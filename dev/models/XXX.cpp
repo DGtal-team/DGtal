@@ -1,0 +1,68 @@
+/** 
+ * @file XXX.cpp
+ * @author AUTHOR (\c EMAIL )
+ * INSTITUTION
+ *
+ * @date 2000/??/??
+ * 
+ * Implementation of methods defined in XXX.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include "YYY/ZZZ/XXX.h"
+// Includes inline functions/methods if necessary.
+#if !defined(INLINE)
+#include "YYY/ZZZ/XXX.ih"
+#endif
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+
+///////////////////////////////////////////////////////////////////////////////
+// class XXX
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+/**
+ * Destructor. 
+ */
+YYY::XXX::~XXX()
+{
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+void 
+YYY::XXX::selfDisplay( std::ostream & out ) const
+{
+  out << "[XXX]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+bool 
+YYY::XXX::isValid() const
+{
+  return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals - private :
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

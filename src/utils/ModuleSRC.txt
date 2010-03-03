@@ -1,0 +1,5 @@
+
+SET(DGTAL_SRC ${DGTAL_SRC} 
+		utils/Clock
+		utils/Trace)
+

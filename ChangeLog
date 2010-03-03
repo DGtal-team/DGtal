@@ -1,0 +1,37 @@
+2010-02-17 dcoeurjo
+  * Trace: new class models for output streams in Trace class.
+  * TraceWriter/TraceWriterTerm/TraceWriterFile: added
+
+2010-02-12 dcoeurjo
+  * models: bug fix  in INLINE commands
+  * Trace/Clock: minor edit and bug report
+
+2010-01-05 dcoeurjo
+  * Trace can be initialized on diffrent output stream (e.g. std::cerr or a file stream)
+  * test_trace: update to test the new API
+
+2010-01-04 dcoeurjo
+  * Clock: no more static variables and methods (in order to have several running clocks)
+  * Trace: new interface and the endBlock displays and returns the ellapsed time within the block 
+
+2009-12-28 dcoeurjo
+  * Trace: a new class to trace out messages to the standard output. Four type of messages are possible: info, debug, error and "emphased". On color linux terminal, messages appears with an appropriate color foreground.
+  * test_trace: an illustration of the Trace interface
+
+2009-12-14 dcoeurjo
+  * CMakeLists, test_clock updates to ensure compatibility with VisualStudio
+  * New cmake options
+    - OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+    - OPTION(BUILD_TESTS "Build tests." ON)
+
+2009-12-11 dcoeurjo
+	* CMakeLists scripts and first backport from imagene (Clock class)
+
+2009-12-11 dcoeurjo
+	* Repository cleanup: 
+		  - Modeles and genereateClass.sh removed
+      - JOL scripts & templates added
+	
+
+2009-12-03 dcoeurjo
+	* Modeles: class templates added with generateClass.sh script

@@ -1,0 +1,47 @@
+/** 
+ * @file XXX.ih
+ * @author AUTHOR (\c EMAIL )
+ * INSTITUTION
+ *
+ * @date 2000/??/??
+ * 
+ * Implementation of inline methods defined in XXX.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'XXX'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'XXX' to write.
+ * @return the output stream after the writing.
+ */
+std::ostream&
+YYY::operator<<( std::ostream & out, 
+		 const XXX & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
