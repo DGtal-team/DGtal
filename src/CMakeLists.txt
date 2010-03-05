@@ -6,6 +6,8 @@ include_directories (${PROJECT_SOURCE_DIR}/include)
 ## each subdir must contain a ModuleSRC.txt file with a set command on the variable ${DGTAL_SRC}
 include(base/ModuleSRC.txt)
 include(utils/ModuleSRC.txt)
+include(math/ModuleSRC.txt)
+
 
 
 # Create a library called "DGtal".

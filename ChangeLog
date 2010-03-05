@@ -1,3 +1,7 @@
+2010-03-03 dcoeurjo
+	* math/MeasureOfStraightLines: new class to compute the measure of a set of Straight lines defined as a polygon in the (a,b) parameter space.
+	* test_measure: added
+
 2010-02-17 dcoeurjo
   * Trace: new class models for output streams in Trace class.
   * TraceWriter/TraceWriterTerm/TraceWriterFile: added

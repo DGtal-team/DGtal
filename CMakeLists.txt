@@ -53,6 +53,12 @@ ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
 # -----------------------------------------------------------------------------
+# Check Dependencies
+# -----------------------------------------------------------------------------
+FIND_PACKAGE(Boost)
+
+
+# -----------------------------------------------------------------------------
 # Defines some variables
 # -----------------------------------------------------------------------------
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
