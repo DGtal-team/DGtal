@@ -28,7 +28,7 @@ namespace DGtal
 
   TraceWriterTerm traceWriterTerm(std::cerr);
   Trace trace(traceWriterTerm);
-
+  
 
    std::string Version = "@DGtal_VERSION@";
 }
