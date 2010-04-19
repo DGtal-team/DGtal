@@ -23,17 +23,31 @@
 // Inclusions
 #include <iostream>
 
+#include "DGtal/utils/Trace.h"
+#include "DGtal/utils/TraceWriterTerm.h"
+#include "DGtal/utils/TraceWriterFile.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////// 
 #ifndef INLINE
 /** Forces inline if nothing is provided by the compiler. */
 #define INLINE inline
+#else
+#define INLINE
 #endif
+
+
 
 namespace DGtal 
 {
   
+  /** DGtal Global variables
+  *
+  **/
+  extern TraceWriterTerm traceWriterTerm;
+  extern Trace trace;
   
   /////////////////////////////////////////////////////////////////////////////
   // class Common

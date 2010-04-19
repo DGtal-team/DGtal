@@ -20,9 +20,8 @@
 #include <fstream>
 
 #include "DGtal/base/Config.h"
-#include "DGtal/utils/Trace.h"
-#include "DGtal/utils/TraceWriterTerm.h"
-#include "DGtal/utils/TraceWriterFile.h"
+#include "DGtal/base/Common.h"
+
 
 using namespace DGtal;
 using namespace std;

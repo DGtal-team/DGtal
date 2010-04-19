@@ -44,6 +44,7 @@
  * @param object the object of class 'Common' to write.
  * @return the output stream after the writing.
  */
+INLINE 
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
 		 const Common & object )

@@ -26,7 +26,7 @@
 #include <ostream>
 #include <string>
 #include <stack>
-#include "DGtal/base/Common.h"
+
 #include "DGtal/utils/Clock.h"
 #include "DGtal/utils/TraceWriter.h"
 #include "DGtal/utils/TraceWriterTerm.h"
@@ -210,7 +210,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    INLINE Trace( const Trace & other );
+    Trace( const Trace & other );
 
     /**
      * Assignment.
@@ -218,7 +218,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    INLINE Trace & operator=( const Trace & other );
+    Trace & operator=( const Trace & other );
 
 
 
@@ -235,7 +235,7 @@ namespace DGtal
    * @param object the object of class 'Trace' to write.
    * @return the output stream after the writing.
    */
-  INLINE std::ostream&
+  std::ostream&
   operator<<( std::ostream & out, const Trace & object );
 
   

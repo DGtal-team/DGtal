@@ -24,7 +24,6 @@
 // Inclusions
 #include <iostream>
 #include <ostream>
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 

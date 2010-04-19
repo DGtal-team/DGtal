@@ -17,16 +17,13 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
-#include "DGtal/utils/Trace.h"
-#include "DGtal/utils/TraceWriterTerm.h"
+#include <vector>
+#include "DGtal/base/Common.h"
 #include "DGtal/math/MeasureOfStraightLines.h"
+
 
 using namespace DGtal;
 using namespace std;
-
-//Global Trace declaration
-TraceWriterTerm traceWriterTerm(cerr);
-Trace trace(traceWriterTerm);
 
 
 
@@ -46,6 +43,7 @@ void testUnitSquare()
   a.push_back(0); b.push_back(1);
   
   MeasureOfStraightLines measure;
+    
 
   trace.info() << "Measure of the Straight of Lines of the unit square = " << measure.computeMeasure(a,b)<< std::endl;
   trace.emphase() <<"Expected value = 0.707107 (sqrt(2)/2)"<<endl;

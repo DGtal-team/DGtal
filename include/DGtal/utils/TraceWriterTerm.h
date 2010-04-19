@@ -24,7 +24,6 @@
 // Inclusions
 #include <iostream>
 #include <string>
-#include "DGtal/base/Common.h"
 #include "DGtal/utils/TraceWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 

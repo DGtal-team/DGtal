@@ -27,7 +27,7 @@ set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 # -----------------------------------------------------------------------------
 # Display some information
 # -----------------------------------------------------------------------------
-message( STATUS "Libs extension is '${SUFFIXLIB}'. Bins extension is '${SUFFIXBIN}'." )
+message(STATUS "Libs extension is '${SUFFIXLIB}'. Bins extension is '${SUFFIXBIN}'." )
 message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
@@ -97,8 +97,8 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-SET(${DGtal_VERSION} "0.1")
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h" IMMEDIATE @ONLY)
+SET(DGtal_VERSION "0.1")
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h" IMMEDIATE)
 
 
 #------------------------------------------------------------------------------
