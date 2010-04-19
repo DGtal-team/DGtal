@@ -18,6 +18,8 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+
+#include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
@@ -25,9 +27,6 @@
 using namespace DGtal;
 using namespace std;
 
-//Global Trace declaration
-TraceWriterTerm traceWriterTerm(cerr);
-Trace trace(traceWriterTerm);
 
 void testSimple()
 {

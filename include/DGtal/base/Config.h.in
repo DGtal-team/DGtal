@@ -10,4 +10,25 @@
  * This file is part of the DGtal library.
  */
 
+#include <iostream>
+#include <string>
+#include "DGtal/utils/Trace.h"
+#include "DGtal/utils/TraceWriterTerm.h"
+#include "DGtal/utils/TraceWriterFile.h"
 
+
+
+/**
+ * Global Variable Declaration
+ *
+ **/
+
+namespace DGtal 
+{
+
+  TraceWriterTerm traceWriterTerm(std::cerr);
+  Trace trace(traceWriterTerm);
+
+
+   std::string Version = "@DGtal_VERSION@";
+}

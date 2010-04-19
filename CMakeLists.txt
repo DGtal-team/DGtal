@@ -94,6 +94,12 @@ if (CMAKE_MAJOR_VERSION EQUAL 2)
    endif (CMAKE_MINOR_VERSION GREATER 5)
 endif (CMAKE_MAJOR_VERSION EQUAL 2)
 
+#------------------------------------------------------------------------------
+# Configuration of the Config.h
+#------------------------------------------------------------------------------
+SET(${DGtal_VERSION} "0.1")
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h" IMMEDIATE @ONLY)
+
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
