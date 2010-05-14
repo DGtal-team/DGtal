@@ -59,7 +59,7 @@ DGtal::PointVector<T,N>::getDimension() const
 template<typename T,std::size_t N>
 INLINE 
 const T& 
-DGtal::PointVector<T,N>::ro(std::size_t i) const
+DGtal::PointVector<T,N>::getVal(std::size_t i) const
 {
   return myArray[ i ];
 }
@@ -74,7 +74,7 @@ DGtal::PointVector<T,N>::ro(std::size_t i) const
 * \param i is the index of the retrieved coefficient.
 */
 template<typename T,std::size_t N>
-INLINE T& DGtal::PointVector<T,N>::rw(std::size_t i)
+INLINE T& DGtal::PointVector<T,N>::getSetVal(std::size_t i)
 {
   return myArray[ i ];
 }
@@ -94,6 +94,21 @@ DGtal::PointVector<T,N>::operator*= (T coeff)
   return *this;
 }
 
+
+
+/**
+* Assignemnt operator
+*
+* \param aPointVector is the pointvector to assign to \a *this.
+*/
+template<typename T, std::size_t N>
+DGtal::PointVector<T,N>&  
+DGtal::PointVector<T,N>::operator= (const PointVector<T,N> &aPointVector)
+{
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    myArray[ i ] = aPointVector.getVal(i);
+  return *this;
+}
 
 /**
 * Resets all the values to zero.

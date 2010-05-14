@@ -22,6 +22,38 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
+/**
+* Constructor
+**/
+template<typename T,std::size_t N>
+DGtal::Vector<T,N>::Vector()
+{
+}
+
+/**
+* Destructor
+**/
+template<typename T,std::size_t N>
+DGtal::Vector<T,N>::~Vector()
+{
+}
+
+/**
+* Addition operator.
+*
+* \pre Vector \a v must have the same size as \a *this.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Vector<T,N>&  
+DGtal::Vector<T,N>::operator+= (const Vector<T,N>& v)
+{
+  for (std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] += v.getVal( i );
+  return *this;
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,13 +65,13 @@
  * @param object the object of class 'Vector' to write.
  * @return the output stream after the writing.
  */
-std::ostream&
-DGtal::operator<<( std::ostream & out, 
-		 const Vector & object )
-{
-  object.selfDisplay( out );
-  return out;
-}
+//std::ostream&
+//DGtal::operator<<( std::ostream & out, 
+//		 const Vector<T,N> & object )/
+//{
+ // object.selfDisplay( out );
+ // return out;
+//}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

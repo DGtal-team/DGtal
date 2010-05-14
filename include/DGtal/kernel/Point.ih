@@ -52,7 +52,7 @@ INLINE DGtal::Point<T,N>&
 DGtal::Point<T,N>::operator+= (const Point<T,N>& v)
 {
   for (std::size_t i = 0; i < N; ++i )
-    this->myArray[ i ] += v.ro( i );
+    this->myArray[ i ] += v.getVal( i );
   return *this;
 }
 

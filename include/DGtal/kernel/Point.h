@@ -59,16 +59,17 @@ namespace DGtal
     */
     ~Point();
     
-    /**
-    * Addition operator.
-    *
-    * \param v is the Point that gets added to \a *this.
-    */
-    Point<T,N>& operator+= (const Point<T,N>& v);
     
-
     // ----------------------- Interface --------------------------------------
-  public:
+    public:
+    
+      /**
+      * Addition operator.
+      *
+      * \param v is the Point that gets added to \a *this.
+      */
+      Point<T,N>& operator+= (const Point<T,N>& v);
+      
 
     /**
      * Writes/Displays the object on an output stream.

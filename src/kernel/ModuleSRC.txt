@@ -1,5 +1,6 @@
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
 		kernel/Point
+		kernel/Vector
 		kernel/PointVector)
 

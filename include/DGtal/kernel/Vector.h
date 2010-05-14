@@ -26,6 +26,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -35,13 +36,20 @@ namespace DGtal
   // class Vector
   /** 
    * Description of class 'Vector' <p>
-   * Aim: 
+   *
+   * Aim: Implement the notion of Point in a Digital Space.
    */
-  class Vector
+  template<typename T, std::size_t N> 
+  class Vector : public PointVector<T,N>
   {
     // ----------------------- Standard services ------------------------------
   public:
 
+    /**
+    * Constructor.
+    */
+    Vector();
+    
     /**
      * Destructor. 
      */
@@ -50,6 +58,22 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+    * Addition operator.
+    *
+    * \param v is the Point that gets added to \a *this.
+    */
+    Vector<T,N>& operator+= (const Vector<T,N>& v);
+    
+    /**
+    * Assignment.
+    * @param other the object to copy.
+    * @return a reference on 'this'.
+    * Forbidden by default.
+    */
+    Vector<T,N> & operator=( const Vector<T,N> & other );
+    
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -70,11 +94,7 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Vector();
+   
 
   private:
 
@@ -85,14 +105,7 @@ namespace DGtal
      */
     Vector( const Vector & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Vector & operator=( const Vector & other );
-  
+   
     // ------------------------- Internals ------------------------------------
   private:
   
@@ -105,8 +118,8 @@ namespace DGtal
    * @param object the object of class 'Vector' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<<( std::ostream & out, const Vector & object );
+  //std::ostream&
+  //operator<<( std::ostream & out, const Vector & object );
 
   
 } // namespace DGtal

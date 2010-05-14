@@ -51,7 +51,7 @@ namespace DGtal
 
     /**
     * Constructor.
-    *
+    * \todo PointVector must be Virutal
     */
     PointVector();
     
@@ -79,7 +79,7 @@ namespace DGtal
     *
     * \param i is the index of the retrieved coefficient.
     */
-    const T& ro(std::size_t i) const;
+    const T& getVal(std::size_t i) const;
     
     /**
     * Returns a non-const reference to the \a i-th element of the
@@ -89,7 +89,7 @@ namespace DGtal
     *
     * \param i is the index of the retrieved coefficient.
     */
-    T& rw(uint i);
+    T& getSetVal(std::size_t i);
     
     
     /**
@@ -100,6 +100,15 @@ namespace DGtal
     PointVector<T,N>& operator*= (T coeff);
     
     
+    /**
+    * Assignement Operator
+    *
+    * \param coeff is the factor \a *this get multiplied by.
+    */
+    PointVector<T,N>& operator= (const PointVector<T,N>& aPointVector);
+    
+    
+
     /**
     * Resets all the values to zero.
     */
@@ -138,13 +147,7 @@ namespace DGtal
      */
     PointVector( const PointVector & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    PointVector & operator=( const PointVector & other );
+
   
     // ------------------------- Internals ------------------------------------
   private:

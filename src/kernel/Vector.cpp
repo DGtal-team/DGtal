@@ -27,14 +27,6 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-/**
- * Destructor. 
- */
-DGtal::Vector::~Vector()
-{
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -43,8 +35,9 @@ DGtal::Vector::~Vector()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
+template<typename T,std::size_t N>
 void 
-DGtal::Vector::selfDisplay( std::ostream & out ) const
+DGtal::Vector<T,N>::selfDisplay( std::ostream & out ) const
 {
   out << "[Vector]";
 }
@@ -53,8 +46,9 @@ DGtal::Vector::selfDisplay( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
+template<typename T,std::size_t N>
 bool 
-DGtal::Vector::isValid() const
+DGtal::Vector<T,N>::isValid() const
 {
   return true;
 }
