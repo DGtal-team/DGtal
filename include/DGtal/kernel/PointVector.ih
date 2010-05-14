@@ -1,0 +1,135 @@
+/** 
+ * @file PointVector.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/14
+ * 
+ * Implementation of inline methods defined in PointVector.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+/**
+* Constructor
+**/
+template<typename T,std::size_t N>
+DGtal::PointVector<T,N>::PointVector()
+{
+}
+
+/**
+* Destructor
+**/
+template<typename T,std::size_t N>
+DGtal::PointVector<T,N>::~PointVector()
+{
+}
+
+
+/**
+* Returns the size of the vector (i.e. the number of its
+* coefficients).
+*/
+template<typename T,std::size_t N>
+INLINE std::size_t 
+DGtal::PointVector<T,N>::getDimension() const
+{
+  return myArray.size();
+}
+
+
+/**
+* Returns the  \a i-th coefficient of the vector.
+*
+* \pre The \a i index must lie between \a 0 and \a size() .
+*
+* \param i is the index of the retrieved coefficient.
+*/
+
+template<typename T,std::size_t N>
+INLINE 
+const T& 
+DGtal::PointVector<T,N>::ro(std::size_t i) const
+{
+  return myArray[ i ];
+}
+
+
+/**
+* Returns a non-const reference to the \a i-th element of the
+* vector.
+*
+* \pre The \a i index must lie between \a 0 and \a size() .
+*
+* \param i is the index of the retrieved coefficient.
+*/
+template<typename T,std::size_t N>
+INLINE T& DGtal::PointVector<T,N>::rw(std::size_t i)
+{
+  return myArray[ i ];
+}
+
+
+/**
+* Multiplies \a *this by the \a coeff scalar number.
+*
+* \param coeff is the factor \a *this get multiplied by.
+*/
+template<typename T, std::size_t N>
+DGtal::PointVector<T,N>&  
+DGtal::PointVector<T,N>::operator*= (T coeff)
+{
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    myArray[ i ] *= coeff;
+  return *this;
+}
+
+
+/**
+* Resets all the values to zero.
+*/
+template<typename T, std::size_t N>
+INLINE
+void
+DGtal::PointVector<T,N>::zero()
+{
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    myArray[ i ] = 0;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'PointVector'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'PointVector' to write.
+ * @return the output stream after the writing.
+ */
+//std::ostream&
+//DGtal::operator<<( std::ostream & out, //
+//		 const PointVector & object )
+//{
+ // object.selfDisplay( out );
+ // return out;
+//}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

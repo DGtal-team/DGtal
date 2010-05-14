@@ -1,0 +1,80 @@
+/** 
+ * @file Point.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/14
+ * 
+ * Implementation of inline methods defined in Point.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+/**
+* Constructor
+**/
+template<typename T,std::size_t N>
+DGtal::Point<T,N>::Point()
+{
+}
+
+/**
+* Destructor
+**/
+template<typename T,std::size_t N>
+DGtal::Point<T,N>::~Point()
+{
+}
+
+/**
+* Addition operator.
+*
+* \pre Vector \a v must have the same size as \a *this.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Point<T,N>&  
+DGtal::Point<T,N>::operator+= (const Point<T,N>& v)
+{
+  for (std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] += v.ro( i );
+  return *this;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Point'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Point' to write.
+ * @return the output stream after the writing.
+ */
+//std::ostream&
+//DGtal::operator<<( std::ostream & out, 
+//		 const Point & object )
+//{
+ // object.selfDisplay( out );
+  //return out;
+//}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
