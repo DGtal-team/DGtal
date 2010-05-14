@@ -45,8 +45,6 @@ bool testSimple()
   if (aPoint.getDimension() != 4)
       return false;
   
-  
-  
   return true;
 }
 

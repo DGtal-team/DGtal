@@ -26,6 +26,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -35,17 +37,35 @@ namespace DGtal
   // class Point
   /** 
    * Description of class 'Point' <p>
-   * Aim: 
+   *
+   * Aim: Implement the notion of Point in a Digital Space.
+   *
    */
-  class Point
+  
+  template<typename T, std::size_t N> 
+  class Point : public PointVector<T,N>
   {
+    
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Destructor. 
-     */
+    * Constructor.
+    */
+    Point();
+    
+    /**
+    * Destructor.
+    */
     ~Point();
+    
+    /**
+    * Addition operator.
+    *
+    * \param v is the Point that gets added to \a *this.
+    */
+    Point<T,N>& operator+= (const Point<T,N>& v);
+    
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -70,12 +90,7 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Point();
-
+    // ------------------------- Internals ------------------------------------
   private:
 
     /**
@@ -91,10 +106,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Point & operator=( const Point & other );
-  
-    // ------------------------- Internals ------------------------------------
-  private:
+    Point<T,N> & operator=( const Point<T,N> & other );
   
   }; // end of class Point
 
@@ -105,8 +117,8 @@ namespace DGtal
    * @param object the object of class 'Point' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<<( std::ostream & out, const Point & object );
+  //std::ostream&
+  //operator<<( std::ostream & out, const Point & object );
 
   
 } // namespace DGtal
