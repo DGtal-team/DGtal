@@ -9,6 +9,7 @@ link_directories (${PROJECT_BINARY_DIR})
 
 SET(DGTAL_TESTS_SRC
    test_clock
+   test_PointVector
    test_trace
    test_measure)
 
