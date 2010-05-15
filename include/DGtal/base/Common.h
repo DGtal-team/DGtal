@@ -1,3 +1,5 @@
+#pragma once
+
 /** 
  * @file Common.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -27,6 +29,7 @@
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
 
+#include "DGtal/utils/Assert.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

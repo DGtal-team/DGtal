@@ -26,6 +26,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+
+#include "DGtal/kernel/Point.h"
+#include "DGtal/kernel/Vector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -40,22 +43,28 @@ namespace DGtal
    *
    */
   
-  template <DimensionT,IntT>
+  template <typename IntT, std::size_t Dimension>
   class Space
   {
     
-    typedef InT::Integer IntergerType;
-    typedef DimensionT  DimensionType;
+    typedef IntT IntergerType;
+    typedef std::size_t  DimensionType;
     
-    typedef Point<DimensionT,IntT> Point;
-    typedef Vector<DimensionT,IntT> Vector;
-    typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
+    typedef Point<IntT, Dimension> PointType;
+    typedef Vector<IntT,Dimension> VectorType;
+    //typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
     
     
     
     // ----------------------- Standard services ------------------------------
   public:
 
+    /**
+    * Constructor
+    *
+    */
+    Space();
+    
     /**
      * Destructor. 
      */
@@ -84,11 +93,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Space();
 
   private:
 
@@ -119,8 +123,8 @@ namespace DGtal
    * @param object the object of class 'Space' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<<( std::ostream & out, const Space & object );
+ // std::ostream&
+//  operator<<( std::ostream & out, const Space & object );
 
   
 } // namespace DGtal
@@ -131,6 +135,7 @@ namespace DGtal
 #if defined(INLINE)
 #include "DGtal/kernel/Space.ih"
 #endif
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

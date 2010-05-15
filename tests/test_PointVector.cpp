@@ -43,13 +43,44 @@ bool testSimplePoint()
   aPoint.zero();
   aFPoint.zero();
   
-  cout << "aPoint dimension="<<aPoint.getDimension()<<endl;
+  aPoint.getSetVal(2) = 4.5;
+  aPoint.getSetVal(1) = 4;
+  aPoint.getSetVal(0) = -3;
+  
+  aPoint *= 5.6;
+  
+  trace.beginBlock("Test point dimension");
+  trace.info()<< "aPoint dimension="<<aPoint.getDimension()<<endl;
+  trace.endBlock();
+  
   if (aPoint.getDimension() != 4)
       return false;
+  
   
    aPoint += aFPoint;
   
   return true;
+}
+
+bool testNorms()
+{
+  typedef Point<double,3> PointType;
+  PointType aPoint;
+  
+  aPoint.getSetVal(2) = 2;
+  aPoint.getSetVal(1) = -1;
+  aPoint.getSetVal(0) = 3;
+
+  trace.beginBlock("Test of Norms");
+  trace.info() << "aPoint l_2 norm="<<aPoint.norm()<<endl;
+  trace.info() << "aPoint l_1 norm="<<aPoint.norm(PointType::L_1)<<endl;
+  trace.info() << "aPoint l_infty norm="<<aPoint.norm(PointType::L_infty)<<endl;
+  trace.endBlock();
+  
+  
+  return ((aPoint.norm(PointType::L_1) == 6) && 
+  (aPoint.norm(PointType::L_infty) == 3));
+  
 }
 
 /**
@@ -66,7 +97,10 @@ bool testSimpleVector()
   aVector.zero();
   aFVector.zero();
   
-  cout << "aVector dimension="<<aVector.getDimension()<<endl;
+  trace.beginBlock("Test of Vector Dimension");
+  trace.info() << "aVector dimension="<<aVector.getDimension()<<endl;
+  trace.endBlock();
+  
   if (aVector.getDimension() != 4)
     return false;
   
@@ -76,13 +110,27 @@ bool testSimpleVector()
 }
 
 
+bool testPointTypeConversion()
+{
+  Point<int,3> aPointInt3;
+  Point<int,3> aPointInt3b;
+  Point<double,3> aPointInt3bb;
+  
+  aPointInt3b.getSetVal(2) = 4;
+  aPointInt3 = aPointInt3b;
+
+  aPointInt3bb.getSetVal(2) = 4.0;
+  
+  //This assignement does not compile
+  //aPointInt3 = aPointInt3bb;
+  
+}
 
 
-
-int main(int argc, char **argv)
+int main()
 {
   
-  if (testSimplePoint() && testSimpleVector())
+  if (testSimplePoint() && testSimpleVector() && testNorms() && testPointTypeConversion())
      return 0;
   else
     return 1;

@@ -9,9 +9,10 @@ link_directories (${PROJECT_BINARY_DIR})
 
 SET(DGTAL_TESTS_SRC
    test_clock
-   test_PointVector
    test_trace
-   test_measure)
+   test_measure
+   test_PointVector
+   test_Space)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

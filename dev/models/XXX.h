@@ -1,3 +1,5 @@
+#pragma once
+
 /** 
  * @file XXX.h
  * @author AUTHOR (\c EMAIL )

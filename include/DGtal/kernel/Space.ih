@@ -1,0 +1,56 @@
+/** 
+ * @file Space.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/15
+ * 
+ * Implementation of inline methods defined in Space.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template<typename T,std::size_t N>
+DGtal::Space<T,N>::Space()
+{
+}
+
+template<typename T,std::size_t N>
+DGtal::Space<T,N>::~Space()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Space'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Space' to write.
+ * @return the output stream after the writing.
+ */
+//std::ostream&
+//DGtal::operator<<( std::ostream & out, 
+//		 const Space & object )
+//{
+//  object.selfDisplay( out );
+//  return out;
+//}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

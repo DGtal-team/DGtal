@@ -101,13 +101,6 @@ namespace DGtal
      */
     Point( const Point & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Point<T,N> & operator=( const Point<T,N> & other );
   
   }; // end of class Point
 

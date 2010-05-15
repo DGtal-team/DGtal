@@ -52,6 +52,7 @@ namespace DGtal
     /**
     * Constructor.
     * \todo PointVector must be Virutal
+    * \todo implement assignements with type conversion/cast
     */
     PointVector();
     
@@ -113,6 +114,21 @@ namespace DGtal
     * Resets all the values to zero.
     */
     void zero();
+
+    
+    /**
+    * Specify the set of norm types
+    *
+    */
+    enum NormType { L_2, L_1, L_infty };
+    
+    /**
+    * Computes the norm of a point/vector.
+    *
+    * \param type specifies the type of norm to consider (see \ref NormType)
+    * \return the norm of the point/vector
+    */
+    double norm(NormType type = L_2);
     
     
     /**

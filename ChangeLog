@@ -1,3 +1,8 @@
+2010-05-15 dcoeurjo
+  * Assert.h: added macro ASSERT() added based on the boost/assert.hpp (TODO: implement a nice callback)
+  * Point and Vector templated classes added
+  * Space.*: skeleton of a DGtal::Space added
+
 2010-03-03 dcoeurjo
 	* math/MeasureOfStraightLines: new class to compute the measure of a set of Straight lines defined as a polygon in the (a,b) parameter space.
 	* test_measure: added

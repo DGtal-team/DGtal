@@ -61,6 +61,9 @@ INLINE
 const T& 
 DGtal::PointVector<T,N>::getVal(std::size_t i) const
 {
+  
+  ASSERT(i < getDimension());
+  
   return myArray[ i ];
 }
 
@@ -76,6 +79,8 @@ DGtal::PointVector<T,N>::getVal(std::size_t i) const
 template<typename T,std::size_t N>
 INLINE T& DGtal::PointVector<T,N>::getSetVal(std::size_t i)
 {
+  ASSERT(i < getDimension());
+  
   return myArray[ i ];
 }
 
@@ -122,6 +127,47 @@ DGtal::PointVector<T,N>::zero()
     myArray[ i ] = 0;
 }
 
+
+/**
+* Computes the norm of a point/vector.
+*
+* \param type specifies the type of norm to consider (see \ref NormType)
+* \return the norm of the point/vector
+*/
+template<typename T, std::size_t N>
+INLINE
+double 
+DGtal::PointVector<T,N>::norm(PointVector<T,N>::NormType aType)
+{
+  double tmp= 0;
+  
+  
+  ASSERT(getDimension() > 0);
+  
+  if (aType == L_2)
+  {	
+      for(uint i=0; i < getDimension(); i++)
+	tmp += getVal(i)*getVal(i);
+      tmp = sqrt(tmp);
+  }
+  
+  if (aType == L_1)
+  {	
+    for(uint i=0; i < getDimension(); i++)
+      tmp += fabs(getVal(i));
+  }
+  
+  if (aType == L_infty)
+  {	
+    tmp = getVal(0);
+    
+    for(uint i=1; i < getDimension(); i++)
+      if (tmp < fabs(getVal(i)))
+	tmp = fabs(getVal(i));
+  }
+  
+  return tmp;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
