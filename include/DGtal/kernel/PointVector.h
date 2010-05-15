@@ -25,10 +25,11 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
-
-
 #include <boost/array.hpp>
+#include "DGtal/base/Common.h"
+#include "DGtal/base/BasicTypes.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,21 +57,42 @@ public:
     */
     PointVector();
 
+    /**
+     * Constructor from array of values.
+     *
+     * @param ptrValues the array of values (should be at least as long as
+     * the size of the vector)
+     */
+    PointVector( const T * ptrValues );
+
 
     /**
      * Destructor.
      */
     ~PointVector();
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    PointVector ( const PointVector & other );
+
+
     // ----------------------- Interface --------------------------------------
 public:
 
+  /**
+   * Returns the size of the vector (i.e. the number of its
+   * coefficients).
+   * Same as getDimension
+   */
+  static std::size_t size();
 
-    /**
-    * Returns the size of the vector (i.e. the number of its
-    * coefficients).
-    */
-    std::size_t getDimension() const;
+  /**
+   * Returns the size of the vector (i.e. the number of its
+   * coefficients).
+   */
+  static std::size_t getDimension();
 
 
     /**
@@ -155,13 +177,6 @@ public:
 
 
 private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    PointVector ( const PointVector & other );
 
 
 

@@ -4,6 +4,8 @@
  * @file Space.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/05/14
  * 
@@ -46,29 +48,67 @@ namespace DGtal
   template <typename IntT, std::size_t Dimension>
   class Space
   {
-    
-    typedef IntT IntergerType;
+  public:
+    typedef IntT IntegerType;
     typedef std::size_t  DimensionType;
     
     typedef Point<IntT, Dimension> PointType;
     typedef Vector<IntT,Dimension> VectorType;
+    typedef Space<IntT,Dimension> SpaceType;
+
+    // static constants
+    static const DimensionType static_size = Dimension;
     //typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
-    
+    template <std::size_t Codimension>
+    struct Subcospace {
+      typedef Space<IntT,Dimension-Codimension> Type;
+    };
+    template <std::size_t Subdimension>
+    struct Subspace {
+      typedef Space<IntT,Subdimension> Type;
+    };
     
     
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-    * Constructor
-    *
-    */
+     * Constructor
+     *
+     */
     Space();
     
     /**
      * Destructor. 
      */
     ~Space();
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Does nothing.
+     */
+    Space( const Space & other );
+
+    /**
+     * @return the digital space of specified subdimension of this space. 
+     */
+    template <std::size_t Subdimension>
+    static
+    typename Subspace<Subdimension>::Type getSubspace();
+
+    /**
+     * @return the digital space of specified codimension of this space. 
+     */
+    template <std::size_t Codimension>
+    static
+    typename Subcospace<Codimension>::Type getSubcospace();
+
+
+    /**
+     * @return the dimension of the digital space.
+     */
+    static DimensionType dim();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -96,12 +136,6 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Space( const Space & other );
 
     /**
      * Assignment.
@@ -123,8 +157,9 @@ namespace DGtal
    * @param object the object of class 'Space' to write.
    * @return the output stream after the writing.
    */
- // std::ostream&
-//  operator<<( std::ostream & out, const Space & object );
+  template <typename IntT, std::size_t Dimension>
+  std::ostream&
+  operator<<( std::ostream & out, const Space<IntT,Dimension> & object );
 
   
 } // namespace DGtal

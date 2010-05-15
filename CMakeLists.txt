@@ -55,7 +55,18 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 # Check Dependencies
 # -----------------------------------------------------------------------------
-FIND_PACKAGE(Boost)
+#FIND_PACKAGE(Boost REQUIRED PATHS /opt/local /opt/local/include /opt/local/lib)
+set ( CMAKE_PREFIX_PATH "/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
+message( "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
+#find_path( Boost_DIR include/boost/assert.hpp )
+#message( "Boost_DIR = " ${Boost_DIR} )
+FIND_PACKAGE(Boost REQUIRED)
+if ( Boost_FOUND )
+   message( "[OK] Boost found. include=${Boost_INCLUDE_DIR}" )
+   include_directories( ${Boost_INCLUDE_DIR} )
+endif ( Boost_FOUND )
+
+
 
 
 # -----------------------------------------------------------------------------

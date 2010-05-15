@@ -4,6 +4,8 @@
  * @file Vector.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/05/14
  * 
@@ -37,7 +39,9 @@ namespace DGtal
   /** 
    * Description of class 'Vector' <p>
    *
-   * Aim: Implement the notion of Vector in a Digital Space.
+   * Aim: Implement the notion of Vector in a Digital Space. They are
+   * not truely vectors (as in vector spaces) but rather
+   * Z-modules. The main difference is that the inverse may not exist.
    */
   template<typename T, std::size_t N> 
   class Vector : public PointVector<T,N>
@@ -54,6 +58,20 @@ namespace DGtal
      * Destructor. 
      */
     ~Vector();
+
+    /**
+     * Constructor from array of values.
+     *
+     * @param ptrValues the array of values (should be at least as long as
+     * the size of the vector)
+     */
+    Vector( const T * ptrValues );
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Vector( const Vector & other );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -121,12 +139,6 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Vector( const Vector & other );
 
    
     // ------------------------- Internals ------------------------------------
@@ -141,8 +153,9 @@ namespace DGtal
    * @param object the object of class 'Vector' to write.
    * @return the output stream after the writing.
    */
-  //std::ostream&
-  //operator<<( std::ostream & out, const Vector & object );
+  template<typename T, std::size_t N> 
+  std::ostream&
+  operator<<( std::ostream & out, const Vector<T,N> & object );
 
   
 } // namespace DGtal

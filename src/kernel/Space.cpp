@@ -24,6 +24,7 @@ using namespace std;
 // class Space
 ///////////////////////////////////////////////////////////////////////////////
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -34,27 +35,6 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename T,std::size_t N>
-void
-DGtal::Space<T,N>::selfDisplay ( std::ostream & out ) const
-{
-    out << "[Space]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename T,std::size_t N>
-bool
-DGtal::Space<T,N>::isValid() const
-{
-    return true;
-}
 
 
 

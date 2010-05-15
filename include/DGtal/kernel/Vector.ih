@@ -26,6 +26,7 @@
 * Constructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::Vector<T,N>::Vector()
 {
 }
@@ -34,7 +35,32 @@ DGtal::Vector<T,N>::Vector()
 * Destructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::Vector<T,N>::~Vector()
+{
+}
+
+/**
+ * Constructor from array of values.
+ *
+ * @param ptrValues the array of values (should be at least as long as
+ * the size of the vector)
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::Vector<T,N>::Vector( const T * ptrValues )
+  : PointVector<T,N>( ptrValues )
+{
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::Vector<T,N>::Vector( const Vector & other )
+  : PointVector<T,N>( other )
 {
 }
 
@@ -106,6 +132,33 @@ DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
   return newpoint;
 }
 
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template<typename T,std::size_t N>
+INLINE
+void 
+DGtal::Vector<T,N>::selfDisplay( std::ostream & out ) const
+{
+  out << "[Vector ( " << this->getVal( 0 );
+  for ( size_t i = 1; i < N; ++i )
+    out << ", " << this->getVal( i );
+  out << " )]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template<typename T,std::size_t N>
+INLINE
+bool 
+DGtal::Vector<T,N>::isValid() const
+{
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
@@ -115,13 +168,14 @@ DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
  * @param object the object of class 'Vector' to write.
  * @return the output stream after the writing.
  */
-//std::ostream&
-//DGtal::operator<<( std::ostream & out, 
-//		 const Vector<T,N> & object )/
-//{
- // object.selfDisplay( out );
- // return out;
-//}
+template<typename T,std::size_t N>
+std::ostream&
+DGtal::operator<<( std::ostream & out, 
+		   const Vector<T,N> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

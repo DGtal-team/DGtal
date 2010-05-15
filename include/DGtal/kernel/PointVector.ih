@@ -24,6 +24,7 @@
 * Constructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::PointVector<T,N>::PointVector()
 {
 }
@@ -32,20 +33,58 @@ DGtal::PointVector<T,N>::PointVector()
 * Destructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::PointVector<T,N>::~PointVector()
 {
 }
 
+/**
+ * Constructor from array of values.
+ *
+ * @param ptrValues the array of values (should be at least as long as
+ * the size of the vector)
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
+{
+  for ( std::size_t i = 0; i < N; ++i )
+    myArray[ i ] = ptrValues[ i ];
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
+  : myArray( other.myArray )
+{
+}
 
 /**
 * Returns the size of the vector (i.e. the number of its
 * coefficients).
 */
 template<typename T,std::size_t N>
-INLINE std::size_t
-DGtal::PointVector<T,N>::getDimension() const
+INLINE
+std::size_t
+DGtal::PointVector<T,N>::size()
 {
-    return myArray.size();
+  return N;
+}
+
+/**
+* Returns the size of the vector (i.e. the number of its
+* coefficients).
+*/
+template<typename T,std::size_t N>
+INLINE
+std::size_t
+DGtal::PointVector<T,N>::getDimension()
+{
+  return N;
 }
 
 
@@ -111,9 +150,10 @@ template<typename T, std::size_t N>
 DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 {
-    for ( std::size_t i = 0; i < myArray.size(); ++i )
-        myArray[ i ] = aPointVector.getVal ( i );
-    return *this;
+  myArray = aPointVector.myArray;
+    // for ( std::size_t i = 0; i < myArray.size(); ++i )
+    //     myArray[ i ] = aPointVector.getVal ( i );
+  return *this;
 }
 
 /**
@@ -140,32 +180,28 @@ INLINE
 double
 DGtal::PointVector<T,N>::norm ( PointVector<T,N>::NormType aType )
 {
-    double tmp= 0;
+    double tmp= 0.0;
 
     ASSERT ( getDimension() > 0 );
 
-    if ( aType == L_2 )
-    {
+    switch ( aType ) 
+      {
+      case L_2:
         for ( uint i=0; i < getDimension(); i++ )
             tmp += getVal ( i ) *getVal ( i );
         tmp = ( double ) sqrt ( tmp );
-    }
-
-    if ( aType == L_1 )
-    {
+	break;
+      case L_1:
         for ( uint i=0; i < getDimension(); i++ )
             tmp += fabs ( getVal ( i ) );
-    }
-
-    if ( aType == L_infty )
-    {
+	break;
+      case L_infty:
         tmp = getVal ( 0 );
-
         for ( uint i=1; i < getDimension(); i++ )
-            if ( tmp < fabs ( getVal ( i ) ) )
-                tmp = fabs ( getVal ( i ) );
-    }
-
+	  if ( tmp < fabs ( getVal ( i ) ) )
+	    tmp = fabs ( getVal ( i ) );
+	break;
+      }
     return tmp;
 }
 

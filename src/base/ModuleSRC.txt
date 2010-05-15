@@ -1,2 +1,4 @@
 
-SET(DGTAL_SRC ${DGTAL_SRC} base/Common)
+SET(DGTAL_SRC ${DGTAL_SRC} 
+	base/Common
+	base/BasicTypes )

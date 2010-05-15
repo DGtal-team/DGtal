@@ -2,6 +2,8 @@
  * @file Point.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/05/14
  *
@@ -28,6 +30,7 @@
 * Constructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::Point<T,N>::Point()
 {
 }
@@ -36,9 +39,22 @@ DGtal::Point<T,N>::Point()
 * Destructor
 **/
 template<typename T,std::size_t N>
+INLINE
 DGtal::Point<T,N>::~Point()
 {
 }
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::Point<T,N>::Point( const Point & other )
+  : PointVector<T,N>( other )
+{
+}
+
 
 /**
 * Addition operator.
@@ -48,8 +64,9 @@ DGtal::Point<T,N>::~Point()
 * \param v is the vector that gets added to \a *this.
 */
 template<typename T,std::size_t N>
-INLINE DGtal::Point<T,N>&
-DGtal::Point<T,N>::operator+= ( const Point<T,N>& v )
+INLINE 
+DGtal::Point<T,N>&
+DGtal::Point<T,N>::operator+= ( const Vector<T,N>& v )
 {
     for ( std::size_t i = 0; i < N; ++i )
         this->myArray[ i ] += v.getVal ( i );
@@ -62,13 +79,14 @@ DGtal::Point<T,N>::operator+= ( const Point<T,N>& v )
 * \param v is the vector that gets added to \a *this.
 */
 template<typename T,std::size_t N>
-INLINE DGtal::Point<T,N>
-DGtal::Point<T,N>::operator+ ( const Point<T,N>& v ) const
+INLINE 
+DGtal::Point<T,N>
+DGtal::Point<T,N>::operator+ ( const Vector<T,N>& v ) const
 {
     Point<T,N> newpoint;
 
     for ( std::size_t i = 0; i < N; ++i )
-        newpoint.getSetVal ( i ) = this->getVal ( i ) -  v.getVal ( i );
+        newpoint.getSetVal ( i ) = this->getVal ( i ) +  v.getVal ( i );
 
     return newpoint;
 }
@@ -80,8 +98,9 @@ DGtal::Point<T,N>::operator+ ( const Point<T,N>& v ) const
 * \param v is the vector that gets added to \a *this.
 */
 template<typename T,std::size_t N>
-INLINE DGtal::Point<T,N>&
-DGtal::Point<T,N>::operator-= ( const Point<T,N>& v )
+INLINE 
+DGtal::Point<T,N>&
+DGtal::Point<T,N>::operator-= ( const Vector<T,N>& v )
 {
     for ( std::size_t i = 0; i < N; ++i )
         this->myArray[ i ] -= v.getVal ( i );
@@ -96,16 +115,63 @@ DGtal::Point<T,N>::operator-= ( const Point<T,N>& v )
 * \param v is the vector that gets added to \a *this.
 */
 template<typename T,std::size_t N>
-INLINE DGtal::Point<T,N>
-DGtal::Point<T,N>::operator- ( const Point<T,N>& v ) const
+INLINE 
+DGtal::Point<T,N>
+DGtal::Point<T,N>::operator- ( const Vector<T,N>& v ) const
 {
     Point<T,N> newpoint;
 
     for ( std::size_t i = 0; i < N; ++i )
-        newpoint.getSetVal ( i ) = this->getVal ( i ) +  v.getVal ( i );
+        newpoint.getSetVal ( i ) = this->getVal ( i ) -  v.getVal ( i );
 
     return newpoint;
 }
+
+/**
+ * Substraction operator.
+ * Point - Point => Vector
+ *
+ * \param p is the Point that gets substracted to \a *this.
+ */
+template<typename T,std::size_t N>
+INLINE 
+DGtal::Vector<T,N>
+DGtal::Point<T,N>::operator- ( const Point<T,N>& p ) const
+{
+  Vector<T,N> newVector;
+  for ( std::size_t i = 0; i < N; ++i )
+    newVector.getSetVal ( i ) = this->getVal ( i ) -  p.getVal ( i );
+  return newVector;
+}
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template<typename T, std::size_t N>
+INLINE
+void 
+DGtal::Point<T,N>::selfDisplay( std::ostream & out ) const
+{
+  out << "[Point ( " << this->getVal( 0 );
+  for ( size_t i = 1; i < N; ++i )
+    out << ", " << this->getVal( i );
+  out << " )]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template<typename T, std::size_t N>
+INLINE
+bool 
+DGtal::Point<T,N>::isValid() const
+{
+  return true;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
@@ -116,13 +182,15 @@ DGtal::Point<T,N>::operator- ( const Point<T,N>& v ) const
  * @param object the object of class 'Point' to write.
  * @return the output stream after the writing.
  */
-//std::ostream&
-//DGtal::operator<<( std::ostream & out,
-//		 const Point & object )
-//{
-// object.selfDisplay( out );
-//return out;
-//}
+template<typename T,std::size_t N>
+INLINE
+std::ostream&
+DGtal::operator<<( std::ostream & out,
+		   const Point<T,N> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

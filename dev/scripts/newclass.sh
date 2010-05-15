@@ -18,23 +18,23 @@ then
 fi
 
 
-if test -w "$1.h" ;
+if test -w "${INCLUDE_DIR}/$2/$1.h" ;
 then
-    echo "File $1.h exists and is writable. Please remove it before." ;
+    echo "File ${INCLUDE_DIR}/$2/$1.h exists and is writable. Please remove it before." ;
     exit 2;
 fi
-if test -w "$1.ih" ;
+if test -w "${INCLUDE_DIR}/$2/$1.ih" ;
 then
-    echo "File $1.ih exists and is writable. Please remove it before." ;
+    echo "File ${INCLUDE_DIR}/$2/$1.ih exists and is writable. Please remove it before." ;
     exit 2;
 fi
-if test -w "$1.cpp" ;
+if test -w "${SRC_DIR}/$2/$1.cpp" ;
 then
-    echo "File $1.cpp exists and is writable. Please remove it before." ;
+    echo "File ${SRC_DIR}/$2/$1.cpp exists and is writable. Please remove it before." ;
     exit 2;
 fi
 
-echo "--- Creating modules $1.h, $1.ih and $1.cpp"
+echo "--- Creating files ${INCLUDE_DIR}/$2/$1.h, ${INCLUDE_DIR}/$2/$1.ih and ${SRC_DIR}/$2/$1.cpp"
 
 if test "$#" = "3"; then namespace=$3; fi
 enspace="s/YYY/${namespace}/g"
@@ -73,7 +73,7 @@ if test ! -r "${MODELS_DIR}/XXX.cpp"; then
     exit 2
 fi
 
-cat "${MODELS_DIR}/XXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "$1.h"
-cat "${MODELS_DIR}/XXX.ih" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "$1.ih"
-cat "${MODELS_DIR}/XXX.cpp" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "$1.cpp"
+cat "${MODELS_DIR}/XXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
+cat "${MODELS_DIR}/XXX.ih" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.ih"
+cat "${MODELS_DIR}/XXX.cpp" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${SRC_DIR}/$2/$1.cpp"
 echo "--> done."

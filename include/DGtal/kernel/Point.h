@@ -4,6 +4,8 @@
  * @file Point.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/05/14
  *
@@ -27,6 +29,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/Vector.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +41,9 @@ namespace DGtal
 /**
  * Description of class 'Point' <p>
  *
- * Aim: Implement the notion of Point in a Digital Space.
+ * Aim: Implement the notion of Point in a Digital Space. Inherits
+ * from PointVector which is the template container for Point and
+ * Vector.
  *
  */
 
@@ -59,6 +64,11 @@ public:
     */
     ~Point();
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Point( const Point & other );
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -68,14 +78,14 @@ public:
     *
     * \param v is the Point that gets added to \a *this.
     */
-    Point<T,N>& operator+= ( const Point<T,N>& v );
+    Point<T,N>& operator+= ( const Vector<T,N>& v );
 
     /**
     * Addition operator.
     *
     * \param v is the Point that gets added to \a *this.
     */
-    Point<T,N> operator+ ( const Point<T,N>& v ) const;
+    Point<T,N> operator+ ( const Vector<T,N>& v ) const;
 
 
     /**
@@ -83,14 +93,23 @@ public:
     *
     * \param v is the Point that gets substracted to \a *this.
     */
-    Point<T,N>& operator-= ( const Point<T,N>& v );
+    Point<T,N>& operator-= ( const Vector<T,N>& v );
 
     /**
     * Substraction operator.
+    * Point - Vector => Point
     *
     * \param v is the Point that gets added to \a *this.
     */
-    Point<T,N> operator- ( const Point<T,N>& v ) const;
+    Point<T,N> operator- ( const Vector<T,N>& v ) const;
+
+    /**
+    * Substraction operator.
+    * Point - Point => Vector
+    *
+    * \param p is the Point that gets substracted to \a *this.
+    */
+    Vector<T,N> operator- ( const Point<T,N>& p ) const;
 
 
 
@@ -117,12 +136,6 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Point ( const Point & other );
 
 
 }; // end of class Point
@@ -134,8 +147,9 @@ private:
  * @param object the object of class 'Point' to write.
  * @return the output stream after the writing.
  */
-//std::ostream&
-//operator<<( std::ostream & out, const Point & object );
+template<typename T, std::size_t N>
+std::ostream&
+operator<<( std::ostream & out, const Point<T,N> & object );
 
 
 } // namespace DGtal

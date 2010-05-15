@@ -2,6 +2,8 @@
  * @file Space.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/05/15
  * 
@@ -16,6 +18,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cassert>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -24,14 +27,87 @@
 // Implementation of inline methods                                          //
 
 template<typename T,std::size_t N>
+INLINE
 DGtal::Space<T,N>::Space()
 {
 }
 
 template<typename T,std::size_t N>
+INLINE
 DGtal::Space<T,N>::~Space()
 {
 }
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ * Does nothing.
+ */
+template<typename T,std::size_t N>
+INLINE
+DGtal::Space<T,N>::Space( const Space & other )
+{
+}
+
+
+template<typename T,std::size_t N>
+INLINE
+typename DGtal::Space<T,N>::DimensionType
+DGtal::Space<T,N>::dim()
+{
+  return N;
+}
+
+/**
+ * @return the digital space of specified subdimension of this space. 
+ */
+template <typename T,std::size_t N>
+template <std::size_t Subdimension>
+INLINE
+typename DGtal::Space<T,N>::template Subspace<Subdimension>::Type
+DGtal::Space<T,N>::getSubspace()
+{
+  ASSERT( Subdimension <= N );
+  return Space<T,Subdimension>();
+}
+
+/**
+ * @return the digital space of specified codimension of this space. 
+ */
+template <typename T,std::size_t N>
+template <std::size_t Codimension>
+INLINE
+typename DGtal::Space<T,N>::template Subcospace<Codimension>::Type 
+DGtal::Space<T,N>::getSubcospace()
+{
+  ASSERT( Codimension <= N );
+  return Space<T,N-Codimension>();
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T,std::size_t N>
+INLINE
+void
+DGtal::Space<T,N>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Space dim=" << dim() << " size_elem=" << sizeof( T ) << " ]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T,std::size_t N>
+INLINE
+bool
+DGtal::Space<T,N>::isValid() const
+{
+    return true;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
@@ -42,13 +118,15 @@ DGtal::Space<T,N>::~Space()
  * @param object the object of class 'Space' to write.
  * @return the output stream after the writing.
  */
-//std::ostream&
-//DGtal::operator<<( std::ostream & out, 
-//		 const Space & object )
-//{
-//  object.selfDisplay( out );
-//  return out;
-//}
+template <typename T,std::size_t N>
+INLINE
+std::ostream&
+DGtal::operator<<( std::ostream & out, 
+		   const Space<T,N> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,8 @@ fi
 # setting directories
 MODELS_DIR=${DGtal}/dev/models
 PROFILES_DIR=${DGtal}/dev/profiles
+INCLUDE_DIR=${DGtal}/include/DGtal
+SRC_DIR=${DGtal}/src
 
 # system information
 namespace=DGtal

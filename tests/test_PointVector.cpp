@@ -1,7 +1,7 @@
 /**
- * @file testr_measure.cpp
+ * @file test_PointVector.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- *
+ * 
  *
  * @date 2010/03/03
  *
@@ -30,7 +30,7 @@ using namespace std;
 
 
 /**
- * Test instancition of Points
+ * Test instanciation of Points
  *
  **/
 bool testSimplePoint()
@@ -49,9 +49,9 @@ bool testSimplePoint()
 
     aPoint *= 5.6;
 
-    //Marche pô
-    //aPoint.isValid();
-    //aPVInt3.selfDisplay ( std::cout );
+    // Marche pô
+    // aPoint.isValid();
+    cout << "aPoint=" << aPoint << endl;
 
     trace.beginBlock ( "Test point dimension" );
     trace.info() << "aPoint dimension="<<aPoint.getDimension() <<endl;
@@ -60,8 +60,13 @@ bool testSimplePoint()
     if ( aPoint.getDimension() != 4 )
         return false;
 
-
-    aPoint = aFPoint + aFPoint;
+    const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
+    Vector<double, 4> v ( t );
+    aPoint = aFPoint + v;
+    trace.beginBlock ( "Test point addition with vector" );
+    trace.info() << "aPoint = "<< aFPoint << " + " << v << endl;
+    trace.info() << "aPoint = "<< aPoint << endl;
+    trace.endBlock();
 
     return true;
 }
@@ -102,7 +107,8 @@ bool testSimpleVector()
     aFVector.zero();
 
     trace.beginBlock ( "Test of Vector Dimension" );
-    trace.info() << "aVector dimension="<<aVector.getDimension() <<endl;
+    trace.info() << "aVector dimension="<< aVector.getDimension() <<endl;
+    trace.info() << "aVector = "<< aVector <<endl;
     trace.endBlock();
 
     if ( aVector.getDimension() != 4 )
@@ -127,7 +133,7 @@ bool testPointTypeConversion()
 
     //This assignement does not compile
     //aPointInt3 = aPointInt3bb;
-
+    return true;
 }
 
 
