@@ -1,11 +1,11 @@
-/** 
+/**
  * @file Point.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/14
- * 
- * Implementation of inline methods defined in Point.h 
+ *
+ * Implementation of inline methods defined in Point.h
  *
  * This file is part of the DGtal library.
  */
@@ -48,14 +48,64 @@ DGtal::Point<T,N>::~Point()
 * \param v is the vector that gets added to \a *this.
 */
 template<typename T,std::size_t N>
-INLINE DGtal::Point<T,N>&  
-DGtal::Point<T,N>::operator+= (const Point<T,N>& v)
+INLINE DGtal::Point<T,N>&
+DGtal::Point<T,N>::operator+= ( const Point<T,N>& v )
 {
-  for (std::size_t i = 0; i < N; ++i )
-    this->myArray[ i ] += v.getVal( i );
-  return *this;
+    for ( std::size_t i = 0; i < N; ++i )
+        this->myArray[ i ] += v.getVal ( i );
+    return *this;
 }
 
+/**
+* Addition operator.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Point<T,N>
+DGtal::Point<T,N>::operator+ ( const Point<T,N>& v ) const
+{
+    Point<T,N> newpoint;
+
+    for ( std::size_t i = 0; i < N; ++i )
+        newpoint.getSetVal ( i ) = this->getVal ( i ) -  v.getVal ( i );
+
+    return newpoint;
+}
+
+/**
+* Substraction operator.
+*
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Point<T,N>&
+DGtal::Point<T,N>::operator-= ( const Point<T,N>& v )
+{
+    for ( std::size_t i = 0; i < N; ++i )
+        this->myArray[ i ] -= v.getVal ( i );
+    return *this;
+}
+
+/**
+* Substraction operator.
+*
+* \pre Vector \a v must have the same size as \a *this.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Point<T,N>
+DGtal::Point<T,N>::operator- ( const Point<T,N>& v ) const
+{
+    Point<T,N> newpoint;
+
+    for ( std::size_t i = 0; i < N; ++i )
+        newpoint.getSetVal ( i ) = this->getVal ( i ) +  v.getVal ( i );
+
+    return newpoint;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
@@ -67,11 +117,11 @@ DGtal::Point<T,N>::operator+= (const Point<T,N>& v)
  * @return the output stream after the writing.
  */
 //std::ostream&
-//DGtal::operator<<( std::ostream & out, 
+//DGtal::operator<<( std::ostream & out,
 //		 const Point & object )
 //{
- // object.selfDisplay( out );
-  //return out;
+// object.selfDisplay( out );
+//return out;
 //}
 
 //                                                                           //

@@ -42,7 +42,11 @@ template<typename T,std::size_t N>
 void 
 DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
 {
-  out << "[PointVector]";
+  out << "[PointVector] {";
+  for(unsigned int i=0; i < getDimension() ; ++i)
+    out << getVal(i) <<", ";
+  out << "}";
+  
 }
 
 /**

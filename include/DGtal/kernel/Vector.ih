@@ -55,6 +55,56 @@ DGtal::Vector<T,N>::operator+= (const Vector<T,N>& v)
 }
 
 
+/**
+* Addition operator.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Vector<T,N>
+DGtal::Vector<T,N>::operator+ (const Vector<T,N>& v) const
+{
+  Vector<T,N> newpoint;
+  
+  for (std::size_t i = 0; i < N; ++i )
+    newpoint.getSetVal( i ) = this->getVal( i ) -  v.getVal( i );
+  
+  return newpoint;
+}
+
+/**
+* Substraction operator.
+*
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Vector<T,N>&  
+DGtal::Vector<T,N>::operator-= (const Vector<T,N>& v)
+{
+  for (std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] -= v.getVal( i );
+  return *this;
+}
+
+/**
+* Substraction operator.
+*
+* \pre Vector \a v must have the same size as \a *this.
+*
+* \param v is the vector that gets added to \a *this.
+*/
+template<typename T,std::size_t N>
+INLINE DGtal::Vector<T,N>
+DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
+{
+  Vector<T,N> newpoint;
+  
+  for (std::size_t i = 0; i < N; ++i )
+    newpoint.getSetVal( i ) = this->getVal( i ) +  v.getVal( i );
+  
+  return newpoint;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //

@@ -1,11 +1,11 @@
-/** 
+/**
  * @file XXX.cpp
  * @author AUTHOR (\c EMAIL )
  * INSTITUTION
  *
  * @date 2000/??/??
- * 
- * Implementation of methods defined in XXX.h 
+ *
+ * Implementation of methods defined in XXX.h
  *
  * This file is part of the DGtal library.
  */
@@ -28,7 +28,7 @@ using namespace std;
 // Standard services - public :
 
 /**
- * Destructor. 
+ * Destructor.
  */
 YYY::XXX::~XXX()
 {
@@ -43,20 +43,20 @@ YYY::XXX::~XXX()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-void 
-YYY::XXX::selfDisplay( std::ostream & out ) const
+void
+YYY::XXX::selfDisplay ( std::ostream & out ) const
 {
-  out << "[XXX]";
+    out << "[XXX]";
 }
 
 /**
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-bool 
+bool
 YYY::XXX::isValid() const
 {
-  return true;
+    return true;
 }
 
 

@@ -37,7 +37,7 @@ namespace DGtal
   /** 
    * Description of class 'Vector' <p>
    *
-   * Aim: Implement the notion of Point in a Digital Space.
+   * Aim: Implement the notion of Vector in a Digital Space.
    */
   template<typename T, std::size_t N> 
   class Vector : public PointVector<T,N>
@@ -61,15 +61,38 @@ namespace DGtal
     /**
     * Addition operator.
     *
-    * \param v is the Point that gets added to \a *this.
+    * \param v is the Vector that gets added to \a *this.
     */
     Vector<T,N>& operator+= (const Vector<T,N>& v);
+    
+    /**
+    * Addition operator.
+    *
+    * \param v is the Vector that gets added to \a *this.
+    */
+    Vector<T,N> operator+ (const Vector<T,N>& v) const;
+    
+    
+    /**
+    * Substraction operator with assignement.
+    *
+    * \param v is the Vector that gets substracted to \a *this.
+    */
+    Vector<T,N>& operator-= (const Vector<T,N>& v);
+    
+    /**
+    * Substraction operator.
+    *
+    * \param v is the Vector that gets added to \a *this.
+    */
+    Vector<T,N> operator- (const Vector<T,N>& v) const;
+    
+    
     
     /**
     * Assignment.
     * @param other the object to copy.
     * @return a reference on 'this'.
-    * Forbidden by default.
     */
     Vector<T,N> & operator=( const Vector<T,N> & other );
     

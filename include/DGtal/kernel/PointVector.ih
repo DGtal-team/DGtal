@@ -1,11 +1,11 @@
-/** 
+/**
  * @file PointVector.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/14
- * 
- * Implementation of inline methods defined in PointVector.h 
+ *
+ * Implementation of inline methods defined in PointVector.h
  *
  * This file is part of the DGtal library.
  */
@@ -16,6 +16,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -41,10 +42,10 @@ DGtal::PointVector<T,N>::~PointVector()
 * coefficients).
 */
 template<typename T,std::size_t N>
-INLINE std::size_t 
+INLINE std::size_t
 DGtal::PointVector<T,N>::getDimension() const
 {
-  return myArray.size();
+    return myArray.size();
 }
 
 
@@ -57,14 +58,14 @@ DGtal::PointVector<T,N>::getDimension() const
 */
 
 template<typename T,std::size_t N>
-INLINE 
-const T& 
-DGtal::PointVector<T,N>::getVal(std::size_t i) const
+INLINE
+const T&
+DGtal::PointVector<T,N>::getVal ( std::size_t i ) const
 {
-  
-  ASSERT(i < getDimension());
-  
-  return myArray[ i ];
+
+    ASSERT ( i < getDimension() );
+
+    return myArray[ i ];
 }
 
 
@@ -77,11 +78,11 @@ DGtal::PointVector<T,N>::getVal(std::size_t i) const
 * \param i is the index of the retrieved coefficient.
 */
 template<typename T,std::size_t N>
-INLINE T& DGtal::PointVector<T,N>::getSetVal(std::size_t i)
+INLINE T& DGtal::PointVector<T,N>::getSetVal ( std::size_t i )
 {
-  ASSERT(i < getDimension());
-  
-  return myArray[ i ];
+    ASSERT ( i < getDimension() );
+
+    return myArray[ i ];
 }
 
 
@@ -91,12 +92,12 @@ INLINE T& DGtal::PointVector<T,N>::getSetVal(std::size_t i)
 * \param coeff is the factor \a *this get multiplied by.
 */
 template<typename T, std::size_t N>
-DGtal::PointVector<T,N>&  
-DGtal::PointVector<T,N>::operator*= (T coeff)
+DGtal::PointVector<T,N>&
+DGtal::PointVector<T,N>::operator*= ( T coeff )
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
-    myArray[ i ] *= coeff;
-  return *this;
+    for ( std::size_t i = 0; i < myArray.size(); ++i )
+        myArray[ i ] *= coeff;
+    return *this;
 }
 
 
@@ -107,12 +108,12 @@ DGtal::PointVector<T,N>::operator*= (T coeff)
 * \param aPointVector is the pointvector to assign to \a *this.
 */
 template<typename T, std::size_t N>
-DGtal::PointVector<T,N>&  
-DGtal::PointVector<T,N>::operator= (const PointVector<T,N> &aPointVector)
+DGtal::PointVector<T,N>&
+DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
-    myArray[ i ] = aPointVector.getVal(i);
-  return *this;
+    for ( std::size_t i = 0; i < myArray.size(); ++i )
+        myArray[ i ] = aPointVector.getVal ( i );
+    return *this;
 }
 
 /**
@@ -123,8 +124,8 @@ INLINE
 void
 DGtal::PointVector<T,N>::zero()
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
-    myArray[ i ] = 0;
+    for ( std::size_t i = 0; i < myArray.size(); ++i )
+        myArray[ i ] = 0;
 }
 
 
@@ -136,37 +137,36 @@ DGtal::PointVector<T,N>::zero()
 */
 template<typename T, std::size_t N>
 INLINE
-double 
-DGtal::PointVector<T,N>::norm(PointVector<T,N>::NormType aType)
+double
+DGtal::PointVector<T,N>::norm ( PointVector<T,N>::NormType aType )
 {
-  double tmp= 0;
-  
-  
-  ASSERT(getDimension() > 0);
-  
-  if (aType == L_2)
-  {	
-      for(uint i=0; i < getDimension(); i++)
-	tmp += getVal(i)*getVal(i);
-      tmp = sqrt(tmp);
-  }
-  
-  if (aType == L_1)
-  {	
-    for(uint i=0; i < getDimension(); i++)
-      tmp += fabs(getVal(i));
-  }
-  
-  if (aType == L_infty)
-  {	
-    tmp = getVal(0);
-    
-    for(uint i=1; i < getDimension(); i++)
-      if (tmp < fabs(getVal(i)))
-	tmp = fabs(getVal(i));
-  }
-  
-  return tmp;
+    double tmp= 0;
+
+    ASSERT ( getDimension() > 0 );
+
+    if ( aType == L_2 )
+    {
+        for ( uint i=0; i < getDimension(); i++ )
+            tmp += getVal ( i ) *getVal ( i );
+        tmp = ( double ) sqrt ( tmp );
+    }
+
+    if ( aType == L_1 )
+    {
+        for ( uint i=0; i < getDimension(); i++ )
+            tmp += fabs ( getVal ( i ) );
+    }
+
+    if ( aType == L_infty )
+    {
+        tmp = getVal ( 0 );
+
+        for ( uint i=1; i < getDimension(); i++ )
+            if ( tmp < fabs ( getVal ( i ) ) )
+                tmp = fabs ( getVal ( i ) );
+    }
+
+    return tmp;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -186,8 +186,8 @@ DGtal::PointVector<T,N>::norm(PointVector<T,N>::NormType aType)
 //DGtal::operator<<( std::ostream & out, //
 //		 const PointVector & object )
 //{
- // object.selfDisplay( out );
- // return out;
+// object.selfDisplay( out );
+// return out;
 //}
 
 //                                                                           //

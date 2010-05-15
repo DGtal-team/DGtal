@@ -7,7 +7,7 @@ include_directories (${PROJECT_SOURCE_DIR}/include)
 include(base/ModuleSRC.txt)
 include(utils/ModuleSRC.txt)
 include(math/ModuleSRC.txt)
-
+include(kernel/ModuleSRC.txt)
 
 
 # Create a library called "DGtal".

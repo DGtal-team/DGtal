@@ -40,6 +40,7 @@ bool testSimpleSpace()
  Space<int,6> aSpace6;
  Space<double,2> aSpace2;
   
+ return true;
 }
 
 

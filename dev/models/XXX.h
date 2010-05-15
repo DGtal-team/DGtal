@@ -1,12 +1,12 @@
 #pragma once
 
-/** 
+/**
  * @file XXX.h
  * @author AUTHOR (\c EMAIL )
  * INSTITUTION
  *
  * @date 2000/??/??
- * 
+ *
  * Header file for module XXX.cpp
  *
  * This file is part of the DGtal library.
@@ -28,33 +28,33 @@
 #include "YYY/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace YYY 
+namespace YYY
 {
-  
-  /////////////////////////////////////////////////////////////////////////////
-  // class XXX
-  /** 
-   * Description of class 'XXX' <p>
-   * Aim: 
-   */
-  class XXX
-  {
+
+/////////////////////////////////////////////////////////////////////////////
+// class XXX
+/**
+ * Description of class 'XXX' <p>
+ * Aim:
+ */
+class XXX
+{
     // ----------------------- Standard services ------------------------------
-  public:
+public:
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~XXX();
 
     // ----------------------- Interface --------------------------------------
-  public:
+public:
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -63,12 +63,12 @@ namespace YYY
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-  private:
+private:
     // ------------------------- Private Datas --------------------------------
-  private:
+private:
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+protected:
 
     /**
      * Constructor.
@@ -76,14 +76,14 @@ namespace YYY
      */
     XXX();
 
-  private:
+private:
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    XXX( const XXX & other );
+    XXX ( const XXX & other );
 
     /**
      * Assignment.
@@ -91,24 +91,24 @@ namespace YYY
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    XXX & operator=( const XXX & other );
-  
+    XXX & operator= ( const XXX & other );
+
     // ------------------------- Internals ------------------------------------
-  private:
-  
-  }; // end of class XXX
+private:
+
+}; // end of class XXX
 
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'XXX'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'XXX' to write.
-   * @return the output stream after the writing.
-   */
-  std::ostream&
-  operator<<( std::ostream & out, const XXX & object );
+/**
+ * Overloads 'operator<<' for displaying objects of class 'XXX'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'XXX' to write.
+ * @return the output stream after the writing.
+ */
+std::ostream&
+operator<< ( std::ostream & out, const XXX & object );
 
-  
+
 } // namespace YYY
 
 

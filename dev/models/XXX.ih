@@ -1,11 +1,11 @@
-/** 
+/**
  * @file XXX.ih
  * @author AUTHOR (\c EMAIL )
  * INSTITUTION
  *
  * @date 2000/??/??
- * 
- * Implementation of inline methods defined in XXX.h 
+ *
+ * Implementation of inline methods defined in XXX.h
  *
  * This file is part of the DGtal library.
  */
@@ -34,11 +34,11 @@
  * @return the output stream after the writing.
  */
 std::ostream&
-YYY::operator<<( std::ostream & out, 
-		 const XXX & object )
+YYY::operator<< ( std::ostream & out,
+                  const XXX & object )
 {
-  object.selfDisplay( out );
-  return out;
+    object.selfDisplay ( out );
+    return out;
 }
 
 //                                                                           //
