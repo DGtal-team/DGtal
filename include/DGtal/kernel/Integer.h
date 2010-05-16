@@ -36,7 +36,7 @@ namespace DGtal
    * Description of class 'Integer' <p>
    * Aim: 
    */
-  template <T>
+  template <typename T>
   class Integer
   {
     // ----------------------- Standard services ------------------------------
