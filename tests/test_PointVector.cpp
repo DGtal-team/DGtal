@@ -129,10 +129,13 @@ bool testPointTypeConversion()
     aPointInt3b.getSetVal ( 2 ) = 4;
     aPointInt3 = aPointInt3b;
 
-    aPointInt3bb.getSetVal ( 2 ) = 4.0;
+    aPointInt3bb.getSetVal ( 2 ) = 4.3;
+    aPointInt3bb.getSetVal ( 1 ) = 2.3;
+    //Copy
+    trace.info() << "Before, aPointInt3 = "<< aPointInt3<<endl;
+    aPointInt3.cast(aPointInt3bb);
+    trace.info() << "After, aPointInt3 = "<< aPointInt3<<endl;
 
-    //This assignement does not compile
-    //aPointInt3 = aPointInt3bb;
     return true;
 }
 

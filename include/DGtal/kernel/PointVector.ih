@@ -53,6 +53,24 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
 }
 
 /**
+*  Copy with built-in casts.
+*
+* Copy values in \param aPointVector to \a *this with a built-in cast.
+*
+**/
+template<typename T,std::size_t N>
+template<typename U>
+INLINE
+void 
+DGtal::PointVector<T,N>::cast(DGtal::PointVector<U,N> &aPointVector)
+{
+  myArray = aPointVector.myArray;
+}
+
+
+
+
+/**
  * Copy constructor.
  * @param other the object to clone.
  */
@@ -151,8 +169,6 @@ DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 {
   myArray = aPointVector.myArray;
-    // for ( std::size_t i = 0; i < myArray.size(); ++i )
-    //     myArray[ i ] = aPointVector.getVal ( i );
   return *this;
 }
 

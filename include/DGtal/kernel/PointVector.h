@@ -81,19 +81,27 @@ public:
     // ----------------------- Interface --------------------------------------
 public:
 
-  /**
-   * Returns the size of the vector (i.e. the number of its
-   * coefficients).
-   * Same as getDimension
-   */
-  static std::size_t size();
+    /**
+     * Returns the size of the vector (i.e. the number of its
+     * coefficients).
+     * Same as getDimension
+     */
+    static std::size_t size();
 
-  /**
-   * Returns the size of the vector (i.e. the number of its
-   * coefficients).
-   */
-  static std::size_t getDimension();
+    /**
+     * Returns the size of the vector (i.e. the number of its
+     * coefficients).
+     */
+    static std::size_t getDimension();
 
+    /**
+    *  Copies of a PointVector with built-in casts.
+    *
+    * Copies values in \param aPointVector to \a *this with a built-in cast.
+    *
+    **/
+    template<typename U>
+    void cast(PointVector<U,N> &aPointVector);
 
     /**
     * Returns the  \a i-th coefficient of the vector.
