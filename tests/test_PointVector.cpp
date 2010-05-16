@@ -1,7 +1,7 @@
 /**
  * @file test_PointVector.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * 
+ *
  *
  * @date 2010/03/03
  *
@@ -140,10 +140,12 @@ bool testPointTypeConversion()
 int main()
 {
 
-    ASSERT ( testSimplePoint() );
-    ASSERT ( testSimpleVector() );
-    ASSERT ( testNorms() );
-    ASSERT ( testPointTypeConversion() );
+    bool res;
+    res =  testSimplePoint()  &&    testSimpleVector() && testNorms()  && testPointTypeConversion();
+    if (res)
+        return 0;
+    else
+        return 1;
 
 }
 
