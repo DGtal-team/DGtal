@@ -120,7 +120,7 @@ const T&
 DGtal::PointVector<T,N>::at ( std::size_t i ) const
 {
 
-    ASSERT ( i < getDimension() );
+    ASSERT ( i < dimension() );
 
     return myArray.at( i );
 }
@@ -137,7 +137,7 @@ DGtal::PointVector<T,N>::at ( std::size_t i ) const
 template<typename T,std::size_t N>
 INLINE T& DGtal::PointVector<T,N>::at( std::size_t i )
 {
-    ASSERT ( i < getDimension() );
+    ASSERT ( i < dimension() );
 
     return myArray.at( i );
 }
@@ -198,7 +198,7 @@ DGtal::PointVector<T,N>::norm ( PointVector<T,N>::NormType aType )
 {
     double tmp= 0.0;
 
-    ASSERT ( getDimension() > 0 );
+    ASSERT ( dimension() > 0 );
 
     switch ( aType ) 
       {
