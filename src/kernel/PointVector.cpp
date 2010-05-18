@@ -43,8 +43,8 @@ void
 DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
-  for(unsigned int i=0; i < getDimension() ; ++i)
-    out << getVal(i) <<", ";
+  for(unsigned int i=0; i < dimension() ; ++i)
+    out << at( i ) <<", ";
   out << "}";
   
 }

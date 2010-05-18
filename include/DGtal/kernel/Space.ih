@@ -53,7 +53,7 @@ DGtal::Space<T,N>::Space( const Space & other )
 template<typename T,std::size_t N>
 INLINE
 typename DGtal::Space<T,N>::DimensionType
-DGtal::Space<T,N>::dim()
+DGtal::Space<T,N>::dimension()
 {
   return N;
 }
@@ -93,7 +93,7 @@ INLINE
 void
 DGtal::Space<T,N>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Space dim=" << dim() << " size_elem=" << sizeof( T ) << " ]";
+  out << "[Space dim=" << dimension() << " size_elem=" << sizeof( T ) << " ]";
 }
 
 /**

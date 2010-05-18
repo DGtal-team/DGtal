@@ -43,9 +43,9 @@ bool testSimplePoint()
     aPoint.zero();
     aFPoint.zero();
 
-    aPoint.getSetVal ( 2 ) = 4.5;
-    aPoint.getSetVal ( 1 ) = 4;
-    aPoint.getSetVal ( 0 ) = -3;
+    aPoint.at ( 2 ) = 4.5;
+    aPoint.at ( 1 ) = 4;
+    aPoint.at ( 0 ) = -3;
 
     aPoint *= 5.6;
 
@@ -54,10 +54,10 @@ bool testSimplePoint()
     cout << "aPoint=" << aPoint << endl;
 
     trace.beginBlock ( "Test point dimension" );
-    trace.info() << "aPoint dimension="<<aPoint.getDimension() <<endl;
+    trace.info() << "aPoint dimension="<<aPoint.dimension() <<endl;
     trace.endBlock();
 
-    if ( aPoint.getDimension() != 4 )
+    if ( aPoint.dimension() != 4 )
         return false;
 
     const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
@@ -76,9 +76,9 @@ bool testNorms()
     typedef Point<double,3> PointType;
     PointType aPoint;
 
-    aPoint.getSetVal ( 2 ) = 2;
-    aPoint.getSetVal ( 1 ) = -1;
-    aPoint.getSetVal ( 0 ) = 3;
+    aPoint.at ( 2 ) = 2;
+    aPoint.at ( 1 ) = -1;
+    aPoint.at ( 0 ) = 3;
 
     trace.beginBlock ( "Test of Norms" );
     trace.info() << "aPoint l_2 norm="<<aPoint.norm() <<endl;
@@ -107,11 +107,11 @@ bool testSimpleVector()
     aFVector.zero();
 
     trace.beginBlock ( "Test of Vector Dimension" );
-    trace.info() << "aVector dimension="<< aVector.getDimension() <<endl;
+    trace.info() << "aVector dimension="<< aVector.dimension() <<endl;
     trace.info() << "aVector = "<< aVector <<endl;
     trace.endBlock();
 
-    if ( aVector.getDimension() != 4 )
+    if ( aVector.dimension() != 4 )
         return false;
 
     aVector += aFVector;
@@ -126,11 +126,11 @@ bool testPointTypeConversion()
     Point<int,3> aPointInt3b;
     Point<double,3> aPointInt3bb;
 
-    aPointInt3b.getSetVal ( 2 ) = 4;
+    aPointInt3b.at ( 2 ) = 4;
     aPointInt3 = aPointInt3b;
 
-    aPointInt3bb.getSetVal ( 2 ) = 4.3;
-    aPointInt3bb.getSetVal ( 1 ) = 2.3;
+    aPointInt3bb.at ( 2 ) = 4.3;
+    aPointInt3bb.at ( 1 ) = 2.3;
     //Copy
     trace.info() << "Before, aPointInt3 = "<< aPointInt3<<endl;
     aPointInt3.cast(aPointInt3bb);

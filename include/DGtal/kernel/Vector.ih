@@ -76,7 +76,7 @@ INLINE DGtal::Vector<T,N>&
 DGtal::Vector<T,N>::operator+= (const Vector<T,N>& v)
 {
   for (std::size_t i = 0; i < N; ++i )
-    this->myArray[ i ] += v.getVal( i );
+    this->myArray[ i ] += v.at( i );
   return *this;
 }
 
@@ -93,7 +93,7 @@ DGtal::Vector<T,N>::operator+ (const Vector<T,N>& v) const
   Vector<T,N> newpoint;
   
   for (std::size_t i = 0; i < N; ++i )
-    newpoint.getSetVal( i ) = this->getVal( i ) -  v.getVal( i );
+    newpoint.getSetVal( i ) = this->at( i ) -  v.at( i );
   
   return newpoint;
 }
@@ -109,7 +109,7 @@ INLINE DGtal::Vector<T,N>&
 DGtal::Vector<T,N>::operator-= (const Vector<T,N>& v)
 {
   for (std::size_t i = 0; i < N; ++i )
-    this->myArray[ i ] -= v.getVal( i );
+    this->myArray[ i ] -= v.at( i );
   return *this;
 }
 
@@ -127,7 +127,7 @@ DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
   Vector<T,N> newpoint;
   
   for (std::size_t i = 0; i < N; ++i )
-    newpoint.getSetVal( i ) = this->getVal( i ) +  v.getVal( i );
+    newpoint.getSetVal( i ) = this->at( i ) +  v.at( i );
   
   return newpoint;
 }
@@ -141,9 +141,9 @@ INLINE
 void 
 DGtal::Vector<T,N>::selfDisplay( std::ostream & out ) const
 {
-  out << "[Vector ( " << this->getVal( 0 );
+  out << "[Vector ( " << this->at( 0 );
   for ( size_t i = 1; i < N; ++i )
-    out << ", " << this->getVal( i );
+    out << ", " << this->at( i );
   out << " )]";
 }
 

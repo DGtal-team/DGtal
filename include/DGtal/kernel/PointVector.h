@@ -92,7 +92,7 @@ public:
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
      */
-    static std::size_t getDimension();
+    static std::size_t dimension();
 
     /**
     *  Copies of a PointVector with built-in casts.
@@ -110,7 +110,7 @@ public:
     *
     * \param i is the index of the retrieved coefficient.
     */
-    const T& getVal ( std::size_t i ) const;
+    const T& at ( std::size_t i ) const;
 
     /**
     * Returns a non-const reference to the \a i-th element of the
@@ -120,7 +120,7 @@ public:
     *
     * \param i is the index of the retrieved coefficient.
     */
-    T& getSetVal ( std::size_t i );
+    T& at ( std::size_t i );
 
 
     /**

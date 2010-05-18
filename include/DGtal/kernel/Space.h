@@ -108,7 +108,7 @@ namespace DGtal
     /**
      * @return the dimension of the digital space.
      */
-    static DimensionType dim();
+    static DimensionType dimension();
 
     // ----------------------- Interface --------------------------------------
   public:

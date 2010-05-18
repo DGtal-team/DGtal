@@ -69,7 +69,7 @@ DGtal::Point<T,N>&
 DGtal::Point<T,N>::operator+= ( const Vector<T,N>& v )
 {
     for ( std::size_t i = 0; i < N; ++i )
-        this->myArray[ i ] += v.getVal ( i );
+        this->myArray[ i ] += v.at ( i );
     return *this;
 }
 
@@ -86,7 +86,7 @@ DGtal::Point<T,N>::operator+ ( const Vector<T,N>& v ) const
     Point<T,N> newpoint;
 
     for ( std::size_t i = 0; i < N; ++i )
-        newpoint.getSetVal ( i ) = this->getVal ( i ) +  v.getVal ( i );
+        newpoint.at ( i ) = this->at ( i ) +  v.at ( i );
 
     return newpoint;
 }
@@ -103,7 +103,7 @@ DGtal::Point<T,N>&
 DGtal::Point<T,N>::operator-= ( const Vector<T,N>& v )
 {
     for ( std::size_t i = 0; i < N; ++i )
-        this->myArray[ i ] -= v.getVal ( i );
+        this->myArray[ i ] -= v.at ( i );
     return *this;
 }
 
@@ -122,7 +122,7 @@ DGtal::Point<T,N>::operator- ( const Vector<T,N>& v ) const
     Point<T,N> newpoint;
 
     for ( std::size_t i = 0; i < N; ++i )
-        newpoint.getSetVal ( i ) = this->getVal ( i ) -  v.getVal ( i );
+        newpoint.at ( i ) = this->at ( i ) -  v.at ( i );
 
     return newpoint;
 }
@@ -140,7 +140,7 @@ DGtal::Point<T,N>::operator- ( const Point<T,N>& p ) const
 {
   Vector<T,N> newVector;
   for ( std::size_t i = 0; i < N; ++i )
-    newVector.getSetVal ( i ) = this->getVal ( i ) -  p.getVal ( i );
+    newVector.at ( i ) = this->at ( i ) -  p.at ( i );
   return newVector;
 }
 
@@ -154,9 +154,9 @@ INLINE
 void 
 DGtal::Point<T,N>::selfDisplay( std::ostream & out ) const
 {
-  out << "[Point ( " << this->getVal( 0 );
+  out << "[Point ( " << this->at( 0 );
   for ( size_t i = 1; i < N; ++i )
-    out << ", " << this->getVal( i );
+    out << ", " << this->at( i );
   out << " )]";
 }
 
