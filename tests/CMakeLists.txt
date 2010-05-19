@@ -3,7 +3,7 @@
 
 
 # Make sure the compiler can find include files.
-include_directories (${PROJECT_SOURCE_DIR}/include)
+include_directories (${PROJECT_SOURCE_DIR}/src/)
 # Make sure the linker can find the Hello library once it is built.
 link_directories (${PROJECT_BINARY_DIR})
 

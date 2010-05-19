@@ -107,10 +107,10 @@ add_subdirectory (src)
 #------------------------------------------------------------------------------
 if (CMAKE_MAJOR_VERSION EQUAL 2)
    if (CMAKE_MINOR_VERSION GREATER 5)
-      install(DIRECTORY include/ DESTINATION include 
+      install(DIRECTORY src/ DESTINATION include 
       			FILES_MATCHING PATTERN "*.*h")
    else (CMAKE_MINOR_VERSION GREATER 5)
-      install(DIRECTORY include/ DESTINATION include 
+      install(DIRECTORY src/ DESTINATION include 
       			PATTERN "*.*h")
    endif (CMAKE_MINOR_VERSION GREATER 5)
 endif (CMAKE_MAJOR_VERSION EQUAL 2)
@@ -119,7 +119,7 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
 SET(DGtal_VERSION "0.1")
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/include/DGtal/base/Config.h" IMMEDIATE)
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 
 
 #------------------------------------------------------------------------------
