@@ -35,10 +35,10 @@ DGtal::MeasureOfStraightLines::computeMeasureEdge ( double a0,double b0, double 
   double measure=0;
 
   //Aligned with the 'b' axis
-  if ( ( b0 == 0 ) and ( b1 == 0 ) )
+  if ( ( b0 == 0 ) && ( b1 == 0 ) )
     return 0;
   //Aligned with the 'b' axis
-  if ( ( a0 == 0 ) and ( a1 == 0 ) )
+  if ( ( a0 == 0 ) && ( a1 == 0 ) )
     return 0;
 
   double delta = ( a0*b1 - a1*b0 );
@@ -230,9 +230,9 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
   double measure = 0;
 
   double m_A0A1=0, m_0A0=0, m_0A1=0;
-  if ( ( b0 != 0 ) and ( a0 != 0 ) )
+  if ( ( b0 != 0 ) && ( a0 != 0 ) )
     m_0A0 = __computeCentroidEdgeApprox_b ( 0,0,a0,b0 );
-  if ( ( b1 != 0 )  and ( a1 != 0 ) )
+  if ( ( b1 != 0 )  && ( a1 != 0 ) )
     m_0A1 = __computeCentroidEdgeApprox_b ( 0,0,a1,b1 );
   if ( ( a1 != a0 ) )
     m_A0A1 = __computeCentroidEdgeApprox_b ( a0,b0,a1,b1 );
@@ -271,9 +271,9 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_b ( double a0,double b0, doub
   double measure=0;
   double delta= ( a0*b1 - a1*b0 );
 
-  if ( ( b0 == 0 ) and ( b1 == 0 ) )
+  if ( ( b0 == 0 ) && ( b1 == 0 ) )
     return 0;
-  if ( ( a0 == 0 ) and ( a1 == 0 ) )
+  if ( ( a0 == 0 ) && ( a1 == 0 ) )
     return 0;
 
   if ( a0 == 0 )
@@ -301,9 +301,9 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
   double measure=0;
   double delta= ( a0*b1 - a1*b0 );
 
-  if ( ( b0 == 0 ) and ( b1 == 0 ) )
+  if ( ( b0 == 0 ) && ( b1 == 0 ) )
     return 0;
-  if ( ( a0 == 0 ) and ( a1 == 0 ) )
+  if ( ( a0 == 0 ) && ( a1 == 0 ) )
     return 0;
 
   if ( a0 == 0 )

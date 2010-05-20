@@ -101,7 +101,20 @@ public:
     **/
     Iterator end() { return myArray.end(); }
      
+     
+     /**
+     * PointVector begin() const iterator.
+     *
+     **/
+     ConstIterator begin() const { return myArray.begin(); }
+     
+     /**
+     * PointVector end() const iterator.
+     *
+     **/
+     ConstIterator end() const { return myArray.end(); }
 
+     
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
