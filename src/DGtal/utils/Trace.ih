@@ -154,6 +154,9 @@ DGtal::Trace::endBlockDebug()
 #ifdef DEBUG
   return endBlock(keyword);
 #endif
+#if ( (defined(WIN32)) )
+  return 0.0;
+#endif
 }
 
 
