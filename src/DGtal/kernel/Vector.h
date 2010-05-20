@@ -49,6 +49,11 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    typedef typename PointVector<T,N>::Iterator Iterator;
+    typedef typename PointVector<T,N>::ConstIterator ConstIterator;
+    
+
+    
     /**
     * Constructor.
     */

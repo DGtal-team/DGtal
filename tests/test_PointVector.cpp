@@ -139,12 +139,36 @@ bool testPointTypeConversion()
     return true;
 }
 
+bool testIterator()
+{
+    Point<double,25> aPoint;
+    Vector<int,4> avector;
+  
+    trace.beginBlock("Point Iterator Test");
+
+    for(unsigned int i=0;i<25;++i)
+      aPoint.at(i) = i;
+    trace.info() << "aPoint="<<aPoint<< std::endl;
+
+    trace.info() << "With iterator: ";
+    for(Point<double,25>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
+      trace.info() << (*it) <<" " ;
+
+    trace.info() << std::endl;
+
+    trace.info() << "vector iterator: ";
+    for(Vector<int,4>::Iterator it = avector.begin() ;  it != avector.end(); ++it)
+      trace.info() << (*it) <<" " ;
+    trace.info() << std::endl;
+    
+  return true;
+}
 
 int main()
 {
 
     bool res;
-    res =  testSimplePoint()  &&    testSimpleVector() && testNorms()  && testPointTypeConversion();
+    res =  testSimplePoint()  &&    testSimpleVector() && testNorms()  && testPointTypeConversion() && testIterator();
     if (res)
         return 0;
     else

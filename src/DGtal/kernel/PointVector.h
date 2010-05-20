@@ -51,6 +51,14 @@ class PointVector
 public:
 
     /**
+     *  Copy of the Boost::array iterator type
+     *
+    **/
+    typedef typename boost::array<T,N>::iterator Iterator;
+    typedef typename boost::array<T,N>::const_iterator ConstIterator;
+     
+  
+    /**
     * Constructor.
     * \todo PointVector must be Virutal
     * \todo implement assignements with type conversion/cast
@@ -79,7 +87,20 @@ public:
 
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
+
+     /**
+     * PointVector begin() iterator.
+     *
+     **/
+     Iterator begin() { return myArray.begin(); }
+
+    /**
+    * PointVector end() iterator.
+    *
+    **/
+    Iterator end() { return myArray.end(); }
+     
 
     /**
      * Returns the size of the vector (i.e. the number of its
