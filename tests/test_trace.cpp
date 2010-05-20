@@ -51,13 +51,13 @@ void testIndent()
    trace.error()<< "This is an Error trace, level 2 (followed by a loop)"<<endl;
 
    for(unsigned int i=0 ; i< 4334450; i++)
-    tmp = cos(tmp+i);
+    tmp = cos((double)tmp+i);
 
    trace.endBlock();
    trace.info()<< "This is an Info trace, level 1 (followed by another loop)"<<endl;
 
    for(unsigned int i=0 ; i< 4334450; i++)
-    tmp = cos(tmp+i);
+     tmp = cos((double)tmp+i);
 
    trace.endBlock();
    trace.info()<< "This is an Info trace, level 0"<<endl<<endl;
