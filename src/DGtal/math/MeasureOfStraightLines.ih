@@ -17,7 +17,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <vector>
-#include <assert.h>
 #include <cmath>
 
 #include <boost/math/special_functions/asinh.hpp>
@@ -86,7 +85,7 @@ DGtal::MeasureOfStraightLines::computeMeasure(const std::vector<double> &a,
 {
   double measure = 0;
 
-  assert(a.size() == b.size());
+   ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
@@ -111,7 +110,7 @@ DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
   double measure = 0;
   double C_a = 0;
 
-  assert(a.size() == b.size());
+   ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
@@ -138,7 +137,7 @@ DGtal::MeasureOfStraightLines::computeCentroidB(const std::vector<double> &a,
   double measure = 0;
   double C_b = 0;
 
-  assert(a.size() == b.size());
+   ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
@@ -164,7 +163,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidSquare_b ( double x1, double y1,
   double val;
   val = ( ( -1.0* ( sqrt ( 1.0 + pow ( x1,2 ) ) *x2 ) + x1*sqrt ( 1 + pow ( x2,2 ) ) ) * ( pow ( y1,2 ) - pow ( y2,2 ) ) ) / ( 2.0*sqrt ( ( 1.0 + pow ( x1,2 ) ) * ( 1.0 + pow ( x2,2 ) ) ) );
 
-  assert ( val>=0 );
+   ASSERT ( val>=0 );
   return val;
 }
 
@@ -239,9 +238,9 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
   if ( ( a1 != a0 ) )
     m_A0A1 = __computeCentroidEdgeApprox_b ( a0,b0,a1,b1 );
 
-  assert ( m_0A0>=0 );
-  assert ( m_0A1>=0 );
-  assert ( m_A0A1>=0 );
+   ASSERT ( m_0A0>=0 );
+   ASSERT ( m_0A1>=0 );
+   ASSERT ( m_A0A1>=0 );
 
   if ( a0 < a1 )
     {
@@ -259,7 +258,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
       else
         measure = m_0A0 - m_0A1 - m_A0A1;
     }
-  assert ( measure>=0 );
+   ASSERT ( measure>=0 );
   return signe*measure;
 }
 
@@ -279,13 +278,13 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_b ( double a0,double b0, doub
     return 0;
 
   if ( a0 == 0 )
-    return delta* ( a1* ( ( -2 + sqrt ( 1 + a1*a1 ) ) *b0 + 2*b1 ) + ( b0 - 2*b1 ) *asinh ( a1 ) ) / ( 2*a1*a1*a1 );
+    return delta* ( a1* ( ( -2 + sqrt ( 1 + a1*a1 ) ) *b0 + 2*b1 ) + ( b0 - 2*b1 ) *boost::math::asinh ( a1 ) ) / ( 2*a1*a1*a1 );
   if ( a1 == 0 )
-    return delta* ( a0* ( 2*b0 + ( -2 + sqrt ( 1 + a0*a0 ) ) *b1 ) + ( -2*b0 + b1 ) *asinh ( a0 ) ) / ( 2*a0*a0*a0 );
+    return delta* ( a0* ( 2*b0 + ( -2 + sqrt ( 1 + a0*a0 ) ) *b1 ) + ( -2*b0 + b1 ) *boost::math::asinh ( a0 ) ) / ( 2*a0*a0*a0 );
 
   if ( a0 == a1 )
     return delta* ( ( - ( ( a1* ( b0 + a1* ( -a1 + sqrt ( 1 + pow ( a1,-2 ) ) *sqrt ( 1 + pow ( a1,2 ) ) ) *
-                                  b1 ) ) /sqrt ( 1.0 + pow ( a1,2 ) ) ) + ( b0 + b1 ) *asinh ( a1 ) ) /
+    b1 ) ) /sqrt ( 1.0 + pow ( a1,2 ) ) ) + ( b0 + b1 ) *boost::math::asinh ( a1 ) ) /
                     ( 2.*pow ( a1,3 ) ) );
 
   return __computeCentroidTriApprox_b ( a0,b0,a1,b1 );
@@ -309,15 +308,15 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
     return 0;
 
   if ( a0 == 0 )
-    return delta* ( a1 - asinh ( a1 ) ) / ( a1*a1 );
+    return delta* ( a1 - boost::math::asinh ( a1 ) ) / ( a1*a1 );
   if ( a1 == 0 )
-    return delta* ( a0 - asinh ( a0 ) ) / ( a0*a0 );
+    return delta* ( a0 - boost::math::asinh ( a0 ) ) / ( a0*a0 );
 
   if ( a0 == a1 )
     return delta* ( ( -sqrt ( 1 + pow ( a1,-2 ) ) - 1.0/ ( a1*sqrt ( 1 + pow ( a1,2 ) ) ) + a1/sqrt ( 1 + pow ( a1,2 ) ) +
-                      ( 2*asinh ( a1 ) )  /pow ( a1,2 ) ) /2. );
+    ( 2*boost::math::asinh ( a1 ) )  /pow ( a1,2 ) ) /2. );
 
-  return delta* ( ( - ( a1*asinh ( a0 ) ) + a0*asinh ( a1 ) ) / ( a0* ( a0 - a1 ) *a1 ) );
+  return delta* ( ( - ( a1*boost::math::asinh ( a0 ) ) + a0*boost::math::asinh ( a1 ) ) / ( a0* ( a0 - a1 ) *a1 ) );
 }
 
 
