@@ -333,7 +333,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
  */
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
-		 const MeasureOfStraightLines & object )
+		 const DGtal::MeasureOfStraightLines & object )
 {
   object.selfDisplay( out );
   return out;
