@@ -44,6 +44,23 @@ namespace DGtal
    * Aim: To provide functions to start and stop a timer. Is useful to get
    * performance of algorithms.
    *
+   * The following code snippet demonstrates how to use \p Clock
+   *
+   *  \code
+   *  #include <DGtal/utils/Clock.h>
+   *
+   *   Clock c;
+   *   long duration;
+   *
+   *   c.startClock();
+   *   ...
+   *   //do something
+   *   ...
+   *   duration = c.stopClock();
+   *
+   *   std::cout<< "Duration in ms. : "<< duration <<endl;
+   *  \endcode
+   *
    * \see test_clock.cpp
    */
   class Clock

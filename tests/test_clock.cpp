@@ -17,6 +17,7 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
+#include "DGtal/base/Common.h"
 #include "DGtal/utils/Clock.h"
 
 using namespace DGtal;
@@ -27,9 +28,12 @@ bool test_minimalTick()
 {
   double tick;
   Clock c;
+
+  trace.info() << c <<std::endl;
+  
   c.startClock();
   tick = c.stopClock();
-  cout<< "Minimal tick: "<< tick <<endl;
+  trace.info() << "Minimal tick: "<< tick <<endl;
   return (tick >= 0);
 }
 
@@ -44,7 +48,7 @@ bool test_loopTick()
     tmp = cos(tmp+i);
 
   tick = c.stopClock();
-  cout<< "Loop tick: "<< tick <<endl;
+  trace.info()<< "Loop tick: "<< tick <<endl;
   return (tick >= 0);
 }
 
@@ -69,7 +73,7 @@ bool test_MultipleLoop()
     tmp = cos(tmp+i);
 
   tick1 = c.stopClock();
-  cout<< "Loop tick1: "<< tick1 <<" Loop tick2: "<< tick2 <<endl;
+  trace.info()<< "Loop tick1: "<< tick1 <<" Loop tick2: "<< tick2 <<endl;
   return (tick1 >= 0);
 }
 
