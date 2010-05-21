@@ -1,5 +1,5 @@
 /**
- * @file testr_measure.cpp
+ * @file test_Space.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,8 +9,8 @@
  */
 
 /**
- * Description of test_trace' <p>
- * Aim: simple test of \ref MeasureOfStraighLines
+ * Description of test_Space <p>
+ * Aim: simple test of \ref Space
  */
 
 #include <cstdio>
