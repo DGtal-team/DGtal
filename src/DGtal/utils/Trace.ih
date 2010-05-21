@@ -155,7 +155,7 @@ DGtal::Trace::endBlockDebug()
   return endBlock(keyword);
 #endif
 #if ( (defined(WIN32)) )
-  return 0.0;
+  return (long)0.0;
 #endif
 }
 
@@ -184,6 +184,9 @@ DGtal::Trace::warningDebug() const
 #ifdef DEBUG
   return warning();
 #endif
+#if ( (defined(WIN32)) )
+  return myWriter.outputStream();
+#endif
 }
 
 
@@ -209,6 +212,9 @@ DGtal::Trace::errorDebug() const
 #ifdef DEBUG
   return error();
 #endif
+#if ( (defined(WIN32)) )
+  return myWriter.outputStream();
+#endif
 }
 
 /**
@@ -232,6 +238,9 @@ DGtal::Trace::emphaseDebug() const
 {
 #ifdef DEBUG
   return emphase();
+#endif
+#if ( (defined(WIN32)) )
+  return myWriter.outputStream();
 #endif
 }
 
@@ -258,6 +267,9 @@ DGtal::Trace::infoDebug() const
 {
 #ifdef DEBUG
   return info();
+#endif
+#if ( (defined(WIN32)) )
+  return myWriter.outputStream();
 #endif
 }
 

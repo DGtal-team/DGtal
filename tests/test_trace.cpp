@@ -96,10 +96,20 @@ void testFileStream()
 }
 
 
+void testDebug()
+{
+   trace.beginBlock("Test Debug traces");
+   trace.beginBlockDebug("begin debug block");
+   trace.infoDebug() << "info debug trace"<<endl;
+   trace.endBlockDebug();
+   trace.endBlock();
+}
+
 int main()
 {
   testSimple();
   testIndent();
   testFileStream();
+  testDebug();
   return 0;
 }

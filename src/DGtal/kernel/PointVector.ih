@@ -194,7 +194,7 @@ DGtal::PointVector<T,N>::zero()
 template<typename T, std::size_t N>
 INLINE
 double
-DGtal::PointVector<T,N>::norm ( PointVector<T,N>::NormType aType )
+DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
 {
     double tmp= 0.0;
 
