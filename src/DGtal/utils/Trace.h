@@ -89,14 +89,6 @@ namespace DGtal
      */
     void beginBlock(const std::string &keyword = "");
 
-    
-    /**
-     * Debug version of Trace::beginBlock()
-     * @param keyword contains a label to the new block
-     *
-     */
-    void beginBlockDebug(const std::string &keyword = "");
- 
 
     /**
      * Leave a current block, decrease the indentation level and display the associate keyword
@@ -107,25 +99,10 @@ namespace DGtal
     
 
     /**
-     * Debug version of Trace::endBlock()
-     * @return  the ellapsed time in the block in milliseconds (Class Clock).
-     *
-     */
-    long endBlockDebug();
- 
-
-    /**
      * Create a string with an indentation prefix for a normal trace.
      * @return the cerr output stream with the prefix
      */
     std::ostream & info() const;
-
-    /**
-     * Debug version of the Trace::info()
-     * @return the cerr output stream with the prefix
-     */
-    std::ostream &infoDebug() const;
-
 
     /**
      * Create a string with an indentation prefix for a warning trace.
@@ -133,12 +110,6 @@ namespace DGtal
      * @return the cerr output stream with the prefix
      */
      std::ostream & warning() const;
-
-     /**
-     * Debug version of  Trace::warning()
-     * @return the output stream with the prefix
-     */
-     std::ostream & warningDebug() const;
 
 
     /**
@@ -148,12 +119,7 @@ namespace DGtal
      */
     std::ostream &  error() const;
 
-    /**
-     * Debug version of  Trace::error()
-     * @return the output stream with the prefix
-     */
-    std::ostream & errorDebug() const;
-   
+
     /**
      * Create a string with an indentation prefix for an emphased trace.
      *
@@ -161,13 +127,7 @@ namespace DGtal
      */
     std::ostream &  emphase() const;
 
-    /**
-     * Debug version of the Trace::emphase()
-     * @return the output stream with the prefix
-     */
-    std::ostream &emphaseDebug() const;
-
-    // ----------------------- Interface --------------------------------------
+   // ----------------------- Interface --------------------------------------
   public:
 
     /**

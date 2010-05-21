@@ -1,3 +1,8 @@
+2010-21-05 dcoeurjo
+	* Iterators added to PointVector
+  * Debug methods removed in Trace class
+  * Many bug fixes for VS compatibility
+
 2010-05-15 dcoeurjo
   * Assert.h: added macro ASSERT() added based on the boost/assert.hpp (TODO: implement a nice callback)
   * Point and Vector templated classes added

@@ -101,18 +101,6 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   myClockStack.push(c);
 }
 
-/**
- * Debug version of Trace::beginBlock()
- * @param keyword contains a label to the new block
- *
- */
-INLINE void
-DGtal::Trace::beginBlockDebug(const std::string &keyword)
-{
-#ifdef DEBUG
-  beginBlock(keyword);
-#endif
-}
 
  /**
   * Leave a current block, decrease the indentation level and display the associate keyword with ellapsed time in ms.
@@ -143,24 +131,6 @@ DGtal::Trace::endBlock()
    return tick;
 }
 
-/**
- * Debug version of Trace::endBlock()
- * @param the ellapsed time in the block in milliseconds (Class Clock).
- *
- */
-INLINE long
-DGtal::Trace::endBlockDebug()
-{
-#ifdef DEBUG
-  return endBlock(keyword);
-#endif
-#if ( (defined(WIN32)) )
-  return (long)0.0;
-#endif
-}
-
-
-
 
 /**
  * Create a string with an indentation prefix for a warning trace.
@@ -172,21 +142,6 @@ DGtal::Trace::warning() const
 {
   myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixWarning();
   return  myWriter.outputStream();
-}
-
-/**
- * Debug version of  Trace::warning()
- * @return the output stream with the prefix
- */
-INLINE std::ostream &
-DGtal::Trace::warningDebug() const
-{
-#ifdef DEBUG
-  return warning();
-#endif
-#if ( (defined(WIN32)) )
-  return myWriter.outputStream();
-#endif
 }
 
 
@@ -202,20 +157,6 @@ DGtal::Trace::error() const
   return  myWriter.outputStream();
 }
 
-/**
- * Debug version of  Trace::error()
- * @return the output stream with the prefix
- */
-INLINE std::ostream &
-DGtal::Trace::errorDebug() const
-{
-#ifdef DEBUG
-  return error();
-#endif
-#if ( (defined(WIN32)) )
-  return myWriter.outputStream();
-#endif
-}
 
 /**
  * Create a string with an indentation prefix for an emphased trace.
@@ -230,23 +171,6 @@ DGtal::Trace::emphase() const
 }
 
 /**
- * Debug version of the Trace::emphase()
- * @return the output stream with the prefix
- */
-INLINE std::ostream &
-DGtal::Trace::emphaseDebug() const
-{
-#ifdef DEBUG
-  return emphase();
-#endif
-#if ( (defined(WIN32)) )
-  return myWriter.outputStream();
-#endif
-}
-
-
-
-/**
  * Create a string with an indentation prefix for a normal trace.
  * @return the cerr output stream with the prefix
  */
@@ -256,23 +180,6 @@ DGtal::Trace::info() const
    myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixInfo();
   return  myWriter.outputStream();
 }
-
-
-/**
- * Debug version of the Trace::info()
- * @return the cerr output stream with the prefix
- */
-INLINE std::ostream &
-DGtal::Trace::infoDebug() const
-{
-#ifdef DEBUG
-  return info();
-#endif
-#if ( (defined(WIN32)) )
-  return myWriter.outputStream();
-#endif
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
