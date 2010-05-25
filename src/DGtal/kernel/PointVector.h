@@ -56,8 +56,8 @@ public:
     **/
     typedef typename boost::array<T,N>::iterator Iterator;
     typedef typename boost::array<T,N>::const_iterator ConstIterator;
-     
-  
+
+
     /**
     * Constructor.
     * \todo PointVector must be Virutal
@@ -87,34 +87,42 @@ public:
 
 
     // ----------------------- Interface --------------------------------------
-  public:
+public:
 
-     /**
-     * PointVector begin() iterator.
-     *
-     **/
-     Iterator begin() { return myArray.begin(); }
+    /**
+    * PointVector begin() iterator.
+    *
+    **/
+    Iterator begin() {
+        return myArray.begin();
+    }
 
     /**
     * PointVector end() iterator.
     *
     **/
-    Iterator end() { return myArray.end(); }
-     
-     
-     /**
-     * PointVector begin() const iterator.
-     *
-     **/
-     ConstIterator begin() const { return myArray.begin(); }
-     
-     /**
-     * PointVector end() const iterator.
-     *
-     **/
-     ConstIterator end() const { return myArray.end(); }
+    Iterator end() {
+        return myArray.end();
+    }
 
-     
+
+    /**
+    * PointVector begin() const iterator.
+    *
+    **/
+    ConstIterator begin() const {
+        return myArray.begin();
+    }
+
+    /**
+    * PointVector end() const iterator.
+    *
+    **/
+    ConstIterator end() const {
+        return myArray.end();
+    }
+
+
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).

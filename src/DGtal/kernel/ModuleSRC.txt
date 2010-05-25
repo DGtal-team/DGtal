@@ -3,5 +3,6 @@ SET(DGTAL_SRC ${DGTAL_SRC}
 		DGtal/kernel/Space
 		DGtal/kernel/Point
 		DGtal/kernel/Vector
-		DGtal/kernel/PointVector)
+		DGtal/kernel/PointVector
+		DGtal/kernel/Domain)
 

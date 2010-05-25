@@ -41,7 +41,7 @@ namespace DGtal
   /** 
    * Description of class 'Space' <p>
    *
-   * Aim: Space defines the fundamental structure of a Digital Space
+   * Aim: Space defines the fundamental structure of a Digital Space.
    *
    */
   
@@ -95,14 +95,14 @@ namespace DGtal
      */
     template <std::size_t Subdimension>
     static
-    typename Subspace<Subdimension>::Type getSubspace();
+    typename Subspace<Subdimension>::Type subspace();
 
     /**
      * @return the digital space of specified codimension of this space. 
      */
     template <std::size_t Codimension>
     static
-    typename Subcospace<Codimension>::Type getSubcospace();
+    typename Subcospace<Codimension>::Type subcospace();
 
 
     /**

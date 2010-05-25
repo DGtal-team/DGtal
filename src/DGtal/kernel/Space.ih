@@ -65,7 +65,7 @@ template <typename T,std::size_t N>
 template <std::size_t Subdimension>
 INLINE
 typename DGtal::Space<T,N>::template Subspace<Subdimension>::Type
-DGtal::Space<T,N>::getSubspace()
+DGtal::Space<T,N>::subspace()
 {
   ASSERT( Subdimension <= N );
   return Space<T,Subdimension>();
@@ -78,7 +78,7 @@ template <typename T,std::size_t N>
 template <std::size_t Codimension>
 INLINE
 typename DGtal::Space<T,N>::template Subcospace<Codimension>::Type 
-DGtal::Space<T,N>::getSubcospace()
+DGtal::Space<T,N>::subcospace()
 {
   ASSERT( Codimension <= N );
   return Space<T,N-Codimension>();

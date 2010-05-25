@@ -12,7 +12,8 @@ SET(DGTAL_TESTS_SRC
    test_trace
    test_measure
    test_PointVector
-   test_Space)
+   test_Space
+   test_Domain)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
