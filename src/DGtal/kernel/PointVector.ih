@@ -213,6 +213,48 @@ DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) cons
   return (myArray < aPointVector.myArray);
 }
 
+
+/**
+* Comparison operator.
+*
+* \param aPointVector is the pointvector and we return \param this <= \param aPointVector
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray <= aPointVector.myArray);
+}
+
+/**
+* Comparison operator.
+*
+* \param aPointVector is the pointvector and we return \param this > \param aPointVector
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray > aPointVector.myArray);
+}
+
+/**
+* Comparison operator.
+*
+* \param aPointVector is the pointvector and we return \param this => \param aPointVector
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray >= aPointVector.myArray);
+}
+
+
+
 /**
 * Resets all the values to zero.
 */
