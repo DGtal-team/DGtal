@@ -1,0 +1,146 @@
+/**
+ * @file BoxDomain.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/25
+ *
+ * Implementation of inline methods defined in BoxDomain.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+/**
+* Constructor.
+*
+* (Lowest = Highest = {0}^n)
+*/
+template<class TSpace>
+DGtal::BoxDomain<TSpace>::BoxDomain()
+{
+  DGtal::BoxDomain<TSpace>::PointType aPoint;
+
+  aPoint.zero();
+  myLowestPoint = aPoint;
+  myHighestPoint = aPoint;
+}
+
+/**
+* Constructor from  two points (the Space diagonal)
+*
+*
+*/
+template<class TSpace>
+DGtal::BoxDomain<TSpace>::BoxDomain(const DGtal::BoxDomain<TSpace>::PointType &aPointA,const DGtal::BoxDomain<TSpace>::PointType &aPointB)
+{
+    if (aPointA < aPointB)
+    {
+        myLowestPoint = aPointA;
+        myHighestPoint = aPointB;
+    }
+    else
+    {
+        myLowestPoint = aPointB;
+        myHighestPoint = aPointA;
+    }
+
+}
+
+
+/**
+* Destructor.
+*/
+template<class TSpace>
+DGtal::BoxDomain<TSpace>::~BoxDomain()
+{
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+
+/**
+* Returns the lowest point of the space diagonal.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::BoxDomain<TSpace>::PointType &
+DGtal::BoxDomain<TSpace>::lowestSpaceDiagonalPoint()
+{
+    return myLowestPoint;
+}
+
+
+/**
+* Returns the highest point of the space diagonal.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::BoxDomain<TSpace>::PointType &
+DGtal::BoxDomain<TSpace>::highestSpaceDiagonalPoint()
+{
+    return myHighestPoint;
+}
+
+
+/**
+* Writes/Displays the object on an output stream.
+* @param out the output stream where the object is written.
+*/
+template<class TSpace>
+void
+DGtal::BoxDomain<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[BoxDomain] = ["<< myLowestPoint <<"]x["
+    << myHighestPoint <<"]";
+}
+
+/**
+* Checks the validity/consistency of the object.
+* @return 'true' if the object is valid, 'false' otherwise.
+*/
+template<class TSpace>
+bool
+DGtal::BoxDomain<TSpace>::isValid() const
+{
+    return true;
+}
+
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'BoxDomain'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'BoxDomain' to write.
+ * @return the output stream after the writing.
+ */
+template<class TSpace>
+INLINE
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                    const BoxDomain<TSpace> & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
