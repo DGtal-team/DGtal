@@ -28,7 +28,6 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-
 #include "DGtal/kernel/Point.h"
 #include "DGtal/kernel/Vector.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -57,7 +56,7 @@ namespace DGtal
     typedef Space<IntT,Dimension> SpaceType;
 
     // static constants
-    static const DimensionType static_size = Dimension;
+    static const DimensionType staticDimension = Dimension;
     //typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {

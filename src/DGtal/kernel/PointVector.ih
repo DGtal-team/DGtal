@@ -165,11 +165,52 @@ DGtal::PointVector<T,N>::operator*= ( T coeff )
 * \param aPointVector is the pointvector to assign to \a *this.
 */
 template<typename T, std::size_t N>
+INLINE
 DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 {
   myArray = aPointVector.myArray;
   return *this;
+}
+
+
+/**
+* Comparison operator
+*
+* \param aPointVector is the pointvector to test its equality to \a *this.
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray == aPointVector.myArray);
+}
+
+/**
+* Difference operator
+*
+* \param aPointVector is the pointvector and we return \param this == \param aPointVector
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray != aPointVector.myArray);
+}
+
+/**
+* Comparison operator.
+*
+* \param aPointVector is the pointvector and we return \param this < \param aPointVector
+*/
+template<typename T, std::size_t N>
+INLINE
+bool
+DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) const
+{
+  return (myArray < aPointVector.myArray);
 }
 
 /**

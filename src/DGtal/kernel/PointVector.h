@@ -181,6 +181,24 @@ public:
     PointVector<T,N>& operator= ( const PointVector<T,N>& aPointVector );
 
 
+    /**
+    * Comparison Operator 
+    *
+    **/
+    bool operator== ( const PointVector<T,N>& aPointVector ) const;
+    
+    /**
+    * Difference Operator 
+    *
+    **/
+    bool operator!= ( const PointVector<T,N>& aPointVector ) const;
+    
+    /**
+    * Comparison Operator
+    *
+    **/
+    bool operator< ( const PointVector<T,N>& aPointVector ) const;
+    
 
     /**
     * Resets all the values to zero.

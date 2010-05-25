@@ -69,6 +69,15 @@ public:
     ~Point();
 
     /**
+    * Constructor from array of values.
+    *
+    * @param ptrValues the array of values (should be at least as long as
+    * the size of the vector)
+    */
+    Point( const T * ptrValues );
+    
+    
+    /**
      * Copy constructor.
      * @param other the object to clone.
      */

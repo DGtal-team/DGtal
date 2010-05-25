@@ -28,6 +28,37 @@ using namespace DGtal;
 using namespace std;
 
 
+bool testComparison()
+{
+    const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
+    const double t2[ ] = { 3.5, 4.2, 2.2, 3.2 };
+    Point<double, 4> v ( t );
+    Point<double, 4> v2 ( t );
+    Point<double, 4> v3 ( t2 );
+
+    trace.beginBlock("Comparison of Points");
+    if (v == v2)
+        trace.info()<< "v == v2 (true)"<<std::endl;
+    else
+        trace.info()<< "v == v2 (false)"<<std::endl;
+
+    if (v == v3)
+        trace.info()<< "v == v3 (true)"<<std::endl;
+    else
+        trace.info()<< "v == v3 (false)"<<std::endl;
+
+    if (v < v3)
+        trace.info()<< "v < v3 (true)"<<std::endl;
+    else
+        trace.info()<< "v < v3 (false)"<<std::endl;
+
+
+    trace.endBlock();
+
+    return ((v == v2) && !(v != v2));
+}
+
+
 
 /**
  * Test instanciation of Points
@@ -143,32 +174,37 @@ bool testIterator()
 {
     Point<double,25> aPoint;
     Vector<int,4> avector;
-  
+
     trace.beginBlock("Point Iterator Test");
 
-    for(unsigned int i=0;i<25;++i)
-      aPoint.at(i) = i;
+    for (unsigned int i=0;i<25;++i)
+        aPoint.at(i) = i;
     trace.info() << "aPoint="<<aPoint<< std::endl;
 
     trace.info() << "With iterator: ";
-    for(Point<double,25>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
-      trace.info() << (*it) <<" " ;
+    for (Point<double,25>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
+        trace.info() << (*it) <<" " ;
 
     trace.info() << std::endl;
 
     trace.info() << "vector iterator: ";
-    for(Vector<int,4>::Iterator it = avector.begin() ;  it != avector.end(); ++it)
-      trace.info() << (*it) <<" " ;
+    for (Vector<int,4>::Iterator it = avector.begin() ;  it != avector.end(); ++it)
+        trace.info() << (*it) <<" " ;
     trace.info() << std::endl;
+
+
+  trace.endBlock();
     
-  return true;
+    return true;
 }
 
 int main()
 {
 
     bool res;
-    res =  testSimplePoint()  &&    testSimpleVector() && testNorms()  && testPointTypeConversion() && testIterator();
+    res =  testSimplePoint()  &&    testSimpleVector() &&
+           testNorms()  && testPointTypeConversion() &&
+           testIterator() && testComparison() ;
     if (res)
         return 0;
     else

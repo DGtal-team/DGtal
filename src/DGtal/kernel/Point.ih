@@ -45,6 +45,19 @@ DGtal::Point<T,N>::~Point()
 }
 
 /**
+* Constructor from array of values.
+*
+* @param ptrValues the array of values (should be at least as long as
+* the size of the vector)
+*/
+template<typename T,std::size_t N>
+INLINE
+DGtal::Point<T,N>::Point( const T * ptrValues )
+: PointVector<T,N>( ptrValues )
+{
+}
+
+/**
  * Copy constructor.
  * @param other the object to clone.
  */
