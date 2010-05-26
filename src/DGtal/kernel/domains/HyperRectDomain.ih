@@ -32,8 +32,9 @@
 template<class TSpace>
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-  DGtal::HyperRectDomain<TSpace>::PointType aPoint;
-
+  typedef DGtal::HyperRectDomain<TSpace>::PointType PT;
+  PT aPoint;
+  
   aPoint.zero();
   myLowerBound = aPoint;
   myUpperBound = aPoint;

@@ -145,6 +145,8 @@ bool testSTLCompat()
     for_each(myHyperRectDomain4D.begin(), myHyperRectDomain4D.end(), PrintPoint<PointType4D>);
     trace.info() << std::endl;
     trace.endBlock();
+
+    return myHyperRectDomain4D.isValid();
 }
 
 
