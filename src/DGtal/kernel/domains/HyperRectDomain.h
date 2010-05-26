@@ -76,9 +76,7 @@ public:
         PointType myPoint;
         ///Copies of the Domain limits
         PointType mylower, myupper;
-        ///Index of the iterator position
-        std::size_t myCurrentDim;
-        ///Second index of the iterator position
+///Second index of the iterator position
         std::size_t myCurrentPos;
 
     public:
@@ -91,8 +89,9 @@ public:
 
 
         ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
-                : myPoint( p ), myCurrentDim(0), myCurrentPos(0), mylower(lower), myupper(upper)
-        {}
+                : myPoint( p ),  myCurrentPos(0), mylower(lower), myupper(upper)
+        {
+        }
 
         const PointType & operator*() const
         {
@@ -124,29 +123,29 @@ public:
         **/
         void next()
         {
-            if (myPoint.at(myCurrentPos) + 1 <= myupper.at(myCurrentPos))
+            if (myPoint.at(myCurrentPos)  < myupper.at(myCurrentPos))
                 myPoint.at(myCurrentPos) ++;
             else
             {
-                if (myCurrentPos < myCurrentDim)
+                while ((myCurrentPos < myPoint.dimension()) &&
+                        (myPoint.at(myCurrentPos)  >=  myupper.at(myCurrentPos)))
                 {
+                    myPoint.at(myCurrentPos) = mylower.at(myCurrentPos);
                     myCurrentPos++;
+                }
+
+                if  (myCurrentPos < myPoint.dimension())
+                {
                     myPoint.at(myCurrentPos) ++;
+                    myCurrentPos = 0;
                 }
                 else
                 {
-                    if (myCurrentDim < myPoint.dimension())
-                    {
-                        for (unsigned int i=0 ; i <= myCurrentDim ; ++i)
-                            myPoint.at(i) = mylower.at(i);
-                        myPoint.at(myCurrentDim +1)++;
-
-                        myCurrentPos = 0;
-                        myCurrentDim++;
-                    }
+                    myPoint = myupper;
                 }
             }
         }
+
 
         /**
         * Operator ++ (++it)
@@ -159,13 +158,66 @@ public:
         }
 
         /**
-             * Operator ++ (it++)
-             *
-             */
+        * Operator ++ (it++)
+        *
+        */
         ConstIterator &operator++(int)
         {
             ConstIterator tmp = *this;
             ++*this;
+            return tmp;
+        }
+
+
+        /**
+        * Implements the prev() method to scan the domain points dimension by dimension
+        * (lexicographic order).
+        *
+        **/
+        void prev()
+        {
+            if ( myPoint.at( myCurrentPos )  > mylower.at( myCurrentPos ) )
+                myPoint.at( myCurrentPos ) --;
+            else
+            {
+                while ((myCurrentPos >= 0) &&
+                        (myPoint.at(myCurrentPos)  <=  mylower.at(myCurrentPos)))
+                {
+                    myPoint.at(myCurrentPos) = myupper.at(myCurrentPos);
+                    myCurrentPos++;
+                }
+
+                if  ( myCurrentPos >= 0 )
+                {
+                    myPoint.at(myCurrentPos) --;
+                    myCurrentPos = 0;
+                }
+                else
+                {
+                    myPoint = mylower;
+                }
+            }
+
+        }
+
+        /**
+        * Operator ++ (++it)
+        *
+        */
+        ConstIterator &operator--()
+        {
+            this->prev();
+            return *this;
+        }
+
+        /**
+             * Operator ++ (it++)
+             *
+             */
+        ConstIterator &operator--(int)
+        {
+            ConstIterator tmp = *this;
+            --*this;
             return tmp;
         }
 
@@ -185,7 +237,7 @@ public:
     ConstIterator end() const;
 
 
-    // ----------------------- Interface --------------------------------------
+// ----------------------- Interface --------------------------------------
 public:
 
 
@@ -214,17 +266,17 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+// ------------------------- Protected Datas ------------------------------
 private:
-    // ------------------------- Private Datas --------------------------------
+// ------------------------- Private Datas --------------------------------
 private:
 
-    ///The lowest point of the space diagonal
+///The lowest point of the space diagonal
     PointType myLowerBound;
-    ///The highest point of the space diagonal
+///The highest point of the space diagonal
     PointType myUpperBound;
 
-    // ------------------------- Hidden services ------------------------------
+// ------------------------- Hidden services ------------------------------
 protected:
 
 
@@ -246,7 +298,7 @@ private:
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
-    // ------------------------- Internals ------------------------------------
+// ------------------------- Internals ------------------------------------
 private:
 
 }; // end of class HyperRectDomain
