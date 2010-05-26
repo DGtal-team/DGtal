@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file BoxDomain.h
+ * @file HyperRectDomain.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/25
  *
- * Header file for module BoxDomain.cpp
+ * Header file for module HyperRectDomain.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(BoxDomain_RECURSES)
-#error Recursive header files inclusion detected in BoxDomain.h
-#else // defined(BoxDomain_RECURSES)
+#if defined(HyperRectDomain_RECURSES)
+#error Recursive header files inclusion detected in HyperRectDomain.h
+#else // defined(HyperRectDomain_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define BoxDomain_RECURSES
+#define HyperRectDomain_RECURSES
 
-#if !defined BoxDomain_h
+#if !defined HyperRectDomain_h
 /** Prevents repeated inclusion of headers. */
-#define BoxDomain_h
+#define HyperRectDomain_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -32,9 +32,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class BoxDomain
+// class HyperRectDomain
 /**
- * Description of class 'BoxDomain' <p>
+ * Description of class 'HyperRectDomain' <p>
  * Aim:
  */
 template<class TSpace>
@@ -67,17 +67,26 @@ public:
 
 
     /**
-    * ConstIterator class for BoxDomain
+    * ConstIterator class for HyperRectDomain.
+    *
+    * \todo implements it++
+    * \todo rendre l'iterateur "compliant" avec STL iterateurs
     *
     **/
     class ConstIterator {
 
+        ///Current Point in the domain
         PointType myPoint;
+        ///Copies of the Domain limits
         PointType mylower, myupper;
+        ///Index of the iterator position
         std::size_t myCurrentDim;
+        ///Second index of the iterator position
+        std::size_t myCurrentPos;
+
     public:
         ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
-                : myPoint( p ), myCurrentDim(0), mylower(lower), myupper(upper)
+                : myPoint( p ), myCurrentDim(0), myCurrentPos(0), mylower(lower), myupper(upper)
         {}
 
         const PointType & operator*() const
@@ -90,20 +99,35 @@ public:
             return (myPoint != (*aIt) );
         }
 
+        /**
+        * Implements the next() method to scan the domain points dimension by dimension
+	* (lexicographic order).
+        *
+        **/
         void next()
         {
-            if (myPoint.at(myCurrentDim) + 1 <= myupper.at(myCurrentDim))
-                myPoint.at(myCurrentDim) ++;
+            if (myPoint.at(myCurrentPos) + 1 <= myupper.at(myCurrentPos))
+                myPoint.at(myCurrentPos) ++;
             else
-                if (myCurrentDim +1 < myPoint.dimension())
+            {
+                if (myCurrentPos < myCurrentDim)
                 {
-                    myPoint.at(myCurrentDim) = mylower.at(myCurrentDim);
-                    myPoint.at(myCurrentDim +1) ++;
+                    myCurrentPos++;
+                    myPoint.at(myCurrentPos) ++;
                 }
                 else
                 {
-                    ///	      arg.. je renvoie une exception ?
+                    if (myCurrentDim < myPoint.dimension())
+                    {
+                        for (unsigned int i=0 ; i <= myCurrentDim ; ++i)
+                            myPoint.at(i) = mylower.at(i);
+                        myPoint.at(myCurrentDim +1)++;
+
+                        myCurrentPos = 0;
+                        myCurrentDim++;
+                    }
                 }
+            }
         }
 
         ConstIterator &operator++()
@@ -160,8 +184,10 @@ private:
     // ------------------------- Private Datas --------------------------------
 private:
 
-    PointType myLowerBound; ///The lowest point of the space diagonal
-    PointType myUpperBound;///The highest point of the space diagonal
+    ///The lowest point of the space diagonal
+    PointType myLowerBound;
+    ///The highest point of the space diagonal
+    PointType myUpperBound;
 
     // ------------------------- Hidden services ------------------------------
 protected:
@@ -188,13 +214,13 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class BoxDomain
+}; // end of class HyperRectDomain
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'BoxDomain'.
+ * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'BoxDomain' to write.
+ * @param object the object of class 'HyperRectDomain' to write.
  * @return the output stream after the writing.
  */
 template<class TSpace>
@@ -214,7 +240,7 @@ operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined BoxDomain_h
+#endif // !defined HyperRectDomain_h
 
-#undef BoxDomain_RECURSES
-#endif // else defined(BoxDomain_RECURSES)
+#undef HyperRectDomain_RECURSES
+#endif // else defined(HyperRectDomain_RECURSES)

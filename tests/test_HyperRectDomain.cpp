@@ -66,18 +66,32 @@ bool testIterator()
     PointType b( t2 );
 
     trace.beginBlock("HyperRectDomain Iterator");
-
-    ///Empty domain using the standard constructor
     HyperRectDomain<SpaceType> myHyperRectDomain(a,b);
 
     trace.info() << myHyperRectDomain << std::endl;
 
-    trace.emphase() << "Iterator: ";
+    trace.emphase() << "Iterator 2d: ";
     for (HyperRectDomain<SpaceType>::ConstIterator it = myHyperRectDomain.begin();
             it != myHyperRectDomain.end();
             ++it)
         trace.info() << (*it) << std::endl;
 
+
+    trace.emphase() << "Iterator 4d: ";
+    typedef Space<int,4> SpaceType4D;
+    typedef SpaceType4D::PointType PointType4D;
+    const int t4D[ ] = { 1, 1,1,1};
+    const int t4D2[ ] = { 3,3,3,3};
+    PointType4D a4D( t4D );
+    PointType4D b4D( t4D2 );
+    
+    HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
+    trace.emphase() << myHyperRectDomain4D<<std::endl;
+    
+    for (HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.begin();
+            it != myHyperRectDomain4D.end();
+            ++it)
+        trace.info() << (*it) << std::endl;
 
     trace.endBlock();
     return myHyperRectDomain.isValid();
