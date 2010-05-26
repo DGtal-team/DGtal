@@ -32,12 +32,12 @@
 template<class TSpace>
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-  typedef DGtal::HyperRectDomain<TSpace>::PointType PT;
-  PT aPoint;
-  
-  aPoint.zero();
-  myLowerBound = aPoint;
-  myUpperBound = aPoint;
+    typedef DGtal::HyperRectDomain<TSpace>::PointType PT;
+    PT aPoint;
+
+    aPoint.zero();
+    myLowerBound = aPoint;
+    myUpperBound = aPoint;
 }
 
 /**
@@ -46,7 +46,8 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 *
 */
 template<class TSpace>
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const typename HyperRectDomain<TSpace>::PointType &aPointA,const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const typename HyperRectDomain<TSpace>::PointType &aPointA,
+						const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
 {
     if (aPointA < aPointB)
     {
@@ -55,8 +56,8 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const typename HyperRectDomain<T
     }
     else
     {
-      myLowerBound = aPointB;
-      myUpperBound = aPointA;
+        myLowerBound = aPointB;
+        myUpperBound = aPointA;
     }
 
 }
@@ -110,7 +111,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin() const
 {
-  return DGtal::HyperRectDomain<TSpace>::ConstIterator(myLowerBound,myLowerBound,myUpperBound);
+    return DGtal::HyperRectDomain<TSpace>::ConstIterator(myLowerBound,myLowerBound,myUpperBound);
 }
 
 /**
@@ -122,7 +123,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end() const
 {
-  return DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+    return DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
 }
 
 
@@ -134,7 +135,7 @@ template<class TSpace>
 void
 DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[HyperRectDomain] = ["<< myLowerBound <<"]x["
+    out << "[HyperRectDomain] = ["<< myLowerBound <<"]x["
     << myUpperBound <<"]";
 }
 

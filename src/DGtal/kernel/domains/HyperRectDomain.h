@@ -81,7 +81,7 @@ public:
 
     public:
 
-        typedef std::forward_iterator_tag iterator_category; ///\todo construct a bidirectionnal iterator
+        typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOMACCESS iterator
         typedef PointType value_type;
         typedef ptrdiff_t difference_type;
         typedef PointType* pointer;
