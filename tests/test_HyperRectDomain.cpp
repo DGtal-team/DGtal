@@ -113,13 +113,13 @@ bool testSTLCompat()
   PointType4D a4D( t4D );
   PointType4D b4D( t4D2 );
 
-
+  trace.beginBlock("TestSTL Compatibility");
   
   HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
   trace.emphase() << myHyperRectDomain4D<<std::endl;
   
   for_each(myHyperRectDomain4D.begin(), myHyperRectDomain4D.end(), PrintPoint<PointType4D>);
-
+  trace.info() << std::endl;
   trace.endBlock();
 }
 
