@@ -46,7 +46,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 *
 */
 template<class TSpace>
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const DGtal::HyperRectDomain<TSpace>::PointType &aPointA,const DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const typename HyperRectDomain<TSpace>::PointType &aPointA,const DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
 {
     if (aPointA < aPointB)
     {
