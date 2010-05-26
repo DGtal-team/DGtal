@@ -32,8 +32,8 @@
 template<class TSpace>
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-    typedef typename DGtal::HyperRectDomain<TSpace>::PointType PT;
-    PT aPoint;
+  typedef typename DGtal::HyperRectDomain<TSpace>::PointType PT;
+  PT aPoint;
 
     aPoint.zero();
     myLowerBound = aPoint;
@@ -114,20 +114,6 @@ DGtal::HyperRectDomain<TSpace>::begin() const
     return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(myLowerBound,myLowerBound,myUpperBound);
 }
 
-
-/**
-* begin(aPoint) iterator.
-*
-**/
-template<class TSpace>
-INLINE
-typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::begin(const typename HyperRectDomain<TSpace>::PointType &aPoint) const
-{
-  return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(aPoint,myLowerBound,myUpperBound);
-}
-
-
 /**
 * end() iterator.
 *
@@ -137,7 +123,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end() const
 {
-    return DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
 }
 
 
