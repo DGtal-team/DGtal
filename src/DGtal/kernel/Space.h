@@ -57,6 +57,7 @@ namespace DGtal
 
     // static constants
     static const DimensionType staticDimension = Dimension;
+    
     //typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {

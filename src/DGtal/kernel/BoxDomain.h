@@ -26,7 +26,6 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Domain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -39,7 +38,7 @@ namespace DGtal
  * Aim:
  */
 template<class TSpace>
-class BoxDomain : public Domain<TSpace>
+class BoxDomain
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -61,11 +60,69 @@ public:
     BoxDomain(const PointType &aPointA, const PointType &aPointB);
 
 
-
     /**
      * Destructor.
      */
     ~BoxDomain();
+
+
+    /**
+    * ConstIterator class for BoxDomain
+    *
+    **/
+    class ConstIterator {
+        PointType myPoint;
+        std::size_t myCurrentDim;
+    public:
+        ConstIterator(  const PointType & p )
+                : myPoint( p ), myCurrentDim(0)
+        {}
+
+        const PointType & operator*() const
+        {
+            return myPoint;
+        }
+
+        bool operator!=( const ConstIterator &aIt ) const
+        {
+            return (myPoint != (*aIt) );
+        }
+
+        void next()
+        {
+            if (myPoint.at(myCurrentDim) + 1 < 6) //myUpperBound.at(myCurrentDim))
+                myPoint.at(myCurrentDim) ++;
+            else
+                if (myCurrentDim +1 < myPoint.dimension())
+		{
+		  myPoint.at(myCurrentDim) = 1; //myLowerBound.at(myCurrentDim)
+		  myPoint.at(myCurrentDim +1) ++;
+		}		
+                else
+                {
+                    ///	      arg.. je renvoie une exception ?
+                }
+        }
+
+        ConstIterator &operator++()
+        {
+            this->next();
+            return *this;
+        }
+    };
+
+    /**
+    * begin() iterator.
+    *
+    **/
+    ConstIterator begin() const;
+
+    /**
+    * end() iterator.
+    *
+    **/
+    ConstIterator end() const;
+
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -75,13 +132,13 @@ public:
     * Returns the lowest point of the space diagonal.
     *
     **/
-    PointType &lowestSpaceDiagonalPoint();
+    const PointType &lowerBound() const;
 
     /**
     * Returns the highest point of the space diagonal.
     *
     **/
-    PointType &highestSpaceDiagonalPoint();
+    const PointType &upperBound() const ;
 
 
     /**
@@ -101,8 +158,8 @@ private:
     // ------------------------- Private Datas --------------------------------
 private:
 
-    PointType myLowestPoint; ///The lowest point of the space diagonal
-    PointType myHighestPoint;///The highest point of the space diagonal
+    PointType myLowerBound; ///The lowest point of the space diagonal
+    PointType myUpperBound;///The highest point of the space diagonal
 
     // ------------------------- Hidden services ------------------------------
 protected:

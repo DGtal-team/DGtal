@@ -35,8 +35,8 @@ DGtal::BoxDomain<TSpace>::BoxDomain()
   DGtal::BoxDomain<TSpace>::PointType aPoint;
 
   aPoint.zero();
-  myLowestPoint = aPoint;
-  myHighestPoint = aPoint;
+  myLowerBound = aPoint;
+  myUpperBound = aPoint;
 }
 
 /**
@@ -49,13 +49,13 @@ DGtal::BoxDomain<TSpace>::BoxDomain(const DGtal::BoxDomain<TSpace>::PointType &a
 {
     if (aPointA < aPointB)
     {
-        myLowestPoint = aPointA;
-        myHighestPoint = aPointB;
+        myLowerBound = aPointA;
+        myUpperBound = aPointB;
     }
     else
     {
-        myLowestPoint = aPointB;
-        myHighestPoint = aPointA;
+      myLowerBound = aPointB;
+      myUpperBound = aPointA;
     }
 
 }
@@ -80,10 +80,10 @@ DGtal::BoxDomain<TSpace>::~BoxDomain()
 **/
 template<class TSpace>
 INLINE
-typename DGtal::BoxDomain<TSpace>::PointType &
-DGtal::BoxDomain<TSpace>::lowestSpaceDiagonalPoint()
+const typename DGtal::BoxDomain<TSpace>::PointType &
+DGtal::BoxDomain<TSpace>::lowerBound() const
 {
-    return myLowestPoint;
+    return myLowerBound;
 }
 
 
@@ -93,10 +93,35 @@ DGtal::BoxDomain<TSpace>::lowestSpaceDiagonalPoint()
 **/
 template<class TSpace>
 INLINE
-typename DGtal::BoxDomain<TSpace>::PointType &
-DGtal::BoxDomain<TSpace>::highestSpaceDiagonalPoint()
+const typename DGtal::BoxDomain<TSpace>::PointType &
+DGtal::BoxDomain<TSpace>::upperBound() const
 {
-    return myHighestPoint;
+    return myUpperBound;
+}
+
+
+/**
+* begin() iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::BoxDomain<TSpace>::ConstIterator
+DGtal::BoxDomain<TSpace>::begin() const
+{
+  return DGtal::BoxDomain<TSpace>::ConstIterator(myLowerBound);
+}
+
+/**
+* end() iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::BoxDomain<TSpace>::ConstIterator
+DGtal::BoxDomain<TSpace>::end() const
+{
+  return DGtal::BoxDomain<TSpace>::ConstIterator(myUpperBound);
 }
 
 
@@ -108,8 +133,8 @@ template<class TSpace>
 void
 DGtal::BoxDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[BoxDomain] = ["<< myLowestPoint <<"]x["
-    << myHighestPoint <<"]";
+  out << "[BoxDomain] = ["<< myLowerBound <<"]x["
+    << myUpperBound <<"]";
 }
 
 /**

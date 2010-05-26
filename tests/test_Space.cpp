@@ -27,9 +27,6 @@ using namespace DGtal;
 using namespace std;
 
 
-
-
-
 /**
 * Test instancition of Space 
 *
@@ -39,6 +36,7 @@ bool testSimpleSpace()
   
  Space<int,6> aSpace6;
  Space<double,2> aSpace2;
+
  cout << "aSpace6 = " << aSpace6 << endl;
  cout << "aSpace2 = " << aSpace2 << endl;
  Space<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();

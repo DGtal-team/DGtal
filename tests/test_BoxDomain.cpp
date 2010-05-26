@@ -56,13 +56,39 @@ bool testSimpleBoxDomain()
     return myBoxDomain.isValid();
 }
 
+bool testIterator()
+{
+    typedef Space<int,2> SpaceType;
+    typedef SpaceType::PointType PointType;
+    const int t[ ] = { 1, 1};
+    const int t2[ ] = { 5, 5};
+    PointType a( t );
+    PointType b( t2 );
+
+    trace.beginBlock("BoxDomain Iterator");
+
+    ///Empty domain using the standard constructor
+    BoxDomain<SpaceType> myBoxDomain(a,b);
+
+    trace.info() << myBoxDomain << std::endl;
+
+    trace.emphase() << "Iterator: ";
+    for (BoxDomain<SpaceType>::ConstIterator it = myBoxDomain.begin();
+            it != myBoxDomain.end();
+            ++it)
+        trace.info() << (*it) << std::endl;
+
+
+    trace.endBlock();
+    return myBoxDomain.isValid();
+}
 
 
 
 int main()
 {
 
-    if (testSimpleBoxDomain())
+    if (testSimpleBoxDomain() && testIterator())
         return 0;
     else
         return 1;
