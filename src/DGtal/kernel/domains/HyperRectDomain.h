@@ -69,9 +69,6 @@ public:
     /**
     * ConstIterator class for HyperRectDomain.
     *
-    * \todo implements it++
-    * \todo rendre l'iterateur "compliant" avec STL iterateurs
-    *
     **/
     class ConstIterator {
 
@@ -85,15 +82,15 @@ public:
         std::size_t myCurrentPos;
 
     public:
-  
-      typedef std::forward_iterator_tag iterator_category; ///\todo construct a bidirectionnal iterator
-      typedef PointType value_type;
-      typedef ptrdiff_t difference_type;
-      typedef PointType* pointer;
-      typedef PointType& reference;
-      
 
-      ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
+        typedef std::forward_iterator_tag iterator_category; ///\todo construct a bidirectionnal iterator
+        typedef PointType value_type;
+        typedef ptrdiff_t difference_type;
+        typedef PointType* pointer;
+        typedef PointType& reference;
+
+
+        ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
                 : myPoint( p ), myCurrentDim(0), myCurrentPos(0), mylower(lower), myupper(upper)
         {}
 
@@ -109,7 +106,7 @@ public:
 
         /**
         * Implements the next() method to scan the domain points dimension by dimension
-	* (lexicographic order).
+        * (lexicographic order).
         *
         **/
         void next()
@@ -138,11 +135,28 @@ public:
             }
         }
 
+        /**
+        * Operator ++ (++it)
+        *
+        */
         ConstIterator &operator++()
         {
             this->next();
             return *this;
         }
+        
+        /**
+	* Operator ++ (it++)
+	*
+	*/
+        ConstIterator &operator++(int)
+        {
+            ConstIterator tmp = *this;
+            ++*this;
+            return tmp;
+        }
+
+
     };
 
     /**
