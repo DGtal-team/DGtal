@@ -11,10 +11,10 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/kernel/HyperRectDomain.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/kernel/HyperRectDomain.ih"
+#include "DGtal/kernel/domains/HyperRectDomain.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 

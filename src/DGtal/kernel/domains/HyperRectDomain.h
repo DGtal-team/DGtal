@@ -242,7 +242,7 @@ operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/kernel/HyperRectDomain.ih"
+#include "DGtal/kernel/domains/HyperRectDomain.ih"
 #endif
 
 //                                                                           //
