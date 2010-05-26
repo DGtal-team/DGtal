@@ -99,6 +99,19 @@ public:
             return myPoint;
         }
 
+        /**
+        * Operator ==
+        *
+        */
+        bool operator==(const ConstIterator &it) const
+        {
+            return (myPoint == (*it));
+        }
+
+        /**
+        * Operator !=
+        *
+        */
         bool operator!=( const ConstIterator &aIt ) const
         {
             return (myPoint != (*aIt) );
@@ -144,11 +157,11 @@ public:
             this->next();
             return *this;
         }
-        
+
         /**
-	* Operator ++ (it++)
-	*
-	*/
+             * Operator ++ (it++)
+             *
+             */
         ConstIterator &operator++(int)
         {
             ConstIterator tmp = *this;
