@@ -1,69 +1,66 @@
 #pragma once
 
 /**
- * @file HyperRectDomain.h
+ * @file LineDomain.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/05/25
+ * @date 2010/05/26
  *
- * Header file for module HyperRectDomain.cpp
+ * Header file for module LineDomain.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(HyperRectDomain_RECURSES)
-#error Recursive header files inclusion detected in HyperRectDomain.h
-#else // defined(HyperRectDomain_RECURSES)
+#if defined(LineDomain_RECURSES)
+#error Recursive header files inclusion detected in LineDomain.h
+#else // defined(LineDomain_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define HyperRectDomain_RECURSES
+#define LineDomain_RECURSES
 
-#if !defined HyperRectDomain_h
+#if !defined LineDomain_h
 /** Prevents repeated inclusion of headers. */
-#define HyperRectDomain_h
+#define LineDomain_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class HyperRectDomain
+// class LineDomain
 /**
- * Description of class 'HyperRectDomain' <p>
+ * Description of class 'LineDomain' <p>
  * Aim:
  */
+
 template<class TSpace>
-class HyperRectDomain
+class LineDomain : public HyperRectDomain<TSpace>
 {
-    // ----------------------- Standard services ------------------------------
+
 public:
 
-    typedef typename TSpace::PointType PointType;
-    typedef TSpace SpaceType;
-
-    /**
-    * Default Constructor.
-    */
-    HyperRectDomain();
+    typedef typename HyperRectDomain<TSpace>::PointType PointType;
 
 
     /**
-    * Constructor from  two points \param aPointA and \param aPoint B
-    * defining the space diagonal.
-    *
+    * Constructor.
     */
-    HyperRectDomain(const PointType &aPointA, const PointType &aPointB);
+    LineDomain();
 
 
     /**
      * Destructor.
      */
-    ~HyperRectDomain();
+    ~LineDomain();
+
+    // ----------------------- Interface --------------------------------------
+public:
 
 
     /**
@@ -211,9 +208,9 @@ public:
         }
 
         /**
-             * Operator ++ (it++)
-             *
-             */
+        * Operator ++ (it++)
+        *
+        */
         ConstIterator &operator--(int)
         {
             ConstIterator tmp = *this;
@@ -223,42 +220,6 @@ public:
 
 
     };
-
-    /**
-    * begin() iterator.
-    *
-    **/
-    ConstIterator begin() const;
-
-    /**
-    * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-    *
-    **/
-    ConstIterator begin(const PointType &aPoint) const;
-    
-    
-    /**
-    * end() iterator.
-    *
-    **/
-    ConstIterator end() const;
-
-
-// ----------------------- Interface --------------------------------------
-public:
-
-
-    /**
-    * Returns the lowest point of the space diagonal.
-    *
-    **/
-    const PointType &lowerBound() const;
-
-    /**
-    * Returns the highest point of the space diagonal.
-    *
-    **/
-    const PointType &upperBound() const ;
 
 
     /**
@@ -273,17 +234,12 @@ public:
      */
     bool isValid() const;
 
-// ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Datas ------------------------------
 private:
-// ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
 private:
 
-///The lowest point of the space diagonal
-    PointType myLowerBound;
-///The highest point of the space diagonal
-    PointType myUpperBound;
-
-// ------------------------- Hidden services ------------------------------
+    // ------------------------- Hidden services ------------------------------
 protected:
 
 
@@ -295,7 +251,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    HyperRectDomain ( const HyperRectDomain & other );
+    LineDomain ( const LineDomain & other );
 
     /**
      * Assignment.
@@ -303,23 +259,23 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    HyperRectDomain & operator= ( const HyperRectDomain & other );
+    LineDomain & operator= ( const LineDomain & other );
 
-// ------------------------- Internals ------------------------------------
+    // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class HyperRectDomain
+}; // end of class LineDomain
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
+ * Overloads 'operator<<' for displaying objects of class 'LineDomain'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'HyperRectDomain' to write.
+ * @param object the object of class 'LineDomain' to write.
  * @return the output stream after the writing.
  */
 template<class TSpace>
 std::ostream&
-operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
+operator<< ( std::ostream & out, const LineDomain<TSpace> & object );
 
 
 } // namespace DGtal
@@ -328,13 +284,13 @@ operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/kernel/domains/HyperRectDomain.ih"
+#include "DGtal/kernel/domains/LineDomain.ih"
 #endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined HyperRectDomain_h
+#endif // !defined LineDomain_h
 
-#undef HyperRectDomain_RECURSES
-#endif // else defined(HyperRectDomain_RECURSES)
+#undef LineDomain_RECURSES
+#endif // else defined(LineDomain_RECURSES)
