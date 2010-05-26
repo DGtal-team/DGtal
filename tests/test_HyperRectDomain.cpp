@@ -17,8 +17,8 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
-#include <assert.h>
-#include <vector>
+#include <algorithm>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/HyperRectDomain.h"
 #include "DGtal/kernel/Space.h"
@@ -98,11 +98,36 @@ bool testIterator()
 }
 
 
+template<typename T>
+void PrintPoint(T val)
+{
+  trace.info()<< val <<" ";
+}
+
+bool testSTLCompat()
+{
+  typedef Space<int,4> SpaceType4D;
+  typedef SpaceType4D::PointType PointType4D;
+  const int t4D[ ] = { 1, 1,1,1};
+  const int t4D2[ ] = { 3,3,3,3};
+  PointType4D a4D( t4D );
+  PointType4D b4D( t4D2 );
+
+
+  
+  HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
+  trace.emphase() << myHyperRectDomain4D<<std::endl;
+  
+  for_each(myHyperRectDomain4D.begin(), myHyperRectDomain4D.end(), PrintPoint<PointType4D>);
+
+  trace.endBlock();
+}
+
 
 int main()
 {
 
-    if (testSimpleHyperRectDomain() && testIterator())
+    if (testSimpleHyperRectDomain() && testIterator() && testSTLCompat())
         return 0;
     else
         return 1;

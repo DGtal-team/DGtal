@@ -85,7 +85,15 @@ public:
         std::size_t myCurrentPos;
 
     public:
-        ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
+  
+      typedef std::forward_iterator_tag iterator_category; ///\todo construct a bidirectionnal iterator
+      typedef PointType value_type;
+      typedef ptrdiff_t difference_type;
+      typedef PointType* pointer;
+      typedef PointType& reference;
+      
+
+      ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
                 : myPoint( p ), myCurrentDim(0), myCurrentPos(0), mylower(lower), myupper(upper)
         {}
 
