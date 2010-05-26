@@ -38,7 +38,7 @@ namespace DGtal
  * Aim:
  */
 template<class TSpace>
-class BoxDomain
+class HyperRectDomain
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -49,7 +49,7 @@ public:
     /**
     * Default Constructor.
     */
-    BoxDomain();
+    HyperRectDomain();
 
 
     /**
@@ -57,13 +57,13 @@ public:
     * defining the space diagonal.
     *
     */
-    BoxDomain(const PointType &aPointA, const PointType &aPointB);
+    HyperRectDomain(const PointType &aPointA, const PointType &aPointB);
 
 
     /**
      * Destructor.
      */
-    ~BoxDomain();
+    ~HyperRectDomain();
 
 
     /**
@@ -71,11 +71,13 @@ public:
     *
     **/
     class ConstIterator {
+
         PointType myPoint;
+        PointType mylower, myupper;
         std::size_t myCurrentDim;
     public:
-        ConstIterator(  const PointType & p )
-                : myPoint( p ), myCurrentDim(0)
+        ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
+                : myPoint( p ), myCurrentDim(0), mylower(lower), myupper(upper)
         {}
 
         const PointType & operator*() const
@@ -90,14 +92,14 @@ public:
 
         void next()
         {
-            if (myPoint.at(myCurrentDim) + 1 < 6) //myUpperBound.at(myCurrentDim))
+            if (myPoint.at(myCurrentDim) + 1 <= myupper.at(myCurrentDim))
                 myPoint.at(myCurrentDim) ++;
             else
                 if (myCurrentDim +1 < myPoint.dimension())
-		{
-		  myPoint.at(myCurrentDim) = 1; //myLowerBound.at(myCurrentDim)
-		  myPoint.at(myCurrentDim +1) ++;
-		}		
+                {
+                    myPoint.at(myCurrentDim) = mylower.at(myCurrentDim);
+                    myPoint.at(myCurrentDim +1) ++;
+                }
                 else
                 {
                     ///	      arg.. je renvoie une exception ?
@@ -173,7 +175,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    BoxDomain ( const BoxDomain & other );
+    HyperRectDomain ( const HyperRectDomain & other );
 
     /**
      * Assignment.
@@ -181,7 +183,7 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    BoxDomain & operator= ( const BoxDomain & other );
+    HyperRectDomain & operator= ( const HyperRectDomain & other );
 
     // ------------------------- Internals ------------------------------------
 private:
@@ -197,7 +199,7 @@ private:
  */
 template<class TSpace>
 std::ostream&
-operator<< ( std::ostream & out, const BoxDomain<TSpace> & object );
+operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 
 
 } // namespace DGtal
@@ -206,7 +208,7 @@ operator<< ( std::ostream & out, const BoxDomain<TSpace> & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/kernel/BoxDomain.ih"
+#include "DGtal/kernel/HyperRectDomain.ih"
 #endif
 
 //                                                                           //

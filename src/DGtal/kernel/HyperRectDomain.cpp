@@ -1,27 +1,27 @@
 /**
- * @file BoxDomain.cpp
+ * @file HyperRectDomain.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/25
  *
- * Implementation of methods defined in BoxDomain.h
+ * Implementation of methods defined in HyperRectDomain.h
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/kernel/BoxDomain.h"
+#include "DGtal/kernel/HyperRectDomain.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/kernel/BoxDomain.ih"
+#include "DGtal/kernel/HyperRectDomain.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
-// class BoxDomain
+// class HyperRectDomain
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////

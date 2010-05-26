@@ -1,5 +1,5 @@
 /**
- * @file test_BoxDomain.cpp
+ * @file test_HyperRectDomain.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,8 +9,8 @@
  */
 
 /**
- * Description of test_BoxDomain <p>
- * Aim: simple test of \ref BoxDomain
+ * Description of test_HyperRectDomain <p>
+ * Aim: simple test of \ref HyperRectDomain
  */
 
 #include <cstdio>
@@ -20,7 +20,7 @@
 #include <assert.h>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/BoxDomain.h"
+#include "DGtal/kernel/HyperRectDomain.h"
 #include "DGtal/kernel/Space.h"
 
 using namespace DGtal;
@@ -28,10 +28,10 @@ using namespace std;
 
 
 /**
-* Test instancition of BoxDomain
+* Test instancition of HyperRectDomain
 *
 **/
-bool testSimpleBoxDomain()
+bool testSimpleHyperRectDomain()
 {
 
     typedef Space<int,4> Space4Type;
@@ -42,18 +42,18 @@ bool testSimpleBoxDomain()
     PointType a( t );
     PointType b( t2 );
 
-    trace.beginBlock("BoxDomain init");
+    trace.beginBlock("HyperRectDomain init");
     ///Empty domain using the default constructor
-    BoxDomain<Space4Type> myEmptyDomain;
+    HyperRectDomain<Space4Type> myEmptyDomain;
     trace.info() << "Empty Domain: "<<myEmptyDomain<< std::endl;
 
     ///Empty domain using the standard constructor
-    BoxDomain<Space4Type> myBoxDomain(a,b);
+    HyperRectDomain<Space4Type> myHyperRectDomain(a,b);
 
-    trace.info() << myBoxDomain << std::endl;
+    trace.info() << myHyperRectDomain << std::endl;
 
     trace.endBlock();
-    return myBoxDomain.isValid();
+    return myHyperRectDomain.isValid();
 }
 
 bool testIterator()
@@ -65,22 +65,22 @@ bool testIterator()
     PointType a( t );
     PointType b( t2 );
 
-    trace.beginBlock("BoxDomain Iterator");
+    trace.beginBlock("HyperRectDomain Iterator");
 
     ///Empty domain using the standard constructor
-    BoxDomain<SpaceType> myBoxDomain(a,b);
+    HyperRectDomain<SpaceType> myHyperRectDomain(a,b);
 
-    trace.info() << myBoxDomain << std::endl;
+    trace.info() << myHyperRectDomain << std::endl;
 
     trace.emphase() << "Iterator: ";
-    for (BoxDomain<SpaceType>::ConstIterator it = myBoxDomain.begin();
-            it != myBoxDomain.end();
+    for (HyperRectDomain<SpaceType>::ConstIterator it = myHyperRectDomain.begin();
+            it != myHyperRectDomain.end();
             ++it)
         trace.info() << (*it) << std::endl;
 
 
     trace.endBlock();
-    return myBoxDomain.isValid();
+    return myHyperRectDomain.isValid();
 }
 
 
@@ -88,7 +88,7 @@ bool testIterator()
 int main()
 {
 
-    if (testSimpleBoxDomain() && testIterator())
+    if (testSimpleHyperRectDomain() && testIterator())
         return 0;
     else
         return 1;

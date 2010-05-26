@@ -1,11 +1,11 @@
 /**
- * @file BoxDomain.ih
+ * @file HyperRectDomain.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/25
  *
- * Implementation of inline methods defined in BoxDomain.h
+ * Implementation of inline methods defined in HyperRectDomain.h
  *
  * This file is part of the DGtal library.
  */
@@ -30,9 +30,9 @@
 * (Lowest = Highest = {0}^n)
 */
 template<class TSpace>
-DGtal::BoxDomain<TSpace>::BoxDomain()
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-  DGtal::BoxDomain<TSpace>::PointType aPoint;
+  DGtal::HyperRectDomain<TSpace>::PointType aPoint;
 
   aPoint.zero();
   myLowerBound = aPoint;
@@ -45,7 +45,7 @@ DGtal::BoxDomain<TSpace>::BoxDomain()
 *
 */
 template<class TSpace>
-DGtal::BoxDomain<TSpace>::BoxDomain(const DGtal::BoxDomain<TSpace>::PointType &aPointA,const DGtal::BoxDomain<TSpace>::PointType &aPointB)
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const DGtal::HyperRectDomain<TSpace>::PointType &aPointA,const DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
 {
     if (aPointA < aPointB)
     {
@@ -65,7 +65,7 @@ DGtal::BoxDomain<TSpace>::BoxDomain(const DGtal::BoxDomain<TSpace>::PointType &a
 * Destructor.
 */
 template<class TSpace>
-DGtal::BoxDomain<TSpace>::~BoxDomain()
+DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
 {
 }
 
@@ -80,8 +80,8 @@ DGtal::BoxDomain<TSpace>::~BoxDomain()
 **/
 template<class TSpace>
 INLINE
-const typename DGtal::BoxDomain<TSpace>::PointType &
-DGtal::BoxDomain<TSpace>::lowerBound() const
+const typename DGtal::HyperRectDomain<TSpace>::PointType &
+DGtal::HyperRectDomain<TSpace>::lowerBound() const
 {
     return myLowerBound;
 }
@@ -93,8 +93,8 @@ DGtal::BoxDomain<TSpace>::lowerBound() const
 **/
 template<class TSpace>
 INLINE
-const typename DGtal::BoxDomain<TSpace>::PointType &
-DGtal::BoxDomain<TSpace>::upperBound() const
+const typename DGtal::HyperRectDomain<TSpace>::PointType &
+DGtal::HyperRectDomain<TSpace>::upperBound() const
 {
     return myUpperBound;
 }
@@ -106,10 +106,10 @@ DGtal::BoxDomain<TSpace>::upperBound() const
 **/
 template<class TSpace>
 INLINE
-typename DGtal::BoxDomain<TSpace>::ConstIterator
-DGtal::BoxDomain<TSpace>::begin() const
+typename DGtal::HyperRectDomain<TSpace>::ConstIterator
+DGtal::HyperRectDomain<TSpace>::begin() const
 {
-  return DGtal::BoxDomain<TSpace>::ConstIterator(myLowerBound);
+  return DGtal::HyperRectDomain<TSpace>::ConstIterator(myLowerBound,myLowerBound,myUpperBound);
 }
 
 /**
@@ -118,10 +118,10 @@ DGtal::BoxDomain<TSpace>::begin() const
 **/
 template<class TSpace>
 INLINE
-typename DGtal::BoxDomain<TSpace>::ConstIterator
-DGtal::BoxDomain<TSpace>::end() const
+typename DGtal::HyperRectDomain<TSpace>::ConstIterator
+DGtal::HyperRectDomain<TSpace>::end() const
 {
-  return DGtal::BoxDomain<TSpace>::ConstIterator(myUpperBound);
+  return DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
 }
 
 
@@ -131,9 +131,9 @@ DGtal::BoxDomain<TSpace>::end() const
 */
 template<class TSpace>
 void
-DGtal::BoxDomain<TSpace>::selfDisplay ( std::ostream & out ) const
+DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[BoxDomain] = ["<< myLowerBound <<"]x["
+  out << "[HyperRectDomain] = ["<< myLowerBound <<"]x["
     << myUpperBound <<"]";
 }
 
@@ -143,23 +143,23 @@ DGtal::BoxDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 */
 template<class TSpace>
 bool
-DGtal::BoxDomain<TSpace>::isValid() const
+DGtal::HyperRectDomain<TSpace>::isValid() const
 {
     return true;
 }
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'BoxDomain'.
+ * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'BoxDomain' to write.
+ * @param object the object of class 'HyperRectDomain' to write.
  * @return the output stream after the writing.
  */
 template<class TSpace>
 INLINE
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const BoxDomain<TSpace> & object )
+                    const HyperRectDomain<TSpace> & object )
 {
     object.selfDisplay ( out );
     return out;
