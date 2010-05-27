@@ -44,10 +44,16 @@ namespace DGtal
    *
    */
   
-  template <typename IntT, std::size_t Dimension>
+  template <class IntT, std::size_t Dimension>
   class Space
   {
   public:
+
+    ///ça ne marche pô \todo fixer des concept check sur IntT
+    //BOOST_CONCEPT_ASSERT((EqualityComparable<IntT>));
+    //BOOST_CONCEPT_ASSERT((Assignable<IntT>));
+    
+    
     typedef IntT IntegerType;
     typedef std::size_t  DimensionType;
     

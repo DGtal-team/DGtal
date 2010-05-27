@@ -20,8 +20,9 @@
 #include <algorithm>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+
 
 using namespace DGtal;
 using namespace std;
@@ -47,7 +48,7 @@ bool testSimpleHyperRectDomain()
     HyperRectDomain<Space4Type> myEmptyDomain;
     trace.info() << "Empty Domain: "<<myEmptyDomain<< std::endl;
 
-    ///Empty domain using the standard constructor
+    ///Domain characterized by points a and b
     HyperRectDomain<Space4Type> myHyperRectDomain(a,b);
 
     trace.info() << myHyperRectDomain << std::endl;
