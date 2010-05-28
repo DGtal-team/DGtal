@@ -49,9 +49,9 @@ namespace DGtal
   {
   public:
 
-    ///ça ne marche pô \todo fixer des concept check sur IntT
-    //BOOST_CONCEPT_ASSERT((EqualityComparable<IntT>));
-    //BOOST_CONCEPT_ASSERT((Assignable<IntT>));
+    /// \todo fixer des concept check sur IntT
+    BOOST_CONCEPT_ASSERT((boost::EqualityComparable<IntT>));
+    BOOST_CONCEPT_ASSERT((boost::Assignable<IntT>));
     
     
     typedef IntT IntegerType;
