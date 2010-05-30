@@ -29,7 +29,7 @@ using namespace std;
 
 
 /**
-* Test instancition of HyperRectDomain
+* Simple test of HyperRectDomain construction.
 *
 **/
 bool testSimpleHyperRectDomain()
@@ -40,16 +40,16 @@ bool testSimpleHyperRectDomain()
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
-    PointType a( t );
-    PointType b( t2 );
+    PointType a ( t );
+    PointType b ( t2 );
 
-    trace.beginBlock("HyperRectDomain init");
+    trace.beginBlock ( "HyperRectDomain init" );
     ///Empty domain using the default constructor
     HyperRectDomain<Space4Type> myEmptyDomain;
     trace.info() << "Empty Domain: "<<myEmptyDomain<< std::endl;
 
     ///Domain characterized by points a and b
-    HyperRectDomain<Space4Type> myHyperRectDomain(a,b);
+    HyperRectDomain<Space4Type> myHyperRectDomain ( a,b );
 
     trace.info() << myHyperRectDomain << std::endl;
 
@@ -63,19 +63,19 @@ bool testIterator()
     typedef SpaceType::PointType PointType;
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
-    PointType a( t );
-    PointType b( t2 );
+    PointType a ( t );
+    PointType b ( t2 );
 
-    trace.beginBlock("HyperRectDomain Iterator");
-    HyperRectDomain<SpaceType> myHyperRectDomain(a,b);
+    trace.beginBlock ( "HyperRectDomain Iterator" );
+    HyperRectDomain<SpaceType> myHyperRectDomain ( a,b );
 
     trace.info() << myHyperRectDomain << std::endl;
 
     trace.emphase() << "Iterator 2d: ";
-    for (HyperRectDomain<SpaceType>::ConstIterator it = myHyperRectDomain.begin();
+    for ( HyperRectDomain<SpaceType>::ConstIterator it = myHyperRectDomain.begin();
             it != myHyperRectDomain.end();
-            ++it)
-        trace.info() << (*it) << std::endl;
+            ++it )
+        trace.info() << ( *it ) << std::endl;
 
 
     trace.emphase() << "Iterator 4d: ";
@@ -83,16 +83,16 @@ bool testIterator()
     typedef SpaceType4D::PointType PointType4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D( t4D );
-    PointType4D b4D( t4D2 );
+    PointType4D a4D ( t4D );
+    PointType4D b4D ( t4D2 );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
+    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for (HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.begin();
+    for ( HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.begin();
             it != myHyperRectDomain4D.end();
-            ++it)
-        trace.info() << (*it) << std::endl;
+            ++it )
+        trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
     return myHyperRectDomain.isValid();
@@ -105,29 +105,24 @@ bool testReverseIterator()
     typedef SpaceType4D::PointType PointType4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D( t4D );
-    PointType4D b4D( t4D2 );
+    PointType4D a4D ( t4D );
+    PointType4D b4D ( t4D2 );
 
-    trace.beginBlock("Test reverse iterator");
+    trace.beginBlock ( "Test reverse iterator" );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
+    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for (HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.end();
+    for ( HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.end();
             it != myHyperRectDomain4D.begin();
-            --it)
-        trace.info() << (*it) << std::endl;
+            --it )
+        trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
 
     return myHyperRectDomain4D.isValid();
 }
 
-template<typename T>
-void PrintPoint(T val)
-{
-    trace.info()<< val <<" ";
-}
 
 bool testSTLCompat()
 {
@@ -135,16 +130,19 @@ bool testSTLCompat()
     typedef SpaceType4D::PointType PointType4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D( t4D );
-    PointType4D b4D( t4D2 );
+    PointType4D a4D ( t4D );
+    PointType4D b4D ( t4D2 );
 
-    trace.beginBlock("TestSTL Compatibility");
+    trace.beginBlock ( "TestSTL Compatibility" );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D(a4D,b4D);
+    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for_each(myHyperRectDomain4D.begin(), myHyperRectDomain4D.end(), PrintPoint<PointType4D>);
-    trace.info() << std::endl;
+		std::copy ( myHyperRectDomain4D.begin(),
+								myHyperRectDomain4D.end(),
+                ostream_iterator<PointType4D> ( trace.info(), " " ) );
+
+		trace.info() << std::endl;
     trace.endBlock();
 
     return myHyperRectDomain4D.isValid();
@@ -154,7 +152,7 @@ bool testSTLCompat()
 int main()
 {
 
-    if (testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat())
+    if ( testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat() )
         return 0;
     else
         return 1;

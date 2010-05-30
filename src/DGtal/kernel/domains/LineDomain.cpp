@@ -27,46 +27,8 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-/**
- * Destructor.
- */
-template<class TSpace>
-DGtal::LineDomain<TSpace>::~LineDomain()
-{
-}
-
-/**
-* Constructor.
-*/
-template<class TSpace>
-DGtal::LineDomain<TSpace>::LineDomain()
-{
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template<class TSpace>
-void
-DGtal::LineDomain<TSpace>::selfDisplay ( std::ostream & out ) const
-{
-    out << "[LineDomain]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template<class TSpace>
-bool
-DGtal::LineDomain<TSpace>::isValid() const
-{
-    return true;
-}
 
 
 

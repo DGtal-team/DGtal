@@ -46,10 +46,10 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 *
 */
 template<class TSpace>
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain(const typename HyperRectDomain<TSpace>::PointType &aPointA,
-						const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointB)
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointA,
+        const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointB )
 {
-    if (aPointA < aPointB)
+    if ( aPointA < aPointB )
     {
         myLowerBound = aPointA;
         myUpperBound = aPointB;
@@ -111,7 +111,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin() const
 {
-    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(myLowerBound,myLowerBound,myUpperBound);
+    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myLowerBound,myLowerBound,myUpperBound );
 }
 
 
@@ -122,9 +122,9 @@ DGtal::HyperRectDomain<TSpace>::begin() const
 template<class TSpace>
 INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::begin(const typename HyperRectDomain<TSpace>::PointType &aPoint) const
+DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint ) const
 {
-  return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(aPoint,myLowerBound,myUpperBound);
+    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( aPoint,myLowerBound,myUpperBound );
 }
 
 
@@ -137,7 +137,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end() const
 {
-    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+    return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myUpperBound,myLowerBound,myUpperBound );
 }
 
 

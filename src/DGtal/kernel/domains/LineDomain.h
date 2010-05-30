@@ -36,7 +36,10 @@ namespace DGtal
 // class LineDomain
 /**
  * Description of class 'LineDomain' <p>
- * Aim:
+ * Aim: LineDomain is a subclass of \ref HyperRectDomain with a specific iterator in order to scan
+ * a specific dimension of an \ref HyperRectDomain
+ *
+ * \see test_LineDomain.cpp
  */
 
 template<class TSpace>
@@ -47,34 +50,38 @@ public:
 
     typedef typename HyperRectDomain<TSpace>::PointType PointType;
 
+    // ----------------------- Interface --------------------------------------
+public:
 
     /**
-    * Constructor.
-    */
+    	* Default Constructor.
+    	*/
     LineDomain();
 
 
     /**
-     * Destructor.
-     */
-    ~LineDomain();
-
-    // ----------------------- Interface --------------------------------------
-public:
+    * Constructor from  two points \param aPointA and \param aPoint B
+    *
+    */
+    LineDomain ( const PointType &aPointA, const PointType &aPointB, const std::size_t direction );
 
 
     /**
-    * ConstIterator class for HyperRectDomain.
+    * Destructor.
+    */
+    ~LineDomain();
+
+    /**
+    * ConstIterator class for LineDomain.
     *
     **/
-    class ConstIterator {
+    class ConstIterator
+    {
 
         ///Current Point in the domain
         PointType myPoint;
-        ///Copies of the Domain limits
-        PointType mylower, myupper;
-        ///Second index of the iterator position
-        std::size_t myCurrentPos;
+        ///Dimension on which the iterator must iterate
+        std::size_t myDimension;
 
     public:
 
@@ -85,8 +92,8 @@ public:
         typedef PointType& reference;
 
 
-        ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
-                : myPoint( p ),  myCurrentPos(0), mylower(lower), myupper(upper)
+        ConstIterator ( const PointType & p , const std::size_t aDim )
+                : myPoint ( p ),  myDimension ( aDim )
         {
         }
 
@@ -99,18 +106,18 @@ public:
         * Operator ==
         *
         */
-        bool operator==(const ConstIterator &it) const
+        bool operator== ( const ConstIterator &it ) const
         {
-            return (myPoint == (*it));
+            return ( myPoint.at ( myDimension ) == ( *it ).at ( myDimension ) );
         }
 
         /**
         * Operator !=
         *
         */
-        bool operator!=( const ConstIterator &aIt ) const
+        bool operator!= ( const ConstIterator &aIt ) const
         {
-            return (myPoint != (*aIt) );
+					return ( myPoint.at ( myDimension ) != ( *aIt ).at ( myDimension ) );
         }
 
         /**
@@ -120,27 +127,8 @@ public:
         **/
         void next()
         {
-            if (myPoint.at(myCurrentPos)  < myupper.at(myCurrentPos))
-                myPoint.at(myCurrentPos) ++;
-            else
-            {
-                while ((myCurrentPos < myPoint.dimension()) &&
-                        (myPoint.at(myCurrentPos)  >=  myupper.at(myCurrentPos)))
-                {
-                    myPoint.at(myCurrentPos) = mylower.at(myCurrentPos);
-                    myCurrentPos++;
-                }
-
-                if  (myCurrentPos < myPoint.dimension())
-                {
-                    myPoint.at(myCurrentPos) ++;
-                    myCurrentPos = 0;
-                }
-                else
-                {
-                    myPoint = myupper;
-                }
-            }
+					myPoint.at ( myDimension ) ++;
+            ///\todo check boundaries?
         }
 
 
@@ -158,7 +146,7 @@ public:
         * Operator ++ (it++)
         *
         */
-        ConstIterator &operator++(int)
+        ConstIterator &operator++ ( int )
         {
             ConstIterator tmp = *this;
             ++*this;
@@ -167,34 +155,13 @@ public:
 
 
         /**
-        * Implements the prev() method to scan the domain points dimension by dimension
-        * (lexicographic order).
+        * Implements the prev() method to scan the domain points at dimension k.
         *
         **/
         void prev()
         {
-            if ( myPoint.at( myCurrentPos )  > mylower.at( myCurrentPos ) )
-                myPoint.at( myCurrentPos ) --;
-            else
-            {
-                while ((myCurrentPos >= 0) &&
-                        (myPoint.at(myCurrentPos)  <=  mylower.at(myCurrentPos)))
-                {
-                    myPoint.at(myCurrentPos) = myupper.at(myCurrentPos);
-                    myCurrentPos++;
-                }
-
-                if  ( myCurrentPos >= 0 )
-                {
-                    myPoint.at(myCurrentPos) --;
-                    myCurrentPos = 0;
-                }
-                else
-                {
-                    myPoint = mylower;
-                }
-            }
-
+					myPoint.at ( myDimension ) --;
+            ///\todo check boundaries?
         }
 
         /**
@@ -211,15 +178,34 @@ public:
         * Operator ++ (it++)
         *
         */
-        ConstIterator &operator--(int)
+        ConstIterator &operator-- ( int )
         {
             ConstIterator tmp = *this;
             --*this;
             return tmp;
         }
-
-
     };
+
+
+    /**
+    * begin() iterator. Returns an iterator along the
+    	dimension \param dim.
+    *
+    **/
+    ConstIterator begin ( ) const;
+
+    /**
+    * begin(aPoint) iterator. Returns an iterator starting at \param aPoint and moving toward the dimension \param dim.
+    *
+    **/
+    ConstIterator begin ( const PointType &aPoint) const;
+
+
+    /**
+    * end() iterator. Creates a end() iterator along the dimension \param dim.
+    *
+    **/
+    ConstIterator end ( ) const;
 
 
     /**
@@ -234,14 +220,14 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+// ------------------------- Protected Datas ------------------------------
 private:
-    // ------------------------- Private Datas --------------------------------
+// ------------------------- Private Datas --------------------------------
 private:
 
-    // ------------------------- Hidden services ------------------------------
+// ------------------------- Hidden services ------------------------------
 protected:
-
+    std::size_t myDimension;
 
 
 private:
@@ -261,7 +247,7 @@ private:
      */
     LineDomain & operator= ( const LineDomain & other );
 
-    // ------------------------- Internals ------------------------------------
+// ------------------------- Internals ------------------------------------
 private:
 
 }; // end of class LineDomain

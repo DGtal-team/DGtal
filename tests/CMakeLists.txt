@@ -13,7 +13,9 @@ SET(DGTAL_TESTS_SRC
    test_measure
    test_PointVector
    test_Space
-   test_HyperRectDomain)
+   test_HyperRectDomain
+   test_HyperRectDomain-snippet
+	 test_LineDomain)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

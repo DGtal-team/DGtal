@@ -36,6 +36,35 @@ namespace DGtal
 /**
  * Description of class 'HyperRectDomain' <p>
  * Aim:
+ *
+ * The following code snippet demonstrates how to use \p HyperRectDomain
+ *
+ *  \code
+ *  #include <DGtal/kernel/Space.h>
+ *  #include <DGtal/kernel/domains/HyperRectDomain.h>
+ * ...
+ *
+ * //We create a digital Space based on 'int' integers and in dimension 4
+ * typedef DGtal::Space<int,4> Space4DType;
+ * typedef Space4DType::PointType Point4DType;
+ *
+ * const int rawA[ ] = { 1, 2, 3 ,4};
+ * const int rawB[ ] = { 5, 5, 3 ,4};
+ * Point4DType A ( rawA );
+ * Point4DType B ( rawB );
+ *  
+ * //Domain construction from two points
+ * DGtal::HyperRectDomain<Space4DType> myDomain ( A, B );
+ * 
+ * //We just iterate on the Domain points and print out the point coordinates.
+ * std::copy ( myDomain.begin(),
+ *             myDomain.end(),
+ *             std::ostream_iterator<Point4DType> ( std::cout, " " ) );
+ *  \endcode
+ *
+ *
+ * \see test_HyperRectDomain.cpp
+ * \see test_HyperRectDomain-snippet.cpp
  */
 template<class TSpace>
 class HyperRectDomain
@@ -57,7 +86,7 @@ public:
     * defining the space diagonal.
     *
     */
-    HyperRectDomain(const PointType &aPointA, const PointType &aPointB);
+    HyperRectDomain ( const PointType &aPointA, const PointType &aPointB );
 
 
     /**
@@ -70,7 +99,8 @@ public:
     * ConstIterator class for HyperRectDomain.
     *
     **/
-    class ConstIterator {
+    class ConstIterator
+    {
 
         ///Current Point in the domain
         PointType myPoint;
@@ -88,8 +118,8 @@ public:
         typedef PointType& reference;
 
 
-        ConstIterator(  const PointType & p, const PointType& lower,const PointType &upper )
-                : myPoint( p ),  myCurrentPos(0), mylower(lower), myupper(upper)
+        ConstIterator ( const PointType & p, const PointType& lower,const PointType &upper )
+                : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper )
         {
         }
 
@@ -102,18 +132,18 @@ public:
         * Operator ==
         *
         */
-        bool operator==(const ConstIterator &it) const
+        bool operator== ( const ConstIterator &it ) const
         {
-            return (myPoint == (*it));
+            return ( myPoint == ( *it ) );
         }
 
         /**
         * Operator !=
         *
         */
-        bool operator!=( const ConstIterator &aIt ) const
+        bool operator!= ( const ConstIterator &aIt ) const
         {
-            return (myPoint != (*aIt) );
+            return ( myPoint != ( *aIt ) );
         }
 
         /**
@@ -123,20 +153,20 @@ public:
         **/
         void next()
         {
-            if (myPoint.at(myCurrentPos)  < myupper.at(myCurrentPos))
-                myPoint.at(myCurrentPos) ++;
+            if ( myPoint.at ( myCurrentPos )  < myupper.at ( myCurrentPos ) )
+                myPoint.at ( myCurrentPos ) ++;
             else
             {
-                while ((myCurrentPos < myPoint.dimension()) &&
-                        (myPoint.at(myCurrentPos)  >=  myupper.at(myCurrentPos)))
+                while ( ( myCurrentPos < myPoint.dimension() ) &&
+                        ( myPoint.at ( myCurrentPos )  >=  myupper.at ( myCurrentPos ) ) )
                 {
-                    myPoint.at(myCurrentPos) = mylower.at(myCurrentPos);
+                    myPoint.at ( myCurrentPos ) = mylower.at ( myCurrentPos );
                     myCurrentPos++;
                 }
 
-                if  (myCurrentPos < myPoint.dimension())
+                if ( myCurrentPos < myPoint.dimension() )
                 {
-                    myPoint.at(myCurrentPos) ++;
+                    myPoint.at ( myCurrentPos ) ++;
                     myCurrentPos = 0;
                 }
                 else
@@ -161,7 +191,7 @@ public:
         * Operator ++ (it++)
         *
         */
-        ConstIterator &operator++(int)
+        ConstIterator &operator++ ( int )
         {
             ConstIterator tmp = *this;
             ++*this;
@@ -176,20 +206,20 @@ public:
         **/
         void prev()
         {
-            if ( myPoint.at( myCurrentPos )  > mylower.at( myCurrentPos ) )
-                myPoint.at( myCurrentPos ) --;
+            if ( myPoint.at ( myCurrentPos )  > mylower.at ( myCurrentPos ) )
+                myPoint.at ( myCurrentPos ) --;
             else
             {
-                while ((myCurrentPos >= 0) &&
-                        (myPoint.at(myCurrentPos)  <=  mylower.at(myCurrentPos)))
+                while ( ( myCurrentPos >= 0 ) &&
+                        ( myPoint.at ( myCurrentPos )  <=  mylower.at ( myCurrentPos ) ) )
                 {
-                    myPoint.at(myCurrentPos) = myupper.at(myCurrentPos);
+                    myPoint.at ( myCurrentPos ) = myupper.at ( myCurrentPos );
                     myCurrentPos++;
                 }
 
-                if  ( myCurrentPos >= 0 )
+                if ( myCurrentPos >= 0 )
                 {
-                    myPoint.at(myCurrentPos) --;
+                    myPoint.at ( myCurrentPos ) --;
                     myCurrentPos = 0;
                 }
                 else
@@ -214,7 +244,7 @@ public:
              * Operator ++ (it++)
              *
              */
-        ConstIterator &operator--(int)
+        ConstIterator &operator-- ( int )
         {
             ConstIterator tmp = *this;
             --*this;
@@ -234,9 +264,9 @@ public:
     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
     *
     **/
-    ConstIterator begin(const PointType &aPoint) const;
-    
-    
+    ConstIterator begin ( const PointType &aPoint ) const;
+
+
     /**
     * end() iterator.
     *
@@ -278,15 +308,15 @@ private:
 // ------------------------- Private Datas --------------------------------
 private:
 
-///The lowest point of the space diagonal
-    PointType myLowerBound;
-///The highest point of the space diagonal
-    PointType myUpperBound;
 
 // ------------------------- Hidden services ------------------------------
 protected:
 
 
+    ///The lowest point of the space diagonal
+    PointType myLowerBound;
+    ///The highest point of the space diagonal
+    PointType myUpperBound;
 
 private:
 

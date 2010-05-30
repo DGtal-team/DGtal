@@ -23,6 +23,95 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
+/**
+* Constructor.
+*
+* (Lowest = Highest = {0}^n)
+*/
+template<class TSpace>
+DGtal::LineDomain<TSpace>::LineDomain()
+{
+    typedef typename DGtal::LineDomain<TSpace>::PointType PT;
+    PT aPoint;
+
+    aPoint.zero();
+    this->myLowerBound = aPoint;
+    this->myUpperBound = aPoint;
+		myDimension = 0;
+}
+
+/**
+* Constructor from  two points and a dimension.
+*
+*
+*/
+template<class TSpace>
+DGtal::LineDomain<TSpace>::LineDomain ( const typename DGtal::LineDomain<TSpace>::PointType &aPointA,
+                                        const typename DGtal::LineDomain<TSpace>::PointType &aPointB,
+                                        const std::size_t aDimension )
+{
+		ASSERT( aDimension < aPointA.dimension() );
+    this->myDimension = aDimension;
+    if ( aPointA.at ( aDimension ) < aPointB.at ( aDimension ) )
+    {
+        this->myLowerBound = aPointA;
+        this->myUpperBound = aPointB;
+    }
+    else
+    {
+        this->myLowerBound = aPointB;
+        this->myUpperBound = aPointA;
+    }
+
+}
+
+
+/**
+* Destructor.
+*/
+template<class TSpace>
+DGtal::LineDomain<TSpace>::~LineDomain()
+{
+}
+
+/**
+* begin(aPoint,dim) iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::LineDomain<TSpace>::ConstIterator
+DGtal::LineDomain<TSpace>::begin ( const typename LineDomain<TSpace>::PointType &aPoint ) const
+{
+    return typename DGtal::LineDomain<TSpace>::ConstIterator ( aPoint, this->myDimension );
+}
+
+/**
+* begin(aPoint,dim) iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::LineDomain<TSpace>::ConstIterator
+DGtal::LineDomain<TSpace>::begin ( ) const
+{
+    return typename DGtal::LineDomain<TSpace>::ConstIterator ( this->myLowerBound, this->myDimension );
+}
+
+
+/**
+* end(dim) iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::LineDomain<TSpace>::ConstIterator
+DGtal::LineDomain<TSpace>::end( ) const
+{
+    return typename DGtal::LineDomain<TSpace>::ConstIterator ( this->myUpperBound, this->myDimension );
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
@@ -37,11 +126,38 @@ template<class TSpace>
 INLINE
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const LineDomain<TSpace> & object )
+                    const LineDomain<TSpace> & object )
 {
     object.selfDisplay ( out );
     return out;
 }
+
+/**
+* Writes/Displays the object on an output stream.
+* @param out the output stream where the object is written.
+*/
+template<class TSpace>
+INLINE
+void
+DGtal::LineDomain<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[LineDomain]= ["<< this->myLowerBound <<"]x["
+    << this->myUpperBound <<"] dim="<<myDimension;
+}
+
+/**
+* Checks the validity/consistency of the object.
+* @return 'true' if the object is valid, 'false' otherwise.
+*/
+template<class TSpace>
+INLINE
+bool
+DGtal::LineDomain<TSpace>::isValid() const
+{
+    return true;
+}
+
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
