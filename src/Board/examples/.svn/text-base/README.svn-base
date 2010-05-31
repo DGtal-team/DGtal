@@ -1,0 +1,17 @@
+
+Sample programs for the Board library.
+
+These programs should be linked against the
+libboard archive or dynamic lib.
+
+For example, with GNU g++:
+
+shell> g++ -o example1 example1.cpp -lboard
+
+or 
+
+shell> g++ -o example1 example1.cpp /usr/lib/libboard.a
+
+
+
+

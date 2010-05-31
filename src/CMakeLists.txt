@@ -10,6 +10,9 @@ include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 
 
+add_subdirectory (Board)
+
+
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
 add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC})

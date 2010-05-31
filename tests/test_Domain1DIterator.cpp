@@ -29,30 +29,9 @@ using namespace std;
 
 
 /**
-* Simple test of domai construction.
+* Simple test of 1D iterators on a 4D digital domain
 *
 **/
-bool testSimpleLineDomain()
-{
-
-    typedef Space<int,4> Space4Type;
-    typedef Space4Type::PointType PointType;
-
-    const int t[ ] = { 1, 2, 3 ,4};
-    const int t2[ ] = { 5, 2, 3 ,4};
-    PointType a ( t );
-    PointType b ( t2 );
-
-    trace.beginBlock ( "LineDomain init" );
-    ///Domain characterized by points a and b
-    HyperRectDomain<Space4Type> myDomain ( a,b);
-
-    trace.info() << myDomain << std::endl;
-
-    trace.endBlock();
-    return myDomain.isValid();
-}
-
 bool testIterator()
 {
 
@@ -66,13 +45,13 @@ bool testIterator()
     PointType4D b4D ( t4D2 );
     PointType4D c4D ( t4D3 );
 
-
+    ///Domain construction
     HyperRectDomain<SpaceType4D> my1D ( a4D,b4D );
 
 
     trace.emphase() << my1D <<std::endl;
 
-		///iterates from  {1, 2,1,1} to { 3,6,3,3} along the dimension 1 
+    ///iterates from  {1, 2,1,1} to { 3,6,3,3} along the dimension 1
     for ( HyperRectDomain<SpaceType4D>::Const1DIterator it = my1D.begin ( c4D , 1);
             it != my1D.end ( 1 );
             ++it )
@@ -86,7 +65,7 @@ bool testIterator()
 int main()
 {
 
-    if ( testSimpleLineDomain() && testIterator() )
+    if ( testIterator() )
         return 0;
     else
         return 1;
