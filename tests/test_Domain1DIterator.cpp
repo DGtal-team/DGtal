@@ -1,5 +1,5 @@
 /**
- * @file test_LineDomain.cpp
+ * @file test_Domain1DIterator.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,7 +9,7 @@
  */
 
 /**
- * Description of test_LineDomain <p>
+ * Description of test_Domain1DIterator <p>
  * Aim: simple test of \ref LineDomain
  */
 
@@ -21,7 +21,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/Space.h"
-#include "DGtal/kernel/domains/LineDomain.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 
 
 using namespace DGtal;
@@ -29,7 +29,7 @@ using namespace std;
 
 
 /**
-* Simple test of LineDomain construction.
+* Simple test of domai construction.
 *
 **/
 bool testSimpleLineDomain()
@@ -45,12 +45,12 @@ bool testSimpleLineDomain()
 
     trace.beginBlock ( "LineDomain init" );
     ///Domain characterized by points a and b
-    LineDomain<Space4Type> myLineDomain ( a,b, 0 );
+    HyperRectDomain<Space4Type> myDomain ( a,b);
 
-    trace.info() << myLineDomain << std::endl;
+    trace.info() << myDomain << std::endl;
 
     trace.endBlock();
-    return myLineDomain.isValid();
+    return myDomain.isValid();
 }
 
 bool testIterator()
@@ -67,14 +67,14 @@ bool testIterator()
     PointType4D c4D ( t4D3 );
 
 
-    LineDomain<SpaceType4D> my1D ( a4D,b4D,1 );
+    HyperRectDomain<SpaceType4D> my1D ( a4D,b4D );
 
 
     trace.emphase() << my1D <<std::endl;
 
 		///iterates from  {1, 2,1,1} to { 3,6,3,3} along the dimension 1 
-    for ( LineDomain<SpaceType4D>::ConstIterator it = my1D.begin ( c4D );
-            it != my1D.end ( );
+    for ( HyperRectDomain<SpaceType4D>::Const1DIterator it = my1D.begin ( c4D , 1);
+            it != my1D.end ( 1 );
             ++it )
         trace.info() << ( *it ) << std::endl;
 
@@ -91,4 +91,5 @@ int main()
     else
         return 1;
 }
+
 

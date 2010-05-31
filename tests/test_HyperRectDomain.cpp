@@ -124,6 +124,7 @@ bool testReverseIterator()
 }
 
 
+
 bool testSTLCompat()
 {
     typedef Space<int,4> SpaceType4D;
@@ -138,11 +139,11 @@ bool testSTLCompat()
     HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-		std::copy ( myHyperRectDomain4D.begin(),
-								myHyperRectDomain4D.end(),
+    std::copy ( myHyperRectDomain4D.begin(),
+                myHyperRectDomain4D.end(),
                 ostream_iterator<PointType4D> ( trace.info(), " " ) );
 
-		trace.info() << std::endl;
+    trace.info() << std::endl;
     trace.endBlock();
 
     return myHyperRectDomain4D.isValid();

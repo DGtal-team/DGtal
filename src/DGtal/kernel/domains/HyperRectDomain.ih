@@ -140,6 +140,34 @@ DGtal::HyperRectDomain<TSpace>::end() const
     return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myUpperBound,myLowerBound,myUpperBound );
 }
 
+//------------1D Iterators
+/**
+* begin(aPoint,dim) 1D iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
+DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint , const std::size_t aDimension) const
+{
+  return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( aPoint, aDimension );
+}
+/**
+* end(dim) iterator.
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
+DGtal::HyperRectDomain<TSpace>::end( const std::size_t aDimension ) const
+{
+  return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( this->myUpperBound, aDimension );
+}
+
+
+
+
+//------------helpers
 
 /**
 * Writes/Displays the object on an output stream.
