@@ -208,7 +208,7 @@ Board::scaled( double sx, double sy )
   return static_cast<const Board &>( Board( *this ).scale( sx, sy ) );
 }
 
-Board
+Board 
 Board::scaled( double s )
 {
   return static_cast<const Board &>( Board( *this ).scale( s ) );
@@ -976,24 +976,10 @@ Board::save( const char * filename, PageSize size, float margin ) const
 
 } // namespace LibBoard;
 
-/**
- * @example examples/arithmetic.cpp
- * @example examples/arrows.cpp
- * @example examples/ellipse.cpp
- * @example examples/example1.cpp
- * @example examples/example2.cpp
- * @example examples/example3.cpp
- * @example examples/example4.cpp
- * @example examples/graph.cpp
- * @example examples/koch.cpp
- * @example examples/logo.cpp
- * @example examples/ruler.cpp
- * @example examples/clipping.cpp
- * @example examples/Makefile
- */
+
 
 /**
- * @mainpage LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
+ * LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
  *
  * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
  *
