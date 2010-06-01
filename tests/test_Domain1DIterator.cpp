@@ -45,6 +45,7 @@ bool testIterator()
     PointType4D b4D ( t4D2 );
     PointType4D c4D ( t4D3 );
 
+	trace.beginBlock("1D Domain iterator test");
     ///Domain construction
     HyperRectDomain<SpaceType4D> my1D ( a4D,b4D );
 
