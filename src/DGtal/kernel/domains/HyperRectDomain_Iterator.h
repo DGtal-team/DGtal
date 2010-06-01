@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file HyperRectDomainIterator.h
+ * @file HyperRectDomain_Iterator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/31
  *
- * Header file for module HyperRectDomainIterator.cpp
+ * Header file for module HyperRectDomain_Iterator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(HyperRectDomainIterator_RECURSES)
-#error Recursive header files inclusion detected in HyperRectDomainIterator.h
-#else // defined(HyperRectDomainIterator_RECURSES)
+#if defined(HyperRectDomain_Iterator_RECURSES)
+#error Recursive header files inclusion detected in HyperRectDomain_Iterator.h
+#else // defined(HyperRectDomain_Iterator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define HyperRectDomainIterator_RECURSES
+#define HyperRectDomain_Iterator_RECURSES
 
-#if !defined HyperRectDomainIterator_h
+#if !defined HyperRectDomain_Iterator_h
 /** Prevents repeated inclusion of headers. */
-#define HyperRectDomainIterator_h
+#define HyperRectDomain_Iterator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -32,13 +32,13 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class HyperRectDomainIterator
+// class HyperRectDomain_Iterator
 /**
- * Description of class 'HyperRectDomainIterator' <p>
+ * Description of class 'HyperRectDomain_Iterator' <p>
  * Aim:
  */
 template<typename TPointType>
-class HyperRectDomainIterator
+class HyperRectDomain_Iterator
 {
 
 public:
@@ -50,7 +50,7 @@ public:
     typedef TPointType& reference;
 
 
-    HyperRectDomainIterator ( const TPointType & p, const TPointType& lower,const TPointType &upper )
+    HyperRectDomain_Iterator ( const TPointType & p, const TPointType& lower,const TPointType &upper )
             : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper )
     {
     }
@@ -64,7 +64,7 @@ public:
     * Operator ==
     *
     */
-    bool operator== ( const HyperRectDomainIterator<TPointType> &it ) const
+    bool operator== ( const HyperRectDomain_Iterator<TPointType> &it ) const
     {
         return ( myPoint == ( *it ) );
     }
@@ -73,7 +73,7 @@ public:
     * Operator !=
     *
     */
-    bool operator!= ( const HyperRectDomainIterator<TPointType> &aIt ) const
+    bool operator!= ( const HyperRectDomain_Iterator<TPointType> &aIt ) const
     {
         return ( myPoint != ( *aIt ) );
     }
@@ -112,7 +112,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomainIterator<TPointType> &operator++()
+    HyperRectDomain_Iterator<TPointType> &operator++()
     {
         this->next();
         return *this;
@@ -122,9 +122,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomainIterator<TPointType> &operator++ ( int )
+    HyperRectDomain_Iterator<TPointType> &operator++ ( int )
     {
-        HyperRectDomainIterator<TPointType> tmp = *this;
+        HyperRectDomain_Iterator<TPointType> tmp = *this;
         ++*this;
         return tmp;
     }
@@ -165,7 +165,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomainIterator<TPointType> &operator--()
+    HyperRectDomain_Iterator<TPointType> &operator--()
     {
         this->prev();
         return *this;
@@ -175,9 +175,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomainIterator<TPointType> &operator-- ( int )
+    HyperRectDomain_Iterator<TPointType> &operator-- ( int )
     {
-        HyperRectDomainIterator<TPointType> tmp = *this;
+        HyperRectDomain_Iterator<TPointType> tmp = *this;
         --*this;
         return tmp;
     }
@@ -197,7 +197,7 @@ private:
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined HyperRectDomainIterator_h
+#endif // !defined HyperRectDomain_Iterator_h
 
-#undef HyperRectDomainIterator_RECURSES
-#endif // else defined(HyperRectDomainIterator_RECURSES)
+#undef HyperRectDomain_Iterator_RECURSES
+#endif // else defined(HyperRectDomain_Iterator_RECURSES)

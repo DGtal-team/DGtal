@@ -26,8 +26,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomainIterator.h"
-#include "DGtal/kernel/domains/HyperRectDomain1DIterator.h"
+#include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
+#include "DGtal/kernel/domains/HyperRectDomain_1DIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,8 +78,8 @@ public:
     typedef TSpace SpaceType;
 
     ///Type def of domain iterators
-    typedef HyperRectDomainIterator<PointType> ConstIterator;
-    typedef HyperRectDomain1DIterator<PointType> Const1DIterator;
+    typedef HyperRectDomain_Iterator<PointType> ConstIterator;
+    typedef HyperRectDomain_1DIterator<PointType> Const1DIterator;
 
     /**
     * Default Constructor.
