@@ -1,7 +1,5 @@
-
 # Make sure the compiler can find include files.
-include_directories (${PROJECT_SOURCE_DIR}/src/Board)
-
+include_directories (${PROJECT_SOURCE_DIR}/src/Board .)
 
 SET(BOARD_SRC ${BOARD_SRC}
   Board

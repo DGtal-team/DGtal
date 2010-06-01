@@ -1454,9 +1454,9 @@ GouraudTriangle::flushFIG( std::ostream & stream,
 			   std::map<Color,int> & colormap ) const
 {
 
-  Color c( (_color0.red() + _color1.red() + _color2.red() )/3.0, 
-	   (_color0.green() + _color1.green() + _color2.green())/3.0, 
-	   (_color0.blue() + _color1.blue() + _color2.blue())/3.0 );  
+  Color c( static_cast<unsigned char>((_color0.red() + _color1.red() + _color2.red() )/3.0), 
+	   static_cast<unsigned char>((_color0.green() + _color1.green() + _color2.green())/3.0), 
+	   static_cast<unsigned char>((_color0.blue() + _color1.blue() + _color2.blue())/3.0) );  
   Polyline( _path, Color::None, c, 0.0f ).flushFIG( stream, transform, colormap );
 
   // if ( ! _subdivisions ) {
