@@ -18,4 +18,12 @@ SET(BOARD_SRC ${BOARD_SRC}
 # Create a library called "Board".
 add_library (${LIBBOARD_NAME}  ${BOARD_SRC})
 
+message(STATUS "BOARD_SRCs: "${BOARD_SRC})
+
+install(TARGETS ${LIBBOARD_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
+
+
 add_subdirectory(examples)
