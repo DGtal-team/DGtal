@@ -16,6 +16,6 @@ SET(BOARD_SRC ${BOARD_SRC}
 
 
 # Create a library called "Board".
-add_library ( Board  ${BOARD_SRC})
+add_library (${LIBBOARD_NAME}  ${BOARD_SRC})
 
 add_subdirectory(examples)

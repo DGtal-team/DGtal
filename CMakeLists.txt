@@ -73,6 +73,7 @@ endif ( Boost_FOUND )
 # Defines some variables
 # -----------------------------------------------------------------------------
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
+set ( LIBBOARD_NAME "BOARD${SUFFIXLIB}" )
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options
