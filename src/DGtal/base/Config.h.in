@@ -14,6 +14,16 @@
 #include <string>
 
 
+#define DGTAL_VERSION @DGtal_VERSION@
+
+/*! \namespace DGtal
+*  \brief \p DGtal is the top-level namespace which contains all DGtal
+*         functions and types.
+*/
+
+
+
+
 /**
  * Global Variable Declaration
  *

@@ -630,8 +630,7 @@ EXAMPLE_PATTERNS       = *.cpp \
                          *.hxx
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be 
-# searched for input files to be used with the \include or \dontinclude 
-# commands irrespective of the value of the RECURSIVE tag. 
+# commands irrespective of the value of the RECURSIVE tag.
 # Possible values are YES and NO. If left blank NO is used.
 
 EXAMPLE_RECURSIVE      = YES
