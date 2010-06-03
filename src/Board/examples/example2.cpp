@@ -33,7 +33,7 @@ int main( int, char *[] )
   board.setPenColorRGBi( 255, 0, 0 );
 
   std::vector<Point> points;
-  for ( float x = -1.0; x < 1.0; x+=0.02 ) {
+  for ( double x = -1.0; x < 1.0; x += 0.02 ) {
     points.push_back( Point( x, sin(x*6.28) ) );
   }
   board.setLineWidth( 0.5 );
@@ -41,7 +41,7 @@ int main( int, char *[] )
   board.drawPolyline( points );
 
   board.setPenColorRGBi( 255, 0, 0 );
-  for ( float x = -1.0; x < 1.1; x+=0.1 ) {
+  for ( double x = -1.0; x < 1.1; x += 0.1 ) {
     board.setFillColorRGBi( 255, 0, 0 );
     board.setPenColorRGBi( 0, 0, 255 );
     board.drawCircle( x, 0.0, 0.1 );

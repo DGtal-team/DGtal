@@ -7,43 +7,15 @@
  * @brief  Definition of the ShapeList and Group classes.
  * 
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 #include "board/ShapeList.h"
 #include <algorithm>
 #include <typeinfo>
 #include "board/Tools.h"
+
+#if defined( max )
+#undef max
+#endif
 
 namespace LibBoard {
 
@@ -58,7 +30,7 @@ ShapeList::name() const
 {
   return _name;
 }
-
+  
 ShapeList::~ShapeList()
 {
   free();
@@ -215,7 +187,7 @@ Point
 ShapeList::center() const {
   std::vector<Shape*>::const_iterator i = _shapes.begin();
   std::vector<Shape*>::const_iterator end = _shapes.end();
-  float f = 1.0 / _shapes.size();
+  double f = 1.0 / _shapes.size();
   Point r(0,0);
   while ( i != end ) {
     r += f * (*i)->center();

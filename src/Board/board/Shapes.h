@@ -6,38 +6,6 @@
  * 
  * @brief  
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 #ifndef _BOARD_SHAPES_H_
 #define _BOARD_SHAPES_H_
@@ -48,6 +16,7 @@
 #include "board/Color.h"
 #include "board/Transforms.h"
 #include "board/PSFonts.h"
+#include "board/Tools.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -72,6 +41,12 @@ struct Shape {
 
   enum LineCap { ButtCap = 0, RoundCap, SquareCap };
   enum LineJoin { MiterJoin = 0, RoundJoin, BevelJoin };
+  enum LineStyle { SolidStyle = 0,
+		   DashStyle, 
+		   DotStyle,
+		   DashDotStyle,
+		   DashDotDotStyle,
+		   DashDotDotDotStyle };
 
   /** 
    * Shape constructor.
@@ -81,12 +56,13 @@ struct Shape {
    * @param lineWidth The line thickness.
    * @param depth The depth of the shape.
    */
-  Shape( Color penColor, Color fillColor,
-	 float lineWidth, const LineCap cap, const LineJoin join,
-	 int depth )
-    : _depth( depth ), _penColor( penColor ), _fillColor( fillColor ), 
-      _lineWidth( lineWidth ), _lineCap( cap ), _lineJoin( join ) { }
-
+  inline Shape( Color penColor, Color fillColor,
+		double lineWidth, 
+		LineStyle style,
+		const LineCap cap,
+		const LineJoin join,
+		int depth );
+  
   /** 
    * Shape destructor.
    */
@@ -276,9 +252,10 @@ protected:
   int _depth;    		/**< The depth of the shape. */
   Color _penColor;		/**< The color of the shape. */
   Color _fillColor;		/**< The color of the shape. */
-  float _lineWidth;		/**< The line thickness. */
+  double _lineWidth;	/**< The line thickness. */
+  LineStyle _lineStyle;	/**< The line style (solid, dashed, etc.). */
   LineCap _lineCap;		/**< The linecap attribute. (The way line terminates.) */
-  LineJoin _lineJoin;		/**< The linejoin attribute. (The shape of line junctions.) */
+  LineJoin _lineJoin;	/**< The linejoin attribute. (The shape of line junctions.) */
 
   /** 
    * Return a string of the svg properties lineWidth, opacity, penColor, fillColor,
@@ -361,12 +338,10 @@ Shape::rotateDeg( double angle )
  */
 struct Dot : public Shape { 
   
-  Dot( double x, double y,
-       Color color, 
-       float lineWidth,
-       int depth = -1 )
-    : Shape( color, Color::None, lineWidth, RoundCap, MiterJoin, depth ),
-      _x( x ), _y( y ) { }
+  inline Dot( double x, double y,
+	      Color color, 
+	      double lineWidth,
+	      int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -385,7 +360,7 @@ struct Dot : public Shape {
    * 
    * @return A reference to the Dot itself.
    */
-  Shape & rotate( double angle, const Point & center );
+  Dot & rotate( double angle, const Point & center );
 
   /** 
    * Returns a rotated copy of the dot around a given rotation center.
@@ -404,7 +379,7 @@ struct Dot : public Shape {
    * 
    * @return A reference to the Dot itself.
    */
-  Shape & rotate( double angle );
+  Dot & rotate( double angle );
 
   /** 
    * Returns a copy of the dot rotated around its center (i.e. left unchanged!)
@@ -423,7 +398,7 @@ struct Dot : public Shape {
    * 
    * @return 
    */
-  Shape & translate( double dx, double dy );
+  Dot & translate( double dx, double dy );
 
   /** 
    * Returns a translated copy of the dot.
@@ -473,7 +448,7 @@ struct Dot : public Shape {
   
   Rect boundingBox() const;
 
-  Shape * clone() const;
+  Dot * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -500,12 +475,13 @@ struct Line : public Shape {
    * @param lineWidth The line thickness.
    * @param depth The depth of the line.
    */
-  Line( double x1, double y1, double x2, double y2, 
-	Color color, 
-	float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	int depth = -1 )
-    : Shape( color, Color::None, lineWidth, cap, join, depth ),
-      _x1( x1 ), _y1( y1 ), _x2( x2 ), _y2( y2 ) { }
+  inline Line( double x1, double y1, double x2, double y2, 
+	       Color color, 
+	       double lineWidth,
+	       const LineStyle style = SolidStyle,
+	       const LineCap cap = ButtCap,
+	       const LineJoin join = MiterJoin,
+	       int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -516,7 +492,7 @@ struct Line : public Shape {
 
   Point center() const;
 
-  Shape & rotate( double angle, const Point & center );
+  Line & rotate( double angle, const Point & center );
 
   /** 
    * Returns a copy of the line, rotated around a given rotation center.
@@ -528,7 +504,7 @@ struct Line : public Shape {
    */
   Line rotated( double angle, const Point & center ) const;
 
-  Shape & rotate( double angle );
+  Line & rotate( double angle );
 
   /** 
    * Returns a copy of the line, rotated around its center.
@@ -539,7 +515,7 @@ struct Line : public Shape {
    */
   Line rotated( double angle ) const;
 
-  Shape & translate( double dx, double dy );
+  Line & translate( double dx, double dy );
 
   /** 
    * Returns a translated copy of the line.
@@ -587,7 +563,7 @@ struct Line : public Shape {
 
   Rect boundingBox() const;
 
-  Shape * clone() const;
+  Line * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -617,13 +593,13 @@ struct Arrow : public Line {
    * @param lineWidth The line thickness.
    * @param depth The depth of the line.
    */
-  Arrow( double x1, double y1, double x2, double y2,
-	 Color penColor, Color fillColor,
-	 float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	 int depth = -1 )
-    : Line( x1, y1, x2, y2, penColor, lineWidth, cap, join, depth ) {
-    Shape::_fillColor = fillColor;
-  }
+  inline Arrow( double x1, double y1, double x2, double y2,
+		Color penColor, Color fillColor,
+		double lineWidth, 
+		const LineStyle style = SolidStyle,
+		const LineCap cap = ButtCap,
+		const LineJoin join = MiterJoin,
+		int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -682,7 +658,7 @@ struct Arrow : public Line {
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 
-  Shape * clone() const;
+  Arrow * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -693,26 +669,29 @@ private:
  * @brief A polygonal line described by a series of 2D points.
  */
 struct Polyline : public Shape { 
-  Polyline( const std::vector<Point> & points, 
-	    bool closed,
-	    Color penColor, Color fillColor,
-	    float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	    int depth = -1 )
-    : Shape( penColor, fillColor, lineWidth, cap, join, depth ),
-      _path( points, closed ) { }
+  inline Polyline( const std::vector<Point> & points, 
+		   bool closed,
+		   Color penColor, Color fillColor,
+		   double lineWidth,
+		   const LineStyle lineStyle = SolidStyle,
+		   const LineCap cap = ButtCap,
+		   const LineJoin join = MiterJoin,
+		   int depth = -1 );
 
-  Polyline( const Path & path, 
-	    Color penColor, Color fillColor,
-	    float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	    int depth = -1 )
-    : Shape( penColor, fillColor, lineWidth, cap, join, depth ),
-      _path( path ) { }
+  inline Polyline( const Path & path, 
+		   Color penColor, Color fillColor,
+		   double lineWidth,
+		   const LineStyle lineStyle = SolidStyle,
+		   const LineCap cap = ButtCap,
+		   const LineJoin join = MiterJoin,
+		   int depth = -1 );
 
-  Polyline( bool closed, Color penColor, Color fillColor,
-	    float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	    int depth = -1 )
-    : Shape( penColor, fillColor, lineWidth, cap, join, depth ),
-      _path( closed ) { }
+  inline Polyline( bool closed, Color penColor, Color fillColor,
+		   double lineWidth,
+		   const LineStyle lineStyle = SolidStyle,
+		   const LineCap cap = ButtCap,
+		   const LineJoin join = MiterJoin,
+		   int depth = -1 );
 	    
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -744,7 +723,7 @@ struct Polyline : public Shape {
   }
 
 
-  Shape & rotate( double angle, const Point & center );
+  Polyline & rotate( double angle, const Point & center );
 
   /** 
    * 
@@ -756,7 +735,7 @@ struct Polyline : public Shape {
    */
   Polyline rotated( double angle, const Point & center ) const;
 
-  Shape & rotate( double angle );
+  Polyline & rotate( double angle );
   
   /** 
    * 
@@ -767,7 +746,7 @@ struct Polyline : public Shape {
    */
   Polyline rotated( double angle ) const;
 
-  Shape & translate( double dx, double dy );
+  Polyline & translate( double dx, double dy );
   
   /** 
    * 
@@ -815,7 +794,7 @@ struct Polyline : public Shape {
 
   Rect boundingBox() const;
 
-  Shape * clone() const;
+  Polyline * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -830,27 +809,21 @@ protected:
  */
 struct Rectangle : public Polyline {
 
-  Rectangle( double x, double y, double width, double height,
+  inline Rectangle( double x, double y, double width, double height,
 	     Color penColor, Color fillColor,
-	     float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	     int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, cap, join, depth ) {
-    _path <<  Point( x, y );
-    _path << Point( x + width, y );
-    _path << Point( x + width, y - height );
-    _path << Point( x, y - height );
-  }
-  
-  Rectangle( const Rect & rect,
-	     Color penColor, Color fillColor,
-	     float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
-	     int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, cap, join, depth ) {
-    _path << Point( rect.left, rect.top );
-    _path << Point( rect.left + rect.width, rect.top );
-    _path << Point( rect.left + rect.width, rect.top - rect.height );
-    _path << Point( rect.left, rect.top - rect.height );
-  }
+	     double lineWidth, 
+	     const LineStyle style = SolidStyle,
+	     const LineCap cap = ButtCap,
+	     const LineJoin join = MiterJoin,
+		    int depth = -1 );
+
+  inline Rectangle( const Rect & rect,
+		    Color penColor, Color fillColor,
+		    double lineWidth,
+		    const LineStyle style = SolidStyle,
+		    const LineCap cap = ButtCap,
+		    const LineJoin join = MiterJoin,
+		    int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -925,7 +898,7 @@ struct Rectangle : public Polyline {
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 
-  Shape * clone() const;
+  Rectangle * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -943,9 +916,12 @@ struct Triangle : public Polyline {
 
   Triangle( const Point & p1, const Point & p2, const Point & p3,
 	    Color penColor, Color fillColor,
-	    float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
+	    double lineWidth,
+	    const LineStyle style = SolidStyle,
+	    const LineCap cap = ButtCap,
+	    const LineJoin join = MiterJoin,
 	    int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, cap, join, depth ) {
+    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
     _path << p1;
     _path << p2;
     _path << p3;
@@ -955,9 +931,12 @@ struct Triangle : public Polyline {
 	    const double x2, const double y2, 
 	    const double x3, const double y3,
 	    Color penColor, Color fillColor,
-	    float lineWidth, const LineCap cap = ButtCap, const LineJoin join = MiterJoin,
+	    double lineWidth,
+	    const LineStyle style = SolidStyle,
+	    const LineCap cap = ButtCap,
+	    const LineJoin join = MiterJoin,
 	    int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, cap, join, depth ) {
+    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
     _path << Point( x1, y1 );
     _path << Point( x2, y2 );
     _path << Point( x3, y3 );
@@ -994,7 +973,7 @@ struct Triangle : public Polyline {
 
   Triangle scaled( double s ) const;
 
-  Shape * clone() const;
+  Triangle * clone() const;
   
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -1032,11 +1011,11 @@ struct GouraudTriangle : public Polyline {
 
   Point center() const;
 
-  Shape & rotate( double angle, const Point & center );  
+  GouraudTriangle & rotate( double angle, const Point & center );  
 
   GouraudTriangle rotated( double angle, const Point & center ) const;  
 
-  Shape & rotate( double angle );
+  GouraudTriangle & rotate( double angle );
 
   GouraudTriangle rotated( double angle ) const;
 
@@ -1099,7 +1078,7 @@ struct GouraudTriangle : public Polyline {
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 
-  Shape * clone() const;
+  GouraudTriangle * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -1120,9 +1099,13 @@ struct Ellipse : public Shape {
   Ellipse( double x, double y, 
 	   double xRadius, double yRadius, 
 	   Color penColor, Color fillColor,
-	   float lineWidth, int depth = -1 )
-    : Shape( penColor, fillColor, lineWidth,  ButtCap, MiterJoin, depth ),
-      _center( x, y ), _xRadius( xRadius ), _yRadius( yRadius ), _angle( 0.0 ),
+	   double lineWidth,
+	   const LineStyle lineStyle = SolidStyle,
+	   int depth = -1 )
+    : Shape( penColor, fillColor,
+	     lineWidth, lineStyle, ButtCap, MiterJoin, depth ),
+      _center( x, y ), _xRadius( xRadius ), _yRadius( yRadius ),
+      _angle( 0.0 ),
       _circle( false ) {
     while ( _angle > M_PI_2 ) _angle -= M_PI;
     while ( _angle < -M_PI_2 ) _angle += M_PI;
@@ -1137,7 +1120,7 @@ struct Ellipse : public Shape {
 
   Point center() const;
 
-  Shape & rotate( double angle, const Point & center );
+  Ellipse & rotate( double angle, const Point & center );
 
   /** 
    * 
@@ -1149,7 +1132,7 @@ struct Ellipse : public Shape {
    */
   Ellipse rotated( double angle, const Point & center ) const;
 
-  Shape & rotate( double angle );
+  Ellipse & rotate( double angle );
 
   /** 
    * 
@@ -1160,7 +1143,7 @@ struct Ellipse : public Shape {
    */
   Ellipse rotated( double angle ) const;
   
-  Shape & translate( double dx, double dy );
+  Ellipse & translate( double dx, double dy );
 
   /** 
    * 
@@ -1208,7 +1191,7 @@ struct Ellipse : public Shape {
 
   Rect boundingBox() const;
 
-  Shape * clone() const;
+  Ellipse * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -1229,9 +1212,10 @@ struct Circle : public Ellipse {
 
   Circle( double x, double y, double radius, 
 	  Color penColor, Color fillColor,
-	  float lineWidth,
+	  double lineWidth,
+	  const LineStyle style = SolidStyle,
 	  int depth = -1 )
-    : Ellipse( x, y, radius, radius, penColor, fillColor, lineWidth, depth )
+    : Ellipse( x, y, radius, radius, penColor, fillColor, lineWidth, style, depth )
   { _circle = true; }
 
   /** 
@@ -1243,15 +1227,15 @@ struct Circle : public Ellipse {
 
   Point center() const;
 
-  Shape & rotate( double angle, const Point & center );
+  Circle & rotate( double angle, const Point & center );
 
   Circle rotated( double angle, const Point & center ) const;
 
-  Shape & rotate( double angle );
+  Circle & rotate( double angle );
 
   Circle rotated( double angle ) const;
   
-  Shape & translate( double dx, double dy );
+  Circle & translate( double dx, double dy );
 
   Circle translated( double dx, double dy ) const;
 
@@ -1274,7 +1258,7 @@ struct Circle : public Ellipse {
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 
-  Shape * clone() const;
+  Circle * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -1302,10 +1286,10 @@ struct Text : public Shape {
   Text( double x, double y,
 	const std::string & text,
 	const Fonts::Font font,
-	float size,
+	double size,
 	Color color = Color::Black,
 	int depth = -1 )
-    : Shape( color, Color::None, 1.0, ButtCap, MiterJoin, depth ),
+    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
       _position( x, y ), _text( text ), _font( font ),
       _angle( 0.0 ), _size( size ),
       _xScale( 1.0 ), _yScale( 1.0 ) { }
@@ -1329,10 +1313,10 @@ struct Text : public Shape {
 	const std::string & text,
 	const Fonts::Font font,
 	const std::string & svgFont,
-	float size,
+	double size,
 	Color color = Color::Black,
 	int depth = -1 )
-    : Shape( color, Color::None, 1.0, ButtCap, MiterJoin, depth ),
+    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
       _position( x, y ),
       _text( text ), _font( font ), _svgFont( svgFont ),
       _angle( 0.0 ),
@@ -1348,15 +1332,15 @@ struct Text : public Shape {
 
   Point center() const;
 
-  Shape & rotate( double angle, const Point & center );
+  Text & rotate( double angle, const Point & center );
 
   Text rotated( double angle, const Point & center ) const;
 
-  Shape & rotate( double angle );
+  Text & rotate( double angle );
 
   Text rotated( double angle ) const;
   
-  Shape & translate( double dx, double dy );
+  Text & translate( double dx, double dy );
 
   Text translated( double dx, double dy ) const;
 
@@ -1388,7 +1372,7 @@ struct Text : public Shape {
 
   Rect boundingBox() const;
 
-  Shape * clone() const;
+  Text * clone() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -1399,7 +1383,7 @@ protected:
   Fonts::Font _font;
   std::string _svgFont;
   double _angle;
-  float _size;
+  double _size;
   double _xScale;
   double _yScale;
 };
@@ -1414,8 +1398,13 @@ protected:
  */
 bool shapeGreaterDepth( const Shape *s1, const Shape *s2 );
 
+
 } // namespace LibBoard
 
+/*
+ * Inline methods
+ */
+#include "Shapes.ih"
 
 
 #endif /* _SHAPE_H_ */

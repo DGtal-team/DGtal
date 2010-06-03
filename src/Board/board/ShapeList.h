@@ -7,38 +7,6 @@
  * @brief  Classes ShapeList and Group
  *
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 #ifndef _BOARD_SHAPELIST_H_
 #define _BOARD_SHAPELIST_H_
@@ -54,10 +22,7 @@ namespace LibBoard {
  */
 struct ShapeList : public Shape {
   
-  ShapeList( int depth = -1 )
-    : Shape( Color::None, Color::None, 1.0, ButtCap, MiterJoin, depth ),
-      _nextDepth( std::numeric_limits<int>::max() - 1 )
-  { }
+  inline ShapeList( int depth = -1 );
 
   ShapeList( const ShapeList & other );
 
@@ -288,19 +253,9 @@ private:
   static unsigned int _clippingCount;
 };
 
-template<typename T>
-T &
-ShapeList::last( const unsigned int position )
-{
-  if ( position < _shapes.size() ) {
-    std::vector<Shape*>::reverse_iterator it = _shapes.rbegin() + position;
-    return dynamic_cast<T&>( *(*it) );
-} else {
-  error << "Trying to access an element that does not exist (" 
-	<< position << "/" << _shapes.size() << ").\n";
-  throw -1;
- }
-}
+
+#include "ShapeList.ih"
+
 
 } // namespace LibBoard
 

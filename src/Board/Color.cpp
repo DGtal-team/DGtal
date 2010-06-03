@@ -6,40 +6,10 @@
  * 
  * @brief  
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 #include "board/Color.h"
+#include "board/Tools.h"
+#include <cstdio>
 #include <cmath>
 using std::string;
 
@@ -137,7 +107,7 @@ string
 Color::postscript() const
 {
   char buffer[255];
-  sprintf( buffer, "%.4f %.4f %.4f", _red/255.0, _green/255.0, _blue/255.0 );
+  secured_sprintf( buffer, 255, "%.4f %.4f %.4f", _red/255.0, _green/255.0, _blue/255.0 );
   return buffer;
 }
 
@@ -146,7 +116,7 @@ Color::svg() const
 {
   char buffer[255];
   if ( *this == Color::None ) return "none";
-  sprintf( buffer, "rgb(%d,%d,%d)", _red, _green, _blue );
+  secured_sprintf( buffer, 255, "rgb(%d,%d,%d)", _red, _green, _blue );
   return buffer;
 }
 
@@ -155,7 +125,7 @@ Color::svgAlpha( const char * prefix ) const
 {
   char buffer[255];
   if ( _alpha == 255 || *this == Color::None ) return "";
-  sprintf( buffer, " %s-opacity=\"%f\"", prefix, _alpha/255.0f );
+  secured_sprintf( buffer, 255, " %s-opacity=\"%f\"", prefix, _alpha/255.0f );
   return buffer;
 }
 

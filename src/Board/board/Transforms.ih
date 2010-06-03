@@ -1,0 +1,33 @@
+/* -*- mode: c++ -*- */
+/**
+ * @file   Transforms.ih
+ * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
+ * @date   Sat Aug 18 2007
+ * 
+ * @brief  Inline methods of the Transform classes.
+ * @copyright
+ */
+
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+
+
+Transform::Transform() 
+  : _scale(1.0), _deltaX(0.0), _deltaY(0.0), _height(0.0)
+{ }
+  
+TransformFIG::TransformFIG()
+ : _maxDepth(std::numeric_limits<int>::max()),_minDepth(0)
+{ }
+
+    
+double Transform::round( const double & x )
+{
+  return std::floor( x + 0.5 );
+}
+
+#if defined( _HAS_MSVC_MAX_ )
+#define max(A,B) ((A)>(B)?(A):(B))
+#endif

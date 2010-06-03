@@ -1,0 +1,37 @@
+/* -*- mode: c++ -*- */
+/**
+ * @file   ShapeList.ih
+ * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
+ * @date   Sat Aug 18 2007
+ * 
+ * @brief  Inline methods of the Transform classes.
+ * @copyright
+ */
+
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+
+ShapeList::ShapeList( int depth )
+  : Shape( Color::None, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
+    _nextDepth( std::numeric_limits<int>::max() - 1 )
+{ }
+
+template<typename T>
+T &
+ShapeList::last( const unsigned int position )
+{
+  if ( position < _shapes.size() ) {
+    std::vector<Shape*>::reverse_iterator it = _shapes.rbegin() + position;
+    return dynamic_cast<T&>( *(*it) );
+  } else {
+    error << "Trying to access an element that does not exist (" 
+	<< position << "/" << _shapes.size() << ").\n";
+    throw -1;
+  }
+}
+
+#if defined( _HAS_MSVC_MAX_ )
+#define max(A,B) ((A)>(B)?(A):(B))
+#endif

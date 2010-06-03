@@ -6,38 +6,6 @@
  * 
  * @brief  
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 
 #include "Board.h"
@@ -57,6 +25,10 @@
 #include <cstdio>
 #include <algorithm>
 
+#if defined( max )
+#undef max
+#endif
+
 namespace {
   const float pageSizes[3][2] = { { 0.0f, 0.0f }, // BoundingBox
 				  { 210.0f, 297.0f },
@@ -73,6 +45,7 @@ Board::State::State()
   penColor = Color::Black;
   fillColor =  Color::None;
   lineWidth = 0.5;
+  lineStyle = Shape::SolidStyle;
   lineCap = Shape::ButtCap;
   lineJoin = Shape::MiterJoin;
   font = Fonts::TimesRoman;
@@ -208,7 +181,7 @@ Board::scaled( double sx, double sy )
   return static_cast<const Board &>( Board( *this ).scale( sx, sy ) );
 }
 
-Board 
+Board
 Board::scaled( double s )
 {
   return static_cast<const Board &>( Board( *this ).scale( s ) );
@@ -219,35 +192,35 @@ void
 Board::setUnit( Unit unit )
 {
   switch ( unit ) {
-  case PT:
+  case UPoint:
     _state.unitFactor = 1.0;
     break;
-  case IN:
+  case UInche:
     _state.unitFactor = 25.4f * ppmm;
     break;
-  case CM:
-    _state.unitFactor = 10.0 * ppmm;
+  case UCentimeter:
+    _state.unitFactor = 10.0f * ppmm;
     break;
-  case MM:
+  case UMillimeter:
     _state.unitFactor = ppmm;
     break;
   }
 }
 
 void
-Board::setUnit( float factor, Unit unit )
+Board::setUnit( double factor, Unit unit )
 {
   switch ( unit ) {
-  case PT:
+  case UPoint:
     _state.unitFactor = factor;
     break;
-  case IN:
-    _state.unitFactor = 720.0 * factor;
+  case UInche:
+    _state.unitFactor = 720.0f * factor;
     break;
-  case CM:
-    _state.unitFactor = 10.0 * ppmm * factor;
+  case UCentimeter:
+    _state.unitFactor = 10.0f * ppmm * factor;
     break;
-  case MM:
+  case UMillimeter:
     _state.unitFactor = ppmm * factor;
     break;
   }
@@ -305,14 +278,14 @@ Board::setFillColor( const Color & color )
 }
 
 Board &
-Board::setLineWidth( float width )
+Board::setLineWidth( double width )
 {
   _state.lineWidth = width;
   return *this;
 }
 
 Board &
-Board::setFont( const Fonts::Font font, float fontSize )
+Board::setFont( const Fonts::Font font, double fontSize )
 {
   _state.font = font;
   _state.fontSize = fontSize;
@@ -320,7 +293,7 @@ Board::setFont( const Fonts::Font font, float fontSize )
 }
 
 Board &
-Board::setFontSize( float fontSize )
+Board::setFontSize( double fontSize )
 {
   _state.fontSize = fontSize;
   return *this;
@@ -333,7 +306,7 @@ Board::backgroundColor( const Color & color )
 }
 
 void
-Board::drawDot( float x, float y, int depth )
+Board::drawDot( double x, double y, int depth )
 {  
   if ( depth != -1 ) 
     _shapes.push_back( new Dot( _state.unit(x), _state.unit(y),
@@ -344,23 +317,23 @@ Board::drawDot( float x, float y, int depth )
 }
 
 void
-Board::drawLine( float x1, float y1, float x2, float y2, 
+Board::drawLine( double x1, double y1, double x2, double y2, 
 		 int depth /* = -1 */  )
 {
   if ( depth != -1 ) 
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
-				 _state.penColor, _state.lineWidth, 
-				 _state.lineCap, _state.lineJoin, depth ) );
+				 _state.penColor, _state.lineWidth,
+				 _state.lineStyle, _state.lineCap, _state.lineJoin, depth ) );
   else
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
 				 _state.penColor, _state.lineWidth,
-				 _state.lineCap, _state.lineJoin, _nextDepth-- ) );
+				 _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
 void
-Board::drawArrow( float x1, float y1, float x2, float y2, 
+Board::drawArrow( double x1, double y1, double x2, double y2, 
 		  bool filled /* = false */,
 		  int depth /* = -1 */  )
 {
@@ -368,75 +341,84 @@ Board::drawArrow( float x1, float y1, float x2, float y2,
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
 				  _state.penColor, filled ? _state.penColor : Color::None,
-				  _state.lineWidth, _state.lineCap, _state.lineJoin, depth ) );
+				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, depth ) );
   else
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
 				  _state.penColor, filled ? _state.penColor : Color::None,
-				  _state.lineWidth, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
+				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
 void
-Board::drawRectangle( float x, float y, 
-		      float width, float height,
+Board::drawRectangle( double x, double y, 
+		      double width, double height,
 		      int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
 				    _state.penColor, _state.fillColor,
-				    _state.lineWidth, _state.lineCap, _state.lineJoin, d ) );
+				    _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, d ) );
 }
 
 void
-Board::fillRectangle( float x, float y,
-		      float width, float height,
+Board::fillRectangle( double x, double y,
+		      double width, double height,
 		      int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height),
 				    Color::None, _state.penColor,
-				    0.0f, _state.lineCap, _state.lineJoin,
+				    0.0f, _state.lineStyle, _state.lineCap, _state.lineJoin,
 				    d ) );
 }
 
 void
-Board::drawCircle( float x, float y, float radius,
+Board::drawCircle( double x, double y, double radius,
 		   int depth /* = -1 */  )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
-				 _state.penColor, _state.fillColor, _state.lineWidth, d ) );
+				 _state.penColor, _state.fillColor,
+				 _state.lineWidth, _state.lineStyle, d ) );
 }
 
 void
-Board::fillCircle( float x, float y, float radius,
+Board::fillCircle( double x, double y, double radius,
 		   int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
-				 Color::None, _state.penColor, 0.0f, d ) );
+				 Color::None, _state.penColor,
+				 0.0f, _state.lineStyle, d ) );
 }
 
 void
-Board::drawEllipse( float x, float y,
-		    float xRadius, float yRadius,
+Board::drawEllipse( double x, double y,
+		    double xRadius, double yRadius,
 		    int depth /* = -1 */  )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
-  _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y), _state.unit(xRadius), _state.unit(yRadius),
-				  _state.penColor, _state.fillColor, _state.lineWidth,
+  _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y),
+				  _state.unit(xRadius), _state.unit(yRadius),
+				  _state.penColor,
+				  _state.fillColor,
+				  _state.lineWidth,
+				  _state.lineStyle,
 				  d ) );
 }
 
 void
-Board::fillEllipse( float x, float y, 
-		    float xRadius, float yRadius,
+Board::fillEllipse( double x, double y, 
+		    double xRadius, double yRadius,
 		    int depth /* = -1 */ )
 {
   int d = depth ? depth : _nextDepth--;
   _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y), _state.unit(xRadius), _state.unit(yRadius),
-				  Color::None, _state.penColor,
-				  0.0f, d ) );
+				  Color::None,
+				  _state.penColor,
+				  0.0f, 
+				  _state.lineStyle,
+				  d ) );
 }
 
 void
@@ -452,7 +434,10 @@ Board::drawPolyline( const std::vector<Point> & points,
     ++it;
   }
   _shapes.push_back( new Polyline( v, false, _state.penColor, _state.fillColor,
-				   _state.lineWidth, _state.lineCap, _state.lineJoin,
+				   _state.lineWidth,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );
 }
 
@@ -469,7 +454,10 @@ Board::drawClosedPolyline( const std::vector<Point> & points,
     ++it;
   }
   _shapes.push_back( new Polyline( v, true, _state.penColor, _state.fillColor,
-				   _state.lineWidth, _state.lineCap, _state.lineJoin,
+				   _state.lineWidth,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );
 }
 
@@ -479,14 +467,17 @@ Board::fillPolyline( const std::vector<Point> & points,
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
-				   0.0f, _state.lineCap, _state.lineJoin,
+				   0.0f,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );
 }
 
 void
-Board::drawTriangle( float x1, float y1, 
-		     float x2, float y2, 
-		     float x3, float y3, 
+Board::drawTriangle( double x1, double y1, 
+		     double x2, double y2, 
+		     double x3, double y3, 
 		     int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
@@ -495,7 +486,10 @@ Board::drawTriangle( float x1, float y1,
   points.push_back( Point( _state.unit(x2), _state.unit(y2) ) );
   points.push_back( Point( _state.unit(x3), _state.unit(y3) ) );
   _shapes.push_back( new Polyline( points, true, _state.penColor, _state.fillColor,
-				   _state.lineWidth, _state.lineCap, _state.lineJoin,
+				   _state.lineWidth,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );
 }
 
@@ -511,14 +505,17 @@ Board::drawTriangle( const Point & p1,
   points.push_back( Point( _state.unit(p2.x), _state.unit(p2.y) ) );
   points.push_back( Point( _state.unit(p3.x), _state.unit(p3.y) ) );
   _shapes.push_back( new Polyline( points, true, _state.penColor, _state.fillColor,
-				   _state.lineWidth, _state.lineCap, _state.lineJoin,
+				   _state.lineWidth,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );  
 }
 
 void
-Board::fillTriangle( float x1, float y1, 
-		     float x2, float y2, 
-		     float x3, float y3, 
+Board::fillTriangle( double x1, double y1, 
+		     double x2, double y2, 
+		     double x3, double y3, 
 		     int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
@@ -527,7 +524,10 @@ Board::fillTriangle( float x1, float y1,
   points.push_back( Point( _state.unit(x2), _state.unit(y2) ) );
   points.push_back( Point( _state.unit(x3), _state.unit(y3) ) );
   _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
-				   0.0f, _state.lineCap, _state.lineJoin,
+				   0.0f,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );
 }
 
@@ -543,7 +543,10 @@ Board::fillTriangle( const Point & p1,
   points.push_back( Point( _state.unit(p2.x), _state.unit(p2.y) ) );
   points.push_back( Point( _state.unit(p3.x), _state.unit(p3.y) ) );
   _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
-				   0.0f, _state.lineCap, _state.lineJoin,
+				   0.0f,
+				   _state.lineStyle,
+				   _state.lineCap,
+				   _state.lineJoin,
 				   d ) );  
 }
 
@@ -589,11 +592,12 @@ Board::fillGouraudTriangle( const Point & p1,
   fillGouraudTriangle( Point( _state.unit(p1.x), _state.unit(p1.y) ), color1,
 		       Point( _state.unit(p2.x), _state.unit(p2.y) ), color2,
 		       Point( _state.unit(p3.x), _state.unit(p3.y) ), color3,
-		       divisions, depth );
+		       divisions,
+		       depth );
 }
 
 void
-Board::drawText( float x, float y, const char * text,
+Board::drawText( double x, double y, const char * text,
 		 int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
@@ -602,7 +606,7 @@ Board::drawText( float x, float y, const char * text,
 }
 
 void
-Board::drawText( float x, float y, const std::string & str, int depth /* = -1 */ )
+Board::drawText( double x, double y, const std::string & str, int depth /* = -1 */ )
 {
   int d = (depth!=-1) ? depth : _nextDepth--;
   _shapes.push_back( new Text( _state.unit(x), _state.unit(y), str,
@@ -618,14 +622,18 @@ Board::drawBoundingBox( int depth /* = -1 */ )
 				    _state.unit(bbox.top),
 				    _state.unit(bbox.width),
 				    _state.unit(bbox.height),
-				    _state.penColor, _state.fillColor,
-				    _state.lineWidth, _state.lineCap, _state.lineJoin,
+				    _state.penColor,
+				    _state.fillColor,
+				    _state.lineWidth,
+				    _state.lineStyle,
+				    _state.lineCap,
+				    _state.lineJoin,
 				    d ) );
 }
 
 void
-Board::setClippingRectangle(  float x, float y, 
-			      float width, float height )
+Board::setClippingRectangle(  double x, double y, 
+			      double width, double height )
 {
   _clippingPath.clear();
   _clippingPath << _state.unit( Point( x, y ) );
@@ -695,13 +703,13 @@ Board::addDuplicates( const Shape & shape,
 }
 
 void
-Board::saveEPS( const char * filename, PageSize size, float margin ) const
+Board::saveEPS( const char * filename, PageSize size, double margin ) const
 {
   saveEPS( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
   
 void
-Board::saveEPS( const char * filename, float pageWidth, float pageHeight, float margin ) const
+Board::saveEPS( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
   Rect bbox = boundingBox();
@@ -715,9 +723,12 @@ Board::saveEPS( const char * filename, float pageWidth, float pageHeight, float 
   file << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
   file << "%%Title: " << filename << std::endl;
   file << "%%Creator: Board library (Copyleft)2007 Sebastien Fourey" << std::endl;
-  time_t t = time(0);
-  file << "%%CreationDate: " << ctime(&t);
-
+  {
+    time_t t = time(0);
+    char str_time[255];
+    secured_ctime( str_time, &t, 255 );
+    file << "%%CreationDate: " << str_time;
+  }
   file << "%%BoundingBox: " << std::setprecision( 8 )
        << transform.mapX( bbox.left ) << " "
        << transform.mapY( bbox.top - bbox.height ) << " "
@@ -751,6 +762,7 @@ Board::saveEPS( const char * filename, float pageWidth, float pageHeight, float 
   file << "/sf {setfont} bind def" << std::endl;
   file << "/scf {scalefont} bind def" << std::endl;
   file << "/sw {stringwidth} bind def" << std::endl;
+  file << "/sd {setdash} bind def" << std::endl;
   file << "/tr {translate} bind def" << std::endl;
   file << " 0.5 setlinewidth" << std::endl;
 
@@ -784,13 +796,13 @@ Board::saveEPS( const char * filename, float pageWidth, float pageHeight, float 
 }
 
 void
-Board::saveFIG( const char * filename, PageSize size, float margin ) const
+Board::saveFIG( const char * filename, PageSize size, double margin ) const
 {
   saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
 void
-Board::saveFIG( const char * filename, float pageWidth, float pageHeight, float margin ) const
+Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
   TransformFIG transform;
@@ -845,11 +857,12 @@ Board::saveFIG( const char * filename, float pageWidth, float pageHeight, float 
   std::map<Color,int>::const_iterator endColormap = colormap.end();
   char colorString[255];
   while ( iColormap != endColormap ) {
-    sprintf( colorString,"0 %d #%02x%02x%02x\n",
-	     iColormap->second,
-	     iColormap->first.red(),
-	     iColormap->first.green(),
-	     iColormap->first.blue() );
+    secured_sprintf( colorString, 255,
+		             "0 %d #%02x%02x%02x\n",
+		             iColormap->second,
+	                 iColormap->first.red(),
+	                 iColormap->first.green(),
+	                 iColormap->first.blue() );
     if ( iColormap->second >= 32 ) file << colorString;
     ++iColormap;
   }
@@ -872,13 +885,13 @@ Board::saveFIG( const char * filename, float pageWidth, float pageHeight, float 
 }
 
 void
-Board::saveSVG( const char * filename, PageSize size, float margin ) const
+Board::saveSVG( const char * filename, PageSize size, double margin ) const
 {
   saveSVG( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
 void
-Board::saveSVG( const char * filename, float pageWidth, float pageHeight, float margin ) const
+Board::saveSVG( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
   TransformSVG transform;
@@ -949,7 +962,7 @@ Board::saveSVG( const char * filename, float pageWidth, float pageHeight, float 
 }
 
 void
-Board::save( const char * filename, float pageWidth, float pageHeight, float margin ) const 
+Board::save( const char * filename, double pageWidth, double pageHeight, double margin ) const 
 {
   const char * extension = filename + strlen( filename );
   while ( extension > filename && *extension != '.' ) 
@@ -969,17 +982,31 @@ Board::save( const char * filename, float pageWidth, float pageHeight, float mar
 }
 
 void
-Board::save( const char * filename, PageSize size, float margin ) const 
+Board::save( const char * filename, PageSize size, double margin ) const 
 {
   save( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
 } // namespace LibBoard;
 
-
+/**
+ * @example examples/arithmetic.cpp
+ * @example examples/arrows.cpp
+ * @example examples/ellipse.cpp
+ * @example examples/example1.cpp
+ * @example examples/example2.cpp
+ * @example examples/example3.cpp
+ * @example examples/example4.cpp
+ * @example examples/graph.cpp
+ * @example examples/koch.cpp
+ * @example examples/logo.cpp
+ * @example examples/ruler.cpp
+ * @example examples/clipping.cpp
+ * @example examples/Makefile
+ */
 
 /**
- * LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
+ * @mainpage LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
  *
  * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
  *

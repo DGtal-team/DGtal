@@ -34,11 +34,13 @@ int main( int, char *[] )
   Board board;
 
   // board.clear( Color(0,120,0) );
+  board << Text( -0.45, -0.2, "LibBoard", 
+		 Fonts::Helvetica, "'Bookman Old Style',Verdana", 64.0f, Color::Green );
+  board.setLineWidth( 2.5 ).setPenColorRGBi( 255, 100, 0 );
+  board.setLineStyle( Shape::SolidStyle );
   board.setLineJoin( Shape::MiterJoin );
-  board << Text( -0.45, -0.2, "LibBoard", Fonts::Helvetica, "'Bookman Old Style',Verdana", 64.0f, Color::Green );
-
   board.setLineCap( Shape::RoundCap );
-  board.setLineWidth( 2.5 ).setPenColorRGBi( 255, 100, 0 ).drawLine( -0.5, -0.27, 0.5, -0.27 ); 
+  board.drawLine( -0.5, -0.27, 0.5, -0.27 ); 
   board.addDuplicates( board.last(), 10, 0, -0.02 );
 
   Point p = board.last<Line>().boundingBox().topLeft();

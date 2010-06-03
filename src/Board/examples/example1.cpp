@@ -36,7 +36,7 @@ int main( int, char *[] )
   board.fillCircle( 0.0, 0.0, 0.05 );
 
   std::vector<Point> points;
-  for ( float x = -1.0; x < 1.0; x+=0.02 ) {
+  for ( double x = -1.0; x < 1.0; x += 0.02 ) {
     points.push_back( Point( x, sin(x*6.28) ) );
   }
   board.setLineWidth( 1.0 );

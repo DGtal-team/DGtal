@@ -41,10 +41,10 @@ int main( int argc, char *argv[] )
   }
 
   char the_string[1024];
-  strcpy( the_string, "cccccccbb" );  
+  secured_strncpy( the_string, "cccccccbb", 1024 );  
     
   if ( argc == 2 ) { 
-    strcpy( the_string, argv[1] );
+    secured_strncpy( the_string, argv[1], 1024 );
   }
   
   // char letters[] = "abcde";
@@ -84,7 +84,7 @@ int main( int argc, char *argv[] )
     board.setPenColor( colors[ i ] );
     board.drawRectangle( left, -h * thickness, width, 0.9*thickness );
 
-    sprintf( str, "%c", *pc );
+    secured_sprintf( str, 20, "%c", *pc );
     board.drawText( (left + width/2.0 ), -(h+0.5) * thickness, str );    
     ++h;
     ++pc;
@@ -94,7 +94,7 @@ int main( int argc, char *argv[] )
   for ( int k = 0; k < 5; k++ ) {
     board.setPenColor( colors[ k ] );
     board.drawRectangle( lefts[k], thickness, proba[k], 0.9*thickness );      
-    sprintf( str, "%c", 'a' + k  );
+    secured_sprintf( str, 20, "%c", 'a' + k  );
     //board.drawText( lefts[k] + proba[k]/2.0, 0.5*thickness, str );    
   }
 

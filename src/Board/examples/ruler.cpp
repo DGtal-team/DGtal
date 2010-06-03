@@ -33,7 +33,7 @@ int main( int , char *[] )
   board.clear( Color(200,200,255) );
   board.setLineWidth(1);
 
-  board << Board::CM;
+  board << Board::UCentimeter;
   // board << Rectangle( 0, 27.7, 19, 27.7, Color::Black, Color::None, 0.1 );
 
   Line tiny( 0, 0, 0.2, 0, Color::Black, 0.1 );
@@ -58,7 +58,8 @@ int main( int , char *[] )
 
   board << Text( 2, 24, "Inches", Fonts::CourierBold, 12, Color::Red );
   // Or : board.drawText( 2, 26, "Inches" );
-  board << Board::PT << Rectangle( board.last<Text>().boundingBox(), Color::Black, Color::None, 0.1 );
+  board << Board::UPoint
+	<< Rectangle( board.last<Text>().boundingBox(), Color::Black, Color::None, 0.1 );
 
   // Inches with a change of units
 
@@ -66,7 +67,7 @@ int main( int , char *[] )
   small.translate( 0.5, 0 );
   large.translate( 0.5, 0 );
 
-  board << Board::IN;
+  board << Board::UInche;
   // Equivalent to :   board.setUnit( Board::IN );
   // Equivalent to :   board.setUnit( 1.0, Board::IN );
   // Equivalent to :   board.setUnit( 2.54, Board::CM );
@@ -77,8 +78,10 @@ int main( int , char *[] )
   board.addDuplicates( small, 20, 0, 0.5  );
   board.addDuplicates( large, 11, 0, 1.0  );
   
-  board << Board::CM << Text( 6.5, 24, "Inches again", Fonts::PalatinoBold, 14, Color::Red );
-  board << Board::PT << Rectangle( board.last<Text>().boundingBox(), Color::Black, Color::None, 0.1 );
+  board << Board::UCentimeter 
+	<< Text( 6.5, 24, "Inches again", Fonts::PalatinoBold, 14, Color::Red );
+  board << Board::UPoint
+	<< Rectangle( board.last<Text>().boundingBox(), Color::Black, Color::None, 0.1 );
 
   board.saveEPS( "ruler.eps" /*, Board::A4 */ );
   board.saveFIG( "ruler.fig" /*, Board::A4 */ );

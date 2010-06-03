@@ -1,0 +1,132 @@
+/* -*- mode: c++ -*- */
+/**
+ * @file   Shapes.ih
+ * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
+ * @date   Feb. 2010
+ * 
+ * @brief  Shapes inline methods
+ * @copyright
+ */
+
+namespace LibBoard {
+
+Shape::Shape( Color penColor, Color fillColor,
+	      double lineWidth, 
+	      LineStyle style,
+	      const LineCap cap,
+	      const LineJoin join,
+	      int depth )
+  : _depth( depth ),
+    _penColor( penColor ),
+    _fillColor( fillColor ), 
+    _lineWidth( lineWidth ),
+    _lineStyle( style ),
+    _lineCap( cap ), 
+    _lineJoin( join )
+{
+}
+
+Dot::Dot( double x, double y,
+	  Color color, 
+	  double lineWidth,
+	  int depth )
+  : Shape( color, 
+	   Color::None, 
+	   lineWidth, SolidStyle, RoundCap, MiterJoin, depth ),
+    _x( x ), _y( y ) 
+{
+}
+
+Line::Line( double x1, double y1, double x2, double y2, 
+	    Color color, 
+	    double lineWidth,
+	    const LineStyle style,
+	    const LineCap cap,
+	    const LineJoin join,
+	    int depth )
+  : Shape( color, Color::None, lineWidth, style, cap, join, depth ),
+    _x1( x1 ), _y1( y1 ), _x2( x2 ), _y2( y2 )
+{
+}
+
+
+Arrow::Arrow( double x1, double y1, double x2, double y2,
+	      Color penColor, Color fillColor,
+	      double lineWidth, 
+	      const LineStyle style,
+	      const LineCap cap,
+	      const LineJoin join,
+	      int depth )
+  : Line( x1, y1, x2, y2, penColor, lineWidth, style, cap, join, depth ) 
+{
+  Shape::_fillColor = fillColor;
+}
+
+Polyline::Polyline( const std::vector<Point> & points, 
+		    bool closed,
+		    Color penColor, Color fillColor,
+		    double lineWidth,
+		    const LineStyle lineStyle,
+		    const LineCap cap,
+		    const LineJoin join,
+		    int depth )
+  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
+    _path( points, closed )
+{
+}
+
+Polyline::Polyline( const Path & path, 
+		    Color penColor, Color fillColor,
+		    double lineWidth,
+		    const LineStyle lineStyle,
+		    const LineCap cap,
+		    const LineJoin join,
+		    int depth )
+  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
+    _path( path )
+{
+}
+
+Polyline::Polyline( bool closed, Color penColor, Color fillColor,
+		    double lineWidth,
+		    const LineStyle lineStyle,
+		    const LineCap cap,
+		    const LineJoin join,
+		    int depth )
+  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
+    _path( closed )
+{
+}
+
+Rectangle::Rectangle( double x, double y, double width, double height,
+		      Color penColor, Color fillColor,
+		      double lineWidth, 
+		      const LineStyle style,
+		      const LineCap cap,
+		      const LineJoin join,
+		      int depth )
+  : Polyline( std::vector<Point>(), true, penColor, fillColor,
+	      lineWidth, style, cap, join, depth )
+{
+  _path <<  Point( x, y );
+  _path << Point( x + width, y );
+  _path << Point( x + width, y - height );
+  _path << Point( x, y - height );
+}
+  
+Rectangle::Rectangle( const Rect & rect,
+		      Color penColor, Color fillColor,
+		      double lineWidth,
+		      const LineStyle style,
+		      const LineCap cap,
+		      const LineJoin join,
+		      int depth )
+  : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
+  _path << Point( rect.left, rect.top );
+  _path << Point( rect.left + rect.width, rect.top );
+  _path << Point( rect.left + rect.width, rect.top - rect.height );
+  _path << Point( rect.left, rect.top - rect.height );
+}
+
+
+} // namespace LibBoard

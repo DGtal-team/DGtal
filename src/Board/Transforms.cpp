@@ -6,38 +6,6 @@
  * 
  * @brief  
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 
 #include "board/Rect.h"
@@ -57,26 +25,26 @@ namespace LibBoard {
 // Transform
 // 
 
-float
-Transform::rounded( float x ) const
+double
+Transform::rounded( double x ) const
 {
   return Transform::round( 1000000*x ) / 1000000;
 } 
 
-float
-Transform::mapX( float x ) const
+double
+Transform::mapX( double x ) const
 {
   return rounded( x * _scale + _deltaX );
 }
 
-float
-Transform::scale( float x ) const
+double
+Transform::scale( double x ) const
 {
   return rounded( x * _scale );
 }
 
 void
-Transform::apply( float & x, float & y ) const
+Transform::apply( double & x, double & y ) const
 {
   x = mapX( x );
   y = mapY( y );
@@ -86,17 +54,17 @@ Transform::apply( float & x, float & y ) const
 // TransformEPS
 // 
 
-float
-TransformEPS::mapY( float y ) const
+double
+TransformEPS::mapY( double y ) const
 {
   return rounded( y * _scale + _deltaY );
 }
 
 void
 TransformEPS::setBoundingBox( const Rect & rect,
-			      const float pageWidth,
-			      const float pageHeight,
-			      const float margin )
+			      const double pageWidth,
+			      const double pageHeight,
+			      const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;
@@ -106,8 +74,8 @@ TransformEPS::setBoundingBox( const Rect & rect,
     _deltaY = 0.5 * 297 * ppmm - ( rect.top - 0.5 * rect.height );  
     _height = rect.height;
   } else {
-    const float w = pageWidth - 2 * margin;
-    const float h = pageHeight - 2 * margin;
+    const double w = pageWidth - 2 * margin;
+    const double h = pageHeight - 2 * margin;
     if ( ( rect.height / rect.width ) > ( h / w ) ) {
       _scale = h * ppmm / rect.height;
     } else {
@@ -123,21 +91,20 @@ TransformEPS::setBoundingBox( const Rect & rect,
 // TransformFIG
 // 
 
-float
-TransformFIG::rounded( float x ) const
+double
+TransformFIG::rounded( double x ) const
 {
   return Transform::round( x );
 }
 
-float
-TransformFIG::mapY( float y ) const
+double
+TransformFIG::mapY( double y ) const
 {
-  // float ppmm = 1200/25.4;
   return rounded( _height - ( y * _scale + _deltaY ) );
 }
 
 int
-TransformFIG::mapWidth( float width ) const
+TransformFIG::mapWidth( double width ) const
 {
   // FIG width unit is 1/160 inch
   // Postscript points are 1/72 inch
@@ -148,9 +115,9 @@ TransformFIG::mapWidth( float width ) const
 
 void
 TransformFIG::setBoundingBox( const Rect & rect,
-			      const float pageWidth,
-			      const float pageHeight,
-			      const float margin )
+			      const double pageWidth,
+			      const double pageHeight,
+			      const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = fig_ppmm / ppmm;
@@ -162,8 +129,8 @@ TransformFIG::setBoundingBox( const Rect & rect,
     //_height = rect.height;
     _height = 297 * fig_ppmm;
   } else {
-    const float w = pageWidth - 2 * margin;
-    const float h = pageHeight - 2 * margin;
+    const double w = pageWidth - 2 * margin;
+    const double h = pageHeight - 2 * margin;
     if ( rect.height / rect.width > ( h / w ) ) {
       _scale = ( h * fig_ppmm ) / rect.height;
     } else {
@@ -201,20 +168,20 @@ TransformFIG::mapDepth( int depth ) const
 // TransformSVG
 // 
 
-float
-TransformSVG::rounded( float x ) const
+double
+TransformSVG::rounded( double x ) const
 {
   return Transform::round( 100*x ) / 100.0f;
 } 
 
-float
-TransformSVG::mapY( float y ) const
+double
+TransformSVG::mapY( double y ) const
 {
   return rounded( _height - ( y * _scale + _deltaY ) );
 }
 
-float
-TransformSVG::mapWidth( float width ) const
+double
+TransformSVG::mapWidth( double width ) const
 {
   // return Transform::round( 1000 * width / ppmm ) / 1000.0;
   return Transform::round( 1000 * width  / ppmm  ) / 1000.0;
@@ -222,9 +189,9 @@ TransformSVG::mapWidth( float width ) const
 
 void
 TransformSVG::setBoundingBox( const Rect & rect,
-			      const float pageWidth,
-			      const float pageHeight,
-			      const float margin )  
+			      const double pageWidth,
+			      const double pageHeight,
+			      const double margin )  
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;
@@ -235,8 +202,8 @@ TransformSVG::setBoundingBox( const Rect & rect,
     // _height = 297 * fig_ppmm;
     _height = rect.height;
   } else {
-    const float w = pageWidth - 2 * margin;
-    const float h = pageHeight - 2 * margin;
+    const double w = pageWidth - 2 * margin;
+    const double h = pageHeight - 2 * margin;
     if ( rect.height / rect.width > ( h / w ) ) {
       _scale = h * ppmm / rect.height;
     } else {

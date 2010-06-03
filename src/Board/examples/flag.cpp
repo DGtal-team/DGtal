@@ -36,7 +36,7 @@ int main( int, char *[] )
 
   Line line( 0, 45, 0, 400, Color::Black, 1.0 );
   Line rline(line);
-  const float angle = 2 * M_PI / RAYS;
+  const double angle = 2 * M_PI / RAYS;
   int n = RAYS;
   while ( n-- ) { 
     board << rline;

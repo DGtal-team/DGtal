@@ -6,38 +6,6 @@
  * 
  * @brief  
  * @copyright
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
- * This source code is part of the Board project, a C++ library whose
- * purpose is to allow simple drawings in EPS, FIG or SVG files.
- * Copyright (C) 2007 Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb/>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 #ifndef _BOARD_BOARD_H_
 #define _BOARD_BOARD_H_
@@ -63,7 +31,7 @@ class Board : public ShapeList {
 public:
 
   enum PageSize { BoundingBox, A4, Letter };
-  enum Unit { PT, IN, CM, MM };
+  enum Unit { UPoint, UInche, UCentimeter, UMillimeter };
   static const double Degree;
   
   /** 
@@ -163,7 +131,7 @@ public:
    * @param factor The factor of the unit.
    * @param unit The unit to be used in { PT, IN, CM, MM }.
    */
-  void setUnit( float factor, Unit unit );
+  void setUnit( double factor, Unit unit );
 
   /** 
    * Draws a dot at coordinates (x,y).
@@ -172,7 +140,7 @@ public:
    * @param y Second coordinate of the dot.
    * @param depth Depth of the line.
    */
-  void drawDot( float x, float y, int depth = -1 );
+  void drawDot( double x, double y, int depth = -1 );
 
   /** 
    * Draws a line from (x1,y1) to (x2,y2).
@@ -183,7 +151,7 @@ public:
    * @param y2 Second coordinate of the second extremity.
    * @param depth Depth of the line.
    */
-  void drawLine( float x1, float y1, float x2, float y2, 
+  void drawLine( double x1, double y1, double x2, double y2, 
 		 int depth = -1 );
 
   /** 
@@ -196,7 +164,7 @@ public:
    * @param filled Whether or not the arrow is filled.
    * @param depth Depth of the line.
    */
-  void drawArrow( float x1, float y1, float x2, float y2,
+  void drawArrow( double x1, double y1, double x2, double y2,
 		  bool filled = true,
 		  int depth = -1 );
 
@@ -211,9 +179,9 @@ public:
    * @param y3 Second coordinate of the third vertex.
    * @param depth Depth of the triangle.
    */
-  void drawTriangle( float x1, float y1, 
-		     float x2, float y2, 
-		     float x3, float y3, 
+  void drawTriangle( double x1, double y1, 
+		     double x2, double y2, 
+		     double x3, double y3, 
 		     int depth = -1 );
 
   /** 
@@ -240,9 +208,9 @@ public:
    * @param y3 Second coordinate of the third vertex.
    * @param depth Depth of the triangle.
    */
-  void fillTriangle( float x1, float y1, 
-		     float x2, float y2, 
-		     float x3, float y3, 
+  void fillTriangle( double x1, double y1, 
+		     double x2, double y2, 
+		     double x3, double y3, 
 		     int depth = -1 );
 
   /** 
@@ -281,11 +249,11 @@ public:
    * @param divisions 
    * @param depth 
    */
-  inline void fillGouraudTriangle( const float x1, const float y1,
+  inline void fillGouraudTriangle( const double x1, const double y1,
 				   const Color & color1,
-				   const float x2, const float y2, 
+				   const double x2, const double y2, 
 				   const Color & color2,
-				   const float x3, const float y3,
+				   const double x3, const double y3,
 				   const Color & color3,
 				   unsigned char divisions = 3,
 				   int depth = -1 );
@@ -327,11 +295,11 @@ public:
    * @param divisions
    * @param depth 
    */
-  inline void fillGouraudTriangle( const float x1, const float y1,
+  inline void fillGouraudTriangle( const double x1, const double y1,
 				   const float brightness1,
-				   const float x2, const float y2, 
+				   const double x2, const double y2, 
 				   const float brightness2,
-				   const float x3, const float y3,
+				   const double x3, const double y3,
 				   const float brightness3,
 				   unsigned char divisions = 3,
 				   int depth = -1 );
@@ -359,8 +327,8 @@ public:
    * @param height Height of the rectangle.
    * @param depth Depth of the rectangle.
    */
-  void drawRectangle( float x, float y, 
-		      float width, float height,
+  void drawRectangle( double x, double y, 
+		      double width, double height,
 		      int depth = -1 );
 
   /** 
@@ -372,8 +340,8 @@ public:
    * @param height Height of the rectangle.
    * @param depth Depth of the rectangle.
    */
-  void fillRectangle( float x, float y,
-		      float width, float height,
+  void fillRectangle( double x, double y,
+		      double width, double height,
 		      int depth = -1 );
 
   /** 
@@ -384,7 +352,7 @@ public:
    * @param radius Radius of the circle.
    * @param depth Depth of the circle.
    */
-  void drawCircle( float x, float y, float radius,
+  void drawCircle( double x, double y, double radius,
 		   int depth = -1 );
  
   /** 
@@ -395,7 +363,7 @@ public:
    * @param radius Radius of the circle.
    * @param depth Depth of the circle.
    */
-  void fillCircle( float x, float y, float radius,
+  void fillCircle( double x, double y, double radius,
 		   int depth = -1);
 
   /** 
@@ -406,8 +374,8 @@ public:
    * @param radius Radius of the circle.
    * @param depth Depth of the circle.
    */
-  void drawEllipse( float x, float y, 
-		    float xRadius, float yRadius,
+  void drawEllipse( double x, double y, 
+		    double xRadius, double yRadius,
 		    int depth = -1);
  
   /** 
@@ -419,8 +387,8 @@ public:
    * @param yRadius Y axis radius of the ellipse.
    * @param depth Depth of the circle.
    */
-  void fillEllipse( float x, float y, 
-		    float xRadius, float yRadius,
+  void fillEllipse( double x, double y, 
+		    double xRadius, double yRadius,
 		    int depth = -1);
 
   /** 
@@ -458,7 +426,7 @@ public:
    * @param text The text. 
    * @param depth The depth of the text.
    */
-  void drawText( float x, float y, const char * text, 
+  void drawText( double x, double y, const char * text, 
 		 int depth = -1 );
 
   /** 
@@ -469,7 +437,7 @@ public:
    * @param text The text. 
    * @param depth The depth of the text.
    */
-  void drawText( float x, float y, const std::string & str, 
+  void drawText( double x, double y, const std::string & str, 
 		 int depth = -1 );
 
   /** 
@@ -479,7 +447,7 @@ public:
    * @param fontSize The new font size. (The unit is 1pt = 1/72 in).
    * @return The board itself.
    */
-  Board & setFont( const Fonts::Font font, float fontSize );
+  Board & setFont( const Fonts::Font font, double fontSize );
   
   /** 
    * Changes the font size.
@@ -487,7 +455,7 @@ public:
    * @param fontSize The new font size.  (The unit is 1pt = 1/72 in).
    * @return The board itself.
    */
-  Board & setFontSize( float fontSize ); 
+  Board & setFontSize( double fontSize ); 
 
   /** 
    * Changes the current pen color.
@@ -566,7 +534,15 @@ public:
    * @param width The new line thickness.
    * @return The board itself.
    */
-  Board & setLineWidth( float width );
+  Board & setLineWidth( double width );
+
+  /** 
+   * Changes the current line style.
+   * 
+   * @param style The new line style.
+   * @return The board itself.
+   */
+  inline Board & setLineStyle( Shape::LineStyle style );
   
   /** 
    * Set the line cap style. 
@@ -611,8 +587,8 @@ public:
    * @param width 
    * @param height 
    */
-  void setClippingRectangle(  float x, float y, 
-			      float width, float height );
+  void setClippingRectangle(  double x, double y, 
+			      double width, double height );
 
   /** 
    * Define a clipping path for the whole drawing.
@@ -671,7 +647,7 @@ public:
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void save( const char * filename, PageSize size = Board::BoundingBox, float margin = 10.0 ) const; 
+  void save( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const; 
   
   /** 
    * Save the drawing in an EPS, XFIG of SVG file depending 
@@ -683,7 +659,7 @@ public:
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void save( const char * filename, float pageWidth, float pageHeight, float margin = 10.0 ) const; 
+  void save( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const; 
 
   /** 
    * Saves the drawing in an EPS file. When a size is given (not BoundingBox), the drawing is
@@ -693,7 +669,7 @@ public:
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveEPS( const char * filename, PageSize size = Board::BoundingBox, float margin = 10.0 ) const ;
+  void saveEPS( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const ;
 
   /** 
    * Saves the drawing in an EPS file. When a size is given (not BoundingBox), the drawing is
@@ -705,7 +681,7 @@ public:
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveEPS( const char * filename, float pageWidth, float pageHeight, float margin = 10.0 ) const ;
+  void saveEPS( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
@@ -715,7 +691,7 @@ public:
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, float margin = 10.0 ) const;
+  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
@@ -727,7 +703,7 @@ public:
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveFIG( const char * filename, float pageWidth, float pageHeight, float margin = 10.0 ) const ;
+  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
   /** 
    * Save the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
@@ -737,7 +713,7 @@ public:
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveSVG( const char * filename, PageSize size = Board::BoundingBox, float margin = 10.0 ) const;
+  void saveSVG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Saves the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
@@ -749,7 +725,7 @@ public:
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveSVG( const char * filename, float pageWidth, float pageHeight, float margin = 10.0 ) const ;
+  void saveSVG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
  protected:
 
@@ -758,16 +734,17 @@ public:
    * 
    */
   struct State {
-    Color penColor;		    /**< The pen color. */
+    Color penColor;		        /**< The pen color. */
     Color fillColor;	   	    /**< The fill color. */
-    float lineWidth;		    /**< The line thickness. */
+    double lineWidth;		    /**< The line thickness. */
+    Shape::LineStyle lineStyle;	/**< The line style. */
     Shape::LineCap lineCap;	    /**< The type of line extremities. */
-    Shape::LineJoin lineJoin; 	    /**< The type of line junction. */
-    Fonts::Font font;               /**< The font. */
-    float fontSize;	   	    /**< The font size. */
-    float unitFactor;		    /**< The factor to be applied to arguments of the drawSomething() family. */
+    Shape::LineJoin lineJoin; 	/**< The type of line junction. */
+    Fonts::Font font;           /**< The font. */
+    double fontSize;	   	        /**< The font size. */
+    double unitFactor;		    /**< The factor to be applied to arguments of the drawSomething() family. */
     State();
-    float unit( const float & x ) { return x * unitFactor; }
+    double unit( const double & x ) { return x * unitFactor; }
     Point unit( const Point & p ) { return Point( p.x * unitFactor, p.y * unitFactor); }
     void unit( Shape & shape ) {  shape.scaleAll( unitFactor ); }
   };
@@ -776,32 +753,39 @@ public:
   Path _clippingPath;
 };
 
-inline void
+void
 Board::clear( unsigned char red, unsigned char green, unsigned char blue )
 {
   clear( Color( red, green, blue ) );
 }
 
-inline Board &
+Board &
+Board::setLineStyle( Shape::LineStyle style )
+{
+  _state.lineStyle = style;
+  return *this;
+}
+
+Board &
 Board::setLineCap( Shape::LineCap cap )
 {
   _state.lineCap = cap;
   return *this;
 }
   
-inline Board &
+Board &
 Board::setLineJoin( Shape::LineJoin join )
 {
   _state.lineJoin = join;
   return *this;
 }
 
-inline void
-Board::fillGouraudTriangle( const float x1, const float y1,
+void
+Board::fillGouraudTriangle( const double x1, const double y1,
 			    const Color & color1,
-			    const float x2, const float y2, 
+			    const double x2, const double y2, 
 			    const Color & color2,
-			    const float x3, const float y3,
+			    const double x3, const double y3,
 			    const Color & color3,
 			    unsigned char divisions,
 			    int depth /* = -1 */ )
@@ -813,11 +797,11 @@ Board::fillGouraudTriangle( const float x1, const float y1,
 }
 
 void
-Board::fillGouraudTriangle( const float x1, const float y1,
+Board::fillGouraudTriangle( const double x1, const double y1,
 			    const float brightness1,
-			    const float x2, const float y2, 
+			    const double x2, const double y2, 
 			    const float brightness2,
-			    const float x3, const float y3,
+			    const double x3, const double y3,
 			    const float brightness3,
 			    unsigned char divisions,
 			    int depth /* = -1 */ )

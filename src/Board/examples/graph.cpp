@@ -41,7 +41,7 @@ int main( int , char *[] )
 {
   Board board;
   board.clear( Color(200,255,200) );
-  srand( time( 0 ) );
+  srand( static_cast<unsigned int>( time( 0 ) ) );
 
   vector< pair<int,int>  > points;
   vector< pair<int,int>  >::iterator i1, i2, end;
