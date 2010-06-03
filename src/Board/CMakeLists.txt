@@ -22,14 +22,4 @@ install(TARGETS ${LIBBOARD_NAME}
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-#add_subdirectory(examples)
-
-SET(BOARD_TESTS_SRC
-    koch.cpp
-    logo.cpp)
-
-FOREACH(FILE ${BOARD_TESTS_SRC})
-  add_executable(${FILE} examples/${FILE})
-  target_link_libraries (${FILE} ${LIBBOARD_NAME})
-#  add_test(${FILE} ${FILE})
-ENDFOREACH()
+add_subdirectory(examples)

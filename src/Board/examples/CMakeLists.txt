@@ -14,4 +14,3 @@ FOREACH(FILE ${BOARD_TESTS_SRC})
   target_link_libraries (${FILE} ${LIBBOARD_NAME})
   add_test(${FILE} ${FILE})
 ENDFOREACH()
-
