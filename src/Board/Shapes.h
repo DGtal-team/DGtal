@@ -10,13 +10,13 @@
 #ifndef _BOARD_SHAPES_H_
 #define _BOARD_SHAPES_H_
 
-#include "board/Point.h"
-#include "board/Rect.h"
-#include "board/Path.h"
-#include "board/Color.h"
-#include "board/Transforms.h"
-#include "board/PSFonts.h"
-#include "board/Tools.h"
+#include "Point.h"
+#include "Rect.h"
+#include "Path.h"
+#include "Color.h"
+#include "Transforms.h"
+#include "PSFonts.h"
+#include "Tools.h"
 #include <string>
 #include <vector>
 #include <iostream>

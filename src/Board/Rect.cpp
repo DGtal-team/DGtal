@@ -7,7 +7,7 @@
  * @brief  
  * @copyright
  */
-#include "board/Rect.h"
+#include "Rect.h"
 
 namespace LibBoard {
 

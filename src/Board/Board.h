@@ -14,10 +14,10 @@
 #include <string>
 #include <vector>
 
-#include "board/Point.h"
-#include "board/Path.h"
-#include "board/Shapes.h"
-#include "board/ShapeList.h"
+#include "Point.h"
+#include "Path.h"
+#include "Shapes.h"
+#include "ShapeList.h"
 
 namespace LibBoard {
 

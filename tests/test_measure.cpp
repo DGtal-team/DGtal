@@ -34,19 +34,23 @@ using namespace std;
  **/
 void testUnitSquare()
 {
-  vector<double> a;
-  vector<double> b;
-  
-  a.push_back(0); b.push_back(0);
-  a.push_back(1); b.push_back(0);
-  a.push_back(1); b.push_back(1);
-  a.push_back(0); b.push_back(1);
-  
-  MeasureOfStraightLines measure;
-    
+    vector<double> a;
+    vector<double> b;
 
-  trace.info() << "Measure of the Straight of Lines of the unit square = " << measure.computeMeasure(a,b)<< std::endl;
-  trace.emphase() <<"Expected value = 0.707107 (sqrt(2)/2)"<<endl;
+    a.push_back(0);
+    b.push_back(0);
+    a.push_back(1);
+    b.push_back(0);
+    a.push_back(1);
+    b.push_back(1);
+    a.push_back(0);
+    b.push_back(1);
+
+    MeasureOfStraightLines measure;
+
+
+    trace.info() << "Measure of the Straight of Lines of the unit square = " << measure.computeMeasure(a,b)<< std::endl;
+    trace.emphase() <<"Expected value = 0.707107 (sqrt(2)/2)"<<endl;
 }
 
 
@@ -57,27 +61,31 @@ void testUnitSquare()
  **/
 void testUnitSquareCentroid()
 {
-  vector<double> a;
-  vector<double> b;
-  
-  a.push_back(0); b.push_back(0);
-  a.push_back(1); b.push_back(0);
-  a.push_back(1); b.push_back(1);
-  a.push_back(0); b.push_back(1);
-  
-  MeasureOfStraightLines measure;
+    vector<double> a;
+    vector<double> b;
 
-  trace.info() << "Centroid measure of the unit square = (" << measure.computeCentroidA(a,b)
-	       << ","<<measure.computeCentroidB(a,b)<<")"<<std::endl;
-  trace.emphase() <<"Expected value = (0.4142,0.5)"<<endl;
+    a.push_back(0);
+    b.push_back(0);
+    a.push_back(1);
+    b.push_back(0);
+    a.push_back(1);
+    b.push_back(1);
+    a.push_back(0);
+    b.push_back(1);
+
+    MeasureOfStraightLines measure;
+
+    trace.info() << "Centroid measure of the unit square = (" << measure.computeCentroidA(a,b)
+    << ","<<measure.computeCentroidB(a,b)<<")"<<std::endl;
+    trace.emphase() <<"Expected value = (0.4142,0.5)"<<endl;
 }
 
 
 int main(int argc, char **argv)
 {
-  
-  testUnitSquare();
-  testUnitSquareCentroid();
-  return 0;
+
+    testUnitSquare();
+    testUnitSquareCentroid();
+    return 0;
 }
 

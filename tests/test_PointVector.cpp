@@ -193,8 +193,8 @@ bool testIterator()
     trace.info() << std::endl;
 
 
-  trace.endBlock();
-    
+    trace.endBlock();
+
     return true;
 }
 

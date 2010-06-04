@@ -11,8 +11,8 @@
 #ifndef _BOARD_SHAPELIST_H_
 #define _BOARD_SHAPELIST_H_
 
-#include "board/Shapes.h"
-#include "board/Tools.h"
+#include "Shapes.h"
+#include "Tools.h"
 
 namespace LibBoard {
 

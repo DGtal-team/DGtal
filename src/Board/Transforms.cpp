@@ -8,10 +8,10 @@
  * @copyright
  */
 
-#include "board/Rect.h"
-#include "board/Shapes.h"
-#include "board/ShapeList.h"
-#include "board/Transforms.h"
+#include "Rect.h"
+#include "Shapes.h"
+#include "ShapeList.h"
+#include "Transforms.h"
 #include <cmath>
 
 namespace {

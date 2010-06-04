@@ -7,8 +7,8 @@
  * @brief  
  * @copyright
  */
-#include "board/Color.h"
-#include "board/Tools.h"
+#include "Color.h"
+#include "Tools.h"
 #include <cstdio>
 #include <cmath>
 using std::string;

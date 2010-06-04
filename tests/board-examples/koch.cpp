@@ -24,7 +24,7 @@
 #include <cmath>
 #include <vector>
 #include <utility>
-#include "Board.h"
+#include "Board/Board.h"
 using namespace std;
 using namespace LibBoard;
 

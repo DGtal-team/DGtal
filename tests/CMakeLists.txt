@@ -1,6 +1,8 @@
 #CMakeLists associated to the tests subdir
 #David Coeurjolly <david.coeurjolly@liris.cnrs.fr>
 
+add_subdirectory(board-examples)
+
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)

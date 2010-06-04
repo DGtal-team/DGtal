@@ -22,7 +22,8 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "Board.h"
+#include "Board/Board.h"
+
 using namespace LibBoard;
 
 #ifndef M_PI

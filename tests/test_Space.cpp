@@ -28,23 +28,23 @@ using namespace std;
 
 
 /**
-* Test instancition of Space 
+* Test instancition of Space
 *
 **/
 bool testSimpleSpace()
 {
-  
- Space<int,6> aSpace6;
- Space<double,2> aSpace2;
 
- cout << "aSpace6 = " << aSpace6 << endl;
- cout << "aSpace2 = " << aSpace2 << endl;
- Space<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
- // won't work
- // aSpace6::SpaceType::Subcospace<2>::Type aSpace4 = aSpace6.getSubcospace<2>();
- cout << "aSpace6.subcospace<2> = " << aSpace4 << endl;
+    Space<int,6> aSpace6;
+    Space<double,2> aSpace2;
 
- return true;
+    cout << "aSpace6 = " << aSpace6 << endl;
+    cout << "aSpace2 = " << aSpace2 << endl;
+    Space<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
+// won't work
+// aSpace6::SpaceType::Subcospace<2>::Type aSpace4 = aSpace6.getSubcospace<2>();
+    cout << "aSpace6.subcospace<2> = " << aSpace4 << endl;
+
+    return true;
 }
 
 
@@ -52,10 +52,10 @@ bool testSimpleSpace()
 
 int main()
 {
-  
-  if (testSimpleSpace())
-     return 0;
-  else
-    return 1;
+
+    if (testSimpleSpace())
+        return 0;
+    else
+        return 1;
 }
 

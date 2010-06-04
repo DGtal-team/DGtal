@@ -8,10 +8,10 @@
  * This file is part of the DGtal library
  */
 
- /**
-   * Description of test_trace' <p>
-   * Aim: simple test of \ref Trace
-   */
+/**
+  * Description of test_trace' <p>
+  * Aim: simple test of \ref Trace
+  */
 
 
 #include <cstdio>
@@ -29,39 +29,39 @@ using namespace std;
 
 void testSimple()
 {
-  trace.info()<< "This is an Info trace"<<endl;
-  trace.warning()<< "This is an warning trace"<<endl;
-  trace.error()<< "This is an Error trace"<<endl;
-  trace.emphase()<< "This is an Emphased trace"<<endl;
-  cerr<<endl;
+    trace.info()<< "This is an Info trace"<<endl;
+    trace.warning()<< "This is an warning trace"<<endl;
+    trace.error()<< "This is an Error trace"<<endl;
+    trace.emphase()<< "This is an Emphased trace"<<endl;
+    cerr<<endl;
 }
 
 void testIndent()
 {
-   long tmp=0;
+    long tmp=0;
 
-   trace.info()<< "This is an Info trace, level 0"<<endl;
-   trace.beginBlock("FirstMethod");
-   trace.info()<< "This is an Info trace, level 1"<<endl;
-   trace.info()<< "This is an Info trace, level 1"<<endl;
-   trace.beginBlock("SecondMethod");
-   trace.warning()<< "This is an Warning trace, level 2"<<endl;
-   trace.warning()<< "This is an Warning trace, level 2"<<endl;
-   trace.info()<< "This is an Info trace, level 2"<<endl;
-   trace.error()<< "This is an Error trace, level 2 (followed by a loop)"<<endl;
+    trace.info()<< "This is an Info trace, level 0"<<endl;
+    trace.beginBlock("FirstMethod");
+    trace.info()<< "This is an Info trace, level 1"<<endl;
+    trace.info()<< "This is an Info trace, level 1"<<endl;
+    trace.beginBlock("SecondMethod");
+    trace.warning()<< "This is an Warning trace, level 2"<<endl;
+    trace.warning()<< "This is an Warning trace, level 2"<<endl;
+    trace.info()<< "This is an Info trace, level 2"<<endl;
+    trace.error()<< "This is an Error trace, level 2 (followed by a loop)"<<endl;
 
-   for(unsigned int i=0 ; i< 4334450; i++)
-    tmp = cos((double)tmp+i);
+    for (unsigned int i=0 ; i< 4334450; i++)
+        tmp = cos((double)tmp+i);
 
-   trace.endBlock();
-   trace.info()<< "This is an Info trace, level 1 (followed by another loop)"<<endl;
+    trace.endBlock();
+    trace.info()<< "This is an Info trace, level 1 (followed by another loop)"<<endl;
 
-   for(unsigned int i=0 ; i< 4334450; i++)
-     tmp = cos((double)tmp+i);
+    for (unsigned int i=0 ; i< 4334450; i++)
+        tmp = cos((double)tmp+i);
 
-   trace.endBlock();
-   trace.info()<< "This is an Info trace, level 0"<<endl<<endl;
- }
+    trace.endBlock();
+    trace.info()<< "This is an Info trace, level 0"<<endl<<endl;
+}
 
 /**
   * We test the Trace class on file stream.
@@ -70,36 +70,36 @@ void testIndent()
   */
 void testFileStream()
 {
-  trace.beginBlock("testFileStream");
-  trace.info() << "Checking the filestream output.. Please check the 'example.txt' file"<<endl;
+    trace.beginBlock("testFileStream");
+    trace.info() << "Checking the filestream output.. Please check the 'example.txt' file"<<endl;
 
-  ofstream myfile;
-  myfile.open ("example.txt");
+    ofstream myfile;
+    myfile.open ("example.txt");
 
-  TraceWriterFile traceWriterFile(myfile);
-  Trace t2(traceWriterFile);
+    TraceWriterFile traceWriterFile(myfile);
+    Trace t2(traceWriterFile);
 
-  t2.info()<< "This is an Info trace"<<endl;
-  t2.warning()<< "This is an warning trace"<<endl;
-  
-  t2.error()<< "This is an Error trace"<<endl;
-  t2.emphase()<< "This is an Emphased trace"<<endl;
-  
-  t2.beginBlock("FirstMethod");
-  t2.info()<< "This is an Info trace, level 1"<<endl;
-  t2.info()<< "This is an Info trace, level 1"<<endl;
-  t2.endBlock();
+    t2.info()<< "This is an Info trace"<<endl;
+    t2.warning()<< "This is an warning trace"<<endl;
 
-  myfile.close();
+    t2.error()<< "This is an Error trace"<<endl;
+    t2.emphase()<< "This is an Emphased trace"<<endl;
 
-  trace.endBlock();
+    t2.beginBlock("FirstMethod");
+    t2.info()<< "This is an Info trace, level 1"<<endl;
+    t2.info()<< "This is an Info trace, level 1"<<endl;
+    t2.endBlock();
+
+    myfile.close();
+
+    trace.endBlock();
 }
 
 
 int main()
 {
-  testSimple();
-  testIndent();
-  testFileStream();
-  return 0;
+    testSimple();
+    testIndent();
+    testFileStream();
+    return 0;
 }
