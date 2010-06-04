@@ -7,10 +7,10 @@
  * @brief
  * @copyright
  */
-#include "Rect.h"
-#include "Shapes.h"
-#include "Tools.h"
-#include "PSFonts.h"
+#include "Board/Rect.h"
+#include "Board/Shapes.h"
+#include "Board/Tools.h"
+#include "Board/PSFonts.h"
 #include <cmath>
 #include <cstring>
 #include <vector>

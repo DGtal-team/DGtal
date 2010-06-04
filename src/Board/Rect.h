@@ -11,7 +11,7 @@
 #define _BOARD_RECT_H_
 
 #include <iostream>
-#include "Point.h"
+#include "Board/Point.h"
 
 namespace LibBoard {
 

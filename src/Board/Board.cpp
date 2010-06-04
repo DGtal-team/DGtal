@@ -9,11 +9,11 @@
  */
 
 #include "Board.h"
-#include "Point.h"
-#include "Rect.h"
-#include "Shapes.h"
-#include "Tools.h"
-#include "PSFonts.h"
+#include "Board/Point.h"
+#include "Board/Rect.h"
+#include "Board/Shapes.h"
+#include "Board/Tools.h"
+#include "Board/PSFonts.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>

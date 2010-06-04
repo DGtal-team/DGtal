@@ -8,10 +8,10 @@
  *
  * @copyright
  */
-#include "ShapeList.h"
+#include "Board/ShapeList.h"
+#include "Board/Tools.h"
 #include <algorithm>
 #include <typeinfo>
-#include "Tools.h"
 
 #if defined( max )
 #undef max

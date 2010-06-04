@@ -8,7 +8,7 @@
  * @copyright
  */
 
-#include "Tools.h"
+#include "Board/Tools.h"
 
 LibBoard::MessageStream LibBoard::notice( std::cerr, "Information: " );
 

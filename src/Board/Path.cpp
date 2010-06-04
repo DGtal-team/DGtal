@@ -7,8 +7,8 @@
  * @brief  
  * @copyright
  */
-#include "board/Path.h"
-#include "board/Transforms.h"
+#include "Board/Path.h"
+#include "Board/Transforms.h"
 
 
 namespace LibBoard {

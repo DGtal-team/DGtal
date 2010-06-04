@@ -10,9 +10,9 @@
 #ifndef _BOARD_PATH_H_
 #define _BOARD_PATH_H_
 
-#include "Point.h"
-#include "Rect.h"
-#include "Transforms.h"
+#include "Board/Point.h"
+#include "Board/Rect.h"
+#include "Board/Transforms.h"
 #include <vector>
 #include <iostream>
 
