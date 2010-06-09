@@ -56,6 +56,7 @@ public:
 
     typedef typename PointVector<T,N>::Iterator Iterator;
     typedef typename PointVector<T,N>::ConstIterator ConstIterator;
+    typedef T ValueType;
 
     /**
     * Constructor.

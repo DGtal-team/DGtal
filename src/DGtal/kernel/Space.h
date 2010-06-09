@@ -123,13 +123,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
+     void selfDisplay( std::ostream & out ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

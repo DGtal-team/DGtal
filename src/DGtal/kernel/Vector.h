@@ -29,6 +29,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -72,9 +73,9 @@ namespace DGtal
     Vector( const T * ptrValues );
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
+    * Copy constructor.
+    * @param other the object to clone.
+    */
     Vector( const Vector & other );
 
     // ----------------------- Interface --------------------------------------
@@ -117,6 +118,13 @@ namespace DGtal
     * @return a reference on 'this'.
     */
     Vector<T,N> & operator=( const Vector<T,N> & other );
+
+    /**
+    * Assignment from a Point.
+    * @param other the Point to copy.
+    * @return a reference on 'this'.
+    */
+//    Vector<T,N> & operator=( const Point<T,N> & other );
     
     
     /**

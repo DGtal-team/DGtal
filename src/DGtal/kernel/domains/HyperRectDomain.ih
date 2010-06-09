@@ -62,6 +62,18 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRec
 
 }
 
+/**
+* Copy Constructor.
+*
+*
+*/
+template<class TSpace>
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace> &aDomain)
+{
+    myLowerBound = aDomain.lowerBound();
+    myUpperBound = aDomain.upperBound();
+}
+
 
 /**
 * Destructor.
@@ -71,9 +83,44 @@ DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
 {
 }
 
+/**
+* Assignment.
+* @param other the object to copy.
+* @return a reference on 'this'.
+* Forbidden by default.
+*/
+template<class TSpace>
+DGtal::HyperRectDomain<TSpace> &
+DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
+{
+  this->myUpperBound = other.upperBound();
+  this->myLowerBound = other.lowerBound();
+  return *this;
+}
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
+
+/**
+* Returns the extent of the HyperRectDomain
+*
+**/
+template<class TSpace>
+INLINE
+typename DGtal::HyperRectDomain<TSpace>::ValueType
+DGtal::HyperRectDomain<TSpace>::extent() const
+{
+    DGtal::HyperRectDomain<TSpace>::ValueType val = 1;
+
+    for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
+        val *= (myUpperBound.at(k) - myLowerBound.at(k) + 1);
+
+    return val;
+}
+
 
 
 /**
@@ -150,7 +197,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
 DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint , const std::size_t aDimension) const
 {
-  return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( aPoint, aDimension );
+    return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( aPoint, aDimension );
 }
 /**
 * end(dim) iterator.
@@ -161,7 +208,7 @@ INLINE
 typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
 DGtal::HyperRectDomain<TSpace>::end( const std::size_t aDimension ) const
 {
-  return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( this->myUpperBound, aDimension );
+    return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( this->myUpperBound, aDimension );
 }
 
 

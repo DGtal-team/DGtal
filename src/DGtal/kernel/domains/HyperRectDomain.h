@@ -75,6 +75,7 @@ class HyperRectDomain
 public:
 
     typedef typename TSpace::PointType PointType;
+    typedef typename PointType::ValueType ValueType;
     typedef TSpace SpaceType;
 
     ///Type def of domain iterators
@@ -99,7 +100,24 @@ public:
      */
     ~HyperRectDomain();
 
+    /**
+    * Copy constructor.
+    * @param other the object to clone.
+    * Forbidden by default.
+    */
+    HyperRectDomain ( const HyperRectDomain & other );
+    
+    
+    /**
+    * Assignment.
+    * @param other the object to copy.
+    * @return a reference on 'this'.
+    * Forbidden by default.
+    */
+    HyperRectDomain & operator= ( const HyperRectDomain & other );
 
+
+    
     //------------- Global Iterator
     /**
     * begin() iterator.
@@ -138,6 +156,12 @@ public:
 
 // ----------------------- Interface --------------------------------------
 public:
+
+    /**
+    * Returns the extent of the HyperRectDomain
+    *
+    **/
+    ValueType extent() const;
 
 
     /**
@@ -182,20 +206,8 @@ protected:
 
 private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    HyperRectDomain ( const HyperRectDomain & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    HyperRectDomain & operator= ( const HyperRectDomain & other );
+
 
 // ------------------------- Internals ------------------------------------
 private:

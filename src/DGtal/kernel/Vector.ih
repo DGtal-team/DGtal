@@ -64,6 +64,8 @@ DGtal::Vector<T,N>::Vector( const Vector & other )
 {
 }
 
+
+
 /**
 * Addition operator.
 *
