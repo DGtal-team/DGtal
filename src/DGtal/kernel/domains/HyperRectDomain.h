@@ -27,7 +27,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
-#include "DGtal/kernel/domains/HyperRectDomain_1DIterator.h"
+#include "DGtal/kernel/domains/HyperRectDomain_SpanIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -80,8 +80,10 @@ public:
 
     ///Type def of domain iterators
     typedef HyperRectDomain_Iterator<PointType> ConstIterator;
-    typedef HyperRectDomain_1DIterator<PointType> Const1DIterator;
+    typedef HyperRectDomain_SpanIterator<PointType> ConstSpanIterator;
 
+
+      
     /**
     * Default Constructor.
     */
@@ -138,19 +140,19 @@ public:
     ConstIterator end() const;
 
 
-    //------------- 1D Iterator
+    //------------- Span Iterator
     /**
-    * Returns a 1D iterator starting at \param aPoint and moving toward the dimension \param aDimension.
+    * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
     *
     **/
-    Const1DIterator begin ( const PointType &aPoint, const std::size_t aDimension) const;
+    ConstSpanIterator span_begin ( const PointType &aPoint, const std::size_t aDimension) const;
 
 
     /**
-    * Creates a end() 1D iterator along the dimension \param aDimension.
+    * Creates a end() Span iterator along the dimension \param aDimension.
     *
     **/
-    Const1DIterator end (const std::size_t aDimension) const;
+    ConstSpanIterator span_end (const std::size_t aDimension) const;
 
 
 

@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file HyperRectDomain_1DIterator.h
+ * @file HyperRectDomain_SpanIterator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/31
  *
- * Header file for module HyperRectDomain_1DIterator.cpp
+ * Header file for module HyperRectDomain_SpanIterator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(HyperRectDomain_1DIterator_RECURSES)
-#error Recursive header files inclusion detected in HyperRectDomain_1DIterator.h
-#else // defined(HyperRectDomain_1DIterator_RECURSES)
+#if defined(HyperRectDomain_SpanIterator_RECURSES)
+#error Recursive header files inclusion detected in HyperRectDomain_SpanIterator.h
+#else // defined(HyperRectDomain_SpanIterator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define HyperRectDomain_1DIterator_RECURSES
+#define HyperRectDomain_SpanIterator_RECURSES
 
-#if !defined HyperRectDomain_1DIterator_h
+#if !defined HyperRectDomain_SpanIterator_h
 /** Prevents repeated inclusion of headers. */
-#define HyperRectDomain_1DIterator_h
+#define HyperRectDomain_SpanIterator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -32,13 +32,13 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class HyperRectDomain_1DIterator
+// class HyperRectDomain_SpanIterator
 /**
- * Description of class 'HyperRectDomain_1DIterator' <p>
+ * Description of class 'HyperRectDomain_SpanIterator' <p>
  * Aim:
  */
 template<typename TPointType>
-class HyperRectDomain_1DIterator
+class HyperRectDomain_SpanIterator
 {
 
 public:
@@ -50,7 +50,7 @@ public:
     typedef TPointType& reference;
 
 
-    HyperRectDomain_1DIterator ( const TPointType & p , const std::size_t aDim )
+    HyperRectDomain_SpanIterator ( const TPointType & p , const std::size_t aDim )
             : myPoint ( p ),  myDimension ( aDim )
     {
     }
@@ -64,7 +64,7 @@ public:
     * Operator ==
     *
     */
-    bool operator== ( const HyperRectDomain_1DIterator<TPointType> &it ) const
+    bool operator== ( const HyperRectDomain_SpanIterator<TPointType> &it ) const
     {
         return ( myPoint.at ( myDimension ) == ( *it ).at ( myDimension ) );
     }
@@ -73,7 +73,7 @@ public:
     * Operator !=
     *
     */
-    bool operator!= ( const HyperRectDomain_1DIterator<TPointType> &aIt ) const
+    bool operator!= ( const HyperRectDomain_SpanIterator<TPointType> &aIt ) const
     {
         return ( myPoint.at ( myDimension ) != ( *aIt ).at ( myDimension ) );
     }
@@ -94,7 +94,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_1DIterator<TPointType> &operator++()
+    HyperRectDomain_SpanIterator<TPointType> &operator++()
     {
         this->next();
         return *this;
@@ -104,9 +104,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_1DIterator<TPointType> &operator++ ( int )
+    HyperRectDomain_SpanIterator<TPointType> &operator++ ( int )
     {
-        HyperRectDomain_1DIterator<TPointType> tmp = *this;
+        HyperRectDomain_SpanIterator<TPointType> tmp = *this;
         ++*this;
         return tmp;
     }
@@ -126,7 +126,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_1DIterator<TPointType> &operator--()
+    HyperRectDomain_SpanIterator<TPointType> &operator--()
     {
         this->prev();
         return *this;
@@ -136,9 +136,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_1DIterator<TPointType> &operator-- ( int )
+    HyperRectDomain_SpanIterator<TPointType> &operator-- ( int )
     {
-        HyperRectDomain_1DIterator<TPointType> tmp = *this;
+        HyperRectDomain_SpanIterator<TPointType> tmp = *this;
         --*this;
         return tmp;
     }
@@ -155,7 +155,7 @@ private:
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined HyperRectDomain_1DIterator_h
+#endif // !defined HyperRectDomain_SpanIterator_h
 
-#undef HyperRectDomain_1DIterator_RECURSES
-#endif // else defined(HyperRectDomain_1DIterator_RECURSES)
+#undef HyperRectDomain_SpanIterator_RECURSES
+#endif // else defined(HyperRectDomain_SpanIterator_RECURSES)

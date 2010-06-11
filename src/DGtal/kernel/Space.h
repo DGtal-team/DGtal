@@ -59,6 +59,7 @@ namespace DGtal
     
     typedef Point<IntT, Dimension> PointType;
     typedef Vector<IntT,Dimension> VectorType;
+    
     typedef Space<IntT,Dimension> SpaceType;
 
     // static constants
@@ -114,7 +115,7 @@ namespace DGtal
     /**
      * @return the dimension of the digital space.
      */
-    static DimensionType dimension();
+    static DimensionType dimension() ;
 
     // ----------------------- Interface --------------------------------------
   public:

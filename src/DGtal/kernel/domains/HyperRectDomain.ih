@@ -187,17 +187,17 @@ DGtal::HyperRectDomain<TSpace>::end() const
     return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myUpperBound,myLowerBound,myUpperBound );
 }
 
-//------------1D Iterators
+//------------Span Iterators
 /**
-* begin(aPoint,dim) 1D iterator.
+* begin(aPoint,dim) Span iterator.
 *
 **/
 template<class TSpace>
 INLINE
-typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
-DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint , const std::size_t aDimension) const
+typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
+DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint , const std::size_t aDimension) const
 {
-    return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( aPoint, aDimension );
+    return typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator ( aPoint, aDimension );
 }
 /**
 * end(dim) iterator.
@@ -205,10 +205,10 @@ DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::
 **/
 template<class TSpace>
 INLINE
-typename DGtal::HyperRectDomain<TSpace>::Const1DIterator
-DGtal::HyperRectDomain<TSpace>::end( const std::size_t aDimension ) const
+typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
+DGtal::HyperRectDomain<TSpace>::span_end( const std::size_t aDimension ) const
 {
-    return typename DGtal::HyperRectDomain<TSpace>::Const1DIterator ( this->myUpperBound, aDimension );
+    return typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator ( this->myUpperBound, aDimension );
 }
 
 

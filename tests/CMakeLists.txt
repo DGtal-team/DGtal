@@ -17,7 +17,7 @@ SET(DGTAL_TESTS_SRC
    test_Space
    test_HyperRectDomain
    test_HyperRectDomain-snippet
-   test_Domain1DIterator
+   test_DomainSpanIterator
    test_HyperRectImage)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
