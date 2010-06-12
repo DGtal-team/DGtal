@@ -138,16 +138,6 @@ namespace DGtal
 #endif
       }
    
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-
   private:
 
     /**
@@ -164,10 +154,7 @@ namespace DGtal
      * Forbidden by default.
      */
     TraceWriterTerm & operator=( const TraceWriterTerm & other );
-  
-    // ------------------------- Internals ------------------------------------
-  private:
-  
+ 
   }; // end of class TraceWriterTerm
 
 

@@ -80,6 +80,16 @@ set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
 
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 
+
+OPTION(INLINE_FUNCTIONS "Build inline functions." ON)
+
+if (INLINE_FUNCTIONS)
+  ADD_DEFINITIONS(-DINLINE=inline)
+else (INLINE_FUNCTIONS)
+  ADD_DEFINITIONS(-DINLINE="")
+endif (INLINE_FUNCTIONS)
+  
+
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------

@@ -20,7 +20,6 @@ using namespace std;
 #include "DGtal/utils/Trace.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#define INLINE
 #include "DGtal/utils/Trace.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////

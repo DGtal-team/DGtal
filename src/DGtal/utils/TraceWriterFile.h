@@ -103,15 +103,6 @@ namespace DGtal
      */
     std::string  postfixReset() {return "";}
 
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
    
   private:
 
@@ -129,9 +120,6 @@ namespace DGtal
      * Forbidden by default.
      */
     TraceWriterFile & operator=( const TraceWriterFile & other );
-  
-    // ------------------------- Internals ------------------------------------
-  private:
   
   }; // end of class TraceWriterFile
 

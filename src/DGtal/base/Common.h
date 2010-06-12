@@ -40,23 +40,14 @@
 //////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////// 
-#ifndef INLINE
-/** Forces inline if nothing is provided by the compiler. */
-#define INLINE inline
-#else
-#define INLINE
-#endif
-
-
-
 namespace DGtal 
 {
   
   /** DGtal Global variables
   *
   **/
-  extern TraceWriterTerm traceWriterTerm;
-  extern Trace trace;
+//  extern TraceWriterTerm traceWriterTerm;
+ // extern Trace trace;
   
   /////////////////////////////////////////////////////////////////////////////
   // class Common
@@ -103,7 +94,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    INLINE Common();
+    Common();
 
   private:
 
@@ -112,7 +103,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    INLINE Common( const Common & other );
+    Common( const Common & other );
 
     /**
      * Assignment.
@@ -120,7 +111,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    INLINE Common & operator=( const Common & other );
+    Common & operator=( const Common & other );
   
     // ------------------------- Internals ------------------------------------
   private:
@@ -134,7 +125,7 @@ namespace DGtal
    * @param object the object of class 'Common' to write.
    * @return the output stream after the writing.
    */
-  INLINE std::ostream&
+  std::ostream&
   operator<<( std::ostream & out, const Common & object );
 
   

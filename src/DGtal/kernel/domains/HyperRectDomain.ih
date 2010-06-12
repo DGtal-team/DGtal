@@ -221,6 +221,7 @@ DGtal::HyperRectDomain<TSpace>::span_end( const std::size_t aDimension ) const
 * @param out the output stream where the object is written.
 */
 template<class TSpace>
+INLINE
 void
 DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
@@ -233,6 +234,7 @@ DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 * @return 'true' if the object is valid, 'false' otherwise.
 */
 template<class TSpace>
+INLINE
 bool
 DGtal::HyperRectDomain<TSpace>::isValid() const
 {

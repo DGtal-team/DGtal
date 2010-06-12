@@ -32,7 +32,8 @@
  *
  * @param outputStream  the output stream that will receive the traces.
  */
-INLINE DGtal::Trace::Trace(DGtal::TraceWriter &writer):  myCurrentPrefix (""), myCurrentLevel(0),  myWriter(writer)
+INLINE
+DGtal::Trace::Trace(DGtal::TraceWriter &writer):  myCurrentPrefix (""), myCurrentLevel(0),  myWriter(writer)
 {
 }
 
@@ -41,7 +42,8 @@ INLINE DGtal::Trace::Trace(DGtal::TraceWriter &writer):  myCurrentPrefix (""), m
  * 
  * We send a last postfixReset to prevent bugs in some TraceWriterTerm terminals.
  */
-INLINE DGtal::Trace::~Trace()
+INLINE
+DGtal::Trace::~Trace()
 {
   myWriter.outputStream() << myWriter.postfixReset();
 }
@@ -51,7 +53,8 @@ INLINE DGtal::Trace::~Trace()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-INLINE void
+INLINE
+void
 DGtal::Trace::selfDisplay( std::ostream & out ) const
 {
   out << "[Trace]";
@@ -61,7 +64,8 @@ DGtal::Trace::selfDisplay( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-INLINE bool
+INLINE
+bool
 DGtal::Trace::isValid() const
 {
   return true;
@@ -71,7 +75,8 @@ DGtal::Trace::isValid() const
  * Reset all the variables of the Trace object (indentation level and keyword stack)
  *
  */
-INLINE void
+INLINE
+void
 DGtal::Trace::reset()
 {
   myCurrentLevel = 0;
@@ -87,7 +92,8 @@ DGtal::Trace::reset()
  * @param keyword contains a label to the new block
  *
  */
-INLINE void
+INLINE
+void
 DGtal::Trace::beginBlock(const std::string &keyword)
 {
   myWriter.outputStream()<< myCurrentPrefix << myWriter.prefixEmphase() << "New Block ["<<keyword << "]"<< myWriter.postfixReset()<<std::endl;

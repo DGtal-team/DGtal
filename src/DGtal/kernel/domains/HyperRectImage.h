@@ -53,7 +53,6 @@ public:
 
     /**
     * Constructor.
-    * Forbidden by default (protected to avoid g++ warnings).
     */
     HyperRectImage( const typename THyperRectDomain::PointType &aPointA, const typename THyperRectDomain::PointType &aPointB );
 
