@@ -4,8 +4,8 @@ include_directories (${PROJECT_SOURCE_DIR}/src)
 
 ##Recursive calls
 ## each subdir must contain a ModuleSRC.txt file with a set command on the variable ${DGTAL_SRC}
-include(DGtal/base/ModuleSRC.txt)
 include(DGtal/utils/ModuleSRC.txt)
+include(DGtal/base/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 

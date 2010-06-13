@@ -1,3 +1,5 @@
+#pragma once
+
 /** 
  * @file Clock.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
