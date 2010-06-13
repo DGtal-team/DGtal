@@ -58,6 +58,7 @@ bool testSimpleHyperRectDomain()
     
     trace.endBlock();
  
+    trace.
 
     trace.beginBlock("Test Copy Constructor");
     HyperRectDomain<Space4Type> myHyperRectDomainBis( myHyperRectDomain );

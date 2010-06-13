@@ -44,10 +44,11 @@ namespace DGtal
 {
   
   /** DGtal Global variables
-  *
-  **/
-//  extern TraceWriterTerm traceWriterTerm;
- // extern Trace trace;
+   *
+   **/
+  
+  extern TraceWriterTerm traceWriterTerm;
+  extern Trace trace;
   
   /////////////////////////////////////////////////////////////////////////////
   // class Common
@@ -59,7 +60,7 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-
+    
     /**
      * Destructor. 
      */
@@ -67,7 +68,7 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -126,7 +127,7 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<<( std::ostream & out, const Common & object );
+    operator<<( std::ostream & out, const Common & object );
 
   
 } // namespace DGtal

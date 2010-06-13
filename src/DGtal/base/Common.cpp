@@ -1,5 +1,7 @@
 /** 
  * @file Common.cpp
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -32,8 +34,8 @@ using namespace std;
 *
 **/
 
-//DGtal::TraceWriterTerm DGtal::traceWriterTerm(std::cerr);
-//DGtal::Trace DGtal::trace(traceWriterTerm);
+DGtal::TraceWriterTerm DGtal::traceWriterTerm(std::cerr);
+DGtal::Trace DGtal::trace(traceWriterTerm);
 
 
 ///////////////////////////////////////////////////////////////////////////////
