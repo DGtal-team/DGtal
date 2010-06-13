@@ -26,16 +26,15 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <boost/concept_check.hpp>
+#include <boost/concept/assert.hpp>
+#include <boost/concept/requires.hpp>
 
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
-
 #include "DGtal/utils/Assert.h"
 
-#include <boost/concept_check.hpp>
-#include <boost/concept/assert.hpp>
-#include <boost/concept/requires.hpp>
 
 //////////////////////////////////////////////////////////////////////////////
 
