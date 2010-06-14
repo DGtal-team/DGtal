@@ -37,25 +37,25 @@ namespace DGtal
  * Description of class 'HyperRectDomain_Iterator' <p>
  * Aim:
  */
-template<typename TPointType>
+template<typename TPoint>
 class HyperRectDomain_Iterator
 {
 
 public:
 
     typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
-    typedef TPointType value_type;
+    typedef TPoint value_type;
     typedef ptrdiff_t difference_type;
-    typedef TPointType* pointer;
-    typedef TPointType& reference;
+    typedef TPoint* pointer;
+    typedef TPoint& reference;
 
 
-    HyperRectDomain_Iterator ( const TPointType & p, const TPointType& lower,const TPointType &upper )
+    HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper )
             : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper )
     {
     }
 
-    const TPointType & operator*() const
+    const TPoint & operator*() const
     {
         return myPoint;
     }
@@ -64,7 +64,7 @@ public:
     * Operator ==
     *
     */
-    bool operator== ( const HyperRectDomain_Iterator<TPointType> &it ) const
+    bool operator== ( const HyperRectDomain_Iterator<TPoint> &it ) const
     {
         return ( myPoint == ( *it ) );
     }
@@ -73,7 +73,7 @@ public:
     * Operator !=
     *
     */
-    bool operator!= ( const HyperRectDomain_Iterator<TPointType> &aIt ) const
+    bool operator!= ( const HyperRectDomain_Iterator<TPoint> &aIt ) const
     {
         return ( myPoint != ( *aIt ) );
     }
@@ -112,7 +112,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_Iterator<TPointType> &operator++()
+    HyperRectDomain_Iterator<TPoint> &operator++()
     {
         this->next();
         return *this;
@@ -122,9 +122,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_Iterator<TPointType> &operator++ ( int )
+    HyperRectDomain_Iterator<TPoint> &operator++ ( int )
     {
-        HyperRectDomain_Iterator<TPointType> tmp = *this;
+        HyperRectDomain_Iterator<TPoint> tmp = *this;
         ++*this;
         return tmp;
     }
@@ -165,7 +165,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_Iterator<TPointType> &operator--()
+    HyperRectDomain_Iterator<TPoint> &operator--()
     {
         this->prev();
         return *this;
@@ -175,9 +175,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_Iterator<TPointType> &operator-- ( int )
+    HyperRectDomain_Iterator<TPoint> &operator-- ( int )
     {
-        HyperRectDomain_Iterator<TPointType> tmp = *this;
+        HyperRectDomain_Iterator<TPoint> tmp = *this;
         --*this;
         return tmp;
     }
@@ -185,9 +185,9 @@ public:
 
 private:
     ///Current Point in the domain
-    TPointType myPoint;
+    TPoint myPoint;
     ///Copies of the Domain limits
-    TPointType mylower, myupper;
+    TPoint mylower, myupper;
     ///Second index of the iterator position
     std::size_t myCurrentPos;
 };

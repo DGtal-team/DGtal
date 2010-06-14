@@ -30,9 +30,10 @@
  * (Lowest = Highest = {0}^n)
  */
 template<class TSpace>
+inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-  typedef typename DGtal::HyperRectDomain<TSpace>::PointType PT;
+  typedef typename DGtal::HyperRectDomain<TSpace>::TPoint PT;
   PT aPoint;
 
   aPoint.zero();
@@ -46,8 +47,9 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
  *
  */
 template<class TSpace>
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointA,
-						  const typename DGtal::HyperRectDomain<TSpace>::PointType &aPointB )
+inline
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace>::TPoint &aPointA,
+						  const typename DGtal::HyperRectDomain<TSpace>::TPoint &aPointB )
 {
   if ( aPointA < aPointB )
     {
@@ -68,6 +70,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRec
  *
  */
 template<class TSpace>
+inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace> &aDomain)
 {
   myLowerBound = aDomain.lowerBound();
@@ -79,6 +82,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRec
  * Destructor.
  */
 template<class TSpace>
+inline
 DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
 {
 }
@@ -90,6 +94,7 @@ DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
  * Forbidden by default.
  */
 template<class TSpace>
+inline
 DGtal::HyperRectDomain<TSpace> &
 DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
 {
@@ -110,10 +115,10 @@ DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomai
  **/
 template<class TSpace>
 inline
-typename DGtal::HyperRectDomain<TSpace>::ValueType
+typename DGtal::HyperRectDomain<TSpace>::TValue
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
-  DGtal::HyperRectDomain<TSpace>::ValueType val = 1;
+  DGtal::HyperRectDomain<TSpace>::TValue val = 1;
 
   for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
     val *= (myUpperBound.at(k) - myLowerBound.at(k) + 1);
@@ -129,7 +134,7 @@ DGtal::HyperRectDomain<TSpace>::extent() const
  **/
 template<class TSpace>
 inline
-const typename DGtal::HyperRectDomain<TSpace>::PointType &
+const typename DGtal::HyperRectDomain<TSpace>::TPoint &
 DGtal::HyperRectDomain<TSpace>::lowerBound() const
 {
   return myLowerBound;
@@ -142,7 +147,7 @@ DGtal::HyperRectDomain<TSpace>::lowerBound() const
  **/
 template<class TSpace>
 inline
-const typename DGtal::HyperRectDomain<TSpace>::PointType &
+const typename DGtal::HyperRectDomain<TSpace>::TPoint &
 DGtal::HyperRectDomain<TSpace>::upperBound() const
 {
   return myUpperBound;
@@ -169,7 +174,7 @@ DGtal::HyperRectDomain<TSpace>::begin() const
 template<class TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint ) const
+DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::TPoint &aPoint ) const
 {
   return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( aPoint,myLowerBound,myUpperBound );
 }
@@ -195,7 +200,7 @@ DGtal::HyperRectDomain<TSpace>::end() const
 template<class TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
-DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpace>::PointType &aPoint , const std::size_t aDimension) const
+DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpace>::TPoint &aPoint , const std::size_t aDimension) const
 {
   return typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator ( aPoint, aDimension );
 }

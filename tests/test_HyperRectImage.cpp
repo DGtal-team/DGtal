@@ -37,13 +37,13 @@ bool testSimpleHyperRectImage()
 {
 
     typedef Space<int,4> Space4Type;
-    typedef Space4Type::PointType PointType;
+    typedef Space4Type::TPoint TPoint;
     typedef HyperRectDomain<Space4Type> TDomain;
     
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
-    PointType a ( t );
-    PointType b ( t2 );
+    TPoint a ( t );
+    TPoint b ( t2 );
 
     trace.beginBlock ( "HyperRectImage init" );
 

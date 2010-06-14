@@ -37,13 +37,13 @@ bool testIterator()
 
     trace.emphase() << "Iterator 4d: ";
     typedef Space<int,4> SpaceType4D;
-    typedef SpaceType4D::PointType PointType4D;
+    typedef SpaceType4D::TPoint TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,6,3,3};
     const int t4D3[ ] = { 1, 2,1,1};
-    PointType4D a4D ( t4D );
-    PointType4D b4D ( t4D2 );
-    PointType4D c4D ( t4D3 );
+    TPoint4D a4D ( t4D );
+    TPoint4D b4D ( t4D2 );
+    TPoint4D c4D ( t4D3 );
 
     trace.beginBlock("Span Domain iterator test");
     ///Domain construction

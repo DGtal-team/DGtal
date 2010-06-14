@@ -48,7 +48,7 @@ namespace DGtal
  *
  * //We create a digital Space based on 'int' integers and in dimension 4
  * typedef DGtal::Space<int,4> Space4DType;
- * typedef Space4DType::PointType Point4DType;
+ * typedef Space4DType::TPoint Point4DType;
  *
  * const int rawA[ ] = { 1, 2, 3 ,4};
  * const int rawB[ ] = { 5, 5, 3 ,4};
@@ -74,13 +74,12 @@ class HyperRectDomain
     // ----------------------- Standard services ------------------------------
 public:
 
-    typedef typename TSpace::PointType PointType;
-    typedef typename PointType::ValueType ValueType;
-    typedef TSpace SpaceType;
+    typedef typename TSpace::TPoint TPoint;
+    typedef typename TPoint::TValue TValue;
 
     ///Type def of domain iterators
-    typedef HyperRectDomain_Iterator<PointType> ConstIterator;
-    typedef HyperRectDomain_SpanIterator<PointType> ConstSpanIterator;
+    typedef HyperRectDomain_Iterator<TPoint> ConstIterator;
+    typedef HyperRectDomain_SpanIterator<TPoint> ConstSpanIterator;
 
 
       
@@ -94,7 +93,7 @@ public:
     * defining the space diagonal.
     *
     */
-    HyperRectDomain ( const PointType &aPointA, const PointType &aPointB );
+    HyperRectDomain ( const TPoint &aPointA, const TPoint &aPointB );
 
 
     /**
@@ -131,7 +130,7 @@ public:
     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
     *
     **/
-    ConstIterator begin ( const PointType &aPoint ) const;
+    ConstIterator begin ( const TPoint &aPoint ) const;
 
     /**
     * end() iterator.
@@ -145,7 +144,7 @@ public:
     * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
     *
     **/
-    ConstSpanIterator span_begin ( const PointType &aPoint, const std::size_t aDimension) const;
+    ConstSpanIterator span_begin ( const TPoint &aPoint, const std::size_t aDimension) const;
 
 
     /**
@@ -163,20 +162,20 @@ public:
     * Returns the extent of the HyperRectDomain
     *
     **/
-    ValueType extent() const;
+    TValue extent() const;
 
 
     /**
     * Returns the lowest point of the space diagonal.
     *
     **/
-    const PointType &lowerBound() const;
+    const TPoint &lowerBound() const;
 
     /**
     * Returns the highest point of the space diagonal.
     *
     **/
-    const PointType &upperBound() const ;
+    const TPoint &upperBound() const ;
 
 
     /**
@@ -202,9 +201,9 @@ protected:
 
 
 ///The lowest point of the space diagonal
-    PointType myLowerBound;
+    TPoint myLowerBound;
 ///The highest point of the space diagonal
-    PointType myUpperBound;
+    TPoint myUpperBound;
 
 private:
 

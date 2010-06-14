@@ -56,7 +56,7 @@ namespace DGtal
 
       typedef typename PointVector<T,N>::Iterator Iterator;
       typedef typename PointVector<T,N>::ConstIterator ConstIterator;
-      typedef T ValueType;
+      typedef T TValue;
 
       /**
        * Constructor.

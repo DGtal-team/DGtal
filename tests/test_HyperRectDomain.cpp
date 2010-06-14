@@ -36,12 +36,12 @@ bool testSimpleHyperRectDomain()
 {
 
     typedef Space<int,4> Space4Type;
-    typedef Space4Type::PointType PointType;
+    typedef Space4Type::TPoint TPoint;
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
-    PointType a ( t );
-    PointType b ( t2 );
+    TPoint a ( t );
+    TPoint b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain init" );
     ///Empty domain using the default constructor
@@ -78,37 +78,37 @@ bool testSimpleHyperRectDomain()
 
 bool testIterator()
 {
-    typedef Space<int,2> SpaceType;
-    typedef SpaceType::PointType PointType;
+    typedef Space<int,2> TSpace;
+    typedef TSpace::TPoint TPoint;
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
-    PointType a ( t );
-    PointType b ( t2 );
+    TPoint a ( t );
+    TPoint b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
-    HyperRectDomain<SpaceType> myHyperRectDomain ( a,b );
+    HyperRectDomain<TSpace> myHyperRectDomain ( a,b );
 
     trace.info() << myHyperRectDomain << std::endl;
 
     trace.emphase() << "Iterator 2d: ";
-    for ( HyperRectDomain<SpaceType>::ConstIterator it = myHyperRectDomain.begin();
+    for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
             it != myHyperRectDomain.end();
             ++it )
         trace.info() << ( *it ) << std::endl;
 
 
     trace.emphase() << "Iterator 4d: ";
-    typedef Space<int,4> SpaceType4D;
-    typedef SpaceType4D::PointType PointType4D;
+    typedef Space<int,4> TSpace4D;
+    typedef TSpace4D::TPoint TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D ( t4D );
-    PointType4D b4D ( t4D2 );
+    TPoint4D a4D ( t4D );
+    TPoint4D b4D ( t4D2 );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
+    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for ( HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.begin();
+    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
             it != myHyperRectDomain4D.end();
             ++it )
         trace.info() << ( *it ) << std::endl;
@@ -120,19 +120,19 @@ bool testIterator()
 
 bool testReverseIterator()
 {
-    typedef Space<int,4> SpaceType4D;
-    typedef SpaceType4D::PointType PointType4D;
+    typedef Space<int,4> TSpace4D;
+    typedef TSpace4D::TPoint TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D ( t4D );
-    PointType4D b4D ( t4D2 );
+    TPoint4D a4D ( t4D );
+    TPoint4D b4D ( t4D2 );
 
     trace.beginBlock ( "Test reverse iterator" );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
+    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for ( HyperRectDomain<SpaceType4D>::ConstIterator it = myHyperRectDomain4D.end();
+    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.end();
             it != myHyperRectDomain4D.begin();
             --it )
         trace.info() << ( *it ) << std::endl;
@@ -146,21 +146,21 @@ bool testReverseIterator()
 
 bool testSTLCompat()
 {
-    typedef Space<int,4> SpaceType4D;
-    typedef SpaceType4D::PointType PointType4D;
+    typedef Space<int,4> TSpace4D;
+    typedef TSpace4D::TPoint TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    PointType4D a4D ( t4D );
-    PointType4D b4D ( t4D2 );
+    TPoint4D a4D ( t4D );
+    TPoint4D b4D ( t4D2 );
 
     trace.beginBlock ( "TestSTL Compatibility" );
 
-    HyperRectDomain<SpaceType4D> myHyperRectDomain4D ( a4D,b4D );
+    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
     std::copy ( myHyperRectDomain4D.begin(),
                 myHyperRectDomain4D.end(),
-                ostream_iterator<PointType4D> ( trace.info(), " " ) );
+                ostream_iterator<TPoint4D> ( trace.info(), " " ) );
 
     trace.info() << std::endl;
     trace.endBlock();

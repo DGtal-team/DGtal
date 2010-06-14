@@ -33,42 +33,48 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class HyperRectImage
-/**
- * Description of class 'HyperRectImage' <p>
- * Aim:
- *
- *
- *  \todo ajouter un parametre template avec le Container (vector, map, ..) et faire des specialisations spécifiques des iterateurs.
- *  
- */
+  /////////////////////////////////////////////////////////////////////////////
+  // class HyperRectImage
+  /**
+   * Description of class 'HyperRectImage' <p>
+   * Aim:
+   *
+   *
+   *  \todo ajouter un parametre template avec le Container (vector, map, ..) et faire des specialisations spécifiques des iterateurs.
+   *  
+   */
 
-template < class THyperRectDomain, typename TValue>
-class HyperRectImage
-{
+  template <class THyperRectDomain, typename TValue>
+    class HyperRectImage
+  {
 
-// ----------------------- Standard services ------------------------------
-public:
+    typedef typename THyperRectDomain::TPoint TPoint;
+
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /** 
+     * Constuctor as the bounding box of two points.
+     * 
+     * @param aPointA first point.
+     * @param aPointB second point.
+     */    
+    HyperRectImage( const typename THyperRectDomain::TPoint &aPointA, 
+		    const typename THyperRectDomain::TPoint &aPointB );
 
     /**
-    * Constructor.
-    */
-    HyperRectImage( const typename THyperRectDomain::PointType &aPointA, const typename THyperRectDomain::PointType &aPointB );
-
-    /**
-     * Destructor.
+     * Destructor.x
      */
     ~HyperRectImage();
 
     // ----------------------- Interface --------------------------------------
-public:
-
-
+  public:
+    
     /**
-    * Writes/Displays the object on an output stream.
-    * @param out the output stream where the object is written.
-    */
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
     void selfDisplay ( std::ostream & out ) const;
 
     /**
@@ -77,13 +83,12 @@ public:
      */
     bool isValid() const;
 
-protected:
+  protected:
 
     THyperRectDomain myDomain; ///Local copie of the HyperRectDomain
-
     std::vector<TValue> myImageMap; ///Image Container
 
-private:
+  private:
     /**
      * Assignment.
      * @param other the object to copy.
@@ -93,21 +98,23 @@ private:
     HyperRectImage & operator= ( const HyperRectImage & other );
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class HyperRectImage
+    
+
+  }; // end of class HyperRectImage
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'HyperRectImage'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'HyperRectImage' to write.
- * @return the output stream after the writing.
- */
-template <class THyperRectDomain, typename T>
-inline
-std::ostream&
-operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'HyperRectImage'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'HyperRectImage' to write.
+   * @return the output stream after the writing.
+   */
+  template <class THyperRectDomain, typename T>
+    inline
+    std::ostream&
+    operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
 
 
 } // namespace DGtal

@@ -52,7 +52,7 @@ DGtal::Space<T,N>::Space( const Space & other )
 
 template<typename T,std::size_t N>
 inline
-typename DGtal::Space<T,N>::DimensionType
+typename DGtal::Space<T,N>::TDimension
 DGtal::Space<T,N>::dimension()
 {
   return N;

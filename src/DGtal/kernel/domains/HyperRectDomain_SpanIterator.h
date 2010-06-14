@@ -37,25 +37,25 @@ namespace DGtal
  * Description of class 'HyperRectDomain_SpanIterator' <p>
  * Aim:
  */
-template<typename TPointType>
+template<typename TPoint>
 class HyperRectDomain_SpanIterator
 {
 
 public:
 
     typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
-    typedef TPointType value_type;
+    typedef TPoint value_type;
     typedef ptrdiff_t difference_type;
-    typedef TPointType* pointer;
-    typedef TPointType& reference;
+    typedef TPoint* pointer;
+    typedef TPoint& reference;
 
 
-    HyperRectDomain_SpanIterator ( const TPointType & p , const std::size_t aDim )
+    HyperRectDomain_SpanIterator ( const TPoint & p , const std::size_t aDim )
             : myPoint ( p ),  myDimension ( aDim )
     {
     }
 
-    const TPointType & operator*() const
+    const TPoint & operator*() const
     {
         return myPoint;
     }
@@ -64,7 +64,7 @@ public:
     * Operator ==
     *
     */
-    bool operator== ( const HyperRectDomain_SpanIterator<TPointType> &it ) const
+    bool operator== ( const HyperRectDomain_SpanIterator<TPoint> &it ) const
     {
         return ( myPoint.at ( myDimension ) == ( *it ).at ( myDimension ) );
     }
@@ -73,7 +73,7 @@ public:
     * Operator !=
     *
     */
-    bool operator!= ( const HyperRectDomain_SpanIterator<TPointType> &aIt ) const
+    bool operator!= ( const HyperRectDomain_SpanIterator<TPoint> &aIt ) const
     {
         return ( myPoint.at ( myDimension ) != ( *aIt ).at ( myDimension ) );
     }
@@ -94,7 +94,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_SpanIterator<TPointType> &operator++()
+    HyperRectDomain_SpanIterator<TPoint> &operator++()
     {
         this->next();
         return *this;
@@ -104,9 +104,9 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_SpanIterator<TPointType> &operator++ ( int )
+    HyperRectDomain_SpanIterator<TPoint> &operator++ ( int )
     {
-        HyperRectDomain_SpanIterator<TPointType> tmp = *this;
+        HyperRectDomain_SpanIterator<TPoint> tmp = *this;
         ++*this;
         return tmp;
     }
@@ -126,7 +126,7 @@ public:
     * Operator ++ (++it)
     *
     */
-    HyperRectDomain_SpanIterator<TPointType> &operator--()
+    HyperRectDomain_SpanIterator<TPoint> &operator--()
     {
         this->prev();
         return *this;
@@ -136,16 +136,16 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_SpanIterator<TPointType> &operator-- ( int )
+    HyperRectDomain_SpanIterator<TPoint> &operator-- ( int )
     {
-        HyperRectDomain_SpanIterator<TPointType> tmp = *this;
+        HyperRectDomain_SpanIterator<TPoint> tmp = *this;
         --*this;
         return tmp;
     }
 
 private:
     ///Current Point in the domain
-    TPointType myPoint;
+    TPoint myPoint;
     ///Dimension on which the iterator must iterate
     std::size_t myDimension;
 

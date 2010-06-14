@@ -283,10 +283,8 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions
 #include "DGtal/kernel/PointVector.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

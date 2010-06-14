@@ -25,7 +25,8 @@
 * Destructor.
 */
 template <class THyperRectDomain, typename T>
-DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperRectDomain::PointType &aPointA, const  typename THyperRectDomain::PointType &aPointB ) : myDomain(aPointA,aPointB)
+inline
+DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperRectDomain::TPoint &aPointA, const  typename THyperRectDomain::TPoint &aPointB ) : myDomain(aPointA,aPointB)
 {    
     myImageMap.reserve(myDomain.extent());
 }
@@ -35,6 +36,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperR
  * Destructor.
  */
 template <class THyperRectDomain, typename T>
+inline
 DGtal::HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
 {
 }
@@ -49,6 +51,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
  * @param out the output stream where the object is written.
  */
 template <class THyperRectDomain, typename T>
+inline
 void
 DGtal::HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) const
 {
@@ -60,6 +63,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) co
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <class THyperRectDomain, typename T>
+inline
 bool
 DGtal::HyperRectImage<THyperRectDomain,T>::isValid() const
 {
@@ -74,6 +78,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::isValid() const
 * @return the output stream after the writing.
 */
 template<class THyperRectDomain, typename T>
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                     const HyperRectImage<THyperRectDomain,T> & object )

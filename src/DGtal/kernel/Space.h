@@ -44,35 +44,35 @@ namespace DGtal
    *
    */
   
-  template <class IntT, std::size_t Dimension>
+  template <class TInt, std::size_t Dimension>
   class Space
   {
   public:
 
-    /// \todo fixer des concept check sur IntT
-    BOOST_CONCEPT_ASSERT((boost::EqualityComparable<IntT>));
-    BOOST_CONCEPT_ASSERT((boost::Assignable<IntT>));
+    /// \todo fixer des concept check sur TInt
+    BOOST_CONCEPT_ASSERT((boost::EqualityComparable<TInt>));
+    BOOST_CONCEPT_ASSERT((boost::Assignable<TInt>));
     
     
-    typedef IntT IntegerType;
-    typedef std::size_t  DimensionType;
+    typedef TInt TInteger;
+    typedef std::size_t  TDimension;
     
-    typedef Point<IntT, Dimension> PointType;
-    typedef Vector<IntT,Dimension> VectorType;
+    typedef Point<TInt, Dimension> TPoint;
+    typedef Vector<TInt,Dimension> TVector;
     
-    typedef Space<IntT,Dimension> SpaceType;
+    typedef Space<TInt,Dimension> TSpace;
 
     // static constants
-    static const DimensionType staticDimension = Dimension;
+    static const TDimension staticDimension = Dimension;
     
-    //typedef Matrix<DimensionT,DimensionT,IntT> Matrix;
+    //typedef Matrix<DimensionT,DimensionT,TInt> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {
-      typedef Space<IntT,Dimension-Codimension> Type;
+      typedef Space<TInt,Dimension-Codimension> Type;
     };
     template <std::size_t Subdimension>
     struct Subspace {
-      typedef Space<IntT,Subdimension> Type;
+      typedef Space<TInt,Subdimension> Type;
     };
     
     
@@ -115,7 +115,7 @@ namespace DGtal
     /**
      * @return the dimension of the digital space.
      */
-    static DimensionType dimension() ;
+    static TDimension dimension() ;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -158,9 +158,9 @@ namespace DGtal
    * @param object the object of class 'Space' to write.
    * @return the output stream after the writing.
    */
-  template <typename IntT, std::size_t Dimension>
+  template <typename TInt, std::size_t Dimension>
   std::ostream&
-  operator<<( std::ostream & out, const Space<IntT,Dimension> & object );
+  operator<<( std::ostream & out, const Space<TInt,Dimension> & object );
 
   
 } // namespace DGtal
