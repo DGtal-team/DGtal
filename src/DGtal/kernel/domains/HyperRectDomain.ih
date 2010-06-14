@@ -118,7 +118,7 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::TValue
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
-  DGtal::HyperRectDomain<TSpace>::TValue val = 1;
+  typename DGtal::HyperRectDomain<TSpace>::TValue val = 1;
 
   for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
     val *= (myUpperBound.at(k) - myLowerBound.at(k) + 1);
