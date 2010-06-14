@@ -83,39 +83,41 @@ namespace DGtal
      * Constructor
      *
      */
-    Space();
+    Space() {};
     
     /**
      * Destructor. 
      */
-    ~Space();
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Does nothing.
-     */
-    Space( const Space & other );
+    ~Space() {};
 
     /**
      * @return the digital space of specified subdimension of this space. 
      */
     template <std::size_t Subdimension>
     static
-    typename Subspace<Subdimension>::Type subspace();
+    typename Subspace<Subdimension>::Type subspace()
+      {
+	ASSERT( Subdimension <= Dimension );
+	return Space<TInt,Subdimension>();
+      }
+    
 
     /**
      * @return the digital space of specified codimension of this space. 
      */
     template <std::size_t Codimension>
     static
-    typename Subcospace<Codimension>::Type subcospace();
+    typename Subcospace<Codimension>::Type subcospace()
+      {
+	ASSERT( Codimension <= Dimension );
+	return Space<TInt,Dimension-Codimension>();
+      }
 
 
     /**
      * @return the dimension of the digital space.
      */
-    static TDimension dimension() ;
+    static TDimension dimension() { return Dimension; }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -124,20 +126,12 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-     void selfDisplay( std::ostream & out ) const;
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
+    static void selfDisplay( std::ostream & out )
+    {
+      out << "[Space dim=" << dimension() << " size_elem=" << sizeof( TInt ) << " ]";
+    }
 
   private:
-
-
     /**
      * Assignment.
      * @param other the object to copy.
@@ -159,16 +153,15 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename TInt, std::size_t Dimension>
-  std::ostream&
-  operator<<( std::ostream & out, const Space<TInt,Dimension> & object );
+  static std::ostream&
+  operator<<( std::ostream & out, const Space<TInt,Dimension> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
   
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#include "DGtal/kernel/Space.ih"
 
 
 //                                                                           //
