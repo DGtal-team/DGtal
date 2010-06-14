@@ -27,33 +27,33 @@
 
 
 /**
-* Constructor
-**/
+ * Constructor
+ **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Point<T,N>::Point()
 {
 }
 
 /**
-* Destructor
-**/
+ * Destructor
+ **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Point<T,N>::~Point()
 {
 }
 
 /**
-* Constructor from array of values.
-*
-* @param ptrValues the array of values (should be at least as long as
-* the size of the vector)
-*/
+ * Constructor from array of values.
+ *
+ * @param ptrValues the array of values (should be at least as long as
+ * the size of the vector)
+ */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Point<T,N>::Point( const T * ptrValues )
-: PointVector<T,N>( ptrValues )
+  : PointVector<T,N>( ptrValues )
 {
 }
 
@@ -62,7 +62,7 @@ DGtal::Point<T,N>::Point( const T * ptrValues )
  * @param other the object to clone.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Point<T,N>::Point( const Point & other )
   : PointVector<T,N>( other )
 {
@@ -70,74 +70,74 @@ DGtal::Point<T,N>::Point( const Point & other )
 
 
 /**
-* Addition operator.
-*
-* \pre Vector \a v must have the same size as \a *this.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Addition operator.
+ *
+ * \pre Vector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE 
+inline 
 DGtal::Point<T,N>&
 DGtal::Point<T,N>::operator+= ( const Vector<T,N>& v )
 {
-    for ( std::size_t i = 0; i < N; ++i )
-        this->myArray[ i ] += v.at ( i );
-    return *this;
+  for ( std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] += v.at ( i );
+  return *this;
 }
 
 /**
-* Addition operator.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Addition operator.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE 
+inline 
 DGtal::Point<T,N>
 DGtal::Point<T,N>::operator+ ( const Vector<T,N>& v ) const
 {
-    Point<T,N> newpoint;
+  Point<T,N> newpoint;
 
-    for ( std::size_t i = 0; i < N; ++i )
-        newpoint.at ( i ) = this->at ( i ) +  v.at ( i );
+  for ( std::size_t i = 0; i < N; ++i )
+    newpoint.at ( i ) = this->at ( i ) +  v.at ( i );
 
-    return newpoint;
+  return newpoint;
 }
 
 /**
-* Substraction operator.
-*
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Substraction operator.
+ *
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE 
+inline 
 DGtal::Point<T,N>&
 DGtal::Point<T,N>::operator-= ( const Vector<T,N>& v )
 {
-    for ( std::size_t i = 0; i < N; ++i )
-        this->myArray[ i ] -= v.at ( i );
-    return *this;
+  for ( std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] -= v.at ( i );
+  return *this;
 }
 
 /**
-* Substraction operator.
-*
-* \pre Vector \a v must have the same size as \a *this.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Substraction operator.
+ *
+ * \pre Vector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE 
+inline 
 DGtal::Point<T,N>
 DGtal::Point<T,N>::operator- ( const Vector<T,N>& v ) const
 {
-    Point<T,N> newpoint;
+  Point<T,N> newpoint;
 
-    for ( std::size_t i = 0; i < N; ++i )
-        newpoint.at ( i ) = this->at ( i ) -  v.at ( i );
+  for ( std::size_t i = 0; i < N; ++i )
+    newpoint.at ( i ) = this->at ( i ) -  v.at ( i );
 
-    return newpoint;
+  return newpoint;
 }
 
 /**
@@ -147,7 +147,7 @@ DGtal::Point<T,N>::operator- ( const Vector<T,N>& v ) const
  * \param p is the Point that gets substracted to \a *this.
  */
 template<typename T,std::size_t N>
-INLINE 
+inline 
 DGtal::Vector<T,N>
 DGtal::Point<T,N>::operator- ( const Point<T,N>& p ) const
 {
@@ -163,7 +163,7 @@ DGtal::Point<T,N>::operator- ( const Point<T,N>& p ) const
  * @param out the output stream where the object is written.
  */
 template<typename T, std::size_t N>
-INLINE
+inline
 void 
 DGtal::Point<T,N>::selfDisplay( std::ostream & out ) const
 {
@@ -178,7 +178,7 @@ DGtal::Point<T,N>::selfDisplay( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool 
 DGtal::Point<T,N>::isValid() const
 {
@@ -196,7 +196,7 @@ DGtal::Point<T,N>::isValid() const
  * @return the output stream after the writing.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 std::ostream&
 DGtal::operator<<( std::ostream & out,
 		   const Point<T,N> & object )

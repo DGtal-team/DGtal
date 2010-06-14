@@ -138,23 +138,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-   
-
-  private:
-
-
-   
-    // ------------------------- Internals ------------------------------------
-  private:
   
   }; // end of class Vector
 
@@ -174,10 +157,8 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/kernel/Vector.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

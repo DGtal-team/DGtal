@@ -78,11 +78,13 @@ namespace DGtal
     * Starts a clock.
     */
     void startClock();
-    /**
-    * @return the time (in ms) since the last 'startClock()'.
-    */
-    long stopClock();
 
+    /**
+     * Stops the clock.
+     * @return the time (in ms) since the last 'startClock()'.
+     */
+    long stopClock();
+    
     /**
      * Constructor.
      *
@@ -154,21 +156,20 @@ namespace DGtal
    * @param object the object of class 'Clock' to write.
    * @return the output stream after the writing.
    */
+  inline
   std::ostream&
-  operator<<( std::ostream & out, const Clock & object );
-
+  operator<<( std::ostream & out, const Clock & object )
+    {
+      object.selfDisplay( out );
+      return out;
+    }
+  
   
 } // namespace DGtal
 
-
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Inline methods
 #include "DGtal/utils/Clock.ih"
-#endif
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined Clock_h
 

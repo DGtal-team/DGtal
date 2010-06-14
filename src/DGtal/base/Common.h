@@ -125,18 +125,17 @@ namespace DGtal
    * @param object the object of class 'Common' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-    operator<<( std::ostream & out, const Common & object );
+  inline
+    std::ostream&
+    operator<<( std::ostream & out, const Common & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
   
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
-#include "DGtal/base/Common.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

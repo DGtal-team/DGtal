@@ -23,19 +23,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 /**
-* Constructor
-**/
+ * Constructor
+ **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Vector<T,N>::Vector()
 {
 }
 
 /**
-* Destructor
-**/
+ * Destructor
+ **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Vector<T,N>::~Vector()
 {
 }
@@ -47,7 +47,7 @@ DGtal::Vector<T,N>::~Vector()
  * the size of the vector)
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Vector<T,N>::Vector( const T * ptrValues )
   : PointVector<T,N>( ptrValues )
 {
@@ -58,7 +58,7 @@ DGtal::Vector<T,N>::Vector( const T * ptrValues )
  * @param other the object to clone.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Vector<T,N>::Vector( const Vector & other )
   : PointVector<T,N>( other )
 {
@@ -67,14 +67,14 @@ DGtal::Vector<T,N>::Vector( const Vector & other )
 
 
 /**
-* Addition operator.
-*
-* \pre Vector \a v must have the same size as \a *this.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Addition operator.
+ *
+ * \pre Vector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE DGtal::Vector<T,N>&  
+inline DGtal::Vector<T,N>&  
 DGtal::Vector<T,N>::operator+= (const Vector<T,N>& v)
 {
   for (std::size_t i = 0; i < N; ++i )
@@ -84,12 +84,12 @@ DGtal::Vector<T,N>::operator+= (const Vector<T,N>& v)
 
 
 /**
-* Addition operator.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Addition operator.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE DGtal::Vector<T,N>
+inline DGtal::Vector<T,N>
 DGtal::Vector<T,N>::operator+ (const Vector<T,N>& v) const
 {
   Vector<T,N> newpoint;
@@ -101,13 +101,13 @@ DGtal::Vector<T,N>::operator+ (const Vector<T,N>& v) const
 }
 
 /**
-* Substraction operator.
-*
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Substraction operator.
+ *
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE DGtal::Vector<T,N>&  
+inline DGtal::Vector<T,N>&  
 DGtal::Vector<T,N>::operator-= (const Vector<T,N>& v)
 {
   for (std::size_t i = 0; i < N; ++i )
@@ -116,14 +116,14 @@ DGtal::Vector<T,N>::operator-= (const Vector<T,N>& v)
 }
 
 /**
-* Substraction operator.
-*
-* \pre Vector \a v must have the same size as \a *this.
-*
-* \param v is the vector that gets added to \a *this.
-*/
+ * Substraction operator.
+ *
+ * \pre Vector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
 template<typename T,std::size_t N>
-INLINE DGtal::Vector<T,N>
+inline DGtal::Vector<T,N>
 DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
 {
   Vector<T,N> newpoint;
@@ -139,7 +139,7 @@ DGtal::Vector<T,N>::operator- (const Vector<T,N>& v) const
  * @param out the output stream where the object is written.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 void 
 DGtal::Vector<T,N>::selfDisplay( std::ostream & out ) const
 {
@@ -154,7 +154,7 @@ DGtal::Vector<T,N>::selfDisplay( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 bool 
 DGtal::Vector<T,N>::isValid() const
 {

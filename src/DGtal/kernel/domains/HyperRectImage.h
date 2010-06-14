@@ -105,11 +105,16 @@ private:
  * @return the output stream after the writing.
  */
 template <class THyperRectDomain, typename T>
+inline
 std::ostream&
 operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
 
 
 } // namespace DGtal
+
+///////////////////////////////////////////////////////////////////////////////
+// Inline methods.
+#include "DGtal/kernel/domains/HyperRectImage.ih"
 
 
 //                                                                           //

@@ -206,10 +206,8 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions
 #include "DGtal/utils/Trace.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

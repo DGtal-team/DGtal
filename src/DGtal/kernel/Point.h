@@ -36,143 +36,131 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class Point
-/**
- * Description of class 'Point' <p>
- *
- * Aim: Implement the notion of Point in a Digital Space. Inherits
- * from PointVector which is the template container for Point and
- * Vector.
- *
- */
+  /////////////////////////////////////////////////////////////////////////////
+  // class Point
+  /**
+   * Description of class 'Point' <p>
+   *
+   * Aim: Implement the notion of Point in a Digital Space. Inherits
+   * from PointVector which is the template container for Point and
+   * Vector.
+   *
+   */
 
-template<typename T, std::size_t N>
-class Point : public PointVector<T,N>
-{
+  template<typename T, std::size_t N>
+    class Point : public PointVector<T,N>
+    {
 
-    // ----------------------- Standard services ------------------------------
-public:
+      // ----------------------- Standard services ------------------------------
+    public:
 
-    typedef typename PointVector<T,N>::Iterator Iterator;
-    typedef typename PointVector<T,N>::ConstIterator ConstIterator;
-    typedef T ValueType;
+      typedef typename PointVector<T,N>::Iterator Iterator;
+      typedef typename PointVector<T,N>::ConstIterator ConstIterator;
+      typedef T ValueType;
 
-    /**
-    * Constructor.
-    */
-    Point();
+      /**
+       * Constructor.
+       */
+      Point();
 
-    /**
-    * Destructor.
-    */
-    ~Point();
+      /**
+       * Destructor.
+       */
+      ~Point();
 
-    /**
-    * Constructor from array of values.
-    *
-    * @param ptrValues the array of values (should be at least as long as
-    * the size of the vector)
-    */
-    Point( const T * ptrValues );
+      /**
+       * Constructor from array of values.
+       *
+       * @param ptrValues the array of values (should be at least as long as
+       * the size of the vector)
+       */
+      Point( const T * ptrValues );
     
     
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    Point( const Point & other );
+      /**
+       * Copy constructor.
+       * @param other the object to clone.
+       */
+      Point( const Point & other );
 
-    // ----------------------- Interface --------------------------------------
-public:
+      // ----------------------- Interface --------------------------------------
+    public:
 
-    /**
-    * Addition operator with assignement.
-    *
-    * \param v is the Point that gets added to \a *this.
-    */
-    Point<T,N>& operator+= ( const Vector<T,N>& v );
+      /**
+       * Addition operator with assignement.
+       *
+       * \param v is the Point that gets added to \a *this.
+       */
+      Point<T,N>& operator+= ( const Vector<T,N>& v );
 
-    /**
-    * Addition operator.
-    *
-    * \param v is the Point that gets added to \a *this.
-    */
-    Point<T,N> operator+ ( const Vector<T,N>& v ) const;
-
-
-    /**
-    * Substraction operator with assignement.
-    *
-    * \param v is the Point that gets substracted to \a *this.
-    */
-    Point<T,N>& operator-= ( const Vector<T,N>& v );
-
-    /**
-    * Substraction operator.
-    * Point - Vector => Point
-    *
-    * \param v is the Point that gets added to \a *this.
-    */
-    Point<T,N> operator- ( const Vector<T,N>& v ) const;
-
-    /**
-    * Substraction operator.
-    * Point - Point => Vector
-    *
-    * \param p is the Point that gets substracted to \a *this.
-    */
-    Vector<T,N> operator- ( const Point<T,N>& p ) const;
+      /**
+       * Addition operator.
+       *
+       * \param v is the Point that gets added to \a *this.
+       */
+      Point<T,N> operator+ ( const Vector<T,N>& v ) const;
 
 
+      /**
+       * Substraction operator with assignement.
+       *
+       * \param v is the Point that gets substracted to \a *this.
+       */
+      Point<T,N>& operator-= ( const Vector<T,N>& v );
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
+      /**
+       * Substraction operator.
+       * Point - Vector => Point
+       *
+       * \param v is the Point that gets added to \a *this.
+       */
+      Point<T,N> operator- ( const Vector<T,N>& v ) const;
 
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-private:
-    // ------------------------- Private Datas --------------------------------
-private:
-
-    // ------------------------- Hidden services ------------------------------
-protected:
-
-    // ------------------------- Internals ------------------------------------
-private:
+      /**
+       * Substraction operator.
+       * Point - Point => Vector
+       *
+       * \param p is the Point that gets substracted to \a *this.
+       */
+      Vector<T,N> operator- ( const Point<T,N>& p ) const;
 
 
 
-}; // end of class Point
+      /**
+       * Writes/Displays the object on an output stream.
+       * @param out the output stream where the object is written.
+       */
+      void selfDisplay ( std::ostream & out ) const;
+
+      /**
+       * Checks the validity/consistency of the object.
+       * @return 'true' if the object is valid, 'false' otherwise.
+       */
+      bool isValid() const;
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Point'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Point' to write.
- * @return the output stream after the writing.
- */
-template<typename T, std::size_t N>
-std::ostream&
-operator<<( std::ostream & out, const Point<T,N> & object );
+
+    }; // end of class Point
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Point'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Point' to write.
+   * @return the output stream after the writing.
+   */
+  template<typename T, std::size_t N>
+    inline
+    std::ostream&
+    operator<<( std::ostream & out, const Point<T,N> & object );
 
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/kernel/Point.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

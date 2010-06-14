@@ -168,9 +168,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
-#if defined(INLINE)
 #include "DGtal/kernel/Space.ih"
-#endif
 
 
 //                                                                           //

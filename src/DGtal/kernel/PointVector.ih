@@ -24,7 +24,7 @@
 * Constructor
 **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::PointVector<T,N>::PointVector()
 {
 }
@@ -33,7 +33,7 @@ DGtal::PointVector<T,N>::PointVector()
 * Destructor
 **/
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::PointVector<T,N>::~PointVector()
 {
 }
@@ -45,7 +45,7 @@ DGtal::PointVector<T,N>::~PointVector()
  * the size of the vector)
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
 {
   for ( std::size_t i = 0; i < N; ++i )
@@ -60,7 +60,7 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
 **/
 template<typename T,std::size_t N>
 template<typename U>
-INLINE
+inline
 void 
 DGtal::PointVector<T,N>::cast(DGtal::PointVector<U,N> &aPointVector)
 {
@@ -75,7 +75,7 @@ DGtal::PointVector<T,N>::cast(DGtal::PointVector<U,N> &aPointVector)
  * @param other the object to clone.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
   : myArray( other.myArray )
 {
@@ -86,7 +86,7 @@ DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
 * coefficients).
 */
 template<typename T,std::size_t N>
-INLINE
+inline
 std::size_t
 DGtal::PointVector<T,N>::size()
 {
@@ -98,7 +98,7 @@ DGtal::PointVector<T,N>::size()
 * coefficients).
 */
 template<typename T,std::size_t N>
-INLINE
+inline
 std::size_t
 DGtal::PointVector<T,N>::dimension()
 {
@@ -115,7 +115,7 @@ DGtal::PointVector<T,N>::dimension()
 */
 
 template<typename T,std::size_t N>
-INLINE
+inline
 const T&
 DGtal::PointVector<T,N>::at ( std::size_t i ) const
 {
@@ -135,7 +135,7 @@ DGtal::PointVector<T,N>::at ( std::size_t i ) const
 * \param i is the index of the retrieved coefficient.
 */
 template<typename T,std::size_t N>
-INLINE T& DGtal::PointVector<T,N>::at( std::size_t i )
+inline T& DGtal::PointVector<T,N>::at( std::size_t i )
 {
     ASSERT ( i < dimension() );
 
@@ -165,7 +165,7 @@ DGtal::PointVector<T,N>::operator*= ( T coeff )
 * \param aPointVector is the pointvector to assign to \a *this.
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 {
@@ -180,7 +180,7 @@ DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 * \param aPointVector is the pointvector to test its equality to \a *this.
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> &aPointVector ) const
 {
@@ -193,7 +193,7 @@ DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> &aPointVector ) con
 * \param aPointVector is the pointvector and we return \param this == \param aPointVector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> &aPointVector ) const
 {
@@ -206,7 +206,7 @@ DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> &aPointVector ) con
 * \param aPointVector is the pointvector and we return \param this < \param aPointVector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) const
 {
@@ -220,7 +220,7 @@ DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) cons
 * \param aPointVector is the pointvector and we return \param this <= \param aPointVector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> &aPointVector ) const
 {
@@ -233,7 +233,7 @@ DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> &aPointVector ) con
 * \param aPointVector is the pointvector and we return \param this > \param aPointVector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> &aPointVector ) const
 {
@@ -246,7 +246,7 @@ DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> &aPointVector ) cons
 * \param aPointVector is the pointvector and we return \param this => \param aPointVector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 bool
 DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> &aPointVector ) const
 {
@@ -259,7 +259,7 @@ DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> &aPointVector ) con
 * Resets all the values to zero.
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 void
 DGtal::PointVector<T,N>::zero()
 {
@@ -275,7 +275,7 @@ DGtal::PointVector<T,N>::zero()
 * \return the norm of the point/vector
 */
 template<typename T, std::size_t N>
-INLINE
+inline
 double
 DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
 {
@@ -304,9 +304,35 @@ DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
     return tmp;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
 
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+
+template<typename T,std::size_t N>
+inline
+void 
+DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
+{
+  out << "[PointVector] {";
+  for(unsigned int i=0; i < dimension() ; ++i)
+    out << at( i ) <<", ";
+  out << "}";
+  
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template<typename T,std::size_t N>
+inline
+bool 
+DGtal::PointVector<T,N>::isValid() const
+{
+  return true;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //

@@ -34,13 +34,13 @@ using namespace std;
 // Interface - public :
 
 
- /**
-   * Constructor.
-   */
+/**
+ * Constructor.
+ */
 DGtal::MeasureOfStraightLines::MeasureOfStraightLines()
- {
+{
    ///Default value
-   myEpsilon = 0.005;
+   myEpsilon = 0.0005;
  }
 
 

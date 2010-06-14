@@ -27,13 +27,13 @@
 // Implementation of inline methods                                          //
 
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Space<T,N>::Space()
 {
 }
 
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Space<T,N>::~Space()
 {
 }
@@ -44,14 +44,14 @@ DGtal::Space<T,N>::~Space()
  * Does nothing.
  */
 template<typename T,std::size_t N>
-INLINE
+inline
 DGtal::Space<T,N>::Space( const Space & other )
 {
 }
 
 
 template<typename T,std::size_t N>
-INLINE
+inline
 typename DGtal::Space<T,N>::DimensionType
 DGtal::Space<T,N>::dimension()
 {
@@ -63,7 +63,7 @@ DGtal::Space<T,N>::dimension()
  */
 template <typename T,std::size_t N>
 template <std::size_t Subdimension>
-INLINE
+inline
 typename DGtal::Space<T,N>::template Subspace<Subdimension>::Type
 DGtal::Space<T,N>::subspace()
 {
@@ -76,7 +76,7 @@ DGtal::Space<T,N>::subspace()
  */
 template <typename T,std::size_t N>
 template <std::size_t Codimension>
-INLINE
+inline
 typename DGtal::Space<T,N>::template Subcospace<Codimension>::Type 
 DGtal::Space<T,N>::subcospace()
 {
@@ -89,7 +89,7 @@ DGtal::Space<T,N>::subcospace()
  * @param out the output stream where the object is written.
  */
 template <typename T,std::size_t N>
-INLINE
+inline
 void
 DGtal::Space<T,N>::selfDisplay ( std::ostream & out ) const
 {
@@ -107,7 +107,7 @@ DGtal::Space<T,N>::selfDisplay ( std::ostream & out ) const
  * @return the output stream after the writing.
  */
 template <typename T,std::size_t N>
-INLINE
+inline
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
 		   const Space<T,N> & object )
