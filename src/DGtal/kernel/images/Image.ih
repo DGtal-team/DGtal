@@ -1,0 +1,105 @@
+/**
+ * @file Image.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/25
+ *
+ * Implementation of inline methods defined in Image.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+* Destructor.
+*/
+template <class THyperRectDomain, typename T, class TCont>
+inline
+Image<THyperRectDomain,T,TCont>::Image(const TPoint &aPointA,
+				       const TPoint &aPointB ) : myDomain(aPointA,aPointB), myImageMap(aPointA,aPointB)
+{
+    myImageMap.resize(myDomain.extent());
+}
+
+
+/**
+ * Destructor.
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+Image<THyperRectDomain,T,TCont>::~Image()
+{
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+/**
+ * returns the value at a point
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+T
+Image<THyperRectDomain,T,TCont>::operator()(TPoint &aPoint) const
+{
+    return myImageMap( aPoint );
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+void
+Image<THyperRectDomain,T,TCont>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[Image]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+bool
+Image<THyperRectDomain,T,TCont>::isValid() const
+{
+    return true;
+}
+
+
+
+
+
+
+/**
+* Overloads 'operator<<' for displaying objects of class 'Image'.
+* @param out the output stream where the object is written.
+* @param object the object of class 'Image' to write.
+* @return the output stream after the writing.
+*/
+template<class THyperRectDomain, typename T, class TCont>
+inline
+std::ostream&
+operator<< ( std::ostream & out,
+             const Image<THyperRectDomain,T,TCont> & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

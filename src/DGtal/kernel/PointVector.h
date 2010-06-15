@@ -57,7 +57,9 @@ public:
     typedef typename boost::array<T,N>::iterator Iterator;
     typedef typename boost::array<T,N>::const_iterator ConstIterator;
 
-
+    static const std::size_t Dimension = N;
+    
+    
     /**
     * Constructor.
     * \todo PointVector must be Virutal

@@ -1,0 +1,73 @@
+/**
+ * @file ImageContainer_vector.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/06/15
+ *
+ * Implementation of inline methods defined in ImageContainer_vector.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+template <typename TPoint, typename T>
+inline
+ImageContainer_vector<TPoint,T>::ImageContainer_vector(const TPoint &aPointA,
+        const TPoint &aPointB )
+{
+    if (aPointA < aPointB)
+    {
+        myLowerBound = aPointA;
+        myUpperBound = aPointB;
+    }
+    else
+    {
+        myLowerBound = aPointB;
+        myUpperBound = aPointA;
+    }
+}
+
+template <typename TPoint, typename T>
+inline
+ImageContainer_vector<TPoint,T>::~ImageContainer_vector( )
+{
+}
+
+
+template <typename TPoint, typename T>
+inline
+T
+ImageContainer_vector<TPoint,T>::operator()(TPoint &aPoint) const
+{
+    return this->at( linearized( aPoint ) );
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals - private :
+template<typename TPoint, typename T>
+inline
+typename ImageContainer_vector<TPoint,T>::TSizeType
+ImageContainer_vector<TPoint,T>::linearized( TPoint &aPoint) const
+{
+    TSizeType pos = aPoint.at( 0 );
+    TSizeType multiplier = 1;
+     
+    for (unsigned int k = 1 ; k < TPoint::Dimension ; k++)
+    {
+        multiplier *= (this->myUpperBound.at( k-1 ) - this->myLowerBound.at ( k-1 ));
+        pos += multiplier * ( aPoint.at( k ) - this->myLowerBound.at( k ) );
+    }
+
+    return pos;
+}
+

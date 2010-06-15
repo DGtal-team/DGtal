@@ -58,6 +58,8 @@ namespace DGtal
       typedef typename PointVector<T,N>::ConstIterator ConstIterator;
       typedef T TValue;
 
+      static const std::size_t Dimension = N;
+      
       /**
        * Constructor.
        */

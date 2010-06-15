@@ -53,6 +53,8 @@ namespace DGtal
     typedef typename PointVector<T,N>::Iterator Iterator;
     typedef typename PointVector<T,N>::ConstIterator ConstIterator;
 
+    static const std::size_t Dimension = N;
+    
     
     /**
     * Constructor.
