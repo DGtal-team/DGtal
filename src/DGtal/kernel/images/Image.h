@@ -41,21 +41,20 @@ namespace DGtal
  * Aim:
  *
  * \todo Iterateurs dans le cas générique (const et non const) ( (*It) = Point-> Indice -> Valeur)
- * \todo vérifier cas avec map comme container
  * \todo spécialisé si TContainer=vector pour avoir des iterateurs customs (*It)= Indice -> Valeur
+ * \todo Documentation
  */
 
 template <class THyperRectDomain, typename TValue, class TContainer >
 class Image
 {
-
-    typedef typename THyperRectDomain::TPoint TPoint;
-    //typedef std::vector<TValue> TContainer;
-    typedef typename TContainer::size_type TSizeType;
-
     // ----------------------- Standard services ------------------------------
 public:
-
+  
+  typedef typename THyperRectDomain::TPoint TPoint;
+  
+  typedef typename TContainer::Iterator Iterator;
+  typedef typename TContainer::ConstIterator ConstIterator;
     /**
      * Constuctor as the bounding box of two points.
      *
@@ -73,9 +72,47 @@ public:
     // ----------------------- Interface --------------------------------------
 public:
 
-  
-    TValue operator()(TPoint &aPoint) const;
-  
+    /**
+    *  Generic function to get the value of an image at a point \param aPoint
+    *
+    */
+    TValue operator()(const TPoint &aPoint);
+
+    // ----------------------- Built-in terators  from the container--------------------------------
+
+    Iterator begin() {
+        return myImageMap.begin();
+    }
+
+    Iterator end() {
+        return myImageMap.end();
+    }
+
+    Iterator rend() {
+        return myImageMap.rend();
+    }
+
+    Iterator rbegin() {
+        return myImageMap.rend();
+    }
+
+    ConstIterator begin() const {
+        return myImageMap.begin();
+    }
+
+    ConstIterator end() const {
+        return myImageMap.end();
+    }
+
+    ConstIterator rend() const {
+        return myImageMap.rend();
+    }
+
+    ConstIterator rbegin() const {
+        return myImageMap.rend();
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.

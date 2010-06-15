@@ -162,7 +162,7 @@ public:
     * Returns the extent of the HyperRectDomain
     *
     **/
-    TValue extent() const;
+    std::size_t extent() const;
 
     /**
     * Returns the lowest point of the space diagonal.

@@ -37,22 +37,29 @@ namespace DGtal
 // class ImageContainer_vector
 /**
  * Description of class 'ImageContainer_vector' <p>
+ * \todo Documentation
  * Aim:
  */
 
-template <typename TPoint, typename TValue>
+template <class TPoint, typename TValue>
 class ImageContainer_vector: public vector<TValue>
 {
-    typedef typename vector<TValue>::size_type TSizeType;
-
 public:
+
+    typedef typename vector<TValue>::size_type TSizeType;
+    typedef typename vector<TValue>::iterator Iterator;
+    typedef typename vector<TValue>::const_iterator ConstIterator;
 
     ImageContainer_vector(const TPoint &aPointA,
                           const TPoint &aPointB );
 
     ~ImageContainer_vector();
 
-    TValue operator()(TPoint &aPoint) const;
+    TValue operator()(const TPoint &aPoint);
+
+    void allocate(const std::size_t aSize) {
+        this->resize( aSize );
+    }
 
 private:
 
@@ -61,7 +68,7 @@ private:
      * \param aPoint the point to convert to an index
      * \return the index of \param aPoint in the container
      */
-    TSizeType linearized(TPoint &aPoint) const;
+    TSizeType linearized(const TPoint &aPoint) const;
 
     TPoint myLowerBound;
     TPoint myUpperBound;
@@ -71,10 +78,8 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions
 #include "DGtal/kernel/images/ImageContainer_vector.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

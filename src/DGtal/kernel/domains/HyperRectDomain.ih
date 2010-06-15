@@ -114,7 +114,7 @@ DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomai
  **/
 template<class TSpace>
 inline
-typename DGtal::HyperRectDomain<TSpace>::TValue
+std::size_t
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
   TValue val = 1;

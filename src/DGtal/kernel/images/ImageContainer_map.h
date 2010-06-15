@@ -38,27 +38,34 @@ namespace DGtal
 /**
  * Description of class 'ImageContainer_map' <p>
  * Aim:
+ * \todo Documentation
  */
 
 template <typename TPoint, typename TValue>
 class ImageContainer_map: public map<TPoint,TValue>
 {
-    typedef typename vector<TValue>::size_type TSizeType;
-
+  
 public:
+    typedef typename map<TPoint,TValue>::size_type TSizeType;
+    typedef typename map<TPoint,TValue>::iterator Iterator;
+    typedef typename map<TPoint,TValue>::const_iterator ConstIterator;
 
     ImageContainer_map(const TPoint &aPointA,
                        const TPoint &aPointB ) {};
 
     ~ImageContainer_map() {};
 
-    TValue operator()(const TPoint &aPoint)
+    TValue operator()(const TPoint &aPoint) throw( std::bad_alloc )
     {
-	return this->operator[]( aPoint );
+        Iterator it = this->find( aPoint );
+        if ( it == this->end() )
+            throw std::bad_alloc();
+        else
+            this->operator[]( aPoint );
     }
 
     void allocate(const std::size_t aSize) {};
-    
+
 private:
 
 };

@@ -45,7 +45,7 @@ ImageContainer_vector<TPoint,T>::~ImageContainer_vector( )
 template <typename TPoint, typename T>
 inline
 T
-ImageContainer_vector<TPoint,T>::operator()(TPoint &aPoint) const
+ImageContainer_vector<TPoint,T>::operator()(const TPoint &aPoint)
 {
     return this->at( linearized( aPoint ) );
 
@@ -57,7 +57,7 @@ ImageContainer_vector<TPoint,T>::operator()(TPoint &aPoint) const
 template<typename TPoint, typename T>
 inline
 typename ImageContainer_vector<TPoint,T>::TSizeType
-ImageContainer_vector<TPoint,T>::linearized( TPoint &aPoint) const
+ImageContainer_vector<TPoint,T>::linearized(const TPoint &aPoint) const
 {
     TSizeType pos = aPoint.at( 0 );
     TSizeType multiplier = 1;
