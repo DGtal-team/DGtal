@@ -33,8 +33,7 @@ template<class TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
-  typedef typename DGtal::HyperRectDomain<TSpace>::TPoint PT;
-  PT aPoint;
+  TPoint aPoint;
 
   aPoint.zero();
   myLowerBound = aPoint;
@@ -48,8 +47,8 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
  */
 template<class TSpace>
 inline
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace>::TPoint &aPointA,
-						  const typename DGtal::HyperRectDomain<TSpace>::TPoint &aPointB )
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const TPoint &aPointA,
+						  const TPoint &aPointB )
 {
   if ( aPointA < aPointB )
     {
@@ -118,7 +117,7 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::TValue
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
-  typename DGtal::HyperRectDomain<TSpace>::TValue val = 1;
+  TValue val = 1;
 
   for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
     val *= (myUpperBound.at(k) - myLowerBound.at(k) + 1);

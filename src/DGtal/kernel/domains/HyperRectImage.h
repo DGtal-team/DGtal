@@ -29,7 +29,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
-#include <string.h>
+
 
 namespace DGtal
 {
@@ -50,8 +50,8 @@ class HyperRectImage
 {
 
     typedef typename THyperRectDomain::TPoint TPoint;
-    typedef typename std::vector<TValue> TContainer;
-		typedef typename std::size_t  TSizeType;
+    typedef std::vector<TValue> TContainer;
+		typedef TContainer TSizeType;
 		
     // ----------------------- Standard services ------------------------------
 public:
@@ -131,13 +131,14 @@ std::ostream&
 operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
 
 
-} // namespace DGtal
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Inline methods.
 #include "DGtal/kernel/domains/HyperRectImage.ih"
 
-
+	
+} // namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -23,8 +23,8 @@
 */
 template <class THyperRectDomain, typename T>
 inline
-DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperRectDomain::TPoint &aPointA,
-        const  typename THyperRectDomain::TPoint &aPointB ) : myDomain(aPointA,aPointB)
+HyperRectImage<THyperRectDomain,T>::HyperRectImage(const TPoint &aPointA,
+        const TPoint &aPointB ) : myDomain(aPointA,aPointB)
 {
     myImageMap.reserve(myDomain.extent());
 }
@@ -35,7 +35,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperR
  */
 template <class THyperRectDomain, typename T>
 inline
-DGtal::HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
+HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
 {
 }
 
@@ -51,7 +51,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
 template <class THyperRectDomain, typename T>
 inline
 void
-DGtal::HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) const
+HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) const
 {
     out << "[HyperRectImage]";
 }
@@ -63,7 +63,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) co
 template <class THyperRectDomain, typename T>
 inline
 bool
-DGtal::HyperRectImage<THyperRectDomain,T>::isValid() const
+HyperRectImage<THyperRectDomain,T>::isValid() const
 {
     return true;
 }
@@ -72,7 +72,7 @@ DGtal::HyperRectImage<THyperRectDomain,T>::isValid() const
 template <class THyperRectDomain, typename T>
 inline
 T
-DGtal::HyperRectImage<THyperRectDomain,T>::operator()(DGtal::HyperRectImage<THyperRectDomain,T>::TPoint &aPoint)
+HyperRectImage<THyperRectDomain,T>::operator()(TPoint &aPoint)
 {
     return myImageMap.at( linearized( aPoint ) );
 }
@@ -88,8 +88,8 @@ DGtal::HyperRectImage<THyperRectDomain,T>::operator()(DGtal::HyperRectImage<THyp
 template<class THyperRectDomain, typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out,
-                    const HyperRectImage<THyperRectDomain,T> & object )
+operator<< ( std::ostream & out,
+             const HyperRectImage<THyperRectDomain,T> & object )
 {
     object.selfDisplay ( out );
     return out;
@@ -100,15 +100,15 @@ DGtal::operator<< ( std::ostream & out,
 // Internals - private :
 template<class THyperRectDomain, typename T>
 inline
-DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType
-linearized( DGtal::HyperRectImage<THyperRectDomain,T>::TPoint &aPoint)
+typename HyperRectImage<THyperRectDomain,T>::TSizeType
+HyperRectImage<THyperRectDomain,T>::linearized( TPoint &aPoint)
 {
-    DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType pos = aPoint.at( 0 );
-    DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType multiplier = 1;
+    TSizeType pos = aPoint.at( 0 );
+    TSizeType multiplier = 1;
 
     for (unsigned int k = 1 ; k < THyperRectDomain::TSpace::Dimension ; k++)
     {
-        multiplier *= (myUpperBound.at( k-1 ) - myLowerBound.at ( k-1 ));
+        multiplier *= (this->myUpperBound.at( k-1 ) - this->myLowerBound.at ( k-1 ));
         pos += multiplier * aPoint.at( k );
     }
 
