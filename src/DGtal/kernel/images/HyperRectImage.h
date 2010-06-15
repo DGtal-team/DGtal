@@ -45,14 +45,14 @@ namespace DGtal
  *
  */
 
-template <class THyperRectDomain, typename TValue>
+template <class THyperRectDomain, typename TValue, class TContainer = std::vector<TValue> >
 class HyperRectImage
 {
 
     typedef typename THyperRectDomain::TPoint TPoint;
-    typedef std::vector<TValue> TContainer;
-		typedef TContainer TSizeType;
-		
+    //typedef std::vector<TValue> TContainer;
+    typedef typename TContainer::size_type TSizeType;
+
     // ----------------------- Standard services ------------------------------
 public:
 
@@ -95,11 +95,11 @@ protected:
 
 private:
 
-		 /**
-     *  Linearized a point and return the vector position.
-     * \param aPoint the point to convert to an index
-     * \return the index of \param aPoint in the container
-     */
+    /**
+    *  Linearized a point and return the vector position.
+    * \param aPoint the point to convert to an index
+    * \return the index of \param aPoint in the container
+    */
     TSizeType linearized(TPoint &aPoint);
 
 
@@ -125,19 +125,19 @@ private:
  * @param object the object of class 'HyperRectImage' to write.
  * @return the output stream after the writing.
  */
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
 std::ostream&
-operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
+operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T,TCont> & object );
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Inline methods.
-#include "DGtal/kernel/domains/HyperRectImage.ih"
+#include "DGtal/kernel/images/HyperRectImage.ih"
 
-	
+
 } // namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

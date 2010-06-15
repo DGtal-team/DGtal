@@ -21,9 +21,9 @@
 /**
 * Destructor.
 */
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
-HyperRectImage<THyperRectDomain,T>::HyperRectImage(const TPoint &aPointA,
+HyperRectImage<THyperRectDomain,T,TCont>::HyperRectImage(const TPoint &aPointA,
         const TPoint &aPointB ) : myDomain(aPointA,aPointB)
 {
     myImageMap.reserve(myDomain.extent());
@@ -33,9 +33,9 @@ HyperRectImage<THyperRectDomain,T>::HyperRectImage(const TPoint &aPointA,
 /**
  * Destructor.
  */
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
-HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
+HyperRectImage<THyperRectDomain,T,TCont>::~HyperRectImage()
 {
 }
 
@@ -48,10 +48,10 @@ HyperRectImage<THyperRectDomain,T>::~HyperRectImage()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
 void
-HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) const
+HyperRectImage<THyperRectDomain,T,TCont>::selfDisplay ( std::ostream & out ) const
 {
     out << "[HyperRectImage]";
 }
@@ -60,19 +60,19 @@ HyperRectImage<THyperRectDomain,T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
 bool
-HyperRectImage<THyperRectDomain,T>::isValid() const
+HyperRectImage<THyperRectDomain,T,TCont>::isValid() const
 {
     return true;
 }
 
 
-template <class THyperRectDomain, typename T>
+template <class THyperRectDomain, typename T, class TCont>
 inline
 T
-HyperRectImage<THyperRectDomain,T>::operator()(TPoint &aPoint)
+HyperRectImage<THyperRectDomain,T,TCont>::operator()(TPoint &aPoint)
 {
     return myImageMap.at( linearized( aPoint ) );
 }
@@ -85,11 +85,11 @@ HyperRectImage<THyperRectDomain,T>::operator()(TPoint &aPoint)
 * @param object the object of class 'HyperRectImage' to write.
 * @return the output stream after the writing.
 */
-template<class THyperRectDomain, typename T>
+template<class THyperRectDomain, typename T, class TCont>
 inline
 std::ostream&
 operator<< ( std::ostream & out,
-             const HyperRectImage<THyperRectDomain,T> & object )
+	     const HyperRectImage<THyperRectDomain,T,TCont> & object )
 {
     object.selfDisplay ( out );
     return out;
@@ -98,10 +98,10 @@ operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
-template<class THyperRectDomain, typename T>
+template<class THyperRectDomain, typename T, class TCont>
 inline
-typename HyperRectImage<THyperRectDomain,T>::TSizeType
-HyperRectImage<THyperRectDomain,T>::linearized( TPoint &aPoint)
+typename HyperRectImage<THyperRectDomain,T,TCont>::TSizeType
+HyperRectImage<THyperRectDomain,T,TCont>::linearized( TPoint &aPoint)
 {
     TSizeType pos = aPoint.at( 0 );
     TSizeType multiplier = 1;

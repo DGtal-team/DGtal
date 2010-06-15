@@ -20,7 +20,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/Space.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/domains/HyperRectImage.h"
+#include "DGtal/kernel/images/HyperRectImage.h"
 
 
 using namespace DGtal;

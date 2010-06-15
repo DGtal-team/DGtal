@@ -196,21 +196,13 @@ private:
 
 
 // ------------------------- Hidden services ------------------------------
-protected:
+private:
 
 
 ///The lowest point of the space diagonal
     TPoint myLowerBound;
 ///The highest point of the space diagonal
     TPoint myUpperBound;
-
-private:
-
-
-
-
-// ------------------------- Internals ------------------------------------
-private:
 
 }; // end of class HyperRectDomain
 
