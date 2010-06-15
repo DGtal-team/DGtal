@@ -18,16 +18,14 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-
-
-
 /**
 * Destructor.
 */
 template <class THyperRectDomain, typename T>
 inline
-DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperRectDomain::TPoint &aPointA, const  typename THyperRectDomain::TPoint &aPointB ) : myDomain(aPointA,aPointB)
-{    
+DGtal::HyperRectImage<THyperRectDomain,T>::HyperRectImage(const typename THyperRectDomain::TPoint &aPointA,
+        const  typename THyperRectDomain::TPoint &aPointB ) : myDomain(aPointA,aPointB)
+{
     myImageMap.reserve(myDomain.extent());
 }
 
@@ -71,6 +69,16 @@ DGtal::HyperRectImage<THyperRectDomain,T>::isValid() const
 }
 
 
+template <class THyperRectDomain, typename T>
+inline
+T
+DGtal::HyperRectImage<THyperRectDomain,T>::operator()(DGtal::HyperRectImage<THyperRectDomain,T>::TPoint &aPoint)
+{
+    return myImageMap.at( linearized( aPoint ) );
+}
+
+
+
 /**
 * Overloads 'operator<<' for displaying objects of class 'HyperRectImage'.
 * @param out the output stream where the object is written.
@@ -90,6 +98,22 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
+template<class THyperRectDomain, typename T>
+inline
+DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType
+linearized( DGtal::HyperRectImage<THyperRectDomain,T>::TPoint &aPoint)
+{
+    DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType pos = aPoint.at( 0 );
+    DGtal::HyperRectImage<THyperRectDomain,T>::TSizeType multiplier = 1;
+
+    for (unsigned int k = 1 ; k < THyperRectDomain::TSpace::Dimension ; k++)
+    {
+        multiplier *= (myUpperBound.at( k-1 ) - myLowerBound.at ( k-1 ));
+        pos += multiplier * aPoint.at( k );
+    }
+
+    return pos;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

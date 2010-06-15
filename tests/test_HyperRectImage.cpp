@@ -16,8 +16,6 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
-#include <fstream>
-#include <algorithm>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/Space.h"
@@ -47,11 +45,9 @@ bool testSimpleHyperRectImage()
 
     trace.beginBlock ( "HyperRectImage init" );
 
-
     ///Domain characterized by points a and b
     HyperRectImage<TDomain,double> myHyperRectImage (a,b );
     trace.info() << myHyperRectImage << std::endl;
-    
     trace.endBlock();
     return myHyperRectImage.isValid();
 }

@@ -164,7 +164,6 @@ public:
     **/
     TValue extent() const;
 
-
     /**
     * Returns the lowest point of the space diagonal.
     *

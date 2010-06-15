@@ -29,39 +29,41 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
+#include <string.h>
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class HyperRectImage
-  /**
-   * Description of class 'HyperRectImage' <p>
-   * Aim:
-   *
-   *
-   *  \todo ajouter un parametre template avec le Container (vector, map, ..) et faire des specialisations spécifiques des iterateurs.
-   *  
-   */
+/////////////////////////////////////////////////////////////////////////////
+// class HyperRectImage
+/**
+ * Description of class 'HyperRectImage' <p>
+ * Aim:
+ *
+ *
+ *  \todo ajouter un parametre template avec le Container (vector, map, ..) et faire des specialisations spécifiques des iterateurs.
+ *
+ */
 
-  template <class THyperRectDomain, typename TValue>
-    class HyperRectImage
-  {
+template <class THyperRectDomain, typename TValue>
+class HyperRectImage
+{
 
     typedef typename THyperRectDomain::TPoint TPoint;
-
-
+    typedef typename std::vector<TValue> TContainer;
+		typedef typename std::size_t  TSizeType;
+		
     // ----------------------- Standard services ------------------------------
-  public:
+public:
 
-    /** 
+    /**
      * Constuctor as the bounding box of two points.
-     * 
+     *
      * @param aPointA first point.
      * @param aPointB second point.
-     */    
-    HyperRectImage( const typename THyperRectDomain::TPoint &aPointA, 
-		    const typename THyperRectDomain::TPoint &aPointB );
+     */
+    HyperRectImage( const typename THyperRectDomain::TPoint &aPointA,
+                    const typename THyperRectDomain::TPoint &aPointB );
 
     /**
      * Destructor.x
@@ -69,8 +71,11 @@ namespace DGtal
     ~HyperRectImage();
 
     // ----------------------- Interface --------------------------------------
-  public:
-    
+public:
+
+    TValue operator()(TPoint &aPoint);
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -83,38 +88,47 @@ namespace DGtal
      */
     bool isValid() const;
 
-  protected:
+protected:
 
     THyperRectDomain myDomain; ///Local copie of the HyperRectDomain
-    std::vector<TValue> myImageMap; ///Image Container
+    TContainer myImageMap; ///Image Container
 
-  private:
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
+private:
+
+		 /**
+     *  Linearized a point and return the vector position.
+     * \param aPoint the point to convert to an index
+     * \return the index of \param aPoint in the container
      */
+    TSizeType linearized(TPoint &aPoint);
+
+
+    /**
+    * Assignment.
+    * @param other the object to copy.
+    * @return a reference on 'this'.
+    * Forbidden by default.
+    */
     HyperRectImage & operator= ( const HyperRectImage & other );
 
     // ------------------------- Internals ------------------------------------
-  private:
-
-    
-
-  }; // end of class HyperRectImage
+private:
 
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'HyperRectImage'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'HyperRectImage' to write.
-   * @return the output stream after the writing.
-   */
-  template <class THyperRectDomain, typename T>
-    inline
-    std::ostream&
-    operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
+
+}; // end of class HyperRectImage
+
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'HyperRectImage'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'HyperRectImage' to write.
+ * @return the output stream after the writing.
+ */
+template <class THyperRectDomain, typename T>
+inline
+std::ostream&
+operator<< ( std::ostream & out, const HyperRectImage<THyperRectDomain,T> & object );
 
 
 } // namespace DGtal
