@@ -5,4 +5,4 @@ SET(DGTAL_SRC ${DGTAL_SRC}
 		DGtal/kernel/Vector
 		DGtal/kernel/PointVector
 		DGtal/kernel/domains/HyperRectDomain
-		DGtal/kernel/images/HyperRectImage)
+		DGtal/kernel/images/Image)
