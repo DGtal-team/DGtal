@@ -44,7 +44,7 @@ namespace DGtal
 template <typename TPoint, typename TValue>
 class ImageContainer_map: public map<TPoint,TValue>
 {
-
+  
 public:
     typedef typename map<TPoint,TValue>::size_type TSizeType;
     typedef typename map<TPoint,TValue>::iterator Iterator;

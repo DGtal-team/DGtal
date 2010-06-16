@@ -28,6 +28,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/images/ImageContainerConcept.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -48,13 +49,21 @@ namespace DGtal
 template <class THyperRectDomain, typename TValue, class TContainer >
 class Image
 {
+
+  
+  
+    
     // ----------------------- Standard services ------------------------------
 public:
   
-  typedef typename THyperRectDomain::TPoint TPoint;
   
-  typedef typename TContainer::Iterator Iterator;
-  typedef typename TContainer::ConstIterator ConstIterator;
+    typedef typename THyperRectDomain::TPoint TPoint;
+    typedef typename TContainer::Iterator Iterator;   
+    typedef typename TContainer::ConstIterator ConstIterator;
+
+    BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<TPoint,TValue,TContainer>));
+    
+
     /**
      * Constuctor as the bounding box of two points.
      *
@@ -84,7 +93,7 @@ public:
      *
      */
     TValue operator()(const Iterator &aIt);
-    
+
 
 
     // ----------------------- Built-in terators  from the container--------------------------------
@@ -139,6 +148,7 @@ protected:
     THyperRectDomain myDomain; ///Local copie of the HyperRectDomain (to have generic iterators) \todo should be removed in specialized classes
     TContainer myImageMap; ///Image Container
 
+    TValue myValue;
 private:
 
     /**
