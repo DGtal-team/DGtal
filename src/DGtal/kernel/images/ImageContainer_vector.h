@@ -57,6 +57,9 @@ public:
 
     TValue operator()(const TPoint &aPoint);
 
+    TValue operator()(const Iterator &it) { return (*it); };
+
+    
     void allocate(const std::size_t aSize) {
         this->resize( aSize );
     }

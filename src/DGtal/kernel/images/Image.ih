@@ -54,6 +54,22 @@ Image<THyperRectDomain,T,TCont>::operator()(const TPoint &aPoint)
     return myImageMap( aPoint );
 }
 
+
+/**
+ * returns the value at an iterator.
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+T
+Image<THyperRectDomain,T,TCont>::operator()(const Iterator &aIt)
+{
+  return myImageMap( aIt );
+  
+  
+}
+
+
+
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.

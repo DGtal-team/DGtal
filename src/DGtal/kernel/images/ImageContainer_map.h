@@ -44,7 +44,7 @@ namespace DGtal
 template <typename TPoint, typename TValue>
 class ImageContainer_map: public map<TPoint,TValue>
 {
-  
+
 public:
     typedef typename map<TPoint,TValue>::size_type TSizeType;
     typedef typename map<TPoint,TValue>::iterator Iterator;
@@ -61,8 +61,19 @@ public:
         if ( it == this->end() )
             throw std::bad_alloc();
         else
-            this->operator[]( aPoint );
+            return this->operator[]( aPoint );
     }
+
+
+    TValue operator()(const Iterator &it) throw( std::bad_alloc )
+    {
+	if ( it == this->end() )
+            throw std::bad_alloc();
+        else
+            return (*it).second;
+    }
+
+
 
     void allocate(const std::size_t aSize) {};
 

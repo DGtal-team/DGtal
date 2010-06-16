@@ -78,6 +78,15 @@ public:
     */
     TValue operator()(const TPoint &aPoint);
 
+
+    /**
+     *  Generic function to get the value of an image at a point \param aPoint
+     *
+     */
+    TValue operator()(const Iterator &aIt);
+    
+
+
     // ----------------------- Built-in terators  from the container--------------------------------
 
     Iterator begin() {
