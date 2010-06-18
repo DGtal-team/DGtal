@@ -60,7 +60,7 @@ public:
     typedef typename THyperRectDomain::TPoint TPoint;
     typedef typename TContainer::Iterator Iterator;
     typedef typename TContainer::ConstIterator ConstIterator;
-		typedef typename TContainer::SpanIterator SpanIterator;
+    typedef typename TContainer::SpanIterator SpanIterator;
 
     BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<TPoint,TValue,TContainer>));
 
@@ -95,12 +95,31 @@ public:
      */
     TValue operator()(const Iterator &aIt);
 
-		/**
-		 *  Generic function to get the value of an image at a point \param aPoint
-		 *
-		 */
-		TValue operator()(const SpanIterator &aIt);
-		
+
+
+    /**
+     *  Generic function to get the value of an image at a point \param aPoint
+     *
+     */
+    TValue operator()(const SpanIterator &aIt);
+
+    void setValue(const TPoint &aPoint, const TValue aVal)
+    {
+        myImageMap.setValue(aPoint,aVal);
+    }
+
+    ///\todo FIXME
+    void setValue(Iterator &aIt, const TValue aVal)
+    {
+      myImageMap.setValue(aIt,aVal);
+      
+    }
+
+    void setValue(SpanIterator &aIt, const TValue aVal)
+    {
+      myImageMap.setValue(aIt,aVal);
+    }
+
 
     // ----------------------- Built-in terators  from the container--------------------------------
 
@@ -112,13 +131,13 @@ public:
         return myImageMap.end();
     }
 
-    SpanIterator span_begin(TPoint &aPoint, std::size_t aDimension) {
+    SpanIterator span_begin(const TPoint &aPoint, const std::size_t aDimension) {
         return myImageMap.span_begin(aPoint,aDimension);
 
     }
 
-    SpanIterator span_end(std::size_t aDimension) {
-			return myImageMap.span_end(aDimension);
+    SpanIterator span_end(const TPoint &aPoint, const std::size_t aDimension) {
+        return myImageMap.span_end(aPoint,aDimension);
     }
 
     Iterator rend() {

@@ -51,6 +51,15 @@ ImageContainer_vector<TPoint,T>::operator()(const TPoint &aPoint)
 
 }
 
+template <typename TPoint, typename T>
+inline
+void
+ImageContainer_vector<TPoint,T>::setValue(const TPoint &aPoint, const T &V)
+{
+  this->at( linearized( aPoint ) ) = V;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
@@ -59,7 +68,7 @@ inline
 typename ImageContainer_vector<TPoint,T>::TSizeType
 ImageContainer_vector<TPoint,T>::linearized(const TPoint &aPoint) const
 {
-    TSizeType pos = aPoint.at( 0 );
+    TSizeType pos = aPoint.at( 0 )- this->myLowerBound.at( 0 ) ;
     TSizeType multiplier = 1;
 
     for (unsigned int k = 1 ; k < TPoint::Dimension ; k++)

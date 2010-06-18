@@ -185,7 +185,7 @@ bool testSpanIterators()
 
     const int t[ ] = { 1, 1, 1};
     const int t2[ ] = { 5, 5, 5};
-    const int t3[ ] = { 2, 1, 2};
+    const int t3[ ] = { 1, 1, 1};
     TPoint a ( t );
     TPoint b ( t2 );
     TPoint c( t3);
@@ -193,8 +193,21 @@ bool testSpanIterators()
     trace.beginBlock("Test of Concepts");
     Image<TDomain,double, TContainerV> myImageV ( a,b );
 
+    double cpt=0;
+    for ( Image<TDomain,double, TContainerV>::Iterator it = myImageV.begin();
+            it != myImageV.end();
+            ++it)
+    {
+        myImageV.setValue( it, cpt );
+        cpt++;
+    }
+
+    std::copy ( myImageV.begin(),
+                myImageV.end(),
+                ostream_iterator<double> ( trace.info(), " " ) );
+
     for ( Image<TDomain,double, TContainerV>::SpanIterator it = myImageV.span_begin(c,1);
-            it != myImageV.span_end(1);
+            it != myImageV.span_end(c,1);
             ++it)
         trace.info() << myImageV(it)<<" ";
 

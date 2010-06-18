@@ -44,17 +44,17 @@ namespace DGtal
 template <typename TPoint, typename TValue>
 class ImageContainer_map: public map<TPoint,TValue>
 {
-  
+
 public:
     typedef typename map<TPoint,TValue>::size_type TSizeType;
     typedef typename map<TPoint,TValue>::iterator Iterator;
     typedef typename map<TPoint,TValue>::const_iterator ConstIterator;
 
-		///\todo create span iterators
-		class SpanIterator: public Iterator
-		{
-		};
-		
+    ///\todo create span iterators
+    class SpanIterator: public Iterator
+    {
+    };
+
     ImageContainer_map(const TPoint &aPointA,
                        const TPoint &aPointB ) {};
 
@@ -72,12 +72,28 @@ public:
 
     TValue operator()(const Iterator &it) throw( std::bad_alloc )
     {
-	if ( it == this->end() )
+        if ( it == this->end() )
             throw std::bad_alloc();
         else
             return (*it).second;
     }
+    
 
+    void setValue(const TPoint &aPoint, const TValue &aValue)
+    {
+      this->operator[]( aPoint ) ;
+    }
+
+
+    void setValue(SpanIterator &it, const TValue &aValue)
+    {
+       ASSERT("NOT-YET-IMPLEMENTED");
+    }
+
+    void setValue(Iterator &it, const TValue &aValue)
+    {
+        (*it) = aValue;
+    }
 
 
     void allocate(const std::size_t aSize) {};
