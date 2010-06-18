@@ -68,6 +68,17 @@ Image<THyperRectDomain,T,TCont>::operator()(const Iterator &aIt)
   
 }
 
+/**
+ * returns the value at an iterator.
+ */
+template <class THyperRectDomain, typename T, class TCont>
+inline
+T
+Image<THyperRectDomain,T,TCont>::operator()(const SpanIterator &aIt)
+{
+	return myImageMap( aIt );
+	
+}
 
 
 /**

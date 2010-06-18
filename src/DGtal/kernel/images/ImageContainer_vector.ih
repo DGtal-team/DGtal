@@ -61,7 +61,7 @@ ImageContainer_vector<TPoint,T>::linearized(const TPoint &aPoint) const
 {
     TSizeType pos = aPoint.at( 0 );
     TSizeType multiplier = 1;
-     
+
     for (unsigned int k = 1 ; k < TPoint::Dimension ; k++)
     {
         multiplier *= (this->myUpperBound.at( k-1 ) - this->myLowerBound.at ( k-1 ));

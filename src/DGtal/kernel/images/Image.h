@@ -50,19 +50,20 @@ template <class THyperRectDomain, typename TValue, class TContainer >
 class Image
 {
 
-  
-  
-    
+
+
+
     // ----------------------- Standard services ------------------------------
 public:
-  
-  
+
+
     typedef typename THyperRectDomain::TPoint TPoint;
-    typedef typename TContainer::Iterator Iterator;   
+    typedef typename TContainer::Iterator Iterator;
     typedef typename TContainer::ConstIterator ConstIterator;
+		typedef typename TContainer::SpanIterator SpanIterator;
 
     BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<TPoint,TValue,TContainer>));
-    
+
 
     /**
      * Constuctor as the bounding box of two points.
@@ -94,7 +95,12 @@ public:
      */
     TValue operator()(const Iterator &aIt);
 
-
+		/**
+		 *  Generic function to get the value of an image at a point \param aPoint
+		 *
+		 */
+		TValue operator()(const SpanIterator &aIt);
+		
 
     // ----------------------- Built-in terators  from the container--------------------------------
 
@@ -104,6 +110,15 @@ public:
 
     Iterator end() {
         return myImageMap.end();
+    }
+
+    SpanIterator span_begin(TPoint &aPoint, std::size_t aDimension) {
+        return myImageMap.span_begin(aPoint,aDimension);
+
+    }
+
+    SpanIterator span_end(std::size_t aDimension) {
+			return myImageMap.span_end(aDimension);
     }
 
     Iterator rend() {

@@ -50,6 +50,11 @@ public:
     typedef typename map<TPoint,TValue>::iterator Iterator;
     typedef typename map<TPoint,TValue>::const_iterator ConstIterator;
 
+		///\todo create span iterators
+		class SpanIterator: public Iterator
+		{
+		};
+		
     ImageContainer_map(const TPoint &aPointA,
                        const TPoint &aPointB ) {};
 
