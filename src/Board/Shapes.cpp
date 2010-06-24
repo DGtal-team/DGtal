@@ -737,22 +737,51 @@ Ellipse::translated( double dx, double dy ) const
 Shape &
 Ellipse::scale( double sx, double sy )
 {
-    if ( _angle != 0.0 ) {
-        Point cx = Point( _xRadius, 0 ).rotate( _angle );
-        Point cy = Point( 0, _yRadius ).rotate( _angle );
-        cx.x *= sx;
-        cx.y *= sy;
-        cy.x *= sx;
-        cy.y *= sy;
-        _xRadius = cx.norm();
-        //_yRadius = cy.norm();
-        _angle = atan( cx.y / cx.x);
+  // Thanks to Freddie Exall for pointing an error with the first version
+  // of this function, and for pointing to a fix as well!
+  if ( _angle != 0 ) {
+    double co = cos( _angle );
+    double si = sin( _angle );
+
+    // current transformation matrix
+    double m00 = ( 1 / _xRadius ) * co;
+    double m01 = ( 1 / _xRadius ) * si;
+    double m10 = - ( 1 / _yRadius ) * si;
+    double m11 = ( 1 / _yRadius ) * co;
+
+    // Implicit function of ellipse at current
+    // ax^2 + bxy + cy^2 = 1
+    double a = ( m00 * m00 ) + ( m10 * m10 );
+    double b = 2 * ( ( m00 * m01 ) + ( m10 * m11 ) );
+    double c = ( m01 * m01 ) + ( m11 * m11 );
+
+    // Scale coefficients ( x_new = sx * x, y_new = sy * y )
+    a = a / ( sx * sx );
+    b = b / ( sx * sy );
+    c = c / ( sy * sy );
+
+    if ( b == 0 ) {
+      _angle = 0;
+    } else if ( a == c ) {
+      _angle = M_PI / 4;
+      a += ( b / 2 );
+      c -= ( b / 2 );
     } else {
-        _xRadius *= sx;
-        _yRadius *= sy;
+      _angle = 0.5 * atan( b / ( a - c ) );
+      double k = 1 + ( ( b * b ) / ( ( a - c ) * ( a - c ) ) );
+      k = sqrt( k );
+      k *= ( a - c );
+      c += a;
+      a = 0.5 * ( c + k );
+      c = 0.5 * ( c - k );
     }
-    if ( _xRadius != _yRadius ) _circle = false;
-    return *this;
+    _xRadius = 1 / sqrt( a );
+    _yRadius = 1 / sqrt( c );
+  } else {
+    _xRadius = _xRadius * sx;
+    _yRadius = _yRadius * sy;
+  }
+  return *this;
 }
 
 Shape &
