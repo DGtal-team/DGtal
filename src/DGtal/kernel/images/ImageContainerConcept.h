@@ -57,10 +57,10 @@ struct ImageContainerConcept  : boost::Assignable<TValue>, boost::EqualityCompar
     
     BOOST_CONCEPT_USAGE(ImageContainerConcept)
     {
-        TContainer j(a,b);
+        //TContainer j(a,b);
         it=i.begin();  // require postincrement-dereference returning value_type	
         same_type(i(it),v);        // require preincrement returning X&
-	same_type(i(a),v);
+	      same_type(i(a),v);
     }
 
  private:

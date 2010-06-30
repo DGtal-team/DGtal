@@ -141,11 +141,13 @@ bool testBuiltInIterators()
 }
 
 template <typename T>
-class Hop
+struct Hop
 {
     std::vector<double> t;
     typedef std::vector<double>::iterator Iterator;
-    typedef std::vector<double>::const_iterator ConstIterator;
+		typedef std::vector<double>::iterator SpanIterator;
+		typedef std::vector<double>::iterator ConstSpanIterator;
+		typedef std::vector<double>::const_iterator ConstIterator;
     Hop(const T &a, const T &b) {};
     void  allocate(std::size_t hlop) {};
     Iterator begin() {
@@ -168,7 +170,7 @@ bool testConcepts()
 
     trace.beginBlock("Test of Concepts");
 
-//  Image<TDomain,double, Hop<TPoint> > myImageV ( a,b );
+    //Image<TDomain,double, Hop<TPoint> > myImageV ( a,b );
     trace.endBlock();
 
     return true;
