@@ -61,15 +61,17 @@ namespace DGtal
   public:
 
     /**
-     * Constructor.
-     * Creates the empty set.
-     */
-    DigitalSetBySTLVector();
-
-    /**
      * Destructor.
      */
     ~DigitalSetBySTLVector();
+
+    /**
+     * Constructor.
+     * Creates the empty set in the domain [d].
+     *
+     * @param d any domain.
+     */
+    DigitalSetBySTLVector( const Domain & d );
 
     /**
      * Copy constructor.
@@ -83,6 +85,12 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     DigitalSetBySTLVector & operator= ( const DigitalSetBySTLVector & other );
+
+    /**
+     * @return the embedding domain.
+     */
+    const Domain & domain() const;
+
 
     // ----------------------- Standard Set services --------------------------
   public:
@@ -128,6 +136,7 @@ namespace DGtal
      * Removes the point pointed by [it] from the set.
      * 
      * @param it an iterator on this set.
+     * @pre it should point on a valid element ( it != end() ).
      * Note: generally faster than giving just the point.
      */
     void erase( Iterator it );
@@ -187,7 +196,7 @@ namespace DGtal
      *
      * NB: be aware of the overhead cost when returning the object.
      */
-    DigitalSetBySTLVector<Domain> getComplement() const; 
+    DigitalSetBySTLVector<Domain> computeComplement() const; 
 
     /**
      * Builds the complement in the domain of the set [other_set] in
@@ -195,7 +204,7 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-    void setComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
+    void assignFromComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
     
     /**
      * Computes the bounding box of this set.
@@ -224,6 +233,12 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
+
+    /**
+     * The associated domain.
+     */
+    const Domain & myDomain;
+
     /**
      * The container storing the points of the set.
      */
