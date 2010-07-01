@@ -30,6 +30,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/CImageContainer.h"
 #include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -40,20 +41,23 @@ namespace DGtal
   // class Image
   /**
    * Description of class 'Image' <p>
-   * \brief Aim:
+   * \brief Aim: implementation of a generic image.
+   *
    *
    * \todo spaniterator dans le container_map
    * \todo Documentation
+   * @example test_Image.cpp
    */
 
-  template <typename TDomain, typename ValueType, typename ImageContainer >
+  template <typename Domain, typename ValueType, 
+	    typename ImageContainer =  ImageContainerBySTLVector<typename Domain::Point, ValueType > >
   class Image
   {
     // ----------------------- Standard services ------------------------------
   public:
 
 
-    typedef typename TDomain::Point Point;
+    typedef typename Domain::Point Point;
     typedef typename ImageContainer::Iterator Iterator;
     typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::SpanIterator SpanIterator;
@@ -66,8 +70,8 @@ namespace DGtal
      * @param aPointA first point.
      * @param aPointB second point.
      */
-    Image( const typename TDomain::Point &aPointA,
-           const typename TDomain::Point &aPointB );
+    Image( const typename Domain::Point &aPointA,
+           const typename Domain::Point &aPointB );
 
     /**
      * Destructor.x
@@ -266,10 +270,10 @@ namespace DGtal
    * @param object the object of class 'Image' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDomain, typename T, typename TCont>
+  template <typename Domain, typename T, typename TCont>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, const Image<TDomain,T,TCont> & object );
+  operator<< ( std::ostream & out, const Image<Domain,T,TCont> & object );
 
 
 

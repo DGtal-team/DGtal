@@ -18,10 +18,10 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-template <typename TPoint, typename T>
+template <typename Point, typename T>
 inline
-ImageContainerBySTLVector<TPoint,T>::ImageContainerBySTLVector(const TPoint &aPointA,
-        const TPoint &aPointB )
+ImageContainerBySTLVector<Point,T>::ImageContainerBySTLVector(const Point &aPointA,
+        const Point &aPointB )
 {
     if (aPointA < aPointB)
     {
@@ -35,26 +35,26 @@ ImageContainerBySTLVector<TPoint,T>::ImageContainerBySTLVector(const TPoint &aPo
     }
 }
 
-template <typename TPoint, typename T>
+template <typename Point, typename T>
 inline
-ImageContainerBySTLVector<TPoint,T>::~ImageContainerBySTLVector( )
+ImageContainerBySTLVector<Point,T>::~ImageContainerBySTLVector( )
 {
 }
 
 
-template <typename TPoint, typename T>
+template <typename Point, typename T>
 inline
 T
-ImageContainerBySTLVector<TPoint,T>::operator()(const TPoint &aPoint)
+ImageContainerBySTLVector<Point,T>::operator()(const Point &aPoint)
 {
     return this->at( linearized( aPoint ) );
 
 }
 
-template <typename TPoint, typename T>
+template <typename Point, typename T>
 inline
 void
-ImageContainerBySTLVector<TPoint,T>::setValue(const TPoint &aPoint, const T &V)
+ImageContainerBySTLVector<Point,T>::setValue(const Point &aPoint, const T &V)
 {
   this->at( linearized( aPoint ) ) = V;
 }
@@ -63,15 +63,15 @@ ImageContainerBySTLVector<TPoint,T>::setValue(const TPoint &aPoint, const T &V)
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
-template<typename TPoint, typename T>
+template<typename Point, typename T>
 inline
-typename ImageContainerBySTLVector<TPoint,T>::TSizeType
-ImageContainerBySTLVector<TPoint,T>::linearized(const TPoint &aPoint) const
+typename ImageContainerBySTLVector<Point,T>::SizeType
+ImageContainerBySTLVector<Point,T>::linearized(const Point &aPoint) const
 {
-    TSizeType pos = aPoint.at( 0 )- this->myLowerBound.at( 0 ) ;
-    TSizeType multiplier = 1;
+    SizeType pos = aPoint.at( 0 )- this->myLowerBound.at( 0 ) ;
+    SizeType multiplier = 1;
 
-    for (unsigned int k = 1 ; k < TPoint::Dimension ; k++)
+    for (unsigned int k = 1 ; k < Point::Dimension ; k++)
     {
         multiplier *= (this->myUpperBound.at( k-1 ) - this->myLowerBound.at ( k-1 ));
         pos += multiplier * ( aPoint.at( k ) - this->myLowerBound.at( k ) );
