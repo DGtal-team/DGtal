@@ -44,7 +44,7 @@ namespace DGtal
    *
    */
   
-  template <class TInt, std::size_t Dimension>
+  template <typename TInt, std::size_t Dimension>
   class Space
   {
   public:

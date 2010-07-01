@@ -98,10 +98,10 @@ public:
 
             std::cout<< "construct("<<myPos<<")"<<std::endl;
 
-            //We compute the shift quantity
-            shift = 1;
+            //We compute the myShift quantity
+            myShift = 1;
             for (unsigned int k=0; k < myDimension  ; k++)
-                shift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
+                myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
         }
 
         const TValue & operator*() const
@@ -139,7 +139,7 @@ public:
         **/
         void next()
         {
-            myPos += shift;
+            myPos += myShift;
         }
 
         /**
@@ -148,8 +148,8 @@ public:
          **/
         void prev()
         {
-            ASSERT((long int) myPos-shift>0);
-            myPos -= shift;
+            ASSERT((long int) myPos-myShift>0);
+            myPos -= myShift;
         }
 
         /**
@@ -206,7 +206,7 @@ public:
         std::size_t myDimension;
 
         ///Padding variable
-        TSizeType shift;
+        TSizeType myShift;
 
     };
 

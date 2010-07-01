@@ -45,13 +45,9 @@ namespace DGtal
    * \todo Documentation
    */
 
-  template <class THyperRectDomain, typename TValue, class TContainer >
+  template <typename THyperRectDomain, typename TValue, typename TContainer >
   class Image
   {
-
-
-
-
     // ----------------------- Standard services ------------------------------
   public:
 
