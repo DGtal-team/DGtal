@@ -140,7 +140,6 @@ CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SO
 ADD_CUSTOM_TARGET(distclean
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetDistclean.cmake")
 
-
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------

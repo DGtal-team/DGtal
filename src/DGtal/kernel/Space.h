@@ -28,8 +28,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Point.h"
-#include "DGtal/kernel/Vector.h"
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -57,8 +56,8 @@ namespace DGtal
     typedef TInt TInteger;
     typedef std::size_t  TDimension;
     
-    typedef Point<TInt, Dimension> TPoint;
-    typedef Vector<TInt,Dimension> TVector;
+    typedef PointVector<TInt, Dimension> TPoint;
+    typedef PointVector<TInt,Dimension> TVector;
     
     typedef Space<TInt,Dimension> TSpace;
 

@@ -39,7 +39,7 @@ namespace DGtal
   // class Image
   /**
    * Description of class 'Image' <p>
-   * Aim:
+   * \brief Aim:
    *
    * \todo spaniterator dans le container_map
    * \todo Documentation

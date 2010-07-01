@@ -21,8 +21,8 @@
 
 
 /**
-* Constructor
-**/
+ * Constructor
+ **/
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector()
@@ -30,8 +30,8 @@ DGtal::PointVector<T,N>::PointVector()
 }
 
 /**
-* Destructor
-**/
+ * Destructor
+ **/
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::~PointVector()
@@ -52,21 +52,6 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
     myArray[ i ] = ptrValues[ i ];
 }
 
-/**
-*  Copy with built-in casts.
-*
-* Copy values in \param aPointVector to \a *this with a built-in cast.
-*
-**/
-template<typename T,std::size_t N>
-template<typename U>
-inline
-void 
-DGtal::PointVector<T,N>::cast(DGtal::PointVector<U,N> &aPointVector)
-{
-  myArray = aPointVector.myArray;
-}
-
 
 
 
@@ -82,9 +67,9 @@ DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
 }
 
 /**
-* Returns the size of the vector (i.e. the number of its
-* coefficients).
-*/
+ * Returns the size of the vector (i.e. the number of its
+ * coefficients).
+ */
 template<typename T,std::size_t N>
 inline
 std::size_t
@@ -94,9 +79,9 @@ DGtal::PointVector<T,N>::size()
 }
 
 /**
-* Returns the size of the vector (i.e. the number of its
-* coefficients).
-*/
+ * Returns the size of the vector (i.e. the number of its
+ * coefficients).
+ */
 template<typename T,std::size_t N>
 inline
 std::size_t
@@ -107,12 +92,12 @@ DGtal::PointVector<T,N>::dimension()
 
 
 /**
-* Returns the  \a i-th coefficient of the vector.
-*
-* \pre The \a i index must lie between \a 0 and \a size() .
-*
-* \param i is the index of the retrieved coefficient.
-*/
+ * Returns the  \a i-th coefficient of the vector.
+ *
+ * \pre The \a i index must lie between \a 0 and \a size() .
+ *
+ * \param i is the index of the retrieved coefficient.
+ */
 
 template<typename T,std::size_t N>
 inline
@@ -120,50 +105,50 @@ const T&
 DGtal::PointVector<T,N>::at ( std::size_t i ) const
 {
 
-    ASSERT ( i < dimension() );
+  ASSERT ( i < dimension() );
 
-    return myArray.at( i );
+  return myArray.at( i );
 }
 
 
 /**
-* Returns a non-const reference to the \a i-th element of the
-* vector.
-*
-* \pre The \a i index must lie between \a 0 and \a size() .
-*
-* \param i is the index of the retrieved coefficient.
-*/
+ * Returns a non-const reference to the \a i-th element of the
+ * vector.
+ *
+ * \pre The \a i index must lie between \a 0 and \a size() .
+ *
+ * \param i is the index of the retrieved coefficient.
+ */
 template<typename T,std::size_t N>
 inline T& DGtal::PointVector<T,N>::at( std::size_t i )
 {
-    ASSERT ( i < dimension() );
+  ASSERT ( i < dimension() );
 
-    return myArray.at( i );
+  return myArray.at( i );
 }
 
 
 /**
-* Multiplies \a *this by the \a coeff scalar number.
-*
-* \param coeff is the factor \a *this get multiplied by.
-*/
+ * Multiplies \a *this by the \a coeff scalar number.
+ *
+ * \param coeff is the factor \a *this get multiplied by.
+ */
 template<typename T, std::size_t N>
 DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator*= ( T coeff )
 {
-    for ( std::size_t i = 0; i < myArray.size(); ++i )
-        myArray[ i ] *= coeff;
-    return *this;
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    myArray[ i ] *= coeff;
+  return *this;
 }
 
 
 
 /**
-* Assignemnt operator
-*
-* \param aPointVector is the pointvector to assign to \a *this.
-*/
+ * Assignemnt operator
+ *
+ * \param aPointVector is the pointvector to assign to \a *this.
+ */
 template<typename T, std::size_t N>
 inline
 DGtal::PointVector<T,N>&
@@ -175,10 +160,10 @@ DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 
 
 /**
-* Comparison operator
-*
-* \param aPointVector is the pointvector to test its equality to \a *this.
-*/
+ * Comparison operator
+ *
+ * \param aPointVector is the pointvector to test its equality to \a *this.
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -188,10 +173,10 @@ DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> &aPointVector ) con
 }
 
 /**
-* Difference operator
-*
-* \param aPointVector is the pointvector and we return \param this == \param aPointVector
-*/
+ * Difference operator
+ *
+ * \param aPointVector is the pointvector and we return \param this == \param aPointVector
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -201,10 +186,10 @@ DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> &aPointVector ) con
 }
 
 /**
-* Comparison operator.
-*
-* \param aPointVector is the pointvector and we return \param this < \param aPointVector
-*/
+ * Comparison operator.
+ *
+ * \param aPointVector is the pointvector and we return \param this < \param aPointVector
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -215,10 +200,10 @@ DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) cons
 
 
 /**
-* Comparison operator.
-*
-* \param aPointVector is the pointvector and we return \param this <= \param aPointVector
-*/
+ * Comparison operator.
+ *
+ * \param aPointVector is the pointvector and we return \param this <= \param aPointVector
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -228,10 +213,10 @@ DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> &aPointVector ) con
 }
 
 /**
-* Comparison operator.
-*
-* \param aPointVector is the pointvector and we return \param this > \param aPointVector
-*/
+ * Comparison operator.
+ *
+ * \param aPointVector is the pointvector and we return \param this > \param aPointVector
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -241,10 +226,10 @@ DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> &aPointVector ) cons
 }
 
 /**
-* Comparison operator.
-*
-* \param aPointVector is the pointvector and we return \param this => \param aPointVector
-*/
+ * Comparison operator.
+ *
+ * \param aPointVector is the pointvector and we return \param this => \param aPointVector
+ */
 template<typename T, std::size_t N>
 inline
 bool
@@ -254,54 +239,125 @@ DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> &aPointVector ) con
 }
 
 
+/**
+ * Addition operator.
+ *
+ * \pre PointVector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
+template<typename T,std::size_t N>
+inline 
+DGtal::PointVector<T,N>&
+DGtal::PointVector<T,N>::operator+= ( const PointVector<T,N>& v )
+{
+  for ( std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] += v.at ( i );
+  return *this;
+}
 
 /**
-* Resets all the values to zero.
-*/
+ * Addition operator.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
+template<typename T,std::size_t N>
+inline 
+DGtal::PointVector<T,N>
+DGtal::PointVector<T,N>::operator+ ( const PointVector<T,N>& v ) const
+{
+  PointVector<T,N> newpoint;
+
+  for ( std::size_t i = 0; i < N; ++i )
+    newpoint.at ( i ) = this->at ( i ) +  v.at ( i );
+
+  return newpoint;
+}
+
+/**
+ * Substraction operator.
+ *
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
+template<typename T,std::size_t N>
+inline 
+DGtal::PointVector<T,N>&
+DGtal::PointVector<T,N>::operator-= ( const PointVector<T,N>& v )
+{
+  for ( std::size_t i = 0; i < N; ++i )
+    this->myArray[ i ] -= v.at ( i );
+  return *this;
+}
+
+/**
+ * Substraction operator.
+ *
+ * \pre PointVector \a v must have the same size as \a *this.
+ *
+ * \param v is the vector that gets added to \a *this.
+ */
+template<typename T,std::size_t N>
+inline 
+DGtal::PointVector<T,N>
+DGtal::PointVector<T,N>::operator- ( const PointVector<T,N>& v ) const
+{
+  PointVector<T,N> newpoint;
+
+  for ( std::size_t i = 0; i < N; ++i )
+    newpoint.at ( i ) = this->at ( i ) -  v.at ( i );
+
+  return newpoint;
+}
+
+
+/**
+ * Resets all the values to zero.
+ */
 template<typename T, std::size_t N>
 inline
 void
 DGtal::PointVector<T,N>::zero()
 {
-    for ( std::size_t i = 0; i < myArray.size(); ++i )
-        myArray[ i ] = 0;
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    myArray[ i ] = 0;
 }
 
 
 /**
-* Computes the norm of a point/vector.
-*
-* \param type specifies the type of norm to consider (see \ref NormType)
-* \return the norm of the point/vector
-*/
+ * Computes the norm of a point/vector.
+ *
+ * \param type specifies the type of norm to consider (see \ref NormType)
+ * \return the norm of the point/vector
+ */
 template<typename T, std::size_t N>
 inline
 double
 DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
 {
-    double tmp= 0.0;
+  double tmp= 0.0;
 
-    ASSERT ( dimension() > 0 );
+  ASSERT ( dimension() > 0 );
 
-    switch ( aType ) 
-      {
-      case L_2:
-        for ( uint i=0; i < dimension(); i++ )
-            tmp += at ( i ) *at ( i );
-        tmp = ( double ) sqrt ( tmp );
-	break;
-      case L_1:
-        for ( uint i=0; i < dimension(); i++ )
-            tmp += fabs ( at( i ) );
-	break;
-      case L_infty:
-        tmp = at( 0 );
-        for ( uint i=1; i < dimension(); i++ )
-	  if ( tmp < fabs ( at ( i ) ) )
-	    tmp = fabs ( at ( i ) );
-	break;
-      }
-    return tmp;
+  switch ( aType ) 
+    {
+    case L_2:
+      for ( uint i=0; i < dimension(); i++ )
+	tmp += at ( i ) *at ( i );
+      tmp = ( double ) sqrt ( tmp );
+      break;
+    case L_1:
+      for ( uint i=0; i < dimension(); i++ )
+	tmp += fabs ( at( i ) );
+      break;
+    case L_infty:
+      tmp = at( 0 );
+      for ( uint i=1; i < dimension(); i++ )
+	if ( tmp < fabs ( at ( i ) ) )
+	  tmp = fabs ( at ( i ) );
+      break;
+    }
+  return tmp;
 }
 
 
@@ -337,19 +393,7 @@ DGtal::PointVector<T,N>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'PointVector'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'PointVector' to write.
- * @return the output stream after the writing.
- */
-//std::ostream&
-//DGtal::operator<<( std::ostream & out, //
-//		 const PointVector & object )
-//{
-// object.selfDisplay( out );
-// return out;
-//}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

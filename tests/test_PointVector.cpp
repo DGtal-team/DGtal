@@ -21,8 +21,6 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/Point.h"
-#include "DGtal/kernel/Vector.h"
 
 using namespace DGtal;
 using namespace std;
@@ -32,9 +30,9 @@ bool testComparison()
 {
     const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
     const double t2[ ] = { 3.5, 4.2, 2.2, 3.2 };
-    Point<double, 4> v ( t );
-    Point<double, 4> v2 ( t );
-    Point<double, 4> v3 ( t2 );
+    PointVector<double, 4> v ( t );
+    PointVector<double, 4> v2 ( t );
+    PointVector<double, 4> v3 ( t2 );
 
     trace.beginBlock("Comparison of Points");
     if (v == v2)
@@ -67,8 +65,8 @@ bool testComparison()
 bool testSimplePoint()
 {
     PointVector<int,3>  aPVInt3; //shouldn't be authorized
-    Point<double,4> aPoint;
-    Point<double,4> aFPoint;
+    PointVector<double,4> aPoint;
+    PointVector<double,4> aFPoint;
 
     aPVInt3.zero();
     aPoint.zero();
@@ -92,7 +90,7 @@ bool testSimplePoint()
         return false;
 
     const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
-    Vector<double, 4> v ( t );
+    PointVector<double, 4> v ( t );
     aPoint = aFPoint + v;
     trace.beginBlock ( "Test point addition with vector" );
     trace.info() << "aPoint = "<< aFPoint << " + " << v << endl;
@@ -104,7 +102,7 @@ bool testSimplePoint()
 
 bool testNorms()
 {
-    typedef Point<double,3> PointType;
+    typedef PointVector<double,3> PointType;
     PointType aPoint;
 
     aPoint.at ( 2 ) = 2;
@@ -129,9 +127,9 @@ bool testNorms()
 **/
 bool testSimpleVector()
 {
-    Vector<int,3>  aPVInt3; //shouldn't be authorized
-    Vector<double,4> aVector;
-    Vector<double,4> aFVector;
+    PointVector<int,3>  aPVInt3; //shouldn't be authorized
+    PointVector<double,4> aVector;
+    PointVector<double,4> aFVector;
 
     aPVInt3.zero();
     aVector.zero();
@@ -151,29 +149,10 @@ bool testSimpleVector()
 }
 
 
-bool testPointTypeConversion()
-{
-    Point<int,3> aPointInt3;
-    Point<int,3> aPointInt3b;
-    Point<double,3> aPointInt3bb;
-
-    aPointInt3b.at ( 2 ) = 4;
-    aPointInt3 = aPointInt3b;
-
-    aPointInt3bb.at ( 2 ) = 4.3;
-    aPointInt3bb.at ( 1 ) = 2.3;
-    //Copy
-    trace.info() << "Before, aPointInt3 = "<< aPointInt3<<endl;
-    aPointInt3.cast(aPointInt3bb);
-    trace.info() << "After, aPointInt3 = "<< aPointInt3<<endl;
-
-    return true;
-}
-
 bool testIterator()
 {
-    Point<double,25> aPoint;
-    Vector<int,4> avector;
+    PointVector<double,25> aPoint;
+    PointVector<int,4> avector;
 
     trace.beginBlock("Point Iterator Test");
 
@@ -182,15 +161,12 @@ bool testIterator()
     trace.info() << "aPoint="<<aPoint<< std::endl;
 
     trace.info() << "With iterator: ";
-    for (Point<double,25>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
+    for (PointVector<double,25>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
         trace.info() << (*it) <<" " ;
 
     trace.info() << std::endl;
 
-    trace.info() << "vector iterator: ";
-    for (Vector<int,4>::Iterator it = avector.begin() ;  it != avector.end(); ++it)
-        trace.info() << (*it) <<" " ;
-    trace.info() << std::endl;
+    
 
 
     trace.endBlock();
@@ -203,7 +179,7 @@ int main()
 
     bool res;
     res =  testSimplePoint()  &&    testSimpleVector() &&
-           testNorms()  && testPointTypeConversion() &&
+           testNorms()  &&
            testIterator() && testComparison() ;
     if (res)
         return 0;

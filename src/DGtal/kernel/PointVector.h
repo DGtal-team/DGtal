@@ -35,36 +35,37 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class PointVector
-/**
- * Description of class 'PointVector' <p>
- *
- * Aim: Implements basic operations that will be used in  \ref Point  and \ref Vector classes.
- *
- */
+  /////////////////////////////////////////////////////////////////////////////
+  // class PointVector
+  /**
+   * Description of class 'PointVector' <p>
+   *
+   * \brief Aim: Implements basic operations that will be used in  \ref Point  and \ref Vector classes.
+   *
+   */
 
-template<typename T, std::size_t N>
-class PointVector
-{
+  template<typename T, std::size_t N>
+  class PointVector
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     /**
      *  Copy of the Boost::array iterator type
      *
-    **/
+     **/
     typedef typename boost::array<T,N>::iterator Iterator;
     typedef typename boost::array<T,N>::const_iterator ConstIterator;
-
+    
+    typedef T TValue;
     static const std::size_t Dimension = N;
     
     
     /**
-    * Constructor.
-    * \todo PointVector must be Virutal
-    * \todo implement assignements with type conversion/cast
-    */
+     * Constructor.
+     * \todo PointVector must be Virutal
+     * \todo implement assignements with type conversion/cast
+     */
     PointVector();
 
     /**
@@ -89,39 +90,39 @@ public:
 
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
-    * PointVector begin() iterator.
-    *
-    **/
+     * PointVector begin() iterator.
+     *
+     **/
     Iterator begin() {
-        return myArray.begin();
+      return myArray.begin();
     }
 
     /**
-    * PointVector end() iterator.
-    *
-    **/
+     * PointVector end() iterator.
+     *
+     **/
     Iterator end() {
-        return myArray.end();
+      return myArray.end();
     }
 
 
     /**
-    * PointVector begin() const iterator.
-    *
-    **/
+     * PointVector begin() const iterator.
+     *
+     **/
     ConstIterator begin() const {
-        return myArray.begin();
+      return myArray.begin();
     }
 
     /**
-    * PointVector end() const iterator.
-    *
-    **/
+     * PointVector end() const iterator.
+     *
+     **/
     ConstIterator end() const {
-        return myArray.end();
+      return myArray.end();
     }
 
 
@@ -139,102 +140,125 @@ public:
     static std::size_t dimension();
 
     /**
-    *  Copies of a PointVector with built-in casts.
-    *
-    * Copies values in \param aPointVector to \a *this with a built-in cast.
-    *
-    **/
-    template<typename U>
-    void cast(PointVector<U,N> &aPointVector);
-
-    /**
-    * Returns the  \a i-th coefficient of the vector.
-    *
-    * \pre The \a i index must lie between \a 0 and \a size() .
-    *
-    * \param i is the index of the retrieved coefficient.
-    */
+     * Returns the  \a i-th coefficient of the vector.
+     *
+     * \pre The \a i index must lie between \a 0 and \a size() .
+     *
+     * \param i is the index of the retrieved coefficient.
+     */
     const T& at ( std::size_t i ) const;
 
     /**
-    * Returns a non-const reference to the \a i-th element of the
-    * vector.
-    *
-    * \pre The \a i index must lie between \a 0 and \a size() .
-    *
-    * \param i is the index of the retrieved coefficient.
-    */
+     * Returns a non-const reference to the \a i-th element of the
+     * vector.
+     *
+     * \pre The \a i index must lie between \a 0 and \a size() .
+     *
+     * \param i is the index of the retrieved coefficient.
+     */
     T& at ( std::size_t i );
 
 
     /**
-    * Multiplies \a *this by the \a coeff scalar number.
-    *
-    * \param coeff is the factor \a *this get multiplied by.
-    */
+     * Multiplies \a *this by the \a coeff scalar number.
+     *
+     * \param coeff is the factor \a *this get multiplied by.
+     */
     PointVector<T,N>& operator*= ( T coeff );
 
 
     /**
-    * Assignement Operator
-    *
-    * \param coeff is the factor \a *this get multiplied by.
-    */
+     * Assignement Operator
+     *
+     * \param coeff is the factor \a *this get multiplied by.
+     */
     PointVector<T,N>& operator= ( const PointVector<T,N>& aPointVector );
 
-
-    /**
-    * Comparison Operator 
-    *
-    **/
+    /** 
+     * Equality operator.
+     * 
+     * @param aPointVector Point/Vector to compare to this.
+     * @return true iff points are equal.
+     */
     bool operator== ( const PointVector<T,N>& aPointVector ) const;
     
     /**
-    * Difference Operator 
-    *
-    **/
+     * Difference Operator 
+     *
+     **/
     bool operator!= ( const PointVector<T,N>& aPointVector ) const;
     
     /**
-    * Comparison Operators
-    *
-    **/
+     * Comparison Operators
+     *
+     **/
     bool operator< ( const PointVector<T,N>& aPointVector ) const;
     /**
-    * Comparison Operators
-    *
-    **/
+     * Comparison Operators
+     *
+     **/
     bool operator<= ( const PointVector<T,N>& aPointVector ) const;
     
     /**
-    * Comparison Operators
-    *
-    **/
+     * Comparison Operators
+     *
+     **/
     bool operator> ( const PointVector<T,N>& aPointVector ) const;
     /**
-    * Comparison Operators
-    *
-    **/
+     * Comparison Operators
+     *
+     **/
     bool operator>= ( const PointVector<T,N>& aPointVector ) const;
     
+
     /**
-    * Resets all the values to zero.
-    */
+     * Addition operator with assignement.
+     *
+     * \param v is the Point that gets added to \a *this.
+     */
+    PointVector<T,N>& operator+= ( const PointVector<T,N>& v );
+
+    /**
+     * Addition operator.
+     *
+     * \param v is the Point that gets added to \a *this.
+     */
+    PointVector<T,N> operator+ ( const PointVector<T,N>& v ) const;
+
+
+    /**
+     * Substraction operator with assignement.
+     *
+     * \param v is the Point that gets substracted to \a *this.
+     */
+    PointVector<T,N>& operator-= ( const PointVector<T,N>& v );
+
+    /**
+     * Substraction operator.
+     * Point - Vector => Point
+     *
+     * \param v is the Point that gets added to \a *this.
+     */
+    PointVector<T,N> operator- ( const PointVector<T,N>& v ) const;
+
+    /**
+     * Resets all the values to zero.
+     */
     void zero();
 
 
     /**
-    * Specify the set of norm types
-    *
-    */
+     * Specify the set of norm types
+     *
+     */
     enum NormType { L_2, L_1, L_infty };
 
     /**
-    * Computes the norm of a point/vector.
-    *
-    * \param type specifies the type of norm to consider (see \ref NormType)
-    * \return the norm of the point/vector
-    */
+     * Computes the norm of a point/vector.
+     *
+     * \param type specifies the type of norm to consider (see \ref NormType)
+     * \return the norm of the point/vector
+     */
     double norm ( NormType type = L_2 );
 
 
@@ -251,25 +275,20 @@ public:
     bool isValid() const;
 
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
 
     // ------------------------- Hidden services ------------------------------
-public:
+ private:
 
     ///Internal data-structure: boost/array with constant size.
     boost::array<T,N> myArray;
 
 
-private:
-
-
-
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class PointVector
-
+  }; // end of class PointVector
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'PointVector'.
@@ -277,9 +296,14 @@ private:
  * @param object the object of class 'PointVector' to write.
  * @return the output stream after the writing.
  */
-//std::ostream&
-//operator<<( std::ostream & out, const PointVector<T,N> & object );
-
+template<typename T, std::size_t N>
+inline
+std::ostream&
+operator<<( std::ostream & out, const PointVector<T,N> & object )
+{
+ object.selfDisplay( out );
+ return out;
+}
 
 } // namespace DGtal
 

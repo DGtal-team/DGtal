@@ -1,8 +1,8 @@
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
 		DGtal/kernel/Space
-		DGtal/kernel/Point
-		DGtal/kernel/Vector
+#		DGtal/kernel/Point
+#		DGtal/kernel/Vector
 		DGtal/kernel/PointVector
 		DGtal/kernel/domains/HyperRectDomain
 		DGtal/kernel/images/Image)
