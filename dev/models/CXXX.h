@@ -1,41 +1,41 @@
 #pragma once
 
 /**
- * @file Integer.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file XXX.h
+ * @author AUTHOR (\c EMAIL )
+ * INSTITUTION
  *
- * @date 2010/07/01
+ * @date 2000/??/??
  *
- * Header file for concept Integer.cpp
+ * Header file for concept XXX.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Integer_RECURSES)
-#error Recursive header files inclusion detected in Integer.h
-#else // defined(Integer_RECURSES)
+#if defined(XXX_RECURSES)
+#error Recursive header files inclusion detected in XXX.h
+#else // defined(XXX_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Integer_RECURSES
+#define XXX_RECURSES
 
-#if !defined Integer_h
+#if !defined XXX_h
 /** Prevents repeated inclusion of headers. */
-#define Integer_h
+#define XXX_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/base/Common.h"
+#include "YYY/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
+namespace YYY
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class Integer
+  // class XXX
   /**
-   * Description of \b concept '\b Integer' <p>
+   * Description of \b concept '\b XXX' <p>
    * Aim:
    * 
    * <p> Refinement of
@@ -43,7 +43,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of Integer
+   * - \t X : A type that is a model of XXX
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -67,7 +67,7 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-  struct Integer
+  struct XXX
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -78,19 +78,19 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept Integer
+  }; // end of concept XXX
   
-} // namespace DGtal
+} // namespace YYY
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/Integer.ih"
+#include "YYY/ZZZ/XXX.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Integer_h
+#endif // !defined XXX_h
 
-#undef Integer_RECURSES
-#endif // else defined(Integer_RECURSES)
+#undef XXX_RECURSES
+#endif // else defined(XXX_RECURSES)

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+# Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
 
 if ! test -d "${DGtal}"; then
     echo "Environment variable DGtal is undefined."
@@ -37,14 +39,14 @@ fi
 echo "--- Creating files ${INCLUDE_DIR}/$2/$1.h, ${INCLUDE_DIR}/$2/$1.ih and ${SRC_DIR}/$2/$1.cpp"
 
 if test "$#" = "3"; then namespace=$3; fi
-enspace="s/YYY/${namespace}/g"
-esubdir="s/ZZZ/$2/g"
-ename="s/XXX/$1/g"
+enspace="s@YYY@${namespace}@g"
+esubdir="s@ZZZ@$2@g"
+ename="s@XXX@$1@g"
 #etoday='s/2000\/??\/??/'`date '+20%y\/%m\/%d'`'/g'
 etoday='s@2000/??/??@'"${today}"'@g'
-eauthor="s/AUTHOR/${author}/g"
+eauthor="s@AUTHOR@${author}@g"
 eemail="s/EMAIL/${email}/g"
-einstitution="s/INSTITUTION/${institution}/g"
+einstitution="s@INSTITUTION@${institution}@g"
 
 
 # MODELS_DIR=${DGtal}/dev/models

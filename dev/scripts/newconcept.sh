@@ -1,4 +1,6 @@
 #!/bin/bash
+# Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+# Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
 
 if ! test -d "${DGtal}"; then
     echo "Environment variable DGtal is undefined."
@@ -9,9 +11,9 @@ source ${SCRIPTS_DIR}/common.sh
 
 if test \( "$#" != "3" \) -a \( "$#" != "2" \);
 then 
-    echo "usage: $0 module_name subdir [namespace]" ;
-    echo "       - creates two templated C++ skeleton files (.h and .ih) designed"
-    echo "         for a class [module_name]. Modules are expected to be in a"
+    echo "usage: $0 concept_name subdir [namespace]" ;
+    echo "       - creates two C++ skeleton files (.h and .ih) designed"
+    echo "         for a concept [concept_name]. Modules are expected to be in a"
     echo "         directory of the form: namespace/subdir/module_name."
     echo "       - defaut namespace is ${namespace}."
     exit 1
@@ -55,15 +57,15 @@ einstitution="s@INSTITUTION@${institution}@g"
 #     institution=${INSTITUTION}
 # fi
 
-if test ! -r "${MODELS_DIR}/TXXX.h"; then
-    echo "Missing model TXXX.h in ${MODELS_DIR}."
+if test ! -r "${MODELS_DIR}/CXXX.h"; then
+    echo "Missing model CXXX.h in ${MODELS_DIR}."
     exit 2
 fi
-if test ! -r "${MODELS_DIR}/TXXX.ih"; then
-    echo "Missing model TXXX.ih in ${MODELS_DIR}."
+if test ! -r "${MODELS_DIR}/CXXX.ih"; then
+    echo "Missing model CXXX.ih in ${MODELS_DIR}."
     exit 2
 fi
 
-cat "${MODELS_DIR}/XXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
-cat "${MODELS_DIR}/XXX.ih" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.ih"
+cat "${MODELS_DIR}/CXXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
+cat "${MODELS_DIR}/CXXX.ih" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.ih"
 echo "--> done."

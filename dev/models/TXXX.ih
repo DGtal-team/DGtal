@@ -10,18 +10,68 @@
  * This file is part of the DGtal library.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+void
+YYY::XXX<T>::~XXX()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+YYY::XXX<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[XXX]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+YYY::XXX<T>::isValid() const
+{
+    return true;
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
+// Implementation of inline function                                         //
+
+template <typename T>
+inline
+std::ostream&
+operator<< ( std::ostream & out, const YYY::XXX<T> & object );
+ {
+   object.selfDisplay( out );
+   return out;
+ }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

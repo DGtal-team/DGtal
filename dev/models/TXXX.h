@@ -31,16 +31,17 @@
 namespace YYY
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class XXX
-/**
- * Description of class 'XXX' <p>
- * \brief Aim:
- */
-class XXX
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // template class XXX
+  /**
+   * Description of template class 'XXX' <p>
+   * \brief Aim:
+   */
+  template <typename T>
+  class XXX
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     /**
      * Destructor.
@@ -48,7 +49,7 @@ public:
     ~XXX();
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -63,12 +64,12 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  private:
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -76,7 +77,7 @@ protected:
      */
     XXX();
 
-private:
+  private:
 
     /**
      * Copy constructor.
@@ -94,24 +95,20 @@ private:
     XXX & operator= ( const XXX & other );
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class XXX
+  }; // end of class XXX
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'XXX'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'XXX' to write.
- * @return the output stream after the writing.
- */
-inline
-std::ostream&
-operator<< ( std::ostream & out, const XXX & object );
- {
-   object.selfDisplay( out );
-   return out;
- }
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'XXX'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'XXX' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename T>
+  std::ostream&
+  operator<< ( std::ostream & out, const XXX<T> & object );
 
 } // namespace YYY
 

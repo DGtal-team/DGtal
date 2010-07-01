@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/Integer.h"
 #include "DGtal/kernel/Space.h"
 
 
@@ -28,7 +29,7 @@ using namespace std;
 
 
 /**
-* Test instancition of Space
+* Test instanciation of Space
 *
 **/
 bool testSimpleSpace()
@@ -47,13 +48,18 @@ bool testSimpleSpace()
     return true;
 }
 
-
+// Temporary test to check if template is valid.
+bool testInteger()
+{
+  Integer<int> concept;
+  return true;
+}
 
 
 int main()
 {
 
-    if (testSimpleSpace())
+  if ( testSimpleSpace() && testInteger() )
         return 0;
     else
         return 1;
