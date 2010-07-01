@@ -53,7 +53,7 @@ DGtal::FreemanChain::const_iterator::const_iterator()
  * @param n the position in [chain] (within 0 and chain.size()-1).
  */
 DGtal::FreemanChain::const_iterator::const_iterator
-( const FreemanChain & chain, uint n )
+( const FreemanChain & chain, DGtal::uint n )
   : myFc( &chain ), myPos( 0 )
 {
   myXY.at(0)=chain.x0;
@@ -179,7 +179,7 @@ DGtal::FreemanChain::const_iterator::nextInLoop()
 /**
  * @return the current position (as an index in the Freeman chain).
  */
-uint
+DGtal::uint
 DGtal::FreemanChain::const_iterator::getPosition() const
 {
   return myPos;
@@ -198,7 +198,7 @@ DGtal::FreemanChain::const_iterator::getChain() const
  * @return the current Freeman code (specifies the movement to
  * the next point).
  */
-uint 
+DGtal::uint 
 DGtal::FreemanChain::const_iterator::getCode() const
 {
   //TODO
@@ -373,7 +373,7 @@ DGtal::FreemanChain::end() const
 /**
  * @return the length of the Freeman chain code.
  */
-uint
+DGtal::uint
 DGtal::FreemanChain::size() const
 {
   return chain.size();
@@ -385,8 +385,8 @@ DGtal::FreemanChain::size() const
  * @param pos a position in the chain code.
  * @return the code at position [pos].
  */ 
-uint
-DGtal::FreemanChain::code( uint pos ) const
+DGtal::uint
+DGtal::FreemanChain::code( DGtal::uint pos ) const
 {
   //TODO
   //ASSERT_FreemanChain( pos < chain.size() );
@@ -397,8 +397,8 @@ DGtal::FreemanChain::code( uint pos ) const
  * @param pos a position in the chain code.
  * @return the next position.
  */ 
-uint
-DGtal::FreemanChain::next( uint pos ) const
+DGtal::uint
+DGtal::FreemanChain::next( DGtal::uint pos ) const
 {
   ++pos;
   if ( pos >= chain.size() )
@@ -410,8 +410,8 @@ DGtal::FreemanChain::next( uint pos ) const
  * @param pos a position in the chain code.
  * @return the previous position.
  */ 
-uint
-DGtal::FreemanChain::previous( uint pos ) const
+DGtal::uint
+DGtal::FreemanChain::previous( DGtal::uint pos ) const
 {
   if ( pos == 0 ) pos = chain.size() - 1;
   else --pos;
@@ -431,7 +431,7 @@ DGtal::FreemanChain::previous( uint pos ) const
  */
 INLINE
 void
-DGtal::FreemanChain::displacement( int & dx, int & dy, uint code )
+DGtal::FreemanChain::displacement( int & dx, int & dy, DGtal::uint code )
 {
   switch ( code ) 
     {
@@ -448,7 +448,7 @@ DGtal::FreemanChain::displacement( int & dx, int & dy, uint code )
  */
 INLINE
 DGtal::PointVector<int, 2>
-DGtal::FreemanChain::displacement( uint code )
+DGtal::FreemanChain::displacement( DGtal::uint code )
 {
  PointI2D aPoint;
   aPoint.at(0)=0;
@@ -471,8 +471,8 @@ DGtal::FreemanChain::displacement( uint code )
  * @return the turned code.
  */
 INLINE
-uint
-DGtal::FreemanChain::turnedCode( uint code, bool ccw )
+DGtal::uint
+DGtal::FreemanChain::turnedCode( DGtal::uint code, bool ccw )
 {
   if ( ccw ) return ( code + 1 ) & 0x3;
   else       return ( code - 1 ) & 0x3;

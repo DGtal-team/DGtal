@@ -21,8 +21,8 @@
 #include "DGtal/kernel/Space.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/Image.h"
-#include "DGtal/kernel/images/ImageContainer_vector.h"
-#include "DGtal/kernel/images/ImageContainer_map.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/images/ImageContainerBySTLMap.h"
 
 using namespace DGtal;
 using namespace std;
@@ -38,7 +38,7 @@ bool testSimpleImage()
     typedef Space<int,4> Space4Type;
     typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
-    typedef ImageContainer_vector<Point, double> TContainer;
+    typedef ImageContainerBySTLVector<Point, double> TContainer;
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
@@ -60,8 +60,8 @@ bool testImageContainer()
     typedef Space<int,4> Space4Type;
     typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
-    typedef ImageContainer_vector<Point, double> TContainerV;
-    typedef ImageContainer_map<Point, double> TContainerM;
+    typedef ImageContainerBySTLVector<Point, double> TContainerV;
+    typedef ImageContainerBySTLMap<Point, double> TContainerM;
 
     bool res = true;
 
@@ -107,8 +107,8 @@ bool testBuiltInIterators()
     typedef Space<int,2> Space2Type;
     typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
-    typedef ImageContainer_vector<Point, double> TContainerV;
-    typedef ImageContainer_map<Point, double> TContainerM;
+    typedef ImageContainerBySTLVector<Point, double> TContainerV;
+    typedef ImageContainerBySTLMap<Point, double> TContainerM;
 
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
@@ -160,8 +160,8 @@ bool testConcepts()
     typedef Space<int,2> Space2Type;
     typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
-    typedef ImageContainer_vector<Point, double> TContainerV;
-    typedef ImageContainer_map<Point, double> TContainerM;
+    typedef ImageContainerBySTLVector<Point, double> TContainerV;
+    typedef ImageContainerBySTLMap<Point, double> TContainerM;
 
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
@@ -182,7 +182,7 @@ bool testSpanIterators()
     typedef Space<int,3> Space3Type;
     typedef Space3Type::Point Point;
     typedef HyperRectDomain<Space3Type> TDomain;
-    typedef ImageContainer_vector<Point, double> TContainerV;
+    typedef ImageContainerBySTLVector<Point, double> TContainerV;
 
 
     const int t[ ] = { 1, 1, 1};
