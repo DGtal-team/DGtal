@@ -34,14 +34,13 @@
  * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
  * 4-connected freeman chains.
  */
-ImaGene::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
+DGtal::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
   : myFirst( first ), myNb( nb )
 {
   myOrder = new uint[ nb ];
 
-  // TODO : ask big boss what to do about ASSERT
-  //  ASSERT_OrderedAlphabet( ( myOrder != 0 ) 
-  //			   && "[ImaGene::OrderedAlphabet::OrderedAlphabet( char first, int nb )] error in new: no memory left ?" );
+  ASSERT( ( myOrder != 0 ) 
+          && "[DGtal::OrderedAlphabet::OrderedAlphabet( char first, int nb )] error in new: no memory left ?" );
   for ( uint i = 0; i < myNb; ++i )
     myOrder[ i ] = i;
 }
@@ -53,11 +52,10 @@ ImaGene::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
  * starting from 0 to myNb-1.
  */
 uint
-ImaGene::OrderedAlphabet::order( char c ) const
+DGtal::OrderedAlphabet::order( char c ) const
 {
-  // TODO : ask big boss what to do about ASSERT
-  // ASSERT_OrderedAlphabet( ( c - myFirst ) < myNb 
-  //			   && "[ImaGene::OrderedAlphabet::order( char c )] invalid letter." );
+  ASSERT( ( c - myFirst ) < myNb 
+          && "[DGtal::OrderedAlphabet::order( char c )] invalid letter." );
   return myOrder[ c - myFirst ];
 }
 
@@ -70,10 +68,9 @@ ImaGene::OrderedAlphabet::order( char c ) const
  * NB: O(nb of letters in the alphabet).
  */
 char
-ImaGene::OrderedAlphabet::letter( uint i ) const
+DGtal::OrderedAlphabet::letter( uint i ) const
 {
-  // TODO : ask big boss what to do about ASSERT
-  // ASSERT_OrderedAlphabet( i < myNb );
+  ASSERT( i < myNb );
   for ( uint j = 0; j < myNb; ++j )
     if ( myOrder[ j ] == i )
       return myFirst + j;
@@ -87,7 +84,7 @@ ImaGene::OrderedAlphabet::letter( uint i ) const
  * @return 'true' iff c1 < c2
  */
 bool 
-ImaGene::OrderedAlphabet::less( char c1, char c2 ) const
+DGtal::OrderedAlphabet::less( char c1, char c2 ) const
 {
   return myOrder[ c1 - myFirst ] < myOrder[ c2 - myFirst ];
 }
@@ -98,7 +95,7 @@ ImaGene::OrderedAlphabet::less( char c1, char c2 ) const
  * @return 'true' iff c1 <= c2
  */
 bool 
-ImaGene::OrderedAlphabet::lessOrEqual( char c1, char c2 ) const
+DGtal::OrderedAlphabet::lessOrEqual( char c1, char c2 ) const
 {
   return myOrder[ c1 - myFirst ] <= myOrder[ c2 - myFirst ];
 }
@@ -109,7 +106,7 @@ ImaGene::OrderedAlphabet::lessOrEqual( char c1, char c2 ) const
  * @return 'true' iff c1 == c2
  */
 bool 
-ImaGene::OrderedAlphabet::equal( char c1, char c2 ) const
+DGtal::OrderedAlphabet::equal( char c1, char c2 ) const
 {
   return c1 == c2;
 }

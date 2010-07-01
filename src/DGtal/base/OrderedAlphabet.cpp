@@ -14,6 +14,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/OrderedAlphabet.h"
+#include "DGtal/math/Mathutils.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
 #include "DGtal/base/OrderedAlphabet.ih"
@@ -217,8 +218,8 @@ DGtal::OrderedAlphabet::duvalPP
   const std::string & w, 
   index_t s, index_t e ) const
 {
-  ASSERT_OrderedAlphabet( ( order( w[ s ] ) == 1 )
-			  || ( order( w[ s ] ) == 2 ) );
+  ASSERT( ( order( w[ s ] ) == 1 )
+          || ( order( w[ s ] ) == 2 ) );
   index_t i = s;
   index_t j = s+1;
   uint p = 1;
@@ -279,8 +280,8 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
 				       const std::string & w, 
 				       index_t s, index_t e ) const
 {
-  ASSERT_OrderedAlphabet( ( order( w[ s ] ) == 1 )
-			  || ( order( w[ s ] ) == 2 ) );
+  ASSERT( ( order( w[ s ] ) == 1 )
+          || ( order( w[ s ] ) == 2 ) );
   size_t modulo = w.size();
   Mathutils::ModuloComputer mc( modulo );
   index_t i = s;
