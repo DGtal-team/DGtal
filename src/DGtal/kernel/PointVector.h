@@ -178,36 +178,56 @@ namespace DGtal
      * Equality operator.
      * 
      * @param aPointVector Point/Vector to compare to this.
+     *
      * @return true iff points are equal.
      */
     bool operator== ( const PointVector<T,N>& aPointVector ) const;
     
-    /**
-     * Difference Operator 
+    /** 
+     * Difference operator on Points/Vectors.
+     * 
+     * @param aPointVector the Point/Vector to compare to this.
      *
-     **/
+     * @return true iff this differs from aPointVector, false otherwise.
+     */
     bool operator!= ( const PointVector<T,N>& aPointVector ) const;
     
-    /**
-     * Comparison Operators
+    
+    /** 
+     * Comparison operator on Points/Vectors (LesserThan).
+     * 
+     * @param aPointVector the Point/Vector to compare to this.
      *
-     **/
+     * @return true iff this < aPointVector, false otherwise.
+     */
     bool operator< ( const PointVector<T,N>& aPointVector ) const;
-    /**
-     * Comparison Operators
+    
+    /** 
+     * Comparison operator on Points/Vectors (LesserOrEqualThan).
+     * 
+     * @param aPointVector the Point/Vector to compare to this.
      *
-     **/
+     * @return true iff this <= aPointVector, false otherwise.
+     */
     bool operator<= ( const PointVector<T,N>& aPointVector ) const;
     
-    /**
-     * Comparison Operators
+  
+    /** 
+     * Comparison operator on Points/Vectors (GreaterThan).
+     * 
+     * @param aPointVector the Point/Vector to compare to this.
      *
-     **/
+     * @return true iff this > aPointVector, false otherwise.
+     */
     bool operator> ( const PointVector<T,N>& aPointVector ) const;
-    /**
-     * Comparison Operators
+    
+    /** 
+     * Comparison operator on Points/Vectors (GreaterOrEqualThan).
+     * 
+     * @param aPointVector the Point/Vector to compare to this.
      *
-     **/
+     * @return true iff this >= aPointVector, false otherwise.
+     */
     bool operator>= ( const PointVector<T,N>& aPointVector ) const;
     
 
