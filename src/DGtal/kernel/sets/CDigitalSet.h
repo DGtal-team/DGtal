@@ -70,6 +70,7 @@ namespace DGtal
    * <p> Models <br>
    *
    * <p> Notes <br>
+   * @ingroup Concepts
    */
   template <typename Domain>
   struct CDigitalSet
