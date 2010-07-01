@@ -2,7 +2,7 @@
 
 /**
  * @file PointVector.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author David Coeurjolly (@c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/14
@@ -40,7 +40,7 @@ namespace DGtal
   /**
    * Description of class 'PointVector' <p>
    *
-   * \brief Aim: Implements basic operations that will be used in  \ref Point  and \ref Vector classes.
+   * @brief Aim: Implements basic operations that will be used in  @ref Point  and @ref Vector classes.
    *
    */
 
@@ -63,8 +63,8 @@ namespace DGtal
     
     /**
      * Constructor.
-     * \todo PointVector must be Virutal
-     * \todo implement assignements with type conversion/cast
+     * @todo PointVector must be Virutal
+     * @todo implement assignements with type conversion/cast
      */
     PointVector();
 
@@ -95,6 +95,7 @@ namespace DGtal
     /**
      * PointVector begin() iterator.
      *
+     * @return an Iterator on the first element of a Point/Vector.
      **/
     Iterator begin() {
       return myArray.begin();
@@ -103,6 +104,7 @@ namespace DGtal
     /**
      * PointVector end() iterator.
      *
+     * @return an Iterator on the last element of a Point/Vector.
      **/
     Iterator end() {
       return myArray.end();
@@ -112,6 +114,7 @@ namespace DGtal
     /**
      * PointVector begin() const iterator.
      *
+     * @return an ConstIterator on the first element of a Point/Vector.
      **/
     ConstIterator begin() const {
       return myArray.begin();
@@ -120,6 +123,7 @@ namespace DGtal
     /**
      * PointVector end() const iterator.
      *
+     * @return a ConstIterator on the last element of a Point/Vector.     
      **/
     ConstIterator end() const {
       return myArray.end();
@@ -134,35 +138,35 @@ namespace DGtal
     static std::size_t size();
 
     /**
-     * Returns the size of the vector (i.e. the number of its
-     * coefficients).
+     * Static method to obtain the dimension of a Point/Vector
+     * @return  the size of the vector (i.e. the number of its elements).
      */
     static std::size_t dimension();
 
     /**
-     * Returns the  \a i-th coefficient of the vector.
+     * Returns the  @a i-th coefficient of the vector.
      *
-     * \pre The \a i index must lie between \a 0 and \a size() .
+     * @pre The @a i index must lie between @a 0 and @a size() .
      *
-     * \param i is the index of the retrieved coefficient.
+     * @param i is the index of the retrieved coefficient.
      */
     const T& at ( std::size_t i ) const;
 
     /**
-     * Returns a non-const reference to the \a i-th element of the
+     * Returns a non-const reference to the @a i-th element of the
      * vector.
      *
-     * \pre The \a i index must lie between \a 0 and \a size() .
+     * @pre The @a i index must lie between @a 0 and @a size() .
      *
-     * \param i is the index of the retrieved coefficient.
+     * @param i is the index of the retrieved coefficient.
      */
     T& at ( std::size_t i );
 
 
     /**
-     * Multiplies \a *this by the \a coeff scalar number.
+     * Multiplies @a *this by the @a coeff scalar number.
      *
-     * \param coeff is the factor \a *this get multiplied by.
+     * @param coeff is the factor @a *this get multiplied by.
      */
     PointVector<T,N>& operator*= ( T coeff );
 
@@ -170,7 +174,7 @@ namespace DGtal
     /**
      * Assignement Operator
      *
-     * \param coeff is the factor \a *this get multiplied by.
+     * @param coeff is the factor @a *this get multiplied by.
      */
     PointVector<T,N>& operator= ( const PointVector<T,N>& aPointVector );
 
@@ -234,14 +238,14 @@ namespace DGtal
     /**
      * Addition operator with assignement.
      *
-     * \param v is the Point that gets added to \a *this.
+     * @param v is the Point that gets added to @a *this.
      */
     PointVector<T,N>& operator+= ( const PointVector<T,N>& v );
 
     /**
      * Addition operator.
      *
-     * \param v is the Point that gets added to \a *this.
+     * @param v is the Point that gets added to @a *this.
      */
     PointVector<T,N> operator+ ( const PointVector<T,N>& v ) const;
 
@@ -249,7 +253,8 @@ namespace DGtal
     /**
      * Substraction operator with assignement.
      *
-     * \param v is the Point that gets substracted to \a *this.
+     * @param v is the Point that gets substracted to  *this.
+     * @return a reference to the resulting Point/Vector 
      */
     PointVector<T,N>& operator-= ( const PointVector<T,N>& v );
 
@@ -257,7 +262,7 @@ namespace DGtal
      * Substraction operator.
      * Point - Vector => Point
      *
-     * \param v is the Point that gets added to \a *this.
+     * @param v is the Point that gets added to @a *this.
      */
     PointVector<T,N> operator- ( const PointVector<T,N>& v ) const;
 
@@ -276,8 +281,8 @@ namespace DGtal
     /**
      * Computes the norm of a point/vector.
      *
-     * \param type specifies the type of norm to consider (see \ref NormType)
-     * \return the norm of the point/vector
+     * @param type specifies the type of norm to consider (see @ref NormType)
+     * @return the norm of the point/vector
      */
     double norm ( NormType type = L_2 );
 
@@ -299,7 +304,7 @@ namespace DGtal
 
 
     // ------------------------- Hidden services ------------------------------
- private:
+  private:
 
     ///Internal data-structure: boost/array with constant size.
     boost::array<T,N> myArray;
@@ -310,20 +315,20 @@ namespace DGtal
 
   }; // end of class PointVector
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'PointVector'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'PointVector' to write.
- * @return the output stream after the writing.
- */
-template<typename T, std::size_t N>
-inline
-std::ostream&
-operator<<( std::ostream & out, const PointVector<T,N> & object )
-{
- object.selfDisplay( out );
- return out;
-}
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'PointVector'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'PointVector' to write.
+   * @return the output stream after the writing.
+   */
+  template<typename T, std::size_t N>
+  inline
+  std::ostream&
+  operator<<( std::ostream & out, const PointVector<T,N> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
 } // namespace DGtal
 
