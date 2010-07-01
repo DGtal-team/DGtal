@@ -159,15 +159,20 @@ namespace DGtal
   public:
 
     /**
-     * Returns the extent of the HyperRectDomain
+     * @return  the extent of the HyperRectDomain
      *
      **/
     std::size_t extent() const;
 
-    /**
-     * Returns the extent of the HyperRectDomain
-     *
-     **/
+
+    /** 
+     * Returns the extent of the HyperRectDomain (static method).
+     * 
+     * @param aLowerBound  a Point corresponding to the lower bound.
+     * @param aUpperBound a Point corresponding to the upper bound.
+     * 
+     * @return the extent.
+     */    
     static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
     {
       TValue val = 1;

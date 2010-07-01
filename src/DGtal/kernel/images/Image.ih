@@ -24,9 +24,12 @@
 template <typename TDomain, typename T, typename TCont>
 inline
 Image<TDomain,T,TCont>::Image(const Point &aPointA,
-				       const Point &aPointB ) : myImageMap(aPointA,aPointB)
+			      const Point &aPointB ) : myImageMap(aPointA,aPointB)
 {
-  myImageMap.allocate( TDomain::extent(aPointA,aPointB) );
+  if ( aPointA < aPointB )
+    myImageMap.allocate( TDomain::extent(aPointA,aPointB) );
+  else
+    myImageMap.allocate( TDomain::extent(aPointB,aPointA) );
 }
 
 
