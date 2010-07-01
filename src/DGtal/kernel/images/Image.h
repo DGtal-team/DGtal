@@ -45,14 +45,14 @@ namespace DGtal
    * \todo Documentation
    */
 
-  template <typename THyperRectDomain, typename TValue, typename TContainer >
+  template <typename TDomain, typename TValue, typename TContainer >
   class Image
   {
     // ----------------------- Standard services ------------------------------
   public:
 
 
-    typedef typename THyperRectDomain::Point Point;
+    typedef typename TDomain::Point Point;
     typedef typename TContainer::Iterator Iterator;
     typedef typename TContainer::ConstIterator ConstIterator;
     typedef typename TContainer::SpanIterator SpanIterator;
@@ -66,8 +66,8 @@ namespace DGtal
      * @param aPointA first point.
      * @param aPointB second point.
      */
-    Image( const typename THyperRectDomain::Point &aPointA,
-           const typename THyperRectDomain::Point &aPointB );
+    Image( const typename TDomain::Point &aPointA,
+           const typename TDomain::Point &aPointB );
 
     /**
      * Destructor.x
@@ -107,7 +107,8 @@ namespace DGtal
      * 
      * @param aPoint the position as a Point
      * @param aVal the value to store
-     */    void setValue(const Point &aPoint, const TValue aVal)
+     */    
+    void setValue(const Point &aPoint, const TValue aVal)
     {
       myImageMap.setValue(aPoint,aVal);
     }
@@ -238,10 +239,9 @@ namespace DGtal
 
   protected:
 
-    THyperRectDomain myDomain; ///Local copie of the HyperRectDomain (to have generic iterators) \todo should be removed in specialized classes
     TContainer myImageMap; ///Image Container
-
     TValue myValue;
+
   private:
 
     /**
@@ -266,10 +266,10 @@ namespace DGtal
    * @param object the object of class 'Image' to write.
    * @return the output stream after the writing.
    */
-  template <class THyperRectDomain, typename T, class TCont>
+  template <typename TDomain, typename T, typename TCont>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, const Image<THyperRectDomain,T,TCont> & object );
+  operator<< ( std::ostream & out, const Image<TDomain,T,TCont> & object );
 
 
 

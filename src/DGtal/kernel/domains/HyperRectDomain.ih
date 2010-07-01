@@ -29,7 +29,7 @@
  *
  * (Lowest = Highest = {0}^n)
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 {
@@ -45,7 +45,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
  *
  *
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
 						  const Point &aPointB )
@@ -68,7 +68,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
  *
  *
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace> &aDomain)
 {
@@ -80,7 +80,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRec
 /**
  * Destructor.
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
 {
@@ -92,7 +92,7 @@ DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
  * @return a reference on 'this'.
  * Forbidden by default.
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace> &
 DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
@@ -108,29 +108,27 @@ DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomai
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
+
+
 /**
  * Returns the extent of the HyperRectDomain
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 std::size_t
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
-  TValue val = 1;
-
-  for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
-    val *= (myUpperBound.at(k) - myLowerBound.at(k) + 1);
-
-  return val;
+  return extent(myLowerBound,myUpperBound);
 }
+
 
 
 /**
  * Returns the lowest point of the space diagonal.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 const typename DGtal::HyperRectDomain<TSpace>::Point &
 DGtal::HyperRectDomain<TSpace>::lowerBound() const
@@ -143,7 +141,7 @@ DGtal::HyperRectDomain<TSpace>::lowerBound() const
  * Returns the highest point of the space diagonal.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 const typename DGtal::HyperRectDomain<TSpace>::Point &
 DGtal::HyperRectDomain<TSpace>::upperBound() const
@@ -156,7 +154,7 @@ DGtal::HyperRectDomain<TSpace>::upperBound() const
  * begin() iterator.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin() const
@@ -169,7 +167,7 @@ DGtal::HyperRectDomain<TSpace>::begin() const
  * begin(aPoint) iterator.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::Point &aPoint ) const
@@ -182,7 +180,7 @@ DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::
  * end() iterator.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end() const
@@ -195,7 +193,7 @@ DGtal::HyperRectDomain<TSpace>::end() const
  * begin(aPoint,dim) Span iterator.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
 DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpace>::Point &aPoint , const std::size_t aDimension) const
@@ -206,7 +204,7 @@ DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpa
  * end(dim) iterator.
  *
  **/
-template<class TSpace>
+template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
 DGtal::HyperRectDomain<TSpace>::span_end( const std::size_t aDimension ) const
@@ -223,7 +221,7 @@ DGtal::HyperRectDomain<TSpace>::span_end( const std::size_t aDimension ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -236,7 +234,7 @@ DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 bool
 DGtal::HyperRectDomain<TSpace>::isValid() const
@@ -251,7 +249,7 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
  * @param object the object of class 'HyperRectDomain' to write.
  * @return the output stream after the writing.
  */
-template<class TSpace>
+template<typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

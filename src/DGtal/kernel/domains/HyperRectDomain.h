@@ -33,46 +33,46 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class HyperRectDomain
-/**
- * Description of class 'HyperRectDomain' <p>
- * Aim:
- *
- * The following code snippet demonstrates how to use \p HyperRectDomain
- *
- *  \code
- *  #include <DGtal/kernel/Space.h>
- *  #include <DGtal/kernel/domains/HyperRectDomain.h>
- * ...
- *
- * //We create a digital Space based on 'int' integers and in dimension 4
- * typedef DGtal::Space<int,4> Space4DType;
- * typedef Space4DType::TPoint Point4DType;
- *
- * const int rawA[ ] = { 1, 2, 3 ,4};
- * const int rawB[ ] = { 5, 5, 3 ,4};
- * Point4DType A ( rawA );
- * Point4DType B ( rawB );
- *
- * //Domain construction from two points
- * DGtal::HyperRectDomain<Space4DType> myDomain ( A, B );
- *
- * //We just iterate on the Domain points and print out the point coordinates.
- * std::copy ( myDomain.begin(),
- *             myDomain.end(),
- *             std::ostream_iterator<Point4DType> ( std::cout, " " ) );
- *  \endcode
- *
- *
- * \see test_HyperRectDomain.cpp
- * \see test_HyperRectDomain-snippet.cpp
- */
-template<class TSpace>
-class HyperRectDomain
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // class HyperRectDomain
+  /**
+   * Description of class 'HyperRectDomain' <p>
+   * Aim:
+   *
+   * The following code snippet demonstrates how to use \p HyperRectDomain
+   *
+   *  \code
+   *  #include <DGtal/kernel/Space.h>
+   *  #include <DGtal/kernel/domains/HyperRectDomain.h>
+   * ...
+   *
+   * //We create a digital Space based on 'int' integers and in dimension 4
+   * typedef DGtal::Space<int,4> Space4DType;
+   * typedef Space4DType::TPoint Point4DType;
+   *
+   * const int rawA[ ] = { 1, 2, 3 ,4};
+   * const int rawB[ ] = { 5, 5, 3 ,4};
+   * Point4DType A ( rawA );
+   * Point4DType B ( rawB );
+   *
+   * //Domain construction from two points
+   * DGtal::HyperRectDomain<Space4DType> myDomain ( A, B );
+   *
+   * //We just iterate on the Domain points and print out the point coordinates.
+   * std::copy ( myDomain.begin(),
+   *             myDomain.end(),
+   *             std::ostream_iterator<Point4DType> ( std::cout, " " ) );
+   *  \endcode
+   *
+   *
+   * \see test_HyperRectDomain.cpp
+   * \see test_HyperRectDomain-snippet.cpp
+   */
+  template<typename TSpace>
+  class HyperRectDomain
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     typedef typename TSpace::Point Point;
     typedef typename Point::TValue TValue;
@@ -84,15 +84,15 @@ public:
 
       
     /**
-    * Default Constructor.
-    */
+     * Default Constructor.
+     */
     HyperRectDomain();
 
     /**
-    * Constructor from  two points \param aPointA and \param aPoint B
-    * defining the space diagonal.
-    *
-    */
+     * Constructor from  two points \param aPointA and \param aPoint B
+     * defining the space diagonal.
+     *
+     */
     HyperRectDomain ( const Point &aPointA, const Point &aPointB );
 
 
@@ -102,78 +102,92 @@ public:
     ~HyperRectDomain();
 
     /**
-    * Copy constructor.
-    * @param other the object to clone.
-    * Forbidden by default.
-    */
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
     HyperRectDomain ( const HyperRectDomain & other );
     
     
     /**
-    * Assignment.
-    * @param other the object to copy.
-    * @return a reference on 'this'.
-    * Forbidden by default.
-    */
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
 
     
     //------------- Global Iterator
     /**
-    * begin() iterator.
-    *
-    **/
+     * begin() iterator.
+     *
+     **/
     ConstIterator begin() const;
 
     /**
-    * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-    *
-    **/
+     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
+     *
+     **/
     ConstIterator begin ( const Point &aPoint ) const;
 
     /**
-    * end() iterator.
-    *
-    **/
+     * end() iterator.
+     *
+     **/
     ConstIterator end() const;
 
 
     //------------- Span Iterator
     /**
-    * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
-    *
-    **/
+     * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
+     *
+     **/
     ConstSpanIterator span_begin ( const Point &aPoint, const std::size_t aDimension) const;
 
 
     /**
-    * Creates a end() Span iterator along the dimension \param aDimension.
-    *
-    **/
+     * Creates a end() Span iterator along the dimension \param aDimension.
+     *
+     **/
     ConstSpanIterator span_end (const std::size_t aDimension) const;
 
 
 
-// ----------------------- Interface --------------------------------------
-public:
+    // ----------------------- Interface --------------------------------------
+  public:
 
     /**
-    * Returns the extent of the HyperRectDomain
-    *
-    **/
+     * Returns the extent of the HyperRectDomain
+     *
+     **/
     std::size_t extent() const;
 
     /**
-    * Returns the lowest point of the space diagonal.
-    *
-    **/
+     * Returns the extent of the HyperRectDomain
+     *
+     **/
+    static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
+    {
+      TValue val = 1;
+      for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
+	val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
+
+      return val;
+    }
+
+
+    /**
+     * Returns the lowest point of the space diagonal.
+     *
+     **/
     const Point &lowerBound() const;
 
     /**
-    * Returns the highest point of the space diagonal.
-    *
-    **/
+     * Returns the highest point of the space diagonal.
+     *
+     **/
     const Point &upperBound() const ;
 
 
@@ -189,33 +203,33 @@ public:
      */
     bool isValid() const;
 
-// ------------------------- Protected Datas ------------------------------
-private:
-// ------------------------- Private Datas --------------------------------
-private:
+    // ------------------------- Protected Datas ------------------------------
+  private:
+    // ------------------------- Private Datas --------------------------------
+  private:
 
 
-// ------------------------- Hidden services ------------------------------
-private:
+    // ------------------------- Hidden services ------------------------------
+  private:
 
 
-///The lowest point of the space diagonal
+    ///The lowest point of the space diagonal
     Point myLowerBound;
-///The highest point of the space diagonal
+    ///The highest point of the space diagonal
     Point myUpperBound;
 
-}; // end of class HyperRectDomain
+  }; // end of class HyperRectDomain
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'HyperRectDomain' to write.
- * @return the output stream after the writing.
- */
-template<class TSpace>
-std::ostream&
-operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'HyperRectDomain' to write.
+   * @return the output stream after the writing.
+   */
+  template<typename TSpace>
+  std::ostream&
+  operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 
 
 } // namespace DGtal

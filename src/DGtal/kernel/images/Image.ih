@@ -19,23 +19,23 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /**
-* Destructor.
-*/
-template <class THyperRectDomain, typename T, class TCont>
+ * Destructor.
+ */
+template <typename TDomain, typename T, typename TCont>
 inline
-Image<THyperRectDomain,T,TCont>::Image(const Point &aPointA,
-				       const Point &aPointB ) : myDomain(aPointA,aPointB), myImageMap(aPointA,aPointB)
+Image<TDomain,T,TCont>::Image(const Point &aPointA,
+				       const Point &aPointB ) : myImageMap(aPointA,aPointB)
 {
-    myImageMap.allocate(myDomain.extent());
+  myImageMap.allocate( TDomain::extent(aPointA,aPointB) );
 }
 
 
 /**
  * Destructor.
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
-Image<THyperRectDomain,T,TCont>::~Image()
+Image<TDomain,T,TCont>::~Image()
 {
 }
 
@@ -46,22 +46,22 @@ Image<THyperRectDomain,T,TCont>::~Image()
 /**
  * returns the value at a point
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
 T
-Image<THyperRectDomain,T,TCont>::operator()(const Point &aPoint)
+Image<TDomain,T,TCont>::operator()(const Point &aPoint)
 {
-    return myImageMap( aPoint );
+  return myImageMap( aPoint );
 }
 
 
 /**
  * returns the value at an iterator.
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
 T
-Image<THyperRectDomain,T,TCont>::operator()(const Iterator &aIt)
+Image<TDomain,T,TCont>::operator()(const Iterator &aIt)
 {
   return myImageMap( aIt );
   
@@ -71,12 +71,12 @@ Image<THyperRectDomain,T,TCont>::operator()(const Iterator &aIt)
 /**
  * returns the value at an iterator.
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
 T
-Image<THyperRectDomain,T,TCont>::operator()(const SpanIterator &aIt)
+Image<TDomain,T,TCont>::operator()(const SpanIterator &aIt)
 {
-	return myImageMap( aIt );
+  return myImageMap( aIt );
 	
 }
 
@@ -85,41 +85,41 @@ Image<THyperRectDomain,T,TCont>::operator()(const SpanIterator &aIt)
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
 void
-Image<THyperRectDomain,T,TCont>::selfDisplay ( std::ostream & out ) const
+Image<TDomain,T,TCont>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[Image]";
+  out << "[Image]";
 }
 
 /**
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <class THyperRectDomain, typename T, class TCont>
+template <typename TDomain, typename T, typename TCont>
 inline
 bool
-Image<THyperRectDomain,T,TCont>::isValid() const
+Image<TDomain,T,TCont>::isValid() const
 {
-    return true;
+  return true;
 }
 
 
 /**
-* Overloads 'operator<<' for displaying objects of class 'Image'.
-* @param out the output stream where the object is written.
-* @param object the object of class 'Image' to write.
-* @return the output stream after the writing.
-*/
-template<class THyperRectDomain, typename T, class TCont>
+ * Overloads 'operator<<' for displaying objects of typename 'Image'.
+ * @param out the output stream where the object is written.
+ * @param object the object of typename 'Image' to write.
+ * @return the output stream after the writing.
+ */
+template<typename TDomain, typename T, typename TCont>
 inline
 std::ostream&
 operator<< ( std::ostream & out,
-             const Image<THyperRectDomain,T,TCont> & object )
+             const Image<TDomain,T,TCont> & object )
 {
-    object.selfDisplay ( out );
-    return out;
+  object.selfDisplay ( out );
+  return out;
 }
 
 
