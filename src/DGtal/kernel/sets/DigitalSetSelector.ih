@@ -1,0 +1,79 @@
+/**
+ * @file DigitalSetSelector.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/01
+ *
+ * Implementation of inline methods defined in DigitalSetSelector.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+void
+DGtal::DigitalSetSelector<T>::~DigitalSetSelector()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::DigitalSetSelector<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[DigitalSetSelector]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::DigitalSetSelector<T>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline function                                         //
+
+template <typename T>
+inline
+std::ostream&
+operator<< ( std::ostream & out, const DGtal::DigitalSetSelector<T> & object );
+ {
+   object.selfDisplay( out );
+   return out;
+ }
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
