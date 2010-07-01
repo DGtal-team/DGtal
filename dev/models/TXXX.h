@@ -35,7 +35,7 @@ namespace YYY
 // class XXX
 /**
  * Description of class 'XXX' <p>
- * Aim:
+ * \brief Aim:
  */
 class XXX
 {
