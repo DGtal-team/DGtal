@@ -1,4 +1,5 @@
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/math/MeasureOfStraightLines)
+		DGtal/math/MeasureOfStraightLines
+		DGtal/math/Mathutils)
 
