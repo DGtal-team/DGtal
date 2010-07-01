@@ -42,6 +42,8 @@ namespace DGtal
    *
    * @brief Aim: Implements basic operations that will be used in  @ref Point  and @ref Vector classes.
    *
+   *
+   * @example test_PointVector.cpp
    */
 
   template<typename T, std::size_t N>
@@ -66,8 +68,6 @@ namespace DGtal
     
     /**
      * Constructor.
-     * @todo PointVector must be Virutal
-     * @todo implement assignements with type conversion/cast
      */
     PointVector();
 

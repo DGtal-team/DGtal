@@ -81,11 +81,11 @@ DGtal::MeasureOfStraightLines::setEpsilon(const double aValue)
  */
 INLINE double 
 DGtal::MeasureOfStraightLines::computeMeasure(const std::vector<double> &a,
-				       const std::vector<double> &b)
+					      const std::vector<double> &b)
 {
   double measure = 0;
 
-   ASSERT(a.size() == b.size());
+  ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
@@ -105,19 +105,19 @@ DGtal::MeasureOfStraightLines::computeMeasure(const std::vector<double> &a,
  */
 INLINE double 
 DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
-				       const std::vector<double> &b)
+						const std::vector<double> &b)
 {
   double measure = 0;
   double C_a = 0;
 
-   ASSERT(a.size() == b.size());
+  ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
       measure += computeMeasureEdge( a[i], b[i], 
-				    a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
+				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
       C_a += computeCentroidEdge_a ( a[i], b[i], 
-				    a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
+				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
     } 
 
   return C_a/measure;
@@ -132,19 +132,19 @@ DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
  */
 INLINE double 
 DGtal::MeasureOfStraightLines::computeCentroidB(const std::vector<double> &a,
-				       const std::vector<double> &b)
+						const std::vector<double> &b)
 {
   double measure = 0;
   double C_b = 0;
 
-   ASSERT(a.size() == b.size());
+  ASSERT(a.size() == b.size());
   
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
       measure += computeMeasureEdge( a[i], b[i], 
-				    a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
+				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
       C_b += computeCentroidEdge_b ( a[i], b[i], 
-				    a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
+				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
     } 
 
   return C_b/measure;
@@ -163,7 +163,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidSquare_b ( double x1, double y1,
   double val;
   val = ( ( -1.0* ( sqrt ( 1.0 + pow ( x1,2 ) ) *x2 ) + x1*sqrt ( 1 + pow ( x2,2 ) ) ) * ( pow ( y1,2 ) - pow ( y2,2 ) ) ) / ( 2.0*sqrt ( ( 1.0 + pow ( x1,2 ) ) * ( 1.0 + pow ( x2,2 ) ) ) );
 
-   ASSERT ( val>=0 );
+  ASSERT ( val>=0 );
   return val;
 }
 
@@ -212,9 +212,9 @@ DGtal::MeasureOfStraightLines::__computeCentroidEdgeApprox_b ( double a0, double
     {
       y2 = ( b1-b0 ) / ( a1-a0 ) * ( a0+ ( i+1 ) *myEpsilon ) + decal;
       if ( y2>0 )
-          measure += __computeCentroidSquare_b ( a0+i*myEpsilon, 0, a0+ ( i+1 ) *myEpsilon, y2 );
+	measure += __computeCentroidSquare_b ( a0+i*myEpsilon, 0, a0+ ( i+1 ) *myEpsilon, y2 );
       else
-          measure += __computeCentroidSquare_b ( a0+i*myEpsilon, y2, a0+ ( i+1 ) *myEpsilon, 0 );
+	measure += __computeCentroidSquare_b ( a0+i*myEpsilon, y2, a0+ ( i+1 ) *myEpsilon, 0 );
     }
   return measure;
 }
@@ -238,9 +238,9 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
   if ( ( a1 != a0 ) )
     m_A0A1 = __computeCentroidEdgeApprox_b ( a0,b0,a1,b1 );
 
-   ASSERT ( m_0A0>=0 );
-   ASSERT ( m_0A1>=0 );
-   ASSERT ( m_A0A1>=0 );
+  ASSERT ( m_0A0>=0 );
+  ASSERT ( m_0A1>=0 );
+  ASSERT ( m_A0A1>=0 );
 
   if ( a0 < a1 )
     {
@@ -258,7 +258,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
       else
         measure = m_0A0 - m_0A1 - m_A0A1;
     }
-   ASSERT ( measure>=0 );
+  ASSERT ( measure>=0 );
   return signe*measure;
 }
 
@@ -284,7 +284,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_b ( double a0,double b0, doub
 
   if ( a0 == a1 )
     return delta* ( ( - ( ( a1* ( b0 + a1* ( -a1 + sqrt ( 1 + pow ( a1,-2 ) ) *sqrt ( 1 + pow ( a1,2 ) ) ) *
-    b1 ) ) /sqrt ( 1.0 + pow ( a1,2 ) ) ) + ( b0 + b1 ) *boost::math::asinh ( a1 ) ) /
+				  b1 ) ) /sqrt ( 1.0 + pow ( a1,2 ) ) ) + ( b0 + b1 ) *boost::math::asinh ( a1 ) ) /
                     ( 2.*pow ( a1,3 ) ) );
 
   return __computeCentroidTriApprox_b ( a0,b0,a1,b1 );
@@ -314,7 +314,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
 
   if ( a0 == a1 )
     return delta* ( ( -sqrt ( 1 + pow ( a1,-2 ) ) - 1.0/ ( a1*sqrt ( 1 + pow ( a1,2 ) ) ) + a1/sqrt ( 1 + pow ( a1,2 ) ) +
-    ( 2*boost::math::asinh ( a1 ) )  /pow ( a1,2 ) ) /2. );
+		      ( 2*boost::math::asinh ( a1 ) )  /pow ( a1,2 ) ) /2. );
 
   return delta* ( ( - ( a1*boost::math::asinh ( a0 ) ) + a0*boost::math::asinh ( a1 ) ) / ( a0* ( a0 - a1 ) *a1 ) );
 }
@@ -334,7 +334,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
 INLINE
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
-		 const DGtal::MeasureOfStraightLines & object )
+		   const DGtal::MeasureOfStraightLines & object )
 {
   object.selfDisplay( out );
   return out;
