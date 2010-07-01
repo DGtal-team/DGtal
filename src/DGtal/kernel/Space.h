@@ -51,7 +51,6 @@ namespace DGtal
 
     /// \todo fixer des concept check sur Integer
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    // BOOST_CONCEPT_ASSERT((boost::Assignable<Integer>));
     
     
     typedef Integer TInteger;

@@ -177,54 +177,12 @@ bool testConcepts()
 }
 
 
-bool testSpanIterators()
-{
-    typedef Space<int,3> Space3Type;
-    typedef Space3Type::Point Point;
-    typedef HyperRectDomain<Space3Type> TDomain;
-    typedef ImageContainerBySTLVector<Point, double> TContainerV;
-
-
-    const int t[ ] = { 1, 1, 1};
-    const int t2[ ] = { 5, 5, 5};
-    const int t3[ ] = { 1, 1, 1};
-    Point a ( t );
-    Point b ( t2 );
-    Point c( t3);
-
-    trace.beginBlock("Test of Concepts");
-    Image<TDomain,double, TContainerV> myImageV ( a,b );
-
-    double cpt=0;
-    for ( Image<TDomain,double, TContainerV>::Iterator it = myImageV.begin();
-            it != myImageV.end();
-            ++it)
-    {
-        myImageV.setValue( it, cpt );
-        cpt++;
-    }
-
-    std::copy ( myImageV.begin(),
-                myImageV.end(),
-                ostream_iterator<double> ( trace.info(), " " ) );
-
-    for ( Image<TDomain,double, TContainerV>::SpanIterator it = myImageV.span_begin(c,1);
-            it != myImageV.span_end(c,1);
-            ++it)
-        trace.info() << myImageV(it)<<" ";
-
-    trace.endBlock();
-
-    return true;
-
-}
-
 
 
 int main()
 {
 
-    if ( testSimpleImage() && testImageContainer() && testBuiltInIterators() && testConcepts() && testSpanIterators())
+  if ( testSimpleImage() && testImageContainer() && testBuiltInIterators() && testConcepts() )
         return 0;
     else
         return 1;

@@ -41,7 +41,7 @@ namespace DGtal
   // class Image
   /**
    * Description of class 'Image' <p>
-   * \brief Aim: implementation of a generic image.
+   * \brief Aim: implementation of a generic hyper rectangular image.
    *
    *
    * \todo spaniterator dans le container_map
@@ -82,7 +82,9 @@ namespace DGtal
   public:
 
     /**
-     *  Generic function to get the value of an image at a point.
+     * Generic function to get the value of an image at a point.
+     * If the point is out of the image range, a default value is returned. 
+     * The default value can be changed by setDefaultValue.
      *
      * \param aPoint the point
      * \return the value at the point \param aPoint
@@ -93,6 +95,8 @@ namespace DGtal
     /**
      *  Generic function to get the value of an image at position given
      * by a build-in iterator.
+     *
+     * \todo verifier le default value sur les iterateurs
      * \param aIt the iteror
      * \return the value referenced by the iterator
      */
@@ -125,8 +129,7 @@ namespace DGtal
      */
     void setValue(Iterator &aIt, const ValueType aVal)
     {
-      myImageMap.setValue(aIt,aVal);
-      
+      myImageMap.setValue(aIt,aVal);      
     }
 
     /** 
@@ -241,10 +244,15 @@ namespace DGtal
      */
     bool isValid() const;
 
-  protected:
-
-    ImageContainer myImageMap; ///Image Container
-    ValueType myValue;
+    /** 
+     * Change the default value of type DefaultValue used in case of out_of_range.
+     * 
+     * @param aValue the new default value.
+     */
+    void setDefaultValue(const ValueType aValue)
+    {
+      myDefaultValue = aValue;
+    }
 
   private:
 
@@ -259,6 +267,8 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
+    ValueType myDefaultValue; ///Default Value to be used in case of out_of_range
+    ImageContainer myImageMap; ///Image Container
 
 
   }; // end of class Image

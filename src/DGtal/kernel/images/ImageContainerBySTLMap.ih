@@ -1,0 +1,43 @@
+/**
+ * @file ImageContainerBySTLMap.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/06/15
+ *
+ * Implementation of inline methods defined in ImageContainerBySTLMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+template <typename Point, typename T>
+inline
+ImageContainerBySTLMap<Point,T>::ImageContainerBySTLMap(const Point &aPointA,
+        const Point &aPointB )
+{
+    if (aPointA < aPointB)
+    {
+        myLowerBound = aPointA;
+        myUpperBound = aPointB;
+    }
+    else
+    {
+        myLowerBound = aPointB;
+        myUpperBound = aPointA;
+    }
+}
+
+template <typename Point, typename T>
+inline
+ImageContainerBySTLMap<Point,T>::~ImageContainerBySTLMap( )
+{
+}
+

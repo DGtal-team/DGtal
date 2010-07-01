@@ -69,7 +69,7 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-    struct CValueType  : boost::Assignable<T>, boost::EqualityComparable<T>
+    struct CValueType  : boost::Assignable<T>, boost::EqualityComparable<T>, boost::DefaultConstructible<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:

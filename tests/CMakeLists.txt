@@ -18,7 +18,8 @@ SET(DGTAL_TESTS_SRC
    test_HyperRectDomain
    test_HyperRectDomain-snippet
    test_DomainSpanIterator
-   test_Image)
+   test_Image
+   test_ImageSpanIterators)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
