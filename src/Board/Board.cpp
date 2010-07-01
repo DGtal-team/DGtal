@@ -1006,7 +1006,7 @@ Board::save( const char * filename, PageSize size, double margin ) const
  */
 
 /**
- * LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
+ *  LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
  *
  * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
  *

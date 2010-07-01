@@ -22,3 +22,18 @@
 */
 
 
+/**
+ * \mainpage DGtal - Digital Geometry Tools and Algorithms.
+ *
+ *
+ * @section intro_sec_dgtal Introduction
+ *
+ *
+ * @section examples_sec_dgtal Code examples
+ *
+ * @section links_sec_dgtal Links
+ *
+ * <ul>
+ * <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
+ * </ul>
+ */
