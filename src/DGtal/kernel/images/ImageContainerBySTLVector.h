@@ -96,8 +96,6 @@ namespace DGtal
       {
 	myPos = aMap->linearized(p);
 
-	std::cout<< "construct("<<myPos<<")"<<std::endl;
-
 	//We compute the myShift quantity
 	myShift = 1;
 	for (unsigned int k=0; k < myDimension  ; k++)
@@ -224,7 +222,9 @@ namespace DGtal
     SpanIterator span_end(const Point &aPoint,const std::size_t aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myLowerBound.at( aDimension ) + myUpperBound.at( aDimension ) - myLowerBound.at( aDimension ) + 1;
+      tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
+	myUpperBound.at( aDimension ) - 
+	myLowerBound.at( aDimension ) + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
@@ -238,8 +238,8 @@ namespace DGtal
 
     /**
      *  Linearized a point and return the vector position.
-     * \param aPoint the point to convert to an index
-     * \return the index of \param aPoint in the container
+     * @param aPoint the point to convert to an index
+     * @return the index of @param aPoint in the container
      */
     SizeType linearized(const Point &aPoint) const;
 
