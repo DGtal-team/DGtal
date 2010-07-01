@@ -25,6 +25,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +52,18 @@ public:
 
 
     HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper )
-            : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper )
+      : myPoint ( p ), mylower ( lower ), myupper ( upper ),  myCurrentPos ( 0 ),
+	myUsePermutation(false)
+  {}
+
+    HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper,
+			       std::initializer_list<unsigned int> permutation )
+      : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper ),
+	myUsePermutation(true)
     {
+      myPermutation.reserve(permutation.size());
+      uninitialized_copy(permutation.begin(), permutation.end(), myPermutation);
+      // TODO: check the validity of the permutation ?      
     }
 
     const TPoint & operator*() const
@@ -83,29 +94,28 @@ public:
     * (lexicographic order).
     *
     **/
-    void next()
+    void nextLexicographicOrder()
     {
-        if ( myPoint.at ( myCurrentPos )  < myupper.at ( myCurrentPos ) )
-            myPoint.at ( myCurrentPos ) ++;
-        else
-        {
-            while ( ( myCurrentPos < myPoint.dimension() ) &&
-                    ( myPoint.at ( myCurrentPos )  >=  myupper.at ( myCurrentPos ) ) )
-            {
-                myPoint.at ( myCurrentPos ) = mylower.at ( myCurrentPos );
-                myCurrentPos++;
-            }
+      //assert( on est encore dans le domaine ); TODO 
+      myPoint.at ( myCurrentPos ) ++;
+      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
+	   ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) )
+	{
+	  do
+	    {
+	      myPoint.at ( myCurrentPos ) = mylower.at ( myCurrentPos );
+	      myCurrentPos++;
+	      if (myCurrentPos < myPoint.dimension())
+		myPoint.at ( myCurrentPos ) ++;
+	    }
+	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
+		  ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) );	    
+	  myCurrentPos = 0;
+	}
+    }
 
-            if ( myCurrentPos < myPoint.dimension() )
-            {
-                myPoint.at ( myCurrentPos ) ++;
-                myCurrentPos = 0;
-            }
-            else
-            {
-                myPoint = myupper;
-            }
-        }
+    void nextPermutationOrder()
+    { // TODO
     }
 
     /**
@@ -114,8 +124,9 @@ public:
     */
     HyperRectDomain_Iterator<TPoint> &operator++()
     {
-        this->next();
-        return *this;
+      if (myUsePermutation) nextPermutationOrder();
+      else                  nextLexicographicOrder();
+      return *this;
     }
 
     /**
@@ -137,28 +148,21 @@ public:
     **/
     void prev()
     {
-        if ( myPoint.at ( myCurrentPos )  > mylower.at ( myCurrentPos ) )
-            myPoint.at ( myCurrentPos ) --;
-        else
-        {
-            while ( ( myCurrentPos >= 0 ) &&
-                    ( myPoint.at ( myCurrentPos )  <=  mylower.at ( myCurrentPos ) ) )
-            {
-                myPoint.at ( myCurrentPos ) = myupper.at ( myCurrentPos );
-                myCurrentPos++;
-            }
-
-            if ( myCurrentPos >= 0 )
-            {
-                myPoint.at ( myCurrentPos ) --;
-                myCurrentPos = 0;
-            }
-            else
-            {
-                myPoint = mylower;
-            }
-        }
-
+      myPoint.at ( myCurrentPos ) --;
+      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
+	   ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) )
+	{
+	  do
+	    {
+	      myPoint.at ( myCurrentPos ) = myupper.at ( myCurrentPos );
+	      myCurrentPos++;
+	      if (myCurrentPos < myPoint.dimension())
+		myPoint.at ( myCurrentPos ) --;
+	    }
+	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
+		  ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) );	    
+	  myCurrentPos = 0;
+	}
     }
 
     /**
@@ -190,6 +194,12 @@ private:
     TPoint mylower, myupper;
     ///Second index of the iterator position
     std::size_t myCurrentPos;
+    ///Vector of permutation on dimension, to fix the order in which dimensions
+    /// are considered.
+    std::vector<unsigned int> myPermutation;
+    /// True iff we use the vector of permutation, otherwise dimensions are
+    /// considered in increasing order.
+    bool myUsePermutation;
 };
 
 

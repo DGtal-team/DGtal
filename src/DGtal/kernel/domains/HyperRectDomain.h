@@ -78,12 +78,9 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Point::Coordinate Coordinate;
 
-
-    ///Type def of domain iterators
+    ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;
     typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
-
-
       
     /**
      * Default Constructor.
@@ -126,7 +123,7 @@ namespace DGtal
      * begin() iterator.
      *
      **/
-    ConstIterator begin() const;
+    const ConstIterator& begin() const;
 
     /**
      * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
@@ -138,7 +135,7 @@ namespace DGtal
      * end() iterator.
      *
      **/
-    ConstIterator end() const;
+    const ConstIterator& end() const;
 
 
     //------------- Span Iterator
@@ -225,6 +222,11 @@ namespace DGtal
     ///The highest point of the space diagonal
     Point myUpperBound;
 
+    /// Begin iterator
+    ConstIterator myIteratorBegin;
+
+    /// End iterator
+    ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
 
 
