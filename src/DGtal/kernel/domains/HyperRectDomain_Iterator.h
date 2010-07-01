@@ -41,9 +41,7 @@ namespace DGtal
 template<typename TPoint>
 class HyperRectDomain_Iterator
 {
-
 public:
-
     typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
     typedef TPoint value_type;
     typedef ptrdiff_t difference_type;
@@ -54,21 +52,28 @@ public:
     HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper )
       : myPoint ( p ), mylower ( lower ), myupper ( upper ),  myCurrentPos ( 0 ),
 	myUsePermutation(false)
-  {}
+  { 
+    ASSERT(lower<upper); 
+    ASSERT(lower<=p && p<=upper); 
+  }
 
     HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper,
 			       std::initializer_list<unsigned int> permutation )
       : myPoint ( p ),  myCurrentPos ( 0 ), mylower ( lower ), myupper ( upper ),
 	myUsePermutation(true)
     {
+      ASSERT(lower<upper); 
+      ASSERT(lower<=p && p<=upper);
+      ASSERT(permutation.size()==TPoint::Dimension);
       myPermutation.reserve(permutation.size());
       uninitialized_copy(permutation.begin(), permutation.end(), myPermutation);
       // TODO: check the validity of the permutation ?      
     }
 
     const TPoint & operator*() const
-    {
-        return myPoint;
+    {  
+      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
+      return myPoint;
     }
 
     /**
@@ -96,7 +101,8 @@ public:
     **/
     void nextLexicographicOrder()
     {
-      //assert( on est encore dans le domaine ); TODO 
+      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
+
       myPoint.at ( myCurrentPos ) ++;
       if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
 	   ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) )
@@ -148,6 +154,8 @@ public:
     **/
     void prev()
     {
+      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
+
       myPoint.at ( myCurrentPos ) --;
       if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
 	   ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) )
@@ -177,7 +185,6 @@ public:
 
     /**
     * Operator ++ (it++)
-    *
     */
     HyperRectDomain_Iterator<TPoint> &operator-- ( int )
     {

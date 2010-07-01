@@ -29,10 +29,9 @@ using namespace std;
 bool testComparison()
 {
     const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
-    const double t2[ ] = { 3.5, 4.2, 2.2, 3.2 };
     PointVector<double, 4> v ( t );
     PointVector<double, 4> v2 ( t );
-    PointVector<double, 4> v3 ( t2 );
+    PointVector<double, 4> v3 ( { 3.5, 4.2, 2.2, 3.2 } );
 
     trace.beginBlock("Comparison of Points");
     if (v == v2)
@@ -68,10 +67,6 @@ bool testSimplePoint()
     PointVector<double,4> aPoint={-3 ,4 ,4.5 ,0};
     PointVector<double,4> aFPoint;
 
-    /*    aPoint.at ( 2 ) = 4.5;
-    aPoint.at ( 1 ) = 4;
-    aPoint.at ( 0 ) = -3;*/
-
     aPoint *= 5.6;
 
     // Marche pô
@@ -85,8 +80,7 @@ bool testSimplePoint()
     if ( aPoint.dimension() != 4 )
         return false;
 
-    const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
-    PointVector<double, 4> v ( t );
+    PointVector<double, 4> v ({ 3.5, 4.1, 2.2, 3.2 });
     aPoint = aFPoint + v;
     trace.beginBlock ( "Test point addition with vector" );
     trace.info() << "aPoint = "<< aFPoint << " + " << v << endl;
@@ -101,9 +95,9 @@ bool testNorms()
     typedef PointVector<double,3> PointType;
     PointType aPoint;
 
-    aPoint.at ( 2 ) = 2;
+    aPoint.at ( 2 ) =  2;
     aPoint.at ( 1 ) = -1;
-    aPoint.at ( 0 ) = 3;
+    aPoint.at ( 0 ) =  3;
 
     trace.beginBlock ( "Test of Norms" );
     trace.info() << "aPoint l_2 norm="<<aPoint.norm() <<endl;
@@ -158,9 +152,6 @@ bool testIterator()
 
     trace.info() << std::endl;
 
-    
-
-
     trace.endBlock();
 
     return true;
@@ -168,7 +159,6 @@ bool testIterator()
 
 int main()
 {
-
     bool res;
     res =  testSimplePoint()  &&    testSimpleVector() &&
            testNorms()  &&
@@ -177,6 +167,5 @@ int main()
         return 0;
     else
         return 1;
-
 }
 

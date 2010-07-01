@@ -92,7 +92,7 @@ namespace DGtal
 
     SpanIterator( const Point & p ,
 		  const std::size_t aDim ,
-		  ImageContainerBySTLVector<Point,ValueType> *aMap ) :   myDimension ( aDim ), myMap ( aMap )
+		  ImageContainerBySTLVector<Point,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
 	myPos = aMap->linearized(p);
 

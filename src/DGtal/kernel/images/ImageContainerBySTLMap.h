@@ -55,8 +55,8 @@ public:
     {
     };
 
-    ImageContainerBySTLMap(const TPoint &aPointA,
-                       const TPoint &aPointB ) {};
+    ImageContainerBySTLMap(const TPoint &/*aPointA*/,
+			   const TPoint &/*aPointB*/ ) {};
 
     ~ImageContainerBySTLMap() {};
 
@@ -96,7 +96,7 @@ public:
     }
 
 
-    void allocate(const std::size_t aSize) {};
+    void allocate(const std::size_t /*aSize*/) {};
 
 private:
 
