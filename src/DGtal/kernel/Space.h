@@ -28,6 +28,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -43,35 +44,35 @@ namespace DGtal
    *
    */
   
-  template <typename TInt, std::size_t Dimension>
+  template <typename Integer, std::size_t Dimension>
   class Space
   {
   public:
 
-    /// \todo fixer des concept check sur TInt
-    BOOST_CONCEPT_ASSERT((boost::EqualityComparable<TInt>));
-    BOOST_CONCEPT_ASSERT((boost::Assignable<TInt>));
+    /// \todo fixer des concept check sur Integer
+    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+    // BOOST_CONCEPT_ASSERT((boost::Assignable<Integer>));
     
     
-    typedef TInt TInteger;
+    typedef Integer TInteger;
     typedef std::size_t  TDimension;
     
-    typedef PointVector<TInt, Dimension> Point;
-    typedef PointVector<TInt,Dimension> Vector;
+    typedef PointVector<Integer, Dimension> Point;
+    typedef PointVector<Integer,Dimension> Vector;
     
-    typedef Space<TInt,Dimension> TSpace;
+    typedef Space<Integer,Dimension> TSpace;
 
     // static constants
     static const TDimension staticDimension = Dimension;
     
-    //typedef Matrix<DimensionT,DimensionT,TInt> Matrix;
+    //typedef Matrix<DimensionT,DimensionT,Integer> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {
-      typedef Space<TInt,Dimension-Codimension> Type;
+      typedef Space<Integer,Dimension-Codimension> Type;
     };
     template <std::size_t Subdimension>
     struct Subspace {
-      typedef Space<TInt,Subdimension> Type;
+      typedef Space<Integer,Subdimension> Type;
     };
     
     
@@ -97,7 +98,7 @@ namespace DGtal
     typename Subspace<Subdimension>::Type subspace()
       {
 	ASSERT( Subdimension <= Dimension );
-	return Space<TInt,Subdimension>();
+	return Space<Integer,Subdimension>();
       }
     
 
@@ -109,7 +110,7 @@ namespace DGtal
     typename Subcospace<Codimension>::Type subcospace()
       {
 	ASSERT( Codimension <= Dimension );
-	return Space<TInt,Dimension-Codimension>();
+	return Space<Integer,Dimension-Codimension>();
       }
 
 
@@ -127,7 +128,7 @@ namespace DGtal
      */
     static void selfDisplay( std::ostream & out )
     {
-      out << "[Space dim=" << dimension() << " size_elem=" << sizeof( TInt ) << " ]";
+      out << "[Space dim=" << dimension() << " size_elem=" << sizeof( Integer ) << " ]";
     }
 
   private:
@@ -151,9 +152,9 @@ namespace DGtal
    * @param object the object of class 'Space' to write.
    * @return the output stream after the writing.
    */
-  template <typename TInt, std::size_t Dimension>
+  template <typename Integer, std::size_t Dimension>
   static std::ostream&
-  operator<<( std::ostream & out, const Space<TInt,Dimension> & object )
+  operator<<( std::ostream & out, const Space<Integer,Dimension> & object )
   {
     object.selfDisplay( out );
     return out;

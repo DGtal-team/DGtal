@@ -1,0 +1,33 @@
+/**
+ * @file CDigitalSet.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
+ * Groupe de Recherche en Informatique, Image, Automatique et
+ * Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ *
+ * @date 2010/07/01
+ *
+ * Implementation of inline methods defined for concept CDigitalSet in CDigitalSet.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
