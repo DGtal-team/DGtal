@@ -1,5 +1,5 @@
 /**
- * @file DigitalSetSelector.ih
+ * @file DigitalSetBySTLVector.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -9,7 +9,7 @@
  *
  * @date 2010/07/01
  *
- * Implementation of inline methods defined in DigitalSetSelector.h
+ * Implementation of inline methods defined in DigitalSetBySTLVector.h
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
 template <typename T>
 inline
 void
-DGtal::DigitalSetSelector<T>::~DigitalSetSelector()
+DGtal::DigitalSetBySTLVector<T>::~DigitalSetBySTLVector()
 {
 }
 
@@ -46,9 +46,9 @@ DGtal::DigitalSetSelector<T>::~DigitalSetSelector()
 template <typename T>
 inline
 void
-DGtal::DigitalSetSelector<T>::selfDisplay ( std::ostream & out ) const
+DGtal::DigitalSetBySTLVector<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[DigitalSetSelector]";
+  out << "[DigitalSetBySTLVector]";
 }
 
 /**
@@ -58,7 +58,7 @@ DGtal::DigitalSetSelector<T>::selfDisplay ( std::ostream & out ) const
 template <typename T>
 inline
 bool
-DGtal::DigitalSetSelector<T>::isValid() const
+DGtal::DigitalSetBySTLVector<T>::isValid() const
 {
     return true;
 }
@@ -71,28 +71,12 @@ DGtal::DigitalSetSelector<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSetSelector<T> & object );
+operator<< ( std::ostream & out, const DGtal::DigitalSetBySTLVector<T> & object );
  {
    object.selfDisplay( out );
    return out;
  }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// TEMPLATE SPECIALIZATION
-///////////////////////////////////////////////////////////////////////////////
-/**
- * DigitalSetSelector specializarion when Preferences is
- * SMALL+LOW_VAR+LOW_ITER+LOW_BEL
- */
-template <typename Domain, 0>
-struct DigitalSetSelector
-{
-  /**
-   * Adequate digital set representation for the given preferences.
-   */
-  typedef DigitalSetBySTLVector<Domain> Type;
-}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

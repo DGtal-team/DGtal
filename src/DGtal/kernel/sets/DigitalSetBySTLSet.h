@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @file DigitalSetSelector.h
+ * @file DigitalSetBySTLSet.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -11,20 +11,20 @@
  *
  * @date 2010/07/01
  *
- * Header file for module DigitalSetSelector.cpp
+ * Header file for module DigitalSetBySTLSet.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DigitalSetSelector_RECURSES)
-#error Recursive header files inclusion detected in DigitalSetSelector.h
-#else // defined(DigitalSetSelector_RECURSES)
+#if defined(DigitalSetBySTLSet_RECURSES)
+#error Recursive header files inclusion detected in DigitalSetBySTLSet.h
+#else // defined(DigitalSetBySTLSet_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DigitalSetSelector_RECURSES
+#define DigitalSetBySTLSet_RECURSES
 
-#if !defined DigitalSetSelector_h
+#if !defined DigitalSetBySTLSet_h
 /** Prevents repeated inclusion of headers. */
-#define DigitalSetSelector_h
+#define DigitalSetBySTLSet_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -36,33 +36,21 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class DigitalSetSelector
+  // template class DigitalSetBySTLSet
   /**
-   * Description of template class 'DigitalSetSelector' <p>
+   * Description of template class 'DigitalSetBySTLSet' <p>
    * \brief Aim:
    */
-  template <typename Domain, uint Preferences >
-  struct DigitalSetSelector
+  template <typename T>
+  class DigitalSetBySTLSet
   {
-    // ----------------------- Local types ------------------------------
-    
-    enum Size { SMALL = 0, MEDIUM = 1, BIG = 2, WHOLE = 3 };
-    enum Variability { LOW_VAR = 0, HIGH_VAR = 4 };
-    enum Iterability { LOW_ITER = 0, HIGH_ITER = 8 };
-    enum BelongTestability { LOW_BEL = 0, HIGH_BEL = 16 };
-
-    /**
-     * Adequate digital set representation for the given preferences.
-     */
-    typedef DigitalSetBySTLSet<Domain> Type;
-
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Destructor.
      */
-    ~DigitalSetSelector();
+    ~DigitalSetBySTLSet();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -91,7 +79,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    DigitalSetSelector();
+    DigitalSetBySTLSet();
 
   private:
 
@@ -100,7 +88,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    DigitalSetSelector ( const DigitalSetSelector & other );
+    DigitalSetBySTLSet ( const DigitalSetBySTLSet & other );
 
     /**
      * Assignment.
@@ -108,35 +96,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    DigitalSetSelector & operator= ( const DigitalSetSelector & other );
+    DigitalSetBySTLSet & operator= ( const DigitalSetBySTLSet & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class DigitalSetSelector
+  }; // end of class DigitalSetBySTLSet
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalSetSelector'.
+   * Overloads 'operator<<' for displaying objects of class 'DigitalSetBySTLSet'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalSetSelector' to write.
+   * @param object the object of class 'DigitalSetBySTLSet' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetSelector<T> & object );
+  operator<< ( std::ostream & out, const DigitalSetBySTLSet<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/sets/DigitalSetSelector.ih"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DigitalSetSelector_h
+#endif // !defined DigitalSetBySTLSet_h
 
-#undef DigitalSetSelector_RECURSES
-#endif // else defined(DigitalSetSelector_RECURSES)
+#undef DigitalSetBySTLSet_RECURSES
+#endif // else defined(DigitalSetBySTLSet_RECURSES)
