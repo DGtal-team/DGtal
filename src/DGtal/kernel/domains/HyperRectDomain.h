@@ -125,6 +125,12 @@ namespace DGtal
      **/
     const ConstIterator& begin() const;
 
+     /**
+     * begin() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator begin(std::initializer_list<unsigned int> permutation);
+
     /**
      * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
      *

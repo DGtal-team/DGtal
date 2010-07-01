@@ -38,10 +38,8 @@ bool testSimpleHyperRectDomain()
     typedef Space<int,4> Space4Type;
     typedef Space4Type::Point Point;
 
-    const int t[ ] = { 1, 2, 3 ,4};
-    const int t2[ ] = { 5, 5, 3 ,4};
-    Point a ( t );
-    Point b ( t2 );
+    Point a ({ 1, 2, 3 ,4});
+    Point b ({ 5, 5, 3 ,4} );
 
     trace.beginBlock ( "HyperRectDomain init" );
     ///Empty domain using the default constructor
@@ -80,10 +78,8 @@ bool testIterator()
 {
     typedef Space<int,2> TSpace;
     typedef TSpace::Point Point;
-    const int t[ ] = { 1, 1};
-    const int t2[ ] = { 5, 5};
-    Point a ( t );
-    Point b ( t2 );
+    Point a ({ 1, 1});
+    Point b ({ 5, 5});
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myHyperRectDomain ( a,b );
@@ -92,18 +88,15 @@ bool testIterator()
 
     trace.emphase() << "Iterator 2d: ";
     for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
-            it != myHyperRectDomain.end();
-            ++it )
+            it != myHyperRectDomain.end(); ++it )
         trace.info() << ( *it ) << std::endl;
 
 
     trace.emphase() << "Iterator 4d: ";
     typedef Space<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    const int t4D[ ] = {1,1,1,1};
-    const int t4D2[ ] = {3,3,3,3};
-    Point4D a4D ( t4D );
-    Point4D b4D ( t4D2 );
+    Point4D a4D ( {1,1,1,1} );
+    Point4D b4D ( {3,3,3,3} );
 
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
@@ -114,6 +107,13 @@ bool testIterator()
         trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
+
+    trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
+    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin({3,2,1,0});
+	  it != myHyperRectDomain4D.end(); ++it )
+        trace.info() << ( *it ) << std::endl;
+
+
     return myHyperRectDomain.isValid();
 }
 
@@ -122,20 +122,17 @@ bool testReverseIterator()
 {
     typedef Space<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    const int t4D[ ] = { 1, 1,1,1};
-    const int t4D2[ ] = { 3,3,3,3};
-    Point4D a4D ( t4D );
-    Point4D b4D ( t4D2 );
+    Point4D a4D ({1,1,1,1});
+    Point4D b4D ({3,3,3,3});
 
     trace.beginBlock ( "Test reverse iterator" );
 
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.end();
-            it != myHyperRectDomain4D.begin();
-            --it )
-        trace.info() << ( *it ) << std::endl;
+    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin(b4D);
+	  it != myHyperRectDomain4D.begin(); --it )
+      trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
 
@@ -148,10 +145,8 @@ bool testSTLCompat()
 {
     typedef Space<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    const int t4D[ ] = { 1, 1,1,1};
-    const int t4D2[ ] = { 3,3,3,3};
-    Point4D a4D ( t4D );
-    Point4D b4D ( t4D2 );
+    Point4D a4D ({1,1,1,1});
+    Point4D b4D ({3,3,3,3});
 
     trace.beginBlock ( "TestSTL Compatibility" );
 
