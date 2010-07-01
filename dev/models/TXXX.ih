@@ -27,7 +27,6 @@
  */
 template <typename T>
 inline
-void
 YYY::XXX<T>::~XXX()
 {
 }
@@ -62,7 +61,7 @@ YYY::XXX<T>::isValid() const
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline function                                         //
+// Implementation of inline functions                                        //
 
 template <typename T>
 inline
