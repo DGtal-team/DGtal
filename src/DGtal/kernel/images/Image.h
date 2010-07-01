@@ -28,7 +28,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageContainerConcept.h"
+#include "DGtal/kernel/images/CImageContainer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -45,7 +45,7 @@ namespace DGtal
    * \todo Documentation
    */
 
-  template <typename TDomain, typename TValue, typename TContainer >
+  template <typename TDomain, typename TValue, typename ImageContainer >
   class Image
   {
     // ----------------------- Standard services ------------------------------
@@ -53,11 +53,11 @@ namespace DGtal
 
 
     typedef typename TDomain::Point Point;
-    typedef typename TContainer::Iterator Iterator;
-    typedef typename TContainer::ConstIterator ConstIterator;
-    typedef typename TContainer::SpanIterator SpanIterator;
+    typedef typename ImageContainer::Iterator Iterator;
+    typedef typename ImageContainer::ConstIterator ConstIterator;
+    typedef typename ImageContainer::SpanIterator SpanIterator;
 
-    BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<Point,TValue,TContainer>));
+    BOOST_CONCEPT_ASSERT((DGtal::CImageContainer<Point,TValue,ImageContainer>));
 
 
     /**
@@ -239,7 +239,7 @@ namespace DGtal
 
   protected:
 
-    TContainer myImageMap; ///Image Container
+    ImageContainer myImageMap; ///Image Container
     TValue myValue;
 
   private:

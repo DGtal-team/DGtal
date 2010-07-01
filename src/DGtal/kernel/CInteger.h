@@ -35,7 +35,8 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CInteger
   /**
-   * Description of \b concept '\b CInteger' <p>
+   * Description of \b concept '\b CInteger' <p>     
+   * @ingroup Concepts
    * Aim:
    * 
    * <p> Refinement of

@@ -36,6 +36,7 @@ namespace YYY
   // class XXX
   /**
    * Description of \b concept '\b XXX' <p>
+   * @ingroup Concepts
    * Aim:
    * 
    * <p> Refinement of
