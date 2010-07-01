@@ -1,4 +1,3 @@
-
 SET(DGTAL_SRC ${DGTAL_SRC} 
 		DGtal/kernel/Space
 #		DGtal/kernel/Point

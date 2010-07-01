@@ -48,7 +48,7 @@ namespace DGtal
      * @param outputStream the current output Stream 
      *
      */
-    TraceWriterFile(std::ostream &outputStream) : TraceWriter(outputStream) {};
+    TraceWriterFile(std::ostream &aoutputStream) : TraceWriter(aoutputStream) {};
   
 
 

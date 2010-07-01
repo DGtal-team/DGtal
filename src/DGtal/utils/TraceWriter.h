@@ -84,7 +84,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-  TraceWriter(std::ostream &outputStream) : myOutputStream(outputStream) {};
+  TraceWriter(std::ostream &aoutputStream) : myOutputStream(aoutputStream) {};
   
 
 
