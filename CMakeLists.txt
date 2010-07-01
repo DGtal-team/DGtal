@@ -128,7 +128,9 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-SET(DGtal_VERSION "0.1")
+SET(DGtal_VERSION_MAJOR 0)
+SET(DGtal_VERSION_MINOR 1)
+SET(DGtal_VERSION_PATCH 0)
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 
 
@@ -139,3 +141,12 @@ ADD_CUSTOM_TARGET(distclean
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetDistclean.cmake")
 
 
+#------------------------------------------------------------------------------
+# CPack Configurations
+#------------------------------------------------------------------------------
+SET(CPACK_SOURCE_GENERATOR "TGZ")
+#SET(CPACK_SOURCE_IGNORE_FILES "/CVS/;/\.svn/") #;\\.swp$;\\.kdev4;build;qtcreator-build")
+SET(CPACK_PACKAGE_VERSION_MAJOR 	 ${DGtal_VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR 	 ${DGtal_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH 	 ${DGtal_VERSION_PATCH})
+INCLUDE(CPack)
