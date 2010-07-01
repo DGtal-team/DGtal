@@ -74,12 +74,12 @@ class HyperRectDomain
     // ----------------------- Standard services ------------------------------
 public:
 
-    typedef typename TSpace::TPoint TPoint;
-    typedef typename TPoint::TValue TValue;
+    typedef typename TSpace::Point Point;
+    typedef typename Point::TValue TValue;
 
     ///Type def of domain iterators
-    typedef HyperRectDomain_Iterator<TPoint> ConstIterator;
-    typedef HyperRectDomain_SpanIterator<TPoint> ConstSpanIterator;
+    typedef HyperRectDomain_Iterator<Point> ConstIterator;
+    typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
 
 
       
@@ -93,7 +93,7 @@ public:
     * defining the space diagonal.
     *
     */
-    HyperRectDomain ( const TPoint &aPointA, const TPoint &aPointB );
+    HyperRectDomain ( const Point &aPointA, const Point &aPointB );
 
 
     /**
@@ -130,7 +130,7 @@ public:
     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
     *
     **/
-    ConstIterator begin ( const TPoint &aPoint ) const;
+    ConstIterator begin ( const Point &aPoint ) const;
 
     /**
     * end() iterator.
@@ -144,7 +144,7 @@ public:
     * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
     *
     **/
-    ConstSpanIterator span_begin ( const TPoint &aPoint, const std::size_t aDimension) const;
+    ConstSpanIterator span_begin ( const Point &aPoint, const std::size_t aDimension) const;
 
 
     /**
@@ -168,13 +168,13 @@ public:
     * Returns the lowest point of the space diagonal.
     *
     **/
-    const TPoint &lowerBound() const;
+    const Point &lowerBound() const;
 
     /**
     * Returns the highest point of the space diagonal.
     *
     **/
-    const TPoint &upperBound() const ;
+    const Point &upperBound() const ;
 
 
     /**
@@ -200,9 +200,9 @@ private:
 
 
 ///The lowest point of the space diagonal
-    TPoint myLowerBound;
+    Point myLowerBound;
 ///The highest point of the space diagonal
-    TPoint myUpperBound;
+    Point myUpperBound;
 
 }; // end of class HyperRectDomain
 

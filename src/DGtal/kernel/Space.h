@@ -56,8 +56,8 @@ namespace DGtal
     typedef TInt TInteger;
     typedef std::size_t  TDimension;
     
-    typedef PointVector<TInt, Dimension> TPoint;
-    typedef PointVector<TInt,Dimension> TVector;
+    typedef PointVector<TInt, Dimension> Point;
+    typedef PointVector<TInt,Dimension> Vector;
     
     typedef Space<TInt,Dimension> TSpace;
 

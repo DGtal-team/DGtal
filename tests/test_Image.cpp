@@ -36,14 +36,14 @@ bool testSimpleImage()
 {
 
     typedef Space<int,4> Space4Type;
-    typedef Space4Type::TPoint TPoint;
+    typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
-    typedef ImageContainer_vector<TPoint, double> TContainer;
+    typedef ImageContainer_vector<Point, double> TContainer;
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
     trace.beginBlock ( "Image init" );
 
@@ -58,20 +58,20 @@ bool testSimpleImage()
 bool testImageContainer()
 {
     typedef Space<int,4> Space4Type;
-    typedef Space4Type::TPoint TPoint;
+    typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
-    typedef ImageContainer_vector<TPoint, double> TContainerV;
-    typedef ImageContainer_map<TPoint, double> TContainerM;
+    typedef ImageContainer_vector<Point, double> TContainerV;
+    typedef ImageContainer_map<Point, double> TContainerM;
 
     bool res = true;
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
     const int t3[ ] = { 5, 3, 3 ,4};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
-    TPoint c ( t3 );
+    Point c ( t3 );
 
     trace.beginBlock ( "Image Container" );
 
@@ -105,15 +105,15 @@ bool testImageContainer()
 bool testBuiltInIterators()
 {
     typedef Space<int,2> Space2Type;
-    typedef Space2Type::TPoint TPoint;
+    typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
-    typedef ImageContainer_vector<TPoint, double> TContainerV;
-    typedef ImageContainer_map<TPoint, double> TContainerM;
+    typedef ImageContainer_vector<Point, double> TContainerV;
+    typedef ImageContainer_map<Point, double> TContainerM;
 
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
     trace.beginBlock("Test of built-in iterators");
 
@@ -158,19 +158,19 @@ struct Hop
 bool testConcepts()
 {
     typedef Space<int,2> Space2Type;
-    typedef Space2Type::TPoint TPoint;
+    typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
-    typedef ImageContainer_vector<TPoint, double> TContainerV;
-    typedef ImageContainer_map<TPoint, double> TContainerM;
+    typedef ImageContainer_vector<Point, double> TContainerV;
+    typedef ImageContainer_map<Point, double> TContainerM;
 
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
     trace.beginBlock("Test of Concepts");
 
-    //Image<TDomain,double, Hop<TPoint> > myImageV ( a,b );
+    //Image<TDomain,double, Hop<Point> > myImageV ( a,b );
     trace.endBlock();
 
     return true;
@@ -180,17 +180,17 @@ bool testConcepts()
 bool testSpanIterators()
 {
     typedef Space<int,3> Space3Type;
-    typedef Space3Type::TPoint TPoint;
+    typedef Space3Type::Point Point;
     typedef HyperRectDomain<Space3Type> TDomain;
-    typedef ImageContainer_vector<TPoint, double> TContainerV;
+    typedef ImageContainer_vector<Point, double> TContainerV;
 
 
     const int t[ ] = { 1, 1, 1};
     const int t2[ ] = { 5, 5, 5};
     const int t3[ ] = { 1, 1, 1};
-    TPoint a ( t );
-    TPoint b ( t2 );
-    TPoint c( t3);
+    Point a ( t );
+    Point b ( t2 );
+    Point c( t3);
 
     trace.beginBlock("Test of Concepts");
     Image<TDomain,double, TContainerV> myImageV ( a,b );

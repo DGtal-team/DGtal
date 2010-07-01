@@ -36,12 +36,12 @@ bool testSimpleHyperRectDomain()
 {
 
     typedef Space<int,4> Space4Type;
-    typedef Space4Type::TPoint TPoint;
+    typedef Space4Type::Point Point;
 
     const int t[ ] = { 1, 2, 3 ,4};
     const int t2[ ] = { 5, 5, 3 ,4};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain init" );
     ///Empty domain using the default constructor
@@ -79,11 +79,11 @@ bool testSimpleHyperRectDomain()
 bool testIterator()
 {
     typedef Space<int,2> TSpace;
-    typedef TSpace::TPoint TPoint;
+    typedef TSpace::Point Point;
     const int t[ ] = { 1, 1};
     const int t2[ ] = { 5, 5};
-    TPoint a ( t );
-    TPoint b ( t2 );
+    Point a ( t );
+    Point b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myHyperRectDomain ( a,b );
@@ -99,11 +99,11 @@ bool testIterator()
 
     trace.emphase() << "Iterator 4d: ";
     typedef Space<int,4> TSpace4D;
-    typedef TSpace4D::TPoint TPoint4D;
+    typedef TSpace4D::Point Point4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    TPoint4D a4D ( t4D );
-    TPoint4D b4D ( t4D2 );
+    Point4D a4D ( t4D );
+    Point4D b4D ( t4D2 );
 
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
@@ -121,11 +121,11 @@ bool testIterator()
 bool testReverseIterator()
 {
     typedef Space<int,4> TSpace4D;
-    typedef TSpace4D::TPoint TPoint4D;
+    typedef TSpace4D::Point Point4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    TPoint4D a4D ( t4D );
-    TPoint4D b4D ( t4D2 );
+    Point4D a4D ( t4D );
+    Point4D b4D ( t4D2 );
 
     trace.beginBlock ( "Test reverse iterator" );
 
@@ -147,11 +147,11 @@ bool testReverseIterator()
 bool testSTLCompat()
 {
     typedef Space<int,4> TSpace4D;
-    typedef TSpace4D::TPoint TPoint4D;
+    typedef TSpace4D::Point Point4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,3,3,3};
-    TPoint4D a4D ( t4D );
-    TPoint4D b4D ( t4D2 );
+    Point4D a4D ( t4D );
+    Point4D b4D ( t4D2 );
 
     trace.beginBlock ( "TestSTL Compatibility" );
 
@@ -160,7 +160,7 @@ bool testSTLCompat()
 
     std::copy ( myHyperRectDomain4D.begin(),
                 myHyperRectDomain4D.end(),
-                ostream_iterator<TPoint4D> ( trace.info(), " " ) );
+                ostream_iterator<Point4D> ( trace.info(), " " ) );
 
     trace.info() << std::endl;
     trace.endBlock();

@@ -23,8 +23,8 @@
 */
 template <class THyperRectDomain, typename T, class TCont>
 inline
-Image<THyperRectDomain,T,TCont>::Image(const TPoint &aPointA,
-				       const TPoint &aPointB ) : myDomain(aPointA,aPointB), myImageMap(aPointA,aPointB)
+Image<THyperRectDomain,T,TCont>::Image(const Point &aPointA,
+				       const Point &aPointB ) : myDomain(aPointA,aPointB), myImageMap(aPointA,aPointB)
 {
     myImageMap.allocate(myDomain.extent());
 }
@@ -49,7 +49,7 @@ Image<THyperRectDomain,T,TCont>::~Image()
 template <class THyperRectDomain, typename T, class TCont>
 inline
 T
-Image<THyperRectDomain,T,TCont>::operator()(const TPoint &aPoint)
+Image<THyperRectDomain,T,TCont>::operator()(const Point &aPoint)
 {
     return myImageMap( aPoint );
 }

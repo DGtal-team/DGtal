@@ -37,7 +37,7 @@ bool testIterator()
 
     trace.emphase() << "Iterator 4d: ";
     typedef Space<int,4> SpaceType4D;
-    typedef SpaceType4D::TPoint TPoint4D;
+    typedef SpaceType4D::Point TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,6,3,3};
     const int t4D3[ ] = { 1, 2,1,1};

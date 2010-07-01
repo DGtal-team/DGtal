@@ -52,12 +52,12 @@ namespace DGtal
   public:
 
 
-    typedef typename THyperRectDomain::TPoint TPoint;
+    typedef typename THyperRectDomain::Point Point;
     typedef typename TContainer::Iterator Iterator;
     typedef typename TContainer::ConstIterator ConstIterator;
     typedef typename TContainer::SpanIterator SpanIterator;
 
-    BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<TPoint,TValue,TContainer>));
+    BOOST_CONCEPT_ASSERT((DGtal::ImageContainerConcept<Point,TValue,TContainer>));
 
 
     /**
@@ -66,8 +66,8 @@ namespace DGtal
      * @param aPointA first point.
      * @param aPointB second point.
      */
-    Image( const typename THyperRectDomain::TPoint &aPointA,
-           const typename THyperRectDomain::TPoint &aPointB );
+    Image( const typename THyperRectDomain::Point &aPointA,
+           const typename THyperRectDomain::Point &aPointB );
 
     /**
      * Destructor.x
@@ -83,7 +83,7 @@ namespace DGtal
      * \param aPoint the point
      * \return the value at the point \param aPoint
      */
-    TValue operator()(const TPoint &aPoint);
+    TValue operator()(const Point &aPoint);
 
 
     /**
@@ -107,7 +107,7 @@ namespace DGtal
      * 
      * @param aPoint the position as a Point
      * @param aVal the value to store
-     */    void setValue(const TPoint &aPoint, const TValue aVal)
+     */    void setValue(const Point &aPoint, const TValue aVal)
     {
       myImageMap.setValue(aPoint,aVal);
     }
@@ -161,7 +161,7 @@ namespace DGtal
      * \param aDimension direction of the span iterator
      * @return the begin span iterator
      */
-    SpanIterator span_begin(const TPoint &aPoint, const std::size_t aDimension) {
+    SpanIterator span_begin(const Point &aPoint, const std::size_t aDimension) {
       return myImageMap.span_begin(aPoint,aDimension);
 
     }
@@ -173,7 +173,7 @@ namespace DGtal
      * \param aDimension direction of the span iterator
      * @return the  end  span iterator
      */
-    SpanIterator span_end(const TPoint &aPoint, const std::size_t aDimension) {
+    SpanIterator span_end(const Point &aPoint, const std::size_t aDimension) {
       return myImageMap.span_end(aPoint,aDimension);
     }
     /** 
