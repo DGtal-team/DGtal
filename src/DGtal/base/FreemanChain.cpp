@@ -191,7 +191,7 @@ DGtal::FreemanChain::alphabet( char & zero, char & one,
  * @param ccw 'true' if the contour is seen counterclockwise with
  * its inside to the left.
  */
-uint
+DGtal::uint
 DGtal::FreemanChain::movement( uint code1, uint code2, bool ccw )
 {
   uint cfg = ( ccw ? 0 : 16 ) + ( code1 << 2 ) + code2;

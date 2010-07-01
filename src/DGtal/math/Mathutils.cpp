@@ -126,7 +126,7 @@ DGtal::Mathutils::averagedLength( float t )
  *
  * @return the gcd of a and b.
  */
-uint
+DGtal::uint
 DGtal::Mathutils::cfrac( vector<uint> & z, uint a, uint b )
 {
   while ( b != 0 )
