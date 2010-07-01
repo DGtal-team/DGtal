@@ -100,8 +100,8 @@ bool testIterator()
     trace.emphase() << "Iterator 4d: ";
     typedef Space<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    const int t4D[ ] = { 1, 1,1,1};
-    const int t4D2[ ] = { 3,3,3,3};
+    const int t4D[ ] = {1,1,1,1};
+    const int t4D2[ ] = {3,3,3,3};
     Point4D a4D ( t4D );
     Point4D b4D ( t4D2 );
 

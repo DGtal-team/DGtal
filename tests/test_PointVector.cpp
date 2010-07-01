@@ -64,17 +64,13 @@ bool testComparison()
  **/
 bool testSimplePoint()
 {
-    PointVector<int,3>  aPVInt3; //shouldn't be authorized
-    PointVector<double,4> aPoint;
+    PointVector<int,3>  aPVInt3; 
+    PointVector<double,4> aPoint={-3 ,4 ,4.5 ,0};
     PointVector<double,4> aFPoint;
 
-    aPVInt3.zero();
-    aPoint.zero();
-    aFPoint.zero();
-
-    aPoint.at ( 2 ) = 4.5;
+    /*    aPoint.at ( 2 ) = 4.5;
     aPoint.at ( 1 ) = 4;
-    aPoint.at ( 0 ) = -3;
+    aPoint.at ( 0 ) = -3;*/
 
     aPoint *= 5.6;
 
@@ -127,13 +123,9 @@ bool testNorms()
 **/
 bool testSimpleVector()
 {
-    PointVector<int,3>  aPVInt3; //shouldn't be authorized
+    PointVector<int,3>  aPVInt3;
     PointVector<double,4> aVector;
     PointVector<double,4> aFVector;
-
-    aPVInt3.zero();
-    aVector.zero();
-    aFVector.zero();
 
     trace.beginBlock ( "Test of Vector Dimension" );
     trace.info() << "aVector dimension="<< aVector.dimension() <<endl;

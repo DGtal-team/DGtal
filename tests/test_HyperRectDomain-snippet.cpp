@@ -29,7 +29,7 @@ int main()
     typedef Space4DType::Point Point4DType;
 
     const int rawA[ ] = { 1, 2, 3 ,4};
-    const int rawB[ ] = { 5, 5, 3 ,4};
+    const int rawB[ ] = { 4, 4, 5 ,5};
     Point4DType A ( rawA );
     Point4DType B ( rawB );
 
