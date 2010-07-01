@@ -57,7 +57,10 @@ namespace DGtal
     typedef typename boost::array<T,N>::iterator Iterator;
     typedef typename boost::array<T,N>::const_iterator ConstIterator;
     
-    typedef T TValue;
+    ///\todo documentation here!
+    typedef T Component;
+    typedef T Coordinate;
+
     static const std::size_t Dimension = N;
     
     

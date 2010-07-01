@@ -24,6 +24,8 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
+#include "DGtal/kernel/images/CValueType.h"
+
 namespace DGtal
 {
 
@@ -66,15 +68,17 @@ namespace DGtal
    * @todo Complete ImageContainer checking.
    */
 
-  template <class TPoint, typename TValue, class TContainer>
-    struct CImageContainer  : boost::Assignable<TValue>, boost::EqualityComparable<TValue>
+  template <typename TPoint, typename ValueType, typename TContainer>
+    struct CImageContainer
     {
 
     public:
       typedef typename TContainer::Iterator Iterator;
 
       BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
-    
+      BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
+
+
       BOOST_CONCEPT_USAGE(CImageContainer)
       {
         //TContainer j(a,b);
@@ -86,7 +90,7 @@ namespace DGtal
     private:
       TContainer i;
       Iterator it;
-      TValue v;
+      ValueType v;
       TPoint a,b;
  
       // Type deduction will fail unless the arguments have the same type.

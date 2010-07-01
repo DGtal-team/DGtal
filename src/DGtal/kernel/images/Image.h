@@ -29,6 +29,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/kernel/images/CValueType.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -45,7 +46,7 @@ namespace DGtal
    * \todo Documentation
    */
 
-  template <typename TDomain, typename TValue, typename ImageContainer >
+  template <typename TDomain, typename ValueType, typename ImageContainer >
   class Image
   {
     // ----------------------- Standard services ------------------------------
@@ -57,8 +58,7 @@ namespace DGtal
     typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::SpanIterator SpanIterator;
 
-    BOOST_CONCEPT_ASSERT((DGtal::CImageContainer<Point,TValue,ImageContainer>));
-
+    BOOST_CONCEPT_ASSERT((CImageContainer<Point,ValueType,ImageContainer>));
 
     /**
      * Constuctor as the bounding box of two points.
@@ -83,7 +83,7 @@ namespace DGtal
      * \param aPoint the point
      * \return the value at the point \param aPoint
      */
-    TValue operator()(const Point &aPoint);
+    ValueType operator()(const Point &aPoint);
 
 
     /**
@@ -92,14 +92,14 @@ namespace DGtal
      * \param aIt the iteror
      * \return the value referenced by the iterator
      */
-    TValue operator()(const Iterator &aIt);
+    ValueType operator()(const Iterator &aIt);
 
 
     /**
      *  Generic function to get the value of an image at a point \param aPoint
      *
      */
-    TValue operator()(const SpanIterator &aIt);
+    ValueType operator()(const SpanIterator &aIt);
 
 
     /** 
@@ -108,7 +108,7 @@ namespace DGtal
      * @param aPoint the position as a Point
      * @param aVal the value to store
      */    
-    void setValue(const Point &aPoint, const TValue aVal)
+    void setValue(const Point &aPoint, const ValueType aVal)
     {
       myImageMap.setValue(aPoint,aVal);
     }
@@ -119,7 +119,7 @@ namespace DGtal
      * @param aIt the built-in iterator 
      * @param aVal the value to store
      */
-    void setValue(Iterator &aIt, const TValue aVal)
+    void setValue(Iterator &aIt, const ValueType aVal)
     {
       myImageMap.setValue(aIt,aVal);
       
@@ -131,7 +131,7 @@ namespace DGtal
      * @param aIt the span iterator 
      * @param aVal the value to store
      */
-    void setValue(SpanIterator &aIt, const TValue aVal)
+    void setValue(SpanIterator &aIt, const ValueType aVal)
     {
       myImageMap.setValue(aIt,aVal);
     }
@@ -240,7 +240,7 @@ namespace DGtal
   protected:
 
     ImageContainer myImageMap; ///Image Container
-    TValue myValue;
+    ValueType myValue;
 
   private:
 

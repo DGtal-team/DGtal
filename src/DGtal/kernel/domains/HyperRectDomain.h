@@ -68,14 +68,16 @@ namespace DGtal
    * \see test_HyperRectDomain.cpp
    * \see test_HyperRectDomain-snippet.cpp
    */
-  template<typename TSpace>
+  template<typename Space>
   class HyperRectDomain
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef typename TSpace::Point Point;
-    typedef typename Point::TValue TValue;
+
+    typedef typename Space::Point Point;
+    typedef typename Point::Coordinate Coordinate;
+
 
     ///Type def of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;
@@ -175,8 +177,8 @@ namespace DGtal
      */    
     static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
     {
-      TValue val = 1;
-      for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
+      std::size_t val = 1;
+      for (unsigned int k =  0; k < Space::staticDimension ; k++)
 	val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
 
       return val;
@@ -232,9 +234,9 @@ namespace DGtal
    * @param object the object of class 'HyperRectDomain' to write.
    * @return the output stream after the writing.
    */
-  template<typename TSpace>
+  template<typename Space>
   std::ostream&
-  operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
+  operator<< ( std::ostream & out, const HyperRectDomain<Space> & object );
 
 
 } // namespace DGtal

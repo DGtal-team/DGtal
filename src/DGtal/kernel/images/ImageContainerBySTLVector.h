@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file ImageContainer_vector.h
+ * @file ImageContainerBySTLVector.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/06/15
  *
- * Header file for module ImageContainer_vector.cpp
+ * Header file for module ImageContainerBySTLVector.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImageContainer_vector_RECURSES)
-#error Recursive header files inclusion detected in ImageContainer_vector.h
-#else // defined(ImageContainer_vector_RECURSES)
+#if defined(ImageContainerBySTLVector_RECURSES)
+#error Recursive header files inclusion detected in ImageContainerBySTLVector.h
+#else // defined(ImageContainerBySTLVector_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImageContainer_vector_RECURSES
+#define ImageContainerBySTLVector_RECURSES
 
-#if !defined ImageContainer_vector_h
+#if !defined ImageContainerBySTLVector_h
 /** Prevents repeated inclusion of headers. */
-#define ImageContainer_vector_h
+#define ImageContainerBySTLVector_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -34,15 +34,15 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class ImageContainer_vector
+// class ImageContainerBySTLVector
 /**
- * Description of class 'ImageContainer_vector' <p>
+ * Description of class 'ImageContainerBySTLVector' <p>
  * \todo Documentation
  * Aim:
  */
 
 template <class TPoint, typename TValue>
-class ImageContainer_vector: public vector<TValue>
+class ImageContainerBySTLVector: public vector<TValue>
 {
 public:
 
@@ -50,10 +50,10 @@ public:
     typedef typename vector<TValue>::iterator Iterator;
     typedef typename vector<TValue>::const_iterator ConstIterator;
 
-    ImageContainer_vector(const TPoint &aPointA,
+    ImageContainerBySTLVector(const TPoint &aPointA,
                           const TPoint &aPointB );
 
-    ~ImageContainer_vector();
+    ~ImageContainerBySTLVector();
 
 
     TValue operator()(const TPoint &aPoint);
@@ -80,7 +80,7 @@ public:
     class SpanIterator
     {
 
-        friend class ImageContainer_vector<TPoint,TValue>;
+        friend class ImageContainerBySTLVector<TPoint,TValue>;
 
     public:
 
@@ -92,7 +92,7 @@ public:
 
         SpanIterator( const TPoint & p ,
                       const std::size_t aDim ,
-                      ImageContainer_vector<TPoint,TValue> *aMap ) :   myDimension ( aDim ), myMap ( aMap )
+                      ImageContainerBySTLVector<TPoint,TValue> *aMap ) :   myDimension ( aDim ), myMap ( aMap )
         {
             myPos = aMap->linearized(p);
 
@@ -200,7 +200,7 @@ public:
         TSizeType myPos;
 
         /// Copy of the underlying images
-        ImageContainer_vector<TPoint,TValue> *myMap;
+        ImageContainerBySTLVector<TPoint,TValue> *myMap;
 
         ///Dimension on which the iterator must iterate
         std::size_t myDimension;
@@ -252,12 +252,12 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions
-#include "DGtal/kernel/images/ImageContainer_vector.ih"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImageContainer_vector_h
+#endif // !defined ImageContainerBySTLVector_h
 
-#undef ImageContainer_vector_RECURSES
-#endif // else defined(ImageContainer_vector_RECURSES)
+#undef ImageContainerBySTLVector_RECURSES
+#endif // else defined(ImageContainerBySTLVector_RECURSES)

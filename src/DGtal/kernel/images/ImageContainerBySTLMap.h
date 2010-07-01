@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file ImageContainer_map.h
+ * @file ImageContainerBySTLMap.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/06/15
  *
- * Header file for module ImageContainer_map.cpp
+ * Header file for module ImageContainerBySTLMap.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImageContainer_map_RECURSES)
-#error Recursive header files inclusion detected in ImageContainer_map.h
-#else // defined(ImageContainer_map_RECURSES)
+#if defined(ImageContainerBySTLMap_RECURSES)
+#error Recursive header files inclusion detected in ImageContainerBySTLMap.h
+#else // defined(ImageContainerBySTLMap_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImageContainer_map_RECURSES
+#define ImageContainerBySTLMap_RECURSES
 
-#if !defined ImageContainer_map_h
+#if !defined ImageContainerBySTLMap_h
 /** Prevents repeated inclusion of headers. */
-#define ImageContainer_map_h
+#define ImageContainerBySTLMap_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -34,15 +34,15 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class ImageContainer_map
+// class ImageContainerBySTLMap
 /**
- * Description of class 'ImageContainer_map' <p>
+ * Description of class 'ImageContainerBySTLMap' <p>
  * Aim:
  * \todo Documentation
  */
 
 template <typename TPoint, typename TValue>
-class ImageContainer_map: public map<TPoint,TValue>
+class ImageContainerBySTLMap: public map<TPoint,TValue>
 {
 
 public:
@@ -55,10 +55,10 @@ public:
     {
     };
 
-    ImageContainer_map(const TPoint &aPointA,
+    ImageContainerBySTLMap(const TPoint &aPointA,
                        const TPoint &aPointB ) {};
 
-    ~ImageContainer_map() {};
+    ~ImageContainerBySTLMap() {};
 
     TValue operator()(const TPoint &aPoint) throw( std::bad_alloc )
     {
@@ -109,7 +109,7 @@ private:
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImageContainer_map_h
+#endif // !defined ImageContainerBySTLMap_h
 
-#undef ImageContainer_map_RECURSES
-#endif // else defined(ImageContainer_map_RECURSES)
+#undef ImageContainerBySTLMap_RECURSES
+#endif // else defined(ImageContainerBySTLMap_RECURSES)
