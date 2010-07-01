@@ -43,7 +43,10 @@ namespace DGtal
    * set of points within the given domain. This set of points is
    * modifiable by the user.
    * 
-   * <p> Refinement of
+   * <p> Refinement of  boost::DefaultConstructible, 
+   * boost::CopyConstructible, boost::Assignable
+   *
+   * @todo add boost::Container ?
    *
    * <p> Associated types :
    *
@@ -73,7 +76,10 @@ namespace DGtal
    * @ingroup Concepts
    */
   template <typename Domain>
-  struct CDigitalSet
+  struct CDigitalSet : 
+    boost::DefaultConstructible,
+    boost::CopyConstructible, 
+    boost::Assignable
   {
     // ----------------------- Concept checks ------------------------------
   public:
