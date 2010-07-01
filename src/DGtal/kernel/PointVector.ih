@@ -26,7 +26,9 @@
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector()
-{
+{  
+  for ( std::size_t i = 0; i < N; ++i )
+    myArray[ i ] = 0;
 }
 
 /**
@@ -35,8 +37,7 @@ DGtal::PointVector<T,N>::PointVector()
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::~PointVector()
-{
-}
+{}
 
 /**
  * Constructor from array of values.
@@ -52,8 +53,14 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
     myArray[ i ] = ptrValues[ i ];
 }
 
-
-
+template<typename T,std::size_t N>
+inline
+DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
+{ 
+  unsigned int i=0;
+  for (const T *p = init.begin (); p != init.end (); ++p, ++i)
+    myArray[ i ] = *p;
+}
 
 /**
  * Copy constructor.
@@ -63,8 +70,7 @@ template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
   : myArray( other.myArray )
-{
-}
+{}
 
 /**
  * Returns the size of the vector (i.e. the number of its
@@ -317,7 +323,7 @@ DGtal::PointVector<T,N>::operator- ( const PointVector<T,N>& v ) const
 template<typename T, std::size_t N>
 inline
 void
-DGtal::PointVector<T,N>::zero()
+DGtal::PointVector<T,N>::reset()
 {
   for ( std::size_t i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
@@ -373,9 +379,8 @@ DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
   for(unsigned int i=0; i < dimension() ; ++i)
-    out << at( i ) <<", ";
-  out << "}";
-  
+    out << at( i ) <<(i==dimension()-1?"":", ");
+  out << "}";  
 }
 
 /**

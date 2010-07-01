@@ -79,6 +79,11 @@ namespace DGtal
      */
     PointVector( const T * ptrValues );
 
+    /**
+     * Constructor from initializer list.
+     * @param the initializer list.
+     */
+    PointVector(std::initializer_list<T> init);
 
     /**
      * Destructor.
@@ -272,8 +277,7 @@ namespace DGtal
     /**
      * Resets all the values to zero.
      */
-    void zero();
-
+    void reset();
 
     /**
      * Specify the set of norm types
@@ -301,6 +305,8 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+    static PointVector zero;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -335,6 +341,8 @@ namespace DGtal
 
 } // namespace DGtal
 
+template<typename T, std::size_t N>
+PointVector<T,N>  PointVector<T,N>::zero;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions
