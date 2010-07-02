@@ -51,7 +51,7 @@ DGtal::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
  * @return the index of the letter [c] in the order relation,
  * starting from 0 to myNb-1.
  */
-uint
+DGtal::uint
 DGtal::OrderedAlphabet::order( char c ) const
 {
   ASSERT( ( c - myFirst ) < myNb 
