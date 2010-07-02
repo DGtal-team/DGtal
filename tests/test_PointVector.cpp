@@ -17,7 +17,6 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
-#include <assert.h>
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
