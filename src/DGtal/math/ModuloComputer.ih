@@ -1,0 +1,205 @@
+/**
+ * @file ModuloComputer.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/02
+ *
+ * Implementation of inline methods defined in ModuloComputer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename T, typename UT>
+inline
+DGtal::ModuloComputer<T,UT>::~ModuloComputer()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Initializes the modulo computer with the value [m].
+ * @param m any non-zero integer.
+ */
+template <typename T, typename UT>
+inline
+DGtal::ModuloComputer<T,UT>::ModuloComputer( const UT &  m )
+  : k( m )
+{
+}
+
+    
+/**
+ * Increment the value [i] modulo.
+ * @param i any value between 0 and [k] (excluded).
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+void 
+DGtal::ModuloComputer<T,UT>::increment( UT & i ) const
+{
+  if ( ++i == k ) i = 0;
+}
+
+
+/**
+ * Decrement the value [i] modulo.
+ * @param i any value between 0 and [k] (excluded).
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+void 
+DGtal::ModuloComputer<T,UT>::decrement( UT & i ) const
+{
+  if ( i == 0 ) i = k;
+  --i;
+}
+
+
+/**
+ * @param i any value between 0 and [k] (excluded).
+ * @return the incremented value of [i] modulo [k].
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+UT 
+DGtal::ModuloComputer<T,UT>::next( UT & i ) const
+{
+  ++i;
+  return ( i == k ) ? 0 : i;
+}
+
+
+/**
+ * @param i any value between 0 and [k] (excluded).
+ * @return the decremented value of [i] modulo [k].
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+UT 
+DGtal::ModuloComputer<T,UT>::previous( UT i ) const
+{
+  return ( i == 0 ) ? k - 1 : i - 1;
+}
+
+
+/**
+ * @param i any integer value.
+ * @return the value of [i] modulo [k].
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+UT 
+DGtal::ModuloComputer<T,UT>::cast( int i ) const
+{
+  while ( i < 0 ) i += k;
+  UT ip = (T) i;
+  while ( ip >= k ) ip -= k;
+  return ip;
+}
+
+    
+/**
+ * Less comparator modulo. Be careful, modulo comparisons have no
+ * sense when the absolute difference of the values are around k / 2.
+ *
+ * @param i any value between 0 and [k] (excluded).  @param j any
+ * value between 0 and [k] (excluded).  @return 'true' if [i] strictly
+ * precedes [j] in a window 'floor([k]/2)'.  @see k
+ */
+template <typename T, typename UT>
+inline
+bool 
+DGtal::ModuloComputer<T,UT>::less( UT i, UT j ) const
+{
+  T d = ( (T) j ) - ( (T) i );
+  if ( d > 0 )
+    return d < (T) ( k / 2 );
+  else
+    return (-d) >= (T) ( k / 2 );
+}
+
+
+/**
+ * Performs j - i modulo, assuming less(i,j) is true.
+ *
+ * @param j any value between 0 and [k] (excluded).
+ * @param i any value between 0 and [k] (excluded).
+ * @return the value j - i, always positive. 
+ * @see k
+ */
+template <typename T, typename UT>
+inline
+UT
+DGtal::ModuloComputer<T,UT>::posDiff( UT j, UT i ) const
+{
+  return ( i <= j ) ? j - i : j + k - i;
+}
+
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T, typename UT>
+inline
+void
+DGtal::ModuloComputer<T,UT>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ModuloComputer]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T, typename UT>
+inline
+bool
+DGtal::ModuloComputer<T,UT>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T, typename UT>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const ModuloComputer<T,UT> & object );
+ {
+   object.selfDisplay( out );
+   return out;
+ }
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

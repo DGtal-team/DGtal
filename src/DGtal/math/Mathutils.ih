@@ -32,6 +32,7 @@
  * Initializes the modulo computer with the value [m].
  * @param m any non-zero integer.
  */
+INLINE
 DGtal::Mathutils::ModuloComputer::ModuloComputer( unsigned int m )
   : k( m )
 {
@@ -43,6 +44,7 @@ DGtal::Mathutils::ModuloComputer::ModuloComputer( unsigned int m )
  * @param i any value between 0 and [k] (excluded).
  * @see k
  */
+INLINE
 void 
 DGtal::Mathutils::ModuloComputer::increment( unsigned int & i ) const
 {
@@ -55,6 +57,7 @@ DGtal::Mathutils::ModuloComputer::increment( unsigned int & i ) const
  * @param i any value between 0 and [k] (excluded).
  * @see k
  */
+INLINE
 void 
 DGtal::Mathutils::ModuloComputer::decrement( unsigned int & i ) const
 {
@@ -68,6 +71,7 @@ DGtal::Mathutils::ModuloComputer::decrement( unsigned int & i ) const
  * @return the incremented value of [i] modulo [k].
  * @see k
  */
+INLINE
 unsigned int 
 DGtal::Mathutils::ModuloComputer::next( unsigned int i ) const
 {
@@ -81,6 +85,7 @@ DGtal::Mathutils::ModuloComputer::next( unsigned int i ) const
  * @return the decremented value of [i] modulo [k].
  * @see k
  */
+INLINE
 unsigned int 
 DGtal::Mathutils::ModuloComputer::previous( unsigned int i ) const
 {
@@ -93,6 +98,7 @@ DGtal::Mathutils::ModuloComputer::previous( unsigned int i ) const
  * @return the value of [i] modulo [k].
  * @see k
  */
+INLINE
 unsigned int 
 DGtal::Mathutils::ModuloComputer::cast( int i ) const
 {
@@ -111,6 +117,7 @@ DGtal::Mathutils::ModuloComputer::cast( int i ) const
  * value between 0 and [k] (excluded).  @return 'true' if [i] strictly
  * precedes [j] in a window 'floor([k]/2)'.  @see k
  */
+INLINE
 bool 
 DGtal::Mathutils::ModuloComputer::less( unsigned int i, unsigned int j ) const
 {
@@ -130,6 +137,7 @@ DGtal::Mathutils::ModuloComputer::less( unsigned int i, unsigned int j ) const
  * @return the value j - i, always positive. 
  * @see k
  */
+INLINE
 unsigned int
 DGtal::Mathutils::ModuloComputer::posDiff( unsigned int j, unsigned int i ) const
 {
@@ -141,6 +149,7 @@ DGtal::Mathutils::ModuloComputer::posDiff( unsigned int j, unsigned int i ) cons
  * @param i any angle.
  * @return the corresponding angle in [0:2pi[
  */
+INLINE
 float 
 DGtal::Mathutils::AngleComputer::cast( float i )
 {
@@ -158,6 +167,7 @@ DGtal::Mathutils::AngleComputer::cast( float i )
  * @param j any angle in [0:2pi[
  * @return 'true' if [i] strictly precedes [j] in a window 'pi'.
  */
+INLINE
 bool
 DGtal::Mathutils::AngleComputer::less( float i, float j )
 {
@@ -176,6 +186,7 @@ DGtal::Mathutils::AngleComputer::less( float i, float j )
  * @param i any angle in [0:2pi[
  * @return the value j - i, always positive. 
  */
+INLINE
 float 
 DGtal::Mathutils::AngleComputer::posDiff( float j, float i )
 {
@@ -189,6 +200,7 @@ DGtal::Mathutils::AngleComputer::posDiff( float j, float i )
  * @param i any angle in [0:2pi[
  * @return the value j - i, always positive. 
  */
+INLINE
 float 
 DGtal::Mathutils::AngleComputer::deviation( float j, float i )
 {
@@ -203,6 +215,7 @@ DGtal::Mathutils::AngleComputer::deviation( float j, float i )
  * @param j any angle in [0:2pi[
  * @return the smallest angle of [i] and [j] in a window 'pi'.
  */
+INLINE
 float 
 DGtal::Mathutils::AngleComputer::min( float i, float j )
 {
@@ -216,6 +229,7 @@ DGtal::Mathutils::AngleComputer::min( float i, float j )
  * @param j any angle in [0:2pi[
  * @return the greatest angle of [i] and [j] in a window 'pi'.
  */
+INLINE
 float 
 DGtal::Mathutils::AngleComputer::max( float i, float j )
 {
@@ -228,6 +242,7 @@ DGtal::Mathutils::AngleComputer::max( float i, float j )
  * @param i any angle.
  * @return the corresponding angle in [0:2pi[
  */
+INLINE
 double 
 DGtal::Mathutils::AngleComputer::cast( double i )
 {
@@ -245,6 +260,7 @@ DGtal::Mathutils::AngleComputer::cast( double i )
  * @param j any angle in [0:2pi[
  * @return 'true' if [i] strictly precedes [j] in a window 'pi'.
  */
+INLINE
 bool
 DGtal::Mathutils::AngleComputer::less( double i, double j )
 {
@@ -263,6 +279,7 @@ DGtal::Mathutils::AngleComputer::less( double i, double j )
  * @param i any angle in [0:2pi[
  * @return the value j - i, always positive. 
  */
+INLINE
 double 
 DGtal::Mathutils::AngleComputer::posDiff( double j, double i )
 {
@@ -276,6 +293,7 @@ DGtal::Mathutils::AngleComputer::posDiff( double j, double i )
  * @param i any angle in [0:2pi[
  * @return the value j - i, always positive. 
  */
+INLINE
 double 
 DGtal::Mathutils::AngleComputer::deviation( double j, double i )
 {
@@ -290,6 +308,7 @@ DGtal::Mathutils::AngleComputer::deviation( double j, double i )
  * @param j any angle in [0:2pi[
  * @return the smallest angle of [i] and [j] in a window 'pi'.
  */
+INLINE
 double 
 DGtal::Mathutils::AngleComputer::min( double i, double j )
 {
@@ -303,6 +322,7 @@ DGtal::Mathutils::AngleComputer::min( double i, double j )
  * @param j any angle in [0:2pi[
  * @return the greatest angle of [i] and [j] in a window 'pi'.
  */
+INLINE
 double 
 DGtal::Mathutils::AngleComputer::max( double i, double j )
 {
@@ -319,6 +339,7 @@ DGtal::Mathutils::AngleComputer::max( double i, double j )
  * @param x any value.
  * @return the square of [x].
  */
+INLINE
 float
 DGtal::Mathutils::sqr( float x )
 {
@@ -329,6 +350,7 @@ DGtal::Mathutils::sqr( float x )
  * @param x any value.
  * @return the square of [x].
  */
+INLINE
 double
 DGtal::Mathutils::sqr( double x )
 {
@@ -343,6 +365,7 @@ DGtal::Mathutils::sqr( double x )
  * @return the value x^n.
  */
 template <typename Number>
+INLINE
 Number 
 DGtal::Mathutils::power( Number x, unsigned int n )
 {
