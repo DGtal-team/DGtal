@@ -16,6 +16,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/math/Mathutils.h"
+#include "DGtal/base/OrderedAlphabet.h"
 #include <string>
 #include <sstream>
 #include <vector>
@@ -269,8 +270,8 @@ DGtal::FreemanChain::innerContour
   const FreemanChain & aOuterChain,
   bool ccw )
 {
-  uint nb = aOuterChain.chain.size();
-  uint j = 0;
+  unsigned int nb = aOuterChain.chain.size();
+  unsigned int j = 0;
   aOuter2inner.clear();
   aOuter2inner.reserve( nb );
   // aInnerChain.chain.reserve( nb + 4 );
@@ -287,10 +288,10 @@ DGtal::FreemanChain::innerContour
   aInnerChain.x0 = dx0 > 0 ? aOuterChain.x0 : aOuterChain.x0 - 1;
   aInnerChain.y0 = dy0 > 0 ? aOuterChain.y0 : aOuterChain.y0 - 1;
 
-  FreemanChain::const_iterator it_begin = aOuterChain.begin();
-  FreemanChain::const_iterator it = it_begin;
+  FreemanChain::constIterator it_begin = aOuterChain.begin();
+  FreemanChain::constIterator it = it_begin;
   it.next();
-  for ( uint i = 0; i < nb; ++i )
+  for ( unsigned int i = 0; i < nb; ++i )
     {
       // Check if contour is open.
       // cerr << "i=" << i << " code=" << aOuterChain.code( i ) << endl;
@@ -301,7 +302,7 @@ DGtal::FreemanChain::innerContour
 	case 0:
 	// contour going in then out.
 	  aInnerChain.chain += aOuterChain.chain[ i ];
-	  aInnerChain.chain += ( ( ( (uint) ( aOuterChain.chain[ i ] - '0' ) 
+	  aInnerChain.chain += ( ( ( (unsigned int) ( aOuterChain.chain[ i ] - '0' ) 
 				     + ( ccw ? 3 : 1 ) ) )
 				 % 4 ) + '0';
 	  aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
@@ -381,10 +382,10 @@ DGtal::FreemanChain::innerContour
  */
 void
 DGtal::FreemanChain::cleanContour( vector<FreemanChain> & aCleanCs,
-				     vector< pair<unsigned int,unsigned int> > & aC2clean,
-				     vector< vector<unsigned int> > & aClean2c,
-				     const FreemanChain & c,
-				     bool ccw )
+				   vector< pair<unsigned int,unsigned int> > & aC2clean,
+				   vector< vector<unsigned int> > & aClean2c,
+				   const FreemanChain & c,
+				   bool ccw )
 {
   
 }
@@ -438,8 +439,8 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
   aC2clean.reserve( nb );
   aClean2c.reserve( nb );
   c2cleanTMP.reserve( nb );
-  FreemanChain::const_iterator it = c.begin();
-  FreemanChain::const_iterator itn = c.begin(); itn.nextInLoop();
+  FreemanChain::constIterator it = c.begin();
+  FreemanChain::constIterator itn = c.begin(); itn.nextInLoop();
   // Find a consistent starting point.
   unsigned int n;
   unsigned int size_spike = 0;
@@ -491,7 +492,7 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
       return size_spike == 0;
     }
   // Loops over all letters.
-  FreemanChain::const_iterator it_begin = it;
+  FreemanChain::constIterator it_begin = it;
   deque<unsigned int> clean_code;
   deque<unsigned int> clean_idx;
   vector<unsigned int> begin_outer_spike;
@@ -797,7 +798,7 @@ DGtal::FreemanChain::subsample( FreemanChain & aSubc,
 				  int x0, int y0 )
 {
   if ( ( h == 0 ) || ( v == 0 ) ) return false;
-  FreemanChain::const_iterator it = c.begin();
+  FreemanChain::constIterator it = c.begin();
   unsigned int j = 0;
   unsigned int nb = c.chain.size();
   if ( nb == 0 ) return false;
@@ -874,286 +875,492 @@ DGtal::FreemanChain::subsample( FreemanChain & aSubc,
 }
 
 
-// /**
-//  * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc].
-//  *
-//  * @param vx (returns) the x-coordinates of the MLP vertices.
-//  * @param vy (returns) the y-coordinates of the MLP vertices.
-//  * @param vi (returns) the indices of the MLP vertices in [fc].
-//  * @param fc the input Freeman chain.
-//  *
-//  * @return 'true' if the MLP has made a correct loop, 'false'
-//  * otherwise (error ?).
-//  */
-// bool
-// DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
-// 				   std::vector<int> & vy,
-// 				   std::vector<unsigned int> & vi,
-// 				   const FreemanChain & fc )
-// {
-//   bool cvx = true;
-//   OrderedAlphabet A( '0', 4 );
-//   FreemanChain::const_iterator it = fc.findQuadrantChange4( A );
-//   // char start_char = fc.chain[ it.getPosition() ];
+/**
+ * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc].
+ *
+ * @param vx (returns) the x-coordinates of the MLP vertices.
+ * @param vy (returns) the y-coordinates of the MLP vertices.
+ * @param vi (returns) the indices of the MLP vertices in [fc].
+ * @param fc the input Freeman chain.
+ *
+ * @return 'true' if the MLP has made a correct loop, 'false'
+ * otherwise (error ?).
+ */
+bool
+DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
+				   std::vector<int> & vy,
+				   std::vector<unsigned int> & vi,
+				   const FreemanChain & fc )
+{
+  bool cvx = true;
+  OrderedAlphabet A( '0', 4 );
+  FreemanChain::constIterator it = fc.findQuadrantChange4( A );
+  // char start_char = fc.chain[ it.getPosition() ];
 
-//   unsigned int j = it.getPosition();
-//   unsigned int end = j;
-//   // cerr << "end=" << end << endl; 
-//   unsigned int nb_a1;
-//   unsigned int nb_a2;
-//   string w = fc.chain;
-//   // cerr << w << endl;
-//   PointI2D  xy = *it;
-//   do 
-//     {
-//       vx.push_back( xy.x() );
-//       vy.push_back( xy.y() );  
-//       vi.push_back( j );
-// //       cerr << "- (" << xy.x() << "," << xy.y() << ") at " << j << endl;
-//       unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
-// //       cerr << "  nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
-//       int dx;
-//       int dy;
-//       displacement( dx, dy, A.letter( 1 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a1;
-//       else if ( dx < 0 ) xy.x() -= nb_a1;
-//       else if ( dy > 0 ) xy.y() += nb_a1;
-//       else if ( dy < 0 ) xy.y() -= nb_a1;
-//       displacement( dx, dy, A.letter( 2 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a2;
-//       else if ( dx < 0 ) xy.x() -= nb_a2;
-//       else if ( dy > 0 ) xy.y() += nb_a2;
-//       else if ( dy < 0 ) xy.y() -= nb_a2;
-//     }
-//   while ( j != end );
-//   // cerr << w << endl;
-//   bool loop_ok = ( ( xy.x() == vx[ 0 ] ) && ( xy.y() == vy[ 0 ] ) );
-// //   if ( loop_ok )
-// //     cerr << "Loop OK" << endl;
-// //   else 
-// //     cerr << "Loop ERROR" << endl;
-//   return loop_ok;
-// }
+  unsigned int j = it.getPosition();
+  unsigned int end = j;
+  // cerr << "end=" << end << endl; 
+  unsigned int nb_a1;
+  unsigned int nb_a2;
+  string w = fc.chain;
+  // cerr << w << endl;
+  PointI2D  xy = *it;
+  do 
+    {
+      vx.push_back( xy.at(0) );
+      vy.push_back( xy.at(1) );  
+      vi.push_back( j );
+//       cerr << "- (" << xy.x() << "," << xy.y() << ") at " << j << endl;
+      unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
+//       cerr << "  nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
+      int dx;
+      int dy;
+      displacement( dx, dy, A.letter( 1 ) - '0' );
+      if ( dx > 0 )      xy.at(0) += nb_a1;
+      else if ( dx < 0 ) xy.at(0) -= nb_a1;
+      else if ( dy > 0 ) xy.at(1) += nb_a1;
+      else if ( dy < 0 ) xy.at(1) -= nb_a1;
+      displacement( dx, dy, A.letter( 2 ) - '0' );
+      if ( dx > 0 )      xy.at(0) += nb_a2;
+      else if ( dx < 0 ) xy.at(0) -= nb_a2;
+      else if ( dy > 0 ) xy.at(1) += nb_a2;
+      else if ( dy < 0 ) xy.at(1) -= nb_a2;
+    }
+  while ( j != end );
+  // cerr << w << endl;
+  bool loop_ok = ( ( xy.at(0) == vx[ 0 ] ) && ( xy.at(1) == vy[ 0 ] ) );
+//   if ( loop_ok )
+//     cerr << "Loop OK" << endl;
+//   else 
+//     cerr << "Loop ERROR" << endl;
+  return loop_ok;
+}
 
-// /**
-//  * Computes the Minimum Length Polygon (MLP) of the Freeman chain
-//  * [fc]. Tells also if vertices are inside or outside.
-//  *
-//  * @param vx (returns) the x-coordinates of the MLP vertices.
-//  * @param vy (returns) the y-coordinates of the MLP vertices.
-//  * @param vi (returns) the indices of the MLP vertices in [fc].
-//  *
-//  * @param vt (returns) the type (inside=true, outside=false) of the
-//  * MLP vertices in [fc].
-//  *
-//  * @param fc the input Freeman chain.
-//  *
-//  * @param cw when 'true', the inside is considered to be to the right
-//  * of the contour (the contour turns clockwise around the inside),
-//  * when 'false' the inside is considered to be to the left of the
-//  * contour (the contour turns counterclockwise around the inside).
-//  *
-//  * @return 'true' if the MLP has made a correct loop, 'false'
-//  * otherwise (error ?).
-//  */
-// bool
-// DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
-// 				   std::vector<int> & vy,
-// 				   std::vector<unsigned int> & vi,
-// 				   std::vector<bool> & vt,
-// 				   const FreemanChain & fc,
-// 				   bool cw )
-// {
-//   OrderedAlphabet A( '0', 4 );
-//   if ( cw ) A.reverseAround12();
-//   FreemanChain::const_iterator it = fc.findQuadrantChange4( A );
-//   FreemanChain::const_iterator itprev = it;
-//   itprev.previousInLoop();
-//   unsigned int mvt = FreemanChain::movement( itprev.getCode(), it.getCode(), ! cw );
+/**
+ * Computes the Minimum Length Polygon (MLP) of the Freeman chain
+ * [fc]. Tells also if vertices are inside or outside.
+ *
+ * @param vx (returns) the x-coordinates of the MLP vertices.
+ * @param vy (returns) the y-coordinates of the MLP vertices.
+ * @param vi (returns) the indices of the MLP vertices in [fc].
+ *
+ * @param vt (returns) the type (inside=true, outside=false) of the
+ * MLP vertices in [fc].
+ *
+ * @param fc the input Freeman chain.
+ *
+ * @param cw when 'true', the inside is considered to be to the right
+ * of the contour (the contour turns clockwise around the inside),
+ * when 'false' the inside is considered to be to the left of the
+ * contour (the contour turns counterclockwise around the inside).
+ *
+ * @return 'true' if the MLP has made a correct loop, 'false'
+ * otherwise (error ?).
+ */
+bool
+DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
+				   std::vector<int> & vy,
+				   std::vector<unsigned int> & vi,
+				   std::vector<bool> & vt,
+				   const FreemanChain & fc,
+				   bool cw )
+{
+  OrderedAlphabet A( '0', 4 );
+  if ( cw ) A.reverseAround12();
+  FreemanChain::constIterator it = fc.findQuadrantChange4( A );
+  FreemanChain::constIterator itprev = it;
+  itprev.previousInLoop();
+  unsigned int mvt = FreemanChain::movement( itprev.getCode(), it.getCode(), ! cw );
   
 
-//   //BK
-//   //TODO
-//   //ASSERT_FreemanChain( ( ( mvt == 1 ) || ( mvt == 3 ) )
-//   //		       && "[DGtal::FreemanChain::computeMLP] Invalid start point." );
+  
+  ASSERT( ( ( mvt == 1 ) || ( mvt == 3 ) )
+	  && "[DGtal::FreemanChain::computeMLP] Invalid start point." );
   
 
-//   bool cvx = mvt == 1;
+  bool cvx = mvt == 1;
 
-//   unsigned int j = it.getPosition();
-//   unsigned int end = j;
-//   // cerr << "end=" << end << endl; 
-//   unsigned int nb_a1;
-//   unsigned int nb_a2;
-//   string w = fc.chain;
-//   // cerr << w << endl;
-//   PointI2D xy = *it;
-//   do 
-//     {
-//       vx.push_back( xy.x() );
-//       vy.push_back( xy.y() );  
-//       vi.push_back( j );
-//       vt.push_back( cvx );
-//       // cerr << "(" << xy.x() << "," << xy.y() << ") at " << j;
-//       unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
-//       // cerr << " nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
-//       int dx;
-//       int dy;
-//       displacement( dx, dy, A.letter( 1 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a1;
-//       else if ( dx < 0 ) xy.x() -= nb_a1;
-//       else if ( dy > 0 ) xy.y() += nb_a1;
-//       else if ( dy < 0 ) xy.y() -= nb_a1;
-//       displacement( dx, dy, A.letter( 2 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a2;
-//       else if ( dx < 0 ) xy.x() -= nb_a2;
-//       else if ( dy > 0 ) xy.y() += nb_a2;
-//       else if ( dy < 0 ) xy.y() -= nb_a2;
-//     }
-//   while ( j != end );
-//   // cerr << w << endl;
-//   bool loop_ok = ( ( xy.x() == vx[ 0 ] ) && ( xy.y() == vy[ 0 ] ) );
-//   // if ( loop_ok )
-//   //   cerr << "Loop OK" << endl;
-//   // else 
-//   //   cerr << "Loop ERROR" << endl;
-//   return loop_ok;
-// }
+  unsigned int j = it.getPosition();
+  unsigned int end = j;
+  // cerr << "end=" << end << endl; 
+  unsigned int nb_a1;
+  unsigned int nb_a2;
+  string w = fc.chain;
+  // cerr << w << endl;
+  PointI2D xy = *it;
+  do 
+    {
+      vx.push_back( xy.at(0) );
+      vy.push_back( xy.at(1) );  
+      vi.push_back( j );
+      vt.push_back( cvx );
+      // cerr << "(" << xy.x() << "," << xy.y() << ") at " << j;
+      unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
+      // cerr << " nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
+      int dx;
+      int dy;
+      displacement( dx, dy, A.letter( 1 ) - '0' );
+      if ( dx > 0 )      xy.at(0) += nb_a1;
+      else if ( dx < 0 ) xy.at(0) -= nb_a1;
+      else if ( dy > 0 ) xy.at(1) += nb_a1;
+      else if ( dy < 0 ) xy.at(1) -= nb_a1;
+      displacement( dx, dy, A.letter( 2 ) - '0' );
+      if ( dx > 0 )      xy.at(0) += nb_a2;
+      else if ( dx < 0 ) xy.at(0) -= nb_a2;
+      else if ( dy > 0 ) xy.at(1) += nb_a2;
+      else if ( dy < 0 ) xy.at(1) -= nb_a2;
+    }
+  while ( j != end );
+  // cerr << w << endl;
+  bool loop_ok = ( ( xy.at(0) == vx[ 0 ] ) && ( xy.at(1) == vy[ 0 ] ) );
+  // if ( loop_ok )
+  //   cerr << "Loop OK" << endl;
+  // else 
+  //   cerr << "Loop ERROR" << endl;
+  return loop_ok;
+}
 
 
-// /**
-//  * Computes the Minimum Length Polygon (MLP) of the Freeman chain
-//  * [fc]. Tells also if vertices are inside or outside. The MLP lies in
-//  * the half-integer plane compared with the Freeman Chain. Vertex
-//  * coordinates are given as integers. This function gives the
-//  * displacement vector to go from the digital contour to the MLP.
-//  *
-//  * @param vx (returns) the x-coordinates of the MLP vertices.
-//  * @param vy (returns) the y-coordinates of the MLP vertices.
-//  * @param vi (returns) the indices of the MLP vertices in [fc].
-//  *
-//  * @param vt (returns) the type (inside=true, outside=false) of the
-//  * MLP vertices in [fc].
-//  *
-//  * @param twice_dv (returns) twice the displacement vector to go from
-//  * the integer plane of the Freeman chain to the half-integer plane of
-//  * the MLP.
-//  *
-//  * @param fc the input Freeman chain.
-//  *
-//  * @param cw when 'true', the inside is considered to be to the right
-//  * of the contour (the contour turns clockwise around the inside),
-//  * when 'false' the inside is considered to be to the left of the
-//  * contour (the contour turns counterclockwise around the inside).
-//  *
-//  * @return the iterator on the starting step of the MLP or 'end()' if
-//  * there was an error (incorrect loop ?).
-//  */
-// DGtal::FreemanChain::const_iterator
-// DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
-// 				   std::vector<int> & vy,
-// 				   std::vector<unsigned int> & vi,
-// 				   std::vector<bool> & vt,
-// 				   Vector2i & twice_dv,
-// 				   const FreemanChain & fc,
-// 				   bool cw )
-// {
-//   OrderedAlphabet A( '0', 4 );
-//   if ( cw ) A.reverseAround12();
-//   FreemanChain::const_iterator it = fc.findQuadrantChange4( A );
+/**
+ * Computes the Minimum Length Polygon (MLP) of the Freeman chain
+ * [fc]. Tells also if vertices are inside or outside. The MLP lies in
+ * the half-integer plane compared with the Freeman Chain. Vertex
+ * coordinates are given as integers. This function gives the
+ * displacement vector to go from the digital contour to the MLP.
+ *
+ * @param vx (returns) the x-coordinates of the MLP vertices.
+ * @param vy (returns) the y-coordinates of the MLP vertices.
+ * @param vi (returns) the indices of the MLP vertices in [fc].
+ *
+ * @param vt (returns) the type (inside=true, outside=false) of the
+ * MLP vertices in [fc].
+ *
+ * @param twice_dv (returns) twice the displacement vector to go from
+ * the integer plane of the Freeman chain to the half-integer plane of
+ * the MLP.
+ *
+ * @param fc the input Freeman chain.
+ *
+ * @param cw when 'true', the inside is considered to be to the right
+ * of the contour (the contour turns clockwise around the inside),
+ * when 'false' the inside is considered to be to the left of the
+ * contour (the contour turns counterclockwise around the inside).
+ *
+ * @return the iterator on the starting step of the MLP or 'end()' if
+ * there was an error (incorrect loop ?).
+ */
+DGtal::FreemanChain::constIterator
+DGtal::FreemanChain::computeMLP( std::vector<int> & vx,
+				   std::vector<int> & vy,
+				   std::vector<unsigned int> & vi,
+				   std::vector<bool> & vt,
+				   PointI2D & twice_dv,
+				   const FreemanChain & fc,
+				   bool cw )
+{
+  OrderedAlphabet A( '0', 4 );
+  if ( cw ) A.reverseAround12();
+  FreemanChain::constIterator it = fc.findQuadrantChange4( A );
 
-//   // Compute displacement vector.
-//   FreemanChain::const_iterator itprev = it;
-//   itprev.previousInLoop();
-//   //TODO :Initialisation à 0 par défaut à vérif
-//   PointI2D v_it();
-//   PointI2D v_itprev();
-//   Vector2i v_itprev();
+  // Compute displacement vector.
+  FreemanChain::constIterator itprev = it;
+  itprev.previousInLoop();
   
-//   v_it.move4( it.getCode() );
-//   v_itprev.move4( itprev.getCode() );
-//   twice_dv = v_it - v_itprev;
+  PointI2D v_it;
+  PointI2D v_itprev;
+  
+  
+  //v_it.move4( it.getCode() );
+  //v_itprev.move4( itprev.getCode() );
+  movePointFromFC(v_it, it.getCode());
+  movePointFromFC(v_itprev, itprev.getCode());
+  
+  twice_dv = v_it - v_itprev;
 
-//   unsigned int mvt = FreemanChain::movement( itprev.getCode(), it.getCode(), ! cw );
-//   ASSERT_FreemanChain( ( ( mvt == 1 ) || ( mvt == 3 ) )
-// 		       && "[DGtal::FreemanChain::computeMLP] Invalid start point." );
-//   bool cvx = mvt == 1;
+  unsigned int mvt = FreemanChain::movement( itprev.getCode(), it.getCode(), ! cw );
+  ASSERT( ( ( mvt == 1 ) || ( mvt == 3 ) )
+		       && "[DGtal::FreemanChain::computeMLP] Invalid start point." );
+  bool cvx = mvt == 1;
   
 
-//   unsigned int j = it.getPosition();
-//   unsigned int end = j;
-//   // cerr << "end=" << end << endl; 
-//   unsigned int nb_a1;
-//   unsigned int nb_a2;
-//   string w = fc.chain;
-//   // cerr << w << endl;
-//   PointI2D xy = *it;
-//   do 
-//     {
-//       vx.push_back( xy.x() );
-//       vy.push_back( xy.y() );  
-//       vi.push_back( j );
-//       vt.push_back( cvx );
-//       // cerr << "(" << xy.x() << "," << xy.y() << ") at " << j;
-//       unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
-//       // cerr << " nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
-//       int dx;
-//       int dy;
-//       displacement( dx, dy, A.letter( 1 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a1;
-//       else if ( dx < 0 ) xy.x() -= nb_a1;
-//       else if ( dy > 0 ) xy.y() += nb_a1;
-//       else if ( dy < 0 ) xy.y() -= nb_a1;
-//       displacement( dx, dy, A.letter( 2 ) - '0' );
-//       if ( dx > 0 )      xy.x() += nb_a2;
-//       else if ( dx < 0 ) xy.x() -= nb_a2;
-//       else if ( dy > 0 ) xy.y() += nb_a2;
-//       else if ( dy < 0 ) xy.y() -= nb_a2;
-//     }
-//   while ( j != end );
-//   // cerr << w << endl;
-//   bool loop_ok = ( ( xy.x() == vx[ 0 ] ) && ( xy.y() == vy[ 0 ] ) );
-//   // if ( loop_ok )
-//   //   cerr << "Loop OK" << endl;
-//   // else 
-//   //   cerr << "Loop ERROR" << endl;
-//   return loop_ok ? it : fc.end();
-// }
+  unsigned int j = it.getPosition();
+  unsigned int end = j;
+  // cerr << "end=" << end << endl; 
+  unsigned int nb_a1;
+  unsigned int nb_a2;
+  string w = fc.chain;
+  // cerr << w << endl;
+  PointI2D xy = *it;
+  do 
+    {
+      vx.push_back( xy.at(0) );
+      vy.push_back( xy.at(1) );  
+      vi.push_back( j );
+      vt.push_back( cvx );
+      // cerr << "(" << xy.x() << "," << xy.y() << ") at " << j;
+      unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
+      // cerr << " nb_a1=" << nb_a1 << " nb_a2=" << nb_a2 << endl;
+      int dx;
+      int dy;
+      displacement( dx, dy, A.letter( 1 ) - '0' );
+      if ( dx > 0 )      xy.at(0) += nb_a1;
+      else if ( dx < 0 ) xy.at(0) -= nb_a1;
+      else if ( dy > 0 ) xy.at(1) += nb_a1;
+      else if ( dy < 0 ) xy.at(1) -= nb_a1;
+      displacement( dx, dy, A.letter( 2 ) - '0' );
+      if ( dx > 0 )      xy.at(1) += nb_a2;
+      else if ( dx < 0 ) xy.at(1) -= nb_a2;
+      else if ( dy > 0 ) xy.at(0) += nb_a2;
+      else if ( dy < 0 ) xy.at(0) -= nb_a2;
+    }
+  while ( j != end );
+  // cerr << w << endl;
+  bool loop_ok = ( ( xy.at(0) == vx[ 0 ] ) && ( xy.at(1) == vy[ 0 ] ) );
+  // if ( loop_ok )
+  //   cerr << "Loop OK" << endl;
+  // else 
+  //   cerr << "Loop ERROR" << endl;
+  return loop_ok ? it : fc.end();
+}
 
 
-// /**
-//  * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc]
-//  * and return its length.
-//  *
-//  * @param fc the input Freeman chain.
-//  *
-//  * @return the Euclidean length of the MLP.
-//  */
-// double
-// DGtal::FreemanChain::lengthMLP( const FreemanChain & fc )
-// {
-//   OrderedAlphabet A( '0', 4 );
-//   FreemanChain::const_iterator it = fc.findQuadrantChange4( A );
-//   unsigned int j = it.getPosition();
-//   unsigned int end = j;
-//   unsigned int nb_a1;
-//   unsigned int nb_a2;
-//   string w = fc.chain;
-//   double length = 0.0;
-//   bool cvx = true;
-//   do 
-//     {
-//       unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
-//       if ( l != 0 )
-// 	{
-// 	  double dx = (double) nb_a1;
-// 	  double dy = (double) nb_a2;
-// 	  length += sqrt( dx*dx + dy*dy );
-// 	}
-//     }
-//   while ( j != end );
-//   return length;
-// }
+/**
+ * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc]
+ * and return its length.
+ *
+ * @param fc the input Freeman chain.
+ *
+ * @return the Euclidean length of the MLP.
+ */
+double
+DGtal::FreemanChain::lengthMLP( const FreemanChain & fc )
+{
+  OrderedAlphabet A( '0', 4 );
+  FreemanChain::constIterator it = fc.findQuadrantChange4( A );
+  unsigned int j = it.getPosition();
+  unsigned int end = j;
+  unsigned int nb_a1;
+  unsigned int nb_a2;
+  string w = fc.chain;
+  double length = 0.0;
+  bool cvx = true;
+  do 
+    {
+      unsigned int l = A.nextEdge( nb_a1, nb_a2, w, j, cvx );
+      if ( l != 0 )
+	{
+	  double dx = (double) nb_a1;
+	  double dy = (double) nb_a2;
+	  length += sqrt( dx*dx + dy*dy );
+	}
+    }
+  while ( j != end );
+  return length;
+}
+
+
+/**
+ * Finds a quadrant change in 'this' Freeman chain and returns the
+ * position as an iterator. A quadrant change is some
+ <code>
+ abb..bc
+  |
+ iterator
+ <endcode>
+ *
+ * The alphabet is possibly re-ordered so that a > b > c.
+ *
+ * @param A (possibly updated) a Freeman chain alphabet, possibly
+ * re-ordered so that a > b > c.
+ *
+ * @return an iterator on 'this' that points on the first letter b.
+ */
+DGtal::FreemanChain::constIterator
+DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const
+{
+  DGtal::FreemanChain::constIterator it = begin();
+  DGtal::FreemanChain::constIterator it_end = end();
+  // find first letters a and b.
+  unsigned int code1 = it.getCode();
+  it.next();
+  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
+    it.next();
+  ASSERT( ( it != it_end ) 
+	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+  unsigned int  code2 = it.getCode();
+  // find third letter c.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+				|| ( it.getCode() == code2 ) ) )
+    it.next();
+  ASSERT( ( it != it_end ) 
+		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+  unsigned int code3 = it.getCode();
+  // reorder a and b.
+  it.previous();
+  if ( it.getCode() != code2 ) swap( code1, code2 );
+  // find first a.
+  do 
+    { 
+      it.previous();
+    }
+  while ( it.getCode() == code2 );
+  char a_char = chain[ it.getPosition() ];
+  // the next is the first b.
+  it.next();
+  char b_char = chain[ it.getPosition() ];
+  // Reorder the alphabet to match the quadrant change.
+  while ( A.order( b_char ) != 1 )
+    A.shiftLeft();
+  if ( A.order( a_char ) == 0 )
+    {
+      A.reverse();
+      while ( A.order( b_char ) != 1 )
+	A.shiftLeft();
+    }
+  ASSERT( ( A.order( b_char ) == 1 )
+		       && ( A.order( a_char ) == 2 )
+		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+  return it;
+}
+
+
+/**
+ * Finds a quadrant change in 'this' Freeman chain and returns the
+ * position as an iterator. A quadrant change is some
+ <code>
+ (abc)*bc...cd
+        |
+ iterator
+ <endcode>
+ *
+ * This quadrant change also guarantees that is not a place where a
+ * convexity change occurs in the combinatorial MLP algorithm.
+ *
+ * The alphabet is possibly re-ordered so that b > c > d > a.
+ *
+ * @param A (possibly updated) a Freeman chain alphabet, possibly
+ * re-ordered so that b > c > d > a.
+ *
+ * @return an iterator on 'this' that points on the first letter c.
+ */
+DGtal::FreemanChain::constIterator
+DGtal::FreemanChain::findQuadrantChange4( OrderedAlphabet & A ) const
+{
+  FreemanChain::constIterator it = begin();
+  FreemanChain::constIterator it_end = end();
+  // find first letters a and b.
+  uint code1 = it.getCode();
+  it.next();
+  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
+    it.next();
+  ASSERT( ( it != it_end ) 
+	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+  uint code2 = it.getCode();
+  // find third letter c.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+				|| ( it.getCode() == code2 ) ) )
+    it.next();
+  ASSERT( ( it != it_end ) 
+	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+  unsigned int code3 = it.getCode();
+  // find fourth letter d.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+				|| ( it.getCode() == code2 )
+				|| ( it.getCode() == code3 ) ) )
+    it.next();
+  ASSERT( ( it != it_end ) 
+		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
+  unsigned int  code4 = it.getCode();
+  // define true c.
+  it.previous();
+  code3 = it.getCode();
+  // find first b.
+  do 
+    { 
+      it.previous();
+    }
+  while ( it.getCode() == code3 );
+  char a_char = chain[ it.getPosition() ];
+  // the next is the first c.
+  it.next();
+  char b_char = chain[ it.getPosition() ];
+  // Reorder the alphabet to match the quadrant change.
+  while ( A.order( b_char ) != 1 )
+    A.shiftLeft();
+  if ( A.order( a_char ) == 0 )
+    {
+      A.reverse();
+      while ( A.order( b_char ) != 1 )
+	A.shiftLeft();
+    }
+  ASSERT( ( A.order( b_char ) == 1 )
+	  && ( A.order( a_char ) == 2 )
+	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+  return it;
+}
+
+
+/**
+ * This method takes O(n) operations and works only for Freeman
+ * chains whose successive codes are between +1/-1. It determines
+ * if the FreemanChain corresponds to a closed contour, and if
+ * this is the case, determines how many counterclockwise loops the
+ * contour has done. Of course, it the contour has done
+ * clockwise loops, then the given number is accordingly
+ * negative.
+ *
+ * @return the number of counterclockwise loops, or '0' is the contour
+ * is open or invalid.
+ */
+int
+DGtal::FreemanChain::isClosed() const
+{
+  FreemanChain::constIterator it = this->begin();
+  FreemanChain::constIterator it_end = this->end();
+  FreemanChain::constIterator it_suiv = it;
+  PointI2D spos = *it;
+  int nb_ccw_turns = 0;
+  while ( it != it_end )
+    {
+      int code1 = it.getCode();
+      it_suiv.nextInLoop();
+      int code2 = it_suiv.getCode();
+      uint diff = ( code2 - code1 + 4 ) % 4;
+      if ( diff == 1 )      ++nb_ccw_turns;
+      else if ( diff == 3 ) --nb_ccw_turns;
+      else if ( diff == 2 ) return 0;
+      ++it;
+    }
+  if ( spos == *it_suiv )
+    return nb_ccw_turns / 4;
+  else return 0;
+}
+
+
+
+
+
+
+
+
+/**
+ * Return a vector containing all the interger points of the freemanchain.
+ *
+ * @param fc the FreemanChain
+ * @param vContour (returns) the vector containing all the integer contour points.
+  */
+void
+DGtal::FreemanChain::getContourPoints(const FreemanChain & fc, vector<PointI2D> & vContour) 
+{
+  vContour.clear();
+  for ( FreemanChain::constIterator it = fc.begin();
+	it != fc.end();
+	++it )
+    {
+      vContour.push_back(*it);
+    }
+}
+
 
 
 

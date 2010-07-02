@@ -29,6 +29,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@ public :
      * This class represents an iterator on the freeman chain, storing
      * the current coordinate.
      */
-    class const_iterator
+    class constIterator
     {
       // ------------------------- data -----------------------
     private:
@@ -87,7 +88,7 @@ public :
        * Default Constructor.
        * The object is not valid.
        */
-      INLINE const_iterator();
+      INLINE constIterator();
 
       /**
        * Constructor.
@@ -96,25 +97,25 @@ public :
        * @param aChain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()-1).
        */
-      INLINE const_iterator( const FreemanChain & aChain, unsigned int n = 0 );
+      INLINE constIterator( const FreemanChain & aChain, unsigned int n = 0 );
 
       /**
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      INLINE const_iterator( const const_iterator & aOther );
+      INLINE constIterator( const constIterator & aOther );
     
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      INLINE const_iterator& operator=( const const_iterator & aOther );
+      INLINE constIterator& operator=( const constIterator & aOther );
     
       /**
        * Destructor. Does nothing.
        */
-      INLINE ~const_iterator();
+      INLINE ~constIterator();
     
       // ------------------------- iteration services -------------------------
     public:
@@ -133,7 +134,7 @@ public :
        * Pre-increment.
        * Goes to the next point on the chain.
        */
-      INLINE const_iterator& operator++();
+      INLINE constIterator& operator++();
       
       /**
        * Goes to the next point on the chain.
@@ -165,7 +166,7 @@ public :
        * Pre-decrement.
        * Goes to the previous point on the chain.
        */
-      INLINE const_iterator& operator--();
+      INLINE constIterator& operator--();
       
       /**
        * Goes to the previous point on the chain if possible.
@@ -185,7 +186,7 @@ public :
        *
        * @return 'true' if their current positions coincide.
        */
-      INLINE bool operator==( const const_iterator & aOther ) const;
+      INLINE bool operator==( const constIterator & aOther ) const;
 
       /**
        * Inequality operator.
@@ -195,7 +196,7 @@ public :
        *
        * @return 'true' if their current positions differs.
        */
-      INLINE bool operator!=( const const_iterator & aOther ) const;
+      INLINE bool operator!=( const constIterator & aOther ) const;
 
       /**
        * Inferior operator.
@@ -206,7 +207,7 @@ public :
        * @return 'true' if the current position of 'this' is before
        * the current position of [other].
        */
-      INLINE bool operator<( const const_iterator & aOther ) const;
+      INLINE bool operator<( const constIterator & aOther ) const;
       
     };
       
@@ -527,7 +528,7 @@ public :
      * @return 'true' if the MLP has made a correct loop, 'false'
      * otherwise (error ?).
      */
-    static const_iterator computeMLP( std::vector<int> & vx,
+    static constIterator computeMLP( std::vector<int> & vx,
 				      std::vector<int> & vy,
 				      std::vector<unsigned int> & vi,
 				      std::vector<bool> & vt,
@@ -547,10 +548,8 @@ public :
     static double lengthMLP( const FreemanChain & fc );
 
 
-
-
-
-    /**
+  
+  /**
      * Return a vector containing all the interger points of the freemanchain.
      *
      * @param fc the FreemanChain
@@ -558,7 +557,11 @@ public :
      */
     static void getContourPoints(const FreemanChain & fc, std::vector<PointI2D > & aVContour); 
     
-
+  
+  
+  
+  
+  static void movePointFromFC(PointI2D & aPoint, unsigned int aCode );
 
 
 
@@ -601,13 +604,13 @@ public:
      * Iterator service.
      * @return an iterator pointing on the first point of the chain.
      */
-    INLINE FreemanChain::const_iterator begin() const;
+    INLINE FreemanChain::constIterator begin() const;
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last point of the chain.
      */
-    INLINE FreemanChain::const_iterator end() const;
+    INLINE FreemanChain::constIterator end() const;
 
     /**
      * @param pos a position in the chain code.
@@ -670,10 +673,11 @@ public:
      * @return an iterator on 'this' that points on the first letter b.
      */
     
+  
   //BK
-  //FreemanChain::const_iterator
-    //findQuadrantChange( OrderedAlphabet & A ) const;
-
+  FreemanChain::constIterator
+  findQuadrantChange( OrderedAlphabet & A ) const;
+  
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
      * position as an iterator. A quadrant change is some
@@ -695,8 +699,8 @@ public:
      */
   
   //BK  
-  //    FreemanChain::const_iterator
-  // findQuadrantChange4( OrderedAlphabet & A ) const;
+  FreemanChain::constIterator
+  findQuadrantChange4( OrderedAlphabet & A ) const;
 
     /**
      * This method takes O(n) operations and works only for Freeman
