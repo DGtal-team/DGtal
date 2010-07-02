@@ -40,8 +40,21 @@ namespace DGtal
   /**
    * Description of class 'PointVector' <p>
    *
-   * @brief Aim: Implements basic operations that will be used in  @ref Point  and @ref Vector classes.
+   * @brief Aim: Implements basic operations that will be used in @ref
+   * Point and @ref Vector classes.
+   * 
+   * A PointVector may represent either a digital point or a digital
+   * vector depending on the context. For performance reasons, these
+   * two types are just aliases. The user should take care how to use
+   * it depending on the context. For instance, adding two points has
+   * no meaning, but will be authorized by the compiler.
    *
+   * The default less than operator is the one of the lexicographic
+   * ordering, starting from dimension 0 to N-1.
+   *
+   * PointVector also realizes the concept CLattice with an infimum
+   * (meet, greatest lower bound) and a supremum (join, least upper
+   * bound) operation.
    *
    * @example test_PointVector.cpp
    */
@@ -69,7 +82,7 @@ namespace DGtal
      * Constructor.
      */
     PointVector();
-
+    
     /**
      * Constructor from array of values.
      *
@@ -77,25 +90,33 @@ namespace DGtal
      * the size of the vector)
      */
     PointVector( const T * ptrValues );
-
+    
     /**
      * Constructor from initializer list.
      * @param the initializer list.
      */
     PointVector(std::initializer_list<T> init);
-
+    
     /**
      * Destructor.
      */
     ~PointVector();
-
+    
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     PointVector ( const PointVector & other );
-
-    // ----------------------- Interface --------------------------------------
+    
+    /**
+     * Assignement Operator
+     *
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    PointVector & operator= ( const PointVector & pv );
+    
+    // ----------------------- Iterator services ------------------------------
   public:
 
     /**
@@ -103,37 +124,31 @@ namespace DGtal
      *
      * @return an Iterator on the first element of a Point/Vector.
      **/
-    Iterator begin() {
-      return myArray.begin();
-    }
+    Iterator begin();
 
     /**
      * PointVector end() iterator.
      *
      * @return an Iterator on the last element of a Point/Vector.
      **/
-    Iterator end() {
-      return myArray.end();
-    }
-
+    Iterator end();
 
     /**
      * PointVector begin() const iterator.
      *
      * @return an ConstIterator on the first element of a Point/Vector.
      **/
-    ConstIterator begin() const {
-      return myArray.begin();
-    }
+    ConstIterator begin() const;
 
     /**
      * PointVector end() const iterator.
      *
      * @return a ConstIterator on the last element of a Point/Vector.     
      **/
-    ConstIterator end() const {
-      return myArray.end();
-    }
+    ConstIterator end() const;
+
+    // ----------------------- Array services ------------------------------
+  public:
 
     /**
      * Returns the size of the vector (i.e. the number of its
@@ -167,105 +182,109 @@ namespace DGtal
      */
     T& at ( std::size_t i );
 
-    /**
-     * Multiplies @a *this by the @a coeff scalar number.
-     *
-     * @param coeff is the factor @a *this get multiplied by.
-     */
-    PointVector<T,N>& operator*= ( T coeff );
 
-    /**
-     * Assignement Operator
-     *
-     * @param coeff is the factor @a *this get multiplied by.
-     */
-    PointVector<T,N>& operator= ( const PointVector<T,N>& aPointVector );
+    // ----------------------- Comparison operations --------------------------
+  public:
 
     /** 
      * Equality operator.
      * 
-     * @param aPointVector Point/Vector to compare to this.
+     * @param pv Point/Vector to compare to this.
      *
      * @return true iff points are equal.
      */
-    bool operator== ( const PointVector<T,N>& aPointVector ) const;
-    
+    bool operator== ( const PointVector<T,N> & pv ) const;
+		      
     /** 
      * Difference operator on Points/Vectors.
      * 
-     * @param aPointVector the Point/Vector to compare to this.
+     * @param pv the Point/Vector to compare to this.
      *
-     * @return true iff this differs from aPointVector, false otherwise.
+     * @return true iff this differs from pv, false otherwise.
      */
-    bool operator!= ( const PointVector<T,N>& aPointVector ) const;    
+    bool operator!= ( const PointVector<T,N> & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (LesserThan).
      * 
-     * @param aPointVector the Point/Vector to compare to this.
+     * @param pv the Point/Vector to compare to this.
      *
-     * @return true iff this < aPointVector, false otherwise.
+     * @return true iff this < pv, false otherwise.
      */
-    bool operator< ( const PointVector<T,N>& aPointVector ) const;
+    bool operator< ( const PointVector<T,N> & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (LesserOrEqualThan).
      * 
-     * @param aPointVector the Point/Vector to compare to this.
+     * @param pv the Point/Vector to compare to this.
      *
-     * @return true iff this <= aPointVector, false otherwise.
+     * @return true iff this <= pv, false otherwise.
      */
-    bool operator<= ( const PointVector<T,N>& aPointVector ) const;    
+    bool operator<= ( const PointVector<T,N> & pv ) const;
   
     /** 
      * Comparison operator on Points/Vectors (GreaterThan).
      * 
-     * @param aPointVector the Point/Vector to compare to this.
+     * @param pv the Point/Vector to compare to this.
      *
-     * @return true iff this > aPointVector, false otherwise.
+     * @return true iff this > pv, false otherwise.
      */
-    bool operator> ( const PointVector<T,N>& aPointVector ) const;
+    bool operator> ( const PointVector<T,N> & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (GreaterOrEqualThan).
      * 
-     * @param aPointVector the Point/Vector to compare to this.
+     * @param pv the Point/Vector to compare to this.
      *
-     * @return true iff this >= aPointVector, false otherwise.
+     * @return true iff this >= pv, false otherwise.
      */
-    bool operator>= ( const PointVector<T,N>& aPointVector ) const;
+    bool operator>= ( const PointVector<T,N> & pv ) const;
     
+
+    // ----------------------- Operations ------------------------------
+  public:
+
+    /**
+     * Multiplies @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get multiplied by.
+     * @return a reference on 'this'.
+     */
+    PointVector<T,N> & operator*= ( T coeff );
 
     /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
+     * @return a reference on 'this'.
      */
-    PointVector<T,N>& operator+= ( const PointVector<T,N>& v );
+    PointVector<T,N> & operator+= ( const PointVector<T,N> & v );
 
     /**
      * Addition operator.
      *
      * @param v is the Point that gets added to @a *this.
+     * @return a new Point that is the addition of 'this' to [v].
      */
-    PointVector<T,N> operator+ ( const PointVector<T,N>& v ) const;
+    PointVector<T,N> operator+ ( const PointVector<T,N> & v ) const;
 
-
+				 
     /**
      * Substraction operator with assignement.
      *
      * @param v is the Point that gets substracted to  *this.
-     * @return a reference to the resulting Point/Vector 
+     * @return a reference on 'this'.
      */
-    PointVector<T,N>& operator-= ( const PointVector<T,N>& v );
+    PointVector<T,N> & operator-= ( const PointVector<T,N> & v );
 
     /**
      * Substraction operator.
      * Point - Vector => Point
      *
      * @param v is the Point that gets added to @a *this.
+     * @return a new Point that is the subtraction 'this'-[v].
      */
-    PointVector<T,N> operator- ( const PointVector<T,N>& v ) const;
+    PointVector<T,N> operator- ( const PointVector<T,N> & v ) const;
 
     /**
      * Resets all the values to zero.
@@ -285,7 +304,11 @@ namespace DGtal
      * @return the norm of the point/vector
      */
     double norm ( NormType type = L_2 );
+				 
+				 
 
+    // ----------------------- Interface --------------------------------------
+  public:
 
     /**
      * Writes/Displays the object on an output stream.

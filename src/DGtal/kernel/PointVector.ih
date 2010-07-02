@@ -72,6 +72,62 @@ DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
   : myArray( other.myArray )
 {}
 
+
+
+/**
+ * PointVector begin() iterator.
+ *
+ * @return an Iterator on the first element of a Point/Vector.
+ **/
+template<typename T,std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::Iterator 
+DGtal::PointVector<T,N>::begin() 
+{
+  return myArray.begin();
+}
+
+/**
+ * PointVector end() iterator.
+ *
+ * @return an Iterator on the last element of a Point/Vector.
+ **/
+template<typename T,std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::Iterator 
+DGtal::PointVector<T,N>::end()
+{
+  return myArray.end();
+}
+
+
+/**
+ * PointVector begin() const iterator.
+ *
+ * @return an ConstIterator on the first element of a Point/Vector.
+ **/
+template<typename T,std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::ConstIterator
+DGtal::PointVector<T,N>::begin() const
+{
+  return myArray.begin();
+}
+
+/**
+ * PointVector end() const iterator.
+ *
+ * @return a ConstIterator on the last element of a Point/Vector.     
+ **/
+template<typename T,std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::ConstIterator
+DGtal::PointVector<T,N>::end() const
+{
+  return myArray.end();
+}
+
+
 /**
  * Returns the size of the vector (i.e. the number of its
  * coefficients).
@@ -181,14 +237,14 @@ DGtal::PointVector<T,N>::operator*= ( T coeff )
 /**
  * Assignemnt operator
  *
- * \param aPointVector is the pointvector to assign to \a *this.
+ * \param pv is the pointvector to assign to \a *this.
  */
 template<typename T, std::size_t N>
 inline
 DGtal::PointVector<T,N>&
-DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
+DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> & pv )
 {
-  myArray = aPointVector.myArray;
+  myArray = pv.myArray;
   return *this;
 }
 
@@ -196,80 +252,80 @@ DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> &aPointVector )
 /**
  * Comparison operator
  *
- * \param aPointVector is the pointvector to test its equality to \a *this.
+ * \param pv is the pointvector to test its equality to \a *this.
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> & pv ) const
 {
-  return (myArray == aPointVector.myArray);
+  return (myArray == pv.myArray);
 }
 
 /**
  * Difference operator
  *
- * \param aPointVector is the pointvector and we return \param this == \param aPointVector
+ * \param pv is the pointvector and we return \param this == \param pv
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> & pv ) const
 {
-  return (myArray != aPointVector.myArray);
+  return (myArray != pv.myArray);
 }
 
 /**
  * Comparison operator.
  *
- * \param aPointVector is the pointvector and we return \param this < \param aPointVector
+ * \param pv is the pointvector and we return \param this < \param pv
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> & pv ) const
 {
-  return (myArray < aPointVector.myArray);
+  return (myArray < pv.myArray);
 }
 
 
 /**
  * Comparison operator.
  *
- * \param aPointVector is the pointvector and we return \param this <= \param aPointVector
+ * \param pv is the pointvector and we return \param this <= \param pv
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> & pv ) const
 {
-  return (myArray <= aPointVector.myArray);
+  return (myArray <= pv.myArray);
 }
 
 /**
  * Comparison operator.
  *
- * \param aPointVector is the pointvector and we return \param this > \param aPointVector
+ * \param pv is the pointvector and we return \param this > \param pv
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> & pv ) const
 {
-  return (myArray > aPointVector.myArray);
+  return (myArray > pv.myArray);
 }
 
 /**
  * Comparison operator.
  *
- * \param aPointVector is the pointvector and we return \param this => \param aPointVector
+ * \param pv is the pointvector and we return \param this => \param pv
  */
 template<typename T, std::size_t N>
 inline
 bool
-DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> &aPointVector ) const
+DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> & pv ) const
 {
-  return (myArray >= aPointVector.myArray);
+  return (myArray >= pv.myArray);
 }
 
 
