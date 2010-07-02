@@ -1,0 +1,8 @@
+## Sources associated to the module geometry
+##
+
+
+SET(DGTAL_SRC ${DGTAL_SRC} 
+		#DGtal/geometry/...
+		)
+
