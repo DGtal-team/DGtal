@@ -10,7 +10,7 @@ include_directories (${PROJECT_SOURCE_DIR}/src/)
 link_directories (${PROJECT_BINARY_DIR})
 
 SET(DGTAL_TESTS_SRC
-   testInteger
+#   testInteger
    test_clock
    test_trace
    test_measure
@@ -22,7 +22,7 @@ SET(DGTAL_TESTS_SRC
    test_ImageSpanIterators
    test_PointVector
    test_SpaceND
-	 test_ArithDSS)
+   test_ArithDSS)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
