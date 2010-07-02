@@ -78,6 +78,7 @@ namespace DGtal
     
 
     typedef typename Space::Point Point;
+		typedef typename Space::Vector Vector;
     typedef typename Point::Coordinate Coordinate;
     typedef typename Space::SizeType SizeType;
 
