@@ -3,6 +3,6 @@
 
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		#DGtal/geometry/...
+		DGtal/geometry/FreemanChain	
 		)
 

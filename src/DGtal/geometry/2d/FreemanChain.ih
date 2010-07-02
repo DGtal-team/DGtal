@@ -1,0 +1,500 @@
+/**
+ * @file FreemanChain.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2010/07/01
+ *
+ * Implementation of inline methods defined in FreemanChain.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <iostream>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// class FreemanChain::const_iterator
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------- Standard services -----------------------
+
+/**
+ * Default Constructor.
+ * The object is not valid.
+ */
+DGtal::FreemanChain::const_iterator::const_iterator()
+  : myFc( 0 ), myPos( 0 )
+{
+}
+
+/**
+ * Constructor.
+ * Nb: complexity in O(n).
+ *
+ * @param chain a Freeman chain,
+ * @param n the position in [chain] (within 0 and chain.size()-1).
+ */
+DGtal::FreemanChain::const_iterator::const_iterator
+( const FreemanChain & chain, unsigned int n )
+  : myFc( &chain ), myPos( 0 )
+{
+  myXY.at(0)=chain.x0;
+  myXY.at(1)=chain.y0;
+  
+  if ( n < myFc->chain.size() )
+    while ( myPos < n )
+      {
+	this->next();
+	// JOL !!!
+	// ERROR: myPos is already incremented in next().
+	// ++myPos;
+      }
+  else // iterator end() 
+    myPos = myFc->chain.size();
+}
+
+/**
+ * Copy constructor.
+ * @param other the iterator to clone.
+ */
+DGtal::FreemanChain::const_iterator::const_iterator
+( const const_iterator & other )
+  : myFc( other.myFc ), myPos( other.myPos ), myXY( other.myXY )
+{
+}
+    
+/**
+ * Assignment.
+ * @param other the iterator to copy.
+ * @return a reference on 'this'.
+ */
+DGtal::FreemanChain::const_iterator& 
+DGtal::FreemanChain::const_iterator::operator=
+( const const_iterator & other )
+{
+  if ( this != &other )
+    {
+      myFc = other.myFc;
+      myPos = other.myPos;
+      myXY = other.myXY;
+    }
+  return *this;
+}
+    
+/**
+ * Destructor. Does nothing.
+ */
+DGtal::FreemanChain::const_iterator::~const_iterator()
+{
+}
+    
+// ------------------------- iteration services -------------------------
+      
+/**
+ * @return the current coordinates.
+ */
+PointVector<int, 2> 
+DGtal::FreemanChain::const_iterator::operator*() const
+{
+  return myXY;
+}
+
+/**
+ * @return the current coordinates.
+ */
+DGtal::PointVector<int, 2>
+DGtal::FreemanChain::const_iterator::get() const
+{
+  return myXY;
+}
+
+/**
+ * Pre-increment.
+ * Goes to the next point on the chain.
+ */
+DGtal::FreemanChain::const_iterator& 
+DGtal::FreemanChain::const_iterator::operator++()
+{
+  this->next();
+  return *this;
+}
+      
+/**
+ * Goes to the next point on the chain.
+ */
+void 
+DGtal::FreemanChain::const_iterator::next()
+{
+  if ( myPos < myFc->chain.size() )
+    {
+      switch ( myFc->code( myPos ) )
+	{
+	case 0: myXY.at(0)++; break;
+	case 1: myXY.at(1)++; break;
+	case 2: myXY.at(0)--; break;
+	case 3: myXY.at(1)--; break;
+	}
+      ++myPos;
+    }
+}
+
+/**
+ * Goes to the previous point on the chain as if on a loop.
+ */
+void
+DGtal::FreemanChain::const_iterator::nextInLoop()
+{
+  if ( myPos < myFc->chain.size() )
+    {
+      switch ( myFc->code( myPos ) )
+	{
+	case 0: myXY.at(0)++; break;
+	case 1: myXY.at(1)++; break;
+	case 2: myXY.at(0)--; break;
+	case 3: myXY.at(1)--; break;
+	}
+      myPos = ( myPos + 1 ) % myFc->chain.size();
+    }
+}
+
+
+/**
+ * @return the current position (as an index in the Freeman chain).
+ */
+unsigned int
+DGtal::FreemanChain::const_iterator::getPosition() const
+{
+  return myPos;
+}
+
+/**
+ * @return the associated Freeman chain.
+ */
+const DGtal::FreemanChain* 
+DGtal::FreemanChain::const_iterator::getChain() const
+{
+  return myFc;
+}
+
+/**
+ * @return the current Freeman code (specifies the movement to
+ * the next point).
+ */
+unsigned int 
+DGtal::FreemanChain::const_iterator::getCode() const
+{
+  ASSERT( myFc != 0 );
+  return myFc->code( myPos );
+}
+
+/**
+ * Pre-decrement.
+ * Goes to the previous point on the chain.
+ */
+DGtal::FreemanChain::const_iterator& 
+DGtal::FreemanChain::const_iterator::operator--()
+{
+  this->previous();
+  return *this;
+}
+
+/**
+ * Goes to the previous point on the chain if possible.
+ */
+void
+DGtal::FreemanChain::const_iterator::previous()
+{
+  if ( myPos > 0 )
+    {
+      --myPos;
+      switch ( myFc->code( myPos ) )
+	{
+	case 0: myXY.at(0)--; break;
+	case 1: myXY.at(1)--; break;
+	case 2: myXY.at(0)++; break;
+	case 3: myXY.at(1)++; break;
+	}
+    }
+}
+
+/**
+ * Goes to the previous point on the chain as if on a loop.
+ */
+void
+DGtal::FreemanChain::const_iterator::previousInLoop()
+{
+  if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
+  else --myPos;
+  switch ( myFc->code( myPos ) )
+    {
+    case 0: myXY.at(0)--; break;
+    case 1: myXY.at(1)--; break;
+    case 2: myXY.at(0)++; break;
+    case 3: myXY.at(1)++; break;
+    }
+}
+
+
+/**
+ * Equality operator.
+ *
+ * @param other the iterator to compare with (must be defined on
+ * the same chain).
+ *
+ * @return 'true' if their current positions coincide.
+ */
+bool 
+DGtal::FreemanChain::const_iterator::operator==
+( const const_iterator & other ) const
+{
+  ASSERT( myFc == other.myFc );
+  return myPos == other.myPos;
+}
+
+/**
+ * Inequality operator.
+ *
+ * @param other the iterator to compare with (must be defined on
+ * the same chain).
+ *
+ * @return 'true' if their current positions differs.
+ */
+bool 
+DGtal::FreemanChain::const_iterator::operator!=
+( const const_iterator & other ) const
+{
+  ASSERT( myFc == other.myFc );
+  return myPos != other.myPos;
+}
+
+
+/**
+ * Inferior operator.
+ *
+ * @param other the iterator to compare with (must be defined on
+ * the same chain).
+ *
+ * @return 'true' if the current position of 'this' is before
+ * the current position of [other].
+ */
+bool 
+DGtal::FreemanChain::const_iterator::operator<
+( const const_iterator & other ) const
+{
+
+  ASSERT( myFc == other.myFc );
+  return myPos < other.myPos;
+}
+
+      
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+/**
+ * Constructor.
+ * @param s the chain code.
+ * @param x the x-coordinate of the first point.
+ * @param y the y-coordinate of the first point.
+ */
+DGtal::FreemanChain::FreemanChain( const std::string & s, int x, int y )
+  : chain( s ), x0( x ), y0( y )
+{
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+DGtal::FreemanChain::FreemanChain( const FreemanChain & other )
+  : chain( other.chain ), x0( other.x0 ), y0( other.y0 )
+{
+}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ */
+DGtal::FreemanChain & 
+DGtal::FreemanChain::operator=( const FreemanChain & other )
+{
+  if ( this != &other )
+    {
+      chain = other.chain;
+      x0 = other.x0;
+      y0 = other.y0;
+    }
+  return *this;
+}
+
+
+/**
+ * Iterator service.
+ * @return an iterator pointing on the first point of the chain.
+ */
+DGtal::FreemanChain::const_iterator 
+DGtal::FreemanChain::begin() const
+{
+  return FreemanChain::const_iterator( *this, 0 );
+}
+
+/**
+ * Iterator service.
+ * @return an iterator pointing after the last point of the chain.
+ */
+DGtal::FreemanChain::const_iterator 
+DGtal::FreemanChain::end() const
+{
+  return FreemanChain::const_iterator( *this, chain.size() );
+}
+
+/**
+ * @return the length of the Freeman chain code.
+ */
+unsigned int
+DGtal::FreemanChain::size() const
+{
+  return chain.size();
+}
+
+
+
+/**
+ * @param pos a position in the chain code.
+ * @return the code at position [pos].
+ */ 
+unsigned int
+DGtal::FreemanChain::code( unsigned int pos ) const
+{
+  ASSERT( pos < chain.size() );
+  return chain[ pos ] - '0';
+}
+
+/**
+ * @param pos a position in the chain code.
+ * @return the next position.
+ */ 
+unsigned int
+DGtal::FreemanChain::next( unsigned int pos ) const
+{
+  ++pos;
+  if ( pos >= chain.size() )
+    pos = 0;
+  return pos;
+}
+
+/**
+ * @param pos a position in the chain code.
+ * @return the previous position.
+ */ 
+unsigned int
+DGtal::FreemanChain::previous( unsigned int pos ) const
+{
+  if ( pos == 0 ) pos = chain.size() - 1;
+  else --pos;
+  return pos;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Staic services
+
+/**
+ * Returns the displacement vector of a Freeman code.
+ *
+ * @param dx (returns) the x-displacement.
+ * @param dy (returns) the x-displacement.
+ * @param c the code.
+ */
+INLINE
+void
+DGtal::FreemanChain::displacement( int & dx, int & dy, unsigned int code )
+{
+  switch ( code ) 
+    {
+    case 0: dx = 1; dy = 0; break;
+    case 1: dx = 0; dy = 1; break;
+    case 2: dx = -1; dy = 0; break;
+    case 3: dx = 0; dy = -1; break;
+    }
+}
+
+/**
+ * @param c a Freeman code (between 0-3).
+ * Returns the displacement vector of the Freeman code.
+ */
+INLINE
+DGtal::PointVector<int, 2>
+DGtal::FreemanChain::displacement( unsigned int code )
+{
+ PointI2D aPoint;
+  aPoint.at(0)=0;
+  aPoint.at(0)=0;
+  
+  switch ( code ) 
+    {
+    case 0: aPoint.at(0)=1; aPoint.at(1)=0;  //returnPointI2D( 1, 0 );
+    case 1: aPoint.at(0)=0; aPoint.at(1)=1;  //returnPointI2D( 0, 1 );
+    case 2: aPoint.at(0)=-1; aPoint.at(1)=0; //returnPointI2D( -1, 0 );
+    case 3: aPoint.at(0)=0; aPoint.at(1)=-1; //returnPointI2D( 0, -1 );
+    }
+  return aPoint; //PointI2D( 0, 0 );
+}
+
+/**
+ * @param code any Freeman code
+ * @param ccw when 'true' turns counterclockwise, otherwise turns clockwise.
+ *
+ * @return the turned code.
+ */
+INLINE
+unsigned int
+DGtal::FreemanChain::turnedCode( unsigned int code, bool ccw )
+{
+  if ( ccw ) return ( code + 1 ) & 0x3;
+  else       return ( code - 1 ) & 0x3;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'FreemanChain'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'FreemanChain' to write.
+ * @return the output stream after the writing.
+ */
+INLINE
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const FreemanChain & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
