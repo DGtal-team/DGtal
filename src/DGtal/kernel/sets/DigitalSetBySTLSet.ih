@@ -29,24 +29,211 @@
 /**
  * Destructor.
  */
-template <typename T>
+template <typename Domain>
 inline
-void
-DGtal::DigitalSetBySTLSet<T>::~DigitalSetBySTLSet()
+DGtal::DigitalSetBySTLSet<Domain>::~DigitalSetBySTLSet()
 {
+}
+
+/**
+ * Default constructor.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet()
+{
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet( const DigitalSetBySTLSet & other )
+  : mySet( other.mySet )
+{
+}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLSet<Domain> &
+DGtal::DigitalSetBySTLSet<Domain>::operator= ( const DigitalSetBySTLSet & other )
+{
+  mySet = other.mySet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
+
+/**
+ * @return the number of elements in the set.
+ */
+template <typename Domain>
+inline
+size_type
+DGtal::DigitalSetBySTLSet<Domain>::size() const
+{
+  return mySet.size();
+}
+
+/**
+ * @return 'true' iff the set is empty (no element).
+ */
+template <typename Domain>
+inline
+bool
+DGtal::DigitalSetBySTLSet<Domain>::empty() const
+{
+  return mySet.empty();
+}
+
+
+/**
+ * Adds point [p] to this set.
+ *
+ * @param p any digital point.
+ * @pre p should belong to the associated domain.
+ */
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::insert( const Point & p )
+{
+  mySet.insert( p );
+}
+
+
+/**
+ * Adds the collection of points specified by the two iterators to
+ * this set.
+ *
+ * @param first the start point in the collection of Point.
+ * @param last the last point in the collection of Point.
+ * @pre all points should belong to the associated domain.
+ */
+template <typename Domain>
+template <typename PointInputIterator>
+void
+DGtal::DigitalSetBySTLSet<Domain>::insert( PointInputIterator first, PointInputIterator last )
+{
+  mySet.insert( first, last );
+}
+
+/**
+ * Removes point [p] from the set.
+ * 
+ * @param p the point to remove.
+ * @return the number of removed elements (0 or 1).
+ */
+template <typename Domain>
+size_type
+DGtal::DigitalSetBySTLSet<Domain>::erase( const Point & p )
+{
+  mySet.erase( p );
+}
+
+
+/**
+ * Removes the point pointed by [it] from the set.
+ * 
+ * @param it an iterator on this set.
+ * Note: generally faster than giving just the point.
+ */
+template <typename Domain>
+void
+DGtal::DigitalSetBySTLSet<Domain>::erase( Iterator it )
+{
+  mySet.erase( it );
+}
+
+
+/**
+ * Clears the set.
+ * @post this set is empty.
+ */
+template <typename Domain>
+void
+DGtal::DigitalSetBySTLSet<Domain>::clear();
+
+/**
+ * @param p any digital point.
+ * @return a const iterator pointing on [p] if found, otherwise end().
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p ) const
+{
+  return mySet.find( p );
+}
+
+/**
+ * @param p any digital point.
+ * @return an iterator pointing on [p] if found, otherwise end().
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::Iterator
+DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p )
+{
+  return mySet.find( p );
+}
+
+/**
+ * @return a const iterator on the first element in this set.
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+DGtal::DigitalSetBySTLSet<Domain>::begin() const
+{
+  return mySet.begin();
+}
+
+/**
+ * @return a const iterator on the element after the last in this set.
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+DGtal::DigitalSetBySTLSet<Domain>::end() const
+{
+  return mySet.end();
+}
+
+/**
+ * @return an iterator on the first element in this set.
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::Iterator
+DGtal::DigitalSetBySTLSet<Domain>::begin()
+{
+  return mySet.begin();
+}
+
+/**
+ * @return a iterator on the element after the last in this set.
+ */
+template <typename Domain>
+DGtal::DigitalSetBySTLSet<Domain>::Iterator
+DGtal::DigitalSetBySTLSet<Domain>::end()
+{
+  return mySet.end();
+}
+
+
+
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<T>::selfDisplay ( std::ostream & out ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDisplay ( std::ostream & out ) const
 {
   out << "[DigitalSetBySTLSet]";
 }
@@ -55,23 +242,50 @@ DGtal::DigitalSetBySTLSet<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename Domain>
 inline
 bool
-DGtal::DigitalSetBySTLSet<T>::isValid() const
+DGtal::DigitalSetBySTLSet<Domain>::isValid() const
 {
     return true;
 }
+
+    /**
+     * @return the complement of this set in the domain.
+     *
+     * NB: be aware of the overhead cost when returning the object.
+     */
+    DigitalSetBySTLVector<Domain> getComplement() const; 
+
+    /**
+     * Builds the complement in the domain of the set [other_set] in
+     * this.
+     *
+     * @param other_set defines the set whose complement is assigned to 'this'.
+     */
+    void setComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
+    
+    /**
+     * Computes the bounding box of this set.
+     *
+     * @param lower the first point of the bounding box (lowest in all
+     * directions).
+     * @param upper the last point of the bounding box (highest in all
+     * directions).
+     */
+    void computeBoundingBox( Point & lower, Point & upper );
+
+
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //
 
-template <typename T>
+template <typename Domain>
 inline
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSetBySTLSet<T> & object );
+operator<< ( std::ostream & out, const DGtal::DigitalSetBySTLSet<Domain> & object );
  {
    object.selfDisplay( out );
    return out;

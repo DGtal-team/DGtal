@@ -42,7 +42,7 @@ namespace DGtal
    * Description of template class 'DigitalSetBySTLSet' <p>
    * \brief Aim:
    */
-  template <typename T>
+  template <typename Domain>
   class DigitalSetBySTLSet
   {
   public:
@@ -60,9 +60,11 @@ namespace DGtal
 
     /**
      * Constructor.
-     * Creates the empty set.
+     * Creates the empty set in the domain [d].
+     *
+     * @param d any domain.
      */
-    DigitalSetBySTLSet();
+    DigitalSetBySTLSet( const Domain & d );
 
     /**
      * Copy constructor.
@@ -238,6 +240,12 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
+    /**
+     * 
+     * 
+     */
+    const Domain & myDomain;
+
   }; // end of class DigitalSetBySTLSet
 
 
@@ -247,9 +255,9 @@ namespace DGtal
    * @param object the object of class 'DigitalSetBySTLSet' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename Domain>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetBySTLSet<T> & object );
+  operator<< ( std::ostream & out, const DigitalSetBySTLSet<Domain> & object );
 
 } // namespace DGtal
 
