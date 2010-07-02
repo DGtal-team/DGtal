@@ -20,7 +20,7 @@ SET(DGTAL_TESTS_SRC
    test_Image
    test_ImageSpanIterators
    test_PointVector
-   test_Space)
+   test_SpaceND)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

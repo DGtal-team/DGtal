@@ -1,5 +1,5 @@
 /**
- * @file test_Space.cpp
+ * @file test_SpaceND.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,8 +9,8 @@
  */
 
 /**
- * Description of test_Space <p>
- * Aim: simple test of \ref Space
+ * Description of test_SpaceND <p>
+ * Aim: simple test of \ref SpaceND
  */
 
 #include <cstdio>
@@ -21,7 +21,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/Integer.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 
 
 using namespace DGtal;
@@ -29,18 +29,18 @@ using namespace std;
 
 
 /**
-* Test instanciation of Space
+* Test instanciation of SpaceND
 *
 **/
 bool testSimpleSpace()
 {
 
-    Space<int,6> aSpace6;
-    Space<double,2> aSpace2;
+    SpaceND<int,6> aSpace6;
+    SpaceND<double,2> aSpace2;
 
     cout << "aSpace6 = " << aSpace6 << endl;
     cout << "aSpace2 = " << aSpace2 << endl;
-    Space<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
+    SpaceND<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
 // won't work
 // aSpace6::SpaceType::Subcospace<2>::Type aSpace4 = aSpace6.getSubcospace<2>();
     cout << "aSpace6.subcospace<2> = " << aSpace4 << endl;

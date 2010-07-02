@@ -20,7 +20,7 @@
 #include <algorithm>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 // #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
@@ -39,7 +39,7 @@ bool testDigitalSetBySTLVector()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef Space<int,4> Space4Type;
+  typedef SpaceND<int,4> Space4Type;
   typedef HyperRectDomain<Space4Type> DomainType;
   typedef Space4Type::Point Point;
   
@@ -50,6 +50,9 @@ bool testDigitalSetBySTLVector()
   Point p3( { 2, 5, 3 ,4} );
   trace.beginBlock ( "HyperRectDomain init" );
 
+    typedef SpaceND<int,4> Space4Type;
+    typedef HyperRectDomain<Space4Type> DomainType;
+    typedef Space4Type::Point Point;
   ///Domain characterized by points a and b
   DomainType domain ( a,b );
   trace.info() << domain << std::endl;

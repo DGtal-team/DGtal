@@ -18,7 +18,7 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/Image.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
@@ -35,7 +35,7 @@ using namespace std;
 bool testSimpleImage()
 {
 
-    typedef Space<int,4> Space4Type;
+    typedef SpaceND<int,4> Space4Type;
     typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
     typedef ImageContainerBySTLVector<Point, double> TContainer;
@@ -57,7 +57,7 @@ bool testSimpleImage()
 
 bool testImageContainer()
 {
-    typedef Space<int,4> Space4Type;
+    typedef SpaceND<int,4> Space4Type;
     typedef Space4Type::Point Point;
     typedef HyperRectDomain<Space4Type> TDomain;
     typedef ImageContainerBySTLVector<Point, double> TContainerV;
@@ -104,7 +104,7 @@ bool testImageContainer()
 
 bool testBuiltInIterators()
 {
-    typedef Space<int,2> Space2Type;
+    typedef SpaceND<int,2> Space2Type;
     typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
     typedef ImageContainerBySTLVector<Point, double> TContainerV;
@@ -157,7 +157,7 @@ struct Hop
 
 bool testConcepts()
 {
-    typedef Space<int,2> Space2Type;
+    typedef SpaceND<int,2> Space2Type;
     typedef Space2Type::Point Point;
     typedef HyperRectDomain<Space2Type> TDomain;
     typedef ImageContainerBySTLVector<Point, double> TContainerV;

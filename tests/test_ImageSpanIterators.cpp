@@ -18,7 +18,7 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/Image.h"
 #include "DGtal/kernel/images/ImageContainerBySTLMap.h"
@@ -32,7 +32,7 @@ using namespace std;
 
 bool testSpanIterators()
 {
-    typedef Space<int,3> Space3Type;
+    typedef SpaceND<int,3> Space3Type;
     typedef Space3Type::Point Point;
     typedef HyperRectDomain<Space3Type> TDomain;
     typedef ImageContainerBySTLVector<Point, double> TContainerV;

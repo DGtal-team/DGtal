@@ -1,7 +1,7 @@
 #pragma once
 
 /** 
- * @file Space.h
+ * @file SpaceND.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -9,20 +9,20 @@
  *
  * @date 2010/05/14
  * 
- * Header file for module Space.cpp
+ * Header file for module SpaceND.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Space_RECURSES)
-#error Recursive header files inclusion detected in Space.h
-#else // defined(Space_RECURSES)
+#if defined(SpaceND_RECURSES)
+#error Recursive header files inclusion detected in SpaceND.h
+#else // defined(SpaceND_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Space_RECURSES
+#define SpaceND_RECURSES
 
-#if !defined Space_h
+#if !defined SpaceND_h
 /** Prevents repeated inclusion of headers. */
-#define Space_h
+#define SpaceND_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -36,16 +36,16 @@ namespace DGtal
 {
   
   /////////////////////////////////////////////////////////////////////////////
-  // class Space
+  // class SpaceND
   /** 
-   * Description of class 'Space' <p>
+   * Description of class 'SpaceND' <p>
    *
-   * Aim: Space defines the fundamental structure of a Digital Space.
+   * Aim: SpaceND defines the fundamental structure of a Digital SpaceND.
    *
    */
   
   template <typename Integer, std::size_t Dimension>
-  class Space
+  class SpaceND
   {
   public:
 
@@ -54,25 +54,25 @@ namespace DGtal
     
     
     typedef Integer TInteger;
-    typedef std::size_t  TDimension;
+    typedef std::size_t  DimensionType;
     
     typedef PointVector<Integer, Dimension> Point;
     typedef PointVector<Integer,Dimension> Vector;
     typedef Integer SizeType;
     
-    typedef Space<Integer,Dimension> TSpace;
+    typedef SpaceND<Integer,Dimension> Space;
 
     // static constants
-    static const TDimension staticDimension = Dimension;
+    static const DimensionType staticDimension = Dimension;
     
     //typedef Matrix<DimensionT,DimensionT,Integer> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {
-      typedef Space<Integer,Dimension-Codimension> Type;
+      typedef SpaceND<Integer,Dimension-Codimension> Type;
     };
     template <std::size_t Subdimension>
     struct Subspace {
-      typedef Space<Integer,Subdimension> Type;
+      typedef SpaceND<Integer,Subdimension> Type;
     };
     
     
@@ -83,12 +83,12 @@ namespace DGtal
      * Constructor
      *
      */
-    Space() {};
+    SpaceND() {};
     
     /**
      * Destructor. 
      */
-    ~Space() {};
+    ~SpaceND() {};
 
     /**
      * @return the digital space of specified subdimension of this space. 
@@ -98,7 +98,7 @@ namespace DGtal
     typename Subspace<Subdimension>::Type subspace()
       {
 	ASSERT( Subdimension <= Dimension );
-	return Space<Integer,Subdimension>();
+	return SpaceND<Integer,Subdimension>();
       }
     
 
@@ -110,14 +110,14 @@ namespace DGtal
     typename Subcospace<Codimension>::Type subcospace()
       {
 	ASSERT( Codimension <= Dimension );
-	return Space<Integer,Dimension-Codimension>();
+	return SpaceND<Integer,Dimension-Codimension>();
       }
 
 
     /**
      * @return the dimension of the digital space.
      */
-    static TDimension dimension() { return Dimension; }
+    static DimensionType dimension() { return Dimension; }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -128,7 +128,7 @@ namespace DGtal
      */
     static void selfDisplay( std::ostream & out )
     {
-      out << "[Space dim=" << dimension() << " size_elem=" << sizeof( Integer ) << " ]";
+      out << "[SpaceND dim=" << dimension() << " size_elem=" << sizeof( Integer ) << " ]";
     }
 
   private:
@@ -138,23 +138,23 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Space & operator=( const Space & other );
+    SpaceND & operator=( const SpaceND & other );
   
     // ------------------------- Internals ------------------------------------
   private:
   
-  }; // end of class Space
+  }; // end of class SpaceND
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Space'.
+   * Overloads 'operator<<' for displaying objects of class 'SpaceND'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Space' to write.
+   * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
   template <typename Integer, std::size_t Dimension>
   static std::ostream&
-  operator<<( std::ostream & out, const Space<Integer,Dimension> & object )
+  operator<<( std::ostream & out, const SpaceND<Integer,Dimension> & object )
   {
     object.selfDisplay( out );
     return out;
@@ -167,7 +167,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Space_h
+#endif // !defined SpaceND_h
 
-#undef Space_RECURSES
-#endif // else defined(Space_RECURSES)
+#undef SpaceND_RECURSES
+#endif // else defined(SpaceND_RECURSES)

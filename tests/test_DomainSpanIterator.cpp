@@ -20,7 +20,7 @@
 #include <algorithm>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 
@@ -36,7 +36,7 @@ bool testIterator()
 {
 
     trace.emphase() << "Iterator 4d: ";
-    typedef Space<int,4> SpaceType4D;
+    typedef SpaceND<int,4> SpaceType4D;
     typedef SpaceType4D::Point TPoint4D;
     const int t4D[ ] = { 1, 1,1,1};
     const int t4D2[ ] = { 3,6,3,3};

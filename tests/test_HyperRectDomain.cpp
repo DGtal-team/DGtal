@@ -20,7 +20,7 @@
 #include <algorithm>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Space.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 
@@ -35,7 +35,7 @@ using namespace std;
 bool testSimpleHyperRectDomain()
 {
 
-    typedef Space<int,4> Space4Type;
+    typedef SpaceND<int,4> Space4Type;
     typedef Space4Type::Point Point;
 
     Point a ({ 1, 2, 3 ,4});
@@ -76,7 +76,7 @@ bool testSimpleHyperRectDomain()
 
 bool testIterator()
 {
-    typedef Space<int,2> TSpace;
+    typedef SpaceND<int,2> TSpace;
     typedef TSpace::Point Point;
     Point a ({ 1, 1});
     Point b ({ 5, 5});
@@ -93,7 +93,7 @@ bool testIterator()
 
 
     trace.emphase() << "Iterator 4d: ";
-    typedef Space<int,4> TSpace4D;
+    typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
     Point4D a4D ( {1,1,1,1} );
     Point4D b4D ( {3,3,3,3} );
@@ -120,7 +120,7 @@ bool testIterator()
 
 bool testReverseIterator()
 {
-    typedef Space<int,4> TSpace4D;
+    typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
     Point4D a4D ({1,1,1,1});
     Point4D b4D ({3,3,3,3});
@@ -143,7 +143,7 @@ bool testReverseIterator()
 
 bool testSTLCompat()
 {
-    typedef Space<int,4> TSpace4D;
+    typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
     Point4D a4D ({1,1,1,1});
     Point4D b4D ({3,3,3,3});
