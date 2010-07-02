@@ -1,0 +1,81 @@
+/**
+ * @file ArithDSS4.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/02
+ *
+ * Implementation of inline methods defined in ArithDSS4.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename Domain2D>
+inline
+DGtal::ArithDSS4<Domain2D>::~ArithDSS4()
+{
+}
+
+/**
+ * Constructor.
+ */
+template <typename Domain2D>
+DGtal::ArithDSS4<Domain2D>::ArithDSS4(
+	const DGtal::ArithDSS4<Domain2D>::Point& aFirstPoint, 
+	const DGtal::ArithDSS4<Domain2D>::Point& aSecondPoint)
+{
+
+	//todo: 
+	//ASSERT(DGtal::ArithDSS4<Domain2D>::Point::staticDimension == 2);
+
+	//todo: checks connexity
+
+	this->myF = aFirstPoint;
+	this->myL = aSecondPoint;
+
+	this->myUf = aFirstPoint;
+	this->myLf = aFirstPoint;
+	this->myUl = aSecondPoint;
+	this->myLl = aSecondPoint;
+
+	this->myA = this->myUl.at(0) - this->myUf.at(0); 
+	this->myB = this->myUl.at(1) - this->myUf.at(1); 
+	this->myMu = this->myA*this->myUl.at(0) - this->myB*this->myUl.at(1);
+	this->myOmega = norm(this->myA,this->myB);
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS4<Domain2D>::Integer 
+DGtal::ArithDSS4<Domain2D>::norm(
+			const typename DGtal::ArithDSS4<Domain2D>::Integer & x, 
+			const typename DGtal::ArithDSS4<Domain2D>::Integer & y) const 
+{
+	return std::abs(x)+std::abs(y);
+}
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
