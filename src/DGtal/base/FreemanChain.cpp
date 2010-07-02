@@ -473,7 +473,7 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   clean_c.y0 = P.at(1);
 
   // cerr << "Starting point is " << i << endl;
-  // ASSERT_FreemanChain( ( n < nb ) || ( i == 0 ) );
+  ASSERT( ( n < nb ) || ( i == 0 ) );
   if ( ( n == nb ) )
     { // do nothing
       clean_c.chain = c.chain;
@@ -866,9 +866,8 @@ DGtal::FreemanChain::subsample( FreemanChain & subc,
     for ( unsigned int i = 0; i < nb; ++i )
       if ( c2subc[ i ] >= nbsub ) c2subc[ i ] -= nbsub;
 
-  //BK
-  //TODO  
-  //ASSERT_FreemanChain( c2subc.size() == nb );
+
+  ASSERT( c2subc.size() == nb );
   return nbsub != 0;
 }
 
@@ -973,7 +972,6 @@ DGtal::FreemanChain::subsample( FreemanChain & subc,
 
 //   //BK
 //   //TODO
-  
 //   //ASSERT_FreemanChain( ( ( mvt == 1 ) || ( mvt == 3 ) )
 //   //		       && "[DGtal::FreemanChain::computeMLP] Invalid start point." );
   

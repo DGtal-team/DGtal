@@ -201,8 +201,7 @@ DGtal::FreemanChain::const_iterator::getChain() const
 unsigned int 
 DGtal::FreemanChain::const_iterator::getCode() const
 {
-  //TODO
-  //ASSERT_FreemanChain( myFc != 0 );
+  ASSERT( myFc != 0 );
   return myFc->code( myPos );
 }
 
@@ -266,8 +265,7 @@ bool
 DGtal::FreemanChain::const_iterator::operator==
 ( const const_iterator & other ) const
 {
-  //TODO
-  //ASSERT_FreemanChain( myFc == other.myFc );
+  ASSERT( myFc == other.myFc );
   return myPos == other.myPos;
 }
 
@@ -283,8 +281,7 @@ bool
 DGtal::FreemanChain::const_iterator::operator!=
 ( const const_iterator & other ) const
 {
-  //TODO
-  //ASSERT_FreemanChain( myFc == other.myFc );
+  ASSERT( myFc == other.myFc );
   return myPos != other.myPos;
 }
 
@@ -302,8 +299,8 @@ bool
 DGtal::FreemanChain::const_iterator::operator<
 ( const const_iterator & other ) const
 {
-  //TODO
-  //ASSERT_FreemanChain( myFc == other.myFc );
+
+  ASSERT( myFc == other.myFc );
   return myPos < other.myPos;
 }
 
@@ -388,8 +385,7 @@ DGtal::FreemanChain::size() const
 unsigned int
 DGtal::FreemanChain::code( unsigned int pos ) const
 {
-  //TODO
-  //ASSERT_FreemanChain( pos < chain.size() );
+  ASSERT( pos < chain.size() );
   return chain[ pos ] - '0';
 }
 
