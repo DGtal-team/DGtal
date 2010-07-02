@@ -157,12 +157,30 @@ bool testIterator()
     return true;
 }
 
+bool testOperators()
+{
+  trace.beginBlock("Point Operators Test");
+
+  PointVector<int,4> p1({1,2,3,4});
+  PointVector<int,4> p2({5,4,3,2});
+
+  trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
+  trace.info() << "p1+p2: "<<p1+p2 <<std::endl;
+  trace.info() << "p1-p2: "<<p1-p2 <<std::endl;
+  trace.info() << "inf(p1,p2): "<<p1.inf(p2) <<std::endl;
+  trace.info() << "sup(p1,p2): "<<p1.sup(p2) <<std::endl;
+  trace.endBlock();
+
+  return true; 
+}
+
 int main()
 {
     bool res;
     res =  testSimplePoint()  &&    testSimpleVector() &&
-           testNorms()  &&
-           testIterator() && testComparison() ;
+      testNorms()  &&
+      testIterator() && testComparison() &&
+      testOperators();
     if (res)
         return 0;
     else

@@ -98,11 +98,12 @@ namespace DGtal
     PointVector(std::initializer_list<T> init);
 
     /** Constructor taking apoint and a functor as parameters.
+     *  The new point is initialized by the result of functor f
+     *  for each coordinate of apoint1 and apoint2
      */    
-    template<class Functor>
-    PointVector(const PointVector& apoint1, 
-		const PointVector& apoint2,
-		Functor& f);
+    template<typename Functor>
+    PointVector(const PointVector& apoint1, const PointVector& apoint2, 
+		const Functor& f);
 
     /**
      * Destructor.
@@ -218,7 +219,7 @@ namespace DGtal
      *
      * @return true iff points are equal.
      */
-    bool operator== ( const PointVector<T,N> & pv ) const;
+    bool operator== ( const PointVector & pv ) const;
 		      
     /** 
      * Difference operator on Points/Vectors.
@@ -227,7 +228,7 @@ namespace DGtal
      *
      * @return true iff this differs from pv, false otherwise.
      */
-    bool operator!= ( const PointVector<T,N> & pv ) const;
+    bool operator!= ( const PointVector & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (LesserThan).
@@ -236,7 +237,7 @@ namespace DGtal
      *
      * @return true iff this < pv, false otherwise.
      */
-    bool operator< ( const PointVector<T,N> & pv ) const;
+    bool operator< ( const PointVector & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (LesserOrEqualThan).
@@ -245,7 +246,7 @@ namespace DGtal
      *
      * @return true iff this <= pv, false otherwise.
      */
-    bool operator<= ( const PointVector<T,N> & pv ) const;
+    bool operator<= ( const PointVector & pv ) const;
   
     /** 
      * Comparison operator on Points/Vectors (GreaterThan).
@@ -254,7 +255,7 @@ namespace DGtal
      *
      * @return true iff this > pv, false otherwise.
      */
-    bool operator> ( const PointVector<T,N> & pv ) const;
+    bool operator> ( const PointVector & pv ) const;
     
     /** 
      * Comparison operator on Points/Vectors (GreaterOrEqualThan).
@@ -263,7 +264,7 @@ namespace DGtal
      *
      * @return true iff this >= pv, false otherwise.
      */
-    bool operator>= ( const PointVector<T,N> & pv ) const;
+    bool operator>= ( const PointVector & pv ) const;
     
 
     // ----------------------- Operations ------------------------------
@@ -275,7 +276,7 @@ namespace DGtal
      * @param coeff is the factor @a *this get multiplied by.
      * @return a reference on 'this'.
      */
-    PointVector<T,N> & operator*= ( T coeff );
+    PointVector & operator*= ( T coeff );
 
     /**
      * Addition operator with assignement.
@@ -283,7 +284,7 @@ namespace DGtal
      * @param v is the Point that gets added to @a *this.
      * @return a reference on 'this'.
      */
-    PointVector<T,N> & operator+= ( const PointVector<T,N> & v );
+    PointVector & operator+= ( const PointVector & v );
 
     /**
      * Addition operator.
@@ -291,7 +292,7 @@ namespace DGtal
      * @param v is the Point that gets added to @a *this.
      * @return a new Point that is the addition of 'this' to [v].
      */
-    PointVector<T,N> operator+ ( const PointVector<T,N> & v ) const;
+    PointVector operator+ ( const PointVector & v ) const;
 
 				 
     /**
@@ -300,7 +301,7 @@ namespace DGtal
      * @param v is the Point that gets substracted to  *this.
      * @return a reference on 'this'.
      */
-    PointVector<T,N> & operator-= ( const PointVector<T,N> & v );
+    PointVector & operator-= ( const PointVector & v );
 
     /**
      * Substraction operator.
@@ -309,12 +310,22 @@ namespace DGtal
      * @param v is the Point that gets added to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
      */
-    PointVector<T,N> operator- ( const PointVector<T,N> & v ) const;
+    PointVector operator- ( const PointVector & v ) const;
 
     /**
      * Resets all the values to zero.
      */
     void reset();
+
+    /**
+     * @return a new point being the inf between *this and apoint.
+     */
+    PointVector inf( const PointVector& apoint );
+
+    /**
+     * @return a new point being the sup between *this and apoint.
+     */
+    PointVector sup( const PointVector& apoint );
 
     /**
      * Specify the set of norm types
@@ -347,6 +358,7 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /// Static const for zero PointVector.
     static PointVector zero;
 
     // ------------------------- Private Datas --------------------------------
@@ -359,26 +371,12 @@ namespace DGtal
     ///Internal data-structure: boost/array with constant size.
     boost::array<T,N> myArray;
 
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
   }; // end of class PointVector
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'PointVector'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'PointVector' to write.
-   * @return the output stream after the writing.
-   */
+  /// Operator <<
   template<typename T, std::size_t N>
-  inline
   std::ostream&
-  operator<<( std::ostream & out, const PointVector<T,N> & object )
-  {
-    object.selfDisplay( out );
-    return out;
-  }
+  operator<<( std::ostream & out, const PointVector<T,N> & object );
 
 } // namespace DGtal
 

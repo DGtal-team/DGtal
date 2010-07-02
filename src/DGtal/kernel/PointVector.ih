@@ -17,6 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
+#include <DGtal/base/BasicFunctors.h>
 //////////////////////////////////////////////////////////////////////////////
 template<typename T,std::size_t N>
 inline
@@ -26,15 +27,16 @@ DGtal::PointVector<T,N>::PointVector()
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-/*template<typename T,std::size_t N, class Functor>
+template<typename T,std::size_t N>
+template<typename Functor>
 inline
 DGtal::PointVector<T,N>::PointVector(const PointVector& apoint1, 
 				     const PointVector& apoint2,
-				     Functor& f)
+				     const Functor& f)
 {  
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = f.operator() (apoint1[i],apoint2[i]);
-    }*/
+}
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
@@ -117,17 +119,14 @@ inline
 const T&
 DGtal::PointVector<T,N>::at ( std::size_t i ) const
 {
-
-  ASSERT ( i < dimension() );
-
+  ASSERT ( i < N );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline T& DGtal::PointVector<T,N>::at( std::size_t i )
 {
-  ASSERT ( i < dimension() );
-
+  ASSERT ( i < N );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
@@ -136,7 +135,6 @@ inline
 const T&
 DGtal::PointVector<T,N>::operator[]( std::size_t i ) const
 {
-
   ASSERT ( i < N );
   return myArray[i];
 }
@@ -228,14 +226,7 @@ template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>
 DGtal::PointVector<T,N>::operator+ ( const PointVector<T,N>& v ) const
-{
-  PointVector<T,N> newpoint;
-
-  for ( std::size_t i = 0; i < N; ++i )
-    newpoint.at ( i ) = this->at ( i ) +  v.at ( i );
-
-  return newpoint;
-}
+{ return PointVector(*this,v,std::plus<T>()); }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline 
@@ -251,14 +242,7 @@ template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>
 DGtal::PointVector<T,N>::operator- ( const PointVector<T,N>& v ) const
-{
-  PointVector<T,N> newpoint;
-
-  for ( std::size_t i = 0; i < N; ++i )
-    newpoint.at ( i ) = this->at ( i ) -  v.at ( i );
-
-  return newpoint;
-}
+{ return PointVector(*this,v,std::minus<T>()); }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
@@ -268,6 +252,16 @@ DGtal::PointVector<T,N>::reset()
   for ( std::size_t i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
 }
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+PointVector<T,N> DGtal::PointVector<T,N>::inf( const PointVector& apoint )
+{ return PointVector(*this,apoint,MinFunctor<T>()); }
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+PointVector<T,N> DGtal::PointVector<T,N>::sup( const PointVector& apoint )
+{ return PointVector(*this,apoint,MaxFunctor<T>()); }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
@@ -308,6 +302,15 @@ DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
   for(unsigned int i=0; i < dimension() ; ++i)
     out << at( i ) <<(i==dimension()-1?"":", ");
   out << "}";  
+}
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+std::ostream&
+DGtal::operator<<( std::ostream & out, const PointVector<T,N> & object )
+{
+  object.selfDisplay( out );
+  return out;
 }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
