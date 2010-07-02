@@ -71,7 +71,7 @@ public :
       /**
        * The current position in the word.
        */
-      uint myPos;
+      unsigned int myPos;
 
       /**
        * The current coordinates of the iterator.
@@ -95,7 +95,7 @@ public :
        * @param chain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()-1).
        */
-      INLINE const_iterator( const FreemanChain & chain, uint n = 0 );
+      INLINE const_iterator( const FreemanChain & chain, unsigned int n = 0 );
 
       /**
        * Copy constructor.
@@ -147,7 +147,7 @@ public :
       /**
        * @return the current position (as an index in the Freeman chain).
        */
-      INLINE uint getPosition() const;
+      INLINE unsigned int getPosition() const;
 
       /**
        * @return the associated Freeman chain.
@@ -158,7 +158,7 @@ public :
        * @return the current Freeman code (specifies the movement to
        * the next point).
        */
-      INLINE uint getCode() const;
+      INLINE unsigned int getCode() const;
 
       /**
        * Pre-decrement.
@@ -254,8 +254,8 @@ public :
   //static void create( std::string & chain,
   //			std::string & qchain,
   //			const C4CIterator & it, 
-  //			uint nb, uint freeman, uint quadrant,
-  //			uint start_index = 0 );
+  //			unsigned int nb, unsigned int freeman, unsigned int quadrant,
+  //			unsigned int start_index = 0 );
   
   
     /**
@@ -276,7 +276,7 @@ public :
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
      */
-    static uint movement( uint code1, uint code2, bool ccw = true );
+    static unsigned int movement( unsigned int code1, unsigned int code2, bool ccw = true );
 
     /**
      * Returns the displacement vector of a Freeman code.
@@ -285,13 +285,13 @@ public :
      * @param dy (returns) the y-displacement.
      * @param c the code.
      */
-    static void displacement( int & dx, int & dy, uint code );
+    static void displacement( int & dx, int & dy, unsigned int code );
 
     /**
      * @param c a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-  static PointI2D displacement( uint code );
+  static PointI2D displacement( unsigned int code );
 
     /**
      * @param code any Freeman code.
@@ -301,7 +301,7 @@ public :
      *
      * @return the turned code.
      */
-    static uint turnedCode( uint code, bool ccw = true );
+    static unsigned int turnedCode( unsigned int code, bool ccw = true );
     
     /**
      * From the Freeman chain [pl_chain] representing a pointel
@@ -325,8 +325,8 @@ public :
      * @param pl_chain the input code of the 4-connected pointel contour.
      */
     static void pointel2pixel( FreemanChain & pix_chain,
-			       std::vector<uint> & pl2pix,
-			       std::vector<uint> & pix2pl,
+			       std::vector<unsigned int> & pl2pix,
+			       std::vector<unsigned int> & pix2pl,
 			       const FreemanChain & pl_chain );
 
     /**
@@ -357,8 +357,8 @@ public :
      * its inside to the left.
      */
     static void innerContour( FreemanChain & inner_chain,
-			      std::vector<uint> & outer2inner,
-			      std::vector<uint> & inner2outer,
+			      std::vector<unsigned int> & outer2inner,
+			      std::vector<unsigned int> & inner2outer,
 			      const FreemanChain & outer_chain,
 			      bool ccw = true );
 
@@ -389,8 +389,8 @@ public :
      * @todo This method is not implemented.
      */
     static void cleanContour( std::vector<FreemanChain> & clean_cs,
-			      std::vector< std::pair<uint,uint> > & c2clean,
-			      std::vector< std::vector<uint> > & clean2c,
+			      std::vector< std::pair<unsigned int,unsigned int> > & c2clean,
+			      std::vector< std::vector<unsigned int> > & clean2c,
 			      const FreemanChain & c,
 			      bool ccw = true );
     /**
@@ -416,8 +416,8 @@ public :
      * @return 'true' if the contour add an interior, 'false' otherwise.
      */
     static bool cleanOuterSpikes( FreemanChain & clean_c,
-				  std::vector<uint> & c2clean,
-				  std::vector<uint> & clean2c,
+				  std::vector<unsigned int> & c2clean,
+				  std::vector<unsigned int> & clean2c,
 				  const FreemanChain & c,
 				  bool ccw = true );
 
@@ -448,10 +448,10 @@ public :
      * 'true' otherwise.
      */
     static bool subsample( FreemanChain & subc,
-			   std::vector<uint> & c2subc,
-			   std::vector<uint> & subc2c,
+			   std::vector<unsigned int> & c2subc,
+			   std::vector<unsigned int> & subc2c,
 			   const FreemanChain & c,
-			   uint h, uint v,
+			   unsigned int h, unsigned int v,
 			   int x0, int y0 );
 
     /**
@@ -467,7 +467,7 @@ public :
      */
     static bool computeMLP( std::vector<int> & vx,
 			    std::vector<int> & vy,
-			    std::vector<uint> & vi,
+			    std::vector<unsigned int> & vi,
 			    const FreemanChain & fc );
 
     /**
@@ -493,7 +493,7 @@ public :
      */
     static bool computeMLP( std::vector<int> & vx,
 			    std::vector<int> & vy,
-			    std::vector<uint> & vi,
+			    std::vector<unsigned int> & vi,
 			    std::vector<bool> & vt,
 			    const FreemanChain & fc,
 			    bool cw );
@@ -528,7 +528,7 @@ public :
      */
     static const_iterator computeMLP( std::vector<int> & vx,
 				      std::vector<int> & vy,
-				      std::vector<uint> & vi,
+				      std::vector<unsigned int> & vi,
 				      std::vector<bool> & vt,
 				     PointI2D & twice_dv,
 				      const FreemanChain & fc,
@@ -612,24 +612,24 @@ public:
      * @param pos a position in the chain code.
      * @return the code at position [pos].
      */ 
-    INLINE uint code( uint pos ) const;
+    INLINE unsigned int code( unsigned int pos ) const;
 
     /**
      * @param pos a position in the chain code.
      * @return the next position.
      */ 
-    INLINE uint next( uint pos ) const;
+    INLINE unsigned int next( unsigned int pos ) const;
 
     /**
      * @param pos a position in the chain code.
      * @return the previous position.
      */ 
-    INLINE uint previous( uint pos ) const;
+    INLINE unsigned int previous( unsigned int pos ) const;
 
     /**
      * @return the length of the Freeman chain code.
      */
-    INLINE uint size() const;
+    INLINE unsigned int size() const;
 
     /**
      * Computes a bounding box for the Freeman chain code.
