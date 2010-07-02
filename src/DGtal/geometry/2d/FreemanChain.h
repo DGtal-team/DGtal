@@ -789,7 +789,7 @@ operator<< ( std::ostream & out, const FreemanChain & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/base/FreemanChain.ih"
+#include "DGtal/geometry/2d/FreemanChain.ih"
 #endif
 
 //                                                                           //

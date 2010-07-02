@@ -14,7 +14,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/base/FreemanChain.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/math/Mathutils.h"
 #include <string>
 #include <sstream>
@@ -24,7 +24,7 @@
 
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/base/FreemanChain.ih"
+#include "DGtal/geomeetry/2d/FreemanChain.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 
