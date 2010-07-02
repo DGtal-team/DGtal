@@ -53,6 +53,7 @@ namespace DGtal
   class DigitalSetBySTLVector
   {
   public:
+    typedef Domain DomainType;
     typedef typename Domain::Point Point;
     typedef typename Domain::SizeType SizeType;
     typedef typename std::vector<Point>::iterator Iterator;
@@ -135,7 +136,7 @@ namespace DGtal
      * @pre p should belong to the associated domain.
      * @pre p should not belong to this.
      */
-    void uncheckedInsert( const Point & p );
+    void insertNew( const Point & p );
 
     /**
      * Adds the collection of points specified by the two iterators to
@@ -152,7 +153,7 @@ namespace DGtal
      * @pre each point should not belong to this.
      */
     template <typename PointInputIterator>
-    void uncheckedInsert( PointInputIterator first, PointInputIterator last );
+    void insertNew( PointInputIterator first, PointInputIterator last );
 
     /**
      * Removes point [p] from the set.
@@ -263,7 +264,7 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-
+    
     /**
      * The associated domain.
      */

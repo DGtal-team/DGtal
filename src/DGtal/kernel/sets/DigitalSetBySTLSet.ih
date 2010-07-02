@@ -36,11 +36,15 @@ DGtal::DigitalSetBySTLSet<Domain>::~DigitalSetBySTLSet()
 }
 
 /**
- * Default constructor.
+ * Constructor.
+ * Creates the empty set in the domain [d].
+ *
+ * @param d any domain.
  */
 template <typename Domain>
 inline
-DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet()
+DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet( const Domain & d )
+  : myDomain( d ), mySet()
 {
 }
 
@@ -50,8 +54,8 @@ DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet()
  */
 template <typename Domain>
 inline
-DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet( const DigitalSetBySTLSet & other )
-  : mySet( other.mySet )
+DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet( const DigitalSetBySTLSet<Domain> & other )
+  : myDomain( other.myDomain ), mySet( other.mySet )
 {
 }
 
@@ -63,10 +67,28 @@ DGtal::DigitalSetBySTLSet<Domain>::DigitalSetBySTLSet( const DigitalSetBySTLSet 
 template <typename Domain>
 inline
 DGtal::DigitalSetBySTLSet<Domain> &
-DGtal::DigitalSetBySTLSet<Domain>::operator= ( const DigitalSetBySTLSet & other )
+DGtal::DigitalSetBySTLSet<Domain>::operator= ( const DigitalSetBySTLSet<Domain> & other )
 {
+  ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
+	  && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+	  && "This domain should include the domain of the other set in case of assignment." );
   mySet = other.mySet;
+  return *this;
 }
+
+
+/**
+ * @return the embedding domain.
+ */
+template <typename Domain>
+inline
+const Domain & 
+DGtal::DigitalSetBySTLSet<Domain>::domain() const
+{
+  return myDomain;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -77,7 +99,7 @@ DGtal::DigitalSetBySTLSet<Domain>::operator= ( const DigitalSetBySTLSet & other 
  */
 template <typename Domain>
 inline
-size_type
+typename DGtal::DigitalSetBySTLSet<Domain>::SizeType
 DGtal::DigitalSetBySTLSet<Domain>::size() const
 {
   return mySet.size();
@@ -106,6 +128,7 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::insert( const Point & p )
 {
+  // ASSERT( myDomain.isInside( p ) );
   mySet.insert( p );
 }
 
@@ -126,6 +149,45 @@ DGtal::DigitalSetBySTLSet<Domain>::insert( PointInputIterator first, PointInputI
   mySet.insert( first, last );
 }
 
+
+/**
+ * Adds point [p] to this set if the point is not already in the
+ * set.
+ *
+ * @param p any digital point.
+ *
+ * @pre p should belong to the associated domain.
+ * @pre p should not belong to this.
+ */
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::insertNew( const Point & p )
+{
+  // ASSERT( myDomain.isInside( p ) );
+  mySet.insert( p );
+}
+
+/**
+ * Adds the collection of points specified by the two iterators to
+ * this set.
+ *
+ * @param first the start point in the collection of Point.
+ * @param last the last point in the collection of Point.
+ *
+ * @pre all points should belong to the associated domain.
+ * @pre each point should not belong to this.
+ */
+template <typename Domain>
+template <typename PointInputIterator>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::insertNew
+( PointInputIterator first, PointInputIterator last )
+{
+  mySet.insert( first, last );
+}
+
 /**
  * Removes point [p] from the set.
  * 
@@ -133,12 +195,11 @@ DGtal::DigitalSetBySTLSet<Domain>::insert( PointInputIterator first, PointInputI
  * @return the number of removed elements (0 or 1).
  */
 template <typename Domain>
-size_type
+typename DGtal::DigitalSetBySTLSet<Domain>::SizeType
 DGtal::DigitalSetBySTLSet<Domain>::erase( const Point & p )
 {
   mySet.erase( p );
 }
-
 
 /**
  * Removes the point pointed by [it] from the set.
@@ -153,21 +214,23 @@ DGtal::DigitalSetBySTLSet<Domain>::erase( Iterator it )
   mySet.erase( it );
 }
 
-
 /**
  * Clears the set.
  * @post this set is empty.
  */
 template <typename Domain>
 void
-DGtal::DigitalSetBySTLSet<Domain>::clear();
+DGtal::DigitalSetBySTLSet<Domain>::clear()
+{
+  mySet.clear();
+}
 
 /**
  * @param p any digital point.
  * @return a const iterator pointing on [p] if found, otherwise end().
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p ) const
 {
   return mySet.find( p );
@@ -178,7 +241,7 @@ DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p ) const
  * @return an iterator pointing on [p] if found, otherwise end().
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::Iterator
+typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p )
 {
   return mySet.find( p );
@@ -188,7 +251,7 @@ DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p )
  * @return a const iterator on the first element in this set.
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::begin() const
 {
   return mySet.begin();
@@ -198,7 +261,7 @@ DGtal::DigitalSetBySTLSet<Domain>::begin() const
  * @return a const iterator on the element after the last in this set.
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
+typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::end() const
 {
   return mySet.end();
@@ -208,7 +271,7 @@ DGtal::DigitalSetBySTLSet<Domain>::end() const
  * @return an iterator on the first element in this set.
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::Iterator
+typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::begin()
 {
   return mySet.begin();
@@ -218,13 +281,70 @@ DGtal::DigitalSetBySTLSet<Domain>::begin()
  * @return a iterator on the element after the last in this set.
  */
 template <typename Domain>
-DGtal::DigitalSetBySTLSet<Domain>::Iterator
+typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::end()
 {
   return mySet.end();
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Other Set services -----------------------------
+    
+/**
+ * @return the complement of this set in the domain.
+ *
+ * NB: be aware of the overhead cost when returning the object.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLSet<Domain>
+DGtal::DigitalSetBySTLSet<Domain>::computeComplement() const
+{
+  
+}
+
+/**
+ * Builds the complement in the domain of the set [other_set] in
+ * this.
+ *
+ * @param other_set defines the set whose complement is assigned to 'this'.
+ */
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::assignFromComplement
+( const DigitalSetBySTLSet<Domain> & other_set )
+{
+}
+    
+/**
+ * Computes the bounding box of this set.
+ *
+ * @param lower the first point of the bounding box (lowest in all
+ * directions).
+ * @param upper the last point of the bounding box (highest in all
+ * directions).
+ */
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::computeBoundingBox
+( Point & lower, Point & upper )
+{
+  // lower = myDomain.upperBound();
+  // upper = myDomain.lowerBound();
+  // ConstIterator it_end = end();
+  // for ( ConstIterator it = begin(); it != end(); ++it )
+  //   {
+  //     const Point & p *it;
+  //     if ( *it < lower ) lower
+  //   } 
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
 
 /**
  * Writes/Displays the object on an output stream.
@@ -235,7 +355,7 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[DigitalSetBySTLSet]";
+  out << "[DigitalSetBySTLSet]" << " size=" << size();
 }
 
 /**
@@ -250,46 +370,17 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
     return true;
 }
 
-    /**
-     * @return the complement of this set in the domain.
-     *
-     * NB: be aware of the overhead cost when returning the object.
-     */
-    DigitalSetBySTLVector<Domain> getComplement() const; 
-
-    /**
-     * Builds the complement in the domain of the set [other_set] in
-     * this.
-     *
-     * @param other_set defines the set whose complement is assigned to 'this'.
-     */
-    void setComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
-    
-    /**
-     * Computes the bounding box of this set.
-     *
-     * @param lower the first point of the bounding box (lowest in all
-     * directions).
-     * @param upper the last point of the bounding box (highest in all
-     * directions).
-     */
-    void computeBoundingBox( Point & lower, Point & upper );
-
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //
 
 template <typename Domain>
 inline
-std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSetBySTLSet<Domain> & object );
- {
-   object.selfDisplay( out );
-   return out;
- }
+std::ostream &
+DGtal::operator<< ( std::ostream & out, const DGtal::DigitalSetBySTLSet<Domain> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

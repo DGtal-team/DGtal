@@ -162,7 +162,7 @@ DGtal::DigitalSetBySTLVector<Domain>::insert
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::uncheckedInsert( const Point & p )
+DGtal::DigitalSetBySTLVector<Domain>::insertNew( const Point & p )
 {
   // ASSERT( myDomain.isInside( p ) );
   ASSERT_ALL_PRE( find( p ) == end() );
@@ -187,7 +187,7 @@ template <typename Domain>
 template <typename PointInputIterator>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::uncheckedInsert
+DGtal::DigitalSetBySTLVector<Domain>::insertNew
 ( PointInputIterator first, PointInputIterator last )
 {
   std::copy( first, last, myVector.end() );

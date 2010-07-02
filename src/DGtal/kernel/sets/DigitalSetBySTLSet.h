@@ -46,9 +46,11 @@ namespace DGtal
   class DigitalSetBySTLSet
   {
   public:
-    typedef Domain::Point Point;
-    typedef std::set<Point>::iterator Iterator;
-    typedef std::set<Point>::const_iterator ConstIterator;
+    typedef Domain DomainType;
+    typedef typename Domain::Point Point;
+    typedef typename Domain::SizeType SizeType;
+    typedef typename std::set<Point>::iterator Iterator;
+    typedef typename std::set<Point>::const_iterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -79,13 +81,18 @@ namespace DGtal
      */
     DigitalSetBySTLSet & operator= ( const DigitalSetBySTLSet & other );
 
+    /**
+     * @return the embedding domain.
+     */
+    const Domain & domain() const;
+
     // ----------------------- Standard Set services --------------------------
   public:
 
     /**
      * @return the number of elements in the set.
      */
-    size_type size() const;
+    SizeType size() const;
 
     /**
      * @return 'true' iff the set is empty (no element).
@@ -112,12 +119,36 @@ namespace DGtal
     void insert( PointInputIterator first, PointInputIterator last );
 
     /**
+     * Adds point [p] to this set if the point is not already in the
+     * set.
+     *
+     * @param p any digital point.
+     *
+     * @pre p should belong to the associated domain.
+     * @pre p should not belong to this.
+     */
+    void insertNew( const Point & p );
+
+    /**
+     * Adds the collection of points specified by the two iterators to
+     * this set.
+     *
+     * @param first the start point in the collection of Point.
+     * @param last the last point in the collection of Point.
+     *
+     * @pre all points should belong to the associated domain.
+     * @pre each point should not belong to this.
+     */
+    template <typename PointInputIterator>
+    void insertNew( PointInputIterator first, PointInputIterator last );
+
+    /**
      * Removes point [p] from the set.
      * 
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
-    size_type erase( const Point & p );
+    SizeType erase( const Point & p );
 
     /**
      * Removes the point pointed by [it] from the set.
@@ -182,7 +213,7 @@ namespace DGtal
      *
      * NB: be aware of the overhead cost when returning the object.
      */
-    DigitalSetBySTLVector<Domain> getComplement() const; 
+    DigitalSetBySTLSet<Domain> computeComplement() const; 
 
     /**
      * Builds the complement in the domain of the set [other_set] in
@@ -190,7 +221,7 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-    void setComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
+    void assignFromComplement( const DigitalSetBySTLSet<Domain> & other_set ); 
     
     /**
      * Computes the bounding box of this set.
@@ -201,7 +232,6 @@ namespace DGtal
      * directions).
      */
     void computeBoundingBox( Point & lower, Point & upper );
-
 
 
     // ----------------------- Interface --------------------------------------
@@ -223,6 +253,11 @@ namespace DGtal
   protected:
 
     /**
+     * The associated domain;
+     */
+    const Domain & myDomain;
+
+    /**
      * The container storing the points of the set.
      */
     std::set<Point> mySet;
@@ -233,6 +268,11 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
+    /**
+     * Default Constructor.
+     * Forbidden since a Domain is necessary for defining a set.
+     */
+    DigitalSetBySTLSet();
 
   private:
 
@@ -240,11 +280,6 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-    /**
-     * 
-     * 
-     */
-    const Domain & myDomain;
 
   }; // end of class DigitalSetBySTLSet
 
