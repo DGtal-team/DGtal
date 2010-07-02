@@ -144,6 +144,11 @@ namespace DGtal
      **/
     const ConstIterator& end() const;
 
+     /**
+     * end() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator end(std::initializer_list<unsigned int> permutation);
 
     //------------- Span Iterator
     /**

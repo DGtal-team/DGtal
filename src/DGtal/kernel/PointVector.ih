@@ -58,7 +58,7 @@ inline
 DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
 { 
   unsigned int i=0;
-  for (const T *p = init.begin (); p != init.end (); ++p, ++i)
+  for (const T *p = init.begin (); p != init.end () && i<N; ++p, ++i)
     myArray[ i ] = *p;
 }
 
@@ -96,7 +96,6 @@ DGtal::PointVector<T,N>::dimension()
   return N;
 }
 
-
 /**
  * Returns the  \a i-th coefficient of the vector.
  *
@@ -104,7 +103,6 @@ DGtal::PointVector<T,N>::dimension()
  *
  * \param i is the index of the retrieved coefficient.
  */
-
 template<typename T,std::size_t N>
 inline
 const T&
@@ -115,7 +113,6 @@ DGtal::PointVector<T,N>::at ( std::size_t i ) const
 
   return myArray.at( i );
 }
-
 
 /**
  * Returns a non-const reference to the \a i-th element of the
@@ -133,6 +130,37 @@ inline T& DGtal::PointVector<T,N>::at( std::size_t i )
   return myArray.at( i );
 }
 
+/**
+ * Returns the  \a i-th coefficient of the vector.
+ *
+ * \pre The \a i index must lie between \a 0 and \a size() .
+ *
+ * \param i is the index of the retrieved coefficient.
+ */
+template<typename T,std::size_t N>
+inline
+const T&
+DGtal::PointVector<T,N>::operator[]( std::size_t i ) const
+{
+
+  ASSERT ( i < N );
+  return myArray[i];
+}
+
+/**
+ * Returns a non-const reference to the \a i-th element of the
+ * vector.
+ *
+ * \pre The \a i index must lie between \a 0 and \a size() .
+ *
+ * \param i is the index of the retrieved coefficient.
+ */
+template<typename T,std::size_t N>
+inline T& DGtal::PointVector<T,N>::operator[]( std::size_t i )
+{
+  ASSERT ( i < N );
+  return myArray[i];
+}
 
 /**
  * Multiplies \a *this by the \a coeff scalar number.

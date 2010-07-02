@@ -63,8 +63,7 @@ namespace DGtal
     typedef T Component;
     typedef T Coordinate;
 
-    static const std::size_t Dimension = N;
-    
+    static const std::size_t Dimension = N;    
     
     /**
      * Constructor.
@@ -95,7 +94,6 @@ namespace DGtal
      * @param other the object to clone.
      */
     PointVector ( const PointVector & other );
-
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -137,7 +135,6 @@ namespace DGtal
       return myArray.end();
     }
 
-
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
@@ -170,14 +167,12 @@ namespace DGtal
      */
     T& at ( std::size_t i );
 
-
     /**
      * Multiplies @a *this by the @a coeff scalar number.
      *
      * @param coeff is the factor @a *this get multiplied by.
      */
     PointVector<T,N>& operator*= ( T coeff );
-
 
     /**
      * Assignement Operator
@@ -202,8 +197,7 @@ namespace DGtal
      *
      * @return true iff this differs from aPointVector, false otherwise.
      */
-    bool operator!= ( const PointVector<T,N>& aPointVector ) const;
-    
+    bool operator!= ( const PointVector<T,N>& aPointVector ) const;    
     
     /** 
      * Comparison operator on Points/Vectors (LesserThan).
@@ -221,8 +215,7 @@ namespace DGtal
      *
      * @return true iff this <= aPointVector, false otherwise.
      */
-    bool operator<= ( const PointVector<T,N>& aPointVector ) const;
-    
+    bool operator<= ( const PointVector<T,N>& aPointVector ) const;    
   
     /** 
      * Comparison operator on Points/Vectors (GreaterThan).

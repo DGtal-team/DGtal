@@ -189,6 +189,16 @@ DGtal::HyperRectDomain<TSpace>::end() const
   return myIteratorEnd;
 }
 
+template<typename TSpace>
+inline
+typename DGtal::HyperRectDomain<TSpace>::ConstIterator
+DGtal::HyperRectDomain<TSpace>::end(std::initializer_list<unsigned int> permutation)
+{
+  ConstIterator res(myUpperBound,myLowerBound,myUpperBound,permutation);
+  ++res;
+  return res;
+}
+
 //------------Span Iterators
 /**
  * begin(aPoint,dim) Span iterator.

@@ -66,15 +66,17 @@ public:
       ASSERT(lower<=p && p<=upper);
       ASSERT(permutation.size()==TPoint::Dimension);
       myPermutation.reserve(permutation.size());
-      unsigned int i=0;
-      for (const unsigned int *c = permutation.begin (); c != permutation.end (); ++c, ++i)
-	myPermutation[ i ] = *c;
+      for (const unsigned int *c = permutation.begin (); 
+	   c != permutation.end (); ++c)
+	{
+	  myPermutation.push_back(*c);
+	}
       // TODO: check the validity of the permutation ?      
     }
 
     const TPoint & operator*() const
     {  
-      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
       return myPoint;
     }
 
@@ -99,24 +101,21 @@ public:
     /**
     * Implements the next() method to scan the domain points dimension by dimension
     * (lexicographic order).
-    *
     **/
     void nextLexicographicOrder()
     {
-      // PB for itend      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
-
       myPoint.at ( myCurrentPos ) ++;
-      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
+      if ( ( myCurrentPos < TPoint::Dimension-1 ) && 
 	   ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) )
 	{
 	  do
 	    {
 	      myPoint.at ( myCurrentPos ) = mylower.at ( myCurrentPos );
 	      myCurrentPos++;
-	      if (myCurrentPos < myPoint.dimension())
+	      if (myCurrentPos < TPoint::Dimension)
 		myPoint.at ( myCurrentPos ) ++;
 	    }
-	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
+	  while ( ( myCurrentPos < TPoint::Dimension-1 ) &&
 		  ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) );	    
 	  myCurrentPos = 0;
 	}
@@ -128,28 +127,28 @@ public:
     **/
     void nextPermutationOrder()
     { 
-      //      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
-
-      myPoint.at ( myCurrentPos ) ++;
-      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
-	   ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) )
+      myPoint.at ( myPermutation[myCurrentPos] ) ++;
+      if ( ( myCurrentPos < TPoint::Dimension-1 ) && 
+	   ( myPoint.at ( myPermutation[myCurrentPos] )  > 
+	     myupper.at ( myPermutation[myCurrentPos] ) ) )
 	{
 	  do
 	    {
-	      myPoint.at ( myCurrentPos ) = mylower.at ( myCurrentPos );
+	      myPoint.at ( myPermutation[myCurrentPos] ) = 
+		mylower.at ( myPermutation[myCurrentPos] );
 	      myCurrentPos++;
-	      if (myCurrentPos < myPoint.dimension())
-		myPoint.at ( myCurrentPos ) ++;
+	      if (myCurrentPos < TPoint::Dimension)
+		myPoint.at ( myPermutation[myCurrentPos] ) ++;
 	    }
-	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
-		  ( myPoint.at ( myCurrentPos )  >  myupper.at ( myCurrentPos ) ) );	    
+	  while ( ( myCurrentPos < TPoint::Dimension-1 ) &&
+		  ( myPoint.at ( myPermutation[myCurrentPos] )  >  
+		    myupper.at ( myPermutation[myCurrentPos] ) ) ); 
 	  myCurrentPos = 0;
 	}
     }
 
     /**
     * Operator ++ (++it)
-    *
     */
     HyperRectDomain_Iterator<TPoint> &operator++()
     {
@@ -162,7 +161,7 @@ public:
     * Operator ++ (it++)
     *
     */
-    HyperRectDomain_Iterator<TPoint> &operator++ ( int )
+    HyperRectDomain_Iterator<TPoint> operator++ ( int )
     {
         HyperRectDomain_Iterator<TPoint> tmp = *this;
         ++*this;
@@ -172,24 +171,21 @@ public:
     /**
     * Implements the prev() method to scan the domain points dimension by dimension
     * (lexicographic order).
-    *
     **/
      void prevLexicographicOrder()
     {
-      // PB for itend      ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
-
       myPoint.at ( myCurrentPos ) --;
-      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
+      if ( ( myCurrentPos < TPoint::Dimension-1 ) && 
 	   ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) )
 	{
 	  do
 	    {
 	      myPoint.at ( myCurrentPos ) = myupper.at ( myCurrentPos );
 	      myCurrentPos++;
-	      if (myCurrentPos < myPoint.dimension())
+	      if (myCurrentPos < TPoint::Dimension)
 		myPoint.at ( myCurrentPos ) --;
 	    }
-	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
+	  while ( ( myCurrentPos < TPoint::Dimension-1 ) &&
 		  ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) );	    
 	  myCurrentPos = 0;
 	}
@@ -198,26 +194,25 @@ public:
     /**
     * Implements the prev() method to scan the domain points dimension by dimension
     * (permutation order).
-    *
     **/
     void prevPermutationOrder()
     {
-      // ASSERT(mylower<=myPoint && myPoint<myupper); // we must be between [begin,end[
-
       myPoint.at ( myPermutation[myCurrentPos] ) --;
-      if ( ( myCurrentPos < myPoint.dimension()-1 ) && 
+      if ( ( myCurrentPos < TPoint::Dimension-1 ) && 
 	   ( myPoint.at ( myPermutation[myCurrentPos] )  <  
 	     mylower.at ( myPermutation[myCurrentPos] ) ) )
 	{
 	  do
 	    {
-	      myPoint.at ( myPermutation[myCurrentPos] ) = myupper.at ( myPermutation[myCurrentPos] );
+	      myPoint.at ( myPermutation[myCurrentPos] ) = 
+		myupper.at ( myPermutation[myCurrentPos] );
 	      myCurrentPos++;
-	      if (myCurrentPos < myPoint.dimension())
+	      if (myCurrentPos < TPoint::Dimension)
 		myPoint.at ( myPermutation[myCurrentPos] ) --;
 	    }
-	  while ( ( myCurrentPos < myPoint.dimension()-1 ) &&
-		  ( myPoint.at ( myCurrentPos )  <  mylower.at ( myCurrentPos ) ) );	    
+	  while ( ( myCurrentPos < TPoint::Dimension-1 ) &&
+		  ( myPoint.at ( myPermutation[myCurrentPos] )  <  
+		    mylower.at ( myPermutation[myCurrentPos] ) ) );	    
 	  myCurrentPos = 0;
 	}
     }
