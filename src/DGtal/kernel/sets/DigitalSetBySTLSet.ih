@@ -301,7 +301,7 @@ inline
 DGtal::DigitalSetBySTLSet<Domain>
 DGtal::DigitalSetBySTLSet<Domain>::computeComplement() const
 {
-  
+
 }
 
 /**
@@ -316,6 +316,8 @@ void
 DGtal::DigitalSetBySTLSet<Domain>::assignFromComplement
 ( const DigitalSetBySTLSet<Domain> & other_set )
 {
+  clear();
+  // ... to be completed 
 }
     
 /**
