@@ -157,20 +157,20 @@ DGtal::FreemanChain::read( std::istream & in, FreemanChain & c )
 
 
 /**
- * @param zero (returns) the '0' or 'x' letter for quadrant [quadrant].
- * @param one (returns) the '1' or 'y' letter for quadrant [quadrant].
- * @param quadrant the quadrant as any of '0', '1', '2', or '3'.
+ * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
+ * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
+ * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
  */
 void
-DGtal::FreemanChain::alphabet( char & zero, char & one, 
-				 char quadrant )
+DGtal::FreemanChain::alphabet( char & aZero, char & aOne, 
+			       char aQuadrant )
 {
-  switch ( quadrant )
+  switch ( aQuadrant )
     {
-    case '0': zero = '0'; one = '1'; break;
-    case '1': zero = '1'; one = '2'; break;
-    case '2': zero = '2'; one = '3'; break;
-    case '3': zero = '3'; one = '0'; break;
+    case '0': aZero = '0'; aOne = '1'; break;
+    case '1': aZero = '1'; aOne = '2'; break;
+    case '2': aZero = '2'; aOne = '3'; break;
+    case '3': aZero = '3'; aOne = '0'; break;
     }
 }
 
@@ -186,15 +186,15 @@ DGtal::FreemanChain::alphabet( char & zero, char & one,
  * toward the interior, 2: going straight, 3: turning toward
  * exterior. Interior/exterior is specified by [ccw].
  *
- * @param code1 the code of the first step as an integer in 0..3.
- * @param code2 the code of the second step as an integer in 0..3.
+ * @param aCode1 the code of the first step as an integer in 0..3.
+ * @param aCode2 the code of the second step as an integer in 0..3.
  * @param ccw 'true' if the contour is seen counterclockwise with
  * its inside to the left.
  */
 unsigned int
-DGtal::FreemanChain::movement( unsigned int code1, unsigned int code2, bool ccw )
+DGtal::FreemanChain::movement( unsigned int aCode1, unsigned int aCode2, bool ccw )
 {
-  unsigned int cfg = ( ccw ? 0 : 16 ) + ( code1 << 2 ) + code2;
+  unsigned int cfg = ( ccw ? 0 : 16 ) + ( aCode1 << 2 ) + aCode2;
   static const unsigned int tbl[ 32 ] = { 
     2, 1, 0, 3, 3, 2, 1, 0,
     0, 3, 2, 1, 1, 0, 3, 2, 
@@ -205,33 +205,33 @@ DGtal::FreemanChain::movement( unsigned int code1, unsigned int code2, bool ccw 
 
 
 /**
- * From the Freeman chain [pl_chain] representing a pointel
- * 4-connected contour, constructs the Freeman chain [pix_chain]
+ * From the Freeman chain [aPl_chain] representing a pointel
+ * 4-connected contour, constructs the Freeman chain [aPix_chain]
  * that represents its inner 4-connected border of pixels. The
- * Freeman chain [pl_chain] has its inside to the left (ie. ccw).
+ * Freeman chain [aPl_chain] has its inside to the left (ie. ccw).
  * 
  * Note that chain codes going back and forth are @b never considered
  * useless: it means that the chain is always supposed to have its
  * interior to the left (ccw) or right (cw) even at configurations
  * "02", "13", "20", "31".
  * 
- * @param pix_chain (output) the code of the 4-connected inner border. 
+ * @param aPix_chain (output) the code of the 4-connected inner border. 
  *
- * @param pl2pix (output) the mapping associating pointels to
+ * @param aPl2pix (output) the mapping associating pointels to
  * pixels as indices in their respective Freeman chain.
  *
- * @param pix2pl (output) the inverse mapping associating pixels to
+ * @param aPix2pl (output) the inverse mapping associating pixels to
  * pointels as indices in their respective Freeman chain.
  *
- * @param pl_chain the input code of the 4-connected pointel contour.
+ * @param aPl_chain the input code of the 4-connected pointel contour.
  */
 void
-DGtal::FreemanChain::pointel2pixel( FreemanChain & pix_chain,
-				      vector<unsigned int> & pl2pix,
-				      vector<unsigned int> & pix2pl,
-				      const FreemanChain & pl_chain )
+DGtal::FreemanChain::pointel2pixel( FreemanChain & aPixChain,
+				    vector<unsigned int> & aPl2pix,
+				    vector<unsigned int> & aPix2pl,
+				    const FreemanChain & aPlChain )
 {
-  innerContour( pix_chain, pl2pix, pix2pl, pl_chain, true );
+  innerContour( aPixChain, aPl2pix, aPix2pl, aPlChain, true );
 }
 
 /**
@@ -246,92 +246,92 @@ DGtal::FreemanChain::pointel2pixel( FreemanChain & pix_chain,
  * interior to the left (ccw) or right (cw) even at configurations
  * "02", "13", "20", "31".
  * 
- * @param inner_chain (output) the code of the 4-connected inner
+ * @param aInner_chain (output) the code of the 4-connected inner
  * border, with starting coordinates that are floored to the closest
  * integer.
  *
- * @param outer2inner (output) the mapping associating outer to
+ * @param aOuter2inner (output) the mapping associating outer to
  * inner elements as indices in their respective Freeman chain.
  *
- * @param inner2outer (output) the mapping associating inner to
+ * @param aInner2outer (output) the mapping associating inner to
  * outer elements as indices in their respective Freeman chain.
  *
- * @param outer_chain the input code of the 4-connected contour.
+ * @param aOuter_chain the input code of the 4-connected contour.
  *
  * @param ccw 'true' if the contour is seen counterclockwise with its
  * inside to the left.
  */
 void 
 DGtal::FreemanChain::innerContour
-( FreemanChain & inner_chain,
-  vector<unsigned int> & outer2inner,
-  vector<unsigned int> & inner2outer,
-  const FreemanChain & outer_chain,
+( FreemanChain & aInnerChain,
+  vector<unsigned int> & aOuter2inner,
+  vector<unsigned int> & aInner2outer,
+  const FreemanChain & aOuterChain,
   bool ccw )
 {
-  unsigned int nb = outer_chain.chain.size();
-  unsigned int j = 0;
-  outer2inner.clear();
-  outer2inner.reserve( nb );
-  // inner_chain.chain.reserve( nb + 4 );
-  inner_chain.chain = "";
-  inner2outer.clear();
-  inner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
+  uint nb = aOuterChain.chain.size();
+  uint j = 0;
+  aOuter2inner.clear();
+  aOuter2inner.reserve( nb );
+  // aInnerChain.chain.reserve( nb + 4 );
+  aInnerChain.chain = "";
+  aInner2outer.clear();
+  aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
   int dx0, dy0;
   int dx1, dy1;
-  FreemanChain::displacement( dx0, dy0, outer_chain.code( 0 ) );
+  FreemanChain::displacement( dx0, dy0, aOuterChain.code( 0 ) );
   int turn = ccw ? 1 : 3;
-  FreemanChain::displacement( dx1, dy1, ( outer_chain.code( 0 ) + turn ) % 4 );
+  FreemanChain::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
   dx0 += dx1;
   dy0 += dy1;
-  inner_chain.x0 = dx0 > 0 ? outer_chain.x0 : outer_chain.x0 - 1;
-  inner_chain.y0 = dy0 > 0 ? outer_chain.y0 : outer_chain.y0 - 1;
+  aInnerChain.x0 = dx0 > 0 ? aOuterChain.x0 : aOuterChain.x0 - 1;
+  aInnerChain.y0 = dy0 > 0 ? aOuterChain.y0 : aOuterChain.y0 - 1;
 
-  FreemanChain::const_iterator it_begin = outer_chain.begin();
+  FreemanChain::const_iterator it_begin = aOuterChain.begin();
   FreemanChain::const_iterator it = it_begin;
   it.next();
-  for ( unsigned int i = 0; i < nb; ++i )
+  for ( uint i = 0; i < nb; ++i )
     {
       // Check if contour is open.
-      // cerr << "i=" << i << " code=" << outer_chain.code( i ) << endl;
-      switch ( movement( outer_chain.code( i ), 
-			 outer_chain.code( ( i + 1 ) % nb ),
+      // cerr << "i=" << i << " code=" << aOuterChain.code( i ) << endl;
+      switch ( movement( aOuterChain.code( i ), 
+			 aOuterChain.code( ( i + 1 ) % nb ),
 			 ccw ) ) 
 	{
 	case 0:
 	// contour going in then out.
-	  inner_chain.chain += outer_chain.chain[ i ];
-	  inner_chain.chain += ( ( ( (unsigned int) ( outer_chain.chain[ i ] - '0' ) 
+	  aInnerChain.chain += aOuterChain.chain[ i ];
+	  aInnerChain.chain += ( ( ( (uint) ( aOuterChain.chain[ i ] - '0' ) 
 				     + ( ccw ? 3 : 1 ) ) )
 				 % 4 ) + '0';
-	  inner_chain.chain += outer_chain.chain[ ( i + 1 ) % nb ];
-	  outer2inner.push_back( j );
-	  inner2outer.push_back( i );
-	  inner2outer.push_back( i + 1 );
-	  inner2outer.push_back( i + 1 );
+	  aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
+	  aOuter2inner.push_back( j );
+	  aInner2outer.push_back( i );
+	  aInner2outer.push_back( i + 1 );
+	  aInner2outer.push_back( i + 1 );
 	  j += 3;
 	  break;
 
 	case 1:
 	  // contour turning toward its inside.
-	  outer2inner.push_back( j );
+	  aOuter2inner.push_back( j );
 	  break;
 
 	case 2:
 	  // contour going straight ahead
-	  inner_chain.chain += outer_chain.chain[ i ];
-	  outer2inner.push_back( j );
-	  inner2outer.push_back( i );
+	  aInnerChain.chain += aOuterChain.chain[ i ];
+	  aOuter2inner.push_back( j );
+	  aInner2outer.push_back( i );
 	  ++j;
 	  break;
 
 	case 3:
 	  // contour turning toward its outside.
-	  inner_chain.chain += outer_chain.chain[ i ];
-	  inner_chain.chain += outer_chain.chain[ ( i + 1 ) % nb ];
-	  outer2inner.push_back( j );
-	  inner2outer.push_back( i );
-	  inner2outer.push_back( i + 1 );
+	  aInnerChain.chain += aOuterChain.chain[ i ];
+	  aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
+	  aOuter2inner.push_back( j );
+	  aInner2outer.push_back( i );
+	  aInner2outer.push_back( i + 1 );
 	  j += 2;
 	  break;
 	}	
@@ -343,13 +343,15 @@ DGtal::FreemanChain::innerContour
 	   && ( *it_begin != *it ) ) 
 	// freeman chain is *not* a closed loop.
 	{
-	  inner_chain.chain += outer_chain.chain[ i ];
-	  outer2inner.push_back( j );
-	  inner2outer.push_back( i );
+	  aInnerChain.chain += aOuterChain.chain[ i ];
+	  aOuter2inner.push_back( j );
+	  aInner2outer.push_back( i );
 	  ++i; ++j;
 	  break;
 	}
     }
+
+ 
 }
     
 
@@ -378,9 +380,9 @@ DGtal::FreemanChain::innerContour
  * its inside to the left.
  */
 void
-DGtal::FreemanChain::cleanContour( vector<FreemanChain> & clean_cs,
-				     vector< pair<unsigned int,unsigned int> > & c2clean,
-				     vector< vector<unsigned int> > & clean2c,
+DGtal::FreemanChain::cleanContour( vector<FreemanChain> & aCleanCs,
+				     vector< pair<unsigned int,unsigned int> > & aC2clean,
+				     vector< vector<unsigned int> > & aClean2c,
 				     const FreemanChain & c,
 				     bool ccw )
 {
@@ -411,9 +413,9 @@ DGtal::FreemanChain::cleanContour( vector<FreemanChain> & clean_cs,
  * @return 'true' if the contour add an interior, 'false' otherwise.
  */
 bool
-DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
-					 std::vector<unsigned int> & c2clean,
-					 std::vector<unsigned int> & clean2c,
+DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
+					 std::vector<unsigned int> & aC2clean,
+					 std::vector<unsigned int> & aClean2c,
 					 const FreemanChain & c,
 					 bool ccw )
 {
@@ -429,12 +431,12 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   unsigned int i = 0;
   unsigned int j = 0;
   vector<unsigned int> c2cleanTMP;
-  clean_c.chain.reserve( nb );
-  clean_c.chain = "";
-  c2clean.clear();
-  clean2c.clear();
-  c2clean.reserve( nb );
-  clean2c.reserve( nb );
+  aCleanC.chain.reserve( nb );
+  aCleanC.chain = "";
+  aC2clean.clear();
+  aClean2c.clear();
+  aC2clean.reserve( nb );
+  aClean2c.reserve( nb );
   c2cleanTMP.reserve( nb );
   FreemanChain::const_iterator it = c.begin();
   FreemanChain::const_iterator itn = c.begin(); itn.nextInLoop();
@@ -469,18 +471,18 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   i = start_idx;
   // JOL : 2009/07/7, added starting coordinates
   PointI2D P = *it;
-  clean_c.x0 = P.at(0);
-  clean_c.y0 = P.at(1);
+  aCleanC.x0 = P.at(0);
+  aCleanC.y0 = P.at(1);
 
   // cerr << "Starting point is " << i << endl;
   ASSERT( ( n < nb ) || ( i == 0 ) );
   if ( ( n == nb ) )
     { // do nothing
-      clean_c.chain = c.chain;
+      aCleanC.chain = c.chain;
       for ( unsigned int n = 0; n < nb; ++n )
 	{
-	  c2clean.push_back( n );
-	  clean2c.push_back( n );
+	  aC2clean.push_back( n );
+	  aClean2c.push_back( n );
 	}
       if ( size_spike != 0 )
 	cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
@@ -573,7 +575,7 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   while ( it != it_begin );
 
   // Once outer spikes are known, we can create the new contour.
-  c2clean.resize( nb );
+  aC2clean.resize( nb );
   i = start_idx % nb;
   j = 0;
   unsigned int nb_spikes = begin_outer_spike.size();
@@ -583,9 +585,9 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
     {
       if ( ( k == nb_spikes ) || ( i != begin_outer_spike[ k ] ) )
 	{
-	  clean_c.chain.push_back( c.chain[ i ] );
-	  c2clean[ i ] = j;
-	  clean2c.push_back( i );
+	  aCleanC.chain.push_back( c.chain[ i ] );
+	  aC2clean[ i ] = j;
+	  aClean2c.push_back( i );
 	  mc.increment( i );
 	  ++j;
 	  ++n;
@@ -594,7 +596,7 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
 	{
 	  while ( i != end_outer_spike[ k ] )
 	    {
-	      c2clean[ i ] = j;
+	      aC2clean[ i ] = j;
 	      mc.increment( i );
 	      ++n;
 	    }
@@ -602,30 +604,30 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
 	}
     }
   for ( unsigned int i = 0; i < nb; ++i )
-    if ( c2clean[ i ] >= clean_c.chain.size() )
-      if ( c2clean[ i ] == clean_c.chain.size() )
-	c2clean[ i ] = 0;
+    if ( aC2clean[ i ] >= aCleanC.chain.size() )
+      if ( aC2clean[ i ] == aCleanC.chain.size() )
+	aC2clean[ i ] = 0;
       else 
 	{
 	  cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-	       << "Bad correspondence for c2clean[" << i<< "]"
-	       << " = " << c2clean[ i ] << " >= " << clean_c.chain.size()
+	       << "Bad correspondence for aC2clean[" << i<< "]"
+	       << " = " << aC2clean[ i ] << " >= " << aCleanC.chain.size()
 	       << endl;
-	  c2clean[ i ] = c2clean[ i ] % clean_c.chain.size();
+	  aC2clean[ i ] = aC2clean[ i ] % aCleanC.chain.size();
 	}
 
-  for ( unsigned int j = 0; j < clean_c.chain.size(); ++j )
-    if ( clean2c[ j ] >= nb )
+  for ( unsigned int j = 0; j < aCleanC.chain.size(); ++j )
+    if ( aClean2c[ j ] >= nb )
       {
 	cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-	     << "Bad correspondence for clean2c[" << j << "]"
-	     << " = " << clean2c[ j ] << " >= " << nb
+	     << "Bad correspondence for aClean2c[" << j << "]"
+	     << " = " << aClean2c[ j ] << " >= " << nb
 	     << endl;
-	clean2c[ j ] = clean2c[ j ] % nb;
+	aClean2c[ j ] = aClean2c[ j ] % nb;
       }
 
   // for( int i= 0; i < c2cleanTMP.size(); i++ ) {
-  //   c2clean.push_back
+  //   aC2clean.push_back
   //     ( c2cleanTMP.at( ( i + (c2cleanTMP.size()-start_idx) ) 
   // 		       % c2cleanTMP.size() ) );
   // }
@@ -639,9 +641,9 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   //   {
   //     if ( ( k == nb_spikes ) || ( i != begin_outer_spike[ k ] ) )
   // 	{
-  // 	  clean_c.chain.push_back( c.chain[ i ] );
+  // 	  aCleanC.chain.push_back( c.chain[ i ] );
   // 	  c2cleanTMP.push_back( j );
-  // 	  clean2c.push_back( i );
+  // 	  aClean2c.push_back( i );
   // 	  mc.increment( i );
   // 	  ++j;
   // 	  ++n;
@@ -659,7 +661,7 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   //   }
 
   // for( int i= 0; i < c2cleanTMP.size(); i++ ) {
-  //   c2clean.push_back
+  //   aC2clean.push_back
   //     ( c2cleanTMP.at( ( i + (c2cleanTMP.size()-start_idx) ) 
   // 		       % c2cleanTMP.size() ) );
   // }
@@ -704,12 +706,12 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   // 	  // Process waiting steps.
   // 	  while ( ! fc_to_process.empty() )
   // 	    {
-  // 	      clean_c.chain += fc_to_process.front();
+  // 	      aCleanC.chain += fc_to_process.front();
   // 	      fc_to_process.pop_front();
-  // 	      c2clean.push_back( j ) ; 
-  // 	      clean2c.push_back( idx_to_process.front() );
-  // 	      // c2clean[ idx_to_process.front() ] = j;
-  // 	      // clean2c[ j ] = idx_to_process.front();
+  // 	      aC2clean.push_back( j ) ; 
+  // 	      aClean2c.push_back( idx_to_process.front() );
+  // 	      // aC2clean[ idx_to_process.front() ] = j;
+  // 	      // aClean2c[ j ] = idx_to_process.front();
   // 	      idx_to_process.pop_front();
   // 	      ++j;
   // 	    }
@@ -718,8 +720,8 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   // 	      // Outer spike. Remove it.
   // 	      for ( unsigned int k = 0; k < size_spike; ++k )
   // 		{
-  // 		  // c2clean[ i ] = j;
-  // 		  c2clean.push_back( j ) ; 
+  // 		  // aC2clean[ i ] = j;
+  // 		  aC2clean.push_back( j ) ; 
   // 		  mc.increment( i );
   // 		  it.nextInLoop();
   // 		}
@@ -729,11 +731,11 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   // 	      // Inner spike. Keep it.
   // 	      for ( unsigned int k = 0; k < size_spike; ++k )
   // 		{
-  // 		  c2clean.push_back( j ) ; 
-  // 		  clean2c.push_back( i );
-  // 		  // c2clean[ i ] = j;
-  // 		  // clean2c[ j ] = i;
-  // 		  clean_c.chain += c.chain[ i ];
+  // 		  aC2clean.push_back( j ) ; 
+  // 		  aClean2c.push_back( i );
+  // 		  // aC2clean[ i ] = j;
+  // 		  // aClean2c[ j ] = i;
+  // 		  aCleanC.chain += c.chain[ i ];
   // 		  ++j;
   // 		  mc.increment( i );
   // 		  it.nextInLoop();
@@ -748,12 +750,12 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
   // while ( ! fc_to_process.empty() )
   //   {
   //     cout << fc_to_process.front() << " at " << idx_to_process.front() << endl;
-  //     clean_c.chain += fc_to_process.front();
+  //     aCleanC.chain += fc_to_process.front();
   //     fc_to_process.pop_front();
-  //     c2clean.push_back( j ) ; 
-  //     clean2c.push_back( idx_to_process.front() );
-  //     // c2clean[ idx_to_process.front() ] = j;
-  //     // clean2c[ j ] = idx_to_process.front();
+  //     aC2clean.push_back( j ) ; 
+  //     aClean2c.push_back( idx_to_process.front() );
+  //     // aC2clean[ idx_to_process.front() ] = j;
+  //     // aClean2c[ j ] = idx_to_process.front();
   //     idx_to_process.pop_front();
   //     ++j;
   //   }
@@ -787,9 +789,9 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & clean_c,
  * 'true' otherwise.
  */
 bool
-DGtal::FreemanChain::subsample( FreemanChain & subc,
-				  std::vector<unsigned int> & c2subc,
-				  std::vector<unsigned int> & subc2c,
+DGtal::FreemanChain::subsample( FreemanChain & aSubc,
+				  std::vector<unsigned int> & aC2subc,
+				  std::vector<unsigned int> & aSubc2c,
 				  const FreemanChain & c,
 				  unsigned int h, unsigned int v,
 				  int x0, int y0 )
@@ -806,16 +808,16 @@ DGtal::FreemanChain::subsample( FreemanChain & subc,
   fXY.at(1)= ( fxy.at(1) - y0 ) / v; 
   
   
-  subc.x0 = fXY.at(0);
-  subc.y0 = fXY.at(1);
-  c2subc.clear();
-  c2subc.reserve( nb );
-  subc2c.clear();
-  subc2c.reserve( nb );
+  aSubc.x0 = fXY.at(0);
+  aSubc.y0 = fXY.at(1);
+  aC2subc.clear();
+  aC2subc.reserve( nb );
+  aSubc2c.clear();
+  aSubc2c.reserve( nb );
 
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      c2subc.push_back( j );
+      aC2subc.push_back( j );
       it.nextInLoop();
       PointI2D nxy( it.get() );
       PointI2D nXY;
@@ -825,23 +827,23 @@ DGtal::FreemanChain::subsample( FreemanChain & subc,
       
       if ( nXY != fXY )
 	{
-	  subc2c.push_back( i );
+	  aSubc2c.push_back( i );
 	  char code;
 	  if ( nXY.at(0) > fXY.at(0) )       code = '0';
 	  else if ( nXY.at(0) < fXY.at(0) )  code = '2';
 	  else if ( nXY.at(1) > fXY.at(1) )  code = '1';
 	  else                           code = '3';
-	  subc.chain += code;
+	  aSubc.chain += code;
 	  ++j;
 	  fXY = nXY;
 	}
     }
-//   c2subc.push_back( j );
+//   aC2subc.push_back( j );
 //   it.nextInLoop();
 //   for ( unsigned int i = 1; i <= nb; ++i )
 //     {
 //       // JOL 
-//       //c2subc.push_back( j );
+//       //aC2subc.push_back( j );
 //       Vector2i nxy( it.get() );
 //       Vector2i nXY( ( nxy.x() - x0 ) / h, ( nxy.y() - y0 ) / v );
 //       if ( nXY != fXY )
@@ -851,23 +853,23 @@ DGtal::FreemanChain::subsample( FreemanChain & subc,
 // 	  else if ( nXY.x() < fXY.x() )  code = '2';
 // 	  else if ( nXY.y() > fXY.y() )  code = '1';
 // 	  else                           code = '3';
-// 	  subc.chain += code;
-// 	  subc2c.push_back( i - 1 );
+// 	  aSubc.chain += code;
+// 	  aSubc2c.push_back( i - 1 );
 // 	  ++j;
 // 	  fXY = nXY;
 // 	}
-//       if ( i != nb ) c2subc.push_back( j );
+//       if ( i != nb ) aC2subc.push_back( j );
 //       it.nextInLoop();
 //     }
 //   // TODO : enhance this.
-  unsigned int nbsub =  subc.chain.size();
+  unsigned int nbsub =  aSubc.chain.size();
   // Last correspondence may be in fact to 0 instead of nbsub.
   if ( nbsub != 0 )
     for ( unsigned int i = 0; i < nb; ++i )
-      if ( c2subc[ i ] >= nbsub ) c2subc[ i ] -= nbsub;
+      if ( aC2subc[ i ] >= nbsub ) aC2subc[ i ] -= nbsub;
 
 
-  ASSERT( c2subc.size() == nb );
+  ASSERT( aC2subc.size() == nb );
   return nbsub != 0;
 }
 

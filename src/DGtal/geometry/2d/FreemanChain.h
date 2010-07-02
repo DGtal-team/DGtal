@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
 namespace DGtal
 {
 
@@ -92,23 +93,23 @@ public :
        * Constructor.
        * Nb: complexity in O(n).
        *
-       * @param chain a Freeman chain,
+       * @param aChain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()-1).
        */
-      INLINE const_iterator( const FreemanChain & chain, unsigned int n = 0 );
+      INLINE const_iterator( const FreemanChain & aChain, unsigned int n = 0 );
 
       /**
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      INLINE const_iterator( const const_iterator & other );
+      INLINE const_iterator( const const_iterator & aOther );
     
       /**
        * Assignment.
-       * @param other the iterator to copy.
+       * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      INLINE const_iterator& operator=( const const_iterator & other );
+      INLINE const_iterator& operator=( const const_iterator & aOther );
     
       /**
        * Destructor. Does nothing.
@@ -179,33 +180,33 @@ public :
       /**
        * Equality operator.
        *
-       * @param other the iterator to compare with (must be defined on
+       * @param aOther the iterator to compare with (must be defined on
        * the same chain).
        *
        * @return 'true' if their current positions coincide.
        */
-      INLINE bool operator==( const const_iterator & other ) const;
+      INLINE bool operator==( const const_iterator & aOther ) const;
 
       /**
        * Inequality operator.
        *
-       * @param other the iterator to compare with (must be defined on
+       * @param aOther the iterator to compare with (must be defined on
        * the same chain).
        *
        * @return 'true' if their current positions differs.
        */
-      INLINE bool operator!=( const const_iterator & other ) const;
+      INLINE bool operator!=( const const_iterator & aOther ) const;
 
       /**
        * Inferior operator.
        *
-       * @param other the iterator to compare with (must be defined on
+       * @param aOther the iterator to compare with (must be defined on
        * the same chain).
        *
        * @return 'true' if the current position of 'this' is before
        * the current position of [other].
        */
-      INLINE bool operator<( const const_iterator & other ) const;
+      INLINE bool operator<( const const_iterator & aOther ) const;
       
     };
       
@@ -259,11 +260,11 @@ public :
   
   
     /**
-     * @param zero (returns) the '0' or 'x' letter for quadrant [quadrant].
-     * @param one (returns) the '1' or 'y' letter for quadrant [quadrant].
-     * @param quadrant the quadrant as any of '0', '1', '2', or '3'.
+     * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
+     * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
+     * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
      */
-    static void alphabet( char & zero, char & one, char quadrant );
+    static void alphabet( char & aZero, char & aOne, char aQuadrant );
 
     /**
      * Given two consecutive moves on a Freeman chain code, this
@@ -271,37 +272,37 @@ public :
      * toward the interior, 2: going straight, 3: turning toward
      * exterior. Interior/exterior is specified by [ccw].
      *
-     * @param code1 the code of the first step as an integer in 0..3.
-     * @param code2 the code of the second step as an integer in 0..3.
+     * @param aCode1 the code of the first step as an integer in 0..3.
+     * @param aCode2 the code of the second step as an integer in 0..3.
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
      */
-    static unsigned int movement( unsigned int code1, unsigned int code2, bool ccw = true );
+    static unsigned int movement( unsigned int aCode1, unsigned int aCode2, bool ccw = true );
 
     /**
      * Returns the displacement vector of a Freeman code.
      *
      * @param dx (returns) the x-displacement.
      * @param dy (returns) the y-displacement.
-     * @param c the code.
+     * @param aCode the code.
      */
-    static void displacement( int & dx, int & dy, unsigned int code );
+    static void displacement( int & dx, int & dy, unsigned int aCode );
 
     /**
-     * @param c a Freeman code (between 0-3).
+     * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-  static PointI2D displacement( unsigned int code );
+  static PointI2D displacement( unsigned int aCode );
 
     /**
-     * @param code any Freeman code.
+     * @param aCode any Freeman code.
      *
      * @param ccw when 'true' turns counterclockwise (or left),
      * otherwise turns clockwise (right).
      *
      * @return the turned code.
      */
-    static unsigned int turnedCode( unsigned int code, bool ccw = true );
+    static unsigned int turnedCode( unsigned int aCode, bool ccw = true );
     
     /**
      * From the Freeman chain [pl_chain] representing a pointel
@@ -314,20 +315,20 @@ public :
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      * 
-     * @param pix_chain (output) the code of the 4-connected inner border. 
+     * @param aPix_chain (output) the code of the 4-connected inner border. 
      *
-     * @param pl2pix (output) the mapping associating pointels to
+     * @param aPl2pix (output) the mapping associating pointels to
      * pixels as indices in their respective Freeman chain.
      *
-     * @param pix2pl (output) the inverse mapping associating pixels to
+     * @param aPix2pl (output) the inverse mapping associating pixels to
      * pointels as indices in their respective Freeman chain.
      *
      * @param pl_chain the input code of the 4-connected pointel contour.
      */
-    static void pointel2pixel( FreemanChain & pix_chain,
-			       std::vector<unsigned int> & pl2pix,
-			       std::vector<unsigned int> & pix2pl,
-			       const FreemanChain & pl_chain );
+    static void pointel2pixel( FreemanChain & aPix_chain,
+			       std::vector<unsigned int> & aPl2pix,
+			       std::vector<unsigned int> & aPix2pl,
+			       const FreemanChain & aPlChain );
 
     /**
      * From the Freeman chain [outer_chain] representing a 4-connected
@@ -341,25 +342,25 @@ public :
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      * 
-     * @param inner_chain (output) the code of the 4-connected inner
+     * @param aInner_chain (output) the code of the 4-connected inner
      * border, with starting coordinates that are floored to the closest
      * integer.
      *
-     * @param outer2inner (output) the mapping associating outer to
+     * @param aOuter2inner (output) the mapping associating outer to
      * inner elements as indices in their respective Freeman chain.
      *
-     * @param inner2outer (output) the mapping associating inner to
+     * @param aInner2outer (output) the mapping associating inner to
      * outer elements as indices in their respective Freeman chain.
      *
-     * @param outer_chain the input code of the 4-connected contour.
+     * @param aOuter_chain the input code of the 4-connected contour.
      *
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
      */
-    static void innerContour( FreemanChain & inner_chain,
-			      std::vector<unsigned int> & outer2inner,
-			      std::vector<unsigned int> & inner2outer,
-			      const FreemanChain & outer_chain,
+    static void innerContour( FreemanChain & aInner_chain,
+			      std::vector<unsigned int> & aOuter2inner,
+			      std::vector<unsigned int> & aInner2outer,
+			      const FreemanChain & aOuterChain,
 			      bool ccw = true );
 
     /**
@@ -369,14 +370,14 @@ public :
      * these removals cuts the contour in several loops. Because of
      * that, the mappings are more complex.
 
-     * @param clean_cs (output) the array of cleaned 4-connected contours.
+     * @param aClean_cs (output) the array of cleaned 4-connected contours.
      *
-     * @param c2clean (output) the mapping associating an element to
+     * @param aC2clean (output) the mapping associating an element to
      * its clean element as a pair (n,i) where n is the index of the
      * cleaned contour and i the indice of the element in this Freeman
      * chain.
      *
-     * @param clean2c (output) the array of mapping associating a
+     * @param aClean2c (output) the array of mapping associating a
      * clean element to its non-clean element. clean2c[n][j] gives the
      * index of the non-clean element on c corresponding to the clean
      * element of index j in the n-th contour.
@@ -388,9 +389,9 @@ public :
      *
      * @todo This method is not implemented.
      */
-    static void cleanContour( std::vector<FreemanChain> & clean_cs,
-			      std::vector< std::pair<unsigned int,unsigned int> > & c2clean,
-			      std::vector< std::vector<unsigned int> > & clean2c,
+    static void cleanContour( std::vector<FreemanChain> & aCleanCs,
+			      std::vector< std::pair<unsigned int,unsigned int> > & aC2clean,
+			      std::vector< std::vector<unsigned int> > & aClean2c,
 			      const FreemanChain & c,
 			      bool ccw = true );
     /**
@@ -400,12 +401,12 @@ public :
      * pointel contours should not have any outer spikes, while
      * 4-connected pixel contours should not have any inner spikes.
      *
-     * @param clean_c (output) the cleaned 4-connected contour.
+     * @param aClean_c (output) the cleaned 4-connected contour.
      *
-     * @param c2clean (output) the mapping associating an element to
+     * @param aC2clean (output) the mapping associating an element to
      * its clean element.
      *
-     * @param clean2c (output) the inverse mapping associating a
+     * @param aClean2c (output) the inverse mapping associating a
      * clean element to its non-clean element. 
      *
      * @param c the input code of the 4-connected contour (should be a loop !).
@@ -415,9 +416,9 @@ public :
      *
      * @return 'true' if the contour add an interior, 'false' otherwise.
      */
-    static bool cleanOuterSpikes( FreemanChain & clean_c,
-				  std::vector<unsigned int> & c2clean,
-				  std::vector<unsigned int> & clean2c,
+    static bool cleanOuterSpikes( FreemanChain & aClean_c,
+				  std::vector<unsigned int> & aC2clean,
+				  std::vector<unsigned int> & aClean2c,
 				  const FreemanChain & c,
 				  bool ccw = true );
 
@@ -427,13 +428,13 @@ public :
      * X = ( x - x0 ) div h, 
      * Y = ( y - y0 ) div v.
      *
-     * @param subc (output) the subsampled Freeman chain code (may
+     * @param aSubc (output) the subsampled Freeman chain code (may
      * contain spikes)
      * 
-     * @param c2subc (output) the mapping associating an element to
+     * @param aC2subc (output) the mapping associating an element to
      * its subsampled element.
      *
-     * @param subc2c (output) the inverse mapping associating a
+     * @param aSubc2c (output) the inverse mapping associating a
      * subsampled element to its element. More precisely, subc2c[ j ]
      * is the last pointel to be in j.
      *
@@ -447,9 +448,9 @@ public :
      * @return 'false' if initial contour was empty or if [subc] is empty,
      * 'true' otherwise.
      */
-    static bool subsample( FreemanChain & subc,
-			   std::vector<unsigned int> & c2subc,
-			   std::vector<unsigned int> & subc2c,
+    static bool subsample( FreemanChain & aSubc,
+			   std::vector<unsigned int> & aC2subc,
+			   std::vector<unsigned int> & aSubc2c,
 			   const FreemanChain & c,
 			   unsigned int h, unsigned int v,
 			   int x0, int y0 );
@@ -512,7 +513,7 @@ public :
      * @param vt (returns) the type (inside=true, outside=false) of the
      * MLP vertices in [fc].
      *
-     * @param twice_dv (returns) twice the displacement vector to go from
+     * @param aTwice_dv (returns) twice the displacement vector to go from
      * the integer plane of the Freeman chain to the half-integer plane of
      * the MLP.
      *
@@ -530,7 +531,7 @@ public :
 				      std::vector<int> & vy,
 				      std::vector<unsigned int> & vi,
 				      std::vector<bool> & vt,
-				     PointI2D & twice_dv,
+				      PointI2D & aTwice_dv,
 				      const FreemanChain & fc,
 				      bool cw );
 
@@ -553,9 +554,9 @@ public :
      * Return a vector containing all the interger points of the freemanchain.
      *
      * @param fc the FreemanChain
-     * @param vContour (returns) the vector containing all the integer contour points.
+     * @param aVContour (returns) the vector containing all the integer contour points.
      */
-    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2D > & vContour); 
+    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2D > & aVContour); 
     
 
 
