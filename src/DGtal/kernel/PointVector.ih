@@ -348,17 +348,17 @@ DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
   switch ( aType ) 
     {
     case L_2:
-      for ( uint i=0; i < dimension(); i++ )
+      for ( unsigned int i=0; i < dimension(); i++ )
 	tmp += at ( i ) *at ( i );
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
-      for ( uint i=0; i < dimension(); i++ )
+      for ( unsigned int i=0; i < dimension(); i++ )
 	tmp += fabs ( at( i ) );
       break;
     case L_infty:
       tmp = at( 0 );
-      for ( uint i=1; i < dimension(); i++ )
+      for ( unsigned int i=1; i < dimension(); i++ )
 	if ( tmp < fabs ( at ( i ) ) )
 	  tmp = fabs ( at ( i ) );
       break;
