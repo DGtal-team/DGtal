@@ -77,6 +77,7 @@ namespace DGtal
 
     typedef typename Space::Point Point;
     typedef typename Point::Coordinate Coordinate;
+    typedef typename Space::SizeType SizeType;
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;

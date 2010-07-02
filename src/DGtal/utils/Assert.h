@@ -37,8 +37,12 @@ namespace DGtal
   * At this point, it is just a redirect to the boost/assert.hpp macro.
   *
   **/
-  #define ASSERT(expr) BOOST_ASSERT(expr)
-  
+#define ASSERT(expr) BOOST_ASSERT(expr)
+#if defined(CHECK_ALL_PRE)
+#define ASSERT_ALL_PRE(expr) BOOST_ASSERT(expr)
+#else // defined(CHECK_ALL_PRE)
+#define ASSERT_ALL_PRE(expr)
+#endif
   
 } // namespace DGtal
 

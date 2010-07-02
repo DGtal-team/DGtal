@@ -37,7 +37,6 @@
 namespace DGtal
 {
   typedef std::size_t size_t;
-  //typedef ::size_type size_type;
   typedef unsigned int uint;
 
   typedef boost::uint16_t uint16_t;

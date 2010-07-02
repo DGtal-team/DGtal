@@ -58,6 +58,7 @@ namespace DGtal
     
     typedef PointVector<Integer, Dimension> Point;
     typedef PointVector<Integer,Dimension> Vector;
+    typedef Integer SizeType;
     
     typedef Space<Integer,Dimension> TSpace;
 

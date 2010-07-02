@@ -13,13 +13,14 @@ SET(DGTAL_TESTS_SRC
    test_clock
    test_trace
    test_measure
-   test_PointVector
-   test_Space
+   test_DigitalSet
+   test_DomainSpanIterator
    test_HyperRectDomain
    test_HyperRectDomain-snippet
-   test_DomainSpanIterator
    test_Image
-   test_ImageSpanIterators)
+   test_ImageSpanIterators
+   test_PointVector
+   test_Space)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

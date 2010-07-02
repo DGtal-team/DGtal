@@ -66,7 +66,8 @@ YYY::XXX<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-operator<< ( std::ostream & out, const YYY::XXX<T> & object );
+YYY::operator<< ( std::ostream & out, 
+		  const XXX<T> & object );
  {
    object.selfDisplay( out );
    return out;

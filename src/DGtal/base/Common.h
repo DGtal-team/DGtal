@@ -34,6 +34,7 @@
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
 #include "DGtal/utils/Assert.h"
+#include "DGtal/base/BasicTypes.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
