@@ -10,6 +10,7 @@ MODELS_DIR=${DGtal}/dev/models
 PROFILES_DIR=${DGtal}/dev/profiles
 INCLUDE_DIR=${DGtal}/src/DGtal
 SRC_DIR=${DGtal}/src/DGtal
+TESTS_DIR=${DGtal}/tests
 
 # system information
 namespace=DGtal
