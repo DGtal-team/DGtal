@@ -96,7 +96,14 @@ namespace DGtal
      * @param the initializer list.
      */
     PointVector(std::initializer_list<T> init);
-    
+
+    /** Constructor taking apoint and a functor as parameters.
+     */    
+    template<class Functor>
+    PointVector(const PointVector& apoint1, 
+		const PointVector& apoint2,
+		Functor& f);
+
     /**
      * Destructor.
      */
@@ -182,6 +189,24 @@ namespace DGtal
      */
     T& at ( std::size_t i );
 
+    /**
+     * Returns the  @a i-th coefficient of the vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    const T& operator[] ( std::size_t i ) const;
+
+    /**
+     * Returns a non-const reference to the @a i-th element of the
+     * vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    T& operator[] ( std::size_t i );
 
     // ----------------------- Comparison operations --------------------------
   public:

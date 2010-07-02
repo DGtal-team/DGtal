@@ -18,11 +18,6 @@
 #include <cstdlib>
 #include <cmath>
 //////////////////////////////////////////////////////////////////////////////
-
-
-/**
- * Constructor
- **/
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector()
@@ -30,21 +25,22 @@ DGtal::PointVector<T,N>::PointVector()
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = 0;
 }
-
-/**
- * Destructor
- **/
+//------------------------------------------------------------------------------
+/*template<typename T,std::size_t N, class Functor>
+inline
+DGtal::PointVector<T,N>::PointVector(const PointVector& apoint1, 
+				     const PointVector& apoint2,
+				     Functor& f)
+{  
+  for ( std::size_t i = 0; i < N; ++i )
+    myArray[ i ] = f.operator() (apoint1[i],apoint2[i]);
+    }*/
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::~PointVector()
 {}
-
-/**
- * Constructor from array of values.
- *
- * @param ptrValues the array of values (should be at least as long as
- * the size of the vector)
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
@@ -52,7 +48,7 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = ptrValues[ i ];
 }
-
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
@@ -61,24 +57,13 @@ DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
   for (const T *p = init.begin (); p != init.end () && i<N; ++p, ++i)
     myArray[ i ] = *p;
 }
-
-/**
- * Copy constructor.
- * @param other the object to clone.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector ( const PointVector<T,N> & other )
   : myArray( other.myArray )
 {}
-
-
-
-/**
- * PointVector begin() iterator.
- *
- * @return an Iterator on the first element of a Point/Vector.
- **/
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 typename DGtal::PointVector<T,N>::Iterator 
@@ -86,12 +71,7 @@ DGtal::PointVector<T,N>::begin()
 {
   return myArray.begin();
 }
-
-/**
- * PointVector end() iterator.
- *
- * @return an Iterator on the last element of a Point/Vector.
- **/
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 typename DGtal::PointVector<T,N>::Iterator 
@@ -99,13 +79,7 @@ DGtal::PointVector<T,N>::end()
 {
   return myArray.end();
 }
-
-
-/**
- * PointVector begin() const iterator.
- *
- * @return an ConstIterator on the first element of a Point/Vector.
- **/
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 typename DGtal::PointVector<T,N>::ConstIterator
@@ -113,12 +87,7 @@ DGtal::PointVector<T,N>::begin() const
 {
   return myArray.begin();
 }
-
-/**
- * PointVector end() const iterator.
- *
- * @return a ConstIterator on the last element of a Point/Vector.     
- **/
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 typename DGtal::PointVector<T,N>::ConstIterator
@@ -126,12 +95,7 @@ DGtal::PointVector<T,N>::end() const
 {
   return myArray.end();
 }
-
-
-/**
- * Returns the size of the vector (i.e. the number of its
- * coefficients).
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 std::size_t
@@ -139,11 +103,7 @@ DGtal::PointVector<T,N>::size()
 {
   return N;
 }
-
-/**
- * Returns the size of the vector (i.e. the number of its
- * coefficients).
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 std::size_t
@@ -151,14 +111,7 @@ DGtal::PointVector<T,N>::dimension()
 {
   return N;
 }
-
-/**
- * Returns the  \a i-th coefficient of the vector.
- *
- * \pre The \a i index must lie between \a 0 and \a size() .
- *
- * \param i is the index of the retrieved coefficient.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 const T&
@@ -169,15 +122,7 @@ DGtal::PointVector<T,N>::at ( std::size_t i ) const
 
   return myArray.at( i );
 }
-
-/**
- * Returns a non-const reference to the \a i-th element of the
- * vector.
- *
- * \pre The \a i index must lie between \a 0 and \a size() .
- *
- * \param i is the index of the retrieved coefficient.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline T& DGtal::PointVector<T,N>::at( std::size_t i )
 {
@@ -185,14 +130,7 @@ inline T& DGtal::PointVector<T,N>::at( std::size_t i )
 
   return myArray.at( i );
 }
-
-/**
- * Returns the  \a i-th coefficient of the vector.
- *
- * \pre The \a i index must lie between \a 0 and \a size() .
- *
- * \param i is the index of the retrieved coefficient.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 const T&
@@ -202,27 +140,14 @@ DGtal::PointVector<T,N>::operator[]( std::size_t i ) const
   ASSERT ( i < N );
   return myArray[i];
 }
-
-/**
- * Returns a non-const reference to the \a i-th element of the
- * vector.
- *
- * \pre The \a i index must lie between \a 0 and \a size() .
- *
- * \param i is the index of the retrieved coefficient.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline T& DGtal::PointVector<T,N>::operator[]( std::size_t i )
 {
   ASSERT ( i < N );
   return myArray[i];
 }
-
-/**
- * Multiplies \a *this by the \a coeff scalar number.
- *
- * \param coeff is the factor \a *this get multiplied by.
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 DGtal::PointVector<T,N>&
 DGtal::PointVector<T,N>::operator*= ( T coeff )
@@ -231,14 +156,7 @@ DGtal::PointVector<T,N>::operator*= ( T coeff )
     myArray[ i ] *= coeff;
   return *this;
 }
-
-
-
-/**
- * Assignemnt operator
- *
- * \param pv is the pointvector to assign to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 DGtal::PointVector<T,N>&
@@ -247,13 +165,7 @@ DGtal::PointVector<T,N>::operator= ( const PointVector<T,N> & pv )
   myArray = pv.myArray;
   return *this;
 }
-
-
-/**
- * Comparison operator
- *
- * \param pv is the pointvector to test its equality to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -261,12 +173,7 @@ DGtal::PointVector<T,N>::operator== ( const PointVector<T,N> & pv ) const
 {
   return (myArray == pv.myArray);
 }
-
-/**
- * Difference operator
- *
- * \param pv is the pointvector and we return \param this == \param pv
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -274,12 +181,7 @@ DGtal::PointVector<T,N>::operator!= ( const PointVector<T,N> & pv ) const
 {
   return (myArray != pv.myArray);
 }
-
-/**
- * Comparison operator.
- *
- * \param pv is the pointvector and we return \param this < \param pv
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -287,13 +189,7 @@ DGtal::PointVector<T,N>::operator< ( const PointVector<T,N> & pv ) const
 {
   return (myArray < pv.myArray);
 }
-
-
-/**
- * Comparison operator.
- *
- * \param pv is the pointvector and we return \param this <= \param pv
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -301,12 +197,7 @@ DGtal::PointVector<T,N>::operator<= ( const PointVector<T,N> & pv ) const
 {
   return (myArray <= pv.myArray);
 }
-
-/**
- * Comparison operator.
- *
- * \param pv is the pointvector and we return \param this > \param pv
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -314,12 +205,7 @@ DGtal::PointVector<T,N>::operator> ( const PointVector<T,N> & pv ) const
 {
   return (myArray > pv.myArray);
 }
-
-/**
- * Comparison operator.
- *
- * \param pv is the pointvector and we return \param this => \param pv
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 bool
@@ -327,15 +213,7 @@ DGtal::PointVector<T,N>::operator>= ( const PointVector<T,N> & pv ) const
 {
   return (myArray >= pv.myArray);
 }
-
-
-/**
- * Addition operator.
- *
- * \pre PointVector \a v must have the same size as \a *this.
- *
- * \param v is the vector that gets added to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>&
@@ -345,12 +223,7 @@ DGtal::PointVector<T,N>::operator+= ( const PointVector<T,N>& v )
     this->myArray[ i ] += v.at ( i );
   return *this;
 }
-
-/**
- * Addition operator.
- *
- * \param v is the vector that gets added to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>
@@ -363,13 +236,7 @@ DGtal::PointVector<T,N>::operator+ ( const PointVector<T,N>& v ) const
 
   return newpoint;
 }
-
-/**
- * Substraction operator.
- *
- *
- * \param v is the vector that gets added to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>&
@@ -379,14 +246,7 @@ DGtal::PointVector<T,N>::operator-= ( const PointVector<T,N>& v )
     this->myArray[ i ] -= v.at ( i );
   return *this;
 }
-
-/**
- * Substraction operator.
- *
- * \pre PointVector \a v must have the same size as \a *this.
- *
- * \param v is the vector that gets added to \a *this.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>
@@ -399,11 +259,7 @@ DGtal::PointVector<T,N>::operator- ( const PointVector<T,N>& v ) const
 
   return newpoint;
 }
-
-
-/**
- * Resets all the values to zero.
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 void
@@ -412,14 +268,7 @@ DGtal::PointVector<T,N>::reset()
   for ( std::size_t i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
 }
-
-
-/**
- * Computes the norm of a point/vector.
- *
- * \param type specifies the type of norm to consider (see \ref NormType)
- * \return the norm of the point/vector
- */
+//------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 double
@@ -449,13 +298,7 @@ DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
     }
   return tmp;
 }
-
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 void 
@@ -466,11 +309,7 @@ DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
     out << at( i ) <<(i==dimension()-1?"":", ");
   out << "}";  
 }
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
+//------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline
 bool 
@@ -478,13 +317,4 @@ DGtal::PointVector<T,N>::isValid() const
 {
   return true;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline functions and external operators                 //
-
-
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
-
+//------------------------------------------------------------------------------

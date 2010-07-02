@@ -110,9 +110,16 @@ bool testIterator()
 
     trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
     for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin({3,2,1,0});
-	  it != myHyperRectDomain4D.end(); ++it )
+	  it != myHyperRectDomain4D.end({3,2,1,0}); ++it )
         trace.info() << ( *it ) << std::endl;
 
+    trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
+    HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.end({3,2,1,0});
+    HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin({3,2,1,0});
+    --it1; --it2;
+    std::cout<<"BEGIN:"<<*it1<<" END:"<<*it2<<std::endl;
+    for ( ; it1!=it2; --it1 )
+      trace.info() << ( *it1 ) << std::endl;
 
     return myHyperRectDomain.isValid();
 }
@@ -130,8 +137,16 @@ bool testReverseIterator()
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
 
-    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin(b4D);
-	  it != myHyperRectDomain4D.begin(); --it )
+    trace.emphase() << "Increasing order: ";
+    
+    HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
+    for ( ; it != myHyperRectDomain4D.end(); ++it )
+      trace.info() << ( *it ) << std::endl;
+
+    trace.emphase() << "Now decreasing order: ";
+    HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin();
+    --it; --it2; 
+    for ( ; it != it2; --it )
       trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
