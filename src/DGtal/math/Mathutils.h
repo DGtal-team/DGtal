@@ -63,48 +63,48 @@ public:
     /**
      * Modulo of all computations.
      */
-    uint k;
+    unsigned int k;
     
     /**
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
      */
-    INLINE ModuloComputer( uint m );
+    INLINE ModuloComputer( unsigned int m );
     
     /**
      * Increment the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    INLINE void increment( uint & i ) const;
+    INLINE void increment( unsigned int & i ) const;
 
     /**
      * Decrement the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    INLINE void decrement( uint & i ) const;
+    INLINE void decrement( unsigned int & i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the incremented value of [i] modulo [k].
      * @see k
      */
-    INLINE uint next( uint i ) const;
+    INLINE unsigned int next( unsigned int i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
      * @see k
      */
-    INLINE uint previous( uint i ) const;
+    INLINE unsigned int previous( unsigned int i ) const;
 
     /**
      * @param i any integer value.
      * @return the value of [i] modulo [k].
      * @see k
      */
-    INLINE uint cast( int i ) const;
+    INLINE unsigned int cast( int i ) const;
     
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
@@ -115,7 +115,7 @@ public:
      * @return 'true' if [i] strictly precedes [j] in a window 'floor([k]/2)'.
      * @see k
      */
-    INLINE bool less( uint i, uint j ) const;
+    INLINE bool less( unsigned int i, unsigned int j ) const;
 
     /**
      * Performs j - i modulo, assuming less(i,j) is true.
@@ -125,7 +125,7 @@ public:
      * @return the value j - i, always positive. 
      * @see k
      */
-    INLINE uint posDiff( uint j, uint i ) const;
+    INLINE unsigned int posDiff( unsigned int j, unsigned int i ) const;
     
     
   };
@@ -309,7 +309,7 @@ public:
    *
    * @return the gcd of a and b.
    */
-  static uint cfrac( std::vector<uint> & z, uint a, uint b );
+  static unsigned int cfrac( std::vector<unsigned int> & z, unsigned int a, unsigned int b );
 
   /**
    * Returns the greatest common divisor of a and b.
@@ -396,7 +396,7 @@ public:
    */
   template <typename Number>
   INLINE static
-  Number power( Number x, uint n );
+  Number power( Number x, unsigned int n );
 
 
     // ----------------------- Interface --------------------------------------

@@ -32,7 +32,7 @@
  * Initializes the modulo computer with the value [m].
  * @param m any non-zero integer.
  */
-DGtal::Mathutils::ModuloComputer::ModuloComputer( DGtal::uint m )
+DGtal::Mathutils::ModuloComputer::ModuloComputer( unsigned int m )
   : k( m )
 {
 }
@@ -44,7 +44,7 @@ DGtal::Mathutils::ModuloComputer::ModuloComputer( DGtal::uint m )
  * @see k
  */
 void 
-DGtal::Mathutils::ModuloComputer::increment( DGtal::uint & i ) const
+DGtal::Mathutils::ModuloComputer::increment( unsigned int & i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -56,7 +56,7 @@ DGtal::Mathutils::ModuloComputer::increment( DGtal::uint & i ) const
  * @see k
  */
 void 
-DGtal::Mathutils::ModuloComputer::decrement( DGtal::uint & i ) const
+DGtal::Mathutils::ModuloComputer::decrement( unsigned int & i ) const
 {
   if ( i == 0 ) i = k;
   --i;
@@ -68,8 +68,8 @@ DGtal::Mathutils::ModuloComputer::decrement( DGtal::uint & i ) const
  * @return the incremented value of [i] modulo [k].
  * @see k
  */
-DGtal::uint 
-DGtal::Mathutils::ModuloComputer::next( DGtal::uint i ) const
+unsigned int 
+DGtal::Mathutils::ModuloComputer::next( unsigned int i ) const
 {
   ++i;
   return ( i == k ) ? 0 : i;
@@ -81,8 +81,8 @@ DGtal::Mathutils::ModuloComputer::next( DGtal::uint i ) const
  * @return the decremented value of [i] modulo [k].
  * @see k
  */
-DGtal::uint 
-DGtal::Mathutils::ModuloComputer::previous( DGtal::uint i ) const
+unsigned int 
+DGtal::Mathutils::ModuloComputer::previous( unsigned int i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -93,11 +93,11 @@ DGtal::Mathutils::ModuloComputer::previous( DGtal::uint i ) const
  * @return the value of [i] modulo [k].
  * @see k
  */
-DGtal::uint 
+unsigned int 
 DGtal::Mathutils::ModuloComputer::cast( int i ) const
 {
   while ( i < 0 ) i += k;
-  DGtal::uint ip = (DGtal::uint) i;
+  unsigned int ip = (unsigned int) i;
   while ( ip >= k ) ip -= k;
   return ip;
 }
@@ -112,7 +112,7 @@ DGtal::Mathutils::ModuloComputer::cast( int i ) const
  * precedes [j] in a window 'floor([k]/2)'.  @see k
  */
 bool 
-DGtal::Mathutils::ModuloComputer::less( DGtal::uint i, DGtal::uint j ) const
+DGtal::Mathutils::ModuloComputer::less( unsigned int i, unsigned int j ) const
 {
   int d = ( (int) j ) - ( (int) i );
   if ( d > 0 )
@@ -130,8 +130,8 @@ DGtal::Mathutils::ModuloComputer::less( DGtal::uint i, DGtal::uint j ) const
  * @return the value j - i, always positive. 
  * @see k
  */
-DGtal::uint
-DGtal::Mathutils::ModuloComputer::posDiff( DGtal::uint j, DGtal::uint i ) const
+unsigned int
+DGtal::Mathutils::ModuloComputer::posDiff( unsigned int j, unsigned int i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
 }
@@ -344,7 +344,7 @@ DGtal::Mathutils::sqr( double x )
  */
 template <typename Number>
 Number 
-DGtal::Mathutils::power( Number x, DGtal::uint n )
+DGtal::Mathutils::power( Number x, unsigned int n )
 {
   Number r = (Number) 1;
   while ( n != 0 )

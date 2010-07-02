@@ -126,13 +126,13 @@ DGtal::Mathutils::averagedLength( float t )
  *
  * @return the gcd of a and b.
  */
-DGtal::uint
-DGtal::Mathutils::cfrac( vector<uint> & z, uint a, uint b )
+unsigned int
+DGtal::Mathutils::cfrac( vector<unsigned int> & z, unsigned int a, unsigned int b )
 {
   while ( b != 0 )
     {
-      uint q = a / b;
-      uint r = a - b * q;
+      unsigned int q = a / b;
+      unsigned int r = a - b * q;
       z.push_back( q );
       a = b;
       b = r;
@@ -284,7 +284,7 @@ DGtal::Mathutils::greaterPrime( unsigned long long n )
   //BK
   //TODO
   //ASSERT_Mathutils( n != 0 );
-  uint i = getMSB( n - 1 ) + 1;
+  unsigned int i = getMSB( n - 1 ) + 1;
   
 
   //BK
