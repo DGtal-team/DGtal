@@ -46,7 +46,7 @@ string
 DGtal::OrderedAlphabet::orderedAlphabet() const
 {
   char tbl[ myNb + 1];
-  for ( uint i = 0; i < myNb; ++i )
+  for ( unsigned int i = 0; i < myNb; ++i )
     {
       tbl[ myOrder[ i ] ] = myFirst + i;
     }
@@ -61,11 +61,11 @@ DGtal::OrderedAlphabet::orderedAlphabet() const
 void
 DGtal::OrderedAlphabet::shiftLeft()
 {
-  uint* p = myOrder;
-  uint* q = myOrder + myNb;
+  unsigned int* p = myOrder;
+  unsigned int* q = myOrder + myNb;
   while ( p != q )
     {
-      uint k = *p;
+      unsigned int k = *p;
       *p = ( k == 0 ) ? myNb - 1 : k - 1; 
       ++p;
     }
@@ -77,11 +77,11 @@ DGtal::OrderedAlphabet::shiftLeft()
 void 
 DGtal::OrderedAlphabet::shiftRight()
 {
-  uint* p = myOrder;
-  uint* q = myOrder + myNb;
+  unsigned int* p = myOrder;
+  unsigned int* q = myOrder + myNb;
   while ( p != q )
     {
-      uint k = *p + 1;
+      unsigned int k = *p + 1;
       *p = ( k == myNb ) ? 0 : k; 
       ++p;
     }
@@ -93,8 +93,8 @@ DGtal::OrderedAlphabet::shiftRight()
 void 
 DGtal::OrderedAlphabet::reverse()
 {
-  uint* p = myOrder;
-  uint* q = myOrder + myNb;
+  unsigned int* p = myOrder;
+  unsigned int* q = myOrder + myNb;
   while ( p != q )
     {
       *p = myNb - 1 - *p;
@@ -108,8 +108,8 @@ DGtal::OrderedAlphabet::reverse()
 void 
 DGtal::OrderedAlphabet::reverseAround12()
 {
-  uint* p = myOrder;
-  uint* q = myOrder + myNb;
+  unsigned int* p = myOrder;
+  unsigned int* q = myOrder + myNb;
   while ( p != q )
     {
       *p = ( myNb + 3 - *p ) % myNb;
@@ -222,8 +222,8 @@ DGtal::OrderedAlphabet::duvalPP
           || ( order( w[ s ] ) == 2 ) );
   index_t i = s;
   index_t j = s+1;
-  uint p = 1;
-  uint q = 2;
+  unsigned int p = 1;
+  unsigned int q = 2;
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
@@ -240,7 +240,7 @@ DGtal::OrderedAlphabet::duvalPP
 	      len = j; nb = 0;
 	      return false;
 	    }
-	  uint tmp = p; 
+	  unsigned int tmp = p; 
 	  p = q;
 	  q += q - tmp;
 	  i = s;
@@ -286,8 +286,8 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
   Mathutils::ModuloComputer mc( modulo );
   index_t i = s;
   index_t j = mc.next( s );
-  uint p = 1;
-  uint q = 2;
+  unsigned int p = 1;
+  unsigned int q = 2;
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
@@ -304,7 +304,7 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
 	      len = j; nb = 0;
 	      return false;
 	    }
-	  uint tmp = p; 
+	  unsigned int tmp = p; 
 	  p = q;
 	  q += q - tmp;
 	  i = s;

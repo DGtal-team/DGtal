@@ -34,14 +34,14 @@
  * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
  * 4-connected freeman chains.
  */
-DGtal::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
+DGtal::OrderedAlphabet::OrderedAlphabet( char first, unsigned int nb )
   : myFirst( first ), myNb( nb )
 {
-  myOrder = new uint[ nb ];
+  myOrder = new unsigned int[ nb ];
 
   ASSERT( ( myOrder != 0 ) 
           && "[DGtal::OrderedAlphabet::OrderedAlphabet( char first, int nb )] error in new: no memory left ?" );
-  for ( uint i = 0; i < myNb; ++i )
+  for ( unsigned int i = 0; i < myNb; ++i )
     myOrder[ i ] = i;
 }
 
@@ -51,7 +51,7 @@ DGtal::OrderedAlphabet::OrderedAlphabet( char first, uint nb )
  * @return the index of the letter [c] in the order relation,
  * starting from 0 to myNb-1.
  */
-DGtal::uint
+unsigned int
 DGtal::OrderedAlphabet::order( char c ) const
 {
   ASSERT( ( c - myFirst ) < myNb 
@@ -68,10 +68,10 @@ DGtal::OrderedAlphabet::order( char c ) const
  * NB: O(nb of letters in the alphabet).
  */
 char
-DGtal::OrderedAlphabet::letter( uint i ) const
+DGtal::OrderedAlphabet::letter( unsigned int i ) const
 {
   ASSERT( i < myNb );
-  for ( uint j = 0; j < myNb; ++j )
+  for ( unsigned int j = 0; j < myNb; ++j )
     if ( myOrder[ j ] == i )
       return myFirst + j;
   return myFirst;

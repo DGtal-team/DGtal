@@ -49,12 +49,12 @@ class OrderedAlphabet
     /**
      * The index datatype.
      */
-    typedef uint index_t;
+    typedef unsigned int index_t;
 
     /**
      * The size datatype.
      */
-    typedef uint size_t;
+    typedef unsigned int size_t;
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -73,7 +73,7 @@ public:
      * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
      * 4-connected freeman chains.
      */
-    INLINE OrderedAlphabet( char first, uint nb );
+    INLINE OrderedAlphabet( char first, unsigned int nb );
 
     /**
      * @return the current ordered alphabet.
@@ -106,7 +106,7 @@ public:
      * @return the index of the letter [c] in the order relation,
      * starting from 0 to myNb-1.
      */
-    INLINE uint order( char c ) const;
+    INLINE unsigned int order( char c ) const;
 
     /**
      * @param i the index of some letter in the order relation,
@@ -116,7 +116,7 @@ public:
      *
      * NB: O(nb of letters in the alphabet).
      */
-    INLINE char letter( uint i ) const;
+    INLINE char letter( unsigned int i ) const;
 
     /**
      * @param c1 a letter in the alphabet
@@ -283,12 +283,12 @@ private:
     /**
      * the number of letters.
      */
-    uint myNb;
+    unsigned int myNb;
 
     /**
      * the order relation, given by the isomorphism with 0..myNb-1.
      */
-    uint* myOrder;
+    unsigned int* myOrder;
 
     // ------------------------- Hidden services ------------------------------
 protected:
