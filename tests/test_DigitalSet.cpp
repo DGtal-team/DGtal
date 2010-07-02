@@ -23,7 +23,7 @@
 #include "DGtal/kernel/Space.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
-#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+// #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 
 
 using namespace DGtal;
