@@ -73,3 +73,4 @@ int main()
 }
 
 
+/** @ingroup Tests **/

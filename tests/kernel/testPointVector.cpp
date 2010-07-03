@@ -186,3 +186,4 @@ int main()
         return 1;
 }
 
+/** @ingroup Tests **/

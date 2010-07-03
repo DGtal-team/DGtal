@@ -41,3 +41,4 @@ int main()
                 myDomain.end(),
                 std::ostream_iterator<Point4DType> ( std::cout, " " ) );
 }
+/** @ingroup Tests **/

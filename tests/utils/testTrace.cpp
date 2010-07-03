@@ -103,3 +103,4 @@ int main()
     testFileStream();
     return 0;
 }
+/** @ingroup Tests **/
