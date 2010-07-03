@@ -1186,14 +1186,14 @@ DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const
   while ( ( it != it_end ) && ( it.getCode() == code1 ) )
     it.next();
   ASSERT( ( it != it_end ) 
-	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+	  && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
   unsigned int  code2 = it.getCode();
   // find third letter c.
   while ( ( it != it_end ) && ( ( it.getCode() == code1 )
 				|| ( it.getCode() == code2 ) ) )
     it.next();
   ASSERT( ( it != it_end ) 
-		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+		       && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
   unsigned int code3 = it.getCode();
   // reorder a and b.
   it.previous();
@@ -1219,7 +1219,7 @@ DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const
     }
   ASSERT( ( A.order( b_char ) == 1 )
 		       && ( A.order( a_char ) == 2 )
-		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+		       && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
   return it;
 }
 
@@ -1254,14 +1254,14 @@ DGtal::FreemanChain::findQuadrantChange4( OrderedAlphabet & A ) const
   while ( ( it != it_end ) && ( it.getCode() == code1 ) )
     it.next();
   ASSERT( ( it != it_end ) 
-	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+	  && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
   uint code2 = it.getCode();
   // find third letter c.
   while ( ( it != it_end ) && ( ( it.getCode() == code1 )
 				|| ( it.getCode() == code2 ) ) )
     it.next();
   ASSERT( ( it != it_end ) 
-	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+	  && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
   unsigned int code3 = it.getCode();
   // find fourth letter d.
   while ( ( it != it_end ) && ( ( it.getCode() == code1 )
@@ -1269,7 +1269,7 @@ DGtal::FreemanChain::findQuadrantChange4( OrderedAlphabet & A ) const
 				|| ( it.getCode() == code3 ) ) )
     it.next();
   ASSERT( ( it != it_end ) 
-		       && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
+		       && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
   unsigned int  code4 = it.getCode();
   // define true c.
   it.previous();
@@ -1295,7 +1295,7 @@ DGtal::FreemanChain::findQuadrantChange4( OrderedAlphabet & A ) const
     }
   ASSERT( ( A.order( b_char ) == 1 )
 	  && ( A.order( a_char ) == 2 )
-	  && "[ImaGene::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+	  && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
   return it;
 }
 

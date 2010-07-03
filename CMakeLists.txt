@@ -13,7 +13,7 @@ message( "----------------------------------------------------------------------
 message( "DGtal: see AUTHORS file" )
 message( "       You may specify the following options:" )
 message( "         - CMAKE_BUILD_TYPE = Debug|Release: choose configuration.")
-message( "         - CMAKE_INSTALL_PREFIX = <path>: the place to install ImaGene (/usr/local).")
+message( "         - CMAKE_INSTALL_PREFIX = <path>: the place to install DGtal (/usr/local).")
 message( "       with the syntax (for instance)")  
 message( "         cmake -DCMAKE_BUILD_TYPE:STRING=Debug")
 message( "-------------------------------------------------------------------------------" )
