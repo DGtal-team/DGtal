@@ -10,19 +10,19 @@ include_directories (${PROJECT_SOURCE_DIR}/src/)
 link_directories (${PROJECT_BINARY_DIR})
 
 SET(DGTAL_TESTS_SRC
-   testInteger
-   test_clock
-   test_trace
-   test_measure
-   test_DigitalSet
-   test_DomainSpanIterator
-   test_HyperRectDomain
-   test_HyperRectDomain-snippet
-   test_Image
-   test_ImageSpanIterators
-   test_PointVector
-   test_SpaceND
-   test_ArithDSS)
+   utils/testClock
+   utils/testTrace
+   kernel/testInteger
+   math/testMeasure
+   kernel/testDigitalSet
+   kernel/testDomainSpanIterator
+   kernel/testHyperRectDomain
+   kernel/testHyperRectDomain-snippet
+   kernel/testImage
+   kernel/testImageSpanIterators
+   kernel/testPointVector
+   kernel/testSpaceND
+   geometry/2d/testArithDSS)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
