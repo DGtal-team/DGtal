@@ -1,5 +1,6 @@
 /**
- * @file testInteger.cpp
+ * @file testInteger.cp
+ * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -67,4 +68,4 @@ int main( int argc, char** argv )
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-/** @ingroup Tests **/
+
