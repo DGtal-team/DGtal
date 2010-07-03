@@ -10,7 +10,7 @@ include_directories (${PROJECT_SOURCE_DIR}/src/)
 link_directories (${PROJECT_BINARY_DIR})
 
 SET(DGTAL_TESTS_SRC
-#   testInteger
+   testInteger
    test_clock
    test_trace
    test_measure
