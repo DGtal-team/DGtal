@@ -3,7 +3,6 @@
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
 		DGtal/math/MeasureOfStraightLines
-		DGtal/math/ModuloComputer
-		#DGtal/math/Mathutils
+		DGtal/math/arithmetic/ModuloComputer
 		)
 

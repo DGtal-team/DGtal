@@ -22,17 +22,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
-template <typename T, typename UT>
-inline
-DGtal::ModuloComputer<T,UT>::~ModuloComputer()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
 
 /**
  * Initializes the modulo computer with the value [m].
@@ -44,6 +33,10 @@ DGtal::ModuloComputer<T,UT>::ModuloComputer( const UT &  m )
   : k( m )
 {
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
 
     
 /**
@@ -83,7 +76,7 @@ DGtal::ModuloComputer<T,UT>::decrement( UT & i ) const
 template <typename T, typename UT>
 inline
 UT 
-DGtal::ModuloComputer<T,UT>::next( UT & i ) const
+DGtal::ModuloComputer<T,UT>::next(  UT & i ) const
 {
   ++i;
   return ( i == k ) ? 0 : i;
@@ -98,7 +91,7 @@ DGtal::ModuloComputer<T,UT>::next( UT & i ) const
 template <typename T, typename UT>
 inline
 UT 
-DGtal::ModuloComputer<T,UT>::previous( UT i ) const
+DGtal::ModuloComputer<T,UT>::previous(  UT & i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -112,7 +105,7 @@ DGtal::ModuloComputer<T,UT>::previous( UT i ) const
 template <typename T, typename UT>
 inline
 UT 
-DGtal::ModuloComputer<T,UT>::cast( int i ) const
+DGtal::ModuloComputer<T,UT>::cast( T i ) const
 {
   while ( i < 0 ) i += k;
   UT ip = (T) i;
@@ -193,7 +186,7 @@ template <typename T, typename UT>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const ModuloComputer<T,UT> & object );
+		    const ModuloComputer<T,UT> & object )
  {
    object.selfDisplay( out );
    return out;

@@ -14,7 +14,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/OrderedAlphabet.h"
-#include "DGtal/math/Mathutils.h"
+#include "DGtal/math/arithmetic/ModuloComputer.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
 #include "DGtal/base/OrderedAlphabet.ih"
@@ -174,7 +174,7 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
   index_t s, index_t e ) const
 {
   size_t modulo = w.size();
-  Mathutils::ModuloComputer mc( modulo );
+  ModuloComputer<int,unsigned int> mc( modulo );
   index_t i = s;
   index_t j = mc.next( s );
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
@@ -283,7 +283,7 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
   ASSERT( ( order( w[ s ] ) == 1 )
           || ( order( w[ s ] ) == 2 ) );
   size_t modulo = w.size();
-  Mathutils::ModuloComputer mc( modulo );
+  ModuloComputer<int,unsigned int> mc( modulo );
   index_t i = s;
   index_t j = mc.next( s );
   unsigned int p = 1;
@@ -374,7 +374,7 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
 				    index_t & s,
 				    bool & cvx )
 {
-  Mathutils::ModuloComputer mc( w.size() );
+  ModuloComputer<int,unsigned int> mc( w.size() );
   size_t l;
   size_t len;
   size_t nb;

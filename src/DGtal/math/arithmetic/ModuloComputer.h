@@ -65,46 +65,42 @@ namespace DGtal
     //    typedef typename Interger::Unsigned;
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    BOOST_CONCEPT_ASSERT((CUnsigendInteger<UnsignedInteger>));
+    BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));
 
-    /**
-     * Modulo of all computations.
-     */
-    UsignedInteger k;
-    
+  public:    
     /**
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
      */
-    ModuloComputer( UnsignedInteger m );
+    ModuloComputer( const UnsignedInteger & m );
     
     /**
      * Increment the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void increment( UnsignedInteger & i ) const;
+    void increment(  UnsignedInteger  & i ) const;
 
     /**
      * Decrement the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void decrement( UnsignedInteger & i ) const;
+    void decrement(  UnsignedInteger &  i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the incremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger next( UnsignedInteger i ) const;
+    UnsignedInteger next(  UnsignedInteger & i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger previous( UnsignedInteger i ) const;
+    UnsignedInteger previous(  UnsignedInteger & i ) const;
 
     /**
      * @param i any integer value.
@@ -147,10 +143,12 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
     // ------------------------- Private Datas --------------------------------
   private:
+    /**
+     * Modulo of all computations.
+     */
+    UnsignedInteger k;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -188,7 +186,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/ModuloComputer.ih"
+#include "DGtal/math/arithmetic/ModuloComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
