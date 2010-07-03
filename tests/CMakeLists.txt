@@ -9,26 +9,10 @@ include_directories (${PROJECT_SOURCE_DIR}/src/)
 # Make sure the linker can find the Hello library once it is built.
 link_directories (${PROJECT_BINARY_DIR})
 
-SET(DGTAL_TESTS_SRC
-   utils/testClock
-   utils/testTrace
-   kernel/testInteger
-   math/testMeasure
-   kernel/testDigitalSet
-   kernel/testDomainSpanIterator
-   kernel/testHyperRectDomain
-   kernel/testHyperRectDomain-snippet
-   kernel/testImage
-   kernel/testImageSpanIterators
-   kernel/testPointVector
-   kernel/testSpaceND
-   geometry/2d/testArithDSS)
 
+#------TESTS subdirectories ------
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
-
-
+add_subdirectory(kernel)
+add_subdirectory(math)
+add_subdirectory(utils)
+add_subdirectory(geometry/2d)
