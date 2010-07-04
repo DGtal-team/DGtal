@@ -93,14 +93,14 @@ namespace DGtal
      * @return the incremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger next(  UnsignedInteger & i ) const;
+    UnsignedInteger next(  UnsignedInteger i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger previous(  UnsignedInteger & i ) const;
+    UnsignedInteger previous(  UnsignedInteger i ) const;
 
     /**
      * @param i any integer value.

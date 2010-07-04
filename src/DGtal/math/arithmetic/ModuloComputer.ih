@@ -76,7 +76,7 @@ DGtal::ModuloComputer<T,UT>::decrement( UT & i ) const
 template <typename T, typename UT>
 inline
 UT 
-DGtal::ModuloComputer<T,UT>::next(  UT & i ) const
+DGtal::ModuloComputer<T,UT>::next( UT i ) const
 {
   ++i;
   return ( i == k ) ? 0 : i;
@@ -91,7 +91,7 @@ DGtal::ModuloComputer<T,UT>::next(  UT & i ) const
 template <typename T, typename UT>
 inline
 UT 
-DGtal::ModuloComputer<T,UT>::previous(  UT & i ) const
+DGtal::ModuloComputer<T,UT>::previous( UT i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
