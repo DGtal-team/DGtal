@@ -47,6 +47,7 @@ namespace DGtal
   typedef boost::int32_t int32_t;
   typedef boost::int64_t int64_t;
 
+
 /////////////////////////////////////////////////////////////////////////////
 // class BasicTypes
 /**

@@ -2,6 +2,8 @@
 
 /**
  * @file CUnsignedInteger.h
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -27,7 +29,9 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -38,7 +42,7 @@ namespace DGtal
   /**
    * Description of \b concept '\b CUnsignedInteger' <p>
    * @ingroup Concepts
-   * Aim: Concept checking for Unsigned Integer.
+   * Aim: Concept checking for Unsigned Integer. 
    * 
    * <p> Refinement of CInteger
    *
@@ -74,13 +78,19 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
+    BOOST_CONCEPT_USAGE(CUnsignedInteger)
+    {
+      // Will compile iff Unsigned.
+      ConceptUtils::checkTrue( myIsUnsigned );
+    }
     
     // ------------------------- Private Datas --------------------------------
   private:
     
     // ------------------------- Internals ------------------------------------
   private:
-    
+    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
+
   }; // end of concept CUnsignedInteger
   
 } // namespace DGtal

@@ -30,6 +30,20 @@
 
 namespace DGtal
 {
+  /**
+   * Defines the tag for 'false'.
+   */
+  struct TagFalse{};
+
+  /**
+   * Defines the tag for 'True'.
+   */
+  struct TagTrue{};
+
+  /**
+   * Defines the tag for 'Unknown'.
+   */
+  struct TagUnknown{};
 
 /////////////////////////////////////////////////////////////////////////////
 // class ConceptUtils
@@ -55,7 +69,15 @@ public:
   template <typename T>
   static
   void sameType( const T & t1, const T & t2 );
-  
+
+  static
+  void checkTrue( const TagTrue & tag );
+
+  static
+  void checkFalse( const TagFalse & tag );
+
+  static
+  void checkUnknown( const TagUnknown & tag );
 
 }; // end of class ConceptUtils
 

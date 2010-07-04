@@ -5,6 +5,9 @@
  * @author David Coeurjolly (@c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
  * @date 2010/05/14
  *
  * Header file for module PointVector.cpp
@@ -318,11 +321,21 @@ namespace DGtal
     void reset();
 
     /**
+     * Implements the infimum (or greatest lower bound). It means the
+     * point whose coordinates are exactly the minimum of the two
+     * points coordinate by coordinate.
+     *
+     * @param apoint any point.
      * @return a new point being the inf between *this and apoint.
      */
     PointVector inf( const PointVector& apoint );
 
     /**
+     * Implements the supremum (or least upper bound). It means the
+     * point whose coordinates are exactly the maximum of the two
+     * points coordinate by coordinate.
+     *
+     * @param apoint any point.
      * @return a new point being the sup between *this and apoint.
      */
     PointVector sup( const PointVector& apoint );

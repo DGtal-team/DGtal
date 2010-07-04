@@ -1,0 +1,177 @@
+/**
+ * @file IntegerTraits.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/03
+ *
+ * Implementation of inline methods defined in IntegerTraits.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <limits>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+/**
+ * @return the zero of this integer.
+ */
+template <typename T>
+inline
+typename DGtal::IntegerTraits<T>::ReturnType
+DGtal::IntegerTraits<T>::zero()
+{
+  return 0;
+}
+
+/**
+ * @return the one of this integer.
+ */
+template <typename T>
+inline
+typename DGtal::IntegerTraits<T>::ReturnType
+DGtal::IntegerTraits<T>::one()
+{
+  return 1;
+}
+
+/**
+ * @return the number of significant digits for this integer type,
+ * or 0 if unbounded or unknown.
+ */
+template <typename T>
+inline
+unsigned int
+DGtal::IntegerTraits<T>::digits()
+{
+  return zero();
+}
+
+/**
+ * @return 1 if bounded, 0, if not bounded, 2 if unknown.
+ */
+template <typename T>
+inline
+unsigned int
+DGtal::IntegerTraits<T>::isBounded()
+{
+  return 2;
+}
+ 
+/**
+ * @return 1 if unsigned, 0, if signed, 2 if unknown.
+ */
+template <typename T>
+inline
+unsigned int
+DGtal::IntegerTraits<T>::isUnsigned()
+{
+  return 2;
+}
+
+
+
+// ///////////////////////////////////////////////////////////////////////////////
+// // Specialization for int.
+// ///////////////////////////////////////////////////////////////////////////////
+
+// template <>
+// inline
+// typename DGtal::IntegerTraits<int>::ReturnType
+// DGtal::IntegerTraits<int>::zero()
+// {
+//   return 0;
+// }
+
+// template <>
+// inline
+// DGtal::IntegerTraits<int>::ReturnType
+// DGtal::IntegerTraits<int>::one()
+// {
+//   return 1;
+// }
+
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<int>::digits()
+// {
+//   return std::numeric_limits<int>::digits;
+// }
+
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<int>::isBounded()
+// {
+//   return 2;
+// }
+ 
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<int>::isUnsigned()
+// {
+//   return 2;
+// }
+
+
+// ///////////////////////////////////////////////////////////////////////////////
+// // Specialization for unsigned int.
+// ///////////////////////////////////////////////////////////////////////////////
+
+// template <>
+// inline
+// DGtal::IntegerTraits<unsigned int>::ReturnType
+// DGtal::IntegerTraits<unsigned int>::zero()
+// {
+//   return 0;
+// }
+
+// template <>
+// inline
+// DGtal::IntegerTraits<unsigned int>::ReturnType
+// DGtal::IntegerTraits<unsigned int>::one()
+// {
+//   return 1;
+// }
+
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<unsigned int>::digits()
+// {
+//   return std::numeric_limits<unsigned int>::digits;
+// }
+
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<unsigned int>::isBounded()
+// {
+//   return 2;
+// }
+ 
+// template <>
+// inline
+// unsigned int
+// DGtal::IntegerTraits<unsigned int>::isUnsigned()
+// {
+//   return 2;
+// }
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

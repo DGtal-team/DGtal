@@ -20,7 +20,7 @@
 #include <assert.h>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/Integer.h"
+// #include "DGtal/kernel/Integer.h"
 #include "DGtal/kernel/SpaceND.h"
 
 
@@ -51,8 +51,9 @@ bool testSimpleSpace()
 // Temporary test to check if template is valid.
 bool testInteger()
 {
-  Integer<int> concept;
-  return true;
+  // JOL: Integer => Cinteger
+  //   Integer<int> concept;
+   return true;
 }
 
 

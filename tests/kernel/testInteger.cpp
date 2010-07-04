@@ -1,6 +1,5 @@
 /**
- * @file testInteger.cp
- * @ingroup Tests
+ * @file testInteger.cpp
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -16,6 +15,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -34,13 +34,23 @@ bool testInteger()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ..." );
+  trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<unsigned int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
   // These tests fail : bool is not a model of CInteger.
   // BOOST_CONCEPT_ASSERT(( CInteger<std::string> ));
   // BOOST_CONCEPT_ASSERT(( CInteger<bool> ));
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Checking CUnsignedInteger models ..." );
+  BOOST_CONCEPT_ASSERT(( CUnsignedInteger<unsigned int> ));
+  // These tests fail : int is not a model of CUnsignedInteger.
+  // BOOST_CONCEPT_ASSERT(( CUnsignedInteger<int> ));
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -68,4 +78,3 @@ int main( int argc, char** argv )
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
