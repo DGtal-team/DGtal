@@ -173,13 +173,41 @@ bool testOperators()
   return true; 
 }
 
+bool testIntegerNorms()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  PointVector<int,4> p1({2,1,3,4});
+  PointVector<int,4> p2({4,5,3,2});
+  PointVector<int,4> p = p2 - p1;
+  
+  trace.beginBlock ( "Checking Integer norm1" );
+  trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
+  nbok += p.norm1() == 8 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "L1(p2-p1): "<< p.norm1() << "( == 8 ?)" << std::endl;
+  nbok += p.normInfinity() == 4 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Linfty(p2-p1): "<< p.normInfinity()  << "( == 4 ?)"
+	       << std::endl;
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 int main()
 {
-    bool res;
-    res =  testSimplePoint()  &&    testSimpleVector() &&
-      testNorms()  &&
-      testIterator() && testComparison() &&
-      testOperators();
+  bool res;
+  res =  testSimplePoint()  
+    && testSimpleVector()
+    && testNorms()  
+    && testIterator() 
+    && testComparison() 
+    && testOperators()
+    && testIntegerNorms();
     if (res)
         return 0;
     else

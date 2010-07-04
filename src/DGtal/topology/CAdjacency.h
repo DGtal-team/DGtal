@@ -1,58 +1,58 @@
 #pragma once
 
 /**
- * @file CSpace.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
+ * @file CAdjacency.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2010/07/02
+ * @date 2010/07/04
  *
- * Header file for concept CSpace.cpp
+ * Header file for concept CAdjacency.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSpace_RECURSES)
-#error Recursive header files inclusion detected in CSpace.h
-#else // defined(CSpace_RECURSES)
+#if defined(CAdjacency_RECURSES)
+#error Recursive header files inclusion detected in CAdjacency.h
+#else // defined(CAdjacency_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSpace_RECURSES
+#define CAdjacency_RECURSES
 
-#if !defined CSpace_h
+#if !defined CAdjacency_h
 /** Prevents repeated inclusion of headers. */
-#define CSpace_h
+#define CAdjacency_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/ConceptUtils.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSpace
+  // class CAdjacency
   /**
-   * Description of \b concept '\b CSpace' <p>
+   * Description of \b concept '\b CAdjacency' <p>
    * @ingroup Concepts
    *
-   * \brief Aim: Defines the concept describing a digital space, ie a
-   * cartesian product of integer lines.
+   * \brief Aim: The concept CAdjacency defines an elementary
+   * adjacency relation between points of a digital domain.
    * 
+   * It thus distinguishes which points are close and which points are
+   * further away in this domain. Adjacency relations are used to
+   * define a digital topology, in the sense of Rosenfeld or in the
+   * sense of Herman. In other words, and adjacency relation define a
+   * neighborhood graph on the points of a digital domain.
+   *
    * <p> Refinement of
    *
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CSpace
+   * - \t X : A type that is a model of CAdjacency
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -76,45 +76,30 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-  struct CSpace
+  struct CAdjacency
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    typedef typename T::Space Space;
-    typedef typename T::Point Point;
-    typedef typename T::Vector Vector;
-    typedef typename T::DimensionType DimensionType;
-    BOOST_CONCEPT_USAGE( CSpace )
-    {
-      // Should have a dimension() method.
-      myX.dimension();
-      // This method shoud return the correct type.
-      ConceptUtils::sameType( myDim, myX.dimension() );
-    }
-
+    
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX;
-    DimensionType myDim;
-
+    
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CSpace
+  }; // end of concept CAdjacency
   
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CSpace.ih"
+#include "DGtal/topology/CAdjacency.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSpace_h
+#endif // !defined CAdjacency_h
 
-#undef CSpace_RECURSES
-#endif // else defined(CSpace_RECURSES)
+#undef CAdjacency_RECURSES
+#endif // else defined(CAdjacency_RECURSES)

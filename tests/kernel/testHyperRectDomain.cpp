@@ -42,13 +42,16 @@ bool testSimpleHyperRectDomain()
     Point b ({ 5, 5, 3 ,4} );
 
     trace.beginBlock ( "HyperRectDomain init" );
+    // Checking that HyperRectDomain is a model of CDomain.
+    typedef HyperRectDomain<Space4Type> HRDomain4;
+    BOOST_CONCEPT_ASSERT(( CDomain< HRDomain4 > ));
+
     ///Empty domain using the default constructor
     HyperRectDomain<Space4Type> myEmptyDomain;
     trace.info() << "Empty Domain: "<<myEmptyDomain<< std::endl;
 
     ///Domain characterized by points a and b
     HyperRectDomain<Space4Type> myHyperRectDomain ( a,b );
-
     trace.info() << myHyperRectDomain << std::endl;
 
     trace.info() << "Domain Extent= "<< myHyperRectDomain.extent()<<std::endl;

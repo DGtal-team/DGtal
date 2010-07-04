@@ -31,6 +31,7 @@
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
+#include "DGtal/kernel/IntegerTraits.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@ namespace DGtal
     ///\todo documentation here!
     typedef T Component;
     typedef T Coordinate;
-
+    typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
     static const std::size_t Dimension = N;    
     
     /**
@@ -328,7 +329,7 @@ namespace DGtal
      * @param apoint any point.
      * @return a new point being the inf between *this and apoint.
      */
-    PointVector inf( const PointVector& apoint );
+    PointVector inf( const PointVector& apoint ) const;
 
     /**
      * Implements the supremum (or least upper bound). It means the
@@ -338,7 +339,7 @@ namespace DGtal
      * @param apoint any point.
      * @return a new point being the sup between *this and apoint.
      */
-    PointVector sup( const PointVector& apoint );
+    PointVector sup( const PointVector& apoint ) const;
 
     /**
      * Specify the set of norm types
@@ -352,7 +353,21 @@ namespace DGtal
      * @param type specifies the type of norm to consider (see @ref NormType)
      * @return the norm of the point/vector
      */
-    double norm ( NormType type = L_2 );
+    double norm ( NormType type = L_2 ) const;
+
+    /**
+     * Computes the 1-norm of a vector.
+     *
+     * @return the absolute sum of the components of this vector.
+     */
+    UnsignedComponent norm1() const;
+
+    /**
+     * Computes the infinity-norm of a vector.
+     *
+     * @return the maximum absolute value of the components of this vector.
+     */
+    UnsignedComponent normInfinity() const;
 				 
 				 
 

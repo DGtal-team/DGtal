@@ -26,6 +26,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/domains/HyperRectDomain_SpanIterator.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -36,8 +38,8 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class HyperRectDomain
   /**
-   * Description of class 'HyperRectDomain' <p>
-   * Aim:
+   * Description of class 'HyperRectDomain' <p> \brief Aim:
+   * Parallelepidec region of a digital space, model of a 'CDomain'.
    *
    * The following code snippet demonstrates how to use \p HyperRectDomain
    *
@@ -74,13 +76,16 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-
+    BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
     
 
+    typedef Space DigitalSpace;
     typedef typename Space::Point Point;
-		typedef typename Space::Vector Vector;
-    typedef typename Point::Coordinate Coordinate;
+    typedef typename Space::Vector Vector;
     typedef typename Space::SizeType SizeType;
+    typedef typename Point::Coordinate Coordinate;
+
+    // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;

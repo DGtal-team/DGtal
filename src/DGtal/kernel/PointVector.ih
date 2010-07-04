@@ -255,18 +255,20 @@ DGtal::PointVector<T,N>::reset()
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
-PointVector<T,N> DGtal::PointVector<T,N>::inf( const PointVector& apoint )
+DGtal::PointVector<T,N> 
+DGtal::PointVector<T,N>::inf( const PointVector& apoint ) const
 { return PointVector(*this,apoint,MinFunctor<T>()); }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
-PointVector<T,N> DGtal::PointVector<T,N>::sup( const PointVector& apoint )
+DGtal::PointVector<T,N>
+DGtal::PointVector<T,N>::sup( const PointVector& apoint ) const
 { return PointVector(*this,apoint,MaxFunctor<T>()); }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline
 double
-DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
+DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType ) const
 {
   double tmp= 0.0;
 
@@ -291,6 +293,34 @@ DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType )
       break;
     }
   return tmp;
+}
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::UnsignedComponent
+DGtal::PointVector<T,N>::norm1() const
+{
+  ASSERT ( dimension() > 0 );
+  UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  for ( unsigned int i=1; i < dimension(); ++i )
+    val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
+  return val;
+}
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+typename DGtal::PointVector<T,N>::UnsignedComponent
+DGtal::PointVector<T,N>::normInfinity() const
+{
+  ASSERT ( dimension() > 0 );
+  UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  for ( unsigned int i=1; i < dimension(); ++i )
+    {
+      UnsignedComponent tmp( ( myArray[ i ] >= 0 ) 
+			     ? myArray[ i ] : -myArray[ i ] );
+      if ( tmp > val ) val = tmp;
+    }
+  return val;
 }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>

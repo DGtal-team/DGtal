@@ -1,29 +1,26 @@
 #pragma once
 
 /**
- * @file CSpace.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
+ * @file CDomain.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2010/07/02
+ * @date 2010/07/01
  *
- * Header file for concept CSpace.cpp
+ * Header file for concept CDomain.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSpace_RECURSES)
-#error Recursive header files inclusion detected in CSpace.h
-#else // defined(CSpace_RECURSES)
+#if defined(CDomain_RECURSES)
+#error Recursive header files inclusion detected in CDomain.h
+#else // defined(CDomain_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSpace_RECURSES
+#define CDomain_RECURSES
 
-#if !defined CSpace_h
+#if !defined CDomain_h
 /** Prevents repeated inclusion of headers. */
-#define CSpace_h
+#define CDomain_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -31,28 +28,31 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSpace
+  // class CDomain
   /**
-   * Description of \b concept '\b CSpace' <p>
-   * @ingroup Concepts
-   *
-   * \brief Aim: Defines the concept describing a digital space, ie a
-   * cartesian product of integer lines.
+   * Description of \b concept '\b CDomain' <p> Aim: This concept
+   * represents a digital domain, i.e. a subset of points of the given
+   * digital space.
    * 
    * <p> Refinement of
    *
    * <p> Associated types :
    *
+   * - DigitalSpace : the embedding digital space.
+   * - Point : the point type of the space
+   * - SizeType : the type used for counting elements of the space.
+   * - Vector : the vector type of the space
+   * - LinearMap : the linear map type of the space
+   * 
+   * 
    * <p> Notation
-   * - \t X : A type that is a model of CSpace
+   * - \t X : A type that is a model of CDomain
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -72,49 +72,51 @@ namespace DGtal
    * <p> Invariants <br>
    *
    * <p> Models <br>
+   * HyperRectDomain 
    *
    * <p> Notes <br>
+   *
+   * @todo Complete domain checking.
    */
   template <typename T>
-  struct CSpace
+  struct CDomain
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    typedef typename T::Space Space;
+    typedef typename T::DigitalSpace DigitalSpace;
     typedef typename T::Point Point;
     typedef typename T::Vector Vector;
-    typedef typename T::DimensionType DimensionType;
-    BOOST_CONCEPT_USAGE( CSpace )
+    //typedef typename T::LinearMap LinearMap;
+
+    BOOST_CONCEPT_USAGE( CDomain )
     {
-      // Should have a dimension() method.
-      myX.dimension();
-      // This method shoud return the correct type.
-      ConceptUtils::sameType( myDim, myX.dimension() );
+      // Domain should have a lowerBound() returning a Point.
+      ConceptUtils::sameType( myP, myT.lowerBound() );
+      // Domain should have an upperBound() returning a Point.
+      ConceptUtils::sameType( myP, myT.upperBound() );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX;
-    DimensionType myDim;
+    T myT;
+    Point myP;
 
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CSpace
+  }; // end of concept CDomain
   
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CSpace.ih"
+#include "DGtal/kernel/domains/CDomain.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSpace_h
+#endif // !defined CDomain_h
 
-#undef CSpace_RECURSES
-#endif // else defined(CSpace_RECURSES)
+#undef CDomain_RECURSES
+#endif // else defined(CDomain_RECURSES)

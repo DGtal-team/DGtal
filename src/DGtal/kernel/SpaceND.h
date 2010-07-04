@@ -54,6 +54,7 @@ namespace DGtal
     
     
     typedef Integer TInteger;
+    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef std::size_t  DimensionType;
     
     typedef PointVector<Integer, Dimension> Point;
