@@ -27,6 +27,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/SpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,7 +53,8 @@ namespace DGtal
    * less or equal than 1 and if their norm-1 is less or equal than
    * maxNorm1.
    */
-  template <typename Space, std::size_t maxNorm1>
+  template <typename Space, std::size_t maxNorm1, 
+	    std::size_t dimension = Space::staticDimension >
   class MetricAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
@@ -175,6 +177,30 @@ namespace DGtal
 
   }; // end of class MetricAdjacency
 
+  /**
+   * Standard 4-neighborhood for a 2D digital space based on type 'int'.
+   */
+  typedef MetricAdjacency< SpaceND<int,2>, 1> Z2Adj4;
+
+  /**
+   * Standard 8-neighborhood for a 2D digital space based on type 'int'.
+   */
+  typedef MetricAdjacency< SpaceND<int,2>, 2> Z2Adj8;
+
+  /**
+   * Standard 6-neighborhood for a 3D digital space based on type 'int'.
+   */
+  typedef MetricAdjacency< SpaceND<int,3>, 1> Z3Adj6;
+
+  /**
+   * Standard 18-neighborhood for a 3D digital space based on type 'int'.
+   */
+  typedef MetricAdjacency< SpaceND<int,3>, 2> Z3Adj18;
+
+  /**
+   * Standard 26-neighborhood for a 3D digital space based on type 'int'.
+   */
+  typedef MetricAdjacency< SpaceND<int,3>, 3> Z3Adj26;
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'MetricAdjacency'.
@@ -182,10 +208,11 @@ namespace DGtal
    * @param object the object of class 'MetricAdjacency' to write.
    * @return the output stream after the writing.
    */
-  template <typename Space, std::size_t maxNorm1>
+  template <typename Space, std::size_t maxNorm1, 
+	    std::size_t dimension = Space::staticDimension>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const MetricAdjacency< Space,maxNorm1 > & object );
+	       const MetricAdjacency< Space,maxNorm1,dimension > & object );
 
 } // namespace DGtal
 

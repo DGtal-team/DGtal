@@ -26,9 +26,9 @@
 /**
  * Destructor.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
-DGtal::MetricAdjacency<Space,maxNorm1>::~MetricAdjacency()
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::~MetricAdjacency()
 {
 }
 
@@ -36,9 +36,9 @@ DGtal::MetricAdjacency<Space,maxNorm1>::~MetricAdjacency()
  * Constructor. Does nothing. Due to the symmetry and translation
  * invariance of this digital topology, all methods are static.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
-DGtal::MetricAdjacency<Space,maxNorm1>::MetricAdjacency()
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::MetricAdjacency()
 {
 }
 
@@ -52,10 +52,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::MetricAdjacency()
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool 
-DGtal::MetricAdjacency<Space,maxNorm1>::isAdjacentTo
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::isAdjacentTo
 ( const Point & p1, const Point & p2 )
 {
   Vector v( p2 - p1 );
@@ -69,10 +69,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::isAdjacentTo
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation and p1 != p2.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool 
-DGtal::MetricAdjacency<Space,maxNorm1>::isProperlyAdjacentTo
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::isProperlyAdjacentTo
 ( const Point & p1, const Point & p2 )
 {
   Vector v( p2 - p1 );
@@ -94,10 +94,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::isProperlyAdjacentTo
  * @param p any point of this space.
  * @param out_it any output iterator.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 template <typename OutputIterator>
 void 
-DGtal::MetricAdjacency<Space,maxNorm1>::writeNeighborhood
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeNeighborhood
 ( const Point & p, OutputIterator & out_it )
 {
   Point p1( p );
@@ -129,10 +129,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::writeNeighborhood
  * @param p any point of this space.
  * @param out_it any output iterator.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 template <typename OutputIterator>
 void
-DGtal::MetricAdjacency<Space,maxNorm1>::writeProperNeighborhood
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeProperNeighborhood
 ( const Point & p, OutputIterator & out_it )
 {
   Point p1( p );
@@ -162,10 +162,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::writeProperNeighborhood
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
 void
-DGtal::MetricAdjacency<Space,maxNorm1>::selfDisplay 
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::selfDisplay 
 ( std::ostream & out )
 {
   out << "[MetricAdjacency Z" << Space::staticDimension
@@ -176,10 +176,10 @@ DGtal::MetricAdjacency<Space,maxNorm1>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool
-DGtal::MetricAdjacency<Space,maxNorm1>::isValid()
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>::isValid()
 {
   return true;
 }
@@ -189,11 +189,11 @@ DGtal::MetricAdjacency<Space,maxNorm1>::isValid()
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Space, std::size_t maxNorm1>
+template <typename Space, std::size_t maxNorm1, std::size_t dimension>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const MetricAdjacency<Space,maxNorm1> & object )
+		    const MetricAdjacency<Space,maxNorm1,dimension> & object )
 {
   object.selfDisplay( out );
   return out;
