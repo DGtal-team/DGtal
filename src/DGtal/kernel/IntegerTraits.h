@@ -31,6 +31,9 @@
 
 namespace DGtal
 {
+  enum bound {BOUNDED, UNBOUNDED, BOUND_UNKNOWN};
+  enum sign {SIGNED, UNSIGNED, SIGN_UNKNOWN};
+  
 
   /////////////////////////////////////////////////////////////////////////////
   // template class IntegerTraits
@@ -70,11 +73,11 @@ namespace DGtal
     static unsigned int digits();
 
     /**
-     * @return 1 if bounded, 0, if not bounded, 2 if unknown.
+     * @return BOUNDED, UNBOUNDED, or BOUND_UNKNOWN.
      */
     static unsigned int isBounded();
     /**
-     * @return 1 if unsigned, 0, if signed, 2 if unknown.
+     * @return SIGNED, UNSIGNED or SIGN_UNKNOWN.
      */
     static unsigned int isUnsigned();
 
@@ -100,9 +103,9 @@ namespace DGtal
     static unsigned int digits()
     { return std::numeric_limits<int>::digits; }
     static unsigned int isBounded()
-    { return 1; }
+    { return BOUNDED; }
     static unsigned int isUnsigned()
-    { return 0; }
+    { return SIGNED; }
 
   }; // end of class IntegerTraits
 
@@ -125,9 +128,9 @@ namespace DGtal
     static unsigned int digits()
     { return std::numeric_limits<unsigned int>::digits; }
     static unsigned int isBounded()
-    { return 1; }
+    { return BOUNDED; }
     static unsigned int isUnsigned()
-    { return 1; }
+    { return UNSIGNED; }
 
   }; // end of class IntegerTraits
 
