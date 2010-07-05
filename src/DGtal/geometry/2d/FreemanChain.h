@@ -643,18 +643,8 @@ public:
      * @param max_x (returns) the maximal x-coordinate.
      * @param max_y (returns) the maximal y-coordinate.
      */
-    void computeBoundingBox( int32_t & min_x, int32_t & min_y, 
-			     int32_t & max_x, int32_t & max_y ) const;
-    /**
-     * Computes a bounding box for the Freeman chain code.
-     *
-     * @param min_x (returns) the minimal x-coordinate.
-     * @param min_y (returns) the minimal y-coordinate.
-     * @param max_x (returns) the maximal x-coordinate.
-     * @param max_y (returns) the maximal y-coordinate.
-     */
-    void computeBoundingBox( int64_t & min_x, int64_t & min_y, 
-			     int64_t & max_x, int64_t & max_y ) const;
+    void computeBoundingBox( int & min_x, int & min_y, 
+			     int & max_x, int & max_y ) const;
 
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
@@ -765,7 +755,7 @@ protected:
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    FreemanChain();
+  //    FreemanChain();
 
 private:
 

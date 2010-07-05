@@ -1363,6 +1363,35 @@ DGtal::FreemanChain::getContourPoints(const FreemanChain & fc, vector<PointI2D> 
 
 
 
+/**
+ * Computes a bounding box for the Freeman chain code.
+ *
+ * @param min_x (returns) the minimal x-coordinate.
+ * @param min_y (returns) the minimal y-coordinate.
+ * @param max_x (returns) the maximal x-coordinate.
+ * @param max_y (returns) the maximal y-coordinate.
+ */
+void
+DGtal::FreemanChain::computeBoundingBox( int & min_x, int & min_y, 
+					 int & max_x, int & max_y ) const
+{
+  min_x = max_x = x0;
+  min_y = max_y = y0;
+  for ( FreemanChain::constIterator it = begin();
+	it != end();
+	++it )
+    {
+      PointI2D p( *it );
+      if ( p.at(0) < min_x ) min_x = p.at(0);
+      else if ( p.at(0) > max_x ) max_x = p.at(0);
+      if ( p.at(1) < min_y ) min_y = p.at(1);
+      else if ( p.at(1) > max_y ) max_y = p.at(1);
+    }
+}
+
+
+
+
 
 
 

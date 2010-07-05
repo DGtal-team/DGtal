@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC
        testArithDSS
-       )
+       testFreemanChain	
+              )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
