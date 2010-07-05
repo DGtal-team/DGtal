@@ -301,7 +301,16 @@ inline
 DGtal::DigitalSetBySTLSet<Domain>
 DGtal::DigitalSetBySTLSet<Domain>::computeComplement() const
 {
-
+  DigitalSetBySTLSet<Domain> set;
+  typename Domain::ConstIterator itPoint = myDomain.begin();
+  typename Domain::ConstIterator itEnd = myDomain.end();
+  while ( itPoint != itEnd ) {
+    if ( find( *itPoint ) == end() ) {
+      set.insert( *itPoint );
+    }
+    ++itPoint;
+  }
+  return set;
 }
 
 /**
@@ -317,9 +326,16 @@ DGtal::DigitalSetBySTLSet<Domain>::assignFromComplement
 ( const DigitalSetBySTLSet<Domain> & other_set )
 {
   clear();
-  // ... to be completed 
+  typename Domain::ConstIterator itPoint = myDomain.begin();
+  typename Domain::ConstIterator itEnd = myDomain.end();
+  while ( itPoint != itEnd ) {
+    if ( other_set.find( *itPoint ) == other_set.end() ) {
+      insert( *itPoint );
+    }
+    ++itPoint;
+  }
 }
-    
+
 /**
  * Computes the bounding box of this set.
  *
@@ -334,16 +350,16 @@ void
 DGtal::DigitalSetBySTLSet<Domain>::computeBoundingBox
 ( Point & lower, Point & upper )
 {
-  // lower = myDomain.upperBound();
-  // upper = myDomain.lowerBound();
-  // ConstIterator it_end = end();
-  // for ( ConstIterator it = begin(); it != end(); ++it )
-  //   {
-  //     const Point & p *it;
-  //     if ( *it < lower ) lower
-  //   } 
+  lower = myDomain.upperBound();
+  upper = myDomain.lowerBound();
+  ConstIterator it = begin();
+  ConstIterator itEnd = end();
+  while ( it != itEnd ) {
+    lower = lower.inf( *it );
+    upper = upper.sup( *it );
+    ++it;
+  }
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -369,7 +385,7 @@ inline
 bool
 DGtal::DigitalSetBySTLSet<Domain>::isValid() const
 {
-    return true;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
