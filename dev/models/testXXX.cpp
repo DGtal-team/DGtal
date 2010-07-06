@@ -1,5 +1,6 @@
 /**
  * @file testXXX.cpp
+ * @ingroup Tests
  * @author AUTHOR (\c EMAIL )
  * INSTITUTION
  *
@@ -24,7 +25,6 @@ using namespace DGtal;
 /**
  * Example of a test. To be completed.
  *
- * @ingroup Tests
  */
 bool testXXX()
 {

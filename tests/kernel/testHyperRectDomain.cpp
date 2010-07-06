@@ -1,5 +1,6 @@
 /**
- * @file test_HyperRectDomain.cpp
+ * @file testHyperRectDomain.cpp
+ * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,7 +10,7 @@
  */
 
 /**
- * Description of test_HyperRectDomain <p>
+ * Description of testHyperRectDomain <p>
  * Aim: simple test of \ref HyperRectDomain
  */
 

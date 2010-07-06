@@ -1,5 +1,6 @@
 /**
- * @file testr_trace.cpp
+ * @file testTrace.cpp
+ * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -9,7 +10,7 @@
  */
 
 /**
-  * Description of test_trace' <p>
+  * Description of testTrace' <p>
   * Aim: simple test of \ref Trace
   */
 

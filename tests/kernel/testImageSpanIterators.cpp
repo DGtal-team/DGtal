@@ -1,5 +1,6 @@
 /**
  * @file test_ImageSpanIterators.cpp
+ * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *

@@ -1,5 +1,6 @@
 /**
  * @file testr_clock.cpp
+ * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *

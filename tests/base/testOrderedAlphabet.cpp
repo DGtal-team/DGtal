@@ -134,7 +134,6 @@ bool testDuvalPPMod( const OrderedAlphabet & alphabet,
 /**
  * Test the class OrderedAlphabet.
  *
- * @ingroup Tests
  */
 bool testOrderedAlphabet()
 {

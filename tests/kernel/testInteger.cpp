@@ -1,5 +1,6 @@
 /**
  * @file testInteger.cpp
+ * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -27,7 +28,7 @@ using namespace DGtal;
 /**
  * Example of a test. To be completed.
  *
- * @ingroup Tests
+ *
  */
 bool testInteger()
 {

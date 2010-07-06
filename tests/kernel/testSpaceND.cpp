@@ -1,5 +1,6 @@
 /**
  * @file test_SpaceND.cpp
+ * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *
@@ -20,7 +21,6 @@
 #include <assert.h>
 #include <vector>
 #include "DGtal/base/Common.h"
-// #include "DGtal/kernel/Integer.h"
 #include "DGtal/kernel/SpaceND.h"
 
 

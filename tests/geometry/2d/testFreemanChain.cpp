@@ -1,5 +1,6 @@
 /**
  * @file testFreemanChain.cpp
+ * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
@@ -26,7 +27,6 @@ using namespace DGtal;
 /**
  * Example of a test. To be completed.
  *
- * @ingroup Tests
  */
 bool testFreemanChain(stringstream & ss)
 {
