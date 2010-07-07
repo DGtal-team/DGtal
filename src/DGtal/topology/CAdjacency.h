@@ -26,6 +26,7 @@
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
+#include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -51,10 +52,12 @@ namespace DGtal
    *
    * <p> Associated types :
    *
-   * <p> Notation
-   * - \t X : A type that is a model of CAdjacency
-   * - \t x, \t y	: Object of type X
+   * - \c Point : must be defined in the model.
    *
+   * <p> Notations
+   * - \c Adj : A type that is a model of CAdjacency
+   * - \c adj	: Object of type Adj.
+   * - \c p1, \c p2 : an object of type \ref Point.
    * <p> Definitions
    *
    * <p> Valid expressions and semantics <br>
@@ -64,26 +67,50 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
+   * <td> adjacency test </td> 
+   * <td> adj.isAdjacentTo( p1, p2 ) </td> <td> \c p1 and \c p2 of same type Point. </td> <td> \c bool </td>
+   * <td> </td> <td> Return 'true' when the two points are adjacent according to the adjacency relation \c adj </td> <td> </td> <td> </td>
    * </tr>
+   *
+   * <tr> 
+   * <td> proper adjacency test </td> 
+   * <td> adj.isProperlyAdjacentTo( p1, p2 ) </td> <td> \c p1 and \c p2 of same type Point. </td> <td> \c bool </td>
+   * <td> </td> <td> Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 </td> <td> </td> <td> </td>
+   * </tr>
+   *
    * </table>
    *
    * <p> Invariants <br>
    *
    * <p> Models <br>
    *
+   * - MetricAdjacency
+   *
    * <p> Notes <br>
    */
-  template <typename T>
+  template <typename Adj>
   struct CAdjacency
   {
     // ----------------------- Concept checks ------------------------------
   public:
     
+    typedef typename Adj::Point Point;
+    BOOST_CONCEPT_USAGE( CAdjacency )
+    {
+      // check isAdjacentTo
+      ConceptUtils::sameType( myBool, myAdj.isAdjacentTo( myP1, myP2 ) );
+      // check isProperlyAdjacentTo
+      ConceptUtils::sameType( myBool, 
+			      myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
+    }
+
     // ------------------------- Private Datas --------------------------------
   private:
-    
+    Adj myAdj;
+    Point myP1;
+    Point myP2;
+    bool myBool;
+
     // ------------------------- Internals ------------------------------------
   private:
     

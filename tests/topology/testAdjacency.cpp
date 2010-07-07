@@ -141,7 +141,6 @@ bool testMetricAdjacency()
 	       << "== 26 ?" << std::endl;
   trace.endBlock();
 
-  
   return nbok == nb;
 }
 
