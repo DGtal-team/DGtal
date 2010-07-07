@@ -27,9 +27,9 @@
  * Initializes the modulo computer with the value [m].
  * @param m any non-zero integer.
  */
-template <typename T, typename UT>
+template <typename T>
 inline
-DGtal::ModuloComputer<T,UT>::ModuloComputer( const UT &  m )
+DGtal::ModuloComputer<T>::ModuloComputer( const typename T::UnsignedVersion &  m )
   : k( m )
 {
 }
@@ -44,10 +44,10 @@ DGtal::ModuloComputer<T,UT>::ModuloComputer( const UT &  m )
  * @param i any value between 0 and [k] (excluded).
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T,UT>::increment( UT & i ) const
+DGtal::ModuloComputer<T>::increment( typename T::UnsignedVersion & i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -58,10 +58,10 @@ DGtal::ModuloComputer<T,UT>::increment( UT & i ) const
  * @param i any value between 0 and [k] (excluded).
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T,UT>::decrement( UT & i ) const
+DGtal::ModuloComputer<T>::decrement( typename T::UnsignedVersion & i ) const
 {
   if ( i == 0 ) i = k;
   --i;
@@ -73,10 +73,10 @@ DGtal::ModuloComputer<T,UT>::decrement( UT & i ) const
  * @return the incremented value of [i] modulo [k].
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
-UT 
-DGtal::ModuloComputer<T,UT>::next( UT i ) const
+typename T::UnsignedVersion 
+DGtal::ModuloComputer<T>::next( typename T::UnsignedVersion i ) const
 {
   ++i;
   return ( i == k ) ? 0 : i;
@@ -88,10 +88,10 @@ DGtal::ModuloComputer<T,UT>::next( UT i ) const
  * @return the decremented value of [i] modulo [k].
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
-UT 
-DGtal::ModuloComputer<T,UT>::previous( UT i ) const
+typename T::UnsignedVersion 
+DGtal::ModuloComputer<T>::previous( typename T::UnsignedVersion i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -102,13 +102,13 @@ DGtal::ModuloComputer<T,UT>::previous( UT i ) const
  * @return the value of [i] modulo [k].
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
-UT 
-DGtal::ModuloComputer<T,UT>::cast( T i ) const
+typename T::UnsignedVersion 
+DGtal::ModuloComputer<T>::cast( typename T::SignedVersion i ) const
 {
   while ( i < 0 ) i += k;
-  UT ip = (T) i;
+  typename T::UnsignedVersion ip = (typename T::SignedVersion) i;
   while ( ip >= k ) ip -= k;
   return ip;
 }
@@ -122,12 +122,12 @@ DGtal::ModuloComputer<T,UT>::cast( T i ) const
  * value between 0 and [k] (excluded).  @return 'true' if [i] strictly
  * precedes [j] in a window 'floor([k]/2)'.  @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
 bool 
-DGtal::ModuloComputer<T,UT>::less( UT i, UT j ) const
+DGtal::ModuloComputer<T>::less( typename T::UnsignedVersion i, typename T::UnsignedVersion j ) const
 {
-  T d = ( (T) j ) - ( (T) i );
+  typename T::SignedVersion d = ( (T) j ) - ( (T) i );
   if ( d > 0 )
     return d < (T) ( k / 2 );
   else
@@ -143,10 +143,10 @@ DGtal::ModuloComputer<T,UT>::less( UT i, UT j ) const
  * @return the value j - i, always positive. 
  * @see k
  */
-template <typename T, typename UT>
+template <typename T>
 inline
-UT
-DGtal::ModuloComputer<T,UT>::posDiff( UT j, UT i ) const
+typename T::UnsignedVersion
+DGtal::ModuloComputer<T>::posDiff( typename T::UnsignedVersion j, typename T::UnsignedVersion i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
 }
@@ -157,10 +157,10 @@ DGtal::ModuloComputer<T,UT>::posDiff( UT j, UT i ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T, typename UT>
+template <typename T>
 inline
 void
-DGtal::ModuloComputer<T,UT>::selfDisplay ( std::ostream & out ) const
+DGtal::ModuloComputer<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ModuloComputer]";
 }
@@ -169,10 +169,10 @@ DGtal::ModuloComputer<T,UT>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T, typename UT>
+template <typename T>
 inline
 bool
-DGtal::ModuloComputer<T,UT>::isValid() const
+DGtal::ModuloComputer<T>::isValid() const
 {
     return true;
 }
@@ -182,11 +182,11 @@ DGtal::ModuloComputer<T,UT>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T, typename UT>
+template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const ModuloComputer<T,UT> & object )
+		    const ModuloComputer<T> & object )
  {
    object.selfDisplay( out );
    return out;

@@ -14,13 +14,15 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/base/OrderedAlphabet.h"
 #include <string>
 #include <sstream>
 #include <vector>
 #include <deque>
+#include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/math/arithmetic/ModuloComputer.h"
+#include "DGtal/base/OrderedAlphabet.h"
 
 
 // Includes inline functions/methods if necessary.
@@ -428,7 +430,8 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
 	   << endl;
       return false;
     }
-  ModuloComputer<int,unsigned int> mc( nb );
+  typedef IntegerTraits<int> Integer;
+  ModuloComputer< Integer > mc( nb );
   unsigned int i = 0;
   unsigned int j = 0;
   vector<unsigned int> c2cleanTMP;

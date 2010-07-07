@@ -1,11 +1,9 @@
-SET(DGTAL_TESTS_SRC
-       testMeasure)
+SET(DGTAL_TESTS_SRC_ARITH
+       testModuloComputer)
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
+FOREACH(FILE ${DGTAL_TESTS_SRC_ARITH})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
-
-add_subdirectory(arithmetic)

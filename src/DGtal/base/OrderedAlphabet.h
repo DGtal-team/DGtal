@@ -29,23 +29,30 @@
 #include <iostream>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class OrderedAlphabet
-/**
- * Description of class 'OrderedAlphabet' <p>
- * \brief Aim: Describes an alphabet over an interval of (ascii) letters,
- * where the lexicographic order can be changed (shifted, reversed, ...).
- * Useful for the arithmetic minimum length polygon (AMLP).
- */
-class OrderedAlphabet
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // class OrderedAlphabet
+  /**
+   * Description of class 'OrderedAlphabet' <p>
+   * \brief Aim: Describes an alphabet over an interval of (ascii) letters,
+   * where the lexicographic order can be changed (shifted, reversed, ...).
+   * Useful for the arithmetic minimum length polygon (AMLP).
+   */
+  class OrderedAlphabet
+  {
     // ----------------------- Standard types ------------------------------
   public:
+
+    /**
+     * Internal integer type to consider in the OrderdAlphabet class.
+     */
+    typedef IntegerTraits<int> IntegerTrait;
+     
     /**
      * The index datatype.
      */
@@ -57,7 +64,7 @@ class OrderedAlphabet
     typedef unsigned int size_t;
 
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     /**
      * Destructor.
@@ -257,7 +264,7 @@ public:
 
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -272,9 +279,9 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  private:
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
     /**
      * the first character.
      */
@@ -291,7 +298,7 @@ private:
     unsigned int* myOrder;
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -299,7 +306,7 @@ protected:
      */
     OrderedAlphabet();
 
-private:
+  private:
 
     /**
      * Copy constructor.
@@ -317,19 +324,19 @@ private:
     OrderedAlphabet & operator= ( const OrderedAlphabet & other );
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class OrderedAlphabet
+  }; // end of class OrderedAlphabet
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'OrderedAlphabet'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'OrderedAlphabet' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const OrderedAlphabet & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'OrderedAlphabet'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'OrderedAlphabet' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const OrderedAlphabet & object );
 
 
 } // namespace DGtal

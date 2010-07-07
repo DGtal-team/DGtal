@@ -26,6 +26,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -47,7 +48,7 @@ namespace DGtal
    *   //Construct an arithmetic modulo 15
    *   // Note that MyInteger must be a model of the concept CInteger
    *   ModuloComputer<MyInteger> modular(15);
-   *   typedef MyInteger::UnsignedInteger myUnsignedInteger;
+   *   typedef MyInteger::UnsignedVersion myUnsignedInteger;
    *
    *   myUnsignedInteger a;
    *
@@ -57,16 +58,16 @@ namespace DGtal
    *   ...
    *  @endcode
    */
-  template <typename Integer, typename UnsignedInteger>
+  template <typename IntegerTrait>
   class ModuloComputer
   {
 
-    //@todo Créer un integer_trait précisant les pendants unsigned/signed pour les entiers
-    //    typedef typename Interger::Unsigned;
+    BOOST_CONCEPT_ASSERT((CInteger<typename IntegerTrait::SignedVersion>));
+    BOOST_CONCEPT_ASSERT((CUnsignedInteger<typename IntegerTrait::UnsignedVersion>));    
 
-    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));
-
+    typedef typename IntegerTrait::UnsignedVersion UnsignedInteger;
+    typedef typename IntegerTrait::SignedVersion Integer;
+    
   public:    
     /**
      * Initializes the modulo computer with the value [m].
