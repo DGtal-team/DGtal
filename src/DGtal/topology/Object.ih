@@ -1,0 +1,195 @@
+/**
+ * @file Object.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/07
+ *
+ * Implementation of inline methods defined in Object.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor. 
+ *
+ * @param topology the digital topology chosen for this set, a copy of
+ * which is stored in the object.
+ *
+ * @param pointSet the set of points of the object. It is copied
+ * in the object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+( const DigitalTopologyType & topology, 
+  const DigitalSet & pointSet )
+  : myTopo( topology ),
+    myPointSet( new DigitalSet( pointSet ) )
+{
+}
+
+/**
+ * Constructor. 
+ *
+ * @param topology the digital topology chosen for this set, a copy of
+ * which is stored in the object.
+ *
+ * @param pointSet the set of points of the object. It is smartly
+ * reference in the object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+( const DigitalTopologyType & topology, 
+  const CowPtr<DigitalSet> & pointSet )
+  : myTopo( topology ),
+    myPointSet( pointSet )
+{
+}
+  
+/**
+ * Constructor by attachment of a dynamically allocated point set. 
+ *
+ * @param topology the digital topology chosen for this set, a copy of
+ * which is stored in the object.
+ *
+ * @param pointSet a dynamically allocated pointer on a set of
+ * points which is afterwards handled by this (which will take
+ * care of its deletion).
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+( const DigitalTopologyType & topology, 
+  DigitalSet* pointSet )
+  : myTopo( topology ),
+    myPointSet( pointSet )
+{
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ *
+ * The copy is smart in the sense that the digital set is
+ * referenced, and will be copied only if the set is changed.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+( const Object & other )
+  : myTopo( other.myTopo ),
+    myPointSet( other.myPointSet )
+{
+}
+
+
+/**
+ * Destructor.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::~Object()
+{
+}
+
+/**
+ * @return the number of elements in the set.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType 
+DGtal::Object<DigitalTopologyType,DigitalSet>::size() const
+{
+  return myPointSet->size();
+}
+
+
+/**
+ * A const reference on the point set defining the points of the
+ * digital object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+const DigitalSet & 
+DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet() const
+{
+  return *myPointSet;
+}
+
+/**
+ * A reference on the point set defining the points of the
+ * digital object (may duplicate the set).
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DigitalSet & 
+DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet()
+{
+  return *myPointSet;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+void
+DGtal::Object<DigitalTopologyType,DigitalSet>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Object"
+      << " topology=" << myTopo
+      << " counts=" << myPointSet.count()
+      << " set=" << *myPointSet
+      << "]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+bool
+DGtal::Object<DigitalTopologyType, DigitalSet>::isValid() const
+{
+  return myPointSet != 0;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const Object<DigitalTopologyType,DigitalSet> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -30,6 +30,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
