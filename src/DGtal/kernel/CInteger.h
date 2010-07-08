@@ -99,8 +99,8 @@ namespace DGtal
     {
       T x( 0 ); // require constructor from built-in integer.
       T y( 1 ); // require constructor from built-in integer.
-      x + y;
-      x - y;
+      x = x + y;
+      x = x - y;
       ConceptUtils::sameType( myX, ++x );
       ConceptUtils::sameType( myX, --x );
       // @todo x+y with short is promoted to int. We should use some

@@ -54,7 +54,7 @@ DGtal::OrderedAlphabet::OrderedAlphabet( char first, unsigned int nb )
 unsigned int
 DGtal::OrderedAlphabet::order( char c ) const
 {
-  ASSERT( ( c - myFirst ) < myNb 
+  ASSERT( ( c - myFirst ) < (int) myNb 
           && "[DGtal::OrderedAlphabet::order( char c )] invalid letter." );
   return myOrder[ c - myFirst ];
 }

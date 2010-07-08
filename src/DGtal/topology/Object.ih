@@ -28,16 +28,16 @@
  * @param topology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
- * @param pointSet the set of points of the object. It is copied
+ * @param aPointSet the set of points of the object. It is copied
  * in the object.
  */
 template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 ( const DigitalTopologyType & topology, 
-  const DigitalSet & pointSet )
+  const DigitalSet & aPointSet )
   : myTopo( topology ),
-    myPointSet( new DigitalSet( pointSet ) )
+    myPointSet( new DigitalSet( aPointSet ) )
 {
 }
 
@@ -47,16 +47,16 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  * @param topology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
- * @param pointSet the set of points of the object. It is smartly
+ * @param aPointSet the set of points of the object. It is smartly
  * reference in the object.
  */
 template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 ( const DigitalTopologyType & topology, 
-  const CowPtr<DigitalSet> & pointSet )
+  const CowPtr<DigitalSet> & aPointSet )
   : myTopo( topology ),
-    myPointSet( pointSet )
+    myPointSet( aPointSet )
 {
 }
   
@@ -66,7 +66,7 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  * @param topology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
- * @param pointSet a dynamically allocated pointer on a set of
+ * @param aPointSetPtr a dynamically allocated pointer on a set of
  * points which is afterwards handled by this (which will take
  * care of its deletion).
  */
@@ -74,7 +74,7 @@ template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 ( const DigitalTopologyType & topology, 
-  DigitalSet* pointSet )
+  DigitalSet* aPointSetPtr )
   : myTopo( topology ),
     myPointSet( pointSet )
 {

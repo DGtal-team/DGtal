@@ -92,17 +92,17 @@ namespace DGtal
     /**
      * Defines the digital topology (kappa,lambda).
      *
-     * @param kappa a const reference to the adjacency object chosen
+     * @param aKappa a const reference to the adjacency object chosen
      * for the foreground topology.
      *
-     * @param lambda a const reference to the adjacency object chosen
+     * @param aLambda a const reference to the adjacency object chosen
      * for the background topology.
      *
      * @param props an hint of the properties of this digital
      * topology, default is UNKNOWN.
      */
-    DigitalTopology( const ForegroundAdjacency & kappa, 
-		     const BackgroundAdjacency & lambda,
+    DigitalTopology( const ForegroundAdjacency & aKappa, 
+		     const BackgroundAdjacency & aLambda,
 		     DigitalTopologyProperties props = UNKNOWN_DT );
 
     /**

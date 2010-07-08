@@ -65,11 +65,11 @@ namespace DGtal
      * @param topology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
-     * @param pointSet the set of points of the object. It is copied
+     * @param aPointSet the set of points of the object. It is copied
      * in the object.
      */
     Object( const DigitalTopologyType & topology, 
-	    const DigitalSet & pointSet );
+	    const DigitalSet & aPointSet );
 
     /**
      * Constructor. 
@@ -77,11 +77,11 @@ namespace DGtal
      * @param topology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
-     * @param pointSet the set of points of the object. It is smartly
+     * @param aPointSet the set of points of the object. It is smartly
      * reference in the object.
      */
     Object( const DigitalTopologyType & topology, 
-	    const CowPtr<DigitalSet> & pointSet );
+	    const CowPtr<DigitalSet> & aPointSet );
 
     /**
      * Constructor by attachment of a dynamically allocated point set. 
@@ -89,12 +89,12 @@ namespace DGtal
      * @param topology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
-     * @param pointSet a dynamically allocated pointer on a set of
+     * @param aPointSetPtr a dynamically allocated pointer on a set of
      * points which is afterwards handled by this (which will take
      * care of its deletion).
      */
     Object( const DigitalTopologyType & topology, 
-	    DigitalSet* pointSet );
+	    DigitalSet* aPointSetPtr );
  
     /**
      * Copy constructor.
