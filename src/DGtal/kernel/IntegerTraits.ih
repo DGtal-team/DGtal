@@ -47,6 +47,30 @@ DGtal::IntegerTraits<T>::one()
 }
 
 /**
+ * @return the minimum possible value for this type of integer or
+ * ONE if not bounded or unknown.
+ */
+template <typename T>
+inline
+typename DGtal::IntegerTraits<T>::ReturnType
+DGtal::IntegerTraits<T>::min()
+{
+  return ONE;
+}
+
+/**
+ * @return the maximum possible value for this type of integer or
+ * ZERO if not bounded or unknown.
+ */
+template <typename T>
+inline
+typename DGtal::IntegerTraits<T>::ReturnType
+DGtal::IntegerTraits<T>::max()
+{
+  return ZERO;
+}
+
+/**
  * @return the number of significant digits for this integer type,
  * or 0 if unbounded or unknown.
  */
@@ -63,7 +87,7 @@ DGtal::IntegerTraits<T>::digits()
  */
 template <typename T>
 inline
-unsigned int
+DGtal::BoundEnum
 DGtal::IntegerTraits<T>::isBounded()
 {
   return BOUND_UNKNOWN;
@@ -74,7 +98,7 @@ DGtal::IntegerTraits<T>::isBounded()
  */
 template <typename T>
 inline
-unsigned int
+DGtal::SignEnum
 DGtal::IntegerTraits<T>::isUnsigned()
 {
   return SIGN_UNKNOWN;

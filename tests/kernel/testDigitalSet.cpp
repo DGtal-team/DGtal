@@ -23,12 +23,14 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <string>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
 
 using namespace DGtal;
 using namespace std;
@@ -69,6 +71,30 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
   return nbok == nb;
 }
 
+template < typename DigitalDomainType, DGtal::size_t props >
+bool testDigitalSetSelector( const DigitalDomainType & domain,
+			     const std::string & comment )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+ 
+  trace.beginBlock ( "Test DigitalSetSelector( " + comment + ")." );
+
+  typedef typename DigitalSetSelector
+    < DigitalDomainType, props >::Type SpecificSet; 
+  SpecificSet set1( domain );
+  set1.insert( domain.lowerBound() );
+  set1.insert( domain.upperBound() );
+  nbok += set1.size() == 2 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << comment << " (2 elements): " << set1 << std::endl;
+
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 int main()
 {
   typedef SpaceND<int,4> Space4Type;
@@ -93,7 +119,23 @@ int main()
   bool okSet = testDigitalSet< DigitalSetBySTLSet<DomainType> >( domain );
   trace.endBlock();
 
-  return !( okVector && okSet );
+  bool okSelectorSmall = testDigitalSetSelector
+    < DomainType, SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS >
+    ( domain, "Small set" );
+
+  bool okSelectorBig = testDigitalSetSelector
+    < DomainType, BIG_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS >
+    ( domain, "Big set" );
+
+  bool okSelectorMediumHBel = testDigitalSetSelector
+    < DomainType, MEDIUM_DS+LOW_VAR_DS+LOW_ITER_DS+HIGH_BEL_DS >
+    ( domain, "Medium set + High belonging test" );
+
+  bool res = okVector && okSet 
+    && okSelectorSmall && okSelectorBig && okSelectorMediumHBel;
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return res ? 0 : 1;
 }
 
 /** @ingroup Tests **/

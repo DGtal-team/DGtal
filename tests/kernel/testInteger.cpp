@@ -39,6 +39,8 @@ bool testInteger()
   BOOST_CONCEPT_ASSERT(( CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<unsigned int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
+  BOOST_CONCEPT_ASSERT(( CInteger<DGtal::uint16_t> ));
+  BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
   // These tests fail : bool is not a model of CInteger.
   // BOOST_CONCEPT_ASSERT(( CInteger<std::string> ));
   // BOOST_CONCEPT_ASSERT(( CInteger<bool> ));
@@ -46,6 +48,32 @@ bool testInteger()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
+
+  trace.info() << "  - max int16 = " << IntegerTraits<DGtal::int16_t>::max()
+	       << std::endl;
+  trace.info() << "  - min int16 = " << IntegerTraits<DGtal::int16_t>::min()
+	       << std::endl;
+  trace.info() << "  - max int32 = " << IntegerTraits<DGtal::int32_t>::max()
+	       << std::endl;
+  trace.info() << "  - min int32 = " << IntegerTraits<DGtal::int32_t>::min()
+	       << std::endl;
+  trace.info() << "  - max int64 = " << IntegerTraits<DGtal::int64_t>::max()
+	       << std::endl;
+  trace.info() << "  - min int64 = " << IntegerTraits<DGtal::int64_t>::min()
+	       << std::endl;
+  trace.info() << "  - max uint16 = " << IntegerTraits<DGtal::uint16_t>::max()
+	       << std::endl;
+  trace.info() << "  - min uint16 = " << IntegerTraits<DGtal::uint16_t>::min()
+	       << std::endl;
+  trace.info() << "  - max uint32 = " << IntegerTraits<DGtal::uint32_t>::max()
+	       << std::endl;
+  trace.info() << "  - min uint32 = " << IntegerTraits<DGtal::uint32_t>::min()
+	       << std::endl;
+  trace.info() << "  - max uint64 = " << IntegerTraits<DGtal::uint64_t>::max()
+	       << std::endl;
+  trace.info() << "  - min uint64 = " << IntegerTraits<DGtal::uint64_t>::min()
+	       << std::endl;
+
   trace.endBlock();
 
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );

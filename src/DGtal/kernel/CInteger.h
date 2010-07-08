@@ -28,6 +28,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -98,13 +99,27 @@ namespace DGtal
     {
       T x( 0 ); // require constructor from built-in integer.
       T y( 1 ); // require constructor from built-in integer.
-      ConceptUtils::sameType( myX, x + y );
+      x + y;
+      x - y;
+      ConceptUtils::sameType( myX, ++x );
+      ConceptUtils::sameType( myX, --x );
+      // @todo x+y with short is promoted to int. We should use some
+      // verification with possible promoting.
+      // ConceptUtils::sameType( myX, x + y );
+      ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
+      ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
     }
       
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
     T myY;
+    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
+    typename IntegerTraits<T>::IsBounded myIsBounded;
+    typename IntegerTraits<T>::SignedVersion mySignedVersion;
+    typename IntegerTraits<T>::UnsignedVersion myUnsignedVersion;
+    typename IntegerTraits<T>::ReturnType myReturnType;
+
     // ------------------------- Internals ------------------------------------
   private:
     

@@ -35,96 +35,45 @@
 namespace DGtal
 {
 
+  // ----------------------- Related enumerations -----------------------------
+  enum DigitalSetSize { SMALL_DS = 0, MEDIUM_DS = 1, BIG_DS = 2, WHOLE_DS = 3 };
+  enum DigitalSetVariability { LOW_VAR_DS = 0, HIGH_VAR_DS = 4 };
+  enum DigitalSetIterability { LOW_ITER_DS = 0, HIGH_ITER_DS = 8 };
+  enum DigitalSetBelongTestability { LOW_BEL_DS = 0, HIGH_BEL_DS = 16 };
+
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetSelector
   /**
-   * Description of template class 'DigitalSetSelector' <p>
-   * \brief Aim:
+   * Description of template class 'DigitalSetSelector' <p> \brief
+   * Aim: Automatically defines an adequate digital set type according
+   * to the hints given by the user.
+   *
+   * @code
+   typedef SpaceND<int,4> Space4Type;
+   typedef HyperRectDomain<Space4Type> DomainType;
+   typedef Space4Type::Point Point;
+   Point a ( { 1, 2, 3 ,4} );
+   Point b ( { 5, 5, 3 ,5} );
+   // Domain characterized by points a and b
+   DomainType domain ( a,b );
+   // Specifies a small point set but with a high variability.
+   typedef typename DigitalSetSelector
+     < DomainType, SMALL_DS + HIGH_VAR_DS >::Type SpecificSet; 
+   SpecificSet set1( domain );
+   *
+   * @endcode
    */
   template <typename Domain, uint Preferences >
   struct DigitalSetSelector
   {
     // ----------------------- Local types ------------------------------
-    
-    enum Size { SMALL = 0, MEDIUM = 1, BIG = 2, WHOLE = 3 };
-    enum Variability { LOW_VAR = 0, HIGH_VAR = 4 };
-    enum Iterability { LOW_ITER = 0, HIGH_ITER = 8 };
-    enum BelongTestability { LOW_BEL = 0, HIGH_BEL = 16 };
-
     /**
      * Adequate digital set representation for the given preferences.
      */
     typedef DigitalSetBySTLSet<Domain> Type;
 
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Destructor.
-     */
-    ~DigitalSetSelector();
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    DigitalSetSelector();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DigitalSetSelector ( const DigitalSetSelector & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DigitalSetSelector & operator= ( const DigitalSetSelector & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
   }; // end of class DigitalSetSelector
 
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalSetSelector'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalSetSelector' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename T>
-  std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetSelector<T> & object );
 
 } // namespace DGtal
 

@@ -23,75 +23,23 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Standard services ------------------------------
-
-/**
- * Destructor.
- */
-template <typename T>
-inline
-void
-DGtal::DigitalSetSelector<T>::~DigitalSetSelector()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename T>
-inline
-void
-DGtal::DigitalSetSelector<T>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[DigitalSetSelector]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename T>
-inline
-bool
-DGtal::DigitalSetSelector<T>::isValid() const
-{
-    return true;
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline function                                         //
-
-template <typename T>
-inline
-std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSetSelector<T> & object );
- {
-   object.selfDisplay( out );
-   return out;
- }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // TEMPLATE SPECIALIZATION
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * DigitalSetSelector specializarion when Preferences is
- * SMALL+LOW_VAR+LOW_ITER+LOW_BEL
- */
-template <typename Domain, 0>
-struct DigitalSetSelector
-{
+namespace DGtal {
   /**
-   * Adequate digital set representation for the given preferences.
+   * DigitalSetSelector specializarion when Preferences is
+   * SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS
    */
-  typedef DigitalSetBySTLVector<Domain> Type;
+  template <typename Domain>
+  struct DigitalSetSelector<Domain, SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS>
+  {
+    /**
+     * Adequate digital set representation for the given preferences.
+     */
+    typedef DigitalSetBySTLVector<Domain> Type;
+  };
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
