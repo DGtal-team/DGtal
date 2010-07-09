@@ -447,8 +447,8 @@ INLINE
 DGtal::PointVector<int, 2>
 DGtal::FreemanChain::displacement( unsigned int aCode )
 {
-  PointI2D aPoint({0,0});
-    
+  
+#ifdef CPP0X_INITIALIZER_LIST  
   switch ( aCode ) 
     {
     case 0:  return PointI2D({1,0}); 
@@ -457,6 +457,18 @@ DGtal::FreemanChain::displacement( unsigned int aCode )
     case 3:  return PointI2D({0,-1});
     }
   return  PointI2D({0,0}); 
+#else
+   int t[2] = {0,0};
+  
+  switch ( aCode ) 
+    {
+    case 0:  t[0]++; return PointI2D( t ); 
+    case 1:  t[1]++; return PointI2D( t ); 
+    case 2:  t[0]--; return PointI2D( t );
+    case 3:  t[1]--; return PointI2D( t );
+    }
+  return  PointI2D( t ); 
+#endif //CPP0X_INITIALIZER_LIST
 }
 
 

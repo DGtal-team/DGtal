@@ -8,7 +8,7 @@ void f(std::initializer_list<T> init)
     std::cout<<*p<<", ";
   std::cout<<"}"<<std::endl;
 }
-
+d
 int main()
 {
   f({1,2,3,4});

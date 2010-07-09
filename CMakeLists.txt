@@ -96,7 +96,6 @@ set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
 
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 
-
 OPTION(INLINE_FUNCTION_BUILD "Build inline functions." ON)
 
 if (INLINE_FUNCTION_BUILD)

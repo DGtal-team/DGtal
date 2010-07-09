@@ -31,7 +31,9 @@ bool testComparison()
     const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
     PointVector<double, 4> v ( t );
     PointVector<double, 4> v2 ( t );
+#ifdef CPP0X_INITIALIZER_LIST
     PointVector<double, 4> v3 ( { 3.5, 4.2, 2.2, 3.2 } );
+#endif
 
     trace.beginBlock("Comparison of Points");
     if (v == v2)
@@ -39,15 +41,17 @@ bool testComparison()
     else
         trace.info()<< "v == v2 (false)"<<std::endl;
 
+#ifdef CPP0X_INITIALIZER_LIST
     if (v == v3)
         trace.info()<< "v == v3 (true)"<<std::endl;
     else
         trace.info()<< "v == v3 (false)"<<std::endl;
+#endif
 
-    if (v < v3)
-        trace.info()<< "v < v3 (true)"<<std::endl;
+    if (v < v2)
+        trace.info()<< "v < v2 (true)"<<std::endl;
     else
-        trace.info()<< "v < v3 (false)"<<std::endl;
+        trace.info()<< "v < v2 (false)"<<std::endl;
 
 
     trace.endBlock();
