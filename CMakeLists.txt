@@ -89,7 +89,7 @@ message( "-- CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 #message( "Boost_DIR = " ${Boost_DIR} )
 FIND_PACKAGE(Boost REQUIRED)
 if ( Boost_FOUND )
-   message( "-- [OK] Boost found. include=${Boost_INCLUDE_DIR}" )
+   message( "-- Boost found. include=${Boost_INCLUDE_DIR}" )
    include_directories( ${Boost_INCLUDE_DIR} )
 endif ( Boost_FOUND )
 

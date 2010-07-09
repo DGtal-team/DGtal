@@ -273,7 +273,7 @@ DGtal::PointVector<T,N>::sup( const PointVector& apoint ) const
 template<typename T, std::size_t N>
 inline
 double
-DGtal::PointVector<T,N>::norm (typename PointVector<T,N>::NormType aType ) const
+DGtal::PointVector<T,N>::norm (const typename PointVector<T,N>::NormType aType ) const
 {
   double tmp= 0.0;
 

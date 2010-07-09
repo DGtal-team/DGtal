@@ -60,9 +60,25 @@ namespace DGtal
    * (meet, greatest lower bound) and a supremum (join, least upper
    * bound) operation.
    *
-   * @example test_PointVector.cpp
+   * Usage example:
+   * @code
+   *
+   * ...
+   * typedef PointVector<double,5> VectorD5;
+   * VectorD5 p, q, r;
+   *
+   * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
+   * q.at(3) = -5.5   // q = {0.0, 0.0, 0.0, -5.5, 0.0}
+   * r =  p + q ;   //  r = {0.0, 2.0, 0.0, -5.5, 0.0}
+   * 
+   * d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
+   * ...
+   * @endcode
+   * \todo continue snippet
+   * @example testPointVector.cpp
+   *
+   *
    */
-
   template<typename T, std::size_t N>
   class PointVector
   {
@@ -95,11 +111,11 @@ namespace DGtal
      */
     PointVector( const T * ptrValues );
     
+#ifdef CPP0X_INITIALIZER_LIST
     /**
      * Constructor from initializer list.
      * @param the initializer list.
      */
-#ifdef CPP0X_INITIALIZER_LIST
     PointVector(std::initializer_list<T> init);
 #endif // CPP0X_INITIALIZER_LIST
 
@@ -355,7 +371,7 @@ namespace DGtal
      * @param type specifies the type of norm to consider (see @ref NormType)
      * @return the norm of the point/vector
      */
-    double norm ( NormType type = L_2 ) const;
+    double norm ( const NormType type = L_2 ) const;
 
     /**
      * Computes the 1-norm of a vector.

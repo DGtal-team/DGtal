@@ -37,6 +37,6 @@
  * <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
  * </ul>
  *
- * @defgroup Concepts
- * @defgroup Tests
+ * @defgroup Concepts DGtal concepts
+ * @defgroup Tests DGtal test files
  */

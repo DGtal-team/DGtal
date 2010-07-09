@@ -40,7 +40,8 @@ namespace DGtal
   /** 
    * Description of class 'SpaceND' <p>
    *
-   * Aim: SpaceND defines the fundamental structure of a Digital SpaceND.
+   * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
+   * \todo document here!
    *
    */
   
