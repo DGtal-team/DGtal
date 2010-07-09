@@ -25,7 +25,7 @@
 /**
  * Constructor. 
  *
- * @param topology the digital topology chosen for this set, a copy of
+ * @param aTopology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
  * @param aPointSet the set of points of the object. It is copied
@@ -34,9 +34,9 @@
 template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & topology, 
+( const DigitalTopologyType & aTopology, 
   const DigitalSet & aPointSet )
-  : myTopo( topology ),
+  : myTopo( aTopology ),
     myPointSet( new DigitalSet( aPointSet ) )
 {
 }
@@ -44,7 +44,7 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 /**
  * Constructor. 
  *
- * @param topology the digital topology chosen for this set, a copy of
+ * @param aTopology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
  * @param aPointSet the set of points of the object. It is smartly
@@ -53,9 +53,9 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & topology, 
+( const DigitalTopologyType & aTopology, 
   const CowPtr<DigitalSet> & aPointSet )
-  : myTopo( topology ),
+  : myTopo( aTopology ),
     myPointSet( aPointSet )
 {
 }
@@ -63,7 +63,7 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 /**
  * Constructor by attachment of a dynamically allocated point set. 
  *
- * @param topology the digital topology chosen for this set, a copy of
+ * @param aTopology the digital topology chosen for this set, a copy of
  * which is stored in the object.
  *
  * @param aPointSetPtr a dynamically allocated pointer on a set of
@@ -73,9 +73,9 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & topology, 
+( const DigitalTopologyType & aTopology, 
   DigitalSet* aPointSetPtr )
-  : myTopo( topology ),
+  : myTopo( aTopology ),
     myPointSet( pointSet )
 {
 }
@@ -96,6 +96,23 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
 {
 }
 
+/**
+ * Constructor of an empty object by providing a domain.
+ *
+ * @param aTopology the digital topology chosen for this set, a copy of
+ * which is stored in the object.
+ *
+ * @param aDomain any domain related to the given topology.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+( const DigitalTopologyType & aTopology, 
+  const typename DigitalSet::DomainType & domain )
+  : myTopo( aTopology ),
+    myPointSet( new DigitalSet( domain ) )
+{
+}
 
 /**
  * Destructor.
@@ -104,6 +121,24 @@ template <typename DigitalTopologyType, typename DigitalSet>
 inline
 DGtal::Object<DigitalTopologyType,DigitalSet>::~Object()
 {
+}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet> &
+DGtal::Object<DigitalTopologyType,DigitalSet>::operator= 
+( const Object & other )
+{
+  if ( this != &other )
+    {
+      myPointSet = other.myPointSet;
+    }
+  return *this;
 }
 
 /**
@@ -141,6 +176,186 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet()
 {
   return *myPointSet;
 }
+
+/**
+ * @return a const reference to the topology of this object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+const DigitalTopologyType & 
+DGtal::Object<DigitalTopologyType,DigitalSet>::topology() const
+{
+  return myTopo;
+}
+
+/**
+ * @return a const reference to the adjacency of this object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+const typename DigitalTopologyType::ForegroundAdjacencyType & 
+DGtal::Object<DigitalTopologyType,DigitalSet>::adjacency() const
+{
+  return myTopo.kappa();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Object services --------------------------------
+
+/**
+ * Let A be this object with foreground adjacency k and N_k(p) the
+ * k-neighborhood of p. Returns the set A intersected with N_k(p).
+ *
+ * @param p any point (in the domain of the digital object, not
+ * necessarily in the object).
+ *
+ * @return the kappa-neighborhood of [p] in this object.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,
+	      typename DGtal::Object<DigitalTopologyType,DigitalSet>::SmallSet>
+DGtal::Object<DigitalTopologyType,DigitalSet>::neighborhood
+( const Point & p ) const
+{
+  typedef std::vector<Point> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeNeighborhood( p, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  Object<DigitalTopologyType,SmallSet> neighA( myTopo, pointSet().domain() );
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  SmallSet & neighASet = neighA.pointSet(); 
+  for ( ContainerConstIterator it = neigh.begin();
+	it != it_end;
+	++it )
+    if ( pointSet().find( *it ) != not_found )
+      neighASet.insertNew( *it ); // insertNew is guaranteed by construction.
+  return neighA;
+}
+
+/**
+ * @param p any point (in the domain of the digital object, not
+ * necessarily in the object).
+ *
+ * @return the cardinal of the kappa-neighborhood of [p] in this object.
+ *
+ * @see neighborhood
+ *
+ * NB: faster than computing the neighborhood then computing its cardinal.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType
+DGtal::Object<DigitalTopologyType,DigitalSet>
+::neighborhoodSize( const Point & p ) const
+{
+  typedef std::vector<Point> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeNeighborhood( p, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  SizeType nb = 0;
+  for ( ContainerConstIterator it = neigh.begin();
+	it != it_end;
+	++it )
+    if ( pointSet().find( *it ) != not_found )
+      ++nb;
+  return nb;
+}
+
+
+/**
+ * Let A be this object with foreground adjacency k and N*_k(p)
+ * the proper k-neighborhood of p. Returns the set A intersected
+ * with N*_k(p).
+ *
+ * @param p any point (in the domain of the digital object, not
+ * necessarily in the object).
+ *
+ * @return the kappa-neighborhood of [p] in this object, without p.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,
+	      typename DGtal::Object<DigitalTopologyType,DigitalSet>::SmallSet>
+DGtal::Object<DigitalTopologyType,DigitalSet>::properNeighborhood
+( const Point & p ) const
+{
+  typedef std::vector<Point> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeProperNeighborhood( p, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  Object<DigitalTopologyType,SmallSet> neighA( myTopo, pointSet().domain() );
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  SmallSet & neighASet = neighA.pointSet(); 
+  for ( ContainerConstIterator it = neigh.begin();
+	it != it_end;
+	++it )
+    if ( pointSet().find( *it ) != not_found )
+      neighASet.insertNew( *it ); // insertNew is guaranteed by construction.
+  return neighA;
+}
+
+/**
+ * @param p any point (in the domain of the digital object, not
+ * necessarily in the object).
+ *
+ * @return the cardinal of the kappa-neighborhood of [p] in this object.
+ *
+ * @see properNeighborhood
+ *
+ * NB: faster than computing the proper neighborhood then
+ * computing its cardinal.
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType
+DGtal::Object<DigitalTopologyType,DigitalSet>
+::properNeighborhoodSize( const Point & p ) const
+{
+  typedef std::vector<Point> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeProperNeighborhood( p, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  SizeType nb = 0;
+  for ( ContainerConstIterator it = neigh.begin();
+	it != it_end;
+	++it )
+    if ( pointSet().find( *it ) != not_found )
+      ++nb;
+  return nb;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

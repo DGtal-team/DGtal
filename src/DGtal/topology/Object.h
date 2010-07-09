@@ -27,6 +27,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,43 +60,62 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     typedef typename DigitalSet::SizeType SizeType;
+    typedef typename DigitalSet::Point Point;
+    // should be the same as Point.
+    typedef typename DigitalTopologyType::Point DTPoint;
+
+    typedef typename DigitalSet::DomainType DomainType;
+    typedef 
+    typename DigitalSetSelector< DomainType,  
+				 SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
 
     /**
      * Constructor. 
      *
-     * @param topology the digital topology chosen for this set, a copy of
+     * @param aTopology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
      * @param aPointSet the set of points of the object. It is copied
      * in the object.
      */
-    Object( const DigitalTopologyType & topology, 
+    Object( const DigitalTopologyType & aTopology, 
 	    const DigitalSet & aPointSet );
 
     /**
      * Constructor. 
      *
-     * @param topology the digital topology chosen for this set, a copy of
+     * @param aTopology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
      * @param aPointSet the set of points of the object. It is smartly
      * reference in the object.
      */
-    Object( const DigitalTopologyType & topology, 
+    Object( const DigitalTopologyType & aTopology, 
 	    const CowPtr<DigitalSet> & aPointSet );
 
     /**
      * Constructor by attachment of a dynamically allocated point set. 
      *
-     * @param topology the digital topology chosen for this set, a copy of
+     * @param aTopology the digital topology chosen for this set, a copy of
      * which is stored in the object.
      *
      * @param aPointSetPtr a dynamically allocated pointer on a set of
      * points which is afterwards handled by this (which will take
      * care of its deletion).
      */
-    Object( const DigitalTopologyType & topology, 
+    Object( const DigitalTopologyType & aTopology, 
 	    DigitalSet* aPointSetPtr );
+
+    /**
+     * Constructor of an empty object by providing a domain.
+     *
+     * @param aTopology the digital topology chosen for this set, a copy of
+     * which is stored in the object.
+     *
+     * @param aDomain any domain related to the given topology.
+     */
+    Object( const DigitalTopologyType & aTopology, 
+	    const typename DigitalSet::DomainType & domain );
  
     /**
      * Copy constructor.
@@ -109,6 +130,13 @@ namespace DGtal
      * Destructor.
      */
     ~Object();
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Object & operator= ( const Object & other );
 
     /**
      * @return the number of elements in the set.
@@ -127,11 +155,81 @@ namespace DGtal
      */
     DigitalSet & pointSet();
 
+    /**
+     * @return a const reference to the topology of this object.
+     */
+    const DigitalTopologyType & topology() const;
+
+    /**
+     * @return a const reference to the adjacency of this object.
+     */
+    const typename DigitalTopologyType::ForegroundAdjacencyType & 
+    adjacency() const;
+
     // ----------------------- Object services --------------------------------
   public:
 
     /**
-     * @return the
+     * Let A be this object with foreground adjacency k and N_k(p) the
+     * k-neighborhood of p. Returns the set A intersected with N_k(p).
+     *
+     * @param p any point (in the domain of the digital object, not
+     * necessarily in the object).
+     *
+     * @return the kappa-neighborhood of [p] in this object.
+     *
+     * @see neighborhoodSize
+     *
+     * NB: if you need only the size of neighborhood, use neighborhoodSize.
+     */
+    Object<DigitalTopologyType,SmallSet> neighborhood( const Point & p ) const;
+
+    /**
+     * @param p any point (in the domain of the digital object, not
+     * necessarily in the object).
+     *
+     * @return the cardinal of the kappa-neighborhood of [p] in this object.
+     *
+     * @see neighborhood
+     *
+     * NB: faster than computing the neighborhood then computing its cardinal.
+     */
+    SizeType neighborhoodSize( const Point & p ) const;
+
+    /**
+     * Let A be this object with foreground adjacency k and N*_k(p)
+     * the proper k-neighborhood of p. Returns the set A intersected
+     * with N*_k(p).
+     *
+     * @param p any point (in the domain of the digital object, not
+     * necessarily in the object).
+     *
+     * @return the kappa-neighborhood of [p] in this object, without p.
+     *
+     * @see properNeighborhoodSize
+     *
+     * NB: if you need only the size of the proper neighborhood, use
+     * properNeighborhoodSize.
+     */
+    Object<DigitalTopologyType,SmallSet> properNeighborhood
+    ( const Point & p ) const;
+
+    /**
+     * @param p any point (in the domain of the digital object, not
+     * necessarily in the object).
+     *
+     * @return the cardinal of the kappa-neighborhood of [p] in this object.
+     *
+     * @see properNeighborhood
+     *
+     * NB: faster than computing the proper neighborhood then
+     * computing its cardinal.
+     */
+    SizeType properNeighborhoodSize( const Point & p ) const;
+ 
+    /**
+     * @return the border of this object (the set of points of this
+     * which is lambda()-adjacent with some point of the background).
      */
     Object border() const;
 
@@ -177,13 +275,6 @@ namespace DGtal
   private:
 
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Object & operator= ( const Object & other );
 
     // ------------------------- Internals ------------------------------------
   private:

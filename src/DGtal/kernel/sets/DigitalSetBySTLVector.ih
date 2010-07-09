@@ -190,7 +190,9 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::insertNew
 ( PointInputIterator first, PointInputIterator last )
 {
-  std::copy( first, last, myVector.end() );
+  while ( first != last )
+    myVector.push_back( *first++ );
+  // std::copy( first, last, myVector.end() );
 }
 
 

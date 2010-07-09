@@ -77,9 +77,9 @@ namespace DGtal
    */
   template <typename Domain>
   struct CDigitalSet : 
-    boost::DefaultConstructible,
-    boost::CopyConstructible, 
-    boost::Assignable
+    boost::DefaultConstructible< Domain >,
+    boost::CopyConstructible< Domain >, 
+    boost::Assignable< Domain >
   {
     // ----------------------- Concept checks ------------------------------
   public:

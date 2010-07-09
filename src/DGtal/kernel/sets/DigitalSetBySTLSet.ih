@@ -198,7 +198,7 @@ template <typename Domain>
 typename DGtal::DigitalSetBySTLSet<Domain>::SizeType
 DGtal::DigitalSetBySTLSet<Domain>::erase( const Point & p )
 {
-  mySet.erase( p );
+  return mySet.erase( p );
 }
 
 /**

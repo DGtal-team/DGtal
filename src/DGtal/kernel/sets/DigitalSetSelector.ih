@@ -28,12 +28,26 @@
 // TEMPLATE SPECIALIZATION
 ///////////////////////////////////////////////////////////////////////////////
 namespace DGtal {
+
   /**
    * DigitalSetSelector specializarion when Preferences is
    * SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS
    */
   template <typename Domain>
   struct DigitalSetSelector<Domain, SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS>
+  {
+    /**
+     * Adequate digital set representation for the given preferences.
+     */
+    typedef DigitalSetBySTLVector<Domain> Type;
+  };
+
+  /**
+   * DigitalSetSelector specializarion when Preferences is
+   * SMALL_DS+LOW_VAR_DS+HIGH_ITER_DS+LOW_BEL_DS
+   */
+  template <typename Domain>
+  struct DigitalSetSelector<Domain, SMALL_DS+LOW_VAR_DS+HIGH_ITER_DS+LOW_BEL_DS>
   {
     /**
      * Adequate digital set representation for the given preferences.

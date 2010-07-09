@@ -79,6 +79,12 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
+    typedef ForegroundAdjacency ForegroundAdjacencyType;
+    typedef BackgroundAdjacency BackgroundAdjacencyType;
+    typedef typename ForegroundAdjacency::Point Point;
+    // should be the same as Point.
+    typedef typename BackgroundAdjacency::Point BackPoint; 
+    
     BOOST_CONCEPT_ASSERT(( CAdjacency< ForegroundAdjacency > ));
     BOOST_CONCEPT_ASSERT(( CAdjacency< BackgroundAdjacency > ));
     
