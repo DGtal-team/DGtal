@@ -131,7 +131,7 @@ namespace DGtal
     /**
      * @return a const reference to the background connectedness.
      */
-    const ForegroundAdjacency & lambda() const;
+    const BackgroundAdjacency & lambda() const;
 
     /**
      * @return JORDAN iff the topology is Jordan, NOT_JORDAN iff the

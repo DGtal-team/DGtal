@@ -87,7 +87,7 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::kappa() const
  */
 template <typename ForegroundAdjacency, typename BackgroundAdjacency>
 inline
-const ForegroundAdjacency & 
+const BackgroundAdjacency & 
 DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::lambda() const
 {
   return myLambda;

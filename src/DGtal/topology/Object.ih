@@ -357,6 +357,51 @@ DGtal::Object<DigitalTopologyType,DigitalSet>
 }
 
 
+
+/**
+ * @return the border of this object (the set of points of this
+ * which is lambda()-adjacent with some point of the background).
+ */
+template <typename DigitalTopologyType, typename DigitalSet>
+inline
+DGtal::Object<DigitalTopologyType,DigitalSet>
+DGtal::Object<DigitalTopologyType,DigitalSet>::border() const
+{
+  typedef std::vector<Point> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  const DigitalSet & mySet = pointSet();
+  Object<DigitalTopologyType,DigitalSet> output( topology(), 
+						 mySet.domain() );
+  DigitalSet & outputSet = output.pointSet();
+
+  // Loop on all points of the set.
+  const DigitalSetConstIterator it_end = mySet.end();
+  for ( DigitalSetConstIterator it = mySet.begin();
+	it != it_end;
+	++it )
+    {
+      std::back_insert_iterator< Container > back_ins_it( neigh );
+      topology().lambda().writeProperNeighborhood( *it, back_ins_it );
+      // Checks if any point is not in the object.
+      const ContainerConstIterator itc_end( neigh.end() );
+      for ( ContainerConstIterator itc = neigh.begin();
+	    itc != itc_end;
+	    ++itc )
+	if ( pointSet().find( *itc ) == it_end )
+	  {
+	    outputSet.insertNew( *it );
+	    break;
+	  }
+      neigh.clear();
+    }
+  return output;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

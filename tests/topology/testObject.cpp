@@ -44,13 +44,19 @@ bool testObject()
   typedef MetricAdjacency< Z2, 2 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef HyperRectDomain< Z2 > DomainType; 
-  Adj4 adj4;
-  Adj8 adj8;
-  DT48 dt48( adj4, adj8, JORDAN_DT );
   typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
      MediumSet;
 //   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
 //     MediumSet;
+  typedef Object<DT48, MediumSet> ObjectType;
+  typedef ObjectType::SmallSet SmallSet;
+  typedef Object<DT48, SmallSet> SmallObjectType;
+  typedef ObjectType::SizeType SizeType;
+
+  Adj4 adj4;
+  Adj8 adj8;
+  DT48 dt48( adj4, adj8, JORDAN_DT );
+
   Point p1( { -500, -500 } );
   Point p2( { 500, 500 } );
   Point c( { 0, 0 } );
@@ -69,13 +75,13 @@ bool testObject()
   trace.endBlock();
 
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
-  Object<DT48, MediumSet> disk_object( dt48, disk );
+  ObjectType disk_object( dt48, disk );
   nbok += disk_object.size() == 636101 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Disk (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
-  Object<DT48, MediumSet> disk_object2( disk_object );
+  ObjectType disk_object2( disk_object );
   nbok += disk_object2.size() == 636101 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -100,7 +106,6 @@ bool testObject()
   trace.endBlock();
 
   trace.beginBlock ( "Testing neighborhoods ..." );
-  typedef Object<DT48, MediumSet>::SmallSet SmallSet;
   Object<DT48, SmallSet> neigh = disk_object.neighborhood( c );
   nbok += neigh.size() == 4 ? 1 : 0; 
   nb++;
@@ -113,7 +118,6 @@ bool testObject()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "N*_4(Disk, " << l << ").size() = " << neigh.size()
 	       << " == 3" << std::endl;
-  typedef Object<DT48, MediumSet>::SizeType SizeType;
   SizeType size = disk_object.properNeighborhoodSize( l );
   nbok += size == 3 ? 1 : 0; 
   nb++;
@@ -137,7 +141,7 @@ bool testObject()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "neigh = disk_object, size() = " << neigh.size() 
 	       << " == 636100" << std::endl;
-  Object<DT48, SmallSet> neigh2 = disk_object2.neighborhood( c );
+  SmallObjectType neigh2 = disk_object2.neighborhood( c );
   DigitalSetConverter<SmallSet>::assign
     ( neigh.pointSet(), neigh2.pointSet() );
   nbok += neigh.size() == 5 ? 1 : 0; 
@@ -146,6 +150,23 @@ bool testObject()
 	       << "neigh = N_4(Disk2, c), size() = " << neigh.size() 
 	       << " == 5" << std::endl;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing border extraction ..." );
+  ObjectType bdisk = disk_object.border();
+  nbok += bdisk.size() == 3600 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Border(Disk, c), size() = " << bdisk.size() 
+	       << " == 5" << std::endl;
+  ObjectType bdisk2 = disk_object2.border();
+  nbok += bdisk2.size() == 3592 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Border(Disk2, c), size() = " << bdisk2.size() 
+	       << " == 5" << std::endl;
+
+  trace.endBlock();
+
 
   return nbok == nb;
 }
