@@ -19,6 +19,7 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetConverter.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/DomainMetricAdjacency.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -40,10 +41,14 @@ bool testObject()
   
   typedef SpaceND< int, 2 > Z2;
   typedef Z2::Point Point;
-  typedef MetricAdjacency< Z2, 1 > Adj4;
-  typedef MetricAdjacency< Z2, 2 > Adj8;
-  typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef HyperRectDomain< Z2 > DomainType; 
+  Point p1( { -449, -449 } );
+  Point p2( { 449, 449 } );
+  DomainType domain( p1, p2 );
+
+  typedef DomainMetricAdjacency< DomainType, 1 > Adj4;
+  typedef DomainMetricAdjacency< DomainType, 2 > Adj8;
+  typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
      MediumSet;
 //   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
@@ -53,15 +58,12 @@ bool testObject()
   typedef Object<DT48, SmallSet> SmallObjectType;
   typedef ObjectType::SizeType SizeType;
 
-  Adj4 adj4;
-  Adj8 adj8;
+  Adj4 adj4( domain );
+  Adj8 adj8( domain );
   DT48 dt48( adj4, adj8, JORDAN_DT );
 
-  Point p1( { -500, -500 } );
-  Point p2( { 500, 500 } );
   Point c( { 0, 0 } );
   Point l( { 449, 0 } );
-  DomainType domain( p1, p2 );
   MediumSet disk( domain );
   trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
   for ( DomainType::ConstIterator it = domain.begin(); 
@@ -153,17 +155,17 @@ bool testObject()
 
   trace.beginBlock ( "Testing border extraction ..." );
   ObjectType bdisk = disk_object.border();
-  nbok += bdisk.size() == 3600 ? 1 : 0; 
+  nbok += bdisk.size() == 3372 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Border(Disk, c), size() = " << bdisk.size() 
-	       << " == 5" << std::endl;
+	       << " == 3372" << std::endl;
   ObjectType bdisk2 = disk_object2.border();
-  nbok += bdisk2.size() == 3592 ? 1 : 0; 
+  nbok += bdisk2.size() == 3364 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Border(Disk2, c), size() = " << bdisk2.size() 
-	       << " == 5" << std::endl;
+	       << " == 3364" << std::endl;
 
   trace.endBlock();
 

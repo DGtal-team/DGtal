@@ -70,16 +70,18 @@ namespace DGtal
    * \see test_HyperRectDomain.cpp
    * \see test_HyperRectDomain-snippet.cpp
    */
-  template<typename Space>
+  template<typename TSpace>
   class HyperRectDomain
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     
 
-    typedef Space DigitalSpace;
+    typedef TSpace DigitalSpace;
+    typedef TSpace SpaceType;
+    typedef TSpace Space;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
     typedef typename Space::SizeType SizeType;
@@ -195,7 +197,7 @@ namespace DGtal
     static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
     {
       std::size_t val = 1;
-      for (unsigned int k =  0; k < Space::staticDimension ; k++)
+      for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
 	val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
 
       return val;
@@ -214,6 +216,11 @@ namespace DGtal
      **/
     const Point &upperBound() const ;
 
+    /**
+     * @param p any point.
+     * @return 'true' if point [p] is inside this domain.
+     */
+    bool isInside( const Point & p ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -256,9 +263,9 @@ namespace DGtal
    * @param object the object of class 'HyperRectDomain' to write.
    * @return the output stream after the writing.
    */
-  template<typename Space>
+  template<typename TSpace>
   std::ostream&
-  operator<< ( std::ostream & out, const HyperRectDomain<Space> & object );
+  operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
 
 
 } // namespace DGtal

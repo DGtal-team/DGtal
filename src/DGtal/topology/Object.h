@@ -231,7 +231,7 @@ namespace DGtal
      * @return the border of this object (the set of points of this
      * which is lambda()-adjacent with some point of the background).
      *
-     * NB : the background adjacency should be symmetric.
+     * NB : the background adjacency should be a symmetric relation.
      */
     Object border() const;
 

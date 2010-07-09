@@ -40,10 +40,10 @@ namespace DGtal
    * @ingroup Concepts
    *
    * \brief Aim: The concept CAdjacency defines an elementary
-   * adjacency relation between points of a digital domain.
+   * adjacency relation between points of a digital space.
    * 
    * It thus distinguishes which points are close and which points are
-   * further away in this domain. Adjacency relations are used to
+   * further away in this space. Adjacency relations are used to
    * define a digital topology, in the sense of Rosenfeld or in the
    * sense of Herman. In other words, and adjacency relation define a
    * neighborhood graph on the points of a digital domain.

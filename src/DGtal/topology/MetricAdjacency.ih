@@ -251,15 +251,16 @@ namespace DGtal {
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
-      *out_it++ = Point( { x-1, y-1 } );
-      *out_it++ = Point( { x  , y-1 } );
-      *out_it++ = Point( { x+1, y-1 } );
-      *out_it++ = Point( { x-1, y   } );
-      *out_it++ = Point( { x  , y   } );
-      *out_it++ = Point( { x+1, y   } );
-      *out_it++ = Point( { x-1, y+1 } );
-      *out_it++ = Point( { x  , y+1 } );
-      *out_it++ = Point( { x+1, y+1 } );
+  
+      *out_it++ = Point(  x-1, y-1  );
+      *out_it++ = Point(  x  , y-1  );
+      *out_it++ = Point(  x+1, y-1  );
+      *out_it++ = Point(  x-1, y    );
+      *out_it++ = Point(  x  , y    );
+      *out_it++ = Point(  x+1, y    );
+      *out_it++ = Point(  x-1, y+1  );
+      *out_it++ = Point(  x  , y+1  );
+      *out_it++ = Point(  x+1, y+1  );
     }
 
     template <typename OutputIterator>
@@ -270,14 +271,14 @@ namespace DGtal {
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
-      *out_it++ = Point( { x-1, y-1 } );
-      *out_it++ = Point( { x  , y-1 } );
-      *out_it++ = Point( { x+1, y-1 } );
-      *out_it++ = Point( { x-1, y   } );
-      *out_it++ = Point( { x+1, y   } );
-      *out_it++ = Point( { x-1, y+1 } );
-      *out_it++ = Point( { x  , y+1 } );
-      *out_it++ = Point( { x+1, y+1 } );
+      *out_it++ = Point(  x-1, y-1  );
+      *out_it++ = Point(  x  , y-1  );
+      *out_it++ = Point(  x+1, y-1  );
+      *out_it++ = Point(  x-1, y    );
+      *out_it++ = Point(  x+1, y    );
+      *out_it++ = Point(  x-1, y+1  );
+      *out_it++ = Point(  x  , y+1  );
+      *out_it++ = Point(  x+1, y+1  );
     }
 
     // ----------------------- Interface --------------------------------------
@@ -345,11 +346,11 @@ namespace DGtal {
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
-      *out_it++ = Point( { x  , y-1 } );
-      *out_it++ = Point( { x-1, y   } );
-      *out_it++ = Point( { x  , y   } );
-      *out_it++ = Point( { x+1, y   } );
-      *out_it++ = Point( { x  , y+1 } );
+      *out_it++ = Point(  x  , y-1  );
+      *out_it++ = Point(  x-1, y    );
+      *out_it++ = Point(  x  , y    );
+      *out_it++ = Point(  x+1, y    );
+      *out_it++ = Point(  x  , y+1  );
     }
 
     template <typename OutputIterator>
@@ -360,10 +361,10 @@ namespace DGtal {
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
-      *out_it++ = Point( { x  , y-1 } );
-      *out_it++ = Point( { x-1, y   } );
-      *out_it++ = Point( { x+1, y   } );
-      *out_it++ = Point( { x  , y+1 } );
+      *out_it++ = Point(  x  , y-1  );
+      *out_it++ = Point(  x-1, y    );
+      *out_it++ = Point(  x+1, y    );
+      *out_it++ = Point(  x  , y+1  );
     }
 
     // ----------------------- Interface --------------------------------------

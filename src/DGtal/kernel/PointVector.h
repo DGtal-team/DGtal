@@ -110,6 +110,33 @@ namespace DGtal
      * the size of the vector)
      */
     PointVector( const T * ptrValues );
+
+    /**
+     * Constructor from one value (the Dimension of the vector should
+     * be at least 1). Other components are set to 0.
+     *
+     * @param x the first value.
+     */
+    PointVector( const T & x );
+
+    /**
+     * Constructor from two values (the Dimension of the vector should
+     * be at least 2). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     */
+    PointVector( const T & x, const T & y );
+
+    /**
+     * Constructor from three values (the Dimension of the vector should
+     * be at least 3). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     * @param z the third value.
+     */
+    PointVector( const T & x, const T & y, const T & z );
     
 #ifdef CPP0X_INITIALIZER_LIST
     /**
@@ -346,6 +373,7 @@ namespace DGtal
      *
      * @param apoint any point.
      * @return a new point being the inf between *this and apoint.
+     * @see isBelow
      */
     PointVector inf( const PointVector& apoint ) const;
 
@@ -358,6 +386,20 @@ namespace DGtal
      * @return a new point being the sup between *this and apoint.
      */
     PointVector sup( const PointVector& apoint ) const;
+
+    /**
+     * @param p any point.
+     * @return true if this is below p (ie. this==inf(this,p))
+     * NB: faster than computing the infimum and compare it afterwards.
+     */
+    bool isLower( const PointVector& p ) const;
+
+    /**
+     * @param p any point.
+     * @return true if this is upper p (ie. this==sup(this,p))
+     * NB: faster than computing the supremum and compare it afterwards.
+     */
+    bool isUpper( const PointVector& p ) const;
 
     /**
      * Specify the set of norm types

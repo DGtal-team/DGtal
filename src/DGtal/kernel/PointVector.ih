@@ -52,6 +52,39 @@ DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
     myArray[ i ] = ptrValues[ i ];
 }
 //------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+DGtal::PointVector<T,N>::PointVector( const T & x )
+{
+  ASSERT( N >= 1 );
+  myArray[ 0 ] = x;
+  for ( std::size_t i = 1; i < N; ++i )
+    myArray[ i ] = 0;
+}
+//------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+DGtal::PointVector<T,N>::PointVector( const T & x, const T & y )
+{
+  ASSERT( N >= 2 );
+  myArray[ 0 ] = x;
+  myArray[ 1 ] = y;
+  for ( std::size_t i = 2; i < N; ++i )
+    myArray[ i ] = 0;
+}
+//------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+DGtal::PointVector<T,N>::PointVector( const T & x, const T & y, const T & z )
+{
+  ASSERT( N >= 3 );
+  myArray[ 0 ] = x;
+  myArray[ 1 ] = y;
+  myArray[ 2 ] = z;
+  for ( std::size_t i = 3; i < N; ++i )
+    myArray[ i ] = 0;
+}
+//------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
 template<typename T,std::size_t N>
 inline
@@ -269,6 +302,26 @@ inline
 DGtal::PointVector<T,N>
 DGtal::PointVector<T,N>::sup( const PointVector& apoint ) const
 { return PointVector(*this,apoint,MaxFunctor<T>()); }
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+bool
+DGtal::PointVector<T,N>::isLower( const PointVector& p ) const
+{
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    if ( p[ i ] < myArray[ i ] ) return false;
+  return true;
+}
+//------------------------------------------------------------------------------
+template<typename T, std::size_t N>
+inline
+bool
+DGtal::PointVector<T,N>::isUpper( const PointVector& p ) const
+{
+  for ( std::size_t i = 0; i < myArray.size(); ++i )
+    if ( p[ i ] > myArray[ i ] ) return false;
+  return true;
+}
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline

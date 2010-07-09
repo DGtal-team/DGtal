@@ -129,6 +129,18 @@ DGtal::HyperRectDomain<TSpace>::lowerBound() const
   return myLowerBound;
 }
 
+/**
+ * @param p any point.
+ * @return 'true' if point [p] is inside this domain.
+ */
+template<typename TSpace>
+inline
+bool
+DGtal::HyperRectDomain<TSpace>::isInside( const Point & p ) const
+{
+  return myLowerBound.isLower( p ) && myUpperBound.isUpper( p );
+}
+
 
 /**
  * Returns the highest point of the space diagonal.

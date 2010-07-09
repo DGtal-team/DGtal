@@ -34,6 +34,7 @@ namespace DGtal
   template<typename T>
   struct MinFunctor
   {
+    inline
     T operator() (const T&a, const T&b) const
     { return std::min(a,b); }
   };
@@ -41,6 +42,7 @@ namespace DGtal
   template<typename T>
   struct MaxFunctor
   {
+    inline
     T operator() (const T&a, const T&b) const
     { return std::max(a,b); }
   };
