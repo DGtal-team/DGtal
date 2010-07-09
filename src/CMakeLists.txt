@@ -20,7 +20,6 @@ include(Board/ModuleSRC.txt)
 # The extension is already found. Any number of sources could be listed here.
 add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC} ${BOARD_SRC})
 
-message(STATUS "DTGAL_SRCs: "${DGTAL_SRC})
 
 install(TARGETS ${LIBDGTAL_NAME} 
         RUNTIME DESTINATION bin

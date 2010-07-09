@@ -18,8 +18,8 @@ message( "       with the syntax (for instance)")
 message( "         cmake -DCMAKE_BUILD_TYPE:STRING=Debug")
 message( "-------------------------------------------------------------------------------" )
 
-message("Source DIR is ${PROJECT_SOURCE_DIR}")
-message("Binary DIR is ${PROJECT_BINARY_DIR}")
+message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
+message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
 
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 
@@ -45,8 +45,19 @@ try_compile( CPP0X_INITIALIZER_LIST
   )
 if ( CPP0X_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_INITIALIZER_LIST")
-  message( "[c++0x] With initializer_list" )
+  message( "-- [c++0x] with initializer_list" )
 endif ( CPP0X_INITIALIZER_LIST )
+
+try_compile( CPP0X_AUTO 
+  ${CMAKE_BINARY_DIR}/CMakeTmp
+  ${CMAKE_SOURCE_DIR}/tests/cpp0x/auto.cpp
+  COMPILE_DEFINITIONS "-std=c++0x"
+  OUTPUT_VARIABLE OUTPUT
+  )
+if ( CPP0X_AUTO )
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_AUTO")
+  message( "-- [c++0x] with auto" )
+endif ( CPP0X_AUTO )
 
 # -----------------------------------------------------------------------------
 # Check packages
@@ -73,17 +84,14 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 #FIND_PACKAGE(Boost REQUIRED PATHS /opt/local /opt/local/include /opt/local/lib)
 set ( CMAKE_PREFIX_PATH "/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
-message( "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
+message( "-- CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 #find_path( Boost_DIR include/boost/assert.hpp )
 #message( "Boost_DIR = " ${Boost_DIR} )
 FIND_PACKAGE(Boost REQUIRED)
 if ( Boost_FOUND )
-   message( "[OK] Boost found. include=${Boost_INCLUDE_DIR}" )
+   message( "-- [OK] Boost found. include=${Boost_INCLUDE_DIR}" )
    include_directories( ${Boost_INCLUDE_DIR} )
 endif ( Boost_FOUND )
-
-
-
 
 # -----------------------------------------------------------------------------
 # Defines some variables
@@ -122,10 +130,6 @@ if (BUILD_TESTS)
 endif (BUILD_TESTS)
 
 
-#------------------------------------------------------------------------------
-# Add subdirectories
-#------------------------------------------------------------------------------
-add_subdirectory (src)
 
 #------------------------------------------------------------------------------
 # Prepare installations concerning global scope.
@@ -191,3 +195,9 @@ SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*)
  endif(WIN32)
 
 INCLUDE(CPack)
+
+
+#------------------------------------------------------------------------------
+# Add subdirectories
+#------------------------------------------------------------------------------
+add_subdirectory (src)
