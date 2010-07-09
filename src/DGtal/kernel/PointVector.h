@@ -99,7 +99,9 @@ namespace DGtal
      * Constructor from initializer list.
      * @param the initializer list.
      */
+#ifdef CPP0X_INITIALIZER_LIST
     PointVector(std::initializer_list<T> init);
+#endif // CPP0X_INITIALIZER_LIST
 
     /** Constructor taking apoint and a functor as parameters.
      *  The new point is initialized by the result of functor f

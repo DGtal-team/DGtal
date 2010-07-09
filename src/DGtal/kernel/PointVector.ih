@@ -47,10 +47,12 @@ template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector( const T * ptrValues )
 {
+  // The problem here is that we have no guaranty on the size of init !!
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = ptrValues[ i ];
 }
 //------------------------------------------------------------------------------
+#ifdef CPP0X_INITIALIZER_LIST
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
@@ -58,7 +60,10 @@ DGtal::PointVector<T,N>::PointVector(std::initializer_list<T> init)
   unsigned int i=0;
   for (const T *p = init.begin (); p != init.end () && i<N; ++p, ++i)
     myArray[ i ] = *p;
+  for ( ; i<N; ++i)
+    myArray[i]=0;
 }
+#endif // CPP0X_INITIALIZER_LIST
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
 inline

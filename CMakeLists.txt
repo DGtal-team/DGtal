@@ -32,6 +32,22 @@ message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
 
+
+# -----------------------------------------------------------------------------
+# Test some c++0x functionalities
+# -----------------------------------------------------------------------------
+# Look for modules
+try_compile( CPP0X_INITIALIZER_LIST 
+  ${CMAKE_BINARY_DIR}/CMakeTmp
+  ${CMAKE_SOURCE_DIR}/tests/cpp0x/initializer_list.cpp
+  COMPILE_DEFINITIONS "-std=c++0x"
+  OUTPUT_VARIABLE OUTPUT
+  )
+if ( CPP0X_INITIALIZER_LIST )
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_INITIALIZER_LIST")
+  message( "[c++0x] With initializer_list" )
+endif ( CPP0X_INITIALIZER_LIST )
+
 # -----------------------------------------------------------------------------
 # Check packages
 # -----------------------------------------------------------------------------
