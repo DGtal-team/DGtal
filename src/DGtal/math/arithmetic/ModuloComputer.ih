@@ -29,7 +29,7 @@
  */
 template <typename T>
 inline
-DGtal::ModuloComputer<T>::ModuloComputer( const typename T::UnsignedVersion &  m )
+DGtal::ModuloComputer<T>::ModuloComputer( const UnsignedInteger &  m )
   : k( m )
 {
 }
@@ -47,7 +47,7 @@ DGtal::ModuloComputer<T>::ModuloComputer( const typename T::UnsignedVersion &  m
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::increment( typename T::UnsignedVersion & i ) const
+DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -61,7 +61,7 @@ DGtal::ModuloComputer<T>::increment( typename T::UnsignedVersion & i ) const
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::decrement( typename T::UnsignedVersion & i ) const
+DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
 {
   if ( i == 0 ) i = k;
   --i;
@@ -75,11 +75,11 @@ DGtal::ModuloComputer<T>::decrement( typename T::UnsignedVersion & i ) const
  */
 template <typename T>
 inline
-typename T::UnsignedVersion 
-DGtal::ModuloComputer<T>::next( typename T::UnsignedVersion i ) const
+typename DGtal::ModuloComputer<T>::UnsignedInteger 
+DGtal::ModuloComputer<T>::next( const UnsignedInteger & i ) const
 {
-  ++i;
-  return ( i == k ) ? 0 : i;
+  
+  return ( (i+1) == k ) ? 0 : (i+1);
 }
 
 
@@ -90,8 +90,8 @@ DGtal::ModuloComputer<T>::next( typename T::UnsignedVersion i ) const
  */
 template <typename T>
 inline
-typename T::UnsignedVersion 
-DGtal::ModuloComputer<T>::previous( typename T::UnsignedVersion i ) const
+typename DGtal::ModuloComputer<T>::UnsignedInteger 
+DGtal::ModuloComputer<T>::previous( const UnsignedInteger & i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -104,11 +104,12 @@ DGtal::ModuloComputer<T>::previous( typename T::UnsignedVersion i ) const
  */
 template <typename T>
 inline
-typename T::UnsignedVersion 
-DGtal::ModuloComputer<T>::cast( typename T::SignedVersion i ) const
+typename DGtal::ModuloComputer<T>::UnsignedInteger 
+DGtal::ModuloComputer<T>::cast( const Integer & i ) const
 {
-  while ( i < 0 ) i += k;
-  typename T::UnsignedVersion ip = (typename T::SignedVersion) i;
+  Integer tmp = i;
+  while ( i < 0 ) tmp += k;
+  UnsignedInteger ip = (Integer) tmp;
   while ( ip >= k ) ip -= k;
   return ip;
 }
@@ -125,9 +126,9 @@ DGtal::ModuloComputer<T>::cast( typename T::SignedVersion i ) const
 template <typename T>
 inline
 bool 
-DGtal::ModuloComputer<T>::less( typename T::UnsignedVersion i, typename T::UnsignedVersion j ) const
+DGtal::ModuloComputer<T>::less( const  UnsignedInteger & i, const  UnsignedInteger & j ) const
 {
-  typename T::SignedVersion d = ( (T) j ) - ( (T) i );
+  Integer d = ( (T) j ) - ( (T) i );
   if ( d > 0 )
     return d < (T) ( k / 2 );
   else
@@ -145,8 +146,8 @@ DGtal::ModuloComputer<T>::less( typename T::UnsignedVersion i, typename T::Unsig
  */
 template <typename T>
 inline
-typename T::UnsignedVersion
-DGtal::ModuloComputer<T>::posDiff( typename T::UnsignedVersion j, typename T::UnsignedVersion i ) const
+typename DGtal::ModuloComputer<T>::UnsignedInteger 
+DGtal::ModuloComputer<T>::posDiff( const UnsignedInteger &  j, const UnsignedInteger & i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
 }

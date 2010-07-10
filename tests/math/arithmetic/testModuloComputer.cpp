@@ -38,11 +38,10 @@ bool testModuloComputer()
 
   //Construct an arithmetic modulo 15
 
-  typedef IntegerTraits<int> myInt;
   
-  ModuloComputer<myInt> modular(15);
-  typedef myInt::UnsignedVersion myUnsignedInteger;
-  myInt::UnsignedVersion a;
+  ModuloComputer< int > modular(15);
+  typedef IntegerTraits< int >::UnsignedVersion myUnsignedInteger;
+  myUnsignedInteger a;
   
   a = modular.cast( 2 );   //a contains the value 2
   nbok += (a == 2) ? 1 : 0;

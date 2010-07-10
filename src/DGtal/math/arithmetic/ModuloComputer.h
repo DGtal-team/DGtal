@@ -58,16 +58,18 @@ namespace DGtal
    *   ...
    *  @endcode
    */
-  template <typename IntegerTrait>
+  template <typename TInteger>
   class ModuloComputer
   {
 
-    BOOST_CONCEPT_ASSERT((CInteger<typename IntegerTrait::SignedVersion>));
-    BOOST_CONCEPT_ASSERT((CUnsignedInteger<typename IntegerTrait::UnsignedVersion>));    
+    typedef typename IntegerTraits<TInteger>::SignedVersion Integer;
+    typedef typename IntegerTraits<TInteger>::UnsignedVersion UnsignedInteger;
+ 
 
-    typedef typename IntegerTrait::UnsignedVersion UnsignedInteger;
-    typedef typename IntegerTrait::SignedVersion Integer;
-    
+    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+    BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
+
+
   public:    
     /**
      * Initializes the modulo computer with the value [m].
@@ -94,21 +96,21 @@ namespace DGtal
      * @return the incremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger next(  UnsignedInteger i ) const;
+    UnsignedInteger  next(  const UnsignedInteger & i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger previous(  UnsignedInteger i ) const;
+    UnsignedInteger previous(  const UnsignedInteger  & i ) const;
 
     /**
      * @param i any integer value.
      * @return the value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger cast( Integer i ) const;
+    UnsignedInteger cast( const Integer & i ) const;
     
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
@@ -119,7 +121,7 @@ namespace DGtal
      * @return 'true' if [i] strictly precedes [j] in a window 'floor([k]/2)'.
      * @see k
      */
-    bool less( UnsignedInteger i, UnsignedInteger j ) const;
+    bool less( const UnsignedInteger & i, const UnsignedInteger & j ) const;
 
     /**
      * Performs j - i modulo, assuming less(i,j) is true.
@@ -129,7 +131,7 @@ namespace DGtal
      * @return the value j - i, always positive. 
      * @see k
      */
-    UnsignedInteger posDiff( UnsignedInteger j, UnsignedInteger i ) const;
+    UnsignedInteger posDiff( const UnsignedInteger  & j, const UnsignedInteger & i ) const;
     
   public:
     /**

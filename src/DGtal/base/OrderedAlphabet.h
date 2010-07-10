@@ -6,6 +6,8 @@
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author Laurent Provot (\c Laurent.Provot@loria.fr )
  * LORIA (CNRS, UMR 7503), Nancy University, France
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/01
  *
@@ -51,7 +53,7 @@ namespace DGtal
     /**
      * Internal integer type to consider in the OrderdAlphabet class.
      */
-    typedef IntegerTraits<int> IntegerTrait;
+    typedef int Integer;
      
     /**
      * The index datatype.

@@ -175,7 +175,7 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
   index_t s, index_t e ) const
 {
   size_t modulo = w.size();
-  ModuloComputer< DGtal::OrderedAlphabet::IntegerTrait > mc( modulo );
+  ModuloComputer< Integer > mc( modulo );
   index_t i = s;
   index_t j = mc.next( s );
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
@@ -284,7 +284,7 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
   ASSERT( ( order( w[ s ] ) == 1 )
           || ( order( w[ s ] ) == 2 ) );
   size_t modulo = w.size();
-  ModuloComputer< DGtal::OrderedAlphabet::IntegerTrait > mc( modulo );
+  ModuloComputer< Integer > mc( modulo );
   index_t i = s;
   index_t j = mc.next( s );
   unsigned int p = 1;
@@ -375,7 +375,7 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
 				    index_t & s,
 				    bool & cvx )
 {
-  ModuloComputer< DGtal::OrderedAlphabet::IntegerTrait > mc( w.size() );
+  ModuloComputer< Integer > mc( w.size() );
   size_t l;
   size_t len;
   size_t nb;

@@ -430,8 +430,8 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
 	   << endl;
       return false;
     }
-  typedef IntegerTraits<int> Integer;
-  ModuloComputer< Integer > mc( nb );
+
+  ModuloComputer< int > mc( nb );
   unsigned int i = 0;
   unsigned int j = 0;
   vector<unsigned int> c2cleanTMP;
