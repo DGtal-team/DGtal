@@ -1,5 +1,7 @@
 SET(DGTAL_TESTS_SRC
-   testOrderedAlphabet)
+   testBasicBoolFunctions
+   testOrderedAlphabet
+   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

@@ -65,7 +65,7 @@ namespace DGtal
    *
    * @endcode
    */
-  template <typename Domain, uint Preferences >
+  template <typename Domain, int Preferences >
   struct DigitalSetSelector
   {
     // ----------------------- Local types ------------------------------

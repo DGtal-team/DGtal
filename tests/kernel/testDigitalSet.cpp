@@ -71,7 +71,7 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
   return nbok == nb;
 }
 
-template < typename DigitalDomainType, DGtal::size_t props >
+template < typename DigitalDomainType, int props >
 bool testDigitalSetSelector( const DigitalDomainType & domain,
 			     const std::string & comment )
 {
