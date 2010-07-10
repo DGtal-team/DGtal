@@ -1,0 +1,106 @@
+/**
+ * @file BasicPointPredicates.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/10
+ *
+ * Implementation of inline methods defined in BasicPointPredicates.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+template <typename TPoint, bool boolCst>
+inline
+bool
+DGtal::ConstantPointPredicate<TPoint,boolCst>
+::operator()( const Point & p ) const
+{
+  return boolCst;
+}
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+DGtal::IsLowerPointPredicate<TPoint>
+::IsLowerPointPredicate( const Point & upperBound )
+  : myUpperBound( upperBound )
+{}
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::IsLowerPointPredicate<TPoint>
+::operator()( const Point & p ) const
+{
+  return p.isLower( myUpperBound );
+}
+
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+DGtal::IsUpperPointPredicate<TPoint>
+::IsUpperPointPredicate( const Point & lowerBound )
+  : myLowerBound( lowerBound )
+{}
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::IsUpperPointPredicate<TPoint>
+::operator()( const Point & p ) const
+{
+  return p.isUpper( myLowerBound );
+}
+
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+DGtal::IsWithinPointPredicate<TPoint>
+::IsWithinPointPredicate( const Point & lowerBound,
+			  const Point & upperBound )
+  : myLowerBound( lowerBound ), myUpperBound( upperBound )
+{}
+//------------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::IsWithinPointPredicate<TPoint>
+::operator()( const Point & p ) const
+{
+  return p.isUpper( myLowerBound )
+    && p.isLower( myUpperBound );
+}
+
+//------------------------------------------------------------------------------
+template <typename PointPredicate1, typename PointPredicate2>
+inline
+DGtal::BinaryPointPredicate<PointPredicate1,PointPredicate2>
+::BinaryPointPredicate( const PointPredicate1 & pred1,
+			const PointPredicate2 & pred2,
+			const BoolFunction2 & boolFunctor )
+  : myPred1( pred1 ), myPred2( pred2 ), myBoolFunctor( boolFunctor )
+{
+}
+//------------------------------------------------------------------------------
+template <typename PointPredicate1, typename PointPredicate2>
+inline
+bool 
+DGtal::BinaryPointPredicate<PointPredicate1,PointPredicate2>
+::operator()( const Point & p ) const
+{
+  return myBoolFunctor( myPred1( p ), myPred2( p ) );
+}
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -28,6 +28,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -103,34 +104,47 @@ namespace DGtal
     bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ); 
 
     /**
-     * Outputs the whole neighborhood of point [p] as a sequence of
-     * *out_it++ = ...
+     * Outputs the whole neighborhood of point [p] satisfying the
+     * given predicate as a sequence of *out_it++ = ...
      *
      * @tparam OutputIterator any output iterator (like
      * std::back_insert_iterator< std::vector<int> >).
      *
+     * @tparam PointPredicate any predicate object (defaut is true functor)
+     *
      * @param p any point of this space.
      * @param out_it any output iterator.
+     * @param pred the predicate.
      */
-    template <typename OutputIterator>
+    template <typename OutputIterator, 
+	      typename PointPredicate = TruePointPredicate< Point > >
     static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it );
+    void writeNeighborhood( const Point & p, 
+			    OutputIterator & out_it,
+			    const PointPredicate & pred 
+			    = TruePointPredicate< Point >() );
 
     /**
-     * Outputs the whole proper neighborhood of point [p] (thus
-     * without [p] itself) as a sequence of *out_it++ = ...
+     * Outputs the whole neighborhood of point [p] (except p itself)
+     * satisfying the given predicate as a sequence of *out_it++ = ...
      *
      * @tparam OutputIterator any output iterator (like
      * std::back_insert_iterator< std::vector<int> >).
      *
+     * @tparam PointPredicate any predicate object (defaut is true functor)
+     *
      * @param p any point of this space.
      * @param out_it any output iterator.
+     * @param pred the predicate.
      */
-    template <typename OutputIterator>
+    template <typename OutputIterator, 
+	      typename PointPredicate = TruePointPredicate< Point > >
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it );
-
+				  OutputIterator & out_it,
+				  const PointPredicate & pred 
+				  = TruePointPredicate< Point >() );
+    
     // ----------------------- Interface --------------------------------------
   public:
 

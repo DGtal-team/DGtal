@@ -1,0 +1,55 @@
+/**
+ * @file DomainPredicate.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/10
+ *
+ * Implementation of inline methods defined in DomainPredicate.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//------------------------------------------------------------------------------
+template <typename TDomain>
+inline
+DGtal::DomainPredicate<TDomain>
+::DomainPredicate( const Domain & domain )
+  : myDomain( &domain )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDomain>
+inline
+DGtal::DomainPredicate<TDomain>
+::DomainPredicate( const DomainPredicate & other )
+  : myDomain( other.myDomain )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDomain>
+inline
+bool
+DGtal::DomainPredicate<TDomain>
+::operator()( const Point & p ) const
+{
+  return myDomain->isInside( p );
+}
+//------------------------------------------------------------------------------
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

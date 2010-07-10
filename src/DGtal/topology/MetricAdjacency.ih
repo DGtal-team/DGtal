@@ -85,20 +85,24 @@ DGtal::MetricAdjacency<Space,maxNorm1,dimension>::isProperlyAdjacentTo
 }
 
 /**
- * Outputs the whole neighborhood of point [p] as a sequence of
- * *out_it++ = ...
+ * Outputs the whole neighborhood of point [p] satisfying the
+ * given predicate as a sequence of *out_it++ = ...
  *
  * @tparam OutputIterator any output iterator (like
  * std::back_insert_iterator< std::vector<int> >).
  *
+ * @tparam PointPredicate any predicate object (defaut is true functor)
+ *
  * @param p any point of this space.
  * @param out_it any output iterator.
+ * @param pred the predicate.
  */
 template <typename Space, std::size_t maxNorm1, std::size_t dimension>
-template <typename OutputIterator>
+template <typename OutputIterator, typename PointPredicate>
 void 
-DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeNeighborhood
-( const Point & p, OutputIterator & out_it )
+DGtal::MetricAdjacency<Space,maxNorm1,dimension>
+::writeNeighborhood
+( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
 {
   Point p1( p );
   for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
@@ -114,26 +118,16 @@ DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeNeighborhood
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( n1 <= maxNorm1 )
+      if ( ( n1 <= maxNorm1 ) && ( pred( *it ) ) )
 	*out_it++ = *it;
     }
 }
 
-/**
- * Outputs the whole proper neighborhood of point [p] (thus
- * without [p] itself) as a sequence of *out_it++ = ...
- *
- * @tparam OutputIterator any output iterator (like
- * std::back_insert_iterator< std::vector<int> >).
- *
- * @param p any point of this space.
- * @param out_it any output iterator.
- */
 template <typename Space, std::size_t maxNorm1, std::size_t dimension>
-template <typename OutputIterator>
+template <typename OutputIterator, typename PointPredicate>
 void
 DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeProperNeighborhood
-( const Point & p, OutputIterator & out_it )
+( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
 {
   Point p1( p );
   for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
@@ -149,7 +143,7 @@ DGtal::MetricAdjacency<Space,maxNorm1,dimension>::writeProperNeighborhood
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
+      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 )  && ( pred( *it ) ) )
 	*out_it++ = *it;
     }
 }
@@ -263,7 +257,28 @@ namespace DGtal {
       *out_it++ = Point(  x+1, y+1  );
     }
 
-    template <typename OutputIterator>
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeNeighborhood( const Point & p, 
+			    OutputIterator & out_it,
+			    const PointPredicate & pred )
+    {
+      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+    }
+
+    template < typename OutputIterator >
     inline
     static
     void writeProperNeighborhood( const Point & p, 
@@ -279,6 +294,26 @@ namespace DGtal {
       *out_it++ = Point(  x-1, y+1  );
       *out_it++ = Point(  x  , y+1  );
       *out_it++ = Point(  x+1, y+1  );
+    }
+
+    template <typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+				  OutputIterator & out_it,
+				  const PointPredicate & pred )
+    {
+      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -353,6 +388,23 @@ namespace DGtal {
       *out_it++ = Point(  x  , y+1  );
     }
 
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeNeighborhood( const Point & p, 
+			    OutputIterator & out_it,
+			    const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+    }
+
     template <typename OutputIterator>
     inline
     static
@@ -365,6 +417,22 @@ namespace DGtal {
       *out_it++ = Point(  x-1, y    );
       *out_it++ = Point(  x+1, y    );
       *out_it++ = Point(  x  , y+1  );
+    }
+
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+				  OutputIterator & out_it,
+				  const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
     }
 
     // ----------------------- Interface --------------------------------------

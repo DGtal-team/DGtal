@@ -373,7 +373,7 @@ namespace DGtal
      *
      * @param apoint any point.
      * @return a new point being the inf between *this and apoint.
-     * @see isBelow
+     * @see isLower
      */
     PointVector inf( const PointVector& apoint ) const;
 
@@ -384,6 +384,7 @@ namespace DGtal
      *
      * @param apoint any point.
      * @return a new point being the sup between *this and apoint.
+     * @see isUpper
      */
     PointVector sup( const PointVector& apoint ) const;
 

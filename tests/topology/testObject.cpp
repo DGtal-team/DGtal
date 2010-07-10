@@ -15,11 +15,13 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetConverter.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/DomainMetricAdjacency.h"
+#include "DGtal/topology/DomainAdjacency.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,8 +48,12 @@ bool testObject()
   Point p2( { 449, 449 } );
   DomainType domain( p1, p2 );
 
-  typedef DomainMetricAdjacency< DomainType, 1 > Adj4;
-  typedef DomainMetricAdjacency< DomainType, 2 > Adj8;
+  // typedef DomainMetricAdjacency< DomainType, 1 > Adj4;
+  // typedef DomainMetricAdjacency< DomainType, 2 > Adj8;
+  typedef MetricAdjacency< Z2, 1 > MetricAdj4;
+  typedef MetricAdjacency< Z2, 2 > MetricAdj8;
+  typedef DomainAdjacency< DomainType, MetricAdj4 > Adj4;
+  typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
      MediumSet;
@@ -58,8 +64,12 @@ bool testObject()
   typedef Object<DT48, SmallSet> SmallObjectType;
   typedef ObjectType::SizeType SizeType;
 
-  Adj4 adj4( domain );
-  Adj8 adj8( domain );
+  // Adj4 adj4( domain );
+  // Adj8 adj8( domain );
+  MetricAdj4 madj4;
+  MetricAdj8 madj8;
+  Adj4 adj4( domain, madj4 );
+  Adj8 adj8( domain, madj8 );
   DT48 dt48( adj4, adj8, JORDAN_DT );
 
   Point c( { 0, 0 } );
