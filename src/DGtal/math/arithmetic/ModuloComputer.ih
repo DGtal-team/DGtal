@@ -108,7 +108,7 @@ typename DGtal::ModuloComputer<T>::UnsignedInteger
 DGtal::ModuloComputer<T>::cast( const Integer & i ) const
 {
   Integer tmp = i;
-  while ( i < 0 ) tmp += k;
+  while ( tmp < 0 ) tmp += k;
   UnsignedInteger ip = (Integer) tmp;
   while ( ip >= k ) ip -= k;
   return ip;

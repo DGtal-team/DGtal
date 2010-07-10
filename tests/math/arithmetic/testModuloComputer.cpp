@@ -46,15 +46,18 @@ bool testModuloComputer()
   a = modular.cast( 2 );   //a contains the value 2
   nbok += (a == 2) ? 1 : 0;
   nb++;
-  
+
+  trace.info() << "a= "<<a<<std::endl;
   a = modular.cast( -1 );  //a contains the value 14
   nbok += (a== 14) ? 1 : 0;
   nb++;
 
+  trace.info() << "a= "<<a<<std::endl;
   modular.increment( a ); //a contains the value 0
   nbok += (a== 0) ? 1 : 0;
   nb++;  
-  
+
+  trace.info() << "a= "<<a<<std::endl;
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
