@@ -67,8 +67,8 @@ namespace DGtal
    *  \endcode
    *
    *
-   * \see test_HyperRectDomain.cpp
-   * \see test_HyperRectDomain-snippet.cpp
+   * \see testHyperRectDomain.cpp
+   * \see testHyperRectDomain-snippet.cpp
    */
   template<typename TSpace>
   class HyperRectDomain

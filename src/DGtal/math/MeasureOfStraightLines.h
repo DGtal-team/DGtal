@@ -56,7 +56,7 @@ namespace DGtal
    * }
    * \endverbatim
    *
-   * @example test_measure.cpp
+   * @example testMeasure.cpp
    *
    * \todo Create a vector<Point> interface
    */

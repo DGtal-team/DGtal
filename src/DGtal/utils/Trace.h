@@ -48,9 +48,9 @@ namespace DGtal
    * Methods postfixed with "Debug" contain no code if the compilation flag DEBUG is not set.
    *
    *
-   * For usage examples, see the test_trace.cpp file.
+   * For usage examples, see the testtrace.cpp file.
    *
-   * @example test_trace.cpp
+   * @example testTrace.cpp
    *
    * \todo Create a default constructor on TraceWriterTerm(std::cerr)
    */
