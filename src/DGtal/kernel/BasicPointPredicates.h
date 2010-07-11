@@ -73,7 +73,7 @@ namespace DGtal
   // template class FalsePointPredicate
   /**
    * Description of template class 'FalsePointPredicate' <p>
-   * \brief Aim: The predicate that returns always true.
+   * \brief Aim: The predicate that returns always false.
    *
    * @tparam TPoint any point type
    */

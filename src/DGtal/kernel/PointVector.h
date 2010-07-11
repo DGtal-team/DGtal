@@ -74,8 +74,8 @@ namespace DGtal
    * d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
    * ...
    * @endcode
-   * \todo continue snippet
-   * @example testPointVector.cpp
+   * @todo continue snippet
+   * @see testPointVector.cpp
    *
    *
    */

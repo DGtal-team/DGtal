@@ -40,7 +40,7 @@ namespace DGtal
    * with the 1-norm and the infinity-norm.
    *
    * It induces the classical 4 and 8 adjacencies in 2D, the 6, 18 and
-   * 26 adjacencies in 3D, and the \f[ \omega \f] and \f[ \alpha \f]
+   * 26 adjacencies in 3D, and the \f$ \omega \f$ and \f$ \alpha \f$
    * adjacencies in nD.
    *
    * \b Model of a CAdjacency.
@@ -52,7 +52,7 @@ namespace DGtal
    * less or equal than 1 and if their norm-1 is less or equal than
    * maxNorm1.
    *
-   * @example testAdjacency.cpp
+   * @deprecated Use DomainAdjacency instead.
    */
   template <typename Domain, std::size_t maxNorm1, 
 	    std::size_t dimension = Domain::Space::staticDimension >

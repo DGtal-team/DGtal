@@ -25,6 +25,38 @@
 using namespace DGtal;
 using namespace std;
 
+/**
+ * @example testPointVector.cpp
+ *
+   * A PointVector may represent either a digital point or a digital
+   * vector depending on the context. For performance reasons, these
+   * two types are just aliases. The user should take care how to use
+   * it depending on the context. For instance, adding two points has
+   * no meaning, but will be authorized by the compiler.
+   *
+   * The default less than operator is the one of the lexicographic
+   * ordering, starting from dimension 0 to N-1.
+   *
+   * PointVector also realizes the concept CLattice with an infimum
+   * (meet, greatest lower bound) and a supremum (join, least upper
+   * bound) operation.
+   *
+   * Usage example:
+   * @code
+   *
+   * ...
+   * typedef PointVector<double,5> VectorD5;
+   * VectorD5 p, q, r;
+   *
+   * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
+   * q.at(3) = -5.5   // q = {0.0, 0.0, 0.0, -5.5, 0.0}
+   * r =  p + q ;   //  r = {0.0, 2.0, 0.0, -5.5, 0.0}
+   * 
+   * d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
+   * ...
+   * @endcode
+   *
+   */
 
 bool testComparison()
 {

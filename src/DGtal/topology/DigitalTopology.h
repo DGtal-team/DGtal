@@ -55,7 +55,7 @@ namespace DGtal
    * instantiable.
    *
    * A digital topology is classically denoted by a couple
-   * \f[ (\kappa,\lambda) \f], which explains the notations in the class.
+   * \f$ (\kappa,\lambda) \f$, which explains the notations in the class.
    *
    * @code
    typedef SpaceND< int, 2 > Zi2;
