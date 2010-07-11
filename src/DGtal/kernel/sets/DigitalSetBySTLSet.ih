@@ -348,7 +348,7 @@ template <typename Domain>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::computeBoundingBox
-( Point & lower, Point & upper )
+( Point & lower, Point & upper ) const
 {
   lower = myDomain.upperBound();
   upper = myDomain.lowerBound();

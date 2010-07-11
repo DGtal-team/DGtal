@@ -45,6 +45,7 @@ bool
 DGtal::DomainPredicate<TDomain>
 ::operator()( const Point & p ) const
 {
+  //  std::cerr << "DomainPred.operator(" << p << ")" << std::endl;
   return myDomain->isInside( p );
 }
 //------------------------------------------------------------------------------

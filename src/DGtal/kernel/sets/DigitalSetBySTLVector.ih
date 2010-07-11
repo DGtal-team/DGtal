@@ -388,16 +388,22 @@ template <typename Domain>
 inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::computeBoundingBox
-( Point & lower, Point & upper )
+( Point & lower, Point & upper ) const
 {
-  // lower = myDomain.upperBound();
-  // upper = myDomain.lowerBound();
-  // ConstIterator it_end = end();
-  // for ( ConstIterator it = begin(); it != end(); ++it )
-  //   {
-  //     const Point & p *it;
-  //     if ( *it < lower ) lower
-  //   } 
+  if ( begin() != end() )
+    {
+      ConstIterator it = begin();
+      ConstIterator it_end = end();
+      upper = lower = *it;
+      for ( ; it != end(); ++it )
+	if ( it->isLower( lower ) ) lower = *it;
+	else if ( it->isUpper( upper ) ) upper = *it;
+    }
+  else
+    {
+      lower = myDomain.upperBound();
+      upper = myDomain.lowerBound();
+    }
 }
 
 

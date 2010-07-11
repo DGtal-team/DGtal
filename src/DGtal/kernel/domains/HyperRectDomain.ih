@@ -31,11 +31,15 @@
  */
 template<typename TSpace>
 inline
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain() : myLowerBound(Point::zero),
-						    myUpperBound(Point::zero),
-						    myIteratorBegin(Point::zero,Point::zero,Point::zero),
-						    myIteratorEnd(Point::zero,Point::zero,Point::zero)
-{ ++myIteratorEnd; }
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
+  : myLowerBound(Point::zero),
+    myUpperBound(Point::zero),
+    myPredicate( myLowerBound, myUpperBound ),
+    myIteratorBegin(Point::zero,Point::zero,Point::zero),
+    myIteratorEnd(Point::zero,Point::zero,Point::zero)
+{ 
+  ++myIteratorEnd; 
+}
 
 /**
  * Constructor from  two points (the Space diagonal)
@@ -48,6 +52,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
 						  const Point &aPointB ) :
   myLowerBound(std::min(aPointA,aPointB)),
   myUpperBound(std::max(aPointA,aPointB)),
+  myPredicate( myLowerBound, myUpperBound ),
   myIteratorBegin(myLowerBound,myLowerBound,myUpperBound),
   myIteratorEnd(myUpperBound,myLowerBound,myUpperBound)
 {
@@ -64,6 +69,7 @@ inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace> &aDomain) :
   myLowerBound(aDomain.lowerBound()),
   myUpperBound(aDomain.upperBound()),
+  myPredicate( myLowerBound, myUpperBound ),
   myIteratorBegin(aDomain.myIteratorBegin),
   myIteratorEnd(aDomain.myIteratorEnd)
 {}
@@ -88,10 +94,14 @@ inline
 DGtal::HyperRectDomain<TSpace> &
 DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
 {
-  myLowerBound = other.myLowerBound;
-  myUpperBound = other.myUpperBound;
-  myIteratorBegin = other.myIteratorBegin;
-  myIteratorEnd = other.myIteratorEnd;
+  if ( this != &other )
+    {
+      myLowerBound = other.myLowerBound;
+      myUpperBound = other.myUpperBound;
+      myPredicate = other.myPredicate;
+      myIteratorBegin = other.myIteratorBegin;
+      myIteratorEnd = other.myIteratorEnd;
+    }
   return *this;
 }
 
@@ -138,7 +148,18 @@ inline
 bool
 DGtal::HyperRectDomain<TSpace>::isInside( const Point & p ) const
 {
-  return myLowerBound.isLower( p ) && myUpperBound.isUpper( p );
+  return myPredicate( p ); //LowerBound.isLower( p ) && myUpperBound.isUpper( p );
+}
+
+/**
+ * @return a const reference to the "IsInside" predicate.
+ */
+template<typename TSpace>
+inline
+const typename DGtal::HyperRectDomain<TSpace>::Predicate &
+DGtal::HyperRectDomain<TSpace>::predicate() const
+{
+  return myPredicate;
 }
 
 

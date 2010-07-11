@@ -12,7 +12,9 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cmath>
 #include <iostream>
+#include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
@@ -24,6 +26,7 @@
 #include "DGtal/topology/DomainAdjacency.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
+#include "DGtal/topology/Expander.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -43,6 +46,7 @@ bool testObject()
   
   typedef SpaceND< int, 2 > Z2;
   typedef Z2::Point Point;
+  typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z2 > DomainType; 
   Point p1( { -449, -449 } );
   Point p2( { 449, 449 } );
@@ -72,15 +76,19 @@ bool testObject()
   Adj8 adj8( domain, madj8 );
   DT48 dt48( adj4, adj8, JORDAN_DT );
 
+  Coordinate r = 449;
+  double radius = (double) (r+1);
   Point c( { 0, 0 } );
-  Point l( { 449, 0 } );
+  Point l( { r, 0 } );
   MediumSet disk( domain );
-  trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
+  ostringstream sstr;
+  sstr << "Creating disk( r < " << radius << " ) ...";
+  trace.beginBlock ( sstr.str() );
   for ( DomainType::ConstIterator it = domain.begin(); 
 	it != domain.end();
 	++it )
     {
-      if ( (*it - c ).norm() < 450.0 )
+      if ( (*it - c ).norm() < radius ) // 450.0
 	// insertNew is very important for vector container.
 	disk.insertNew( *it );
     }
@@ -176,9 +184,35 @@ bool testObject()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Border(Disk2, c), size() = " << bdisk2.size() 
 	       << " == 3364" << std::endl;
-
   trace.endBlock();
 
+  trace.beginBlock ( "Testing expansion by layers on the boundary ..." );
+  typedef Expander< ObjectType > ObjectExpander;
+  ObjectExpander expander( bdisk, *(bdisk.pointSet().begin()) );
+  while ( ! expander.finished() )
+    {
+      nbok += expander.layer().size() <= 2 ? 1 : 0; 
+      nb++;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+		   << "expander.layer.size() <= 2 " 
+		   << expander << std::endl;
+      expander.nextLayer();
+    }
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing expansion by layers on the disk from center..." );
+  ObjectExpander expander2( disk_object2, c );
+  while ( ! expander2.finished() )
+    {
+      trace.info() << expander2 << std::endl;
+      expander2.nextLayer();
+    }
+  nbok += expander2.distance() <= sqrt(2.0)*radius ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "expander.distance() = " << expander2.distance()
+	       << " <= " << sqrt(2.0)*radius << std::endl;
+  trace.endBlock();
 
   return nbok == nb;
 }

@@ -70,6 +70,10 @@ namespace DGtal
    *
    * <p> Models <br>
    *
+   * - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
+   * - complex predicate constructor: BinaryPointPredicate
+   * - others: DomainPredicate
+   *
    * <p> Notes <br>
    */
   template <typename T>

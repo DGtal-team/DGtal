@@ -303,6 +303,8 @@ namespace DGtal {
 				  OutputIterator & out_it,
 				  const PointPredicate & pred )
     {
+      //      std::cerr << "Z2_8.writeProperNeighborhood(,,Pred)" << std::endl;
+
       Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
       if ( pred( q ) ) *out_it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
@@ -426,6 +428,7 @@ namespace DGtal {
 				  OutputIterator & out_it,
 				  const PointPredicate & pred )
     {
+      // std::cerr << "Z2_4.writeProperNeighborhood(,,Pred)" << std::endl;
       Point q( p[ 0 ], p[ 1 ] - 1 );
       if ( pred( q ) ) *out_it++ = q;
       --q[ 0 ]; ++q[ 1 ]; 

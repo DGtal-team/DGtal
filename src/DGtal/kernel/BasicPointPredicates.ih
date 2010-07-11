@@ -80,9 +80,28 @@ DGtal::IsWithinPointPredicate<TPoint>
 }
 
 //------------------------------------------------------------------------------
-template <typename PointPredicate1, typename PointPredicate2>
+template <typename TPointPredicate>
 inline
-DGtal::BinaryPointPredicate<PointPredicate1,PointPredicate2>
+DGtal::NotPointPredicate<TPointPredicate>
+::NotPointPredicate( const PointPredicate & pred )
+  : myPred( pred )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate>
+inline
+bool
+DGtal::NotPointPredicate<TPointPredicate>
+::operator()( const Point & p ) const
+{
+  // std::cerr << "NotPP.operator(" << p << ")" << std::endl;
+  return ! myPred( p );
+}
+
+//------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2>
+inline
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2>
 ::BinaryPointPredicate( const PointPredicate1 & pred1,
 			const PointPredicate2 & pred2,
 			const BoolFunction2 & boolFunctor )
@@ -90,13 +109,14 @@ DGtal::BinaryPointPredicate<PointPredicate1,PointPredicate2>
 {
 }
 //------------------------------------------------------------------------------
-template <typename PointPredicate1, typename PointPredicate2>
+template <typename TPointPredicate1, typename TPointPredicate2>
 inline
 bool 
-DGtal::BinaryPointPredicate<PointPredicate1,PointPredicate2>
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2>
 ::operator()( const Point & p ) const
 {
   return myBoolFunctor( myPred1( p ), myPred2( p ) );
+  // return myPred1( p ) && myPred2( p );
 }
 
 

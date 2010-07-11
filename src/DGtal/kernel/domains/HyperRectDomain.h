@@ -27,6 +27,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/domains/HyperRectDomain_SpanIterator.h"
@@ -92,7 +93,9 @@ namespace DGtal
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;
     typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
-      
+
+    typedef IsWithinPointPredicate<Point> Predicate;
+
     /**
      * Default Constructor.
      */
@@ -223,6 +226,11 @@ namespace DGtal
     bool isInside( const Point & p ) const;
 
     /**
+     * @return a const reference to the "IsInside" predicate.
+     */
+    const Predicate & predicate() const;
+
+    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -248,6 +256,9 @@ namespace DGtal
     Point myLowerBound;
     ///The highest point of the space diagonal
     Point myUpperBound;
+
+    /// "IsInside" predicate.
+    Predicate myPredicate;
 
     /// Begin iterator
     ConstIterator myIteratorBegin;

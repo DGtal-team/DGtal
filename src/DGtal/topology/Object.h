@@ -51,23 +51,27 @@ namespace DGtal
    * points which touch the complement in the sense of background
    * adjacency.
    *
-   * @tparam DigitalTopologyType any realization of DigitalTopology.
+   * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam DigitalSet any model of CDigitalSet.
    */
-  template <typename DigitalTopologyType, typename DigitalSet>
+  template <typename TDigitalTopology, typename TDigitalSet>
   class Object
   {
     // ----------------------- Standard services ------------------------------
   public:
+    typedef TDigitalSet DigitalSet;
+    typedef TDigitalTopology DigitalTopology;
     typedef typename DigitalSet::SizeType SizeType;
     typedef typename DigitalSet::Point Point;
     // should be the same as Point.
-    typedef typename DigitalTopologyType::Point DTPoint;
+    typedef typename DigitalTopology::Point DTPoint;
 
-    typedef typename DigitalSet::DomainType DomainType;
+    typedef typename DigitalSet::DomainType Domain;
     typedef 
-    typename DigitalSetSelector< DomainType,  
+    typename DigitalSetSelector< Domain,  
 				 SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+    typedef typename DigitalTopology::ForegroundAdjacencyType ForegroundAdjacency;
+    typedef typename DigitalTopology::BackgroundAdjacencyType BackgroundAdjacency;
 
     /**
      * Constructor. 
@@ -78,7 +82,7 @@ namespace DGtal
      * @param aPointSet the set of points of the object. It is copied
      * in the object.
      */
-    Object( const DigitalTopologyType & aTopology, 
+    Object( const DigitalTopology & aTopology, 
 	    const DigitalSet & aPointSet );
 
     /**
@@ -90,7 +94,7 @@ namespace DGtal
      * @param aPointSet the set of points of the object. It is smartly
      * reference in the object.
      */
-    Object( const DigitalTopologyType & aTopology, 
+    Object( const DigitalTopology & aTopology, 
 	    const CowPtr<DigitalSet> & aPointSet );
 
     /**
@@ -103,7 +107,7 @@ namespace DGtal
      * points which is afterwards handled by this (which will take
      * care of its deletion).
      */
-    Object( const DigitalTopologyType & aTopology, 
+    Object( const DigitalTopology & aTopology, 
 	    DigitalSet* aPointSetPtr );
 
     /**
@@ -114,8 +118,8 @@ namespace DGtal
      *
      * @param aDomain any domain related to the given topology.
      */
-    Object( const DigitalTopologyType & aTopology, 
-	    const typename DigitalSet::DomainType & domain );
+    Object( const DigitalTopology & aTopology, 
+	    const Domain & domain );
  
     /**
      * Copy constructor.
@@ -144,6 +148,11 @@ namespace DGtal
     SizeType size() const;
 
     /**
+     * A const reference to the embedding domain.
+     */
+    const Domain & domain() const;
+
+    /**
      * A const reference on the point set defining the points of the
      * digital object.
      */
@@ -158,12 +167,12 @@ namespace DGtal
     /**
      * @return a const reference to the topology of this object.
      */
-    const DigitalTopologyType & topology() const;
+    const DigitalTopology & topology() const;
 
     /**
      * @return a const reference to the adjacency of this object.
      */
-    const typename DigitalTopologyType::ForegroundAdjacencyType & 
+    const ForegroundAdjacency & 
     adjacency() const;
 
     // ----------------------- Object services --------------------------------
@@ -182,7 +191,7 @@ namespace DGtal
      *
      * NB: if you need only the size of neighborhood, use neighborhoodSize.
      */
-    Object<DigitalTopologyType,SmallSet> neighborhood( const Point & p ) const;
+    Object<DigitalTopology,SmallSet> neighborhood( const Point & p ) const;
 
     /**
      * @param p any point (in the domain of the digital object, not
@@ -211,7 +220,7 @@ namespace DGtal
      * NB: if you need only the size of the proper neighborhood, use
      * properNeighborhoodSize.
      */
-    Object<DigitalTopologyType,SmallSet> properNeighborhood
+    Object<DigitalTopology,SmallSet> properNeighborhood
     ( const Point & p ) const;
 
     /**
@@ -258,7 +267,7 @@ namespace DGtal
     /**
      * the digital topology of the object.
      */
-    DigitalTopologyType myTopo;
+    DigitalTopology myTopo;
 
     /**
      * A copy on write pointer on the associated (owned or not) point set
@@ -290,10 +299,10 @@ namespace DGtal
    * @param object the object of class 'Object' to write.
    * @return the output stream after the writing.
    */
-  template <typename DigitalTopologyType, typename DigitalSet>
+  template <typename TDigitalTopology, typename TDigitalSet>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const Object<DigitalTopologyType, DigitalSet> & object );
+	       const Object<TDigitalTopology, TDigitalSet> & object );
 
 } // namespace DGtal
 

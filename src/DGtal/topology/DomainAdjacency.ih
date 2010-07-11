@@ -31,8 +31,8 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 template <typename TDomain, typename TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
-::DomainAdjacency( const TDomain & domain, 
-		   const TAdjacency & adjacency )
+::DomainAdjacency( const Domain & domain, 
+		   const Adjacency & adjacency )
   : myPred( domain ), myAdjacency( adjacency )
 {
 }
@@ -43,6 +43,15 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::DomainAdjacency( const DomainAdjacency & other )
   : myPred( other.myPred ), myAdjacency( other.myAdjacency )
 {
+}
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TAdjacency>
+inline
+const typename DGtal::DomainAdjacency<TDomain,TAdjacency>::PredicateType &
+DGtal::DomainAdjacency<TDomain,TAdjacency>
+::predicate() const
+{
+  return myPred;
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>
@@ -76,10 +85,11 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 		     OutputIterator & out_it,
 		     const PointPredicate & pred ) const
 {
-  typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-    Predicate;
-  Predicate combinedPred( pred, myPred, andBF2 );
-  myAdjacency.writeNeighborhood( p, out_it, combinedPred );
+  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
+  //   Predicate;
+  // Predicate combinedPred( pred, myPred, andBF2 );
+  // myAdjacency.writeNeighborhood( p, out_it, combinedPred );
+  myAdjacency.writeNeighborhood( p, out_it, pred );
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>
@@ -102,10 +112,11 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 			   OutputIterator & out_it,
 			   const PointPredicate & pred ) const
 {
-  typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-    Predicate;
-  Predicate combinedPred( pred, myPred, andBF2 );
-  myAdjacency.writeProperNeighborhood( p, out_it, combinedPred );
+  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
+  //   Predicate;
+  // Predicate combinedPred( pred, myPred, andBF2 );
+  // myAdjacency.writeProperNeighborhood( p, out_it, combinedPred );
+  myAdjacency.writeProperNeighborhood( p, out_it, pred );
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>

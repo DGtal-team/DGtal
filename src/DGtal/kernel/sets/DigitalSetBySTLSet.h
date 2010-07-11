@@ -231,7 +231,7 @@ namespace DGtal
      * @param upper the last point of the bounding box (highest in all
      * directions).
      */
-    void computeBoundingBox( Point & lower, Point & upper );
+    void computeBoundingBox( Point & lower, Point & upper ) const;
 
 
     // ----------------------- Interface --------------------------------------

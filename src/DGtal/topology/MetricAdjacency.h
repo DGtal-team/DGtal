@@ -65,6 +65,7 @@ namespace DGtal
   public:
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
+    typedef TruePointPredicate< Point > PredicateType;
 
     // ----------------------- Standard services ------------------------------
   public:

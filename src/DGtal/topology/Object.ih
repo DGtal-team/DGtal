@@ -31,10 +31,10 @@
  * @param aPointSet the set of points of the object. It is copied
  * in the object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & aTopology, 
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const TDigitalTopology & aTopology, 
   const DigitalSet & aPointSet )
   : myTopo( aTopology ),
     myPointSet( new DigitalSet( aPointSet ) )
@@ -50,10 +50,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  * @param aPointSet the set of points of the object. It is smartly
  * reference in the object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & aTopology, 
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const TDigitalTopology & aTopology, 
   const CowPtr<DigitalSet> & aPointSet )
   : myTopo( aTopology ),
     myPointSet( aPointSet )
@@ -70,10 +70,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  * points which is afterwards handled by this (which will take
  * care of its deletion).
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & aTopology, 
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const TDigitalTopology & aTopology, 
   DigitalSet* aPointSetPtr )
   : myTopo( aTopology ),
     myPointSet( pointSet )
@@ -87,9 +87,9 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  * The copy is smart in the sense that the digital set is
  * referenced, and will be copied only if the set is changed.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::Object
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const Object & other )
   : myTopo( other.myTopo ),
     myPointSet( other.myPointSet )
@@ -104,22 +104,22 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::Object
  *
  * @param aDomain any domain related to the given topology.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::Object
-( const DigitalTopologyType & aTopology, 
-  const typename DigitalSet::DomainType & domain )
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const TDigitalTopology & aTopology, 
+  const Domain & aDomain )
   : myTopo( aTopology ),
-    myPointSet( new DigitalSet( domain ) )
+    myPointSet( new DigitalSet( aDomain ) )
 {
 }
 
 /**
  * Destructor.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>::~Object()
+DGtal::Object<TDigitalTopology,TDigitalSet>::~Object()
 {
 }
 
@@ -128,10 +128,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::~Object()
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet> &
-DGtal::Object<DigitalTopologyType,DigitalSet>::operator= 
+DGtal::Object<TDigitalTopology,TDigitalSet> &
+DGtal::Object<TDigitalTopology,TDigitalSet>::operator= 
 ( const Object & other )
 {
   if ( this != &other )
@@ -144,12 +144,23 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::operator=
 /**
  * @return the number of elements in the set.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType 
-DGtal::Object<DigitalTopologyType,DigitalSet>::size() const
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType 
+DGtal::Object<TDigitalTopology,TDigitalSet>::size() const
 {
   return myPointSet->size();
+}
+
+/**
+ * A const reference to the embedding domain.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+const typename DGtal::Object<TDigitalTopology,TDigitalSet>::Domain &
+DGtal::Object<TDigitalTopology,TDigitalSet>::domain() const
+{
+  return myPointSet->domain();
 }
 
 
@@ -157,10 +168,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::size() const
  * A const reference on the point set defining the points of the
  * digital object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-const DigitalSet & 
-DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet() const
+const TDigitalSet & 
+DGtal::Object<TDigitalTopology,TDigitalSet>::pointSet() const
 {
   return *myPointSet;
 }
@@ -169,10 +180,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet() const
  * A reference on the point set defining the points of the
  * digital object (may duplicate the set).
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DigitalSet & 
-DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet()
+TDigitalSet & 
+DGtal::Object<TDigitalTopology,TDigitalSet>::pointSet()
 {
   return *myPointSet;
 }
@@ -180,10 +191,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::pointSet()
 /**
  * @return a const reference to the topology of this object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-const DigitalTopologyType & 
-DGtal::Object<DigitalTopologyType,DigitalSet>::topology() const
+const TDigitalTopology & 
+DGtal::Object<TDigitalTopology,TDigitalSet>::topology() const
 {
   return myTopo;
 }
@@ -191,10 +202,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::topology() const
 /**
  * @return a const reference to the adjacency of this object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-const typename DigitalTopologyType::ForegroundAdjacencyType & 
-DGtal::Object<DigitalTopologyType,DigitalSet>::adjacency() const
+const typename TDigitalTopology::ForegroundAdjacencyType & 
+DGtal::Object<TDigitalTopology,TDigitalSet>::adjacency() const
 {
   return myTopo.kappa();
 }
@@ -212,11 +223,11 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::adjacency() const
  *
  * @return the kappa-neighborhood of [p] in this object.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,
-	      typename DGtal::Object<DigitalTopologyType,DigitalSet>::SmallSet>
-DGtal::Object<DigitalTopologyType,DigitalSet>::neighborhood
+DGtal::Object<TDigitalTopology,
+	      typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallSet>
+DGtal::Object<TDigitalTopology,TDigitalSet>::neighborhood
 ( const Point & p ) const
 {
   typedef std::vector<Point> Container;
@@ -229,7 +240,7 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::neighborhood
   adjacency().writeNeighborhood( p, back_ins_it );
 
   // A neighborhood is small, so is defined the digital object.
-  Object<DigitalTopologyType,SmallSet> neighA( myTopo, pointSet().domain() );
+  Object<TDigitalTopology,SmallSet> neighA( myTopo, pointSet().domain() );
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet(); 
@@ -251,10 +262,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::neighborhood
  *
  * NB: faster than computing the neighborhood then computing its cardinal.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType
-DGtal::Object<DigitalTopologyType,DigitalSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
+DGtal::Object<TDigitalTopology,TDigitalSet>
 ::neighborhoodSize( const Point & p ) const
 {
   typedef std::vector<Point> Container;
@@ -289,11 +300,11 @@ DGtal::Object<DigitalTopologyType,DigitalSet>
  *
  * @return the kappa-neighborhood of [p] in this object, without p.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,
-	      typename DGtal::Object<DigitalTopologyType,DigitalSet>::SmallSet>
-DGtal::Object<DigitalTopologyType,DigitalSet>::properNeighborhood
+DGtal::Object<TDigitalTopology,
+	      typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallSet>
+DGtal::Object<TDigitalTopology,TDigitalSet>::properNeighborhood
 ( const Point & p ) const
 {
   typedef std::vector<Point> Container;
@@ -306,7 +317,7 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::properNeighborhood
   adjacency().writeProperNeighborhood( p, back_ins_it );
 
   // A neighborhood is small, so is defined the digital object.
-  Object<DigitalTopologyType,SmallSet> neighA( myTopo, pointSet().domain() );
+  Object<TDigitalTopology,SmallSet> neighA( myTopo, pointSet().domain() );
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet(); 
@@ -329,10 +340,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::properNeighborhood
  * NB: faster than computing the proper neighborhood then
  * computing its cardinal.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<DigitalTopologyType,DigitalSet>::SizeType
-DGtal::Object<DigitalTopologyType,DigitalSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
+DGtal::Object<TDigitalTopology,TDigitalSet>
 ::properNeighborhoodSize( const Point & p ) const
 {
   typedef std::vector<Point> Container;
@@ -362,20 +373,22 @@ DGtal::Object<DigitalTopologyType,DigitalSet>
  * @return the border of this object (the set of points of this
  * which is lambda()-adjacent with some point of the background).
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<DigitalTopologyType,DigitalSet>
-DGtal::Object<DigitalTopologyType,DigitalSet>::border() const
+DGtal::Object<TDigitalTopology,TDigitalSet>
+DGtal::Object<TDigitalTopology,TDigitalSet>::border() const
 {
   typedef std::vector<Point> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+  //typedef typename Domain::Predicate Predicate;
 
   // Intermediate container that is fast writable.
   Container neigh;
   const DigitalSet & mySet = pointSet();
-  Object<DigitalTopologyType,DigitalSet> output( topology(), 
-						 mySet.domain() );
+  Object<DigitalTopology,DigitalSet> output( topology(), 
+					     mySet.domain() );
   DigitalSet & outputSet = output.pointSet();
 
   // Loop on all points of the set.
@@ -385,7 +398,9 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::border() const
 	++it )
     {
       std::back_insert_iterator< Container > back_ins_it( neigh );
-      topology().lambda().writeProperNeighborhood( *it, back_ins_it );
+      // Computing neighborhood within domain.
+      topology().lambda().writeProperNeighborhood
+	( *it, back_ins_it, domain().predicate() );
       // Checks if any point is not in the object.
       const ContainerConstIterator itc_end( neigh.end() );
       for ( ContainerConstIterator itc = neigh.begin();
@@ -409,10 +424,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>::border() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<DigitalTopologyType,DigitalSet>
+DGtal::Object<TDigitalTopology,TDigitalSet>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "[Object"
@@ -426,10 +441,10 @@ DGtal::Object<DigitalTopologyType,DigitalSet>
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
 bool
-DGtal::Object<DigitalTopologyType, DigitalSet>::isValid() const
+DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
 {
   return myPointSet != 0;
 }
@@ -439,11 +454,11 @@ DGtal::Object<DigitalTopologyType, DigitalSet>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename DigitalTopologyType, typename DigitalSet>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Object<DigitalTopologyType,DigitalSet> & object )
+		  const Object<TDigitalTopology,TDigitalSet> & object )
 {
   object.selfDisplay( out );
   return out;

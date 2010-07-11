@@ -31,10 +31,23 @@
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
+#include "DGtal/kernel/sets/DigitalSetDomain.h"
 
 using namespace DGtal;
 using namespace std;
 
+
+#define INBLOCK_TEST(x) \
+  nbok += ( x ) ? 1 : 0; \
+  nb++; \
+  trace.info() << "(" << nbok << "/" << nb << ") " \
+	       << #x << std::endl;
+
+#define INBLOCK_TEST2(x,y) \
+  nbok += ( x ) ? 1 : 0; \
+  nb++; \
+  trace.info() << "(" << nbok << "/" << nb << ") " \
+  << y << std::endl;
 
 template < typename DigitalSetType >
 bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
@@ -95,6 +108,54 @@ bool testDigitalSetSelector( const DigitalDomainType & domain,
   return nbok == nb;
 }
 
+bool testDigitalSetDomain()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef SpaceND<int,2> Z2;
+  typedef HyperRectDomain<Z2> DomainType;
+  typedef Z2::Point Point;
+  Point p1( { -449, -449 } );
+  Point p2( { 449, 449 } );
+  DomainType domain( p1, p2 );
+  typedef DigitalSetSelector
+    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  SpecificSet disk( domain );
+  Point c( { 0, 0 } );
+  Point l( { 449, 0 } );
+
+  trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
+  for ( DomainType::ConstIterator it = domain.begin(); 
+	it != domain.end();
+	++it )
+    {
+      if ( (*it - c ).norm() < 450.0 )
+	// insertNew is very important for vector container.
+	disk.insertNew( *it );
+    }
+  disk.erase( c );
+  INBLOCK_TEST( disk.size() == 636100 );
+  trace.endBlock();
+
+  typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
+  RestrictedDomain disk_domain( disk );
+  trace.beginBlock ( "Iterating over disk domain ..." );
+  uint nb_in_domain = 0;
+  for ( RestrictedDomain::ConstIterator it = disk_domain.begin(); 
+	it != disk_domain.end();
+	++it )
+    {
+      ++nb_in_domain;
+    }
+  INBLOCK_TEST( nb_in_domain == 636100 );
+  INBLOCK_TEST( disk_domain.lowerBound() == Point( { -449, -449 } ) );
+  INBLOCK_TEST( disk_domain.upperBound() == Point( {  449,  449 } ) );
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 int main()
 {
   typedef SpaceND<int,4> Space4Type;
@@ -131,8 +192,11 @@ int main()
     < DomainType, MEDIUM_DS+LOW_VAR_DS+LOW_ITER_DS+HIGH_BEL_DS >
     ( domain, "Medium set + High belonging test" );
 
+  bool okDigitalSetDomain = testDigitalSetDomain();
+
   bool res = okVector && okSet 
-    && okSelectorSmall && okSelectorBig && okSelectorMediumHBel;
+    && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
+    && okDigitalSetDomain;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

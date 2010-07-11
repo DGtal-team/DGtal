@@ -53,14 +53,14 @@ namespace DGtal
     typedef TDomain Domain;
     typedef TAdjacency Adjacency;
     typedef typename Domain::Point Point;
-    typedef DomainPredicate< Domain > DomainPredicateType;
+    typedef DomainPredicate< Domain > PredicateType;
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor.
      */
-    DomainAdjacency( const TDomain & domain, const TAdjacency & adjacency );
+    DomainAdjacency( const Domain & domain, const Adjacency & adjacency );
 
     /**
      * Copy constructor.
@@ -75,6 +75,14 @@ namespace DGtal
 
     // ----------------------- Adjacency services -----------------------------
   public:
+
+    /**
+     * @return a const reference on the predicate which can check if a
+     * given point belongs to the domain.
+     *
+     * Useful if you want to restrict your neighborhood.
+     */
+    const PredicateType & predicate() const;
 
     /**
      * @param p1 any point in this space.
@@ -162,12 +170,12 @@ namespace DGtal
     /**
      * The predicate for testing if a point belongs to the domain.
      */
-    DomainPredicateType myPred;
+    PredicateType myPred;
 
     /**
      * The adjacency relation.
      */
-    const TAdjacency & myAdjacency;
+    const Adjacency & myAdjacency;
     // ------------------------- Hidden services ------------------------------
   protected:
 

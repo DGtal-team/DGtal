@@ -166,16 +166,47 @@ namespace DGtal
   };
 
   /////////////////////////////////////////////////////////////////////////////
+  // template class NotPointPredicate
+  /**
+   * Description of template class 'NotPointPredicate' <p> \brief
+   * Aim: The predicate returns true when the point is within the given bounds.
+   *
+   * @tparam TPointPredicate the predicate type.
+   */
+  template <typename TPointPredicate>
+  struct NotPointPredicate
+  {
+    typedef TPointPredicate PointPredicate;
+    typedef typename PointPredicate::Point Point;
+
+    /**
+     * Constructor from predicates and bool Functor.
+     */
+    NotPointPredicate( const PointPredicate & pred );
+
+    /**
+     * @param p any point.
+     * @return the value of the predicate at this point.
+     */
+    bool operator()( const Point & p ) const;
+
+    const PointPredicate & myPred;
+  };
+
+  /////////////////////////////////////////////////////////////////////////////
   // template class BinaryPointPredicate
   /**
    * Description of template class 'BinaryPointPredicate' <p> \brief
    * Aim: The predicate returns true when the point is within the given bounds.
    *
-   * @tparam TPoint any point type
+   * @tparam PointPredicate1 the left predicate type.
+   * @tparam PointPredicate2 the right predicate type.
    */
-  template <typename PointPredicate1, typename PointPredicate2>
+  template <typename TPointPredicate1, typename TPointPredicate2>
   struct BinaryPointPredicate
   {
+    typedef TPointPredicate1 PointPredicate1;
+    typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
     // should be the same.
     typedef typename PointPredicate2::Point Point2;
