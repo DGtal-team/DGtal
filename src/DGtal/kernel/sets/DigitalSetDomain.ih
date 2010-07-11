@@ -1,0 +1,145 @@
+/**
+ * @file DigitalSetDomain.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/10
+ *
+ * Implementation of inline methods defined in DigitalSetDomain.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename TDigitalSet>
+inline
+DGtal::DigitalSetDomain<TDigitalSet>
+::~DigitalSetDomain()
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+DGtal::DigitalSetDomain<TDigitalSet>
+::DigitalSetDomain ( const DigitalSet & aSet )
+  : mySet( aSet ), myPredicate( aSet )
+{
+  mySet.computeBoundingBox( myLowerBound, myUpperBound );
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+DGtal::DigitalSetDomain<TDigitalSet>
+::DigitalSetDomain ( const DigitalSetDomain & other )
+  : mySet( other.mySet ),
+    myLowerBound( other.myLowerBound ), 
+    myUpperBound( other.myUpperBound ),
+    myPredicate( other.mySet )
+{}
+
+// ----------------------- Domain services --------------------------------
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+DGtal::DigitalSetDomain<TDigitalSet>
+::begin() const
+{
+  return mySet.begin();
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+DGtal::DigitalSetDomain<TDigitalSet>
+::end() const
+{
+  return mySet.end();
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+const typename DGtal::DigitalSetDomain<TDigitalSet>::Point &
+DGtal::DigitalSetDomain<TDigitalSet>
+::lowerBound() const
+{
+  return myLowerBound;
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+const typename DGtal::DigitalSetDomain<TDigitalSet>::Point &
+DGtal::DigitalSetDomain<TDigitalSet>
+::upperBound() const
+{
+  return myUpperBound;
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+bool
+DGtal::DigitalSetDomain<TDigitalSet>
+::isInside( const Point & p ) const
+{
+  // std::cerr << "isInside: p=" << p
+  // 	    << " lower=" << myLowerBound
+  // 	    << " islower=" << p.isLower( myUpperBound )
+  // 	    << " upper=" << myUpperBound
+  // 	    << " isupper=" << p.isUpper( myLowerBound )
+  // 	    << std::endl;
+  return p.isLower( myUpperBound )
+    && p.isUpper( myLowerBound )
+    && myPredicate( p ); // mySet.find( p ) != end();
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+const typename DGtal::DigitalSetDomain<TDigitalSet>::Predicate &
+DGtal::DigitalSetDomain<TDigitalSet>
+::predicate() const
+{
+  return myPredicate;
+}
+
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+void
+DGtal::DigitalSetDomain<TDigitalSet>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[DigitalSetDomain set=" << mySet << "]";
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+bool
+DGtal::DigitalSetDomain<TDigitalSet>::isValid() const
+{
+    return true;
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const DigitalSetDomain<TDigitalSet> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

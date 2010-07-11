@@ -1,0 +1,56 @@
+/**
+ * @file SetPredicate.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/07/10
+ *
+ * Implementation of inline methods defined in SetPredicate.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+DGtal::SetPredicate<TDigitalSet>
+::SetPredicate( const DigitalSet & aSet )
+  : mySet( &aSet )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+DGtal::SetPredicate<TDigitalSet>
+::SetPredicate( const SetPredicate & other )
+  : mySet( other.mySet )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+bool
+DGtal::SetPredicate<TDigitalSet>
+::operator()( const Point & p ) const
+{
+  //  std::cerr << "SetPred.operator(" << p << ")" << std::endl;
+  return mySet->find( p ) != mySet->end();
+}
+//------------------------------------------------------------------------------
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
