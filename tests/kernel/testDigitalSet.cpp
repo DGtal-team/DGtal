@@ -141,7 +141,7 @@ bool testDigitalSetDomain()
   typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
   RestrictedDomain disk_domain( disk );
   trace.beginBlock ( "Iterating over disk domain ..." );
-  uint nb_in_domain = 0;
+  unsigned int nb_in_domain = 0;
   for ( RestrictedDomain::ConstIterator it = disk_domain.begin(); 
 	it != disk_domain.end();
 	++it )
