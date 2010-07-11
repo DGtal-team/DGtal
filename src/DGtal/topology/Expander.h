@@ -51,6 +51,8 @@ namespace DGtal
    * initial core. The expander may move point by point or layer by
    * layer.
    *
+   * @tparam TObject the type of the digital object.
+   *
    * @code
    * Point p( ... );
    * ObjectType object( ... );
@@ -68,7 +70,8 @@ namespace DGtal
    *   }
    * @endcode
    *
-   * @tparam TObject the type of the digital object.
+   * @see testExpander.cpp
+   * @see testObject.cpp
    */
   template <typename TObject>
   class Expander
