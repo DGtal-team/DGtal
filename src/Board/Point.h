@@ -41,10 +41,10 @@ struct Point {
   /** 
    * Point constructor.
    * 
-   * @param x The point's first coordinate.
-   * @param y The point's second coordinate.
+   * @param xc The point's first coordinate.
+   * @param yc The point's second coordinate.
    */
-  Point( double x, double y ):x(x),y(y) { } 
+  Point( double xc, double yc ):x(xc),y(yc) { } 
   
   /** 
    * Rotate the point with a given angle around the origin (0,0)
@@ -56,10 +56,10 @@ struct Point {
   /** 
    * Get the values of the x and y values.
    * 
-   * @param x Reference to the x to be set.
-   * @param y Reference to the y to be set.
+   * @param xout Reference to the x to be set.
+   * @param yout Reference to the y to be set.
    */
-  inline void get( double & x, double & y ) const;
+  inline void get( double & xout, double & yout ) const;
   
   /** 
    * Rotate the point with a given angle around the origin (0,0)
@@ -89,10 +89,10 @@ struct Point {
 };
 
 inline void
-Point::get( double & x, double & y ) const
+Point::get( double & xout, double & yout ) const
 {
-  x = Point::x;
-  y = Point::y;
+  xout = x;
+  yout = y;
 }
 
 inline Point
@@ -178,10 +178,10 @@ operator!=( const Point & a, const Point & b )
 Point &
 Point::rotate( double angle )
 {
-  double x = cos( angle ) * Point::x - sin( angle ) * Point::y; 
-  double y = sin( angle ) * Point::x + cos( angle ) * Point::y;
-  Point::x = x;
-  Point::y = y;
+  double newx = cos( angle ) * Point::x - sin( angle ) * Point::y; 
+  double newy = sin( angle ) * Point::x + cos( angle ) * Point::y;
+  x = newx;
+  y = newy;
   return *this;
 }
 

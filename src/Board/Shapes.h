@@ -317,9 +317,9 @@ Shape::fillColor() const
 }
 
 Shape &
-Shape::rotateDeg( double angle, const Point & center )
+Shape::rotateDeg( double angle, const Point & aCenter )
 {
-  return rotate( angle * ( M_PI / 180.0 ), center ); 
+  return rotate( angle * ( M_PI / 180.0 ), aCenter ); 
 }
 
 Shape &
@@ -915,13 +915,14 @@ protected:
 struct Triangle : public Polyline {
 
   Triangle( const Point & p1, const Point & p2, const Point & p3,
-	    Color penColor, Color fillColor,
+	    Color pen,
+	    Color fill,
 	    double lineWidth,
 	    const LineStyle style = SolidStyle,
 	    const LineCap cap = ButtCap,
 	    const LineJoin join = MiterJoin,
-	    int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
+	    int depthValue = -1 )
+    : Polyline( std::vector<Point>(), true, pen, fill, lineWidth, style, cap, join, depthValue ) {
     _path << p1;
     _path << p2;
     _path << p3;
@@ -930,13 +931,14 @@ struct Triangle : public Polyline {
   Triangle( const double x1, const double y1, 
 	    const double x2, const double y2, 
 	    const double x3, const double y3,
-	    Color penColor, Color fillColor,
+	    Color pen,
+	    Color fill,
 	    double lineWidth,
 	    const LineStyle style = SolidStyle,
 	    const LineCap cap = ButtCap,
 	    const LineJoin join = MiterJoin,
-	    int depth = -1 )
-    : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
+	    int depthValue = -1 )
+    : Polyline( std::vector<Point>(), true, pen, fill, lineWidth, style, cap, join, depthValue ) {
     _path << Point( x1, y1 );
     _path << Point( x2, y2 );
     _path << Point( x3, y3 );
@@ -1098,12 +1100,12 @@ struct Ellipse : public Shape {
   
   Ellipse( double x, double y, 
 	   double xRadius, double yRadius, 
-	   Color penColor, Color fillColor,
+	   Color pen, Color fill,
 	   double lineWidth,
 	   const LineStyle lineStyle = SolidStyle,
-	   int depth = -1 )
-    : Shape( penColor, fillColor,
-	     lineWidth, lineStyle, ButtCap, MiterJoin, depth ),
+	   int depthValue = -1 )
+    : Shape( pen, fill,
+	     lineWidth, lineStyle, ButtCap, MiterJoin, depthValue ),
       _center( x, y ), _xRadius( xRadius ), _yRadius( yRadius ),
       _angle( 0.0 ),
       _circle( false ) {
@@ -1211,11 +1213,11 @@ protected:
 struct Circle : public Ellipse {
 
   Circle( double x, double y, double radius, 
-	  Color penColor, Color fillColor,
+	  Color pen, Color fill,
 	  double lineWidth,
 	  const LineStyle style = SolidStyle,
-	  int depth = -1 )
-    : Ellipse( x, y, radius, radius, penColor, fillColor, lineWidth, style, depth )
+	  int depthValue = -1 )
+    : Ellipse( x, y, radius, radius, pen, fill, lineWidth, style, depthValue )
   { _circle = true; }
 
   /** 
@@ -1288,8 +1290,8 @@ struct Text : public Shape {
 	const Fonts::Font font,
 	double size,
 	Color color = Color::Black,
-	int depth = -1 )
-    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
+	int depthValue = -1 )
+    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ), _text( text ), _font( font ),
       _angle( 0.0 ), _size( size ),
       _xScale( 1.0 ), _yScale( 1.0 ) { }
@@ -1315,8 +1317,8 @@ struct Text : public Shape {
 	const std::string & svgFont,
 	double size,
 	Color color = Color::Black,
-	int depth = -1 )
-    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
+	int depthValue = -1 )
+    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ),
       _text( text ), _font( font ), _svgFont( svgFont ),
       _angle( 0.0 ),

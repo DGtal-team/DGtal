@@ -31,8 +31,8 @@ const Color Color::Purple((unsigned char)128,(unsigned char)128,(unsigned char)1
 const Color Color::Navy((unsigned char)0,(unsigned char)0,(unsigned char)128);
 const Color Color::Aqua((unsigned char)0,(unsigned char)255,(unsigned char)255);
 
-Color::Color( const unsigned int rgb, unsigned char alpha )
- :_alpha( alpha )
+Color::Color( const unsigned int rgb, unsigned char alphaValue )
+ :_alpha( alphaValue )
 {
   _red = ( rgb & 0xFF0000u ) >> 16;
   _green = ( rgb & 0xFF00u ) >> 8;
@@ -40,22 +40,22 @@ Color::Color( const unsigned int rgb, unsigned char alpha )
 }
 
 Color &
-Color::setRGBf( float red,
-		float green,
-		float blue,
-		float alpha  ) {
-  if ( red > 1.0f ) red = 1.0f;
-  if ( red < 0.0f ) red = 0.0f;
-  _red = static_cast<unsigned char>( 255 * red );
-  if ( green > 1.0f ) green = 1.0f;
-  if ( green < 0.0f ) green = 0.0f;
-  _green = static_cast<unsigned char>( 255 * green );
-  if ( blue > 1.0f ) blue = 1.0f;
-  if ( blue < 0.0f ) blue = 0.0f;
-  _blue = static_cast<unsigned char>( 255 * blue );
-  if ( alpha > 1.0f ) alpha = 1.0f;
-  if ( alpha < 0.0f ) alpha = 0.0f;
-  _alpha = static_cast<unsigned char>( 255 * alpha );
+Color::setRGBf( float redValue,
+		float greenValue,
+		float blueValue,
+		float alphaValue  ) {
+  if ( redValue > 1.0f ) redValue = 1.0f;
+  if ( redValue < 0.0f ) redValue = 0.0f;
+  _red = static_cast<unsigned char>( 255 * redValue );
+  if ( greenValue > 1.0f ) greenValue = 1.0f;
+  if ( greenValue < 0.0f ) greenValue = 0.0f;
+  _green = static_cast<unsigned char>( 255 * greenValue );
+  if ( blueValue > 1.0f ) blueValue = 1.0f;
+  if ( blueValue < 0.0f ) blueValue = 0.0f;
+  _blue = static_cast<unsigned char>( 255 * blueValue );
+  if ( alphaValue > 1.0f ) alphaValue = 1.0f;
+  if ( alphaValue < 0.0f ) alphaValue = 0.0f;
+  _alpha = static_cast<unsigned char>( 255 * alphaValue );
   return *this;
 }
 

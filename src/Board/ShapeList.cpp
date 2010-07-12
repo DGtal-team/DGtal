@@ -199,22 +199,22 @@ ShapeList::center() const {
 }
 
 Shape &
-ShapeList::rotate( double angle, const Point & center )
+ShapeList::rotate( double angle, const Point & rotCenter )
 {
     std::vector<Shape*>::iterator i = _shapes.begin();
     std::vector<Shape*>::iterator end = _shapes.end();
     while ( i != end ) {
-        (*i)->rotate( angle, center );
+        (*i)->rotate( angle, rotCenter );
         ++i;
     }
     return *this;
 }
 
 ShapeList
-ShapeList::rotated( double angle, const Point & center )
+ShapeList::rotated( double angle, const Point & rotCenter )
 {
     ShapeList r( *this );
-    return static_cast<ShapeList&>( r.rotate( angle, center ) );
+    return static_cast<ShapeList&>( r.rotate( angle, rotCenter ) );
 }
 
 Shape &
@@ -439,10 +439,10 @@ Group::name() const
 }
 
 Shape &
-Group::rotate( double angle, const Point & center )
+Group::rotate( double angle, const Point & rotCenter )
 {
-    ShapeList::rotate( angle, center );
-    _clippingPath.rotate( angle, center );
+    ShapeList::rotate( angle, rotCenter );
+    _clippingPath.rotate( angle, rotCenter );
     return (*this);
 }
 
@@ -488,9 +488,9 @@ Group::scale( double s )
 }
 
 Group
-Group::rotated( double angle, const Point & center )
+Group::rotated( double angle, const Point & rotCenter )
 {
-    return static_cast<const Group &>( Group( *this ).rotate( angle, center ) );
+    return static_cast<const Group &>( Group( *this ).rotate( angle, rotCenter ) );
 }
 
 Group
@@ -576,13 +576,13 @@ Group::flushFIG( std::ostream & stream,
                  const TransformFIG & transform,
                  std::map<Color,int> & colormap ) const
 {
-    Rect bbox = boundingBox();
+    Rect box = boundingBox();
     stream << "# Begin group\n";
     stream << "6 "
-    << transform.mapX( bbox.left ) << " "
-    << transform.mapY( bbox.top ) << " "
-    << transform.mapX( bbox.left + bbox.width ) << " "
-    << transform.mapY( bbox.top - bbox.height ) << "\n";
+    << transform.mapX( box.left ) << " "
+    << transform.mapY( box.top ) << " "
+    << transform.mapX( box.left + box.width ) << " "
+    << transform.mapY( box.top - box.height ) << "\n";
     ShapeList::flushFIG( stream, transform, colormap );
     stream << "-6\n";
     stream << "# End Group\n";

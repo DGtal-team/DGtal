@@ -13,8 +13,8 @@
 #define _HAS_MSVC_MAX_ true
 #endif
 
-ShapeList::ShapeList( int depth )
-  : Shape( Color::None, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depth ),
+ShapeList::ShapeList( int depthValue )
+  : Shape( Color::None, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
     _nextDepth( std::numeric_limits<int>::max() - 1 )
 { }
 

@@ -53,8 +53,8 @@ Board::State::State()
   unitFactor = 1.0;
 }
 
-Board::Board( const Color & backgroundColor )
-  : _backgroundColor( backgroundColor )
+Board::Board( const Color & bgColor )
+  : _backgroundColor( bgColor )
 {
 }
 
@@ -109,10 +109,10 @@ Board::clear( const Color & color )
 
 
 Shape &
-Board::rotate( double angle, const Point & center )
+Board::rotate( double angle, const Point & aCenter )
 {
-  ShapeList::rotate( angle, center );
-  _clippingPath.rotate( angle, center );
+  ShapeList::rotate( angle, aCenter );
+  _clippingPath.rotate( angle, aCenter );
   return (*this);
 }
 
@@ -158,9 +158,9 @@ Board::scale( double s )
 }
 
 Board
-Board::rotated( double angle, const Point & center )
+Board::rotated( double angle, const Point & aCenter )
 {
-  return static_cast<const Board &>( Board( *this ).rotate( angle, center ) );
+  return static_cast<const Board &>( Board( *this ).rotate( angle, aCenter ) );
 }
 
 Board
@@ -306,11 +306,11 @@ Board::backgroundColor( const Color & color )
 }
 
 void
-Board::drawDot( double x, double y, int depth )
+Board::drawDot( double x, double y, int depthValue )
 {  
-  if ( depth != -1 ) 
+  if ( depthValue != -1 ) 
     _shapes.push_back( new Dot( _state.unit(x), _state.unit(y),
-				_state.penColor, _state.lineWidth, depth ) );
+				_state.penColor, _state.lineWidth, depthValue ) );
   else
     _shapes.push_back( new Dot( _state.unit(x), _state.unit(y),
 				_state.penColor, _state.lineWidth, _nextDepth-- ) );
@@ -318,13 +318,13 @@ Board::drawDot( double x, double y, int depth )
 
 void
 Board::drawLine( double x1, double y1, double x2, double y2, 
-		 int depth /* = -1 */  )
+		 int depthValue /* = -1 */  )
 {
-  if ( depth != -1 ) 
+  if ( depthValue != -1 ) 
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
 				 _state.penColor, _state.lineWidth,
-				 _state.lineStyle, _state.lineCap, _state.lineJoin, depth ) );
+				 _state.lineStyle, _state.lineCap, _state.lineJoin, depthValue ) );
   else
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
@@ -334,27 +334,27 @@ Board::drawLine( double x1, double y1, double x2, double y2,
 
 void
 Board::drawArrow( double x1, double y1, double x2, double y2, 
-		  bool filled /* = false */,
-		  int depth /* = -1 */  )
+		  bool filledArrow /* = false */,
+		  int depthValue /* = -1 */  )
 {
-  if ( depth != -1 )
+  if ( depthValue != -1 )
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filled ? _state.penColor : Color::None,
-				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, depth ) );
+				  _state.penColor, filledArrow ? _state.penColor : Color::None,
+				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, depthValue ) );
   else
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filled ? _state.penColor : Color::None,
+				  _state.penColor, filledArrow ? _state.penColor : Color::None,
 				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
 void
 Board::drawRectangle( double x, double y, 
 		      double width, double height,
-		      int depth /* = -1 */ )
+		      int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
 				    _state.penColor, _state.fillColor,
 				    _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, d ) );
@@ -363,9 +363,9 @@ Board::drawRectangle( double x, double y,
 void
 Board::fillRectangle( double x, double y,
 		      double width, double height,
-		      int depth /* = -1 */ )
+		      int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height),
 				    Color::None, _state.penColor,
 				    0.0f, _state.lineStyle, _state.lineCap, _state.lineJoin,
@@ -374,19 +374,20 @@ Board::fillRectangle( double x, double y,
 
 void
 Board::drawCircle( double x, double y, double radius,
-		   int depth /* = -1 */  )
+		   int depthValue /* = -1 */  )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
 				 _state.penColor, _state.fillColor,
 				 _state.lineWidth, _state.lineStyle, d ) );
 }
 
 void
-Board::fillCircle( double x, double y, double radius,
-		   int depth /* = -1 */ )
+Board::fillCircle( double x, double y,
+		   double radius,
+		   int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
 				 Color::None, _state.penColor,
 				 0.0f, _state.lineStyle, d ) );
@@ -395,9 +396,9 @@ Board::fillCircle( double x, double y, double radius,
 void
 Board::drawEllipse( double x, double y,
 		    double xRadius, double yRadius,
-		    int depth /* = -1 */  )
+		    int depthValue /* = -1 */  )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y),
 				  _state.unit(xRadius), _state.unit(yRadius),
 				  _state.penColor,
@@ -410,9 +411,9 @@ Board::drawEllipse( double x, double y,
 void
 Board::fillEllipse( double x, double y, 
 		    double xRadius, double yRadius,
-		    int depth /* = -1 */ )
+		    int depthValue /* = -1 */ )
 {
-  int d = depth ? depth : _nextDepth--;
+  int d = depthValue ? depthValue : _nextDepth--;
   _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y), _state.unit(xRadius), _state.unit(yRadius),
 				  Color::None,
 				  _state.penColor,
@@ -423,9 +424,9 @@ Board::fillEllipse( double x, double y,
 
 void
 Board::drawPolyline( const std::vector<Point> & points,
-		     int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;  
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;  
   std::vector<Point> v = points;
   std::vector<Point>::iterator it = v.begin();
   std::vector<Point>::iterator end = v.end();
@@ -443,9 +444,9 @@ Board::drawPolyline( const std::vector<Point> & points,
 
 void
 Board::drawClosedPolyline( const std::vector<Point> & points,
-			     int depth /* = -1 */ )
+			   int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> v = points;
   std::vector<Point>::iterator it = v.begin();
   std::vector<Point>::iterator end = v.end();
@@ -463,9 +464,9 @@ Board::drawClosedPolyline( const std::vector<Point> & points,
 
 void
 Board::fillPolyline( const std::vector<Point> & points,
-		       int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
 				   0.0f,
 				   _state.lineStyle,
@@ -478,9 +479,9 @@ void
 Board::drawTriangle( double x1, double y1, 
 		     double x2, double y2, 
 		     double x3, double y3, 
-		     int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> points;
   points.push_back( Point( _state.unit(x1), _state.unit(y1) ) );
   points.push_back( Point( _state.unit(x2), _state.unit(y2) ) );
@@ -497,9 +498,9 @@ void
 Board::drawTriangle( const Point & p1,
 		     const Point & p2, 
 		     const Point & p3, 
-		     int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> points;
   points.push_back( Point( _state.unit(p1.x), _state.unit(p1.y) ) );
   points.push_back( Point( _state.unit(p2.x), _state.unit(p2.y) ) );
@@ -516,9 +517,9 @@ void
 Board::fillTriangle( double x1, double y1, 
 		     double x2, double y2, 
 		     double x3, double y3, 
-		     int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> points;
   points.push_back( Point( _state.unit(x1), _state.unit(y1) ) );
   points.push_back( Point( _state.unit(x2), _state.unit(y2) ) );
@@ -535,9 +536,9 @@ void
 Board::fillTriangle( const Point & p1,
 		     const Point & p2, 
 		     const Point & p3, 
-		     int depth /* = -1 */ )
+		     int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> points;
   points.push_back( Point( _state.unit(p1.x), _state.unit(p1.y) ) );
   points.push_back( Point( _state.unit(p2.x), _state.unit(p2.y) ) );
@@ -558,9 +559,9 @@ Board::fillGouraudTriangle( const Point & p1,
 			    const Point & p3,
 			    const Color & color3,
 			    unsigned char divisions,
-			    int depth /* = -1 */ )
+			    int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new GouraudTriangle( Point( _state.unit(p1.x), _state.unit(p1.y) ), color1,
 					  Point( _state.unit(p2.x), _state.unit(p2.y) ), color2,
 					  Point( _state.unit(p3.x), _state.unit(p3.y) ), color3,
@@ -575,7 +576,7 @@ Board::fillGouraudTriangle( const Point & p1,
 			    const Point & p3,
 			    const float brightness3,
 			    unsigned char divisions,
-			    int depth /* = -1 */ )
+			    int depthValue /* = -1 */ )
 {
   Color color1( _state.penColor );
   Color color2( _state.penColor );
@@ -593,35 +594,35 @@ Board::fillGouraudTriangle( const Point & p1,
 		       Point( _state.unit(p2.x), _state.unit(p2.y) ), color2,
 		       Point( _state.unit(p3.x), _state.unit(p3.y) ), color3,
 		       divisions,
-		       depth );
+		       depthValue );
 }
 
 void
 Board::drawText( double x, double y, const char * text,
-		 int depth /* = -1 */ )
+		 int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Text( _state.unit(x), _state.unit(y), text,
 			       _state.font, _state.fontSize, _state.penColor, d ) );
 }
 
 void
-Board::drawText( double x, double y, const std::string & str, int depth /* = -1 */ )
+Board::drawText( double x, double y, const std::string & str, int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Text( _state.unit(x), _state.unit(y), str,
 			       _state.font, _state.fontSize, _state.penColor, d ) );
 }
 
 void
-Board::drawBoundingBox( int depth /* = -1 */ )
+Board::drawBoundingBox( int depthValue /* = -1 */ )
 {
-  int d = (depth!=-1) ? depth : _nextDepth--;
-  Rect bbox = boundingBox();
-  _shapes.push_back( new Rectangle( _state.unit(bbox.left),
-				    _state.unit(bbox.top),
-				    _state.unit(bbox.width),
-				    _state.unit(bbox.height),
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
+  Rect box = boundingBox();
+  _shapes.push_back( new Rectangle( _state.unit(box.left),
+				    _state.unit(box.top),
+				    _state.unit(box.width),
+				    _state.unit(box.height),
 				    _state.penColor,
 				    _state.fillColor,
 				    _state.lineWidth,
@@ -632,14 +633,14 @@ Board::drawBoundingBox( int depth /* = -1 */ )
 }
 
 void
-Board::setClippingRectangle(  double x, double y, 
-			      double width, double height )
+Board::setClippingRectangle( double xLeft, double yTop, 
+			     double rectWidth, double rectHeight )
 {
   _clippingPath.clear();
-  _clippingPath << _state.unit( Point( x, y ) );
-  _clippingPath << _state.unit( Point( x + width, y ) );
-  _clippingPath << _state.unit( Point( x + width, y - height) );
-  _clippingPath << _state.unit( Point( x , y - height ) );
+  _clippingPath << _state.unit( Point( xLeft, yTop ) );
+  _clippingPath << _state.unit( Point( xLeft + rectWidth, yTop ) );
+  _clippingPath << _state.unit( Point( xLeft + rectWidth, yTop - rectHeight) );
+  _clippingPath << _state.unit( Point( xLeft , yTop - rectHeight ) );
 }
 
 void
@@ -673,13 +674,13 @@ Board::setClippingPath(  const Path & path  )
 void
 Board::addDuplicates( const Shape & shape,
 		      unsigned int times,
-		      double dx, double dy, double scale )
+		      double dx, double dy, double scaleValue )
 {
   Shape * s = shape.clone();
   while ( times-- ) {
     (*this) << (*s);
-    if ( scale != 1.0 )
-      s->scale( scale );
+    if ( scaleValue != 1.0 )
+      s->scale( scaleValue );
     s->translate( dx, dy );
   }
   delete s;
@@ -712,13 +713,13 @@ void
 Board::saveEPS( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
-  Rect bbox = boundingBox();
+  Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
   if ( clipping )
-    bbox = bbox && _clippingPath.boundingBox();
+    box = box && _clippingPath.boundingBox();
   
   TransformEPS transform;
-  transform.setBoundingBox( bbox, pageWidth, pageHeight, margin );
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
   
   file << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
   file << "%%Title: " << filename << std::endl;
@@ -730,10 +731,10 @@ Board::saveEPS( const char * filename, double pageWidth, double pageHeight, doub
     file << "%%CreationDate: " << str_time;
   }
   file << "%%BoundingBox: " << std::setprecision( 8 )
-       << transform.mapX( bbox.left ) << " "
-       << transform.mapY( bbox.top - bbox.height ) << " "
-       << transform.mapX( bbox.left + bbox.width ) << " "
-       << transform.mapY( bbox.top ) << std::endl;
+       << transform.mapX( box.left ) << " "
+       << transform.mapY( box.top - box.height ) << " "
+       << transform.mapX( box.left + box.width ) << " "
+       << transform.mapY( box.top ) << std::endl;
 
   file << "%Magnification: 1.0000" << std::endl;
   file << "%%EndComments" << std::endl;
@@ -774,7 +775,7 @@ Board::saveEPS( const char * filename, double pageWidth, double pageHeight, doub
   
   // Draw the background color if needed.
   if ( _backgroundColor != Color::None ) { 
-    Rectangle r( bbox, Color::None, _backgroundColor, 0.0f );
+    Rectangle r( box, Color::None, _backgroundColor, 0.0f );
     r.flushPostscript( file, transform );
   }
 
@@ -806,8 +807,8 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
 {
   std::ofstream file( filename );
   TransformFIG transform;
-  Rect bbox = boundingBox();
-  transform.setBoundingBox( bbox, pageWidth, pageHeight, margin  );
+  Rect box = boundingBox();
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
   transform.setDepthRange( *this );
   
   file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
@@ -869,7 +870,7 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
 
   // Draw the background color if needed.
   if ( _backgroundColor != Color::None ) { 
-    Rectangle r( bbox, Color::None, _backgroundColor, 0.0f );
+    Rectangle r( box, Color::None, _backgroundColor, 0.0f );
     r.depth( std::numeric_limits<int>::max() );
     r.flushFIG( file, transform, colormap );
   }
@@ -895,11 +896,11 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
 {
   std::ofstream file( filename );
   TransformSVG transform;
-  Rect bbox = boundingBox();
+  Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
   if ( clipping )
-    bbox = bbox && _clippingPath.boundingBox();
-  transform.setBoundingBox( bbox, pageWidth, pageHeight, margin );
+    box = box && _clippingPath.boundingBox();
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
 
   file << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>" << std::endl;
   file << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"" << std::endl;
@@ -915,13 +916,13 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
     file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
   } else {
     file << "<svg width=\""
-	 << ( bbox.width / ppmm )  << "mm"
+	 << ( box.width / ppmm )  << "mm"
 	 << "\" height=\""
-	 << ( bbox.height / ppmm ) << "mm"
+	 << ( box.height / ppmm ) << "mm"
 	 << "\" " << std::endl;
     file << "     viewBox=\"0 0 "
-	 << bbox.width  << " "
-	 << bbox.height << "\" " << std::endl;
+	 << box.width  << " "
+	 << box.height << "\" " << std::endl;
     file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
   }
 
@@ -941,7 +942,7 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
   
   // Draw the background color if needed.
   if ( _backgroundColor != Color::None ) { 
-    Rectangle r( bbox, Color::None, _backgroundColor, 0.0 );
+    Rectangle r( box, Color::None, _backgroundColor, 0.0 );
     r.flushSVG( file, transform );
   }
   

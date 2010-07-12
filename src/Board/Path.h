@@ -28,10 +28,10 @@ struct Path {
 
   Path() : _closed( false ) { }
 
-  Path( const std::vector<Point> & points, bool closed )
-    : _points( points ), _closed( closed ) { }
+  Path( const std::vector<Point> & points, bool closedPath )
+    : _points( points ), _closed( closedPath ) { }
 
-  Path( bool closed ) : _closed( closed ) { }    
+  Path( bool closedPath ) : _closed( closedPath ) { }    
   
   inline void clear();
 
@@ -228,9 +228,9 @@ Path::size() const
 }
 
 void
-Path::setClosed( bool closed )
+Path::setClosed( bool closedPath )
 {
-  _closed = closed;
+  _closed = closedPath;
 }
 
 } // namespace LibBoard  

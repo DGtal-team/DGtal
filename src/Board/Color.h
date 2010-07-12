@@ -25,16 +25,17 @@ public:
 
   Color( const unsigned int rgb, unsigned char alpha = 255 );
 
-  Color( unsigned char red, unsigned char  green, unsigned char  blue, unsigned char alpha = 255 )
-    :_red(red),_green(green),_blue(blue),_alpha(alpha) { }
+  Color( unsigned char redValue, unsigned char  greenValue, unsigned char  blueValue,
+	 unsigned char alphaValue = 255 )
+    : _red(redValue),_green(greenValue),_blue(blueValue),_alpha(alphaValue) { }
 
-  Color( unsigned char gray, unsigned char alpha = 255 )
-    :_red(gray),_green(gray),_blue(gray),_alpha(alpha) { }
+  Color( unsigned char grayValue, unsigned char alphaValue = 255 )
+    : _red(grayValue),_green(grayValue),_blue(grayValue),_alpha(alphaValue) { }
 
-  Color( const bool valid = true )
-    :_red(-1),_green(-1),_blue(-1),_alpha(255)
+  Color( const bool validColor = true )
+    : _red(-1),_green(-1),_blue(-1),_alpha(255)
   { 
-    if ( valid ) {
+    if ( validColor ) {
       _red = _green = _blue = 0;
     }
   }
@@ -109,40 +110,40 @@ private:
 };
 
 inline Color &
-Color::setRGBi( const unsigned char red,
-		const unsigned char green,
-		const unsigned char blue,
-		const unsigned char alpha ) {
-  _red = red;
-  _green = green;
-  _blue = blue;
-  _alpha = alpha;
+Color::setRGBi( const unsigned char redValue,
+		const unsigned char greenValue,
+		const unsigned char blueValue,
+		const unsigned char alphaValue ) {
+  _red = redValue;
+  _green = greenValue;
+  _blue = blueValue;
+  _alpha = alphaValue;
   return *this;
 }
 
 
 inline void
-Color::red( const unsigned char red )
+Color::red( const unsigned char redValue )
 {
-  _red = red;
+  _red = redValue;
 }
 
 inline void
-Color::green( unsigned char green )
+Color::green( unsigned char greenValue )
 {
-  _green = green;
+  _green = greenValue;
 }
 
 inline void 
-Color::blue( unsigned char blue )
+Color::blue( unsigned char blueValue )
 {
-  _blue = blue;
+  _blue = blueValue;
 }
 
 inline void 
-Color::alpha( unsigned char alpha )
+Color::alpha( unsigned char alphaValue )
 {
-  _alpha = alpha;
+  _alpha = alphaValue;
 }
 
 inline unsigned char Color::red() const { return _red; } 

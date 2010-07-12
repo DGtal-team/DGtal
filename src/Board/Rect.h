@@ -35,8 +35,8 @@ struct Rect {
    * 
    * @return 
    */
-  Rect( double left = 0.0f, double top = 0.0f, double width = 0.0f, double height = 0.0f )
-    :left( left ), top( top ), width( width ), height( height ) { } 
+  Rect( double leftX = 0.0f, double topY = 0.0f, double rectWidth = 0.0f, double rectHeight = 0.0f )
+    :left( leftX ), top( topY ), width( rectWidth ), height( rectHeight ) { } 
 
   Point topLeft() { return Point( left, top ); }
   Point topRight() { return Point( left + width, top ); }

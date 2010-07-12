@@ -35,25 +35,25 @@ Path::center() const {
 }
 
 Path &
-Path::rotate( double angle, const Point & center )
+Path::rotate( double angle, const Point & rotCenter )
 {
   std::vector<Point>::iterator i = _points.begin();
   std::vector<Point>::iterator end = _points.end();
   while ( i != end ) {
-    i->rotate( angle, center );
+    i->rotate( angle, rotCenter );
     ++i;
   }
   return *this;
 }
 
 Path
-Path::rotated( double angle, const Point & center ) const
+Path::rotated( double angle, const Point & rotCenter ) const
 {
   Path res(*this);
   std::vector<Point>::iterator i = res._points.begin();
   std::vector<Point>::iterator end = res._points.end();
   while ( i != end ) {
-    i->rotate( angle, center );
+    i->rotate( angle, rotCenter );
     ++i;
   }
   return res;

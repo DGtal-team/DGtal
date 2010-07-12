@@ -10,15 +10,16 @@
 
 namespace LibBoard {
 
-Shape::Shape( Color penColor, Color fillColor,
+Shape::Shape( Color pen,
+	      Color fill,
 	      double lineWidth, 
 	      LineStyle style,
 	      const LineCap cap,
 	      const LineJoin join,
-	      int depth )
-  : _depth( depth ),
-    _penColor( penColor ),
-    _fillColor( fillColor ), 
+	      int depthValue )
+  : _depth( depthValue ),
+    _penColor( pen ),
+    _fillColor( fill ), 
     _lineWidth( lineWidth ),
     _lineStyle( style ),
     _lineCap( cap ), 
@@ -29,10 +30,10 @@ Shape::Shape( Color penColor, Color fillColor,
 Dot::Dot( double x, double y,
 	  Color color, 
 	  double lineWidth,
-	  int depth )
+	  int depthValue )
   : Shape( color, 
 	   Color::None, 
-	   lineWidth, SolidStyle, RoundCap, MiterJoin, depth ),
+	   lineWidth, SolidStyle, RoundCap, MiterJoin, depthValue ),
     _x( x ), _y( y ) 
 {
 }
@@ -43,85 +44,95 @@ Line::Line( double x1, double y1, double x2, double y2,
 	    const LineStyle style,
 	    const LineCap cap,
 	    const LineJoin join,
-	    int depth )
-  : Shape( color, Color::None, lineWidth, style, cap, join, depth ),
+	    int depthValue )
+  : Shape( color, Color::None, lineWidth, style, cap, join, depthValue ),
     _x1( x1 ), _y1( y1 ), _x2( x2 ), _y2( y2 )
 {
 }
 
 
 Arrow::Arrow( double x1, double y1, double x2, double y2,
-	      Color penColor, Color fillColor,
+	      Color pen,
+	      Color fill,
 	      double lineWidth, 
 	      const LineStyle style,
 	      const LineCap cap,
 	      const LineJoin join,
-	      int depth )
-  : Line( x1, y1, x2, y2, penColor, lineWidth, style, cap, join, depth ) 
+	      int depthValue )
+  : Line( x1, y1, x2, y2, pen, lineWidth, style, cap, join, depthValue ) 
 {
-  Shape::_fillColor = fillColor;
+  Shape::_fillColor = fill;
 }
 
 Polyline::Polyline( const std::vector<Point> & points, 
 		    bool closed,
-		    Color penColor, Color fillColor,
+		    Color pen,
+		    Color fill,
 		    double lineWidth,
 		    const LineStyle lineStyle,
 		    const LineCap cap,
 		    const LineJoin join,
-		    int depth )
-  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
+		    int depthValue )
+  : Shape( pen, fill, lineWidth, lineStyle, cap, join, depthValue ),
     _path( points, closed )
 {
 }
 
 Polyline::Polyline( const Path & path, 
-		    Color penColor, Color fillColor,
+		    Color pen,
+		    Color fill,
 		    double lineWidth,
 		    const LineStyle lineStyle,
 		    const LineCap cap,
 		    const LineJoin join,
-		    int depth )
-  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
+		    int depthValue )
+  : Shape( pen, fill, lineWidth, lineStyle, cap, join, depthValue ),
     _path( path )
 {
 }
 
-Polyline::Polyline( bool closed, Color penColor, Color fillColor,
-		    double lineWidth,
-		    const LineStyle lineStyle,
-		    const LineCap cap,
-		    const LineJoin join,
-		    int depth )
-  : Shape( penColor, fillColor, lineWidth, lineStyle, cap, join, depth ),
-    _path( closed )
+  Polyline::Polyline( bool closed,
+		      Color pen,
+		      Color fill,
+		      double lineWidth,
+		      const LineStyle lineStyle,
+		      const LineCap cap,
+		      const LineJoin join,
+		      int depthValue )
+    : Shape( pen, fill, lineWidth, lineStyle, cap, join, depthValue ),
+      _path( closed )
 {
 }
 
-Rectangle::Rectangle( double x, double y, double width, double height,
-		      Color penColor, Color fillColor,
+Rectangle::Rectangle( double xLeft,
+		      double yTop,
+		      double rectWidth, 
+		      double rectHeight,
+		      Color pen,
+		      Color fill,
 		      double lineWidth, 
 		      const LineStyle style,
 		      const LineCap cap,
 		      const LineJoin join,
-		      int depth )
-  : Polyline( std::vector<Point>(), true, penColor, fillColor,
-	      lineWidth, style, cap, join, depth )
+		      int depthValue )
+  : Polyline( std::vector<Point>(), true, pen, fill,
+	      lineWidth, style, cap, join, depthValue )
 {
-  _path <<  Point( x, y );
-  _path << Point( x + width, y );
-  _path << Point( x + width, y - height );
-  _path << Point( x, y - height );
+  _path <<  Point( xLeft, yTop );
+  _path << Point( xLeft + rectWidth, yTop );
+  _path << Point( xLeft + rectWidth, yTop - rectHeight );
+  _path << Point( xLeft, yTop - rectHeight );
 }
   
 Rectangle::Rectangle( const Rect & rect,
-		      Color penColor, Color fillColor,
+		      Color pen,
+		      Color fill,
 		      double lineWidth,
 		      const LineStyle style,
 		      const LineCap cap,
 		      const LineJoin join,
-		      int depth )
-  : Polyline( std::vector<Point>(), true, penColor, fillColor, lineWidth, style, cap, join, depth ) {
+		      int depthValue )
+  : Polyline( std::vector<Point>(), true, pen, fill, lineWidth, style, cap, join, depthValue ) {
   _path << Point( rect.left, rect.top );
   _path << Point( rect.left + rect.width, rect.top );
   _path << Point( rect.left + rect.width, rect.top - rect.height );

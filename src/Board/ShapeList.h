@@ -170,8 +170,8 @@ protected:
  */
 struct Group : public ShapeList {
   
-  Group( int depth = -1 )
-    : ShapeList( depth ), _clippingPath( true /* closed path */ ) { }
+  Group( int depthValue = -1 )
+    : ShapeList( depthValue ), _clippingPath( true /* closed path */ ) { }
   
   Group( const Group & other ) 
     : ShapeList( other ), _clippingPath( other._clippingPath ) { }

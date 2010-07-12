@@ -133,16 +133,16 @@ Dot::center() const {
 }
 
 Dot &
-Dot::rotate( double angle, const Point & center )
+Dot::rotate( double angle, const Point & rotCenter )
 {
-    Point( _x, _y ).rotate( angle, center ).get( _x, _y );
+    Point( _x, _y ).rotate( angle, rotCenter ).get( _x, _y );
     return *this;
 }
 
 Dot
-Dot::rotated( double angle, const Point & center ) const
+Dot::rotated( double angle, const Point & rotCenter ) const
 {
-    return Dot(*this).rotate( angle, center );
+    return Dot(*this).rotate( angle, rotCenter );
 }
 
 Dot &
@@ -285,10 +285,10 @@ Line::center() const {
 }
 
 Line &
-Line::rotate( double angle, const Point & center )
+Line::rotate( double angle, const Point & rotCenter )
 {
-    Point( _x1, _y1 ).rotate( angle, center ).get( _x1, _y1 );
-    Point( _x2, _y2 ).rotate( angle, center ).get( _x2, _y2 );
+    Point( _x1, _y1 ).rotate( angle, rotCenter ).get( _x1, _y1 );
+    Point( _x2, _y2 ).rotate( angle, rotCenter ).get( _x2, _y2 );
     return *this;
 }
 
@@ -299,11 +299,11 @@ Line::rotate( double angle )
 }
 
 Line
-Line::rotated( double angle, const Point & center ) const
+Line::rotated( double angle, const Point & rotCenter ) const
 {
     Line res(*this);
-    Point( _x1, _y1 ).rotate( angle, center ).get( res._x1, res._y1 );
-    Point( _x2, _y2 ).rotate( angle, center ).get( res._x2, res._y2 );
+    Point( _x1, _y1 ).rotate( angle, rotCenter ).get( res._x1, res._y1 );
+    Point( _x2, _y2 ).rotate( angle, rotCenter ).get( res._x2, res._y2 );
     return res;
 }
 
@@ -481,11 +481,11 @@ Arrow::name() const
 }
 
 Arrow
-Arrow::rotated( double angle, const Point & center ) const
+Arrow::rotated( double angle, const Point & rotCenter ) const
 {
     Arrow res(*this);
-    Point( _x1, _y1 ).rotate( angle, center ).get( res._x1, res._y1 );
-    Point( _x2, _y2 ).rotate( angle, center ).get( res._x2, res._y2 );
+    Point( _x1, _y1 ).rotate( angle, rotCenter ).get( res._x1, res._y1 );
+    Point( _x2, _y2 ).rotate( angle, rotCenter ).get( res._x2, res._y2 );
     return res;
 }
 
@@ -691,12 +691,12 @@ Ellipse::center() const {
 }
 
 Ellipse &
-Ellipse::rotate( double angle, const Point & center )
+Ellipse::rotate( double angle, const Point & rotCenter )
 {
     Point c( _center );
     Point e = (c + Point( _xRadius, 0 )).rotate( _angle, c );
-    Point rc = c.rotated( angle, center );
-    Point re = e.rotated( angle, center );
+    Point rc = c.rotated( angle, rotCenter );
+    Point re = e.rotated( angle, rotCenter );
     Point axis = re - rc;
     _angle = atan( axis.y / axis.x );
     _center = rc;
@@ -704,9 +704,9 @@ Ellipse::rotate( double angle, const Point & center )
 }
 
 Ellipse
-Ellipse::rotated( double angle, const Point & center ) const
+Ellipse::rotated( double angle, const Point & rotCenter ) const
 {
-    return Ellipse(*this).rotate( angle, center );
+    return Ellipse(*this).rotate( angle, rotCenter );
 }
 
 Ellipse &
@@ -933,21 +933,21 @@ Circle::center() const {
 }
 
 Circle &
-Circle::rotate( double angle, const Point & center )
+Circle::rotate( double angle, const Point & rotCenter )
 {
     if ( _circle ) {
-        if ( center == _center ) return *this;
-        _center.rotate( angle, center );
+        if ( rotCenter == _center ) return *this;
+        _center.rotate( angle, rotCenter );
         return *this;
     }
-    Ellipse::rotate( angle, center );
+    Ellipse::rotate( angle, rotCenter );
     return *this;
 }
 
 Circle
-Circle::rotated( double angle, const Point & center ) const
+Circle::rotated( double angle, const Point & rotCenter ) const
 {
-    return Circle(*this).rotate( angle, center );
+    return Circle(*this).rotate( angle, rotCenter );
 }
 
 Circle &
@@ -1054,16 +1054,16 @@ Polyline::center() const {
 }
 
 Polyline &
-Polyline::rotate( double angle, const Point & center )
+Polyline::rotate( double angle, const Point & rotCenter )
 {
-    _path.rotate( angle, center );
+    _path.rotate( angle, rotCenter );
     return *this;
 }
 
 Polyline
-Polyline::rotated( double angle, const Point & center ) const
+Polyline::rotated( double angle, const Point & rotCenter ) const
 {
-    return Polyline(*this).rotate( angle, center );
+    return Polyline(*this).rotate( angle, rotCenter );
 }
 
 Polyline &
@@ -1222,9 +1222,9 @@ Rectangle::name() const
 }
 
 Rectangle
-Rectangle::rotated( double angle, const Point & center ) const
+Rectangle::rotated( double angle, const Point & rotCenter ) const
 {
-    return static_cast<Rectangle &>( Rectangle(*this).rotate( angle, center ) );
+    return static_cast<Rectangle &>( Rectangle(*this).rotate( angle, rotCenter ) );
 }
 
 Rectangle
@@ -1361,9 +1361,9 @@ GouraudTriangle::GouraudTriangle( const Point & p0, const Color & color0,
                                   const Point & p1, const Color & color1,
                                   const Point & p2, const Color & color2,
                                   int subdivisions,
-                                  int depth )
+                                  int depthValue )
         : Polyline( std::vector<Point>(), true, Color::None, Color::None,
-                    0.0f, SolidStyle, ButtCap, MiterJoin, depth ),
+                    0.0f, SolidStyle, ButtCap, MiterJoin, depthValue ),
         _color0( color0 ), _color1( color1 ), _color2( color2 ), _subdivisions( subdivisions ) {
     _path << p0;
     _path << p1;
@@ -1377,12 +1377,12 @@ GouraudTriangle::GouraudTriangle( const Point & p0, const Color & color0,
 GouraudTriangle::GouraudTriangle( const Point & p0, float brightness0,
                                   const Point & p1, float brightness1,
                                   const Point & p2, float brightness2,
-                                  const Color & _fillColor,
+                                  const Color & fill,
                                   int subdivisions,
-                                  int depth )
+                                  int depthValue )
         : Polyline( std::vector<Point>(), true, Color::None, Color::None,
-                    0.0f, SolidStyle, ButtCap, MiterJoin, depth ),
-        _color0( _fillColor ), _color1( _fillColor ), _color2( _fillColor ), _subdivisions( subdivisions )
+                    0.0f, SolidStyle, ButtCap, MiterJoin, depthValue ),
+	  _color0( fill ), _color1( fill ), _color2( fill ), _subdivisions( subdivisions )
 {
     _path << p0;
     _path << p1;
@@ -1408,16 +1408,16 @@ GouraudTriangle::center() const {
 }
 
 GouraudTriangle &
-GouraudTriangle::rotate( double angle, const Point & center )
+GouraudTriangle::rotate( double angle, const Point & rotCenter )
 {
-    _path.rotate( angle, center );
+    _path.rotate( angle, rotCenter );
     return *this;
 }
 
 GouraudTriangle
-GouraudTriangle::rotated( double angle, const Point & center ) const
+GouraudTriangle::rotated( double angle, const Point & rotCenter ) const
 {
-    return GouraudTriangle(*this).rotate( angle, center );
+    return GouraudTriangle(*this).rotate( angle, rotCenter );
 }
 
 GouraudTriangle &
@@ -1619,11 +1619,11 @@ Text::center() const {
 }
 
 Text &
-Text::rotate( double angle, const Point & center )
+Text::rotate( double angle, const Point & rotCenter )
 {
     Point endPos = _position + Point( 10000 * cos( _angle ), 10000 * sin( _angle ) );
-    _position.rotate( angle, center );
-    endPos.rotate( angle, center );
+    _position.rotate( angle, rotCenter );
+    endPos.rotate( angle, rotCenter );
     Point v = endPos - _position;
     v /= v.norm();
     if ( v.x >= 0 ) _angle = asin( v.y );
@@ -1633,9 +1633,9 @@ Text::rotate( double angle, const Point & center )
 }
 
 Text
-Text::rotated( double angle, const Point & center ) const
+Text::rotated( double angle, const Point & rotCenter ) const
 {
-    return Text(*this).rotate( angle, center );
+    return Text(*this).rotate( angle, rotCenter );
 }
 
 Text &

@@ -138,9 +138,9 @@ public:
    * 
    * @param x First coordinate of the dot.
    * @param y Second coordinate of the dot.
-   * @param depth Depth of the line.
+   * @param depthValue Depth of the line.
    */
-  void drawDot( double x, double y, int depth = -1 );
+  void drawDot( double x, double y, int depthValue = -1 );
 
   /** 
    * Draws a line from (x1,y1) to (x2,y2).
@@ -149,10 +149,10 @@ public:
    * @param y1 Second coordinate of the first extremity.
    * @param x2 First coordinate of the second extremity.
    * @param y2 Second coordinate of the second extremity.
-   * @param depth Depth of the line.
+   * @param depthValue Depth of the line.
    */
   void drawLine( double x1, double y1, double x2, double y2, 
-		 int depth = -1 );
+		 int depthValue = -1 );
 
   /** 
    * Draws a line from (x1,y1) to (x2,y2) with an arrow at (x2,y2).
@@ -162,11 +162,11 @@ public:
    * @param x2 First coordinate of the second extremity.
    * @param y2 Second coordinate of the second extremity.
    * @param filled Whether or not the arrow is filled.
-   * @param depth Depth of the line.
+   * @param depthValue Depth of the line.
    */
   void drawArrow( double x1, double y1, double x2, double y2,
 		  bool filled = true,
-		  int depth = -1 );
+		  int depthValue = -1 );
 
   /** 
    * Draws a triangle.
@@ -177,12 +177,12 @@ public:
    * @param y3 Second coordinate of the second vertex.
    * @param x3 First coordinate of the third vertex.
    * @param y3 Second coordinate of the third vertex.
-   * @param depth Depth of the triangle.
+   * @param depthValue Depth of the triangle.
    */
   void drawTriangle( double x1, double y1, 
 		     double x2, double y2, 
 		     double x3, double y3, 
-		     int depth = -1 );
+		     int depthValue = -1 );
 
   /** 
    * Draws a triangle.
@@ -190,12 +190,12 @@ public:
    * @param p1 First vertex.
    * @param p2 Second vertex.
    * @param p3 Third vertex.
-   * @param depth Depth of the triangle.
+   * @param depthValue Depth of the triangle.
    */
   void drawTriangle( const Point & p1,
 		     const Point & p2, 
 		     const Point & p3, 
-		     int depth = -1 );
+		     int depthValue = -1 );
 
   /** 
    * Draws a filled triangle.
@@ -206,12 +206,12 @@ public:
    * @param y3 Second coordinate of the second vertex.
    * @param x3 First coordinate of the third vertex.
    * @param y3 Second coordinate of the third vertex.
-   * @param depth Depth of the triangle.
+   * @param depthValue Depth of the triangle.
    */
   void fillTriangle( double x1, double y1, 
 		     double x2, double y2, 
 		     double x3, double y3, 
-		     int depth = -1 );
+		     int depthValue = -1 );
 
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
@@ -223,7 +223,7 @@ public:
    * @param p3 
    * @param color3 
    * @param divisions number of triangle subdivisions.
-   * @param depth The depth of the triangle.
+   * @param depthValue The depth of the triangle.
    */
   void fillGouraudTriangle( const Point & p1,
 			    const Color & color1,
@@ -232,7 +232,7 @@ public:
 			    const Point & p3,
 			    const Color & color3,
 			    unsigned char divisions = 3,
-			    int depth = -1 );
+			    int depthValue = -1 );
 
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
@@ -247,7 +247,7 @@ public:
    * @param y3 
    * @param color3 
    * @param divisions 
-   * @param depth 
+   * @param depthValue 
    */
   inline void fillGouraudTriangle( const double x1, const double y1,
 				   const Color & color1,
@@ -256,7 +256,7 @@ public:
 				   const double x3, const double y3,
 				   const Color & color3,
 				   unsigned char divisions = 3,
-				   int depth = -1 );
+				   int depthValue = -1 );
 
   /** 
    * Draws a triangle with a Gouraud-like shaded color according to
@@ -268,7 +268,7 @@ public:
    * @param p3 
    * @param brightness3
    * @param divisions number of triangle subdivisions.
-   * @param depth The depth of the triangle.
+   * @param depthValue The depth of the triangle.
    */
   void fillGouraudTriangle( const Point & p1,
 			    const float brightness1,
@@ -277,7 +277,7 @@ public:
 			    const Point & p3,
 			    const float brightness3,
 			    unsigned char divisions = 3,
-			    int depth = -1 );
+			    int depthValue = -1 );
 
   /** 
    * Draws a triangle with a Gouraud-like shaded color according to
@@ -293,7 +293,7 @@ public:
    * @param y3 
    * @param brightness3
    * @param divisions
-   * @param depth 
+   * @param depthValue 
    */
   inline void fillGouraudTriangle( const double x1, const double y1,
 				   const float brightness1,
@@ -302,7 +302,7 @@ public:
 				   const double x3, const double y3,
 				   const float brightness3,
 				   unsigned char divisions = 3,
-				   int depth = -1 );
+				   int depthValue = -1 );
 
 
   /** 
@@ -311,12 +311,12 @@ public:
    * @param p1 First vertex.
    * @param p2 Second vertex.
    * @param p3 Third vertex.
-   * @param depth Depth of the triangle.
+   * @param depthValue Depth of the triangle.
    */
   void fillTriangle( const Point & p1,
 		     const Point & p2, 
 		     const Point & p3, 
-		     int depth = -1 );
+		     int depthValue = -1 );
   
   /** 
    * Draws a rectangle.
@@ -325,11 +325,11 @@ public:
    * @param y Second coordinate of the upper left corner.
    * @param width Width of the rectangle.
    * @param height Height of the rectangle.
-   * @param depth Depth of the rectangle.
+   * @param depthValue Depth of the rectangle.
    */
   void drawRectangle( double x, double y, 
 		      double width, double height,
-		      int depth = -1 );
+		      int depthValue = -1 );
 
   /** 
    * Draws a rectangle filled with the current pen color.
@@ -338,11 +338,11 @@ public:
    * @param y Second coordinate of the upper left corner.
    * @param width Width of the rectangle.
    * @param height Height of the rectangle.
-   * @param depth Depth of the rectangle.
+   * @param depthValue Depth of the rectangle.
    */
   void fillRectangle( double x, double y,
 		      double width, double height,
-		      int depth = -1 );
+		      int depthValue = -1 );
 
   /** 
    * Draws a circle.
@@ -350,10 +350,10 @@ public:
    * @param x First coordinate of the circle's center.
    * @param y Second coordinate of the circle's center.
    * @param radius Radius of the circle.
-   * @param depth Depth of the circle.
+   * @param depthValue Depth of the circle.
    */
   void drawCircle( double x, double y, double radius,
-		   int depth = -1 );
+		   int depthValue = -1 );
  
   /** 
    * Draws a circle filled with the current pen color.
@@ -361,10 +361,10 @@ public:
    * @param x First coordinate of the circle's center.
    * @param y Second coordinate of the circle's center.
    * @param radius Radius of the circle.
-   * @param depth Depth of the circle.
+   * @param depthValue Depth of the circle.
    */
   void fillCircle( double x, double y, double radius,
-		   int depth = -1);
+		   int depthValue = -1);
 
   /** 
    * Draws an ellipse.
@@ -372,11 +372,11 @@ public:
    * @param x First coordinate of the circle's center.
    * @param y Second coordinate of the circle's center.
    * @param radius Radius of the circle.
-   * @param depth Depth of the circle.
+   * @param depthValue Depth of the circle.
    */
   void drawEllipse( double x, double y, 
 		    double xRadius, double yRadius,
-		    int depth = -1);
+		    int depthValue = -1);
  
   /** 
    * Draws an ellipse filled with the current pen color.
@@ -385,38 +385,38 @@ public:
    * @param y Second coordinate of the circle's center.
    * @param xRadius X axis radius of the ellipse.
    * @param yRadius Y axis radius of the ellipse.
-   * @param depth Depth of the circle.
+   * @param depthValue Depth of the circle.
    */
   void fillEllipse( double x, double y, 
 		    double xRadius, double yRadius,
-		    int depth = -1);
+		    int depthValue = -1);
 
   /** 
    * Draws a polygonal line.
    * 
    * @param points A vector of points.
-   * @param depth The depth of the polyline.
+   * @param depthValue The depth of the polyline.
    */
   void drawPolyline( const std::vector<Point> & points,
-		     int depth = -1 );
+		     int depthValue = -1 );
   
   /** 
    * Draws a closed polygonal line.
    * 
    * @param points A vector of points.
-   * @param depth The depth of the polyline.
+   * @param depthValue The depth of the polyline.
    */
   void drawClosedPolyline( const std::vector<Point> & points,
-			   int depth = -1 );
+			   int depthValue = -1 );
 
   /** 
    * Draws a filled polygon.
    * 
    * @param points A vector of points.
-   * @param depth The depth of the polygon.
+   * @param depthValue The depth of the polygon.
    */
   void fillPolyline( const std::vector<Point> & points,
-		     int depth = -1 );
+		     int depthValue = -1 );
     
   /** 
    * Draws a string of text.
@@ -424,10 +424,10 @@ public:
    * @param x The first coordinates of the lower left corner.
    * @param y The second coordinates of the lower left corner.
    * @param text The text. 
-   * @param depth The depth of the text.
+   * @param depthValue The depth of the text.
    */
   void drawText( double x, double y, const char * text, 
-		 int depth = -1 );
+		 int depthValue = -1 );
 
   /** 
    * Draws a string of text.
@@ -435,10 +435,10 @@ public:
    * @param x The first coordinates of the lower left corner.
    * @param y The second coordinates of the lower left corner.
    * @param text The text. 
-   * @param depth The depth of the text.
+   * @param depthValue The depth of the text.
    */
   void drawText( double x, double y, const std::string & str, 
-		 int depth = -1 );
+		 int depthValue = -1 );
 
   /** 
    * Changes the current font and font size.
@@ -574,9 +574,9 @@ public:
   /** 
    * Draws the current drawing's bounding box as a rectangle.
    * 
-   * @param depth The depth of the rectangle.
+   * @param depthValue The depth of the rectangle.
    */
-  void drawBoundingBox( int depth = -1 );
+  void drawBoundingBox( int depthValue = -1 );
 
 
   /** 
@@ -788,12 +788,12 @@ Board::fillGouraudTriangle( const double x1, const double y1,
 			    const double x3, const double y3,
 			    const Color & color3,
 			    unsigned char divisions,
-			    int depth /* = -1 */ )
+			    int depthValue /* = -1 */ )
 {
   fillGouraudTriangle( Point( x1, y1 ), color1,
 		       Point( x2, y2 ), color2,
 		       Point( x3, y3 ), color3,
-		       divisions, depth );		       
+		       divisions, depthValue );		       
 }
 
 void
@@ -804,12 +804,12 @@ Board::fillGouraudTriangle( const double x1, const double y1,
 			    const double x3, const double y3,
 			    const float brightness3,
 			    unsigned char divisions,
-			    int depth /* = -1 */ )
+			    int depthValue /* = -1 */ )
 {
   fillGouraudTriangle( Point( x1, y1 ), brightness1,
 		       Point( x2, y2 ), brightness2,
 		       Point( x3, y3 ), brightness3,
-		       divisions, depth );
+		       divisions, depthValue );
 }
 
 } // namespace Board
