@@ -111,19 +111,34 @@ namespace DGtal
      * @tparam OutputIterator any output iterator (like
      * std::back_insert_iterator< std::vector<int> >).
      *
-     * @tparam PointPredicate any predicate object (defaut is true functor)
+     * @tparam PointPredicate any predicate type.
      *
      * @param p any point of this space.
      * @param out_it any output iterator.
      * @param pred the predicate.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate = TruePointPredicate< Point > >
+	      typename PointPredicate>
     static
     void writeNeighborhood( const Point & p, 
 			    OutputIterator & out_it,
-			    const PointPredicate & pred 
-			    = TruePointPredicate< Point >() );
+			    const PointPredicate & pred );
+
+
+    /**
+     * Outputs the whole neighborhood of point [p] as a sequence of
+     * *out_it++ = ...
+     *
+     * @tparam OutputIterator any output iterator (like
+     * std::back_insert_iterator< std::vector<int> >).
+     *
+     * @param p any point of this space.
+     * @param out_it any output iterator.
+     */
+    template <typename OutputIterator>
+    static
+    void writeNeighborhood( const Point & p, 
+			    OutputIterator & out_it );
 
     /**
      * Outputs the whole neighborhood of point [p] (except p itself)
@@ -132,19 +147,33 @@ namespace DGtal
      * @tparam OutputIterator any output iterator (like
      * std::back_insert_iterator< std::vector<int> >).
      *
-     * @tparam PointPredicate any predicate object (defaut is true functor)
+     * @tparam PointPredicate any predicate type.
      *
      * @param p any point of this space.
      * @param out_it any output iterator.
      * @param pred the predicate.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate = TruePointPredicate< Point > >
+	      typename PointPredicate >
     static
     void writeProperNeighborhood( const Point & p, 
 				  OutputIterator & out_it,
-				  const PointPredicate & pred 
-				  = TruePointPredicate< Point >() );
+				  const PointPredicate & pred );
+
+    /**
+     * Outputs the whole neighborhood of point [p] (except p itself)
+     * as a sequence of *out_it++ = ...
+     *
+     * @tparam OutputIterator any output iterator (like
+     * std::back_insert_iterator< std::vector<int> >).
+     *
+     * @param p any point of this space.
+     * @param out_it any output iterator.
+     */
+    template <typename OutputIterator>
+    static
+    void writeProperNeighborhood( const Point & p, 
+				  OutputIterator & out_it );
     
     // ----------------------- Interface --------------------------------------
   public:
