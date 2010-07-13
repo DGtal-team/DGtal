@@ -47,7 +47,7 @@ DGtal::ModuloComputer<T>::ModuloComputer( const UnsignedIntegerParamType  m )
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::increment( UnsignedIntegerParamType i ) const
+DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -61,7 +61,7 @@ DGtal::ModuloComputer<T>::increment( UnsignedIntegerParamType i ) const
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::decrement( UnsignedIntegerParamType i ) const
+DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
 {
   if ( i == 0 ) i = k;
   --i;

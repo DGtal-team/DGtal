@@ -84,14 +84,14 @@ namespace DGtal
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void increment(  UnsignedIntegerParamType i ) const;
+    void increment(  UnsignedInteger & i ) const;
 
     /**
      * Decrement the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void decrement(  UnsignedIntegerParamType  i ) const;
+    void decrement(  UnsignedInteger  & i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
