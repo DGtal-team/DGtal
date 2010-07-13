@@ -29,7 +29,7 @@
  */
 template <typename T>
 inline
-DGtal::ModuloComputer<T>::ModuloComputer( const UnsignedInteger &  m )
+DGtal::ModuloComputer<T>::ModuloComputer( const UnsignedIntegerParamType  m )
   : k( m )
 {
 }
@@ -47,7 +47,7 @@ DGtal::ModuloComputer<T>::ModuloComputer( const UnsignedInteger &  m )
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
+DGtal::ModuloComputer<T>::increment( UnsignedIntegerParamType i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -61,7 +61,7 @@ DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
 template <typename T>
 inline
 void 
-DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
+DGtal::ModuloComputer<T>::decrement( UnsignedIntegerParamType i ) const
 {
   if ( i == 0 ) i = k;
   --i;
@@ -76,7 +76,7 @@ DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
 template <typename T>
 inline
 typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::next( const UnsignedInteger & i ) const
+DGtal::ModuloComputer<T>::next( const UnsignedIntegerParamType i ) const
 {
   
   return ( (i+1) == k ) ? 0 : (i+1);
@@ -91,7 +91,7 @@ DGtal::ModuloComputer<T>::next( const UnsignedInteger & i ) const
 template <typename T>
 inline
 typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::previous( const UnsignedInteger & i ) const
+DGtal::ModuloComputer<T>::previous( const UnsignedIntegerParamType i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -105,7 +105,7 @@ DGtal::ModuloComputer<T>::previous( const UnsignedInteger & i ) const
 template <typename T>
 inline
 typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::cast( const Integer & i ) const
+DGtal::ModuloComputer<T>::cast( const IntegerParamType i ) const
 {
   Integer tmp = i;
   while ( tmp < 0 ) tmp += k;
@@ -126,7 +126,7 @@ DGtal::ModuloComputer<T>::cast( const Integer & i ) const
 template <typename T>
 inline
 bool 
-DGtal::ModuloComputer<T>::less( const  UnsignedInteger & i, const  UnsignedInteger & j ) const
+DGtal::ModuloComputer<T>::less( const  UnsignedIntegerParamType i, const  UnsignedIntegerParamType j ) const
 {
   Integer d = ( (T) j ) - ( (T) i );
   if ( d > 0 )
@@ -147,7 +147,7 @@ DGtal::ModuloComputer<T>::less( const  UnsignedInteger & i, const  UnsignedInteg
 template <typename T>
 inline
 typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::posDiff( const UnsignedInteger &  j, const UnsignedInteger & i ) const
+DGtal::ModuloComputer<T>::posDiff( const UnsignedIntegerParamType  j, const UnsignedIntegerParamType i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
 }

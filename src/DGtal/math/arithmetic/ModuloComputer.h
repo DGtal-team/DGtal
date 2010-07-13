@@ -63,8 +63,10 @@ namespace DGtal
   {
 
     typedef typename IntegerTraits<TInteger>::SignedVersion Integer;
+    typedef typename IntegerTraits<Integer>::ParamType IntegerParamType;
+
     typedef typename IntegerTraits<TInteger>::UnsignedVersion UnsignedInteger;
- 
+    typedef typename IntegerTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
@@ -75,42 +77,42 @@ namespace DGtal
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
      */
-    ModuloComputer( const UnsignedInteger & m );
+    ModuloComputer( const UnsignedIntegerParamType m );
     
     /**
      * Increment the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void increment(  UnsignedInteger  & i ) const;
+    void increment(  UnsignedIntegerParamType i ) const;
 
     /**
      * Decrement the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
      * @see k
      */
-    void decrement(  UnsignedInteger &  i ) const;
+    void decrement(  UnsignedIntegerParamType  i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the incremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger  next(  const UnsignedInteger & i ) const;
+    UnsignedInteger  next(  const UnsignedIntegerParamType i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger previous(  const UnsignedInteger  & i ) const;
+    UnsignedInteger previous(  const UnsignedIntegerParamType i ) const;
 
     /**
      * @param i any integer value.
      * @return the value of [i] modulo [k].
      * @see k
      */
-    UnsignedInteger cast( const Integer & i ) const;
+    UnsignedInteger cast( const IntegerParamType i ) const;
     
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
@@ -121,7 +123,7 @@ namespace DGtal
      * @return 'true' if [i] strictly precedes [j] in a window 'floor([k]/2)'.
      * @see k
      */
-    bool less( const UnsignedInteger & i, const UnsignedInteger & j ) const;
+    bool less( const UnsignedIntegerParamType i, const UnsignedIntegerParamType j ) const;
 
     /**
      * Performs j - i modulo, assuming less(i,j) is true.
@@ -131,7 +133,7 @@ namespace DGtal
      * @return the value j - i, always positive. 
      * @see k
      */
-    UnsignedInteger posDiff( const UnsignedInteger  & j, const UnsignedInteger & i ) const;
+    UnsignedInteger posDiff( const UnsignedIntegerParamType j, const UnsignedIntegerParamType i ) const;
     
   public:
     /**
