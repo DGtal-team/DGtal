@@ -54,6 +54,7 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
 {
   typedef typename DigitalSetType::DomainType DomainType;
   typedef typename DomainType::Point Point;
+  typedef typename Point::Coordinate Coordinate;
   unsigned int nbok = 0;
   unsigned int nb = 0;
  
@@ -66,9 +67,12 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
 	       << "Empty set: " << set1 << std::endl;
   trace.endBlock();
 
-  Point p1( { 4, 3, 3 ,4} );
-  Point p2( { 2, 5, 3 ,5} );
-  Point p3( { 2, 5, 3 ,4} );
+  Coordinate t []= { 4, 3, 3 ,4};
+  Point p1( t );
+  Coordinate t2[] = { 2, 5, 3 ,5};
+  Point p2( t2 );
+  Coordinate t3[]=  { 2, 5, 3 ,4} ;
+  Point p3( t3);
 
   trace.beginBlock ( "Insertion." );
   set1.insert( p1 );
@@ -116,14 +120,14 @@ bool testDigitalSetDomain()
   typedef SpaceND<int,2> Z2;
   typedef HyperRectDomain<Z2> DomainType;
   typedef Z2::Point Point;
-  Point p1( { -449, -449 } );
-  Point p2( { 449, 449 } );
+  Point p1(  -449, -449  );
+  Point p2(  449, 449  );
   DomainType domain( p1, p2 );
   typedef DigitalSetSelector
     < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
   SpecificSet disk( domain );
-  Point c( { 0, 0 } );
-  Point l( { 449, 0 } );
+  Point c(  0, 0  );
+  Point l(  449, 0  );
 
   trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
   for ( DomainType::ConstIterator it = domain.begin(); 
@@ -149,8 +153,8 @@ bool testDigitalSetDomain()
       ++nb_in_domain;
     }
   INBLOCK_TEST( nb_in_domain == 636100 );
-  INBLOCK_TEST( disk_domain.lowerBound() == Point( { -449, -449 } ) );
-  INBLOCK_TEST( disk_domain.upperBound() == Point( {  449,  449 } ) );
+  INBLOCK_TEST( disk_domain.lowerBound() == Point(  -449, -449 ) );
+  INBLOCK_TEST( disk_domain.upperBound() == Point(   449,  449 ) );
   trace.endBlock();
 
   return nbok == nb;
@@ -162,8 +166,10 @@ int main()
   typedef HyperRectDomain<Space4Type> DomainType;
   typedef Space4Type::Point Point;
   
-  Point a ( { 1, 2, 3 ,4} );
-  Point b ( { 5, 5, 3 ,5} );
+  int t[] =  { 1, 2, 3 ,4};
+  Point a ( t );
+  int t2[]={ 5, 5, 3 ,5};
+  Point b ( t2 );
   trace.beginBlock ( "HyperRectDomain init" );
 
   ///Domain characterized by points a and b
