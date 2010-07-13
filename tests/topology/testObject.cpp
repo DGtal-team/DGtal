@@ -48,8 +48,8 @@ bool testObject()
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z2 > DomainType; 
-  Point p1( { -449, -449 } );
-  Point p2( { 449, 449 } );
+  Point p1(  -449, -449  );
+  Point p2( 449, 449  );
   DomainType domain( p1, p2 );
 
   // typedef DomainMetricAdjacency< DomainType, 1 > Adj4;
@@ -78,8 +78,8 @@ bool testObject()
 
   Coordinate r = 449;
   double radius = (double) (r+1);
-  Point c( { 0, 0 } );
-  Point l( { r, 0 } );
+  Point c(  0, 0  );
+  Point l(  r, 0  );
   MediumSet disk( domain );
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";

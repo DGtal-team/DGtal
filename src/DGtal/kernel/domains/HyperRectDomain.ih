@@ -201,6 +201,7 @@ DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::
   return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( aPoint,myLowerBound,myUpperBound );
 }
 
+#ifdef CPP0X_INITIALIZER_LIST
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
@@ -208,7 +209,7 @@ DGtal::HyperRectDomain<TSpace>::begin(std::initializer_list<unsigned int> permut
 { return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myLowerBound,myLowerBound,myUpperBound,
 								  permutation);
 }
-
+#endif
 
 /**
  * end() iterator.
@@ -222,6 +223,7 @@ DGtal::HyperRectDomain<TSpace>::end() const
   return myIteratorEnd;
 }
 
+#ifdef CPP0X_INITIALIZER_LIST
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
@@ -231,6 +233,7 @@ DGtal::HyperRectDomain<TSpace>::end(std::initializer_list<unsigned int> permutat
   ++res;
   return res;
 }
+#endif
 
 //------------Span Iterators
 /**

@@ -140,11 +140,13 @@ namespace DGtal
      **/
     const ConstIterator& begin() const;
 
+#ifdef CPP0X_INITIALIZER_LIST
      /**
      * begin() iterator with an order different from lexicographic.
      *
      **/
     ConstIterator begin(std::initializer_list<unsigned int> permutation);
+#endif
 
     /**
      * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
@@ -158,11 +160,13 @@ namespace DGtal
      **/
     const ConstIterator& end() const;
 
+#ifdef CPP0X_INITIALIZER_LIST
      /**
      * end() iterator with an order different from lexicographic.
      *
      **/
     ConstIterator end(std::initializer_list<unsigned int> permutation);
+#endif
 
     //------------- Span Iterator
     /**

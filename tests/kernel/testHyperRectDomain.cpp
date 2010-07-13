@@ -39,8 +39,10 @@ bool testSimpleHyperRectDomain()
     typedef SpaceND<int,4> Space4Type;
     typedef Space4Type::Point Point;
 
-    Point a ({ 1, 2, 3 ,4});
-    Point b ({ 5, 5, 3 ,4} );
+    int t [] ={ 1, 2, 3 ,4}; 
+    Point a ( t );
+    int t2[] ={ 5, 5, 3 ,4}; 
+    Point b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain init" );
     // Checking that HyperRectDomain is a model of CDomain.
@@ -82,8 +84,8 @@ bool testIterator()
 {
     typedef SpaceND<int,2> TSpace;
     typedef TSpace::Point Point;
-    Point a ({ 1, 1});
-    Point b ({ 5, 5});
+    Point a ( 1, 1);
+    Point b ( 5, 5);
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myHyperRectDomain ( a,b );
@@ -99,8 +101,11 @@ bool testIterator()
     trace.emphase() << "Iterator 4d: ";
     typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    Point4D a4D ( {1,1,1,1} );
-    Point4D b4D ( {3,3,3,3} );
+
+    int t[]= {1,1,1,1};
+    Point4D a4D ( t );
+    int t2[]= {3,3,3,3};
+    Point4D b4D ( t2 );
 
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
     trace.emphase() << myHyperRectDomain4D<<std::endl;
@@ -111,7 +116,8 @@ bool testIterator()
         trace.info() << ( *it ) << std::endl;
 
     trace.endBlock();
-
+    
+#ifdef CPP0X_INITIALIZER_LIST
     trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
     for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin({3,2,1,0});
 	  it != myHyperRectDomain4D.end({3,2,1,0}); ++it )
@@ -124,6 +130,7 @@ bool testIterator()
     std::cout<<"BEGIN:"<<*it1<<" END:"<<*it2<<std::endl;
     for ( ; it1!=it2; --it1 )
       trace.info() << ( *it1 ) << std::endl;
+#endif
 
     return myHyperRectDomain.isValid();
 }
@@ -133,8 +140,10 @@ bool testReverseIterator()
 {
     typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    Point4D a4D ({1,1,1,1});
-    Point4D b4D ({3,3,3,3});
+    int t[] = {1,1,1,1};
+    Point4D a4D (t);
+    int t2[]={3,3,3,3};
+    Point4D b4D (t2);
 
     trace.beginBlock ( "Test reverse iterator" );
 
@@ -164,8 +173,10 @@ bool testSTLCompat()
 {
     typedef SpaceND<int,4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    Point4D a4D ({1,1,1,1});
-    Point4D b4D ({3,3,3,3});
+    int t[] = {1,1,1,1};
+    Point4D a4D (t);
+    int t2[]={3,3,3,3};
+    Point4D b4D (t2);
 
     trace.beginBlock ( "TestSTL Compatibility" );
 
