@@ -100,7 +100,9 @@ bool testComparison()
 bool testSimplePoint()
 {
     PointVector<int,3>  aPVInt3; 
-    PointVector<double,4> aPoint={-3 ,4 ,4.5 ,0};
+
+    double t[]={-3 ,4 ,4.5 ,0};
+    PointVector<double,4> aPoint(t);
     PointVector<double,4> aFPoint;
 
     aPoint *= 5.6;
@@ -116,7 +118,8 @@ bool testSimplePoint()
     if ( aPoint.dimension() != 4 )
         return false;
 
-    PointVector<double, 4> v ({ 3.5, 4.1, 2.2, 3.2 });
+    double tt[] = { 3.5, 4.1, 2.2, 3.2 };
+    PointVector<double, 4> v (tt);
     aPoint = aFPoint + v;
     trace.beginBlock ( "Test point addition with vector" );
     trace.info() << "aPoint = "<< aFPoint << " + " << v << endl;
@@ -196,9 +199,11 @@ bool testIterator()
 bool testOperators()
 {
   trace.beginBlock("Point Operators Test");
-
-  PointVector<int,4> p1({1,2,3,4});
-  PointVector<int,4> p2({5,4,3,2});
+  
+  int t1[] = {1,2,3,4};
+  PointVector<int,4> p1( t1 );
+  int t2[]= {5,4,3,2};
+  PointVector<int,4> p2( t2 );
 
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
   trace.info() << "p1+p2: "<<p1+p2 <<std::endl;
@@ -215,8 +220,10 @@ bool testIntegerNorms()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  PointVector<int,4> p1({2,1,3,4});
-  PointVector<int,4> p2({4,5,3,2});
+  int t[]= {2,1,3,4};
+  PointVector<int,4> p1(t);
+  int t2[]= {4,5,3,2};
+  PointVector<int,4> p2(t2);
   PointVector<int,4> p = p2 - p1;
   
   trace.beginBlock ( "Checking Integer norm1" );
