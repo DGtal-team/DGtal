@@ -84,7 +84,7 @@ namespace DGtal
    *
    * <p> Models <br>
    *
-   * - MetricAdjacency
+   * - MetricAdjacency, DomainAdjacency
    *
    * <p> Notes <br>
    */

@@ -26,7 +26,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
+#include "DGtal/topology/CAdjacency.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -43,12 +45,16 @@ namespace DGtal
    * This class is useful for limiting adjacencies that are defined
    * for unlimited spaces.
    *
+   * Model of CAdjacency.
+   *
    * @tparam TDomain the type of the domain.
    * @tparam TAdjacency the type of the adjacency.
    */
   template <typename TDomain, typename TAdjacency>
   class DomainAdjacency
   {
+    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    BOOST_CONCEPT_ASSERT(( CAdjacency<TAdjacency> ));
   public:
     typedef TDomain Domain;
     typedef TAdjacency Adjacency;
@@ -56,7 +62,7 @@ namespace DGtal
     typedef DomainPredicate< Domain > PredicateType;
     // ----------------------- Standard services ------------------------------
   public:
-
+    
     /**
      * Constructor.
      */

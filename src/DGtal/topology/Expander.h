@@ -48,8 +48,8 @@ namespace DGtal
    *
    * The \b core of the expander is at the beginning the set of points
    * at distance 0. Each layer is at a different distance from the
-   * initial core. The expander may move point by point or layer by
-   * layer.
+   * initial core. The expander move layer by layer but the user is
+   * free to navigate on each layer.
    *
    * @tparam TObject the type of the digital object.
    *
@@ -61,11 +61,13 @@ namespace DGtal
    * while ( ! expander.finished() )
    *   {
    *     std::cout << "Layer " << expander.distance() << " :";
+   *     // Visit the current layer.
    *     for ( ObjectExpander::ConstIterator it = expander.begin();
    *           it != expander.end();
    *           ++it )
    *        std::cout << " " << *it;
    *     std::cout << endl;
+   *     // Move to next layer.
    *     expander.nextLayer();
    *   }
    * @endcode

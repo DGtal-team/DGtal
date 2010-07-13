@@ -37,9 +37,16 @@ namespace DGtal
   /**
    * Description of template class 'DomainPredicate' <p> \brief Aim:
    * The predicate returning true iff the point is in the domain given
-   * at construction.
+   * at construction. It is just a wrapper class around the methods
+   * Domain::isInside( const Point & ), where \c Domain stands for any
+   * model of CDomain.
+   *
+   * It is used by domains to define the type by their method \c
+   * predicate().
    *
    * Model of CPointPredicate
+   *
+   * @see DomainAdjacency::predicate.
    */
   template <typename TDomain>
   struct DomainPredicate

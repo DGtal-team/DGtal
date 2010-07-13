@@ -80,9 +80,10 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     
 
-    typedef TSpace DigitalSpace;
-    typedef TSpace SpaceType;
+    // typedef TSpace DigitalSpace;
+    // typedef TSpace SpaceType;
     typedef TSpace Space;
+    typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
     typedef typename Space::SizeType SizeType;
@@ -227,6 +228,10 @@ namespace DGtal
 
     /**
      * @return a const reference to the "IsInside" predicate.
+     * 
+     * NB: Could have used template class DomainPredicate but, for
+     * performance reason, directly used the IsWithinPointPredicate
+     * which fits perfectly.
      */
     const Predicate & predicate() const;
 
