@@ -126,8 +126,7 @@ namespace DGtal
     typedef int16_t SignedVersion;
     typedef uint16_t UnsignedVersion;
     typedef uint16_t ReturnType;
-    typedef uint16_t ParamType;
-
+    typedef boost::call_traits<uint16_t>::param_type ParamType;
     static const uint16_t ZERO = 0;
     static const uint16_t ONE = 1;
     static ReturnType zero()
@@ -158,7 +157,7 @@ namespace DGtal
     typedef int16_t SignedVersion;
     typedef uint16_t UnsignedVersion;
     typedef int16_t ReturnType;
-    typedef int16_t ParamType;
+    typedef boost::call_traits<int16_t>::param_type ParamType;
     static const int16_t ZERO = 0;
     static const int16_t ONE = 1;
     static ReturnType zero()
@@ -189,7 +188,7 @@ namespace DGtal
     typedef int32_t SignedVersion;
     typedef uint32_t UnsignedVersion;
     typedef uint32_t ReturnType;
-    typedef uint32_t ParamType;
+    typedef boost::call_traits<uint32_t>::param_type ParamType;
     static const uint32_t ZERO = 0;
     static const uint32_t ONE = 1;
     static ReturnType zero()
@@ -219,7 +218,7 @@ namespace DGtal
     typedef TagTrue IsSpecialized;
     typedef int32_t SignedVersion;
     typedef uint32_t UnsignedVersion;
-    typedef int32_t ReturnType;
+    typedef boost::call_traits<int32_t>::param_type ReturnType;
     typedef int32_t ParamType;
     static const int32_t ZERO = 0;
     static const int32_t ONE = 1;
@@ -251,8 +250,7 @@ namespace DGtal
     typedef int64_t SignedVersion;
     typedef uint64_t UnsignedVersion;
     typedef uint64_t ReturnType;
-    typedef uint64_t &  ParamType;
-    
+    typedef boost::call_traits<uint64_t>::param_type ParamType;
     static const uint64_t ZERO = 0;
     static const uint64_t ONE = 1;
     static ReturnType zero()
@@ -283,7 +281,7 @@ namespace DGtal
     typedef int64_t SignedVersion;
     typedef uint64_t UnsignedVersion;
     typedef int64_t ReturnType;
-    typedef int64_t &  ParamType;
+    typedef boost::call_traits<int64_t>::param_type ParamType;
     static const int64_t ZERO = 0;
     static const int64_t ONE = 1;
     static ReturnType zero()
