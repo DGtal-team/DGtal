@@ -57,6 +57,7 @@ public:
     ASSERT(lower<=p && p<=upper); 
   }
 
+#ifdef CPP0X_INITIALIZER_LIST
     HyperRectDomain_Iterator ( const TPoint & p, const TPoint& lower,const TPoint &upper,
 			       std::initializer_list<unsigned int> permutation )
       : myPoint ( p ), mylower ( lower ), myupper ( upper ),  myCurrentPos ( 0 ),
@@ -73,6 +74,7 @@ public:
 	}
       // TODO: check the validity of the permutation ?      
     }
+#endif
 
     const TPoint & operator*() const
     {  
