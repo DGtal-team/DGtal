@@ -39,8 +39,8 @@ int main(int argc, char **argv)
   typedef HyperRectDomain<Space2Type> Domain2D;
   typedef Space2Type::Point Point;
   
-  Point firstPoint ( { 0, 0 } );
-  Point secondPoint ( { 1, 0 } );
+  Point firstPoint ( 0, 0  );
+  Point secondPoint (  1, 0  );
 
     trace.info() << "Init of a DSS ";
 		ArithDSS4<Domain2D> theDSS(firstPoint,secondPoint);		
