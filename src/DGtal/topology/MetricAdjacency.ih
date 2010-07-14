@@ -246,11 +246,12 @@ DGtal::MetricAdjacency<Space,maxNorm1,dimension>::isValid()
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Space, std::size_t maxNorm1, std::size_t dimension>
+template <typename Space, std::size_t maxNorm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const MetricAdjacency<Space,maxNorm1,dimension> & object )
+		    const MetricAdjacency<Space,maxNorm1,
+		    Space::staticDimension> & object )
 {
   object.selfDisplay( out );
   return out;

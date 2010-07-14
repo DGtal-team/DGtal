@@ -85,6 +85,20 @@ DGtal::PointVector<T,N>::PointVector( const T & x, const T & y, const T & z )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+DGtal::PointVector<T,N>::PointVector( const T & x, const T & y, 
+				      const T & z, const T & t )
+{
+  ASSERT( N >= 4 );
+  myArray[ 0 ] = x;
+  myArray[ 1 ] = y;
+  myArray[ 2 ] = z;
+  myArray[ 3 ] = t;
+  for ( std::size_t i = 4; i < N; ++i )
+    myArray[ i ] = 0;
+}
+//------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
 template<typename T,std::size_t N>
 inline

@@ -50,7 +50,7 @@ bool testMetricAdjacency()
   typedef Z3Adj6 Adj6;
   typedef Z3Adj18 Adj18;
   typedef Z3Adj26 Adj26;
-  Point p( {3, -5, 10, 5} );
+  Point p( 3, -5, 10 );
 
 
   trace.beginBlock ( "Testing neighborhood of" );

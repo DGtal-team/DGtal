@@ -137,6 +137,17 @@ namespace DGtal
      * @param z the third value.
      */
     PointVector( const T & x, const T & y, const T & z );
+
+    /**
+     * Constructor from four values (the Dimension of the vector should
+     * be at least 4). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     * @param z the third value.
+     * @param t the fourth value.
+     */
+    PointVector( const T & x, const T & y, const T & z, const T & t );
     
 #ifdef CPP0X_INITIALIZER_LIST
     /**

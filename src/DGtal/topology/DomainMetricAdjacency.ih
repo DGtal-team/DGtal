@@ -212,11 +212,12 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
+template <typename Domain, std::size_t maxNorm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const DomainMetricAdjacency<Domain,maxNorm1,dimension> & object )
+		    const DomainMetricAdjacency<Domain,maxNorm1,
+		    Domain::Space::staticDimension> & object )
 {
   object.selfDisplay( out );
   return out;

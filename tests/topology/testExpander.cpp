@@ -81,8 +81,8 @@ bool testExpander()
   // ------------------------------- Object ------------------------------
   Coordinate r = 49;
   double radius = (double) (r+1);
-  Point c( { 0, 0 } );
-  Point l( { r, 0 } );
+  Point c( 0, 0 );
+  Point l( r, 0 );
   DigitalSet ball_set( domain );
   ostringstream sstr;
   sstr << "Creating 3D ball( r < " << radius << " ) ...";

@@ -254,11 +254,11 @@ namespace DGtal
    * @param object the object of class 'MetricAdjacency' to write.
    * @return the output stream after the writing.
    */
-  template <typename Space, std::size_t maxNorm1, 
-	    std::size_t dimension = Space::staticDimension>
+  template <typename Space, std::size_t maxNorm1>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const MetricAdjacency< Space,maxNorm1,dimension > & object );
+	       const MetricAdjacency< Space,maxNorm1,
+	       Space::staticDimension > & object );
 
 } // namespace DGtal
 

@@ -190,11 +190,11 @@ namespace DGtal
    * @param object the object of class 'DomainMetricAdjacency' to write.
    * @return the output stream after the writing.
    */
-  template <typename Domain, std::size_t maxNorm1, 
-	    std::size_t dimension = Domain::Space::staticDimension>
+  template <typename Domain, std::size_t maxNorm1>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const DomainMetricAdjacency< Domain,maxNorm1,dimension > & object );
+	       const DomainMetricAdjacency< Domain, maxNorm1,
+	       Domain::Space::staticDimension > & object );
 
 } // namespace DGtal
 
