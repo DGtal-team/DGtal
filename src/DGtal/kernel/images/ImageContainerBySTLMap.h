@@ -42,11 +42,12 @@ namespace DGtal
    * @example test_Image.cpp
    */
 
-  template <typename Point, typename ValueType>
-  class ImageContainerBySTLMap: public map<Point,ValueType>
+  template <typename Domain, typename ValueType>
+  class ImageContainerBySTLMap: public map<typename Domain::Point,ValueType>
   {
 
   public:
+    typedef typename Domain::Point Point;
     typedef typename map<Point,ValueType>::size_type TSizeType;
     typedef typename map<Point,ValueType>::iterator Iterator;
     typedef typename map<Point,ValueType>::const_iterator ConstIterator;
@@ -54,12 +55,12 @@ namespace DGtal
     ///\todo create span iterators
     class SpanIterator: public Iterator
     {
-      friend class ImageContainerBySTLMap<Point,ValueType>;
+      friend class ImageContainerBySTLMap<Domain,ValueType>;
 
     public:
       SpanIterator( const Point & p ,
 		    const std::size_t aDim ,
-		    ImageContainerBySTLMap<Point,ValueType> *aMap ) :   
+		    ImageContainerBySTLMap<Domain,ValueType> *aMap ) :   
 	myStartingPoint( p ),	myDimension ( aDim ), 	myMap ( aMap )
       {
 	myPos = myMap->find( p );
@@ -149,7 +150,7 @@ namespace DGtal
       Iterator myPos;
 
       /// Copy of the underlying images
-      ImageContainerBySTLMap<Point,ValueType> *myMap;
+      ImageContainerBySTLMap<Domain,ValueType> *myMap;
 
       ///Dimension on which the iterator must iterate
       std::size_t myDimension;

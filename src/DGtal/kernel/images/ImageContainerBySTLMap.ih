@@ -18,9 +18,9 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
-ImageContainerBySTLMap<Point,T>::ImageContainerBySTLMap(const Point &aPointA,
+ImageContainerBySTLMap<Domain,T>::ImageContainerBySTLMap(const Point &aPointA,
         const Point &aPointB )
 {
     if (aPointA < aPointB)
@@ -35,9 +35,9 @@ ImageContainerBySTLMap<Point,T>::ImageContainerBySTLMap(const Point &aPointA,
     }
 }
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
-ImageContainerBySTLMap<Point,T>::~ImageContainerBySTLMap( )
+ImageContainerBySTLMap<Domain,T>::~ImageContainerBySTLMap( )
 {
 }
 

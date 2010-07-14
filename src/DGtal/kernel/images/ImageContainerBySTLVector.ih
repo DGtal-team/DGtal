@@ -18,43 +18,47 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
-ImageContainerBySTLVector<Point,T>::ImageContainerBySTLVector(const Point &aPointA,
+ImageContainerBySTLVector<Domain,T>::ImageContainerBySTLVector(const Point &aPointA,
         const Point &aPointB )
 {
-    if (aPointA < aPointB)
+  if (aPointA < aPointB)
     {
-        myLowerBound = aPointA;
-        myUpperBound = aPointB;
+      myLowerBound = aPointA;
+      myUpperBound = aPointB;
     }
-    else
+  else
     {
-        myLowerBound = aPointB;
-        myUpperBound = aPointA;
+      myLowerBound = aPointB;
+      myUpperBound = aPointA;
     }
+ 
+  Point dec = myUpperBound - myLowerBound;
+  size_t extent = dec.norm1();
+  this->resize(extent);
 }
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
-ImageContainerBySTLVector<Point,T>::~ImageContainerBySTLVector( )
+ImageContainerBySTLVector<Domain,T>::~ImageContainerBySTLVector( )
 {
 }
 
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
 T
-ImageContainerBySTLVector<Point,T>::operator()(const Point &aPoint)
+ImageContainerBySTLVector<Domain,T>::operator()(const Point &aPoint)
 {
     return this->at( linearized( aPoint ) );
 
 }
 
-template <typename Point, typename T>
+template <typename Domain, typename T>
 inline
 void
-ImageContainerBySTLVector<Point,T>::setValue(const Point &aPoint, const T &V)
+ImageContainerBySTLVector<Domain,T>::setValue(const Point &aPoint, const T &V)
 {
   this->at( linearized( aPoint ) ) = V;
 }
@@ -70,8 +74,10 @@ namespace {
    * 2 and 3 to prevent the use of a loop in these cases.
    * 
    */
-  template < typename Point, int Dimension, typename SizeType >
+  template < typename Domain, int Dimension, typename SizeType >
   struct linearizer {
+
+    typedef typename Domain::Point Point;
 
     /** 
      * Compute the linearized offset of a point in a vector container.
@@ -100,8 +106,10 @@ namespace {
    * Specialization of the linearizer class for dimension 1.
    * 
    */
-  template < typename Point, typename SizeType >
-  struct linearizer< Point, 1, SizeType > {
+  template < typename Domain, typename SizeType >
+  struct linearizer< Domain, 1, SizeType > {
+    typedef typename Domain::Point Point;
+
     static SizeType apply( const Point & aPoint,
 			   const Point & lowerBound,
 			   const Point & upperBound ) {
@@ -113,8 +121,10 @@ namespace {
    * Specialization of the linearizer class for dimension 2.
    * 
    */
-  template < typename Point, typename SizeType >
-  struct linearizer< Point, 2, SizeType > {
+  template < typename Domain, typename SizeType >
+  struct linearizer< Domain, 2, SizeType > {
+    typedef typename Domain::Point Point;
+
     static SizeType apply( const Point & aPoint,
 			   const Point & lowerBound,
 			   const Point & upperBound ) {
@@ -127,8 +137,10 @@ namespace {
    * Specialization of the linearizer class for dimension 3.
    * 
    */
-  template < typename Point, typename SizeType >
-  struct linearizer< Point, 3, SizeType > {
+  template < typename Domain, typename SizeType >
+  struct linearizer< Domain, 3, SizeType > {
+    typedef typename Domain::Point Point;
+
     static SizeType apply( const Point & aPoint,
 			   const Point & lowerBound,
 			   const Point & upperBound ) {
@@ -146,11 +158,24 @@ namespace {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
-template<typename Point, typename T>
+template<typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Point,T>::SizeType
-ImageContainerBySTLVector<Point,T>::linearized(const Point &aPoint) const
+typename ImageContainerBySTLVector<Domain,T>::SizeType
+ImageContainerBySTLVector<Domain,T>::linearized(const Point &aPoint) const
 {
-  return linearizer<Point, Point::Dimension, SizeType >::apply( aPoint, myLowerBound, myUpperBound );
+  return linearizer<Domain, Point::Dimension, SizeType >::apply( aPoint, myLowerBound, myUpperBound );
+}
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TDomain, typename V>
+inline
+void
+ImageContainerBySTLVector<TDomain,V>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Image - STLVector] size="<<this->size();
 }
 

@@ -41,11 +41,12 @@ namespace DGtal
    * Aim:
    */
 
-  template <typename Point, typename ValueType>
-    class ImageContainerBySTLVector: public vector<ValueType>
+  template <typename Domain, typename ValueType>
+  class ImageContainerBySTLVector: public vector<ValueType>
   {
   public:
 
+    typedef typename Domain::Point Point;
     typedef typename vector<ValueType>::size_type SizeType;
     typedef typename vector<ValueType>::iterator Iterator;
     typedef typename vector<ValueType>::const_iterator ConstIterator;
@@ -80,7 +81,7 @@ namespace DGtal
     class SpanIterator
     {
 
-      friend class ImageContainerBySTLVector<Point,ValueType>;
+      friend class ImageContainerBySTLVector<Domain,ValueType>;
 
     public:
 
@@ -92,7 +93,7 @@ namespace DGtal
 
     SpanIterator( const Point & p ,
 		  const std::size_t aDim ,
-		  ImageContainerBySTLVector<Point,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+		  ImageContainerBySTLVector<Domain,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
 	myPos = aMap->linearized(p);
 
@@ -198,7 +199,7 @@ namespace DGtal
       SizeType myPos;
 
       /// Copy of the underlying images
-      ImageContainerBySTLVector<Point,ValueType> *myMap;
+      ImageContainerBySTLVector<Domain,ValueType> *myMap;
 
       ///Dimension on which the iterator must iterate
       std::size_t myDimension;
@@ -234,6 +235,21 @@ namespace DGtal
     };
 
 
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * @return the validity of the Image
+     */
+    bool isValid() const
+    {
+      return (this != NULL);
+    }
+
+
   private:
 
     /**
@@ -246,6 +262,21 @@ namespace DGtal
     Point myLowerBound;
     Point myUpperBound;
   };
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Image'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Image' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename Domain, typename V>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain,V> & object )
+  {
+    object.selfDisplay ( out );
+    return out;
+  }
 
 } // namespace DGtal
 

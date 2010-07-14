@@ -1,0 +1,41 @@
+/**
+ * @file ImageSelector.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/14
+ *
+ * Implementation of inline methods defined in ImageSelector.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+namespace DGtal {
+
+  /**
+   * ImageSelector specializarion when Preferences is LOW_ITER_I+LOW_BEL_I
+   */
+  template <typename Domain,  typename ValueType>
+  struct ImageSelector<Domain,  ValueType, LOW_ITER_I+LOW_BEL_I>
+  {
+    /**
+     * Adequate digital set representation for the given preferences.
+     */
+    typedef ImageContainerBySTLMap<Domain,ValueType> Type;
+  };
+
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
