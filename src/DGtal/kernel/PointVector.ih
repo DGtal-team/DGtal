@@ -355,13 +355,13 @@ DGtal::PointVector<T,N>::norm (const typename PointVector<T,N>::NormType aType )
       break;
     case L_1:
       for ( unsigned int i=0; i < dimension(); i++ )
-	tmp += fabs ( at( i ) );
+	tmp += fabs ( (double) at( i ) );
       break;
     case L_infty:
       tmp = at( 0 );
       for ( unsigned int i=1; i < dimension(); i++ )
-	if ( tmp < fabs ( at ( i ) ) )
-	  tmp = fabs ( at ( i ) );
+	if ( tmp < fabs ( (double) at ( i ) ) )
+	  tmp = fabs ( (double) at ( i ) );
       break;
     }
   return tmp;
