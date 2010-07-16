@@ -157,8 +157,8 @@ bool testNorms()
 bool testSimpleVector()
 {
     PointVector<int,3>  aPVInt3;
-    PointVector<uint32_t,4> aVector;
-    PointVector<uint32_t,4> aFVector;
+    PointVector<int,4> aVector;
+    PointVector<int,4> aFVector;
 
     trace.beginBlock ( "Test of Vector Dimension" );
     trace.info() << "aVector dimension="<< aVector.dimension() <<endl;
