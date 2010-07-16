@@ -180,20 +180,3 @@ DGtal::ModuloComputer<T>::isValid() const
 
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline functions                                        //
-
-template <typename T>
-inline
-std::ostream&
-DGtal::operator<< ( std::ostream & out, 
-		    const ModuloComputer<T> & object )
- {
-   object.selfDisplay( out );
-   return out;
- }
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
-

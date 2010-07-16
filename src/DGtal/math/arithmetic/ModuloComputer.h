@@ -186,6 +186,15 @@ namespace DGtal
 
   }; // end of class ModuloComputer
 
+  template <typename T>
+  std::ostream&
+  operator<< ( std::ostream & out, 
+	       const ModuloComputer<T> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
 } // namespace DGtal
 
 
