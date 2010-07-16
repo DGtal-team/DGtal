@@ -88,7 +88,7 @@ public :
        * Default Constructor.
        * The object is not valid.
        */
-      INLINE constIterator();
+      constIterator();
 
       /**
        * Constructor.
@@ -97,25 +97,25 @@ public :
        * @param aChain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()-1).
        */
-      INLINE constIterator( const FreemanChain & aChain, unsigned int n = 0 );
+      constIterator( const FreemanChain & aChain, unsigned int n = 0 );
 
       /**
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      INLINE constIterator( const constIterator & aOther );
+      constIterator( const constIterator & aOther );
     
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      INLINE constIterator& operator=( const constIterator & aOther );
+      constIterator& operator=( const constIterator & aOther );
     
       /**
        * Destructor. Does nothing.
        */
-      INLINE ~constIterator();
+      ~constIterator();
     
       // ------------------------- iteration services -------------------------
     public:
@@ -123,60 +123,60 @@ public :
       /**
        * @return the current coordinates.
        */
-      INLINE PointI2D operator*() const;
+      PointI2D operator*() const;
 
       /**
        * @return the current coordinates.
        */
-      INLINE PointI2D get() const;
+      PointI2D get() const;
 
       /**
        * Pre-increment.
        * Goes to the next point on the chain.
        */
-      INLINE constIterator& operator++();
+      constIterator& operator++();
       
       /**
        * Goes to the next point on the chain.
        */
-      INLINE void next();
+      void next();
 
       /**
        * Goes to the next point on the chain as if on a loop.
        */
-      INLINE void nextInLoop();
+      void nextInLoop();
 
       /**
        * @return the current position (as an index in the Freeman chain).
        */
-      INLINE unsigned int getPosition() const;
+      unsigned int getPosition() const;
 
       /**
        * @return the associated Freeman chain.
        */
-      INLINE const FreemanChain* getChain() const;
+      const FreemanChain* getChain() const;
 
       /**
        * @return the current Freeman code (specifies the movement to
        * the next point).
        */
-      INLINE unsigned int getCode() const;
+      unsigned int getCode() const;
 
       /**
        * Pre-decrement.
        * Goes to the previous point on the chain.
        */
-      INLINE constIterator& operator--();
+      constIterator& operator--();
       
       /**
        * Goes to the previous point on the chain if possible.
        */
-      INLINE void previous();
+      void previous();
 
       /**
        * Goes to the previous point on the chain as if on a loop.
        */
-      INLINE void previousInLoop();
+      void previousInLoop();
 
       /**
        * Equality operator.
@@ -186,7 +186,7 @@ public :
        *
        * @return 'true' if their current positions coincide.
        */
-      INLINE bool operator==( const constIterator & aOther ) const;
+      bool operator==( const constIterator & aOther ) const;
 
       /**
        * Inequality operator.
@@ -196,7 +196,7 @@ public :
        *
        * @return 'true' if their current positions differs.
        */
-      INLINE bool operator!=( const constIterator & aOther ) const;
+      bool operator!=( const constIterator & aOther ) const;
 
       /**
        * Inferior operator.
@@ -207,7 +207,7 @@ public :
        * @return 'true' if the current position of 'this' is before
        * the current position of [other].
        */
-      INLINE bool operator<( const constIterator & aOther ) const;
+      bool operator<( const constIterator & aOther ) const;
       
     };
       
@@ -584,56 +584,56 @@ public:
      * @param x the x-coordinate of the first point.
      * @param y the y-coordinate of the first point.
      */
-    INLINE FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
+    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    INLINE FreemanChain( const FreemanChain & other );
+    FreemanChain( const FreemanChain & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    INLINE FreemanChain & operator=( const FreemanChain & other );
+    FreemanChain & operator=( const FreemanChain & other );
 
 
     /**
      * Iterator service.
      * @return an iterator pointing on the first point of the chain.
      */
-    INLINE FreemanChain::constIterator begin() const;
+    FreemanChain::constIterator begin() const;
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last point of the chain.
      */
-    INLINE FreemanChain::constIterator end() const;
+    FreemanChain::constIterator end() const;
 
     /**
      * @param pos a position in the chain code.
      * @return the code at position [pos].
      */ 
-    INLINE unsigned int code( unsigned int pos ) const;
+    unsigned int code( unsigned int pos ) const;
 
     /**
      * @param pos a position in the chain code.
      * @return the next position.
      */ 
-    INLINE unsigned int next( unsigned int pos ) const;
+    unsigned int next( unsigned int pos ) const;
 
     /**
      * @param pos a position in the chain code.
      * @return the previous position.
      */ 
-    INLINE unsigned int previous( unsigned int pos ) const;
+    unsigned int previous( unsigned int pos ) const;
 
     /**
      * @return the length of the Freeman chain code.
      */
-    INLINE unsigned int size() const;
+    unsigned int size() const;
 
     /**
      * Computes a bounding box for the Freeman chain code.
