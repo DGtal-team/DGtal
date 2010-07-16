@@ -48,15 +48,15 @@ namespace DGtal
     { return std::max(a,b); }
   };
 
-/**
-* Copy of the std::minus binary operator (not implemented on MS-VS)
-*/
- template <class T> 
- struct MinusFunctor : binary_function <T,T,T>
- {
-  T operator() (const T& x, const T& y) const
+  /**
+   * Copy of the std::minus binary operator (not implemented on MS-VS)
+   */
+  template <class T> 
+  struct MinusFunctor : binary_function <T,T,T>
+  {
+    T operator() (const T& x, const T& y) const
     {return x-y;}
- };
+  };
 
 }
 ///////////////////////////////////////////////////////////////////////////////
