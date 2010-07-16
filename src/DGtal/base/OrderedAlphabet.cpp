@@ -46,13 +46,15 @@ DGtal::OrderedAlphabet::~OrderedAlphabet()
 string
 DGtal::OrderedAlphabet::orderedAlphabet() const
 {
-  char tbl[ myNb + 1];
+  char *tbl;
+  tbl = (char *)malloc((myNb + 1)*sizeof(char));
   for ( unsigned int i = 0; i < myNb; ++i )
     {
       tbl[ myOrder[ i ] ] = myFirst + i;
     }
   tbl[ myNb ] = '\0';
   string s( tbl );
+  free(tbl);
   return s;
 }
 
@@ -285,7 +287,7 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
           || ( order( w[ s ] ) == 2 ) );
   size_t modulo = w.size();
   ModuloComputer< Integer > mc( modulo );
-  index_t i = s;
+  ModuloComputer< Integer >::UnsignedInteger i = s;
   index_t j = mc.next( s );
   unsigned int p = 1;
   unsigned int q = 2;

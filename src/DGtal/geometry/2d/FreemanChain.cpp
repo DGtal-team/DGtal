@@ -432,8 +432,8 @@ DGtal::FreemanChain::cleanOuterSpikes( FreemanChain & aCleanC,
     }
 
   ModuloComputer< int > mc( nb );
-  unsigned int i = 0;
-  unsigned int j = 0;
+  ModuloComputer< int >::UnsignedInteger i = 0;
+  ModuloComputer< int >::UnsignedInteger j = 0;
   vector<unsigned int> c2cleanTMP;
   aCleanC.chain.reserve( nb );
   aCleanC.chain = "";
