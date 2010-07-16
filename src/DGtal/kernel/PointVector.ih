@@ -294,7 +294,7 @@ template<typename T,std::size_t N>
 inline 
 DGtal::PointVector<T,N>
 DGtal::PointVector<T,N>::operator- ( const PointVector<T,N>& v ) const
-{ return PointVector(*this,v,std::minus<T>()); }
+{ return PointVector(*this,v,MinusFunctor<T>()); }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline

@@ -27,6 +27,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <algorithm>
+#include <functional>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -46,6 +47,17 @@ namespace DGtal
     T operator() (const T&a, const T&b) const
     { return std::max(a,b); }
   };
+
+/**
+* Copy of the std::minus binary operator (not implemented on MS-VS)
+*/
+ template <class T> 
+ struct MinusFunctor : binary_function <T,T,T>
+ {
+  T operator() (const T& x, const T& y) const
+    {return x-y;}
+ };
+
 }
 ///////////////////////////////////////////////////////////////////////////////
 

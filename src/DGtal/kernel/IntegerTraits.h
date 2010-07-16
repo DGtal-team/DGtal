@@ -115,6 +115,69 @@ namespace DGtal
 
 
   /**
+   * Specialization for <int>.
+   */
+  template <>
+  struct IntegerTraits<int>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSpecialized;
+    typedef int SignedVersion;
+    typedef unsigned int UnsignedVersion;
+    typedef int ReturnType;
+    typedef boost::call_traits<int>::param_type ParamType;
+    static const int ZERO = 0;
+    static const int ONE = 1;
+    static ReturnType zero()
+    { return 0; }
+    static ReturnType one()
+    { return 1; }
+    static ReturnType min()
+    { return boost::integer_traits<int>::const_min; }
+    static ReturnType max()
+    { return boost::integer_traits<int>::const_max; }
+    static unsigned int digits()
+    { return boost::integer_traits<int>::digits; }
+    static BoundEnum isBounded()
+    { return BOUNDED; }
+    static SignEnum isUnsigned()
+    { return UNSIGNED; }
+  }; // end of class IntegerTraits<int>.
+
+  /**
+   * Specialization for <int>.
+   */
+  template <>
+  struct IntegerTraits<unsigned int>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagTrue IsUnsigned;
+    typedef TagTrue IsSpecialized;
+    typedef int SignedVersion;
+    typedef unsigned int UnsignedVersion;
+    typedef int ReturnType;
+    typedef boost::call_traits<unsigned int>::param_type ParamType;
+    static const unsigned int ZERO = 0;
+    static const unsigned int ONE = 1;
+    static ReturnType zero()
+    { return 0; }
+    static ReturnType one()
+    { return 1; }
+    static ReturnType min()
+    { return boost::integer_traits<unsigned int>::const_min; }
+    static ReturnType max()
+    { return boost::integer_traits<unsigned int>::const_max; }
+    static unsigned int digits()
+    { return boost::integer_traits<unsigned int>::digits; }
+    static BoundEnum isBounded()
+    { return BOUNDED; }
+    static SignEnum isUnsigned()
+    { return UNSIGNED; }
+  }; // end of class IntegerTraits<unsigned int>.
+
+
+  /**
    * Specialization for <uint16_t>.
    */
   template <>
