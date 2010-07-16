@@ -30,12 +30,19 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
+
+#if ( (defined(WIN32)) )
+#define _USE_MATH_DEFINES
+#endif //win32
+#include <cmath>
+
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
 #include "DGtal/utils/Assert.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////////

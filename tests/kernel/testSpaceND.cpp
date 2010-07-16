@@ -36,7 +36,7 @@ bool testSimpleSpace()
 {
 
     SpaceND<int,6> aSpace6;
-    SpaceND<double,2> aSpace2;
+    SpaceND<long int,2> aSpace2;
 
     cout << "aSpace6 = " << aSpace6 << endl;
     cout << "aSpace2 = " << aSpace2 << endl;

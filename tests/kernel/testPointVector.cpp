@@ -131,7 +131,7 @@ bool testSimplePoint()
 
 bool testNorms()
 {
-    typedef PointVector<double,3> PointType;
+    typedef PointVector<int,3> PointType;
     PointType aPoint;
 
     aPoint.at ( 2 ) =  2;
@@ -157,8 +157,8 @@ bool testNorms()
 bool testSimpleVector()
 {
     PointVector<int,3>  aPVInt3;
-    PointVector<double,4> aVector;
-    PointVector<double,4> aFVector;
+    PointVector<uint32_t,4> aVector;
+    PointVector<uint32_t,4> aFVector;
 
     trace.beginBlock ( "Test of Vector Dimension" );
     trace.info() << "aVector dimension="<< aVector.dimension() <<endl;
