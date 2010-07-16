@@ -14,6 +14,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "Board/Board.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,20 +35,72 @@ using namespace LibBoard;
 bool testSimpleBoard()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
+  unsigned int nb = 2;
   
   Board board;
 
+  board.setPenColorRGBi( 0, 0, 0);
   board.drawRectangle( -1, 1, 2.0, 2.0 );
   board.setPenColorRGBi( 0, 0, 255 );
-  board.fillCircle( 0.0, 0.0, 0.05 );
+  board.fillCircle( 2, 2, 1 );
   
-  board.scale(100);
+  
 
-  board.saveSVG( "testsimpleboard.svg" );
+  board.saveSVG( "simpleboard.svg" );
+  board.saveFIG( "simpleboard.fig" );
+  board.saveEPS( "simpleboard.eps" );
+  nbok++;
 
+  typedef  PointVector<int,2> Point2D;
+  Point2D apoint, p2;
+  apoint[0] = 5;
+  p2[0] = 1;
+  apoint[1] = 8;
+  p2[1] = 1;
 
+  board.setPenColorRGBi( 255, 0, 255 );
+  apoint.selfDraw(board);
+  board.setPenColorRGBi( 255, 0, 0 );
+  apoint.selfDraw(board,p2);
+
+  board.scale(10);
+
+  board.saveSVG( "pointsimpleboard.svg" );
+  board.saveFIG( "pointsimpleboard.fig" );
+  board.saveEPS( "pointsimpleboard.eps" );
+  nbok++;
+  trace.endBlock();
   return nbok == nb;
+}
+
+bool testDomain()
+{
+    typedef SpaceND<int,2> TSpace;
+    typedef TSpace::Point Point;
+    Point a ( 1, 1);
+    Point b ( 5, 5);
+
+    trace.beginBlock ( "HyperRectDomain Iterator" );
+    HyperRectDomain<TSpace> myDomain ( a,b );
+    
+    Board board;
+    myDomain.selfDraw(board);
+    board.scale(10);
+    board.saveSVG( "domain-grid.svg" );
+    
+    Board b2;
+    myDomain.selfDraw(b2,false);
+    b2.scale(10);
+    b2.saveSVG( "domain-paving.svg" );
+
+
+    trace.endBlock();
+
+    PointVector<int,3> pl;
+    //An assert should be raised 
+    //pl.selfDraw(b2);
+
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +114,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleBoard(); // && ... other tests
+  bool res = testSimpleBoard() && testDomain(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

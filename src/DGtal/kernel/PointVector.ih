@@ -405,6 +405,33 @@ DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
     out << at( i ) <<(i==dimension()-1?"":", ");
   out << "}";  
 }
+
+//------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+void 
+DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board) const
+{
+  if (N==2)
+	board.drawDot((float) myArray[0], (float) myArray[1]);
+  else
+    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+
+}
+//------------------------------------------------------------------------------
+template<typename T,std::size_t N>
+inline
+void 
+DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board, const PointVector &apoint) const
+{
+  if (N==2)
+    board.drawArrow((float)apoint[0], (float) apoint[1], 
+		    (float) apoint[0]+myArray[0],(float)apoint[1]+ myArray[1],
+		    true);
+  else
+    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+
+}
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>
 inline

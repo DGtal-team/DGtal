@@ -290,6 +290,32 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 }
 
 
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDraw ( LibBoard::Board & aboard , bool asGrid) const
+{
+  if (TSpace::staticDimension == 2)
+    {
+      float dec=0.5;
+      if (asGrid)
+	{
+	  for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
+	    aboard.drawLine(x,myLowerBound[1]-dec,x, myUpperBound[1]+dec);     
+	  for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
+	    aboard.drawLine(myLowerBound[0]-dec,y,myUpperBound[0]+dec,y);
+	}	  
+      else
+	{
+	  for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
+	    for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
+	      aboard.drawRectangle(x-dec,y+dec, 1,1);
+	}      
+    }
+  else
+    ASSERT("selfDraw-NOT-YET-IMPLEMENTED-in-ND"=="");
+}
+
 /**
  * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
  * @param out the output stream where the object is written.

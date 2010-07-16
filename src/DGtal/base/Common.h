@@ -42,7 +42,7 @@
 #include "DGtal/utils/Assert.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
-
+#include "Board/Board.h"
 
 
 //////////////////////////////////////////////////////////////////////////////

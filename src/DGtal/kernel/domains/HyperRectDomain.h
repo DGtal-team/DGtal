@@ -239,6 +239,13 @@ namespace DGtal
      */
     const Predicate & predicate() const;
 
+     /**
+     * Draw the object (as a Point) on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     */
+    void selfDraw ( LibBoard::Board & board, bool asGrid=true) const;
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.

@@ -451,6 +451,21 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+
+    /**
+     * Draw the object (as a Point) on a LiBoard board
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw(LibBoard::Board & board) const;
+
+    /**
+     * Draw the object (as a Vector from aPoint) on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @param startingPoint the starting point of the vector
+     */
+    void selfDraw(LibBoard::Board & board, const PointVector &startingPoint) const;
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
