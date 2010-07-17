@@ -239,12 +239,59 @@ namespace DGtal
      */
     const Predicate & predicate() const;
 
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+    struct SelfDrawStylePaving
+    {
+      SelfDrawStylePaving(LibBoard::Board & aboard)
+      {
+	aboard.setPenColorRGBi(160,160,160);	
+      }
+    };
+
+    struct SelfDrawStyleGrid
+    {
+      SelfDrawStyleGrid(LibBoard::Board & aboard)
+      {
+	aboard.setPenColorRGBi(160,160,160);	
+	aboard.setLineStyle(LibBoard::Shape::DashStyle);
+      }
+    };
+
+    // ------------------------- Public services --------------------------------
+  public:
+
      /**
-     * Draw the object (as a Point) on a LiBoard board
+     * Draw the object (as a Grid) on a LiBoard board
      * @param board the output board where the object is drawn.
      * @param asGrid to choose between paving vs. grid representation.
+     * @param astylefunctor a Functor to specialize the Board style.
      */
-    void selfDraw ( LibBoard::Board & board, bool asGrid=true) const;
+    template<typename Functor = SelfDrawStyleGrid>
+    void selfDrawAsGrid( LibBoard::Board & board) const;
+
+     /**
+     * Draw the object (as a Grid) on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     * @param astylefunctor a Functor to specialize the Board style.
+     */
+    template<typename Functor = SelfDrawStylePaving>
+    void selfDrawAsPaving( LibBoard::Board & board ) const;
+
+
+    /**
+     * Draw the object (as a Grid) on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     * @param astylefunctor a Functor to specialize the Board style.
+     */
+    void selfDraw( LibBoard::Board & board) const
+    {
+      selfDrawAsPaving(board);
+    }
+
 
     /**
      * Writes/Displays the object on an output stream.
@@ -258,10 +305,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
 
 
     // ------------------------- Hidden services ------------------------------

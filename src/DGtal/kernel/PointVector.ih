@@ -38,6 +38,7 @@ DGtal::PointVector<T,N>::PointVector(const PointVector& apoint1,
     myArray[ i ] = f.operator() (apoint1[i],apoint2[i]);
 }
 //------------------------------------------------------------------------------
+
 template<typename T,std::size_t N>
 inline
 DGtal::PointVector<T,N>::~PointVector()
@@ -408,26 +409,36 @@ DGtal::PointVector<T,N>::selfDisplay( std::ostream & out ) const
 
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
+template<typename Functor>
 inline
 void 
 DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board) const
 {
   if (N==2)
-	board.drawDot((float) myArray[0], (float) myArray[1]);
+    {
+      Functor applystyle(board);
+      board.drawDot((float) myArray[0], (float) myArray[1]);
+    }
   else
     ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
 
 }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
+template<typename Functor>
 inline
 void 
-DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board, const PointVector &apoint) const
+DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board, 
+				  const PointVector &apoint) const
 {
   if (N==2)
-    board.drawArrow((float)apoint[0], (float) apoint[1], 
+    {
+      Functor applystyle(board);
+
+      board.drawArrow((float)apoint[0], (float) apoint[1], 
 		    (float) apoint[0]+myArray[0],(float)apoint[1]+ myArray[1],
-		    true);
+		      true);
+    }
   else
     ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
 

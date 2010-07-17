@@ -78,18 +78,18 @@ bool testDomain()
     typedef SpaceND<int,2> TSpace;
     typedef TSpace::Point Point;
     Point a ( 1, 1);
-    Point b ( 5, 5);
+    Point b ( 15, 15);
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myDomain ( a,b );
     
     Board board;
-    myDomain.selfDraw(board);
+    myDomain.selfDrawAsGrid(board);
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     
     Board b2;
-    myDomain.selfDraw(b2,false);
+    myDomain.selfDrawAsPaving(b2);
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
 

@@ -448,6 +448,18 @@ namespace DGtal
 				 
 				 
 
+    // ------------------------- Private Datas --------------------------------
+  private:
+    
+    struct SelfDrawStyle
+    {
+      SelfDrawStyle(LibBoard::Board & aboard)
+      {
+	aboard.setPenColorRGBi(0,0,0);
+	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+      }
+    };
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -455,15 +467,21 @@ namespace DGtal
     /**
      * Draw the object (as a Point) on a LiBoard board
      * @param board the output board where the object is drawn.
+     * @param afunc a Functor to specialize the Board style
      */
-    void selfDraw(LibBoard::Board & board) const;
+    template<typename Functor = SelfDrawStyle>
+    void selfDraw(LibBoard::Board & board ) const;
 
     /**
      * Draw the object (as a Vector from aPoint) on a LiBoard board
+     *
      * @param board the output board where the object is drawn.
      * @param startingPoint the starting point of the vector
+     * @param afunc a Functor to specialize the Board style
      */
-    void selfDraw(LibBoard::Board & board, const PointVector &startingPoint) const;
+    template<typename Functor = SelfDrawStyle>
+    void selfDraw(LibBoard::Board & board, 
+		  const PointVector &startingPoint ) const;
 
 
     /**
@@ -481,8 +499,6 @@ namespace DGtal
     /// Static const for zero PointVector.
     static PointVector zero;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
 
 
     // ------------------------- Hidden services ------------------------------

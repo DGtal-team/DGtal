@@ -291,30 +291,47 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 
 
 template<typename TSpace>
+template<typename F>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDraw ( LibBoard::Board & aboard , bool asGrid) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
 {
   if (TSpace::staticDimension == 2)
     {
-      float dec=0.5;
-      if (asGrid)
-	{
-	  for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	    aboard.drawLine(x,myLowerBound[1]-dec,x, myUpperBound[1]+dec);     
-	  for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	    aboard.drawLine(myLowerBound[0]-dec,y,myUpperBound[0]+dec,y);
-	}	  
-      else
-	{
-	  for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	    for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	      aboard.drawRectangle(x-dec,y+dec, 1,1);
-	}      
+      F applystyle(aboard);
+      
+      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
+	aboard.drawLine(x,myLowerBound[1]-0.5,x, myUpperBound[1]+0.5);     
+      for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
+	aboard.drawLine(myLowerBound[0]-0.5,y,myUpperBound[0]+0.5,y);
+
+      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
+	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
+	  aboard.fillCircle(x,y,0.1);
     }
   else
     ASSERT("selfDraw-NOT-YET-IMPLEMENTED-in-ND"=="");
 }
+
+
+template<typename TSpace>
+template<typename F>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( LibBoard::Board & aboard) const
+{
+  if (TSpace::staticDimension == 2)
+    {
+      F applystyle(aboard);
+
+      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
+	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
+	  aboard.drawRectangle(x-0.5,y+0.5, 1,1);
+    }      
+  else
+    ASSERT("selfDraw-NOT-YET-IMPLEMENTED-in-ND"=="");
+}
+
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
