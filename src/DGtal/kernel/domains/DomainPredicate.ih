@@ -41,6 +41,15 @@ DGtal::DomainPredicate<TDomain>
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
+const TDomain & 
+DGtal::DomainPredicate<TDomain>
+::domain() const
+{
+  return *myDomain;
+}
+//------------------------------------------------------------------------------
+template <typename TDomain>
+inline
 bool
 DGtal::DomainPredicate<TDomain>
 ::operator()( const Point & p ) const

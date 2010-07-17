@@ -56,10 +56,16 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
     BOOST_CONCEPT_ASSERT(( CAdjacency<TAdjacency> ));
   public:
-    typedef TDomain Domain;
+
+    // Required as model of CAdjacency
+    typedef typename TDomain::Space Space; 
     typedef TAdjacency Adjacency;
-    typedef typename Domain::Point Point;
-    typedef DomainPredicate< Domain > PredicateType;
+    typedef typename TDomain::Point Point;
+
+    // Required as model of CDomainAdjacency
+    typedef TDomain Domain;
+    typedef DomainPredicate< Domain > Predicate;
+
     // ----------------------- Standard services ------------------------------
   public:
     
@@ -79,6 +85,11 @@ namespace DGtal
      */
     ~DomainAdjacency();
 
+    /**
+     * @return a const reference to the associated domain.
+     */
+    const Domain & domain() const;
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -88,7 +99,7 @@ namespace DGtal
      *
      * Useful if you want to restrict your neighborhood.
      */
-    const PredicateType & predicate() const;
+    const Predicate & predicate() const;
 
     /**
      * @param p1 any point in this space.
@@ -120,6 +131,11 @@ namespace DGtal
      * @param p any point of this space.
      * @param out_it any output iterator.
      * @param pred the predicate.
+     *
+     * NB: It is up to the user to add a predicate to guarantee that
+     * the neighborhood is included in the domain. To do so, you may
+     * just mix your predicate with the object predicate() with a
+     * BinaryPointPredicate AND.
      */
     template <typename OutputIterator, 
 	      typename PointPredicate>
@@ -127,6 +143,16 @@ namespace DGtal
 			    OutputIterator & out_it,
 			    const PointPredicate & pred ) const;
 
+    /**
+     * Outputs the whole neighborhood of point [p] (restricted to this
+     * domain) as a sequence of *out_it++ = ...
+     *
+     * @tparam OutputIterator any output iterator (like
+     * std::back_insert_iterator< std::vector<int> >).
+     *
+     * @param p any point of this space.
+     * @param out_it any output iterator.
+     */
     template <typename OutputIterator>
     void writeNeighborhood( const Point & p, 
 			    OutputIterator & out_it ) const;
@@ -143,6 +169,11 @@ namespace DGtal
      * @param p any point of this space.
      * @param out_it any output iterator.
      * @param pred the predicate.
+     *
+     * NB: It is up to the user to add a predicate to guarantee that
+     * the neighborhood is included in the domain. To do so, you may
+     * just mix your predicate with the object predicate() with a
+     * BinaryPointPredicate AND.
      */
     template <typename OutputIterator, 
 	      typename PointPredicate>
@@ -150,6 +181,16 @@ namespace DGtal
 				  OutputIterator & out_it,
 				  const PointPredicate & pred ) const;
 
+    /**
+     * Outputs the whole neighborhood of point [p] (except p itself,
+     * restricted to this domain) as a sequence of *out_it++ = ...
+     *
+     * @tparam OutputIterator any output iterator (like
+     * std::back_insert_iterator< std::vector<int> >).
+     *
+     * @param p any point of this space.
+     * @param out_it any output iterator.
+     */
     template <typename OutputIterator>
     void writeProperNeighborhood( const Point & p, 
 				  OutputIterator & out_it ) const;
@@ -176,12 +217,13 @@ namespace DGtal
     /**
      * The predicate for testing if a point belongs to the domain.
      */
-    PredicateType myPred;
+    Predicate myPred;
 
     /**
      * The adjacency relation.
      */
     const Adjacency & myAdjacency;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 

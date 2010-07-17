@@ -25,9 +25,9 @@
 /**
  * Destructor.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::~DigitalTopology()
 {
 }
@@ -44,9 +44,9 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
  * @param props an hint of the properties of this digital
  * topology, default is UNKNOWN.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology( const ForegroundAdjacency & aKappa, 
 		   const BackgroundAdjacency & aLambda,
 		   DigitalTopologyProperties props )
@@ -61,9 +61,9 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology ( const DigitalTopology & other )
   : myKappa( other.myKappa ), myLambda( other.myLambda ), 
     myProps( other.myProps )
@@ -74,10 +74,10 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
 /**
  * @return a const reference to the foreground connectedness.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-const ForegroundAdjacency & 
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::kappa() const
+const TForegroundAdjacency & 
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::kappa() const
 {
   return myKappa;
 }
@@ -85,10 +85,10 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::kappa() const
 /**
  * @return a const reference to the background connectedness.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-const BackgroundAdjacency & 
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::lambda() const
+const TBackgroundAdjacency & 
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::lambda() const
 {
   return myLambda;
 }
@@ -97,10 +97,10 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::lambda() const
  * @return JORDAN iff the topology is Jordan, NOT_JORDAN iff the
  * topology is known to be NOT_JORDAN, UNKNOWN otherwise.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 DGtal::DigitalTopologyProperties 
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::properties() const
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::properties() const
 {
   return myProps;
 }
@@ -109,11 +109,11 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>::properties() co
  * @return a digital topology object which is the reverse
  * topology of this (ie. \f[ (\lambda,\kappa) \f].
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-typename DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+typename DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::ReverseTopology 
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::reverseTopology() const
 {
   return ReverseTopology( myLambda, myKappa, myProps );
@@ -126,10 +126,10 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 void
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "[DigitalTopology kappa=" << myKappa 
@@ -145,10 +145,10 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 bool
-DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
+DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::isValid() const
 {
     return true;
@@ -159,11 +159,11 @@ DGtal::DigitalTopology<ForegroundAdjacency,BackgroundAdjacency>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DigitalTopology<ForegroundAdjacency,BackgroundAdjacency> & object )
+		  const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object )
 {
   object.selfDisplay( out );
   return out;

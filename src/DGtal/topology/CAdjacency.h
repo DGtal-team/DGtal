@@ -25,6 +25,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "boost/concept_check.hpp"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
@@ -50,9 +51,11 @@ namespace DGtal
    *
    * <p> Refinement of
    *
-   * <p> Associated types :
+   * <p> Associated types (must be defined in the model):
    *
-   * - \c Point : must be defined in the model.
+   * - \c Space: the space of the adjacency.
+   * - \c Point: the digital point type.
+   * - \c Adjacency: the type of the adjacency itself.
    *
    * <p> Notations
    * - \c Adj : A type that is a model of CAdjacency
@@ -94,7 +97,10 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     
+    typedef typename Adj::Space Space;
     typedef typename Adj::Point Point;
+    typedef typename Adj::Adjacency Adjacency;
+
     BOOST_CONCEPT_USAGE( CAdjacency )
     {
       // check isAdjacentTo
@@ -102,6 +108,10 @@ namespace DGtal
       // check isProperlyAdjacentTo
       ConceptUtils::sameType( myBool, 
 			      myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
+      // Check writeNeighborhood
+      myAdj.writeNeighborhood( myP1, myInserter );
+      // Check writeProperNeighborhood
+      myAdj.writeProperNeighborhood( myP1, myInserter );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -110,6 +120,7 @@ namespace DGtal
     Point myP1;
     Point myP2;
     bool myBool;
+    std::back_insert_iterator< std::vector<Point> > myInserter;
 
     // ------------------------- Internals ------------------------------------
   private:

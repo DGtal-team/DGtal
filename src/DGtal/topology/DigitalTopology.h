@@ -71,16 +71,16 @@ namespace DGtal
    cout << opp_dt << std::endl;
    * @endcode
    *
-   * @tparam ForegroundAdjacency any model of CAdjacency.
-   * @tparam BackgroundAdjacency any model of CAdjacency.
+   * @tparam TForegroundAdjacency any model of CAdjacency.
+   * @tparam TBackgroundAdjacency any model of CAdjacency.
    */
-  template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+  template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
   class DigitalTopology
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef ForegroundAdjacency ForegroundAdjacencyType;
-    typedef BackgroundAdjacency BackgroundAdjacencyType;
+    typedef TForegroundAdjacency ForegroundAdjacency;
+    typedef TBackgroundAdjacency BackgroundAdjacency;
     typedef typename ForegroundAdjacency::Point Point;
     // should be the same as Point.
     typedef typename BackgroundAdjacency::Point BackPoint; 
@@ -213,10 +213,10 @@ namespace DGtal
    * @param object the object of class 'DigitalTopology' to write.
    * @return the output stream after the writing.
    */
-  template <typename ForegroundAdjacency, typename BackgroundAdjacency>
+  template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const DigitalTopology<ForegroundAdjacency,BackgroundAdjacency> & object );
+	       const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object );
 
 } // namespace DGtal
 

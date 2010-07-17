@@ -47,7 +47,7 @@ namespace DGtal
    *
    * \b Model of a CAdjacency.
    *
-   * @tparam Space any digital space (see concept CSpace).
+   * @tparam TSpace any digital space (see concept CSpace).
    *
    * @tparam maxNorm1 defines which points are adjacent. More
    * precisely, two points are adjacent iff their norm-infinity is
@@ -56,16 +56,20 @@ namespace DGtal
    *
    * @see testAdjacency.cpp
    */
-  template <typename Space, std::size_t maxNorm1, 
-	    std::size_t dimension = Space::staticDimension >
+  template <typename TSpace, std::size_t maxNorm1, 
+	    std::size_t dimension = TSpace::staticDimension >
   class MetricAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
+    // Required by CAdjacency
+    typedef TSpace Space;
     typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, maxNorm1, dimension> Adjacency;
+
+    // Others
     typedef typename Space::Vector Vector;
-    typedef TruePointPredicate< Point > PredicateType;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -254,11 +258,11 @@ namespace DGtal
    * @param object the object of class 'MetricAdjacency' to write.
    * @return the output stream after the writing.
    */
-  template <typename Space, std::size_t maxNorm1>
+  template <typename TSpace, std::size_t maxNorm1>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const MetricAdjacency< Space,maxNorm1,
-	       Space::staticDimension > & object );
+	       const MetricAdjacency< TSpace,maxNorm1,
+	       TSpace::staticDimension > & object );
 
 } // namespace DGtal
 

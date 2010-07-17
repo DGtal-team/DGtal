@@ -74,6 +74,11 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /**
+     * @return a const reference to the associated domain.
+     */
+    const Domain & domain() const;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -94,6 +99,8 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    /// The domain corresponding to this predicate.
     const Domain* const myDomain;
 
   }; // end of struct DomainPredicate

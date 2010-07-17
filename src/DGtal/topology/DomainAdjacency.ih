@@ -47,7 +47,16 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>
 inline
-const typename DGtal::DomainAdjacency<TDomain,TAdjacency>::PredicateType &
+const TDomain &
+DGtal::DomainAdjacency<TDomain,TAdjacency>
+::domain() const
+{
+  return myPred.domain();
+}
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TAdjacency>
+inline
+const typename DGtal::DomainAdjacency<TDomain,TAdjacency>::Predicate &
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::predicate() const
 {

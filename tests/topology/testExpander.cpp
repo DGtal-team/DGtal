@@ -61,11 +61,16 @@ bool testExpander()
   typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z3 > Domain; 
   typedef Domain::ConstIterator DomainConstIterator; 
+
   typedef MetricAdjacency< Z3, 1 > MetricAdj6;
   typedef MetricAdjacency< Z3, 2 > MetricAdj18;
   typedef DomainAdjacency< Domain, MetricAdj6 > Adj6;
   typedef DomainAdjacency< Domain, MetricAdj18 > Adj18;
+  // typedef MetricAdjacency< Z3, 1 > Adj6;
+  // typedef MetricAdjacency< Z3, 2 > Adj18;
+
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
+
   typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT6_18, DigitalSet> ObjectType;
   typedef Expander< ObjectType > ObjectExpander;
@@ -73,10 +78,14 @@ bool testExpander()
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
+
   MetricAdj6 madj6;
   MetricAdj18 madj18;
   Adj6 adj6( domain, madj6 );
   Adj18 adj18( domain, madj18 );
+  // Adj6 adj6;
+  // Adj18 adj18;
+
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
   // ------------------------------- Object ------------------------------
   Coordinate r = 49;

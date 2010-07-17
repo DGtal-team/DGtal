@@ -28,6 +28,9 @@
  *
  * @section intro_sec_dgtal Introduction
  *
+ * @section manuals_dgtal DGtal user-guides
+ *
+ * - \ref dgtal_topology 
  *
  * @section examples_sec_dgtal Code examples
  *

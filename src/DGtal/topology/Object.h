@@ -52,7 +52,7 @@ namespace DGtal
    * adjacency.
    *
    * @tparam TDigitalTopology any realization of DigitalTopology.
-   * @tparam DigitalSet any model of CDigitalSet.
+   * @tparam TDigitalSet any model of CDigitalSet.
    */
   template <typename TDigitalTopology, typename TDigitalSet>
   class Object
@@ -70,8 +70,9 @@ namespace DGtal
     typedef 
     typename DigitalSetSelector< Domain,  
 				 SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
-    typedef typename DigitalTopology::ForegroundAdjacencyType ForegroundAdjacency;
-    typedef typename DigitalTopology::BackgroundAdjacencyType BackgroundAdjacency;
+    typedef typename DigitalTopology::ForegroundAdjacency ForegroundAdjacency;
+    typedef typename DigitalTopology::BackgroundAdjacency BackgroundAdjacency;
+    typedef Object<DigitalTopology,SmallSet> SmallObject;
 
     /**
      * Constructor. 
@@ -172,8 +173,7 @@ namespace DGtal
     /**
      * @return a const reference to the adjacency of this object.
      */
-    const ForegroundAdjacency & 
-    adjacency() const;
+    const ForegroundAdjacency & adjacency() const;
 
     // ----------------------- Object services --------------------------------
   public:
@@ -191,7 +191,7 @@ namespace DGtal
      *
      * NB: if you need only the size of neighborhood, use neighborhoodSize.
      */
-    Object<DigitalTopology,SmallSet> neighborhood( const Point & p ) const;
+    SmallObject neighborhood( const Point & p ) const;
 
     /**
      * @param p any point (in the domain of the digital object, not
@@ -220,8 +220,7 @@ namespace DGtal
      * NB: if you need only the size of the proper neighborhood, use
      * properNeighborhoodSize.
      */
-    Object<DigitalTopology,SmallSet> properNeighborhood
-    ( const Point & p ) const;
+    SmallObject properNeighborhood( const Point & p ) const;
 
     /**
      * @param p any point (in the domain of the digital object, not
@@ -243,6 +242,18 @@ namespace DGtal
      * NB : the background adjacency should be a symmetric relation.
      */
     Object border() const;
+
+    /**
+     * Computes the connected components of the object and writes
+     * them on the output iterator [it].
+     *
+     * @tparam TOutputObjectIterator the type of an output iterator in
+     * a container of Object s.
+     *
+     * @param it the output iterator. *it is an Object*.
+     */
+    template <typename TOutputObjectIterator>
+    void writeComponents( TOutputObjectIterator & it ) const;
 
     // ----------------------- Interface --------------------------------------
   public:

@@ -204,7 +204,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::topology() const
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-const typename TDigitalTopology::ForegroundAdjacencyType & 
+const typename TDigitalTopology::ForegroundAdjacency & 
 DGtal::Object<TDigitalTopology,TDigitalSet>::adjacency() const
 {
   return myTopo.kappa();
@@ -225,8 +225,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::adjacency() const
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<TDigitalTopology,
-	      typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology,TDigitalSet>::neighborhood
 ( const Point & p ) const
 {
@@ -240,7 +239,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::neighborhood
   adjacency().writeNeighborhood( p, back_ins_it );
 
   // A neighborhood is small, so is defined the digital object.
-  Object<TDigitalTopology,SmallSet> neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domain() );
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet(); 
@@ -302,8 +301,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::Object<TDigitalTopology,
-	      typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology,TDigitalSet>::properNeighborhood
 ( const Point & p ) const
 {
@@ -317,7 +315,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::properNeighborhood
   adjacency().writeProperNeighborhood( p, back_ins_it );
 
   // A neighborhood is small, so is defined the digital object.
-  Object<TDigitalTopology,SmallSet> neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domain() );
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet(); 
@@ -388,7 +386,8 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::border() const
   Container neigh;
   const DigitalSet & mySet = pointSet();
   Object<DigitalTopology,DigitalSet> output( topology(), 
-					     mySet.domain() );
+					     domain() );
+  // mySet.domain() );
   DigitalSet & outputSet = output.pointSet();
 
   // Loop on all points of the set.
