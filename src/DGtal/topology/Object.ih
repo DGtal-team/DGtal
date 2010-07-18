@@ -465,6 +465,7 @@ inline
 void 
 DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::Board & aBoard) const
 {
+  Point p;
   pointSet().selfDraw<Functor>(aBoard);
   aBoard.setPenColorRGBi(0,0,0);
   for(typename TDigitalSet::ConstIterator it = pointSet().begin(); 
@@ -478,7 +479,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::B
 	  it2 != neig.pointSet().end();
 	  ++it2)	
 	{
-	  Point p = (*it2) - (*it);
+	  p = (*it2) - (*it);
 	  p.selfDraw(aBoard,(*it));
 	}
     }
