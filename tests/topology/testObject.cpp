@@ -31,6 +31,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Object.
@@ -217,6 +218,96 @@ bool testObject()
   return nbok == nb;
 }
 
+bool testDraw()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef SpaceND< int, 2 > Z2;
+  typedef Z2::Point Point;
+  typedef Point::Coordinate Coordinate;
+  typedef HyperRectDomain< Z2 > DomainType; 
+  Point p1(  -10, -10  );
+  Point p2( 10, 10  );
+  DomainType domain( p1, p2 );
+
+  // typedef DomainMetricAdjacency< DomainType, 1 > Adj4;
+  // typedef DomainMetricAdjacency< DomainType, 2 > Adj8;
+  typedef MetricAdjacency< Z2, 1 > MetricAdj4;
+  typedef MetricAdjacency< Z2, 2 > MetricAdj8;
+  typedef DomainAdjacency< DomainType, MetricAdj4 > Adj4;
+  typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
+  typedef DigitalTopology< Adj4, Adj8 > DT48;
+  typedef DigitalTopology< Adj8, Adj4 > DT84;
+  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
+     MediumSet;
+//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
+//     MediumSet;
+  typedef Object<DT48, MediumSet> ObjectType;
+  typedef Object<DT84, MediumSet> ObjectType84;
+
+  typedef ObjectType::SmallSet SmallSet;
+  typedef Object<DT48, SmallSet> SmallObjectType;
+  typedef ObjectType::SizeType SizeType;
+
+  // Adj4 adj4( domain );
+  // Adj8 adj8( domain );
+  MetricAdj4 madj4;
+  MetricAdj8 madj8;
+  Adj4 adj4( domain, madj4 );
+  Adj8 adj8( domain, madj8 );
+  DT48 dt48( adj4, adj8, JORDAN_DT );
+  DT84 dt84( adj8, adj4, JORDAN_DT );
+  
+  Coordinate r = 5;
+  double radius = (double) (r+1);
+  Point c(  0, 0  );
+  Point l(  r, 0  );
+  MediumSet disk( domain );
+  ostringstream sstr;
+  sstr << "Creating disk( r < " << radius << " ) ...";
+  trace.beginBlock ( sstr.str() );
+  for ( DomainType::ConstIterator it = domain.begin(); 
+	it != domain.end();
+	++it )
+    {
+      if ( (*it - c ).norm() < radius ) // 450.0
+	// insertNew is very important for vector container.
+	disk.insertNew( *it );
+    }
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
+  ObjectType disk_object( dt48, disk );
+  ObjectType84 disk_object2( dt84, disk );
+  trace.endBlock();
+
+  Board board;
+  domain.selfDrawAsGrid(board);
+  disk_object.selfDraw(board);
+  
+  board.scale(10);
+  board.saveSVG("disk-object.svg");
+  
+  Board board2;
+  domain.selfDrawAsGrid(board2);
+  disk_object.selfDrawWithAdjacencies(board2);
+  
+  board2.scale(10);
+  board2.saveSVG("disk-object-adj.svg");
+
+  Board board3;
+  domain.selfDrawAsGrid(board3);
+  disk_object2.selfDrawWithAdjacencies(board3);
+  
+  board3.scale(10);
+  board3.saveSVG("disk-object-adj-bis.svg");
+
+
+  return nbok == nb;
+  
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -228,7 +319,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testObject(); // && ... other tests
+  bool res = testObject() && testDraw(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

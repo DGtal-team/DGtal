@@ -296,6 +296,37 @@ namespace DGtal
 
   private:
 
+    /** 
+     * Default Style Functor for selfDraw methods
+     * 
+     * @param aBoard 
+     */
+    struct SelfDrawStyle
+    {
+      SelfDrawStyle(LibBoard::Board & aBoard) 
+      {
+	aBoard.setPenColorRGBi(160,160,160);
+	aBoard.setFillColorRGBi(80,80,80);
+      }
+    };
+
+  public:
+    
+    /**
+     * Draw the object on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor = SelfDrawStyle>
+    void selfDraw(LibBoard::Board & board ) const;
+
+    /**
+     * Draw the object (with Adjacency relationships) on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor = SelfDrawStyle>
+    void selfDrawWithAdjacencies(LibBoard::Board & board ) const;
 
 
     // ------------------------- Internals ------------------------------------

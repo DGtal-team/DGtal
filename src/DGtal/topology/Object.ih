@@ -448,6 +448,40 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
   return myPointSet != 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// selfDraw functions                                                        //
+template <typename TDigitalTopology, typename TDigitalSet>
+template<typename Functor>
+inline
+void 
+DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw(LibBoard::Board & aBoard) const
+{
+  pointSet().selfDraw<Functor>(aBoard);
+}
+
+template<typename TDigitalTopology, typename TDigitalSet>
+template<typename Functor>
+inline
+void 
+DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::Board & aBoard) const
+{
+  pointSet().selfDraw<Functor>(aBoard);
+  aBoard.setPenColorRGBi(0,0,0);
+  for(typename TDigitalSet::ConstIterator it = pointSet().begin(); 
+      it != pointSet().end();
+      ++it)
+    {
+      //Brute-force scan of the neighborhood.
+      ///@todo fix the bruteforce scan that produces 2 segments per adjacency
+      SmallObject neig = this->properNeighborhood(*it);
+      for(typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin(); 
+	  it2 != neig.pointSet().end();
+	  ++it2)
+	aBoard.drawLine( (*it)[0], (*it)[1],(*it2)[0], (*it2)[1] );
+
+    }
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
