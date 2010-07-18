@@ -35,7 +35,7 @@
 
 using namespace DGtal;
 using namespace std;
-
+using namespace LibBoard;
 
 #define INBLOCK_TEST(x) \
   nbok += ( x ) ? 1 : 0; \
@@ -107,6 +107,45 @@ bool testDigitalSetSelector( const DigitalDomainType & domain,
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << comment << " (2 elements): " << set1 << std::endl;
 
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
+bool testDigitalSetDraw()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef SpaceND<int,2> Z2;
+  typedef HyperRectDomain<Z2> DomainType;
+  typedef Z2::Point Point;
+  Point p1(  -10, -10  );
+  Point p2(  10, 10  );
+  DomainType domain( p1, p2 );
+  typedef DigitalSetSelector
+    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  SpecificSet disk( domain );
+  Point c(  0, 0  );
+
+  trace.beginBlock ( "Creating disk( r=5.0 ) ..." );
+  for ( DomainType::ConstIterator it = domain.begin(); 
+	it != domain.end();
+	++it )
+    {
+      if ( (*it - c ).norm() < 5.0 )
+	// insertNew is very important for vector container.
+       	  disk.insertNew( *it );
+    }
+
+  //Board export test
+  trace.beginBlock("SVG Export");
+  Board board;
+  domain.selfDrawAsGrid(board);
+  disk.selfDraw(board);
+
+  board.scale(10);
+  board.saveSVG( "disk-set.svg" );
   trace.endBlock();
 
   return nbok == nb;
@@ -200,9 +239,11 @@ int main()
 
   bool okDigitalSetDomain = testDigitalSetDomain();
 
+  bool okDigitalSetDraw = testDigitalSetDraw();
+
   bool res = okVector && okSet 
     && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
-    && okDigitalSetDomain;
+    && okDigitalSetDomain && okDigitalSetDraw;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -388,6 +388,27 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
   return true;
 }
 
+
+
+//------------------------------------------------------------------------------
+template<typename Domain>
+template<typename Functor>
+inline
+void 
+DGtal::DigitalSetBySTLSet<Domain>::selfDraw(LibBoard::Board & aBoard) const
+{
+  if (Domain::Space::staticDimension == 2)
+    {
+      Functor applystyle(aBoard);
+      for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
+	aBoard.fillRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    }
+  else
+    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //
 
