@@ -476,9 +476,11 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::B
       SmallObject neig = this->properNeighborhood(*it);
       for(typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin(); 
 	  it2 != neig.pointSet().end();
-	  ++it2)
-	aBoard.drawLine( (*it)[0], (*it)[1],(*it2)[0], (*it2)[1] );
-
+	  ++it2)	
+	{
+	  Point p = (*it2) - (*it);
+	  p.selfDraw(aBoard,(*it));
+	}
     }
 }
 

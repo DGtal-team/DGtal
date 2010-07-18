@@ -283,24 +283,27 @@ bool testDraw()
   trace.endBlock();
 
   Board board;
+  board.setUnit(Board::UCentimeter);
+
   domain.selfDrawAsGrid(board);
   disk_object.selfDraw(board);
   
-  board.scale(10);
   board.saveSVG("disk-object.svg");
   
   Board board2;
+  board2 << Board::UCentimeter;
+
   domain.selfDrawAsGrid(board2);
   disk_object.selfDrawWithAdjacencies(board2);
   
-  board2.scale(10);
   board2.saveSVG("disk-object-adj.svg");
 
   Board board3;
+  board3 << Board::UCentimeter;
+
   domain.selfDrawAsGrid(board3);
   disk_object2.selfDrawWithAdjacencies(board3);
   
-  board3.scale(10);
   board3.saveSVG("disk-object-adj-bis.svg");
 
 
