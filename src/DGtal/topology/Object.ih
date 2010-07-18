@@ -473,7 +473,6 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::B
       ++it)
     {
       //Brute-force scan of the neighborhood.
-      ///@todo fix the bruteforce scan that produces 2 segments per adjacency
       SmallObject neig = this->properNeighborhood(*it);
       for(typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin(); 
 	  it2 != neig.pointSet().end();
