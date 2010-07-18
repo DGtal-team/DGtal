@@ -280,19 +280,6 @@ namespace DGtal
     template<typename Functor = SelfDrawStylePaving>
     void selfDrawAsPaving( LibBoard::Board & board ) const;
 
-
-    /**
-     * Draw the object (as a Grid) on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     * @param astylefunctor a Functor to specialize the Board style.
-     */
-    void selfDraw( LibBoard::Board & board) const
-    {
-      selfDrawAsPaving(board);
-    }
-
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
