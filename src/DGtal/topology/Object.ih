@@ -13,6 +13,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/topology/Expander.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,8 +34,43 @@
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object()
+  : myTopo( 0 ), myPointSet( 0 )
+{
+}
+
+/**
+ * Constructor. 
+ *
+ * @param aTopology the digital topology chosen for this set, a copy of
+ * which is stored in the object.
+ *
+ * @param aPointSet the set of points of the object. It is copied
+ * in the object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
-( const TDigitalTopology & aTopology, 
+( const DigitalTopology & aTopology, 
+  const DigitalSet & aPointSet )
+  : myTopo( new DigitalTopology( aTopology ) ),
+    myPointSet( new DigitalSet( aPointSet ) )
+{
+}
+
+/**
+ * Constructor. 
+ *
+ * @param aTopology the digital topology chosen for this set,
+ * smartly copied.
+ *
+ * @param aPointSet the set of points of the object. It is copied
+ * in the object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const CowPtr<DigitalTopology> & aTopology, 
   const DigitalSet & aPointSet )
   : myTopo( aTopology ),
     myPointSet( new DigitalSet( aPointSet ) )
@@ -55,7 +91,7 @@ inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
   const CowPtr<DigitalSet> & aPointSet )
-  : myTopo( aTopology ),
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( aPointSet )
 {
 }
@@ -75,7 +111,7 @@ inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
   DigitalSet* aPointSetPtr )
-  : myTopo( aTopology ),
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( pointSet )
 {
 }
@@ -109,6 +145,23 @@ inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
   const Domain & aDomain )
+  : myTopo( new DigitalTopology( aTopology ) ),
+    myPointSet( new DigitalSet( aDomain ) )
+{
+}
+
+/**
+ * Constructor of an empty object by providing a domain.
+ *
+ * @param aTopology the digital topology chosen for this set, smartly copied.
+ *
+ * @param aDomain any domain related to the given topology.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::Object<TDigitalTopology,TDigitalSet>::Object
+( const CowPtr<DigitalTopology> & aTopology, 
+  const Domain & aDomain )
   : myTopo( aTopology ),
     myPointSet( new DigitalSet( aDomain ) )
 {
@@ -136,6 +189,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::operator=
 {
   if ( this != &other )
     {
+      myTopo = other.myTopo;
       myPointSet = other.myPointSet;
     }
   return *this;
@@ -196,7 +250,7 @@ inline
 const TDigitalTopology & 
 DGtal::Object<TDigitalTopology,TDigitalSet>::topology() const
 {
-  return myTopo;
+  return *myTopo;
 }
 
 /**
@@ -207,7 +261,7 @@ inline
 const typename TDigitalTopology::ForegroundAdjacency & 
 DGtal::Object<TDigitalTopology,TDigitalSet>::adjacency() const
 {
-  return myTopo.kappa();
+  return myTopo->kappa();
 }
 
 
@@ -415,6 +469,41 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::border() const
   return output;
 }
 
+/**
+ * Computes the connected components of the object and writes
+ * them on the output iterator [it].
+ *
+ * @tparam TOutputObjectIterator the type of an output iterator in
+ * a container of Object s.
+ *
+ * @param it the output iterator. *it is an Object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TOutputObjectIterator>
+inline
+void
+DGtal::Object<TDigitalTopology,TDigitalSet>
+::writeComponents( TOutputObjectIterator & it ) const
+{
+  ASSERT( size() != 0 );
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+  DigitalSetConstIterator it_object = pointSet().begin();
+  Point p( *it_object++ );
+  Expander<Object> expander( *this, p );
+  while ( expander.nextLayer() ) ;
+  Object component( myTopo, expander.core() );
+  *it++ = component;
+  DigitalSet visited( expander.core() );
+  
+  while ( it_object != pointSet().end() )
+    {
+      p = *it_object;
+      if ( visited.find( p ) == visited.end() )
+	{
+	}
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -445,7 +534,7 @@ inline
 bool
 DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
 {
-  return myPointSet != 0;
+  return ( *myPointSet != 0 ) && (*myTopo != 0 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

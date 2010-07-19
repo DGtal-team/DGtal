@@ -75,6 +75,11 @@ namespace DGtal
     typedef Object<DigitalTopology,SmallSet> SmallObject;
 
     /**
+     * Constructor. The object is not valid.
+     */
+    Object();
+
+    /**
      * Constructor. 
      *
      * @param aTopology the digital topology chosen for this set, a copy of
@@ -84,6 +89,18 @@ namespace DGtal
      * in the object.
      */
     Object( const DigitalTopology & aTopology, 
+	    const DigitalSet & aPointSet );
+
+    /**
+     * Constructor. 
+     *
+     * @param aTopology the digital topology chosen for this set,
+     * smartly copied.
+     *
+     * @param aPointSet the set of points of the object. It is copied
+     * in the object.
+     */
+    Object( const CowPtr<DigitalTopology> & aTopology, 
 	    const DigitalSet & aPointSet );
 
     /**
@@ -121,6 +138,17 @@ namespace DGtal
      */
     Object( const DigitalTopology & aTopology, 
 	    const Domain & domain );
+
+    /**
+     * Constructor of an empty object by providing a domain.
+     *
+     * @param aTopology the digital topology chosen for this set,
+     * smartly copied.
+     *
+     * @param aDomain any domain related to the given topology.
+     */
+    Object( const CowPtr<DigitalTopology> & aTopology, 
+	    const Domain & aDomain );
  
     /**
      * Copy constructor.
@@ -250,7 +278,7 @@ namespace DGtal
      * @tparam TOutputObjectIterator the type of an output iterator in
      * a container of Object s.
      *
-     * @param it the output iterator. *it is an Object*.
+     * @param it the output iterator. *it is an Object.
      */
     template <typename TOutputObjectIterator>
     void writeComponents( TOutputObjectIterator & it ) const;
@@ -278,7 +306,7 @@ namespace DGtal
     /**
      * the digital topology of the object.
      */
-    DigitalTopology myTopo;
+    CowPtr<DigitalTopology> myTopo;
 
     /**
      * A copy on write pointer on the associated (owned or not) point set
@@ -287,12 +315,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Object();
 
   private:
 

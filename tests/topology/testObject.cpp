@@ -33,6 +33,18 @@ using namespace std;
 using namespace DGtal;
 using namespace LibBoard;
 
+#define INBLOCK_TEST(x) \
+  nbok += ( x ) ? 1 : 0; \
+  nb++; \
+  trace.info() << "(" << nbok << "/" << nb << ") " \
+	       << #x << std::endl;
+
+#define INBLOCK_TEST2(x,y) \
+  nbok += ( x ) ? 1 : 0; \
+  nb++; \
+  trace.info() << "(" << nbok << "/" << nb << ") " \
+  << y << std::endl;
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Object.
 ///////////////////////////////////////////////////////////////////////////////
@@ -218,10 +230,72 @@ bool testObject()
   return nbok == nb;
 }
 
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testObject3D()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef SpaceND< int, 3 > Z3;
+  typedef MetricAdjacency< Z3, 1 > Adj6;
+  typedef MetricAdjacency< Z3, 2 > Adj18;
+  typedef DigitalTopology< Adj6, Adj18 > DT6_18;
+  typedef Z3::Point Point;
+  typedef HyperRectDomain< Z3 > Domain; 
+  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT6_18, DigitalSet> ObjectType;
+  Adj6 adj6;
+  Adj18 adj18;
+  DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
+ 
+  Point p1( -50, -50, -50 );
+  Point p2( 50, 50, 50 );
+  Domain domain( p1, p2 );
+  Point c( 0, 0 );
+
+  trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
+  trace.info() << "Creating diamond (r=45)" << endl;
+  // diamond of radius 30
+  DigitalSet diamond_set( domain );
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+    {
+      if ( (*it - c ).norm1() <= 45 ) diamond_set.insertNew( *it );
+    }
+  ObjectType diamond( dt6_18, diamond_set );
+  trace.info() << "Cloning diamond" << endl;
+  // The following line takes almost no time.
+  ObjectType diamond_clone( diamond );
+  // Since one of the objects is modified, the set is duplicated at the following line
+  trace.info() << "Removing one point" << endl;
+  diamond_clone.pointSet().erase( c );
+
+  trace.info() << "Inserting into vector<Object>" << endl;
+  vector<ObjectType> objects;
+  back_insert_iterator< vector< ObjectType > > inserter( objects );
+  *inserter++ = diamond;
+  *inserter++ = diamond_clone;
+  
+  for (  vector<ObjectType>::const_iterator it = objects.begin();
+	 it != objects.end();
+	 ++it )
+    trace.info() << "objects[" << (it - objects.begin() ) << "]" << *it << endl;
+
+  INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 1 ) );
+  trace.endBlock();
+
+  return nbok == nb;
+
+}
+
 bool testDraw()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
+
+  trace.beginBlock ( "testDraw(): testing drawing commands." );
   
   typedef SpaceND< int, 2 > Z2;
   typedef Z2::Point Point;
@@ -282,6 +356,8 @@ bool testDraw()
   ObjectType84 disk_object2( dt84, disk );
   trace.endBlock();
 
+  trace.beginBlock ( "Testing export as SVG with libboard." );
+
   Board board;
   board.setUnit(Board::UCentimeter);
 
@@ -305,7 +381,9 @@ bool testDraw()
   disk_object2.selfDrawWithAdjacencies(board3);
   
   board3.saveSVG("disk-object-adj-bis.svg");
+  trace.endBlock();
 
+  trace.endBlock();
 
   return nbok == nb;
   
@@ -322,7 +400,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testObject() && testDraw(); // && ... other tests
+  bool res = testObject() && testObject3D() && testDraw();
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
