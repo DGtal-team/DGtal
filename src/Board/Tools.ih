@@ -5,7 +5,11 @@
  * @date   June 2010
  * 
  * @brief  Tools (def. of inline functions and methods)
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 
 namespace LibBoard {

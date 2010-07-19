@@ -1,0 +1,232 @@
+/**
+ * @file ColorBrightnessColorMap.ih
+ * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
+ * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ *
+ * @date 2010/07/19
+ *
+ * Implementation of inline methods defined in ColorBrightnessColorMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+template <typename ValueType>
+inline
+DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap( const ValueType & min,
+								    const ValueType & max,
+								    const LibBoard::Color & color )
+  : myMin( min ), myMax( max ), myColor( color )
+{ }
+
+
+template <typename ValueType>
+inline
+DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap ( const ColorBrightnessColorMap & other )
+  : myMin( other.myMin ), myMax( other.myMax ), myColor( other.myColor )
+{ 
+}
+
+template <typename ValueType>
+inline
+DGtal::ColorBrightnessColorMap<ValueType>::~ColorBrightnessColorMap()
+{
+}
+
+template <typename ValueType>
+ColorBrightnessColorMap<ValueType> &
+ColorBrightnessColorMap<ValueType>::operator= ( const ColorBrightnessColorMap & other )
+{
+  if ( &other != this ) {
+    myMin = other.myMin;
+    myMax = other.myMax;
+    myColor = other.myColor;
+  }
+  return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::ColorBrightnessColorMap<ValueType>::min() const
+{
+  return myMin;
+}
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::ColorBrightnessColorMap<ValueType>::max() const
+{
+  return myMax;
+}
+
+template<typename ValueType>
+inline
+LibBoard::Color
+DGtal::ColorBrightnessColorMap<ValueType>::operator()( const ValueType & value ) const
+{
+  return ColorBrightnessColorMap<ValueType>::getColor( myColor, myMin, myMax, value );
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename ValueType>
+inline
+void
+DGtal::ColorBrightnessColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ColorBrightnessColorMap " 
+      << " min=" << myMin
+      << " max=" << myMax
+      << " color=(" 
+      << myColor.red() << ","
+      << myColor.green() << ","  
+      << myColor.blue() << ") "   
+      << " ]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename ValueType>
+inline
+bool
+DGtal::ColorBrightnessColorMap<ValueType>::isValid() const
+{
+    return true;
+}
+
+template <typename ValueType>
+inline
+LibBoard::Color
+DGtal::ColorBrightnessColorMap<ValueType>::getColor( const LibBoard::Color color,
+						     const ValueType & min,
+						     const ValueType & max,
+						     const ValueType & value )
+{
+  double h,s,v;
+  ColorBrightnessColorMap<ValueType>::RGBtoHSV( h, s, v,
+						color.red(),
+						color.green(),
+						color.blue() );
+  const double range = static_cast<double>( max - min );
+  const double scale = static_cast<double>( value - min ) / range;
+  double red, green, blue;
+  ColorBrightnessColorMap<ValueType>::HSVtoRGB( red, green, blue, h, s, v * scale );
+  return LibBoard::Color( static_cast<int>( red * 255), 
+			  static_cast<int>( green * 255),
+			  static_cast<int>( blue * 255) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename ValueType>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const ColorBrightnessColorMap<ValueType> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - private :
+
+template <typename ValueType>
+inline
+void
+DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB( double &r, double &g, double &b,
+						     const double h, const double s, const double v)
+{
+  int i;
+  float f, p, q, t;
+  if( s == 0 ) {                     // achromatic (gray)
+    r = g = b = v;
+    return;
+  }
+  i = static_cast<int>( floor( h / 60 ) );
+  f = ( h / 60 ) - i;                        // factorial part of h
+  p = v * ( 1 - s );
+  q = v * ( 1 - s * f );
+  t = v * ( 1 - s * ( 1 - f ) );
+  switch( i ) {
+  case 0:
+    r = v; g = t; b = p;
+    break;
+  case 1:
+    r = q; g = v; b = p;
+    break;
+  case 2:
+    r = p; g = v; b = t;
+    break;
+   case 3:
+     r = p; g = q; b = v;
+     break;
+  case 4:
+    r = t;  g = p; b = v;
+    break;
+  default:		// case 5:
+    r = v; g = p; b = q;
+    break;
+  }
+}
+
+template <typename ValueType>
+inline
+void
+DGtal::ColorBrightnessColorMap<ValueType>::RGBtoHSV( double &h, double &s, double &v,
+						     const unsigned char r,
+						     const unsigned char g,
+						     const unsigned char b )
+{
+  double min = (r<g) ? r : g;
+  if ( b < min ) min = b;
+  unsigned char max = (r>g) ? r : g;
+  if ( b > max ) max = b;
+  double dr = r / 255.0;
+  double dg = g / 255.0;
+  double db = b / 255.0;
+  v = (0.3*dr + 0.59*dg + 0.11*db);
+  if ( max == min ) {
+    h = 0;
+    s = 0;
+  } else {
+    double diff = ( max - min ) / 255.0;
+    if ( max == r ) {
+      h = (dg - db ) / diff;
+      h -= 6 * static_cast<int>(h / 6);
+    } else if ( max == g ) {
+      h = 2 + ( ( db - dr ) / diff );
+    } else if ( max == b ) {
+      h = 4 + ( ( dr - dg ) / diff );
+    }
+    h *= 60;
+    if ( h < 0 ) h += 360;
+    s = diff / v;
+  }
+}

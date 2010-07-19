@@ -30,7 +30,6 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
-
 #if ( (defined(WIN32)) )
 #define _USE_MATH_DEFINES
 #endif //win32

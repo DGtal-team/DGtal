@@ -6,7 +6,11 @@
  * 
  * @brief  Classes ShapeList and Group
  *
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 #ifndef _BOARD_SHAPELIST_H_
 #define _BOARD_SHAPELIST_H_

@@ -5,8 +5,11 @@
  * @date   Sat Aug 18 2007
  *
  * @brief  Definition of the ShapeList and Group classes.
- *
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 #include "Board/ShapeList.h"
 #include "Board/Tools.h"

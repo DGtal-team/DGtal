@@ -5,7 +5,11 @@
  * @date   Feb. 2010
  * 
  * @brief  Shapes inline methods
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 
 namespace LibBoard {
