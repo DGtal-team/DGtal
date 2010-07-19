@@ -86,8 +86,16 @@ namespace DGtal {
  * background. This is called the <b>digital Jordan theorem</b>
  * (Rosenfeld). 
  * 
+ * <table>
+ * <tr>
+ * <td>
  * @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
+ * </td>
+ * <td>
  * @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
+ * </td>
+ * </tr>
+ * </table>
  *
  * \subsection dgtal_topology_sec1s2 6-, 18- and 26- adjacencies in Z3
  *
@@ -225,6 +233,7 @@ namespace DGtal {
  *
  * @code
  * ...
+ * typedef Z3::Point Point;
  * typedef HyperRectDomain< Z3 > Domain; 
  * typedef Domain::ConstIterator DomainConstIterator; 
  * typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
@@ -245,6 +254,15 @@ namespace DGtal {
  * ObjectType diamond_clone( diamond );
  * // Since one of the objects is modified, the set is duplicated at the following line
  * diamond_clone.pointSet().erase( c );
+ * @endcode
+ *
+ * Objects may also be initialized empty, so that you can easily use a
+ * container to store them. Of course, they are not valid in this
+ * case.
+ *
+ * @code
+ * ObjectType object;          // valid
+ * vector<ObjectType> objects; // valid
  * @endcode
  *
  * \subsection dgtal_topology_sec3s2 Neighborhood of a point in an object
