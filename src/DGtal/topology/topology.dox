@@ -86,6 +86,9 @@ namespace DGtal {
  * background. This is called the <b>digital Jordan theorem</b>
  * (Rosenfeld). 
  * 
+ * @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
+ * @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
+ *
  * \subsection dgtal_topology_sec1s2 6-, 18- and 26- adjacencies in Z3
  *
  * Similarly as the 4-,8- adjacencies in 3D, the name of the 6-, 18-,
