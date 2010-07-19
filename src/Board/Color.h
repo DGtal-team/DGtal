@@ -5,7 +5,11 @@
  * @date   Sat Aug 18 2007
  * 
  * @brief  The Color structure.
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 #ifndef _BOARD_COLOR_H_
 #define _BOARD_COLOR_H_
@@ -83,7 +87,6 @@ public:
   std::string postscript() const;
   
   inline bool valid() const { return (*this) != Color::None; }
-
 
 public:
   static const Color None;

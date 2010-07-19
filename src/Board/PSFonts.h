@@ -5,7 +5,11 @@
  * @date   Sat Aug 18 2007
  * 
  * @brief  The Point structure.
- * @copyright
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 #ifndef _BOARD_PSFONTS_H_
 #define _BOARD_PSFONTS_H_

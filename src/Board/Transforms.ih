@@ -5,9 +5,12 @@
  * @date   Sat Aug 18 2007
  * 
  * @brief  Inline methods of the Transform classes.
- * @copyright
  */
-
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
+ */
 #if defined( max )
 #undef max 
 #define _HAS_MSVC_MAX_ true

@@ -5,8 +5,13 @@
  * @date   Sat Aug 18 2007
  * 
  * @brief  
- * @copyright
  */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
+ */
+
 #include "Board/Rect.h"
 
 namespace LibBoard {

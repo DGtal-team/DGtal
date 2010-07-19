@@ -1,0 +1,188 @@
+/**
+ * @file HueShadeColorMap.ih
+ * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
+ * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ *
+ * @date 2010/07/19
+ *
+ * Implementation of inline methods defined in HueShadeColorMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+template <typename ValueType>
+inline
+DGtal::HueShadeColorMap<ValueType>::HueShadeColorMap( const ValueType & min,
+						      const ValueType & max )
+  : myMin( min ), myMax( max )
+{ }
+
+
+template <typename ValueType>
+inline
+DGtal::HueShadeColorMap<ValueType>::HueShadeColorMap ( const HueShadeColorMap & other )
+  : myMin( other.myMin ), myMax( other.myMax )
+{ 
+}
+
+template <typename ValueType>
+inline
+DGtal::HueShadeColorMap<ValueType>::~HueShadeColorMap()
+{
+}
+
+template <typename ValueType>
+HueShadeColorMap<ValueType> &
+HueShadeColorMap<ValueType>::operator= ( const HueShadeColorMap & other )
+{
+  if ( &other != this ) {
+    myMin = other.myMin;
+    myMax = other.myMax;
+  }
+  return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::HueShadeColorMap<ValueType>::min() const
+{
+  return myMin;
+}
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::HueShadeColorMap<ValueType>::max() const
+{
+  return myMax;
+}
+
+template<typename ValueType>
+inline
+LibBoard::Color
+DGtal::HueShadeColorMap<ValueType>::operator()( const ValueType & value ) const
+{
+  return HueShadeColorMap<ValueType>::getColor( myMin, myMax, value );
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename ValueType>
+inline
+void
+DGtal::HueShadeColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[HueShadeColorMap " 
+      << " min=" << myMin
+      << " max=" << myMax
+      << " ]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename ValueType>
+inline
+bool
+DGtal::HueShadeColorMap<ValueType>::isValid() const
+{
+    return true;
+}
+
+template <typename ValueType>
+inline
+LibBoard::Color
+DGtal::HueShadeColorMap<ValueType>::getColor( const ValueType & min,
+					      const ValueType & max,
+					      const ValueType & value )
+{
+  const double range = static_cast<double>( max - min );
+  const double scale = static_cast<double>( value - min );
+  const double hue = 359.99 * ( scale / range  );
+  double red, green, blue;
+  HueShadeColorMap<ValueType>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
+  return LibBoard::Color( static_cast<int>( red * 255), 
+			  static_cast<int>( green * 255),
+			  static_cast<int>( blue * 255) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename ValueType>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const HueShadeColorMap<ValueType> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - private :
+
+template <typename ValueType>
+inline
+void
+DGtal::HueShadeColorMap<ValueType>::HSVtoRGB(double &r, double &g, double &b,
+					     const double h, const double s, const double v)
+{
+  int i;
+  float f, p, q, t;
+  if( s == 0 ) {                     // achromatic (gray)
+    r = g = b = v;
+    return;
+  }
+  i = static_cast<int>( floor( h / 60 ) );
+  f = ( h / 60 ) - i;                        // factorial part of h
+  p = v * ( 1 - s );
+  q = v * ( 1 - s * f );
+  t = v * ( 1 - s * ( 1 - f ) );
+  switch( i ) {
+  case 0:
+    r = v; g = t; b = p;
+    break;
+  case 1:
+    r = q; g = v; b = p;
+    break;
+  case 2:
+    r = p; g = v; b = t;
+    break;
+   case 3:
+     r = p; g = q; b = v;
+     break;
+  case 4:
+    r = t;  g = p; b = v;
+    break;
+  default:		// case 5:
+    r = v; g = p; b = q;
+    break;
+  }
+}
+
+

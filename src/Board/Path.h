@@ -4,8 +4,12 @@
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Aug 2009
  * 
- * @brief  
- * @copyright
+ * @brief
+ */
+/*
+ * \@copyright This File is part of the Board library which is
+ * licensed under the terms of the GNU Lesser General Public Licence.
+ * See the LICENCE file for further details.
  */
 #ifndef _BOARD_PATH_H_
 #define _BOARD_PATH_H_
