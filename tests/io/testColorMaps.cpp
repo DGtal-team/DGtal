@@ -17,7 +17,8 @@
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-
+#include "DGtal/io/colormaps/ColorMapInverter.h"
+#include "DGtal/io/colormaps/CyclicHueColorMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -28,31 +29,23 @@ using namespace LibBoard;
 // Function for testing class GrayscaleColorMap.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename ColorMap, typename ValueType>
-class ColorMapSampler {
-public:  
-  ColorMapSampler( ColorMap colorMap, ValueType step )
-    : myColorMap( colorMap ), myStep( step )
-  { 
+template <typename TColorMap>
+void writeColorMapSample( const TColorMap & aColorMap, 
+			  const typename TColorMap::ValueType step,
+			  const char * filename )
+{
+  typedef typename TColorMap::ValueType ValueType;
+  Board b;
+  b.setPenColor(Color::None);
+  for ( ValueType x = aColorMap.min(); x < aColorMap.max(); x += step ) {
+    b.setFillColor( aColorMap( x ) );
+    b.drawRectangle( static_cast<double>( x ),
+		     -100,
+		     static_cast<double>( step ),
+		     10 );
   }
-  void write( const char * filename ) const
-  {
-    Board b;
-    b.setPenColor(Color::None);
-    for ( ValueType x = myColorMap.min(); x < myColorMap.max(); x += myStep ) {
-      b.setFillColor( myColorMap( x ) );
-      b.drawRectangle( static_cast<double>( x ),
-		       -100,
-		       static_cast<double>( myStep ),
-		       10 );
-    }
-    b.saveEPS( filename );
-  } 
-private:
-  ColorMap myColorMap;
-  ValueType myStep;
-};
-
+  b.saveEPS( filename );
+} 
 
 /**
  * Example of a test. To be completed.
@@ -68,15 +61,21 @@ bool testGrayscaleColorMap()
     GrayscaleColorMap<unsigned char> cmap(0,255);
     
     Color c0 = cmap(0);
-    trace.info(); cerr << int(c0.red()) << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
+    trace.info(); 
+    cerr << int(c0.red())
+	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
     nbok += ( c0 == Color::Black );
     
     Color c128 = cmap(128);
-    trace.info(); cerr << int(c128.red()) << "," << int(c128.green()) << "," << int(c128.blue()) << std::endl;
+    trace.info(); 
+    cerr << int(c128.red())
+	 << "," << int(c128.green()) << "," << int(c128.blue()) << std::endl;
     nbok += ( c128 == Color(128,128,128) );
     
     Color c255 = cmap(255);
-    trace.info(); cerr << int(c255.red()) << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
+    trace.info();
+    cerr << int(c255.red())
+	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
     nbok += ( c255 == Color::White );
   }
   trace.endBlock();
@@ -85,11 +84,15 @@ bool testGrayscaleColorMap()
   {
     GrayscaleColorMap<unsigned char> cmap(64,128);
     Color c0 = cmap(64);
-    trace.info(); cerr << int(c0.red()) << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
+    trace.info();
+    cerr << int(c0.red())
+	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
     nbok += ( c0 == Color::Black );
 
     Color c255 = cmap(128);
-    trace.info(); cerr << int(c255.red()) << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
+    trace.info(); 
+    cerr << int(c255.red())
+	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
     nbok += ( c255 == Color::White );    
   }
   trace.endBlock();
@@ -98,12 +101,14 @@ bool testGrayscaleColorMap()
   {
     Color c = GrayscaleColorMap<unsigned char>::getColor(0,128,128);
     trace.info() << "Should be white: ";
-    cerr << int(c.red()) << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
+    cerr << int(c.red())
+	 << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
     nbok += (c == Color::White);
 
     c = GrayscaleColorMap<unsigned char>::getColor(0,128,64);
     trace.info() << "Should be around 127,127,127: ";
-    cerr << int(c.red()) << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
+    cerr << int(c.red())
+	 << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
 
     trace.endBlock();
   }
@@ -116,18 +121,27 @@ int main( int argc, char** argv )
   bool res1 = testGrayscaleColorMap();
   trace.emphase() << ( res1 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-
-  trace.endBlock();
-
-  GrayscaleColorMap<int> cmap_gray(0,500);
-  ColorMapSampler< GrayscaleColorMap<int>, int >( cmap_gray, 1 ).write( "gray_colormap.eps" );
-
-  HueShadeColorMap<int> cmap_hsv(0,500);
-  ColorMapSampler< HueShadeColorMap<int>, int >( cmap_hsv, 1 ).write( "hsv_colormap.eps" );
-
-  ColorBrightnessColorMap<int> cmap_red(0,500, Color::Red );
-  ColorMapSampler< ColorBrightnessColorMap<int>, int >( cmap_red, 1 ).write( "red_colormap.eps" );
   
+  GrayscaleColorMap<int> cmap_gray( 0, 500);
+  writeColorMapSample( cmap_gray, 1, "gray_colormap.eps" );
+
+  HueShadeColorMap<int> cmap_hsv( 0, 500);
+  writeColorMapSample( cmap_hsv, 1, "hsv_colormap.eps" );
+
+  ColorBrightnessColorMap<int> cmap_red( 0, 500, Color::Red );
+  writeColorMapSample( cmap_red, 1, "red_colormap.eps" );
+
+  CyclicHueColorMap<int> cmap_cyclic5( 0, 500 );
+  writeColorMapSample( cmap_cyclic5, 1, "cylic5_colormap.eps" );
+
+  CyclicHueColorMap<int> cmap_cyclic10( 0, 500, 10 );
+  writeColorMapSample( cmap_cyclic10, 1, "cylic10_colormap.eps" );
+
+  typedef ColorBrightnessColorMap<int> BrightnessColorMapInt;
+  BrightnessColorMapInt cmap_green( 0, 500, Color::Green);
+  ColorMapInverter<BrightnessColorMapInt> inverted(cmap_green);
+  writeColorMapSample( inverted, 1, "green_colormap.eps" );
+
   return ( res1 ) ? 0 : 1;
 }
 //                                                                           //
