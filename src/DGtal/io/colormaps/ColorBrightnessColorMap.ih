@@ -208,24 +208,25 @@ DGtal::ColorBrightnessColorMap<ValueType>::RGBtoHSV( double &h, double &s, doubl
   if ( b < min ) min = b;
   unsigned char max = (r>g) ? r : g;
   if ( b > max ) max = b;
+
   double dr = r / 255.0;
   double dg = g / 255.0;
   double db = b / 255.0;
-  v = (0.3*dr + 0.59*dg + 0.11*db);
+  v = max / 255.0; // (0.3*dr + 0.59*dg + 0.11*db);
   if ( max == min ) {
     h = 0;
     s = 0;
+    return;
   } else {
     double diff = ( max - min ) / 255.0;
     if ( max == r ) {
       h = (dg - db ) / diff;
-      h -= 6 * static_cast<int>(h / 6);
     } else if ( max == g ) {
-      h = 2 + ( ( db - dr ) / diff );
+      h = 2.0 + ( ( db - dr ) / diff );
     } else if ( max == b ) {
-      h = 4 + ( ( dr - dg ) / diff );
+      h = 4.0 + ( ( dr - dg ) / diff );
     }
-    h *= 60;
+    h *= 60.0;
     if ( h < 0 ) h += 360;
     s = diff / v;
   }
