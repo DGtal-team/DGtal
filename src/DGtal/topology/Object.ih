@@ -35,7 +35,7 @@
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object()
-  : myTopo( 0 ), myPointSet( 0 )
+  : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
 {
 }
 
@@ -52,9 +52,11 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const DigitalTopology & aTopology, 
-  const DigitalSet & aPointSet )
+  const DigitalSet & aPointSet,
+  Connectedness cxn )
   : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( new DigitalSet( aPointSet ) )
+    myPointSet( new DigitalSet( aPointSet ) ),
+    myConnectedness( cxn )
 {
 }
 
@@ -71,9 +73,11 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const CowPtr<DigitalTopology> & aTopology, 
-  const DigitalSet & aPointSet )
+  const DigitalSet & aPointSet,
+  Connectedness cxn )
   : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aPointSet ) )
+    myPointSet( new DigitalSet( aPointSet ) ), 
+    myConnectedness( cxn )
 {
 }
 
@@ -90,9 +94,11 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
-  const CowPtr<DigitalSet> & aPointSet )
+  const CowPtr<DigitalSet> & aPointSet,
+  Connectedness cxn )
   : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( aPointSet )
+    myPointSet( aPointSet ), 
+    myConnectedness( cxn )
 {
 }
   
@@ -110,9 +116,11 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
-  DigitalSet* aPointSetPtr )
+  DigitalSet* aPointSetPtr,
+  Connectedness cxn )
   : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( pointSet )
+    myPointSet( pointSet ),
+    myConnectedness( cxn )
 {
 }
 
@@ -128,7 +136,8 @@ inline
 DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const Object & other )
   : myTopo( other.myTopo ),
-    myPointSet( other.myPointSet )
+    myPointSet( other.myPointSet ),
+    myConnectedness( other.myConnectedness )
 {
 }
 
@@ -146,7 +155,8 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const TDigitalTopology & aTopology, 
   const Domain & aDomain )
   : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( new DigitalSet( aDomain ) )
+    myPointSet( new DigitalSet( aDomain ) ),
+    myConnectedness( CONNECTED )
 {
 }
 
@@ -163,7 +173,8 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::Object
 ( const CowPtr<DigitalTopology> & aTopology, 
   const Domain & aDomain )
   : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aDomain ) )
+    myPointSet( new DigitalSet( aDomain ) ),
+    myConnectedness( CONNECTED )
 {
 }
 
@@ -191,6 +202,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::operator=
     {
       myTopo = other.myTopo;
       myPointSet = other.myPointSet;
+      myConnectedness = other.myConnectedness;
     }
   return *this;
 }
@@ -239,6 +251,7 @@ inline
 TDigitalSet & 
 DGtal::Object<TDigitalTopology,TDigitalSet>::pointSet()
 {
+  myConnectedness = UNKNOWN;
   return *myPointSet;
 }
 
@@ -481,29 +494,91 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::border() const
 template <typename TDigitalTopology, typename TDigitalSet>
 template <typename TOutputObjectIterator>
 inline
-void
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
 DGtal::Object<TDigitalTopology,TDigitalSet>
 ::writeComponents( TOutputObjectIterator & it ) const
 {
-  ASSERT( size() != 0 );
+  SizeType nb_components = 0;
+  if ( pointSet().empty() ) 
+    {
+      myConnectedness = CONNECTED;
+      return nb_components;
+    }
+  else if ( connectedness() == CONNECTED )
+    {
+      *it++ = *this;
+      return 1;
+    }
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   DigitalSetConstIterator it_object = pointSet().begin();
   Point p( *it_object++ );
   Expander<Object> expander( *this, p );
   while ( expander.nextLayer() ) ;
-  Object component( myTopo, expander.core() );
+  Object component( myTopo, expander.core(), CONNECTED );
   *it++ = component;
+  ++nb_components;
   DigitalSet visited( expander.core() );
-  
   while ( it_object != pointSet().end() )
     {
-      p = *it_object;
+      p = *it_object++;
       if ( visited.find( p ) == visited.end() )
 	{
+	  Expander<Object> expander2( *this, p );
+	  while ( expander2.nextLayer() ) ;
+	  Object component2( myTopo, expander2.core(), CONNECTED );
+	  *it++ = component2;
+	  ++nb_components;
+	  visited += expander2.core();
 	}
     }
+  myConnectedness = nb_components == 1 ? CONNECTED : DISCONNECTED;
+  return nb_components;
 }
 
+/**
+ * @return the connectedness of this object. Either CONNECTED,
+ * DISCONNECTED, or UNKNOWN.
+ *
+ * @see computeConnectedness
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Connectedness 
+DGtal::Object<TDigitalTopology,TDigitalSet>::connectedness() const
+{
+  return myConnectedness;
+}
+
+/**
+ * If 'connectedness() == UNKNOWN', computes the connectedness of
+ * this object. After that, the connectedness of 'this' is either
+ * CONNECTED or DISCONNECTED.
+ *
+ * @return the connectedness of this object. Either CONNECTED or
+ * DISCONNECTED.
+ *
+ * @see connectedness
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Connectedness 
+DGtal::Object<TDigitalTopology,TDigitalSet>::computeConnectedness() const
+{
+  if ( myConnectedness == UNKNOWN )
+    {
+      if ( pointSet().empty() ) 
+	myConnectedness = CONNECTED;
+      else 
+	{
+	  // Take first point
+	  Expander<Object> expander( *this, *( pointSet().begin() ) );
+	  // and expand.
+	  while ( expander.nextLayer() ) ;
+	  myConnectedness = ( expander.core().size() == pointSet().size() )
+	    ? CONNECTED : DISCONNECTED;
+	}
+    }
+  return myConnectedness;
+}
+ 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -522,6 +597,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>
       << " topology=" << myTopo
       << " counts=" << myPointSet.count()
       << " set=" << *myPointSet
+      << " cxn=" << myConnectedness
       << "]";
 }
 

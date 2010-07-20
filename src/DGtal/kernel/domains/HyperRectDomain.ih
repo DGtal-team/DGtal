@@ -310,7 +310,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
 	  aboard.fillCircle(x,y,0.1);
     }
   else
-    ASSERT("selfDraw-NOT-YET-IMPLEMENTED-in-ND"=="");
+    ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 }
 
 
@@ -329,7 +329,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( LibBoard::Board & aboard) cons
 	  aboard.drawRectangle(x-0.5,y+0.5, 1,1);
     }      
   else
-    ASSERT("selfDraw-NOT-YET-IMPLEMENTED-in-ND"=="");
+    ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
 }
 
 

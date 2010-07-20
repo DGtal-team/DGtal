@@ -72,7 +72,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    DomainAdjacency( const Domain & domain, const Adjacency & adjacency );
+    DomainAdjacency( const Domain & aDomain, const Adjacency & adjacency );
 
     /**
      * Copy constructor.

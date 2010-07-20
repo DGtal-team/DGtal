@@ -57,10 +57,10 @@ namespace DGtal
     typedef typename Domain::Point Point;
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
+     * Constructor from domain.
+     * @param aDomain any domain.
      */
-    DomainPredicate ( const Domain & domain );
+    DomainPredicate ( const Domain & aDomain );
 
     /**
      * Copy constructor.

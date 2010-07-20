@@ -255,6 +255,7 @@ bool testObject3D()
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
   Point c( 0, 0 );
+  Point d( 10, 2 );
 
   trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
   trace.info() << "Creating diamond (r=45)" << endl;
@@ -269,8 +270,9 @@ bool testObject3D()
   // The following line takes almost no time.
   ObjectType diamond_clone( diamond );
   // Since one of the objects is modified, the set is duplicated at the following line
-  trace.info() << "Removing one point" << endl;
+  trace.info() << "Removing two points " << c << " and " << d << endl;
   diamond_clone.pointSet().erase( c );
+  diamond_clone.pointSet().erase( d );
 
   trace.info() << "Inserting into vector<Object>" << endl;
   vector<ObjectType> objects;
@@ -281,9 +283,41 @@ bool testObject3D()
   for (  vector<ObjectType>::const_iterator it = objects.begin();
 	 it != objects.end();
 	 ++it )
-    trace.info() << "objects[" << (it - objects.begin() ) << "]" << *it << endl;
+    trace.info() << "- objects[" << (it - objects.begin() ) << "]" 
+		 << " = " << *it << endl;
 
-  INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 1 ) );
+  INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 2 ) );
+  INBLOCK_TEST( objects[ 0 ].size() == 125671 );
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing connected component extraction  ..." );
+  // JOL: do like this for output iterators pointing on the same
+  // container as 'this'. Works fine and nearly as fast. 
+  //
+  // ObjectType( objects[ 0 ] ).writeComponents( inserter );
+
+  trace.beginBlock ( "Components of diamond.border()  ..." );
+  vector<ObjectType> objects2;
+  back_insert_iterator< vector< ObjectType > > inserter2( objects2 );
+  unsigned int nbc0 = objects[ 0 ].border().writeComponents( inserter2 );
+  INBLOCK_TEST( nbc0 == 1 );
+  INBLOCK_TEST( objects[ 0 ].computeConnectedness() == ObjectType::CONNECTED );
+  trace.endBlock();
+
+  trace.beginBlock ( "Components of diamond_clone.border()  ..." );
+  unsigned int nbc1 = objects[ 1 ].border().writeComponents( inserter2 );
+  INBLOCK_TEST( nbc1 == 3 );
+  trace.endBlock();
+  for (  vector<ObjectType>::const_iterator it = objects2.begin();
+	 it != objects2.end();
+	 ++it )
+    trace.info() << "- objects2[" << (it - objects2.begin() ) << "]" 
+		 << " = " << *it << endl;
+  INBLOCK_TEST( objects2[ 0 ].size() == objects2[ 1 ].size() );
+  INBLOCK_TEST( objects2[ 2 ].size() == objects2[ 3 ].size() );
+  INBLOCK_TEST( objects2[ 0 ].size() == 15848 );
+  INBLOCK_TEST( objects2[ 2 ].size() == 18 );
+
   trace.endBlock();
 
   return nbok == nb;
@@ -400,7 +434,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testObject() && testObject3D() && testDraw();
+  bool res = testObject() && 
+    testObject3D() && testDraw();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
