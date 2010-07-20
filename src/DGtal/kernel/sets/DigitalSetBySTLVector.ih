@@ -344,6 +344,30 @@ DGtal::DigitalSetBySTLVector<Domain>::end()
   return myVector.end();
 }
 
+/**
+ * set union to left.
+ * @param aSet any other set.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLVector<Domain> & 
+DGtal::DigitalSetBySTLVector<Domain>
+::operator+=( const DigitalSetBySTLVector<Domain> & aSet )
+{
+  if ( this != &aSet )
+    {
+      std::vector<Point> other( aSet.myVector );
+      std::stable_sort( other.begin(), other.end() );
+      std::stable_sort( begin(), end() );
+      std::vector<Point> new_vector;
+      new_vector.reserve( size() + other.size() );
+      std::set_union( begin(), end(), other.begin(), other.end(), 
+		      std::back_insert_iterator< std::vector<Point> >
+		      ( new_vector ) );
+      myVector.swap( new_vector );
+    }
+  return *this;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

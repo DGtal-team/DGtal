@@ -75,6 +75,13 @@ namespace DGtal
     typedef Object<DigitalTopology,SmallSet> SmallObject;
 
     /**
+     * Kind of connectedness of this object.
+     */
+    enum Connectedness {
+      DISCONNECTED = 0, CONNECTED = 1, UNKNOWN = 2
+    };
+
+    /**
      * Constructor. The object is not valid.
      */
     Object();
@@ -87,9 +94,12 @@ namespace DGtal
      *
      * @param aPointSet the set of points of the object. It is copied
      * in the object.
+     * 
+     * @param cxn the connectedness (default is UNKNOWN).
      */
     Object( const DigitalTopology & aTopology, 
-	    const DigitalSet & aPointSet );
+	    const DigitalSet & aPointSet,
+	    Connectedness cxn = UNKNOWN );
 
     /**
      * Constructor. 
@@ -99,9 +109,12 @@ namespace DGtal
      *
      * @param aPointSet the set of points of the object. It is copied
      * in the object.
+     * 
+     * @param cxn the connectedness (default is UNKNOWN).
      */
     Object( const CowPtr<DigitalTopology> & aTopology, 
-	    const DigitalSet & aPointSet );
+	    const DigitalSet & aPointSet,
+	    Connectedness cxn = UNKNOWN );
 
     /**
      * Constructor. 
@@ -111,9 +124,12 @@ namespace DGtal
      *
      * @param aPointSet the set of points of the object. It is smartly
      * reference in the object.
+     * 
+     * @param cxn the connectedness (default is UNKNOWN).
      */
     Object( const DigitalTopology & aTopology, 
-	    const CowPtr<DigitalSet> & aPointSet );
+	    const CowPtr<DigitalSet> & aPointSet,
+	    Connectedness cxn = UNKNOWN );
 
     /**
      * Constructor by attachment of a dynamically allocated point set. 
@@ -124,9 +140,12 @@ namespace DGtal
      * @param aPointSetPtr a dynamically allocated pointer on a set of
      * points which is afterwards handled by this (which will take
      * care of its deletion).
+     * 
+     * @param cxn the connectedness (default is UNKNOWN).
      */
     Object( const DigitalTopology & aTopology, 
-	    DigitalSet* aPointSetPtr );
+	    DigitalSet* aPointSetPtr,
+	    Connectedness cxn = UNKNOWN );
 
     /**
      * Constructor of an empty object by providing a domain.
@@ -279,10 +298,57 @@ namespace DGtal
      * a container of Object s.
      *
      * @param it the output iterator. *it is an Object.
+     * @return the number of components.
+     *
+     * NB: Be careful that the [it] should not be an output iterator
+     * pointing in the same container containing 'this'. The following
+     * example might make a 'bus error' because the vector might be
+     * resized() during insertion.
+     *
+     * @code
+     * vector<ObjectType> objects;
+     * objects[ 0 ] = ... some object;
+     * ...
+     * back_insert_iterator< vector<ObjectType> > it( objects );
+     * objects[ 0 ].writeComponents( it ); // it points in same container as this.
+     * // might 'bus error'.
+     * @endcode
+     * 
+     * If you wish to use an output iterator (like a
+     * std::back_insert_iterator) in the same container containing
+     * your object, you can write:
+     *
+     * @code
+     * ObjectType( objects[ 0 ] ).writeComponents( it );
+     * @endcode
+     *
+     * It is nearly as efficient (the clone uses smart copy on write
+     * pointers) and works in any case. You might even overwrite your
+     * object while doing this.
      */
     template <typename TOutputObjectIterator>
-    void writeComponents( TOutputObjectIterator & it ) const;
+    SizeType writeComponents( TOutputObjectIterator & it ) const;
 
+    /**
+     * @return the connectedness of this object. Either CONNECTED,
+     * DISCONNECTED, or UNKNOWN.
+     *
+     * @see computeConnectedness
+     */
+    Connectedness connectedness() const;
+
+    /**
+     * If 'connectedness() == UNKNOWN', computes the connectedness of
+     * this object. After that, the connectedness of 'this' is either
+     * CONNECTED or DISCONNECTED.
+     *
+     * @return the connectedness of this object. Either CONNECTED or
+     * DISCONNECTED.
+     *
+     * @see connectedness
+     */
+    Connectedness computeConnectedness() const;
+    
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -312,6 +378,11 @@ namespace DGtal
      * A copy on write pointer on the associated (owned or not) point set
      */
     CowPtr<DigitalSet> myPointSet;
+
+    /**
+     * Connectedness of this object. Either CONNECTED, DISCONNECTED, or UNKNOWN.
+     */
+    mutable Connectedness myConnectedness;
 
     // ------------------------- Hidden services ------------------------------
   protected:

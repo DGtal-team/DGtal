@@ -44,6 +44,7 @@ namespace DGtal {
  *    -# \ref dgtal_topology_sec3s2
  *    -# \ref dgtal_topology_sec3s3
  *    -# \ref dgtal_topology_sec3s4
+ *    -# \ref dgtal_topology_sec3s5
  *
  * \section dgtal_topology_sec1_ajdacency Adjacency relations
  *
@@ -296,7 +297,33 @@ namespace DGtal {
  * (transitive closure of the foreground adjacency) and a
  * connectedness relation on the complement of the set (transitive
  * closure of the background adjacency).  Objects may be connected or
- * not. The connectedness is stored with the object, if it is known. 
+ * not. The connectedness is stored with the object, if it is known.
+ * The method Object::connectedness returns CONNECTED, DISCONNECTED or
+ * UNKNOWN depending on the connectedness of this object and if it has
+ * been computed. The method Object::computeConnectedness forces the
+ * computation. After this process, the connectedness is either
+ * CONNECTED or DISCONNECTED.
+ *
+ * Furthermore, you can use the method Object::writeComponents to
+ * compute all the connected components of this object. It also
+ * updates the connectedness of this object to either CONNECTED or
+ * DISCONNECTED depending on the number of connected components. Each
+ * connected component is of course CONNECTED.
+ *
+ * You may use writeComponents as follows:
+ *
+ * @code
+ * std::vector< ObjectType > objects;
+ * std::back_insert_iterator< std::vector< ObjectType > > inserter( objects );
+ * // nbc == 1 since the boundary of the diamond is connected.
+ * unsigned int nbc = bdiamond.writeComponents( inserter );
+ * // nbd == 2 since the boundary of the diamond minus its center is disconnected.
+ * unsigned int nbd = bdiamond_clone.writeComponents( inserter );
+ * // objects.size() == 3
+ * @endcode
+ *
+ * You must be careful when using an output iterator writing in the
+ * same container as 'this' object (see Object::writeComponents).
  *
  * \subsection dgtal_topology_sec3s5 Simple points
  *

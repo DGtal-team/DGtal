@@ -205,6 +205,13 @@ namespace DGtal
      */
     Iterator end();
 
+    /**
+     * set union to left.
+     * @param aSet any other set.
+     */
+    DigitalSetBySTLSet<Domain> & operator+=
+    ( const DigitalSetBySTLSet<Domain> & aSet );
+
     // ----------------------- Other Set services -----------------------------
   public:
     

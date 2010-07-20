@@ -96,9 +96,10 @@ namespace DGtal
     typedef T Component;
     typedef T Coordinate;
 	
-    //typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
-	// @todo T is not a model of Integer!
-	typedef T UnsignedComponent;
+    // JOL need it in various norm().
+    typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
+    // @todo T is not a model of Integer!
+    // typedef T UnsignedComponent;
 
 
     static const std::size_t Dimension = N;    

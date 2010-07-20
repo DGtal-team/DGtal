@@ -208,6 +208,7 @@ DGtal::DigitalSetBySTLSet<Domain>::erase( const Point & p )
  * Note: generally faster than giving just the point.
  */
 template <typename Domain>
+inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::erase( Iterator it )
 {
@@ -219,6 +220,7 @@ DGtal::DigitalSetBySTLSet<Domain>::erase( Iterator it )
  * @post this set is empty.
  */
 template <typename Domain>
+inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::clear()
 {
@@ -230,6 +232,7 @@ DGtal::DigitalSetBySTLSet<Domain>::clear()
  * @return a const iterator pointing on [p] if found, otherwise end().
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p ) const
 {
@@ -241,6 +244,7 @@ DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p ) const
  * @return an iterator pointing on [p] if found, otherwise end().
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p )
 {
@@ -251,6 +255,7 @@ DGtal::DigitalSetBySTLSet<Domain>::find( const Point & p )
  * @return a const iterator on the first element in this set.
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::begin() const
 {
@@ -261,6 +266,7 @@ DGtal::DigitalSetBySTLSet<Domain>::begin() const
  * @return a const iterator on the element after the last in this set.
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain>::end() const
 {
@@ -271,6 +277,7 @@ DGtal::DigitalSetBySTLSet<Domain>::end() const
  * @return an iterator on the first element in this set.
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::begin()
 {
@@ -281,10 +288,35 @@ DGtal::DigitalSetBySTLSet<Domain>::begin()
  * @return a iterator on the element after the last in this set.
  */
 template <typename Domain>
+inline
 typename DGtal::DigitalSetBySTLSet<Domain>::Iterator
 DGtal::DigitalSetBySTLSet<Domain>::end()
 {
   return mySet.end();
+}
+
+/**
+ * set union to left.
+ * @param aSet any other set.
+ */
+template <typename Domain>
+inline
+DGtal::DigitalSetBySTLSet<Domain> & 
+DGtal::DigitalSetBySTLSet<Domain>
+::operator+=( const DigitalSetBySTLSet<Domain> & aSet )
+{
+  if ( this != &aSet )
+    {
+      Iterator it_dst = end();
+      for ( ConstIterator it_src = aSet.begin();
+	    it_src != aSet.end();
+	    ++it_src )
+	{
+	  // Use hint it_dst to go faster.
+	  it_dst = mySet.insert( it_dst, *it_src );
+	}
+    }
+  return *this;
 }
 
 
