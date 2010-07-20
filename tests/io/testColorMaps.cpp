@@ -26,9 +26,8 @@ using namespace DGtal;
 using namespace LibBoard;
   
 ///////////////////////////////////////////////////////////////////////////////
-// Function for testing class GrayscaleColorMap.
+// Function template for testing ColorMap classes. 
 ///////////////////////////////////////////////////////////////////////////////
-
 template <typename TColorMap>
 void writeColorMapSample( const TColorMap & aColorMap, 
 			  const typename TColorMap::ValueType step,
@@ -47,10 +46,6 @@ void writeColorMapSample( const TColorMap & aColorMap,
   b.saveEPS( filename );
 } 
 
-/**
- * Example of a test. To be completed.
- *
- */
 bool testGrayscaleColorMap()
 {
   unsigned int nbok = 0;
