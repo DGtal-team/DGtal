@@ -59,11 +59,16 @@ namespace DGtal
    * }
    * @endcode
    *
-   * @tparam ValueType The type of the range values.
+   * @tparam PValueType The type of the range values.
    */
-  template <typename ValueType>
+  template <typename PValueType>
   class GrayscaleColorMap
   {
+    
+  public:
+    
+    typedef PValueType ValueType;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -73,8 +78,8 @@ namespace DGtal
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      */
-    GrayscaleColorMap( const ValueType & min,
-		       const ValueType & max );
+    GrayscaleColorMap( const PValueType & min,
+		       const PValueType & max );
 
 
     /** 
@@ -84,7 +89,7 @@ namespace DGtal
      * @return A gray level (as a Color) which linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const ValueType & value ) const;
+    LibBoard::Color operator()( const PValueType & value ) const;
       
     /**
      * Destructor.
@@ -124,14 +129,14 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const ValueType & min() const;
+    const PValueType & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const ValueType & max() const;
+    const PValueType & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
@@ -145,9 +150,9 @@ namespace DGtal
      * @return A gray level (as a Color) which linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const ValueType & min,
-				     const ValueType & max,
-				     const ValueType & value );
+    static LibBoard::Color getColor( const PValueType & min,
+				     const PValueType & max,
+				     const PValueType & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -158,8 +163,8 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    ValueType myMin;		/**< The lower bound of the value range.  */
-    ValueType myMax;            /**< The lower bound of the value range.  */
+    PValueType myMin;		/**< The lower bound of the value range.  */
+    PValueType myMax;            /**< The lower bound of the value range.  */
 
     /**
      * Constructor.
@@ -179,9 +184,9 @@ namespace DGtal
    * @param object the object of class 'GrayscaleColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename ValueType>
+  template <typename PValueType>
   std::ostream&
-  operator<< ( std::ostream & out, const GrayscaleColorMap<ValueType> & object );
+  operator<< ( std::ostream & out, const GrayscaleColorMap<PValueType> & object );
   
 } // namespace DGtal
 

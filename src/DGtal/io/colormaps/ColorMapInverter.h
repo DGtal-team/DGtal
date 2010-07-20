@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file HueShadeColorMap.h
+ * @file ColorMapInverter.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
  * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
- * Header file for module HueShadeColorMap.cpp
+ * Header file for module ColorMapInverter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(HueShadeColorMap_RECURSES)
-#error Recursive header files inclusion detected in HueShadeColorMap.h
-#else // defined(HueShadeColorMap_RECURSES)
+#if defined(ColorMapInverter_RECURSES)
+#error Recursive header files inclusion detected in ColorMapInverter.h
+#else // defined(ColorMapInverter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define HueShadeColorMap_RECURSES
+#define ColorMapInverter_RECURSES
 
-#if !defined HueShadeColorMap_h
+#if !defined ColorMapInverter_h
 /** Prevents repeated inclusion of headers. */
-#define HueShadeColorMap_h
+#define ColorMapInverter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -34,41 +34,40 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class HueShadeColorMap
+  // template class ColorMapInverter
   /**
-   * Description of template class 'HueShadeColorMap' <p>
-   * @brief Aim: This class template may be used to (linearly) convert scalar
-   * values in a given range into a color in a hue shade colormap, maybe aka
-   * rainbow color map.
+   * Description of template class 'ColorMapInverter' <p>
+   * \brief Aim: This class template may be used to reverse an existing color map.
    * 
-   * The HueShadeColorMap can be used either as a functor object (the value
-   * range is given at the object's construction) which converts a value  into a
-   * LibBoard::Color structure, or it can be used through a static method taking
-   * both the range and the value as parameters.
+   * A ColorMapInverter can be used either as a functor object which converts a
+   * value  into a LibBoard::Color structure, or it can be used through a static
+   * method taking both the range and the value as parameters. In both cases, an
+   * existing color map is used, whose range is simply considered from max to min.
    *
    * The code below shows a possible use of this class.
    * @code
    * #include "Board/Color.h"
-   * #include "HueShadeColorMap.h"
+   * #include "GrayScaleColorMap.h"
+   * #include "ColorMapInverter.h"
    * // ...
    * {
-   *   HueShadeColorMap<float> hueShade(0.0f,1.0f);
-   *   LibBoard::Color red = hueShade(1.0f);
-   *   LibBoard::Color lightBlue1 = hueShade(0.5f);
-   *   // Or, equivalently:
-   *   LibBoard::Color lightBlue2 = HueShadeColorMap<float>::getColor(0.0f,1.0f,0.5f);
+   *   typedef GrayScaleColorMap<float> GrayMap;
+   *   GrayMap grayShade(0.0f,1000.0f)
+   *   ColorMapInverter<GrayMap> iGrayShade(grayShade);
+   *   LibBoard::Color white = grayShade(1.0f);
+   *   LibBoard::Color black = iGrayShade(1.0f);
    * }
    * @endcode
    *
    * @tparam PValueType The type of the range values.
    */
-  template <typename PValueType>
-  class HueShadeColorMap
+  template <typename PColorMap>
+  class ColorMapInverter
   {
 
   public:
     
-    typedef PValueType ValueType;
+    typedef typename PColorMap::ValueType ValueType;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -76,38 +75,36 @@ namespace DGtal
     /** 
      * Constructor.
      * 
-     * @param min The lower bound of the value range.
-     * @param max The upper bound of the value range.
+     * @param aColorMap A color map to be inverted.
      */
-    HueShadeColorMap( const PValueType & min,
-		      const PValueType & max );
-    
+    ColorMapInverter( const PColorMap & aColorMap );
+
     /** 
-     * Computes the color associated with a value in a given range.
+     * Computes the colorassociated with a value in a given range.
      * 
      * @param value A value within the value range.
-     * @return A color whose hue linearly depends on the 
-     * position of [value] within the current range.
+     * @return A color which linearly and reversely depends on the 
+     * position of [value] within the range of the color map used.
      */
-    LibBoard::Color operator()( const PValueType & value ) const;
+    LibBoard::Color operator()( const ValueType & value ) const;
       
     /**
      * Destructor.
      */
-    ~HueShadeColorMap();
+    ~ColorMapInverter();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    HueShadeColorMap ( const HueShadeColorMap & other );
+    ColorMapInverter ( const ColorMapInverter & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    HueShadeColorMap & operator= ( const HueShadeColorMap & other );
+    ColorMapInverter & operator= ( const ColorMapInverter & other );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -129,30 +126,30 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const PValueType & min() const;
+    const ValueType & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const PValueType & max() const;
+    const ValueType & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
 
     /** 
-     * Computes the color associated with a value in a given range.
+     * Computes the color associated with a value in a given range. The range
+     * is the one of the associated color map, but considered from max to min.
      * 
      * @param min The lower bound of the value range.  
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A color whose hue linearly depends on the 
+     * @return A color which linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const PValueType & min,
-				     const PValueType & max,
-				     const PValueType & value );
+    static LibBoard::Color getColor( const PColorMap & aColorMap,
+				     const ValueType & aValue );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -160,59 +157,47 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    PColorMap myColorMap;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;            /**< The lower bound of the value range.  */
+    ValueType myMin;		/**< The lower bound of the value range.  */
+    ValueType myMax;            /**< The lower bound of the value range.  */
 
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    HueShadeColorMap();
+    ColorMapInverter();
 
     // ------------------------- Internals ------------------------------------
   private:
 
-    /** 
-     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB space.
-     * 
-     * @param r The red component (out).
-     * @param g The green component (out).
-     * @param b The blue component (out).
-     * @param h The hue of the color in [0..360)
-     * @param s The saturation of the color in [0..1].
-     * @param v The value of the color in [0..1].
-     */
-    static void HSVtoRGB(double &r, double &g, double &b,
-			 double h, const double s, const double v);
-
-
-  }; // end of class HueShadeColorMap
+  }; // end of class ColorMapInverter
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'HueShadeColorMap'.
+   * Overloads 'operator<<' for displaying objects of class 'ColorMapInverter'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'HueShadeColorMap' to write.
+   * @param object the object of class 'ColorMapInverter' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType>
+  template <typename ValueType>
   std::ostream&
-  operator<< ( std::ostream & out, const HueShadeColorMap<PValueType> & object );
+  operator<< ( std::ostream & out, const ColorMapInverter<ValueType> & object );
   
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/colormaps/HueShadeColorMap.ih"
+#include "DGtal/io/colormaps/ColorMapInverter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined HueShadeColorMap_h
+#endif // !defined ColorMapInverter_h
 
-#undef HueShadeColorMap_RECURSES
-#endif // else defined(HueShadeColorMap_RECURSES)
+#undef ColorMapInverter_RECURSES
+#endif // else defined(ColorMapInverter_RECURSES)

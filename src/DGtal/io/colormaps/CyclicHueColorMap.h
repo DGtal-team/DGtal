@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file HueShadeColorMap.h
+ * @file CyclicHueColorMap.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
  * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
- * Header file for module HueShadeColorMap.cpp
+ * Header file for module CyclicHueColorMap.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(HueShadeColorMap_RECURSES)
-#error Recursive header files inclusion detected in HueShadeColorMap.h
-#else // defined(HueShadeColorMap_RECURSES)
+#if defined(CyclicHueColorMap_RECURSES)
+#error Recursive header files inclusion detected in CyclicHueColorMap.h
+#else // defined(CyclicHueColorMap_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define HueShadeColorMap_RECURSES
+#define CyclicHueColorMap_RECURSES
 
-#if !defined HueShadeColorMap_h
+#if !defined CyclicHueColorMap_h
 /** Prevents repeated inclusion of headers. */
-#define HueShadeColorMap_h
+#define CyclicHueColorMap_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -34,36 +34,24 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class HueShadeColorMap
+  // template class CyclicHueColorMap
   /**
-   * Description of template class 'HueShadeColorMap' <p>
+   * Description of template class 'CyclicHueColorMap' <p>
+   *
    * @brief Aim: This class template may be used to (linearly) convert scalar
-   * values in a given range into a color in a hue shade colormap, maybe aka
-   * rainbow color map.
+   * values in a given range into a color in a \em cyclic hue shade
+   * colormap, maybe aka rainbow color map. This color map is suitable, for
+   * example, to colorize distance functions.
    * 
-   * The HueShadeColorMap can be used either as a functor object (the value
+   * The CyclicHueColorMap can be used either as a functor object (the value
    * range is given at the object's construction) which converts a value  into a
    * LibBoard::Color structure, or it can be used through a static method taking
    * both the range and the value as parameters.
    *
-   * The code below shows a possible use of this class.
-   * @code
-   * #include "Board/Color.h"
-   * #include "HueShadeColorMap.h"
-   * // ...
-   * {
-   *   HueShadeColorMap<float> hueShade(0.0f,1.0f);
-   *   LibBoard::Color red = hueShade(1.0f);
-   *   LibBoard::Color lightBlue1 = hueShade(0.5f);
-   *   // Or, equivalently:
-   *   LibBoard::Color lightBlue2 = HueShadeColorMap<float>::getColor(0.0f,1.0f,0.5f);
-   * }
-   * @endcode
-   *
    * @tparam PValueType The type of the range values.
    */
   template <typename PValueType>
-  class HueShadeColorMap
+  class CyclicHueColorMap
   {
 
   public:
@@ -78,9 +66,11 @@ namespace DGtal
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
+     * @param cycles The number of cycles in the colormap.
      */
-    HueShadeColorMap( const PValueType & min,
-		      const PValueType & max );
+    CyclicHueColorMap( const PValueType & min,
+		       const PValueType & max,
+		       const unsigned int cycles = 5 );
     
     /** 
      * Computes the color associated with a value in a given range.
@@ -94,20 +84,20 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~HueShadeColorMap();
+    ~CyclicHueColorMap();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    HueShadeColorMap ( const HueShadeColorMap & other );
+    CyclicHueColorMap ( const CyclicHueColorMap & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    HueShadeColorMap & operator= ( const HueShadeColorMap & other );
+    CyclicHueColorMap & operator= ( const CyclicHueColorMap & other );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -144,13 +134,15 @@ namespace DGtal
     /** 
      * Computes the color associated with a value in a given range.
      * 
+     * @param cycles The number of (rainbow) cycles.
      * @param min The lower bound of the value range.  
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
      * @return A color whose hue linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const PValueType & min,
+    static LibBoard::Color getColor( const unsigned int cycles,
+				     const PValueType & min,
 				     const PValueType & max,
 				     const PValueType & value );
     
@@ -164,19 +156,21 @@ namespace DGtal
   protected:
 
     PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;            /**< The lower bound of the value range.  */
-
+    PValueType myMax;           /**< The lower bound of the value range.  */
+    unsigned int myCycles;	/**< The number of cycles in the color map. */
+    
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    HueShadeColorMap();
+    CyclicHueColorMap();
 
     // ------------------------- Internals ------------------------------------
   private:
 
     /** 
-     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB space.
+     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB
+     * space.
      * 
      * @param r The red component (out).
      * @param g The green component (out).
@@ -189,30 +183,30 @@ namespace DGtal
 			 double h, const double s, const double v);
 
 
-  }; // end of class HueShadeColorMap
+  }; // end of class CyclicHueColorMap
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'HueShadeColorMap'.
+   * Overloads 'operator<<' for displaying objects of class 'CyclicHueColorMap'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'HueShadeColorMap' to write.
+   * @param object the object of class 'CyclicHueColorMap' to write.
    * @return the output stream after the writing.
    */
   template <typename PValueType>
-  std::ostream&
-  operator<< ( std::ostream & out, const HueShadeColorMap<PValueType> & object );
+    std::ostream&
+    operator<< ( std::ostream & out, const CyclicHueColorMap<PValueType> & object );
   
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/colormaps/HueShadeColorMap.ih"
+#include "DGtal/io/colormaps/CyclicHueColorMap.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined HueShadeColorMap_h
+#endif // !defined CyclicHueColorMap_h
 
-#undef HueShadeColorMap_RECURSES
-#endif // else defined(HueShadeColorMap_RECURSES)
+#undef CyclicHueColorMap_RECURSES
+#endif // else defined(CyclicHueColorMap_RECURSES)

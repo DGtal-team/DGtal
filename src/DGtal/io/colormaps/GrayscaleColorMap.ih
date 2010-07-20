@@ -32,7 +32,8 @@ DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap( const ValueType & min,
 
 template <typename ValueType>
 inline
-DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap ( const GrayscaleColorMap & other )
+DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap
+( const GrayscaleColorMap<ValueType> & other )
   : myMin( other.myMin ), myMax( other.myMax )
 { 
 }
@@ -45,7 +46,8 @@ DGtal::GrayscaleColorMap<ValueType>::~GrayscaleColorMap()
 
 template <typename ValueType>
 GrayscaleColorMap<ValueType> &
-GrayscaleColorMap<ValueType>::operator= ( const GrayscaleColorMap & other )
+GrayscaleColorMap<ValueType>::operator=
+( const GrayscaleColorMap<ValueType> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
