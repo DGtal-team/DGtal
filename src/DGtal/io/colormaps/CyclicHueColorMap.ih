@@ -1,11 +1,11 @@
 /**
- * @file ColorBrightnessColorMap.ih
+ * @file CyclicHueColorMap.ih
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
  * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
- * Implementation of inline methods defined in ColorBrightnessColorMap.h
+ * Implementation of inline methods defined in CyclicHueColorMap.h
  *
  * This file is part of the DGtal library.
  */
@@ -25,35 +25,37 @@
 
 template <typename ValueType>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap
-( const ValueType & min,  const ValueType & max, const LibBoard::Color & color )
-  : myMin( min ), myMax( max ), myColor( color )
+DGtal::CyclicHueColorMap<ValueType>::CyclicHueColorMap
+( const ValueType & min,
+  const ValueType & max,
+  const unsigned int cycles)
+  : myMin( min ), myMax( max ), myCycles( cycles )
 { }
 
 
 template <typename ValueType>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap
-( const ColorBrightnessColorMap<ValueType> & other )
-  : myMin( other.myMin ), myMax( other.myMax ), myColor( other.myColor )
+DGtal::CyclicHueColorMap<ValueType>::CyclicHueColorMap
+( const CyclicHueColorMap<ValueType> & other )
+  : myMin( other.myMin ), myMax( other.myMax ), myCycles( other.myCycles )
 { 
 }
 
 template <typename ValueType>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::~ColorBrightnessColorMap()
+DGtal::CyclicHueColorMap<ValueType>::~CyclicHueColorMap()
 {
 }
 
 template <typename ValueType>
-ColorBrightnessColorMap<ValueType> &
-ColorBrightnessColorMap<ValueType>::operator=
-( const ColorBrightnessColorMap<ValueType> & other )
+CyclicHueColorMap<ValueType> &
+CyclicHueColorMap<ValueType>::operator=
+( const CyclicHueColorMap<ValueType> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    myColor = other.myColor;
+    myCycles = other.myCycles;
   }
   return *this;
 }
@@ -64,7 +66,7 @@ ColorBrightnessColorMap<ValueType>::operator=
 template<typename ValueType>
 inline
 const ValueType &
-DGtal::ColorBrightnessColorMap<ValueType>::min() const
+DGtal::CyclicHueColorMap<ValueType>::min() const
 {
   return myMin;
 }
@@ -72,7 +74,7 @@ DGtal::ColorBrightnessColorMap<ValueType>::min() const
 template<typename ValueType>
 inline
 const ValueType &
-DGtal::ColorBrightnessColorMap<ValueType>::max() const
+DGtal::CyclicHueColorMap<ValueType>::max() const
 {
   return myMax;
 }
@@ -80,9 +82,12 @@ DGtal::ColorBrightnessColorMap<ValueType>::max() const
 template<typename ValueType>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<ValueType>::operator()( const ValueType & value ) const
+DGtal::CyclicHueColorMap<ValueType>::operator()( const ValueType & value ) const
 {
-  return ColorBrightnessColorMap<ValueType>::getColor( myColor, myMin, myMax, value );
+  return CyclicHueColorMap<ValueType>::getColor( myCycles,
+						 myMin,
+						 myMax,
+						 value );
 }
 
 /**
@@ -92,15 +97,12 @@ DGtal::ColorBrightnessColorMap<ValueType>::operator()( const ValueType & value )
 template <typename ValueType>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+DGtal::CyclicHueColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ColorBrightnessColorMap " 
+  out << "[CyclicHueColorMap " 
       << " min=" << myMin
       << " max=" << myMax
-      << " color=(" 
-      << myColor.red() << ","
-      << myColor.green() << ","  
-      << myColor.blue() << ") "   
+      << " cycles=" << myCycles
       << " ]";
 }
 
@@ -111,7 +113,7 @@ DGtal::ColorBrightnessColorMap<ValueType>::selfDisplay ( std::ostream & out ) co
 template <typename ValueType>
 inline
 bool
-DGtal::ColorBrightnessColorMap<ValueType>::isValid() const
+DGtal::CyclicHueColorMap<ValueType>::isValid() const
 {
     return true;
 }
@@ -119,20 +121,17 @@ DGtal::ColorBrightnessColorMap<ValueType>::isValid() const
 template <typename ValueType>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<ValueType>::getColor( const LibBoard::Color color,
-						     const ValueType & min,
-						     const ValueType & max,
-						     const ValueType & value )
+DGtal::CyclicHueColorMap<ValueType>::getColor( const unsigned int cycles,
+					       const ValueType & min,
+					       const ValueType & max,
+					       const ValueType & value )
 {
-  double h,s,v;
-  ColorBrightnessColorMap<ValueType>::RGBtoHSV( h, s, v,
-						color.red(),
-						color.green(),
-						color.blue() );
   const double range = static_cast<double>( max - min );
   const double scale = static_cast<double>( value - min ) / range;
+  const double hue = std::floor( static_cast<int>( cycles * scale * 360 )
+				 % 360 );
   double red, green, blue;
-  ColorBrightnessColorMap<ValueType>::HSVtoRGB( red, green, blue, h, s, v * scale );
+  CyclicHueColorMap<ValueType>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
   return LibBoard::Color( static_cast<int>( red * 255), 
 			  static_cast<int>( green * 255),
 			  static_cast<int>( blue * 255) );
@@ -145,7 +144,7 @@ template <typename ValueType>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ColorBrightnessColorMap<ValueType> & object )
+		  const CyclicHueColorMap<ValueType> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -161,8 +160,9 @@ DGtal::operator<< ( std::ostream & out,
 template <typename ValueType>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB( double &r, double &g, double &b,
-						     const double h, const double s, const double v)
+DGtal::CyclicHueColorMap<ValueType>::HSVtoRGB
+( double & r, double & g, double & b,
+  const double h, const double s, const double v)
 {
   int i;
   float f, p, q, t;
@@ -197,38 +197,4 @@ DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB( double &r, double &g, doubl
   }
 }
 
-template <typename ValueType>
-inline
-void
-DGtal::ColorBrightnessColorMap<ValueType>::RGBtoHSV( double &h, double &s, double &v,
-						     const unsigned char r,
-						     const unsigned char g,
-						     const unsigned char b )
-{
-  double min = (r<g) ? r : g;
-  if ( b < min ) min = b;
-  unsigned char max = (r>g) ? r : g;
-  if ( b > max ) max = b;
 
-  double dr = r / 255.0;
-  double dg = g / 255.0;
-  double db = b / 255.0;
-  v = max / 255.0; // (0.3*dr + 0.59*dg + 0.11*db);
-  if ( max == min ) {
-    h = 0;
-    s = 0;
-    return;
-  } else {
-    double diff = ( max - min ) / 255.0;
-    if ( max == r ) {
-      h = (dg - db ) / diff;
-    } else if ( max == g ) {
-      h = 2.0 + ( ( db - dr ) / diff );
-    } else if ( max == b ) {
-      h = 4.0 + ( ( dr - dg ) / diff );
-    }
-    h *= 60.0;
-    if ( h < 0 ) h += 360;
-    s = diff / v;
-  }
-}

@@ -33,7 +33,8 @@ DGtal::HueShadeColorMap<ValueType>::HueShadeColorMap( const ValueType & min,
 
 template <typename ValueType>
 inline
-DGtal::HueShadeColorMap<ValueType>::HueShadeColorMap ( const HueShadeColorMap & other )
+DGtal::HueShadeColorMap<ValueType>::HueShadeColorMap
+( const HueShadeColorMap<ValueType> & other )
   : myMin( other.myMin ), myMax( other.myMax )
 { 
 }
@@ -46,7 +47,8 @@ DGtal::HueShadeColorMap<ValueType>::~HueShadeColorMap()
 
 template <typename ValueType>
 HueShadeColorMap<ValueType> &
-HueShadeColorMap<ValueType>::operator= ( const HueShadeColorMap & other )
+HueShadeColorMap<ValueType>::operator=
+( const HueShadeColorMap<ValueType> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -117,8 +119,8 @@ DGtal::HueShadeColorMap<ValueType>::getColor( const ValueType & min,
 					      const ValueType & value )
 {
   const double range = static_cast<double>( max - min );
-  const double scale = static_cast<double>( value - min );
-  const double hue = 359.99 * ( scale / range  );
+  const double scale = static_cast<double>( value - min ) / range;
+  const double hue = 359.99 * scale;
   double red, green, blue;
   HueShadeColorMap<ValueType>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
   return LibBoard::Color( static_cast<int>( red * 255), 
@@ -149,8 +151,9 @@ DGtal::operator<< ( std::ostream & out,
 template <typename ValueType>
 inline
 void
-DGtal::HueShadeColorMap<ValueType>::HSVtoRGB(double &r, double &g, double &b,
-					     const double h, const double s, const double v)
+DGtal::HueShadeColorMap<ValueType>::HSVtoRGB
+(double & r, double & g, double & b,
+ const double h, const double s, const double v)
 {
   int i;
   float f, p, q, t;
@@ -158,7 +161,7 @@ DGtal::HueShadeColorMap<ValueType>::HSVtoRGB(double &r, double &g, double &b,
     r = g = b = v;
     return;
   }
-  i = static_cast<int>( floor( h / 60 ) );
+  i = static_cast<int>( std::floor( h / 60 ) );
   f = ( h / 60 ) - i;                        // factorial part of h
   p = v * ( 1 - s );
   q = v * ( 1 - s * f );

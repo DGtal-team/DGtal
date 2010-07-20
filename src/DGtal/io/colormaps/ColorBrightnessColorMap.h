@@ -63,9 +63,13 @@ namespace DGtal
    *
    * @tparam ValueType The type of the range values.
    */
-  template <typename ValueType>
+  template <typename PValueType>
   class ColorBrightnessColorMap
   {
+  public:
+    
+    typedef PValueType ValueType;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -75,18 +79,18 @@ namespace DGtal
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      */
-    ColorBrightnessColorMap( const ValueType & min,
-			     const ValueType & max,
+    ColorBrightnessColorMap( const PValueType & min,
+			     const PValueType & max,
 			     const LibBoard::Color & color );
     
     /** 
-     * Computes the gray level associated with a value in a given range.
+     * Computes the color associated with a value in a given range.
      * 
      * @param value A value within the value range.
-     * @return A gray level (as a Color) which linearly depends on the 
+     * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const ValueType & value ) const;
+    LibBoard::Color operator()( const PValueType & value ) const;
       
     /**
      * Destructor.
@@ -126,32 +130,32 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const ValueType & min() const;
+    const PValueType & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const ValueType & max() const;
+    const PValueType & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
 
     /** 
-     * Computes the gray level associated with a value in a given range.
+     * Computes the color associated with a value in a given range.
      * 
      * @param color The color associated with the upper bound. 
      * @param min The lower bound of the value range.  
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A gray level (as a Color) which linearly depends on the 
+     * @return A color whose brightness linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
     static LibBoard::Color getColor( const LibBoard::Color color,
-				     const ValueType & min,
-				     const ValueType & max,
-				     const ValueType & value );
+				     const PValueType & min,
+				     const PValueType & max,
+				     const PValueType & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -162,8 +166,8 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    ValueType myMin;		/**< The lower bound of the value range.  */
-    ValueType myMax;            /**< The lower bound of the value range.  */
+    PValueType myMin;		/**< The lower bound of the value range.  */
+    PValueType myMax;            /**< The lower bound of the value range.  */
     LibBoard::Color myColor;	/**< The color of the upper bound value. */
     
     /**
@@ -212,9 +216,9 @@ namespace DGtal
    * @param object the object of class 'ColorBrightnessColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename ValueType>
+  template <typename PValueType>
   std::ostream&
-  operator<< ( std::ostream & out, const ColorBrightnessColorMap<ValueType> & object );
+  operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValueType> & object );
   
 } // namespace DGtal
 
