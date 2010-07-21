@@ -21,6 +21,7 @@
 /** Prevents repeated inclusion of headers. */
 #define TraceWriterTerm_h
 
+
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
