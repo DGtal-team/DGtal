@@ -13,6 +13,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <vector>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,6 +23,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
+template <typename ValueType>
+inline
+DGtal::GradientColorMap<ValueType>::GradientColorMap
+( const ValueType & min,
+  const ValueType & max )
+  : myMin( min ), myMax( max )
+{ }
 
 template <typename ValueType>
 inline
@@ -30,9 +38,11 @@ DGtal::GradientColorMap<ValueType>::GradientColorMap
   const ValueType & max,
   const LibBoard::Color & firstColor,
   const LibBoard::Color & lastColor )
-  : myMin( min ), myMax( max ),
-    myFirstColor( firstColor ), myLastColor( lastColor )
-{ }
+  : myMin( min ), myMax( max )
+{
+  myColors.push_back( firstColor );
+  myColors.push_back( lastColor );
+}
 
 template <typename ValueType>
 inline
@@ -44,28 +54,43 @@ DGtal::GradientColorMap<ValueType>::GradientColorMap
 { 
   switch ( preset ) {
   case Spring:
-    myFirstColor.setRGBi( 255, 0, 255 );
-    myLastColor.setRGBi( 255, 255, 0 );
+    myColors.push_back( LibBoard::Color( 255, 0, 255 ));
+    myColors.push_back( LibBoard::Color( 255, 255, 0 ));
     break;
   case Summer:
-    myFirstColor.setRGBi( 0, 132, 100 );
-    myLastColor.setRGBi( 255, 255, 100 );
+    myColors.push_back( LibBoard::Color( 0, 132, 100 ));
+    myColors.push_back( LibBoard::Color( 255, 255, 100 ));
     break;
   case Autumn:
-    myFirstColor.setRGBi( 255, 0, 0 );
-    myLastColor.setRGBi( 255, 255, 0 );
+    myColors.push_back( LibBoard::Color( 255, 0, 0 ));
+    myColors.push_back( LibBoard::Color( 255, 255, 0));
     break;
   case Winter:
-    myFirstColor.setRGBi( 0, 0, 255 );
-    myLastColor.setRGBi( 0, 255, 132 );
+    myColors.push_back( LibBoard::Color( 0, 0, 255 ));
+    myColors.push_back( LibBoard::Color( 0, 255, 132 ));
     break;
   case Cool:
-    myFirstColor.setRGBi( 0, 255, 255 );
-    myLastColor.setRGBi( 255, 0, 255 );
+    myColors.push_back( LibBoard::Color( 0, 255, 255 ));
+    myColors.push_back( LibBoard::Color( 255, 0, 255 ));
     break;
   case Copper:
-    myFirstColor.setRGBi( 0, 0, 0 );
-    myLastColor.setRGBi( 255, 198, 123 );
+    myColors.push_back( LibBoard::Color( 0, 0, 0 ));
+    myColors.push_back( LibBoard::Color( 255, 198, 123 ));
+    break;
+  case Hot:
+    myColors.push_back( LibBoard::Color::Black );
+    myColors.push_back( LibBoard::Color::Red );
+    myColors.push_back( LibBoard::Color( 255, 140, 0 ) );
+    myColors.push_back( LibBoard::Color::Yellow );
+    myColors.push_back( LibBoard::Color::White );
+    break;
+  case Jet:
+    myColors.push_back( LibBoard::Color::Blue );
+    myColors.push_back( LibBoard::Color::Cyan );
+    myColors.push_back( LibBoard::Color::Yellow );
+    myColors.push_back( LibBoard::Color( 255, 140, 0 ) );
+    myColors.push_back( LibBoard::Color::Red );
+    myColors.push_back( LibBoard::Color( 132, 0, 0 ) );
     break;
   }
 }
@@ -74,8 +99,7 @@ template <typename ValueType>
 inline
 DGtal::GradientColorMap<ValueType>::GradientColorMap
 ( const GradientColorMap<ValueType> & other )
-  : myMin( other.myMin ), myMax( other.myMax ),
-    myFirstColor( other.myFirstColor ), myLastColor( other.myLastColor )
+  : myMin( other.myMin ), myMax( other.myMax ), myColors( other.myColors )
 { 
 }
 
@@ -93,14 +117,30 @@ GradientColorMap<ValueType>::operator=
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    myFirstColor = other.myFirstColor;
-    myLastColor = other.myLastColor;
+    myColors = other.myColors;
   }
   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
+
+
+template<typename ValueType>
+inline
+void
+DGtal::GradientColorMap<ValueType>::addColor( const LibBoard::Color & color )
+{
+  myColors.push_back( color );
+}
+
+template<typename ValueType>
+inline
+void
+DGtal::GradientColorMap<ValueType>::clearColors()
+{
+  myColors.clear();
+}
 
 template<typename ValueType>
 inline
@@ -123,11 +163,10 @@ inline
 LibBoard::Color
 DGtal::GradientColorMap<ValueType>::operator()( const ValueType & value ) const
 {
-  return GradientColorMap<ValueType>::getColor( myFirstColor,
-						myLastColor,
-						myMin,
-						myMax,
-						value );
+  return GradientColorMap<ValueType>::getColor( myColors,
+						 myMin,
+						 myMax,
+						 value );
 }
 
 /**
@@ -141,16 +180,16 @@ DGtal::GradientColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GradientColorMap " 
       << " min=" << myMin
-      << " max=" << myMax
-      << " firstColor=(" 
-      << myFirstColor.red() << ","
-      << myFirstColor.green() << ","  
-      << myFirstColor.blue() << ") "   
-      << " lastColor=(" 
-      << myLastColor.red() << ","
-      << myLastColor.green() << ","  
-      << myLastColor.blue() << ") "   
-      << " ]";
+      << " max=" << myMax;
+  std::vector<LibBoard::Color>::iterator it = myColors.begin();
+  while ( it != myColors.end() ) {
+    out << " RGB(" 
+	<< it->red() << ","
+	<< it->green() << ","  
+	<< it->blue() << ") ";
+    ++it;
+  }
+  out << " ]";
 }
 
 /**
@@ -168,13 +207,20 @@ DGtal::GradientColorMap<ValueType>::isValid() const
 template <typename ValueType>
 inline
 LibBoard::Color
-DGtal::GradientColorMap<ValueType>::getColor( const LibBoard::Color firstColor,
-					      const LibBoard::Color lastColor,
-					      const ValueType & min,
-					      const ValueType & max,
-					      const ValueType & value )
+DGtal::GradientColorMap<ValueType>::getColor( const std::vector<LibBoard::Color> & colors,
+					       const ValueType & min,
+					       const ValueType & max,
+					       const ValueType & value )
 {
-  const double scale = static_cast<double>( value - min ) / (max - min);
+  if ( colors.size() < 2 )
+    return LibBoard::Color::None; 
+  double scale = static_cast<double>( value - min ) / (max - min);
+  const int intervals = colors.size() - 1;
+  const int upper_index = static_cast<int>( ceil( intervals * scale ) );
+  const LibBoard::Color & firstColor = colors[ upper_index - 1 ];
+  const LibBoard::Color & lastColor = colors[ upper_index ];
+  scale = ( scale * intervals ) - (upper_index - 1);
+
   const unsigned char red = static_cast<unsigned char>( firstColor.red() +
 							scale * ( lastColor.red() - 
 								  firstColor.red() ));
@@ -183,7 +229,7 @@ DGtal::GradientColorMap<ValueType>::getColor( const LibBoard::Color firstColor,
 								    firstColor.green() ));
   const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
 							 scale * ( lastColor.blue() - 
-								  firstColor.blue() ));
+								   firstColor.blue() ));
   return LibBoard::Color( red, green, blue );
 }
 
