@@ -59,7 +59,6 @@ namespace DGtal
    *   LibBoard::Color blue2 = ColorBrightnessColorMap<float>::getColor(LibBoard::Color::Blue,0.0f,1.0f,0.5f);
    * }
    * @endcode
-   * @todo Fix the ColorBrightnessColorMap::getColor method so that it works!
    *
    * @tparam ValueType The type of the range values.
    */

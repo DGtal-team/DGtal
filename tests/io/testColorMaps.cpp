@@ -32,13 +32,13 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TColorMap>
 void addColorMapSample( const char * name,
-			  const TColorMap & aColorMap, 
-			  const typename TColorMap::ValueType step,
-			  Board & board )
+			const TColorMap & aColorMap, 
+			const typename TColorMap::ValueType step,
+			Board & board )
 {
   typedef typename TColorMap::ValueType ValueType;
   board.translate( 0, 15 );
-  for ( ValueType x = aColorMap.min(); x < aColorMap.max(); x += step ) {
+  for ( ValueType x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setPenColor(Color::Black);
     board.setFont( LibBoard::Fonts::Courier, 12 );
     board.drawText( -150, 0, name );
@@ -139,13 +139,32 @@ int main( int argc, char** argv )
   addColorMapSample( "CyclicHue (10x)", cmap_cyclic10, 1, board );
 
   GradientColorMap<int> cmap_gradient( 0, 500, Color::Yellow, Color::Red );
-  addColorMapSample( "Gradient", cmap_gradient, 1, board );
+  addColorMapSample( "Gradient (Y->R)", cmap_gradient, 1, board );
+
+  GradientColorMap<int> cmap_grad3( 0, 500 );
+  cmap_grad3.addColor( Color::Blue );
+  cmap_grad3.addColor( Color::White );
+  cmap_grad3.addColor( Color::Red );
+  addColorMapSample( "Gradient (B->W->R)", cmap_grad3, 1, board );
+
+  cmap_grad3.clearColors();
+  cmap_grad3.addColor( Color::Green );
+  cmap_grad3.addColor( Color::Yellow );
+  cmap_grad3.addColor( Color::Red );
+  addColorMapSample( "Gradient (G->Y->R)", cmap_grad3, 1, board );
 
   GradientColorMap<int> cool_gradient( 0, 500, GradientColorMap<int>::Cool );
   addColorMapSample( "Gradient (Cool)", cool_gradient, 1, board );
 
   GradientColorMap<int> copper_gradient( 0, 500, GradientColorMap<int>::Copper );
   addColorMapSample( "Gradient (Copper)", copper_gradient, 1, board );
+
+  GradientColorMap<int> hot_gradient( 0, 500, GradientColorMap<int>::Hot );
+  addColorMapSample( "Gradient (Hot)", hot_gradient, 1, board );
+
+  GradientColorMap<int> jet_gradient( 0, 500, GradientColorMap<int>::Jet );
+
+  addColorMapSample( "Gradient (Jet)", jet_gradient, 1, board );
 
   addColorMapSample( "Gradient (Spring)",
 		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Spring ),
@@ -163,7 +182,6 @@ int main( int argc, char** argv )
 		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Winter ),
 		     1,
 		     board );
-
 
   typedef ColorBrightnessColorMap<int> BrightnessColorMapInt;
   BrightnessColorMapInt cmap_green( 0, 500, Color::Green);

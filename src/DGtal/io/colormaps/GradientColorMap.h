@@ -38,7 +38,8 @@ namespace DGtal
   /**
    * Description of template class 'GradientColorMap' <p>
    * \brief Aim: This class template may be used to (linearly) convert scalar
-   * values in a given range into a color in a gradient between two colors. 
+   * values in a given range into a color in a gradient defined by two
+   * or more colors.
    * 
    * The GradientColorMap can be used either as a functor object
    * (the value range is given at the object's construction, together with the
@@ -52,19 +53,20 @@ namespace DGtal
    * #include "GradientColorMap.h"
    * // ...
    * {
-   *   GradientColorMap<float> gradient(0.0f,1.0f,
-   *                                    LibBoard::Color::Blue,
-   *                                    LibBoard::Color::Red );
-   *   LibBoard::Color c1 = blueShade(0.33f);
-   *   LibBoard::Color c2 = blueShade(0.75f);
-   *   // Or, equivalently:
-   *   LibBoard::Color c3 = GradientColorMap<float>::getColor(LibBoard::Color::Blue,
-   *                                                          LibBoard::Color::Red,
-   *                                                          0.0f,1.0f,
-   *                                                          0.75f);
+   *   Board b;
+   *
+   *   GradientColorMap<float> gradient( 0.0, 1000.0, Color::White, Color::Red );
+   *   b.setPenColor( gradient( 230.0 ) ); // Somewhere between white and red.
+   *
+   *   GradientColorMap<int> grad3( 0, 500 );
+   *   grad3.addColor( Color::Blue );
+   *   grad3.addColor( Color::White );
+   *   grad3.addColor( Color::Red );
+   *   
+   *   b.setPenColor( grad3( 100 ) ); // Between Blue and white.
+   *   b.setPenColor( grad3( 300 ) ); // Between white and red.
    * }
    * @endcode
-   * @todo Fix the GradientColorMap::getColor method so that it works!
    *
    * @tparam ValueType The type of the range values.
    */
@@ -76,7 +78,7 @@ namespace DGtal
     
     typedef PValueType ValueType;
 
-    enum Preset { Spring, Summer, Autumn, Winter, Cool, Copper };
+    enum Preset { Spring, Summer, Autumn, Winter, Cool, Copper, Hot, Jet };
 
 
     // ----------------------- Standard services ------------------------------
@@ -87,31 +89,39 @@ namespace DGtal
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
-     * @param firstColor The color of the lower bound.
-     * @param lastColor The color of the upper bound.
      */
     GradientColorMap( const PValueType & min,
-		      const PValueType & max,
+		       const PValueType & max );
+
+    /** 
+     * Constructor for a gradient between two colors.
+     * 
+     * @param min The lower bound of the value range.
+     * @param max The upper bound of the value range.
+     * @param firstColor The "left" color of the gradient.
+     * @param lastColor  The "right" color of the gradient.
+     */
+    GradientColorMap( const ValueType & min,
+		      const ValueType & max,
 		      const LibBoard::Color & firstColor,
 		      const LibBoard::Color & lastColor );
-
     /** 
      * Constructor.
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
-     * @param preset A preset gradient.
+     * @param preset A preset identifier.
      */
     GradientColorMap( const PValueType & min,
-		      const PValueType & max,
-		      const Preset & preset );
+		       const PValueType & max,
+		       const Preset & preset );
 
     
     /** 
      * Computes the color associated with a value in a given range.
      * 
      * @param value A value within the value range.
-     * @return A color whose color linearly depends on the 
+     * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
     LibBoard::Color operator()( const PValueType & value ) const;
@@ -136,6 +146,19 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
+
+    /** 
+     * Clears the list of colors.
+     * 
+     */
+    void clearColors();
+
+    /** 
+     * Adds a color to the list of color steps.
+     * 
+     * @param color A color.
+     */
+    void addColor( const LibBoard::Color & color );
 
     /**
      * Writes/Displays the object on an output stream.
@@ -165,19 +188,17 @@ namespace DGtal
 
     // ----------------------- Static methods ---------------------------------
 
-
     /** 
      * Computes the color associated with a value in a given range.
      * 
-     * @param color The color associated with the upper bound. 
+     * @param colors The gradients boundary colors.
      * @param min The lower bound of the value range.  
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
      * @return A color whose color linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const LibBoard::Color firstColor,
-				     const LibBoard::Color lastColor,
+    static LibBoard::Color getColor( const std::vector<LibBoard::Color> & colors,
 				     const PValueType & min,
 				     const PValueType & max,
 				     const PValueType & value );
@@ -193,8 +214,7 @@ namespace DGtal
 
     PValueType myMin;		/**< The lower bound of the value range.  */
     PValueType myMax;           /**< The lower bound of the value range.  */
-    LibBoard::Color myFirstColor;	/**< The color of the lower bound value. */
-    LibBoard::Color myLastColor;	/**< The color of the upper bound value. */
+    std::vector<LibBoard::Color> myColors;	/**< The gradients boundary colors. */
     
     /**
      * Constructor.
