@@ -1,0 +1,209 @@
+/**
+ * @file GradientColorMap.ih
+ * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
+ * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ *
+ * @date 2010/07/19
+ *
+ * Implementation of inline methods defined in GradientColorMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+template <typename ValueType>
+inline
+DGtal::GradientColorMap<ValueType>::GradientColorMap
+( const ValueType & min,
+  const ValueType & max,
+  const LibBoard::Color & firstColor,
+  const LibBoard::Color & lastColor )
+  : myMin( min ), myMax( max ),
+    myFirstColor( firstColor ), myLastColor( lastColor )
+{ }
+
+template <typename ValueType>
+inline
+DGtal::GradientColorMap<ValueType>::GradientColorMap
+( const ValueType & min,
+  const ValueType & max,
+  const Preset & preset )
+  : myMin( min ), myMax( max )
+{ 
+  switch ( preset ) {
+  case Spring:
+    myFirstColor.setRGBi( 255, 0, 255 );
+    myLastColor.setRGBi( 255, 255, 0 );
+    break;
+  case Summer:
+    myFirstColor.setRGBi( 0, 132, 100 );
+    myLastColor.setRGBi( 255, 255, 100 );
+    break;
+  case Autumn:
+    myFirstColor.setRGBi( 255, 0, 0 );
+    myLastColor.setRGBi( 255, 255, 0 );
+    break;
+  case Winter:
+    myFirstColor.setRGBi( 0, 0, 255 );
+    myLastColor.setRGBi( 0, 255, 132 );
+    break;
+  case Cool:
+    myFirstColor.setRGBi( 0, 255, 255 );
+    myLastColor.setRGBi( 255, 0, 255 );
+    break;
+  case Copper:
+    myFirstColor.setRGBi( 0, 0, 0 );
+    myLastColor.setRGBi( 255, 198, 123 );
+    break;
+  }
+}
+
+template <typename ValueType>
+inline
+DGtal::GradientColorMap<ValueType>::GradientColorMap
+( const GradientColorMap<ValueType> & other )
+  : myMin( other.myMin ), myMax( other.myMax ),
+    myFirstColor( other.myFirstColor ), myLastColor( other.myLastColor )
+{ 
+}
+
+template <typename ValueType>
+inline
+DGtal::GradientColorMap<ValueType>::~GradientColorMap()
+{
+}
+
+template <typename ValueType>
+GradientColorMap<ValueType> &
+GradientColorMap<ValueType>::operator=
+( const GradientColorMap<ValueType> & other )
+{
+  if ( &other != this ) {
+    myMin = other.myMin;
+    myMax = other.myMax;
+    myFirstColor = other.myFirstColor;
+    myLastColor = other.myLastColor;
+  }
+  return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::GradientColorMap<ValueType>::min() const
+{
+  return myMin;
+}
+
+template<typename ValueType>
+inline
+const ValueType &
+DGtal::GradientColorMap<ValueType>::max() const
+{
+  return myMax;
+}
+
+template<typename ValueType>
+inline
+LibBoard::Color
+DGtal::GradientColorMap<ValueType>::operator()( const ValueType & value ) const
+{
+  return GradientColorMap<ValueType>::getColor( myFirstColor,
+						myLastColor,
+						myMin,
+						myMax,
+						value );
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename ValueType>
+inline
+void
+DGtal::GradientColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GradientColorMap " 
+      << " min=" << myMin
+      << " max=" << myMax
+      << " firstColor=(" 
+      << myFirstColor.red() << ","
+      << myFirstColor.green() << ","  
+      << myFirstColor.blue() << ") "   
+      << " lastColor=(" 
+      << myLastColor.red() << ","
+      << myLastColor.green() << ","  
+      << myLastColor.blue() << ") "   
+      << " ]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename ValueType>
+inline
+bool
+DGtal::GradientColorMap<ValueType>::isValid() const
+{
+    return true;
+}
+
+template <typename ValueType>
+inline
+LibBoard::Color
+DGtal::GradientColorMap<ValueType>::getColor( const LibBoard::Color firstColor,
+					      const LibBoard::Color lastColor,
+					      const ValueType & min,
+					      const ValueType & max,
+					      const ValueType & value )
+{
+  const double scale = static_cast<double>( value - min ) / (max - min);
+  const unsigned char red = static_cast<unsigned char>( firstColor.red() +
+							scale * ( lastColor.red() - 
+								  firstColor.red() ));
+  const unsigned char green = static_cast<unsigned char>( firstColor.green() +
+							  scale * ( lastColor.green() - 
+								    firstColor.green() ));
+  const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
+							 scale * ( lastColor.blue() - 
+								  firstColor.blue() ));
+  return LibBoard::Color( red, green, blue );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename ValueType>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const GradientColorMap<ValueType> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - private :
+
