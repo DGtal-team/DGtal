@@ -56,17 +56,28 @@ namespace DGtal
 
     ~ImageContainerBySTLVector();
 
+    /** 
+     * Get the value of an image at a given position.
+     *
+     * @param aPoint  position in the image.
+     * @return the value at aPoint.
+     */
+    ValueType operator()(const Point &aPoint) const;
 
-    ValueType operator()(const Point &aPoint);
-
-    ValueType operator()(const Iterator &it)
+    /** 
+     * Get the value of an image at a given position given 
+     * by a ConstIterator.
+     *
+     * @param it  position in the image.
+     * @return the value at aPoint.
+     */
+    ValueType operator()(ConstIterator &it) const
     {
       return (*it);
     };
 
+ 
     void setValue(const Point &aPoint, const ValueType &aValue);
-
-
 
     void setValue(Iterator &it, const ValueType &aValue)
     {
