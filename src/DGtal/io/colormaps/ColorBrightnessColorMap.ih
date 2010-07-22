@@ -161,8 +161,9 @@ DGtal::operator<< ( std::ostream & out,
 template <typename ValueType>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB( double &r, double &g, double &b,
-						     const double h, const double s, const double v)
+DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB
+( double &r, double &g, double &b,
+  const double h, const double s, const double v)
 {
   int i;
   float f, p, q, t;

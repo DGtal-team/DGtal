@@ -17,8 +17,10 @@
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-#include "DGtal/io/colormaps/ColorMapInverter.h"
 #include "DGtal/io/colormaps/CyclicHueColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/ColorMapInverter.h"
+#include "Board/PSFonts.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -29,21 +31,24 @@ using namespace LibBoard;
 // Function template for testing ColorMap classes. 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TColorMap>
-void writeColorMapSample( const TColorMap & aColorMap, 
+void addColorMapSample( const char * name,
+			  const TColorMap & aColorMap, 
 			  const typename TColorMap::ValueType step,
-			  const char * filename )
+			  Board & board )
 {
   typedef typename TColorMap::ValueType ValueType;
-  Board b;
-  b.setPenColor(Color::None);
+  board.translate( 0, 15 );
   for ( ValueType x = aColorMap.min(); x < aColorMap.max(); x += step ) {
-    b.setFillColor( aColorMap( x ) );
-    b.drawRectangle( static_cast<double>( x ),
-		     -100,
-		     static_cast<double>( step ),
-		     10 );
+    board.setPenColor(Color::Black);
+    board.setFont( LibBoard::Fonts::Courier, 12 );
+    board.drawText( -150, 0, name );
+    board.setPenColor(Color::None);
+    board.setFillColor( aColorMap( x ) );
+    board.drawRectangle( static_cast<double>( x ),
+			 10,
+			 static_cast<double>( step ),
+			 10 );
   }
-  b.saveEPS( filename );
 } 
 
 bool testGrayscaleColorMap()
@@ -112,30 +117,61 @@ bool testGrayscaleColorMap()
 
 int main( int argc, char** argv )
 {
+  Board board;
   trace.beginBlock ( "Testing GrayscaleColorMap" );
   bool res1 = testGrayscaleColorMap();
   trace.emphase() << ( res1 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
   GrayscaleColorMap<int> cmap_gray( 0, 500);
-  writeColorMapSample( cmap_gray, 1, "gray_colormap.eps" );
+  addColorMapSample( "Grayscale", cmap_gray, 1, board );
 
   HueShadeColorMap<int> cmap_hsv( 0, 500);
-  writeColorMapSample( cmap_hsv, 1, "hsv_colormap.eps" );
+  addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
   ColorBrightnessColorMap<int> cmap_red( 0, 500, Color::Red );
-  writeColorMapSample( cmap_red, 1, "red_colormap.eps" );
+  addColorMapSample( "Brightness", cmap_red, 1, board );
 
   CyclicHueColorMap<int> cmap_cyclic5( 0, 500 );
-  writeColorMapSample( cmap_cyclic5, 1, "cylic5_colormap.eps" );
+  addColorMapSample( "CyclicHue (5x)", cmap_cyclic5, 1, board );
 
   CyclicHueColorMap<int> cmap_cyclic10( 0, 500, 10 );
-  writeColorMapSample( cmap_cyclic10, 1, "cylic10_colormap.eps" );
+  addColorMapSample( "CyclicHue (10x)", cmap_cyclic10, 1, board );
+
+  GradientColorMap<int> cmap_gradient( 0, 500, Color::Yellow, Color::Red );
+  addColorMapSample( "Gradient", cmap_gradient, 1, board );
+
+  GradientColorMap<int> cool_gradient( 0, 500, GradientColorMap<int>::Cool );
+  addColorMapSample( "Gradient (Cool)", cool_gradient, 1, board );
+
+  GradientColorMap<int> copper_gradient( 0, 500, GradientColorMap<int>::Copper );
+  addColorMapSample( "Gradient (Copper)", copper_gradient, 1, board );
+
+  addColorMapSample( "Gradient (Spring)",
+		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Spring ),
+		     1,
+		     board );
+  addColorMapSample( "Gradient (Summer)",
+		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Summer ),
+		     1,
+		     board );
+  addColorMapSample( "Gradient (Autumn)",
+		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Autumn ),
+		     1,
+		     board );
+  addColorMapSample( "Gradient (Winter)",
+		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Winter ),
+		     1,
+		     board );
+
 
   typedef ColorBrightnessColorMap<int> BrightnessColorMapInt;
   BrightnessColorMapInt cmap_green( 0, 500, Color::Green);
   ColorMapInverter<BrightnessColorMapInt> inverted(cmap_green);
-  writeColorMapSample( inverted, 1, "green_colormap.eps" );
+  addColorMapSample( "Brightness (Green)", cmap_green, 1, board );
+  addColorMapSample( "Inverted Brightness", inverted, 1, board );
+
+  board.saveEPS( "colormaps.eps" );
 
   return ( res1 ) ? 0 : 1;
 }
