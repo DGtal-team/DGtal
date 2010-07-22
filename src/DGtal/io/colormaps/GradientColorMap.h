@@ -33,6 +33,18 @@
 namespace DGtal
 {
 
+  // ----------------------- Related enumerations -----------------------------
+  enum ColorGradientPreset { CMAP_CUSTOM = 0,
+			     CMAP_GRAYSCALE,
+			     CMAP_SPRING,
+			     CMAP_SUMMER,
+			     CMAP_AUTUMN,
+			     CMAP_WINTER,
+			     CMAP_COOL,
+			     CMAP_COPPER,
+			     CMAP_HOT,
+			     CMAP_JET };
+
   /////////////////////////////////////////////////////////////////////////////
   // template class GradientColorMap
   /**
@@ -70,16 +82,13 @@ namespace DGtal
    *
    * @tparam ValueType The type of the range values.
    */
-  template <typename PValueType>
+  template <typename PValueType, int DefaultPreset = CMAP_CUSTOM >
   class GradientColorMap
   {
 
   public:
     
     typedef PValueType ValueType;
-
-    enum Preset { Spring, Summer, Autumn, Winter, Cool, Copper, Hot, Jet };
-
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -89,9 +98,11 @@ namespace DGtal
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
+     * @param preset A preset identifier.
      */
     GradientColorMap( const PValueType & min,
-		       const PValueType & max );
+		      const PValueType & max,
+		      const ColorGradientPreset preset = static_cast<ColorGradientPreset>( DefaultPreset ) );
 
     /** 
      * Constructor for a gradient between two colors.
@@ -105,17 +116,6 @@ namespace DGtal
 		      const ValueType & max,
 		      const LibBoard::Color & firstColor,
 		      const LibBoard::Color & lastColor );
-    /** 
-     * Constructor.
-     * 
-     * @param min The lower bound of the value range.
-     * @param max The upper bound of the value range.
-     * @param preset A preset identifier.
-     */
-    GradientColorMap( const PValueType & min,
-		       const PValueType & max,
-		       const Preset & preset );
-
     
     /** 
      * Computes the color associated with a value in a given range.

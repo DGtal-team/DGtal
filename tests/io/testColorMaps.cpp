@@ -17,7 +17,6 @@
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-#include "DGtal/io/colormaps/CyclicHueColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorMapInverter.h"
 #include "Board/PSFonts.h"
@@ -122,21 +121,21 @@ int main( int argc, char** argv )
   bool res1 = testGrayscaleColorMap();
   trace.emphase() << ( res1 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+ 
   GrayscaleColorMap<int> cmap_gray( 0, 500);
   addColorMapSample( "Grayscale", cmap_gray, 1, board );
-
-  HueShadeColorMap<int> cmap_hsv( 0, 500);
-  addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
   ColorBrightnessColorMap<int> cmap_red( 0, 500, Color::Red );
   addColorMapSample( "Brightness", cmap_red, 1, board );
 
-  CyclicHueColorMap<int> cmap_cyclic5( 0, 500 );
-  addColorMapSample( "CyclicHue (5x)", cmap_cyclic5, 1, board );
+  HueShadeColorMap<int,1> cmap_hsv( 0, 500);
+  addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
-  CyclicHueColorMap<int> cmap_cyclic10( 0, 500, 10 );
-  addColorMapSample( "CyclicHue (10x)", cmap_cyclic10, 1, board );
+  HueShadeColorMap<int,2> cmap_cyclic5( 0, 500 );
+  addColorMapSample( "HueShade (2x)", cmap_cyclic5, 1, board );
+
+  HueShadeColorMap<int, 10> cmap_cyclic10( 0, 500 );
+  addColorMapSample( "HueShade (10x)", cmap_cyclic10, 1, board );
 
   GradientColorMap<int> cmap_gradient( 0, 500, Color::Yellow, Color::Red );
   addColorMapSample( "Gradient (Y->R)", cmap_gradient, 1, board );
@@ -153,33 +152,33 @@ int main( int argc, char** argv )
   cmap_grad3.addColor( Color::Red );
   addColorMapSample( "Gradient (G->Y->R)", cmap_grad3, 1, board );
 
-  GradientColorMap<int> cool_gradient( 0, 500, GradientColorMap<int>::Cool );
+  GradientColorMap<int> cool_gradient( 0, 500, CMAP_COOL );
   addColorMapSample( "Gradient (Cool)", cool_gradient, 1, board );
 
-  GradientColorMap<int> copper_gradient( 0, 500, GradientColorMap<int>::Copper );
+  GradientColorMap<int> copper_gradient( 0, 500, CMAP_COPPER );
   addColorMapSample( "Gradient (Copper)", copper_gradient, 1, board );
 
-  GradientColorMap<int> hot_gradient( 0, 500, GradientColorMap<int>::Hot );
+  GradientColorMap<int> hot_gradient( 0, 500, CMAP_HOT );
   addColorMapSample( "Gradient (Hot)", hot_gradient, 1, board );
 
-  GradientColorMap<int> jet_gradient( 0, 500, GradientColorMap<int>::Jet );
+  GradientColorMap<int> jet_gradient( 0, 500, CMAP_JET );
 
   addColorMapSample( "Gradient (Jet)", jet_gradient, 1, board );
 
   addColorMapSample( "Gradient (Spring)",
-		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Spring ),
+		     GradientColorMap<int>( 0, 500, CMAP_SPRING ),
 		     1,
 		     board );
   addColorMapSample( "Gradient (Summer)",
-		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Summer ),
+		     GradientColorMap<int>( 0, 500, CMAP_SUMMER ),
 		     1,
 		     board );
   addColorMapSample( "Gradient (Autumn)",
-		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Autumn ),
+		     GradientColorMap<int>( 0, 500, CMAP_AUTUMN ),
 		     1,
 		     board );
   addColorMapSample( "Gradient (Winter)",
-		     GradientColorMap<int>( 0, 500, GradientColorMap<int>::Winter ),
+		     GradientColorMap<int>( 0, 500, CMAP_WINTER ),
 		     1,
 		     board );
 

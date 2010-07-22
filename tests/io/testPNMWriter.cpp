@@ -19,6 +19,7 @@
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/writers/PNMWriter.h"
 
 
@@ -43,7 +44,9 @@ bool testPNMWriter()
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<unsigned char> Hue;
+  typedef HueShadeColorMap<unsigned char,2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
+  typedef GradientColorMap<unsigned char, CMAP_JET > Jet;
 
   Point a ( 1, 1);
   Point b ( 16, 16);
@@ -53,7 +56,9 @@ bool testPNMWriter()
     image[i] = i;
   
   PNMWriter<Image,Hue>().exportPPM("export-hue.ppm",image,0,255);
+  PNMWriter<Image,HueTwice>().exportPPM("export-hue-twice.ppm",image,0,255);
   PNMWriter<Image,Gray>().exportPPM("export-gray.ppm",image,0,255);
+  PNMWriter<Image,Jet>().exportPPM("export-jet.ppm",image,0,255);
   
   trace.endBlock();
   
