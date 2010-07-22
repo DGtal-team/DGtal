@@ -37,9 +37,12 @@ namespace DGtal
   // template class HueShadeColorMap
   /**
    * Description of template class 'HueShadeColorMap' <p>
+   *
    * @brief Aim: This class template may be used to (linearly) convert scalar
-   * values in a given range into a color in a hue shade colormap, maybe aka
-   * rainbow color map.
+   * values in a given range into a color in a \em cyclic hue shade
+   * colormap, maybe aka rainbow color map. This color map is suitable, for
+   * example, to colorize distance functions. By default, only one hue cycle is
+   * used.
    * 
    * The HueShadeColorMap can be used either as a functor object (the value
    * range is given at the object's construction) which converts a value  into a
@@ -52,35 +55,41 @@ namespace DGtal
    * #include "HueShadeColorMap.h"
    * // ...
    * {
-   *   HueShadeColorMap<float> hueShade(0.0f,1.0f);
+   *   HueShadeColorMap<float>    hueShade(0.0f,1.0f);
+   *   HueShadeColorMap<float,10> hueShadeBis(0.0f,1.0f);     // Ten cycles.
+   *   HueShadeColorMap<float>    hueShadeTer(0.0f,1.0f,10);  // Idem.
    *   LibBoard::Color red = hueShade(1.0f);
    *   LibBoard::Color lightBlue1 = hueShade(0.5f);
    *   // Or, equivalently:
    *   LibBoard::Color lightBlue2 = HueShadeColorMap<float>::getColor(0.0f,1.0f,0.5f);
    * }
    * @endcode
-   *
+   * 
    * @tparam PValueType The type of the range values.
+   * @tparam DefaultCycles The default number of cycles (used as a default
+   *         parameter by the constructor).
    */
-  template <typename PValueType>
-  class HueShadeColorMap
-  {
+  template <typename PValueType, int DefaultCycles = 1 >
+    class HueShadeColorMap
+    {
 
-  public:
+    public:
     
     typedef PValueType ValueType;
 
     // ----------------------- Standard services ------------------------------
-  public:
+    public:
 
     /** 
      * Constructor.
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
+     * @param cycles The number of cycles in the colormap.
      */
     HueShadeColorMap( const PValueType & min,
-		      const PValueType & max );
+		       const PValueType & max,
+		       const unsigned int cycles = DefaultCycles );
     
     /** 
      * Computes the color associated with a value in a given range.
@@ -110,7 +119,7 @@ namespace DGtal
     HueShadeColorMap & operator= ( const HueShadeColorMap & other );
 
     // ----------------------- Interface --------------------------------------
-  public:
+    public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -138,34 +147,45 @@ namespace DGtal
      */
     const PValueType & max() const;
 
+
+    /** 
+     * Sets the number of cycles of hue shade.
+     * 
+     * @param cycles Number of cycles.
+     */
+    void setCycles( int cycles );
+
     // ----------------------- Static methods ---------------------------------
 
 
     /** 
      * Computes the color associated with a value in a given range.
      * 
+     * @param cycles The number of (rainbow) cycles.
      * @param min The lower bound of the value range.  
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
      * @return A color whose hue linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const PValueType & min,
+    static LibBoard::Color getColor( const unsigned int cycles,
+				     const PValueType & min,
 				     const PValueType & max,
 				     const PValueType & value );
     
     // ------------------------- Protected Datas ------------------------------
-  private:
+    private:
 
     // ------------------------- Private Datas --------------------------------
-  private:
+    private:
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+    protected:
 
     PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;            /**< The lower bound of the value range.  */
-
+    PValueType myMax;           /**< The lower bound of the value range.  */
+    unsigned int myCycles;	/**< The number of cycles in the color map. */
+    
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
@@ -173,10 +193,11 @@ namespace DGtal
     HueShadeColorMap();
 
     // ------------------------- Internals ------------------------------------
-  private:
+    private:
 
     /** 
-     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB space.
+     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB
+     * space.
      * 
      * @param r The red component (out).
      * @param g The green component (out).
@@ -189,7 +210,7 @@ namespace DGtal
 			 double h, const double s, const double v);
 
 
-  }; // end of class HueShadeColorMap
+    }; // end of class HueShadeColorMap
 
 
   /**
@@ -199,8 +220,8 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename PValueType>
-  std::ostream&
-  operator<< ( std::ostream & out, const HueShadeColorMap<PValueType> & object );
+    std::ostream&
+    operator<< ( std::ostream & out, const HueShadeColorMap<PValueType> & object );
   
 } // namespace DGtal
 

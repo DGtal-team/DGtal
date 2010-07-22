@@ -23,17 +23,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
-DGtal::GradientColorMap<ValueType>::GradientColorMap
-( const ValueType & min,
-  const ValueType & max )
-  : myMin( min ), myMax( max )
-{ }
-
-template <typename ValueType>
-inline
-DGtal::GradientColorMap<ValueType>::GradientColorMap
+DGtal::GradientColorMap<ValueType,DefaultPreset>::GradientColorMap
 ( const ValueType & min,
   const ValueType & max,
   const LibBoard::Color & firstColor,
@@ -44,47 +36,51 @@ DGtal::GradientColorMap<ValueType>::GradientColorMap
   myColors.push_back( lastColor );
 }
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
-DGtal::GradientColorMap<ValueType>::GradientColorMap
+DGtal::GradientColorMap<ValueType,DefaultPreset>::GradientColorMap
 ( const ValueType & min,
   const ValueType & max,
-  const Preset & preset )
+  const ColorGradientPreset preset )
   : myMin( min ), myMax( max )
 { 
   switch ( preset ) {
-  case Spring:
+  case CMAP_GRAYSCALE:
+    myColors.push_back( LibBoard::Color::Black );
+    myColors.push_back( LibBoard::Color::White );
+    break;
+  case CMAP_SPRING:
     myColors.push_back( LibBoard::Color( 255, 0, 255 ));
     myColors.push_back( LibBoard::Color( 255, 255, 0 ));
     break;
-  case Summer:
+  case CMAP_SUMMER:
     myColors.push_back( LibBoard::Color( 0, 132, 100 ));
     myColors.push_back( LibBoard::Color( 255, 255, 100 ));
     break;
-  case Autumn:
+  case CMAP_AUTUMN:
     myColors.push_back( LibBoard::Color( 255, 0, 0 ));
     myColors.push_back( LibBoard::Color( 255, 255, 0));
     break;
-  case Winter:
+  case CMAP_WINTER:
     myColors.push_back( LibBoard::Color( 0, 0, 255 ));
     myColors.push_back( LibBoard::Color( 0, 255, 132 ));
     break;
-  case Cool:
+  case CMAP_COOL:
     myColors.push_back( LibBoard::Color( 0, 255, 255 ));
     myColors.push_back( LibBoard::Color( 255, 0, 255 ));
     break;
-  case Copper:
+  case CMAP_COPPER:
     myColors.push_back( LibBoard::Color( 0, 0, 0 ));
     myColors.push_back( LibBoard::Color( 255, 198, 123 ));
     break;
-  case Hot:
+  case CMAP_HOT:
     myColors.push_back( LibBoard::Color::Black );
     myColors.push_back( LibBoard::Color::Red );
     myColors.push_back( LibBoard::Color( 255, 140, 0 ) );
     myColors.push_back( LibBoard::Color::Yellow );
     myColors.push_back( LibBoard::Color::White );
     break;
-  case Jet:
+  case CMAP_JET:
     myColors.push_back( LibBoard::Color::Blue );
     myColors.push_back( LibBoard::Color::Cyan );
     myColors.push_back( LibBoard::Color::Yellow );
@@ -92,27 +88,29 @@ DGtal::GradientColorMap<ValueType>::GradientColorMap
     myColors.push_back( LibBoard::Color::Red );
     myColors.push_back( LibBoard::Color( 132, 0, 0 ) );
     break;
+  case CMAP_CUSTOM:
+    break;
   }
 }
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
-DGtal::GradientColorMap<ValueType>::GradientColorMap
-( const GradientColorMap<ValueType> & other )
+DGtal::GradientColorMap<ValueType,DefaultPreset>::GradientColorMap
+( const GradientColorMap<ValueType,DefaultPreset> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColors( other.myColors )
 { 
 }
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
-DGtal::GradientColorMap<ValueType>::~GradientColorMap()
+DGtal::GradientColorMap<ValueType,DefaultPreset>::~GradientColorMap()
 {
 }
 
-template <typename ValueType>
-GradientColorMap<ValueType> &
-GradientColorMap<ValueType>::operator=
-( const GradientColorMap<ValueType> & other )
+template <typename ValueType, int DefaultPreset>
+GradientColorMap<ValueType,DefaultPreset> &
+GradientColorMap<ValueType,DefaultPreset>::operator=
+( const GradientColorMap<ValueType,DefaultPreset> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -126,44 +124,44 @@ GradientColorMap<ValueType>::operator=
 // Interface - public :
 
 
-template<typename ValueType>
+template<typename ValueType, int DefaultPreset>
 inline
 void
-DGtal::GradientColorMap<ValueType>::addColor( const LibBoard::Color & color )
+DGtal::GradientColorMap<ValueType,DefaultPreset>::addColor( const LibBoard::Color & color )
 {
   myColors.push_back( color );
 }
 
-template<typename ValueType>
+template<typename ValueType, int DefaultPreset>
 inline
 void
-DGtal::GradientColorMap<ValueType>::clearColors()
+DGtal::GradientColorMap<ValueType,DefaultPreset>::clearColors()
 {
   myColors.clear();
 }
 
-template<typename ValueType>
+template<typename ValueType, int DefaultPreset>
 inline
 const ValueType &
-DGtal::GradientColorMap<ValueType>::min() const
+DGtal::GradientColorMap<ValueType,DefaultPreset>::min() const
 {
   return myMin;
 }
 
-template<typename ValueType>
+template<typename ValueType, int DefaultPreset>
 inline
 const ValueType &
-DGtal::GradientColorMap<ValueType>::max() const
+DGtal::GradientColorMap<ValueType,DefaultPreset>::max() const
 {
   return myMax;
 }
 
-template<typename ValueType>
+template<typename ValueType, int DefaultPreset>
 inline
 LibBoard::Color
-DGtal::GradientColorMap<ValueType>::operator()( const ValueType & value ) const
+DGtal::GradientColorMap<ValueType,DefaultPreset>::operator()( const ValueType & value ) const
 {
-  return GradientColorMap<ValueType>::getColor( myColors,
+  return GradientColorMap<ValueType,DefaultPreset>::getColor( myColors,
 						 myMin,
 						 myMax,
 						 value );
@@ -173,10 +171,10 @@ DGtal::GradientColorMap<ValueType>::operator()( const ValueType & value ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
 void
-DGtal::GradientColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+DGtal::GradientColorMap<ValueType,DefaultPreset>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GradientColorMap " 
       << " min=" << myMin
@@ -196,18 +194,18 @@ DGtal::GradientColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
 bool
-DGtal::GradientColorMap<ValueType>::isValid() const
+DGtal::GradientColorMap<ValueType,DefaultPreset>::isValid() const
 {
     return true;
 }
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
 LibBoard::Color
-DGtal::GradientColorMap<ValueType>::getColor( const std::vector<LibBoard::Color> & colors,
+DGtal::GradientColorMap<ValueType,DefaultPreset>::getColor( const std::vector<LibBoard::Color> & colors,
 					       const ValueType & min,
 					       const ValueType & max,
 					       const ValueType & value )
@@ -236,11 +234,11 @@ DGtal::GradientColorMap<ValueType>::getColor( const std::vector<LibBoard::Color>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename ValueType>
+template <typename ValueType, int DefaultPreset>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GradientColorMap<ValueType> & object )
+		  const GradientColorMap<ValueType,DefaultPreset> & object )
 {
   object.selfDisplay( out );
   return out;

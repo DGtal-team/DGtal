@@ -22,7 +22,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-
 template <typename ValueType>
 inline
 DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap( const ValueType & min,
