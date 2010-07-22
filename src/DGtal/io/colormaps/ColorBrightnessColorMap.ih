@@ -166,7 +166,7 @@ DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB
   const double h, const double s, const double v)
 {
   int i;
-  float f, p, q, t;
+  double f, p, q, t;
   if( s == 0 ) {                     // achromatic (gray)
     r = g = b = v;
     return;
