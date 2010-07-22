@@ -171,16 +171,16 @@ DGtal::HueShadeColorMap<ValueType,DefaultCycles>::HSVtoRGB
   const double h, const double s, const double v)
 {
   int i;
-  float f, p, q, t;
+  double f, p, q, t;
   if( s == 0 ) {                     // achromatic (gray)
     r = g = b = v;
     return;
   }
   i = static_cast<int>( floor( h / 60 ) );
   f = ( h / 60 ) - i;                        // factorial part of h
-  p = v * ( 1 - s );
-  q = v * ( 1 - s * f );
-  t = v * ( 1 - s * ( 1 - f ) );
+  p = v * ( 1.0 - s );
+  q = v * ( 1.0 - s * f );
+  t = v * ( 1.0 - s * ( 1.0 - f ) );
   switch( i ) {
   case 0:
     r = v; g = t; b = p;
