@@ -96,9 +96,7 @@ public:
    * @param green 
    * @param blue 
    */
-  inline void clear( unsigned char red, unsigned char green, unsigned char blue );
-
-
+  void clear( unsigned char red, unsigned char green, unsigned char blue );
 
   Shape & rotate( double angle, const Point & center );
 
@@ -119,8 +117,6 @@ public:
   Board scaled( double sx, double sy );
 
   Board scaled( double s );
-
-
 
   /** 
    * Set the unit used by the drawSomething methods.
@@ -253,15 +249,15 @@ public:
    * @param divisions 
    * @param depthValue 
    */
-  inline void fillGouraudTriangle( const double x1, const double y1,
-				   const Color & color1,
-				   const double x2, const double y2, 
-				   const Color & color2,
-				   const double x3, const double y3,
-				   const Color & color3,
-				   unsigned char divisions = 3,
-				   int depthValue = -1 );
-
+  void fillGouraudTriangle( const double x1, const double y1,
+			    const Color & color1,
+			    const double x2, const double y2, 
+			    const Color & color2,
+			    const double x3, const double y3,
+			    const Color & color3,
+			    unsigned char divisions = 3,
+			    int depthValue = -1 );
+  
   /** 
    * Draws a triangle with a Gouraud-like shaded color according to
    * the current fill color and a brightness value given for each vertex. 
@@ -299,15 +295,15 @@ public:
    * @param divisions
    * @param depthValue 
    */
-  inline void fillGouraudTriangle( const double x1, const double y1,
-				   const float brightness1,
-				   const double x2, const double y2, 
-				   const float brightness2,
-				   const double x3, const double y3,
-				   const float brightness3,
-				   unsigned char divisions = 3,
-				   int depthValue = -1 );
-
+  void fillGouraudTriangle( const double x1, const double y1,
+			    const float brightness1,
+			    const double x2, const double y2, 
+			    const float brightness2,
+			    const double x3, const double y3,
+			    const float brightness3,
+			    unsigned char divisions = 3,
+			    int depthValue = -1 );
+  
 
   /** 
    * Draws a filled triangle.
@@ -546,7 +542,7 @@ public:
    * @param style The new line style.
    * @return The board itself.
    */
-  inline Board & setLineStyle( Shape::LineStyle style );
+  Board & setLineStyle( Shape::LineStyle style );
   
   /** 
    * Set the line cap style. 
@@ -556,7 +552,7 @@ public:
    * 
    * @return The board itself.
    */  
-  inline Board & setLineCap( Shape::LineCap cap ); 
+  Board & setLineCap( Shape::LineCap cap ); 
  
   /** 
    * Set the line joine style. 
@@ -566,7 +562,7 @@ public:
    * 
    * @return The board itself.
    */  
-  inline Board & setLineJoin( Shape::LineJoin join );
+  Board & setLineJoin( Shape::LineJoin join );
 
   /** 
    * Changes the background color of the whole drawing.
@@ -757,65 +753,8 @@ public:
   Path _clippingPath;
 };
 
-void
-Board::clear( unsigned char red, unsigned char green, unsigned char blue )
-{
-  clear( Color( red, green, blue ) );
-}
+} // namespace LibBoard
 
-Board &
-Board::setLineStyle( Shape::LineStyle style )
-{
-  _state.lineStyle = style;
-  return *this;
-}
-
-Board &
-Board::setLineCap( Shape::LineCap cap )
-{
-  _state.lineCap = cap;
-  return *this;
-}
-  
-Board &
-Board::setLineJoin( Shape::LineJoin join )
-{
-  _state.lineJoin = join;
-  return *this;
-}
-
-void
-Board::fillGouraudTriangle( const double x1, const double y1,
-			    const Color & color1,
-			    const double x2, const double y2, 
-			    const Color & color2,
-			    const double x3, const double y3,
-			    const Color & color3,
-			    unsigned char divisions,
-			    int depthValue /* = -1 */ )
-{
-  fillGouraudTriangle( Point( x1, y1 ), color1,
-		       Point( x2, y2 ), color2,
-		       Point( x3, y3 ), color3,
-		       divisions, depthValue );		       
-}
-
-void
-Board::fillGouraudTriangle( const double x1, const double y1,
-			    const float brightness1,
-			    const double x2, const double y2, 
-			    const float brightness2,
-			    const double x3, const double y3,
-			    const float brightness3,
-			    unsigned char divisions,
-			    int depthValue /* = -1 */ )
-{
-  fillGouraudTriangle( Point( x1, y1 ), brightness1,
-		       Point( x2, y2 ), brightness2,
-		       Point( x3, y3 ), brightness3,
-		       divisions, depthValue );
-}
-
-} // namespace Board
+#include "Board.ih"
 
 #endif
