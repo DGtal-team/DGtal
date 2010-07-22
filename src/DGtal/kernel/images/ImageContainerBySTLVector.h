@@ -35,10 +35,16 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // class ImageContainerBySTLVector
+  
   /**
    * Description of class 'ImageContainerBySTLVector' <p>
-   * \todo Documentation
-   * Aim:
+   *
+   * Aim: Model of CImageContainer implementing the association Point<->Value
+   * using a std::vector. This class provides built-in iterators and fast SpanIterators 
+   * to perform 1D scans.
+   *
+   * @example testImage.cpp
+   * @example testImageContainerBenchmark.cpp
    */
 
   template <typename Domain, typename ValueType>
@@ -77,18 +83,32 @@ namespace DGtal
     };
 
  
+    /** 
+     * Set a value on an Image at aPoint.
+     * 
+     * @param aPoint location of the point to associate with aValue.
+     * @param aValue the value.
+     */   
     void setValue(const Point &aPoint, const ValueType &aValue);
 
+    /** 
+     * Set a value on an Image at a position specified by an Iterator.
+     * 
+     * @param it  iterator on the location.
+     * @param aValue the value.
+     */   
     void setValue(Iterator &it, const ValueType &aValue)
     {
       (*it) = aValue;
     }
 
-    void allocate(const std::size_t aSize) {
-      this->resize( aSize );
-    }
-
     /////////////////////////// Custom Iterators ////////////////////:
+    /** 
+     * Specific SpanIterator on ImageContainerBySTLVector.
+     * 
+     * @tparam Domain the HyperRectDomain on which the iterator iterates.
+     * @tparam ValueType 
+     */
     class SpanIterator
     {
 
@@ -102,9 +122,15 @@ namespace DGtal
       typedef ValueType* pointer;
       typedef ValueType& reference;
 
-    SpanIterator( const Point & p ,
-		  const std::size_t aDim ,
-		  ImageContainerBySTLVector<Domain,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+      /** 
+       * Constructor.
+       * 
+       * @param p starting point of the SpanIterator
+       * @param aDim specifies the dimension along which the iterator will iterate
+       * @param aMap pointer to the imageContainer
+       */    SpanIterator( const Point & p ,
+			   const std::size_t aDim ,
+			   ImageContainerBySTLVector<Domain,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
 	myPos = aMap->linearized(p);
 
@@ -114,19 +140,21 @@ namespace DGtal
 	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
       }
 
+
+      /** 
+       * operator* on SpanIterators.
+       * 
+       * @return the value associated to the current position.
+       */      
       const ValueType & operator*() const
       {
 	return (*myMap)[ myPos ];
       }
 
-      void setValue(const ValueType &v)
-      {
-	(*myMap)[ myPos ] = v;
-      }
-
       /**
-       * Operator ==
+       * Operator ==.
        *
+       * @return true if this and it are equals.
        */
       bool operator== ( const SpanIterator &it ) const
       {
@@ -136,6 +164,7 @@ namespace DGtal
       /**
        * Operator !=
        *
+       * @return true if this and it are different.
        */
       bool operator!= ( const SpanIterator &it ) const
       {
@@ -144,7 +173,7 @@ namespace DGtal
       }
 
       /**
-       * Implements the next() method
+       * Implements the next() method: we move on step forward.
        *
        **/
       void next()
@@ -153,7 +182,7 @@ namespace DGtal
       }
 
       /**
-       * Implements the prev() method
+       * Implements the prev() method: we move on step backward.
        *
        **/
       void prev()
@@ -167,43 +196,42 @@ namespace DGtal
        *
        */
       SpanIterator &operator++()
-        {
-	  this->next();
-	  return *this;
-        }
+      {
+	this->next();
+	return *this;
+      }
 
       /**
        * Operator ++ (it++)
        *
        */
       SpanIterator &operator++ ( int )
-        {
-	  SpanIterator tmp = *this;
-	  ++*this;
-	  return tmp;
-        }
-
+      {
+	SpanIterator tmp = *this;
+	++*this;
+	return tmp;
+      }
 
       /**
        * Operator -- (--it)
        *
        */
       SpanIterator &operator--()
-        {
-	  this->prev();
-	  return *this;
-        }
+      {
+	this->prev();
+	return *this;
+      }
 
       /**
        * Operator -- (it--)
        *
        */
       SpanIterator &operator-- ( int )
-        {
-	  SpanIterator tmp = *this;
-	  --*this;
-	  return tmp;
-        }
+      {
+	SpanIterator tmp = *this;
+	--*this;
+	return tmp;
+      }
 
     private:
       ///Current Point in the domain
@@ -220,17 +248,42 @@ namespace DGtal
 
     };
 
-
+    /** 
+     * Set a value on an Image at a position specified by an SpanIterator.
+     * 
+     * @param it  iterator on the location.
+     * @param aValue the value.
+     */     
     void setValue(SpanIterator &it, const ValueType &aValue)
     {
       it.setValue(aValue);
     }
 
+
+    /** 
+     * Create a begin() SpanIterator at a given position in a given 
+     * direction.
+     * 
+     * @param aPoint the starting point of the SpanIterator.
+     * @param aDimension the dimension on which the iterator iterates.
+     * 
+     * @return a SpanIterator
+     */
     SpanIterator span_begin(const Point &aPoint, const std::size_t aDimension)
     {
       return SpanIterator ( aPoint, aDimension, this);
     }
 
+    /** 
+     * Create an end() SpanIterator at a given position in a given 
+     * direction.
+     * 
+     * @param aPoint a point belonging to the current image dimension (not 
+     * necessarily the point used in the span_begin() method.
+     * @param aDimension the dimension on which the iterator iterates.
+     * 
+     * @return a SpanIterator
+     */
     SpanIterator span_end(const Point &aPoint,const std::size_t aDimension)
     {
       Point tmp = aPoint;
@@ -240,6 +293,12 @@ namespace DGtal
       return SpanIterator( tmp, aDimension, this);
     }
 
+    /** 
+     * Returns the value of the image at a given SpanIterator position.
+     *
+     * @param it position given by a SpanIterator.
+     * @return an object of type ValueType.
+     */
     ValueType operator()(const SpanIterator &it)
     {
       return (*it);
