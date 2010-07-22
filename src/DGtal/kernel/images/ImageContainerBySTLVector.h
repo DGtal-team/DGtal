@@ -47,12 +47,15 @@ namespace DGtal
    * @example testImageContainerBenchmark.cpp
    */
 
-  template <typename Domain, typename ValueType>
-  class ImageContainerBySTLVector: public vector<ValueType>
+  template <typename TDomain, typename TValueType>
+  class ImageContainerBySTLVector: public vector<TValueType>
   {
   public:
 
+    typedef TValueType ValueType;
+    typedef TDomain Domain;
     typedef typename Domain::Point Point;
+    typedef typename Domain::Vector Vector;
     typedef typename vector<ValueType>::size_type SizeType;
     typedef typename vector<ValueType>::iterator Iterator;
     typedef typename vector<ValueType>::const_iterator ConstIterator;
@@ -319,6 +322,28 @@ namespace DGtal
       return (this != NULL);
     }
 
+    /** 
+     * Returns the extent of an Image.
+     * 
+     * @return the image extent as a Vector.
+     */
+    Vector extent() const;
+
+    /** 
+     * @return the image lower point.
+     */
+    Point lowerBound() const
+    {
+      return myLowerBound;
+    };
+    
+    /** 
+     * @return the image upper point.
+     */
+    Point upperBound() const
+    {
+      return myUpperBound;
+    };
 
   private:
 
