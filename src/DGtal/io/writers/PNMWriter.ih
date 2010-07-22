@@ -1,0 +1,69 @@
+/**
+ * @file PNMWriter.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/22
+ *
+ * Implementation of inline methods defined in PNMWriter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <fstream>
+#include "Board/Color.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+
+namespace DGtal {
+template<typename I,typename C>
+bool
+PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
+			  const ValueType & minV, const ValueType & maxV) const
+{
+  ///@todo  the ValueType of I should match with the one in C
+
+  ASSERT(I::Domain::staticDimension == 2);
+
+  ofstream out;
+  typename I::Domain::Vector ext = aImage.extent();
+  typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
+  typename I::ValueType val;
+  C colormap(minV,maxV);
+  LibBoard::Color col;
+  
+  out.open(filename);
+
+  //PPM format
+  out << "P3"<<endl;
+  out << "#DGtal PNM Writer"<<endl<<endl;
+  out << ext[0]<<" "<< ext[1]<<endl;
+  out << "255" <<endl;
+
+  //We scan the domain instead of the image becaus we cannot
+  //trust the image container Iterator
+  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+      it!=itend;
+      ++it)
+    {
+
+      val = aImage( (*it) );
+      std::cout<< (*it)<< " "<< (int)val<<std::endl;
+      col = colormap( val );
+      out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
+    }
+  
+  out.close(); 
+
+  ///@todo catch IOerror excpetion
+  return true;
+}
+
+}//namespace

@@ -65,6 +65,20 @@ ImageContainerBySTLVector<Domain,T>::setValue(const Point &aPoint, const T &V)
   this->at( linearized( aPoint ) ) = V;
 }
 
+template <typename Domain, typename T>
+inline
+typename ImageContainerBySTLVector<Domain,T>::Vector
+ImageContainerBySTLVector<Domain,T>::extent() const
+{
+  Vector one;
+  for(unsigned int i= 0; i < Domain::staticDimension; i++)
+    one[i] = myUpperBound[i] - myLowerBound[i] + 1;
+
+  return one;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Helper classes defined in the compilation unit (anonymous namespace)
 
