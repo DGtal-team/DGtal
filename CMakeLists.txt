@@ -145,6 +145,12 @@ endif (INLINE_FUNCTION_BUILD)
   
 
 # -----------------------------------------------------------------------------
+# Benchmark target
+# -----------------------------------------------------------------------------
+ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+
+
+# -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_TESTS "Build tests." ON)
@@ -159,7 +165,6 @@ if (BUILD_TESTS)
       endif (CMAKE_COMPILER_IS_GNUCC)
   add_subdirectory (tests)
 endif (BUILD_TESTS)
-
 
 
 #------------------------------------------------------------------------------

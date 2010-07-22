@@ -83,6 +83,10 @@ namespace DGtal
     // typedef TSpace DigitalSpace;
     // typedef TSpace SpaceType;
     typedef TSpace Space;
+   
+    // static constants
+    static const typename Space::DimensionType staticDimension = Space::staticDimension;
+   
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;

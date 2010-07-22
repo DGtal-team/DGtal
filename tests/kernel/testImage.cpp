@@ -57,7 +57,7 @@ bool testSimpleImage()
 
 
     trace.info() << " Vector iterator: ";
-    for ( Image::Iterator it = myImage.begin();
+    for ( Image::ConstIterator it = myImage.begin();
             it != myImage.end();
             ++it)
         trace.info() << myImage(it) <<" ";
