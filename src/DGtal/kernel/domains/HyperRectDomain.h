@@ -145,7 +145,7 @@ namespace DGtal
     const ConstIterator& begin() const;
 
 #ifdef CPP0X_INITIALIZER_LIST
-     /**
+    /**
      * begin() iterator with an order different from lexicographic.
      *
      **/
@@ -165,7 +165,7 @@ namespace DGtal
     const ConstIterator& end() const;
 
 #ifdef CPP0X_INITIALIZER_LIST
-     /**
+    /**
      * end() iterator with an order different from lexicographic.
      *
      **/
@@ -266,23 +266,48 @@ namespace DGtal
     // ------------------------- Public services --------------------------------
   public:
 
-     /**
-     * Draw the object (as a Grid) on a LiBoard board
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
      * @param board the output board where the object is drawn.
      * @param asGrid to choose between paving vs. grid representation.
      * @param astylefunctor a Functor to specialize the Board style.
      */
-    template<typename Functor = SelfDrawStyleGrid>
+    template<typename Functor>
     void selfDrawAsGrid( LibBoard::Board & board) const;
 
-     /**
-     * Draw the object (as a Grid) on a LiBoard board
+
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     * @param astylefunctor a Functor to specialize the Board style.
+     */
+    void selfDrawAsGrid( LibBoard::Board & board) const
+    {
+      selfDrawAsGrid<SelfDrawStyleGrid>(board);
+    }
+
+
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
      * @param board the output board where the object is drawn.
      * @param asGrid to choose between paving vs. grid representation.
      * @param astylefunctor a Functor to specialize the Board style.
      */
     template<typename Functor = SelfDrawStylePaving>
     void selfDrawAsPaving( LibBoard::Board & board ) const;
+
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     * @param astylefunctor a Functor to specialize the Board style.
+     */
+    void selfDrawAsPaving( LibBoard::Board & board ) const
+    {
+      selfDrawAsPaving<SelfDrawStylePaving>(board);
+    }
+
 
     /**
      * Writes/Displays the object on an output stream.
