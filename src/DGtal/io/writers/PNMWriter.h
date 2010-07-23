@@ -27,6 +27,8 @@
 #include <iostream>
 #include <string>
 #include "DGtal/base/Common.h"
+#include <boost/static_assert.hpp>
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -46,6 +48,8 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
 
+    BOOST_STATIC_ASSERT(TImage::Domain::staticDimension == 2);
+    
     typedef TImage Image;
     typedef typename TImage::ValueType ValueType;
     typedef TColormap Colormap;
