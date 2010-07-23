@@ -23,32 +23,32 @@
 // ----------------------- Standard services ------------------------------
 
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap
-( const ValueType & min,  const ValueType & max, const LibBoard::Color & color )
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::ColorBrightnessColorMap
+( const PValueType & min,  const PValueType & max, const LibBoard::Color color )
   : myMin( min ), myMax( max ), myColor( color )
 { }
 
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::ColorBrightnessColorMap
-( const ColorBrightnessColorMap<ValueType> & other )
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::ColorBrightnessColorMap
+( const ColorBrightnessColorMap<PValueType,PDefaultColor> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColor( other.myColor )
 { 
 }
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<ValueType>::~ColorBrightnessColorMap()
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::~ColorBrightnessColorMap()
 {
 }
 
-template <typename ValueType>
-ColorBrightnessColorMap<ValueType> &
-ColorBrightnessColorMap<ValueType>::operator=
-( const ColorBrightnessColorMap<ValueType> & other )
+template <typename PValueType, int PDefaultColor>
+ColorBrightnessColorMap<PValueType,PDefaultColor> &
+ColorBrightnessColorMap<PValueType,PDefaultColor>::operator=
+( const ColorBrightnessColorMap<PValueType,PDefaultColor> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -61,38 +61,38 @@ ColorBrightnessColorMap<ValueType>::operator=
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template<typename ValueType>
+template<typename PValueType, int PDefaultColor>
 inline
-const ValueType &
-DGtal::ColorBrightnessColorMap<ValueType>::min() const
+const PValueType &
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::min() const
 {
   return myMin;
 }
 
-template<typename ValueType>
+template<typename PValueType, int PDefaultColor>
 inline
-const ValueType &
-DGtal::ColorBrightnessColorMap<ValueType>::max() const
+const PValueType &
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::max() const
 {
   return myMax;
 }
 
-template<typename ValueType>
+template<typename PValueType, int PDefaultColor>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<ValueType>::operator()( const ValueType & value ) const
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::operator()( const PValueType & value ) const
 {
-  return ColorBrightnessColorMap<ValueType>::getColor( myColor, myMin, myMax, value );
+  return ColorBrightnessColorMap<PValueType,PDefaultColor>::getColor( myColor, myMin, myMax, value );
 }
 
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ColorBrightnessColorMap " 
       << " min=" << myMin
@@ -108,31 +108,31 @@ DGtal::ColorBrightnessColorMap<ValueType>::selfDisplay ( std::ostream & out ) co
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 bool
-DGtal::ColorBrightnessColorMap<ValueType>::isValid() const
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::isValid() const
 {
     return true;
 }
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<ValueType>::getColor( const LibBoard::Color color,
-						     const ValueType & min,
-						     const ValueType & max,
-						     const ValueType & value )
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::getColor( const LibBoard::Color color,
+						     const PValueType & min,
+						     const PValueType & max,
+						     const PValueType & value )
 {
   double h,s,v;
-  ColorBrightnessColorMap<ValueType>::RGBtoHSV( h, s, v,
+  ColorBrightnessColorMap<PValueType,PDefaultColor>::RGBtoHSV( h, s, v,
 						color.red(),
 						color.green(),
 						color.blue() );
   const double range = static_cast<double>( max - min );
   const double scale = static_cast<double>( value - min ) / range;
   double red, green, blue;
-  ColorBrightnessColorMap<ValueType>::HSVtoRGB( red, green, blue, h, s, v * scale );
+  ColorBrightnessColorMap<PValueType,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
   return LibBoard::Color( static_cast<int>( red * 255), 
 			  static_cast<int>( green * 255),
 			  static_cast<int>( blue * 255) );
@@ -141,11 +141,11 @@ DGtal::ColorBrightnessColorMap<ValueType>::getColor( const LibBoard::Color color
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ColorBrightnessColorMap<ValueType> & object )
+		  const ColorBrightnessColorMap<PValueType,PDefaultColor> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -158,10 +158,10 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::HSVtoRGB
 ( double &r, double &g, double &b,
   const double h, const double s, const double v)
 {
@@ -198,13 +198,14 @@ DGtal::ColorBrightnessColorMap<ValueType>::HSVtoRGB
   }
 }
 
-template <typename ValueType>
+template <typename PValueType, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<ValueType>::RGBtoHSV( double &h, double &s, double &v,
-						     const unsigned char r,
-						     const unsigned char g,
-						     const unsigned char b )
+DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::RGBtoHSV
+( double &h, double &s, double &v,
+  const unsigned char r,
+  const unsigned char g,
+  const unsigned char b )
 {
   double min = (r<g) ? r : g;
   if ( b < min ) min = b;

@@ -11,7 +11,6 @@
  *
  * This file is part of the DGtal library.
  */
-
 #if defined(ColorBrightnessColorMap_RECURSES)
 #error Recursive header files inclusion detected in ColorBrightnessColorMap.h
 #else // defined(ColorBrightnessColorMap_RECURSES)
@@ -29,6 +28,13 @@
 #include "Board/Board.h"
 #include "Board/Color.h"
 //////////////////////////////////////////////////////////////////////////////
+
+#ifndef DGTAL_RGB2INT
+#define DGTAL_RGB2INT(R,G,B) (((R)<<16)|((G)<<8)|(B))
+#define DGTAL_RED_COMPONENT(I) (((I)>>16)&0xFF)
+#define DGTAL_GREEN_COMPONENT(I) (((I)>>8)&0xFF)
+#define DGTAL_BLUE_COMPONENT(I) ((I)&0xFF)
+#endif
 
 namespace DGtal
 {
@@ -60,9 +66,10 @@ namespace DGtal
    * }
    * @endcode
    *
-   * @tparam ValueType The type of the range values.
+   * @tparam PValueType The type of the range values.
+   * @tparam PDefaultColor The default color as an integer built using the DGTAL_RGB2INT macro.
    */
-  template <typename PValueType>
+  template <typename PValueType, int PDefaultColor = DGTAL_RGB2INT( 255, 255, 255 ) >
   class ColorBrightnessColorMap
   {
   public:
@@ -80,7 +87,10 @@ namespace DGtal
      */
     ColorBrightnessColorMap( const PValueType & min,
 			     const PValueType & max,
-			     const LibBoard::Color & color );
+			     const LibBoard::Color color
+			     = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultColor ),
+						DGTAL_GREEN_COMPONENT( PDefaultColor ),
+						DGTAL_BLUE_COMPONENT( PDefaultColor ) ) );
     
     /** 
      * Computes the color associated with a value in a given range.
