@@ -88,8 +88,8 @@ namespace DGtal
      * @param cycles The number of cycles in the colormap.
      */
     HueShadeColorMap( const PValueType & min,
-		       const PValueType & max,
-		       const unsigned int cycles = DefaultCycles );
+		      const PValueType & max,
+		      const unsigned int cycles = DefaultCycles );
     
     /** 
      * Computes the color associated with a value in a given range.

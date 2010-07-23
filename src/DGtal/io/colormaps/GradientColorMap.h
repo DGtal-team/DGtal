@@ -30,6 +30,13 @@
 #include "Board/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef DGTAL_RGB2INT
+#define DGTAL_RGB2INT(R,G,B) (((R)<<16)|((G)<<8)|(B))
+#define DGTAL_RED_COMPONENT(I) (((I)>>16)&0xFF)
+#define DGTAL_GREEN_COMPONENT(I) (((I)>>8)&0xFF)
+#define DGTAL_BLUE_COMPONENT(I) ((I)&0xFF)
+#endif
+
 namespace DGtal
 {
 
@@ -81,8 +88,17 @@ namespace DGtal
    * @endcode
    *
    * @tparam ValueType The type of the range values.
+   * @tparam PDefaultPreset The default gradient preset (e.g. CMAP_GRAYSCALE,
+   *         CMAP_HOT, or CMAP_CUSTOM
+   * @tparam PDefaultFirstColor If DefaultPreset is CMAP_CUSTOM, this is the
+   *         starting color of the gradient.
+   * @tparam PDefaultLastColor If DefaultPreset is CMAP_CUSTOM, this is the
+   *         ending color of the gradient.
    */
-  template <typename PValueType, int DefaultPreset = CMAP_CUSTOM >
+  template <typename PValueType, 
+    int PDefaultPreset = CMAP_CUSTOM,
+    int PDefaultFirstColor = DGTAL_RGB2INT(0,0,0),
+    int PDefaultLastColor = DGTAL_RGB2INT(255,255,255) >
   class GradientColorMap
   {
 
@@ -99,23 +115,22 @@ namespace DGtal
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param preset A preset identifier.
+     * @param firstColor The "left" color of the gradient if preset is CMAP_CUSTOM.
+     * @param lastColor  The "right" color of the gradient if preset is CMAP_CUSTOM.
      */
     GradientColorMap( const PValueType & min,
 		      const PValueType & max,
-		      const ColorGradientPreset preset = static_cast<ColorGradientPreset>( DefaultPreset ) );
-
-    /** 
-     * Constructor for a gradient between two colors.
-     * 
-     * @param min The lower bound of the value range.
-     * @param max The upper bound of the value range.
-     * @param firstColor The "left" color of the gradient.
-     * @param lastColor  The "right" color of the gradient.
-     */
-    GradientColorMap( const ValueType & min,
-		      const ValueType & max,
-		      const LibBoard::Color & firstColor,
-		      const LibBoard::Color & lastColor );
+		      const ColorGradientPreset preset
+		      = static_cast<ColorGradientPreset>( PDefaultPreset ),
+		      const LibBoard::Color firstColor 
+		      = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
+					 DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
+					 DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
+		      const LibBoard::Color lastColor
+		      = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
+					 DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
+					 DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
+		      );
     
     /** 
      * Computes the color associated with a value in a given range.

@@ -20,6 +20,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/writers/PNMWriter.h"
 
 
@@ -46,7 +47,14 @@ bool testPNMWriter()
   typedef HueShadeColorMap<unsigned char> Hue;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
+  // Gradient using the "Jet" preset.
   typedef GradientColorMap<unsigned char, CMAP_JET > Jet;
+  // Gradient from black to red.
+  const int BlackColor = DGTAL_RGB2INT(0,0,0);
+  const int RedColor = DGTAL_RGB2INT(255,0,0);
+  typedef GradientColorMap< unsigned char, CMAP_CUSTOM, BlackColor, RedColor > RedShade1;
+  // Gradient from black to red, using a ColorBrightnessColorMap.
+  typedef ColorBrightnessColorMap< unsigned char, RedColor > RedShade2;
 
   Point a ( 1, 1);
   Point b ( 16, 16);
@@ -59,6 +67,8 @@ bool testPNMWriter()
   PNMWriter<Image,HueTwice>().exportPPM("export-hue-twice.ppm",image,0,255);
   PNMWriter<Image,Gray>().exportPPM("export-gray.ppm",image,0,255);
   PNMWriter<Image,Jet>().exportPPM("export-jet.ppm",image,0,255);
+  PNMWriter<Image,RedShade1>().exportPPM("export-red1.ppm",image,0,255);
+  PNMWriter<Image,RedShade2>().exportPPM("export-red2.ppm",image,0,255);
   
   trace.endBlock();
   

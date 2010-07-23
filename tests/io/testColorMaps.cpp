@@ -128,6 +128,9 @@ int main( int argc, char** argv )
   ColorBrightnessColorMap<int> cmap_red( 0, 500, Color::Red );
   addColorMapSample( "Brightness", cmap_red, 1, board );
 
+  ColorBrightnessColorMap<int, DGTAL_RGB2INT(0,0,255) > cmap_blue( 0, 500 );
+  addColorMapSample( "Bright (Blue)", cmap_blue, 1, board );
+
   HueShadeColorMap<int,1> cmap_hsv( 0, 500);
   addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
@@ -137,20 +140,22 @@ int main( int argc, char** argv )
   HueShadeColorMap<int, 10> cmap_cyclic10( 0, 500 );
   addColorMapSample( "HueShade (10x)", cmap_cyclic10, 1, board );
 
-  GradientColorMap<int> cmap_gradient( 0, 500, Color::Yellow, Color::Red );
+  const int yellow = DGTAL_RGB2INT(255,255,0);
+  const int red = DGTAL_RGB2INT(255,0,0);
+  GradientColorMap<int, CMAP_CUSTOM, yellow, red> cmap_gradient( 0, 500 );
   addColorMapSample( "Gradient (Y->R)", cmap_gradient, 1, board );
 
   GradientColorMap<int> cmap_grad3( 0, 500 );
-  cmap_grad3.addColor( Color::Blue );
-  cmap_grad3.addColor( Color::White );
-  cmap_grad3.addColor( Color::Red );
-  addColorMapSample( "Gradient (B->W->R)", cmap_grad3, 1, board );
-
-  cmap_grad3.clearColors();
   cmap_grad3.addColor( Color::Green );
   cmap_grad3.addColor( Color::Yellow );
   cmap_grad3.addColor( Color::Red );
   addColorMapSample( "Gradient (G->Y->R)", cmap_grad3, 1, board );
+
+  cmap_grad3.clearColors();
+  cmap_grad3.addColor( Color::Blue );
+  cmap_grad3.addColor( Color::White );
+  cmap_grad3.addColor( Color::Red );
+  addColorMapSample( "Gradient (B->W->R)", cmap_grad3, 1, board );
 
   GradientColorMap<int> cool_gradient( 0, 500, CMAP_COOL );
   addColorMapSample( "Gradient (Cool)", cool_gradient, 1, board );
@@ -161,12 +166,11 @@ int main( int argc, char** argv )
   GradientColorMap<int> hot_gradient( 0, 500, CMAP_HOT );
   addColorMapSample( "Gradient (Hot)", hot_gradient, 1, board );
 
-  GradientColorMap<int> jet_gradient( 0, 500, CMAP_JET );
-
+  GradientColorMap<int,CMAP_JET> jet_gradient( 0, 500 );
   addColorMapSample( "Gradient (Jet)", jet_gradient, 1, board );
 
   addColorMapSample( "Gradient (Spring)",
-		     GradientColorMap<int>( 0, 500, CMAP_SPRING ),
+		     GradientColorMap<int,CMAP_SPRING>( 0, 500 ),
 		     1,
 		     board );
   addColorMapSample( "Gradient (Summer)",
