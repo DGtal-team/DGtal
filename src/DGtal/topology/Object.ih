@@ -13,7 +13,10 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Expander.h"
+#include "DGtal/topology/MetricAdjacency.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -577,6 +580,162 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::computeConnectedness() const
 	}
     }
   return myConnectedness;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Simple points -------------------------------
+
+/**
+ * Geodesic neighborhood of point [p] and order [k] in the object
+ * for the given metric adjacency.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TAdjacency>
+inline
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallObject
+DGtal::Object<TDigitalTopology,TDigitalSet>
+::geodesicNeighborhood
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
+{
+  // Local types.
+  typedef std::vector<Point> Container;
+  typedef MetricAdjacency<Space,Space::staticDimension> AlphaAdjacency;
+  typedef MetricAdjacency<Space,1> OmegaAdjacency;
+  typedef DGtal::DigitalTopology<TAdjacency,OmegaAdjacency> LocalTopology;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+  typedef Object<LocalTopology,SmallSet> LocalObject;
+  typedef HyperRectDomain<Space> LocalDomain;
+
+  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
+  AlphaAdjacency alpha;
+  OmegaAdjacency omega;
+  // Intermediate container that is fast writable.
+  Container local_points;
+  std::back_insert_iterator< Container > back_ins_it( local_points );
+  alpha.writeProperNeighborhood( p, back_ins_it, limitedX.predicate() );
+
+  // Construct local domain.
+  Point p1( p );
+  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
+    --(*it);
+  Point p2( p );
+  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
+    ++(*it);
+  LocalDomain domain( p1, p2 );
+  
+  // Construct local X.
+  LocalTopology topology( adj, omega );
+  LocalObject X( topology, domain );
+  X.pointSet().insertNew( local_points.begin(), local_points.end() );
+
+  // A neighborhood is small, so is defined the digital object.
+  typename LocalObject::SmallObject neighAdj = X.properNeighborhood( p );
+  Expander<LocalObject> expander( X, 
+				  neighAdj.pointSet().begin(),
+				  neighAdj.pointSet().end() );
+  for ( unsigned int i = 1; ( i < k ) && ( ! expander.finished() ); ++i )
+    expander.nextLayer();
+
+  SmallObject geodesicN( this->topology(), expander.core() );
+  return geodesicN;
+  
+}
+
+/**
+ * Geodesic neighborhood of point [p] and order [k] in the
+ * complemented object for the given metric adjacency.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TAdjacency>
+inline
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::SmallComplementObject
+DGtal::Object<TDigitalTopology,TDigitalSet>
+::geodesicNeighborhoodInComplement
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
+{
+  // Local types.
+  typedef std::vector<Point> Container;
+  typedef MetricAdjacency<Space,Space::staticDimension> AlphaAdjacency;
+  typedef MetricAdjacency<Space,1> OmegaAdjacency;
+  typedef DGtal::DigitalTopology<TAdjacency,OmegaAdjacency> LocalTopology;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+  typedef Object<LocalTopology,SmallSet> LocalObject;
+  typedef HyperRectDomain<Space> LocalDomain;
+  typedef typename DigitalSetDomain<DigitalSet>::Predicate PredicateIsInX;
+  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
+  AlphaAdjacency alpha;
+  OmegaAdjacency omega;
+  // Intermediate container that is fast writable.
+  Container local_points;
+  std::back_insert_iterator< Container > back_ins_it( local_points );
+  NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
+  alpha.writeNeighborhood( p, back_ins_it, not_pred_is_in_X );
+			   
+  // Construct local domain.
+  Point p1( p );
+  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
+    --(*it);
+  Point p2( p );
+  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
+    ++(*it);
+  LocalDomain domain( p1, p2 );
+  
+  // Construct local Xcomp.
+  LocalTopology topology( adj, omega );
+  LocalObject Xcomp( topology, domain );
+  Xcomp.pointSet().insertNew( local_points.begin(), local_points.end() );
+
+  // A neighborhood is small, so is defined the digital object.
+  typename LocalObject::SmallObject neighAdj = Xcomp.properNeighborhood( p );
+  Expander<LocalObject> expander( Xcomp, 
+				  neighAdj.pointSet().begin(),
+				  neighAdj.pointSet().end() );
+  for ( unsigned int i = 0; ( i < k ) && ( ! expander.finished() ); ++i )
+    expander.nextLayer();
+
+  SmallComplementObject geodesicN( this->topology().reverseTopology(),
+					expander.core() );
+  return geodesicN;
+}
+
+/**
+ * [Bertrand, 1994] A voxel v is simple for a set X if #C6 [G6 (v,
+ * X)] = #C18[G18(v, X^c)] = 1, where #Ck [Y] denotes the number
+ * of k-connected components of a set Y.
+ *
+ * We adapt this definition to (kappa,lambda) connectednesses. Be
+ * careful, such a definition is valid only for Jordan couples in
+ * dimension 2 and 3.
+ *
+ * @return 'true' if this point is simple.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+bool 
+DGtal::Object<TDigitalTopology,TDigitalSet>
+::isSimple( const Point & v ) const
+{
+  SmallObject Gkappa_X 
+    = geodesicNeighborhood( topology().kappa(),
+			    v, 
+			    Space::staticDimension );
+  
+  if ( Gkappa_X.computeConnectedness() == SmallObject::CONNECTED )
+    {
+      if ( Gkappa_X.pointSet().empty() ) return false;
+      SmallComplementObject Glambda_compX 
+	= geodesicNeighborhoodInComplement( topology().lambda(),
+					    v, 
+					    Space::staticDimension );
+      return ( Glambda_compX.computeConnectedness() 
+	       == SmallComplementObject::CONNECTED )
+	&& ( ! Glambda_compX.pointSet().empty() );
+    }
+  return false;
 }
  
 
