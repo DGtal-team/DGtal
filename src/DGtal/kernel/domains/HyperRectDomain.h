@@ -294,7 +294,7 @@ namespace DGtal
      * @param asGrid to choose between paving vs. grid representation.
      * @param astylefunctor a Functor to specialize the Board style.
      */
-    template<typename Functor = SelfDrawStylePaving>
+    template<typename Functor>
     void selfDrawAsPaving( LibBoard::Board & board ) const;
 
     /**

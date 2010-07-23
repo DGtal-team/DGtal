@@ -30,8 +30,6 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 {
   ///@todo  the ValueType of I should match with the one in C
 
-  ASSERT(I::Domain::staticDimension == 2);
-
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
