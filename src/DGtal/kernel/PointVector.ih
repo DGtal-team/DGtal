@@ -414,14 +414,10 @@ inline
 void 
 DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board) const
 {
-  if (N==2)
-    {
-      Functor applystyle(board);
-      board.drawDot((float) myArray[0], (float) myArray[1]);
-    }
-  else
-    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
-
+  ASSERT(N==2);
+  Functor applystyle(board);
+  board.drawDot((float) myArray[0], (float) myArray[1]);
+  
 }
 //------------------------------------------------------------------------------
 template<typename T,std::size_t N>
@@ -431,17 +427,13 @@ void
 DGtal::PointVector<T,N>::selfDraw(LibBoard::Board & board, 
 				  const PointVector &apoint) const
 {
-  if (N==2)
-    {
-      Functor applystyle(board);
+  ASSERT(N==2); 
+  Functor applystyle(board);
 
-      board.drawArrow((float)apoint[0], (float) apoint[1], 
-		    (float) apoint[0]+myArray[0],(float)apoint[1]+ myArray[1],
-		      true);
-    }
-  else
-    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
-
+  board.drawArrow((float)apoint[0], (float) apoint[1], 
+		  (float) apoint[0]+myArray[0],(float)apoint[1]+ myArray[1],
+		  true);
+     
 }
 //------------------------------------------------------------------------------
 template<typename T, std::size_t N>

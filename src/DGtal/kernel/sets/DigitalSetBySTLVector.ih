@@ -473,7 +473,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(LibBoard::Board & aBoard) const
 	aBoard.fillRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
     }
   else
-    ASSERT(not("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+    ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
 
 }
 
