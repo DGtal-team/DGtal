@@ -306,9 +306,18 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
-    template<typename Functor = SelfDrawStyle>
+    template<typename Functor>
     void selfDraw(LibBoard::Board & board ) const;
 
+    /**
+     * Draw the object on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDraw(LibBoard::Board & board ) const
+    {
+      selfDraw<SelfDrawStyle>(board);
+    }
 
     // ------------------------- Hidden services ------------------------------
   protected:
