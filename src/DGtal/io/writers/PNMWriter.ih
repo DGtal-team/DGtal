@@ -37,7 +37,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
   C colormap(minV,maxV);
   LibBoard::Color col;
   
-  out.open(filename);
+  out.open(filename.c_str());
 
   //PPM format
   out << "P3"<<endl;
