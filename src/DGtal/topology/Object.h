@@ -61,18 +61,21 @@ namespace DGtal
   public:
     typedef TDigitalSet DigitalSet;
     typedef TDigitalTopology DigitalTopology;
+    typedef typename DigitalTopology::ReverseTopology ReverseTopology;
     typedef typename DigitalSet::SizeType SizeType;
     typedef typename DigitalSet::Point Point;
     // should be the same as Point.
     typedef typename DigitalTopology::Point DTPoint;
 
     typedef typename DigitalSet::DomainType Domain;
+    typedef typename Domain::Space Space;
     typedef 
     typename DigitalSetSelector< Domain,  
 				 SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
     typedef typename DigitalTopology::ForegroundAdjacency ForegroundAdjacency;
     typedef typename DigitalTopology::BackgroundAdjacency BackgroundAdjacency;
     typedef Object<DigitalTopology,SmallSet> SmallObject;
+    typedef Object<ReverseTopology,SmallSet> SmallComplementObject;
 
     /**
      * Kind of connectedness of this object.
@@ -281,6 +284,11 @@ namespace DGtal
      * computing its cardinal.
      */
     SizeType properNeighborhoodSize( const Point & p ) const;
+
+
+    // ----------------------- border services -------------------------------
+  public:
+
  
     /**
      * @return the border of this object (the set of points of this
@@ -289,6 +297,10 @@ namespace DGtal
      * NB : the background adjacency should be a symmetric relation.
      */
     Object border() const;
+
+
+    // ----------------------- Connectedness services -------------------------
+  public:
 
     /**
      * Computes the connected components of the object and writes
@@ -348,7 +360,43 @@ namespace DGtal
      * @see connectedness
      */
     Connectedness computeConnectedness() const;
-    
+
+
+    // ----------------------- Simple points -------------------------------
+  public:
+
+    /**
+     * Geodesic neighborhood of point [p] and order [k] in the object
+     * for the given metric adjacency.
+     */
+    template <typename TAdjacency>
+    SmallObject 
+    geodesicNeighborhood( const TAdjacency & adj,
+			  const Point & p, unsigned int k ) const;
+
+    /**
+     * Geodesic neighborhood of point [p] and order [k] in the
+     * complemented object for the given metric adjacency.
+     */
+    template <typename TAdjacency>
+    SmallComplementObject 
+    geodesicNeighborhoodInComplement( const TAdjacency & adj,
+				      const Point & p, unsigned int k ) const;
+
+
+    /**
+     * [Bertrand, 1994] A voxel v is simple for a set X if #C6 [G6 (v,
+     * X)] = #C18[G18(v, X^c)] = 1, where #Ck [Y] denotes the number
+     * of k-connected components of a set Y.
+     *
+     * We adapt this definition to (kappa,lambda) connectednesses. Be
+     * careful, such a definition is valid only for Jordan couples in
+     * dimension 2 and 3.
+     *
+     * @return 'true' if this point is simple.
+     */
+    bool isSimple( const Point & v ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 

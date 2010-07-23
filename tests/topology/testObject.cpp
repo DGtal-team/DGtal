@@ -324,6 +324,71 @@ bool testObject3D()
 
 }
 
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testSimplePoints3D()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef SpaceND< int, 3 > Z3;
+  typedef MetricAdjacency< Z3, 1 > Adj6;
+  typedef MetricAdjacency< Z3, 2 > Adj18;
+  typedef DigitalTopology< Adj6, Adj18 > DT6_18;
+  typedef Z3::Point Point;
+  typedef HyperRectDomain< Z3 > Domain; 
+  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT6_18, DigitalSet> ObjectType;
+  typedef Object<DT6_18, DigitalSet>::SmallObject SmallObjectType;
+  typedef Object<DT6_18, DigitalSet>::SmallComplementObject SmallComplementObjectType;
+  Adj6 adj6;
+  Adj18 adj18;
+  DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
+ 
+  Point p1( -10, -10, -10 );
+  Point p2( 10, 10, 10 );
+  Domain domain( p1, p2 );
+  Point c( 0, 0 );
+  Point r( 3, 0 );
+
+  trace.beginBlock ( "Creating Diamond (r=4)" );
+  // diamond of radius 4
+  DigitalSet diamond_set( domain );
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+    {
+      if ( (*it - c ).norm1() <= 3 ) diamond_set.insertNew( *it );
+    }
+  diamond_set.erase( c );
+  ObjectType diamond( dt6_18, diamond_set );
+  trace.endBlock();
+
+  trace.beginBlock ( "Geodesic neighborhoods ..." );
+  SmallObjectType geoN6_3 = diamond.geodesicNeighborhood( adj6, r, 3 );
+  SmallObjectType geoN18_2 = diamond.geodesicNeighborhood( adj18, r, 2 );
+  trace.info() << "geoN6_3  = " << geoN6_3 << endl;
+  trace.info() << "geoN18_2 = " << geoN18_2 << endl;
+  SmallComplementObjectType cgeoN6_3 = diamond.geodesicNeighborhoodInComplement( adj6, r, 3 );
+  SmallComplementObjectType cgeoN18_2 = diamond.geodesicNeighborhoodInComplement( adj18, r, 2 );
+  trace.info() << "cgeoN6_3  = " << cgeoN6_3 << endl;
+  trace.info() << "cgeoN18_2 = " << cgeoN18_2 << endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Simple points ..." );
+  for ( DigitalSet::ConstIterator it = diamond.pointSet().begin();
+	it != diamond.pointSet().end();
+	++it )
+    trace.info() << "- " << *it 
+		 << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
+		 << endl;
+  trace.endBlock();
+  
+
+  return nbok == nb;
+}
+
+
 bool testDraw()
 {
   unsigned int nbok = 0;
@@ -435,7 +500,8 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testObject() && 
-    testObject3D() && testDraw();
+    testObject3D() && testDraw()
+    && testSimplePoints3D();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
