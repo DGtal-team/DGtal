@@ -10,7 +10,6 @@
  * This file is part of the DGtal library.
  */
 
-
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <vector>
@@ -81,8 +80,11 @@ DGtal::GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLas
     myColors.push_back( LibBoard::Color( 132, 0, 0 ) );
     break;
   case CMAP_CUSTOM:
-    myColors.push_back( firstColor );    
-    myColors.push_back( lastColor );    
+    if ( firstColor != LibBoard::Color::None
+	 && lastColor != LibBoard::Color::None ) {
+      myColors.push_back( firstColor );
+      myColors.push_back( lastColor );   
+    }
     break;
   }
 }

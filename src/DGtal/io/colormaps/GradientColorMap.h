@@ -97,8 +97,8 @@ namespace DGtal
    */
   template <typename PValueType, 
     int PDefaultPreset = CMAP_CUSTOM,
-    int PDefaultFirstColor = DGTAL_RGB2INT(0,0,0),
-    int PDefaultLastColor = DGTAL_RGB2INT(255,255,255) >
+    int PDefaultFirstColor = -1,
+    int PDefaultLastColor = -1 >
   class GradientColorMap
   {
 
@@ -122,14 +122,18 @@ namespace DGtal
 		      const PValueType & max,
 		      const ColorGradientPreset preset
 		      = static_cast<ColorGradientPreset>( PDefaultPreset ),
-		      const LibBoard::Color firstColor 
-		      = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
-					 DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
-					 DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
+		      const LibBoard::Color firstColor
+		      = 
+		      ( PDefaultFirstColor == -1 ) ? LibBoard::Color::None :
+		      LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
+				       DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
+				       DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
 		      const LibBoard::Color lastColor
-		      = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
-					 DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
-					 DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
+		      = 
+		      ( PDefaultFirstColor == -1 ) ? LibBoard::Color::None :
+		      LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
+				       DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
+				       DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
 		      );
     
     /** 
