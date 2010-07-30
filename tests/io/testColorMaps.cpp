@@ -14,11 +14,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/colormaps/CColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/colormaps/ColorMapInverter.h"
 #include "Board/PSFonts.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,9 @@ void addColorMapSample( const char * name,
 			const TColorMap & aColorMap, 
 			const typename TColorMap::ValueType step,
 			Board & board )
-{
+{ 
+  BOOST_CONCEPT_ASSERT(( CColorMap<TColorMap> ));
+
   typedef typename TColorMap::ValueType ValueType;
   board.translate( 0, 15 );
   for ( ValueType x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
@@ -185,13 +187,7 @@ int main( int argc, char** argv )
 		     GradientColorMap<int>( 0, 500, CMAP_WINTER ),
 		     1,
 		     board );
-
-  typedef ColorBrightnessColorMap<int> BrightnessColorMapInt;
-  BrightnessColorMapInt cmap_green( 0, 500, Color::Green);
-  ColorMapInverter<BrightnessColorMapInt> inverted(cmap_green);
-  addColorMapSample( "Brightness (Green)", cmap_green, 1, board );
-  addColorMapSample( "Inverted Brightness", inverted, 1, board );
-
+  
   board.saveEPS( "colormaps.eps" );
 
   return ( res1 ) ? 0 : 1;
