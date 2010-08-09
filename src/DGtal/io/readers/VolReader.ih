@@ -223,16 +223,17 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
   sy = sizeY;
   sz = sizeZ;
 	
+  typename T::Point firstPoint;
+  typename T::Point lastPoint;
+      
+  firstPoint = T::Point::zero;
+  lastPoint[0] = sx-1;      
+  lastPoint[1] = sy-1;
+  lastPoint[2] = sz-1;
+  typename T::Domain domain(firstPoint,lastPoint);
+
   try 
     {
-      typename T::Point firstPoint;
-      typename T::Point lastPoint;
-      
-      firstPoint = T::Point::zero;
-      lastPoint[0] = sx;      
-      lastPoint[1] = sy;
-      lastPoint[2] = sz;
-      
       image = new T(firstPoint,lastPoint);
     }
   catch (...) 
@@ -243,13 +244,13 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
 	
   count = 0;
   unsigned char val;
-  typename T::Iterator it = image->begin();
+  typename T::Domain::ConstIterator it = domain.begin();
   long int total = sx*sy*sz;
   
   while ((count < total) && (fin))
     {
       val = getc(fin);  
-      image->setValue(it,val);
+      image->setValue( (*it),val);
       it++;
       count++;
     }

@@ -40,7 +40,7 @@ namespace DGtal
    * Description of template class 'VolReader' <p>
    * \brief Aim: implements methods to read a "Vol" file format.
    *
-   * The main import methode "importVol" returns an instance of the template 
+   * The main import method "importVol" returns an instance of the template 
    * parameter TImageContainer.
    *
    * The private methods have been backported from the SimpleVol project 
@@ -57,7 +57,7 @@ namespace DGtal
    * typedef ImageSelector<TDomain, int>::Type Image;
    * 
    * VolReader<Image> reader;
-   * Image image = reader.importVol("/home/dcoeurjo/Volumes/cat10.vol");
+   * Image image = reader.importVol("data.vol");
    *
    * trace.info() << image <<endl;
    * ...

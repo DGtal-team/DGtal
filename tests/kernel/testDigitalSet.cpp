@@ -105,6 +105,8 @@ bool testDigitalSetBoardSnippet()
   mySet.selfDraw<SelfDrawStyleCustom>(board);
   board.saveSVG("simpleSet-color.svg");
 
+  //FIXME check IO errors
+  return true;
 }
 
 template < typename DigitalSetType >
@@ -166,7 +168,8 @@ bool testDigitalSetSelector( const DigitalDomainType & domain,
 	       << comment << " (2 elements): " << set1 << std::endl;
 
   trace.endBlock();
-
+  
+  
   return nbok == nb;
 }
 

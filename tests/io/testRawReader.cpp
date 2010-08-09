@@ -41,7 +41,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testRawReader()
+bool testRawReader2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -68,7 +68,8 @@ bool testRawReader()
   typedef GrayscaleColorMap<unsigned char> Gray;  
   PNMWriter<Image,Gray>::exportPGM("export-raw-reader.pgm",image,0,255);
 
-
+  /// @todo re-import the PGM and compare with raw2D-64x64
+  
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -89,7 +90,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testRawReader(); // && ... other tests
+  bool res = testRawReader2D(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

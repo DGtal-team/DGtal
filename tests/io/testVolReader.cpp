@@ -23,6 +23,9 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/writers/VolWriter.h"
+
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -50,7 +53,9 @@ bool testVolReader()
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
   
   VolReader<Image> reader;
-  Image image = reader.importVol("/home/dcoeurjo/Volumes/cat10.vol");
+  
+  std::string filename = testPath + "samples/cat10.vol";
+  Image image = reader.importVol( filename );
   
   trace.info() << image <<endl;
   
@@ -71,7 +76,7 @@ bool testVolReader()
   typedef HueShadeColorMap<unsigned char> Hue;
   typedef GrayscaleColorMap<unsigned char> Gray;
 
-  VolWriter<Image,Gray>::exportVol("export-hue.vol",image,0,255);
+  VolWriter<Image,Gray>::exportVol("catenoid-export.vol",image,0,255);
 
   nbok += ( true )  ? 1 : 0; 
   nb++;
