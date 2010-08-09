@@ -21,7 +21,9 @@
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
+
 #include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/writers/RawWriter.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,6 +75,9 @@ bool testPNMWriter()
   PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
   PNMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,0,255);
   
+
+  RawWriter<Image,HueTwice>::exportRaw8("export-hue-twice.raw",image,0,255);
+
   trace.endBlock();
   
   return true;
