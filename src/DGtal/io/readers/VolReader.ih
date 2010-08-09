@@ -294,11 +294,15 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
   typename T::Iterator it = image->begin();
   long int total = sx*sy*sz;
 
-  while ((count <= total) && (fin))
+  trace.error() << "Total= "<<total << endl;
+  
+  while ((count < total) && (fin))
     {
-      val = getc(fin);      
-      image->setValue( *it , val);
-      ++it;
+      val = getc(fin);  
+      //trace.warning() << "It= "<< (*it)<<" val= "<<(int)val<<" count="<<count<<endl;
+      (*it) =  val;
+      it++;
+      count++;
     }
   
   if (count != total) 

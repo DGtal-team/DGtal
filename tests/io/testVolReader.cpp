@@ -51,6 +51,18 @@ bool testVolReader()
   
   nbok += true ? 1 : 0; 
   nb++;
+
+  unsigned int nbval=0;
+  for(Image::ConstIterator it=image.begin(), itend=image.end();
+      it != itend;   ++it)
+    if ( image(it) != 0)
+      nbval++;
+  
+  trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;
+
+  nbok += ( nbval == 8043)  ? 1 : 0; 
+  nb++;
+
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
