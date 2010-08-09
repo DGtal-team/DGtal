@@ -345,6 +345,7 @@ namespace DGtal
       return myUpperBound;
     };
 
+
   private:
 
     /**
@@ -356,6 +357,46 @@ namespace DGtal
 
     Point myLowerBound;
     Point myUpperBound;
+    
+    // ----------------------- LibBoard methods --------------------------------------
+    
+  private:
+    struct SelfDrawStyle
+    {
+      SelfDrawStyle(LibBoard::Board & aboard)
+      {
+	aboard.setPenColorRGBi(0,0,0);
+	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+      }
+    };
+    
+  public:
+    
+
+    /**
+     * Draw the image on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     * @param minValue the minimum value contained in the image (used in the colormap settings)
+     * @param maxValue the maximum value contained in the image (used in the colormap settings)
+     * @tparam FunctorStyle a Functor to specialize the Board style
+     * @tparam Coloramp any models of CColormap.
+     */
+    template<typename FunctorStyle, typename Colormap>
+    void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue) const;
+
+    /**
+     * Draw the object on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     * @param minValue the minimum value contained in the image (used in the colormap settings)
+     * @param maxValue the maximum value contained in the image (used in the colormap settings)
+     * @tparam Coloramp any models of CColormap.
+     */
+    template<typename Colormap>
+    void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue ) const
+    {
+      selfDraw<SelfDrawStyle,Colormap>(board,minValue,maxValue);
+    }
+
   };
 
   /**

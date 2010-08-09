@@ -294,8 +294,8 @@ namespace DGtal
     {
       SelfDrawStyle(LibBoard::Board & aBoard) 
       {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setFillColorRGBi(80,80,80);
+	aBoard.setFillColorRGBi(160,160,160);
+	aBoard.setPenColorRGBi(80,80,80);
       }
     };
 

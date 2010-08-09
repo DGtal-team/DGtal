@@ -193,8 +193,9 @@ namespace DGtal {
  * @endcode
  *
  * and we obtain: 
- * @todo bug in Board !
-
+ *
+ * @image html simpleSet-color.png  
+ *
  * \section howtocreate How to create your own export ?
  *
  * To create a LibBoard export on your object, you  have to

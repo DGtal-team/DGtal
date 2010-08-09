@@ -25,6 +25,7 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 
+#include "Board/Board.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +65,7 @@ bool testPNMWriter()
   Image image(a,b);
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
-  
+
   PNMWriter<Image,Hue>::exportPPM("export-hue.ppm",image,0,255);
   PNMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,0,255);
 
@@ -75,8 +76,13 @@ bool testPNMWriter()
   PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
   PNMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,0,255);
   
-
   RawWriter<Image,HueTwice>::exportRaw8("export-hue-twice.raw",image,0,255);
+
+  //test Image export with libboard
+  LibBoard::Board  board;
+  board.setUnit(LibBoard::Board::UCentimeter);
+  image.selfDraw<HueTwice>(board,0,255);
+  board.saveSVG("export-hue-twice.svg");
 
   trace.endBlock();
   
