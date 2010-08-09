@@ -1,0 +1,148 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+ * @page board_export Visualize DGtal objects with LibBoard
+ *
+ * This part of the manual describes how to export 2D DGtal objects
+ * with LibBoard in order to construct SVG, EPS or XFIG drawings. 
+ * This document is dedicated both to  DGtal users and developers.
+ * 
+ * Table of contents:
+ *  -# \ref LibBoard
+ *  -# \ref howtouse
+ *    -# \ref basicusage
+ *    -# \ref advancedusage
+ *  -# \ref howtocreate
+ *
+ * \section LibBoard Short overview of the LibBoard library
+ *
+ *  LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
+ *
+ * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
+ *
+ * It allows simple drawings in:
+ * <ul>
+ *  <li>Encapsulated Postcript files (EPS) ;
+ *  <li>XFig files (FIG) ;
+ *  <li>Scalable Vector Graphics files (SVG).
+ * </ul>
+ *
+ * The main class of the library is the #LibBoard#Board class. It is
+ * intented to be as simple as possible so that it can be used quickly
+ * in programs to generate the kind of figure one would rather
+ * not draw by hand, but which can be easily drawn by a computer (C++) program.
+ *
+ * A clone of the LibBoard source code (release: 0.8.8-3) has been
+ * included in DGtal. Its classes are grouped into the namespace Board.
+ *
+ * \section howtouse How to use LibBoard objects in DGtal ?
+ *
+ * \subsection basicusage Basic usage
+ *
+ * Many DGtal objects implents a method selfDraw wihch aims at
+ * defining the way the objects export themself with LibBoard commands.
+ *
+ * For instance, the selfDraw method of a digital set  (any model of  CDigitalSet like
+ * DigitalSetBySTLSet or DigitalSetBySTLVector) appends to a given
+ * LibBoard::Board square primitives for each points of the set.
+ *
+ * For example, let us define a basic 2D set on Z^2:
+ *
+ * @code
+ *  
+ * #include "DGtal/base/Common.h"
+ * #include "DGtal/kernel/SpaceND.h"
+ * #include "DGtal/kernel/domains/HyperRectDomain.h"
+ * #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+ * #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+ * #include "DGtal/kernel/sets/DigitalSetSelector.h"
+ * 
+ * ...
+ * typedef SpaceND<int,2> Z2;
+ * typedef HyperRectDomain<Z2> DomainType;
+ * typedef Z2::Point Point;
+ * Point p1(  -10, -10  );
+ * Point p2(  10, 10  );
+ * DomainType domain( p1, p2 );
+ * typedef DigitalSetSelector
+ *  < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+ * SpecificSet mySet( domain );
+ * 
+ * Point c(  0, 0  );
+ * mySet.insert( c );
+ * Point d(  5, 2  );
+ * mySet.insert( d );
+ * Point e(  1, -3  );
+ * mySet.insert( e );
+ * @endcode
+ *
+ * The basic selfDraw usage can be skected as follows:
+ *
+ * @code
+ * LibBoard::Board board;
+ * board.setUnit(Board::UCentimeter);
+ * mySet.selfDraw(board);
+ * board.saveSVG( "simpleSet.svg" );
+ * @endcode
+ * 
+ * leading to the drawing (after a SVG->PNG conversion):
+ *
+ * @image html simpleSet.png 
+ *
+ * We can enhance the drawing displaying digital domain (any models
+ * of CDigitalDomain) containing the set. Since we have at least two
+ * ways to display the domain, several selfDraw methods exist. For
+ * example, you can either do:
+ *
+ * @code
+ * LibBoard::Board board;
+ * board.setUnit(Board::UCentimeter);
+ *
+ * domain.selfDrawAsGrid(board)
+ * mySet.selfDraw(board);
+ * board.saveSVG( "simpleSet-grid.svg" );
+ * @endcode
+ *
+ * or
+ * @code
+ * LibBoard::Board board;
+ * board.setUnit(Board::UCentimeter);
+ *
+ * domain.selfDrawAsPaving(board)
+ * mySet.selfDraw(board);
+ * board.saveSVG( "simpleSet-Paving.svg" );
+ * @endcode
+ *
+ * <table>
+ * <tr>
+ * <td>
+ * @image html simpleSet-grid.png  "selfDrawAsGrid result."
+ * </td>
+ * <td>
+ * @image html simpleSet-paving.png  "selfDrawAsPaving result." 
+ * </td>
+ * </tr>
+ * </table>
+ * 
+ *
+ * <table>
+ * <tr>
+ * <td>
+ * @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
+ * </td>
+ * <td>
+ * @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
+ * </td>
+ * </tr>
+ * </table>
+ * \subsection advancedusage Advanced usage
+ * @todo  
+ *
+ * \section howtocreate How to create your own export ?
+ * @todo
+ */
+}

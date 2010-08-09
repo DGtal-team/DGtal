@@ -29,7 +29,6 @@ template <typename T>
 inline
 DGtal::VolReader<T>::VolReader()
 {
-  initEndian();
 }
 
 /**
@@ -71,23 +70,6 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - Private :
-
-template<typename T>
-void
-DGtal::VolReader<T>::initEndian() 
-{
-  endian.i_endian.i = 0;
-  for (unsigned int i = 0; i < sizeof(endian.i_endian.i); ++i) {
-    endian.i_endian.i += (i + '0') << (i*8);
-  }
-  endian.v_endian.v = 0;
-  for (unsigned int i = 0; i < sizeof(endian.v_endian.v); ++i) {
-    endian.v_endian.v += (i + '0') << (i*8);
-  }
-
-  endian.i_endian.ci[sizeof(int)] = 0;
-  endian.v_endian.cv[sizeof(voxel)] = 0;
-}
 
 
 template <typename T>
@@ -157,30 +139,6 @@ DGtal::VolReader<T>::readVolData( FILE *fin )
 		      << requiredHeaders[i] <<std::endl;
 	return NULL;
       }
-    }
-
-  // Check endian
-  if (getHeaderValue( "Version" ) == NULL && 
-      (strcmp(endian.i_endian.ci, getHeaderValue( "Int-Endian" )) != 0 || 
-       strcmp(endian.v_endian.cv, getHeaderValue( "Voxel-Endian" )) != 0)) 
-    {
-			
-      trace.error() << "VolReader: This file has incompatible endianess "
-		    << endian.i_endian.ci
-		    <<" <-> " << getHeaderValue( "Int-Endian" )
-		    <<". Convertion to be implemented !\n";
-
-      if (strlen( endian.i_endian.ci ) == strlen( getHeaderValue( "Int-Endian" ) ) &&
-	  strlen( endian.v_endian.cv ) == strlen( getHeaderValue( "Voxel-Endian" ) ) ) 
-	{
-	  trace.warning() << "VolReader: Trying to continue...\n";
-	} 
-      else 
-	{
-	  trace.warning() << "VolReader: Abort...\n" ;
-	}
-    
-      return NULL;
     }
   
   int sx,sy,sz;
@@ -344,7 +302,7 @@ DGtal::VolReader<T>::getHeaderValue( const char *type ) const
 
 template<typename T>
 int 
-DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest ) const 
+DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest ) const
 {
 
   ASSERT( myStateOk );

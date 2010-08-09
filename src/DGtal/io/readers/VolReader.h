@@ -132,11 +132,11 @@ namespace DGtal
     //! Returns non-zero if failure
     int getHeaderValueAsInt( const char *type, int *dest ) const;
 
-    //! This class help us to associate a field type and his value.
-    //! An object is a pair (type, value). You can copy and assign
-    //! such objects.
-    /*! In recent C++, we should use a std::map, but we prefer (badly) code it
-      by hand for compatibility with old compilers.
+    // This class help us to associate a field type and his value.
+    // An object is a pair (type, value). You can copy and assign
+    // such objects.
+    /* In recent C++, we should use a std::map, but we prefer (badly) code it
+       by hand for compatibility with old compilers.
       At this time, there is a limit of 30 fields in header :-} */
     struct HeaderField {
       //! Constructor. The string are copied.
@@ -179,25 +179,7 @@ namespace DGtal
     //! Global list of required fields in a .vol file
     static const char *requiredHeaders[];
     
-    
-    //! A little structure that help us to determine host endian
-    struct endian_t {
-      //! Endian for the int type
-      union {
-	int 	i;
-	char 	ci[ sizeof(int) + 1 ];
-      } i_endian;
-
-      //! Endian for the voxel type
-      union {
-	voxel	v;
-	char 	cv[ sizeof(voxel) + 1 ];
-      } v_endian;
-    };
-
-    endian_t endian;
-    void initEndian();
-
+  
     // ------------------------- Hidden services ------------------------------
 
   private:
