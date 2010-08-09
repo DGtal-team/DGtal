@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_MATH
        testSimpleBoard
        testPNMWriter
+       testVolReader
        testColorMaps)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
