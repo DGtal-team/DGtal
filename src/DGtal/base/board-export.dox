@@ -5,7 +5,7 @@
 namespace DGtal {
 
 /**
- * @page board_export Visualize DGtal objects with LibBoard
+ * @page board_export Visualize 2D DGtal objects with LibBoard
  *
  * This part of the manual describes how to export 2D DGtal objects
  * with LibBoard in order to construct SVG, EPS or XFIG drawings. 
@@ -32,7 +32,7 @@ namespace DGtal {
  * </ul>
  *
  * The main class of the library is the #LibBoard#Board class. It is
- * intented to be as simple as possible so that it can be used quickly
+ * intended to be as simple as possible so that it can be used quickly
  * in programs to generate the kind of figure one would rather
  * not draw by hand, but which can be easily drawn by a computer (C++) program.
  *
@@ -43,8 +43,8 @@ namespace DGtal {
  *
  * \subsection basicusage Basic usage
  *
- * Many DGtal objects implents a method selfDraw wihch aims at
- * defining the way the objects export themself with LibBoard commands.
+ * Many DGtal objects implement a method selfDraw which aims at
+ * defining the way the objects export themselves with LibBoard commands.
  *
  * For instance, the selfDraw method of a digital set  (any model of  CDigitalSet like
  * DigitalSetBySTLSet or DigitalSetBySTLVector) appends to a given
@@ -128,6 +128,21 @@ namespace DGtal {
  * </tr>
  * </table>
  * 
+ * Similarly, objects of the class PointVector can be drawn either as
+ * a Point, or as a Vector. In this case, a single selfDraw method
+ * exits with two interface:
+ *  - void selfDraw(LibBoard::Board & board ): the object is drawn
+ * as Point (Board::Dot)
+ *  - void selfDraw(LibBoard::Board & board , const PointVector &
+ * aPoint): the object is drawn as a Vector (Board::Arrow)
+ *
+ * As illustrated in the document @ref dgtal_topology, the following
+ * drawings represent an object with two different adjacency
+ * relationships. To obtain such figures, we have call  selfDraw
+ * methods of the following objects:
+ *  - HyperRectDomain: to display the main board;
+ *  - DigitalSetBySTLVector: to display the object as a digital set;
+ *  - PointVector: to display the set of adjacency relationships as arrows.
  *
  * <table>
  * <tr>
@@ -139,10 +154,74 @@ namespace DGtal {
  * </td>
  * </tr>
  * </table>
- * \subsection advancedusage Advanced usage
- * @todo  
  *
+ * \subsection advancedusage Advanced usage
+ *
+ * By default, each method selfDraw uses a specific style. For
+ * example, the default style or color associated to a digital domain
+ * is either a dashed grid with gray color, or a set of unfilled gray
+ * squares (see HyperRectDomain::SelfDrawStyleGrid and
+ * HyperRectDomain::SelfDrawStylePaving).
+ *
+ * If the user wants to customize the output color for instance, he or
+ * she have to:
+ *  -# Create a C++ class or struct with a constructor taking a
+ * LibBoard instance in parameter and such that the LibBoard commands to
+ * customize the colors belongs to this constructor. 
+ *  -# Use this class as a template parameter of the selfDraw methods.
+ *
+ * For example, if you want the simple set considered above to be
+ * depicted in red with green edges, just create your own style "struct"
+ * as follows:
+ * @code
+ * struct SelfDrawStyleCustom
+    {
+      SelfDrawStyleCustom(LibBoard::Board & aboard)
+      {
+	aboard.setPenColorRGBi(0,255,0);
+	aboard.setFillColorRGBi(255,0,0);
+      }
+    };
+ * @endcode 
+ *
+ * Then, we use this customized style in the selfDraw calls:
+ * @code
+ * LibBoard::Board board;
+ * board.setUnit(Board::UCentimeter);
+ * mySet.selfDraw<SelfDrawStyleCustom>(board);
+ * board.saveSVG( "simpleSet.svg" );
+ * @endcode
+ *
+ * and we obtain: 
+ * @todo bug in Board !
+
  * \section howtocreate How to create your own export ?
- * @todo
+ *
+ * To create a LibBoard export on your object, you  have to
+ *  -# Create a SelfDrawStyle struct  (e.g. DigitalSetBySTLVector::SelfDrawStyle)
+ *  -# Implement a method selfDraw the will perform the drawing with
+ * a default template parameter set to SelfDrawDefaultStyle. 
+ *
+ * The second item can be done using the following declaration code:
+ *@code
+    /*
+     * Draw the object on a LibBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor>
+    void selfDraw(LibBoard::Board & board ) const;
+
+    /*
+     * Draw the object on a LibBoard board
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw(LibBoard::Board & board ) const
+    {
+      selfDraw<SelfDrawStyle>(board);
+    }
+ * @endcode
+ *
+ * 
  */
 }
