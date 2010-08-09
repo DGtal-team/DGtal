@@ -40,6 +40,8 @@ namespace DGtal
    * Description of template struct 'PNMWriter' <p>
    * \brief Aim: Export a 2D Image using the Netpbm formats.
    *
+   * @todo PGM3D and PPM3D
+   *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
    */
@@ -48,7 +50,8 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
 
-    BOOST_STATIC_ASSERT(TImage::Domain::staticDimension == 2);
+    BOOST_STATIC_ASSERT( (TImage::Domain::staticDimension == 2) || 
+			 (TImage::Domain::staticDimension == 3));
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::ValueType, 
 			 typename TImage::ValueType>::value));
