@@ -26,7 +26,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
-			  const ValueType & minV, const ValueType & maxV) const
+			  const ValueType & minV, const ValueType & maxV)
 {
   ///@todo  the ValueType of I should match with the one in C
 

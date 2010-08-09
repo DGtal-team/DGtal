@@ -39,7 +39,30 @@ namespace DGtal
    * Description of template class 'VolReader' <p>
    * \brief Aim: implements methods to read a "Vol" file format.
    *
-   * @todo documentation.
+   * The main import methode "importVol" returns an instance of the template 
+   * parameter TImageContainer.
+   *
+   * The private methods have been backported from the SimpleVol project 
+   * (see http://liris.cnrs.fr/david.coeurjolly).
+   *
+   * Example usage:
+   * @code
+   * ...
+   * typedef SpaceND<int,3> Space3;
+   * typedef HyperRectDomain<Space3> TDomain;
+   * typedef TDomain::Point Point;
+   *
+   * //Default image container = STLVector
+   * typedef ImageSelector<TDomain, int>::Type Image;
+   * 
+   * VolReader<Image> reader;
+   * Image image = reader.importVol("/home/dcoeurjo/Volumes/cat10.vol");
+   *
+   * trace.info() << image <<endl;
+   * ...
+   * @endcode
+   *
+   * @tparam TImageContainer the image container to use. 
    *
    * @example testVolReader.cpp
    */
@@ -64,8 +87,18 @@ namespace DGtal
      */
     ~VolReader();
 
+
+
+    /** 
+     * Main method to import a Vol into an instance of the 
+     * template parameter ImageContainer.
+     * 
+     * @param filename the file name to import.
+     * @return an instance of the ImageContainer.
+     */
     ImageContainer & importVol(const std::string & filename);
-    ImageContainer & glop (const std::string & filename ) ;
+
+
     /** 
      * @return true if the object is valid.
      */
