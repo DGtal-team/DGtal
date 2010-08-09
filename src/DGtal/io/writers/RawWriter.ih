@@ -1,11 +1,11 @@
 /**
- * @file VolWriter.ih
+ * @file RawWriter.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/22
  *
- * Implementation of inline methods defined in VolWriter.h
+ * Implementation of inline methods defined in RawWriter.h
  *
  * This file is part of the DGtal library.
  */
@@ -25,7 +25,7 @@
 namespace DGtal {
 template<typename I,typename C>
 bool
-VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
+RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 			  const ValueType & minV, const ValueType & maxV)
 {
   ///@todo  the ValueType of I should match with the one in C
@@ -37,21 +37,9 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
   C colormap(minV,maxV);
   LibBoard::Color col;
   
-  out.open(filename.c_str());
+  out.open(filename.c_str(), ios_base::binary);
 
-  //Vol format
-  out << "X: "<< ext[0]<<endl;
-  out << "Y: "<< ext[1]<<endl;
-  out << "Z: "<< ext[2]<<endl;
-  out << "Voxel-Size: 1"<<endl;
-  out << "Alpha-Color: 0"<<endl;
-  out << "Voxel-Endian: 0"<<endl;
-  out << "Int-Endian: 0123"<<endl;
-  out << "Version: 2"<<endl;
-  out << "."<<endl;
-
-  //We scan the domain instead of the image because we cannot
-  //trust the image container Iterator
+  //We scan the domain 
   for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it)
