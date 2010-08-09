@@ -57,7 +57,7 @@ namespace DGtal
 
     /** 
      * Export an Image to  Raw format (8bits). The pipeline can be sketched
-     * as follows: ValueType --<colormap>--> Color ----> unsigned char.
+     * as follows: ValueType --<colormap>--> Board::Color ----> unsigned char.
      * 
      * @param filename name of the output file
      * @param aImage the image to export

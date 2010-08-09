@@ -251,6 +251,8 @@ namespace DGtal
       SelfDrawStylePaving(LibBoard::Board & aboard)
       {
 	aboard.setPenColorRGBi(160,160,160);	
+	aboard.setFillColorRGBi(255,255,255);
+	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
       }
     };
 

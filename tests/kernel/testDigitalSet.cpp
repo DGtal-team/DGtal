@@ -49,6 +49,47 @@ using namespace LibBoard;
   trace.info() << "(" << nbok << "/" << nb << ") " \
   << y << std::endl;
 
+
+bool testDigitalSetBoardSnippet()
+{
+  typedef SpaceND<int,2> Z2;
+  typedef HyperRectDomain<Z2> DomainType;
+  typedef Z2::Point Point;
+  Point p1(  -10, -10  );
+  Point p2(  10, 10  );
+  DomainType domain( p1, p2 );
+  typedef DigitalSetSelector
+    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  SpecificSet mySet( domain );
+
+  Point c(  0, 0  );
+  mySet.insert( c );
+  Point d(  5, 2  );
+  mySet.insert( d );
+  Point e(  1, -3  );
+  mySet.insert( e );
+
+  Board board;
+  board.setUnit(Board::UCentimeter);
+  mySet.selfDraw(board);
+  board.saveSVG("myset-export.svg");
+
+  board.clear();
+
+  board.setUnit(Board::UCentimeter);
+  domain.selfDrawAsGrid(board);
+  mySet.selfDraw(board);
+  board.saveSVG("simpleSet-grid.svg");
+
+  board.clear();
+
+  board.setUnit(Board::UCentimeter);
+  domain.selfDrawAsPaving(board);
+  mySet.selfDraw(board);
+  board.saveSVG("simpleSet-paving.svg");
+
+}
+
 template < typename DigitalSetType >
 bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
 {
@@ -241,9 +282,11 @@ int main()
 
   bool okDigitalSetDraw = testDigitalSetDraw();
 
+  bool okDigitalSetDrawSnippet = testDigitalSetBoardSnippet();
+
   bool res = okVector && okSet 
     && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
-    && okDigitalSetDomain && okDigitalSetDraw;
+    && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
