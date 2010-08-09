@@ -38,7 +38,7 @@ namespace DGtal
   // template class RawWriter
   /**
    * Description of template struct 'RawWriter' <p>
-   * \brief Aim: Raw export of an Image (2D and 3D).
+   * \brief Aim: Raw binary export of an Image.
    *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
@@ -56,7 +56,8 @@ namespace DGtal
     typedef TColormap Colormap;
 
     /** 
-     * Export an Image with the Raw format (8bits).
+     * Export an Image to  Raw format (8bits). The pipeline can be sketched
+     * as follows: ValueType --<colormap>--> Color ----> unsigned char.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
