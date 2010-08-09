@@ -28,6 +28,7 @@
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
+#include <boost/static_assert.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,6 +74,9 @@ namespace DGtal
   public:
 
     typedef TImageContainer ImageContainer;
+
+    BOOST_STATIC_ASSERT(ImageContainer::Domain::staticDimension == 3);
+
 
     /** 
      * Default Constructor.

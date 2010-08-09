@@ -1,26 +1,26 @@
 #pragma once
 
 /**
- * @file PNMWriter.h
+ * @file VolWriter.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/22
  *
- * Header file for module PNMWriter.cpp
+ * Header file for module VolWriter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PNMWriter_RECURSES)
-#error Recursive header files inclusion detected in PNMWriter.h
-#else // defined(PNMWriter_RECURSES)
+#if defined(VolWriter_RECURSES)
+#error Recursive header files inclusion detected in VolWriter.h
+#else // defined(VolWriter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PNMWriter_RECURSES
+#define VolWriter_RECURSES
 
-#if !defined PNMWriter_h
+#if !defined VolWriter_h
 /** Prevents repeated inclusion of headers. */
-#define PNMWriter_h
+#define VolWriter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -35,20 +35,20 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class PNMWriter
+  // template class VolWriter
   /**
-   * Description of template struct 'PNMWriter' <p>
-   * \brief Aim: Export a 2D Image using the Netpbm formats.
+   * Description of template struct 'VolWriter' <p>
+   * \brief Aim: Export a 3D Image using the Vol formats.
    *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
    */
   template <typename TImage, typename TColormap>
-  struct PNMWriter
+  struct VolWriter
   {
     // ----------------------- Standard services ------------------------------
 
-    BOOST_STATIC_ASSERT(TImage::Domain::staticDimension == 2);
+    BOOST_STATIC_ASSERT(TImage::Domain::staticDimension == 3);
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::ValueType, 
 			 typename TImage::ValueType>::value));
@@ -58,9 +58,7 @@ namespace DGtal
     typedef TColormap Colormap;
 
     /** 
-     * Export an Image with PPM format. The colormap specified
-     * in the template arguments is used to convert ValueType 
-     * to RBG colors.
+     * Export an Image with the Vol format.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
@@ -69,22 +67,7 @@ namespace DGtal
      * 
      * @return true if no errors occur.
      */
-    static bool exportPPM(const std::string & filename, const Image &aImage, 
-			  const ValueType & minV, const ValueType & maxV);
-
-    /** 
-     * Export an Image with PGM format. The colormap specified
-     * in the template arguments is used to convert ValueType 
-     * to RBG colors. Then, a RGB to Grayscale conversion is performed.
-     * 
-     * @param filename name of the output file
-     * @param aImage the image to export
-     * @param minV the minimum value of aImage (for colormap)
-     * @param maxV the maximum value of aImage (for colormap) 
-     * 
-     * @return true if no errors occur.
-     */
-    static bool exportPGM(const std::string & filename, const Image &aImage, 
+    static bool exportVol(const std::string & filename, const Image &aImage, 
 			  const ValueType & minV, const ValueType & maxV);
     
   };
@@ -92,12 +75,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/writers//PNMWriter.ih"
+#include "DGtal/io/writers//VolWriter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PNMWriter_h
+#endif // !defined VolWriter_h
 
-#undef PNMWriter_RECURSES
-#endif // else defined(PNMWriter_RECURSES)
+#undef VolWriter_RECURSES
+#endif // else defined(VolWriter_RECURSES)

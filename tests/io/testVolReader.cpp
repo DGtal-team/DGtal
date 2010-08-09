@@ -18,6 +18,11 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
+#include "DGtal/io/writers/VolWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -42,7 +47,7 @@ bool testVolReader()
   typedef TDomain::Point Point;
   
   //Default image selector = STLVector
-  typedef ImageSelector<TDomain, int>::Type Image;
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
   
   VolReader<Image> reader;
   Image image = reader.importVol("/home/dcoeurjo/Volumes/cat10.vol");
@@ -61,6 +66,14 @@ bool testVolReader()
   trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;
 
   nbok += ( nbval == 8043)  ? 1 : 0; 
+  nb++;
+
+  typedef HueShadeColorMap<unsigned char> Hue;
+  typedef GrayscaleColorMap<unsigned char> Gray;
+
+  VolWriter<Image,Gray>::exportVol("export-hue.vol",image,0,255);
+
+  nbok += ( true )  ? 1 : 0; 
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
