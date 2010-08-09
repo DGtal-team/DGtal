@@ -50,6 +50,16 @@ using namespace LibBoard;
   << y << std::endl;
 
 
+  struct SelfDrawStyleCustom
+  {
+    SelfDrawStyleCustom(LibBoard::Board & aboard)
+      {
+	aboard.setFillColorRGBi(255,0,0);
+	aboard.setPenColorRGBi(0,255,0);
+      }
+    };
+
+
 bool testDigitalSetBoardSnippet()
 {
   typedef SpaceND<int,2> Z2;
@@ -87,6 +97,13 @@ bool testDigitalSetBoardSnippet()
   domain.selfDrawAsPaving(board);
   mySet.selfDraw(board);
   board.saveSVG("simpleSet-paving.svg");
+
+
+  board.clear();
+
+  board.setUnit(Board::UCentimeter);
+  mySet.selfDraw<SelfDrawStyleCustom>(board);
+  board.saveSVG("simpleSet-color.svg");
 
 }
 

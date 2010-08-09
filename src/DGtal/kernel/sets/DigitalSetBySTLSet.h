@@ -289,7 +289,7 @@ namespace DGtal
   public:
     
     /**
-     * Draw the object on a LiBoard board
+     * Draw the object on a LibBoard board
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
@@ -297,9 +297,8 @@ namespace DGtal
     void selfDraw(LibBoard::Board & board ) const;
 
     /**
-     * Draw the object on a LiBoard board
+     * Draw the object on a LibBoard board
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
      */
     void selfDraw(LibBoard::Board & board ) const
     {
