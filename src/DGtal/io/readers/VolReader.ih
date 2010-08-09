@@ -58,14 +58,10 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
   int errcode;
   T  *image;
 
-  myStateOk = true;
   fin = fopen( filename.c_str() , "r" );
 
   if (fin == NULL) 
-    {
       trace.error() << "VolReader : can't open "<< filename<<endl;
-      myStateOk = false;      
-    }
   
   image = readVolData( fin );
   fclose( fin );
@@ -279,9 +275,7 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
       lastPoint[1] = sy;
       lastPoint[2] = sz;
       
-      trace.warning() << firstPoint << lastPoint<<std::endl;
       image = new T(firstPoint,lastPoint);
-
     }
   catch (...) 
     {
@@ -293,14 +287,11 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
   unsigned char val;
   typename T::Iterator it = image->begin();
   long int total = sx*sy*sz;
-
-  trace.error() << "Total= "<<total << endl;
   
   while ((count < total) && (fin))
     {
       val = getc(fin);  
-      //trace.warning() << "It= "<< (*it)<<" val= "<<(int)val<<" count="<<count<<endl;
-      (*it) =  val;
+      image->setValue(it,val);
       it++;
       count++;
     }
@@ -324,7 +315,7 @@ const char *DGtal::VolReader<T>::requiredHeaders[] = {
 
 template<typename T>
 int 
-DGtal::VolReader<T>::getHeaderField( const char *type ) const 
+DGtal::VolReader<T>::getHeaderField( const char *type ) const
 {
 
   ASSERT( myStateOk );
@@ -340,7 +331,7 @@ DGtal::VolReader<T>::getHeaderField( const char *type ) const
 
 template<typename T>
 const char *
-DGtal::VolReader<T>::getHeaderValue( const char *type ) const 
+DGtal::VolReader<T>::getHeaderValue( const char *type ) const
 {
 
   int i = getHeaderField( type );

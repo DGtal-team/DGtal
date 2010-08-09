@@ -67,8 +67,8 @@ namespace DGtal
      * 
      * @return true if no errors occur.
      */
-    bool exportPPM(const std::string & filename, const Image &aImage, 
-		   const ValueType & minV, const ValueType & maxV) const;
+    static bool exportPPM(const std::string & filename, const Image &aImage, 
+			  const ValueType & minV, const ValueType & maxV);
     
   };
 }//namespace

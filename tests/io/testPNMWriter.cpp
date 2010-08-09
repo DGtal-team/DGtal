@@ -63,12 +63,12 @@ bool testPNMWriter()
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
   
-  PNMWriter<Image,Hue>().exportPPM("export-hue.ppm",image,0,255);
-  PNMWriter<Image,HueTwice>().exportPPM("export-hue-twice.ppm",image,0,255);
-  PNMWriter<Image,Gray>().exportPPM("export-gray.ppm",image,0,255);
-  PNMWriter<Image,Jet>().exportPPM("export-jet.ppm",image,0,255);
-  PNMWriter<Image,RedShade1>().exportPPM("export-red1.ppm",image,0,255);
-  PNMWriter<Image,RedShade2>().exportPPM("export-red2.ppm",image,0,255);
+  PNMWriter<Image,Hue>::exportPPM("export-hue.ppm",image,0,255);
+  PNMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,0,255);
+  PNMWriter<Image,Gray>::exportPPM("export-gray.ppm",image,0,255);
+  PNMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,0,255);
+  PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
+  PNMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,0,255);
   
   trace.endBlock();
   
