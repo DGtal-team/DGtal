@@ -365,7 +365,7 @@ namespace DGtal
     {
       SelfDrawStyle(LibBoard::Board & aboard)
       {
-	aboard.setPenColorRGBi(0,0,0);
+	aboard.setPenColorRGBi(60,60,60);
 	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
       }
     };
