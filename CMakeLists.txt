@@ -131,6 +131,17 @@ if ( Boost_FOUND )
    include_directories( ${Boost_INCLUDE_DIR} )
 endif ( Boost_FOUND )
 
+
+##########Check if libMagick++ exists
+FIND_PACKAGE(Magick)
+
+IF(MAGICK++_FOUND)
+  INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
+   message( "-- ImageMagick found." )
+ENDIF(MAGICK++_FOUND)
+
+
+
 # -----------------------------------------------------------------------------
 # Defines some variables
 # -----------------------------------------------------------------------------

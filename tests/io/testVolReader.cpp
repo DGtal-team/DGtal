@@ -52,10 +52,9 @@ bool testVolReader()
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
   
-  VolReader<Image> reader;
   
   std::string filename = testPath + "samples/cat10.vol";
-  Image image = reader.importVol( filename );
+  Image image = VolReader<Image>::importVol( filename );
   
   trace.info() << image <<endl;
   

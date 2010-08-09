@@ -35,10 +35,10 @@ ImageContainerBySTLVector<Domain,T>::ImageContainerBySTLVector(const Point &aPoi
     }
  
   Point dec = myUpperBound - myLowerBound;
-  size_t extent = 1;
+  size_t ext = 1;
   for(unsigned int k=0;k<  Domain::staticDimension; k++)
-    extent *= dec[k]+1;
-  this->resize(extent);
+    ext *= dec[k]+1;
+  this->resize(ext);
 }
 
 template <typename Domain, typename T>

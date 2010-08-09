@@ -22,32 +22,29 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::VolReader<T>::VolReader()
-{
-}
 
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::VolReader<T>::~VolReader()
-{
-}
+// // /**
+// //  * Destructor.
+// //  */
+// // template <typename T>
+// // inline
+// // DGtal::VolReader<T>::VolReader()
+// // {
+// // }
+
+// // /**
+// //  * Destructor.
+// //  */
+// // template <typename T>
+// // inline
+// // DGtal::VolReader<T>::~VolReader()
+// // {
+// // }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template <typename T>
 inline
 T &
@@ -57,25 +54,13 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
   int errcode;
   T  *image;
 
+  HeaderField header[ MAX_HEADERNUMLINES ];
+
   fin = fopen( filename.c_str() , "r" );
 
   if (fin == NULL) 
       trace.error() << "VolReader : can't open "<< filename<<endl;
   
-  image = readVolData( fin );
-  fclose( fin );
- 
-  return (*image);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - Private :
-
-
-template <typename T>
-T *
-DGtal::VolReader<T>::readVolData( FILE *fin ) 
-{
   // Read header
   // Buf for a line 
   char buf[128];
@@ -92,7 +77,8 @@ DGtal::VolReader<T>::readVolData( FILE *fin )
       if (line[strlen(line) - 1] != '\n') 
 	{
 	  trace.error() << "VolReader: Line "<< linecount << " too long" << std::endl;
-	  return NULL;
+	  ///@todo FIXME
+	  return (*image);
 	}
     
       int i;
@@ -101,7 +87,8 @@ DGtal::VolReader<T>::readVolData( FILE *fin )
       if (i == 0 || i >= 126 || line[i] != ':') 
 	{
 	  trace.error() << "VolReader: Invalid header read at line "<< linecount << std::endl;
-	  return NULL;
+	  ///@todo FIXME
+	  return (*image);
 	} 
       else 
 	{
@@ -128,59 +115,43 @@ DGtal::VolReader<T>::readVolData( FILE *fin )
   // Check required headers
   for (int i = 0; requiredHeaders[i]; ++i) 
     {
-      if (getHeaderValue( "Version" ) != NULL && 
+      if (getHeaderValue( "Version" ,header) != NULL && 
 	  (strcmp( requiredHeaders[i], "Int-Endian" ) == 0 || 
 	   strcmp( requiredHeaders[i], "Voxel-Endian" ) == 0)) 
 	{
 	  continue;
 	}
-      if (getHeaderField( requiredHeaders[i] ) == -1) {
+      if (getHeaderField( requiredHeaders[i]  , header) == -1) {
 	trace.error() << "VolReader: Required Header Field missing: "
 		      << requiredHeaders[i] <<std::endl;
-	return NULL;
+	///@todo FIXME
+	return (*image);
+
       }
     }
   
   int sx,sy,sz;
 
-  getHeaderValueAsInt("X", &sx);
-  getHeaderValueAsInt("Y", &sy);
-  getHeaderValueAsInt("Z", &sz);
+  getHeaderValueAsInt("X", &sx, header);
+  getHeaderValueAsInt("Y", &sy, header);
+  getHeaderValueAsInt("Z", &sz, header);
   
-  if (getHeaderValue( "Version" ) != NULL ) 
-    { 
-      // Field Version appeared only in v2
-      return readV2RawData( fin, true, sx, sy, sz );
-    }
-  return readV1RawData( fin, true );
-}
-
-
-template <typename T>
-T *
-DGtal::VolReader<T>::readV1RawData( FILE *fin, bool headerInited ) {
-
-  int count = 0;
-  int rawsx, rawsy, rawsz;
-  int sx,sy,sz;
-
-  // Size of the volume
-  count += fread( &rawsx, sizeof(int), 1, fin );
-  count += fread( &rawsy, sizeof(int), 1, fin );
-  count += fread( &rawsz, sizeof(int), 1, fin );
-
-  if (count != 3) 
+  if (getHeaderValue( "Version", header ) == NULL ) 
     {
-      trace.error() << "VolReader: can't read file (raw header)\n";
-      return NULL;
-    }
+      int rawsx, rawsy, rawsz;
+      long int count = 0;
+      // Size of the volume
+      count += fread( &rawsx, sizeof(int), 1, fin );
+      count += fread( &rawsy, sizeof(int), 1, fin );
+      count += fread( &rawsz, sizeof(int), 1, fin );
 
-  if (headerInited) 
-    {		
-      // The raw header contains the volume size too	
-      getHeaderValueAsInt("X", &sx);
-      getHeaderValueAsInt("Y", &sy);
-      getHeaderValueAsInt("Z", &sz);
+      if (count != 3) 
+	{
+	  trace.error() << "VolReader: can't read file (raw header)\n";
+	  ///@todo FIXME
+	  return (*image);
+	}
+
 
       if (sx != rawsx || sy != rawsy || sz != rawsz) 
 	{
@@ -188,41 +159,28 @@ DGtal::VolReader<T>::readV1RawData( FILE *fin, bool headerInited ) {
 	}
 	
       int voxsize;
-      if (getHeaderValueAsInt( "Voxel-Size", &voxsize ) == 0 && voxsize != sizeof(voxel)) 
+      if (getHeaderValueAsInt( "Voxel-Size", &voxsize, header ) == 0 && voxsize != sizeof(voxel)) 
 	{
 	  trace.error() << "VolReader: This file was generated with a voxel-size that we do not support.\n";
-	  return NULL;
+	  ///@todo FIXME
+	  return (*image);
 	}
-    
-    }
 	
-  // We should have a useless \n in the file at this point
-  char tmp;
-  count = fread( &tmp, sizeof(char), 1, fin );
+      // We should have a useless \n in the file at this point
+      char tmp;
+      count = fread( &tmp, sizeof(char), 1, fin );
 
-  if (count != 1 || tmp != '\n') 
-    {
-      trace.error()<< "VolReader: I thouhgt I would have read a \\n !\n";
-      return NULL;
+      if (count != 1 || tmp != '\n') 
+	{
+	  trace.error()<< "VolReader: I thouhgt I would have read a \\n !\n";
+	  ///@todo FIXME
+	  return (*image);
+	}
     }
-
-  return readV2RawData( fin, headerInited, sx, sy, sz );
-}
-
-template <typename T>
-T *
-DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited, 
-				    int sizeX, int sizeY, int sizeZ)
-{
+      
+  //Raw Data 
   long count = 0;
-  T *image;
-  int sx,sy,sz;
-	
-  // now read the raw data
-  sx = sizeX;
-  sy = sizeY;
-  sz = sizeZ;
-	
+		
   typename T::Point firstPoint;
   typename T::Point lastPoint;
       
@@ -239,7 +197,8 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
   catch (...) 
     {
       trace.error()<< "VolReader: not enough memory\n" ;
-      return NULL;
+      ///@todo FIXME
+      return (*image);
     }
 	
   count = 0;
@@ -258,11 +217,15 @@ DGtal::VolReader<T>::readV2RawData( FILE *fin, bool headerInited,
   if (count != total) 
     {
       trace.error()<< "VolReader: can't read file (raw data) !\n";
-      return NULL;
+      ///@todo FIXME
+      return (*image);
     }
 
-  return image;
+  fclose( fin ); 
+  return (*image);
 }
+
+
 
 template <typename T>
 const char *DGtal::VolReader<T>::requiredHeaders[] = {
@@ -273,12 +236,12 @@ const char *DGtal::VolReader<T>::requiredHeaders[] = {
 
 
 template<typename T>
+inline
 int 
-DGtal::VolReader<T>::getHeaderField( const char *type ) const
+DGtal::VolReader<T>::getHeaderField( const char *type, const HeaderField * header ) 
 {
 
-  ASSERT( myStateOk );
-
+  
   for (int i = 0; i < MAX_HEADERNUMLINES; ++i) {
     if (header[i].type != NULL && strcmp( header[i].type, type ) == 0 ) {
       return i;
@@ -289,11 +252,12 @@ DGtal::VolReader<T>::getHeaderField( const char *type ) const
 
 
 template<typename T>
+inline
 const char *
-DGtal::VolReader<T>::getHeaderValue( const char *type ) const
+DGtal::VolReader<T>::getHeaderValue( const char *type, const HeaderField * header  )
 {
 
-  int i = getHeaderField( type );
+  int i = getHeaderField( type, header );
   if (i == -1)
     return NULL;
   return header[i].value;
@@ -302,13 +266,11 @@ DGtal::VolReader<T>::getHeaderValue( const char *type ) const
 
 
 template<typename T>
+inline
 int 
-DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest ) const
+DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header  )
 {
-
-  ASSERT( myStateOk );
-
-  int i = getHeaderField( type );
+  int i = getHeaderField( type, header);
   if (i == -1)
     return 1;
 

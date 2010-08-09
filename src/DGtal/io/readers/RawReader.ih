@@ -1,0 +1,75 @@
+/**
+ * @file RawReader.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/25
+ *
+ * Implementation of inline methods defined in RawReader.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename T>
+inline
+T &
+DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent )
+{
+  FILE * fin;
+  int errcode;
+
+  fin = fopen( filename.c_str() , "r" );
+
+  if (fin == NULL) 
+      trace.error() << "RawReader : can't open "<< filename<<endl;
+  
+  
+  typename T::Point firstPoint;
+  typename T::Point lastPoint;
+      
+  firstPoint = T::Point::zero;
+  lastPoint = extent;
+  long int size=1;
+  for(unsigned int i=0; i < T::Domain::staticDimension; i++)
+    {
+      size *= lastPoint[i];      
+      lastPoint[i]--;
+    }
+
+    
+  typename T::Domain domain(firstPoint,lastPoint);
+  T * image = new T(firstPoint,lastPoint);
+  typename T::ValueType val;
+
+  //We scan the Raw file
+  typename T::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  unsigned int count=0;
+
+  while ((fin) && (it != itend))
+    {
+      val = getc(fin);  
+      image->setValue( (*it),val);
+      it++;
+      count++;
+    }
+  
+  fclose( fin );
+  
+  if (count != size )
+    {
+      trace.error() << "RawReader: error while opening file "<<filename<<endl;
+      delete image;
+      return (*image);
+    }
+  else
+    return (*image);
+}
+
