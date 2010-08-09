@@ -68,7 +68,7 @@ namespace DGtal
     typedef typename IntegerTraits<TInteger>::UnsignedVersion UnsignedInteger;
     typedef typename IntegerTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
-	BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
 	  
 	  /**

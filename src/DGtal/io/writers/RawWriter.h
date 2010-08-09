@@ -29,6 +29,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/colormaps/CColorMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -47,6 +48,8 @@ namespace DGtal
   struct RawWriter
   {
     // ----------------------- Standard services ------------------------------
+
+    BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::ValueType, 
 			 typename TImage::ValueType>::value));
