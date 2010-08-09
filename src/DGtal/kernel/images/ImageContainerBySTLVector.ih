@@ -192,6 +192,6 @@ inline
 void
 ImageContainerBySTLVector<TDomain,V>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Image - STLVector] size="<<this->size();
+  out << "[Image - STLVector] size="<<this->size()<< " lower="<< myLowerBound << " upper="<< myUpperBound<<endl;
 }
 

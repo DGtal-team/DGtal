@@ -65,7 +65,7 @@ namespace DGtal
     ~VolReader();
 
     ImageContainer & importVol(const std::string & filename);
-    
+    ImageContainer & glop (const std::string & filename ) ;
     /** 
      * @return true if the object is valid.
      */
@@ -80,13 +80,13 @@ namespace DGtal
     typedef unsigned char voxel;
 
     //! Read vol data from a file already open
-    ImageContainer &readVolData( FILE *in );
+    ImageContainer *readVolData( FILE *in );
     
     //! Read raw data from a file already open
-    ImageContainer &	readV1RawData( FILE *in, bool headerInited );
+    ImageContainer *	readV1RawData( FILE *in, bool headerInited );
     
     //! Read raw data from a file already open
-    ImageContainer & readV2RawData( FILE *in, bool headerInited, int sx, int sy, int sz );
+    ImageContainer * readV2RawData( FILE *in, bool headerInited, int sx, int sy, int sz );
 
 
     //! Returns NULL if this field is not found
@@ -157,8 +157,9 @@ namespace DGtal
 	char 	cv[ sizeof(voxel) + 1 ];
       } v_endian;
     };
-    static const endian_t endian;
-    static endian_t initEndian();
+
+    endian_t endian;
+    void initEndian();
 
     // ------------------------- Hidden services ------------------------------
 
