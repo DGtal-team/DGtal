@@ -203,7 +203,8 @@ namespace DGtal {
  *  -# Implement a method selfDraw the will perform the drawing with
  * a default template parameter set to SelfDrawDefaultStyle. 
  *
- * The second item can be done using the following declaration code:
+ * The second item can be done using the following declaration code
+ *for instance:
  *@code
     /*
      * Draw the object on a LibBoard board
