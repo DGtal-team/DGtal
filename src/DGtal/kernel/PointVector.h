@@ -468,7 +468,7 @@ namespace DGtal
     /**
      * Draw the object (as a Point) on a LiBoard board.
      * @param board the output board where the object is drawn.
-     * @param afunc a Functor to specialize the Board style
+     * @tparam Functor  a Functor to specialize the Board style
      */
     template<typename Functor>
     void selfDraw(LibBoard::Board & board ) const;
@@ -476,7 +476,6 @@ namespace DGtal
     /**
      * Draw the object (as a Point) on a LiBoard board.
      * @param board the output board where the object is drawn.
-     * @param afunc a Functor to specialize the Board style
      */
     void selfDraw(LibBoard::Board & board ) const
     {
@@ -485,22 +484,21 @@ namespace DGtal
 
 
     /**
-     * Draw the object (as a Vector from aPoint) on a LiBoard board
+     * Draw the object (as a Vector from aPoint) on a LibBoard board
      *
      * @param board the output board where the object is drawn.
      * @param startingPoint the starting point of the vector
-     * @param afunc a Functor to specialize the Board style
+     * @tparam Functor a Functor to specialize the Board style
      */
     template<typename Functor>
     void selfDraw(LibBoard::Board & board, 
 		  const PointVector &startingPoint ) const;
 
     /**
-     * Draw the object (as a Vector from aPoint) on a LiBoard board
+     * Draw the object (as a Vector from aPoint) on a LibBoard board
      *
      * @param board the output board where the object is drawn.
      * @param startingPoint the starting point of the vector
-     * @param afunc a Functor to specialize the Board style
      */
     void selfDraw(LibBoard::Board & board, 
 		  const PointVector &startingPoint ) const

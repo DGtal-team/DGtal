@@ -77,6 +77,32 @@ ImageContainerBySTLVector<Domain,T>::extent() const
   return one;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// libBoard export
+
+template <typename D, typename V>
+template<typename Functor, typename Colormap>
+inline
+void 
+DGtal::ImageContainerBySTLVector<D,V>::selfDraw(LibBoard::Board & board, const V &minV, const V &maxV ) const
+{
+  ASSERT(D::staticDimension == 2);
+
+  Functor applystyle(board);
+
+  D domain(myLowerBound,myUpperBound);
+  Colormap colormap(minV,maxV);
+  LibBoard::Color c;
+  V val;
+
+  for(typename D::ConstIterator it =  domain.begin(); it != domain.end(); ++it)       
+    {
+      val = this->operator()( (*it) );
+      c = colormap( val );
+      board.setFillColorRGBi( c.red(), c.green(), c.blue());
+      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    }
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
