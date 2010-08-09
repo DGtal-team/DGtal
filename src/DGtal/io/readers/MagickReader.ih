@@ -1,0 +1,72 @@
+/**
+ * @file MagickReader.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/07/25
+ *
+ * Implementation of inline methods defined in MagickReader.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+
+#include <Magick++.h>
+
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename T>
+inline
+T &
+DGtal::MagickReader<T>::importImage (const std::string & filename, const Vector & extent )
+{
+  FILE * fin;
+  int errcode;
+  int w,h;
+  const Magick::PixelPacket *cacheRead;
+  
+  Magick::Image img = Magick::Image ( filename );
+
+  w = img.size().width();
+  h = img.size().height();
+
+  //@todo Check Magick::Types according to ValueType
+  img.type ( Magick::TrueColorType );
+  img.modifyImage();
+  cacheRead = img.getConstPixels ( 0, 0, w, h );
+  
+  //@todo check ImageMagick errors.
+  //trace.error() << "MagickReader : can't open "<< filename<<endl;
+  
+  typename T::Point firstPoint;
+  typename T::Point lastPoint;
+      
+  firstPoint = T::Point::zero;
+  lastPoint[0] = w-1;
+  lastPoint[1] = h-1;
+
+  typename T::Domain domain(firstPoint,lastPoint);
+  T * image = new T(firstPoint,lastPoint);
+  typename T::ValueType val;
+
+  //We scan the Raw file
+  typename T::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  unsigned int count=0;
+
+  for(; it != itend; ++it)
+    {
+      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;
+      ///@todo create converters RGB->ValueType
+      val = (pixel->red + pixel->green + pixel->blue) % 256;
+      image->setValue( (*it), val  );
+    }
+
+  return (*image);
+}
+

@@ -1,12 +1,12 @@
 /**
- * @file testRawReader.cpp
+ * @file testMagickReader.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/29
+ * @date 2010/07/30
  *
- * Functions for testing class RawReader.
+ * Functions for testing class MagickReader.
  *
  * This file is part of the DGtal library.
  */
@@ -23,8 +23,7 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
-#include "DGtal/io/writers/PNMWriter.h"
-#include "DGtal/io/readers/RawReader.h"
+#include "DGtal/io/readers/MagickReader.h"
 
 #include "ConfigTest.h"
 
@@ -35,41 +34,18 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class RawReader.
+// Functions for testing class MagickReader.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testRawReader2D()
+bool testMagickReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing Raw reader ..." );
-  
-  typedef SpaceND<int,2> Space2Type;
-  typedef HyperRectDomain<Space2Type> TDomain;
-  typedef TDomain::Vector Vector;
-  
-  //Default image selector = STLVector
-  typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  
-  std::string filename = testPath + "samples/raw2D-64x64.raw";
-  
-  Vector ext(16,16);
-  
-  Image image = RawReader<Image>::importRaw8( filename , ext);
-
-  ///FIXME: check io errors
-  trace.info() << image <<endl;
-
-  //export
-  typedef GrayscaleColorMap<unsigned char> Gray;  
-  PNMWriter<Image,Gray>::exportPGM("export-raw-reader.pgm",image,0,255);
-
-  /// @todo re-import the PGM and compare with raw2D-64x64
-  
+  trace.beginBlock ( "Testing block ..." );
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -84,13 +60,13 @@ bool testRawReader2D()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class RawReader" );
+  trace.beginBlock ( "Testing class MagickReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testRawReader2D(); // && ... other tests
+  bool res = testMagickReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

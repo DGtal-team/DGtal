@@ -84,7 +84,6 @@ namespace DGtal
     {
       return (*it);
     };
-
  
     /** 
      * Set a value on an Image at aPoint.
@@ -104,6 +103,44 @@ namespace DGtal
     {
       (*it) = aValue;
     }
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+
+    /**
+     * @return the validity of the Image
+     */
+    bool isValid() const
+    {
+      return (this != NULL);
+    }
+
+    /** 
+     * Returns the extent of an Image.
+     * 
+     * @return the image extent as a Vector.
+     */
+    Vector extent() const;
+
+    /** 
+     * @return the image lower point.
+     */
+    Point lowerBound() const
+    {
+      return myLowerBound;
+    };
+    
+    /** 
+     * @return the image upper point.
+     */
+    Point upperBound() const
+    {
+      return myUpperBound;
+    };
 
     /////////////////////////// Custom Iterators ////////////////////:
     /** 
@@ -307,43 +344,6 @@ namespace DGtal
       return (*it);
     };
 
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * @return the validity of the Image
-     */
-    bool isValid() const
-    {
-      return (this != NULL);
-    }
-
-    /** 
-     * Returns the extent of an Image.
-     * 
-     * @return the image extent as a Vector.
-     */
-    Vector extent() const;
-
-    /** 
-     * @return the image lower point.
-     */
-    Point lowerBound() const
-    {
-      return myLowerBound;
-    };
-    
-    /** 
-     * @return the image upper point.
-     */
-    Point upperBound() const
-    {
-      return myUpperBound;
-    };
 
 
   private:

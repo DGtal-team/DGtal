@@ -55,9 +55,8 @@ namespace DGtal
    *
    * //Default image container = STLVector
    * typedef ImageSelector<TDomain, int>::Type Image;
-   * 
-   * VolReader<Image> reader;
-   * Image image = reader.importVol("data.vol");
+   *
+   * Image image = VolReader<Image>::importVol("data.vol");
    *
    * trace.info() << image <<endl;
    * ...
@@ -68,29 +67,13 @@ namespace DGtal
    * @example testVolReader.cpp
    */
   template <typename TImageContainer>
-  class VolReader
+  struct VolReader
   {
     // ----------------------- Standard services ------------------------------
-  public:
 
     typedef TImageContainer ImageContainer;
 
     BOOST_STATIC_ASSERT(ImageContainer::Domain::staticDimension == 3);
-
-
-    /** 
-     * Default Constructor.
-     * 
-     */    
-    VolReader();
-    
-
-    /** 
-     * Default destructor.
-     * 
-     */
-    ~VolReader();
-
 
 
     /** 
@@ -100,44 +83,18 @@ namespace DGtal
      * @param filename the file name to import.
      * @return an instance of the ImageContainer.
      */
-    ImageContainer & importVol(const std::string & filename);
+    static ImageContainer & importVol(const std::string & filename);
 
-
-    /** 
-     * @return true if the object is valid.
-     */
-    bool isValid() 
-    { 
-      return myStateOk;
-    }
     
-    // ------------------------- Protected Datas ------------------------------
   private:
 
     typedef unsigned char voxel;
-
-    //! Read vol data from a file already open
-    ImageContainer *readVolData( FILE *in );
-    
-    //! Read raw data from a file already open
-    ImageContainer *	readV1RawData( FILE *in, bool headerInited );
-    
-    //! Read raw data from a file already open
-    ImageContainer * readV2RawData( FILE *in, bool headerInited, int sx, int sy, int sz );
-
-
-    //! Returns NULL if this field is not found
-    const char *getHeaderValue( const char *type ) const;
-
-    //! Returns non-zero if failure
-    int getHeaderValueAsInt( const char *type, int *dest ) const;
-
     // This class help us to associate a field type and his value.
     // An object is a pair (type, value). You can copy and assign
     // such objects.
     /* In recent C++, we should use a std::map, but we prefer (badly) code it
        by hand for compatibility with old compilers.
-      At this time, there is a limit of 30 fields in header :-} */
+       At this time, there is a limit of 30 fields in header :-} */
     struct HeaderField {
       //! Constructor. The string are copied.
       HeaderField( const char *t, const char *v ) :
@@ -167,43 +124,24 @@ namespace DGtal
       char *value;
     };
 
+
+    //! Returns NULL if this field is not found
+    static const char *getHeaderValue( const char *type, const HeaderField * header );
+
+    //! Returns non-zero if failure
+    static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header);
+
+
     //! Maximum number of fields in a .vol file header
     static const int MAX_HEADERNUMLINES = 64;
     
-    //! Here are the fields. A field is empty when his type string is NULL.
-    HeaderField header[ MAX_HEADERNUMLINES ];
     
     //! Internal method which returns the index of a field or -1 if not found.
-    int getHeaderField( const char *type ) const;
+    static int getHeaderField( const char *type, const HeaderField * header ) ;
     
     //! Global list of required fields in a .vol file
     static const char *requiredHeaders[];
-    
-  
-    // ------------------------- Hidden services ------------------------------
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    VolReader ( const VolReader & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    VolReader & operator= ( const VolReader & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-    bool myStateOk;
-
+   
   }; // end of class VolReader
 
 
