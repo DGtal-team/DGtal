@@ -94,7 +94,7 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 
       val = aImage( (*it) );
       col = colormap( val );
-      out << ((int)col.red()+(int)col.green()+(int)col.blue() / 3)<<" ";
+      out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
     }
   
   out.close(); 

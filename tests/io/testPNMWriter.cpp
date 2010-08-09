@@ -65,6 +65,9 @@ bool testPNMWriter()
   
   PNMWriter<Image,Hue>::exportPPM("export-hue.ppm",image,0,255);
   PNMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,0,255);
+
+  PNMWriter<Image,HueTwice>::exportPGM("export-hue-twice.pgm",image,0,255);
+
   PNMWriter<Image,Gray>::exportPPM("export-gray.ppm",image,0,255);
   PNMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,0,255);
   PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
