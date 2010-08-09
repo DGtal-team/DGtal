@@ -1,0 +1,42 @@
+/** 
+ * @File Common.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * 
+ *
+ * @date 2009/12/10
+ * 
+ * Implementation of inline methods defined in Common.h 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Common'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Common' to write.
+ * @return the output stream after the writing.
+ */
+INLINE 
+std::ostream&
+DGtal::operator<<( std::ostream & out, 
+		 const Common & object )
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
