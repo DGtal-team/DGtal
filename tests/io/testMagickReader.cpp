@@ -46,10 +46,31 @@ bool testMagickReader()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+
+  typedef SpaceND<int,2> Space2Type;
+  typedef HyperRectDomain<Space2Type> TDomain;
+  typedef TDomain::Vector Vector;
+  
+  //Default image selector = STLVector
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
+
+  std::string filename = testPath + "samples/simpleSet-paving.png";
+
+  MagickReader<Image> reader;
+  Image img = reader.importImage( filename );
+
+  nbok += img.isValid() ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << "img.isValid() == true"
+	       << std::endl;
+
+  nbok += img.extent() == Image::Vector( 400, 400 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "img.extent() = " << img.extent() 
+	       << "( == {400,400} )"
+	       << std::endl;
   trace.endBlock();
   
   return nbok == nb;
