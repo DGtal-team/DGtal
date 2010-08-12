@@ -14,17 +14,20 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 
-#include <Magick++.h>
+//#include <Magick++.h>
 
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename T>
+template <typename TImageContainer>
 inline
-T &
-DGtal::MagickReader<T>::importImage (const std::string & filename, const Vector & extent )
+TImageContainer &
+DGtal::MagickReader<TImageContainer>::importImage
+(const std::string & filename )
+// JOL remove extent
+// (const std::string & filename, const Vector & extent )
 {
   FILE * fin;
   int errcode;
@@ -44,24 +47,25 @@ DGtal::MagickReader<T>::importImage (const std::string & filename, const Vector 
   //@todo check ImageMagick errors.
   //trace.error() << "MagickReader : can't open "<< filename<<endl;
   
-  typename T::Point firstPoint;
-  typename T::Point lastPoint;
+  typename TImageContainer::Point firstPoint;
+  typename TImageContainer::Point lastPoint;
       
-  firstPoint = T::Point::zero;
+  firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
 
-  typename T::Domain domain(firstPoint,lastPoint);
-  T * image = new T(firstPoint,lastPoint);
-  typename T::ValueType val;
+  typename TImageContainer::Domain domain(firstPoint,lastPoint);
+  TImageContainer * image = new TImageContainer(firstPoint,lastPoint);
+  typename TImageContainer::ValueType val;
 
   //We scan the Raw file
-  typename T::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  typename TImageContainer::Domain::ConstIterator it = domain.begin(),itend=domain.end();
   unsigned int count=0;
 
   for(; it != itend; ++it)
     {
-      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;
+      // const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;
+      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 );
       ///@todo create converters RGB->ValueType
       val = (pixel->red + pixel->green + pixel->blue) % 256;
       image->setValue( (*it), val  );

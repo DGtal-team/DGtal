@@ -137,7 +137,7 @@ FIND_PACKAGE(Magick)
 
 IF(MAGICK++_FOUND)
   INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
-   message( "-- ImageMagick found." )
+   message( "-- GraphicsMagick++ found." )
 ENDIF(MAGICK++_FOUND)
 
 
