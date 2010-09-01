@@ -253,9 +253,12 @@ namespace DGtal
    * @param object the object of class 'GradientColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType, int DefaultPreset>
+  template <typename PValueType,
+	  int PDefaultPreset,
+	  int PDefaultFirstColor,
+	  int PDefaultLastColor >
   std::ostream&
-  operator<< ( std::ostream & out, const GradientColorMap<PValueType,DefaultPreset> & object );
+  operator<< ( std::ostream & out, const GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object );
   
 } // namespace DGtal
 
