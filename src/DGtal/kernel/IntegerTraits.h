@@ -67,12 +67,12 @@ namespace DGtal
     /**
      * Constant Zero.
      */
-    //static const T ZERO = 0;
+    static const T ZERO = T(0);
 
     /**
      * Constant One.
      */
-    //static const T ONE = 1;
+    static const T ONE = T(1);
 
     /**
      * @return the zero of this integer.
