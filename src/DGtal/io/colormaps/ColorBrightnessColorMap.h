@@ -225,9 +225,9 @@ namespace DGtal
    * @param object the object of class 'ColorBrightnessColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType>
+  template <typename PValueType, int PDefaultColor>
   std::ostream&
-  operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValueType> & object );
+  operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValueType,PDefaultColor> & object );
   
 } // namespace DGtal
 
