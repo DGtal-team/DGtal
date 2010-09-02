@@ -43,8 +43,8 @@ namespace DGtal
    * using a std::vector. This class provides built-in iterators and fast SpanIterators 
    * to perform 1D scans.
    *
-   * @example testImage.cpp
-   * @example testImageContainerBenchmark.cpp
+   * @see testImage.cpp
+   * @see testImageContainerBenchmark.cpp
    */
 
   template <typename TDomain, typename TValueType>
