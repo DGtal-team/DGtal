@@ -1,0 +1,62 @@
+/**
+ * @file GenericWriter.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/09/02
+ *
+ * Implementation of inline methods defined in GenericWriter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+
+namespace DGtal {
+template<typename O>
+typename O &
+GenericWriter<O>::importTXT(const std::string & filename)
+{
+ 
+  std::ifstream in;
+  
+  //Default constructor
+  O * aObject = new O();
+
+  in.open(filename.c_str());
+  boost::archive::text_iarchive oa(in);
+
+  ia >> aObject;
+  
+  in.close(); 
+
+  return true;
+}
+
+
+template<typename O>
+typename O &
+GenericWriter<O>::importXML(const std::string & filename)
+{
+  ASSERT("Not yet implemented"=="");
+}
+
+template<typename O>
+typename O &
+GenericWriter<O>::importBIN(const std::string & filename)
+{
+  ASSERT("Not yet implemented"=="");
+}
+
+}//namespace
