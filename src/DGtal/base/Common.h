@@ -29,6 +29,8 @@
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
+#include <boost/serialization/access.hpp>
+
 
 #if ( (defined(WIN32)) )
 #define _USE_MATH_DEFINES

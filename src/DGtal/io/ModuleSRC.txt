@@ -3,7 +3,5 @@
 
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/io/writers/PNMWriter
-		DGtal/io/readers/VolReader
 		)
 

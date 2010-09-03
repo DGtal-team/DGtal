@@ -4,6 +4,7 @@ SET(DGTAL_TESTS_SRC_IO
        testVolReader
        testColorMaps
        testRawReader
+       testGeneric
        )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO})

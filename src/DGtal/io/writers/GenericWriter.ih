@@ -1,0 +1,68 @@
+/**
+ * @file GenericWriter.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/09/02
+ *
+ * Implementation of inline methods defined in GenericWriter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+
+namespace DGtal {
+template<typename I>
+bool
+GenericWriter<I>::exportTXT(const std::string & filename, const I & anObject)
+{
+ 
+  std::ofstream out(filename.c_str());
+
+  boost::archive::text_oarchive oa(out);
+
+  oa << anObject;
+  
+  return true;
+}
+
+template<typename I>
+bool
+GenericWriter<I>::exportXML(const std::string & filename,  const I & anObject)
+{
+  std::ofstream out(filename.c_str());
+
+  boost::archive::xml_oarchive oa(out);
+
+  oa << boost::serialization::make_nvp("DGtal",anObject);
+  
+  return true;
+}
+
+template<typename I>
+bool
+GenericWriter<I>::exportBIN(const std::string & filename, const I & anObject)
+{
+  std::ofstream out(filename.c_str());
+
+  boost::archive::binary_oarchive oa(out);
+
+  oa << anObject;
+  
+  return true;
+}
+
+}//namespace
