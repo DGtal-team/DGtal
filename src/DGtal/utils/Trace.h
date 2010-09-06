@@ -50,7 +50,7 @@ namespace DGtal
    *
    * For usage examples, see the testtrace.cpp file.
    *
-   * @example testTrace.cpp
+   * @see testTrace.cpp
    *
    * \todo Create a default constructor on TraceWriterTerm(std::cerr)
    */

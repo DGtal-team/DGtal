@@ -33,6 +33,8 @@
  * @section manuals_dgtal DGtal user-guides
  *
  * - \ref dgtal_topology 
+ * - \ref board_export 
+ * - \ref image_io 
  *
  * @section examples_sec_dgtal Code examples
  *

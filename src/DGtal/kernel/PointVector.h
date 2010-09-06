@@ -77,8 +77,8 @@ namespace DGtal
    * ...
    * @endcode
    * @todo continue snippet
-   * @see testPointVector.cpp
    *
+   * @see testPointVector.cpp
    *
    */
   template<typename T, std::size_t N>

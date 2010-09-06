@@ -62,7 +62,7 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
-   * @example testRawReader.cpp
+   * @see testRawReader.cpp
    */
   template <typename TImageContainer>
   struct RawReader
