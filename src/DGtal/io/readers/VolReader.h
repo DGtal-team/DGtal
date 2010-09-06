@@ -64,7 +64,7 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
-   * @example testVolReader.cpp
+   * @see testVolReader.cpp
    */
   template <typename TImageContainer>
   struct VolReader

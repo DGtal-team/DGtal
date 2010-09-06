@@ -39,7 +39,7 @@ namespace DGtal
    * Description of class 'ImageContainerBySTLMap' <p>
    * Aim:
    * \todo Documentation
-   * @example test_Image.cpp
+   * @see test_Image.cpp
    */
 
   template <typename Domain, typename ValueType>

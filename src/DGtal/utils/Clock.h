@@ -67,7 +67,7 @@ namespace DGtal
    *   std::cout<< "Duration in ms. : "<< duration <<endl;
    *  \endcode
    *
-   * @example testClock.cpp
+   * @see testClock.cpp
    */
   class Clock
   {
