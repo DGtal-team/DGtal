@@ -137,7 +137,7 @@ bool testObjectBorder()
     trace.info() << "The object (4,8) border is not connected."<<endl;
   
   domain.selfDrawAsGrid(board);
-  bubble2.selfDrawWithAdjacencies(board);
+  bubble_set.selfDraw(board);
   board.saveSVG("bubble-object-48.svg");
   
   bubbleBorder2.selfDrawWithAdjacencies<SelfDrawStyleCustom>(board);  
