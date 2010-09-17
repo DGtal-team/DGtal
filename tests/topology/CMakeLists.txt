@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
    testDigitalTopology
    testExpander
    testObject
+   testObjectBorder
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
