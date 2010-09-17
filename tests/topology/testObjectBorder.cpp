@@ -53,7 +53,8 @@ struct SelfDrawStyleCustomRed
 };
 
 /**
- * Example of a test. To be completed.
+ * Simple test to illustrate the border extraction of a simple 2D
+ * object considering different topologies.
  *
  */
 bool testObjectBorder()
