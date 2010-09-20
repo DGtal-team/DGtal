@@ -117,7 +117,6 @@ bool testSimpleExpander()
   board.clear();
   domain.selfDrawAsGrid(board);
   house4.selfDrawWithAdjacencies(board);
-  board.saveSVG("house4.svg"); 
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0,0));
   while (!expander.finished())
     {
@@ -135,7 +134,6 @@ bool testSimpleExpander()
   board.clear();
   domain.selfDrawAsGrid(board);
   house4.selfDrawWithAdjacencies(board);
-  board.saveSVG("house4.svg"); 
   ObjectExpander expander8(houseCompl8, Point(0,0));
   while (!expander8.finished())
     {
@@ -152,8 +150,7 @@ bool testSimpleExpander()
   //Border=8 Filling=8
   board.clear();
   domain.selfDrawAsGrid(board);
-  house8.selfDrawWithAdjacencies(board);
-  board.saveSVG("house4.svg"); 
+  house8.selfDrawWithAdjacencies(board); 
   ObjectExpander expander88(houseCompl8, Point(0,0));
   while (!expander88.finished())
     {
@@ -167,23 +164,22 @@ bool testSimpleExpander()
   expander88.core().selfDraw<SelfDrawStyleCustom>(board);
   board.saveSVG("house8-8.svg");
 
-  //Border=4 Filling=8
+  //Border=8 Filling=4
   board.clear();
   domain.selfDrawAsGrid(board);
-  house4.selfDrawWithAdjacencies(board);
-  board.saveSVG("house4.svg"); 
-  ObjectExpander expander48(houseCompl8, Point(0,0));
-  while (!expander48.finished())
+  house8.selfDrawWithAdjacencies(board);
+  ObjectExpanderReverseTopo expander84(houseCompl4, Point(0,0));
+  while (!expander84.finished())
     {
-      for ( ObjectExpander::ConstIterator it = expander48.begin();
-	    it != expander48.end();
+      for ( ObjectExpander::ConstIterator it = expander84.begin();
+	    it != expander84.end();
 	    ++it )
         std::cout << " " << *it;
       
-      expander48.nextLayer();
+      expander84.nextLayer();
     } 
-  expander48.core().selfDraw<SelfDrawStyleCustom>(board);
-  board.saveSVG("house4-8.svg");
+  expander84.core().selfDraw<SelfDrawStyleCustom>(board);
+  board.saveSVG("house8-4.svg");
 
 
   nbok += true ? 1 : 0; 
