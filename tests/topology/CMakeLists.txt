@@ -4,6 +4,7 @@ SET(DGTAL_TESTS_SRC
    testExpander
    testObject
    testObjectBorder
+   testSimpleExpander
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
