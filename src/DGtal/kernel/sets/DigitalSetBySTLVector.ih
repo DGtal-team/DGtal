@@ -383,7 +383,16 @@ inline
 DGtal::DigitalSetBySTLVector<Domain>
 DGtal::DigitalSetBySTLVector<Domain>::computeComplement() const
 {
-  
+  DigitalSetBySTLVector<Domain> set;
+  typename Domain::ConstIterator itPoint = myDomain.begin();
+  typename Domain::ConstIterator itEnd = myDomain.end();
+  while ( itPoint != itEnd ) {
+    if ( std::find( begin(), end(), *itPoint ) == end() ) {
+      set.push_back( *itPoint );
+    }
+    ++itPoint;
+  }
+  return set;
 }
 
 /**
@@ -398,6 +407,17 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::assignFromComplement
 ( const DigitalSetBySTLVector<Domain> & other_set )
 {
+  clear();
+  typename Domain::ConstIterator itPoint = myDomain.begin();
+  typename Domain::ConstIterator itEnd = myDomain.end();
+  while ( itPoint != itEnd ) {
+    if ( std::find( other_set.begin(),
+		    other_set.end(),
+		    *itPoint ) == other_set.end() ) {
+      insert( *itPoint );
+    }
+    ++itPoint;
+  }
 }
     
 /**
