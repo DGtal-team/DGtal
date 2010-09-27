@@ -1,4 +1,4 @@
-# The name of our project is "DGtal". CMakeLists files in this
+c# The name of our project is "DGtal". CMakeLists files in this
 # project can refer to the root source directory of the project as
 # ${DGTAL_SOURCE_DIR} and to the root binary directory of the
 # project as ${DGTAL_BINARY_DIR}.
@@ -222,9 +222,9 @@ SET(CPACK_PACKAGE_VERSION_PATCH 	 ${DGtal_VERSION_PATCH})
 # for other generator set specific backend information
 INCLUDE(InstallRequiredSystemLibraries)
 
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal project")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal Project")
 SET(CPACK_PACKAGE_VENDOR ".")
-#SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt") TODO
+#SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.txt") TODO
 #SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt") TODO
 SET(CPACK_PACKAGE_CONTACT "dgtal@liris.cnrs.fr" )
 SET(CPACK_NSIS_CONTACT "dgtal@liris.cnrs.fr")
