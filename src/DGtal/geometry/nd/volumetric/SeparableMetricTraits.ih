@@ -1,0 +1,27 @@
+/**
+ * @file SeparableMetricTraits.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/08/01
+ *
+ * Implementation of inline methods defined in SeparableMetricTraits.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//Specialization for the euclidean metric
+template<typename Integer, 2>
+inline
+int 
+DGtal::SeparableMetricTraits<T,2>::
+}

@@ -1,0 +1,39 @@
+
+
+Separable Metric Traits
+=======================
+
+ * fonctions Sep et F pour les metriques Lp
+ * Fonction pour passer du type interne au resultat ( x^2 -> x pour d_2)
+ * params:
+     - p
+     - le type pour les entiers représentants les abscisses 1D
+     - le type interne pour les valeurs de la metrique (utiliser pour
+instancier l'image de sortie de resultat)
+
+
+ * Ex d_p
+     - par defaut type des valeurs = double ? 
+     - ExactComputation = false
+     - arithmétique sur les doubles
+
+ * Ex d_1
+     - par defaut type des valeurs = pareil que entrée
+     - ExactComputation = true
+     
+ * Ex d_1
+     - par defaut type des valeurs = pareil que entrée
+     - ExactComputation = true
+
+ * Ex d_2:
+     - type valeurs =  Integer2 avec suffisamment de bits pour stocker
+ dim*width^2
+     - ExactComputation = true
+ 
+
+Arithmetique & Cas des infty
+============================
+
+ * Infty uniquement pour la DT
+ * il faut s'en passer
+
