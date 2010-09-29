@@ -22,6 +22,15 @@
 */
 
 
+/*! \namespace DGtal::experimental
+*  \brief \p Experimental functions and types of the DGtal library.
+*/
+
+
+/*! \namespace DGtal::deprecated
+*  \brief \p Deprecated functions and types of the DGtal library.
+*/
+
 /**
  * \mainpage DGtal - Digital Geometry Tools and Algorithms.
  *

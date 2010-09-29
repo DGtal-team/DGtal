@@ -25,6 +25,7 @@
 using namespace std;
 using namespace DGtal;
 
+
 template<typename Image>
 double builtinIteratorScan(const Image &aImage)
 {

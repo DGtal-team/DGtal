@@ -36,7 +36,6 @@
 
 namespace DGtal
 {
-  //typedef std::size_t size_t;
   typedef unsigned int uint;
 
   typedef boost::uint16_t uint16_t;
@@ -46,91 +45,6 @@ namespace DGtal
   typedef boost::int16_t int16_t;
   typedef boost::int32_t int32_t;
   typedef boost::int64_t int64_t;
-
-
-/////////////////////////////////////////////////////////////////////////////
-// class BasicTypes
-/**
- * Description of class 'BasicTypes' <p>
- * Aim: This class tests the correctness of basic types.
- * @todo Check all defined basic types.
- */
-class BasicTypes
-{
-    // ----------------------- Standard services ------------------------------
-public:
-
-    /**
-     * Destructor.
-     */
-    ~BasicTypes();
-
-    // ----------------------- Interface --------------------------------------
-public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-private:
-    // ------------------------- Private Datas --------------------------------
-private:
-
-    // ------------------------- Hidden services ------------------------------
-protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    BasicTypes();
-
-private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    BasicTypes ( const BasicTypes & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    BasicTypes & operator= ( const BasicTypes & other );
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of class BasicTypes
-
-
-/**
- * Overloads 'operator<<' for displaying objects of class 'BasicTypes'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'BasicTypes' to write.
- * @return the output stream after the writing.
- */
-inline
-  std::ostream&
-  operator<< ( std::ostream & out, const BasicTypes & object )
- {
-   object.selfDisplay( out );
-   return out;
-  }
-
 
 } // namespace DGtal
 
