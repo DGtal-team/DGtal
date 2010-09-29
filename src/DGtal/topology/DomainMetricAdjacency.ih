@@ -28,7 +28,7 @@
  */
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::DomainMetricAdjacency( const Domain & aDomain )
   : myDomain( aDomain )
 {
@@ -40,7 +40,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
  */
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::DomainMetricAdjacency( const DomainMetricAdjacency & other )
   : myDomain( other.myDomain )
 {
@@ -51,7 +51,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
  */
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::~DomainMetricAdjacency()
 {
 }
@@ -70,7 +70,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool 
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isAdjacentTo
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isAdjacentTo
 ( const Point & p1, const Point & p2 ) const
 {
   ASSERT( myDomain.isInside( p1 ) && myDomain.isInside( p2 ) );
@@ -88,7 +88,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isAdjacentTo
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool 
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isProperlyAdjacentTo
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isProperlyAdjacentTo
 ( const Point & p1, const Point & p2 ) const
 {
   ASSERT( myDomain.isInside( p1 ) && myDomain.isInside( p2 ) );
@@ -114,7 +114,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isProperlyAdjacentTo
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 template <typename OutputIterator>
 void 
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighborhood
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighborhood
 ( const Point & p, OutputIterator & out_it ) const
 {
   Point p1( p );
@@ -152,7 +152,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighborhood
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 template <typename OutputIterator>
 void
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProperNeighborhood
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProperNeighborhood
 ( const Point & p, OutputIterator & out_it ) const
 {
   Point p1( p );
@@ -189,7 +189,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProperNeighborhood
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
 void
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::selfDisplay ( std::ostream & out ) const
 {
   out << "[DomainMetricAdjacency domain=" 
       << myDomain << "]";
@@ -202,7 +202,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::selfDisplay ( std::ostr
 template <typename Domain, std::size_t maxNorm1, std::size_t dimension>
 inline
 bool
-DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() const
+DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() const
 {
     return true;
 }
@@ -215,7 +215,7 @@ DGtal::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() const
 template <typename Domain, std::size_t maxNorm1>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::deprecated::operator<< ( std::ostream & out, 
 		    const DomainMetricAdjacency<Domain,maxNorm1,
 		    Domain::Space::staticDimension> & object )
 {

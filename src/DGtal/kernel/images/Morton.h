@@ -28,7 +28,7 @@
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/utils/Bits.h"
+#include "DGtal/base/Bits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
