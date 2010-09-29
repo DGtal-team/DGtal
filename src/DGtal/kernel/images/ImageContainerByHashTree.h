@@ -27,7 +27,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/Bits.h"
+#include "DGtal/base/Bits.h"
 #include "Board/Board.h"
 #include "Board/Color.h"
 #include "DGtal/kernel/images/Morton.h"
