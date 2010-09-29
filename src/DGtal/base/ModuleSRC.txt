@@ -1,5 +1,4 @@
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
 	DGtal/base/Common
-	DGtal/base/BasicTypes 
 	DGtal/base/OrderedAlphabet)

@@ -7,10 +7,13 @@ SET(DGTAL_TESTS_SRC
 #   testImageSpanIterators
    testInteger
    testPointVector
-   testSpaceND)
+   testSpaceND
+   testMorton
+   testHashTree)
 
 SET(DGTAL_BENCH_SRC
   testImageContainerBenchmark
+   testImageContainerByHashTree
   )
 
 
