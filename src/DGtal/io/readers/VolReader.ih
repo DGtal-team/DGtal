@@ -46,7 +46,11 @@ DGtal::VolReader<T>::importVol (const std::string & filename )   throw(DGtal::DG
   fin = fopen( filename.c_str() , "r" );
 
   if (fin == NULL) 
-    trace.error() << "VolReader : can't open "<< filename<<endl;
+    {
+      trace.error() << "VolReader : can't open "<< filename<<endl;
+      throw dgtalexception;
+    }
+
   
   // Read header
   // Buf for a line 
