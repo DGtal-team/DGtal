@@ -90,8 +90,10 @@ namespace DGtal
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
+    typedef typename Space::DimensionType DimensionType;
     typedef typename Space::SizeType SizeType;
     typedef typename Point::Coordinate Coordinate;
+    
 
     // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
