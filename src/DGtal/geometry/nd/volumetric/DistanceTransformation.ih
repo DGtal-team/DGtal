@@ -44,37 +44,31 @@ DGtal::DistanceTransformation<I,O,SepM>::~DistanceTransformation()
 template <typename I,typename O, typename SepM>
 template <typename Functor>
 inline
-O &
+O 
 DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage)
 {
-  O *output = new O(aImage.lowerBound(), aImage.upperBound());
-  O *swap = new O(aImage.lowerBound(), aImage.upperBound());
+  O output(aImage.lowerBound(), aImage.upperBound());
+  O swap(aImage.lowerBound(), aImage.upperBound());
   bool isSwap =true;
 
   //First step
-  computeFirstStep<Functor>(aImage, *output);
+  computeFirstStep<Functor>(aImage, output);
   
   //We process the dimensions
   for(unsigned int dim = 1; dim < I::staticDimension ; dim++)
     {
       if (isSwap)
-	computeOtherSteps( *output, *swap, dim);
+	computeOtherSteps( output, swap, dim);
       else
-	computeOtherSteps( *swap, *output, dim);
+	computeOtherSteps( swap, output, dim);
       
       isSwap = !isSwap;
     }
     
   if (!isSwap)
-    {
-      delete swap;
-      return *output;
-    }
+    return output;
   else
-    {
-      delete output;
-      return *swap;
-    }
+    return swap;
 }
 
 
