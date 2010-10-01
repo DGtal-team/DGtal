@@ -56,7 +56,7 @@ namespace DGtal
      * @param filename name of the output file
      * @return an instance of  Object.
      */
-    static Object & importXML(const std::string & filename);
+    static Object importXML(const std::string & filename);
     
     /** 
      * Import an Object with the Boost serialisation process
@@ -65,7 +65,7 @@ namespace DGtal
      * @param filename name of the output file
      * @return an instance of  Object.  
      */
-    static Object & importTXT(const std::string & filename);
+    static Object importTXT(const std::string & filename);
     
 
     /** 
@@ -76,7 +76,7 @@ namespace DGtal
      * 
      * @return an instance of  Object.
      */
-    static Object & importBIN(const std::string & filename);
+    static Object importBIN(const std::string & filename);
     
 
   };

@@ -20,11 +20,12 @@
 
 template <typename T>
 inline
-T &
-DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent )
+T 
+DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent ) throw(DGtal::DGtalIOException)
 {
   FILE * fin;
   int errcode;
+  DGtal::DGtalIOException dgtalerror;
 
   fin = fopen( filename.c_str() , "r" );
 
@@ -46,7 +47,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
 
     
   typename T::Domain domain(firstPoint,lastPoint);
-  T * image = new T(firstPoint,lastPoint);
+  T image(firstPoint,lastPoint);
   typename T::ValueType val;
 
   //We scan the Raw file
@@ -56,7 +57,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   while ((fin) && (it != itend))
     {
       val = getc(fin);  
-      image->setValue( (*it),val);
+      image.setValue( (*it),val);
       it++;
       count++;
     }
@@ -66,10 +67,9 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   if (count != size )
     {
       trace.error() << "RawReader: error while opening file "<<filename<<endl;
-      delete image;
-      return (*image);
+      throw dgtalerror;
     }
   else
-    return (*image);
+    return image;
 }
 

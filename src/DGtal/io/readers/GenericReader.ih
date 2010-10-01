@@ -25,14 +25,14 @@
 
 namespace DGtal {
 template<typename O>
-typename O &
+typename O
 GenericWriter<O>::importTXT(const std::string & filename)
 {
  
   std::ifstream in;
   
   //Default constructor
-  O * aObject = new O();
+  O  aObject();
 
   in.open(filename.c_str());
   boost::archive::text_iarchive oa(in);
@@ -46,14 +46,14 @@ GenericWriter<O>::importTXT(const std::string & filename)
 
 
 template<typename O>
-typename O &
+typename O 
 GenericWriter<O>::importXML(const std::string & filename)
 {
   ASSERT("Not yet implemented"=="");
 }
 
 template<typename O>
-typename O &
+typename O 
 GenericWriter<O>::importBIN(const std::string & filename)
 {
   ASSERT("Not yet implemented"=="");
