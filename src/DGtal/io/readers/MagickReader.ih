@@ -23,17 +23,15 @@
 
 template <typename TImageContainer>
 inline
-TImageContainer &
-DGtal::MagickReader<TImageContainer>::importImage
-(const std::string & filename )
-// JOL remove extent
-// (const std::string & filename, const Vector & extent )
+TImageContainer 
+DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename ) throw(DGtal::DGtalIOException)
 {
   FILE * fin;
   int errcode;
   int w,h;
   const Magick::PixelPacket *cacheRead;
-  
+  DGtal::DGtalIOException dgtalio;
+
   Magick::Image img = Magick::Image ( filename );
 
   w = img.size().width();
@@ -55,7 +53,7 @@ DGtal::MagickReader<TImageContainer>::importImage
   lastPoint[1] = h-1;
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer * image = new TImageContainer(firstPoint,lastPoint);
+  TImageContainer image(firstPoint,lastPoint);
   typename TImageContainer::ValueType val;
 
   //We scan the Raw file
@@ -68,9 +66,9 @@ DGtal::MagickReader<TImageContainer>::importImage
       const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 );
       ///@todo create converters RGB->ValueType
       val = (pixel->red + pixel->green + pixel->blue) % 256;
-      image->setValue( (*it), val  );
+      image.setValue( (*it), val  );
     }
 
-  return (*image);
+  return image;
 }
 

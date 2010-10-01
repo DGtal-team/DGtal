@@ -85,8 +85,8 @@ namespace DGtal
      * @param extent the size of the raw data set.
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer & importRaw8(const std::string & filename,
-				       const Vector & extent);
+    static ImageContainer importRaw8(const std::string & filename,
+				     const Vector & extent) throw(DGtal::DGtalIOException);
     
   }; // end of class RawReader
 

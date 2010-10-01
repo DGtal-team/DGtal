@@ -29,19 +29,24 @@
 
 template <typename T>
 inline
-T &
-DGtal::VolReader<T>::importVol (const std::string & filename )
+T 
+DGtal::VolReader<T>::importVol (const std::string & filename )   throw(DGtal::DGtalIOException)
 {
   FILE * fin;
   int errcode;
-  T  *image;
+  DGtal::DGtalIOException dgtalexception;
+
+
+  typename T::Point firstPoint(0,0,0);
+  typename T::Point lastPoint(0,0,0);
+  T nullImage(firstPoint,lastPoint);
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
   fin = fopen( filename.c_str() , "r" );
 
   if (fin == NULL) 
-      trace.error() << "VolReader : can't open "<< filename<<endl;
+    trace.error() << "VolReader : can't open "<< filename<<endl;
   
   // Read header
   // Buf for a line 
@@ -60,7 +65,7 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	{
 	  trace.error() << "VolReader: Line "<< linecount << " too long" << std::endl;
 	  ///@todo FIXME
-	  return (*image);
+	  throw dgtalexception;
 	}
     
       int i;
@@ -70,7 +75,7 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	{
 	  trace.error() << "VolReader: Invalid header read at line "<< linecount << std::endl;
 	  ///@todo FIXME
-	  return (*image);
+	  throw dgtalexception;
 	} 
       else 
 	{
@@ -107,7 +112,7 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	trace.error() << "VolReader: Required Header Field missing: "
 		      << requiredHeaders[i] <<std::endl;
 	///@todo FIXME
-	return (*image);
+	throw dgtalexception;
 
       }
     }
@@ -131,7 +136,7 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	{
 	  trace.error() << "VolReader: can't read file (raw header)\n";
 	  ///@todo FIXME
-	  return (*image);
+	  throw dgtalexception;
 	}
 
 
@@ -145,7 +150,7 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	{
 	  trace.error() << "VolReader: This file was generated with a voxel-size that we do not support.\n";
 	  ///@todo FIXME
-	  return (*image);
+	  throw dgtalexception;
 	}
 	
       // We should have a useless \n in the file at this point
@@ -156,15 +161,14 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 	{
 	  trace.error()<< "VolReader: I thouhgt I would have read a \\n !\n";
 	  ///@todo FIXME
-	  return (*image);
+	  throw dgtalexception;
 	}
     }
       
   //Raw Data 
   long count = 0;
 		
-  typename T::Point firstPoint;
-  typename T::Point lastPoint;
+  
       
   firstPoint = T::Point::zero;
   lastPoint[0] = sx-1;      
@@ -174,37 +178,38 @@ DGtal::VolReader<T>::importVol (const std::string & filename )
 
   try 
     {
-      image = new T(firstPoint,lastPoint);
+      T image(firstPoint,lastPoint);
+ 	
+      count = 0;
+      unsigned char val;
+      typename T::Domain::ConstIterator it = domain.begin();
+      long int total = sx*sy*sz;
+  
+      while ((count < total) && (fin))
+	{
+	  val = getc(fin);  
+	  image.setValue( (*it),val);
+	  it++;
+	  count++;
+	}
+  
+      if (count != total) 
+	{
+	  trace.error()<< "VolReader: can't read file (raw data) !\n";
+	  ///@todo FIXME
+	  throw dgtalexception;
+	}
+
+      fclose( fin ); 
+      return image;
     }
   catch (...) 
     {
       trace.error()<< "VolReader: not enough memory\n" ;
       ///@todo FIXME
-      return (*image);
-    }
-	
-  count = 0;
-  unsigned char val;
-  typename T::Domain::ConstIterator it = domain.begin();
-  long int total = sx*sy*sz;
-  
-  while ((count < total) && (fin))
-    {
-      val = getc(fin);  
-      image->setValue( (*it),val);
-      it++;
-      count++;
-    }
-  
-  if (count != total) 
-    {
-      trace.error()<< "VolReader: can't read file (raw data) !\n";
-      ///@todo FIXME
-      return (*image);
+      throw dgtalexception;
     }
 
-  fclose( fin ); 
-  return (*image);
 }
 
 

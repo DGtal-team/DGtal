@@ -63,7 +63,7 @@ namespace DGtal
      * @param filename the file name to import.
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer & importImage(const std::string & filename);
+    static ImageContainer importImage(const std::string & filename) throw(DGtal::DGtalIOException);
     
   }; // end of class MagickReader
 

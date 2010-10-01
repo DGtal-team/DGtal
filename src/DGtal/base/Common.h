@@ -26,6 +26,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <exception>
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
@@ -58,6 +59,14 @@ namespace DGtal
   
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
+  
+  class DGtalIOException: public exception
+  {
+    virtual const char* what() const throw()
+    {
+      return "DGtal IO error";
+    }
+  };
   
   /////////////////////////////////////////////////////////////////////////////
   // class Common
