@@ -23,24 +23,6 @@
 // ----------------------- Standard services ------------------------------
 
 
-// // /**
-// //  * Destructor.
-// //  */
-// // template <typename T>
-// // inline
-// // DGtal::VolReader<T>::VolReader()
-// // {
-// // }
-
-// // /**
-// //  * Destructor.
-// //  */
-// // template <typename T>
-// // inline
-// // DGtal::VolReader<T>::~VolReader()
-// // {
-// // }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

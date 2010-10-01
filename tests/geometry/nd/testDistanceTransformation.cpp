@@ -52,17 +52,16 @@ bool testDistanceTransformation()
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image(a,b);
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-  ImageLong *result;
-
+  
   typedef SeparableMetricTraits<unsigned int,  unsigned int, 2> L_2;
 
   DistanceTransformation<Image,ImageLong,L_2> dt;
   
   dt.checkTypesValidity(image);
 
-  result = dt.compute(image);
+  ImageLong result = dt.compute(image);
 
-  trace.info() << *result <<endl;
+  trace.info() << result <<endl;
   
   trace.endBlock();
 

@@ -44,7 +44,7 @@ DGtal::DistanceTransformation<I,O,SepM>::~DistanceTransformation()
 template <typename I,typename O, typename SepM>
 template <typename Functor>
 inline
-O *
+O &
 DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage)
 {
   O *output = new O(aImage.lowerBound(), aImage.upperBound());
@@ -52,15 +52,15 @@ DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage)
   bool isSwap =true;
 
   //First step
-  computeFirstStep<Functor>(aImage, output);
+  computeFirstStep<Functor>(aImage, *output);
   
   //We process the dimensions
   for(unsigned int dim = 1; dim < I::staticDimension ; dim++)
     {
       if (isSwap)
-	computeOtherSteps( output, swap, dim);
+	computeOtherSteps( *output, *swap, dim);
       else
-	computeOtherSteps( swap, output, dim);
+	computeOtherSteps( *swap, *output, dim);
       
       isSwap = !isSwap;
     }
@@ -68,12 +68,12 @@ DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage)
   if (!isSwap)
     {
       delete swap;
-      return output;
+      return *output;
     }
   else
     {
       delete output;
-      return swap;
+      return *swap;
     }
 }
 
@@ -99,7 +99,7 @@ template <typename I,typename O,typename SepM>
 template <typename Functor>
 inline
 void
-DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O *output)
+DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O &output)
 {
   Functor isForeground;
   
@@ -111,7 +111,7 @@ DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O *o
 template <typename I,typename O,typename SepM>
 inline
 void
-DGtal::DistanceTransformation<I,O,SepM>::computeOtherSteps(const O *input, O *output, const DimensionType dim)
+DGtal::DistanceTransformation<I,O,SepM>::computeOtherSteps(const O &input, O &output, const DimensionType dim)
 {
   std::string title = "DT Step ";
   trace.beginBlock(title);
