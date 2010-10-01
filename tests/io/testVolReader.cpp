@@ -87,6 +87,44 @@ bool testVolReader()
   return nbok == nb;
 }
 
+
+bool testIOException()
+{
+   unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing VolReader ..." );
+
+  typedef SpaceND<int,3> Space4Type;
+  typedef HyperRectDomain<Space4Type> TDomain;
+  typedef TDomain::Point Point;
+  
+  //Default image selector = STLVector
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
+  
+  
+  std::string filename = testPath + "samples/null.vol";
+  try
+    {
+      Image image = VolReader<Image>::importVol( filename );
+    }
+  catch(exception& e)
+    {
+      trace.info() << "Exception catched. Message : "<< e.what()<<endl;
+    }
+  
+  
+ 
+  nbok += ( true )  ? 1 : 0; 
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -98,7 +136,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testVolReader(); // && ... other tests
+  bool res = testVolReader() && testIOException(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
