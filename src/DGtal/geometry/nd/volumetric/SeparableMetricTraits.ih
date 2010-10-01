@@ -19,9 +19,3 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-//Specialization for the euclidean metric
-template<typename Integer, 2>
-inline
-int 
-DGtal::SeparableMetricTraits<T,2>::
-}

@@ -74,7 +74,6 @@ endif (APPLE)
 # -----------------------------------------------------------------------------
 # Test some c++0x functionalities
 # -----------------------------------------------------------------------------
-# Look for modules
 try_compile( CPP0X_INITIALIZER_LIST 
   ${CMAKE_BINARY_DIR}/CMakeTmp
   ${CMAKE_SOURCE_DIR}/tests/cpp0x/initializer_list.cpp
@@ -84,6 +83,8 @@ try_compile( CPP0X_INITIALIZER_LIST
 if ( CPP0X_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_INITIALIZER_LIST")
   message( "-- [c++0x] with initializer_list" )
+else ( CPP0X_INITIALIZER_LIST )
+  message( "-- [c++0x] initializer_list not found" )
 endif ( CPP0X_INITIALIZER_LIST )
 
 try_compile( CPP0X_AUTO 
@@ -95,6 +96,8 @@ try_compile( CPP0X_AUTO
 if ( CPP0X_AUTO )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_AUTO")
   message( "-- [c++0x] with auto" )
+else ( CPP0X_AUTO )
+  message( "-- [c++0x] auto not found" )
 endif ( CPP0X_AUTO )
 
 # -----------------------------------------------------------------------------
