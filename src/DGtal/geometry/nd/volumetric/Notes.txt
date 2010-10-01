@@ -1,4 +1,13 @@
 
+=================
+
+ * dans le Traits;
+   * changer le type integer en le type "ExtentType"
+   * passer un domaine en param template de separable ? (utile
+   uniquement pour SEP)
+
+
+
 
 Separable Metric Traits
 =======================

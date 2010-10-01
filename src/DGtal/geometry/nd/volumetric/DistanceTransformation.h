@@ -123,16 +123,16 @@ namespace DGtal
      * @return the distance transformation image with the Internal format.
      */
     template <typename ForegroundPredicate = DefaultForegroundPredicate>
-    ImageOutput * compute(const Image & inputImage);
+    ImageOutput & compute(const Image & inputImage);
 
 
     // ------------------- Private functions ------------------------
   private:
     
     template <typename ForegroundPredicate>
-    void computeFirstStep(const Image & aImage, ImageOutput *output);
+    void computeFirstStep(const Image & aImage, ImageOutput & output);
  
-    void computeOtherSteps(const ImageOutput * inputImage, ImageOutput *output, const DimensionType dim);
+    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const DimensionType dim);
     
     
     // ------------------- Private members ------------------------
