@@ -36,8 +36,8 @@ DGtal::ArithDSS4<Domain2D>::~ArithDSS4()
  */
 template <typename Domain2D>
 DGtal::ArithDSS4<Domain2D>::ArithDSS4(
-	const typename DGtal::ArithDSS4<Domain2D>::Point& aFirstPoint, 
-	const typename DGtal::ArithDSS4<Domain2D>::Point& aSecondPoint)
+	 const typename DGtal::ArithDSS4<Domain2D>::Point& aFirstPoint, 
+	 const typename DGtal::ArithDSS4<Domain2D>::Point& aSecondPoint)
 {
 
 	//todo: 

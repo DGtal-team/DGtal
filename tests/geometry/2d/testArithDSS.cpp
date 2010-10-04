@@ -41,11 +41,33 @@ int main(int argc, char **argv)
   
   Point firstPoint ( 0, 0  );
   Point secondPoint (  1, 0  );
+  
+  // Initialisation of a DSS
+  ArithDSS4<Domain2D> theDSS(firstPoint,secondPoint);		
+  
 
-    trace.info() << "Init of a DSS ";
-		ArithDSS4<Domain2D> theDSS(firstPoint,secondPoint);		
-    trace.emphase() <<" hop "<<endl;
-
+  // Print the result of the initialisation
+  trace.beginBlock("Init of a DSS");
+  std::cout << theDSS;
+  trace.endBlock();
+  
+  // Add some points
+  Point a(1,1);
+  theDSS.add(a);
+  
+  Point b(2,1);
+  theDSS.add(b);
+  
+  Point c(3,1);
+  theDSS.add(c);
+  
+  // Print the result
+  trace.beginBlock("Add some points");
+  std::cout << theDSS;
+  trace.endBlock();
+  
+  
+  
 
     return 0;
 }

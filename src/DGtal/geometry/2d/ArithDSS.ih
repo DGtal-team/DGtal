@@ -23,17 +23,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-template <typename Domain2D>
-inline
-void 
-DGtal::ArithDSS<Domain2D>::selfDisplay ( std::ostream & out ) const
-{
-	out << "("<< myA << "/" << myB << ", ";
-	out << myMu << ", " << (myMu+myOmega-1) << ") ";
-	out << "first " << myF << "last " << myL;
-	out << "Uf " << myUf << "Ul " << myUl;
-	out << "Lf " << myLf << "Ll " << myLl;
-}
+ /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+
+
+
 
 template <typename Domain2D>
 inline
@@ -56,10 +52,10 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
 	Integer deviation = norm(step.at(0),step.at(1));
 	if ( (deviation>1)||(deviation<=0) ) return false;
 	else {
-
-		//remainder
-		Integer r = myA*aPoint.at(0) - myB*aPoint.at(1);
-
+	  
+	  //remainder
+	  Integer r = myA*aPoint.at(0) - myB*aPoint.at(1);
+	  	  
 		if ( (r < myMu-1)||(r > myMu+myOmega) )
 			return false; //strongly exterior
 		else { 
@@ -103,15 +99,33 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
  * @return the output stream after the writing.
  */
 
-template <typename Domain2D>
-inline 
-std::ostream&
-DGtal::operator<< ( std::ostream & out,
-                  const ArithDSS<Domain2D> & object )
-{
-    object.selfDisplay ( out );
-    return out;
-}
+//template <typename Domain2D>
+//inline 
+//std::ostream&
+//DGtal::operator<< ( std::ostream & out,
+//                  const ArithDSS<Domain2D> & object )
+//{
+//   
+//}
+
+  template < typename Domain2D>
+  inline
+  void
+  DGtal::ArithDSS<Domain2D>::selfDisplay ( std::ostream & out)
+  {
+    
+    out << "[ArithDSS] \n" << "Parameters (a,b,mu,omega)=" << 
+"("<< myA << ", " << myB << ", ";
+    out << myMu << ", " << (myMu+myOmega-1) << ")\n";
+    out << "First point " << myF << " Last point " << myL << "\n";
+    out << "Leaning points\n";
+    out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
+    out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;
+    out << "[End ArithDSS]\n";
+    
+  }
+
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

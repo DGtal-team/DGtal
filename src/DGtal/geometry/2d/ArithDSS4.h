@@ -56,7 +56,6 @@ namespace DGtal
      */
     ArithDSS4(const Point& aFirstPoint, const Point& aSecondPoint);
 
-
     /**
      * Destructor.
      */
@@ -112,10 +111,12 @@ namespace DGtal
    * @param object the object of class 'ArithDSS4' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
-  std::ostream&
-  operator<< ( std::ostream & out, const ArithDSS4<T> & object );
-
+ /*  template <typename T> */
+/*   std::ostream&  operator<< ( std::ostream & out, const ArithDSS4<T> & object ) */
+/*   { */
+/*       object.selfDisplay( out); */
+/*       return out; */
+/*     } */
 } // namespace DGtal
 
 
