@@ -72,8 +72,8 @@ public:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
-
+    void selfDisplay ( std::ostream & out ) ;
+     
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -149,7 +149,11 @@ private:
  */
 template<typename Domain2D>
 std::ostream&
-operator<< ( std::ostream & out, const ArithDSS<Domain2D> & object );
+operator<< ( std::ostream & out,  ArithDSS<Domain2D> & object )
+  {
+      object.selfDisplay( out);
+      return out;
+    }
 
 
 } // namespace DGtal
