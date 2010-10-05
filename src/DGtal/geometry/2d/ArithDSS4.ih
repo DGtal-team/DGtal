@@ -53,8 +53,8 @@ DGtal::ArithDSS4<Domain2D>::ArithDSS4(
 	this->myUl = aSecondPoint;
 	this->myLl = aSecondPoint;
 
-	this->myA = this->myUl.at(0) - this->myUf.at(0); 
-	this->myB = this->myUl.at(1) - this->myUf.at(1); 
+	this->myA = this->myUl.at(1) - this->myUf.at(1); 
+	this->myB = this->myUl.at(0) - this->myUf.at(0); 
 	this->myMu = this->myA*this->myUl.at(0) - this->myB*this->myUl.at(1);
 	this->myOmega = norm(this->myA,this->myB);
 
