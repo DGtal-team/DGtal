@@ -69,15 +69,15 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
 			if (r == myMu-1) {	
 				myUl = aPoint; 
 				myLf = myLl;
-				myA = myUl.at(0) - myUf.at(0); 
-				myB = myUl.at(1) - myUf.at(1); 
+				myA = myUl.at(1) - myUf.at(1); 
+				myB = myUl.at(0) - myUf.at(0); 
 				myMu = myA*myUl.at(0) - myB*myUl.at(1);
 				myOmega = norm(myA,myB);
-			} else if (r == myMu+myOmega+1) { 
+			} else if (r == myMu+myOmega) { 
 				myLl = aPoint; 
 				myUf = myUl; 
-				myA = myLl.at(0) - myLf.at(0); 
-				myB = myLl.at(1) - myLf.at(1); 
+				myA = myLl.at(1) - myLf.at(1); 
+				myB = myLl.at(0) - myLf.at(0); 
 				myMu = myA*myUl.at(0) - myB*myUl.at(1);
 				myOmega = norm(myA,myB);
 			}
@@ -116,7 +116,7 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
     
     out << "[ArithDSS] \n" << "Parameters (a,b,mu,omega)=" << 
 "("<< myA << ", " << myB << ", ";
-    out << myMu << ", " << (myMu+myOmega-1) << ")\n";
+    out << myMu << ", " << myOmega << ")\n";
     out << "First point " << myF << " Last point " << myL << "\n";
     out << "Leaning points\n";
     out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
