@@ -24,13 +24,13 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename ) throw(DGtal::DGtalIOException)
+DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename ) throw(DGtal::IOException)
 {
   FILE * fin;
   int errcode;
   int w,h;
   const Magick::PixelPacket *cacheRead;
-  DGtal::DGtalIOException dgtalio;
+  DGtal::IOException dgtalio;
 
   Magick::Image img = Magick::Image ( filename );
 

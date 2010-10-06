@@ -44,6 +44,7 @@
 #include "DGtal/utils/Assert.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
+#include "DGtal/base/Exceptions.h"
 #include "Board/Board.h"
 
 
@@ -60,14 +61,7 @@ namespace DGtal
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
   
-  class DGtalIOException: public exception
-  {
-    virtual const char* what() const throw()
-    {
-      return "DGtal IO error";
-    }
-  };
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class Common
   /** 
