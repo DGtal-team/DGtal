@@ -111,7 +111,7 @@ DGtal::FreemanChain::constIterator::~constIterator()
 /**
  * @return the current coordinates.
  */
-PointVector<int, 2> 
+PointVector<2, int> 
 DGtal::FreemanChain::constIterator::operator*() const
 {
   return myXY;
@@ -120,7 +120,7 @@ DGtal::FreemanChain::constIterator::operator*() const
 /**
  * @return the current coordinates.
  */
-DGtal::PointVector<int, 2>
+DGtal::PointVector<2, int>
 DGtal::FreemanChain::constIterator::get() const
 {
   return myXY;
@@ -444,7 +444,7 @@ DGtal::FreemanChain::displacement( int & dx, int & dy, unsigned int aCode )
  * Returns the displacement vector of the Freeman code.
  */
 INLINE
-DGtal::PointVector<int, 2>
+DGtal::PointVector<2, int>
 DGtal::FreemanChain::displacement( unsigned int aCode )
 {
   

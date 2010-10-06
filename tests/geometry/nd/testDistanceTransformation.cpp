@@ -43,7 +43,7 @@ bool testDistanceTransformation()
   
   trace.beginBlock("Testing the whole DT computation");
   
-  typedef SpaceND<int,2> TSpace;
+  typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   
@@ -79,7 +79,7 @@ bool testTypeValidity()
   
   trace.beginBlock("Testing type checker");
   
-  typedef SpaceND<int,2> TSpace;
+  typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   

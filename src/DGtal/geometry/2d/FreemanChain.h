@@ -53,7 +53,7 @@ class FreemanChain
 {
 
 public :
-  typedef PointVector<int ,2> PointI2D;
+  typedef PointVector<2,int> PointI2D;
 
    // ------------------------- iterator ------------------------------
   public:

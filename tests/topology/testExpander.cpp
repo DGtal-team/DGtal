@@ -56,7 +56,7 @@ bool testExpander()
   unsigned int nb = 0;
   
   // ------------------------------ Types ------------------------------
-  typedef SpaceND< int, 3 > Z3;
+  typedef SpaceND< 3 > Z3;
   typedef Z3::Point Point;
   typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z3 > Domain; 

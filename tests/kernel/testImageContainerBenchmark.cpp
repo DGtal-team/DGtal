@@ -120,7 +120,7 @@ bool testImageContainerBenchmark()
   for(unsigned int n = 100; n < 2000 ; n=n+100)
     {
       trace.beginBlock("Begin test suite");
-      typedef SpaceND<int,2> Space;
+      typedef SpaceND<2> Space;
       typedef Space::Point Point;
       typedef HyperRectDomain<Space> Domain;
       //Default image selector = STLVector
@@ -138,7 +138,7 @@ bool testImageContainerBenchmark()
   for(unsigned int n = 100; n < 2048 ; n=n+100)
     {
       trace.beginBlock("Begin test suite");
-      typedef SpaceND<int,3> Space;
+      typedef SpaceND<3> Space;
       typedef Space::Point Point;
       typedef HyperRectDomain<Space> Domain;
       //Default image selector = STLVector
@@ -155,7 +155,7 @@ bool testImageContainerBenchmark()
   for(unsigned int n = 50; n < 200 ; n=n+20)
     {
       trace.beginBlock("Begin test suite");
-      typedef SpaceND<int,4> Space;
+      typedef SpaceND<4> Space;
       typedef Space::Point Point;
       typedef HyperRectDomain<Space> Domain;
       //Default image selector = STLVector
@@ -172,7 +172,7 @@ bool testImageContainerBenchmark()
   for(unsigned int n = 50; n < 100 ; n=n+10)
     {
       trace.beginBlock("Begin test suite");
-      typedef SpaceND<int,5> Space;
+      typedef SpaceND<5> Space;
       typedef Space::Point Point;
       typedef HyperRectDomain<Space> Domain;
       //Default image selector = STLVector

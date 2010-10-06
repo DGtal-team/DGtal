@@ -35,12 +35,12 @@ using namespace std;
 bool testSimpleSpace()
 {
 
-    SpaceND<int,6> aSpace6;
-    SpaceND<long int,2> aSpace2;
+    SpaceND<6> aSpace6;
+    SpaceND<2,long int> aSpace2;
 
     cout << "aSpace6 = " << aSpace6 << endl;
     cout << "aSpace2 = " << aSpace2 << endl;
-    SpaceND<int,6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
+    SpaceND<6>::Subcospace<2>::Type aSpace4 = aSpace6.subcospace<2>();
 // won't work
 // aSpace6::SpaceType::Subcospace<2>::Type aSpace4 = aSpace6.getSubcospace<2>();
     cout << "aSpace6.subcospace<2> = " << aSpace4 << endl;

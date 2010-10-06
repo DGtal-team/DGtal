@@ -35,7 +35,7 @@ using namespace std;
 bool testSimpleImage()
 {
 
-    typedef SpaceND<int,4> Space4Type;
+    typedef SpaceND<4> Space4Type;
     typedef HyperRectDomain<Space4Type> TDomain;
     typedef TDomain::Point Point;
 

@@ -81,7 +81,7 @@ namespace DGtal
    * @see testPointVector.cpp
    *
    */
-  template<typename T, std::size_t N>
+  template<std::size_t N, typename T = int>
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
@@ -545,14 +545,14 @@ namespace DGtal
   }; // end of class PointVector
 
   /// Operator <<
-  template<typename T, std::size_t N>
+  template<std::size_t N, typename T>
   std::ostream&
-  operator<<( std::ostream & out, const PointVector<T,N> & object );
+  operator<<( std::ostream & out, const PointVector<N,T> & object );
+
+  template< std::size_t N,typename T>
+  PointVector<N,T>  PointVector<N,T>::zero;
 
 } // namespace DGtal
-
-template<typename T, std::size_t N>
-PointVector<T,N>  PointVector<T,N>::zero;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions

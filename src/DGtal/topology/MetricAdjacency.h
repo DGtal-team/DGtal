@@ -230,27 +230,27 @@ namespace DGtal
   /**
    * Standard 4-neighborhood for a 2D digital space based on type 'int'.
    */
-  typedef MetricAdjacency< SpaceND<int,2>, 1> Z2Adj4;
+  typedef MetricAdjacency< SpaceND<2>, 1> Z2Adj4;
 
   /**
    * Standard 8-neighborhood for a 2D digital space based on type 'int'.
    */
-  typedef MetricAdjacency< SpaceND<int,2>, 2> Z2Adj8;
+  typedef MetricAdjacency< SpaceND<2>, 2> Z2Adj8;
 
   /**
    * Standard 6-neighborhood for a 3D digital space based on type 'int'.
    */
-  typedef MetricAdjacency< SpaceND<int,3>, 1> Z3Adj6;
+  typedef MetricAdjacency< SpaceND<3>, 1> Z3Adj6;
 
   /**
    * Standard 18-neighborhood for a 3D digital space based on type 'int'.
    */
-  typedef MetricAdjacency< SpaceND<int,3>, 2> Z3Adj18;
+  typedef MetricAdjacency< SpaceND<3>, 2> Z3Adj18;
 
   /**
    * Standard 26-neighborhood for a 3D digital space based on type 'int'.
    */
-  typedef MetricAdjacency< SpaceND<int,3>, 3> Z3Adj26;
+  typedef MetricAdjacency< SpaceND<3>, 3> Z3Adj26;
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'MetricAdjacency'.

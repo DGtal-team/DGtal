@@ -62,7 +62,7 @@ bool testObjectBorder()
   trace.beginBlock ( "Testing Object Borders in 2D ..." );
 
   typedef int Integer;                // choose your digital line here.
-  typedef SpaceND<int,2> Z2;          // Z^2
+  typedef SpaceND<2> Z2;          // Z^2
   typedef Z2::Point Point;
   typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
   typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type

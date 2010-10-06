@@ -51,7 +51,7 @@ bool testSimpleBoard()
   board.saveEPS( "simpleboard.eps" );
   nbok++;
 
-  typedef  PointVector<int,2> Point2D;
+  typedef  PointVector<2> Point2D;
   Point2D apoint, p2;
   apoint[0] = 5;
   p2[0] = 1;
@@ -75,7 +75,7 @@ bool testSimpleBoard()
 
 bool testDomain()
 {
-    typedef SpaceND<int,2> TSpace;
+    typedef SpaceND<2> TSpace;
     typedef TSpace::Point Point;
     Point a ( 1, 1);
     Point b ( 15, 15);
@@ -96,7 +96,7 @@ bool testDomain()
 
     trace.endBlock();
 
-    PointVector<int,3> pl;
+    PointVector<3> pl;
     //An assert should be raised 
     //pl.selfDraw(b2);
 

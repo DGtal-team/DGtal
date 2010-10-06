@@ -57,7 +57,7 @@ bool testObject()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef SpaceND< int, 2 > Z2;
+  typedef SpaceND< 2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z2 > DomainType; 
@@ -238,7 +238,7 @@ bool testObject3D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef SpaceND< int, 3 > Z3;
+  typedef SpaceND<  3 > Z3;
   typedef MetricAdjacency< Z3, 1 > Adj6;
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
@@ -332,7 +332,7 @@ bool testSimplePoints3D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef SpaceND< int, 3 > Z3;
+  typedef SpaceND< 3 > Z3;
   typedef MetricAdjacency< Z3, 1 > Adj6;
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
@@ -396,7 +396,7 @@ bool testDraw()
 
   trace.beginBlock ( "testDraw(): testing drawing commands." );
   
-  typedef SpaceND< int, 2 > Z2;
+  typedef SpaceND<  2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
   typedef HyperRectDomain< Z2 > DomainType; 

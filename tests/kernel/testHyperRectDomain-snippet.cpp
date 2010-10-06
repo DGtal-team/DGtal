@@ -26,7 +26,7 @@ using namespace DGtal;
 int main()
 {
   //We create a digital Space based on 'int' integers and in dimension 4
-  typedef DGtal::SpaceND<int,4> Space4DType;
+  typedef DGtal::SpaceND<4> Space4DType;
   typedef Space4DType::Point Point4DType;
 
   const int rawA[ ] = { 1, 2, 3 ,4};
