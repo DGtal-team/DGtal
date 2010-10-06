@@ -41,11 +41,13 @@ namespace DGtal
    * Description of class 'SpaceND' <p>
    *
    * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
-   * \todo document here!
+   * \todo documentation here!
    *
+   * @tparam Integer the Integer class used to specify the arithmetic (default type = int).
+   * @tparam Dimension the dimension of the Digital Space.
    */
   
-  template <typename Integer, std::size_t Dimension>
+  template <typename Integer = int, std::size_t Dimension>
   class SpaceND
   {
   public:
