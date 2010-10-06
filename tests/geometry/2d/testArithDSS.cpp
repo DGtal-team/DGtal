@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 {
 
 
-  typedef SpaceND<int,2> Space2Type;
+  typedef SpaceND<2> Space2Type;
   typedef HyperRectDomain<Space2Type> Domain2D;
   typedef Space2Type::Point Point;
   

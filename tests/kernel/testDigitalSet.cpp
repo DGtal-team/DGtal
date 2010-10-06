@@ -62,7 +62,7 @@ using namespace LibBoard;
 
 bool testDigitalSetBoardSnippet()
 {
-  typedef SpaceND<int,2> Z2;
+  typedef SpaceND<2> Z2;
   typedef HyperRectDomain<Z2> DomainType;
   typedef Z2::Point Point;
   Point p1(  -10, -10  );
@@ -178,7 +178,7 @@ bool testDigitalSetDraw()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef SpaceND<int,2> Z2;
+  typedef SpaceND<2> Z2;
   typedef HyperRectDomain<Z2> DomainType;
   typedef Z2::Point Point;
   Point p1(  -10, -10  );
@@ -217,7 +217,7 @@ bool testDigitalSetDomain()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef SpaceND<int,2> Z2;
+  typedef SpaceND<2> Z2;
   typedef HyperRectDomain<Z2> DomainType;
   typedef Z2::Point Point;
   Point p1(  -449, -449  );
@@ -262,7 +262,7 @@ bool testDigitalSetDomain()
 
 int main()
 {
-  typedef SpaceND<int,4> Space4Type;
+  typedef SpaceND<4> Space4Type;
   typedef HyperRectDomain<Space4Type> DomainType;
   typedef Space4Type::Point Point;
   

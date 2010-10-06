@@ -46,7 +46,7 @@ bool testHashTree()
   trace.beginBlock ( "Testing simple init ..." );
 
 
-  typedef SpaceND<int,4> Space4Type;
+  typedef SpaceND<4> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
   typedef TDomain::Point Point;
 
@@ -81,7 +81,7 @@ bool testGetSetVal()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef SpaceND<int,2> SpaceType;
+  typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
   Board board;
@@ -193,7 +193,7 @@ bool testBadKeySizes()
    unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef SpaceND<int,2> SpaceType;
+  typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
   Board board;

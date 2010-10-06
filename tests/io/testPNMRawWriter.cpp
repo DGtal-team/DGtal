@@ -44,7 +44,7 @@ bool testPNMWriter()
   
   trace.beginBlock ( "Testing block ..." );
 
-  typedef SpaceND<int,2> TSpace;
+  typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<unsigned char> Hue;

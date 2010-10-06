@@ -34,7 +34,7 @@ bool testDigitalTopologyZ2()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef SpaceND< int, 2 > Zi2;
+  typedef SpaceND< 2 > Zi2;
   typedef MetricAdjacency< Zi2, 1 > Adj4;
   typedef MetricAdjacency< Zi2, 2 > Adj8;
   Adj4 adj4;

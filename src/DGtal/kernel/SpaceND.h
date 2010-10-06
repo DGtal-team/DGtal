@@ -43,11 +43,11 @@ namespace DGtal
    * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
    * \todo documentation here!
    *
-   * @tparam Integer the Integer class used to specify the arithmetic (default type = int).
    * @tparam Dimension the dimension of the Digital Space.
+   * @tparam Integer the Integer class used to specify the arithmetic (default type = int).
    */
   
-  template <typename Integer = int, std::size_t Dimension>
+  template <std::size_t Dimension, typename Integer = int>
   class SpaceND
   {
   public:
@@ -60,11 +60,11 @@ namespace DGtal
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef std::size_t  DimensionType;
     
-    typedef PointVector<Integer, Dimension> Point;
-    typedef PointVector<Integer,Dimension> Vector;
+    typedef PointVector<Dimension, Integer> Point;
+    typedef PointVector<Dimension, Integer> Vector;
     typedef Integer SizeType;
     
-    typedef SpaceND<Integer,Dimension> Space;
+    typedef SpaceND<Dimension,Integer> Space;
 
     // static constants
     static const DimensionType staticDimension = Dimension;
@@ -72,11 +72,11 @@ namespace DGtal
     //typedef Matrix<DimensionT,DimensionT,Integer> Matrix;
     template <std::size_t Codimension>
     struct Subcospace {
-      typedef SpaceND<Integer,Dimension-Codimension> Type;
+      typedef SpaceND<Dimension-Codimension,Integer> Type;
     };
     template <std::size_t Subdimension>
     struct Subspace {
-      typedef SpaceND<Integer,Subdimension> Type;
+      typedef SpaceND<Subdimension,Integer> Type;
     };
     
     
@@ -102,7 +102,7 @@ namespace DGtal
     typename Subspace<Subdimension>::Type subspace()
       {
 	ASSERT( Subdimension <= Dimension );
-	return SpaceND<Integer,Subdimension>();
+	return SpaceND<Subdimension,Integer>();
       }
     
 
@@ -114,7 +114,7 @@ namespace DGtal
     typename Subcospace<Codimension>::Type subcospace()
       {
 	ASSERT( Codimension <= Dimension );
-	return SpaceND<Integer,Dimension-Codimension>();
+	return SpaceND<Dimension-Codimension,Integer>();
       }
 
 
@@ -156,9 +156,9 @@ namespace DGtal
    * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
-  template <typename Integer, std::size_t Dimension>
+  template <std::size_t Dimension, typename Integer>
   static std::ostream&
-  operator<<( std::ostream & out, const SpaceND<Integer,Dimension> & object )
+  operator<<( std::ostream & out, const SpaceND<Dimension,Integer> & object )
   {
     object.selfDisplay( out );
     return out;

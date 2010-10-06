@@ -40,7 +40,7 @@ bool testGenericWriter()
   
   trace.beginBlock ( "Testing Generic ..." );
 
-  typedef SpaceND<int,2> TSpace;
+  typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef TSpace::Vector Vector;
   typedef HyperRectDomain<TSpace> Domain;

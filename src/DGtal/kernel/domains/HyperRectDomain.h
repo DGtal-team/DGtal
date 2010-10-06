@@ -50,7 +50,7 @@ namespace DGtal
    * ...
    *
    * //We create a digital Space based on 'int' integers and in dimension 4
-   * typedef DGtal::Space<int,4> Space4DType;
+   * typedef DGtal::Space<4> Space4DType;
    * typedef Space4DType::TPoint Point4DType;
    *
    * const int rawA[ ] = { 1, 2, 3 ,4};

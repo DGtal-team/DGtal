@@ -47,7 +47,7 @@ bool testMagickReader()
   
   trace.beginBlock ( "Testing block ..." );
 
-  typedef SpaceND<int,2> Space2Type;
+  typedef SpaceND<2> Space2Type;
   typedef HyperRectDomain<Space2Type> TDomain;
   typedef TDomain::Vector Vector;
   

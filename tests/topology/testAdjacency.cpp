@@ -42,7 +42,7 @@ bool testMetricAdjacency()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef SpaceND<int,3> Space3D;
+  typedef SpaceND<3> Space3D;
   typedef Space3D::Point Point;
   // typedef MetricAdjacency<Space3D,1> Adj6;
   // typedef MetricAdjacency<Space3D,2> Adj18;

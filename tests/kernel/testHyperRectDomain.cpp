@@ -36,7 +36,7 @@ using namespace std;
 bool testSimpleHyperRectDomain()
 {
 
-    typedef SpaceND<int,4> Space4Type;
+    typedef SpaceND<4> Space4Type;
     typedef Space4Type::Point Point;
 
     int t [] ={ 1, 2, 3 ,4}; 
@@ -82,7 +82,7 @@ bool testSimpleHyperRectDomain()
 
 bool testIterator()
 {
-    typedef SpaceND<int,2> TSpace;
+    typedef SpaceND<2> TSpace;
     typedef TSpace::Point Point;
     Point a ( 1, 1);
     Point b ( 5, 5);
@@ -99,7 +99,7 @@ bool testIterator()
 
 
     trace.emphase() << "Iterator 4d: ";
-    typedef SpaceND<int,4> TSpace4D;
+    typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
 
     int t[]= {1,1,1,1};
@@ -138,7 +138,7 @@ bool testIterator()
 
 bool testReverseIterator()
 {
-    typedef SpaceND<int,4> TSpace4D;
+    typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
     int t[] = {1,1,1,1};
     Point4D a4D (t);
@@ -171,7 +171,7 @@ bool testReverseIterator()
 
 bool testSTLCompat()
 {
-    typedef SpaceND<int,4> TSpace4D;
+    typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
     int t[] = {1,1,1,1};
     Point4D a4D (t);

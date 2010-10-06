@@ -45,7 +45,7 @@ bool testVolReader()
   
   trace.beginBlock ( "Testing VolReader ..." );
 
-  typedef SpaceND<int,3> Space4Type;
+  typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
   typedef TDomain::Point Point;
   
@@ -95,7 +95,7 @@ bool testIOException()
   
   trace.beginBlock ( "Testing VolReader ..." );
 
-  typedef SpaceND<int,3> Space4Type;
+  typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
   typedef TDomain::Point Point;
   
