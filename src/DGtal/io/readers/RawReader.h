@@ -86,7 +86,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw8(const std::string & filename,
-				     const Vector & extent) throw(DGtal::DGtalIOException);
+				     const Vector & extent) throw(DGtal::IOException);
     
   }; // end of class RawReader
 

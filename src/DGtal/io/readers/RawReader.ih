@@ -21,11 +21,11 @@
 template <typename T>
 inline
 T 
-DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent ) throw(DGtal::DGtalIOException)
+DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent ) throw(DGtal::IOException)
 {
   FILE * fin;
   int errcode;
-  DGtal::DGtalIOException dgtalerror;
+  DGtal::IOException dgtalerror;
 
   fin = fopen( filename.c_str() , "r" );
 

@@ -30,11 +30,11 @@
 template <typename T>
 inline
 T 
-DGtal::VolReader<T>::importVol (const std::string & filename )   throw(DGtal::DGtalIOException)
+DGtal::VolReader<T>::importVol (const std::string & filename )   throw(DGtal::IOException)
 {
   FILE * fin;
   int errcode;
-  DGtal::DGtalIOException dgtalexception;
+  DGtal::IOException dgtalexception;
 
 
   typename T::Point firstPoint(0,0,0);
