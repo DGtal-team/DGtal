@@ -36,7 +36,6 @@ bool testMorton()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Morton codes ..." );
-
   
   typedef PointVector<2,DGtal::uint32_t> Point;
   typedef DGtal::uint64_t HashKey;
@@ -85,7 +84,7 @@ bool testMorton()
 
   Point p3(0,0);
   DGtal::uint64_t sum=0;
-  for(unsigned int k=0; k < 10000000 ;k++)
+  for(unsigned int k=0; k < 1000000 ;k++)
     {
       p3[1] = k/1000;
       p3[0] = k %1000;
