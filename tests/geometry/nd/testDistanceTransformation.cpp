@@ -22,8 +22,8 @@
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
-
-
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -46,20 +46,50 @@ bool testDistanceTransformation()
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  
+  typedef HueShadeColorMap<unsigned char,2> HueTwice;
+  typedef GrayscaleColorMap<unsigned char> Gray;
   Point a ( 0, 0);
   Point b ( 15, 15);
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image(a,b);
+  
+  for(unsigned k=0; k < 49; k++)
+    {
+      a[0] = (k/7) +5;
+      a[1] = (k%7) +5;
+      image.setValue(a,128);
+    }
+
   typedef ImageSelector<Domain, long int>::Type ImageLong;
   
-  typedef SeparableMetricTraits<unsigned int,  unsigned int, 2> L_2;
+  typedef SeparableMetricTraits<unsigned int, unsigned int, 2> L_2;
 
   DistanceTransformation<Image,ImageLong,L_2> dt;
   
   dt.checkTypesValidity(image);
 
+  LibBoard::Board board;
+  board.setUnit(LibBoard::Board::UCentimeter);
+  image.selfDraw<Gray>(board,0,255);
+  board.saveSVG( "image-preDT.svg" );
+  //We just iterate on the Domain points and print out the point coordinates.
+  std::copy ( image.begin(),
+	      image.end(),
+	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+
+
+
   ImageLong result = dt.compute(image);
+  trace.warning() << result<<endl;
+   //We just iterate on the Domain points and print out the point coordinates.
+  std::copy ( result.begin(),
+	      result.end(),
+	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+
+  board.clear();
+  result.selfDraw<Gray>(board,0,16);
+  board.saveSVG( "image-postDT.svg" );
+
 
   trace.info() << result <<endl;
   

@@ -45,14 +45,19 @@ template <typename I,typename O, typename SepM>
 template <typename Functor>
 inline
 O 
-DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage)
+DGtal::DistanceTransformation<I,O,SepM>::compute(const I & aImage, const Functor & predicate)
 {
-  O output(aImage.lowerBound(), aImage.upperBound());
-  O swap(aImage.lowerBound(), aImage.upperBound());
+
+  //We copy the image extent.
+  myLowerBoundCopy = aImage.lowerBound();
+  myUpperBoundCopy = aImage.upperBound();
+
+  O output(myLowerBoundCopy,myUpperBoundCopy);
+  O swap(myLowerBoundCopy, myUpperBoundCopy);
   bool isSwap =true;
 
   //First step
-  computeFirstStep<Functor>(aImage, output);
+  computeFirstStep(aImage, output,predicate);
   
   //We process the dimensions
   for(unsigned int dim = 1; dim < I::staticDimension ; dim++)
@@ -93,11 +98,25 @@ template <typename I,typename O,typename SepM>
 template <typename Functor>
 inline
 void
-DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O &output)
+DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O &output, const Functor &predicate) const
 {
-  Functor isForeground;
-  
   trace.beginBlock("DT Step 0");
+  Point row = myLowerBoundCopy;
+ 
+  //We process the dimensions to construct a Point
+  //@todo use span_iterator
+  for(unsigned int dim = 1; dim < I::staticDimension ; dim++)
+    {
+      trace.info() << "Processing dim="<<dim<<endl;
+      
+      for(int k = myLowerBoundCopy[dim] ; k <= myUpperBoundCopy[dim]; k++)
+	{
+	  row[dim] = k;
+	  computeFirstStep1D( aImage,output,row, predicate );
+	}
+      row[dim] = myLowerBoundCopy[dim];
+    }
+  
   trace.endBlock();
 }
 
@@ -105,7 +124,7 @@ DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep(const I & aImage, O &o
 template <typename I,typename O,typename SepM>
 inline
 void
-DGtal::DistanceTransformation<I,O,SepM>::computeOtherSteps(const O &input, O &output, const DimensionType dim)
+DGtal::DistanceTransformation<I,O,SepM>::computeOtherSteps(const O &input, O &output, const DimensionType dim) const
 {
   std::string title = "DT Step ";
   trace.beginBlock(title);
@@ -113,7 +132,54 @@ DGtal::DistanceTransformation<I,O,SepM>::computeOtherSteps(const O &input, O &ou
   
 }
 
+////////////////////////// Phase X
+template <typename I,typename O,typename SepM>
+template <typename ForegroundPredicate>
+void 
+DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep1D(const I & aImage, 
+							    O & output, 
+							    const Point &row,
+							    const ForegroundPredicate &isForeground) const
+{
+  Point prec=row;
+  Point point=row;
+ 
+  trace.info() << "Propagating from "<<row<<endl;
+ 
+  //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
+  if( isForeground(aImage,point) )
+    output.setValue(point, myUpperBoundCopy[0] -  myLowerBoundCopy[0]);
+  else
+    output.setValue(point, 0);
+  
+   
+  //Forward scan
+  for ( point[0] = myLowerBoundCopy[0] + 1; point[0] < myUpperBoundCopy[0]; point[0]++ )
+    {
+      if ( isForeground(aImage,point) )
+	{
+	  trace.info()<< "else: " << 1+output(prec)<<endl;
+	  output.setValue(point, 1 + output(prec));      
+	}
+      else
+	output.setValue(point, 0);
 
+
+      prec[0] = point[0];
+    }
+  
+  
+  //prec is the the rightmost point of "point'
+  prec[0] =  myUpperBoundCopy[0];
+  
+  //Backward scan
+  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >=  myLowerBoundCopy[0]; point[0]-- )
+    {
+      if ( output( prec ) < output ( point ) )
+	output.setValue(point, 1 + output( prec ) );
+      prec[0] = point[0];
+    } 
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

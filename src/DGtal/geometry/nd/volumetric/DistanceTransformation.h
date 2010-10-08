@@ -49,6 +49,7 @@ namespace DGtal
     typedef TSeparableMetric SeparableMetric;
     typedef typename TSeparableMetric::InternalValueType InternalValueType;
     typedef typename Image::ValueType ValueType;
+    typedef typename Image::Point Point;
     typedef typename Image::DimensionType DimensionType;
     
     
@@ -74,22 +75,22 @@ namespace DGtal
      */
     struct DefaultForegroundPredicate
     {
-      bool operator()(const Image &aImage, const typename Image::Point &aPoint)
+      bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
       {
 	return (aImage(aPoint) !=0);
       }
       
-      bool operator()(const Image &aImage, const typename Image::Iterator &it)
+      bool operator()(const Image &aImage, const typename Image::Iterator &it) const
       {
 	return (aImage(it) !=0);
       }
       
-      bool operator()(const Image &aImage, const typename Image::ConstIterator &it)
+      bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
       {
 	return (aImage(it) !=0);
       }
       
-      bool operator()(const Image &aImage, const typename Image::SpanIterator &it)
+      bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
       {
 	return (aImage(it) !=0);
       }
@@ -123,22 +124,26 @@ namespace DGtal
      * @return the distance transformation image with the Internal format.
      */
     template <typename ForegroundPredicate = DefaultForegroundPredicate>
-    ImageOutput compute(const Image & inputImage);
+    ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate = DefaultForegroundPredicate() );
 
 
     // ------------------- Private functions ------------------------
   private:
     
     template <typename ForegroundPredicate>
-    void computeFirstStep(const Image & aImage, ImageOutput & output);
+    void computeFirstStep(const Image & aImage, ImageOutput & output, const ForegroundPredicate &predicate) const;
  
-    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const DimensionType dim);
+    template <typename ForegroundPredicate>
+    void computeFirstStep1D (const Image & aImage, ImageOutput & output,const Point &row, const ForegroundPredicate &predicate) const;
+    
+    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const DimensionType dim)const;
     
     
     // ------------------- Private members ------------------------
   private:
     SeparableMetric myMetric;
-    
+    Point myLowerBoundCopy;
+    Point myUpperBoundCopy;
       
       
   }; // end of class DistanceTransformation
