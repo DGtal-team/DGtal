@@ -163,12 +163,12 @@ DGtal::DistanceTransformation<I,O,SepM>::computeFirstStep1D(const I & aImage,
   trace.info() << "Propagating from "<<row<<endl;
  
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
+  //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
   if( isForeground(aImage,point) )
-    output.setValue(point, myUpperBoundCopy[0] -  myLowerBoundCopy[0]);
+    output.setValue(point, myUpperBoundCopy[0] -  myLowerBoundCopy[0] + 1);
   else
     output.setValue(point, 0);
-  
-   
+     
   //Forward scan
   for ( point[0] = myLowerBoundCopy[0] + 1; point[0] < myUpperBoundCopy[0]; point[0]++ )
     {
