@@ -42,7 +42,9 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "Board/Board.h"
+#include "DGtal/io/DGtalBoard.h"
+
+//#include "Board/Board.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -126,7 +128,7 @@ bool testObjectBorder()
   else
     trace.info() << "The object (8,4) border is not connected."<<endl;
   
-  //Board Exoirt
+  //Board Export
   Board board;
   board.setUnit(Board::UCentimeter);
  
@@ -184,13 +186,88 @@ bool testObjectBorder()
   return true;
 }
 
+
+/**
+ * Simple test of DGtalBoard. Illustrates the border extraction of a
+ * simple 2D object considering different topologies.
+ *
+ */
+bool testDGtalBoard()
+{ 
+  trace.beginBlock ( "Testing DGtalBoard with Object Borders in 2D ..." );
+
+  typedef int Integer;                // choose your digital line here.
+  typedef SpaceND<2> Z2;          // Z^2
+  typedef Z2::Point Point;
+  typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type
+  typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
+  typedef HyperRectDomain< Z2 > Domain; 
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT8_4, DigitalSet> ObjectType;
+
+
+  Point p1( -20, -10 );
+  Point p2( 20, 10 );
+  Domain domain( p1, p2 );
+
+  Adj4 adj4;                          // instance of 4-adjacency
+  Adj8 adj8;                          // instance of 8-adjacency
+  DT8_4 dt8_4(adj8,adj4, JORDAN_DT );
+
+  Point c( 0, 0 );
+  
+  //We construct a simple 3-bubbles set
+  DigitalSet bubble_set( domain );
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+    {
+      int x = (*it)[0];
+      int y = (*it)[1];
+      if (( x*x+y*y < 82) || 
+	  (  (x-14)*(x-14)+(y+1)*(y+1)< 17) ||
+	  (  (x+14)*(x+14)+(y-1)*(y-1)< 17) )
+	bubble_set.insertNew( *it);
+    }
+   
+  ObjectType bubble( dt8_4, bubble_set );
+  
+  //Connectedness Check
+  if (bubble.computeConnectedness() == ObjectType::CONNECTED)
+    trace.info() << "The object is (8,4)connected."<<endl;
+  else
+    trace.info() << "The object is not (8,4)connected."<<endl;
+
+  //Border Computation
+  ObjectType bubbleBorder = bubble.border();
+  if (bubbleBorder.computeConnectedness() == ObjectType::CONNECTED)
+   trace.info() << "The object (8,4) border is connected."<<endl;
+  else
+    trace.info() << "The object (8,4) border is not connected."<<endl;
+  
+  //Board Export
+  DGtalBoard board;
+  board.setUnit(Board::UCentimeter);
+ 
+  board << DrawDomainGrid() << domain << bubble_set;
+  board.saveSVG("bubble-set-dgtalboard.svg");
+  
+  board << DrawObjectAdjacencies( true ) << bubbleBorder;
+  board.saveSVG("bubble-object-border-dgtalboard.svg");
+  board.clear();
+
+  trace.endBlock();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
  
-  bool res = testObjectBorder(); // && ... other tests
+  bool res = testObjectBorder()
+    && testDGtalBoard();
   return res ? 0 : 1;
 }
 //                                                                           //
