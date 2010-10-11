@@ -1,0 +1,121 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+//LICENSE-END
+/**
+ * @file DGtalBoard.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2010/10/11
+ *
+ * Implementation of inline methods defined in DGtalBoard.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+/**
+ * Draws the drawable [object] in this board. It should satisfy
+ * the concept CDrawableWithBoard, which requires for instance a
+ * method selfDraw( LibBoard::Board ).
+ *
+ * @param domain any domain.
+ * @return a reference on 'this'.
+ */
+template <typename CDrawableWithBoard>
+INLINE
+DGtal::DGtalBoard & 
+DGtal::DGtalBoard::operator<<( const CDrawableWithBoard & object )
+{
+  object.selfDraw( *this );
+  return *this;
+}
+
+/**
+ * Draws the domain in this board. Choose GRID or PAVING according
+ * to the current state of this object.
+ *
+ * @param domain any domain.
+ * @return a reference on 'this'.
+ */
+template <typename TSpace>
+INLINE
+DGtal::DGtalBoard & 
+DGtal::DGtalBoard::operator<<( const HyperRectDomain<TSpace> & domain )
+{
+  if ( myDomainDrawMode == GRID )
+    domain.selfDrawAsGrid( *this );
+  else
+    domain.selfDrawAsPaving( *this );
+  return *this;
+}
+
+
+/**
+ * Draws the object in this board. Draws adjacencies according to
+ * the current state of this object.
+ *
+ * @param domain any domain.
+ * @return a reference on 'this'.
+ * @see DrawObjectAdjacencies
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+INLINE
+DGtal::DGtalBoard & 
+DGtal::DGtalBoard::operator<<
+( const Object<TDigitalTopology,TDigitalSet> & object )
+{
+  if ( myDrawObjectAdjacencies )
+    object.selfDrawWithAdjacencies( *this );
+  else
+    object.selfDraw( *this );
+  return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'DGtalBoard'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'DGtalBoard' to write.
+ * @return the output stream after the writing.
+ */
+INLINE
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const DGtalBoard & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
