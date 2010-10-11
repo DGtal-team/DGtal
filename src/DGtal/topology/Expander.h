@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/topology/DomainAdjacency.h"
 #include "DGtal/topology/Object.h"
 //////////////////////////////////////////////////////////////////////////////
 
