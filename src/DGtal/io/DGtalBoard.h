@@ -48,21 +48,21 @@
 
 namespace DGtal
 {
-    /**
-     * Specifies the drawing mode for domains.
-     */
-    enum DomainDrawMode { GRID = 0, PAVING = 1 };
+  /**
+   * Specifies the drawing mode for domains.
+   */
+  enum DomainDrawMode { GRID = 0, PAVING = 1 };
 
-/////////////////////////////////////////////////////////////////////////////
-// class DGtalBoard
-/**
- * Description of class 'DGtalBoard' <p> \brief Aim: This class
- * specializes a 'Board' class so as to display DGtal objects more
- * naturally (with <<). The user has simply to declare a DGtalBoard
- * object and uses stream operators to display most digital
- * objects. Furthermore, one can use this class to modify the current
- * style for drawing.
- */
+  /////////////////////////////////////////////////////////////////////////////
+  // class DGtalBoard
+  /**
+   * Description of class 'DGtalBoard' <p> \brief Aim: This class
+   * specializes a 'Board' class so as to display DGtal objects more
+   * naturally (with <<). The user has simply to declare a DGtalBoard
+   * object and uses stream operators to display most digital
+   * objects. Furthermore, one can use this class to modify the current
+   * style for drawing.
+   */
   class DGtalBoard : public LibBoard::Board
   {
     // ----------------------- Standard services ------------------------------
@@ -130,7 +130,7 @@ namespace DGtal
     operator<<( const Object<TDigitalTopology,TDigitalSet> & object );
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -150,28 +150,28 @@ public:
     bool myDrawObjectAdjacencies;
 
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
 
-private:
+  private:
 
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class DGtalBoard
+  }; // end of class DGtalBoard
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'DGtalBoard'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'DGtalBoard' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const DGtalBoard & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'DGtalBoard'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'DGtalBoard' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const DGtalBoard & object );
 
   /**
    * Modifier class in a DGtalBoard stream. Realizes the concept
