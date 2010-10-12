@@ -33,17 +33,34 @@
 
 #include <cstdio>
 #include <cmath>
-#include <iostream>
+// #include <iostream>
 #include <fstream>
 #include <vector>
-#include "DGtal/base/Common.h"
+// #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/ArithDSS4.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
+// #include "DGtal/kernel/SpaceND.h"
+// #include "DGtal/kernel/domains/HyperRectDomain.h"
 
+#include <iostream>
+#include <iterator>
+#include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/DomainPredicate.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
+#include "DGtal/kernel/sets/DigitalSetConverter.h"
+#include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/DomainMetricAdjacency.h"
+#include "DGtal/topology/DomainAdjacency.h"
+#include "DGtal/topology/DigitalTopology.h"
+#include "DGtal/topology/Object.h"
+#include "DGtal/topology/Expander.h"
+#include "DGtal/io/DGtalBoard.h"
 
 using namespace DGtal;
 using namespace std;
+using namespace LibBoard;
+
 
 
 
@@ -69,21 +86,34 @@ int main(int argc, char **argv)
   
   // Add some points
   Point a(1,1);
-  theDSS.add(a);
+  theDSS.addFront(a);
   
   Point b(2,1);
-  theDSS.add(b);
+  theDSS.addFront(b);
   
   Point c(3,1);
-  theDSS.add(c);
+  theDSS.addFront(c);
   
   // Print the result
   trace.beginBlock("Add some points");
   std::cout << theDSS;
   trace.endBlock();
   
+  // Test draw
   
+  Point p1(  -10, -10  );
+  Point p2( 10, 10  );
+  Domain2D domain( p1, p2 );
+
+  Board board;
+  board.setUnit(Board::UCentimeter);
   
+  domain.selfDrawAsGrid(board);
+  theDSS.selfDraw(board);
+  
+  board.saveSVG("DSS.svg");
+  
+ 
 
     return 0;
 }
