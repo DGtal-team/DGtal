@@ -218,9 +218,9 @@ namespace DGtal
   struct DrawWithCustomStyle {
     void selfDraw( DGtalBoard & board ) const
     {
-      CustomStyleFunctor applyStyle(board);
+      CustomStyleFunctor applyFunctor(board);
+      board.setFillColorRGBi(0,169,0);
     }
-    bool myDrawAdj;
   };
 
 } // namespace DGtal
