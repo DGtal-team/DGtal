@@ -219,6 +219,7 @@ namespace DGtal
     void selfDraw( DGtalBoard & board ) const
     {
       CustomStyleFunctor applyFunctor(board);
+      //TEST
       board.setFillColorRGBi(0,169,0);
     }
   };
