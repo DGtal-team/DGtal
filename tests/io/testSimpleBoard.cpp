@@ -102,14 +102,12 @@ bool testDomain()
     
     DGtalBoard board;
     
-    board.myDomainDrawMode = DGtal::GRID;
-    board << myDomain;
+    board << DrawDomainGrid() << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     
     DGtalBoard b2;
-    b2.myDomainDrawMode = DGtal::PAVING;
-    myDomain.selfDrawAsPaving(b2);
+    b2 << DrawDomainPaving() << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
 
