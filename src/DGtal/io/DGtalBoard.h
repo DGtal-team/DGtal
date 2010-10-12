@@ -210,6 +210,19 @@ namespace DGtal
     bool myDrawAdj;
   };
 
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  template<typename CustomStyleFunctor>
+  struct DrawWithCustomStyle {
+    void selfDraw( DGtalBoard & board ) const
+    {
+      CustomStyleFunctor applyStyle(board);
+    }
+    bool myDrawAdj;
+  };
+
 } // namespace DGtal
 
 

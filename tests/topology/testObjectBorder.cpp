@@ -129,14 +129,16 @@ bool testObjectBorder()
     trace.info() << "The object (8,4) border is not connected."<<endl;
   
   //Board Export
-  Board board;
+  DGtalBoard board;
   board.setUnit(Board::UCentimeter);
  
-  domain.selfDrawAsGrid(board);
-  bubble_set.selfDraw(board);
+  board << DrawDomainGrid() <<  domain;
+  board << bubble_set;
   board.saveSVG("bubble-set.svg");
   
-  bubbleBorder.selfDrawWithAdjacencies<SelfDrawStyleCustom>(board);  
+  board << DrawObjectAdjacencies() 
+	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+	<< bubbleBorder;  
   board.saveSVG("bubble-object-border.svg");
   
   board.clear();
