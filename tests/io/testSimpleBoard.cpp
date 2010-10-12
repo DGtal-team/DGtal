@@ -27,8 +27,7 @@
  * This file is part of the DGtal library.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
+//////////////////////////////
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
