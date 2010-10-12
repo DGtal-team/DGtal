@@ -139,9 +139,22 @@ namespace DGtal
      * point from the image valuetype
      * @return the distance transformation image with the Internal format.
      */
-    template <typename ForegroundPredicate = DefaultForegroundPredicate>
-    ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate = DefaultForegroundPredicate() );
+    template <typename ForegroundPredicate>
+    ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate  );
 
+    /** 
+     * Compute the Distance Transformation of an image with the SeparableMetric metric.
+     * The method associates to each point with value satisfying the
+     * foreground predicate, its distance to the closest background point.
+     * 
+     * @param inputImage the input image 
+     * @return the distance transformation image with the Internal format.
+     */
+    ImageOutput compute(const Image & inputImage )
+    {
+      return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
+    };
+    
 
     // ------------------- Private functions ------------------------
   private:
