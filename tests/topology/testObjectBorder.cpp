@@ -132,8 +132,7 @@ bool testObjectBorder()
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
  
-  board << DrawDomainGrid() <<  domain;
-  board << bubble_set;
+  board << DrawDomainGrid() <<  domain << bubble_set;
   board.saveSVG("bubble-set.svg");
   
   board << DrawObjectAdjacencies() 
