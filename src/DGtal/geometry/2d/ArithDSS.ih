@@ -58,19 +58,28 @@ DGtal::ArithDSS<Domain2D>::isValid() const
 	return true;	
 }
 
+  /**
+     * Add a connected pixel aPoint at the front of a DSS.
+     *
+     * @param aPoint the new pixel (connected to the DSS) 
+     
+     * @return true if the union of theDSS and aPoint is still a DSS.
+     */
+
+
 template <typename Domain2D>
 inline
 bool 
-DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
+DGtal::ArithDSS<Domain2D>::addFront(const Point & aPoint)
 {
 
 	Vector step = aPoint-myL;
-	Integer deviation = norm(step.at(0),step.at(1));
+	Integer deviation = norm(step[0],step[1]);
 	if ( (deviation>1)||(deviation<=0) ) return false;
 	else {
 	  
 	  //remainder
-	  Integer r = myA*aPoint.at(0) - myB*aPoint.at(1);
+	  Integer r = myA*aPoint[0] - myB*aPoint[1];
 	  	  
 		if ( (r < myMu-1)||(r > myMu+myOmega) )
 			return false; //strongly exterior
@@ -85,16 +94,16 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
 			if (r == myMu-1) {	
 				myUl = aPoint; 
 				myLf = myLl;
-				myA = myUl.at(1) - myUf.at(1); 
-				myB = myUl.at(0) - myUf.at(0); 
-				myMu = myA*myUl.at(0) - myB*myUl.at(1);
+				myA = myUl[1] - myUf[1]; 
+				myB = myUl[0] - myUf[0]; 
+				myMu = myA*myUl[0] - myB*myUl[1];
 				myOmega = norm(myA,myB);
 			} else if (r == myMu+myOmega) { 
 				myLl = aPoint; 
 				myUf = myUl; 
-				myA = myLl.at(1) - myLf.at(1); 
-				myB = myLl.at(0) - myLf.at(0); 
-				myMu = myA*myUl.at(0) - myB*myUl.at(1);
+				myA = myLl[1] - myLf[1]; 
+				myB = myLl[0] - myLf[0]; 
+				myMu = myA*myUl[0] - myB*myUl[1];
 				myOmega = norm(myA,myB);
 			}
 			return true;
@@ -102,6 +111,133 @@ DGtal::ArithDSS<Domain2D>::add(const Point & aPoint)
 
 	}
 
+}
+
+
+/**
+ * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
+ * @param m any point expressed in the local reference frame (may not be part of the segment).
+ * @return the projected point.
+ */
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS<Domain2D>::PointD
+DGtal::ArithDSS<Domain2D>::project( const Point & m ) const
+{
+  float alpha = ( myMu + myMu + ( myA >= 0 ? myA : -myA ) + myB - 1 ) / 2.0f;
+  float d2 = (float)( myA * myA + myB * myB );
+  float s = myB * m[0] + myA * m[1];
+  float xp = ( myB * s + myA * alpha ) / d2;
+  float yp = ( myA * s - myB * alpha ) / d2;
+  return PointD( xp, yp );
+}
+
+/**
+ * Projects the point [m] onto the straight line whose points have
+ * remainder [r].
+ *
+ * @param m any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @param r the remainder (may not be an integer).
+ * @return the projected point.
+ */
+
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS<Domain2D>::PointD
+DGtal::ArithDSS<Domain2D>::project( const Point & m, float r ) const
+{
+  //  float alpha = ( myMu + myMu + ( myA >= 0 ? myA : -myA ) + myB - 1 ) / 2.0f;
+  float d2 = (float)( myA * myA + myB * myB );
+  float s = myB * m[0] + myA * m[1];
+  float xp = ( myB * s + myA * r ) / d2;
+  float yp = ( myA * s - myB * r ) / d2;
+  
+  return PointD( xp, yp );
+}
+
+/**
+ * Projects the point [m] onto the straight line going through point [p].
+ *
+ * @param m any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @param p any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @return the projected point.
+ */
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS<Domain2D>::PointD
+DGtal::ArithDSS<Domain2D>::project( const Point & m, const Point & p ) const
+{
+  float r = myA * p[0] - myB * p[1];
+  float d2 = (float)( myA * myA + myB * myB );
+  float s = myB * m[0] + myA * m[1];
+  float xp = ( myB * s + myA * r ) / d2;
+  float yp = ( myA * s - myB * r ) / d2;
+  trace.info() << xp << " " << yp << endl;
+  return PointD( xp, yp );
+}
+
+/**
+ * Defined as: norm( project(myL) - project(myF) )
+ * @return the projected length of the segment.
+ * @see projectRegularly
+ */
+template <typename Domain2D>
+inline
+double
+DGtal::ArithDSS<Domain2D>::projectedSegmentLength() const
+{
+  PointD v = project( myL );
+  PointD u = project( myF );
+  v -= u;
+  return v.norm(ArithDSS<Domain2D>::PointD::L_2);
+}
+
+
+
+
+template<typename Domain2D>
+template<typename Functor>
+inline
+void 
+DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
+{
+  if (Domain2D::staticDimension == 2)
+    {
+      Functor applystyle(aBoard);
+      
+      
+      PointD topLeft = project(myF, myUf);
+      PointD bottomLeft = project(myF,myLf);
+      PointD bottomRight = project(myL, myLf);
+      PointD topRight = project(myL,myUf);
+      
+      // IS
+      // Incompatibilité des Point de Board et de DGtal...
+      // A corriger
+      LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
+      LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
+      LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
+      LibBoard::Point topRightBoard(topRight[0],topRight[1]);
+      
+      vector<LibBoard::Point> bb;
+      bb.push_back(topLeftBoard);
+      bb.push_back(bottomLeftBoard);
+      bb.push_back(bottomRightBoard);
+      bb.push_back(topRightBoard);
+      
+      
+      aBoard.drawClosedPolyline(bb);      
+     
+    }
+  else
+    ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+  
 }
 
 

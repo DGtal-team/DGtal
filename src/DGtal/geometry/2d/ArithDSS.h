@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -68,8 +69,8 @@ public:
 		typedef typename Domain2D::Point Point;
 		//2D vector of a domain
 		typedef typename Domain2D::Vector Vector;
-
-
+		
+		typedef typename DGtal::PointVector<2,double> PointD;
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
@@ -83,6 +84,47 @@ public:
 
     // ----------------------- Interface --------------------------------------
 public:
+
+    /**
+   * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
+   * @param m any point expressed in the local reference frame (may not be part of the segment).
+   * @return the projected point.
+   */
+    PointD project( const Point & m ) const;
+
+    /**
+     * Projects the point [m] onto the straight line whose points have
+     * remainder [r].
+     *
+     * @param m any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @param r the remainder (may not be an integer).
+     * @return the projected point.
+     */
+    PointD project( const Point & m, float r ) const;
+    
+    /**
+     * Projects the point [m] onto the straight line going through point [p].
+     *
+     * @param m any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @param p any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @return the projected point.
+     */
+    PointD project( const Point & m, const Point & p ) const;
+  
+
+    /**
+     * Defined as: norm( project(cp_n) - project(c_n) )
+     * @return the projected length of the segment.
+     * @see projectRegularly
+     */
+    double projectedSegmentLength() const;
+    
 
     /**
      * Writes/Displays the object on an output stream.
@@ -103,7 +145,7 @@ public:
      * if true.
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool add(const Point & aPoint);
+    bool addFront(const Point & aPoint);
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -153,6 +195,41 @@ private:
 
     // ------------------------- Internals ------------------------------------
 private:
+
+   /** 
+     * Default Style Functor for selfDraw methods
+     * 
+     * @param aBoard 
+     */
+
+    struct SelfDrawStyle
+    {
+      SelfDrawStyle(LibBoard::Board & aBoard) 
+      {
+	aBoard.setFillColor(LibBoard::Color::None);
+	aBoard.setPenColor(LibBoard::Color::Red);
+      }
+    };
+    
+ public:
+    /**
+     * Draw the object on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor>
+      void selfDraw( LibBoard::Board & board ) const;
+    
+    /**
+     * Draw the object on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDraw( LibBoard::Board & board ) const
+      {
+	selfDraw<SelfDrawStyle>(board);
+      }
+
 
 }; // end of class ArithDSS
 
