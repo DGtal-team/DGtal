@@ -100,7 +100,7 @@ namespace DGtal
      * the concept CDrawableWithBoard, which requires for instance a
      * method selfDraw( LibBoard::Board ).
      *
-     * @param domain any domain.
+     * @param object any drawable object.
      * @return a reference on 'this'.
      */
     template <typename CDrawableWithBoard>
