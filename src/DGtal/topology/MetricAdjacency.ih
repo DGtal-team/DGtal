@@ -289,7 +289,7 @@ namespace DGtal {
     typedef typename Space::Point Point;
     typedef MetricAdjacency<Space, 2, 2> Adjacency;
 
-    typedef typename Space::TInteger Integer;
+    typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
   
     // ----------------------- Standard services ------------------------------
@@ -436,7 +436,7 @@ namespace DGtal {
     typedef typename Space::Point Point;
     typedef MetricAdjacency<Space, 1, 2> Adjacency;
 
-    typedef typename Space::TInteger Integer;
+    typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
   
     // ----------------------- Standard services ------------------------------

@@ -98,7 +98,7 @@ namespace DGtal
     // ----------------------- Associated types ------------------------------
   public:
     typedef TObject Object;
-    typedef typename Object::SizeType SizeType;
+    typedef typename Object::Size Size;
     typedef typename Object::Point Point;
     typedef typename Object::Domain Domain;
     typedef typename Object::SmallSet SmallSet;
@@ -162,7 +162,7 @@ namespace DGtal
      * @return the current distance to the initial core, or
      * equivalently the index of the current layer.
      */
-    SizeType distance() const;
+    Size distance() const;
 
     /**
      * Extract next layer. You might used begin() and end() to access
@@ -247,7 +247,7 @@ namespace DGtal
     /**
      * Current distance to origin.
      */
-    SizeType myDistance;
+    Size myDistance;
 
     /**
      * Boolean stating whether the expansion is over or not.

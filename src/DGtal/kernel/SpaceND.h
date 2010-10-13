@@ -45,6 +45,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -63,36 +64,43 @@ namespace DGtal
    * @tparam Integer the Integer class used to specify the arithmetic (default type = int).
    */
   
-  template <std::size_t Dimension, typename Integer = int>
+  template <std::size_t dim, 
+	    typename TInteger = int, 
+	    typename TSize = DGtal::uint32_t, 
+	    typename TDimension = unsigned char>
   class SpaceND
   {
   public:
 
     /// \todo fixer des concept check sur Integer
-    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    
-    
-    typedef Integer TInteger;
+    BOOST_CONCEPT_ASSERT((CInteger<TInteger>));
+    BOOST_CONCEPT_ASSERT((CUnsignedInteger<TSize>));
+    BOOST_CONCEPT_ASSERT((CUnsignedInteger<TDimension>));
+
+    typedef TInteger Integer;
+  
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
-    typedef std::size_t  DimensionType;
+   
+    typedef TSize Size;
+    typedef TDimension Dimension;
+
+
+    typedef PointVector<dim, Integer> Point;
+    typedef PointVector<dim, Integer> Vector;
     
-    typedef PointVector<Dimension, Integer> Point;
-    typedef PointVector<Dimension, Integer> Vector;
-    typedef Integer SizeType;
-    
-    typedef SpaceND<Dimension,Integer> Space;
+    typedef SpaceND<dim,Integer,Size> Space;
 
     // static constants
-    static const DimensionType staticDimension = Dimension;
+    static const Dimension staticDimension = dim;
     
-    //typedef Matrix<DimensionT,DimensionT,Integer> Matrix;
-    template <std::size_t Codimension>
+    //typedef Matrix<dimT,DimensionT,Integer> Matrix;
+    template <std::size_t codimension>
     struct Subcospace {
-      typedef SpaceND<Dimension-Codimension,Integer> Type;
+      typedef SpaceND<dim-codimension,Integer,Size,Dimension> Type;
     };
-    template <std::size_t Subdimension>
+    template <std::size_t subdimension>
     struct Subspace {
-      typedef SpaceND<Subdimension,Integer> Type;
+      typedef SpaceND<subdimension,Integer,Size,Dimension> Type;
     };
     
     
@@ -113,31 +121,31 @@ namespace DGtal
     /**
      * @return the digital space of specified subdimension of this space. 
      */
-    template <std::size_t Subdimension>
+    template <std::size_t subdimension>
     static
-    typename Subspace<Subdimension>::Type subspace()
+    typename Subspace<subdimension>::Type subspace()
       {
-	ASSERT( Subdimension <= Dimension );
-	return SpaceND<Subdimension,Integer>();
+	ASSERT( subdimension <= dim );
+	return SpaceND<subdimension,Integer,Size,Dimension>();
       }
     
 
     /**
      * @return the digital space of specified codimension of this space. 
      */
-    template <std::size_t Codimension>
+    template <std::size_t codimension>
     static
-    typename Subcospace<Codimension>::Type subcospace()
+    typename Subcospace<codimension>::Type subcospace()
       {
-	ASSERT( Codimension <= Dimension );
-	return SpaceND<Dimension-Codimension,Integer>();
+	ASSERT( codimension <= dim );
+	return SpaceND<dim-codimension,Integer,Size,Dimension>();
       }
 
 
     /**
      * @return the dimension of the digital space.
      */
-    static DimensionType dimension() { return Dimension; }
+    static Dimension dimension() { return dim; }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -172,9 +180,9 @@ namespace DGtal
    * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
-  template <std::size_t Dimension, typename Integer>
+  template <std::size_t dim, typename Integer, typename Size, typename Dimension>
   static std::ostream&
-  operator<<( std::ostream & out, const SpaceND<Dimension,Integer> & object )
+  operator<<( std::ostream & out, const SpaceND<dim,Integer,Size,Dimension> & object )
   {
     object.selfDisplay( out );
     return out;

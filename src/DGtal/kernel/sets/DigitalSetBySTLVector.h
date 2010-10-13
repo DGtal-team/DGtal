@@ -71,7 +71,7 @@ namespace DGtal
   public:
     typedef Domain DomainType;
     typedef typename Domain::Point Point;
-    typedef typename Domain::SizeType SizeType;
+    typedef typename Domain::Size Size;
     typedef typename std::vector<Point>::iterator Iterator;
     typedef typename std::vector<Point>::const_iterator ConstIterator;
 
@@ -116,7 +116,7 @@ namespace DGtal
     /**
      * @return the number of elements in the set.
      */
-    SizeType size() const;
+    Size size() const;
 
     /**
      * @return 'true' iff the set is empty (no element).
@@ -177,7 +177,7 @@ namespace DGtal
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
-    SizeType erase( const Point & p );
+    Size erase( const Point & p );
 
     /**
      * Removes the point pointed by [it] from the set.

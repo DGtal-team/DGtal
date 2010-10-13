@@ -217,10 +217,10 @@ namespace {
 // Internals - private :
 template<typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain,T>::SizeType
+typename ImageContainerBySTLVector<Domain,T>::Size
 ImageContainerBySTLVector<Domain,T>::linearized(const Point &aPoint) const
 {
-  return linearizer<Domain, Point::Dimension, SizeType >::apply( aPoint, myLowerBound, myUpperBound );
+  return linearizer<Domain, Point::Dimension, Size >::apply( aPoint, myLowerBound, myUpperBound );
 }
 
 

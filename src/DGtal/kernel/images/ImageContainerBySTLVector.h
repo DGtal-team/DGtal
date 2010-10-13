@@ -75,12 +75,12 @@ namespace DGtal
     typedef TDomain Domain;
     
     // static constants
-    static const typename Domain::DimensionType staticDimension = Domain::staticDimension;
+    static const typename Domain::Dimension staticDimension = Domain::staticDimension;
   
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;
-    typedef typename Domain::DimensionType DimensionType;
-    typedef typename vector<ValueType>::size_type SizeType;
+    typedef typename Domain::Dimension Dimension;
+    typedef typename vector<ValueType>::size_type Size;
     typedef typename vector<ValueType>::iterator Iterator;
     typedef typename vector<ValueType>::const_iterator ConstIterator;
 
@@ -193,7 +193,7 @@ namespace DGtal
        * @param aDim specifies the dimension along which the iterator will iterate
        * @param aMap pointer to the imageContainer
        */    SpanIterator( const Point & p ,
-			   const DimensionType aDim ,
+			   const Dimension aDim ,
 			   ImageContainerBySTLVector<Domain,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
 	myPos = aMap->linearized(p);
@@ -299,16 +299,16 @@ namespace DGtal
 
     private:
       ///Current Point in the domain
-      SizeType myPos;
+      Size myPos;
 
       /// Copy of the underlying images
       ImageContainerBySTLVector<Domain,ValueType> *myMap;
 
       ///Dimension on which the iterator must iterate
-      DimensionType  myDimension;
+      Dimension  myDimension;
 
       ///Padding variable
-      SizeType myShift;
+      Size myShift;
 
     };
 
@@ -333,7 +333,7 @@ namespace DGtal
      * 
      * @return a SpanIterator
      */
-    SpanIterator span_begin(const Point &aPoint, const DimensionType aDimension)
+    SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
     {
       return SpanIterator ( aPoint, aDimension, this);
     }
@@ -348,7 +348,7 @@ namespace DGtal
      * 
      * @return a SpanIterator
      */
-    SpanIterator span_end(const Point &aPoint,const DimensionType aDimension)
+    SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
     {
       Point tmp = aPoint;
       tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
@@ -377,7 +377,7 @@ namespace DGtal
      * @param aPoint the point to convert to an index
      * @return the index of @param aPoint in the container
      */
-    SizeType linearized(const Point &aPoint) const;
+    Size linearized(const Point &aPoint) const;
 
     Point myLowerBound;
     Point myUpperBound;

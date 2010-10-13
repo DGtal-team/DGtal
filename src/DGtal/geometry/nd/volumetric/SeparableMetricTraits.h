@@ -59,17 +59,18 @@ namespace DGtal
    * LongInteger (size of the values).
    * @todo replace Integer -> ExtentType
    *
-   * @tparam Integer Type used to store the Domain extent.
+   * @tparam Size Type used to store the Domain extent.
    * @tparam TValueType the type of the input map.
    * @tparam tp the order p of the L_p metric.
    *
    */
-  template <typename Integer, typename TValueType, unsigned int tp>
+  template <typename TSize, typename TValueType, unsigned int tp>
   struct SeparableMetricTraits
   {
     // ----------------------- Standard services ------------------------------
 
     typedef TValueType ValueType;
+    typedef TSize Size;
 
     /**
      * Static constants containing the power p of the Lp-metric.
@@ -104,7 +105,7 @@ namespace DGtal
      * 
      * @return the height of the parabola (ci,hi) at pos.
      */
-    InternalValueType F(const Integer pos, const Integer ci, const InternalValueType hi) const;
+    InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const;
 
     /** 
      * Returns the abscissa of the intersection point between two
@@ -117,7 +118,7 @@ namespace DGtal
      * 
      * @return 
      */ 
-    Integer Sep(const Integer i, const InternalValueType hi, const Integer j, const InternalValueType hj) const;    
+    Size Sep(const Size i, const InternalValueType hi, const Size j, const InternalValueType hj) const;    
 
 
   }; // end of class SeparableMetricTraits
@@ -130,8 +131,8 @@ namespace DGtal
    * L_2 specialization
    *
    */
-  template <typename Integer,typename TValueType>
-  struct SeparableMetricTraits<Integer, TValueType, 2>
+  template <typename Size,typename TValueType>
+  struct SeparableMetricTraits<Size, TValueType, 2>
   {
     typedef TValueType ValueType;
     
@@ -145,12 +146,12 @@ namespace DGtal
       return (ValueType)sqrt(aInternalValue);
     }
     
-    inline InternalValueType F(const Integer pos, const Integer ci, const InternalValueType hi) const
+    inline InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const
     {
       return (pos - ci)*(pos - ci) + hi;
     }
     
-    inline Integer Sep(const int i, const long hi, const int j, const long hj) const
+    inline Size Sep(const int i, const long hi, const int j, const long hj) const
     {
       return ((j*j - i*i) + hj + hi)  / (2*(j-i));
     }
@@ -160,8 +161,8 @@ namespace DGtal
      * L_1 specialization
      *
      */
-    template <typename Integer, typename TValueType>
-    struct SeparableMetricTraits<Integer, TValueType, 1>
+    template <typename Size, typename TValueType>
+    struct SeparableMetricTraits<Size, TValueType, 1>
     {
     
       typedef TValueType ValueType; 
@@ -173,12 +174,12 @@ namespace DGtal
 	return (ValueType)aInternalValue;
       }
     
-      inline InternalValueType F(const Integer pos, const Integer ci, const InternalValueType hi) const
+      inline InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const
       {
 	return (InternalValueType) abs(pos - ci) + hi;
       }
     
-      inline Integer Sep(const int i, const long hi, const int j, const long hj) const  
+      inline Size Sep(const int i, const long hi, const int j, const long hj) const  
       {
 	///@todo
 	return 0;

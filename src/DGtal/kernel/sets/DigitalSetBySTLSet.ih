@@ -115,7 +115,7 @@ DGtal::DigitalSetBySTLSet<Domain>::domain() const
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLSet<Domain>::SizeType
+typename DGtal::DigitalSetBySTLSet<Domain>::Size
 DGtal::DigitalSetBySTLSet<Domain>::size() const
 {
   return mySet.size();
@@ -211,7 +211,7 @@ DGtal::DigitalSetBySTLSet<Domain>::insertNew
  * @return the number of removed elements (0 or 1).
  */
 template <typename Domain>
-typename DGtal::DigitalSetBySTLSet<Domain>::SizeType
+typename DGtal::DigitalSetBySTLSet<Domain>::Size
 DGtal::DigitalSetBySTLSet<Domain>::erase( const Point & p )
 {
   return mySet.erase( p );

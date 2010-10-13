@@ -231,7 +231,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::operator=
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType 
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Size 
 DGtal::Object<TDigitalTopology,TDigitalSet>::size() const
 {
   return myPointSet->size();
@@ -349,7 +349,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::neighborhood
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Size
 DGtal::Object<TDigitalTopology,TDigitalSet>
 ::neighborhoodSize( const Point & p ) const
 {
@@ -365,7 +365,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
-  SizeType nb = 0;
+  Size nb = 0;
   for ( ContainerConstIterator it = neigh.begin();
 	it != it_end;
 	++it )
@@ -426,7 +426,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::properNeighborhood
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Size
 DGtal::Object<TDigitalTopology,TDigitalSet>
 ::properNeighborhoodSize( const Point & p ) const
 {
@@ -442,7 +442,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
-  SizeType nb = 0;
+  Size nb = 0;
   for ( ContainerConstIterator it = neigh.begin();
 	it != it_end;
 	++it )
@@ -513,11 +513,11 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::border() const
 template <typename TDigitalTopology, typename TDigitalSet>
 template <typename TOutputObjectIterator>
 inline
-typename DGtal::Object<TDigitalTopology,TDigitalSet>::SizeType
+typename DGtal::Object<TDigitalTopology,TDigitalSet>::Size
 DGtal::Object<TDigitalTopology,TDigitalSet>
 ::writeComponents( TOutputObjectIterator & it ) const
 {
-  SizeType nb_components = 0;
+  Size nb_components = 0;
   if ( pointSet().empty() ) 
     {
       myConnectedness = CONNECTED;

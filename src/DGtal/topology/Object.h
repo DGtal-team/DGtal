@@ -78,7 +78,7 @@ namespace DGtal
     typedef TDigitalSet DigitalSet;
     typedef TDigitalTopology DigitalTopology;
     typedef typename DigitalTopology::ReverseTopology ReverseTopology;
-    typedef typename DigitalSet::SizeType SizeType;
+    typedef typename DigitalSet::Size Size;
     typedef typename DigitalSet::Point Point;
     // should be the same as Point.
     typedef typename DigitalTopology::Point DTPoint;
@@ -212,7 +212,7 @@ namespace DGtal
     /**
      * @return the number of elements in the set.
      */
-    SizeType size() const;
+    Size size() const;
 
     /**
      * A const reference to the embedding domain.
@@ -269,7 +269,7 @@ namespace DGtal
      *
      * NB: faster than computing the neighborhood then computing its cardinal.
      */
-    SizeType neighborhoodSize( const Point & p ) const;
+    Size neighborhoodSize( const Point & p ) const;
 
     /**
      * Let A be this object with foreground adjacency k and N*_k(p)
@@ -299,7 +299,7 @@ namespace DGtal
      * NB: faster than computing the proper neighborhood then
      * computing its cardinal.
      */
-    SizeType properNeighborhoodSize( const Point & p ) const;
+    Size properNeighborhoodSize( const Point & p ) const;
 
 
     // ----------------------- border services -------------------------------
@@ -355,7 +355,7 @@ namespace DGtal
      * object while doing this.
      */
     template <typename TOutputObjectIterator>
-    SizeType writeComponents( TOutputObjectIterator & it ) const;
+    Size writeComponents( TOutputObjectIterator & it ) const;
 
     /**
      * @return the connectedness of this object. Either CONNECTED,

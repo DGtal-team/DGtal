@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/nd/volumetric/EnveloppeComputation.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,8 +67,8 @@ namespace DGtal
     typedef typename TSeparableMetric::InternalValueType InternalValueType;
     typedef typename Image::ValueType ValueType;
     typedef typename Image::Point Point;
-    typedef typename Image::DimensionType DimensionType;
-    
+    typedef typename Image::Dimension Dimension;
+    typedef typename Image::Size Size;
     
     /** 
      * Default Constructor
@@ -165,7 +166,10 @@ namespace DGtal
     template <typename ForegroundPredicate>
     void computeFirstStep1D (const Image & aImage, ImageOutput & output,const Point &row, const ForegroundPredicate &predicate) const;
     
-    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const DimensionType dim)const;
+    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const Dimension dim)const;
+
+    
+    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,const Point &row, const Size dim, Size s[], Size t[]) const;
     
     
     // ------------------- Private members ------------------------
@@ -173,7 +177,7 @@ namespace DGtal
     SeparableMetric myMetric;
     Point myLowerBoundCopy;
     Point myUpperBoundCopy;
-      
+    Point myExtent;
       
   }; // end of class DistanceTransformation
     
