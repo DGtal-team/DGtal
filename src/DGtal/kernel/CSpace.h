@@ -48,6 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -96,12 +97,15 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::TInteger Integer;
+    typedef typename T::Integer Integer;
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
     typedef typename T::Space Space;
     typedef typename T::Point Point;
     typedef typename T::Vector Vector;
-    typedef typename T::DimensionType DimensionType;
+    typedef typename T::Dimension Dimension;
+    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
+    typedef typename T::Size Size;
+    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
     BOOST_CONCEPT_USAGE( CSpace )
     {
       // Should have a dimension() method.
@@ -113,7 +117,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    DimensionType myDim;
+    Dimension myDim;
 
     // ------------------------- Internals ------------------------------------
   private:

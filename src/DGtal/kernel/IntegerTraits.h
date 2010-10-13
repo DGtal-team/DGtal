@@ -196,6 +196,37 @@ namespace DGtal
   }; // end of class IntegerTraits<unsigned int>.
 #endif //WIN32
 
+   /**
+   * Specialization for <usigned char>.
+   */
+  template <>
+  struct IntegerTraits<unsigned char>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagTrue IsUnsigned;
+    typedef TagTrue IsSpecialized;
+    typedef char SignedVersion;
+    typedef unsigned char UnsignedVersion;
+    typedef unsigned char ReturnType;
+    typedef boost::call_traits<unsigned char>::param_type ParamType;
+    static const unsigned char ZERO = 0;
+    static const unsigned char ONE = 1;
+    static ReturnType zero()
+    { return 0; }
+    static ReturnType one()
+    { return 1; }
+    static ReturnType min()
+    { return boost::integer_traits<unsigned char>::const_min; }
+    static ReturnType max()
+    { return boost::integer_traits<unsigned char>::const_max; }
+    static unsigned int digits()
+    { return boost::integer_traits<unsigned char>::digits; }
+    static BoundEnum isBounded()
+    { return BOUNDED; }
+    static SignEnum isUnsigned()
+    { return UNSIGNED; }
+  }; // end of class IntegerTraits<unsigned char>.
+
   /**
    * Specialization for <uint16_t>.
    */

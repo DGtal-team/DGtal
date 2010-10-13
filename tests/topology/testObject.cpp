@@ -95,7 +95,7 @@ bool testObject()
   typedef Object<DT48, MediumSet> ObjectType;
   typedef ObjectType::SmallSet SmallSet;
   typedef Object<DT48, SmallSet> SmallObjectType;
-  typedef ObjectType::SizeType SizeType;
+  typedef ObjectType::Size Size;
 
   // Adj4 adj4( domain );
   // Adj8 adj8( domain );
@@ -167,7 +167,7 @@ bool testObject()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "N*_4(Disk, " << l << ").size() = " << neigh.size()
 	       << " == 3" << std::endl;
-  SizeType size = disk_object.properNeighborhoodSize( l );
+  Size size = disk_object.properNeighborhoodSize( l );
   nbok += size == 3 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -437,7 +437,7 @@ bool testDraw()
 
   typedef ObjectType::SmallSet SmallSet;
   typedef Object<DT48, SmallSet> SmallObjectType;
-  typedef ObjectType::SizeType SizeType;
+  typedef ObjectType::Size Size;
 
   // Adj4 adj4( domain );
   // Adj8 adj8( domain );

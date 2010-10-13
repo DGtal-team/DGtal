@@ -122,7 +122,7 @@ DGtal::Expander<TObject>::finished() const
  */
 template <typename TObject>
 inline
-typename DGtal::Expander<TObject>::SizeType 
+typename DGtal::Expander<TObject>::Size 
 DGtal::Expander<TObject>::distance() const
 {
   return myDistance;

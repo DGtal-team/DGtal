@@ -123,10 +123,9 @@ namespace DGtal
       typedef typename Domain::Point Point;
       typedef typename Domain::Vector Vector;
 
-
       // static constants
-      static const typename TDomain::Space::DimensionType dim = TDomain::staticDimension;
-      static const typename TDomain::Space::DimensionType staticDimension = TDomain::staticDimension;
+      static const typename TDomain::Space::Dimension dim = TDomain::staticDimension;
+      static const typename TDomain::Space::Dimension staticDimension = TDomain::staticDimension;
       static const unsigned int NbChildrenPerNode = POW<2,staticDimension>::VALUE;
  
       static const HashKey ROOT_KEY = static_cast<HashKey>(1);
