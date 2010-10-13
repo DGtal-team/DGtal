@@ -90,6 +90,14 @@ DGtal::ArithDSS4<Domain2D>::norm(
 	return std::abs(x)+std::abs(y);
 }
 
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS4<Domain2D>::Vector 
+DGtal::ArithDSS4<Domain2D>::vectorFrom0ToOmega() const 
+{
+	return Vector(1,-1);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

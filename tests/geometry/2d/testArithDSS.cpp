@@ -72,35 +72,40 @@ int main(int argc, char **argv)
   typedef HyperRectDomain<Space2Type> Domain2D;
   typedef Space2Type::Point Point;
   
-  Point firstPoint ( 0, 0  );
-  Point secondPoint (  1, 0  );
+	std::vector<Point> contour;
+	contour.push_back(Point(0,0));
+	contour.push_back(Point(1,0));
+	contour.push_back(Point(1,1));
+	contour.push_back(Point(2,1));
+	contour.push_back(Point(3,1));
+	contour.push_back(Point(3,2));
+	contour.push_back(Point(4,2));
+	contour.push_back(Point(5,2));
+	contour.push_back(Point(6,2));
+	contour.push_back(Point(6,3));
+
   
   // Initialisation of a DSS
-  ArithDSS4<Domain2D> theDSS(firstPoint,secondPoint);		
+  ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
   
 
   // Print the result of the initialisation
   trace.beginBlock("Init of a DSS");
-  std::cout << theDSS;
+  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
   trace.endBlock();
   
-  // Add some points
-  Point a(1,1);
-  theDSS.addFront(a);
   
-  Point b(2,1);
-  theDSS.addFront(b);
-  
-  Point c(3,1);
-  theDSS.addFront(c);
-  
-  // Print the result
+  // Print the result of the adding
   trace.beginBlock("Add some points");
-  std::cout << theDSS;
+	for (int i = 2; i < contour.size(); i++) {
+			trace.info() << contour.at(i) << std::endl;
+			theDSS.addFront(contour.at(i));
+		  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
+	}
   trace.endBlock();
   
-  // Test draw
-  
+  // Draw the DSS in a SVG file
+  trace.info()<< "Draw the DSS in the SVG file DSS.svg"<< endl; 
   Point p1(  -10, -10  );
   Point p2( 10, 10  );
   Domain2D domain( p1, p2 );
@@ -112,6 +117,15 @@ int main(int argc, char **argv)
   theDSS.selfDraw(board);
   
   board.saveSVG("DSS.svg");
+
+  // Print the result of the removing
+  trace.beginBlock("Remove the first point as many times as possible");
+	while (theDSS.removeBack()) { 
+		trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
+	}
+  trace.endBlock();
+
+
   
  
 

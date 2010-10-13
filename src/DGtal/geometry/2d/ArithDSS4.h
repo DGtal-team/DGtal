@@ -91,6 +91,14 @@ namespace DGtal
      */
     Integer norm(const Integer  & x, const Integer & y) const;
 
+    /**
+		 * Computes the 2D vector 
+		 * starting at a point of remainder 0
+		 * and pointing at a point of remainder omega = |a|+|b|
+     * @return the 2D vector.
+     */
+    Vector vectorFrom0ToOmega() const;
+
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -121,18 +129,6 @@ namespace DGtal
   }; // end of class ArithDSS4
 
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'ArithDSS4'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'ArithDSS4' to write.
-   * @return the output stream after the writing.
-   */
- /*  template <typename T> */
-/*   std::ostream&  operator<< ( std::ostream & out, const ArithDSS4<T> & object ) */
-/*   { */
-/*       object.selfDisplay( out); */
-/*       return out; */
-/*     } */
 } // namespace DGtal
 
 

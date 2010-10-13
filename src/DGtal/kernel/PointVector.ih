@@ -224,6 +224,15 @@ DGtal::PointVector<N,T>::operator*= ( T coeff )
   return *this;
 }
 //------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+DGtal::PointVector<N,T>
+DGtal::PointVector<N,T>::operator* ( T coeff )
+{
+	PointVector v = *this;
+	v *= coeff;
+	return v;
+}
+//------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 DGtal::PointVector<N,T>&
