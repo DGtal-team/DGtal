@@ -66,7 +66,7 @@ namespace DGtal
   
   template <std::size_t dim, 
 	    typename TInteger = int, 
-	    typename TSize = DGtal::uint32_t, 
+	    typename TSize = std::size_t, 
 	    typename TDimension = unsigned char>
   class SpaceND
   {
