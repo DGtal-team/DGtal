@@ -363,6 +363,13 @@ namespace DGtal
     PointVector & operator*= ( T coeff );
 
     /**
+     * Multiplication operator with a scalar number
+     *
+     * @param coeff is the factor 'this' is multiplied by.
+     * @return a new Point that is the multiplication of 'this' by coeff.
+     */
+    PointVector operator* ( T coeff );
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.

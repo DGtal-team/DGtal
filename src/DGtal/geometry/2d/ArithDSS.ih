@@ -52,17 +52,32 @@ inline
 bool
 DGtal::ArithDSS<Domain2D>::isValid() const
 {
-	//todo: 
-	//check if gcd(myA,myB)=1
-	//if myUl - myUf = k(myA,myB), etc.
-	return true;	
+
+	if (myA*myUf[0] - myB*myUf[1] != myMu) return false;
+	else if (myA*myUl[0] - myB*myUl[1] != myMu) return false;
+	else if (myA*myLf[0] - myB*myLf[1] != myMu+myOmega-1) return false;
+	else if (myA*myLl[0] - myB*myLl[1] != myMu+myOmega-1) return false;
+	else {
+
+		//gcd computation
+		Integer a = myA;
+		Integer b = myB;
+		while (b != 0) {
+			Integer q = a/b;
+			Integer r = a - q*b;
+			a = b;
+			b = r;
+		}
+		if (a != 1) return false;
+		else return true;	
+
+	} 
 }
 
   /**
      * Add a connected pixel aPoint at the front of a DSS.
      *
      * @param aPoint the new pixel (connected to the DSS) 
-     
      * @return true if the union of theDSS and aPoint is still a DSS.
      */
 
@@ -113,6 +128,91 @@ DGtal::ArithDSS<Domain2D>::addFront(const Point & aPoint)
 
 }
 
+    /**
+		 * Remove the first point of a DSS
+     * (located at the back with respect to 
+     * the scan orientaion)
+	   * if the DSS has more than two points
+     * @return 'true' the first point is removed, 'false' otherwise.
+     */
+template <typename Domain2D>
+inline
+bool 
+DGtal::ArithDSS<Domain2D>::removeBack()
+{
+	
+	Vector v = myL-myF;
+	if (norm(v[0],v[1]) <= 1) {//if there is only two points
+	//rajouter plutot un membre myN comptant le nombre de points ?
+		return false;
+	} else {                   //else
+
+		//update myF
+		Point ptToRemove = myF;
+	  Integer rMyF = myA*myF[0] - myB*myF[1]; //remainder of myF
+		Vector step;
+		if ( (rMyF-myB >= myMu)&&(rMyF-myB < myMu+myOmega) ) {
+				step = Vector(0,myB/std::abs(myB));
+		} else if ( (rMyF+myA >= myMu)&&(rMyF+myA < myMu+myOmega) ) {
+				step = Vector(myA/std::abs(myA),0);
+		}
+		myF = myF + step;
+
+		//if the point to remove is the first upper leaning point...
+		if (ptToRemove == myUf) {
+			//... and if the first and last lower leaning points are confounded
+			if (myLf == myLl) {
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = myLf - (myUf + vectorFrom0ToOmega() );
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector myFToMyUl = myUl - myF;
+				k = norm(myFToMyUl[0],myFToMyUl[1])/norm(myA,myB);
+				Vector knewMainVector = newMainVector;
+				myUf = myUl - newMainVector*k;
+				Vector myLfToMyL = myL - myLf;
+				k = norm(myLfToMyL[0],myLfToMyL[1])/norm(myA,myB);
+				myLl = myLf + newMainVector*k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = norm(myA,myB);
+			} else {
+				myUf = myUf + Vector(myB,myA);
+			}
+		}
+
+		//if the point to remove is the first lower leaning point...
+		if (ptToRemove == myLf) {
+			//... and if the first and last upper leaning points are confounded
+			if (myUf == myUl) { 
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = myUf - (myLf - vectorFrom0ToOmega() );
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector myFToMyLl = myLl - myF;
+				k = norm(myFToMyLl[0],myFToMyLl[1])/norm(myA,myB);
+				myLf = myLl - newMainVector*k;
+				Vector myUfToMyL = myL - myUf;
+				k = norm(myUfToMyL[0],myUfToMyL[1])/norm(myA,myB);
+				myUl = myUf + newMainVector*k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = norm(myA,myB);
+			} else {
+				myLf = myLf + Vector(myB,myA);
+			}
+		}
+
+		return true;
+	}
+
+}
 
 /**
  * Projects the point [m] onto the average straight line (ie (mu+nu)/2).

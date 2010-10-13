@@ -135,18 +135,29 @@ public:
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
-		 * \todo implementation
      */
     bool isValid() const;
 
     /**
-		 * Tests whether the union between a point and a DSS
-	   * is a DSS. Computes the parameters of the new DSS
-     * if true.
+		 * Tests whether the union between a point 
+     * (adding to the front of the DSS 
+     * with respect to the scan orientaion) 
+		 * and a DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param aPoint the new pixel (connected to the DSS) 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool addFront(const Point & aPoint);
 
+    /**
+		 * Remove the first point of a DSS
+     * (located at the back with respect to 
+     * the scan orientaion)
+	   * if the DSS has more than two points
+     * @return 'true' the first point is removed, 'false' otherwise.
+     */
+    bool removeBack();
 
     // ------------------------- Protected Datas ------------------------------
 protected:
@@ -175,6 +186,14 @@ protected:
      * @return the norm of a 2D vector.
      */
     virtual Integer norm(const Integer& x, const Integer& y) const = 0;
+
+    /**
+		 * Returns the 2D vector 
+		 * starting at a point of remainder 0
+		 * and pointing at a point of remainder omega
+     * @return the 2D vector.
+     */
+    virtual Vector vectorFrom0ToOmega() const = 0;
 
 private:
 
@@ -206,8 +225,8 @@ private:
     {
       SelfDrawStyle(LibBoard::Board & aBoard) 
       {
-	aBoard.setFillColor(LibBoard::Color::None);
-	aBoard.setPenColor(LibBoard::Color::Red);
+				aBoard.setFillColor(LibBoard::Color::None);
+				aBoard.setPenColor(LibBoard::Color::Red);
       }
     };
     
@@ -227,7 +246,7 @@ private:
      */
     void selfDraw( LibBoard::Board & board ) const
       {
-	selfDraw<SelfDrawStyle>(board);
+				selfDraw<SelfDrawStyle>(board);
       }
 
 
