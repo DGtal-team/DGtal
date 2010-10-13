@@ -33,14 +33,10 @@
 
 namespace DGtal
 {
+ 
   /**
-   * @brief Bits
-   * Struct grouping all the functions of this tiny library for bitwise calculation.
-   * 
-   */ 
-
-  // template metaprogramming :)
-  // To compute at compilation time a power
+   * Template metaprogramming to compute at compilation time a power.
+   */
   template <int X, unsigned exponent> class POW
   {
   public:	enum{ VALUE = X* POW<X, exponent-1>::VALUE};
@@ -50,8 +46,9 @@ namespace DGtal
   public:	enum{ VALUE = X };
   };
 
-  // template metaprogramming :)
-  // To compute at compilation time a floor(log2(x))
+  /**
+   * Template metaprogramming to compute at compilation time a log2.
+   */
   template <int X>
   class LOG2
   {
@@ -68,10 +65,15 @@ namespace DGtal
 
   struct Bits
   {
-    // ---------------------------------------------------------------------
-    // Debug tools
-    // ---------------------------------------------------------------------
     /**
+     * @brief Bits Structs grouping all the functions of this tiny
+     * library for bitwise calculation.
+     *
+     * @todo Check that T is CInteger.
+     */
+
+     
+     /**
      * Returns a string containing value's bits. Mainly designed for debugging purposes.
      * 
      * @param value The value that you need to dipslay as a bit string.
@@ -87,10 +89,13 @@ namespace DGtal
       // if the requested number of bit is 0, use the size of the data type instead
       if(nbBits == 0) nbBits = sizeof(T)*8;
       int i = min(sizeof(T)*8-1, nbBits-1);
-      //cerr << "bitString: i = " << i << endl;
+
       for(; i>=0; i--)
 	{
-	  T mask = ((T)1) << i; // if you take these parenthesis out, a mountain of incredible runtime errors will jump on you.(I warned ya !)
+	  T mask = ((T)1) << i; // if you take these parenthesis out,
+				// a mountain of incredible runtime
+				// errors will jump on you.(I warned
+				// ya !)
 	  if(value & mask)
 	    bitStr += "1" ;
 	  else
@@ -110,7 +115,7 @@ namespace DGtal
     template<typename T> 
     static inline T mask(unsigned nthBit)
     {
-      return static_cast<T>(static_cast<T>(1) << nthBit); // you are never too careful these days...
+      return static_cast<T>(static_cast<T>(1) << nthBit); 
     }
 
     /**
@@ -124,19 +129,19 @@ namespace DGtal
 
   
     /** 
-     * Returns a value such that only its bit corresponding to the first (least important) set bit of val,
-     * is set.
+     * Returns a value such that only its bit corresponding to the
+     * first (least important) set bit of val, is set.
      */ 
     template <typename T>
-   static  T firstSetBit(T val)
+    static  T firstSetBit(T val)
     {
       return (val & -val | val & (~val + 1));
     }
 
 
     /**
-     * Returns a value such that only its bit corresponding to the first (least important) unset bit of val,
-     * is set.
+     * Returns a value such that only its bit corresponding to the
+     * first (least important) unset bit of val, is set.
      */ 
     template <typename T>
     static T firstUnsetBit(T val)
