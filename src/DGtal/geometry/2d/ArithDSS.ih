@@ -149,14 +149,7 @@ DGtal::ArithDSS<Domain2D>::removeBack()
 
 		//update myF
 		Point ptToRemove = myF;
-	  Integer rMyF = myA*myF[0] - myB*myF[1]; //remainder of myF
-		Vector step;
-		if ( (rMyF-myB >= myMu)&&(rMyF-myB < myMu+myOmega) ) {
-				step = Vector(0,myB/std::abs(myB));
-		} else if ( (rMyF+myA >= myMu)&&(rMyF+myA < myMu+myOmega) ) {
-				step = Vector(myA/std::abs(myA),0);
-		}
-		myF = myF + step;
+		myF = next(ptToRemove);
 
 		//if the point to remove is the first upper leaning point...
 		if (ptToRemove == myUf) {
@@ -213,6 +206,27 @@ DGtal::ArithDSS<Domain2D>::removeBack()
 	}
 
 }
+
+
+//-------------------------------------------------------------------------
+
+template <typename Domain2D>
+inline
+std::vector<typename Domain2D::Point> 
+DGtal::ArithDSS<Domain2D>::recover() const
+{
+
+	std::vector<Point > contour;
+	Point firstPoint = myF;
+	while (firstPoint != myL) {
+		contour.push_back(firstPoint);
+		firstPoint = next(firstPoint);
+	}
+	contour.push_back(firstPoint);
+
+	return contour;
+}
+
 
 /**
  * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
@@ -311,15 +325,27 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
     {
       Functor applystyle(aBoard);
       
-      
+      // IS
+      // Incompatibilité des Point de Board et de DGtal...
+      // A corriger
+
+			//draw contour
+      vector<Point> ptsOfDSS = recover();
+      vector<LibBoard::Point> contour;
+			for (int i=0; i<ptsOfDSS.size();i++) {
+				Point p = ptsOfDSS.at(i);
+				contour.push_back(LibBoard::Point(p[0],p[1]));
+			}
+
+      aBoard.drawPolyline(contour);
+
+      //draw bounding box
       PointD topLeft = project(myF, myUf);
       PointD bottomLeft = project(myF,myLf);
       PointD bottomRight = project(myL, myLf);
       PointD topRight = project(myL,myUf);
       
-      // IS
-      // Incompatibilité des Point de Board et de DGtal...
-      // A corriger
+
       LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
       LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
       LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
@@ -332,7 +358,7 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
       bb.push_back(topRightBoard);
       
       
-      aBoard.drawClosedPolyline(bb);      
+      aBoard.drawClosedPolyline(bb);  
      
     }
   else

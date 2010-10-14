@@ -99,6 +99,14 @@ namespace DGtal
      */
     Vector vectorFrom0ToOmega() const;
 
+    /**
+		 * Returns the point 
+		 * that follows a given point in the DSS
+		 * @param aPoint, a given point of the DSS. 
+     * @return the next point.
+     */
+    Point next(const Point& aPoint) const;
+
     // ------------------------- Private Datas --------------------------------
   private:
 

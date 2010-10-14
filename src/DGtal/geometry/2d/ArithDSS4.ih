@@ -98,7 +98,25 @@ DGtal::ArithDSS4<Domain2D>::vectorFrom0ToOmega() const
 	return Vector(1,-1);
 }
 
+template <typename Domain2D>
+inline
+typename DGtal::ArithDSS4<Domain2D>::Point
+DGtal::ArithDSS4<Domain2D>::next(
+			const typename DGtal::ArithDSS4<Domain2D>::Point & aPoint) const 
+{
 
+  Integer r = this->myA*aPoint[0] - this->myB*aPoint[1]; //remainder of aPoint
+	//verifier que aPoint soit dans le DSS!
+
+	Vector step; 
+	if ( (r-this->myB >= this->myMu)&&(r-this->myB < this->myMu+this->myOmega) ) {
+			step = Vector(0,this->myB/std::abs(this->myB));
+	} else if ( (r+this->myA >= this->myMu)&&(r+this->myA < this->myMu+this->myOmega) ) {
+			step = Vector(this->myA/std::abs(this->myA),0);
+	}
+
+	return aPoint + step;
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
