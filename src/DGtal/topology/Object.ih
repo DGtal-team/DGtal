@@ -788,6 +788,30 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
   return ( *myPointSet != 0 ) && (*myTopo != 0 );
 }
 
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object. 
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::DrawableWithBoard* 
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle() const
+{
+  return new DefaultDrawStyle;
+}
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+std::string 
+DGtal::Object<TDigitalTopology, TDigitalSet>::styleName() const
+{
+  return "Object";
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // selfDraw functions                                                        //
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -799,6 +823,19 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw(LibBoard::Board & aBoard) 
   pointSet().selfDraw<Functor>(aBoard);
 }
 
+/**
+ * Draw the object on a LiBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void 
+DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw
+( LibBoard::Board & board ) const
+{
+  pointSet().selfDraw( board);
+}
+
 template<typename TDigitalTopology, typename TDigitalSet>
 template<typename Functor>
 inline
@@ -807,6 +844,31 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies(LibBoard::B
 {
   Point p;
   pointSet().selfDraw<Functor>(aBoard);
+  aBoard.setPenColorRGBi(0,0,0);
+  for(typename TDigitalSet::ConstIterator it = pointSet().begin(); 
+      it != pointSet().end();
+      ++it)
+    {
+      //Brute-force scan of the neighborhood.
+      SmallObject neig = this->properNeighborhood(*it);
+      for(typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin(); 
+	  it2 != neig.pointSet().end();
+	  ++it2)	
+	{
+	  p = (*it2) - (*it);
+	  p.selfDraw(aBoard,(*it));
+	}
+    }
+}
+
+template<typename TDigitalTopology, typename TDigitalSet>
+inline
+void 
+DGtal::Object<TDigitalTopology,TDigitalSet>::selfDrawWithAdjacencies
+(LibBoard::Board & aBoard) const
+{
+  Point p;
+  pointSet().selfDraw(aBoard);
   aBoard.setPenColorRGBi(0,0,0);
   for(typename TDigitalSet::ConstIterator it = pointSet().begin(); 
       it != pointSet().end();

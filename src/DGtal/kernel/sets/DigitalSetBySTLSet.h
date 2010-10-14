@@ -303,6 +303,39 @@ namespace DGtal
     };
 
   public:
+    /** 
+     * Default style.
+     */
+    struct DefaultDrawStyle : public DrawableWithBoard
+    {
+      virtual void selfDraw(LibBoard::Board & aBoard) const
+      {
+	aBoard.setFillColorRGBi(160,160,160);
+	aBoard.setPenColorRGBi(80,80,80);
+      }
+    };
+
+    // --------------- CDrawableWithBoard realization -------------------------
+  public:
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object. 
+     */
+    DrawableWithBoard* defaultStyle() const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+
+    /**
+     * Draw the object on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw(LibBoard::Board & board ) const;
+
+  public:
     
     /**
      * Draw the object on a LibBoard board
@@ -311,16 +344,6 @@ namespace DGtal
      */
     template<typename Functor>
     void selfDraw(LibBoard::Board & board ) const;
-
-    /**
-     * Draw the object on a LibBoard board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(LibBoard::Board & board ) const
-    {
-      selfDraw<SelfDrawStyle>(board);
-    }
-
 
 
     // ------------------------- Hidden services ------------------------------
