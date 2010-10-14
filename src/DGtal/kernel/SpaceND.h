@@ -77,14 +77,15 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<TSize>));
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<TDimension>));
 
+    //Arithmetic
     typedef TInteger Integer;
-  
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
    
+    //Size & Dimension
     typedef TSize Size;
     typedef TDimension Dimension;
 
-
+    //Points and Vectors
     typedef PointVector<dim, Integer> Point;
     typedef PointVector<dim, Integer> Vector;
     
