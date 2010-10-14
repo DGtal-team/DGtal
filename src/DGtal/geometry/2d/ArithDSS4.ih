@@ -56,10 +56,11 @@ DGtal::ArithDSS4<Domain2D>::ArithDSS4(
 	 const typename DGtal::ArithDSS4<Domain2D>::Point& aSecondPoint)
 {
 
-	//todo: 
-	//ASSERT(DGtal::ArithDSS4<Domain2D>::Point::staticDimension == 2);
+	ASSERT(DGtal::ArithDSS4<Domain2D>::Point::Dimension == 2 && "only valid for 2D");
 
-	//todo: checks connexity
+	Vector step = aSecondPoint - aFirstPoint;
+	Integer deviation = norm(step[0],step[1]);
+	if ( deviation != 1) throw InputException();
 
 	this->myF = aFirstPoint;
 	this->myL = aSecondPoint;
@@ -106,7 +107,7 @@ DGtal::ArithDSS4<Domain2D>::next(
 {
 
   Integer r = this->myA*aPoint[0] - this->myB*aPoint[1]; //remainder of aPoint
-	//verifier que aPoint soit dans le DSS!
+	if ( (r < this->myMu)||(r >= this->myMu+this->myOmega) )  throw InputException();
 
 	Vector step; 
 	if ( (r-this->myB >= this->myMu)&&(r-this->myB < this->myMu+this->myOmega) ) {

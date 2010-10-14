@@ -69,6 +69,19 @@ namespace DGtal
     }
   };
 
+  /**
+   * InputException derived class.
+   */ 
+  class InputException: public exception
+  {
+		public:
+    virtual const char* what() const throw()
+    {
+      return "DGtal bad input error";
+    }
+  };
+
+
 } // namespace DGtal
 
 

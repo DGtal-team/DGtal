@@ -44,6 +44,7 @@
 #include <iostream>
 #include <iterator>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -84,13 +85,26 @@ int main(int argc, char **argv)
 	contour.push_back(Point(6,2));
 	contour.push_back(Point(6,3));
 
-  
-  // Initialisation of a DSS
-  ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
-  
+  // Bad initialisation
+  trace.beginBlock("Bad init");
+	trace.info() << "same point two times" << std::endl;
+	try {
+  	ArithDSS4<Domain2D> theDSS(Point(0,0),Point(0,0));		
+	} catch (InputException e) {
+		trace.info() << e.what() << std::endl;
+	}
+	trace.info() << "not connected points" << std::endl;
+	try {
+	  ArithDSS4<Domain2D> theDSS(Point(0,0),Point(1,1));	
+	} catch (InputException e) {
+		trace.info() << e.what() << std::endl;
+	}
+  trace.endBlock();
+
 
   // Print the result of the initialisation
   trace.beginBlock("Init of a DSS");
+  ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
   trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
   trace.endBlock();
   
