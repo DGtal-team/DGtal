@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/Object.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -52,6 +53,7 @@ namespace DGtal
    * Specifies the drawing mode for domains.
    */
   enum DomainDrawMode { GRID = 0, PAVING = 1 };
+
 
   /////////////////////////////////////////////////////////////////////////////
   // class DGtalBoard
@@ -65,6 +67,13 @@ namespace DGtal
    */
   class DGtalBoard : public LibBoard::Board
   {
+    // ----------------------- local types ------------------------------
+  public:
+    /**
+     * Stores the default styles for digital objects.
+     */
+    typedef std::map< std::string,CountedPtr<DrawableWithBoard> > StyleMapping;
+
     // ----------------------- Standard services ------------------------------
   public:
     
@@ -148,6 +157,7 @@ namespace DGtal
   public:
     DomainDrawMode myDomainDrawMode;
     bool myDrawObjectAdjacencies;
+    StyleMapping myStyles;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -173,11 +183,26 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const DGtalBoard & object );
 
+  struct DrawWithBoardModifier {
+    std::string styleName() const
+    {
+      return "";
+    }
+
+    DrawableWithBoard* defaultStyle() const
+    {
+      return 0;
+    }
+
+    virtual void selfDraw( DGtalBoard & board ) const 
+    {}
+  };
+
   /**
    * Modifier class in a DGtalBoard stream. Realizes the concept
    * CDrawableWithDGtalBoard.
    */
-  struct DrawDomainGrid {
+  struct DrawDomainGrid : public DrawWithBoardModifier {
     void selfDraw( DGtalBoard & board ) const
     {
       board.myDomainDrawMode = GRID;
@@ -188,7 +213,7 @@ namespace DGtal
    * Modifier class in a DGtalBoard stream. Realizes the concept
    * CDrawableWithDGtalBoard.
    */
-  struct DrawDomainPaving {
+  struct DrawDomainPaving : public DrawWithBoardModifier {
     void selfDraw( DGtalBoard & board ) const
     {
       board.myDomainDrawMode = PAVING;
@@ -199,7 +224,7 @@ namespace DGtal
    * Modifier class in a DGtalBoard stream. Realizes the concept
    * CDrawableWithDGtalBoard.
    */
-  struct DrawObjectAdjacencies {
+  struct DrawObjectAdjacencies : public DrawWithBoardModifier {
     DrawObjectAdjacencies( bool drawAdj = true )
       : myDrawAdj( drawAdj )
     {}
@@ -215,13 +240,36 @@ namespace DGtal
    * CDrawableWithDGtalBoard.
    */
   template<typename CustomStyleFunctor>
-  struct DrawWithCustomStyle {
+  struct DrawWithCustomStyle : public DrawWithBoardModifier {
     void selfDraw( DGtalBoard & board ) const
     {
       CustomStyleFunctor applyFunctor(board);
       //TEST
       board.setFillColorRGBi(0,169,0);
     }
+  };
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct CustomStyle : public DrawWithBoardModifier {
+    /**
+     * @param classname the name of the class to which the style is associated.
+     *
+     * @param style a pointer on a dynamically allocated style, which
+     * is acquired by the class.
+     */
+    CustomStyle( std::string classname, DrawableWithBoard* style )
+      : myClassname( classname ), myStyle( style )
+    {}
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myStyles[ myClassname ] = myStyle;
+    }
+  private:
+    std::string myClassname;
+    CountedPtr<DrawableWithBoard> myStyle;
   };
 
 } // namespace DGtal

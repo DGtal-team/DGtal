@@ -432,6 +432,33 @@ DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
   out << "}";  
 }
 
+// --------------- CDrawableWithBoard realization -------------------------
+//------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+inline
+DGtal::DrawableWithBoard* 
+DGtal::PointVector<N,T>::defaultStyle() const
+{
+  return new DefaultDrawStyle;
+}
+//------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+inline
+std::string 
+DGtal::PointVector<N,T>::styleName() const
+{
+  return "PointVector";
+}
+//------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+inline
+void 
+DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board ) const
+{
+  ASSERT(N==2);
+  board.drawDot((float) myArray[0], (float) myArray[1]);
+}
+
 //------------------------------------------------------------------------------
 template<std::size_t N,typename T>
 template<typename Functor>

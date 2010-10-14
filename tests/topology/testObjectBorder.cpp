@@ -70,6 +70,48 @@ struct SelfDrawStyleCustomRed
   }
 };
 
+struct MyObjectStyleCustom : public DrawableWithBoard
+{
+  void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(0,169,0);
+  }
+};
+
+struct MyDrawStyleCustomRed : public DrawableWithBoard
+{
+  virtual void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(169,150,150);
+    aboard.setPenColorRGBi(0,0,0);
+    aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+    aboard.setLineWidth( 1.5 );
+  }
+};
+
+struct MyDrawStyleCustomBlue : public DrawableWithBoard
+{
+  virtual void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(150,150,250);
+    aboard.setPenColorRGBi(0,0,200);
+    aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+    aboard.setLineWidth( 1.5 );
+  }
+};
+
+struct MyDrawStyleCustomGreen : public DrawableWithBoard
+{
+  virtual void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(150,150,160);
+    aboard.setPenColorRGBi(150,150,160);	
+    aboard.setLineStyle(LibBoard::Shape::DashStyle);
+    aboard.setLineWidth( 1.0 );
+  }
+};
+
+
 /**
  * Simple test to illustrate the border extraction of a simple 2D
  * object considering different topologies.
@@ -136,7 +178,8 @@ bool testObjectBorder()
   board.saveSVG("bubble-set.svg");
   
   board << DrawObjectAdjacencies() 
-	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+    //	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+    	<< CustomStyle( "Object", new MyObjectStyleCustom )
 	<< bubbleBorder;  
   board.saveSVG("bubble-object-border.svg");
   
@@ -250,10 +293,16 @@ bool testDGtalBoard()
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
  
-  board << DrawDomainGrid() << domain << bubble_set;
+  board << DrawDomainGrid() 
+	<< CustomStyle( domain.styleName(), new MyDrawStyleCustomGreen )
+	<< domain 
+	<< CustomStyle( bubble_set.styleName(), new MyDrawStyleCustomRed )
+	<< bubble_set;
   board.saveSVG("bubble-set-dgtalboard.svg");
   
-  board << DrawObjectAdjacencies( true ) << bubbleBorder;
+  board << DrawObjectAdjacencies( true ) 
+	<< CustomStyle( bubbleBorder.styleName(), new MyDrawStyleCustomBlue )
+	<< bubbleBorder;
   board.saveSVG("bubble-object-border-dgtalboard.svg");
   board.clear();
 

@@ -52,6 +52,13 @@ INLINE
 DGtal::DGtalBoard & 
 DGtal::DGtalBoard::operator<<( const CDrawableWithBoard & object )
 {
+  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
+  CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
+  if ( style.get() )
+    style->selfDraw( *this );
+  if ( it != myStyles.end() ) 
+    if ( it->second.get() != 0 )
+      it->second->selfDraw( *this );
   object.selfDraw( *this );
   return *this;
 }
@@ -68,6 +75,13 @@ INLINE
 DGtal::DGtalBoard & 
 DGtal::DGtalBoard::operator<<( const HyperRectDomain<TSpace> & domain )
 {
+  StyleMapping::const_iterator it = myStyles.find( domain.styleName() );
+  CountedPtr<DrawableWithBoard> style( domain.defaultStyle() );
+  if ( style.get() )
+    style->selfDraw( *this );
+  if ( it != myStyles.end() ) 
+    if ( it->second.get() != 0 )
+      it->second->selfDraw( *this );
   if ( myDomainDrawMode == GRID )
     domain.selfDrawAsGrid( *this );
   else
@@ -90,6 +104,13 @@ DGtal::DGtalBoard &
 DGtal::DGtalBoard::operator<<
 ( const Object<TDigitalTopology,TDigitalSet> & object )
 {
+  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
+  CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
+  if ( style.get() )
+    style->selfDraw( *this );
+  if ( it != myStyles.end() ) 
+    if ( it->second.get() != 0 )
+      it->second->selfDraw( *this );
   if ( myDrawObjectAdjacencies )
     object.selfDrawWithAdjacencies( *this );
   else

@@ -77,6 +77,19 @@ namespace DGtal
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
   
+  /**
+   * Interface that specifies that an object can draw itself on a
+   * board. 
+   * @todo (JOL) Put this class elsewhere.
+   */
+  struct DrawableWithBoard {
+    /**
+     * Operation to override. Does nothing by default.
+     *
+     * @param board any object of type Board.
+     */
+    virtual void selfDraw( LibBoard::Board & board ) const {}
+  };
 
   /////////////////////////////////////////////////////////////////////////////
   // class Common

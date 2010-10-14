@@ -58,7 +58,8 @@ DGtal::DGtalBoard::~DGtalBoard()
 DGtal::DGtalBoard::DGtalBoard( const LibBoard::Color & backgroundColor )
   : LibBoard::Board( backgroundColor ),
     myDomainDrawMode( GRID ),
-    myDrawObjectAdjacencies( false )
+    myDrawObjectAdjacencies( false ),
+    myStyles()
 {
 }
 
@@ -70,7 +71,8 @@ DGtal::DGtalBoard::DGtalBoard( const LibBoard::Color & backgroundColor )
 DGtal::DGtalBoard::DGtalBoard( const DGtalBoard & other )
   : LibBoard::Board( other ),
     myDomainDrawMode( other.myDomainDrawMode ),
-    myDrawObjectAdjacencies( other.myDrawObjectAdjacencies )
+    myDrawObjectAdjacencies( other.myDrawObjectAdjacencies ),
+    myStyles( other.myStyles )
 {
 }
 
@@ -87,6 +89,7 @@ DGtal::DGtalBoard::operator= ( const DGtalBoard & other )
       LibBoard::Board::operator=( other );
       myDomainDrawMode = other.myDomainDrawMode;
       myDrawObjectAdjacencies = other.myDrawObjectAdjacencies;
+      myStyles = other.myStyles;
     }
   return *this;
 }

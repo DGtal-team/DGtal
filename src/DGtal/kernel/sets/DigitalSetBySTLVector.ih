@@ -495,6 +495,50 @@ DGtal::DigitalSetBySTLVector<Domain>::isValid() const
 }
 
 
+
+// --------------- CDrawableWithBoard realization -------------------------
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object. 
+ */
+template<typename Domain>
+inline
+DGtal::DrawableWithBoard* 
+DGtal::DigitalSetBySTLVector<Domain>::defaultStyle() const
+{
+  return new DefaultDrawStyle;
+}
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template<typename Domain>
+inline
+std::string
+DGtal::DigitalSetBySTLVector<Domain>::styleName() const
+{
+  return "DigitalSetBySTLVector";
+}
+
+/**
+ * Draw the object on a LibBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template<typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLVector<Domain>::selfDraw( LibBoard::Board & board ) const
+{
+  if (Domain::staticDimension == 2)
+    {
+      for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
+	board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    }
+  else
+    ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+}
+
 //------------------------------------------------------------------------------
 template<typename Domain>
 template<typename Functor>
