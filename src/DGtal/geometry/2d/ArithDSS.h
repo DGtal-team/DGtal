@@ -159,6 +159,14 @@ public:
      */
     bool removeBack();
 
+    /**
+		 * Computes the sequence of (connected) points
+		 * belonging to the DSL(a,b,mu,omega)
+     * between the first and last point of the DSS
+     * @return the computed sequence of points.
+     */
+    std::vector<Point> recover() const;
+
     // ------------------------- Protected Datas ------------------------------
 protected:
 
@@ -194,6 +202,14 @@ protected:
      * @return the 2D vector.
      */
     virtual Vector vectorFrom0ToOmega() const = 0;
+
+    /**
+		 * Returns the point 
+		 * that follows a given point in the DSS
+		 * @param aPoint, a given point of the DSS. 
+     * @return the next point.
+     */
+    virtual Point next(const Point& aPoint) const = 0;
 
 private:
 
