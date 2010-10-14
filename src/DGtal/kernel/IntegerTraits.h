@@ -442,6 +442,18 @@ namespace DGtal
     { return UNSIGNED; }
   }; // end of class IntegerTraits<unsigned int>.
 
+  class Warning_promote_trait_not_specialized_for_this_case { };
+  
+  template<class A, class B>
+  struct promote_trait {
+    typedef Warning_promote_trait_not_specialized_for_this_case promote_t;
+  };
+
+  template<>
+  struct promote_trait<int32_t,int64_t> {
+    typedef int64_t promote_t;
+  };
+
 } // namespace DGtal
 
 
