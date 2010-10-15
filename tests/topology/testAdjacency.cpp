@@ -39,7 +39,6 @@ using namespace std;
 using namespace DGtal;
 
 /**
- * @example testAdjacency.cpp
  *
  * This file test the standard digital adjacencies, the one based on a
  * metric. We have the classical 4- and 8- adjacencies in 2D, the 6-,

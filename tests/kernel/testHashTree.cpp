@@ -40,6 +40,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerByHashTree.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -107,16 +108,22 @@ bool testGetSetVal()
 
   //Default image selector = STLVector
   typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
+  typedef ImageContainerBySTLVector<TDomain, int> ImageVector;
 
   Point a( 1,1 );
   Point b ( 50,50 );
   Point c(15,15);
   Point d(128,128);
 
+  Point l(0,0);
+  Point u(255,255);
 
   trace.beginBlock ( "Image init" );
   ///Domain characterized by points
   Image myImage ( 3, 8, 0 );
+
+  ImageVector myImageV(l,u);
+
   trace.info() << myImage;
   trace.endBlock();
   
@@ -126,10 +133,17 @@ bool testGetSetVal()
     for( a[0] = 0; a[0] < 256; a[0]++)
       {
 	if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(32.0,3.0))
-	  myImage.setValue(a, 30);
+	  {
+	    myImage.setValue(a, 30);
+	    myImageV.setValue(a,30);
+	  }
+
 	else
 	  if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(64.0,3.0))
-	    myImage.setValue(a, 10);	
+	    {
+	      myImage.setValue(a, 10);	
+	      myImageV.setValue(a,10);
+	    }
       }
   trace.endBlock();
   
@@ -155,10 +169,14 @@ bool testGetSetVal()
   nb++;
   
   trace.info() << myImage;
-   
+  trace.info() << myImageV;
+
   myImage.selfDraw<HueTwice>(board,0,255);
   board.saveSVG( "hashtree.svg" );
-
+  board.clear();
+  myImageV.selfDraw<HueTwice>(board,0,255);
+  board.saveSVG( "hashtree-vector.svg" );
+  
 
   ///Domain characterized by points
   Image myImage2 ( 5, 8, 0 );
@@ -219,7 +237,6 @@ bool testBadKeySizes()
 
   //Default image selector = STLVector
   typedef experimental::ImageContainerByHashTree<TDomain, char> Image;
-
   Point d(128,128);
 
   trace.beginBlock ( "Test maximal depth >  number of bits of the HashKey type" );
