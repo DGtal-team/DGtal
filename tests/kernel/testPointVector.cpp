@@ -42,7 +42,6 @@ using namespace DGtal;
 using namespace std;
 
 /**
- * @example testPointVector.cpp
  *
  * A PointVector may represent either a digital point or a digital
  * vector depending on the context. For performance reasons, these

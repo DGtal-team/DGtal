@@ -598,9 +598,9 @@ namespace DGtal
     unsigned int nbNodes = getNbNodes();
     unsigned int totalSize = sizeof(*this) + (1 << myKeySize)*sizeof(Node*) + nbNodes* sizeof(Node);
 	
-    out << "[ImageContainerByHashTree]:  Dimmension=" << dim<<", HashKey size=" 
+    out << "[ImageContainerByHashTree]:  Dimension=" << (int)dim<<", HashKey size=" 
 	<< myKeySize<< ", Depth=" << myTreeDepth <<", image size=" << getSpanSize() 
-	<< "^"<< dim << " ("<< std::pow((double)getSpanSize(),(double)dim )*sizeof(ValueType)
+	<< "^"<< (int)dim << " ("<< std::pow((double)getSpanSize(),(double)dim )*sizeof(ValueType)
 	<<" bytes)"<<", "<< nbNodes << " nodes"<<", Empty lists=" << getNbEmptyLists() 
 	<< " ("<< getNbEmptyLists()*sizeof(Node*)<<" bytes)"<<", Average collisions=" << getAverageCollisions()
 	<< ", Max collisions " << getMaxCollisions() 
