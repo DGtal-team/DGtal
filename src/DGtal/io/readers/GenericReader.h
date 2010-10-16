@@ -101,7 +101,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/writers/GenericReader.ih"
+#include "DGtal/io/readers/GenericReader.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

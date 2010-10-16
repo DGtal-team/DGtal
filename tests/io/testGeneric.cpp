@@ -15,7 +15,7 @@
  **/
 //LICENSE-END
 /**
- * @file testVolReader.cpp
+ * @file testGenericWriterReader.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -34,6 +34,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/io/readers/GenericReader.h"
 
 #include "ConfigTest.h"
 
@@ -49,10 +50,10 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testGenericWriter()
+bool testGenericWriterReader()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
+  unsigned int nb = 1;
   
   trace.beginBlock ( "Testing Generic ..." );
 
@@ -69,10 +70,18 @@ bool testGenericWriter()
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 
-  GenericWriter<Image>::exportTXT("export-generic.txt",image);
-  GenericWriter<Image>::exportBIN("export-generic.bin",image);
-  GenericWriter<Image>::exportXML("export-generic.xml",image);
+  GenericWriter<Point>::exportTXT("export-generic.txt",a);
+  GenericWriter<Point>::exportBIN("export-generic.bin",a);
+  GenericWriter<Point>::exportXML("export-generic.xml",a);
  
+  /* Point c = GenericReader<Point>::importTXT("export-generic.txt");
+  Point d = GenericReader<Point>::importBIN("export-generic.bin");
+  Point e = GenericReader<Point>::importXML("export-generic.xml");
+ 
+  //We check the result
+  if ((a == c) && (a == d))// && (a == e))
+  */
+  nbok++;
 
   trace.endBlock();
   
@@ -90,7 +99,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testGenericWriter(); // && ... other tests
+  bool res = testGenericWriterReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
