@@ -32,10 +32,12 @@
 #include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
+#include "Board/Board.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FreemanChain.
@@ -52,8 +54,8 @@ bool testFreemanChain(stringstream & ss)
   
   trace.beginBlock ( "Testing FreemanChain " );
   
-  FreemanChain fc;
-  FreemanChain::read(ss, fc);
+  FreemanChain fc(ss);
+
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << ss.str() << endl; 
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -74,12 +76,13 @@ bool testFreemanChain(stringstream & ss)
 	       << "Test chain bounding box" << std::endl;
   
   
-  vector<FreemanChain::PointI2D> aContourPointVector; 
+  vector<FreemanChain::PointI2> aContourPointVector; 
   fc.getContourPoints(fc, aContourPointVector);
   trace.info() << "List of point: ";
   for (int i =0; i <aContourPointVector.size(); i++){
     trace.info()<< "(" << aContourPointVector.at(i).at(0) << "," << aContourPointVector.at(i).at(1) << ")";
   }
+  
   trace.info()<< endl;
   nbok+=1;
   trace.info() << "(" << nbok << "/" << nb << ") "

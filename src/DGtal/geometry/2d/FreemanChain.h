@@ -65,19 +65,19 @@ namespace DGtal
    */
 
 
-class FreemanChain
-{
+  class FreemanChain
+  {
 
-public :
-  typedef PointVector<2,int> PointI2D;
+  public :
+    typedef PointVector<2,int> PointI2;
 
-   // ------------------------- iterator ------------------------------
+    // ------------------------- iterator ------------------------------
   public:
     /**
      * This class represents an iterator on the freeman chain, storing
      * the current coordinate.
      */
-    class constIterator
+    class ConstIterator
     {
       // ------------------------- data -----------------------
     private:
@@ -94,7 +94,7 @@ public :
       /**
        * The current coordinates of the iterator.
        */
-     PointI2D  myXY;
+      PointI2  myXY;
       
 
 
@@ -104,7 +104,7 @@ public :
        * Default Constructor.
        * The object is not valid.
        */
-      constIterator();
+      ConstIterator();
 
       /**
        * Constructor.
@@ -113,25 +113,25 @@ public :
        * @param aChain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()-1).
        */
-      constIterator( const FreemanChain & aChain, unsigned int n = 0 );
+      ConstIterator( const FreemanChain & aChain, unsigned int n = 0 );
 
       /**
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      constIterator( const constIterator & aOther );
+      ConstIterator( const ConstIterator & aOther );
     
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      constIterator& operator=( const constIterator & aOther );
+      ConstIterator& operator=( const ConstIterator & aOther );
     
       /**
        * Destructor. Does nothing.
        */
-      ~constIterator();
+      ~ConstIterator();
     
       // ------------------------- iteration services -------------------------
     public:
@@ -139,18 +139,18 @@ public :
       /**
        * @return the current coordinates.
        */
-      PointI2D operator*() const;
+      PointI2 operator*() const;
 
       /**
        * @return the current coordinates.
        */
-      PointI2D get() const;
+      PointI2 get() const;
 
       /**
        * Pre-increment.
        * Goes to the next point on the chain.
        */
-      constIterator& operator++();
+      ConstIterator& operator++();
       
       /**
        * Goes to the next point on the chain.
@@ -182,7 +182,7 @@ public :
        * Pre-decrement.
        * Goes to the previous point on the chain.
        */
-      constIterator& operator--();
+      ConstIterator& operator--();
       
       /**
        * Goes to the previous point on the chain if possible.
@@ -202,7 +202,7 @@ public :
        *
        * @return 'true' if their current positions coincide.
        */
-      bool operator==( const constIterator & aOther ) const;
+      bool operator==( const ConstIterator & aOther ) const;
 
       /**
        * Inequality operator.
@@ -212,7 +212,7 @@ public :
        *
        * @return 'true' if their current positions differs.
        */
-      bool operator!=( const constIterator & aOther ) const;
+      bool operator!=( const ConstIterator & aOther ) const;
 
       /**
        * Inferior operator.
@@ -223,12 +223,12 @@ public :
        * @return 'true' if the current position of 'this' is before
        * the current position of [other].
        */
-      bool operator<( const constIterator & aOther ) const;
+      bool operator<( const ConstIterator & aOther ) const;
       
     };
       
 
-   // ------------------------- static services ------------------------------
+    // ------------------------- static services ------------------------------
   public:
 
     /**
@@ -269,11 +269,11 @@ public :
      * default is 0.
      */
     
-  //static void create( std::string & chain,
-  //			std::string & qchain,
-  //			const C4CIterator & it, 
-  //			unsigned int nb, unsigned int freeman, unsigned int quadrant,
-  //			unsigned int start_index = 0 );
+    //static void create( std::string & chain,
+    //			std::string & qchain,
+    //			const C4CIterator & it, 
+    //			unsigned int nb, unsigned int freeman, unsigned int quadrant,
+    //			unsigned int start_index = 0 );
   
   
     /**
@@ -309,7 +309,7 @@ public :
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-  static PointI2D displacement( unsigned int aCode );
+    static PointI2 displacement( unsigned int aCode );
 
     /**
      * @param aCode any Freeman code.
@@ -472,117 +472,26 @@ public :
 			   unsigned int h, unsigned int v,
 			   int x0, int y0 );
 
-    /**
-     * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc].
-     *
-     * @param vx (returns) the x-coordinates of the MLP vertices.
-     * @param vy (returns) the y-coordinates of the MLP vertices.
-     * @param vi (returns) the indices of the MLP vertices in [fc].
-     * @param fc the input Freeman chain.
-     *
-     * @return 'true' if the MLP has made a correct loop, 'false'
-     * otherwise (error ?).
-     */
-    static bool computeMLP( std::vector<int> & vx,
-			    std::vector<int> & vy,
-			    std::vector<unsigned int> & vi,
-			    const FreemanChain & fc );
-
-    /**
-     * Computes the Minimum Length Polygon (MLP) of the Freeman chain
-     * [fc]. Tells also if vertices are inside or outside.
-     *
-     * @param vx (returns) the x-coordinates of the MLP vertices.
-     * @param vy (returns) the y-coordinates of the MLP vertices.
-     * @param vi (returns) the indices of the MLP vertices in [fc].
-     *
-     * @param vt (returns) the type (inside=true, outside=false) of the
-     * MLP vertices in [fc].
-     *
-     * @param fc the input Freeman chain.
-     *
-     * @param cw when 'true', the inside is considered to be to the right
-     * of the contour (the contour turns clockwise around the inside),
-     * when 'false' the inside is considered to be to the left of the
-     * contour (the contour turns counterclockwise around the inside).
-     *
-     * @return 'true' if the MLP has made a correct loop, 'false'
-     * otherwise (error ?).
-     */
-    static bool computeMLP( std::vector<int> & vx,
-			    std::vector<int> & vy,
-			    std::vector<unsigned int> & vi,
-			    std::vector<bool> & vt,
-			    const FreemanChain & fc,
-			    bool cw );
-
-    /**
-     * Computes the Minimum Length Polygon (MLP) of the Freeman chain
-     * [fc]. Tells also if vertices are inside or outside. The MLP lies in
-     * the half-integer plane compared with the Freeman Chain. Vertex
-     * coordinates are given as integers. This function gives the
-     * displacement vector to go from the digital contour to the MLP.
-     *
-     * @param vx (returns) the x-coordinates of the MLP vertices.
-     * @param vy (returns) the y-coordinates of the MLP vertices.
-     * @param vi (returns) the indices of the MLP vertices in [fc].
-     *
-     * @param vt (returns) the type (inside=true, outside=false) of the
-     * MLP vertices in [fc].
-     *
-     * @param aTwice_dv (returns) twice the displacement vector to go from
-     * the integer plane of the Freeman chain to the half-integer plane of
-     * the MLP.
-     *
-     * @param fc the input Freeman chain.
-     *
-     * @param cw when 'true', the inside is considered to be to the right
-     * of the contour (the contour turns clockwise around the inside),
-     * when 'false' the inside is considered to be to the left of the
-     * contour (the contour turns counterclockwise around the inside).
-     *
-     * @return 'true' if the MLP has made a correct loop, 'false'
-     * otherwise (error ?).
-     */
-    static constIterator computeMLP( std::vector<int> & vx,
-				      std::vector<int> & vy,
-				      std::vector<unsigned int> & vi,
-				      std::vector<bool> & vt,
-				      PointI2D & aTwice_dv,
-				      const FreemanChain & fc,
-				      bool cw );
-
-			    
-    /**
-     * Computes the Minimum Length Polygon (MLP) of the Freeman chain [fc]
-     * and return its length.
-     *
-     * @param fc the input Freeman chain.
-     *
-     * @return the Euclidean length of the MLP.
-     */
-    static double lengthMLP( const FreemanChain & fc );
-
 
   
-  /**
+    /**
      * Return a vector containing all the interger points of the freemanchain.
      *
      * @param fc the FreemanChain
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
-    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2D > & aVContour); 
+    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2> & aVContour); 
     
   
   
   
   
-  static void movePointFromFC(PointI2D & aPoint, unsigned int aCode );
+    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
 
 
 
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
   
 
@@ -593,7 +502,7 @@ public:
      * Destructor.
      */
     ~FreemanChain();
-
+    
     /**
      * Constructor.
      * @param s the chain code.
@@ -601,6 +510,14 @@ public:
      * @param y the y-coordinate of the first point.
      */
     FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
+
+
+    /**
+     * Constructor.
+     * @param in any input stream,
+     */
+    FreemanChain(std::istream & in );
+
 
     /**
      * Copy constructor.
@@ -620,13 +537,13 @@ public:
      * Iterator service.
      * @return an iterator pointing on the first point of the chain.
      */
-    FreemanChain::constIterator begin() const;
+    FreemanChain::ConstIterator begin() const;
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last point of the chain.
      */
-    FreemanChain::constIterator end() const;
+    FreemanChain::ConstIterator end() const;
 
     /**
      * @param pos a position in the chain code.
@@ -667,7 +584,7 @@ public:
      * position as an iterator. A quadrant change is some
      <code>
      abb..bc
-      |
+     |
      iterator
      <endcode>
      *
@@ -680,9 +597,9 @@ public:
      */
     
   
-  //BK
-  FreemanChain::constIterator
-  findQuadrantChange( OrderedAlphabet & A ) const;
+    //BK
+    FreemanChain::ConstIterator
+    findQuadrantChange( OrderedAlphabet & A ) const;
   
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
@@ -704,9 +621,9 @@ public:
      * @return an iterator on 'this' that points on the first letter c.
      */
   
-  //BK  
-  FreemanChain::constIterator
-  findQuadrantChange4( OrderedAlphabet & A ) const;
+    //BK  
+    FreemanChain::ConstIterator
+    findQuadrantChange4( OrderedAlphabet & A ) const;
 
     /**
      * This method takes O(n) operations and works only for Freeman
@@ -724,7 +641,7 @@ public:
   
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -741,8 +658,8 @@ public:
 
     // ------------------------- Public Datas ------------------------------
 
-public:
-  /**
+  public:
+    /**
      * The chain code.
      */
     std::string chain;
@@ -760,38 +677,38 @@ public:
     
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  private:
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
 
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-  //    FreemanChain();
+    //    FreemanChain();
 
-private:
+  private:
 
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class FreemanChain
-
-
+  }; // end of class FreemanChain
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'FreemanChain'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'FreemanChain' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const FreemanChain & object );
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'FreemanChain'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'FreemanChain' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const FreemanChain & object );
 
 
 } // namespace DGtal
