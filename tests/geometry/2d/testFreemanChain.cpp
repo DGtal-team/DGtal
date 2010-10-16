@@ -52,7 +52,7 @@ bool testFreemanChain(stringstream & ss)
   
   trace.beginBlock ( "Testing FreemanChain " );
   
-  FreemanChain::FreemanChain fc;
+  FreemanChain fc;
   FreemanChain::read(ss, fc);
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << ss.str() << endl; 
