@@ -372,6 +372,24 @@ DGtal::FreemanChain::operator=( const FreemanChain & aOther )
 }
 
 
+template<typename Functor>
+inline
+void 
+DGtal::FreemanChain::selfDraw(LibBoard::Board & aBoard) const
+{
+  Functor applystyle(aBoard);
+  vector<FreemanChain::PointI2> aVContour;
+  FreemanChain::getContourPoints(*this, aVContour);
+  vector<LibBoard::Point> contour;
+  for(int i=0; i< aVContour.size(); i++){
+    contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
+  }
+  aBoard.drawPolyline(contour); 
+  
+}
+
+
+
 /**
  * Iterator service.
  * @return an iterator pointing on the first point of the chain.

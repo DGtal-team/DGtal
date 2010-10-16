@@ -29,10 +29,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "Board/Board.h"
+#include <boost/program_options.hpp>
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -42,6 +46,7 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FreemanChain.
 ///////////////////////////////////////////////////////////////////////////////
+
 /**
  * Example of a test. To be completed.
  *
@@ -87,13 +92,32 @@ bool testFreemanChain(stringstream & ss)
   nbok+=1;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Test extracting list of contour point" << std::endl;
-    
-  
-  
-  
-  
+      
   return nbok == nb;
 }
+
+
+
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testDisplayFreemanChain(const string &file)
+{
+  fstream fst;
+  fst.open (file.c_str(), ios::in);
+  FreemanChain fc(fst);  
+  LibBoard::Board aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  fc.selfDraw(aBoard);
+  aBoard.saveEPS( "testDisplayFC.eps" );
+ 
+}
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -106,13 +130,15 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   std::stringstream ss (stringstream::in | stringstream::out);
-  
-  //  std::istream aStream;
   ss << "0 0 00001111222233" << endl;
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+
+  std::string filename = testPath + "samples/klokan.fc";
+  testDisplayFreemanChain(filename);
   trace.endBlock();
-  return res ? 0 : 1;
+  
+return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
