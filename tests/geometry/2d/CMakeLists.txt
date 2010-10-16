@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
        testArithDSS
-#       testFreemanChain	
+       testFreemanChain	
               )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
