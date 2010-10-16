@@ -655,6 +655,31 @@ namespace DGtal
      */
     bool isValid() const;
 
+     public:
+
+
+
+    /*
+      Draw the object on a LibBoard board
+      @param board the output board where the object is drawn.
+      @tparam Functor a Functor to specialize the Board style
+    */
+    template<typename Functor>
+    void selfDraw(LibBoard::Board & board ) const;
+    
+
+
+    /*
+      Draw the object on a LibBoard board
+      @param board the output board where the object is drawn.
+    */
+    void selfDraw(LibBoard::Board & board ) const
+    {
+      selfDraw<SelfDrawStyle>(board);
+    }
+    
+
+    
 
     // ------------------------- Public Datas ------------------------------
 
@@ -695,6 +720,22 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+
+   /** 
+     * Default Style Functor for selfDraw methods
+     * 
+     * @param aBoard 
+     */
+
+    struct SelfDrawStyle
+    {
+      SelfDrawStyle(LibBoard::Board & aBoard) 
+      {
+				aBoard.setFillColor(LibBoard::Color::None);
+				aBoard.setPenColor(LibBoard::Color::Red);
+      }
+    };
+    
 
   }; // end of class FreemanChain
 
