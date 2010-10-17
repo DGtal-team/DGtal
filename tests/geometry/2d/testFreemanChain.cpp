@@ -109,7 +109,7 @@ bool testDisplayFreemanChain(const string &file)
   fst.open (file.c_str(), ios::in);
   FreemanChain fc(fst);  
   LibBoard::Board aBoard;
-  aBoard.setUnit(Board::UCentimeter);
+  aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);
   aBoard.saveEPS( "testDisplayFC.eps" );
  
