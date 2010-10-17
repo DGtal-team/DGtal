@@ -380,9 +380,14 @@ DGtal::FreemanChain::selfDraw(LibBoard::Board & aBoard) const
   Functor applystyle(aBoard);
   vector<FreemanChain::PointI2> aVContour;
   FreemanChain::getContourPoints(*this, aVContour);
+  int minX, minY, maxX, maxY;
+  this->computeBoundingBox(minX, minY, maxX, maxY);
+  aBoard.drawRectangle( minX-10, -(minY-10), 
+			maxX-minX+20, maxY-minY+20);
+
   vector<LibBoard::Point> contour;
   for(int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
+    contour.push_back(LibBoard::Point(aVContour[i][0],-aVContour[i][1]));
   }
   aBoard.drawPolyline(contour); 
   
