@@ -137,7 +137,6 @@ DGtal::ArithDSS<Domain2D>::removeBack()
 	
 	Vector v = myL-myF;
 	if (norm(v[0],v[1]) <= 1) {//if there is only two points
-	//rajouter plutot un membre myN comptant le nombre de points ?
 		return false;
 	} else {                   //else
 

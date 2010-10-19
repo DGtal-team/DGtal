@@ -321,6 +321,41 @@ public:
 			return *this;
 		}
 
+    /**
+     * Equality operator.
+     * @param other the object to compare with.
+     * @return 'true' either if the points perfectly match
+	 	 * or if the first points match to the last ones
+     * (same DSS scanned in the conversed way) 
+     * and 'false' otherwise
+     */
+		bool operator==( const ArithDSS & other ) const {
+			return ( ( (myOmega == other.myOmega) &&
+							  (myUf == other.myUf) && 
+								(myUl == other.myUl) &&  
+								(myLf == other.myLf) &&  
+								(myLl == other.myLl) && 
+								(myF == other.myF) &&  
+								(myL == other.myL) ) || 
+							( (myOmega == other.myOmega) &&
+							  (myUf == other.myLl) && 
+								(myUl == other.myLf) &&  
+								(myLf == other.myUl) &&  
+								(myLl == other.myUf) && 
+								(myF == other.myL) &&  
+								(myL == other.myF) ) );
+		}
+
+    /**
+     * Difference operator.
+     * @param other the object to compare with.
+     * @return 'false' if equal
+     * 'true' otherwise
+     */
+		bool operator!=( const ArithDSS & other ) const {
+			return (!(*this == other));
+		}
+
     // ------------------------- Internals ------------------------------------
 private:
 
