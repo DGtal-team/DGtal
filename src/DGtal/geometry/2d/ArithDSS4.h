@@ -116,20 +116,7 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    ArithDSS4 ( const ArithDSS4 & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    ArithDSS4 & operator= ( const ArithDSS4 & other );
 
     // ------------------------- Internals ------------------------------------
   private:

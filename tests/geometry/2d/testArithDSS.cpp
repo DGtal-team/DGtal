@@ -107,6 +107,19 @@ int main(int argc, char **argv)
   ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
   trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
   trace.endBlock();
+
+  // Copy and assignement
+  trace.beginBlock("Copy");
+  ArithDSS4<Domain2D> secondDSS(theDSS);		
+  trace.info() << secondDSS << " " << secondDSS.isValid() << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock("Assignement");	
+  ArithDSS4<Domain2D> thirdDSS(Point(9,10),Point(10,10));		
+  trace.info() << thirdDSS << " " << thirdDSS.isValid() << std::endl;
+	thirdDSS = theDSS;
+  trace.info() << thirdDSS << " " << thirdDSS.isValid() << std::endl;
+  trace.endBlock();
   
   
   // Print the result of the adding

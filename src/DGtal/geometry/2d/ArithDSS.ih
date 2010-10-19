@@ -39,12 +39,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
- /**
-   * Writes/Displays the object on an output stream.
-   * @param out the output stream where the object is written.
-   */
-
-
 
 
 template <typename Domain2D>
@@ -227,6 +221,111 @@ DGtal::ArithDSS<Domain2D>::recover() const
 	return contour;
 }
 
+//-------------------------------------------------------------------------
+
+template <typename Domain2D>
+inline
+typename Domain2D::Coordinate
+DGtal::ArithDSS<Domain2D>::getRemainder(const Point & aPoint) const
+{
+	return myA*aPoint[0]-myB*aPoint[1];
+}
+
+//-------------------------------------------------------------------------
+
+template <typename Domain2D>
+inline
+bool
+DGtal::ArithDSS<Domain2D>::isInDSL(const Point & aPoint) const
+{
+	Integer r = getRemainder(aPoint);
+	return ( (r >= myMu)&&(r < myMu+myOmega) );
+}
+
+//-------------------------------------------------------------------------
+
+template <typename Domain2D>
+inline
+bool
+DGtal::ArithDSS<Domain2D>::isInDSS(const Point & aPoint) const
+{
+	Integer s = myA*aPoint[0] + myB*aPoint[1];
+	Integer smin = myA*myF[0] + myB*myF[1];
+	Integer smax = myA*myL[0] + myB*myL[1];
+	return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
+}
+
+
+//------------------------- Accessors --------------------------
+
+template <typename Domain2D>
+inline
+typename Domain2D::Coordinate
+DGtal::ArithDSS<Domain2D>::getA() const {
+	return myA;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Coordinate
+DGtal::ArithDSS<Domain2D>::getB() const {
+	return myB;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Coordinate
+DGtal::ArithDSS<Domain2D>::getMu() const {
+	return myMu;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Coordinate
+DGtal::ArithDSS<Domain2D>::getOmega() const {
+	return myOmega;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getUf() const {
+	return myUf;
+}
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getUl() const {
+	return myUl;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getLf() const {
+	return myLf;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getLl() const {
+	return myLl;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getF() const {
+	return myF;
+}
+
+template <typename Domain2D>
+inline
+typename Domain2D::Point
+DGtal::ArithDSS<Domain2D>::getL() const {
+	return myL;
+}
 
 /**
  * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
@@ -370,21 +469,7 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'ArithDSS'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'ArithDSS' to write.
- * @return the output stream after the writing.
- */
 
-//template <typename Domain2D>
-//inline 
-//std::ostream&
-//DGtal::operator<< ( std::ostream & out,
-//                  const ArithDSS<Domain2D> & object )
-//{
-//   
-//}
 
   template < typename Domain2D>
   inline
