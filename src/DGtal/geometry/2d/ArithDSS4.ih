@@ -96,7 +96,13 @@ inline
 typename DGtal::ArithDSS4<Domain2D>::Vector 
 DGtal::ArithDSS4<Domain2D>::vectorFrom0ToOmega() const 
 {
-	return Vector(1,-1);
+	if (this->myA >= 0) {
+		if (this->myB >= 0) return Vector(1,-1);
+		else return Vector(1,1);
+	} else {
+		if (this->myB >= 0) return Vector(-1,-1);
+		else return Vector(-1,1);
+	}
 }
 
 template <typename Domain2D>
@@ -106,14 +112,47 @@ DGtal::ArithDSS4<Domain2D>::next(
 			const typename DGtal::ArithDSS4<Domain2D>::Point & aPoint) const 
 {
 
-  Integer r = this->myA*aPoint[0] - this->myB*aPoint[1]; //remainder of aPoint
-	if ( (r < this->myMu)||(r >= this->myMu+this->myOmega) )  throw InputException();
+	Integer r = this->myA*aPoint[0] - this->myB*aPoint[1];
+	ASSERT( (r >= this->myMu)&&(r < this->myMu+this->myOmega) );
+
 
 	Vector step; 
-	if ( (r-this->myB >= this->myMu)&&(r-this->myB < this->myMu+this->myOmega) ) {
-			step = Vector(0,this->myB/std::abs(this->myB));
-	} else if ( (r+this->myA >= this->myMu)&&(r+this->myA < this->myMu+this->myOmega) ) {
-			step = Vector(this->myA/std::abs(this->myA),0);
+	if ( this->myA >= 0 ) { //quadrant 1
+		if ( this->myB >= 0 ) { 
+			if ( (r-this->myB >= this->myMu)&&
+						(r-this->myB < this->myMu+this->myOmega) ) {
+					step = Vector(0,1);
+			} else if ( (r+this->myA >= this->myMu)&&
+									(r+this->myA < this->myMu+this->myOmega) ) {
+					step = Vector(1,0);
+			}
+		} else {              //quadrant 2
+			if ( (r-this->myB >= this->myMu)&&
+						(r-this->myB < this->myMu+this->myOmega) ) {
+					step = Vector(0,1);
+			} else if ( (r-this->myA >= this->myMu)&&
+									(r-this->myA < this->myMu+this->myOmega) ) {
+					step = Vector(-1,0);
+			}
+		}
+	} else {
+		if ( this->myB >= 0 ) {//quadrant 4 
+			if ( (r+this->myB >= this->myMu)&&
+						(r+this->myB < this->myMu+this->myOmega) ) {
+					step = Vector(0,-1);
+			} else if ( (r+this->myA >= this->myMu)&&
+									(r+this->myA < this->myMu+this->myOmega) ) {
+					step = Vector(1,0);
+			}
+		} else {               //quadrant 3
+			if ( (r+this->myB >= this->myMu)&&
+						(r+this->myB < this->myMu+this->myOmega) ) {
+					step = Vector(0,-1);
+			} else if ( (r-this->myA >= this->myMu)&&
+									(r-this->myA < this->myMu+this->myOmega) ) {
+					step = Vector(-1,0);
+			}
+		}
 	}
 
 	return aPoint + step;

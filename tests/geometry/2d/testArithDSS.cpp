@@ -84,6 +84,7 @@ int main(int argc, char **argv)
 	contour.push_back(Point(5,2));
 	contour.push_back(Point(6,2));
 	contour.push_back(Point(6,3));
+	contour.push_back(Point(6,4));
 
   // Bad initialisation
   trace.beginBlock("Bad init");
@@ -102,40 +103,25 @@ int main(int argc, char **argv)
   trace.endBlock();
 
 
-  // Print the result of the initialisation
+  // Good Initialisation
   trace.beginBlock("Init of a DSS");
   ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
   trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
   trace.endBlock();
 
-  // Copy and assignement
-  trace.beginBlock("Copy");
-  ArithDSS4<Domain2D> secondDSS(theDSS);		
-  trace.info() << secondDSS << " " << secondDSS.isValid() << std::endl;
-  trace.endBlock();
-
-  trace.beginBlock("Assignement");	
-  ArithDSS4<Domain2D> thirdDSS(Point(9,10),Point(10,10));		
-  trace.info() << thirdDSS << " " << thirdDSS.isValid() << std::endl;
-	thirdDSS = theDSS;
-  trace.info() << thirdDSS << " " << thirdDSS.isValid() << std::endl;
-  trace.endBlock();
+ 
   
-  
-  // Print the result of the adding
-  trace.beginBlock("Add some points");
-	for (int i = 2; i < contour.size(); i++) {
-			trace.info() << contour.at(i) << std::endl;
-			theDSS.addFront(contour.at(i));
-		  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
+  // Adding step
+  trace.beginBlock("Add points while it is possible and draw the result in DSS.svg");
+	{
+		int i = 2;
+		while (theDSS.addFront(contour.at(i))) {
+			i++;
+		}
+	  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
 	}
-  trace.endBlock();
-  
-  // Draw the DSS in a SVG file
-  trace.info()<< "Draw the DSS in the SVG file DSS.svg"<< endl; 
-  Point p1(  -10, -10  );
-  Point p2( 10, 10  );
-  Domain2D domain( p1, p2 );
+
+  Domain2D domain( Point(  -10, -10  ), Point(  10, 10  ) );
 
   Board board;
   board.setUnit(Board::UCentimeter);
@@ -145,16 +131,62 @@ int main(int argc, char **argv)
   
   board.saveSVG("DSS.svg");
 
-  // Print the result of the removing
-  trace.beginBlock("Remove the first point as many times as possible");
-	while (theDSS.removeBack()) { 
-		trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
-	}
+  trace.endBlock();
+  
+
+  // Removing step and checks consistency with the adding step.
+  trace.beginBlock("Checks consistency between adding and removing");
+
+		std::deque<ArithDSS4<Domain2D> > v1,v2;
+  	ArithDSS4<Domain2D> newDSS(contour.at(0),contour.at(1));	 
+	  	v1.push_back(newDSS);
+
+		//forward scan and store each DSS
+trace.info() << "forward scan" << std::endl;
+
+		int i = 2;
+		while (newDSS.addFront(contour.at(i))) {
+	  	v1.push_back(newDSS);
+			i++;
+		}
+
+		//backward scan
+trace.info() << "backward scan" << std::endl;
+
+  	ArithDSS4<Domain2D> reverseDSS(contour.at(i-1),contour.at(i-2));
+		int j = i-3;
+		while ( (j>=0)&&(reverseDSS.addFront(contour.at(j))) ) {
+			j--;
+		}
+trace.info() << "removing" << std::endl;
+trace.info() << reverseDSS << std::endl;
+
+		//removing step, store each DSS for comparison
+	  v2.push_front(reverseDSS);
+		i--;
+		while (reverseDSS.removeBack()) {
+	  	v2.push_front(reverseDSS);
+			i--;
+		}		
+		
+		//comparison
+trace.info() << "comparison" << std::endl;
+		ASSERT(v1.size() == v2.size());
+		bool isOk = true;
+		for (int k = 0; k < v1.size(); k++) {
+			if (v1.at(k) != v2.at(k)) isOk = false;
+			trace.info() << "DSS :" << k << std::endl;
+			trace.info() << v1.at(k) << v2.at(k) << std::endl;
+		}
+
+		if (isOk) trace.info() << "ok for the " << v1.size() << " DSS" << std::endl;
+		else trace.info() << "failure" << std::endl;
+
   trace.endBlock();
 
 
   
  
 
-    return 0;
+  return 0;
 }
