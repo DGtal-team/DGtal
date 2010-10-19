@@ -25,10 +25,7 @@
  * This file is part of the DGtal library
  */
 
-/**
- * Description of test_Image <p>
- * Aim: simple test of \ref Image
- */
+
 
 #include <cstdio>
 #include <cmath>
