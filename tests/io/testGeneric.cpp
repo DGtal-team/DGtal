@@ -69,6 +69,7 @@ bool testGenericWriterReader()
   Image image(a,b);
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
+  
 
   GenericWriter<Point>::exportTXT("export-generic.txt",a);
   GenericWriter<Point>::exportBIN("export-generic.bin",a);
