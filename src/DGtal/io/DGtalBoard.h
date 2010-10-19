@@ -239,20 +239,6 @@ namespace DGtal
    * Modifier class in a DGtalBoard stream. Realizes the concept
    * CDrawableWithDGtalBoard.
    */
-  template<typename CustomStyleFunctor>
-  struct DrawWithCustomStyle : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
-    {
-      CustomStyleFunctor applyFunctor(board);
-      //TEST
-      board.setFillColorRGBi(0,169,0);
-    }
-  };
-
-  /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
-   */
   struct CustomStyle : public DrawWithBoardModifier {
     /**
      * @param classname the name of the class to which the style is associated.
