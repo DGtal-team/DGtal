@@ -153,11 +153,11 @@ public:
     bool addFront(const Point & aPoint);
 
     /**
-		 * Remove the first point of a DSS
+		 * Removes the first point of a DSS
      * (located at the back with respect to 
      * the scan orientaion)
 	   * if the DSS has more than two points
-     * @return 'true' the first point is removed, 'false' otherwise.
+     * @return 'true' if the first point is removed, 'false' otherwise.
      */
     bool removeBack();
 
@@ -165,9 +165,85 @@ public:
 		 * Computes the sequence of (connected) points
 		 * belonging to the DSL(a,b,mu,omega)
      * between the first and last point of the DSS
+		 * Nb: in O(omega)
      * @return the computed sequence of points.
      */
     std::vector<Point> recover() const;
+
+
+    /**
+		 * Computes the remainder of a point
+     * (that does not necessarily belong to the DSS)
+     * @param aPoint the point whose remainder is returned 
+     * @return the remainder.
+     */
+    Integer getRemainder( const Point& aPoint ) const;
+
+    /**
+		 * Checks whether a point is in the DSL
+     * of parameters (myA,myB,myMu,myOmega)
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSL( const Point& aPoint ) const;
+
+    /**
+		 * Checks whether a point belongs to the DSS or not
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS( const Point& aPoint ) const;
+
+    // ------------------------- Accessors ------------------------------
+    /**
+		 * myA accessor
+     * @return an Integer of value myA.
+     */
+    Integer getA() const;
+    /**
+		 * myB accessor
+     * @return an Integer of value myB.
+     */
+    Integer getB() const;
+    /**
+		 * myMu accessor
+     * @return an Integer of value myMu.
+     */
+    Integer getMu() const;
+    /**
+		 * myOmega accessor
+     * @return an Integer of value myOmega.
+     */
+    Integer getOmega() const;
+    /**
+		 * Accessor to the first upper leaning point
+     * @return first upper leaning point.
+     */
+    Point getUf() const;
+    /**
+		 * Accessor to the last upper leaning point
+     * @return last upper leaning point.
+     */
+    Point getUl() const;
+    /**
+		 * Accessor to the first lower leaning point
+     * @return first lower leaning point.
+     */
+    Point getLf() const;
+    /**
+		 * Accessor to the last lower leaning point
+     * @return last lower leaning point.
+     */
+    Point getLl() const;
+    /**
+		 * Accessor to the first point of the DSS
+     * @return first point.
+     */
+    Point getF() const;
+    /**
+		 * Accessor to the last point of the DSS
+     * @return last point.
+     */
+    Point getL() const;
+
 
     // ------------------------- Protected Datas ------------------------------
 protected:
@@ -213,14 +289,17 @@ protected:
      */
     virtual Point next(const Point& aPoint) const = 0;
 
-private:
+public:
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    ArithDSS ( const ArithDSS & other );
+    ArithDSS ( const ArithDSS & other ) : 
+							myA(other.myA), myB(other.myB), myMu(other.myMu), myOmega(other.myOmega),
+							myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
+							myF(other.myF), myL(other.myL) {}
 
     /**
      * Assignment.
@@ -228,7 +307,19 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ArithDSS & operator= ( const ArithDSS & other );
+    ArithDSS & operator= ( const ArithDSS & other ) {
+			myA = other.myA;
+			myB = other.myB;
+			myMu = other.myMu;
+			myOmega = other.myOmega;
+			myUf = other.myUf;
+			myLf = other.myLf;
+			myUl = other.myUl;
+			myLl = other.myLl;
+			myF = other.myF;
+			myL = other.myL;
+			return *this;
+		}
 
     // ------------------------- Internals ------------------------------------
 private:

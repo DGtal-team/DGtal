@@ -111,7 +111,7 @@ bool testDisplayFreemanChain(const string &file)
   LibBoard::Board aBoard;
   aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);
-  aBoard.saveEPS( "testDisplayFC.eps" );
+  aBoard.saveSVG( "testDisplayFC.svg" );
  
 }
 
@@ -134,7 +134,9 @@ int main( int argc, char** argv )
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
+	std::string testPath = "../../../../tests/";
   std::string filename = testPath + "samples/klokan.fc";
+	std::cout << filename << std::endl;
   testDisplayFreemanChain(filename);
   trace.endBlock();
   
