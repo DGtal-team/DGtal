@@ -105,6 +105,7 @@ namespace DGtal
    
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
+		typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
@@ -169,7 +170,7 @@ namespace DGtal
      **/
     ConstIterator begin(std::initializer_list<unsigned int> permutation);
 #endif
-
+		
     /**
      * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
      *
@@ -187,7 +188,7 @@ namespace DGtal
      * end() iterator with an order different from lexicographic.
      *
      **/
-    ConstIterator end(std::initializer_list<unsigned int> permutation);
+		ConstIterator end(std::initializer_list<unsigned int> permutation);
 #endif
 
     //------------- Span Iterator
@@ -307,9 +308,6 @@ namespace DGtal
 	aBoard.setLineStyle(LibBoard::Shape::DashStyle);
       }
     };
-
-    // ------------------------- Public services ------------------------------
-  public:
 
     // --------------- CDrawableWithBoard realization -------------------------
   public:

@@ -44,12 +44,12 @@ template <typename PValueType,
 	  int PDefaultLastColor >
 inline
 DGtal::GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::GradientColorMap
-( const PValueType & min,
-  const PValueType & max,
+( const PValueType & minV,
+  const PValueType & maxV,
   const ColorGradientPreset preset,
   const LibBoard::Color firstColor,
   const LibBoard::Color lastColor )
-  : myMin( min ), myMax( max )
+  : myMin( minV ), myMax( maxV )
 { 
   switch ( preset ) {
   case CMAP_GRAYSCALE:

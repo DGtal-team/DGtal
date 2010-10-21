@@ -42,8 +42,8 @@
 template <typename PValueType, int PDefaultColor>
 inline
 DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::ColorBrightnessColorMap
-( const PValueType & min,  const PValueType & max, const LibBoard::Color color )
-  : myMin( min ), myMax( max ), myColor( color )
+( const PValueType & minV,  const PValueType & maxV, const LibBoard::Color color )
+  : myMin( minV ), myMax( maxV ), myColor( color )
 { }
 
 

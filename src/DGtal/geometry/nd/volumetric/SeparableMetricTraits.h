@@ -44,9 +44,10 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
+#include <boost/concept_check.hpp>
 
 namespace DGtal
-{
+  {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SeparableMetricTraits
@@ -66,62 +67,77 @@ namespace DGtal
    */
   template <typename TSize, typename TValueType, unsigned int tp>
   struct SeparableMetricTraits
-  {
-    // ----------------------- Standard services ------------------------------
+    {
+      // ----------------------- Standard services ------------------------------
 
-    typedef TValueType ValueType;
-    typedef TSize Size;
+      typedef TValueType ValueType;
+      typedef TSize Size;
 
-    /**
-     * Static constants containing the power p of the Lp-metric.
-     *
-     */
-    static const double p = tp;
-    
-
-    /**
-     * Default InternalType.
-     */
-    typedef double InternalValueType;
-
-    
-    /** 
-     * Operator () in order to return the correct value from the
-     * InternalValuetype used to ensure exact computations.
-     * 
-     * @param aInternalValueType the internal value to convert
-     * 
-     * @return the converted value.
-     */
-    ValueType operator()(const InternalValueType & aInternalValueType) const;
-
-    /** 
-     * Returns the height at a point  pos of a Lp-parabola with
-     * center  ci and height hi.
-     * 
-     * @param pos an abscissa.
-     * @param ci center of the Lp-parabola.
-     * @param hi height of the Lp-parabola.
-     * 
-     * @return the height of the parabola (ci,hi) at pos.
-     */
-    InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const;
-
-    /** 
-     * Returns the abscissa of the intersection point between two
-     * Lp-parabolas (ci,hi) and (cj,hj).
-     * 
-     * @param ci center of the first Lp-parabola.
-     * @param hi height of the first Lp-parabola power p (hi = real height^p)
-     * @param cj center of the first Lp-parabola. 
-     * @param hj height of the first Lp-parabola power p (hj = real height^p).
-     * 
-     * @return 
-     */ 
-    Size Sep(const Size i, const InternalValueType hi, const Size j, const InternalValueType hj) const;    
+      /**
+       * Static constants containing the power p of the Lp-metric.
+       *
+       */
+      static const double p = tp;
 
 
-  }; // end of class SeparableMetricTraits
+      /**
+       * Default InternalType.
+       */
+      typedef double InternalValueType;
+
+
+      /**
+       * Operator () in order to return the correct value from the
+       * InternalValuetype used to ensure exact computations.
+       *
+       * @param aInternalValueType the internal value to convert
+       *
+       * @return the converted value.
+       */
+      ValueType operator() ( const InternalValueType & aInternalValueType ) const;
+
+      /**
+       * Returns the height at a point  pos of a Lp-parabola with
+       * center  ci and height hi.
+       *
+       * @param pos an abscissa.
+       * @param ci center of the Lp-parabola.
+       * @param hi height of the Lp-parabola.
+       *
+       * @return the height of the parabola (ci,hi) at pos.
+       */
+      InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const;
+
+
+      /**
+       * Returns the InternalValueType value of order p for a given
+       * position. Basically, its computes @paramp pos^p.
+       *
+       * @param pos the value of type Size
+       *
+       * @return the InternaValueType value.
+       */
+      InternalValueType power ( const Size pos ) const
+        {
+          return ( InternalValueType ) std::pow ( pos,p );
+        }
+
+
+      /**
+       * Returns the abscissa of the intersection point between two
+       * Lp-parabolas (ci,hi) and (cj,hj).
+       *
+       * @param ci center of the first Lp-parabola.
+       * @param hi height of the first Lp-parabola power p (hi = real height^p)
+       * @param cj center of the first Lp-parabola.
+       * @param hj height of the first Lp-parabola power p (hj = real height^p).
+       *
+       * @return
+       */
+      Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const;
+
+
+    }; // end of class SeparableMetricTraits
 
   // ------------------------------------------------------------------------
   // -----------------------  Specializations   ------------------------------
@@ -133,70 +149,79 @@ namespace DGtal
    */
   template <typename Size,typename TValueType>
   struct SeparableMetricTraits<Size, TValueType, 2>
-  {
-    typedef TValueType ValueType;
-    
-    static const double p = 2;
+    {
+      typedef TValueType ValueType;
 
-    //Check if ValueType sizeof() > capacité max
-    typedef ValueType InternalValueType;
+      static const double p = 2;
 
-    inline ValueType operator()(const InternalValueType & aInternalValue) const
-    {
-      return (ValueType)sqrt(aInternalValue);
-    }
-    
-    inline InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const
-    {
-      return (pos - ci)*(pos - ci) + hi;
-    }
-    
-    inline Size Sep(const int i, const long hi, const int j, const long hj) const
-    {
-      return ((j*j - i*i) + hj + hi)  / (2*(j-i));
-    }
-  };
-   
-    /**
-     * L_1 specialization
-     *
-     */
-    template <typename Size, typename TValueType>
-    struct SeparableMetricTraits<Size, TValueType, 1>
-    {
-    
-      typedef TValueType ValueType; 
+      //Check if ValueType sizeof() > capacité max
+      typedef ValueType InternalValueType;
+
+      inline ValueType operator() ( const InternalValueType & aInternalValue ) const
+        {
+          return ( ValueType ) sqrt ( aInternalValue );
+        }
+
+      inline InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const
+        {
+          return ( pos - ci ) * ( pos - ci ) + hi;
+        }
+
+      inline Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const
+        {
+          return ( ( j*j - i*i ) + hj + hi )  / ( 2* ( j-i ) );
+        }
+
+      inline InternalValueType power ( const Size i ) const
+        {
+          return (InternalValueType) (i*i);
+        }
+    };
+
+  /**
+   * L_1 specialization
+   *
+   */
+  template <typename Size, typename TValueType>
+  struct SeparableMetricTraits<Size, TValueType, 1>
+    {  
+
+      typedef TValueType ValueType;
       static const double p = 1;
       typedef ValueType InternalValueType;
 
-      inline ValueType operator()(const InternalValueType & aInternalValue) const
-      {
-	return (ValueType)aInternalValue;
-      }
-    
-      inline InternalValueType F(const Size pos, const Size ci, const InternalValueType hi) const
-      {
-	return (InternalValueType) abs(pos - ci) + hi;
-      }
-    
-      inline Size Sep(const int i, const long hi, const int j, const long hj) const  
-      {
-	///@todo
-	return 0;
-      }
-   
+      inline ValueType operator() ( const InternalValueType & aInternalValue ) const
+        {
+          return ( ValueType ) aInternalValue;
+        }
+
+      inline InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const
+        {
+          return ( InternalValueType ) abs ( pos - ci ) + hi;
+        }
+
+      inline Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const
+        {
+          ///@todo
+          return 0;
+        }
+
+      inline InternalValueType power ( const Size i ) const
+			{
+				return (InternalValueType) abs(i);
+			}
 
     }; // end of class SeparableMetricTraits
 
-  } // namespace DGtal
+} // namespace DGtal
 
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // Includes inline functions.
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.ih"
 
-  //                                                                           //
-  ///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined SeparableMetricTraits_h
 

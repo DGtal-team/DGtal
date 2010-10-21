@@ -47,11 +47,14 @@
  * @param domain any domain.
  * @return a reference on 'this'.
  */
-template <typename CDrawableWithBoard>
+template <typename TDrawableWithBoard>
 INLINE
 DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator<<( const CDrawableWithBoard & object )
+DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
 {
+	
+	BOOST_CONCEPT_ASSERT((CDrawableWithBoard<TDrawableWithBoard>));
+	
   StyleMapping::const_iterator it = myStyles.find( object.styleName() );
   CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
   if ( style.get() )
