@@ -42,10 +42,10 @@
 template <typename ValueType, int DefaultCycles>
 inline
 DGtal::HueShadeColorMap<ValueType,DefaultCycles>::HueShadeColorMap
-( const ValueType & min,
-  const ValueType & max,
+( const ValueType & amin,
+  const ValueType & amax,
   const unsigned int cycles )
-  : myMin( min ), myMax( max ), myCycles( cycles )
+  : myMin( amin ), myMax( amax ), myCycles( cycles )
 { }
 
 

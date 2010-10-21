@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/nd/volumetric/EnveloppeComputation.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -69,7 +68,7 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
-    
+    typedef typename Image::Integer Integer;
     /** 
      * Default Constructor
      */
@@ -169,7 +168,7 @@ namespace DGtal
     void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const Dimension dim)const;
 
     
-    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,const Point &row, const Size dim, Size s[], Size t[]) const;
+    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,const Point &row, const Size dim, Integer s[], Integer t[]) const;
     
     
     // ------------------- Private members ------------------------

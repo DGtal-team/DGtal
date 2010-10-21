@@ -476,7 +476,7 @@ template<std::size_t N,typename T>
 template<typename Functor>
 inline
 void 
-DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board, 
+DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board,
 				  const PointVector &apoint) const
 {
   ASSERT(N==2); 

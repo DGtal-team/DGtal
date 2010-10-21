@@ -62,7 +62,8 @@ namespace DGtal
     typedef TDigitalSet DigitalSet;
     typedef typename DigitalSet::DomainType Domain;
     typedef typename Domain::Space Space;
-    typedef typename Domain::Point Point;
+		typedef typename Domain::Integer Integer;
+		typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;

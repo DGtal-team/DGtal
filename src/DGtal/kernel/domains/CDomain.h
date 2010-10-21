@@ -132,6 +132,7 @@ namespace DGtal
     typedef typename T::Space Space;
     typedef typename T::Point Point;
     typedef typename T::Vector Vector;
+		typedef typename T::Integer Integer;
     typedef typename T::Size Size;
     typedef typename T::Dimension Dimension;
     typedef typename T::ConstIterator ConstIterator;

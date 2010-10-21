@@ -40,9 +40,9 @@
 
 template <typename ValueType>
 inline
-DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap( const ValueType & min,
-							const ValueType & max )
-  : myMin( min ), myMax( max )
+DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap( const ValueType & aMin,
+							const ValueType & aMax )
+  : myMin( aMin ), myMax( aMax )
 { }
 
 template <typename ValueType>

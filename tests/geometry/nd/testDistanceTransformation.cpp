@@ -56,59 +56,60 @@ bool testDistanceTransformation()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock("Testing the whole DT computation");
-  
+
+  trace.beginBlock ( "Testing the whole DT computation" );
+
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
-  Point a ( 0, 0);
-  Point b ( 15, 15);
+  Point a ( 0, 0 );
+  Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image(a,b);
-  
-  for(unsigned k=0; k < 49; k++)
+  Image image ( a,b );
+
+  for ( unsigned k=0; k < 49; k++ )
     {
-      a[0] = (k/7) +5;
-      a[1] = (k%7) +5;
-      image.setValue(a,128);
+      a[0] = ( k/7 ) +5;
+      a[1] = ( k%7 ) +5;
+      image.setValue ( a,128 );
     }
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-  
+
   typedef SeparableMetricTraits<unsigned int, unsigned int, 2> L_2;
 
   DistanceTransformation<Image,ImageLong,L_2> dt;
-  
-  dt.checkTypesValidity(image);
+
+  dt.checkTypesValidity ( image );
 
   LibBoard::Board board;
-  board.setUnit(LibBoard::Board::UCentimeter);
-  image.selfDraw<Gray>(board,0,255);
-  board.saveSVG( "image-preDT.svg" );
+  board.setUnit ( LibBoard::Board::UCentimeter );
+  image.selfDraw<Gray> ( board,0,255 );
+  board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
-	      image.end(),
-	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+              image.end(),
+              std::ostream_iterator<unsigned int> ( std::cout, " " ) );
 
 
 
-  ImageLong result = dt.compute(image);
+  ImageLong result = dt.compute ( image );
+	
   trace.warning() << result<<endl;
-   //We just iterate on the Domain points and print out the point coordinates.
+  //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( result.begin(),
-	      result.end(),
-	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+              result.end(),
+              std::ostream_iterator<unsigned int> ( std::cout, " " ) );
 
   board.clear();
-  result.selfDraw<Gray>(board,0,16);
-  board.saveSVG( "image-postDT.svg" );
+  result.selfDraw<Gray> ( board,0,16 );
+  board.saveSVG ( "image-postDT.svg" );
 
 
   trace.info() << result <<endl;
-  
+
   trace.endBlock();
 
   return nbok == nb;
@@ -122,31 +123,30 @@ bool testTypeValidity()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock("Testing type checker");
-  
+
+  trace.beginBlock ( "Testing type checker" );
+
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  
-  Point a ( 0, 0);
-  Point b ( 15, 15);
+
+  Point a ( 0, 0 );
+  Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image(a,b);
+  Image image ( a,b );
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-  ImageLong *result;
 
   typedef SeparableMetricTraits<unsigned int,  unsigned int, 2> L_2;
   DistanceTransformation<Image,ImageLong,L_2> dt;
-  
+
   //No problem should be reported on the std:cerr.
-  dt.checkTypesValidity(image);
+  dt.checkTypesValidity ( image );
 
   typedef SeparableMetricTraits<unsigned int, char, 34> L_34;
   DistanceTransformation<Image,ImageLong,L_34> dt34;
 
   //Type problem should be reported.
-  dt34.checkTypesValidity(image);
+  dt34.checkTypesValidity ( image );
 
   trace.endBlock();
   return nbok == nb;
@@ -155,7 +155,7 @@ bool testTypeValidity()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main ( int argc, char** argv )
 {
   trace.beginBlock ( "Testing class DistanceTransformation" );
   trace.info() << "Args:";

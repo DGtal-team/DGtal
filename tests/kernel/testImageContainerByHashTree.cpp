@@ -43,16 +43,16 @@
 using namespace DGtal;
 using namespace experimental;
 
-int iRand(int iMin, int iMax)
+int iRand ( int iMin, int iMax )
 {
-  double f = (double)rand() / RAND_MAX;
-  return iMin + static_cast<double>(f * (iMax - iMin));
+  double f = ( double ) rand() / RAND_MAX;
+  return iMin + static_cast<double> ( f * ( iMax - iMin ) );
 }
 
 template<typename Domain, typename T >
-bool test_setVal(experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& container, bool checkAfterEachSet)
+bool test_setVal ( experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& container, bool checkAfterEachSet )
 {
-  srand ( time(NULL) );
+  srand ( time ( NULL ) );
 
   //phase 1
   cerr << "Test: set" <<endl;
@@ -60,51 +60,51 @@ bool test_setVal(experimental::ImageContainerByHashTree<Domain , T, DGtal::uint6
   //unsigned DepthMask = container.ROOT_KEY << container.getDepth()*dim;
   unsigned DepthMask = 100000;
   //cerr << "DepthMask = " << DepthMask << endl;
-  for(int key = DepthMask; key > 1; --key)
+  for ( int key = DepthMask; key > 1; --key )
     {
-      if(!container.isKeyValid(key))
-	{
-	  continue;
-	}
+      if ( !container.isKeyValid ( key ) )
+        {
+          continue;
+        }
       //count ++;
-      container.setValue(key, iRand(0, 100));
-      if(checkAfterEachSet)
-	if(!container.checkIntegrity())
-	  {
-	    cerr << "test_set: failure in phase 1" << endl
-		 << "at key " << Bits::bitString(key) << endl;
-	    return false;
-	  }
-	else
-	  cerr << "ok"<<endl;
+      container.setValue ( key, iRand ( 0, 100 ) );
+      if ( checkAfterEachSet )
+        if ( !container.checkIntegrity() )
+          {
+            cerr << "test_set: failure in phase 1" << endl
+                 << "at key " << Bits::bitString ( key ) << endl;
+            return false;
+          }
+        else
+          cerr << "ok"<<endl;
     }
   cerr << "checking the container's validity..." << endl;
-  if(!container.checkIntegrity())
+  if ( !container.checkIntegrity() )
     {
-		
+
       cerr << "test_set: failure in phase 1" << endl;
       return false;
     }
 
   //phase 2
   cerr << "phase 2..." <<endl;
-  for(unsigned key = container.ROOT_KEY; key < DepthMask; ++key)
+  for ( unsigned key = container.ROOT_KEY; key < DepthMask; ++key )
     {
-      if(!container.isKeyValid(key))
-	{
-	  continue;
-	}
-      container.setValue(key, iRand(0, 100));
-      if(checkAfterEachSet)
-	if(!container.checkIntegrity())
-	  {
-	    cerr << "test_set: failure in phase 2" << endl
-		 << "at key " << Bits::bitString(key) << endl;
-	    return false;
-	  }
+      if ( !container.isKeyValid ( key ) )
+        {
+          continue;
+        }
+      container.setValue ( key, iRand ( 0, 100 ) );
+      if ( checkAfterEachSet )
+        if ( !container.checkIntegrity() )
+          {
+            cerr << "test_set: failure in phase 2" << endl
+                 << "at key " << Bits::bitString ( key ) << endl;
+            return false;
+          }
     }
 
-  if(!container.checkIntegrity())
+  if ( !container.checkIntegrity() )
     {
       cerr << "test_set: failure in phase 2" << endl;
       return false;
@@ -116,39 +116,39 @@ bool test_setVal(experimental::ImageContainerByHashTree<Domain , T, DGtal::uint6
 
 
 template<typename Domain, typename T >
-bool test_get(experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool checkAfterEachSet)
+bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool checkAfterEachSet )
 {
-  srand ( time(NULL) );
+  srand ( time ( NULL ) );
   unsigned count = 0;
   //unsigned DepthMask = container.ROOT_KEY << container.getDepth()*dim;
   unsigned DepthMask = 100000;
   //cerr << "DepthMask "<< DepthMask << endl;
-  for(unsigned key = DepthMask; key > container.ROOT_KEY; --key)
+  for ( unsigned key = DepthMask; key > container.ROOT_KEY; --key )
     {
-      if(!container.isKeyValid(key))
-	{
-	  //cerr << "invalid key "<< Bits::bitString(key) << endl;
-	  continue;
-	}
+      if ( !container.isKeyValid ( key ) )
+        {
+          //cerr << "invalid key "<< Bits::bitString(key) << endl;
+          continue;
+        }
       ++count;
-      T val = iRand(0, 100);
+      T val = iRand ( 0, 100 );
       //cerr << "plop1" << endl;
       //cerr << "___________________________ set: " << Bits::bitString(key, 16) << endl;
-      container.setValue(key, val);
+      container.setValue ( key, val );
 
-		
+
       typename experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >::HashKey key2 = key;
-      while(container.isKeyValid(key2))
-	{
-	  key2 = key2 << dim;
-	  if(val != container.get(key2))
-	    {
-	      cerr << "test_get: failure" << endl
-		   << "at key " << Bits::bitString(key2) << endl;
-	      return false;
-	    }
-	  //cerr << "check " << Bits::bitString(key2) << " ok." << endl;
-	}
+      while ( container.isKeyValid ( key2 ) )
+        {
+          key2 = key2 << dim;
+          if ( val != container.get ( key2 ) )
+            {
+              cerr << "test_get: failure" << endl
+                   << "at key " << Bits::bitString ( key2 ) << endl;
+              return false;
+            }
+          //cerr << "check " << Bits::bitString(key2) << " ok." << endl;
+        }
       key2 <<=dim;
     }
   cerr << "test_get: success !" << endl
@@ -158,18 +158,18 @@ bool test_get(experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t 
 
 
 
-int main( int argc, char** argv )
-{	
+int main ( int argc, char** argv )
+{
   trace.beginBlock ( "Testing class ImageContainerBenchmark" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
+
   typedef SpaceND<5> Space;
   typedef Space::Point Point;
   typedef HyperRectDomain<Space> Dom;
-  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree(12,5,1);
+  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree ( 12,5,1 );
   //tree.printInternalState(cerr, 12);
   Dom::Point p1, p2, p3;
   cerr << "azertyuiop" << endl;
@@ -178,7 +178,7 @@ int main( int argc, char** argv )
   p1[2] = -30;
   p1[3] =  20;
   p1[4] =  0;
-	
+
   p2[0] = 32;
   p2[1] = 32;
   p2[2] = 20;
@@ -191,33 +191,33 @@ int main( int argc, char** argv )
   p3[3] = 1;
   p3[4] = 1;
   cerr << "azertyuiop" << endl;
-  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree2(12,p1, p2,1);
+  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree2 ( 12,p1, p2,1 );
   cerr << "azertyuiop" << endl;
-  cerr << "coord get " << tree2.get(p1) << endl;
+  cerr << "coord get " << tree2.get ( p1 ) << endl;
   cerr << "_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
-  cerr << "coord get " << tree2.get(p3) << endl;
-  cerr << "coord get " << tree2.get(p1+=p3) << endl;
-  cerr << "coord get " << tree2.get(p1+=p3) << endl;
-  cerr << "coord get " << tree2.get(p1+=p3) << endl;
-  cerr << "coord get " << tree2.get(p1+=p3) << endl;
+  cerr << "coord get " << tree2.get ( p3 ) << endl;
+  cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
+  cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
+  cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
+  cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
 
   // check that the iterator stuff compiles as it should
   int val = 0;
   typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t>::Iterator HashTreeIterator;
   HashTreeIterator it = tree.begin();
-  for(it = tree.begin(); it != tree.end(); ++it )
-    val = tree(*it);
+  for ( it = tree.begin(); it != tree.end(); ++it )
+    val = tree ( *it );
 
-	
-	
+
+
   bool res =
     (
-     test_setVal(tree, false) &&
-     test_get(tree, false)
-     );
+      test_setVal ( tree, false ) &&
+      test_get ( tree, false )
+    );
 
-	
-	
+
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
