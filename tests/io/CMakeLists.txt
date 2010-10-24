@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC_IO
        testColorMaps
        testRawReader
        testGeneric
+       testDGtalBoardCustomStyle
        )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO})
