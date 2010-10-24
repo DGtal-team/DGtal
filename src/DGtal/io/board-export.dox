@@ -65,7 +65,7 @@ namespace DGtal {
  * #include "DGtal/kernel/sets/DigitalSetSelector.h"
  * 
  * ...
- * typedef SpaceND<int,2> Z2;
+ * typedef SpaceND<2> Z2;
  * typedef HyperRectDomain<Z2> DomainType;
  * typedef Z2::Point Point;
  * Point p1(  -10, -10  );
