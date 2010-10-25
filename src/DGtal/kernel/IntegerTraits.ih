@@ -48,7 +48,11 @@ inline
 typename DGtal::IntegerTraits<T>::ReturnType
 DGtal::IntegerTraits<T>::zero()
 {
-  return 0;
+#if (defined(WIN32))
+    return 0;
+#else
+    return ZERO;
+#endif
 }
 
 /**
@@ -59,7 +63,11 @@ inline
 typename DGtal::IntegerTraits<T>::ReturnType
 DGtal::IntegerTraits<T>::one()
 {
-  return 1;
+#if (defined(WIN32))
+    return 1;
+#else
+    return ONE;
+#endif
 }
 
 /**
@@ -71,7 +79,7 @@ inline
 typename DGtal::IntegerTraits<T>::ReturnType
 DGtal::IntegerTraits<T>::min()
 {
-  return ONE;
+    return ONE;
 }
 
 /**
@@ -83,7 +91,7 @@ inline
 typename DGtal::IntegerTraits<T>::ReturnType
 DGtal::IntegerTraits<T>::max()
 {
-  return ZERO;
+    return ZERO;
 }
 
 /**
@@ -95,7 +103,7 @@ inline
 unsigned int
 DGtal::IntegerTraits<T>::digits()
 {
-  return 0;
+    return 0;
 }
 
 /**
@@ -106,9 +114,9 @@ inline
 DGtal::BoundEnum
 DGtal::IntegerTraits<T>::isBounded()
 {
-  return BOUND_UNKNOWN;
+    return BOUND_UNKNOWN;
 }
- 
+
 /**
  * @return 1 if unsigned, 0, if signed, 2 if unknown.
  */
@@ -117,7 +125,7 @@ inline
 DGtal::SignEnum
 DGtal::IntegerTraits<T>::isUnsigned()
 {
-  return SIGN_UNKNOWN;
+    return SIGN_UNKNOWN;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

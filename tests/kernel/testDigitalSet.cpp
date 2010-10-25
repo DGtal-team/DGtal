@@ -282,9 +282,9 @@ int main()
   typedef HyperRectDomain<Space4Type> DomainType;
   typedef Space4Type::Point Point;
   
-  int t[] =  { 1, 2, 3 ,4};
+  DGtal::int32_t t[] =  { 1, 2, 3 ,4};
   Point a ( t );
-  int t2[]={ 5, 5, 3 ,5};
+  DGtal::int32_t t2[]={ 5, 5, 3 ,5};
   Point b ( t2);
   trace.beginBlock ( "HyperRectDomain init" );
 

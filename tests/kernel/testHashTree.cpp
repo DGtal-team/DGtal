@@ -66,12 +66,13 @@ bool testHashTree()
   typedef SpaceND<4> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
   typedef TDomain::Point Point;
+  typedef Space4Type::Integer Integer;
 
   //Default image selector = STLVector
   typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
 
-  const int t[ ] = { 1, 2, 3 ,4};
-  const int t2[ ] = { 5, 5, 3 ,4};
+  const Integer t[ ] = { 1, 2, 3 ,4};
+  const Integer t2[ ] = { 5, 5, 3 ,4};
   Point a ( t );
   Point b ( t2 );
 
