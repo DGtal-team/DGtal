@@ -4,7 +4,6 @@ SET(DGTAL_TESTS_SRC_IO
        testVolReader
        testColorMaps
        testRawReader
-       testGeneric
        testDGtalBoardCustomStyle
        )
 
@@ -21,7 +20,6 @@ IF(MAGICK++_FOUND)
     testMagickReader
     )
 
-
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_Magick})
     add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${LIBBOARD_NAME} ${MAGICK++_LIBRARIES})
@@ -29,3 +27,17 @@ IF(MAGICK++_FOUND)
   ENDFOREACH(FILE)
 
 ENDIF(MAGICK++_FOUND)
+
+
+IF(USE_BOOST_SERIALIZATION)
+  SET(DGTAL_TESTS_SRC_IO_SERIALIZATION
+    	testGeneric
+	)
+
+	FOREACH(FILE ${DGTAL_TESTS_SRC_IO_SERIALIZATION})
+	add_executable(${FILE} ${FILE})
+	target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${LIBBOARD_NAME} ${Boost_LIBRARIES})
+	add_test(${FILE} ${FILE})
+	ENDFOREACH(FILE)
+
+ENDIF(USE_BOOST_SERIALIZATION)
