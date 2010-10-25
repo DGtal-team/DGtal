@@ -73,7 +73,7 @@ else ( CPP0X_AUTO )
 endif ( CPP0X_AUTO )
 
 # -----------------------------------------------------------------------------
-# Check packages
+# Check and configure CMake packages
 # -----------------------------------------------------------------------------
 # Look for modules
 set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
@@ -97,13 +97,28 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 
 set ( CMAKE_PREFIX_PATH "/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
-message( "-- CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
+message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 
-FIND_PACKAGE(Boost REQUIRED COMPONENTS serialization)
-if ( Boost_FOUND )
-   message( "-- Boost found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
-   include_directories( ${Boost_INCLUDE_DIR} )
-endif ( Boost_FOUND )
+##########Check if boost exists (2 round)
+
+
+OPTION(USE_BOOST_SERIALIZATION "Use the Boost serialization library." ON)
+
+if (USE_BOOST_SERIALIZATION)
+	FIND_PACKAGE(Boost 1.40.0 COMPONENTS serialization)
+	if ( Boost_FOUND )
+		message(STATUS "Boost and boost_serialization found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
+		include_directories( ${Boost_INCLUDE_DIR} )
+		ADD_DEFINITIONS(-DUSE_BOOST_SERILIZATION)
+	endif( Boost_FOUND )
+else (USE_BOOST_SERIALIZATION)
+	FIND_PACKAGE(Boost 1.40.0 REQUIRED)
+	IF ( Boost_FOUND )
+		message(STATUS "Boost found. include=${Boost_INCLUDE_DIR}" )
+		message(STATUS "boost_serialization not found. You can try to compile without the serialization removing the USE_BOOST_SERIALIZATION flag" )
+		include_directories( ${Boost_INCLUDE_DIR} )
+  ENDIF( Boost_FOUND )
+ENDIF(USE_BOOST_SERIALIZATION )
 
 
 ##########Check if libMagick++ exists

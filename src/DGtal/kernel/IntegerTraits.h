@@ -226,7 +226,7 @@ namespace DGtal
     { return UNSIGNED; }
   }; // end of class IntegerTraits<unsigned char>.  
 
-  template <>
+ /* template <>
   struct IntegerTraits<std::size_t>
   {
     typedef TagTrue IsBounded;
@@ -253,6 +253,7 @@ namespace DGtal
     static SignEnum isUnsigned()
     { return UNSIGNED; }
   }; // end of class IntegerTraits<unsigned int>.
+  */
 #endif //WIN32 or APPLE
  
 
