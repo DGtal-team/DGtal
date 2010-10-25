@@ -129,10 +129,9 @@ namespace DGtal
       /**
        * Constructor from array of values.
        *
-       * @param ptrValues the array of values (should be at least as long as
-       * the size of the vector)
-       */
-      PointVector( const T * ptrValues );
+       * @param ptrValues the array of values.
+			*/
+      explicit PointVector( const T * ptrValues );
 
       /**
        * Constructor from one value (the Dimension of the vector should
@@ -140,7 +139,7 @@ namespace DGtal
        *
        * @param x the first value.
        */
-      PointVector( const T & x );
+      //PointVector( const T & x );
 
       /**
        * Constructor from two values (the Dimension of the vector should

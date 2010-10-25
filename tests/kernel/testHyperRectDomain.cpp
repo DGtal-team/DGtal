@@ -55,9 +55,9 @@ bool testSimpleHyperRectDomain()
     typedef SpaceND<4> Space4Type;
     typedef Space4Type::Point Point;
 
-    int t [] ={ 1, 2, 3 ,4}; 
+    DGtal::int32_t t [] ={ 1, 2, 3 ,4}; 
     Point a ( t );
-    int t2[] ={ 5, 5, 3 ,4}; 
+		DGtal::int32_t t2[] ={ 5, 5, 3 ,4}; 
     Point b ( t2 );
 
     trace.beginBlock ( "HyperRectDomain init" );
@@ -118,9 +118,9 @@ bool testIterator()
     typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
 
-    int t[]= {1,1,1,1};
+    DGtal::int32_t t[]= {1,1,1,1};
     Point4D a4D ( t );
-    int t2[]= {3,3,3,3};
+    DGtal::int32_t t2[]= {3,3,3,3};
     Point4D b4D ( t2 );
 
     HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
@@ -156,9 +156,9 @@ bool testReverseIterator()
 {
     typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    int t[] = {1,1,1,1};
+    DGtal::int32_t t[] = {1,1,1,1};
     Point4D a4D (t);
-    int t2[]={3,3,3,3};
+    DGtal::int32_t t2[]={3,3,3,3};
     Point4D b4D (t2);
 
     trace.beginBlock ( "Test reverse iterator" );
@@ -189,9 +189,9 @@ bool testSTLCompat()
 {
     typedef SpaceND<4> TSpace4D;
     typedef TSpace4D::Point Point4D;
-    int t[] = {1,1,1,1};
+    DGtal::int32_t t[] = {1,1,1,1};
     Point4D a4D (t);
-    int t2[]={3,3,3,3};
+    DGtal::int32_t t2[]={3,3,3,3};
     Point4D b4D (t2);
 
     trace.beginBlock ( "TestSTL Compatibility" );

@@ -68,16 +68,7 @@ DGtal::PointVector<N,T>::PointVector( const T * ptrValues )
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = ptrValues[ i ];
 }
-//------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline
-DGtal::PointVector<N,T>::PointVector( const T & x )
-{
-  ASSERT( N >= 1 );
-  myArray[ 0 ] = x;
-  for ( std::size_t i = 1; i < N; ++i )
-    myArray[ i ] = 0;
-}
+
 //------------------------------------------------------------------------------
 template<std::size_t N,typename T>
 inline

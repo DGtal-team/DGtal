@@ -146,7 +146,7 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
   Coordinate t []= { 4, 3, 3 ,4};
   Point p1( t );
   Coordinate t2[] = { 2, 5, 3 ,5};
-  Point p2( t2 );
+  Point p2( t2);
   Coordinate t3[]=  { 2, 5, 3 ,4} ;
   Point p3( t3);
 
@@ -285,7 +285,7 @@ int main()
   int t[] =  { 1, 2, 3 ,4};
   Point a ( t );
   int t2[]={ 5, 5, 3 ,5};
-  Point b ( t2 );
+  Point b ( t2);
   trace.beginBlock ( "HyperRectDomain init" );
 
   ///Domain characterized by points a and b
