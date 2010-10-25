@@ -213,9 +213,9 @@ bool testOperators()
 {
   trace.beginBlock("Point Operators Test");
   
-  int t1[] = {1,2,3,4};
+  DGtal::int32_t t1[] = {1,2,3,4};
   PointVector<4> p1( t1 );
-  int t2[]= {5,4,3,2};
+  DGtal::int32_t t2[]= {5,4,3,2};
   PointVector<4> p2( t2 );
 
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
@@ -233,9 +233,9 @@ bool testIntegerNorms()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  int t[]= {2,1,3,4};
+  DGtal::int32_t t[]= {2,1,3,4};
   PointVector<4> p1(t);
-  int t2[]= {4,5,3,2};
+  DGtal::int32_t t2[]= {4,5,3,2};
   PointVector<4> p2(t2);
   PointVector<4> p = p2 - p1;
   

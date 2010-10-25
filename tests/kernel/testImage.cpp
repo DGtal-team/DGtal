@@ -55,8 +55,8 @@ bool testSimpleImage()
     //Default image selector = STLVector
     typedef ImageSelector<TDomain, int>::Type Image;
 
-    const int t[ ] = { 1, 2, 3 ,4};
-    const int t2[ ] = { 5, 5, 3 ,4};
+    const DGtal::int32_t t[ ] = { 1, 2, 3 ,4};
+    const DGtal::int32_t t2[ ] = { 5, 5, 3 ,4};
     Point a ( t );
     Point b ( t2 );
 

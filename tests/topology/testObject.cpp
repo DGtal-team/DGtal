@@ -270,8 +270,8 @@ bool testObject3D()
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
-  Point c( 0, 0 );
-  Point d( 10, 2 );
+  Point c( 0, 0, 0 );
+  Point d( 10, 2, 0 );
 
   trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
   trace.info() << "Creating diamond (r=45)" << endl;
@@ -366,8 +366,8 @@ bool testSimplePoints3D()
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
   Domain domain( p1, p2 );
-  Point c( 0, 0 );
-  Point r( 3, 0 );
+  Point c( 0, 0, 0 );
+  Point r( 3, 0, 0 );
 
   trace.beginBlock ( "Creating Diamond (r=4)" );
   // diamond of radius 4

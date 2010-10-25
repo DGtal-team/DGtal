@@ -45,8 +45,8 @@ int main()
   typedef DGtal::SpaceND<4> Space4DType;
   typedef Space4DType::Point Point4DType;
 
-  const int rawA[ ] = { 1, 2, 3 ,4};
-  const int rawB[ ] = { 4, 4, 5 ,5};
+  const DGtal::int32_t rawA[ ] = { 1, 2, 3 ,4};
+  const DGtal::int32_t rawB[ ] = { 4, 4, 5 ,5};
   Point4DType A ( rawA );
   Point4DType B ( rawB );
 
