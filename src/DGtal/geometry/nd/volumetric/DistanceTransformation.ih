@@ -106,7 +106,7 @@ DGtal::DistanceTransformation<I,O,SepM>::checkTypesValidity ( const I & aImage )
   typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
 
   //Estimate worst-case bit size
-  double bitSize = SeparableMetric::p*log2 ( I::staticDimension*2*maxExtent );
+  double bitSize = SeparableMetric::p*(log ((double) I::staticDimension*2*maxExtent ) / log(2.0));
 
   if ( bitSize > sizeof ( typename O::ValueType ) *8 )
     trace.warning() << "(DistanceTransformation) The output image ValueType range may not be sufficient to store the exact values  according to the input image extent."<<endl;
