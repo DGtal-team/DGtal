@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-
+#include <cmath>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerByHashTree.h"
@@ -46,7 +46,7 @@ using namespace experimental;
 int iRand ( int iMin, int iMax )
 {
   double f = ( double ) rand() / RAND_MAX;
-  return iMin + static_cast<double> ( f * ( iMax - iMin ) );
+  return (int) (iMin + static_cast<double> ( f * ( iMax - iMin ) ));
 }
 
 template<typename Domain, typename T >

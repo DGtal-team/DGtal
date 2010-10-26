@@ -113,6 +113,7 @@ bool testDisplayFreemanChain(const string &file)
   fc.selfDraw(aBoard);
   aBoard.saveSVG( "testDisplayFC.svg" );
  
+  return true;
 }
 
 

@@ -65,7 +65,7 @@ namespace DGtal
    * @tparam tp the order p of the L_p metric.
    *
    */
-  template <typename TSize, typename TValueType, unsigned int tp>
+	  template <typename TSize, typename TValueType, DGtal::uint32_t tp>
   struct SeparableMetricTraits
     {
       // ----------------------- Standard services ------------------------------
@@ -77,7 +77,7 @@ namespace DGtal
        * Static constants containing the power p of the Lp-metric.
        *
        */
-      static const double p = tp;
+	  static const DGtal::uint32_t p = tp;
 
 
       /**
@@ -152,7 +152,7 @@ namespace DGtal
     {
       typedef TValueType ValueType;
 
-      static const double p = 2;
+      static const DGtal::uint32_t p = 2;
 
       //Check if ValueType sizeof() > capacité max
       typedef ValueType InternalValueType;
@@ -187,7 +187,7 @@ namespace DGtal
     {  
 
       typedef TValueType ValueType;
-      static const double p = 1;
+      static const DGtal::uint32_t p = 1;
       typedef ValueType InternalValueType;
 
       inline ValueType operator() ( const InternalValueType & aInternalValue ) const
