@@ -69,41 +69,41 @@ int main(int argc, char **argv)
 
   typedef SpaceND<2> Space2Type;
   typedef HyperRectDomain<Space2Type> Domain2D;
-	typedef ArithDSS4<Domain2D> PrimitiveType; 
-	typedef FreemanChain ContourType; 
+  typedef ArithDSS4<Domain2D> PrimitiveType; 
+  typedef FreemanChain ContourType; 
   typedef Domain2D::Point Point; 
 
   std::string filename = testPath + "samples/france.fc";
-	std::cout << filename << std::endl;
+  std::cout << filename << std::endl;
 
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
   ContourType theContour(fst);
 
-	//Segmentation
+  //Segmentation
   trace.beginBlock("Segmentation of a chain code into DSS");
-	GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
+  GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
 
   Board aBoard;
   aBoard.setUnit(Board::UCentimeter);
 
-/*
-  int minX, maxX, minY, maxY;
-  theContour.computeBoundingBox(minX, minY, maxX, maxY);  
-  Domain2D theDomain( Point(minX,minY), Point(maxX,maxY) );  
-  theDomain.selfDrawAsGrid(aBoard);
-*/
+  /*
+    int minX, maxX, minY, maxY;
+    theContour.computeBoundingBox(minX, minY, maxX, maxY);  
+    Domain2D theDomain( Point(minX,minY), Point(maxX,maxY) );  
+    theDomain.selfDrawAsGrid(aBoard);
+  */
   theContour.selfDraw(aBoard);
 
-	//pour tous les segments
-	GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
-		theDecomposition.begin();
-	for ( ; i != theDecomposition.end(); ++i) {
-		PrimitiveType segment(*i); 
-  	std::cout << "segment number " << i.getPosition() << std::endl;
-  	std::cout << segment << std::endl;	//standard output
-  	i.get().selfDraw(aBoard); //drawing
-	} 
+  //pour tous les segments
+  GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
+    theDecomposition.begin();
+  for ( ; i != theDecomposition.end(); ++i) {
+    PrimitiveType segment(*i); 
+    trace.info() << "segment number " << i.getPosition() << std::endl;
+    trace.info() << segment << std::endl;	//standard output
+    i.get().selfDraw(aBoard); //drawing
+  } 
   aBoard.saveSVG("segmentation.svg");
 
   trace.endBlock();
