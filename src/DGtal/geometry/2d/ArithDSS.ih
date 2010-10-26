@@ -32,6 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <boost/math/common_factor_rt.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -54,16 +55,10 @@ DGtal::ArithDSS<Domain2D>::isValid() const
 	else {
 
 		//gcd computation
-		Integer a = myA;
-		Integer b = myB;
-		while (b != 0) {
-			Integer q = a/b;
-			Integer r = a - q*b;
-			a = b;
-			b = r;
-		}
-		if (a != 1) return false;
+		Integer gcd = boost::math::gcd(myA, myB);
+		if (gcd != 1) return false;
 		else return true;	
+		
 
 	} 
 }
