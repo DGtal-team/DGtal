@@ -18,7 +18,7 @@
  * @file testHyperRectDomain.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- *
+ * @author Guillaume Damiand (\c guillaume.damiand@liris.cnrs.fr )
  *
  * @date 2010/05/25
  *
@@ -139,13 +139,28 @@ bool testIterator()
 	  it != myHyperRectDomain4D.end({3,2,1,0}); ++it )
         trace.info() << ( *it ) << std::endl;
 
-    trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
+    /* TODO Guillaume PB with the end.
+      trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
     HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.end({3,2,1,0});
     HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin({3,2,1,0});
     --it1; --it2;
     std::cout<<"BEGIN:"<<*it1<<" END:"<<*it2<<std::endl;
     for ( ; it1!=it2; --it1 )
       trace.info() << ( *it1 ) << std::endl;
+    */
+    trace.emphase() << "Iterator on a subset of 4d by using order different from lexicographic: ";
+    for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.begin({1,3});
+	  it3 != myHyperRectDomain4D.end({1,3}); ++it3 )
+        trace.info() << ( *it3 ) << std::endl;
+
+    /* TODO Guillaume PB with the end.
+      trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic: ";
+    HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.end({1,3});
+    HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.begin({1,3});
+    --it4; --it5;
+    std::cout<<"BEGIN:"<<*it4<<" END:"<<*it5<<std::endl;
+    for ( ; it4!=it5; --it4 )
+    trace.info() << ( *it4 ) << std::endl;*/
 #endif
 
     return myHyperRectDomain.isValid();
