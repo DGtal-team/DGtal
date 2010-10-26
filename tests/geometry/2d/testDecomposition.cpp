@@ -53,6 +53,9 @@
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 
 
+#include "ConfigTest.h"
+
+
 using namespace DGtal;
 
 using namespace LibBoard;
@@ -70,7 +73,6 @@ int main(int argc, char **argv)
 	typedef FreemanChain ContourType; 
   typedef Domain2D::Point Point; 
 
-	std::string testPath = "../../../../tests/";
   std::string filename = testPath + "samples/france.fc";
 	std::cout << filename << std::endl;
 
