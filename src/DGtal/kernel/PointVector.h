@@ -19,6 +19,7 @@
 /**
  * @file PointVector.h
  * @author David Coeurjolly (@c david.coeurjolly@liris.cnrs.fr )
+ * @author Guillaume Damiand (@c guillaume.damiand@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -187,11 +188,13 @@ namespace DGtal
       PointVector( const PointVector& apoint1, const PointVector& apoint2,
                    const Functor& f );
 
-      /**
-       * Destructor.
-       */
-      ~PointVector();
+    /**
+     * Destructor.
+     */
+    ~PointVector();    
 
+    // ----------------------- Iterator services ------------------------------
+  public:
       /**
        * Copy constructor.
        * @param other the object to clone.
@@ -206,6 +209,19 @@ namespace DGtal
        */
       PointVector & operator= ( const PointVector & pv );
 
+#ifdef CPP0X_INITIALIZER_LIST
+    /**
+     * Partial copy of a given PointVector.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy 
+     *        (unsigned int between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    PointVector& partialCopy (const PointVector & pv, 
+			      std::initializer_list<unsigned int> dimensions);
+#endif
+    
       // ----------------------- Iterator services ------------------------------
     public:
 

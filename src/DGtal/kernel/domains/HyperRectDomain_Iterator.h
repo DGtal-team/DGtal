@@ -75,23 +75,25 @@ namespace DGtal
       }
 
 #ifdef CPP0X_INITIALIZER_LIST
-      HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper,
-                                std::initializer_list<unsigned int> permutation )
-          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUsePermutation( true )
-      {
-        ASSERT( lower <= upper );
-        ASSERT( lower <= p && p <= upper );
-        ASSERT( permutation.size() <= TPoint::Dimension );
-        myPermutation.reserve( permutation.size() );
-        for ( const unsigned int *c = permutation.begin();
-              c != permutation.end(); ++c )
+    HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower, 
+			     const TPoint &upper,
+			     std::initializer_list<unsigned int> permutation)
+      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+	myUsePermutation( true )
+    {
+      ASSERT( lower <= upper );
+      ASSERT( lower <= p && p <= upper );
+      ASSERT( permutation.size() <= TPoint::Dimension );
+      myPermutation.reserve( permutation.size() );
+      for ( const unsigned int *c = permutation.begin();
+	    c != permutation.end(); ++c )
         {
 	  ASSERT( *c<=TPoint::Dimension );
           myPermutation.push_back( *c );
         }
-        // TODO: check the validity of the permutation ?
-      }
+	    
+      // TODO: check the validity of the permutation ?
+    }
 #endif
 
       const TPoint & operator*() const
@@ -150,7 +152,8 @@ namespace DGtal
 	ASSERT( myCurrentPos<myPermutation.size() );	
         myPoint.at( myPermutation[myCurrentPos] ) ++;
 	
-	if ( myPoint.at( myPermutation[myCurrentPos] )  >
+	if ( myCurrentPos<myPermutation.size()-1 &&
+	     myPoint.at( myPermutation[myCurrentPos] ) >
 	     myupper.at( myPermutation[myCurrentPos] ) )
 	  {
 	    do
@@ -161,13 +164,10 @@ namespace DGtal
 		if ( myCurrentPos < myPermutation.size() )
 		  myPoint.at( myPermutation[myCurrentPos] ) ++;
 	      }
-	    while (( myCurrentPos < myPermutation.size()  ) &&
+	    while (( myCurrentPos < myPermutation.size()-1  ) &&
 		   ( myPoint.at( myPermutation[myCurrentPos] )  >
 		     myupper.at( myPermutation[myCurrentPos] ) ) );
-	    if ( myCurrentPos==myPermutation.size() )
-	      myPoint = myupper;
-	    else
-	      myCurrentPos = 0;
+	    myCurrentPos = 0;
 	  }
       }
 
@@ -217,36 +217,33 @@ namespace DGtal
         }
       }
 
-      /**
-      * Implements the prev() method to scan the domain points dimension by dimension
-      * (permutation order).
-      **/
-      void prevPermutationOrder()
-      {
-	ASSERT( myCurrentPos<myPermutation.size() );
-        myPoint.at( myPermutation[myCurrentPos] ) --;
-	
-        if ( myPoint.at( myPermutation[myCurrentPos] )  <
-	     mylower.at( myPermutation[myCurrentPos] ) )
-	  {
-	    do
-	      {
-		myPoint.at( myPermutation[myCurrentPos] ) =
-		  myupper.at( myPermutation[myCurrentPos] );
-		myCurrentPos++;
-		if ( myCurrentPos < myPermutation.size() )
-		  myPoint.at( myPermutation[myCurrentPos] ) --;
-	      }
-	    while (( myCurrentPos < myPermutation.size() ) &&
-		   ( myPoint.at( myPermutation[myCurrentPos] )  <
-		     mylower.at( myPermutation[myCurrentPos] ) ) );
-	    if ( myCurrentPos==myPermutation.size() )
-	      myPoint = mylower; // --myPoint;  TODO here problem. We need to have a correct lower and upper
-	    // in the case of subiterator
-	    else
-	      myCurrentPos = 0;
-	  }
-      }
+    /**
+     * Implements the prev() method to scan the domain points dimension by dimension
+     * (permutation order).
+     **/
+    void prevPermutationOrder()
+    {
+      ASSERT( myCurrentPos<myPermutation.size() );
+      myPoint.at( myPermutation[myCurrentPos] ) --;
+      
+      if (  myCurrentPos<myPermutation.size()-1 &&
+	    myPoint.at( myPermutation[myCurrentPos] )  <
+	    mylower.at( myPermutation[myCurrentPos] ) )
+	{
+	  do
+	    {
+	      myPoint.at( myPermutation[myCurrentPos] ) =
+		myupper.at( myPermutation[myCurrentPos] );
+	      myCurrentPos++;
+	      if ( myCurrentPos < myPermutation.size() )
+		myPoint.at( myPermutation[myCurrentPos] ) --;
+	    }
+	  while (( myCurrentPos < myPermutation.size()-1 ) &&
+		 ( myPoint.at( myPermutation[myCurrentPos] )  <
+		   mylower.at( myPermutation[myCurrentPos] ) ) );
+	  myCurrentPos = 0;
+	}
+	    }
 
       /**
       * Operator ++ (++it)
