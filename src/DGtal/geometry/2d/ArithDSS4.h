@@ -92,6 +92,13 @@ namespace DGtal
     Integer norm(const Integer  & x, const Integer & y) const;
 
     /**
+		 * Checks whether the DSS lies in one quadrant or not
+		 * @param aVec, the last displacement vector. 
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool sameQuadrant(const Vector& aVec) const;
+
+    /**
 		 * Computes the 2D vector 
 		 * starting at a point of remainder 0
 		 * and pointing at a point of remainder omega = |a|+|b|

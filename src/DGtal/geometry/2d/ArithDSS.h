@@ -274,6 +274,13 @@ protected:
     virtual Integer norm(const Integer& x, const Integer& y) const = 0;
 
     /**
+		 * Checks whether the DSS lies in one quadrant or not
+		 * @param aVec, the last displacement vector. 
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    virtual bool sameQuadrant(const Vector& aVec) const = 0;
+
+    /**
 		 * Returns the 2D vector 
 		 * starting at a point of remainder 0
 		 * and pointing at a point of remainder omega
