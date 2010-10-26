@@ -17,6 +17,7 @@
 /**
  * @file PointVector.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Guillaume Damiand (\c guillaume.damiand@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/14
@@ -232,6 +233,37 @@ DGtal::PointVector<N,T>::operator= ( const PointVector<N,T> & pv )
   myArray = pv.myArray;
   return *this;
 }
+//------------------------------------------------------------------------------
+#ifdef CPP0X_INITIALIZER_LIST
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N,T>&
+DGtal::PointVector<N,T>::partialCopy ( const PointVector<N,T> & pv,
+				       std::initializer_list<unsigned int> dimensions )
+{
+  std::vector<unsigned int> sortedDim;
+  sortedDim.reserve(dimensions.size());
+  for (const unsigned int *c = dimensions.begin (); 
+       c != dimensions.end (); ++c)
+    {
+      ASSERT( *c<N );
+      sortedDim.push_back(*c);
+    }
+  std::sort(sortedDim.begin(),sortedDim.end());
+  
+  unsigned int i=0,j=0;
+  for ( ; i<sortedDim.size() && j<N; ++j )
+    {      
+      if ( sortedDim[i]==j )
+	{	  
+	  myArray[j] = pv.myArray[j];
+	  ++i;
+	  ASSERT(i==sortedDim.size() || sortedDim[i-1]!=sortedDim[i]);
+	}
+    }
+  return *this;
+}
+#endif
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline

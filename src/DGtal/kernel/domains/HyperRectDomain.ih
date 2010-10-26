@@ -17,6 +17,7 @@
 /**
  * @file HyperRectDomain.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Guillaume Damiand (\c guillaume.damiand@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/25
@@ -222,8 +223,10 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin(std::initializer_list<unsigned int> permutation)
-{ return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( myLowerBound,myLowerBound,myUpperBound,
-								  permutation);
+{
+  Point partialUpperBound(myLowerBound);
+  partialUpperBound.partialCopy(myUpperBound,permutation);
+  return ConstIterator (myLowerBound,myLowerBound,partialUpperBound,permutation);
 }
 #endif
 
@@ -245,8 +248,11 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end(std::initializer_list<unsigned int> permutation)
 {
-  ConstIterator res(myUpperBound,myLowerBound,myUpperBound,permutation);
+  Point partialUpperBound(myLowerBound);
+  partialUpperBound.partialCopy(myUpperBound,permutation);
+  ConstIterator res(partialUpperBound,myLowerBound,partialUpperBound,permutation);
   ++res;
+
   return res;
 }
 #endif
