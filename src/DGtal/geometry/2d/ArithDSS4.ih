@@ -52,8 +52,8 @@ DGtal::ArithDSS4<Domain2D>::~ArithDSS4()
  */
 template <typename Domain2D>
 DGtal::ArithDSS4<Domain2D>::ArithDSS4(
-	 const typename DGtal::ArithDSS4<Domain2D>::Point& aFirstPoint, 
-	 const typename DGtal::ArithDSS4<Domain2D>::Point& aSecondPoint)
+	 const Point& aFirstPoint, 
+	 const Point& aSecondPoint)
 {
 
 	ASSERT(DGtal::ArithDSS4<Domain2D>::Point::Dimension == 2 && "only valid for 2D");
@@ -85,10 +85,33 @@ template <typename Domain2D>
 inline
 typename DGtal::ArithDSS4<Domain2D>::Integer 
 DGtal::ArithDSS4<Domain2D>::norm(
-			const typename DGtal::ArithDSS4<Domain2D>::Integer & x, 
-			const typename DGtal::ArithDSS4<Domain2D>::Integer & y) const 
+			const Integer & x, 
+			const Integer & y) const 
 {
 	return std::abs(x)+std::abs(y);
+}
+
+template <typename Domain2D>
+inline
+bool
+DGtal::ArithDSS4<Domain2D>::sameQuadrant(const Vector& aVec) const 
+{
+	bool flag = true;
+	if ( this->myA > 0 ) { 
+		if (aVec == Vector(0,-1)) flag = false;
+	} 
+	if ( this->myA < 0 ) { 
+		if (aVec == Vector(0,1)) flag = false;
+	} 
+	if ( this->myB > 0 ) { 
+		if (aVec == Vector(-1,0)) flag = false;
+	} 
+	if ( this->myB < 0 ) { 
+		if (aVec == Vector(1,0)) flag = false;
+	} 
+	
+	return flag;
+
 }
 
 template <typename Domain2D>
@@ -109,8 +132,10 @@ template <typename Domain2D>
 inline
 typename DGtal::ArithDSS4<Domain2D>::Point
 DGtal::ArithDSS4<Domain2D>::next(
-			const typename DGtal::ArithDSS4<Domain2D>::Point & aPoint) const 
+			const Point & aPoint) const 
 {
+
+
 
 	Integer r = this->myA*aPoint[0] - this->myB*aPoint[1];
 	ASSERT( (r >= this->myMu)&&(r < this->myMu+this->myOmega) );
@@ -122,16 +147,14 @@ DGtal::ArithDSS4<Domain2D>::next(
 			if ( (r-this->myB >= this->myMu)&&
 						(r-this->myB < this->myMu+this->myOmega) ) {
 					step = Vector(0,1);
-			} else if ( (r+this->myA >= this->myMu)&&
-									(r+this->myA < this->myMu+this->myOmega) ) {
+			} else {
 					step = Vector(1,0);
 			}
 		} else {              //quadrant 2
 			if ( (r-this->myB >= this->myMu)&&
 						(r-this->myB < this->myMu+this->myOmega) ) {
 					step = Vector(0,1);
-			} else if ( (r-this->myA >= this->myMu)&&
-									(r-this->myA < this->myMu+this->myOmega) ) {
+			} else {
 					step = Vector(-1,0);
 			}
 		}
@@ -140,16 +163,14 @@ DGtal::ArithDSS4<Domain2D>::next(
 			if ( (r+this->myB >= this->myMu)&&
 						(r+this->myB < this->myMu+this->myOmega) ) {
 					step = Vector(0,-1);
-			} else if ( (r+this->myA >= this->myMu)&&
-									(r+this->myA < this->myMu+this->myOmega) ) {
+			} else {
 					step = Vector(1,0);
 			}
 		} else {               //quadrant 3
 			if ( (r+this->myB >= this->myMu)&&
 						(r+this->myB < this->myMu+this->myOmega) ) {
 					step = Vector(0,-1);
-			} else if ( (r-this->myA >= this->myMu)&&
-									(r-this->myA < this->myMu+this->myOmega) ) {
+			} else {
 					step = Vector(-1,0);
 			}
 		}
