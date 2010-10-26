@@ -48,6 +48,18 @@ DGtal::ArithDSS4<Domain2D>::~ArithDSS4()
 }
 
 /**
+ * Default Constructor (not valid).
+ */
+template <typename Domain2D>
+DGtal::ArithDSS4<Domain2D>::ArithDSS4()
+{
+
+	ASSERT(DGtal::ArithDSS4<Domain2D>::Point::Dimension == 2 && "only valid for 2D");
+
+
+}
+
+/**
  * Constructor.
  */
 template <typename Domain2D>

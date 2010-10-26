@@ -98,8 +98,8 @@ int main(int argc, char **argv)
 		theDecomposition.begin();
 	for ( ; i != theDecomposition.end(); ++i) {
 		PrimitiveType segment(*i); 
-  	std::cerr << "segment number " << i.getPosition() << std::endl;
-  	std::cerr << segment << std::endl;	//standard output
+  	std::cout << "segment number " << i.getPosition() << std::endl;
+  	std::cout << segment << std::endl;	//standard output
   	i.get().selfDraw(aBoard); //drawing
 	} 
   aBoard.saveSVG("segmentation.svg");

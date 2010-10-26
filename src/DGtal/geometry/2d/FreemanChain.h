@@ -732,7 +732,7 @@ namespace DGtal
       SelfDrawStyle(LibBoard::Board & aBoard) 
       {
 				aBoard.setFillColor(LibBoard::Color::None);
-				aBoard.setPenColor(LibBoard::Color::Red);
+				aBoard.setPenColor(LibBoard::Color::Black);
       }
     };
     

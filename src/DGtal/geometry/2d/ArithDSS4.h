@@ -68,6 +68,11 @@ namespace DGtal
 		typedef typename Domain2D::Vector Vector;
 
     /**
+     * Default constructor (not valid).
+     */
+    ArithDSS4();
+
+    /**
      * Constructor.
      */
     ArithDSS4(const Point& aFirstPoint, const Point& aSecondPoint);
