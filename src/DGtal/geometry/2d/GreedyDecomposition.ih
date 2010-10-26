@@ -54,8 +54,7 @@ inline
 DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
 ( const Contour & aContour, unsigned int n )
   : myC( &aContour ), myPosition( 0 ),
-		myFront( aContour.begin() ), myBack( aContour.end() ), 
-		myP(DGtal::PointVector<2,int>(0,0),DGtal::PointVector<2,int>(1,0))
+		myFront( aContour.begin() ), myBack( aContour.end() )
 {
 	myBack = myC->begin();
 	myFront = myBack;
