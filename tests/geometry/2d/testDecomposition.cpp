@@ -71,7 +71,7 @@ int main(int argc, char **argv)
   typedef Domain2D::Point Point; 
 
 	std::string testPath = "../../../../tests/";
-  std::string filename = testPath + "samples/klokan.fc";
+  std::string filename = testPath + "samples/france.fc";
 	std::cout << filename << std::endl;
 
   std::fstream fst;
