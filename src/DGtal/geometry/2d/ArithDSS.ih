@@ -429,7 +429,7 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
       // A corriger
 
 			//draw contour
-      vector<Point> ptsOfDSS = recover();
+/*      vector<Point> ptsOfDSS = recover();
       vector<LibBoard::Point> contour;
 			for (int i=0; i<ptsOfDSS.size();i++) {
 				Point p = ptsOfDSS.at(i);
@@ -437,6 +437,7 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
 			}
 
       aBoard.drawPolyline(contour);
+*/
 
       //draw bounding box
       PointD topLeft = project(myF, myUf);

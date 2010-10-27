@@ -71,7 +71,6 @@ int main(int argc, char **argv)
   typedef HyperRectDomain<Space2Type> Domain2D;
   typedef ArithDSS4<Domain2D> PrimitiveType; 
   typedef FreemanChain ContourType; 
-  typedef Domain2D::Point Point; 
 
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
@@ -86,23 +85,16 @@ int main(int argc, char **argv)
 
   Board aBoard;
   aBoard.setUnit(Board::UCentimeter);
-
-  /*
-    int minX, maxX, minY, maxY;
-    theContour.computeBoundingBox(minX, minY, maxX, maxY);  
-    Domain2D theDomain( Point(minX,minY), Point(maxX,maxY) );  
-    theDomain.selfDrawAsGrid(aBoard);
-  */
   theContour.selfDraw(aBoard);
 
-  //pour tous les segments
+  //for each segment
   GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
     theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-    PrimitiveType segment(*i); 
     trace.info() << "segment number " << i.getPosition() << std::endl;
+    PrimitiveType segment(*i); 
     trace.info() << segment << std::endl;	//standard output
-    i.get().selfDraw(aBoard); //drawing
+    segment.selfDraw(aBoard); //drawing
   } 
   aBoard.saveSVG("segmentation.svg");
 

@@ -75,7 +75,6 @@ public:
 		typedef typename DGtal::PointVector<2,double> PointD;
     /**
      * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
      */
     ArithDSS(){};
 
