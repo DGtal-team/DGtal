@@ -2,6 +2,7 @@ SET(DGTAL_TESTS_SRC
        testArithDSS
        testFreemanChain	
 			 testDecomposition
+			 testHalfPlane
               )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
