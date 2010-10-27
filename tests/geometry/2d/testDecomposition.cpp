@@ -70,7 +70,7 @@ int main(int argc, char **argv)
   typedef SpaceND<2> Space2Type;
   typedef HyperRectDomain<Space2Type> Domain2D;
   typedef ArithDSS4<Domain2D> PrimitiveType; 
-  typedef FreemanChain ContourType; 
+  typedef FreemanChain<Domain2D> ContourType; 
 
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
