@@ -31,11 +31,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "Board/Board.h"
 #include <boost/program_options.hpp>
 #include "ConfigTest.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -46,6 +48,10 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FreemanChain.
 ///////////////////////////////////////////////////////////////////////////////
+typedef SpaceND<2> Space2Type;
+typedef HyperRectDomain<Space2Type> Domain2D;
+typedef Space2Type::Point Point;
+
 
 /**
  * Example of a test. To be completed.
@@ -59,7 +65,7 @@ bool testFreemanChain(stringstream & ss)
   
   trace.beginBlock ( "Testing FreemanChain " );
   
-  FreemanChain fc(ss);
+  FreemanChain<Domain2D> fc(ss);
 
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << ss.str() << endl; 
@@ -81,7 +87,7 @@ bool testFreemanChain(stringstream & ss)
 	       << "Test chain bounding box" << std::endl;
   
   
-  vector<FreemanChain::PointI2> aContourPointVector; 
+  vector<FreemanChain<Domain2D>::PointI2> aContourPointVector; 
   fc.getContourPoints(fc, aContourPointVector);
   trace.info() << "List of point: ";
   for (int i =0; i <aContourPointVector.size(); i++){
@@ -107,7 +113,7 @@ bool testDisplayFreemanChain(const string &file)
 {
   fstream fst;
   fst.open (file.c_str(), ios::in);
-  FreemanChain fc(fst);  
+  FreemanChain<Domain2D> fc(fst);  
   LibBoard::Board aBoard;
   aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);
