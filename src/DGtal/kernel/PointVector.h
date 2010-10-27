@@ -82,7 +82,7 @@ namespace DGtal
    * @code
    *
    * ...
-   * typedef PointVector<double,5> VectorD5;
+   * typedef PointVector<5, double> VectorD5;
    * VectorD5 p, q, r;
    *
    * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
