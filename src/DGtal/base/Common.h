@@ -88,7 +88,7 @@ namespace DGtal
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( LibBoard::Board & board ) const {}
+    virtual void selfDraw( LibBoard::Board &  ) const {}
   };
 
   /////////////////////////////////////////////////////////////////////////////
