@@ -91,310 +91,310 @@ namespace DGtal
   template<typename TSpace>
   class HyperRectDomain
   {
-    // ----------------------- Standard services ------------------------------
-  public:
+      // ----------------------- Standard services ------------------------------
+    public:
 
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-    
-
-    // typedef TSpace DigitalSpace;
-    // typedef TSpace SpaceType;
-    typedef TSpace Space;
-   
-    // static constants
-    static const typename Space::Dimension staticDimension = Space::staticDimension;
-   
-    typedef HyperRectDomain<Space> Domain;
-    typedef typename Space::Point Point;
-		typedef typename Space::Integer Integer;
-    typedef typename Space::Vector Vector;
-    typedef typename Space::Dimension Dimension;
-    typedef typename Space::Size Size;
-    typedef typename Point::Coordinate Coordinate;
-    
-
-    // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
-
-    ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point> ConstIterator;
-    typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
-
-    typedef IsWithinPointPredicate<Point> Predicate;
-
-    /**
-     * Default Constructor.
-     */
-    HyperRectDomain();
-
-    /**
-     * Constructor from  two points \param aPointA and \param aPoint B
-     * defining the space diagonal.
-     *
-     */
-    HyperRectDomain ( const Point &aPointA, const Point &aPointB );
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
 
 
-    /**
-     * Destructor.
-     */
-    ~HyperRectDomain();
+      // typedef TSpace DigitalSpace;
+      // typedef TSpace SpaceType;
+      typedef TSpace Space;
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    HyperRectDomain ( const HyperRectDomain & other );
-    
-    
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    HyperRectDomain & operator= ( const HyperRectDomain & other );
+      // static constants
+      static const typename Space::Dimension staticDimension = Space::staticDimension;
+
+      typedef HyperRectDomain<Space> Domain;
+      typedef typename Space::Point Point;
+      typedef typename Space::Integer Integer;
+      typedef typename Space::Vector Vector;
+      typedef typename Space::Dimension Dimension;
+      typedef typename Space::Size Size;
+      typedef typename Point::Coordinate Coordinate;
 
 
-    
-    //------------- Global Iterator
-    /**
-     * begin() iterator.
-     *
-     **/
-    const ConstIterator& begin() const;
+      // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
-#ifdef CPP0X_INITIALIZER_LIST
-    /**
-     * begin() iterator with an order different from lexicographic.
-     *
-     **/
-    ConstIterator begin(std::initializer_list<unsigned int> permutation);
-#endif
-		
-    /**
-     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-     *
-     **/
-    ConstIterator begin ( const Point &aPoint ) const;
+      ///Typedef of domain iterators
+      typedef HyperRectDomain_Iterator<Point> ConstIterator;
+      typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
 
-    /**
-     * end() iterator.
-     *
-     **/
-    const ConstIterator& end() const;
+      typedef IsWithinPointPredicate<Point> Predicate;
+
+      /**
+       * Default Constructor.
+       */
+      HyperRectDomain();
+
+      /**
+       * Constructor from  two points \param aPointA and \param aPoint B
+       * defining the space diagonal.
+       *
+       */
+      HyperRectDomain ( const Point &aPointA, const Point &aPointB );
+
+
+      /**
+       * Destructor.
+       */
+      ~HyperRectDomain();
+
+      /**
+       * Copy constructor.
+       * @param other the object to clone.
+       * Forbidden by default.
+       */
+      HyperRectDomain ( const HyperRectDomain & other );
+
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       * Forbidden by default.
+       */
+      HyperRectDomain & operator= ( const HyperRectDomain & other );
+
+
+
+      //------------- Global Iterator
+      /**
+       * begin() iterator.
+       *
+       **/
+      const ConstIterator& begin() const;
 
 #ifdef CPP0X_INITIALIZER_LIST
-    /**
-     * end() iterator with an order different from lexicographic.
-     *
-     **/
-		ConstIterator end(std::initializer_list<unsigned int> permutation);
+      /**
+       * begin() iterator with an order different from lexicographic.
+       *
+       **/
+      ConstIterator begin(std::initializer_list<unsigned int> permutation);
 #endif
 
-    //------------- Span Iterator
-    /**
-     * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
-     *
-     **/
-    ConstSpanIterator span_begin ( const Point &aPoint, const std::size_t aDimension) const;
+      /**
+       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
+       *
+       **/
+      ConstIterator begin ( const Point &aPoint ) const;
+
+      /**
+       * end() iterator.
+       *
+       **/
+      const ConstIterator& end() const;
+
+#ifdef CPP0X_INITIALIZER_LIST
+      /**
+       * end() iterator with an order different from lexicographic.
+       *
+       **/
+      ConstIterator end(std::initializer_list<unsigned int> permutation);
+#endif
+
+      //------------- Span Iterator
+      /**
+       * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
+       *
+       **/
+      ConstSpanIterator span_begin ( const Point &aPoint, const std::size_t aDimension) const;
 
 
-    /**
-     * Creates a end() Span iterator along the dimension \param aDimension.
-     *
-     **/
-    ConstSpanIterator span_end (const std::size_t aDimension) const;
+      /**
+       * Creates a end() Span iterator along the dimension \param aDimension.
+       *
+       **/
+      ConstSpanIterator span_end (const std::size_t aDimension) const;
 
 
 
-    // ----------------------- Interface --------------------------------------
-  public:
+      // ----------------------- Interface --------------------------------------
+    public:
 
-    /**
-     * @return  the extent of the HyperRectDomain
-     *
-     **/
-    std::size_t extent() const;
-
-
-    /** 
-     * Returns the extent of the HyperRectDomain (static method).
-     * 
-     * @param aLowerBound  a Point corresponding to the lower bound.
-     * @param aUpperBound a Point corresponding to the upper bound.
-     * 
-     * @return the extent.
-     */    
-    static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
-    {
-      std::size_t val = 1;
-      for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
-	val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
-
-      return val;
-    }
+      /**
+       * @return  the extent of the HyperRectDomain
+       *
+       **/
+      std::size_t extent() const;
 
 
-    /**
-     * Returns the lowest point of the space diagonal.
-     *
-     **/
-    const Point &lowerBound() const;
-
-    /**
-     * Returns the highest point of the space diagonal.
-     *
-     **/
-    const Point &upperBound() const ;
-
-    /**
-     * @param p any point.
-     * @return 'true' if point [p] is inside this domain.
-     */
-    bool isInside( const Point & p ) const;
-
-    /**
-     * @return a const reference to the "IsInside" predicate.
-     * 
-     * NB: Could have used template class DomainPredicate but, for
-     * performance reason, directly used the IsWithinPointPredicate
-     * which fits perfectly.
-     */
-    const Predicate & predicate() const;
-
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    struct SelfDrawStylePaving
-    {
-      SelfDrawStylePaving(LibBoard::Board & aboard)
+      /**
+       * Returns the extent of the HyperRectDomain (static method).
+       *
+       * @param aLowerBound  a Point corresponding to the lower bound.
+       * @param aUpperBound a Point corresponding to the upper bound.
+       *
+       * @return the extent.
+       */
+      static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
       {
-	aboard.setPenColorRGBi(160,160,160);	
-	aboard.setFillColorRGBi(255,255,255);
-	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
-      }
-    };
+        std::size_t val = 1;
+        for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
+          val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
 
-    struct SelfDrawStyleGrid
-    {
-      SelfDrawStyleGrid(LibBoard::Board & aboard)
+        return val;
+      }
+
+
+      /**
+       * Returns the lowest point of the space diagonal.
+       *
+       **/
+      const Point &lowerBound() const;
+
+      /**
+       * Returns the highest point of the space diagonal.
+       *
+       **/
+      const Point &upperBound() const ;
+
+      /**
+       * @param p any point.
+       * @return 'true' if point [p] is inside this domain.
+       */
+      bool isInside( const Point & p ) const;
+
+      /**
+       * @return a const reference to the "IsInside" predicate.
+       *
+       * NB: Could have used template class DomainPredicate but, for
+       * performance reason, directly used the IsWithinPointPredicate
+       * which fits perfectly.
+       */
+      const Predicate & predicate() const;
+
+
+      // ------------------------- Private Datas --------------------------------
+    private:
+      struct SelfDrawStylePaving
       {
-	aboard.setPenColorRGBi(160,160,160);	
-	aboard.setLineStyle(LibBoard::Shape::DashStyle);
-      }
-    };
+        SelfDrawStylePaving(LibBoard::Board & aboard)
+        {
+          aboard.setPenColorRGBi(160, 160, 160);
+          aboard.setFillColorRGBi(255, 255, 255);
+          aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+        }
+      };
 
-    /** 
-     * Default style.
-     */
-    struct DefaultDrawStylePaving : public DrawableWithBoard
-    {
-      virtual void selfDraw(LibBoard::Board & aBoard) const
+      struct SelfDrawStyleGrid
       {
-	aBoard.setPenColorRGBi(160,160,160);	
-	aBoard.setFillColorRGBi(255,255,255);
-	aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
-      }
-    };
+        SelfDrawStyleGrid(LibBoard::Board & aboard)
+        {
+          aboard.setPenColorRGBi(160, 160, 160);
+          aboard.setLineStyle(LibBoard::Shape::DashStyle);
+        }
+      };
 
-    /** 
-     * Default style.
-     */
-    struct DefaultDrawStyleGrid : public DrawableWithBoard
-    {
-      virtual void selfDraw(LibBoard::Board & aBoard) const
+      /**
+       * Default style.
+       */
+      struct DefaultDrawStylePaving : public DrawableWithBoard
       {
-	aBoard.setPenColorRGBi(160,160,160);	
-	aBoard.setLineStyle(LibBoard::Shape::DashStyle);
-      }
-    };
+        virtual void selfDraw(LibBoard::Board & aBoard) const
+        {
+          aBoard.setPenColorRGBi(160, 160, 160);
+          aBoard.setFillColorRGBi(255, 255, 255);
+          aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+        }
+      };
 
-    // --------------- CDrawableWithBoard realization -------------------------
-  public:
+      /**
+       * Default style.
+       */
+      struct DefaultDrawStyleGrid : public DrawableWithBoard
+      {
+        virtual void selfDraw(LibBoard::Board & aBoard) const
+        {
+          aBoard.setPenColorRGBi(160, 160, 160);
+          aBoard.setLineStyle(LibBoard::Shape::DashStyle);
+        }
+      };
 
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object. 
-     */
-    DrawableWithBoard* defaultStyle() const;
+      // --------------- CDrawableWithBoard realization -------------------------
+    public:
 
-    /**
-     * @return the style name used for drawing this object.
-     */
-    std::string styleName() const;
+      /**
+       * Default drawing style object.
+       * @return the dyn. alloc. default style for this object.
+       */
+      DrawableWithBoard* defaultStyle() const;
 
-    /**
-     * Draw the object on a LibBoard board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(LibBoard::Board & board ) const;
+      /**
+       * @return the style name used for drawing this object.
+       */
+      std::string styleName() const;
 
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     * @param astylefunctor a Functor to specialize the Board style.
-     */
-    template<typename Functor>
-    void selfDrawAsGrid( LibBoard::Board & board) const;
+      /**
+       * Draw the object on a LibBoard board.
+       * @param board the output board where the object is drawn.
+       */
+      void selfDraw(LibBoard::Board & board ) const;
 
-
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     */
-    void selfDrawAsGrid( LibBoard::Board & board) const;
-
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     * @param astylefunctor a Functor to specialize the Board style.
-     */
-    template<typename Functor>
-    void selfDrawAsPaving( LibBoard::Board & board ) const;
-
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     */
-    void selfDrawAsPaving( LibBoard::Board & board ) const;
+      /**
+       * Draw the object (as a Grid) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       * @param asGrid to choose between paving vs. grid representation.
+       * @param astylefunctor a Functor to specialize the Board style.
+       */
+      template<typename Functor>
+      void selfDrawAsGrid( LibBoard::Board & board) const;
 
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
+      /**
+       * Draw the object (as a Grid) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       * @param asGrid to choose between paving vs. grid representation.
+       */
+      void selfDrawAsGrid( LibBoard::Board & board) const;
 
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
+      /**
+       * Draw the object (as a Grid) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       * @param asGrid to choose between paving vs. grid representation.
+       * @param astylefunctor a Functor to specialize the Board style.
+       */
+      template<typename Functor>
+      void selfDrawAsPaving( LibBoard::Board & board ) const;
+
+      /**
+       * Draw the object (as a Grid) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       * @param asGrid to choose between paving vs. grid representation.
+       */
+      void selfDrawAsPaving( LibBoard::Board & board ) const;
+
+
+      /**
+       * Writes/Displays the object on an output stream.
+       * @param out the output stream where the object is written.
+       */
+      void selfDisplay ( std::ostream & out ) const;
+
+      /**
+       * Checks the validity/consistency of the object.
+       * @return 'true' if the object is valid, 'false' otherwise.
+       */
+      bool isValid() const;
 
 
 
-    // ------------------------- Hidden services ------------------------------
-  private:
+      // ------------------------- Hidden services ------------------------------
+    private:
 
 
-    ///The lowest point of the space diagonal
-    Point myLowerBound;
-    ///The highest point of the space diagonal
-    Point myUpperBound;
+      ///The lowest point of the space diagonal
+      Point myLowerBound;
+      ///The highest point of the space diagonal
+      Point myUpperBound;
 
-    /// "IsInside" predicate.
-    Predicate myPredicate;
+      /// "IsInside" predicate.
+      Predicate myPredicate;
 
-    /// Begin iterator
-    ConstIterator myIteratorBegin;
+      /// Begin iterator
+      ConstIterator myIteratorBegin;
 
-    /// End iterator
-    ConstIterator myIteratorEnd;
+      /// End iterator
+      ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
 
 

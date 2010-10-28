@@ -75,25 +75,25 @@ namespace DGtal
       }
 
 #ifdef CPP0X_INITIALIZER_LIST
-    HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower, 
-			     const TPoint &upper,
-			     std::initializer_list<unsigned int> permutation)
-      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-	myUsePermutation( true )
-    {
-      ASSERT( lower <= upper );
-      ASSERT( lower <= p && p <= upper );
-      ASSERT( permutation.size() <= TPoint::Dimension );
-      myPermutation.reserve( permutation.size() );
-      for ( const unsigned int *c = permutation.begin();
-	    c != permutation.end(); ++c )
+      HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
+          const TPoint &upper,
+          std::initializer_list<unsigned int> permutation)
+          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+          myUsePermutation( true )
+      {
+        ASSERT( lower <= upper );
+        ASSERT( lower <= p && p <= upper );
+        ASSERT( permutation.size() <= TPoint::Dimension );
+        myPermutation.reserve( permutation.size() );
+        for ( const unsigned int *c = permutation.begin();
+            c != permutation.end(); ++c )
         {
-	  ASSERT( *c<=TPoint::Dimension );
+          ASSERT( *c <= TPoint::Dimension );
           myPermutation.push_back( *c );
         }
-	    
-      // TODO: check the validity of the permutation ?
-    }
+
+        // TODO: check the validity of the permutation ?
+      }
 #endif
 
       const TPoint & operator*() const
@@ -138,7 +138,7 @@ namespace DGtal
               myPoint.at( myCurrentPos ) ++;
           }
           while (( myCurrentPos < TPoint::Dimension - 1 ) &&
-                 ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
+              ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
       }
@@ -149,26 +149,26 @@ namespace DGtal
       **/
       void nextPermutationOrder()
       {
-	ASSERT( myCurrentPos<myPermutation.size() );	
+        ASSERT( myCurrentPos < myPermutation.size() );
         myPoint.at( myPermutation[myCurrentPos] ) ++;
-	
-	if ( myCurrentPos<myPermutation.size()-1 &&
-	     myPoint.at( myPermutation[myCurrentPos] ) >
-	     myupper.at( myPermutation[myCurrentPos] ) )
-	  {
-	    do
-	      {
-		myPoint.at( myPermutation[myCurrentPos] ) =
-		  mylower.at( myPermutation[myCurrentPos] );
-		myCurrentPos++;
-		if ( myCurrentPos < myPermutation.size() )
-		  myPoint.at( myPermutation[myCurrentPos] ) ++;
-	      }
-	    while (( myCurrentPos < myPermutation.size()-1  ) &&
-		   ( myPoint.at( myPermutation[myCurrentPos] )  >
-		     myupper.at( myPermutation[myCurrentPos] ) ) );
-	    myCurrentPos = 0;
-	  }
+
+        if ( myCurrentPos < myPermutation.size() - 1 &&
+            myPoint.at( myPermutation[myCurrentPos] ) >
+            myupper.at( myPermutation[myCurrentPos] ) )
+        {
+          do
+          {
+            myPoint.at( myPermutation[myCurrentPos] ) =
+              mylower.at( myPermutation[myCurrentPos] );
+            myCurrentPos++;
+            if ( myCurrentPos < myPermutation.size() )
+              myPoint.at( myPermutation[myCurrentPos] ) ++;
+          }
+          while (( myCurrentPos < myPermutation.size() - 1  ) &&
+              ( myPoint.at( myPermutation[myCurrentPos] )  >
+                  myupper.at( myPermutation[myCurrentPos] ) ) );
+          myCurrentPos = 0;
+        }
       }
 
       /**
@@ -212,38 +212,38 @@ namespace DGtal
               myPoint.at( myCurrentPos ) --;
           }
           while (( myCurrentPos < TPoint::Dimension - 1 ) &&
-                 ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
+              ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
       }
 
-    /**
-     * Implements the prev() method to scan the domain points dimension by dimension
-     * (permutation order).
-     **/
-    void prevPermutationOrder()
-    {
-      ASSERT( myCurrentPos<myPermutation.size() );
-      myPoint.at( myPermutation[myCurrentPos] ) --;
-      
-      if (  myCurrentPos<myPermutation.size()-1 &&
-	    myPoint.at( myPermutation[myCurrentPos] )  <
-	    mylower.at( myPermutation[myCurrentPos] ) )
-	{
-	  do
-	    {
-	      myPoint.at( myPermutation[myCurrentPos] ) =
-		myupper.at( myPermutation[myCurrentPos] );
-	      myCurrentPos++;
-	      if ( myCurrentPos < myPermutation.size() )
-		myPoint.at( myPermutation[myCurrentPos] ) --;
-	    }
-	  while (( myCurrentPos < myPermutation.size()-1 ) &&
-		 ( myPoint.at( myPermutation[myCurrentPos] )  <
-		   mylower.at( myPermutation[myCurrentPos] ) ) );
-	  myCurrentPos = 0;
-	}
-	    }
+      /**
+       * Implements the prev() method to scan the domain points dimension by dimension
+       * (permutation order).
+       **/
+      void prevPermutationOrder()
+      {
+        ASSERT( myCurrentPos < myPermutation.size() );
+        myPoint.at( myPermutation[myCurrentPos] ) --;
+
+        if (  myCurrentPos < myPermutation.size() - 1 &&
+            myPoint.at( myPermutation[myCurrentPos] )  <
+            mylower.at( myPermutation[myCurrentPos] ) )
+        {
+          do
+          {
+            myPoint.at( myPermutation[myCurrentPos] ) =
+              myupper.at( myPermutation[myCurrentPos] );
+            myCurrentPos++;
+            if ( myCurrentPos < myPermutation.size() )
+              myPoint.at( myPermutation[myCurrentPos] ) --;
+          }
+          while (( myCurrentPos < myPermutation.size() - 1 ) &&
+              ( myPoint.at( myPermutation[myCurrentPos] )  <
+                  mylower.at( myPermutation[myCurrentPos] ) ) );
+          myCurrentPos = 0;
+        }
+      }
 
       /**
       * Operator ++ (++it)

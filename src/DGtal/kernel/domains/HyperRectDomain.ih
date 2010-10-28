@@ -49,13 +49,13 @@
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
-  : myLowerBound(Point::zero),
+    : myLowerBound(Point::zero),
     myUpperBound(Point::zero),
     myPredicate( myLowerBound, myUpperBound ),
-    myIteratorBegin(Point::zero,Point::zero,Point::zero),
-    myIteratorEnd(Point::zero,Point::zero,Point::zero)
-{ 
-  ++myIteratorEnd; 
+    myIteratorBegin(Point::zero, Point::zero, Point::zero),
+    myIteratorEnd(Point::zero, Point::zero, Point::zero)
+{
+  ++myIteratorEnd;
 }
 
 /**
@@ -66,12 +66,12 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
-						  const Point &aPointB ) :
-  myLowerBound(std::min(aPointA,aPointB)),
-  myUpperBound(std::max(aPointA,aPointB)),
-  myPredicate( myLowerBound, myUpperBound ),
-  myIteratorBegin(myLowerBound,myLowerBound,myUpperBound),
-  myIteratorEnd(myUpperBound,myLowerBound,myUpperBound)
+    const Point &aPointB ) :
+    myLowerBound(std::min(aPointA, aPointB)),
+    myUpperBound(std::max(aPointA, aPointB)),
+    myPredicate( myLowerBound, myUpperBound ),
+    myIteratorBegin(myLowerBound, myLowerBound, myUpperBound),
+    myIteratorEnd(myUpperBound, myLowerBound, myUpperBound)
 {
   ++myIteratorEnd;
 }
@@ -84,11 +84,11 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const typename DGtal::HyperRectDomain<TSpace> &aDomain) :
-  myLowerBound(aDomain.lowerBound()),
-  myUpperBound(aDomain.upperBound()),
-  myPredicate( myLowerBound, myUpperBound ),
-  myIteratorBegin(aDomain.myIteratorBegin),
-  myIteratorEnd(aDomain.myIteratorEnd)
+    myLowerBound(aDomain.lowerBound()),
+    myUpperBound(aDomain.upperBound()),
+    myPredicate( myLowerBound, myUpperBound ),
+    myIteratorBegin(aDomain.myIteratorBegin),
+    myIteratorEnd(aDomain.myIteratorEnd)
 {}
 
 
@@ -112,13 +112,13 @@ DGtal::HyperRectDomain<TSpace> &
 DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
 {
   if ( this != &other )
-    {
-      myLowerBound = other.myLowerBound;
-      myUpperBound = other.myUpperBound;
-      myPredicate = other.myPredicate;
-      myIteratorBegin = other.myIteratorBegin;
-      myIteratorEnd = other.myIteratorEnd;
-    }
+  {
+    myLowerBound = other.myLowerBound;
+    myUpperBound = other.myUpperBound;
+    myPredicate = other.myPredicate;
+    myIteratorBegin = other.myIteratorBegin;
+    myIteratorEnd = other.myIteratorEnd;
+  }
   return *this;
 }
 
@@ -139,7 +139,7 @@ inline
 std::size_t
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
-  return extent(myLowerBound,myUpperBound);
+  return extent(myLowerBound, myUpperBound);
 }
 
 
@@ -201,7 +201,7 @@ template<typename TSpace>
 inline
 const typename DGtal::HyperRectDomain<TSpace>::ConstIterator &
 DGtal::HyperRectDomain<TSpace>::begin() const
-{ 
+{
   return myIteratorBegin;
 }
 
@@ -213,9 +213,10 @@ DGtal::HyperRectDomain<TSpace>::begin() const
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::begin ( const typename HyperRectDomain<TSpace>::Point &aPoint ) const
+DGtal::HyperRectDomain<TSpace>::begin ( const Point &aPoint ) const
 {
-  return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( aPoint,myLowerBound,myUpperBound );
+  ASSERT(isInside(aPoint));
+  return typename DGtal::HyperRectDomain<TSpace>::ConstIterator ( aPoint, myLowerBound, myUpperBound );
 }
 
 #ifdef CPP0X_INITIALIZER_LIST
@@ -225,8 +226,8 @@ typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin(std::initializer_list<unsigned int> permutation)
 {
   Point partialUpperBound(myLowerBound);
-  partialUpperBound.partialCopy(myUpperBound,permutation);
-  return ConstIterator (myLowerBound,myLowerBound,partialUpperBound,permutation);
+  partialUpperBound.partialCopy(myUpperBound, permutation);
+  return ConstIterator (myLowerBound, myLowerBound, partialUpperBound, permutation);
 }
 #endif
 
@@ -249,8 +250,8 @@ typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end(std::initializer_list<unsigned int> permutation)
 {
   Point partialUpperBound(myLowerBound);
-  partialUpperBound.partialCopy(myUpperBound,permutation);
-  ConstIterator res(partialUpperBound,myLowerBound,partialUpperBound,permutation);
+  partialUpperBound.partialCopy(myUpperBound, permutation);
+  ConstIterator res(partialUpperBound, myLowerBound, partialUpperBound, permutation);
   ++res;
 
   return res;
@@ -267,6 +268,8 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
 DGtal::HyperRectDomain<TSpace>::span_begin ( const typename HyperRectDomain<TSpace>::Point &aPoint , const std::size_t aDimension) const
 {
+  ASSERT(isInside(aPoint));
+  ASSERT(aDimension < staticDimension);
   return typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator ( aPoint, aDimension );
 }
 /**
@@ -278,6 +281,7 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator
 DGtal::HyperRectDomain<TSpace>::span_end( const std::size_t aDimension ) const
 {
+  ASSERT(aDimension < staticDimension);
   return typename DGtal::HyperRectDomain<TSpace>::ConstSpanIterator ( this->myUpperBound, aDimension );
 }
 
@@ -295,8 +299,8 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[HyperRectDomain] = ["<< myLowerBound <<"]x["
-      << myUpperBound <<"]";
+  out << "[HyperRectDomain] = [" << myLowerBound << "]x["
+  << myUpperBound << "]";
 }
 
 /**
@@ -314,11 +318,11 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 
 /**
  * Default drawing style object.
- * @return the dyn. alloc. default style for this object. 
+ * @return the dyn. alloc. default style for this object.
  */
 template<typename TSpace>
 inline
-DGtal::DrawableWithBoard* 
+DGtal::DrawableWithBoard*
 DGtal::HyperRectDomain<TSpace>::defaultStyle() const
 {
   return new DefaultDrawStyleGrid;
@@ -355,18 +359,18 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
 {
   if (TSpace::staticDimension == 2)
-    {
-      F applystyle(aboard);
-      
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	aboard.drawLine(x,myLowerBound[1]-0.5,x, myUpperBound[1]+0.5);     
-      for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	aboard.drawLine(myLowerBound[0]-0.5,y,myUpperBound[0]+0.5,y);
+  {
+    F applystyle(aboard);
 
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	  aboard.fillCircle(x,y,0.1);
-    }
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      aboard.drawLine(x, myLowerBound[1] - 0.5, x, myUpperBound[1] + 0.5);
+    for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+      aboard.drawLine(myLowerBound[0] - 0.5, y, myUpperBound[0] + 0.5, y);
+
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+        aboard.fillCircle(x, y, 0.1);
+  }
   else
     ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 }
@@ -379,13 +383,13 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( LibBoard::Board & aboard) const
 {
   if (TSpace::staticDimension == 2)
-    {
-      F applystyle(aboard);
+  {
+    F applystyle(aboard);
 
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	  aboard.drawRectangle(x-0.5,y+0.5, 1,1);
-    }      
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+        aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
+  }
   else
     ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
 }
@@ -397,16 +401,16 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
 {
   if (TSpace::staticDimension == 2)
-    {
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	aboard.drawLine(x,myLowerBound[1]-0.5,x, myUpperBound[1]+0.5);     
-      for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	aboard.drawLine(myLowerBound[0]-0.5,y,myUpperBound[0]+0.5,y);
+  {
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      aboard.drawLine(x, myLowerBound[1] - 0.5, x, myUpperBound[1] + 0.5);
+    for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+      aboard.drawLine(myLowerBound[0] - 0.5, y, myUpperBound[0] + 0.5, y);
 
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	  aboard.fillCircle(x,y,0.1);
-    }
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+        aboard.fillCircle(x, y, 0.1);
+  }
   else
     ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 }
@@ -418,11 +422,11 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( LibBoard::Board & aboard) const
 {
   if (TSpace::staticDimension == 2)
-    {
-      for(int x=myLowerBound[0]; x <= myUpperBound[0]; x++)
-	for(int y=myLowerBound[1]; y <= myUpperBound[1]; y++)
-	  aboard.drawRectangle(x-0.5,y+0.5, 1,1);
-    }      
+  {
+    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+        aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
+  }
   else
     ASSERT(false && "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
 }
@@ -438,7 +442,7 @@ template<typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const HyperRectDomain<TSpace> & object )
+    const HyperRectDomain<TSpace> & object )
 {
   object.selfDisplay ( out );
   return out;
