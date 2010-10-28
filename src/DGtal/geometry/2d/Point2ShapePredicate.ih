@@ -87,12 +87,12 @@ bool
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ::operator()(const Point& aPoint) const
 {
-	DGtal::Point2ShapePredicate_traits<
+	DGtal::Point2ShapePredicateComparator<
 		typename Shape::Coordinate,
 		isUpward,
-		isClosed> thePredicat;
+		isClosed> theComparator;
 
-	return thePredicat(myS.signedDistance(aPoint),0);
+	return theComparator(myS.signedDistance(aPoint),0);
 }
 
 

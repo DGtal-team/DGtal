@@ -133,7 +133,7 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::~ConstIterator()
  * @return the current coordinates.
  */
 template <typename Domain2D>
-PointVector<2, int> 
+typename Domain2D::Point 
 DGtal::FreemanChain<Domain2D>::ConstIterator::operator*() const
 {
   return myXY;
@@ -143,7 +143,7 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator*() const
  * @return the current coordinates.
  */
 template <typename Domain2D>
-DGtal::PointVector<2, int>
+typename Domain2D::Point
 DGtal::FreemanChain<Domain2D>::ConstIterator::get() const
 {
   return myXY;
@@ -524,7 +524,7 @@ DGtal::FreemanChain<Domain2D>::displacement( int & dx, int & dy, unsigned int aC
  */
 template <typename Domain2D>
 INLINE
-DGtal::PointVector<2, int>
+typename Domain2D::Point
 DGtal::FreemanChain<Domain2D>::displacement( unsigned int aCode )
 {
   

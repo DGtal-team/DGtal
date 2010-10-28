@@ -71,7 +71,8 @@ namespace DGtal
   {
 
   public :
-    typedef PointVector<2,int> PointI2;
+//    typedef PointVector<2,int> PointI2;
+    typedef typename Domain2D::Point PointI2;
 
     // ------------------------- iterator ------------------------------
   public:
