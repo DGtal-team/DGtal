@@ -195,7 +195,7 @@ namespace DGtal
       return 0;
     }
 
-    virtual void selfDraw( DGtalBoard & board ) const 
+    virtual void selfDraw( DGtalBoard &  ) const 
     {}
   };
 
