@@ -1,0 +1,17 @@
+
+This folder groups exercise files to practise DGtal. Each exercise is
+contained in a specific folder whose name is prefixed by a number
+indicating the its difficulty.
+
+
+To compile the exercises: 
+  
+  - Create a specific build folder (e.g. on linux
+    DGtalPATH/exercise/build)
+  - In this build folder, generate your project file with cmake
+    (e.g. on linux "cd build && cmake .."
+
+For anwsers, contact the DGtal Team.
+
+
+D. Coeurjolly 

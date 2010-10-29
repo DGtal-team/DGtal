@@ -135,14 +135,6 @@ namespace DGtal
       explicit PointVector( const T * ptrValues );
 
       /**
-       * Constructor from one value (the Dimension of the vector should
-       * be at least 1). Other components are set to 0.
-       *
-       * @param x the first value.
-       */
-      //PointVector( const T & x );
-
-      /**
        * Constructor from two values (the Dimension of the vector should
        * be at least 2). Other components are set to 0.
        *

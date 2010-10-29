@@ -106,7 +106,7 @@ namespace DGtal
       //Drawable model should have a styleName() returing a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
-			///@todo FIXME: si on décommente ça plante 
+      ///@todo FIXME: si on décommente ça plante
 //      myT.selfDraw( myB );
     }
 
@@ -115,8 +115,8 @@ namespace DGtal
     T myT;
     DrawableWithBoard *myD;
 
-		///@todo FIXME: si on décommente ça plante 
-		// DGtalBoard myB;
+    ///@todo FIXME: si on décommente ça plante
+    // DGtalBoard myB;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
