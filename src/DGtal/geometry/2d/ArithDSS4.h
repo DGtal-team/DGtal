@@ -55,17 +55,21 @@ namespace DGtal
    * Description of template class 'ArithDSS4' <p>
    * \brief Aim:
    */
-  template <typename Domain2D>
-  class ArithDSS4: public ArithDSS<Domain2D>
+  template <typename TInteger>
+  class ArithDSS4: public ArithDSS<TInteger>
   {
+
+    // ----------------------- Types ------------------------------
+private:
+
+		//2D point and 2D vector
+	  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+		typedef TInteger Integer;
+		typedef DGtal::PointVector<2,Integer> Point;
+		typedef DGtal::PointVector<2,Integer> Vector;
+
     // ----------------------- Standard services ------------------------------
   public:
-
-		typedef typename Domain2D::Coordinate Integer;
-		//2D point of a domain
-		typedef typename Domain2D::Point Point;
-		//2D vector of a domain
-		typedef typename Domain2D::Vector Vector;
 
     /**
      * Default constructor (not valid).

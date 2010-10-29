@@ -41,34 +41,28 @@
 /**
  * Destructor.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-DGtal::ArithDSS4<Domain2D>::~ArithDSS4()
+DGtal::ArithDSS4<TInteger>::~ArithDSS4()
 {
 }
 
 /**
  * Default Constructor (not valid).
  */
-template <typename Domain2D>
-DGtal::ArithDSS4<Domain2D>::ArithDSS4()
+template <typename TInteger>
+DGtal::ArithDSS4<TInteger>::ArithDSS4()
 {
-
-	ASSERT(DGtal::ArithDSS4<Domain2D>::Point::Dimension == 2 && "only valid for 2D");
-
-
 }
 
 /**
  * Constructor.
  */
-template <typename Domain2D>
-DGtal::ArithDSS4<Domain2D>::ArithDSS4(
+template <typename TInteger>
+DGtal::ArithDSS4<TInteger>::ArithDSS4(
 	 const Point& aFirstPoint, 
 	 const Point& aSecondPoint)
 {
-
-	ASSERT(DGtal::ArithDSS4<Domain2D>::Point::Dimension == 2 && "only valid for 2D");
 
 	Vector step = aSecondPoint - aFirstPoint;
 	Integer deviation = norm(step[0],step[1]);
@@ -93,20 +87,20 @@ DGtal::ArithDSS4<Domain2D>::ArithDSS4(
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS4<Domain2D>::Integer 
-DGtal::ArithDSS4<Domain2D>::norm(
+TInteger 
+DGtal::ArithDSS4<TInteger>::norm(
 			const Integer & x, 
 			const Integer & y) const 
 {
 	return std::abs(x)+std::abs(y);
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool
-DGtal::ArithDSS4<Domain2D>::sameQuadrant(const Vector& aVec) const 
+DGtal::ArithDSS4<TInteger>::sameQuadrant(const Vector& aVec) const 
 {
 	bool flag = true;
 	if ( this->myA > 0 ) { 
@@ -126,10 +120,10 @@ DGtal::ArithDSS4<Domain2D>::sameQuadrant(const Vector& aVec) const
 
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS4<Domain2D>::Vector 
-DGtal::ArithDSS4<Domain2D>::vectorFrom0ToOmega() const 
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS4<TInteger>::vectorFrom0ToOmega() const 
 {
 	if (this->myA >= 0) {
 		if (this->myB >= 0) return Vector(1,-1);
@@ -140,10 +134,10 @@ DGtal::ArithDSS4<Domain2D>::vectorFrom0ToOmega() const
 	}
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS4<Domain2D>::Point
-DGtal::ArithDSS4<Domain2D>::next(
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS4<TInteger>::next(
 			const Point & aPoint) const 
 {
 

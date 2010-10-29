@@ -42,10 +42,10 @@
 
 
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool
-DGtal::ArithDSS<Domain2D>::isValid() const
+DGtal::ArithDSS<TInteger>::isValid() const
 {
 
 	if (myA*myUf[0] - myB*myUf[1] != myMu) return false;
@@ -71,10 +71,10 @@ DGtal::ArithDSS<Domain2D>::isValid() const
      */
 
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool 
-DGtal::ArithDSS<Domain2D>::addFront(const Point & aPoint)
+DGtal::ArithDSS<TInteger>::addFront(const Point & aPoint)
 {
 
 	Vector step = aPoint-myL;
@@ -130,10 +130,10 @@ DGtal::ArithDSS<Domain2D>::addFront(const Point & aPoint)
 	   * if the DSS has more than two points
      * @return 'true' the first point is removed, 'false' otherwise.
      */
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool 
-DGtal::ArithDSS<Domain2D>::removeBack()
+DGtal::ArithDSS<TInteger>::removeBack()
 {
 	
 	Vector v = myL-myF;
@@ -204,10 +204,10 @@ DGtal::ArithDSS<Domain2D>::removeBack()
 
 //-------------------------------------------------------------------------
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-std::vector<typename Domain2D::Point> 
-DGtal::ArithDSS<Domain2D>::recover() const
+std::vector<typename DGtal::PointVector<2,TInteger> > 
+DGtal::ArithDSS<TInteger>::recover() const
 {
 
 	std::vector<Point > contour;
@@ -223,20 +223,20 @@ DGtal::ArithDSS<Domain2D>::recover() const
 
 //-------------------------------------------------------------------------
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::ArithDSS<Domain2D>::getRemainder(const Point & aPoint) const
+TInteger
+DGtal::ArithDSS<TInteger>::getRemainder(const Point & aPoint) const
 {
 	return myA*aPoint[0]-myB*aPoint[1];
 }
 
 //-------------------------------------------------------------------------
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool
-DGtal::ArithDSS<Domain2D>::isInDSL(const Point & aPoint) const
+DGtal::ArithDSS<TInteger>::isInDSL(const Point & aPoint) const
 {
 	Integer r = getRemainder(aPoint);
 	return ( (r >= myMu)&&(r < myMu+myOmega) );
@@ -244,10 +244,10 @@ DGtal::ArithDSS<Domain2D>::isInDSL(const Point & aPoint) const
 
 //-------------------------------------------------------------------------
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool
-DGtal::ArithDSS<Domain2D>::isInDSS(const Point & aPoint) const
+DGtal::ArithDSS<TInteger>::isInDSS(const Point & aPoint) const
 {
 	Integer s = myA*aPoint[0] + myB*aPoint[1];
 	Integer smin = myA*myF[0] + myB*myF[1];
@@ -258,72 +258,72 @@ DGtal::ArithDSS<Domain2D>::isInDSS(const Point & aPoint) const
 
 //------------------------- Accessors --------------------------
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::ArithDSS<Domain2D>::getA() const {
+TInteger
+DGtal::ArithDSS<TInteger>::getA() const {
 	return myA;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::ArithDSS<Domain2D>::getB() const {
+TInteger
+DGtal::ArithDSS<TInteger>::getB() const {
 	return myB;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::ArithDSS<Domain2D>::getMu() const {
+TInteger
+DGtal::ArithDSS<TInteger>::getMu() const {
 	return myMu;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::ArithDSS<Domain2D>::getOmega() const {
+TInteger
+DGtal::ArithDSS<TInteger>::getOmega() const {
 	return myOmega;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getUf() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getUf() const {
 	return myUf;
 }
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getUl() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getUl() const {
 	return myUl;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getLf() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getLf() const {
 	return myLf;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getLl() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getLl() const {
 	return myLl;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getF() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getF() const {
 	return myF;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Point
-DGtal::ArithDSS<Domain2D>::getL() const {
+DGtal::PointVector<2,TInteger>
+DGtal::ArithDSS<TInteger>::getL() const {
 	return myL;
 }
 
@@ -332,10 +332,10 @@ DGtal::ArithDSS<Domain2D>::getL() const {
  * @param m any point expressed in the local reference frame (may not be part of the segment).
  * @return the projected point.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS<Domain2D>::PointD
-DGtal::ArithDSS<Domain2D>::project( const Point & m ) const
+DGtal::PointVector<2,double>
+DGtal::ArithDSS<TInteger>::project( const Point & m ) const
 {
   float alpha = ( myMu + myMu + ( myA >= 0 ? myA : -myA ) + myB - 1 ) / 2.0f;
   float d2 = (float)( myA * myA + myB * myB );
@@ -356,10 +356,10 @@ DGtal::ArithDSS<Domain2D>::project( const Point & m ) const
  * @return the projected point.
  */
 
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS<Domain2D>::PointD
-DGtal::ArithDSS<Domain2D>::project( const Point & m, float r ) const
+DGtal::PointVector<2,double>
+DGtal::ArithDSS<TInteger>::project( const Point & m, float r ) const
 {
   //  float alpha = ( myMu + myMu + ( myA >= 0 ? myA : -myA ) + myB - 1 ) / 2.0f;
   float d2 = (float)( myA * myA + myB * myB );
@@ -381,10 +381,10 @@ DGtal::ArithDSS<Domain2D>::project( const Point & m, float r ) const
  *
  * @return the projected point.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename DGtal::ArithDSS<Domain2D>::PointD
-DGtal::ArithDSS<Domain2D>::project( const Point & m, const Point & p ) const
+DGtal::PointVector<2,double>
+DGtal::ArithDSS<TInteger>::project( const Point & m, const Point & p ) const
 {
   float r = myA * p[0] - myB * p[1];
   float d2 = (float)( myA * myA + myB * myB );
@@ -400,70 +400,66 @@ DGtal::ArithDSS<Domain2D>::project( const Point & m, const Point & p ) const
  * @return the projected length of the segment.
  * @see projectRegularly
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
 double
-DGtal::ArithDSS<Domain2D>::projectedSegmentLength() const
+DGtal::ArithDSS<TInteger>::projectedSegmentLength() const
 {
   PointD v = project( myL );
   PointD u = project( myF );
   v -= u;
-  return v.norm(ArithDSS<Domain2D>::PointD::L_2);
+  return v.norm(DGtal::PointVector<2,double>::L_2);
 }
 
 
 
 
-template<typename Domain2D>
+template<typename TInteger>
 template<typename Functor>
 inline
 void 
-DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::ArithDSS<TInteger>::selfDraw( LibBoard::Board & aBoard) const
 {
-  if (Domain2D::staticDimension == 2)
-    {
-      Functor applystyle(aBoard);
-      
-      // IS
-      // Incompatibilité des Point de Board et de DGtal...
-      // A corriger
 
-			//draw contour
+  Functor applystyle(aBoard);
+  
+  // IS
+  // Incompatibilité des Point de Board et de DGtal...
+  // A corriger
+
+	//draw contour
 /*      vector<Point> ptsOfDSS = recover();
-      vector<LibBoard::Point> contour;
-			for (int i=0; i<ptsOfDSS.size();i++) {
-				Point p = ptsOfDSS.at(i);
-				contour.push_back(LibBoard::Point(p[0],p[1]));
-			}
+  vector<LibBoard::Point> contour;
+	for (int i=0; i<ptsOfDSS.size();i++) {
+		Point p = ptsOfDSS.at(i);
+		contour.push_back(LibBoard::Point(p[0],p[1]));
+	}
 
-      aBoard.drawPolyline(contour);
+  aBoard.drawPolyline(contour);
 */
 
-      //draw bounding box
-      PointD topLeft = project(myF, myUf);
-      PointD bottomLeft = project(myF,myLf);
-      PointD bottomRight = project(myL, myLf);
-      PointD topRight = project(myL,myUf);
-      
-
-      LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
-      LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
-      LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
-      LibBoard::Point topRightBoard(topRight[0],topRight[1]);
-      
-      vector<LibBoard::Point> bb;
-      bb.push_back(topLeftBoard);
-      bb.push_back(bottomLeftBoard);
-      bb.push_back(bottomRightBoard);
-      bb.push_back(topRightBoard);
-      
-      
-      aBoard.drawClosedPolyline(bb);  
-     
-    }
-  else
-    ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
+  //draw bounding box
+  PointD topLeft = project(myF, myUf);
+  PointD bottomLeft = project(myF,myLf);
+  PointD bottomRight = project(myL, myLf);
+  PointD topRight = project(myL,myUf);
   
+
+  LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
+  LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
+  LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
+  LibBoard::Point topRightBoard(topRight[0],topRight[1]);
+  
+  vector<LibBoard::Point> bb;
+  bb.push_back(topLeftBoard);
+  bb.push_back(bottomLeftBoard);
+  bb.push_back(bottomRightBoard);
+  bb.push_back(topRightBoard);
+  
+  
+  aBoard.drawClosedPolyline(bb);  
+     
+
 }
 
 
@@ -472,14 +468,15 @@ DGtal::ArithDSS<Domain2D>::selfDraw( LibBoard::Board & aBoard) const
 
 
 
-  template < typename Domain2D>
+  template <typename TInteger>
   inline
   void
-  DGtal::ArithDSS<Domain2D>::selfDisplay ( std::ostream & out)
+  DGtal::ArithDSS<TInteger>::selfDisplay ( std::ostream & out)
   {
     
-    out << "[ArithDSS] \n" << "Parameters (a,b,mu,omega)=" << 
-"("<< myA << ", " << myB << ", ";
+    out << "[ArithDSS] \n";
+		out << "Parameters (a,b,mu,omega)=";
+		out << "("<< myA << ", " << myB << ", ";
     out << myMu << ", " << myOmega << ")\n";
     out << "First point " << myF << " Last point " << myL << "\n";
     out << "Leaning points\n";

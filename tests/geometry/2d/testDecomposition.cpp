@@ -66,11 +66,10 @@ using namespace LibBoard;
 int main(int argc, char **argv)
 {
 
-
-  typedef SpaceND<2> Space2Type;
-  typedef HyperRectDomain<Space2Type> Domain2D;
-  typedef ArithDSS4<Domain2D> PrimitiveType; 
-  typedef FreemanChain<Domain2D> ContourType; 
+	typedef int Coordinate;
+	typedef PointVector<2,Coordinate> Point;
+	typedef ArithDSS4<Coordinate> PrimitiveType; 
+  typedef FreemanChain<	HyperRectDomain<SpaceND<2> > > ContourType; 
 
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
