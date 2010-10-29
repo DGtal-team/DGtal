@@ -157,16 +157,16 @@ bool testIterator()
 
 #ifdef CPP0X_INITIALIZER_LIST
   trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
-  std::cout << "BEGIN:" << *myHyperRectDomain4D.begin( {3, 2, 1, 0})
-      << " END:" << *myHyperRectDomain4D.end( {3, 2, 1, 0})
+  std::cout << "BEGIN:" << *myHyperRectDomain4D.subDomainBegin( {3, 2, 1, 0})
+      << " END:" << *myHyperRectDomain4D.subDomainEnd( {3, 2, 1, 0})
       << " ORDER: {3,2,1,0}" << std::endl;
-  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin( {3, 2, 1, 0});
-      it != myHyperRectDomain4D.end( {3, 2, 1, 0}); ++it )
+  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.subDomainBegin( {3, 2, 1, 0});
+      it != myHyperRectDomain4D.subDomainEnd( {3, 2, 1, 0}); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
-  HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.end( {3, 2, 1, 0});
-  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin( {3, 2, 1, 0});
+  HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.subDomainEnd( {3, 2, 1, 0});
+  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.subDomainBegin( {3, 2, 1, 0});
   --it1;
   --it2;
   std::cout << "BEGIN:" << *it1 << " END:" << *it2 << " ORDER: {3,2,1,0}" << std::endl;
@@ -174,16 +174,16 @@ bool testIterator()
     trace.info() << ( *it1 ) << std::endl;
 
   trace.emphase() << "Iterator on a subset of 4d by using order different from lexicographic: ";
-  std::cout << "BEGIN:" << *myHyperRectDomain4D.begin( {1, 3})
-      << " END:" << *myHyperRectDomain4D.end( {1, 3})
+  std::cout << "BEGIN:" << *myHyperRectDomain4D.subDomainBegin( {1, 3})
+      << " END:" << *myHyperRectDomain4D.subDomainEnd( {1, 3})
       << " ORDER: {1,3}" << std::endl;
-  for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.begin( {1, 3});
-      it3 != myHyperRectDomain4D.end( {1, 3}); ++it3 )
+  for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.subDomainBegin( {1, 3});
+      it3 != myHyperRectDomain4D.subDomainEnd( {1, 3}); ++it3 )
     trace.info() << ( *it3 ) << std::endl;
 
   trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic: ";
-  HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.end( {1, 3});
-  HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.begin( {1, 3});
+  HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.subDomainEnd( {1, 3});
+  HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.subDomainBegin( {1, 3});
   --it4;
   --it5;
   std::cout << "BEGIN:" << *it4 << " END:" << *it5 << " ORDER: {1,3}" << std::endl;
