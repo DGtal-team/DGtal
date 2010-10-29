@@ -59,20 +59,25 @@ namespace DGtal
  * based on the arithmetical algorithm of 
  * Debled and Reveilles (1995)
  */
-template <typename Domain2D>
+template <typename TInteger>
 class ArithDSS
 {
+
+
+    // ----------------------- Types ------------------------------
+private:
+
+		//2D point and 2D vector
+	  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+		typedef TInteger Integer;
+		typedef DGtal::PointVector<2,Integer> Point;
+		typedef DGtal::PointVector<2,Integer> Vector;
+		
+		typedef typename DGtal::PointVector<2,double> PointD;
+
     // ----------------------- Standard services ------------------------------
 public:
 
-		
-		typedef typename Domain2D::Coordinate Integer;
-		//2D point of a domain
-		typedef typename Domain2D::Point Point;
-		//2D vector of a domain
-		typedef typename Domain2D::Vector Vector;
-		
-		typedef typename DGtal::PointVector<2,double> PointD;
     /**
      * Constructor.
      */
@@ -409,9 +414,9 @@ private:
  * @param object the object of class 'ArithDSS' to write.
  * @return the output stream after the writing.
  */
-template<typename Domain2D>
+template <typename TInteger>
 std::ostream&
-operator<< ( std::ostream & out,  ArithDSS<Domain2D> & object )
+operator<< ( std::ostream & out,  ArithDSS<TInteger> & object )
   {
       object.selfDisplay( out);
       return out;

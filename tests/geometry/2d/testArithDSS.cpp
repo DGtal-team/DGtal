@@ -69,9 +69,9 @@ int main(int argc, char **argv)
 {
 
 
-  typedef SpaceND<2> Space2Type;
-  typedef HyperRectDomain<Space2Type> Domain2D;
-  typedef Space2Type::Point Point;
+	typedef int Coordinate;
+	typedef PointVector<2,Coordinate> Point;
+	typedef ArithDSS4<Coordinate> DSS;
   
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -90,13 +90,13 @@ int main(int argc, char **argv)
   trace.beginBlock("Bad init");
 	trace.info() << "same point two times" << std::endl;
 	try {
-  	ArithDSS4<Domain2D> theDSS(Point(0,0),Point(0,0));		
+  	DSS theDSS(Point(0,0),Point(0,0));		
 	} catch (InputException e) {
 		trace.info() << e.what() << std::endl;
 	}
 	trace.info() << "not connected points" << std::endl;
 	try {
-	  ArithDSS4<Domain2D> theDSS(Point(0,0),Point(1,1));	
+	  DSS theDSS(Point(0,0),Point(1,1));	
 	} catch (InputException e) {
 		trace.info() << e.what() << std::endl;
 	}
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 
   // Good Initialisation
   trace.beginBlock("Init of a DSS");
-  ArithDSS4<Domain2D> theDSS(contour.at(0),contour.at(1));		
+  DSS theDSS(contour.at(0),contour.at(1));		
   trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
   trace.endBlock();
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 	  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
 	}
 
-  Domain2D domain( Point(  -10, -10  ), Point(  10, 10  ) );
+	HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
 
   Board board;
   board.setUnit(Board::UCentimeter);
@@ -137,12 +137,12 @@ int main(int argc, char **argv)
   // Removing step and checks consistency with the adding step.
   trace.beginBlock("Checks consistency between adding and removing");
 
-		std::deque<ArithDSS4<Domain2D> > v1,v2;
-  	ArithDSS4<Domain2D> newDSS(contour.at(0),contour.at(1));	 
+		std::deque<DSS > v1,v2;
+  	DSS newDSS(contour.at(0),contour.at(1));	 
 	  	v1.push_back(newDSS);
 
 		//forward scan and store each DSS
-trace.info() << "forward scan" << std::endl;
+		trace.info() << "forward scan" << std::endl;
 
 		int i = 2;
 		while (newDSS.addFront(contour.at(i))) {
@@ -151,15 +151,15 @@ trace.info() << "forward scan" << std::endl;
 		}
 
 		//backward scan
-trace.info() << "backward scan" << std::endl;
+		trace.info() << "backward scan" << std::endl;
 
-  	ArithDSS4<Domain2D> reverseDSS(contour.at(i-1),contour.at(i-2));
+  	DSS reverseDSS(contour.at(i-1),contour.at(i-2));
 		int j = i-3;
 		while ( (j>=0)&&(reverseDSS.addFront(contour.at(j))) ) {
 			j--;
 		}
-trace.info() << "removing" << std::endl;
-trace.info() << reverseDSS << std::endl;
+		trace.info() << "removing" << std::endl;
+		trace.info() << reverseDSS << std::endl;
 
 		//removing step, store each DSS for comparison
 	  v2.push_front(reverseDSS);
@@ -170,7 +170,7 @@ trace.info() << reverseDSS << std::endl;
 		}		
 		
 		//comparison
-trace.info() << "comparison" << std::endl;
+		trace.info() << "comparison" << std::endl;
 		ASSERT(v1.size() == v2.size());
 		bool isOk = true;
 		for (int k = 0; k < v1.size(); k++) {
