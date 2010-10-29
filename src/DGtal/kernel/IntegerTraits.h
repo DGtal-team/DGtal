@@ -49,24 +49,24 @@
 
 namespace DGtal
 {
-enum BoundEnum {BOUNDED = 0, UNBOUNDED = 1, BOUND_UNKNOWN = 2};
-enum SignEnum {SIGNED = 0, UNSIGNED = 1, SIGN_UNKNOWN = 2};
+  enum BoundEnum {BOUNDED = 0, UNBOUNDED = 1, BOUND_UNKNOWN = 2};
+  enum SignEnum {SIGNED = 0, UNSIGNED = 1, SIGN_UNKNOWN = 2};
 
 
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegerTraits
-/**
- * Description of template class 'IntegerTraits' <p>
- * \brief Aim: The traits class for all models of Cinteger.
- *
- * Since CInteger describes the concept Integer, this class is used
- * by models of CIinteger to specialize some definitions related to
- * Integer. For instance it defines whether a given Integer is
- * signed or not and what is signed/unsigned version.
- */
-template <typename T>
-struct IntegerTraits
-{
+  /**
+   * Description of template class 'IntegerTraits' <p>
+   * \brief Aim: The traits class for all models of Cinteger.
+   *
+   * Since CInteger describes the concept Integer, this class is used
+   * by models of CIinteger to specialize some definitions related to
+   * Integer. For instance it defines whether a given Integer is
+   * signed or not and what is signed/unsigned version.
+   */
+  template <typename T>
+  struct IntegerTraits
+  {
     // ----------------------- Associated types ------------------------------
     typedef TagUnknown IsBounded;
     typedef TagUnknown IsUnsigned;
@@ -83,6 +83,7 @@ struct IntegerTraits
     /**
      * Constant Zero.
      */
+
 #if ( defined(WIN32))
     static const T ZERO;
 #else
@@ -135,18 +136,18 @@ struct IntegerTraits
      */
     static SignEnum isUnsigned();
 
-}; // end of class IntegerTraits
+  }; // end of class IntegerTraits
 
 
 
 #if ( defined(WIN32) )
 /// On VS2008, unsigned int and uint??_t are different
-/**
- * Specialization for <int>.
- */
-template <>
-struct IntegerTraits<int>
-{
+  /**
+   * Specialization for <int>.
+   */
+  template <>
+  struct IntegerTraits<int>
+  {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -158,40 +159,40 @@ struct IntegerTraits<int>
     static const int ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<int>::const_min;
+      return boost::integer_traits<int>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<int>::const_max;
+      return boost::integer_traits<int>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<int>::digits;
+      return boost::integer_traits<int>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<int>.
+  }; // end of class IntegerTraits<int>.
 
-/**
- * Specialization for <int>.
- */
-template <>
-struct IntegerTraits<unsigned int>
-{
+  /**
+   * Specialization for <int>.
+   */
+  template <>
+  struct IntegerTraits<unsigned int>
+  {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -203,40 +204,40 @@ struct IntegerTraits<unsigned int>
     static const unsigned int ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<unsigned int>::const_min;
+      return boost::integer_traits<unsigned int>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<unsigned int>::const_max;
+      return boost::integer_traits<unsigned int>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<unsigned int>::digits;
+      return boost::integer_traits<unsigned int>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<unsigned int>.
+  }; // end of class IntegerTraits<unsigned int>.
 
-/**
- * Specialization for <usigned char>.
- */
-template <>
-struct IntegerTraits<unsigned char>
-{
+  /**
+   * Specialization for <usigned char>.
+   */
+  template <>
+  struct IntegerTraits<unsigned char>
+  {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -248,62 +249,62 @@ struct IntegerTraits<unsigned char>
     static const unsigned char ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<unsigned char>::const_min;
+      return boost::integer_traits<unsigned char>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<unsigned char>::const_max;
+      return boost::integer_traits<unsigned char>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<unsigned char>::digits;
+      return boost::integer_traits<unsigned char>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<unsigned char>.
+  }; // end of class IntegerTraits<unsigned char>.
 
-/* template <>
- struct IntegerTraits<std::size_t>
- {
-   typedef TagTrue IsBounded;
-   typedef TagTrue IsUnsigned;
-   typedef TagTrue IsSpecialized;
-   typedef int SignedVersion;
-   typedef std::size_t UnsignedVersion;
-   typedef std::size_t ReturnType;
-   typedef boost::call_traits<std::size_t>::param_type ParamType;
-   static const std::size_t ZERO = 0;
-   static const std::size_t ONE = 1;
-   static ReturnType zero()
-   { return 0; }
-   static ReturnType one()
-   { return 1; }
-   static ReturnType min()
-   { return boost::integer_traits<std::size_t>::const_min; }
-   static ReturnType max()
-   { return boost::integer_traits<std::size_t>::const_max; }
-   static unsigned int digits()
-   { return boost::integer_traits<std::size_t>::digits; }
-   static BoundEnum isBounded()
-   { return BOUNDED; }
-   static SignEnum isUnsigned()
-   { return UNSIGNED; }
- }; // end of class IntegerTraits<unsigned int>.
- */
+  /* template <>
+   struct IntegerTraits<std::size_t>
+   {
+     typedef TagTrue IsBounded;
+     typedef TagTrue IsUnsigned;
+     typedef TagTrue IsSpecialized;
+     typedef int SignedVersion;
+     typedef std::size_t UnsignedVersion;
+     typedef std::size_t ReturnType;
+     typedef boost::call_traits<std::size_t>::param_type ParamType;
+     static const std::size_t ZERO = 0;
+     static const std::size_t ONE = 1;
+     static ReturnType zero()
+     { return 0; }
+     static ReturnType one()
+     { return 1; }
+     static ReturnType min()
+     { return boost::integer_traits<std::size_t>::const_min; }
+     static ReturnType max()
+     { return boost::integer_traits<std::size_t>::const_max; }
+     static unsigned int digits()
+     { return boost::integer_traits<std::size_t>::digits; }
+     static BoundEnum isBounded()
+     { return BOUNDED; }
+     static SignEnum isUnsigned()
+     { return UNSIGNED; }
+   }; // end of class IntegerTraits<unsigned int>.
+   */
 #endif //WIN32 or APPLE
 
 
@@ -371,12 +372,12 @@ struct IntegerTraits<unsigned char>
 //  }; // end of class IntegerTraits<int8_t>.
 
 
-/**
- * Specialization for <uint16_t>.
- */
-template <>
-struct IntegerTraits<uint16_t>
-{
+  /**
+   * Specialization for <uint16_t>.
+   */
+  template <>
+  struct IntegerTraits<uint16_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -388,40 +389,40 @@ struct IntegerTraits<uint16_t>
     static const uint16_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<uint16_t>::const_min;
+      return boost::integer_traits<uint16_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<uint16_t>::const_max;
+      return boost::integer_traits<uint16_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<uint16_t>::digits;
+      return boost::integer_traits<uint16_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<uint16_t>.
+  }; // end of class IntegerTraits<uint16_t>.
 
-/**
- * Specialization for <int16_t>.
- */
-template <>
-struct IntegerTraits<int16_t>
-{
+  /**
+   * Specialization for <int16_t>.
+   */
+  template <>
+  struct IntegerTraits<int16_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -433,40 +434,40 @@ struct IntegerTraits<int16_t>
     static const int16_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<int16_t>::const_min;
+      return boost::integer_traits<int16_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<int16_t>::const_max;
+      return boost::integer_traits<int16_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<int16_t>::digits;
+      return boost::integer_traits<int16_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return SIGNED;
+      return SIGNED;
     }
-}; // end of class IntegerTraits<int16_t>.
+  }; // end of class IntegerTraits<int16_t>.
 
-/**
- * Specialization for <uint32_t>.
- */
-template <>
-struct IntegerTraits<uint32_t>
-{
+  /**
+   * Specialization for <uint32_t>.
+   */
+  template <>
+  struct IntegerTraits<uint32_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -478,40 +479,40 @@ struct IntegerTraits<uint32_t>
     static const uint32_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<uint32_t>::const_min;
+      return boost::integer_traits<uint32_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<uint32_t>::const_max;
+      return boost::integer_traits<uint32_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<uint32_t>::digits;
+      return boost::integer_traits<uint32_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<uint32_t>.
+  }; // end of class IntegerTraits<uint32_t>.
 
-/**
- * Specialization for <int32_t>.
- */
-template <>
-struct IntegerTraits<int32_t>
-{
+  /**
+   * Specialization for <int32_t>.
+   */
+  template <>
+  struct IntegerTraits<int32_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -523,40 +524,40 @@ struct IntegerTraits<int32_t>
     static const int32_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<int32_t>::const_min;
+      return boost::integer_traits<int32_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<int32_t>::const_max;
+      return boost::integer_traits<int32_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<int32_t>::digits;
+      return boost::integer_traits<int32_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return SIGNED;
+      return SIGNED;
     }
-}; // end of class IntegerTraits<int32_t>.
+  }; // end of class IntegerTraits<int32_t>.
 
-/**
- * Specialization for <uint64_t>.
- */
-template <>
-struct IntegerTraits<uint64_t>
-{
+  /**
+   * Specialization for <uint64_t>.
+   */
+  template <>
+  struct IntegerTraits<uint64_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -568,40 +569,40 @@ struct IntegerTraits<uint64_t>
     static const uint64_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<uint64_t>::const_min;
+      return boost::integer_traits<uint64_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<uint64_t>::const_max;
+      return boost::integer_traits<uint64_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<uint64_t>::digits;
+      return boost::integer_traits<uint64_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return UNSIGNED;
+      return UNSIGNED;
     }
-}; // end of class IntegerTraits<uint64_t>.
+  }; // end of class IntegerTraits<uint64_t>.
 
-/**
- * Specialization for <int64_t>.
- */
-template <>
-struct IntegerTraits<int64_t>
-{
+  /**
+   * Specialization for <int64_t>.
+   */
+  template <>
+  struct IntegerTraits<int64_t>
+  {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSpecialized;
@@ -613,46 +614,48 @@ struct IntegerTraits<int64_t>
     static const int64_t ONE = 1;
     static ReturnType zero()
     {
-        return 0;
+      return 0;
     }
     static ReturnType one()
     {
-        return 1;
+      return 1;
     }
     static ReturnType min()
     {
-        return boost::integer_traits<int64_t>::const_min;
+      return boost::integer_traits<int64_t>::const_min;
     }
     static ReturnType max()
     {
-        return boost::integer_traits<int64_t>::const_max;
+      return boost::integer_traits<int64_t>::const_max;
     }
     static unsigned int digits()
     {
-        return boost::integer_traits<int64_t>::digits;
+      return boost::integer_traits<int64_t>::digits;
     }
     static BoundEnum isBounded()
     {
-        return BOUNDED;
+      return BOUNDED;
     }
     static SignEnum isUnsigned()
     {
-        return SIGNED;
+      return SIGNED;
     }
-}; // end of class IntegerTraits<int64_t>.
+  }; // end of class IntegerTraits<int64_t>.
 
 
-class Warning_promote_trait_not_specialized_for_this_case { };
+  class Warning_promote_trait_not_specialized_for_this_case { };
 
-template<class A, class B>
-struct promote_trait {
+  template<class A, class B>
+  struct promote_trait
+  {
     typedef Warning_promote_trait_not_specialized_for_this_case promote_t;
-};
+  };
 
-template<>
-struct promote_trait<int32_t,int64_t> {
+  template<>
+  struct promote_trait<int32_t, int64_t>
+  {
     typedef int64_t promote_t;
-};
+  };
 
 } // namespace DGtal
 
