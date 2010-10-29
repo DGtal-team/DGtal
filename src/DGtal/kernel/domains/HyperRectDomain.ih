@@ -203,7 +203,6 @@ inline
 const typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin() const
 {
-  trace.info() << "ConstIterator " << myLowerBound << " " << myUpperBound << endl;
   return myIteratorBegin;
 }
 
@@ -256,7 +255,6 @@ DGtal::HyperRectDomain<TSpace>::subDomainBegin(std::initializer_list<Size> aSubD
 {
   Point partialUpperBound(myUpperBound);
   partialUpperBound.partialCopy(myUpperBound, aSubDomain);
-  trace.info() << "ConstIterator " << startingPoint << " " << myLowerBound << " " << partialUpperBound << endl;
   return ConstIterator (startingPoint, myLowerBound, partialUpperBound, aSubDomain);
 }
 template<typename TSpace>
@@ -295,7 +293,6 @@ DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Size> aSubDom
 {
   Point partialUpperBound(startingPoint);
   partialUpperBound.partialCopy(myUpperBound, aSubDomain);
-  trace.info() << "ConstIterator " << startingPoint << " " << myLowerBound << " " << partialUpperBound << endl;
 	ConstIterator res(partialUpperBound, myLowerBound, partialUpperBound, aSubDomain);
   ++res;
 
