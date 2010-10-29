@@ -83,6 +83,7 @@ struct IntegerTraits
     /**
      * Constant Zero.
      */
+<<<<<<< HEAD
 #if ( defined(WIN32))
     static const T ZERO;
 #else
@@ -97,6 +98,14 @@ struct IntegerTraits
 #else
     static const T ONE = T(1);
 #endif
+=======
+    static const T ZERO = T(0);
+
+    /**
+     * Constant One.
+     */
+    static const T ONE = T(1);
+>>>>>>> xi-branch
 
     /**
      * @return the zero of this integer.

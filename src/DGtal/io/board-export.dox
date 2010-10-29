@@ -44,7 +44,7 @@ namespace DGtal {
  *
  * \subsection basicusage Basic usage
  *
- * Many DGtal objects implement a mecanism which which aims at
+ * Many DGtal objects implement a mechanism which which aims at
  * defining the way the objects export themselves with LibBoard
  * commands into a DGtalBoard stream.
  *
@@ -63,6 +63,7 @@ namespace DGtal {
  * #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
  * #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
  * #include "DGtal/kernel/sets/DigitalSetSelector.h"
+ * #include "DGtal/io/DGtalBoard.h"
  * 
  * ...
  * typedef SpaceND<2> Z2;
@@ -155,7 +156,7 @@ namespace DGtal {
  * myVector.selfDraw(board, aPoint);
  * @endcode
  *
- * NOTE: in such situation, if the user uses the stream mecanism
+ * NOTE: in such situation, if the user uses the stream mechanism
  * @code board << myVector; @endcode
  * the default selfDraw(DGtalBoard &board) is
  * used.
@@ -252,5 +253,6 @@ namespace DGtal {
  * @endcode
  *
  * 
+ *@endcode
  */
 }
