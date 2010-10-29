@@ -60,17 +60,21 @@ namespace DGtal
    * to return for each 2D point of the domain
    * its signed distance to itself 
    */
-  template <typename Domain2D>
+  template <typename TInteger>
   class StraightLine
   {
+
+    // ----------------------- associated types ------------------------------
+	public:
+
+		//2D point and 2D vector
+	  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+		typedef TInteger Coordinate;
+		typedef DGtal::PointVector<2,Coordinate> Point;
+		typedef DGtal::PointVector<2,Coordinate> Vector;
+
     // ----------------------- Standard services ------------------------------
   public:
-
-		//2D point and 2D vector of a domain
-		typedef typename Domain2D::Point Point;
-		typedef typename Domain2D::Vector Vector;
-		typedef typename Domain2D::Coordinate Coordinate;
-
 
     /**
      * Constructor.
@@ -145,15 +149,15 @@ namespace DGtal
   }; // end of class StraightLine
 
 
-template <typename Domain2D>
-inline
-std::ostream&
-operator<< ( std::ostream & out, 
-		  const StraightLine<Domain2D> & object )
-{
-  object.selfDisplay( out );
-  return out;
-}
+	template <typename TInteger>
+	inline
+	std::ostream&
+	operator<< ( std::ostream & out, 
+				const StraightLine<TInteger> & object )
+	{
+		object.selfDisplay( out );
+		return out;
+	}
 
 
 } // namespace DGtal

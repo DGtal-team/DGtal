@@ -41,9 +41,9 @@
 /**
  * Destructor.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-DGtal::StraightLine<Domain2D>::~StraightLine()
+DGtal::StraightLine<TInteger>::~StraightLine()
 {
 }
 
@@ -52,9 +52,9 @@ DGtal::StraightLine<Domain2D>::~StraightLine()
  * @param firstPoint, secondPoint, two points
  * that uniquely define the StraightLine
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-DGtal::StraightLine<Domain2D>::StraightLine(
+DGtal::StraightLine<TInteger>::StraightLine(
 				const Point& aFirstPoint, 
 				const Point& aSecondPoint):
 				myP(aFirstPoint),
@@ -66,9 +66,9 @@ DGtal::StraightLine<Domain2D>::StraightLine(
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-DGtal::StraightLine<Domain2D>::StraightLine(
+DGtal::StraightLine<TInteger>::StraightLine(
 				const StraightLine & other):
 				myP(other.myP),
 				myQ(other.myQ)
@@ -80,10 +80,10 @@ DGtal::StraightLine<Domain2D>::StraightLine(
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-DGtal::StraightLine<Domain2D>&
-DGtal::StraightLine<Domain2D>::operator=(
+DGtal::StraightLine<TInteger>&
+DGtal::StraightLine<TInteger>::operator=(
 				const StraightLine & other)
 {
 	myP = other.myP;
@@ -97,10 +97,10 @@ DGtal::StraightLine<Domain2D>::operator=(
  * @param aP, the point to be tested.
  * @return the signed distance.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
-typename Domain2D::Coordinate
-DGtal::StraightLine<Domain2D>::signedDistance(const Point& aP) const
+TInteger
+DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
 {
 	Vector pq = myQ - myP;
 	Vector pr = aP - myP;
@@ -117,10 +117,10 @@ DGtal::StraightLine<Domain2D>::signedDistance(const Point& aP) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
 void
-DGtal::StraightLine<Domain2D>::selfDisplay ( std::ostream & out ) const
+DGtal::StraightLine<TInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << "[StraightLine] passing through:\n";
   out << myP << myQ;
@@ -130,10 +130,10 @@ DGtal::StraightLine<Domain2D>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Domain2D>
+template <typename TInteger>
 inline
 bool
-DGtal::StraightLine<Domain2D>::isValid() const
+DGtal::StraightLine<TInteger>::isValid() const
 {
     return true;
 }

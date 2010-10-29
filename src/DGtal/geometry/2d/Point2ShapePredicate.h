@@ -49,54 +49,6 @@
 namespace DGtal
 {
 
-//////////////////////////////////////////////////////////////////////////////
-// policy classes for Point2ShapePredicate
-
-		template <typename T, bool b1, bool b2>
-		struct Point2ShapePredicateComparator {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less<T> c;
-				return c(q,t);
-			}
-		};
-
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,false,false> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less<T> c;
-				return c(q,t);
-			}
-		};
-
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,false,true> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less_equal<T> c;
-				return c(q,t);
-			}
-		};
-
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,true,false> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::greater<T> c;
-				return c(q,t);
-			}
-		};
-
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,true,true> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::greater_equal<T> c;
-				return c(q,t);
-			}
-		};
-
 
   /////////////////////////////////////////////////////////////////////////////
   // template class Point2ShapePredicate
@@ -173,8 +125,59 @@ namespace DGtal
 
   }; // end of class Point2ShapePredicate
 
+//////////////////////////////////////////////////////////////////////////////
+// policy classes for Point2ShapePredicate
 
+		template <typename T, bool b1, bool b2>
+		struct Point2ShapePredicateComparator {
+			bool operator()(const T& q, 
+								 			const T& t) const {
+				std::less<T> c;
+				return c(q,t);
+			}
+		};
 
+		template <typename T>
+		struct Point2ShapePredicateComparator<T,false,false> {
+			bool operator()(const T& q, 
+								 			const T& t) const {
+				std::less<T> c;
+				return c(q,t);
+			}
+		};
+
+		template <typename T>
+		struct Point2ShapePredicateComparator<T,false,true> {
+			bool operator()(const T& q, 
+								 			const T& t) const {
+				std::less_equal<T> c;
+				return c(q,t);
+			}
+		};
+
+		template <typename T>
+		struct Point2ShapePredicateComparator<T,true,false> {
+			bool operator()(const T& q, 
+								 			const T& t) const {
+				std::greater<T> c;
+				return c(q,t);
+			}
+		};
+
+		template <typename T>
+		struct Point2ShapePredicateComparator<T,true,true> {
+			bool operator()(const T& q, 
+								 			const T& t) const {
+				std::greater_equal<T> c;
+				return c(q,t);
+			}
+		};
+
+template <typename Shape, bool isUpward, bool isClosed>
+inline
+std::ostream&
+operator<< ( std::ostream & out, 
+		  const Point2ShapePredicate<Shape,isUpward,isClosed> & object );
 
 } // namespace DGtal
 

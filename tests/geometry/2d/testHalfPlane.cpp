@@ -64,10 +64,9 @@ int main(int argc, char **argv)
 
 
 
-  typedef SpaceND<2> Space2Type;
-  typedef HyperRectDomain<Space2Type> Domain2D;
-	typedef Domain2D::Point Point;
-	typedef StraightLine<Domain2D> StraightLine;
+	typedef int Coordinate;
+	typedef PointVector<2,Coordinate> Point;
+	typedef StraightLine<Coordinate> StraightLine;
 
 	Point p(0,0);
 	Point q(5,2);
