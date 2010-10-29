@@ -162,15 +162,7 @@ namespace DGtal
        * begin() iterator.
        *
        **/
-      const ConstIterator& begin() const;
-
-#ifdef CPP0X_INITIALIZER_LIST
-      /**
-       * begin() iterator with an order different from lexicographic.
-       *
-       **/
-      ConstIterator begin(std::initializer_list<unsigned int> permutation);
-#endif
+      const ConstIterator begin() const;
 
       /**
        * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
@@ -182,17 +174,57 @@ namespace DGtal
        * end() iterator.
        *
        **/
-      const ConstIterator& end() const;
+      const ConstIterator end() const;
+
+      /**
+       * end() iterator.
+       * @returns a ConstIterator at the endpoint \param aPoint
+       *
+       **/
+      ConstIterator end(const Point &aPoint) const;
+
+
+      //------------ Subdomain/Permutation  Iterators
+
+#ifdef CPP0X_INITIALIZER_LIST
+      /**
+       * begin() iterator on a sub-domain with a order than the lexicographic one.
+       *
+       * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
+       * @return a ConstIterator
+       **/
+      ConstIterator subDomainBegin(std::initializer_list<unsigned int> aSubDomain,
+          const Point & startingPoint) const;
+#endif
+      /**
+       * begin() iterator on a sub-domain with a order than the lexicographic one.
+       *
+       * @param aSubDomain the sub-domain given by a vector of dimension.
+       * @return a ConstIterator
+       **/
+      ConstIterator subDomainBegin(const std::vector<unsigned int> & permutation,
+          const Point & startingPoint) const;
+
+
 
 #ifdef CPP0X_INITIALIZER_LIST
       /**
        * end() iterator with an order different from lexicographic.
        *
        **/
-      ConstIterator end(std::initializer_list<unsigned int> permutation);
+      ConstIterator subDomainEnd(std::initializer_list<unsigned int> aSubDomain,
+          const Point & endPoint) const;
 #endif
+      /**
+       * end() iterator with an order different from lexicographic.
+       *
+       **/
+      ConstIterator subDomainEnd(const std::vector<unsigned int> & aSubDomain,
+          const Point & endPoint) const;
 
-      //------------- Span Iterator
+
+
+			//------------- Span Iterator
       /**
        * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
        *
@@ -288,7 +320,7 @@ namespace DGtal
       /**
        * Default style.
        */
-      struct DefaultDrawStylePaving : public DrawableWithBoard
+    struct DefaultDrawStylePaving : public DrawableWithBoard
       {
         virtual void selfDraw(LibBoard::Board & aBoard) const
         {
@@ -301,7 +333,7 @@ namespace DGtal
       /**
        * Default style.
        */
-      struct DefaultDrawStyleGrid : public DrawableWithBoard
+    struct DefaultDrawStyleGrid : public DrawableWithBoard
       {
         virtual void selfDraw(LibBoard::Board & aBoard) const
         {

@@ -36,34 +36,34 @@
 #include <cmath>
 #include <DGtal/base/BasicFunctors.h>
 //////////////////////////////////////////////////////////////////////////////
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector()
-{  
+DGtal::PointVector<N, T>::PointVector()
+{
   for ( std::size_t i = 0; i < N; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 template<typename Functor>
 inline
-DGtal::PointVector<N,T>::PointVector(const PointVector& apoint1, 
-				     const PointVector& apoint2,
-				     const Functor& f)
-{  
+DGtal::PointVector<N, T>::PointVector(const PointVector& apoint1,
+    const PointVector& apoint2,
+    const Functor& f)
+{
   for ( std::size_t i = 0; i < N; ++i )
-    myArray[ i ] = f.operator() (apoint1[i],apoint2[i]);
+    myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
 }
 //------------------------------------------------------------------------------
 
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::~PointVector()
+DGtal::PointVector<N, T>::~PointVector()
 {}
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector( const T * ptrValues )
+DGtal::PointVector<N, T>::PointVector( const T * ptrValues )
 {
   // The problem here is that we have no guaranty on the size of init !!
   for ( std::size_t i = 0; i < N; ++i )
@@ -71,9 +71,9 @@ DGtal::PointVector<N,T>::PointVector( const T * ptrValues )
 }
 
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector( const T & x, const T & y )
+DGtal::PointVector<N, T>::PointVector( const T & x, const T & y )
 {
   ASSERT( N >= 2 );
   myArray[ 0 ] = x;
@@ -82,9 +82,9 @@ DGtal::PointVector<N,T>::PointVector( const T & x, const T & y )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector( const T & x, const T & y, const T & z )
+DGtal::PointVector<N, T>::PointVector( const T & x, const T & y, const T & z )
 {
   ASSERT( N >= 3 );
   myArray[ 0 ] = x;
@@ -94,10 +94,10 @@ DGtal::PointVector<N,T>::PointVector( const T & x, const T & y, const T & z )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector( const T & x, const T & y, 
-				      const T & z, const T & t )
+DGtal::PointVector<N, T>::PointVector( const T & x, const T & y,
+    const T & z, const T & t )
 {
   ASSERT( N >= 4 );
   myArray[ 0 ] = x;
@@ -109,126 +109,126 @@ DGtal::PointVector<N,T>::PointVector( const T & x, const T & y,
 }
 //------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector(std::initializer_list<T> init)
-{ 
-  unsigned int i=0;
-  for (const T *p = init.begin (); p != init.end () && i<N; ++p, ++i)
+DGtal::PointVector<N, T>::PointVector(std::initializer_list<T> init)
+{
+  unsigned int i = 0;
+  for (const T *p = init.begin (); p != init.end () && i < N; ++p, ++i)
     myArray[ i ] = *p;
-  for ( ; i<N; ++i)
-    myArray[i]=0;
+  for ( ; i < N; ++i)
+    myArray[i] = 0;
 }
 #endif // CPP0X_INITIALIZER_LIST
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>::PointVector ( const PointVector<N,T> & other )
-  : myArray( other.myArray )
+DGtal::PointVector<N, T>::PointVector ( const PointVector<N, T> & other )
+    : myArray( other.myArray )
 {}
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::Iterator 
-DGtal::PointVector<N,T>::begin() 
+typename DGtal::PointVector<N, T>::Iterator
+DGtal::PointVector<N, T>::begin()
 {
   return myArray.begin();
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::Iterator 
-DGtal::PointVector<N,T>::end()
+typename DGtal::PointVector<N, T>::Iterator
+DGtal::PointVector<N, T>::end()
 {
   return myArray.end();
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::ConstIterator
-DGtal::PointVector<N,T>::begin() const
+typename DGtal::PointVector<N, T>::ConstIterator
+DGtal::PointVector<N, T>::begin() const
 {
   return myArray.begin();
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::ConstIterator
-DGtal::PointVector<N,T>::end() const
+typename DGtal::PointVector<N, T>::ConstIterator
+DGtal::PointVector<N, T>::end() const
 {
   return myArray.end();
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
 std::size_t
-DGtal::PointVector<N,T>::size()
+DGtal::PointVector<N, T>::size()
 {
   return N;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
 std::size_t
-DGtal::PointVector<N,T>::dimension()
+DGtal::PointVector<N, T>::dimension()
 {
   return N;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
 const T&
-DGtal::PointVector<N,T>::at ( std::size_t i ) const
+DGtal::PointVector<N, T>::at ( std::size_t i ) const
 {
   ASSERT ( i < N );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline T& DGtal::PointVector<N,T>::at( std::size_t i )
+template<std::size_t N, typename T>
+inline T& DGtal::PointVector<N, T>::at( std::size_t i )
 {
   ASSERT ( i < N );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
 const T&
-DGtal::PointVector<N,T>::operator[]( std::size_t i ) const
+DGtal::PointVector<N, T>::operator[]( std::size_t i ) const
 {
   ASSERT ( i < N );
   return myArray[i];
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline T& DGtal::PointVector<N,T>::operator[]( std::size_t i )
+template<std::size_t N, typename T>
+inline T& DGtal::PointVector<N, T>::operator[]( std::size_t i )
 {
   ASSERT ( i < N );
   return myArray[i];
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-DGtal::PointVector<N,T>&
-DGtal::PointVector<N,T>::operator*= ( T coeff )
+template<std::size_t N, typename T>
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::operator*= ( T coeff )
 {
   for ( std::size_t i = 0; i < myArray.size(); ++i )
     myArray[ i ] *= coeff;
   return *this;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-DGtal::PointVector<N,T>
-DGtal::PointVector<N,T>::operator* ( T coeff )
+template<std::size_t N, typename T>
+DGtal::PointVector<N, T>
+DGtal::PointVector<N, T>::operator* ( T coeff )
 {
-	PointVector v = *this;
-	v *= coeff;
-	return v;
+  PointVector v = *this;
+  v *= coeff;
+  return v;
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>&
-DGtal::PointVector<N,T>::operator= ( const PointVector<N,T> & pv )
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::operator= ( const PointVector<N, T> & pv )
 {
   myArray = pv.myArray;
   return *this;
@@ -237,38 +237,66 @@ DGtal::PointVector<N,T>::operator= ( const PointVector<N,T> & pv )
 #ifdef CPP0X_INITIALIZER_LIST
 template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>&
-DGtal::PointVector<N,T>::partialCopy ( const PointVector<N,T> & pv,
-				       std::initializer_list<unsigned int> dimensions )
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
+    std::initializer_list<unsigned int> dimensions )
 {
   std::vector<unsigned int> sortedDim;
   sortedDim.reserve(dimensions.size());
-  for (const unsigned int *c = dimensions.begin (); 
-       c != dimensions.end (); ++c)
+  for (const unsigned int *c = dimensions.begin ();
+      c != dimensions.end (); ++c)
+  {
+    ASSERT( *c < N );
+    sortedDim.push_back(*c);
+  }
+  std::sort(sortedDim.begin(), sortedDim.end());
+
+  unsigned int i = 0, j = 0;
+  for ( ; i < sortedDim.size() && j < N; ++j )
+  {
+    if ( sortedDim[i] == j )
     {
-      ASSERT( *c<N );
-      sortedDim.push_back(*c);
+      myArray[j] = pv.myArray[j];
+      ++i;
+      ASSERT(i == sortedDim.size() || sortedDim[i-1] != sortedDim[i]);
     }
-  std::sort(sortedDim.begin(),sortedDim.end());
-  
-  unsigned int i=0,j=0;
-  for ( ; i<sortedDim.size() && j<N; ++j )
-    {      
-      if ( sortedDim[i]==j )
-	{	  
-	  myArray[j] = pv.myArray[j];
-	  ++i;
-	  ASSERT(i==sortedDim.size() || sortedDim[i-1]!=sortedDim[i]);
-	}
-    }
+  }
   return *this;
 }
 #endif
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
+    std::vector<unsigned int> &dimensions )
+{
+  std::vector<unsigned int> sortedDim;
+  sortedDim.reserve(dimensions.size());
+  for (std::vector<unsigned int>::const_iterator it = dimensions.begin ();
+      it != dimensions.end (); ++it)
+  {
+    ASSERT( *it < N );
+    sortedDim.push_back(*it);
+  }
+  std::sort(sortedDim.begin(), sortedDim.end());
+
+  unsigned int i = 0, j = 0;
+  for ( ; i < sortedDim.size() && j < N; ++j )
+  {
+    if ( sortedDim[i] == j )
+    {
+      myArray[j] = pv.myArray[j];
+      ++i;
+      ASSERT(i == sortedDim.size() || sortedDim[i-1] != sortedDim[i]);
+    }
+  }
+  return *this;
+}
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator== ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator== ( const PointVector<N, T> & pv ) const
 {
   return (myArray == pv.myArray);
 }
@@ -276,7 +304,7 @@ DGtal::PointVector<N,T>::operator== ( const PointVector<N,T> & pv ) const
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator!= ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator!= ( const PointVector<N, T> & pv ) const
 {
   return (myArray != pv.myArray);
 }
@@ -284,7 +312,7 @@ DGtal::PointVector<N,T>::operator!= ( const PointVector<N,T> & pv ) const
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator< ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator< ( const PointVector<N, T> & pv ) const
 {
   return (myArray < pv.myArray);
 }
@@ -292,7 +320,7 @@ DGtal::PointVector<N,T>::operator< ( const PointVector<N,T> & pv ) const
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator<= ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator<= ( const PointVector<N, T> & pv ) const
 {
   return (myArray <= pv.myArray);
 }
@@ -300,7 +328,7 @@ DGtal::PointVector<N,T>::operator<= ( const PointVector<N,T> & pv ) const
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator> ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator> ( const PointVector<N, T> & pv ) const
 {
   return (myArray > pv.myArray);
 }
@@ -308,47 +336,51 @@ DGtal::PointVector<N,T>::operator> ( const PointVector<N,T> & pv ) const
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::operator>= ( const PointVector<N,T> & pv ) const
+DGtal::PointVector<N, T>::operator>= ( const PointVector<N, T> & pv ) const
 {
   return (myArray >= pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline 
-DGtal::PointVector<N,T>&
-DGtal::PointVector<N,T>::operator+= ( const PointVector<N,T>& v )
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::operator+= ( const PointVector<N, T>& v )
 {
   for ( std::size_t i = 0; i < N; ++i )
     this->myArray[ i ] += v.at ( i );
   return *this;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline 
-DGtal::PointVector<N,T>
-DGtal::PointVector<N,T>::operator+ ( const PointVector<N,T>& v ) const
-{ return PointVector(*this,v,std::plus<T>()); }
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N, T>
+DGtal::PointVector<N, T>::operator+ ( const PointVector<N, T>& v ) const
+{
+  return PointVector(*this, v, std::plus<T>());
+}
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline 
-DGtal::PointVector<N,T>&
-DGtal::PointVector<N,T>::operator-= ( const PointVector<N,T>& v )
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::operator-= ( const PointVector<N, T>& v )
 {
   for ( std::size_t i = 0; i < N; ++i )
     this->myArray[ i ] -= v.at ( i );
   return *this;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
-inline 
-DGtal::PointVector<N,T>
-DGtal::PointVector<N,T>::operator- ( const PointVector<N,T>& v ) const
-{ return PointVector(*this,v,MinusFunctor<T>()); }
+template<std::size_t N, typename T>
+inline
+DGtal::PointVector<N, T>
+DGtal::PointVector<N, T>::operator- ( const PointVector<N, T>& v ) const
+{
+  return PointVector(*this, v, MinusFunctor<T>());
+}
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 void
-DGtal::PointVector<N,T>::reset()
+DGtal::PointVector<N, T>::reset()
 {
   for ( std::size_t i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
@@ -356,174 +388,181 @@ DGtal::PointVector<N,T>::reset()
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T> 
-DGtal::PointVector<N,T>::inf( const PointVector& apoint ) const
-{ return PointVector(*this,apoint,MinFunctor<T>()); }
+DGtal::PointVector<N, T>
+DGtal::PointVector<N, T>::inf( const PointVector& apoint ) const
+{
+  return PointVector(*this, apoint, MinFunctor<T>());
+}
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-DGtal::PointVector<N,T>
-DGtal::PointVector<N,T>::sup( const PointVector& apoint ) const
-{ return PointVector(*this,apoint,MaxFunctor<T>()); }
+DGtal::PointVector<N, T>
+DGtal::PointVector<N, T>::sup( const PointVector& apoint ) const
+{
+  return PointVector(*this, apoint, MaxFunctor<T>());
+}
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::isLower( const PointVector& p ) const
+DGtal::PointVector<N, T>::isLower( const PointVector& p ) const
 {
   for ( std::size_t i = 0; i < myArray.size(); ++i )
-    if ( p[ i ] < myArray[ i ] ) return false;
+    if ( p[ i ] < myArray[ i ] )
+      return false;
   return true;
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 bool
-DGtal::PointVector<N,T>::isUpper( const PointVector& p ) const
+DGtal::PointVector<N, T>::isUpper( const PointVector& p ) const
 {
   for ( std::size_t i = 0; i < myArray.size(); ++i )
-    if ( p[ i ] > myArray[ i ] ) return false;
+    if ( p[ i ] > myArray[ i ] )
+      return false;
   return true;
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 double
-DGtal::PointVector<N,T>::norm (const typename PointVector<N,T>::NormType aType ) const
+DGtal::PointVector<N, T>::norm (const typename PointVector<N, T>::NormType aType ) const
 {
-  double tmp= 0.0;
+  double tmp = 0.0;
 
   ASSERT ( dimension() > 0 );
 
-  switch ( aType ) 
-    {
+  switch ( aType )
+  {
     case L_2:
-      for ( unsigned int i=0; i < dimension(); i++ )
-	tmp += at ( i ) *at ( i );
+      for ( unsigned int i = 0; i < dimension(); i++ )
+        tmp += at ( i ) * at ( i );
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
-      for ( unsigned int i=0; i < dimension(); i++ )
-	tmp += fabs ( (double) at( i ) );
+      for ( unsigned int i = 0; i < dimension(); i++ )
+        tmp += fabs ( (double) at( i ) );
       break;
     case L_infty:
       tmp = at( 0 );
-      for ( unsigned int i=1; i < dimension(); i++ )
-	if ( tmp < fabs ( (double) at ( i ) ) )
-	  tmp = fabs ( (double) at ( i ) );
+      for ( unsigned int i = 1; i < dimension(); i++ )
+        if ( tmp < fabs ( (double) at ( i ) ) )
+          tmp = fabs ( (double) at ( i ) );
       break;
-    }
+  }
   return tmp;
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::UnsignedComponent
-DGtal::PointVector<N,T>::norm1() const
+typename DGtal::PointVector<N, T>::UnsignedComponent
+DGtal::PointVector<N, T>::norm1() const
 {
   ASSERT ( dimension() > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
-  for ( unsigned int i=1; i < dimension(); ++i )
+  for ( unsigned int i = 1; i < dimension(); ++i )
     val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
   return val;
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-typename DGtal::PointVector<N,T>::UnsignedComponent
-DGtal::PointVector<N,T>::normInfinity() const
+typename DGtal::PointVector<N, T>::UnsignedComponent
+DGtal::PointVector<N, T>::normInfinity() const
 {
   ASSERT ( dimension() > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
-  for ( unsigned int i=1; i < dimension(); ++i )
-    {
-      UnsignedComponent tmp( ( myArray[ i ] >= 0 ) 
-			     ? myArray[ i ] : -myArray[ i ] );
-      if ( tmp > val ) val = tmp;
-    }
+  for ( unsigned int i = 1; i < dimension(); ++i )
+  {
+    UnsignedComponent tmp( ( myArray[ i ] >= 0 )
+        ? myArray[ i ] : -myArray[ i ] );
+    if ( tmp > val )
+      val = tmp;
+  }
   return val;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-void 
-DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
+void
+DGtal::PointVector<N, T>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
-  for(unsigned int i=0; i < dimension() ; ++i)
-    out << at( i ) <<(i==dimension()-1?"":", ");
-  out << "}";  
+  for (unsigned int i = 0; i < dimension() ; ++i)
+    out << at( i ) << (i == dimension() - 1 ? "" : ", ");
+  out << "}";
 }
 
 // --------------- CDrawableWithBoard realization -------------------------
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-DGtal::DrawableWithBoard* 
-DGtal::PointVector<N,T>::defaultStyle() const
+DGtal::DrawableWithBoard*
+DGtal::PointVector<N, T>::defaultStyle() const
 {
   return new DefaultDrawStyle;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-std::string 
-DGtal::PointVector<N,T>::styleName() const
+std::string
+DGtal::PointVector<N, T>::styleName() const
 {
   return "PointVector";
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-void 
-DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board ) const
+void
+DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board ) const
 {
-  ASSERT(N==2);
+  ASSERT(N == 2);
   board.drawDot((float) myArray[0], (float) myArray[1]);
 }
 
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 template<typename Functor>
 inline
-void 
-DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board) const
+void
+DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board) const
 {
-  ASSERT(N==2);
+  ASSERT(N == 2);
   Functor applystyle(board);
   board.drawDot((float) myArray[0], (float) myArray[1]);
-  
+
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 template<typename Functor>
 inline
-void 
-DGtal::PointVector<N,T>::selfDraw(LibBoard::Board & board,
-				  const PointVector &apoint) const
+void
+DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board,
+    const PointVector &apoint) const
 {
-  ASSERT(N==2); 
+  ASSERT(N == 2);
   Functor applystyle(board);
 
-  board.drawArrow((float)apoint[0], (float) apoint[1], 
-		  (float) apoint[0]+myArray[0],(float)apoint[1]+ myArray[1],
-		  true);
-     
+  board.drawArrow((float)apoint[0], (float) apoint[1],
+      (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
+      true);
+
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 std::ostream&
-DGtal::operator<<( std::ostream & out, const PointVector<N,T> & object )
+DGtal::operator<<( std::ostream & out, const PointVector<N, T> & object )
 {
   object.selfDisplay( out );
   return out;
 }
 //------------------------------------------------------------------------------
-template<std::size_t N,typename T>
+template<std::size_t N, typename T>
 inline
-bool 
-DGtal::PointVector<N,T>::isValid() const
+bool
+DGtal::PointVector<N, T>::isValid() const
 {
   return true;
 }
