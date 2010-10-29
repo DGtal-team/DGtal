@@ -105,7 +105,7 @@ bool testObject()
   Adj8 adj8( domain, madj8 );
   DT48 dt48( adj4, adj8, JORDAN_DT );
 
-  Coordinate r = 449;
+  Coordinate r = 49;
   double radius = (double) (r+1);
   Point c(  0, 0  );
   Point l(  r, 0  );
@@ -125,13 +125,13 @@ bool testObject()
 
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
   ObjectType disk_object( dt48, disk );
-  nbok += disk_object.size() == 636101 ? 1 : 0; 
+  nbok += disk_object.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Disk (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
   ObjectType disk_object2( disk_object );
-  nbok += disk_object2.size() == 636101 ? 1 : 0; 
+  nbok += disk_object2.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Disk2 (r=450.0) " << disk_object2 << std::endl;
@@ -142,12 +142,12 @@ bool testObject()
   trace.info() << "Removing center point in Disk." << std::endl;
   disk_object.pointSet().erase( c );
   disk_object2.pointSet().insert( c );
-  nbok += disk_object.size() == 636100 ? 1 : 0; 
+	nbok += disk_object.size() == 7824 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Disk - c (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
-  nbok += disk_object2.size() == 636101 ? 1 : 0; 
+	nbok += disk_object2.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Disk2 + c (r=450.0) " << disk_object2 << std::endl;
@@ -185,7 +185,7 @@ bool testObject()
   trace.beginBlock ( "Testing set converters ..." );
   DigitalSetConverter<SmallSet>::assign
     ( neigh.pointSet(), disk_object.pointSet() );
-  nbok += neigh.size() == 636100 ? 1 : 0; 
+		nbok += neigh.size() == 7824 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "neigh = disk_object, size() = " << neigh.size() 
@@ -202,13 +202,13 @@ bool testObject()
 
   trace.beginBlock ( "Testing border extraction ..." );
   ObjectType bdisk = disk_object.border();
-  nbok += bdisk.size() == 3372 ? 1 : 0; 
+	nbok += bdisk.size() == 400 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Border(Disk, c), size() = " << bdisk.size() 
 	       << " == 3372" << std::endl;
   ObjectType bdisk2 = disk_object2.border();
-  nbok += bdisk2.size() == 3364 ? 1 : 0; 
+  nbok += bdisk2.size() == 392 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Border(Disk2, c), size() = " << bdisk2.size() 
@@ -274,7 +274,7 @@ bool testObject3D()
   Point d( 10, 2, 0 );
 
   trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
-  trace.info() << "Creating diamond (r=45)" << endl;
+  trace.info() << "Creating diamond (r=15)" << endl;
   // diamond of radius 30
   DigitalSet diamond_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )

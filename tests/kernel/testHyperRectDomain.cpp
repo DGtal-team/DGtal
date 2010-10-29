@@ -112,23 +112,23 @@ bool testIterator()
   trace.emphase() << "Iterator 2d: ";
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
       it != myHyperRectDomain.end(); ++it )
-			 trace.warning() << ( *it ) << std::endl;
+    trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Iterator 2d (permutation): ";
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0} );
       it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
-			 trace.warning() << ( *it ) << std::endl;
+    trace.warning() << ( *it ) << std::endl;
 
-			 trace.emphase() << "Iterator 2d (permutation+starting): ";
-			 for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0},c );
-						it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
-						trace.warning() << ( *it ) << std::endl;
-						
-			 
+  trace.emphase() << "Iterator 2d (permutation+starting): ";
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0}, c );
+      it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
+    trace.warning() << ( *it ) << std::endl;
+
+
   trace.emphase() << "Iterator 2d (span): ";
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1} );
       it != myHyperRectDomain.subDomainEnd( {1} ); ++it )
-			 trace.warning() << ( *it ) << std::endl;
+    trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Iterator 2d (span+starting): ";
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1} , c );

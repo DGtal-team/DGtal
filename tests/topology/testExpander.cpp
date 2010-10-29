@@ -104,7 +104,7 @@ bool testExpander()
 
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
   // ------------------------------- Object ------------------------------
-  Coordinate r = 49;
+  Coordinate r = 9;
   double radius = (double) (r+1);
   Point c( 0, 0 );
   Point l( r, 0 );
@@ -125,7 +125,7 @@ bool testExpander()
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
   ObjectType ball( dt6_18, ball_set );
   ObjectType ball2( ball );
-  INBLOCK_TEST( ball.size() == 523155 );
+	INBLOCK_TEST( ball.size() == 4139 );
   trace.info() << "ball.size() = " << ball.size() 
 	       << " 4/3*pi*r^3 = " << ( 4.0*M_PI*radius*radius*radius/3.0 )
 	       << endl;
@@ -135,7 +135,7 @@ bool testExpander()
 
   trace.beginBlock ( "Testing border extraction ..." );
   ObjectType sphere = ball.border();
-  INBLOCK_TEST( sphere.size() == 39546 );
+  INBLOCK_TEST( sphere.size() == 1434 );
   trace.info() << sphere << endl;
   trace.info() << "sphere.size() = " << sphere.size()
 	       << " 4*pi*r^2 = " << ( 4.0*M_PI*radius*radius )

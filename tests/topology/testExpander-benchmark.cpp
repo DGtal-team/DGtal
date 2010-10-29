@@ -104,7 +104,7 @@ bool testExpander()
 
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
   // ------------------------------- Object ------------------------------
-  Coordinate r = 9;
+  Coordinate r = 49;
   double radius = (double) (r+1);
   Point c( 0, 0 );
   Point l( r, 0 );
