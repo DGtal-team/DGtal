@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
        testFreemanChain	
 			 testDecomposition
 			 testHalfPlane
+			 testPreimage
               )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
