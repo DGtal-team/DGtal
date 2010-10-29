@@ -52,190 +52,215 @@ using namespace std;
 bool testSimpleHyperRectDomain()
 {
 
-    typedef SpaceND<4> Space4Type;
-    typedef Space4Type::Point Point;
+  typedef SpaceND<4> Space4Type;
+  typedef Space4Type::Point Point;
 
-    DGtal::int32_t t [] ={ 1, 2, 3 ,4}; 
-    Point a ( t );
-		DGtal::int32_t t2[] ={ 5, 5, 3 ,4}; 
-    Point b ( t2 );
+  DGtal::int32_t t [] = { 1, 2, 3 , 4};
+  Point a ( t );
+  DGtal::int32_t t2[] = { 5, 5, 3 , 4};
+  Point b ( t2 );
 
-    trace.beginBlock ( "HyperRectDomain init" );
-    // Checking that HyperRectDomain is a model of CDomain.
-    typedef HyperRectDomain<Space4Type> HRDomain4;
-    BOOST_CONCEPT_ASSERT(( CDomain< HRDomain4 > ));
+  trace.beginBlock ( "HyperRectDomain init" );
+  // Checking that HyperRectDomain is a model of CDomain.
+  typedef HyperRectDomain<Space4Type> HRDomain4;
+  BOOST_CONCEPT_ASSERT(( CDomain< HRDomain4 > ));
 
-    ///Empty domain using the default constructor
-    HyperRectDomain<Space4Type> myEmptyDomain;
-    trace.info() << "Empty Domain: "<<myEmptyDomain<< std::endl;
+  ///Empty domain using the default constructor
+  HyperRectDomain<Space4Type> myEmptyDomain;
+  trace.info() << "Empty Domain: " << myEmptyDomain << std::endl;
 
-    ///Domain characterized by points a and b
-    HyperRectDomain<Space4Type> myHyperRectDomain ( a,b );
-    trace.info() << myHyperRectDomain << std::endl;
+  ///Domain characterized by points a and b
+  HyperRectDomain<Space4Type> myHyperRectDomain ( a, b );
+  trace.info() << myHyperRectDomain << std::endl;
 
-    trace.info() << "Domain Extent= "<< myHyperRectDomain.extent()<<std::endl;
-    
-    
-    trace.endBlock();
- 
-    
-    trace.beginBlock("Test Copy Constructor");
-    HyperRectDomain<Space4Type> myHyperRectDomainBis( myHyperRectDomain );
-    trace.info() << "Domain Extent= "<< myHyperRectDomainBis.extent()<<std::endl;
-    trace.endBlock();
+  trace.info() << "Domain Extent= " << myHyperRectDomain.extent() << std::endl;
 
-    trace.beginBlock("Test Assignement");
-    HyperRectDomain<Space4Type> myHyperRectDomainTer;
 
-    myHyperRectDomainTer = myHyperRectDomain;
-    
-    trace.info() << "Domain Extent= "<< myHyperRectDomainTer.extent()<<std::endl;
-    trace.endBlock();
+  trace.endBlock();
 
-    return myHyperRectDomain.isValid();
-    
+
+  trace.beginBlock("Test Copy Constructor");
+  HyperRectDomain<Space4Type> myHyperRectDomainBis( myHyperRectDomain );
+  trace.info() << "Domain Extent= " << myHyperRectDomainBis.extent() << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock("Test Assignement");
+  HyperRectDomain<Space4Type> myHyperRectDomainTer;
+
+  myHyperRectDomainTer = myHyperRectDomain;
+
+  trace.info() << "Domain Extent= " << myHyperRectDomainTer.extent() << std::endl;
+  trace.endBlock();
+
+  return myHyperRectDomain.isValid();
+
 }
 
 bool testIterator()
 {
-    typedef SpaceND<2> TSpace;
-    typedef TSpace::Point Point;
-    Point a ( 1, 1);
-    Point b ( 5, 5);
+  typedef SpaceND<2> TSpace;
+  typedef TSpace::Point Point;
+  Point a ( 1, 1);
+  Point b ( 5, 5);
+  Point c (2, 2);
 
-    trace.beginBlock ( "HyperRectDomain Iterator" );
-    HyperRectDomain<TSpace> myHyperRectDomain ( a,b );
+  trace.beginBlock ( "HyperRectDomain Iterator" );
+  HyperRectDomain<TSpace> myHyperRectDomain ( a, b );
 
-    trace.info() << myHyperRectDomain << std::endl;
+  trace.info() << myHyperRectDomain << std::endl;
 
-    trace.emphase() << "Iterator 2d: ";
-    for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
-            it != myHyperRectDomain.end(); ++it )
-        trace.info() << ( *it ) << std::endl;
+  trace.emphase() << "Iterator 2d: ";
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
+      it != myHyperRectDomain.end(); ++it )
+			 trace.warning() << ( *it ) << std::endl;
+
+  trace.emphase() << "Iterator 2d (permutation): ";
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0} );
+      it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
+			 trace.warning() << ( *it ) << std::endl;
+
+			 trace.emphase() << "Iterator 2d (permutation+starting): ";
+			 for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0},c );
+						it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
+						trace.warning() << ( *it ) << std::endl;
+						
+			 
+  trace.emphase() << "Iterator 2d (span): ";
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1} );
+      it != myHyperRectDomain.subDomainEnd( {1} ); ++it )
+			 trace.warning() << ( *it ) << std::endl;
+
+  trace.emphase() << "Iterator 2d (span+starting): ";
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1} , c );
+      it != myHyperRectDomain.subDomainEnd( {1} , c ); ++it )
+    trace.warning() << ( *it ) << std::endl;
 
 
-    trace.emphase() << "Iterator 4d: ";
-    typedef SpaceND<4> TSpace4D;
-    typedef TSpace4D::Point Point4D;
+  trace.emphase() << "Iterator 4d: ";
+  typedef SpaceND<4> TSpace4D;
+  typedef TSpace4D::Point Point4D;
 
-    DGtal::int32_t t[]= {1,1,1,1};
-    Point4D a4D ( t );
-    DGtal::int32_t t2[]= {3,3,3,3};
-    Point4D b4D ( t2 );
+  DGtal::int32_t t[] = {1, 1, 1, 1};
+  Point4D a4D ( t );
+  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  Point4D b4D ( t2 );
 
-    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
-    trace.emphase() << myHyperRectDomain4D<<std::endl;
+  HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D, b4D );
+  trace.emphase() << myHyperRectDomain4D << std::endl;
 
-    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
-            it != myHyperRectDomain4D.end();
-            ++it )
-        trace.info() << ( *it ) << std::endl;
+  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
+      it != myHyperRectDomain4D.end();
+      ++it )
+    trace.info() << ( *it ) << std::endl;
 
-    trace.endBlock();
-    
+  trace.endBlock();
+
 #ifdef CPP0X_INITIALIZER_LIST
-    trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
-    std::cout<<"BEGIN:"<<*myHyperRectDomain4D.begin({3,2,1,0})
-	     <<" END:"<<*myHyperRectDomain4D.end({3,2,1,0})
-	     <<" ORDER: {3,2,1,0}"<<std::endl;
-    for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin({3,2,1,0});
-	  it != myHyperRectDomain4D.end({3,2,1,0}); ++it )
-        trace.info() << ( *it ) << std::endl;
+  trace.emphase() << "Iterator 4d by using order different from lexicographic: ";
+  std::cout << "BEGIN:" << *myHyperRectDomain4D.begin( {3, 2, 1, 0})
+      << " END:" << *myHyperRectDomain4D.end( {3, 2, 1, 0})
+      << " ORDER: {3,2,1,0}" << std::endl;
+  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin( {3, 2, 1, 0});
+      it != myHyperRectDomain4D.end( {3, 2, 1, 0}); ++it )
+    trace.info() << ( *it ) << std::endl;
 
-    trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
-    HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.end({3,2,1,0});
-    HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin({3,2,1,0});
-    --it1; --it2;
-    std::cout<<"BEGIN:"<<*it1<<" END:"<<*it2<<" ORDER: {3,2,1,0}"<<std::endl;
-    for ( ; it1!=it2; --it1 )
-      trace.info() << ( *it1 ) << std::endl;
+  trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic: ";
+  HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.end( {3, 2, 1, 0});
+  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin( {3, 2, 1, 0});
+  --it1;
+  --it2;
+  std::cout << "BEGIN:" << *it1 << " END:" << *it2 << " ORDER: {3,2,1,0}" << std::endl;
+  for ( ; it1 != it2; --it1 )
+    trace.info() << ( *it1 ) << std::endl;
 
-    trace.emphase() << "Iterator on a subset of 4d by using order different from lexicographic: ";
-    std::cout<<"BEGIN:"<<*myHyperRectDomain4D.begin({1,3})
-	     <<" END:"<<*myHyperRectDomain4D.end({1,3})
-	     <<" ORDER: {1,3}"<<std::endl;
-    for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.begin({1,3});
-	  it3 != myHyperRectDomain4D.end({1,3}); ++it3 )
-        trace.info() << ( *it3 ) << std::endl;
+  trace.emphase() << "Iterator on a subset of 4d by using order different from lexicographic: ";
+  std::cout << "BEGIN:" << *myHyperRectDomain4D.begin( {1, 3})
+      << " END:" << *myHyperRectDomain4D.end( {1, 3})
+      << " ORDER: {1,3}" << std::endl;
+  for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.begin( {1, 3});
+      it3 != myHyperRectDomain4D.end( {1, 3}); ++it3 )
+    trace.info() << ( *it3 ) << std::endl;
 
-    trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic: ";
-    HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.end({1,3});
-    HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.begin({1,3});
-    --it4; --it5;
-    std::cout<<"BEGIN:"<<*it4<<" END:"<<*it5 <<" ORDER: {1,3}"<<std::endl;
-    for ( ; it4!=it5; --it4 )
-      trace.info() << ( *it4 ) << std::endl;
+  trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic: ";
+  HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.end( {1, 3});
+  HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.begin( {1, 3});
+  --it4;
+  --it5;
+  std::cout << "BEGIN:" << *it4 << " END:" << *it5 << " ORDER: {1,3}" << std::endl;
+  for ( ; it4 != it5; --it4 )
+    trace.info() << ( *it4 ) << std::endl;
 #endif
 
-    return myHyperRectDomain.isValid();
+  return myHyperRectDomain.isValid();
 }
 
 
 bool testReverseIterator()
 {
-    typedef SpaceND<4> TSpace4D;
-    typedef TSpace4D::Point Point4D;
-    DGtal::int32_t t[] = {1,1,1,1};
-    Point4D a4D (t);
-    DGtal::int32_t t2[]={3,3,3,3};
-    Point4D b4D (t2);
+  typedef SpaceND<4> TSpace4D;
+  typedef TSpace4D::Point Point4D;
+  DGtal::int32_t t[] = {1, 1, 1, 1};
+  Point4D a4D (t);
+  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  Point4D b4D (t2);
 
-    trace.beginBlock ( "Test reverse iterator" );
+  trace.beginBlock ( "Test reverse iterator" );
 
-    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
-    trace.emphase() << myHyperRectDomain4D<<std::endl;
+  HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D, b4D );
+  trace.emphase() << myHyperRectDomain4D << std::endl;
 
-    trace.emphase() << "Increasing order: ";
-    
-    HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
-    for ( ; it != myHyperRectDomain4D.end(); ++it )
-      trace.info() << ( *it ) << std::endl;
+  trace.emphase() << "Increasing order: ";
 
-    trace.emphase() << "Now decreasing order: ";
-    HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin();
-    --it; --it2; 
-    for ( ; it != it2; --it )
-      trace.info() << ( *it ) << std::endl;
+  HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.begin();
+  for ( ; it != myHyperRectDomain4D.end(); ++it )
+    trace.info() << ( *it ) << std::endl;
 
-    trace.endBlock();
+  trace.emphase() << "Now decreasing order: ";
+  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.begin();
+  --it;
+  --it2;
+  for ( ; it != it2; --it )
+    trace.info() << ( *it ) << std::endl;
 
-    return myHyperRectDomain4D.isValid();
+  trace.endBlock();
+
+  return myHyperRectDomain4D.isValid();
 }
 
 
 
 bool testSTLCompat()
 {
-    typedef SpaceND<4> TSpace4D;
-    typedef TSpace4D::Point Point4D;
-    DGtal::int32_t t[] = {1,1,1,1};
-    Point4D a4D (t);
-    DGtal::int32_t t2[]={3,3,3,3};
-    Point4D b4D (t2);
+  typedef SpaceND<4> TSpace4D;
+  typedef TSpace4D::Point Point4D;
+  DGtal::int32_t t[] = {1, 1, 1, 1};
+  Point4D a4D (t);
+  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  Point4D b4D (t2);
 
-    trace.beginBlock ( "TestSTL Compatibility" );
+  trace.beginBlock ( "TestSTL Compatibility" );
 
-    HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D,b4D );
-    trace.emphase() << myHyperRectDomain4D<<std::endl;
+  HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D, b4D );
+  trace.emphase() << myHyperRectDomain4D << std::endl;
 
-    std::copy ( myHyperRectDomain4D.begin(),
-                myHyperRectDomain4D.end(),
-                ostream_iterator<Point4D> ( trace.info(), " " ) );
+  std::copy ( myHyperRectDomain4D.begin(),
+      myHyperRectDomain4D.end(),
+      ostream_iterator<Point4D> ( trace.info(), " " ) );
 
-    trace.info() << std::endl;
-    trace.endBlock();
+  trace.info() << std::endl;
+  trace.endBlock();
 
-    return myHyperRectDomain4D.isValid();
+  return myHyperRectDomain4D.isValid();
 }
 
 
 int main()
 {
 
-    if ( testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat() )
-        return 0;
-    else
-        return 1;
+  if ( testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat() )
+    return 0;
+  else
+    return 1;
 }
 
 /** @ingroup Tests **/

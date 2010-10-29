@@ -51,41 +51,41 @@ using namespace std;
 bool testIterator()
 {
 
-    trace.emphase() << "Iterator 4d: ";
-    typedef SpaceND<4> SpaceType4D;
-    typedef SpaceType4D::Point TPoint4D;
-	const SpaceType4D::Integer t4D[ ] = { 1, 1,1,1};
-    const SpaceType4D::Integer t4D2[ ] = { 3,6,3,3};
-    const SpaceType4D::Integer t4D3[ ] = { 1, 2,1,1};
-    TPoint4D a4D ( t4D );
-    TPoint4D b4D ( t4D2 );
-    TPoint4D c4D ( t4D3);
+  trace.emphase() << "Iterator 4d: ";
+  typedef SpaceND<4> SpaceType4D;
+  typedef SpaceType4D::Point TPoint4D;
+  const SpaceType4D::Integer t4D[ ] = { 1, 1, 1, 1};
+  const SpaceType4D::Integer t4D2[ ] = { 3, 6, 3, 3};
+  const SpaceType4D::Integer t4D3[ ] = { 1, 2, 1, 1};
+  TPoint4D a4D ( t4D );
+  TPoint4D b4D ( t4D2 );
+  TPoint4D c4D ( t4D3);
 
-    trace.beginBlock("Span Domain iterator test");
-    ///Domain construction
-    HyperRectDomain<SpaceType4D> mySpan ( a4D,b4D );
+  trace.beginBlock("Span Domain iterator test");
+  ///Domain construction
+  HyperRectDomain<SpaceType4D> mySpan ( a4D, b4D );
 
 
-    trace.emphase() << mySpan <<std::endl;
+  trace.emphase() << mySpan << std::endl;
 
-    ///iterates from  {1, 2,1,1} to { 3,6,3,3} along the dimension 1
-    for ( HyperRectDomain<SpaceType4D>::ConstSpanIterator it = mySpan.span_begin ( c4D , 1);
-            it != mySpan.span_end ( 1 );
-            ++it )
-        trace.info() << ( *it ) << std::endl;
+  ///iterates from  {1,2,1,1} to { 3,6,3,3} along the dimension 1
+  for ( HyperRectDomain<SpaceType4D>::ConstIterator it = mySpan.spanBegin ( c4D , 1);
+      it != mySpan.spanEnd ( 1 );
+      ++it )
+    trace.info() << ( *it ) << std::endl;
 
-    trace.endBlock();
-    return mySpan.isValid();
+  trace.endBlock();
+  return mySpan.isValid();
 }
 
 
 int main()
 {
 
-    if ( testIterator() )
-        return 0;
-    else
-        return 1;
+  if ( testIterator() )
+    return 0;
+  else
+    return 1;
 }
 
 

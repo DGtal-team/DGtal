@@ -47,7 +47,6 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
-#include "DGtal/kernel/domains/HyperRectDomain_SpanIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -116,9 +115,7 @@ namespace DGtal
       // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
       ///Typedef of domain iterators
-      typedef HyperRectDomain_Iterator<Point> ConstIterator;
-      typedef HyperRectDomain_SpanIterator<Point> ConstSpanIterator;
-
+      typedef HyperRectDomain_Iterator<Point,Size> ConstIterator;
       typedef IsWithinPointPredicate<Point> Predicate;
 
       /**
@@ -193,7 +190,15 @@ namespace DGtal
        * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
        * @return a ConstIterator
        **/
-      ConstIterator subDomainBegin(std::initializer_list<unsigned int> aSubDomain,
+      ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain) const;
+
+			/**
+      * begin() iterator on a sub-domain with a order than the lexicographic one.
+      *
+      * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
+      * @return a ConstIterator
+      **/
+      ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain,
           const Point & startingPoint) const;
 #endif
       /**
@@ -202,7 +207,15 @@ namespace DGtal
        * @param aSubDomain the sub-domain given by a vector of dimension.
        * @return a ConstIterator
        **/
-      ConstIterator subDomainBegin(const std::vector<unsigned int> & permutation,
+      ConstIterator subDomainBegin(const std::vector<Size> & permutation) const;
+
+      /**
+      * begin() iterator on a sub-domain with a order than the lexicographic one.
+      *
+      * @param aSubDomain the sub-domain given by a vector of dimension.
+      * @return a ConstIterator
+      **/
+      ConstIterator subDomainBegin(const std::vector<Size> & permutation,
           const Point & startingPoint) const;
 
 
@@ -212,33 +225,40 @@ namespace DGtal
        * end() iterator with an order different from lexicographic.
        *
        **/
-      ConstIterator subDomainEnd(std::initializer_list<unsigned int> aSubDomain,
-          const Point & endPoint) const;
+      ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain,
+          const Point &startingPoint) const;
+      /**
+       * end() iterator with an order different from lexicographic.
+       *
+       **/
+      ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain) const;
 #endif
       /**
        * end() iterator with an order different from lexicographic.
        *
        **/
-      ConstIterator subDomainEnd(const std::vector<unsigned int> & aSubDomain,
-          const Point & endPoint) const;
+      ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain,
+          const Point &startingPoint) const;
+      /**
+       * end() iterator with an order different from lexicographic.
+       *
+       **/
+      ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain) const;
 
 
 
-			//------------- Span Iterator
+      //------------- Span Iterator
       /**
        * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
        *
        **/
-      ConstSpanIterator span_begin ( const Point &aPoint, const std::size_t aDimension) const;
-
+      ConstIterator spanBegin ( const Point &aPoint, const std::size_t aDimension) const;
 
       /**
        * Creates a end() Span iterator along the dimension \param aDimension.
        *
        **/
-      ConstSpanIterator span_end (const std::size_t aDimension) const;
-
-
+      ConstIterator spanEnd (const std::size_t aDimension) const;
 
       // ----------------------- Interface --------------------------------------
     public:
@@ -261,7 +281,7 @@ namespace DGtal
       static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
       {
         std::size_t val = 1;
-        for (unsigned int k =  0; k < TSpace::staticDimension ; k++)
+        for (Size k =  0; k < TSpace::staticDimension ; k++)
           val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
 
         return val;
@@ -320,7 +340,7 @@ namespace DGtal
       /**
        * Default style.
        */
-    struct DefaultDrawStylePaving : public DrawableWithBoard
+      struct DefaultDrawStylePaving : public DrawableWithBoard
       {
         virtual void selfDraw(LibBoard::Board & aBoard) const
         {
@@ -333,7 +353,7 @@ namespace DGtal
       /**
        * Default style.
        */
-    struct DefaultDrawStyleGrid : public DrawableWithBoard
+      struct DefaultDrawStyleGrid : public DrawableWithBoard
       {
         virtual void selfDraw(LibBoard::Board & aBoard) const
         {

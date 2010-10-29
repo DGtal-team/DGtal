@@ -236,14 +236,16 @@ DGtal::PointVector<N, T>::operator= ( const PointVector<N, T> & pv )
 //------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
 template<std::size_t N, typename T>
+template<typename Size>
 inline
 DGtal::PointVector<N, T>&
 DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
-    std::initializer_list<unsigned int> dimensions )
+    std::initializer_list<Size> dimensions
+                                      )
 {
-  std::vector<unsigned int> sortedDim;
+  std::vector<Size> sortedDim;
   sortedDim.reserve(dimensions.size());
-  for (const unsigned int *c = dimensions.begin ();
+  for (const Size *c = dimensions.begin ();
       c != dimensions.end (); ++c)
   {
     ASSERT( *c < N );
@@ -251,7 +253,7 @@ DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
   }
   std::sort(sortedDim.begin(), sortedDim.end());
 
-  unsigned int i = 0, j = 0;
+  Size i = 0, j = 0;
   for ( ; i < sortedDim.size() && j < N; ++j )
   {
     if ( sortedDim[i] == j )
@@ -265,14 +267,16 @@ DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
 }
 #endif
 template<std::size_t N, typename T>
+template<typename Size>
 inline
 DGtal::PointVector<N, T>&
 DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
-    std::vector<unsigned int> &dimensions )
+    const std::vector<Size> &dimensions)
 {
-  std::vector<unsigned int> sortedDim;
+  std::vector<Size> sortedDim;
+  typedef typename std::vector<Size>::const_iterator const_iterator;
   sortedDim.reserve(dimensions.size());
-  for (std::vector<unsigned int>::const_iterator it = dimensions.begin ();
+  for (const_iterator it = dimensions.begin ();
       it != dimensions.end (); ++it)
   {
     ASSERT( *it < N );
@@ -280,7 +284,7 @@ DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
   }
   std::sort(sortedDim.begin(), sortedDim.end());
 
-  unsigned int i = 0, j = 0;
+  Size i = 0, j = 0;
   for ( ; i < sortedDim.size() && j < N; ++j )
   {
     if ( sortedDim[i] == j )

@@ -55,7 +55,7 @@ namespace DGtal
    * Description of class 'HyperRectDomain_Iterator' <p>
    * Aim:
    */
-  template<typename TPoint>
+  template<typename TPoint, typename TSize>
   class HyperRectDomain_Iterator
   {
     public:
@@ -64,11 +64,12 @@ namespace DGtal
       typedef ptrdiff_t difference_type;
       typedef TPoint* pointer;
       typedef TPoint& reference;
+			typedef TSize Size;
 
 
       HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
           : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUsePermutation( false )
+          myUseSubDomain( false )
       {
         ASSERT( lower <= upper );
         ASSERT( lower <= p && p <= upper );
@@ -77,42 +78,42 @@ namespace DGtal
 #ifdef CPP0X_INITIALIZER_LIST
       HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
           const TPoint &upper,
-          std::initializer_list<unsigned int> permutation)
+          std::initializer_list<Size> subDomain)
           : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUsePermutation( true )
+          myUseSubDomain( true )
       {
         ASSERT( lower <= upper );
         ASSERT( lower <= p && p <= upper );
-        ASSERT( permutation.size() <= TPoint::Dimension );
-        myPermutation.reserve( permutation.size() );
-        for ( const unsigned int *c = permutation.begin();
-            c != permutation.end(); ++c )
+        ASSERT( subDomain.size() <= TPoint::Dimension );
+        mySubDomain.reserve( subDomain.size() );
+        for ( const unsigned int *c = subDomain.begin();
+            c != subDomain.end(); ++c )
         {
           ASSERT( *c <= TPoint::Dimension );
-          myPermutation.push_back( *c );
+          mySubDomain.push_back( *c );
         }
 
-        // TODO: check the validity of the permutation ?
+        // TODO: check the validity of the subDomain ?
       }
 #endif
       HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
           const TPoint &upper,
-          std::vector<unsigned int> &permutation)
+          const std::vector<Size> &subDomain)
           : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUsePermutation( true )
+          myUseSubDomain( true )
       {
         ASSERT( lower <= upper );
         ASSERT( lower <= p && p <= upper );
-        ASSERT( permutation.size() <= TPoint::Dimension );
-        myPermutation.reserve( permutation.size() );
-				for ( std::vector<unsigned int>::const_iterator it = permutation.begin();
-            it != permutation.end(); ++it )
+        ASSERT( subDomain.size() <= TPoint::Dimension );
+        mySubDomain.reserve( subDomain.size() );
+        for ( std::vector<unsigned int>::const_iterator it = subDomain.begin();
+            it != subDomain.end(); ++it )
         {
           ASSERT( *it <= TPoint::Dimension );
-          myPermutation.push_back( *it );
+          mySubDomain.push_back( *it );
         }
 
-        // TODO: check the validity of the permutation ?
+        // TODO: check the validity of the subDomain ?
       }
 
 
@@ -126,7 +127,7 @@ namespace DGtal
       * Operator ==
       *
       */
-      bool operator== ( const HyperRectDomain_Iterator<TPoint> &it ) const
+      bool operator== ( const HyperRectDomain_Iterator<TPoint,TSize> &it ) const
       {
         return ( myPoint == ( *it ) );
       }
@@ -135,7 +136,7 @@ namespace DGtal
       * Operator !=
       *
       */
-      bool operator!= ( const HyperRectDomain_Iterator<TPoint> &aIt ) const
+      bool operator!= ( const HyperRectDomain_Iterator<TPoint,TSize> &aIt ) const
       {
         return ( myPoint != ( *aIt ) );
       }
@@ -165,28 +166,28 @@ namespace DGtal
 
       /**
       * Implements the next() method to scan the domain points dimension by dimension
-      * (by using the permutation order given by the user).
+      * (by using the subDomain order given by the user).
       **/
-      void nextPermutationOrder()
+      void nextSubDomainOrder()
       {
-        ASSERT( myCurrentPos < myPermutation.size() );
-        myPoint.at( myPermutation[myCurrentPos] ) ++;
+        ASSERT( myCurrentPos < mySubDomain.size() );
+        myPoint.at( mySubDomain[myCurrentPos] ) ++;
 
-        if ( myCurrentPos < myPermutation.size() - 1 &&
-            myPoint.at( myPermutation[myCurrentPos] ) >
-            myupper.at( myPermutation[myCurrentPos] ) )
+        if ( myCurrentPos < mySubDomain.size() - 1 &&
+            myPoint.at( mySubDomain[myCurrentPos] ) >
+            myupper.at( mySubDomain[myCurrentPos] ) )
         {
           do
           {
-            myPoint.at( myPermutation[myCurrentPos] ) =
-              mylower.at( myPermutation[myCurrentPos] );
+            myPoint.at( mySubDomain[myCurrentPos] ) =
+              mylower.at( mySubDomain[myCurrentPos] );
             myCurrentPos++;
-            if ( myCurrentPos < myPermutation.size() )
-              myPoint.at( myPermutation[myCurrentPos] ) ++;
+            if ( myCurrentPos < mySubDomain.size() )
+              myPoint.at( mySubDomain[myCurrentPos] ) ++;
           }
-          while (( myCurrentPos < myPermutation.size() - 1  ) &&
-              ( myPoint.at( myPermutation[myCurrentPos] )  >
-                  myupper.at( myPermutation[myCurrentPos] ) ) );
+          while (( myCurrentPos < mySubDomain.size() - 1  ) &&
+              ( myPoint.at( mySubDomain[myCurrentPos] )  >
+                  myupper.at( mySubDomain[myCurrentPos] ) ) );
           myCurrentPos = 0;
         }
       }
@@ -194,10 +195,10 @@ namespace DGtal
       /**
       * Operator ++ (++it)
       */
-      HyperRectDomain_Iterator<TPoint> &operator++()
+      HyperRectDomain_Iterator<TPoint,TSize> &operator++()
       {
-        if ( myUsePermutation )
-          nextPermutationOrder();
+        if ( myUseSubDomain )
+          nextSubDomainOrder();
         else
           nextLexicographicOrder();
         return *this;
@@ -207,9 +208,9 @@ namespace DGtal
       * Operator ++ (it++)
       *
       */
-      HyperRectDomain_Iterator<TPoint> operator++ ( int )
+      HyperRectDomain_Iterator<TPoint,TSize> operator++ ( int )
       {
-        HyperRectDomain_Iterator<TPoint> tmp = *this;
+        HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
         ++*this;
         return tmp;
       }
@@ -239,28 +240,28 @@ namespace DGtal
 
       /**
        * Implements the prev() method to scan the domain points dimension by dimension
-       * (permutation order).
+       * (subDomain order).
        **/
-      void prevPermutationOrder()
+      void prevSubDomainOrder()
       {
-        ASSERT( myCurrentPos < myPermutation.size() );
-        myPoint.at( myPermutation[myCurrentPos] ) --;
+        ASSERT( myCurrentPos < mySubDomain.size() );
+        myPoint.at( mySubDomain[myCurrentPos] ) --;
 
-        if (  myCurrentPos < myPermutation.size() - 1 &&
-            myPoint.at( myPermutation[myCurrentPos] )  <
-            mylower.at( myPermutation[myCurrentPos] ) )
+        if (  myCurrentPos < mySubDomain.size() - 1 &&
+            myPoint.at( mySubDomain[myCurrentPos] )  <
+            mylower.at( mySubDomain[myCurrentPos] ) )
         {
           do
           {
-            myPoint.at( myPermutation[myCurrentPos] ) =
-              myupper.at( myPermutation[myCurrentPos] );
+            myPoint.at( mySubDomain[myCurrentPos] ) =
+              myupper.at( mySubDomain[myCurrentPos] );
             myCurrentPos++;
-            if ( myCurrentPos < myPermutation.size() )
-              myPoint.at( myPermutation[myCurrentPos] ) --;
+            if ( myCurrentPos < mySubDomain.size() )
+              myPoint.at( mySubDomain[myCurrentPos] ) --;
           }
-          while (( myCurrentPos < myPermutation.size() - 1 ) &&
-              ( myPoint.at( myPermutation[myCurrentPos] )  <
-                  mylower.at( myPermutation[myCurrentPos] ) ) );
+          while (( myCurrentPos < mySubDomain.size() - 1 ) &&
+              ( myPoint.at( mySubDomain[myCurrentPos] )  <
+                  mylower.at( mySubDomain[myCurrentPos] ) ) );
           myCurrentPos = 0;
         }
       }
@@ -269,10 +270,10 @@ namespace DGtal
       * Operator ++ (++it)
       *
       */
-      HyperRectDomain_Iterator<TPoint> &operator--()
+      HyperRectDomain_Iterator<TPoint,TSize> &operator--()
       {
-        if ( myUsePermutation )
-          prevPermutationOrder();
+        if ( myUseSubDomain )
+          prevSubDomainOrder();
         else
           prevLexicographicOrder();
         return *this;
@@ -281,9 +282,9 @@ namespace DGtal
       /**
       * Operator ++ (it++)
       */
-      HyperRectDomain_Iterator<TPoint> &operator-- ( int )
+      HyperRectDomain_Iterator<TPoint,TSize> &operator-- ( int )
       {
-        HyperRectDomain_Iterator<TPoint> tmp = *this;
+        HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
         --*this;
         return tmp;
       }
@@ -295,13 +296,13 @@ namespace DGtal
       ///Copies of the Domain limits
       TPoint mylower, myupper;
       ///Second index of the iterator position
-      std::size_t myCurrentPos;
-      ///Vector of permutation on dimension, to fix the order in which dimensions
+      Size myCurrentPos;
+      ///Vector of subDomain on dimension, to fix the order in which dimensions
       /// are considered.
-      std::vector<unsigned int> myPermutation;
-      /// True iff we use the vector of permutation, otherwise dimensions are
+      std::vector<Size> mySubDomain;
+      /// True iff we use the vector of subDomain, otherwise dimensions are
       /// considered in increasing order.
-      bool myUsePermutation;
+      bool myUseSubDomain;
   };
 
 

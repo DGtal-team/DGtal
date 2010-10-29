@@ -131,7 +131,7 @@ namespace DGtal
        * Constructor from array of values.
        *
        * @param ptrValues the array of values.
-			*/
+      */
       explicit PointVector( const T * ptrValues );
 
       /**
@@ -178,15 +178,15 @@ namespace DGtal
        */
       template<typename Functor>
       PointVector( const PointVector& apoint1, const PointVector& apoint2,
-                   const Functor& f );
+          const Functor& f );
 
-    /**
-     * Destructor.
-     */
-    ~PointVector();    
+      /**
+       * Destructor.
+       */
+      ~PointVector();
 
-    // ----------------------- Iterator services ------------------------------
-  public:
+      // ----------------------- Iterator services ------------------------------
+    public:
       /**
        * Copy constructor.
        * @param other the object to clone.
@@ -201,31 +201,33 @@ namespace DGtal
        */
       PointVector & operator= ( const PointVector & pv );
 
-			
-#ifdef CPP0X_INITIALIZER_LIST
-    /**
-     * Partial copy of a given PointVector.
-     *
-     * @param other the object to copy.
-     * @param dim the dimensions of v to copy 
-     *        (unsigned int between 0 and N, all differents).
-     * @return a reference on 'this'.
-     */
-    PointVector& partialCopy (const PointVector & pv, 
-			      std::initializer_list<unsigned int> dimensions);
-#endif
-		/**
-		 * Partial copy of a given PointVector.
-		 *
-		 * @param other the object to copy.
-		 * @param dim the dimensions of v to copy
-		 *        (unsigned int between 0 and N, all differents).
-		 * @return a reference on 'this'.
-		 */
-		PointVector& partialCopy (const PointVector & pv,
-															std::vector<unsigned int> &dimensions);
 
-		
+#ifdef CPP0X_INITIALIZER_LIST
+      /**
+       * Partial copy of a given PointVector.
+       *
+       * @param other the object to copy.
+       * @param dim the dimensions of v to copy
+       *        (Size between 0 and N, all differents).
+       * @return a reference on 'this'.
+       */
+			template<typename Size>
+      PointVector& partialCopy (const PointVector & pv,
+          std::initializer_list<Size> dimensions);
+#endif
+      /**
+       * Partial copy of a given PointVector.
+       *
+       * @param other the object to copy.
+       * @param dim the dimensions of v to copy
+       *        (Size between 0 and N, all differents).
+       * @return a reference on 'this'.
+       */
+			template<typename Size>
+      PointVector<N,T>& partialCopy (const PointVector<N,T> & pv,
+																		 const std::vector<Size> &dimensions);
+
+
       // ----------------------- Iterator services ------------------------------
     public:
 
@@ -536,7 +538,7 @@ namespace DGtal
        * Draw the object on a LibBoard board.
        * @param board the output board where the object is drawn.
        */
-			void selfDraw( LibBoard::Board & board ) const;
+      void selfDraw( LibBoard::Board & board ) const;
 
 
       // ----------------------- Interface --------------------------------------
@@ -561,7 +563,7 @@ namespace DGtal
        */
       template<typename Functor>
       void selfDraw( LibBoard::Board & board,
-                     const PointVector &startingPoint ) const;
+          const PointVector &startingPoint ) const;
 
       /**
        * Draw the object (as a Vector from aPoint) on a LibBoard board
@@ -570,7 +572,7 @@ namespace DGtal
        * @param startingPoint the starting point of the vector
        */
       void selfDraw( LibBoard::Board & board,
-                     const PointVector &startingPoint ) const
+          const PointVector &startingPoint ) const
       {
         selfDraw<SelfDrawStyle>( board, startingPoint );
       };
