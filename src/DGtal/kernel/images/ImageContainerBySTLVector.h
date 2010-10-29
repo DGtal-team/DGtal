@@ -1,18 +1,18 @@
 /**
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- **/
+*  This program is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU Lesser General Public License as
+*  published by the Free Software Foundation, either version 3 of the
+*  License, or  (at your option) any later version.
+*
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+**/
 //LICENSE-END
 #pragma once
 
@@ -54,12 +54,12 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // class ImageContainerBySTLVector
-  
+
   /**
    * Description of class 'ImageContainerBySTLVector' <p>
    *
    * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::vector. This class provides built-in iterators and fast SpanIterators 
+   * using a std::vector. This class provides built-in iterators and fast SpanIterators
    * to perform 1D scans.
    *
    * @see testImage.cpp
@@ -69,371 +69,372 @@ namespace DGtal
   template <typename TDomain, typename TValueType>
   class ImageContainerBySTLVector: public vector<TValueType>
   {
-  public:
+    public:
 
-    typedef TValueType ValueType;
-    typedef TDomain Domain;
-    
-    // static constants
-    static const typename Domain::Dimension staticDimension = Domain::staticDimension;
-  
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Vector Vector;
-    typedef typename Domain::Dimension Dimension;
-		typedef typename Domain::Integer Integer;
-    typedef typename vector<ValueType>::size_type Size;
-    typedef typename vector<ValueType>::iterator Iterator;
-    typedef typename vector<ValueType>::const_iterator ConstIterator;
+      typedef TValueType ValueType;
+      typedef TDomain Domain;
 
-    ImageContainerBySTLVector(const Point &aPointA,
-			      const Point &aPointB );
+      // static constants
+      static const typename Domain::Dimension staticDimension = Domain::staticDimension;
 
-    ~ImageContainerBySTLVector();
+      typedef typename Domain::Point Point;
+      typedef typename Domain::Vector Vector;
+      typedef typename Domain::Dimension Dimension;
+      typedef typename Domain::Integer Integer;
+      typedef typename vector<ValueType>::size_type Size;
+      typedef typename vector<ValueType>::iterator Iterator;
+      typedef typename vector<ValueType>::const_iterator ConstIterator;
 
-    /** 
-     * Get the value of an image at a given position.
-     *
-     * @param aPoint  position in the image.
-     * @return the value at aPoint.
-     */
-    ValueType operator()(const Point &aPoint) const;
+      ImageContainerBySTLVector(const Point &aPointA,
+          const Point &aPointB );
 
-    /** 
-     * Get the value of an image at a given position given 
-     * by a ConstIterator.
-     *
-     * @param it  position in the image.
-     * @return the value at aPoint.
-     */
-    ValueType operator()(ConstIterator &it) const
-    {
-      return (*it);
-    };
- 
-    /** 
-     * Set a value on an Image at aPoint.
-     * 
-     * @param aPoint location of the point to associate with aValue.
-     * @param aValue the value.
-     */   
-    void setValue(const Point &aPoint, const ValueType &aValue);
+      ~ImageContainerBySTLVector();
 
-    /** 
-     * Set a value on an Image at a position specified by an Iterator.
-     * 
-     * @param it  iterator on the location.
-     * @param aValue the value.
-     */   
-    void setValue(Iterator &it, const ValueType &aValue)
-    {
-      (*it) = aValue;
-    }
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param aPoint  position in the image.
+       * @return the value at aPoint.
+       */
+      ValueType operator()(const Point &aPoint) const;
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
+      /**
+       * Get the value of an image at a given position given
+       * by a ConstIterator.
+       *
+       * @param it  position in the image.
+       * @return the value at aPoint.
+       */
+      ValueType operator()(ConstIterator &it) const
+      {
+        return (*it);
+      };
+
+      /**
+       * Set a value on an Image at aPoint.
+       *
+       * @param aPoint location of the point to associate with aValue.
+       * @param aValue the value.
+       */
+      void setValue(const Point &aPoint, const ValueType &aValue);
+
+      /**
+       * Set a value on an Image at a position specified by an Iterator.
+       *
+       * @param it  iterator on the location.
+       * @param aValue the value.
+       */
+      void setValue(Iterator &it, const ValueType &aValue)
+      {
+        (*it) = aValue;
+      }
+
+      /**
+       * Writes/Displays the object on an output stream.
+       * @param out the output stream where the object is written.
+       */
+      void selfDisplay ( std::ostream & out ) const;
 
 
-    /**
-     * @return the validity of the Image
-     */
-    bool isValid() const
-    {
-      return (this != NULL);
-    }
+      /**
+       * @return the validity of the Image
+       */
+      bool isValid() const
+      {
+        return (this != NULL);
+      }
 
-    /** 
-     * Returns the extent of an Image.
-     * 
-     * @return the image extent as a Vector.
-     */
-    Vector extent() const;
+      /**
+       * Returns the extent of an Image.
+       *
+       * @return the image extent as a Vector.
+       */
+      Vector extent() const;
 
-    /** 
-     * @return the image lower point.
-     */
-    Point lowerBound() const
-    {
-      return myLowerBound;
-    };
-    
-    /** 
-     * @return the image upper point.
-     */
-    Point upperBound() const
-    {
-      return myUpperBound;
-    };
+      /**
+       * @return the image lower point.
+       */
+      Point lowerBound() const
+      {
+        return myLowerBound;
+      };
 
-    /////////////////////////// Custom Iterators ////////////////////:
-    /** 
-     * Specific SpanIterator on ImageContainerBySTLVector.
-     * 
-     * @tparam Domain the HyperRectDomain on which the iterator iterates.
-     * @tparam ValueType 
-     */
-    class SpanIterator
-    {
+      /**
+       * @return the image upper point.
+       */
+      Point upperBound() const
+      {
+        return myUpperBound;
+      };
 
-      friend class ImageContainerBySTLVector<Domain,ValueType>;
+      /////////////////////////// Custom Iterators ////////////////////:
+      /**
+       * Specific SpanIterator on ImageContainerBySTLVector.
+       *
+       * @tparam Domain the HyperRectDomain on which the iterator iterates.
+       * @tparam ValueType
+       */
+      class SpanIterator
+      {
+
+          friend class ImageContainerBySTLVector<Domain, ValueType>;
+
+        public:
+
+          typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
+          typedef ValueType value_type;
+          typedef ptrdiff_t difference_type;
+          typedef ValueType* pointer;
+          typedef ValueType& reference;
+
+          /**
+           * Constructor.
+           *
+           * @param p starting point of the SpanIterator
+           * @param aDim specifies the dimension along which the iterator will iterate
+           * @param aMap pointer to the imageContainer
+           */
+          SpanIterator( const Point & p ,
+              const Dimension aDim ,
+              ImageContainerBySTLVector<Domain, ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+          {
+            myPos = aMap->linearized(p);
+
+            //We compute the myShift quantity
+            myShift = 1;
+            for (unsigned int k = 0; k < myDimension  ; k++)
+              myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
+          }
+
+
+          /**
+           * operator* on SpanIterators.
+           *
+           * @return the value associated to the current position.
+           */
+          const ValueType & operator*() const
+          {
+            return (*myMap)[ myPos ];
+          }
+
+          /**
+           * Operator ==.
+           *
+           * @return true if this and it are equals.
+           */
+          bool operator== ( const SpanIterator &it ) const
+          {
+            return ( myPos == it.myPos );
+          }
+
+          /**
+           * Operator !=
+           *
+           * @return true if this and it are different.
+           */
+          bool operator!= ( const SpanIterator &it ) const
+          {
+            return ( myPos != it.myPos );
+
+          }
+
+          /**
+           * Implements the next() method: we move on step forward.
+           *
+           **/
+          void next()
+          {
+            myPos += myShift;
+          }
+
+          /**
+           * Implements the prev() method: we move on step backward.
+           *
+           **/
+          void prev()
+          {
+            ASSERT((long int) myPos - myShift > 0);
+            myPos -= myShift;
+          }
+
+          /**
+           * Operator ++ (++it)
+           *
+           */
+          SpanIterator &operator++()
+          {
+            this->next();
+            return *this;
+          }
+
+          /**
+           * Operator ++ (it++)
+           *
+           */
+          SpanIterator &operator++ ( int )
+          {
+            SpanIterator tmp = *this;
+            ++*this;
+            return tmp;
+          }
+
+          /**
+           * Operator -- (--it)
+           *
+           */
+          SpanIterator &operator--()
+          {
+            this->prev();
+            return *this;
+          }
+
+          /**
+           * Operator -- (it--)
+           *
+           */
+          SpanIterator &operator-- ( int )
+          {
+            SpanIterator tmp = *this;
+            --*this;
+            return tmp;
+          }
+
+        private:
+          ///Current Point in the domain
+          Size myPos;
+
+          /// Copy of the underlying images
+          ImageContainerBySTLVector<Domain, ValueType> *myMap;
+
+          ///Dimension on which the iterator must iterate
+          Dimension  myDimension;
+
+          ///Padding variable
+          Size myShift;
+
+      };
+
+      /**
+       * Set a value on an Image at a position specified by an SpanIterator.
+       *
+       * @param it  iterator on the location.
+       * @param aValue the value.
+       */
+      void setValue(SpanIterator &it, const ValueType &aValue)
+      {
+        it.setValue(aValue);
+      }
+
+
+      /**
+       * Create a begin() SpanIterator at a given position in a given
+       * direction.
+       *
+       * @param aPoint the starting point of the SpanIterator.
+       * @param aDimension the dimension on which the iterator iterates.
+       *
+       * @return a SpanIterator
+       */
+      SpanIterator spanBegin(const Point &aPoint, const Dimension aDimension)
+      {
+        return SpanIterator ( aPoint, aDimension, this);
+      }
+
+      /**
+       * Create an end() SpanIterator at a given position in a given
+       * direction.
+       *
+       * @param aPoint a point belonging to the current image dimension (not
+       * necessarily the point used in the span_begin() method.
+       * @param aDimension the dimension on which the iterator iterates.
+       *
+       * @return a SpanIterator
+       */
+      SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
+      {
+        Point tmp = aPoint;
+        tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
+            myUpperBound.at( aDimension ) -
+            myLowerBound.at( aDimension ) + 1;
+        return SpanIterator( tmp, aDimension, this);
+      }
+
+      /**
+       * Returns the value of the image at a given SpanIterator position.
+       *
+       * @param it position given by a SpanIterator.
+       * @return an object of type ValueType.
+       */
+      ValueType operator()(const SpanIterator &it)
+      {
+        return (*it);
+      };
+
+
+
+    private:
+
+      /**
+       *  Linearized a point and return the vector position.
+       * @param aPoint the point to convert to an index
+       * @return the index of @param aPoint in the container
+       */
+      Size linearized(const Point &aPoint) const;
+
+      Point myLowerBound;
+      Point myUpperBound;
+
+      // ----------------------- LibBoard methods --------------------------------------
+
+    private:
+      struct SelfDrawStyle
+      {
+        SelfDrawStyle(LibBoard::Board & aboard)
+        {
+          aboard.setPenColorRGBi(60, 60, 60);
+          aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+        }
+      };
 
     public:
 
-      typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
-      typedef ValueType value_type;
-      typedef ptrdiff_t difference_type;
-      typedef ValueType* pointer;
-      typedef ValueType& reference;
-
-      /** 
-       * Constructor.
-       * 
-       * @param p starting point of the SpanIterator
-       * @param aDim specifies the dimension along which the iterator will iterate
-       * @param aMap pointer to the imageContainer
-       */    SpanIterator( const Point & p ,
-			   const Dimension aDim ,
-			   ImageContainerBySTLVector<Domain,ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
-      {
-	myPos = aMap->linearized(p);
-
-	//We compute the myShift quantity
-	myShift = 1;
-	for (unsigned int k=0; k < myDimension  ; k++)
-	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
-      }
-
-
-      /** 
-       * operator* on SpanIterators.
-       * 
-       * @return the value associated to the current position.
-       */      
-      const ValueType & operator*() const
-      {
-	return (*myMap)[ myPos ];
-      }
 
       /**
-       * Operator ==.
-       *
-       * @return true if this and it are equals.
+       * Draw the image on a LibBoard board.
+       * @param board the output board where the object is drawn.
+       * @param minValue the minimum value contained in the image (used in the colormap settings)
+       * @param maxValue the maximum value contained in the image (used in the colormap settings)
+       * @tparam FunctorStyle a Functor to specialize the Board style
+       * @tparam Coloramp any models of CColormap.
        */
-      bool operator== ( const SpanIterator &it ) const
-      {
-	return ( myPos == it.myPos );
-      }
+      template<typename FunctorStyle, typename Colormap>
+      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue) const;
 
       /**
-       * Operator !=
-       *
-       * @return true if this and it are different.
+       * Draw the object on a LibBoard board.
+       * @param board the output board where the object is drawn.
+       * @param minValue the minimum value contained in the image (used in the colormap settings)
+       * @param maxValue the maximum value contained in the image (used in the colormap settings)
+       * @tparam Coloramp any models of CColormap.
        */
-      bool operator!= ( const SpanIterator &it ) const
+      template<typename Colormap>
+      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue ) const
       {
-	return ( myPos != it.myPos );
-
+        selfDraw<SelfDrawStyle, Colormap>(board, minValue, maxValue);
       }
 
-      /**
-       * Implements the next() method: we move on step forward.
-       *
-       **/
-      void next()
-      {
-	myPos += myShift;
-      }
-
-      /**
-       * Implements the prev() method: we move on step backward.
-       *
-       **/
-      void prev()
-      {
-	ASSERT((long int) myPos-myShift>0);
-	myPos -= myShift;
-      }
-
-      /**
-       * Operator ++ (++it)
-       *
-       */
-      SpanIterator &operator++()
-      {
-	this->next();
-	return *this;
-      }
-
-      /**
-       * Operator ++ (it++)
-       *
-       */
-      SpanIterator &operator++ ( int )
-      {
-	SpanIterator tmp = *this;
-	++*this;
-	return tmp;
-      }
-
-      /**
-       * Operator -- (--it)
-       *
-       */
-      SpanIterator &operator--()
-      {
-	this->prev();
-	return *this;
-      }
-
-      /**
-       * Operator -- (it--)
-       *
-       */
-      SpanIterator &operator-- ( int )
-      {
-	SpanIterator tmp = *this;
-	--*this;
-	return tmp;
-      }
-
+      // ----------------------- Serializarion methods ------------------------------------
     private:
-      ///Current Point in the domain
-      Size myPos;
 
-      /// Copy of the underlying images
-      ImageContainerBySTLVector<Domain,ValueType> *myMap;
-
-      ///Dimension on which the iterator must iterate
-      Dimension  myDimension;
-
-      ///Padding variable
-      Size myShift;
-
-    };
-
-    /** 
-     * Set a value on an Image at a position specified by an SpanIterator.
-     * 
-     * @param it  iterator on the location.
-     * @param aValue the value.
-     */     
-    void setValue(SpanIterator &it, const ValueType &aValue)
-    {
-      it.setValue(aValue);
-    }
-
-
-    /** 
-     * Create a begin() SpanIterator at a given position in a given 
-     * direction.
-     * 
-     * @param aPoint the starting point of the SpanIterator.
-     * @param aDimension the dimension on which the iterator iterates.
-     * 
-     * @return a SpanIterator
-     */
-    SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
-    {
-      return SpanIterator ( aPoint, aDimension, this);
-    }
-
-    /** 
-     * Create an end() SpanIterator at a given position in a given 
-     * direction.
-     * 
-     * @param aPoint a point belonging to the current image dimension (not 
-     * necessarily the point used in the span_begin() method.
-     * @param aDimension the dimension on which the iterator iterates.
-     * 
-     * @return a SpanIterator
-     */
-    SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
-    {
-      Point tmp = aPoint;
-      tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
-	myUpperBound.at( aDimension ) - 
-	myLowerBound.at( aDimension ) + 1;
-      return SpanIterator( tmp, aDimension, this);
-    }
-
-    /** 
-     * Returns the value of the image at a given SpanIterator position.
-     *
-     * @param it position given by a SpanIterator.
-     * @return an object of type ValueType.
-     */
-    ValueType operator()(const SpanIterator &it)
-    {
-      return (*it);
-    };
-
-
-
-  private:
-
-    /**
-     *  Linearized a point and return the vector position.
-     * @param aPoint the point to convert to an index
-     * @return the index of @param aPoint in the container
-     */
-    Size linearized(const Point &aPoint) const;
-
-    Point myLowerBound;
-    Point myUpperBound;
-    
-    // ----------------------- LibBoard methods --------------------------------------
-    
-  private:
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(LibBoard::Board & aboard)
+      friend class boost::serialization::access;
+      template<class Archive>
+      void serialize(Archive & ar, const unsigned int version)
       {
-	aboard.setPenColorRGBi(60,60,60);
-	aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+        using boost::serialization::make_nvp;
+        ar & make_nvp("UpperBound", myUpperBound);
+        ar & make_nvp("LowerBound", myLowerBound);
+        ar & make_nvp("Image", boost::serialization::base_object< std::vector< ValueType > >(*this));
       }
-    };
-    
-  public:
-    
-
-    /**
-     * Draw the image on a LibBoard board.
-     * @param board the output board where the object is drawn.
-     * @param minValue the minimum value contained in the image (used in the colormap settings)
-     * @param maxValue the maximum value contained in the image (used in the colormap settings)
-     * @tparam FunctorStyle a Functor to specialize the Board style
-     * @tparam Coloramp any models of CColormap.
-     */
-    template<typename FunctorStyle, typename Colormap>
-    void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue) const;
-
-    /**
-     * Draw the object on a LibBoard board.
-     * @param board the output board where the object is drawn.
-     * @param minValue the minimum value contained in the image (used in the colormap settings)
-     * @param maxValue the maximum value contained in the image (used in the colormap settings)
-     * @tparam Coloramp any models of CColormap.
-     */
-    template<typename Colormap>
-    void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue ) const
-    {
-      selfDraw<SelfDrawStyle,Colormap>(board,minValue,maxValue);
-    }
-
-     // ----------------------- Serializarion methods ------------------------------------
-  private:
-
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-      using boost::serialization::make_nvp;
-      ar & make_nvp("UpperBound",myUpperBound);
-      ar & make_nvp("LowerBound",myLowerBound);
-      ar & make_nvp("Image",boost::serialization::base_object< std::vector< ValueType > >(*this));    
-    }
 
   };
 
@@ -446,7 +447,7 @@ namespace DGtal
   template <typename Domain, typename V>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain,V> & object )
+  operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain, V> & object )
   {
     object.selfDisplay ( out );
     return out;
