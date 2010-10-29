@@ -95,6 +95,26 @@ namespace DGtal
         // TODO: check the validity of the permutation ?
       }
 #endif
+      HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
+          const TPoint &upper,
+          std::vector<unsigned int> &permutation)
+          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+          myUsePermutation( true )
+      {
+        ASSERT( lower <= upper );
+        ASSERT( lower <= p && p <= upper );
+        ASSERT( permutation.size() <= TPoint::Dimension );
+        myPermutation.reserve( permutation.size() );
+				for ( std::vector<unsigned int>::const_iterator it = permutation.begin();
+            it != permutation.end(); ++it )
+        {
+          ASSERT( *it <= TPoint::Dimension );
+          myPermutation.push_back( *it );
+        }
+
+        // TODO: check the validity of the permutation ?
+      }
+
 
       const TPoint & operator*() const
       {

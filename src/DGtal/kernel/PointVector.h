@@ -209,6 +209,7 @@ namespace DGtal
        */
       PointVector & operator= ( const PointVector & pv );
 
+			
 #ifdef CPP0X_INITIALIZER_LIST
     /**
      * Partial copy of a given PointVector.
@@ -221,7 +222,18 @@ namespace DGtal
     PointVector& partialCopy (const PointVector & pv, 
 			      std::initializer_list<unsigned int> dimensions);
 #endif
-    
+		/**
+		 * Partial copy of a given PointVector.
+		 *
+		 * @param other the object to copy.
+		 * @param dim the dimensions of v to copy
+		 *        (unsigned int between 0 and N, all differents).
+		 * @return a reference on 'this'.
+		 */
+		PointVector& partialCopy (const PointVector & pv,
+															std::vector<unsigned int> &dimensions);
+
+		
       // ----------------------- Iterator services ------------------------------
     public:
 
