@@ -43,12 +43,9 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/DomainPredicate.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/DGtalBoard.h"
 
-#include "DGtal/geometry/2d/ArithDSS4.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 
@@ -68,7 +65,8 @@ int main(int argc, char **argv)
 
 	typedef int Coordinate;
 	typedef PointVector<2,Coordinate> Point;
-	typedef ArithDSS4<Coordinate> PrimitiveType; 
+	typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
+
   typedef FreemanChain<	HyperRectDomain<SpaceND<2> > > ContourType; 
 
   std::string filename = testPath + "samples/france.fc";

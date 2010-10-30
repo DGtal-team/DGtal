@@ -27,35 +27,23 @@
  */
 
 /**
- * Description of test_arithDSS <p>
- * Aim: simple test of \ref arithDSS, \ref arithDSS4
+ * Description of testArithDSS <p>
+ * Aim: simple test of \ref arithmeticalDSS
  */
 
-#include <cstdio>
-#include <cmath>
-// #include <iostream>
-#include <fstream>
-#include <vector>
-// #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/ArithDSS4.h"
-// #include "DGtal/kernel/SpaceND.h"
-// #include "DGtal/kernel/domains/HyperRectDomain.h"
+
+
 
 #include <iostream>
 #include <iterator>
+#include <cstdio>
+#include <cmath>
+#include <fstream>
+#include <vector>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/DomainPredicate.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/kernel/sets/DigitalSetConverter.h"
-#include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/topology/DomainMetricAdjacency.h"
-#include "DGtal/topology/DomainAdjacency.h"
-#include "DGtal/topology/DigitalTopology.h"
-#include "DGtal/topology/Object.h"
-#include "DGtal/topology/Expander.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/DGtalBoard.h"
 
 using namespace DGtal;
@@ -71,7 +59,7 @@ int main(int argc, char **argv)
 
 	typedef int Coordinate;
 	typedef PointVector<2,Coordinate> Point;
-	typedef ArithDSS4<Coordinate> DSS;
+	typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS;
   
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -134,8 +122,8 @@ int main(int argc, char **argv)
   trace.endBlock();
   
 
-  // Removing step and checks consistency with the adding step.
-  trace.beginBlock("Checks consistency between adding and removing");
+  // Removing step and checking consistency with the adding step.
+  trace.beginBlock("Checking consistency between adding and removing");
 
 		std::deque<DSS > v1,v2;
   	DSS newDSS(contour.at(0),contour.at(1));	 

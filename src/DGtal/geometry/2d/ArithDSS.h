@@ -69,11 +69,12 @@ private:
 
 		//2D point and 2D vector
 	  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+		//does not compile
 		typedef TInteger Integer;
 		typedef DGtal::PointVector<2,Integer> Point;
 		typedef DGtal::PointVector<2,Integer> Vector;
 		
-		typedef typename DGtal::PointVector<2,double> PointD;
+		typedef DGtal::PointVector<2,double> PointD;
 
     // ----------------------- Standard services ------------------------------
 public:
