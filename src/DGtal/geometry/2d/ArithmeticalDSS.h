@@ -45,10 +45,13 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
+
 
 namespace DGtal
 {
+
 
 /////////////////////////////////////////////////////////////////////////////
 // class ArithmeticalDSS
@@ -404,8 +407,7 @@ class StandardBase
 public:
 
 		//2D point and 2D vector
-	  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-		//does not compile
+	  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
 		typedef TInteger Integer;
 		typedef DGtal::PointVector<2,Integer> Point;
 		typedef DGtal::PointVector<2,Integer> Vector;
@@ -470,6 +472,8 @@ class NaiveBase
 {
 /********** to be completed *************/
 };
+
+
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
