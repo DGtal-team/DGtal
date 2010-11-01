@@ -486,11 +486,33 @@ DGtal::PointVector<N, T>::normInfinity() const
   }
   return val;
 }
+// ------------------------- Standard vectors ------------------------------
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
-void
-DGtal::PointVector<N, T>::selfDisplay( std::ostream & out ) const
+DGtal::PointVector<N,T>
+DGtal::PointVector<N,T>::diagonal( Component val )
+{
+  PointVector p;
+  for ( std::size_t i = 0; i < N; ++i )
+    p.myArray[ i ] = val;
+  return p;
+}
+//------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+inline
+DGtal::PointVector<N,T>
+DGtal::PointVector<N,T>::base( DimensionType k, Component val )
+{
+  PointVector p;
+  p.myArray[ k ] = val;
+  return p;
+}
+//------------------------------------------------------------------------------
+template<std::size_t N,typename T>
+inline
+void 
+DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
   for (unsigned int i = 0; i < dimension() ; ++i)
@@ -522,7 +544,9 @@ void
 DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board ) const
 {
   ASSERT(N == 2);
-  board.drawDot((float) myArray[0], (float) myArray[1]);
+  board.drawRectangle( (float) myArray[0] - 0.5f, 
+		       (float) myArray[1] + 0.5f, 1, 1 );      
+  //board.drawDot((float) myArray[0], (float) myArray[1]);
 }
 
 //------------------------------------------------------------------------------

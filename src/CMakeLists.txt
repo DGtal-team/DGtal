@@ -14,6 +14,7 @@ include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/geometry/ModuleSRC.txt)
 include(DGtal/topology/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
+include(DGtal/helpers/ModuleSRC.txt)
 
 include(Board/ModuleSRC.txt)
 
