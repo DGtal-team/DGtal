@@ -90,6 +90,7 @@ namespace DGtal
 				 SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
     typedef typename DigitalTopology::ForegroundAdjacency ForegroundAdjacency;
     typedef typename DigitalTopology::BackgroundAdjacency BackgroundAdjacency;
+    typedef Object<ReverseTopology,DigitalSet> ComplementObject;
     typedef Object<DigitalTopology,SmallSet> SmallObject;
     typedef Object<ReverseTopology,SmallSet> SmallComplementObject;
 

@@ -47,6 +47,7 @@
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -534,6 +535,8 @@ struct MyDrawStyleCustomFillColor : public DrawableWithBoard
   }
 };
 
+using namespace DGtal::Z2i;
+
 /**
  * Example of a test. To be completed.
  *
@@ -542,25 +545,8 @@ bool testSimplePoints2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef SpaceND< 2 > Z2;
-  typedef MetricAdjacency< Z2, 1 > Adj4;
-  typedef MetricAdjacency< Z2, 2 > Adj8;
-  typedef DigitalTopology< Adj4, Adj8 > DT4_8;
-  typedef DigitalTopology< Adj8, Adj4 > DT8_4;
-  typedef Z2::Point Point;
-  typedef HyperRectDomain< Z2 > Domain; 
+  typedef DGtal::Z2i::Point Point;
   typedef Domain::ConstIterator DomainConstIterator; 
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
-  typedef Object<DT4_8, DigitalSet> ObjectType4_8;
-  typedef Object<DT4_8, DigitalSet>::SmallObject SmallObjectType4_8;
-  typedef Object<DT4_8, DigitalSet>::SmallComplementObject SmallComplementObjectType4_8;
-  typedef Object<DT8_4, DigitalSet> ObjectType8_4;
-  typedef Object<DT8_4, DigitalSet>::SmallObject SmallObjectType8_4;
-  typedef Object<DT8_4, DigitalSet>::SmallComplementObject SmallComplementObjectType8_4;
-  Adj4 adj4;
-  Adj8 adj8;
-  DT4_8 dt4_8( adj4, adj8, JORDAN_DT );
-  DT8_4 dt8_4( adj8, adj4, JORDAN_DT );
  
   Point p1( -17, -17 );
   Point p2( 17, 17 );
@@ -574,10 +560,11 @@ bool testSimplePoints2D()
   Shapes<Domain>::addNorm1Ball( shape_set, Point( -8, 8 ), 6 );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, 9 ), 6 );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 15, -2 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 12, -10 ), 4 );
   shape_set.erase( Point( 5, 0 ) );
   shape_set.erase( Point( -1, -2 ) );
-  ObjectType4_8 shape( dt4_8, shape_set );
-  ObjectType8_4 shape2( dt8_4, shape_set );
+  Object4_8 shape( dt4_8, shape_set );
+  Object8_4 shape2( dt8_4, shape_set );
 
   GradientColorMap<int> cmap_grad( 0, 6 );
   cmap_grad.addColor( Color( 128, 128, 255 ) );
