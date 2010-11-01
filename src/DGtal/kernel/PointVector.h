@@ -113,6 +113,7 @@ namespace DGtal
       ///\todo documentation here!
       typedef T Component;
       typedef T Coordinate;
+    typedef std::size_t DimensionType;
 
       // JOL need it in various norm().
       typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
@@ -492,9 +493,23 @@ namespace DGtal
        */
       UnsignedComponent normInfinity() const;
 
+    // ------------------------- Standard vectors ------------------------------
+  public:
 
+    /**
+     * @param val any value.
+     * @return the diagonal vector (val,val, .. val).
+     */
+    static PointVector diagonal( Component val = 1 );
 
-      // ------------------------- Private Datas --------------------------------
+    /**
+     * @param k any number between 0 and Dimension-1.
+     * @param val any value.
+     * @return the [k]-th base vector (0,0, ..., 0, val, 0, ..., 0).
+     */
+    static PointVector base( DimensionType k, Component val = 1 );
+
+      // ------------------------- Private Datas -------------------------------
     private:
 
       struct SelfDrawStyle

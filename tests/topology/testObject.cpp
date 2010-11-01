@@ -31,6 +31,7 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
+#include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
@@ -43,6 +44,9 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
+#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/helpers/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -504,6 +508,167 @@ bool testDraw()
   
 }
 
+struct MyDrawStyleCustomRed : public DrawableWithBoard
+{
+  virtual void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(255,0,0);
+    aboard.setPenColorRGBi(200,0,0);
+    aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+    aboard.setLineWidth( 2 );
+  }
+};
+
+struct MyDrawStyleCustomFillColor : public DrawableWithBoard
+{
+  Color myColor;
+  MyDrawStyleCustomFillColor( const Color & c )
+    : myColor( c )
+  {}
+  virtual void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColor( myColor );
+    aboard.setPenColorRGBi( 0, 0, 0 );
+    aboard.setLineStyle( LibBoard::Shape::SolidStyle );
+    aboard.setLineWidth( 1.0 );
+  }
+};
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testSimplePoints2D()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef SpaceND< 2 > Z2;
+  typedef MetricAdjacency< Z2, 1 > Adj4;
+  typedef MetricAdjacency< Z2, 2 > Adj8;
+  typedef DigitalTopology< Adj4, Adj8 > DT4_8;
+  typedef DigitalTopology< Adj8, Adj4 > DT8_4;
+  typedef Z2::Point Point;
+  typedef HyperRectDomain< Z2 > Domain; 
+  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT4_8, DigitalSet> ObjectType4_8;
+  typedef Object<DT4_8, DigitalSet>::SmallObject SmallObjectType4_8;
+  typedef Object<DT4_8, DigitalSet>::SmallComplementObject SmallComplementObjectType4_8;
+  typedef Object<DT8_4, DigitalSet> ObjectType8_4;
+  typedef Object<DT8_4, DigitalSet>::SmallObject SmallObjectType8_4;
+  typedef Object<DT8_4, DigitalSet>::SmallComplementObject SmallComplementObjectType8_4;
+  Adj4 adj4;
+  Adj8 adj8;
+  DT4_8 dt4_8( adj4, adj8, JORDAN_DT );
+  DT8_4 dt8_4( adj8, adj4, JORDAN_DT );
+ 
+  Point p1( -17, -17 );
+  Point p2( 17, 17 );
+  Domain domain( p1, p2 );
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, -8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 10, 8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 3, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, -3 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -8, 8 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, 9 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 15, -2 ), 6 );
+  shape_set.erase( Point( 5, 0 ) );
+  shape_set.erase( Point( -1, -2 ) );
+  ObjectType4_8 shape( dt4_8, shape_set );
+  ObjectType8_4 shape2( dt8_4, shape_set );
+
+  GradientColorMap<int> cmap_grad( 0, 6 );
+  cmap_grad.addColor( Color( 128, 128, 255 ) );
+  cmap_grad.addColor( Color( 255, 255, 128 ) );
+  //cmap_grad.addColor( Color( 220, 130, 25 ) );
+  DGtalBoard board;
+  board.setUnit(Board::UCentimeter);
+  board << DrawDomainGrid()
+	<< domain;
+  DGtalBoard board2;
+  board2.setUnit(Board::UCentimeter);
+  board2 << DrawDomainPaving()
+	 << domain;
+
+  // Greedy thinning.
+  DGtal::uint64_t nb_simple;
+  trace.beginBlock ( "Greedy homotopic thinning ..." );
+  int layer = 0;
+  do 
+    {
+      DigitalSet & S = shape.pointSet();
+      std::queue<DigitalSet::Iterator> Q;
+      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+	if ( shape.isSimple( *it ) )
+	  Q.push( it );
+      nb_simple = 0;
+      while ( ! Q.empty() )
+	{
+	  DigitalSet::Iterator it = Q.front();
+	  Q.pop();
+	  if ( shape.isSimple( *it ) )
+	    {
+	      board << CustomStyle( it->styleName(), 
+	       			    new MyDrawStyleCustomFillColor
+	       			    ( cmap_grad( layer ) ) )
+		    << *it;
+	      S.erase( *it );
+	      ++nb_simple;
+	    }
+	}
+      ++layer;
+    }
+  while ( nb_simple != 0 );
+  trace.endBlock();
+
+  // Greedy thinning.
+  trace.beginBlock ( "Greedy homotopic thinning ..." );
+  layer = 0;
+  do 
+    {
+      DigitalSet & S = shape2.pointSet();
+      std::queue<DigitalSet::Iterator> Q;
+      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+	if ( shape2.isSimple( *it ) )
+	  Q.push( it );
+      nb_simple = 0;
+      while ( ! Q.empty() )
+	{
+	  DigitalSet::Iterator it = Q.front();
+	  Q.pop();
+	  if ( shape2.isSimple( *it ) )
+	    {
+	      board2 << CustomStyle( it->styleName(), 
+	      			     new MyDrawStyleCustomFillColor
+				     ( cmap_grad( layer ) ) )
+		     << *it;
+	      S.erase( *it );
+	      ++nb_simple;
+	    }
+	}
+      ++layer;
+    }
+  while ( nb_simple != 0 );
+  trace.endBlock();
+  
+  board	<< CustomStyle( shape.styleName(), new MyDrawStyleCustomRed )
+	<< shape;
+  board.saveSVG( "shape-thinning-4-8.svg");
+  board.clear();
+
+  board2 << CustomStyle( shape2.styleName(), new MyDrawStyleCustomRed )
+	 << shape2;
+  board2.saveSVG( "shape-thinning-8-4.svg");
+  board2.clear();
+  
+  return nbok == nb;
+}
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -517,7 +682,8 @@ int main( int argc, char** argv )
 
   bool res = testObject() && 
     testObject3D() && testDraw()
-    && testSimplePoints3D();
+    && testSimplePoints3D()
+    && testSimplePoints2D();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
