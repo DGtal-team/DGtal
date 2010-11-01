@@ -2,7 +2,6 @@
 ##
 
 
-SET(DGTAL_SRC ${DGTAL_SRC} )
-
-#	DGtal/helpers/Shapes )
+SET(DGTAL_SRC ${DGTAL_SRC}
+	      DGtal/helpers/StdDefs )
 
