@@ -1,6 +1,6 @@
 SET(DGTAL_EXO_SRC
-  a_helloworld
-  b_pointvectors)
+  a_imageinit
+  b_simpleDT)
 
 FOREACH(FILE ${DGTAL_EXO_SRC})
   add_executable(${FILE} ${FILE})

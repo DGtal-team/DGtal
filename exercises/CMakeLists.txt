@@ -33,3 +33,4 @@ IF(DGtal_FOUND)
 ENDIF(DGtal_FOUND)
 
 ADD_SUBDIRECTORY(1_basic_setup)
+ADD_SUBDIRECTORY(2_basic_images)
