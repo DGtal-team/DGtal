@@ -70,11 +70,11 @@ bool testGenericWriterReader()
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
   
+#if (!defined(APPLE))
   GenericWriter<Point>::exportTXT("export-generic.txt",a);
   GenericWriter<Point>::exportBIN("export-generic.bin",a);
   GenericWriter<Point>::exportXML("export-generic.xml",a);
-
-	
+#endif	
   /* Point c = GenericReader<Point>::importTXT("export-generic.txt");
   Point d = GenericReader<Point>::importBIN("export-generic.bin");
   Point e = GenericReader<Point>::importXML("export-generic.xml");
