@@ -56,8 +56,8 @@
  * Default Constructor.
  * The object is not valid.
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator()
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator()
   : myFc( 0 ), myPos( 0 )
 {
 }
@@ -69,8 +69,8 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator()
  * @param chain a Freeman chain,
  * @param n the position in [chain] (within 0 and chain.size()-1).
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator
 ( const FreemanChain & aChain, unsigned int n )
   : myFc( &aChain ), myPos( 0 )
 {
@@ -93,8 +93,8 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator
  * Copy constructor.
  * @param other the iterator to clone.
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator
 ( const ConstIterator & aOther )
   : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
 {
@@ -105,9 +105,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::ConstIterator
  * @param other the iterator to copy.
  * @return a reference on 'this'.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D>::ConstIterator& 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator=
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator& 
+DGtal::FreemanChain<TInteger>::ConstIterator::operator=
 ( const ConstIterator & other )
 {
   if ( this != &other )
@@ -122,8 +122,8 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator=
 /**
  * Destructor. Does nothing.
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::ConstIterator::~ConstIterator()
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::~ConstIterator()
 {
 }
     
@@ -132,9 +132,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::~ConstIterator()
 /**
  * @return the current coordinates.
  */
-template <typename Domain2D>
-typename Domain2D::Point 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator*() const
+template <typename TInteger>
+typename DGtal::PointVector<2,TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::operator*() const
 {
   return myXY;
 }
@@ -142,9 +142,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator*() const
 /**
  * @return the current coordinates.
  */
-template <typename Domain2D>
-typename Domain2D::Point
-DGtal::FreemanChain<Domain2D>::ConstIterator::get() const
+template <typename TInteger>
+typename DGtal::PointVector<2,TInteger>
+DGtal::FreemanChain<TInteger>::ConstIterator::get() const
 {
   return myXY;
 }
@@ -153,9 +153,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::get() const
  * Pre-increment.
  * Goes to the next point on the chain.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D>::ConstIterator& 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator++()
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator& 
+DGtal::FreemanChain<TInteger>::ConstIterator::operator++()
 {
   this->next();
   return *this;
@@ -164,9 +164,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator++()
 /**
  * Goes to the next point on the chain.
  */
-template <typename Domain2D>
+template <typename TInteger>
 void 
-DGtal::FreemanChain<Domain2D>::ConstIterator::next()
+DGtal::FreemanChain<TInteger>::ConstIterator::next()
 {
   if ( myPos < myFc->chain.size() )
     {
@@ -184,9 +184,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::next()
 /**
  * Goes to the previous point on the chain as if on a loop.
  */
-template <typename Domain2D>
+template <typename TInteger>
 void
-DGtal::FreemanChain<Domain2D>::ConstIterator::nextInLoop()
+DGtal::FreemanChain<TInteger>::ConstIterator::nextInLoop()
 {
   if ( myPos < myFc->chain.size() )
     {
@@ -205,9 +205,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::nextInLoop()
 /**
  * @return the current position (as an index in the Freeman chain).
  */
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int
-DGtal::FreemanChain<Domain2D>::ConstIterator::getPosition() const
+DGtal::FreemanChain<TInteger>::ConstIterator::getPosition() const
 {
   return myPos;
 }
@@ -215,9 +215,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::getPosition() const
 /**
  * @return the associated Freeman chain.
  */
-template <typename Domain2D>
-const DGtal::FreemanChain<Domain2D>* 
-DGtal::FreemanChain<Domain2D>::ConstIterator::getChain() const
+template <typename TInteger>
+const DGtal::FreemanChain<TInteger>* 
+DGtal::FreemanChain<TInteger>::ConstIterator::getChain() const
 {
   return myFc;
 }
@@ -226,9 +226,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::getChain() const
  * @return the current Freeman code (specifies the movement to
  * the next point).
  */
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int 
-DGtal::FreemanChain<Domain2D>::ConstIterator::getCode() const
+DGtal::FreemanChain<TInteger>::ConstIterator::getCode() const
 {
   ASSERT( myFc != 0 );
   return myFc->code( myPos );
@@ -238,9 +238,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::getCode() const
  * Pre-decrement.
  * Goes to the previous point on the chain.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D>::ConstIterator& 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator--()
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator& 
+DGtal::FreemanChain<TInteger>::ConstIterator::operator--()
 {
   this->previous();
   return *this;
@@ -249,9 +249,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator--()
 /**
  * Goes to the previous point on the chain if possible.
  */
-template <typename Domain2D>
+template <typename TInteger>
 void
-DGtal::FreemanChain<Domain2D>::ConstIterator::previous()
+DGtal::FreemanChain<TInteger>::ConstIterator::previous()
 {
   if ( myPos > 0 )
     {
@@ -269,9 +269,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::previous()
 /**
  * Goes to the previous point on the chain as if on a loop.
  */
-template <typename Domain2D>
+template <typename TInteger>
 void
-DGtal::FreemanChain<Domain2D>::ConstIterator::previousInLoop()
+DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
 {
   if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
   else --myPos;
@@ -293,9 +293,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::previousInLoop()
  *
  * @return 'true' if their current positions coincide.
  */
-template <typename Domain2D>
+template <typename TInteger>
 bool 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator==
+DGtal::FreemanChain<TInteger>::ConstIterator::operator==
 ( const ConstIterator & aOther ) const
 {
   ASSERT( myFc == aOther.myFc );
@@ -310,9 +310,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator==
  *
  * @return 'true' if their current positions differs.
  */
-template <typename Domain2D>
+template <typename TInteger>
 bool 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator!=
+DGtal::FreemanChain<TInteger>::ConstIterator::operator!=
 ( const ConstIterator & aOther ) const
 {
   ASSERT( myFc == aOther.myFc );
@@ -329,9 +329,9 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator!=
  * @return 'true' if the current position of 'this' is before
  * the current position of [aOther].
  */
-template <typename Domain2D>
+template <typename TInteger>
 bool 
-DGtal::FreemanChain<Domain2D>::ConstIterator::operator<
+DGtal::FreemanChain<TInteger>::ConstIterator::operator<
 ( const ConstIterator & aOther ) const
 {
 
@@ -351,8 +351,8 @@ DGtal::FreemanChain<Domain2D>::ConstIterator::operator<
  * @param y the y-coordinate of the first point.
  */
 
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::FreemanChain( const std::string & s, int x, int y )
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
   : chain( s ), x0( x ), y0( y )
 {
 }
@@ -362,17 +362,17 @@ DGtal::FreemanChain<Domain2D>::FreemanChain( const std::string & s, int x, int y
  * Constructor.
  * @param in any input stream,
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::FreemanChain(std::istream & in ){
-  DGtal::FreemanChain<Domain2D>::read(in, *this);
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
+  DGtal::FreemanChain<TInteger>::read(in, *this);
 }
 
 /**
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Domain2D>
-DGtal::FreemanChain<Domain2D>::FreemanChain( const FreemanChain<Domain2D> & aOther )
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
   : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 )
 {
 }
@@ -382,9 +382,9 @@ DGtal::FreemanChain<Domain2D>::FreemanChain( const FreemanChain<Domain2D> & aOth
  * @param aOther the object to copy.
  * @return a reference on 'this'.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D> & 
-DGtal::FreemanChain<Domain2D>::operator=( const FreemanChain<Domain2D> & aOther )
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger> & 
+DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther )
 {
   if ( this != &aOther )
     {
@@ -395,15 +395,15 @@ DGtal::FreemanChain<Domain2D>::operator=( const FreemanChain<Domain2D> & aOther 
   return *this;
 }
 
-template <typename Domain2D>
+template <typename TInteger>
 template<typename Functor>
 inline
 void 
-DGtal::FreemanChain<Domain2D>::selfDraw(LibBoard::Board & aBoard) const
+DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
 {
   Functor applystyle(aBoard);
-  vector<FreemanChain<Domain2D>::PointI2> aVContour;
-  FreemanChain<Domain2D>::getContourPoints(*this, aVContour);
+  vector<FreemanChain<TInteger>::PointI2> aVContour;
+  FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   int minX, minY, maxX, maxY;
   this->computeBoundingBox(minX, minY, maxX, maxY);
   aBoard.drawRectangle( minX-10, minY-10, 
@@ -423,31 +423,31 @@ DGtal::FreemanChain<Domain2D>::selfDraw(LibBoard::Board & aBoard) const
  * Iterator service.
  * @return an iterator pointing on the first point of the chain.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D>::ConstIterator 
-DGtal::FreemanChain<Domain2D>::begin() const
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator 
+DGtal::FreemanChain<TInteger>::begin() const
 {
-  return FreemanChain<Domain2D>::ConstIterator( *this, 0 );
+  return FreemanChain<TInteger>::ConstIterator( *this, 0 );
 }
 
 /**
  * Iterator service.
  * @return an iterator pointing after the last point of the chain.
  */
-template <typename Domain2D>
-typename DGtal::FreemanChain<Domain2D>::ConstIterator 
-DGtal::FreemanChain<Domain2D>::end() const
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator 
+DGtal::FreemanChain<TInteger>::end() const
 {
-  return FreemanChain<Domain2D>::ConstIterator( *this, chain.size() );
+  return FreemanChain<TInteger>::ConstIterator( *this, chain.size() );
 }
 
 
 /**
  * @return the length of the Freeman chain code.
  */
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int
-DGtal::FreemanChain<Domain2D>::size() const
+DGtal::FreemanChain<TInteger>::size() const
 {
   return chain.size();
 }
@@ -458,9 +458,9 @@ DGtal::FreemanChain<Domain2D>::size() const
  * @param aPos a position in the chain code.
  * @return the code at position [aPos].
  */ 
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int
-DGtal::FreemanChain<Domain2D>::code( unsigned int aPos ) const
+DGtal::FreemanChain<TInteger>::code( unsigned int aPos ) const
 {
   ASSERT( aPos < chain.size() );
   return chain[ aPos ] - '0';
@@ -470,9 +470,9 @@ DGtal::FreemanChain<Domain2D>::code( unsigned int aPos ) const
  * @param pos a position in the chain code.
  * @return the next position.
  */ 
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int
-DGtal::FreemanChain<Domain2D>::next( unsigned int aPos ) const
+DGtal::FreemanChain<TInteger>::next( unsigned int aPos ) const
 {
   ++aPos;
   if ( aPos >= chain.size() )
@@ -484,9 +484,9 @@ DGtal::FreemanChain<Domain2D>::next( unsigned int aPos ) const
  * @param pos a position in the chain code.
  * @return the previous position.
  */ 
-template <typename Domain2D>
+template <typename TInteger>
 unsigned int
-DGtal::FreemanChain<Domain2D>::previous( unsigned int aPos ) const
+DGtal::FreemanChain<TInteger>::previous( unsigned int aPos ) const
 {
   if ( aPos == 0 ) aPos = chain.size() - 1;
   else --aPos;
@@ -504,10 +504,10 @@ DGtal::FreemanChain<Domain2D>::previous( unsigned int aPos ) const
  * @param dy (returns) the x-displacement.
  * @param aCode the code.
  */
-template <typename Domain2D>
+template <typename TInteger>
 INLINE
 void
-DGtal::FreemanChain<Domain2D>::displacement( int & dx, int & dy, unsigned int aCode )
+DGtal::FreemanChain<TInteger>::displacement( int & dx, int & dy, unsigned int aCode )
 {
   switch ( aCode ) 
     {
@@ -522,10 +522,10 @@ DGtal::FreemanChain<Domain2D>::displacement( int & dx, int & dy, unsigned int aC
  * @param aCode a Freeman code (between 0-3).
  * Returns the displacement vector of the Freeman code.
  */
-template <typename Domain2D>
+template <typename TInteger>
 INLINE
-typename Domain2D::Point
-DGtal::FreemanChain<Domain2D>::displacement( unsigned int aCode )
+typename DGtal::PointVector<2,TInteger>
+DGtal::FreemanChain<TInteger>::displacement( unsigned int aCode )
 {
   
 #ifdef CPP0X_INITIALIZER_LIST  
@@ -561,10 +561,10 @@ DGtal::FreemanChain<Domain2D>::displacement( unsigned int aCode )
  *
  * @return the turned code.
  */
-template <typename Domain2D>
+template <typename TInteger>
 INLINE
 unsigned int
-DGtal::FreemanChain<Domain2D>::turnedCode( unsigned int aCode, bool ccw )
+DGtal::FreemanChain<TInteger>::turnedCode( unsigned int aCode, bool ccw )
 {
   if ( ccw ) return ( aCode + 1 ) & 0x3;
   else       return ( aCode - 1 ) & 0x3;
@@ -572,9 +572,9 @@ DGtal::FreemanChain<Domain2D>::turnedCode( unsigned int aCode, bool ccw )
 
 
 
-template <typename Domain2D>
+template <typename TInteger>
 void 
-DGtal::FreemanChain<Domain2D>::movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
+DGtal::FreemanChain<TInteger>::movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
   switch ( aCode )
     {
     case 0: aPoint.at(0)++; break;
@@ -596,11 +596,11 @@ DGtal::FreemanChain<Domain2D>::movePointFromFC(PointI2 & aPoint, unsigned int aC
  * @param object the object of class 'FreemanChain' to write.
  * @return the output stream after the writing.
  */
-template <typename Domain2D>
+template <typename TInteger>
 INLINE
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const FreemanChain<Domain2D> & aObject )
+                  const FreemanChain<TInteger> & aObject )
 {
     aObject.selfDisplay ( out );
     return out;
