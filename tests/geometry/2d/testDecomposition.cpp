@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 	typedef PointVector<2,Coordinate> Point;
 	typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
 
-  typedef FreemanChain<	HyperRectDomain<SpaceND<2> > > ContourType; 
+  typedef FreemanChain<Coordinate> ContourType; 
 
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;

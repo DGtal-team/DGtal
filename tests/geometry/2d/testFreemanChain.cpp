@@ -65,7 +65,7 @@ bool testFreemanChain(stringstream & ss)
   
   trace.beginBlock ( "Testing FreemanChain " );
   
-  FreemanChain<Domain2D> fc(ss);
+  FreemanChain<int> fc(ss);
 
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << ss.str() << endl; 
@@ -87,7 +87,7 @@ bool testFreemanChain(stringstream & ss)
 	       << "Test chain bounding box" << std::endl;
   
   
-  vector<FreemanChain<Domain2D>::PointI2> aContourPointVector; 
+  vector<FreemanChain<int>::PointI2> aContourPointVector; 
   fc.getContourPoints(fc, aContourPointVector);
   trace.info() << "List of point: ";
   for (int i =0; i <aContourPointVector.size(); i++){
@@ -113,7 +113,7 @@ bool testDisplayFreemanChain(const string &file)
 {
   fstream fst;
   fst.open (file.c_str(), ios::in);
-  FreemanChain<Domain2D> fc(fst);  
+  FreemanChain<int> fc(fst);  
   LibBoard::Board aBoard;
   aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);

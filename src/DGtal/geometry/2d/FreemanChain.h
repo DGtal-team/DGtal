@@ -66,14 +66,21 @@ namespace DGtal
    * counterclockwise boundary of the shape.
    */
 
-  template <typename Domain2D>
+  template <typename TInteger>
   class FreemanChain
   {
 
   public :
-//    typedef PointVector<2,int> PointI2;
-    typedef typename Domain2D::Point PointI2;
 
+
+    //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    typedef TInteger Integer;
+    typedef PointVector<2,Integer> PointI2;
+
+
+
+    
+    
     // ------------------------- iterator ------------------------------
   public:
     /**
@@ -430,16 +437,16 @@ namespace DGtal
   aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
   int dx0, dy0;
   int dx1, dy1;
-  FreemanChain<Domain2D>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
+  FreemanChain<TInteger>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
   int turn = ccw ? 1 : 3;
-  FreemanChain<Domain2D>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
+  FreemanChain<TInteger>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
   dx0 += dx1;
   dy0 += dy1;
   aInnerChain.x0 = dx0 > 0 ? aOuterChain.x0 : aOuterChain.x0 - 1;
   aInnerChain.y0 = dy0 > 0 ? aOuterChain.y0 : aOuterChain.y0 - 1;
 
-  FreemanChain<Domain2D>::ConstIterator it_begin = aOuterChain.begin();
-  FreemanChain<Domain2D>::ConstIterator it = it_begin;
+  FreemanChain<TInteger>::ConstIterator it_begin = aOuterChain.begin();
+  FreemanChain<TInteger>::ConstIterator it = it_begin;
   it.next();
   for ( unsigned int i = 0; i < nb; ++i )
     {
@@ -585,8 +592,8 @@ namespace DGtal
   aC2clean.reserve( nb );
   aClean2c.reserve( nb );
   c2cleanTMP.reserve( nb );
-  FreemanChain<Domain2D>::ConstIterator it = c.begin();
-  FreemanChain<Domain2D>::ConstIterator itn = c.begin(); itn.nextInLoop();
+  FreemanChain<TInteger>::ConstIterator it = c.begin();
+  FreemanChain<TInteger>::ConstIterator itn = c.begin(); itn.nextInLoop();
   // Find a consistent starting point.
   unsigned int n;
   unsigned int size_spike = 0;
@@ -638,7 +645,7 @@ namespace DGtal
       return size_spike == 0;
     }
   // Loops over all letters.
-  FreemanChain<Domain2D>::ConstIterator it_begin = it;
+  FreemanChain<TInteger>::ConstIterator it_begin = it;
   deque<unsigned int> clean_code;
   deque<unsigned int> clean_idx;
   vector<unsigned int> begin_outer_spike;
@@ -811,7 +818,7 @@ namespace DGtal
 // 			   unsigned int h, unsigned int v,
 // 			   int x0, int y0 ){
 //       if ( ( h == 0 ) || ( v == 0 ) ) return false;
-//       FreemanChain<Domain2D>::ConstIterator it = c.begin();
+//       FreemanChain<TInteger>::ConstIterator it = c.begin();
 //   unsigned int j = 0;
 //   unsigned int nb = c.chain.size();
 //   if ( nb == 0 ) return false;
@@ -898,7 +905,7 @@ namespace DGtal
      */
     static void getContourPoints(const FreemanChain & fc, std::vector<PointI2> & aVContour){
       aVContour.clear();
-      for ( FreemanChain<Domain2D>::ConstIterator it = fc.begin();
+      for ( FreemanChain<TInteger>::ConstIterator it = fc.begin();
 	    it != fc.end();
 	    ++it )
 	{
@@ -1006,7 +1013,7 @@ namespace DGtal
       
         min_x = max_x = x0;
   min_y = max_y = y0;
-  for ( FreemanChain<Domain2D>::ConstIterator it = begin();
+  for ( FreemanChain<TInteger>::ConstIterator it = begin();
 	it != end();
 	++it )
     {
@@ -1040,8 +1047,8 @@ namespace DGtal
     //BK
     FreemanChain::ConstIterator
     findQuadrantChange( OrderedAlphabet & A ) const{
-        DGtal::FreemanChain<Domain2D>::ConstIterator it = begin();
-  DGtal::FreemanChain<Domain2D>::ConstIterator it_end = end();
+        DGtal::FreemanChain<TInteger>::ConstIterator it = begin();
+  DGtal::FreemanChain<TInteger>::ConstIterator it_end = end();
   // find first letters a and b.
   unsigned int code1 = it.getCode();
   it.next();
@@ -1110,8 +1117,8 @@ namespace DGtal
     //BK  
     FreemanChain::ConstIterator
     findQuadrantChange4( OrderedAlphabet & A ) const{
-        FreemanChain<Domain2D>::ConstIterator it = begin();
-  FreemanChain<Domain2D>::ConstIterator it_end = end();
+        FreemanChain<TInteger>::ConstIterator it = begin();
+  FreemanChain<TInteger>::ConstIterator it_end = end();
   // find first letters a and b.
   uint code1 = it.getCode();
   it.next();
@@ -1177,9 +1184,9 @@ namespace DGtal
      * is open or invalid.
      */
     int isClosed() const{
-        FreemanChain<Domain2D>::ConstIterator it = this->begin();
-  FreemanChain<Domain2D>::ConstIterator it_end = this->end();
-  FreemanChain<Domain2D>::ConstIterator it_suiv = it;
+        FreemanChain<TInteger>::ConstIterator it = this->begin();
+  FreemanChain<TInteger>::ConstIterator it_end = this->end();
+  FreemanChain<TInteger>::ConstIterator it_suiv = it;
   PointI2 spos = *it;
   int nb_ccw_turns = 0;
   while ( it != it_end )
@@ -1238,10 +1245,11 @@ namespace DGtal
       Draw the object on a LibBoard board
       @param board the output board where the object is drawn.
     */
+    
     void selfDraw(LibBoard::Board & board ) const
     {
       selfDraw<SelfDrawStyle>(board);
-    }
+    };
     
 
     
@@ -1313,9 +1321,9 @@ namespace DGtal
    * @param object the object of class 'FreemanChain' to write.
    * @return the output stream after the writing.
    */
-  template<typename Domain2D>
+  template<typename TInteger>
   std::ostream&
-  operator<< ( std::ostream & out, const FreemanChain<Domain2D> & object );
+  operator<< ( std::ostream & out, const FreemanChain<TInteger> & object );
   
   
 } // namespace DGtal
