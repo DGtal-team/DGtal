@@ -101,7 +101,7 @@ bool testDistanceTransformation()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
+  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -178,7 +178,7 @@ bool testDistanceTransformationBorder()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
+  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -202,7 +202,7 @@ bool testDistanceTransformationBorder()
   {
     for (unsigned int x = 0; x < 33; x++)
     {
-			std::cout << std::setw(4) << result(it) << " ";
+      std::cout << std::setw(4) << result(it) << " ";
       ++it;
     }
     std::cout << std::endl;
@@ -255,7 +255,7 @@ bool testDistanceTransformation3D()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
+  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -303,7 +303,7 @@ bool testTypeValidity()
   Image image ( a, b );
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
+  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
   //No problem should be reported on the std:cerr.
@@ -348,12 +348,15 @@ bool testChessboard()
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
   typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 0> L_infty;
+  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 1> L_1;
 
   DistanceTransformation<Image, ImageLong, L_infty> dt;
+  DistanceTransformation<Image, ImageLong, L_1> dt1;
 
   dt.checkTypesValidity ( image );
 
   ImageLong result = dt.compute ( image );
+  ImageLong result1 = dt1.compute ( image );
 
   long int maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
@@ -363,21 +366,31 @@ bool testChessboard()
   ImageLong::ConstIterator it = result.begin();
 
   trace.warning() << result << "MaxV = " << maxv << endl;
-	//We display the values on a 2D slice
-	for (unsigned int y = 0; y < 16; y++)
-	{
-		for (unsigned int x = 0; x < 16; x++)
-		{
-			Point p(x, y);
-			std::cout << std::setw(4)<< result(p) << " ";
-		}
-		std::cout << std::endl;
-	}
+  //We display the values on a 2D slice
+  for (unsigned int y = 0; y < 16; y++)
+  {
+    for (unsigned int x = 0; x < 16; x++)
+    {
+      Point p(x, y);
+      std::cout << std::setw(4) << result(p) << " ";
+    }
+    std::cout << std::endl;
+  }
 
   DGtalBoard board;
-	board.setUnit ( LibBoard::Board::UCentimeter );
+  board.setUnit ( LibBoard::Board::UCentimeter );
   result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-linfty.svg" );
+
+
+	maxv = 0;
+  for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+
+  board.clear();
+  result1.selfDraw<Hue> ( board, 0, maxv + 1);
+  board.saveSVG ( "image-DT-l1.svg" );
 
 
   trace.info() << result << endl;
