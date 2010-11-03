@@ -73,7 +73,7 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   myUpperBoundCopy = aImage.upperBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
 
-  myInfinity  = myMetric.power(myExtent.normInfinity() + 1);
+  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::staticDimension) * myExtent.normInfinity() + 1);
 
   O output ( myLowerBoundCopy, myUpperBoundCopy );
   O swap ( myLowerBoundCopy, myUpperBoundCopy );
@@ -82,17 +82,9 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   //First step
   computeFirstStep ( aImage, output, predicate );
 
-  typename		O::ConstIterator it = output.begin();
-  for (unsigned int y = 0; y < 16; y++)
-  {
-    for (unsigned int x = 0; x < 16; x++)
-    {
-      std::cout << output(it) << " ";
-      ++it;
-    }
-    std::cout << std::endl;
-  }
+//return output;
 
+  typename		O::ConstIterator it = output.begin();
 
   //We process the dimensions
   for ( unsigned int dim = 1; dim < I::staticDimension ; dim++ )
@@ -120,10 +112,15 @@ DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage
 {
   typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
 
-  //Estimate worst-case bit size
-  double bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
+  //Estimate worst-case bit size (special case for p=0 == Linfinity
+  double bitSize;
 
-  if ( bitSize > sizeof ( typename O::ValueType ) *8 )
+  if (SeparableMetric::p != 0)
+    bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
+  else
+    bitSize =  sizeof ( typename I::ValueType ) * 8;
+
+  if ( bitSize > sizeof ( typename O::ValueType ) * 8 )
     trace.warning() << "(DistanceTransformation) The output image ValueType range may not be sufficient to store the exact values  according to the input image extent." << endl;
 
 }
@@ -155,7 +152,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
       itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
   {
-   // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
+    // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
     computeFirstStep1D ( aImage, output, (*it), predicate );
   }
 
@@ -183,11 +180,11 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
     if ( (I::staticDimension - 1 - k) != dim)
       subdomain.push_back( I::staticDimension - 1 - k );
 
- /* std::copy ( subdomain.begin(),
-      subdomain.end(),
-      std::ostream_iterator<unsigned int> ( std::cerr, " - " ) );
-*/
- 
+  /* std::copy ( subdomain.begin(),
+       subdomain.end(),
+       std::ostream_iterator<unsigned int> ( std::cerr, " - " ) );
+  */
+
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
 
   Size maxSize = myExtent.normInfinity();
@@ -200,7 +197,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
       itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
   {
-  //  trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
+    //trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
     computeOtherStep1D ( input, output, (*it), dim, s, t );
   }
 
@@ -281,7 +278,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
 
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
-  while ((( input ( pU) >= myInfinity))
+  while ((( input ( pU) == myInfinity))
       && (pU[dim] <= myUpperBoundCopy[dim]))
     pU[dim] ++;
 
@@ -289,26 +286,32 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   ASSERT( pU[dim] <= myUpperBoundCopy[dim]);///@todo otherwise, the image has no object (fixme)
 
   q = 0;
-  s[0] = pU[dim]; //myLowerBoundCopy[dim];
-  t[0] = myLowerBoundCopy[dim];
+  s[q] = pU[dim]; //myLowerBoundCopy[dim];
+  sQ[dim] = s[q];
+  t[q] = myLowerBoundCopy[dim];
 
   //Forward Scan
- // trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
+ // trace.warning() << "start pU= " << pU << " input(pU)=" << input(pU) << endl;
 
   for ( int u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
   {
-    pU[ dim ]    =  u;
-    if ( input( pU) == myInfinity )
+    pU[ dim ] = u;
+    if ( input( pU ) == myInfinity )
+    {
+      //    trace.info() << "Ctd " << pU << endl;
       continue;
-    //trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
-    //trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
+    }
+
+   //  trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
+   //  trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << "q="<<q<< endl;
 
     while ( ( q >= 0 ) &&
         ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
             myMetric.F ( t[q], u, input ( pU ) ) ) )
     {
-      //trace.info() << "Pop" << endl;
+      //trace.info() << "Pop q=" << q << endl;
       q--;
+      sQ[dim] = s[q];
     }
 
     if ( q < 0 )
@@ -330,6 +333,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
         q++;
         s[q] = u;
         sQ[dim] = u;
+     //  			trace.info() << "Push sq=" << sQ << endl;
         t[q] = w;
       }
     }
@@ -337,7 +341,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
 
   Point last = row;
 
- // trace.error() << "q=" << q << endl;
+ //trace.error() << "q=" << q << endl;
   sQ[dim] = s[q];
   //trace.error() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
   //Backward Scan
@@ -345,7 +349,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
       last[dim] >= myLowerBoundCopy[dim] ;
       last[dim]-- )
   {
-		//trace.info() << "dt="<<myMetric.F ( last[dim] , s[q], input ( sQ ) )<<endl;
+    //trace.info() << "dt="<<myMetric.F ( last[dim] , s[q], input ( sQ ) )<<endl;
     output.setValue ( last, myMetric.F ( last[dim] , s[q], input ( sQ ) ) );
     if (( last[dim] == t[q] ) && (q > 0))
     {

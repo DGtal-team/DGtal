@@ -36,30 +36,30 @@
 
 template <typename Domain, typename T>
 inline
-ImageContainerBySTLVector<Domain,T>::ImageContainerBySTLVector(const Point &aPointA,
-        const Point &aPointB )
+ImageContainerBySTLVector<Domain, T>::ImageContainerBySTLVector(const Point &aPointA,
+    const Point &aPointB )
 {
   if (aPointA < aPointB)
-    {
-      myLowerBound = aPointA;
-      myUpperBound = aPointB;
-    }
+  {
+    myLowerBound = aPointA;
+    myUpperBound = aPointB;
+  }
   else
-    {
-      myLowerBound = aPointB;
-      myUpperBound = aPointA;
-    }
- 
+  {
+    myLowerBound = aPointB;
+    myUpperBound = aPointA;
+  }
+
   Point dec = myUpperBound - myLowerBound;
   size_t ext = 1;
-  for(unsigned int k=0;k<  Domain::staticDimension; k++)
-    ext *= dec[k]+1;
+  for (unsigned int k = 0;k <  Domain::staticDimension; k++)
+    ext *= dec[k] + 1;
   this->resize(ext);
 }
 
 template <typename Domain, typename T>
 inline
-ImageContainerBySTLVector<Domain,T>::~ImageContainerBySTLVector( )
+ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 {
 }
 
@@ -67,27 +67,27 @@ ImageContainerBySTLVector<Domain,T>::~ImageContainerBySTLVector( )
 template <typename Domain, typename T>
 inline
 T
-ImageContainerBySTLVector<Domain,T>::operator()(const Point &aPoint) const
+ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
 {
-    return this->at( linearized( aPoint ) );
+  return this->at( linearized( aPoint ) );
 
 }
 
 template <typename Domain, typename T>
 inline
 void
-ImageContainerBySTLVector<Domain,T>::setValue(const Point &aPoint, const T &V)
+ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
 {
   this->at( linearized( aPoint ) ) = V;
 }
 
 template <typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain,T>::Vector
-ImageContainerBySTLVector<Domain,T>::extent() const
+typename ImageContainerBySTLVector<Domain, T>::Vector
+ImageContainerBySTLVector<Domain, T>::extent() const
 {
   Vector one;
-  for(unsigned int i= 0; i < Domain::staticDimension; i++)
+  for (unsigned int i = 0; i < Domain::staticDimension; i++)
     one[i] = myUpperBound[i] - myLowerBound[i] + 1;
 
   return one;
@@ -99,111 +99,120 @@ ImageContainerBySTLVector<Domain,T>::extent() const
 template <typename D, typename V>
 template<typename Functor, typename Colormap>
 inline
-void 
-DGtal::ImageContainerBySTLVector<D,V>::selfDraw(LibBoard::Board & board, const V &minV, const V &maxV ) const
+void
+DGtal::ImageContainerBySTLVector<D, V>::selfDraw(LibBoard::Board & board, const V &minV, const V &maxV ) const
 {
   ASSERT(D::staticDimension == 2);
 
   Functor applystyle(board);
-  Colormap colormap(minV,maxV);
+  Colormap colormap(minV, maxV);
   LibBoard::Color c;
   V val;
   D domain(myLowerBound, myUpperBound);
 
-  for(typename D::ConstIterator it =  domain.begin(); it != domain.end(); ++it)       
-    {
-      val = this->operator()( (*it) );
-      c = colormap( val );
-      board.setFillColorRGBi( c.red(), c.green(), c.blue());
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
-    }
+  for (typename D::ConstIterator it =  domain.begin(); it != domain.end(); ++it)
+  {
+    val = this->operator()( (*it) );
+    c = colormap( val );
+    board.setFillColorRGBi( c.red(), c.green(), c.blue());
+    board.drawRectangle( (*it)[0] - 0.5, (*it)[1] + 0.5, 1, 1);
+  }
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Helper classes defined in the compilation unit (anonymous namespace)
 
-namespace {
+namespace
+{
 
   /**
    * Class template for linearization of the coordinates of a Point.
    * This class template is to be specialized for efficiency for dimensions 1,
    * 2 and 3 to prevent the use of a loop in these cases.
-   * 
+   *
    */
   template < typename Domain, int Dimension, typename SizeType >
-  struct linearizer {
+  struct linearizer
+  {
 
     typedef typename Domain::Point Point;
 
-    /** 
+    /**
      * Compute the linearized offset of a point in a vector container.
-     * 
+     *
      * @param aPoint A point
      * @param lowerBound The lower bound of the image domain.
      * @param upperBound The upper bound of the image domain.
-     * 
-     * @return 
+     *
+     * @return
      */
     static SizeType apply( const Point & aPoint,
-			   const Point & lowerBound,
-			   const Point & upperBound ) {
+        const Point & lowerBound,
+        const Point & upperBound )
+    {
       SizeType pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
       SizeType multiplier = 1;
       for (unsigned int k = 1 ; k < Point::Dimension ; ++k)
-	{
-	  multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
-	  pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
-	} 
+      {
+        multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
+        pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
+      }
       return pos;
     }
   };
 
   /**
    * Specialization of the linearizer class for dimension 1.
-   * 
+   *
    */
   template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 1, SizeType > {
+  struct linearizer< Domain, 1, SizeType >
+  {
     typedef typename Domain::Point Point;
 
     static SizeType apply( const Point & aPoint,
-			   const Point & lowerBound,
-			   const Point & upperBound ) {
+        const Point & lowerBound,
+        const Point & upperBound )
+    {
       return aPoint[ 0 ] - lowerBound[ 0 ];
     }
   };
 
   /**
    * Specialization of the linearizer class for dimension 2.
-   * 
+   *
    */
   template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 2, SizeType > {
+  struct linearizer< Domain, 2, SizeType >
+  {
     typedef typename Domain::Point Point;
 
     static SizeType apply( const Point & aPoint,
-			   const Point & lowerBound,
-			   const Point & upperBound ) {
-      SizeType multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];    
-      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + multiplier * (aPoint[ 1 ] - lowerBound[ 1 ] ); 
+        const Point & lowerBound,
+        const Point & upperBound )
+    {
+      SizeType multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
+      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + multiplier * (aPoint[ 1 ] - lowerBound[ 1 ] );
     }
   };
 
   /**
    * Specialization of the linearizer class for dimension 3.
-   * 
+   *
    */
   template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 3, SizeType > {
+  struct linearizer< Domain, 3, SizeType >
+  {
     typedef typename Domain::Point Point;
 
     static SizeType apply( const Point & aPoint,
-			   const Point & lowerBound,
-			   const Point & upperBound ) {
+        const Point & lowerBound,
+        const Point & upperBound )
+    {
       SizeType res = aPoint[ 0 ] - lowerBound[ 0 ];
       SizeType multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
-      res += multiplier * ( aPoint[ 1 ] - lowerBound[ 1 ] );  
+      res += multiplier * ( aPoint[ 1 ] - lowerBound[ 1 ] );
       multiplier *= 1 + upperBound[ 1 ] - lowerBound[ 1 ];
       res += multiplier * ( aPoint[ 2 ] - lowerBound[ 2 ] );
       return res;
@@ -217,8 +226,8 @@ namespace {
 // Internals - private :
 template<typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain,T>::Size
-ImageContainerBySTLVector<Domain,T>::linearized(const Point &aPoint) const
+typename ImageContainerBySTLVector<Domain, T>::Size
+ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) const
 {
   return linearizer<Domain, Point::Dimension, Size >::apply( aPoint, myLowerBound, myUpperBound );
 }
@@ -231,8 +240,8 @@ ImageContainerBySTLVector<Domain,T>::linearized(const Point &aPoint) const
 template <typename TDomain, typename V>
 inline
 void
-ImageContainerBySTLVector<TDomain,V>::selfDisplay ( std::ostream & out ) const
+ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Image - STLVector] size="<<this->size()<< " valuetype="<< sizeof(V) <<"bytes lower="<< myLowerBound << " upper="<< myUpperBound;
+  out << "[Image - STLVector] size=" << this->size() << " valuetype=" << sizeof(V) << "bytes lower=" << myLowerBound << " upper=" << myUpperBound;
 }
 

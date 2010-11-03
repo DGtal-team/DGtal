@@ -60,18 +60,18 @@ namespace DGtal
    * LongInteger (size of the values).
    * @todo replace Integer -> ExtentType
    *
-   * @tparam Size Type used to store the Domain extent.
+   * @tparam Abscissa Type used to store the Domain extent.
    * @tparam TValueType the type of the input map.
    * @tparam tp the order p of the L_p metric.
    *
    */
-  template <typename TSize, typename TValueType, DGtal::uint32_t tp>
+  template <typename TAbscissa, typename TValueType, DGtal::uint32_t tp>
   struct SeparableMetricTraits
   {
     // ----------------------- Standard services ------------------------------
 
     typedef TValueType ValueType;
-    typedef TSize Size;
+    typedef TAbscissa Abscissa;
 
     /**
      * Static constants containing the power p of the Lp-metric.
@@ -106,18 +106,18 @@ namespace DGtal
      *
      * @return the height of the parabola (ci,hi) at pos.
      */
-    InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const;
+    InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const;
 
 
     /**
      * Returns the InternalValueType value of order p for a given
      * position. Basically, its computes @paramp pos^p.
      *
-     * @param pos the value of type Size
+     * @param pos the value of type Abscissa
      *
      * @return the InternaValueType value.
      */
-    InternalValueType power ( const Size pos ) const
+    InternalValueType power ( const Abscissa pos ) const
     {
       return ( InternalValueType ) std::pow ( pos, p );
     }
@@ -134,7 +134,7 @@ namespace DGtal
      *
      * @return
      */
-    Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const;
+    Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const;
 
 
   }; // end of class SeparableMetricTraits
@@ -147,8 +147,8 @@ namespace DGtal
    * L_2 specialization
    *
    */
-  template <typename Size, typename TValueType>
-  struct SeparableMetricTraits<Size, TValueType, 2>
+  template <typename Abscissa, typename TValueType>
+  struct SeparableMetricTraits<Abscissa, TValueType, 2>
   {
     typedef TValueType ValueType;
 
@@ -162,17 +162,17 @@ namespace DGtal
       return ( ValueType ) sqrt ( aInternalValue );
     }
 
-    inline InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const
+    inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
       return ( pos - ci ) * ( pos - ci ) + hi;
     }
 
-    inline Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const
+    inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
     {
       return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
     }
 
-    inline InternalValueType power ( const Size i ) const
+    inline InternalValueType power ( const Abscissa i ) const
     {
       return (InternalValueType) (i*i);
     }
@@ -182,8 +182,8 @@ namespace DGtal
    * L_1 specialization
    *
    */
-  template <typename Size, typename TValueType>
-  struct SeparableMetricTraits<Size, TValueType, 1>
+  template <typename Abscissa, typename TValueType>
+  struct SeparableMetricTraits<Abscissa, TValueType, 1>
   {
 
     typedef TValueType ValueType;
@@ -195,23 +195,61 @@ namespace DGtal
       return ( ValueType ) aInternalValue;
     }
 
-    inline InternalValueType F ( const Size pos, const Size ci, const InternalValueType hi ) const
+    inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
       return ( InternalValueType ) abs ( pos - ci ) + hi;
     }
 
-    inline Size Sep ( const Size i, const InternalValueType hi, const Size j, const InternalValueType hj ) const
+    inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
     {
       ///@todo
       return 0;
     }
 
-    inline InternalValueType power ( const Size i ) const
+    inline InternalValueType power ( const Abscissa i ) const
     {
       return (InternalValueType) abs(i);
     }
 
   }; // end of class SeparableMetricTraits
+
+  /**
+   * L_infinity specialization
+   *
+   */
+  template <typename Abscissa, typename TValueType>
+  struct SeparableMetricTraits<Abscissa, TValueType, 0>
+  {
+
+    typedef TValueType ValueType;
+    static const DGtal::uint32_t p = 0;
+    typedef ValueType InternalValueType;
+
+    inline ValueType operator() ( const InternalValueType & aInternalValue ) const
+    {
+      return ( ValueType ) aInternalValue;
+    }
+
+    inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
+    {
+			return ( InternalValueType ) std::max( (Abscissa)abs ( pos - ci ) ,(Abscissa) hi);
+    }
+
+    inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
+    {
+      if (hi <= hj)
+				return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
+      else
+				return std::min ((Abscissa)(j -hi), (Abscissa)(i + j) / 2);
+    }
+
+    inline InternalValueType power ( const Abscissa i ) const
+    {
+      return (InternalValueType) abs(i);
+    }
+
+  }; // end of class SeparableMetricTraits
+
 
 } // namespace DGtal
 

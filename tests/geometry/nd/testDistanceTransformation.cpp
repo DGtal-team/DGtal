@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <iomanip>
 #include "DGtal/base/Common.h"
 
 
@@ -40,6 +41,7 @@
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,6 +50,27 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class DistanceTransformation.
 ///////////////////////////////////////////////////////////////////////////////
+
+template<typename Image>
+void randomSeeds(Image &input, const int nb, const int value)
+{
+  typename Image::Point p, low = input.lowerBound();
+  typename Image::Vector ext;
+
+  ext = input.extent();
+
+  for (unsigned int k = 0 ; k < nb; k++)
+  {
+    for (unsigned int dim = 0; dim < Image::staticDimension; dim++)
+    {
+      p[dim] = rand() % (ext[dim]) +  low[dim];
+    }
+    input.setValue(p, value);
+  }
+}
+
+
+
 /**
  * Example of a test. To be completed.
  *
@@ -78,7 +101,7 @@ bool testDistanceTransformation()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<unsigned int, unsigned int, 2> L_2;
+	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -133,28 +156,29 @@ bool testDistanceTransformationBorder()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing the whole DT computation" );
+  trace.beginBlock ( "Testing DT computation with Infinity values at the first step" );
 
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef HueShadeColorMap<DGtal::uint64_t> Hue;
-	
+  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
+  typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
+
   Point a (0, 0 );
-  Point b ( 15, 15 );
-	Point c(8,8);
+  Point b ( 128, 128 );
+
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image ( a, b );
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     image.setValue ( it, 128 );
 
-	image.setValue(c,0);
-	
+
+  randomSeeds(image, 19, 0);
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<unsigned int, unsigned int, 2> L_2;
+	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -162,34 +186,33 @@ bool testDistanceTransformationBorder()
 
   LibBoard::Board board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Hue> ( board, 0, 128 );
+  image.selfDraw<Hue> ( board, 0, 150 );
   board.saveSVG ( "image-preDT-border.svg" );
-  //We just iterate on the Domain points and print out the point coordinates.
-  std::copy ( image.begin(),
-      image.end(),
-      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
-
 
 
   ImageLong result = dt.compute ( image );
 
-  trace.warning() << result << endl;
-  //We just iterate on the Domain points and print out the point coordinates.
+  long int maxv = 0;
+  for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+
   ImageLong::ConstIterator it = result.begin();
-  for (unsigned int y = 0; y < 16; y++)
+  for (unsigned int y = 0; y < 33; y++)
   {
-    for (unsigned int x = 0; x < 16; x++)
+    for (unsigned int x = 0; x < 33; x++)
     {
-      std::cout << result(it) << " ";
+			std::cout << std::setw(4) << result(it) << " ";
       ++it;
     }
     std::cout << std::endl;
   }
 
+  trace.warning() << result << "MaxV = " << maxv << endl;
 
 
   board.clear();
-  result.selfDraw<Hue> ( board, 0, 128 );
+  result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-postDT-border.svg" );
 
 
@@ -210,7 +233,7 @@ bool testDistanceTransformation3D()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing the whole DT computation" );
+  trace.beginBlock ( "Testing 3D DT computation" );
 
   typedef SpaceND<3> TSpace;
   typedef TSpace::Point Point;
@@ -232,7 +255,7 @@ bool testDistanceTransformation3D()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<unsigned int, unsigned int, 2> L_2;
+	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
@@ -280,7 +303,7 @@ bool testTypeValidity()
   Image image ( a, b );
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<unsigned int,  unsigned int, 2> L_2;
+	typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
   DistanceTransformation<Image, ImageLong, L_2> dt;
 
   //No problem should be reported on the std:cerr.
@@ -296,6 +319,74 @@ bool testTypeValidity()
   return nbok == nb;
 }
 
+
+bool testChessboard()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing DT computation with Infinity values at the first step" );
+
+  typedef SpaceND<2> TSpace;
+  typedef TSpace::Point Point;
+  typedef HyperRectDomain<TSpace> Domain;
+  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
+  typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
+
+  Point a (0, 0 );
+  Point b ( 128, 128 );
+
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  Image image ( a, b );
+
+  for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
+    image.setValue ( it, 128 );
+
+
+  randomSeeds(image, 19, 0);
+
+  typedef ImageSelector<Domain, long int>::Type ImageLong;
+
+  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 0> L_infty;
+
+  DistanceTransformation<Image, ImageLong, L_infty> dt;
+
+  dt.checkTypesValidity ( image );
+
+  ImageLong result = dt.compute ( image );
+
+  long int maxv = 0;
+  for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+
+  ImageLong::ConstIterator it = result.begin();
+
+  trace.warning() << result << "MaxV = " << maxv << endl;
+	//We display the values on a 2D slice
+	for (unsigned int y = 0; y < 16; y++)
+	{
+		for (unsigned int x = 0; x < 16; x++)
+		{
+			Point p(x, y);
+			std::cout << std::setw(4)<< result(p) << " ";
+		}
+		std::cout << std::endl;
+	}
+
+  DGtalBoard board;
+	board.setUnit ( LibBoard::Board::UCentimeter );
+  result.selfDraw<Hue> ( board, 0, maxv + 1);
+  board.saveSVG ( "image-DT-linfty.svg" );
+
+
+  trace.info() << result << endl;
+
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -307,7 +398,7 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D(); // && ... other tests
+  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
