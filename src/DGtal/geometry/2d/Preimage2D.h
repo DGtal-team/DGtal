@@ -160,6 +160,43 @@ namespace DGtal
      */
     bool isValid() const;
 
+//------------------ display -------------------------------
+    /**
+     * Draw the preimage
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor>
+      void selfDraw( LibBoard::Board & board ) const;
+
+
+    /**
+     * Draw the preimage on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDraw( LibBoard::Board & board ) const
+      {
+				selfDraw<selfDrawStyle>(board);
+      }
+
+private:
+
+   /** 
+     * Default Style Functor for drawing
+     * 
+     * @param aBoard 
+     */
+
+    struct selfDrawStyle
+    {
+      selfDrawStyle(LibBoard::Board & aBoard) 
+      {
+				aBoard.setPenColor(LibBoard::Color::Red);
+      }
+    };
+
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
