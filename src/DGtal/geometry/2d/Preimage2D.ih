@@ -106,7 +106,7 @@ DGtal::Preimage2D<Shape>::addFront(
 				(aP, myPHull, PHullFront, myPHull.end());
 
 			//add aP to myPHull
-			myPHull.push_front(aP);
+			if (aP != *myPHull.begin()) myPHull.push_front(aP);
 
 			//update myQHull
 			update<BackwardIterator,QHullUpdateForPAddingPred>
@@ -124,9 +124,10 @@ DGtal::Preimage2D<Shape>::addFront(
 					(aQ, myQHull, QHullFront, myQHull.end());
 
 				//add aQ to myQHull
-				myQHull.push_front(aQ);
+				if (aQ != *myQHull.begin()) myQHull.push_front(aQ);
 
 				//update myPHull
+
 				update<BackwardIterator,PHullUpdateForQAddingPred>
 					(aQ, myPHull, PHullBack, myPHull.rend());
 
@@ -156,13 +157,15 @@ DGtal::Preimage2D<Shape>::update(
 	if (anIterator != anEndIterator) {
 		p = *anIterator;
 		Predicate pred( Shape(p,q) );
+			std::cerr << pred << std::endl;
+
 
 		while ( (anIterator != anEndIterator) && 
 						(pred(aPoint)) ) {
 
 			//deletion
 			anIterator--;
-			//std::cerr << "ERASE " << (*anIterator) << std::endl;
+			std::cerr << "ERASE " << (*anIterator) << std::endl;
 //  		anIterator = aContainer.erase(anIterator);
 //does not compile if type 'Iterator' is the type ' ::reverse_iterator'
 //erase only takes parameter of type ' ::iterator'
@@ -184,6 +187,51 @@ DGtal::Preimage2D<Shape>::update(
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
+
+/**
+ * Draw the preimage on a LiBoard board
+ * @param board the output board where the object is drawn.
+ * @tparam Functor a Functor to specialize the Board style
+ */
+template <typename Shape>
+template<typename Functor>
+inline
+void 
+DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
+{
+
+	ConstForwardIterator i = myPHull.begin();
+	Point pt(*i);
+	++i;
+	while ( i != myPHull.end() ) {
+		Shape s(pt, *i);
+		s.selfDraw<Functor>(aBoard);
+		pt = Point(*i);
+		++i;
+	}
+
+	i = myQHull.begin();
+	pt = Point(*i);
+	++i;
+	while ( i != myQHull.end() ) {
+		Shape s(pt, *i);
+		s.selfDraw<Functor>(aBoard);
+		pt = Point(*i);
+		++i;
+	}
+
+	Point Pf(*myPHull.begin());
+	Point Pl(*myPHull.rbegin());
+	Point Qf(*myQHull.begin());
+	Point Ql(*myQHull.rbegin());
+
+	Shape s1(Pf, Ql);
+	s1.selfDraw<Functor>(aBoard);
+	Shape s2(Qf, Pl);
+	s2.selfDraw<Functor>(aBoard);
+
+}
+
 
 /**
  * Writes/Displays the object on an output stream.
