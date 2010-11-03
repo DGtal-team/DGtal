@@ -117,8 +117,10 @@ bool testDisplayFreemanChain(const string &file)
   LibBoard::Board aBoard;
   aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);
-  aBoard.saveSVG( "testDisplayFC.svg" );
- 
+  aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
+  aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
+  aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
+  
   return true;
 }
 

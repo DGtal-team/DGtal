@@ -406,7 +406,7 @@ DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   int minX, minY, maxX, maxY;
   this->computeBoundingBox(minX, minY, maxX, maxY);
-  aBoard.drawRectangle( minX-10, minY-10, 
+  aBoard.drawRectangle( minX-10, maxY+10, 
 			maxX-minX+20, maxY-minY+20);
 
   vector<LibBoard::Point> contour;
