@@ -328,7 +328,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
           u,
           input ( pU ) );
 
-      if ( w <= myUpperBoundCopy[dim] )
+      if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
       {
         q++;
         s[q] = u;

@@ -94,7 +94,10 @@ namespace DGtal
      *
      * @return the converted value.
      */
-    ValueType operator() ( const InternalValueType & aInternalValueType ) const;
+    ValueType operator() ( const InternalValueType & aInternalValueType ) const
+    {
+			return (ValueType) std::pow((double) aInternalValueType,(double) 1.0/p);
+		}
 
     /**
      * Returns the height at a point  pos of a Lp-parabola with
@@ -106,8 +109,10 @@ namespace DGtal
      *
      * @return the height of the parabola (ci,hi) at pos.
      */
-    InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const;
-
+    InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
+    {
+			return std::pow( asb(pos - ci) , p) + hi;
+		}
 
     /**
      * Returns the InternalValueType value of order p for a given
@@ -134,7 +139,10 @@ namespace DGtal
      *
      * @return
      */
-    Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const;
+    Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
+    {
+			ASSERT(false && "Not-Yet-Implemented");
+		}
 
 
   }; // end of class SeparableMetricTraits
@@ -202,8 +210,11 @@ namespace DGtal
 
     inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
     {
-      ///@todo
-      return 0;
+      if (hj >= hi + j - i)
+        return IntegerTraits<Abscissa>::max();
+      if (hi > hj + j - i)
+        return IntegerTraits<Abscissa>::min();
+      return (hj - hi + j + i) / 2;
     }
 
     inline InternalValueType power ( const Abscissa i ) const
@@ -232,15 +243,15 @@ namespace DGtal
 
     inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
-			return ( InternalValueType ) std::max( (Abscissa)abs ( pos - ci ) ,(Abscissa) hi);
+      return ( InternalValueType ) std::max( (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
     }
 
     inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
     {
       if (hi <= hj)
-				return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
+        return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
       else
-				return std::min ((Abscissa)(j -hi), (Abscissa)(i + j) / 2);
+        return std::min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
 
     inline InternalValueType power ( const Abscissa i ) const
