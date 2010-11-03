@@ -137,11 +137,7 @@ public:
     // ----------------------- Interface --------------------------------------
 public:
      
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
+
 
     /**
 		 * Tests whether the union between a point 
@@ -247,6 +243,12 @@ public:
      */
     Point getL() const;
 
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
 // ------------------ Display ------------------------------------------
 
 	public:
@@ -299,13 +301,23 @@ public:
 
 
     /**
-     * Draw the object on a LiBoard board
+     * Draw the bounding box of the DSS on a LiBoard board
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
     template<typename Functor>
-      void selfDraw( LibBoard::Board & board ) const;
+      void BoundingBoxDraw( LibBoard::Board & board ) const;
     
+    /**
+     * Draw the retrieved digital points of the DSS linked into a 
+     * polygonal line on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    template<typename Functor>
+      void DigitalPointsDraw( LibBoard::Board & board ) const;
+
+
     /**
      * Draw the object on a LiBoard board
      * @param board the output board where the object is drawn.
@@ -313,26 +325,43 @@ public:
      */
     void selfDraw( LibBoard::Board & board ) const
       {
-				selfDraw<SelfDrawStyle>(board);
+				BoundingBoxDraw<BoundingBoxStyle>(board);
+				DigitalPointsDraw<DigitalPointsStyle>(board);
       }
 
 private:
 
    /** 
-     * Default Style Functor for selfDraw methods
+     * Default Style Functor for bounding box drawing
      * 
      * @param aBoard 
      */
 
-    struct SelfDrawStyle
+    struct BoundingBoxStyle
     {
-      SelfDrawStyle(LibBoard::Board & aBoard) 
+      BoundingBoxStyle(LibBoard::Board & aBoard) 
       {
 				aBoard.setFillColor(LibBoard::Color::None);
 				aBoard.setPenColor(LibBoard::Color::Red);
+				aBoard.setLineWidth(1);
       }
     };
 
+   /** 
+     * Default Style Functor for digital points drawing
+     * 
+     * @param aBoard 
+     */
+
+    struct DigitalPointsStyle
+    {
+      DigitalPointsStyle(LibBoard::Board & aBoard) 
+      {
+				aBoard.setFillColor(LibBoard::Color::None);
+				aBoard.setPenColor(LibBoard::Color::Black);
+				aBoard.setLineWidth(2);
+      }
+    };
     // ------------------------- Protected Datas ------------------------------
 protected:
 
@@ -350,23 +379,8 @@ protected:
 private:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+private:
 
-
-    /**
-		 * Computes the norm of the two components
-     * of a 2D vector.
-		 * @param x and y, two values. 
-     * @return the norm of a 2D vector.
-     */
-		Integer norm(const Integer& x, const Integer& y) const;
-
-    /**
-		 * Checks whether the DSS lies in one quadrant or not
-		 * @param aStep, the last displacement vector. 
-     * @return 'true' if yes, 'false' otherwise.
-     */
-    bool hasTwoSteps(const Vector& aStep) const;
 
     /**
 		 * Returns the 2D vector 
@@ -377,9 +391,11 @@ protected:
     Vector vectorFrom0ToOmega() const;
 
     /**
-		 * Returns the point 
-		 * that follows a given point in the DSS
-		 * @param aPoint, a given point of the DSS. 
+		 * Returns the point that follows a given 
+     * point of a DSL
+		 * @param a, b, mu, omega, the parameters 
+     * of the DSL and aPoint, a given point of 
+     * the DSL. 
      * @return the next point.
      */
     Point next(const Point& aPoint) const;
@@ -415,46 +431,45 @@ public:
 
     // ----------------------- Methods ----------------------------
     /**
-		 * Computes the norm of the two components
+		 * Computes the L1 norm of the two components
      * of a 2D vector.
 		 * @param x and y, two values. 
-     * @return the norm of a 2D vector.
+     * @return the L1 norm of a 2D vector.
      */
 		static Integer norm(const Integer& x, const Integer& y);
 
     /**
-		 * Checks whether the DSS lies in one quadrant or not
+		 * Checks whether the DSS has less or more
+     * than two displacement vectors (steps)
+     * between consecutive points
 		 * @param a, b, the slope of the DSS and 
      * aStep, the last displacement vector. 
      * @return 'true' if yes, 'false' otherwise.
      */
-    static bool hasTwoSteps(const Integer& a, 
+    static bool hasMoreThanTwoSteps(const Integer& a, 
 														const Integer& b,
 														const Vector& aStep);
 
     /**
 		 * Returns the 2D vector 
-		 * starting at a point of remainder 0
-		 * and pointing at a point of remainder omega
+		 * corresponding to '0'
+     * in the Freeman representation
+     * in the first octant
 		 * @param a, b, the slope of the DSS
      * @return the 2D vector.
      */
-    static Vector vectorFrom0ToOmega(const Integer& a, 
-																		 const Integer& b);
+    static Vector step0(const Integer& a, const Integer& b);
 
     /**
-		 * Returns the point that follows a given 
-     * point of a DSL
-		 * @param a, b, mu, omega, the parameters 
-     * of the DSL and aPoint, a given point of 
-     * the DSL. 
-     * @return the next point.
+		 * Returns the 2D vector 
+		 * corresponding to '1' 
+     * in the Freeman representation
+     * in the first octant
+		 * @param a, b, the slope of the DSS
+     * @return the 2D vector.
      */
-    static Point next(const Integer& a, 
-										  const Integer& b,
-											const Integer& mu, 
-											const Integer& omega,
-											const Point& aPoint);
+    static Vector step1(const Integer& a, const Integer& b);
+
 
 };
 
@@ -470,7 +485,60 @@ public:
 template <typename TInteger>
 class NaiveBase
 {
-/********** to be completed *************/
+
+    // ----------------------- Types ------------------------------
+public:
+
+		//2D point and 2D vector
+	  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+		typedef TInteger Integer;
+		typedef DGtal::PointVector<2,Integer> Point;
+		typedef DGtal::PointVector<2,Integer> Vector;
+
+
+    // ----------------------- Methods ----------------------------
+    /**
+		 * Computes the Linf norm of the two components
+     * of a 2D vector.
+		 * @param x and y, two values. 
+     * @return the Linf norm of a 2D vector.
+     */
+		static Integer norm(const Integer& x, const Integer& y);
+
+    /**
+		 * Checks whether the DSS has less or more
+     * than two displacement vectors (steps)
+     * between consecutive points
+		 * @param a, b, the slope of the DSS and 
+     * aStep, the last displacement vector. 
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    static bool hasMoreThanTwoSteps(const Integer& a, 
+														const Integer& b,
+														const Vector& aStep);
+
+    /**
+		 * Returns the 2D vector 
+		 * corresponding to '0'
+     * in the Freeman representation
+     * in the first octant
+		 * @param a, b, the slope of the DSS
+     * @return the 2D vector.
+     */
+    static Vector step0(const Integer& a, const Integer& b);
+
+    /**
+		 * Returns the 2D vector 
+		 * corresponding to '1' 
+     * in the Freeman representation
+     * in the first octant
+		 * @param a, b, the slope of the DSS
+     * @return the 2D vector.
+     */
+    static Vector step1(const Integer& a, const Integer& b);
+
+
+
 };
 
 
