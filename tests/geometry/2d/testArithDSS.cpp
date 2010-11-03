@@ -15,7 +15,7 @@
  **/
 //LICENSE-END
 /**
- * @file test_arithDSS.cpp
+ * @file testArithDSS.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -28,7 +28,7 @@
 
 /**
  * Description of testArithDSS <p>
- * Aim: simple test of \ref arithmeticalDSS
+ * Aim: simple test of \ref ArithmeticalDSS
  */
 
 
@@ -59,7 +59,10 @@ int main(int argc, char **argv)
 
 	typedef int Coordinate;
 	typedef PointVector<2,Coordinate> Point;
-	typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS;
+
+//--------------------- DSS4 --------------------------
+
+	typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
   
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -78,13 +81,13 @@ int main(int argc, char **argv)
   trace.beginBlock("Bad init");
 	trace.info() << "same point two times" << std::endl;
 	try {
-  	DSS theDSS(Point(0,0),Point(0,0));		
+  	DSS4 theDSS4(Point(0,0),Point(0,0));		
 	} catch (InputException e) {
 		trace.info() << e.what() << std::endl;
 	}
 	trace.info() << "not connected points" << std::endl;
 	try {
-	  DSS theDSS(Point(0,0),Point(1,1));	
+	  DSS4 theDSS4(Point(0,0),Point(1,1));	
 	} catch (InputException e) {
 		trace.info() << e.what() << std::endl;
 	}
@@ -92,68 +95,69 @@ int main(int argc, char **argv)
 
 
   // Good Initialisation
-  trace.beginBlock("Init of a DSS");
-  DSS theDSS(contour.at(0),contour.at(1));		
-  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
+  trace.beginBlock("Init of a DSS4");
+  DSS4 theDSS4(contour.at(0),contour.at(1));		
+  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
   trace.endBlock();
 
  
   
   // Adding step
-  trace.beginBlock("Add points while it is possible and draw the result in DSS.svg");
+  trace.beginBlock("Add points while it is possible and draw the result in DSS4.svg");
 	{
 		int i = 2;
-		while (theDSS.addFront(contour.at(i))) {
+		while (theDSS4.addFront(contour.at(i))) {
 			i++;
 		}
-	  trace.info() << theDSS << " " << theDSS.isValid() << std::endl;
+	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
+
+		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+
+		Board board;
+		board.setUnit(Board::UCentimeter);
+		
+		domain.selfDrawAsGrid(board);
+		theDSS4.selfDraw(board);
+		
+		board.saveSVG("DSS4.svg");
 	}
-
-	HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
-
-  Board board;
-  board.setUnit(Board::UCentimeter);
-  
-  domain.selfDrawAsGrid(board);
-  theDSS.selfDraw(board);
-  
-  board.saveSVG("DSS.svg");
 
   trace.endBlock();
   
 
+
   // Removing step and checking consistency with the adding step.
   trace.beginBlock("Checking consistency between adding and removing");
 
-		std::deque<DSS > v1,v2;
-  	DSS newDSS(contour.at(0),contour.at(1));	 
-	  	v1.push_back(newDSS);
+		std::deque<DSS4 > v1,v2;
+  	DSS4 newDSS4(contour.at(0),contour.at(1));	 
+	  	v1.push_back(newDSS4);
 
-		//forward scan and store each DSS
+		//forward scan and store each DSS4
 		trace.info() << "forward scan" << std::endl;
 
 		int i = 2;
-		while (newDSS.addFront(contour.at(i))) {
-	  	v1.push_back(newDSS);
+		while (newDSS4.addFront(contour.at(i))) {
+	  	v1.push_back(newDSS4);
 			i++;
 		}
 
 		//backward scan
 		trace.info() << "backward scan" << std::endl;
 
-  	DSS reverseDSS(contour.at(i-1),contour.at(i-2));
+  	DSS4 reverseDSS4(contour.at(i-1),contour.at(i-2));
 		int j = i-3;
-		while ( (j>=0)&&(reverseDSS.addFront(contour.at(j))) ) {
+		while ( (j>=0)&&(reverseDSS4.addFront(contour.at(j))) ) {
 			j--;
 		}
 		trace.info() << "removing" << std::endl;
-		trace.info() << reverseDSS << std::endl;
+		trace.info() << reverseDSS4 << std::endl;
 
-		//removing step, store each DSS for comparison
-	  v2.push_front(reverseDSS);
+		//removing step, store each DSS4 for comparison
+	  v2.push_front(reverseDSS4);
 		i--;
-		while (reverseDSS.removeBack()) {
-	  	v2.push_front(reverseDSS);
+		while (reverseDSS4.removeBack()) {
+	  	v2.push_front(reverseDSS4);
 			i--;
 		}		
 		
@@ -163,18 +167,54 @@ int main(int argc, char **argv)
 		bool isOk = true;
 		for (int k = 0; k < v1.size(); k++) {
 			if (v1.at(k) != v2.at(k)) isOk = false;
-			trace.info() << "DSS :" << k << std::endl;
+			trace.info() << "DSS4 :" << k << std::endl;
 			trace.info() << v1.at(k) << v2.at(k) << std::endl;
 		}
 
-		if (isOk) trace.info() << "ok for the " << v1.size() << " DSS" << std::endl;
+		if (isOk) trace.info() << "ok for the " << v1.size() << " DSS4" << std::endl;
 		else trace.info() << "failure" << std::endl;
 
   trace.endBlock();
 
-
+//--------------------- DSS8 -----------------------------
   
- 
+	typedef ArithmeticalDSS<NaiveBase<Coordinate> > DSS8; 
+
+	std::vector<Point> bord;
+	bord.push_back(Point(0,0));
+	bord.push_back(Point(1,1));
+	bord.push_back(Point(2,1));
+	bord.push_back(Point(3,2));
+	bord.push_back(Point(4,2));
+	bord.push_back(Point(5,2));
+	bord.push_back(Point(6,3));
+	bord.push_back(Point(6,4));
+
+  // Good Initialisation
+  trace.beginBlock("test of a DSS8");
+  DSS8 theDSS8(bord.at(0),bord.at(1));		
+  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
+
+	{
+		int i = 2;
+		while (theDSS8.addFront(bord.at(i))) {
+			i++;
+		}
+	  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
+
+		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+
+		Board board;
+		board.setUnit(Board::UCentimeter);
+		
+		domain.selfDrawAsGrid(board);
+		theDSS8.selfDraw(board);
+		
+		board.saveSVG("DSS8.svg");
+
+	}
+
+  trace.endBlock();
 
   return 0;
 }

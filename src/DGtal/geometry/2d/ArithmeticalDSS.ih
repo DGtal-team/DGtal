@@ -51,6 +51,8 @@ DGtal::ArithmeticalDSS<TDSS>::ArithmeticalDSS()
 
 /**
  * Constructor.
+ * @param aFirstPoint and aSecondPoint, 
+ * two connected points for initialisation
  */
 template <typename TDSS>
 inline
@@ -60,7 +62,7 @@ DGtal::ArithmeticalDSS<TDSS>::ArithmeticalDSS(
 {
 
 	Vector step = aSecondPoint - aFirstPoint;
-	Integer deviation = norm(step[0],step[1]);
+	Integer deviation = TDSS::norm(step[0],step[1]);
 	if ( deviation != 1) throw InputException();
 
 	myF = aFirstPoint;
@@ -74,7 +76,7 @@ DGtal::ArithmeticalDSS<TDSS>::ArithmeticalDSS(
 	myA = myUl.at(1) - myUf.at(1); 
 	myB = myUl.at(0) - myUf.at(0); 
 	myMu = myA*myUl.at(0) - myB*myUl.at(1);
-	myOmega = norm(myA,myB);
+	myOmega = TDSS::norm(myA,myB);
 
 }
 
@@ -160,13 +162,15 @@ DGtal::ArithmeticalDSS<TDSS>::operator!=(
 
 
 /**
- * Add a connected pixel aPoint at the front of a DSS.
- *
+ * Tests whether the union between a point 
+ * (adding to the front of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * Computes the parameters of the new DSS 
+ * with the adding point if true.
  * @param aPoint the new pixel (connected to the DSS) 
- * @return true if the union of theDSS and aPoint is still a DSS.
+ * @return 'true' if the union is a DSS, 'false' otherwise.
  */
-
-
 template <typename TDSS>
 inline
 bool 
@@ -175,10 +179,10 @@ DGtal::ArithmeticalDSS<TDSS>::addFront(const Point & aPoint)
 
 	Vector step = aPoint-myL;
 	//if the two last points are confounded or not connected
-	Integer deviation = norm(step[0],step[1]);
+	Integer deviation = TDSS::norm(step[0],step[1]);
 	if ( (deviation>1)||(deviation<=0) ) return false;
 	//if the points do not lie in one quadrant
-	else if (!hasTwoSteps(step)) return false;
+	else if (TDSS::hasMoreThanTwoSteps(myA,myB,step)) return false;
 	//algorithm for strictly connected path
 	else { 	
   
@@ -202,14 +206,14 @@ DGtal::ArithmeticalDSS<TDSS>::addFront(const Point & aPoint)
 				myA = myUl[1] - myUf[1]; 
 				myB = myUl[0] - myUf[0]; 
 				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = norm(myA,myB);
+				myOmega = TDSS::norm(myA,myB);
 			} else if (r == myMu+myOmega) { 
 				myLl = aPoint; 
 				myUf = myUl; 
 				myA = myLl[1] - myLf[1]; 
 				myB = myLl[0] - myLf[0]; 
 				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = norm(myA,myB);
+				myOmega = TDSS::norm(myA,myB);
 			}
 			return true;
 
@@ -219,13 +223,13 @@ DGtal::ArithmeticalDSS<TDSS>::addFront(const Point & aPoint)
 
 }
 
-    /**
-		 * Remove the first point of a DSS
-     * (located at the back with respect to 
-     * the scan orientaion)
-	   * if the DSS has more than two points
-     * @return 'true' the first point is removed, 'false' otherwise.
-     */
+/**
+ * Remove the first point of a DSS
+ * (located at the back with respect to 
+ * the scan orientaion)
+ * if the DSS has more than two points
+ * @return 'true' the first point is removed, 'false' otherwise.
+ */
 template <typename TDSS>
 inline
 bool 
@@ -233,7 +237,7 @@ DGtal::ArithmeticalDSS<TDSS>::removeBack()
 {
 	
 	Vector v = myL-myF;
-	if (norm(v[0],v[1]) <= 1) {//if there is only two points
+	if (TDSS::norm(v[0],v[1]) <= 1) {//if there is only two points
 		return false;
 	} else {                   //else
 
@@ -253,15 +257,15 @@ DGtal::ArithmeticalDSS<TDSS>::removeBack()
 				//leaning points
 				Integer k; //repetitions of the newMainVector
 				Vector myFToMyUl = myUl - myF;
-				k = norm(myFToMyUl[0],myFToMyUl[1])/norm(myA,myB);
+				k = TDSS::norm(myFToMyUl[0],myFToMyUl[1])/TDSS::norm(myA,myB);
 				Vector knewMainVector = newMainVector;
 				myUf = myUl - newMainVector*k;
 				Vector myLfToMyL = myL - myLf;
-				k = norm(myLfToMyL[0],myLfToMyL[1])/norm(myA,myB);
+				k = TDSS::norm(myLfToMyL[0],myLfToMyL[1])/TDSS::norm(myA,myB);
 				myLl = myLf + newMainVector*k;
 				//mu, omega
 				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = norm(myA,myB);
+				myOmega = TDSS::norm(myA,myB);
 			} else {
 				myUf = myUf + Vector(myB,myA);
 			}
@@ -279,14 +283,14 @@ DGtal::ArithmeticalDSS<TDSS>::removeBack()
 				//leaning points
 				Integer k; //repetitions of the newMainVector
 				Vector myFToMyLl = myLl - myF;
-				k = norm(myFToMyLl[0],myFToMyLl[1])/norm(myA,myB);
+				k = TDSS::norm(myFToMyLl[0],myFToMyLl[1])/TDSS::norm(myA,myB);
 				myLf = myLl - newMainVector*k;
 				Vector myUfToMyL = myL - myUf;
-				k = norm(myUfToMyL[0],myUfToMyL[1])/norm(myA,myB);
+				k = TDSS::norm(myUfToMyL[0],myUfToMyL[1])/TDSS::norm(myA,myB);
 				myUl = myUf + newMainVector*k;
 				//mu, omega
 				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = norm(myA,myB);
+				myOmega = TDSS::norm(myA,myB);
 			} else {
 				myLf = myLf + Vector(myB,myA);
 			}
@@ -299,7 +303,13 @@ DGtal::ArithmeticalDSS<TDSS>::removeBack()
 
 
 //-------------------------------------------------------------------------
-
+/**
+ * Computes the sequence of (connected) points
+ * belonging to the DSL(a,b,mu,omega)
+ * between the first and last point of the DSS
+ * Nb: in O(omega)
+ * @return the computed sequence of points.
+ */
 template <typename TDSS>
 inline
 std::vector<typename DGtal::PointVector<2,typename TDSS::Integer> > 
@@ -318,7 +328,12 @@ DGtal::ArithmeticalDSS<TDSS>::recover() const
 }
 
 //-------------------------------------------------------------------------
-
+/**
+ * Computes the remainder of a point
+ * (that does not necessarily belong to the DSS)
+ * @param aPoint the point whose remainder is returned 
+ * @return the remainder.
+ */
 template <typename TDSS>
 inline
 typename TDSS::Integer
@@ -328,7 +343,11 @@ DGtal::ArithmeticalDSS<TDSS>::getRemainder(const Point & aPoint) const
 }
 
 //-------------------------------------------------------------------------
-
+/**
+ * Checks whether a point is in the DSL
+ * of parameters (myA,myB,myMu,myOmega)
+ * @return 'true' if yes, 'false' otherwise
+ */
 template <typename TDSS>
 inline
 bool
@@ -339,7 +358,10 @@ DGtal::ArithmeticalDSS<TDSS>::isInDSL(const Point & aPoint) const
 }
 
 //-------------------------------------------------------------------------
-
+/**
+ * Checks whether a point belongs to the DSS or not
+ * @return 'true' if yes, 'false' otherwise
+ */
 template <typename TDSS>
 inline
 bool
@@ -423,6 +445,11 @@ DGtal::ArithmeticalDSS<TDSS>::getL() const {
 	return myL;
 }
 
+//-----------------------------------------------------------------
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
 
 template <typename TDSS>
 inline
@@ -532,12 +559,16 @@ DGtal::ArithmeticalDSS<TDSS>::projectedSegmentLength() const
 
 
 
-
+/**
+ * Draw the bounding box of the DSS on a LiBoard board
+ * @param board the output board where the object is drawn.
+ * @tparam Functor a Functor to specialize the Board style
+ */
 template <typename TDSS>
 template<typename Functor>
 inline
 void 
-DGtal::ArithmeticalDSS<TDSS>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( LibBoard::Board & aBoard) const
 {
 
   Functor applystyle(aBoard);
@@ -581,7 +612,36 @@ DGtal::ArithmeticalDSS<TDSS>::selfDraw( LibBoard::Board & aBoard) const
 
 }
 
+/**
+ * Draw the retrieved digital points of the DSS linked into a 
+ * polygonal line on a LiBoard board
+ * @param board the output board where the object is drawn.
+ * @tparam Functor a Functor to specialize the Board style
+ */
+template <typename TDSS>
+template<typename Functor>
+inline
+void 
+DGtal::ArithmeticalDSS<TDSS>::DigitalPointsDraw( LibBoard::Board & aBoard) const
+{
 
+  Functor applystyle(aBoard);
+
+	//draw contour
+  vector<Point> ptsOfDSS = recover();
+  vector<LibBoard::Point> contour;
+	for (int i=0; i<ptsOfDSS.size();i++) {
+		Point p = ptsOfDSS.at(i);
+		contour.push_back(LibBoard::Point(p[0],p[1]));
+	}
+
+  aBoard.drawPolyline(contour);
+}
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
 template <typename TDSS>
 inline
 void
@@ -602,44 +662,56 @@ DGtal::ArithmeticalDSS<TDSS>::selfDisplay ( std::ostream & out)
 
 
 
-template <typename TDSS>
-inline
-typename TDSS::Integer
-DGtal::ArithmeticalDSS<TDSS>::norm(
-			const Integer & x, 
-			const Integer & y) const 
-{
-	return TDSS::norm(x,y);
-}
-
-template <typename TDSS>
-inline
-bool
-DGtal::ArithmeticalDSS<TDSS>::hasTwoSteps(
-			const Vector& aStep) const
-{
-	return TDSS::hasTwoSteps(myA, myB, aStep);
-}
-
+/**
+ * Returns the 2D vector 
+ * starting at a point of remainder 0
+ * and pointing at a point of remainder omega
+ * @return the 2D vector.
+ */
 template <typename TDSS>
 inline
 DGtal::PointVector<2,typename TDSS::Integer>
 DGtal::ArithmeticalDSS<TDSS>::vectorFrom0ToOmega() const
 {
-	return TDSS::vectorFrom0ToOmega(myA, myB);
+	return (TDSS::step0(myA, myB) - TDSS::step1(myA, myB));
 }
 
+/**
+ * Returns the point that follows a given 
+ * point of a DSL
+ * @param a, b, mu, omega, the parameters 
+ * of the DSL and aPoint, a given point of 
+ * the DSL. 
+ * @return the next point.
+ */
 template <typename TDSS>
 inline
 DGtal::PointVector<2,typename TDSS::Integer>
 DGtal::ArithmeticalDSS<TDSS>::next(
-			const Vector& aStep) const
+			const Point& aPoint) const
 {
-	return TDSS::next(myA, myB, myMu, myOmega, aStep);
+
+	Integer r = myA*aPoint[0] - myB*aPoint[1];
+	ASSERT( (r >= myMu)&&(r < myMu+myOmega) );
+
+	Point nextPoint = aPoint + TDSS::step0(myA,myB);
+	Integer r2 = myA*nextPoint[0] - myB*nextPoint[1];
+
+	if ( (r2 >= myMu)&&(r2 < myMu+myOmega) ) {
+			return nextPoint;
+	} else {
+			return aPoint + TDSS::step1(myA,myB);
+	}
+
 }
 
 //--------------------- Standard base -------------------------
-
+/**
+ * Computes the L1 norm of the two components
+ * of a 2D vector.
+ * @param x and y, two values. 
+ * @return the L1 norm of a 2D vector.
+ */
 template <typename TInteger>
 inline
 TInteger 
@@ -650,99 +722,155 @@ DGtal::StandardBase<TInteger>::norm(
 	return std::abs(x)+std::abs(y);
 }
 
+/**
+ * Checks whether the DSS has less or more
+ * than two displacement vectors (steps)
+ * between consecutive points
+ * @param a, b, the slope of the DSS and 
+ * aStep, the last displacement vector. 
+ * @return 'true' if yes, 'false' otherwise.
+ */
 template <typename TInteger>
 inline
 bool
-DGtal::StandardBase<TInteger>::hasTwoSteps(
+DGtal::StandardBase<TInteger>::hasMoreThanTwoSteps(
 				const Integer& a, 
 				const Integer& b,
 				const Vector& aStep) 
 {
-	bool flag = true;
+	bool flag = false;
+
 	if ( a > 0 ) { 
-		if (aStep == Vector(0,-1)) flag = false;
-	} 
-	if ( a < 0 ) { 
-		if (aStep == Vector(0,1)) flag = false;
-	} 
+		if (aStep == Vector(0,-1)) flag = true;
+	} else if ( a < 0 ) { 
+		if (aStep == Vector(0,1)) flag = true;
+	}
+
 	if ( b > 0 ) { 
-		if (aStep == Vector(-1,0)) flag = false;
-	} 
-	if ( b < 0 ) { 
-		if (aStep == Vector(1,0)) flag = false;
+		if (aStep == Vector(-1,0)) flag = true;
+	} else if ( b < 0 ) { 
+		if (aStep == Vector(1,0)) flag = true;
 	} 
 	
 	return flag;
 
 }
 
+/**
+ * Returns the 2D vector 
+ * corresponding to '0'
+ * in the Freeman representation
+ * in the first octant
+ * @param a, b, the slope of the DSS
+ * @return the 2D vector.
+ */
 template <typename TInteger>
 inline
 DGtal::PointVector<2,TInteger>
-DGtal::StandardBase<TInteger>::vectorFrom0ToOmega(
-					const Integer& a, 
-					const Integer& b) 
+DGtal::StandardBase<TInteger>::step0(const Integer& a, const Integer& b) 
 {
-	if (a >= 0) {
-		if (b >= 0) return Vector(1,-1);
-		else return Vector(1,1);
+	if (b >= 0) return Vector(1,0);
+	else return Vector(-1,0);
+}
+
+/**
+ * Returns the 2D vector 
+ * corresponding to '1' 
+ * in the Freeman representation
+ * in the first octant
+ * @param a, b, the slope of the DSS
+ * @return the 2D vector.
+ */
+template <typename TInteger>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::StandardBase<TInteger>::step1(const Integer& a, const Integer& b) 
+{
+	if (a >= 0) return Vector(0,1);
+	else return Vector(0,-1);
+}
+
+//--------------------- Naive base -------------------------
+/**
+ * Computes the Linf norm of the two components
+ * of a 2D vector.
+ * @param x and y, two values. 
+ * @return the Linf norm of a 2D vector.
+ */
+template <typename TInteger>
+inline
+TInteger 
+DGtal::NaiveBase<TInteger>::norm(
+			const Integer & x, 
+			const Integer & y) 
+{
+	return std::max(std::abs(x),std::abs(y));
+}
+
+/**
+ * Checks whether the DSS has less or more
+ * than two displacement vectors (steps)
+ * between consecutive points
+ * @param a, b, the slope of the DSS and 
+ * aStep, the last displacement vector. 
+ * @return 'true' if yes, 'false' otherwise.
+ */
+template <typename TInteger>
+inline
+bool
+DGtal::NaiveBase<TInteger>::hasMoreThanTwoSteps(
+				const Integer& a, 
+				const Integer& b,
+				const Vector& aStep) 
+{
+	bool flag = false;
+
+/* to be completed */
+	
+	return flag;
+
+}
+
+/**
+ * Returns the 2D vector 
+ * corresponding to '0'
+ * in the Freeman representation
+ * in the first octant
+ * @param a, b, the slope of the DSS
+ * @return the 2D vector.
+ */
+template <typename TInteger>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::NaiveBase<TInteger>::step0(const Integer& a, const Integer& b) 
+{
+	if (std::abs(b) >= std::abs(a)) {
+		if (b >= 0) return Vector(1,0);
+		else return Vector(-1,0);
 	} else {
-		if (b >= 0) return Vector(-1,-1);
-		else return Vector(-1,1);
+		if (a >= 0) return Vector(0,1);
+		else return Vector(0,-1);
 	}
 }
 
+/**
+ * Returns the 2D vector 
+ * corresponding to '1' 
+ * in the Freeman representation
+ * in the first octant
+ * @param a, b, the slope of the DSS
+ * @return the 2D vector.
+ */
 template <typename TInteger>
 inline
 DGtal::PointVector<2,TInteger>
-DGtal::StandardBase<TInteger>::next(
-						const Integer& a, 
-					  const Integer& b,
-						const Integer& mu, 
-						const Integer& omega,
-						const Point& aPoint)
+DGtal::NaiveBase<TInteger>::step1(const Integer& a, const Integer& b) 
 {
-
-
-
-	Integer r = a*aPoint[0] - b*aPoint[1];
-	ASSERT( (r >= mu)&&(r < mu+omega) );
-
-
-	Vector step; 
-	if ( a >= 0 ) { //quadrant 1
-		if ( b >= 0 ) { 
-			if ( (r-b >= mu)&&
-						(r-b < mu+omega) ) {
-					step = Vector(0,1);
-			} else {
-					step = Vector(1,0);
-			}
-		} else {              //quadrant 2
-			if ( (r-b >= mu)&&
-						(r-b < mu+omega) ) {
-					step = Vector(0,1);
-			} else {
-					step = Vector(-1,0);
-			}
-		}
+	if (b >= 0) {
+		if (a >= 0) return Vector(1,1);
+		else return Vector(1,-1);
 	} else {
-		if ( b >= 0 ) {//quadrant 4 
-			if ( (r+b >= mu)&&
-						(r+b < mu+omega) ) {
-					step = Vector(0,-1);
-			} else {
-					step = Vector(1,0);
-			}
-		} else {               //quadrant 3
-			if ( (r+b >= mu)&&
-						(r+b < mu+omega) ) {
-					step = Vector(0,-1);
-			} else {
-					step = Vector(-1,0);
-			}
-		}
+		if (a >= 0) return Vector(-1,1);
+		else return Vector(-1,-1);
 	}
-
-	return aPoint + step;
 }

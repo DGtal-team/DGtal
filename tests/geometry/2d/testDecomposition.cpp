@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
   typedef FreemanChain<Coordinate> ContourType; 
 
-  std::string filename = testPath + "samples/france.fc";
+  std::string filename = testPath + "samples/manche.fc";
   std::cout << filename << std::endl;
 
   std::fstream fst;
