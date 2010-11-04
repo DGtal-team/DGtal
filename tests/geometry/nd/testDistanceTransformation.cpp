@@ -107,7 +107,7 @@ bool testDistanceTransformation()
 
   dt.checkTypesValidity ( image );
 
-  LibBoard::Board board;
+  DGtalBoard board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Gray> ( board, 0, 255 );
   board.saveSVG ( "image-preDT.svg" );
@@ -184,7 +184,7 @@ bool testDistanceTransformationBorder()
 
   dt.checkTypesValidity ( image );
 
-  LibBoard::Board board;
+ DGtalBoard board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Hue> ( board, 0, 150 );
   board.saveSVG ( "image-preDT-border.svg" );

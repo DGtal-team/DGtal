@@ -41,8 +41,6 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 
-#include "Board/Board.h"
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -96,7 +94,7 @@ bool testPNMWriter()
   RawWriter<Image,HueTwice>::exportRaw8("export-hue-twice.raw",image,0,255);
 
   //test Image export with libboard
-  LibBoard::Board  board;
+  DGtalBoard  board;
   board.setUnit(LibBoard::Board::UCentimeter);
   image.selfDraw<HueTwice>(board,0,255);
   board.saveSVG("export-hue-twice.svg");

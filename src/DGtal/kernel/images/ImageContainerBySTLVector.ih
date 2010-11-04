@@ -97,14 +97,13 @@ ImageContainerBySTLVector<Domain, T>::extent() const
 // libBoard export
 
 template <typename D, typename V>
-template<typename Functor, typename Colormap>
+template<typename Colormap>
 inline
 void
-DGtal::ImageContainerBySTLVector<D, V>::selfDraw(LibBoard::Board & board, const V &minV, const V &maxV ) const
+DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board, const V &minV, const V &maxV ) const
 {
   ASSERT(D::staticDimension == 2);
 
-  Functor applystyle(board);
   Colormap colormap(minV, maxV);
   LibBoard::Color c;
   V val;
@@ -119,6 +118,22 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(LibBoard::Board & board, const 
   }
 }
 
+//------------------------------------------------------------------------------
+template <typename D, typename V>
+inline
+DGtal::DrawableWithBoard*
+DGtal::ImageContainerBySTLVector<D, V>::defaultStyle() const
+{
+	return new DefaultDrawStyle;
+}
+//------------------------------------------------------------------------------
+template <typename D, typename V>
+inline
+std::string
+DGtal::ImageContainerBySTLVector<D, V>::styleName() const
+{
+	return "ImageContainerBySTLVector";
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Helper classes defined in the compilation unit (anonymous namespace)

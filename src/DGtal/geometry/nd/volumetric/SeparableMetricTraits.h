@@ -56,11 +56,7 @@ namespace DGtal
    * \brief Aim: Implements basic functions associated to metrics used
    * by separable volumetric algorithms.
    *
-   * @todo fix the choice of types  Integer (extent of the image)
-   * LongInteger (size of the values).
-   * @todo replace Integer -> ExtentType
-   *
-   * @tparam Abscissa Type used to store the Domain extent.
+   * @tparam TAbscissa Type used to store the coordinaites of the Domain.
    * @tparam TValueType the type of the input map.
    * @tparam tp the order p of the L_p metric.
    *
@@ -96,8 +92,8 @@ namespace DGtal
      */
     ValueType operator() ( const InternalValueType & aInternalValueType ) const
     {
-			return (ValueType) std::pow((double) aInternalValueType,(double) 1.0/p);
-		}
+      return (ValueType) std::pow((double) aInternalValueType, (double) 1.0 / p);
+    }
 
     /**
      * Returns the height at a point  pos of a Lp-parabola with
@@ -111,8 +107,8 @@ namespace DGtal
      */
     InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
-			return std::pow( asb(pos - ci) , p) + hi;
-		}
+      return std::pow( asb(pos - ci) , p) + hi;
+    }
 
     /**
      * Returns the InternalValueType value of order p for a given
@@ -141,8 +137,8 @@ namespace DGtal
      */
     Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const
     {
-			ASSERT(false && "Not-Yet-Implemented");
-		}
+      ASSERT(false && "Not-Yet-Implemented");
+    }
 
 
   }; // end of class SeparableMetricTraits

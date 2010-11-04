@@ -53,7 +53,28 @@ namespace DGtal
   // template class DistanceTransformation
   /**
    * Description of template class 'DistanceTransformation' <p>
-   * \brief Aim:
+   * \brief Aim: Implementation of the linear in time distance
+   * transformation for a class of separable metrics (see
+   * SeparableMetric).
+   * 
+   * Example:
+   * @code
+   * //Types definition
+   * typedef ImageSelector<Domain, unsigned int>::Type Image; //image with "unsigned in value type
+   * typedef ImageSelector<Domain, long int>::Type ImageLong; //output image with long int value type
+   *
+   * typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,2> L_2; //L_2 = Euclidean metric
+   *
+   * DistanceTransformation<Image, ImageLong, L_2> dt; 
+   *
+   * // ...
+   * //Construction of an instance "image" of Image (with an io reader for instance)
+   * // ...
+   *
+   * //EDT computation
+   * ImageLong result = dt.compute(image);
+   *
+   * @endcode  
    */
   template <typename TImage, typename TImageOutput, typename TSeparableMetric >
   class DistanceTransformation
@@ -71,9 +92,9 @@ namespace DGtal
       typedef typename Image::Dimension Dimension;
       typedef typename Image::Size Size;
       typedef typename Image::Integer Integer;
-			typedef typename Image::Domain Domain;
+      typedef typename Image::Domain Domain;
 
-			
+
       /**
        * Default Constructor
        */
@@ -161,29 +182,73 @@ namespace DGtal
       };
 
 
-      // ------------------- Private functions ------------------------
-    private:
+    // ------------------- Private functions ------------------------
+  private:
 
-      template <typename ForegroundPredicate>
-      void computeFirstStep(const Image & aImage, ImageOutput & output, const ForegroundPredicate &predicate) const;
+    /** 
+     * Compute the first step of the separable distance transformation.
+     * 
+     * @param aImage the input image
+     * @param output the output image with the first step DT values
+     * @param predicate the predicate to characterize the foreground
+     * (e.g. !=0, see DefaultForegroundPredicate)
+     */
+    template <typename ForegroundPredicate>
+    void computeFirstStep(const Image & aImage, ImageOutput & output, const ForegroundPredicate &predicate) const;
 
-      template <typename ForegroundPredicate>
-      void computeFirstStep1D (const Image & aImage, ImageOutput & output, const Point &row, const ForegroundPredicate &predicate) const;
+    /** 
+     * Compute the 1D DT associated to the first step.
+     * 
+     * @param aImage the input image
+     * @param output the output image  with the first step DT values
+     * @param row a point to specify the starting point of the 1D row
+     * @param predicate  the predicate to characterize the foreground
+     * (e.g. !=0, see DefaultForegroundPredicate)
+     */
+    template <typename ForegroundPredicate>
+    void computeFirstStep1D (const Image & aImage, ImageOutput & output, const Point &row, const ForegroundPredicate &predicate) const;
 
-      void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const Dimension dim)const;
+    /** 
+     *  Compute the other steps of the separable distance transformation.
+     * 
+     * @param inputImage the image resulting of the first (or
+     * intermediate) step 
+     * @param output the output image 
+     * @param dim the dimension to process
+     */		
+    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const Dimension dim)const;
 
-
-      void computeOtherStep1D (const ImageOutput & input, ImageOutput & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
+    /** 
+     * Compute the 1D DT associated to the steps except the first one.
+     * 
+     * @param aImage the input image
+     * @param output the output image  with the  DT values
+     * @param row a point to specify the starting point of the 1D row
+     * @param dim the dimension to process
+     * @param predicate  the predicate to characterize the foreground
+     * (e.g. !=0, see DefaultForegroundPredicate)
+     */
+    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
 
 
       // ------------------- Private members ------------------------
     private:
-      SeparableMetric myMetric;
-      Point myLowerBoundCopy;
-      Point myUpperBoundCopy;
-      Point myExtent;
-			InternalValueType myInfinity;
-			
+
+    ///The separable metric instance
+    SeparableMetric myMetric;
+
+    ///Copy of the image lower bound
+    Point myLowerBoundCopy;
+
+    ///Copy of the image lower bound
+    Point myUpperBoundCopy;
+
+    ///Copy of the image extent
+    Point myExtent;
+
+    ///Value to act as a +infinity value
+    InternalValueType myInfinity;
+
 
   }; // end of class DistanceTransformation
 
