@@ -413,7 +413,7 @@ DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
 //   aBoard.drawRectangle();
   
   vector<LibBoard::Point> contour;
-  for(int i=0; i< aVContour.size(); i++){
+  for(unsigned int i=0; i< aVContour.size(); i++){
     contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
   }
   LibBoard::Polyline polyL (contour, true, LibBoard::Color::Red, LibBoard::Color::None, 1);  
