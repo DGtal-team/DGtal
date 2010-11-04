@@ -102,7 +102,7 @@ bool testGetSetVal()
   typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
-  Board board;
+  DGtalBoard board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
   board.setUnit(Board::UCentimeter);
 

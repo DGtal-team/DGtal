@@ -551,26 +551,12 @@ DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board ) const
 
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
-template<typename Functor>
-inline
-void
-DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board) const
-{
-  ASSERT(N == 2);
-  Functor applystyle(board);
-  board.drawDot((float) myArray[0], (float) myArray[1]);
-
-}
-//------------------------------------------------------------------------------
-template<std::size_t N, typename T>
-template<typename Functor>
 inline
 void
 DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board,
     const PointVector &apoint) const
 {
   ASSERT(N == 2);
-  Functor applystyle(board);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
       (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],

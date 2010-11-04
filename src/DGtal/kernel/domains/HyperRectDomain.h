@@ -318,24 +318,6 @@ namespace DGtal
 
       // ------------------------- Private Datas --------------------------------
     private:
-      struct SelfDrawStylePaving
-      {
-        SelfDrawStylePaving(LibBoard::Board & aboard)
-        {
-          aboard.setPenColorRGBi(160, 160, 160);
-          aboard.setFillColorRGBi(255, 255, 255);
-          aboard.setLineStyle(LibBoard::Shape::SolidStyle);
-        }
-      };
-
-      struct SelfDrawStyleGrid
-      {
-        SelfDrawStyleGrid(LibBoard::Board & aboard)
-        {
-          aboard.setPenColorRGBi(160, 160, 160);
-          aboard.setLineStyle(LibBoard::Shape::DashStyle);
-        }
-      };
 
       /**
        * Default style.
@@ -382,15 +364,6 @@ namespace DGtal
        */
       void selfDraw(LibBoard::Board & board ) const;
 
-      /**
-       * Draw the object (as a Grid) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       * @param asGrid to choose between paving vs. grid representation.
-       * @param astylefunctor a Functor to specialize the Board style.
-       */
-      template<typename Functor>
-      void selfDrawAsGrid( LibBoard::Board & board) const;
-
 
       /**
        * Draw the object (as a Grid) on a LiBoard board.
@@ -399,16 +372,7 @@ namespace DGtal
        */
       void selfDrawAsGrid( LibBoard::Board & board) const;
 
-      /**
-       * Draw the object (as a Grid) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       * @param asGrid to choose between paving vs. grid representation.
-       * @param astylefunctor a Functor to specialize the Board style.
-       */
-      template<typename Functor>
-      void selfDrawAsPaving( LibBoard::Board & board ) const;
-
-      /**
+			/**
        * Draw the object (as a Grid) on a LiBoard board.
        * @param board the output board where the object is drawn.
        * @param asGrid to choose between paving vs. grid representation.

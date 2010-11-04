@@ -46,6 +46,7 @@
 #include <boost/serialization/nvp.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/io/DGtalBoard.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -384,31 +385,35 @@ namespace DGtal
       Point myLowerBound;
       Point myUpperBound;
 
-      // ----------------------- LibBoard methods --------------------------------------
+      // ---------------------- DGtalBoard methods --------------------------------------
 
     private:
-      struct SelfDrawStyle
+
+      /**
+      * Default style.
+      */
+      struct DefaultDrawStyle : public DrawableWithBoard
       {
-        SelfDrawStyle(LibBoard::Board & aboard)
+        virtual void selfDraw( DGtalBoard & aBoard ) const
         {
-          aboard.setPenColorRGBi(60, 60, 60);
-          aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+          aBoard.setPenColorRGBi(60, 60, 60);
+          aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
         }
       };
 
     public:
 
+      /**
+       * Default drawing style object.
+       * @return the dyn. alloc. default style for this object.
+       */
+      DrawableWithBoard* defaultStyle() const;
 
       /**
-       * Draw the image on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       * @param minValue the minimum value contained in the image (used in the colormap settings)
-       * @param maxValue the maximum value contained in the image (used in the colormap settings)
-       * @tparam FunctorStyle a Functor to specialize the Board style
-       * @tparam Coloramp any models of CColormap.
+       * @return the style name used for drawing this object.
        */
-      template<typename FunctorStyle, typename Colormap>
-      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue) const;
+      std::string styleName() const;
+
 
       /**
        * Draw the object on a LibBoard board.
@@ -418,10 +423,7 @@ namespace DGtal
        * @tparam Coloramp any models of CColormap.
        */
       template<typename Colormap>
-      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue ) const
-      {
-        selfDraw<SelfDrawStyle, Colormap>(board, minValue, maxValue);
-      }
+      void selfDraw(DGtalBoard & board, const ValueType & minValue, const ValueType & maxValue ) const;
 
       // ----------------------- Serializarion methods ------------------------------------
     private:
