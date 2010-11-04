@@ -105,6 +105,9 @@ bool testFreemanChain(stringstream & ss)
 
 
 
+
+
+
 /**
  * Example of a test. To be completed.
  *
@@ -117,6 +120,13 @@ bool testDisplayFreemanChain(const string &file)
   LibBoard::Board aBoard;
   aBoard.setUnit(Board::UMillimeter);
   fc.selfDraw(aBoard);
+  std::string filenameImage = testPath + "samples/klokanNoise0_75_125_175BG.png";
+  LibBoard::Image image(0,511, 512, 512, filenameImage, 20); 
+  image.shiftDepth(1);
+  aBoard << image;
+  
+
+  
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
@@ -143,13 +153,13 @@ int main( int argc, char** argv )
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
-	std::string testPath = "../../../../tests/";
-  std::string filename = testPath + "samples/klokan.fc";
-	std::cout << filename << std::endl;
+  std::string testPath = "../../../../tests/";
+  std::string filename = testPath + "samples/klokanNoise0_75_125_175.fc";
+  std::cout << filename << std::endl;
   testDisplayFreemanChain(filename);
   trace.endBlock();
   
-return res ? 0 : 1;
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

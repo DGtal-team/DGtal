@@ -55,6 +55,7 @@ Line::Line( double x1, double y1, double x2, double y2,
 }
 
 
+
 Arrow::Arrow( double x1, double y1, double x2, double y2,
 	      Color pen,
 	      Color fill,
@@ -142,6 +143,16 @@ Rectangle::Rectangle( const Rect & rect,
   _path << Point( rect.left + rect.width, rect.top - rect.height );
   _path << Point( rect.left, rect.top - rect.height );
 }
+
+
+  
+Image::Image( double x0, double y0, double width, double height, 
+	      std::string fileName, int depthValue )
+  : Rectangle(x0, y0, width, height, Color::None, Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
+    _x0(x0), _y0(y0), _width(width), _height(height), _filename(fileName)
+{
+}
+  
 
 
 } // namespace LibBoard

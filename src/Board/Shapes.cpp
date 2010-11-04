@@ -472,6 +472,54 @@ Line::boundingBox() const
     return rect;
 }
 
+
+
+/*
+ * Image
+ */
+
+const std::string Image::_name("Image");
+
+const std::string &
+Image::name() const
+{
+    return _name;
+}
+
+Image *
+Image::clone() const {
+  return new Image(*this);
+}
+
+void
+Image::flushFIG( std::ostream & stream,
+                const TransformFIG & transform,
+                std::map<Color,int> & colormap ) const
+
+{
+  stream << "2 5 ";
+  // Line style
+  stream << _lineStyle << " ";
+  // Thickness
+  stream << ( _penColor.valid()?transform.mapWidth( _lineWidth ):0 ) << " ";
+  // Pen color
+  stream << colormap[ _penColor ] << " ";
+  // Fill color
+  stream << "0 ";
+  // Depth
+  stream << transform.mapDepth( _depth ) << " "
+      	 << "-1 -1 0.000 0 0 -1 0 0 5" << std::endl <<" 0 "     
+	 << _filename << std::endl;
+  _path.flushFIG( stream, transform );
+  stream << std::endl;
+  
+}
+
+
+
+
+
+
 /*
  * Arrow
  */
@@ -1271,7 +1319,8 @@ Rectangle::flushFIG( std::ostream & stream,
                      const TransformFIG & transform,
                      std::map<Color,int> & colormap ) const
 {
-    if ( _path[0].y != _path[1].y ) {
+  std::cerr << "in flush rectangle" << std::endl;
+  if ( _path[0].y != _path[1].y ) {
         Polyline::flushFIG( stream, transform, colormap );
         return;
     }
