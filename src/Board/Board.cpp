@@ -928,7 +928,8 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
     file << "     viewBox=\"0 0 "
 	 << box.width  << " "
 	 << box.height << "\" " << std::endl;
-    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
+    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" >" << std::endl;
+
   }
 
   file << "<desc>" << filename 

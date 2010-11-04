@@ -512,10 +512,25 @@ Image::flushFIG( std::ostream & stream,
 	 << _filename << std::endl;
   _path.flushFIG( stream, transform );
   stream << std::endl;
-  
 }
 
 
+
+void
+Image::flushSVG( std::ostream & stream,
+		 const TransformSVG & transform ) const
+{
+
+  stream << "<image x=\"" << transform.mapX( _path[0].x ) << '"'
+	 << " y=\"" << transform.mapY( _path[0].y )  << '"'
+	 << " width=\"" << transform.scale( (_path[1] - _path[0]).norm() ) << '"'
+	 << " height=\"" << transform.scale( (_path[0] - _path[3]).norm() ) << '"'
+	 << "  xlink:href=\""<< _filename << "\" >"  << std::endl
+	 << " <title>My image</title>"<<std::endl
+    	 << " </image>" << std::endl;
+
+
+}
 
 
 
