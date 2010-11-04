@@ -579,6 +579,9 @@ protected:
   double _y2;			/**< Second coordinate of the end point. */
 };
 
+
+
+
 /**
  * The arrow structure.
  * @brief A line between two points with an arrow at one extremity.
@@ -910,6 +913,53 @@ private:
 protected:
   bool _isRectangle;
 };
+
+
+
+/**
+ * The Image structure.
+ * @brief Used to draw image in figure.
+ */
+struct Image : public Rectangle { 
+  
+  /** 
+   * Constructs a Image.
+   * 
+   * @param x0 First coordinate of the start point.
+   * @param y0 Second coordinate of the start point.
+   * @param width First coordinate of the end point.
+   * @param height Second coordinate of the end point.
+   * @param filename the image filename.
+   * @param depth The depth of the image.
+   */
+  
+  inline Image( double x0, double y0, double width, double height, 
+		std::string fileName, int depthValue );
+  /** 
+   * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
+   * 
+   * @return 
+   */
+  const std::string & name() const;
+
+  Image * clone() const;
+  
+  void flushFIG( std::ostream & stream,
+		 const TransformFIG & transform,
+		 std::map<Color,int> & colormap ) const;
+
+private:
+  static const std::string _name; /**< The generic name of the shape. */
+
+protected:
+  double _x0;			/**< First coordinate of the bottom left point. */
+  double _y0;			/**< Second coordinate of the bottom left point. */
+  double _width;
+  double _height;
+  std::string _filename;
+  
+};
+
 
 
 /**
