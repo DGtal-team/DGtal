@@ -114,18 +114,22 @@ bool testFreemanChain(stringstream & ss)
  */
 bool testDisplayFreemanChain(const string &file)
 {
+  LibBoard::Board aBoard;
+  aBoard.setUnit(Board::UMillimeter);
+  
   fstream fst;
   fst.open (file.c_str(), ios::in);
   FreemanChain<int> fc(fst);  
-  LibBoard::Board aBoard;
-  aBoard.setUnit(Board::UMillimeter);
+  aBoard.setPenColor(Color::Red);
   fc.selfDraw(aBoard);
-  std::string filenameImage = testPath + "samples/klokanNoise0_75_125_175BG.png";
-  LibBoard::Image image(0,511, 512, 512, filenameImage, 20); 
+  fst.close();
+  
+  
+  std::string filenameImage = testPath + "samples/contourS.gif";
+  LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
   image.shiftDepth(1);
   aBoard << image;
   
-
   
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
@@ -154,7 +158,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
   std::string testPath = "../../../../tests/";
-  std::string filename = testPath + "samples/klokanNoise0_75_125_175.fc";
+  std::string filename = testPath + "samples/contourS.fc";
   std::cout << filename << std::endl;
   testDisplayFreemanChain(filename);
   trace.endBlock();
