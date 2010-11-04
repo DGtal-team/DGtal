@@ -948,6 +948,10 @@ struct Image : public Rectangle {
 		 const TransformFIG & transform,
 		 std::map<Color,int> & colormap ) const;
 
+  void flushSVG( std::ostream & stream,
+		 const TransformSVG & transform ) const;
+
+
 private:
   static const std::string _name; /**< The generic name of the shape. */
 
