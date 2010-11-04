@@ -401,7 +401,7 @@ inline
 void 
 DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
 {
-  Functor applystyle(aBoard);
+  //  Functor applystyle(aBoard);
   vector<FreemanChain<TInteger>::PointI2> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   int minX, minY, maxX, maxY;
@@ -416,9 +416,9 @@ DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
   for(unsigned int i=0; i< aVContour.size(); i++){
     contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
   }
-  LibBoard::Polyline polyL (contour, true, LibBoard::Color::Red, LibBoard::Color::None, 1);  
-  polyL.shiftDepth(4);
-  aBoard<< polyL; 
+  aBoard.drawPolyline(contour, 4);
+  
+  
 
   
 }
