@@ -256,13 +256,13 @@ namespace DGtal
      * Iterator service.
      * @return an iterator pointing on the first primitive of the contour.
      */
-    GreedyDecomposition::ConstIterator begin() const;
+    typename GreedyDecomposition::ConstIterator begin() const;
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last primitive of the contour.
      */
-    GreedyDecomposition::ConstIterator end() const;
+    typename GreedyDecomposition::ConstIterator end() const;
 
 
     /**
