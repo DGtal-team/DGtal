@@ -371,8 +371,7 @@ inline
 typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator 
 DGtal::GreedyDecomposition<Contour,Primitive>::begin() const
 {
-  return GreedyDecomposition<Contour,Primitive>::ConstIterator
-					( *myContour, 0 );
+  return ConstIterator( *myContour, 0 );
 }
 
 /**
@@ -384,8 +383,7 @@ inline
 typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator 
 DGtal::GreedyDecomposition<Contour,Primitive>::end() const
 {
-  return GreedyDecomposition<Contour,Primitive>::ConstIterator
-					( *myContour, myContour->size() );
+  return ConstIterator( *myContour, myContour->size() );
 }
 
 
