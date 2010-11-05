@@ -157,7 +157,6 @@ int main( int argc, char** argv )
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
-  std::string testPath = "../../../../tests/";
   std::string filename = testPath + "samples/contourS.fc";
   std::cout << filename << std::endl;
   testDisplayFreemanChain(filename);
