@@ -402,7 +402,7 @@ void
 DGtal::FreemanChain<TInteger>::selfDraw(LibBoard::Board & aBoard) const
 {
   //  Functor applystyle(aBoard);
-  vector<FreemanChain<TInteger>::PointI2> aVContour;
+  vector<typename FreemanChain<TInteger>::PointI2> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   int minX, minY, maxX, maxY;
   this->computeBoundingBox(minX, minY, maxX, maxY);
@@ -433,7 +433,7 @@ template <typename TInteger>
 typename DGtal::FreemanChain<TInteger>::ConstIterator 
 DGtal::FreemanChain<TInteger>::begin() const
 {
-  return FreemanChain<TInteger>::ConstIterator( *this, 0 );
+  return ConstIterator( *this, 0 );
 }
 
 /**
@@ -444,7 +444,7 @@ template <typename TInteger>
 typename DGtal::FreemanChain<TInteger>::ConstIterator 
 DGtal::FreemanChain<TInteger>::end() const
 {
-  return FreemanChain<TInteger>::ConstIterator( *this, chain.size() );
+  return ConstIterator( *this, chain.size() );
 }
 
 
