@@ -113,7 +113,7 @@ bool testIterator()
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
       it != myHyperRectDomain.end(); ++it )
     trace.warning() << ( *it ) << std::endl;
-
+#ifdef CPP0X_INITIALIZER_LIST
   trace.emphase() << "Iterator 2d (permutation): ";
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1, 0} );
       it != myHyperRectDomain.subDomainEnd( {1, 0} ); ++it )
@@ -134,7 +134,7 @@ bool testIterator()
   for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subDomainBegin( {1} , c );
       it != myHyperRectDomain.subDomainEnd( {1} , c ); ++it )
     trace.warning() << ( *it ) << std::endl;
-
+#endif
 
   trace.emphase() << "Iterator 4d: ";
   typedef SpaceND<4> TSpace4D;
