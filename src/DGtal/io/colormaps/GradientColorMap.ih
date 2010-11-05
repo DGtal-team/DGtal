@@ -38,10 +38,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename PValueType,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+template < typename PValueType,
+	   int PDefaultPreset,
+	   int PDefaultFirstColor,
+	   int PDefaultLastColor >
 inline
 DGtal::GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::GradientColorMap
 ( const PValueType & minV,
@@ -260,10 +260,12 @@ DGtal::GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLas
   const ValueType & value )
 {
   if ( colors.size() < 2 )
-    return LibBoard::Color::None; 
+    return LibBoard::Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
   const int intervals = colors.size() - 1;
-  const int upper_index = static_cast<int>( ceil( intervals * scale ) );
+  int upper_index = static_cast<int>( ceil( intervals * scale ) );
+  if ( !upper_index ) // Special case when value == min.
+    upper_index = 1;
   const LibBoard::Color & firstColor = colors[ upper_index - 1 ];
   const LibBoard::Color & lastColor = colors[ upper_index ];
   scale = ( scale * intervals ) - (upper_index - 1);
