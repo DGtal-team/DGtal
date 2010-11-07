@@ -44,7 +44,7 @@
 #include <string>
 #include <cstdio>
 #include <boost/static_assert.hpp>
-#include "Magick++.h"
+#include <Magick++.h>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 

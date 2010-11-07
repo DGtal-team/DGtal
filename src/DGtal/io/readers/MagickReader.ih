@@ -48,6 +48,9 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   const Magick::PixelPacket *cacheRead;
   DGtal::IOException dgtalio;
 
+
+  Magick::InitializeMagick(NULL);
+  
   Magick::Image img = Magick::Image ( filename );
 
   w = img.size().width();
