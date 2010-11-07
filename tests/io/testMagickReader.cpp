@@ -61,7 +61,7 @@ bool testMagickReader()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ..." );
+  trace.beginBlock ( "Testing MagickReader ..." );
 
   typedef SpaceND<2> Space2Type;
   typedef HyperRectDomain<Space2Type> TDomain;
@@ -71,6 +71,8 @@ bool testMagickReader()
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
 
   std::string filename = testPath + "samples/simpleSet-paving.png";
+
+  trace.info()<<"Importing: "<<filename<<endl;
 
   MagickReader<Image> reader;
   Image img = reader.importImage( filename );
