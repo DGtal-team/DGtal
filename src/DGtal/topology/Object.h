@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -486,7 +487,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithBoard* defaultStyle() const;
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -497,7 +498,13 @@ namespace DGtal
      * Draw the object on a LibBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw(LibBoard::Board & board ) const;
+    void selfDraw( LibBoard::Board & board ) const;
+
+    /**
+     * Draw the object on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw( DGtalBoard & board ) const;
 
     /**
      * Draw the object on a LiBoard board.
@@ -539,6 +546,23 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const Object<TDigitalTopology, TDigitalSet> & object );
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct DrawObjectAdjacencies : public DrawWithBoardModifier {
+    DrawObjectAdjacencies( bool drawAdj = true )
+      : myDrawAdj( drawAdj )
+    {}
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ "Object" ] = myDrawAdj ? "DrawAdjacencies" : "";
+    }
+    bool myDrawAdj;
+  };
+
+
 
 } // namespace DGtal
 

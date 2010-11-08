@@ -446,7 +446,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
 template<typename Domain>
 inline
 DGtal::DrawableWithBoard* 
-DGtal::DigitalSetBySTLSet<Domain>::defaultStyle() const
+DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }

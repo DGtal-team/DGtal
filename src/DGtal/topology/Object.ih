@@ -795,7 +795,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::DrawableWithBoard* 
-DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle() const
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }
@@ -831,9 +831,28 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void 
 DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw
+( DGtalBoard & board ) const
+{
+  std::string mode = board.getMode( this->styleName() );
+  if ( mode == "" ) 
+    pointSet().selfDraw( board );
+  else if ( mode == "DrawAdjacencies" )
+    selfDrawWithAdjacencies( board );
+  else
+    ASSERT(false && "DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode );
+}
+
+/**
+ * Draw the object on a LiBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void 
+DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw
 ( LibBoard::Board & board ) const
 {
-  pointSet().selfDraw( board);
+  pointSet().selfDraw( board );
 }
 
 template<typename TDigitalTopology, typename TDigitalSet>

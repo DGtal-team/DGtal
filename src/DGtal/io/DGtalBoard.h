@@ -43,8 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/topology/Object.h"
+//#include "DGtal/kernel/domains/HyperRectDomain.h"
+//#include "DGtal/topology/Object.h"
 #include "DGtal/io/CDrawableWithBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -71,9 +71,16 @@ namespace DGtal
     // ----------------------- local types ------------------------------
   public:
     /**
-     * Stores the default styles for digital objects.
+     * The associated map type for storing the default styles of
+     * digital objects.
      */
     typedef std::map< std::string,CountedPtr<DrawableWithBoard> > StyleMapping;
+
+    /**
+     * The associated map type for storing possible modes used for
+     * displaying for digital objects.
+     */
+    typedef std::map< std::string, std::string > ModeMapping;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -106,6 +113,12 @@ namespace DGtal
     DGtalBoard & operator= ( const DGtalBoard & other );
 
     /**
+     * @return the current mode for the given object name or "" if no
+     * specific mode has been set.
+     */
+    std::string getMode( const std::string & objectName ) const;
+
+    /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithBoard, which requires for instance a
      * method selfDraw( LibBoard::Board ).
@@ -124,8 +137,10 @@ namespace DGtal
      * @return a reference on 'this'.
      * @see DrawDomainGrid, DrawDomainPaving
      */
+    /*
     template <typename TSpace>
     DGtalBoard & operator<<( const HyperRectDomain<TSpace> & domain );
+    */
 
     /**
      * Draws the object in this board. Draws adjacencies according to
@@ -135,9 +150,11 @@ namespace DGtal
      * @return a reference on 'this'.
      * @see DrawObjectAdjacencies
      */
+    /*
     template <typename TDigitalTopology, typename TDigitalSet>
     DGtalBoard & 
     operator<<( const Object<TDigitalTopology,TDigitalSet> & object );
+    */
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -156,10 +173,39 @@ namespace DGtal
 
     // ------------------------- Public Datas ------------------------------
   public:
+    /**
+     * @deprecated @since 2010/11/8
+     * @see myModes
+     */
     DomainDrawMode myDomainDrawMode;
+
+    /**
+     * @deprecated @since 2010/11/8
+     * @see myModes
+     */
     bool myDrawObjectAdjacencies;
+
+    /**
+     * For instance, may associate a new style object T1 to the class
+     * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
+     *
+     * One can also store a new style T2 for a specific mode used for
+     * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
+     *
+     * Modes may only be used in objects implementing the concept
+     * CDrawableWithDGtalBoard.
+     */
     StyleMapping myStyles;
 
+    /**
+     * May associate a current mode for a given class.
+     * myModes[ "HyperRectDomain" ] = "Paving".
+     *
+     * Next display of a HyperRectDomain object will used the mode
+     * "Paving".  Modes may only be used in objects implementing the
+     * concept CDrawableWithDGtalBoard.
+     */
+    ModeMapping myModes;
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -190,7 +236,7 @@ namespace DGtal
       return "";
     }
 
-    DrawableWithBoard* defaultStyle() const
+    DrawableWithBoard* defaultStyle( std::string = "" ) const
     {
       return 0;
     }
@@ -199,45 +245,10 @@ namespace DGtal
     {}
   };
 
-  /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
-   */
-  struct DrawDomainGrid : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
-    {
-      board.myDomainDrawMode = GRID;
-    }
-  };
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
-   */
-  struct DrawDomainPaving : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
-    {
-      board.myDomainDrawMode = PAVING;
-    }
-  };
-
-  /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
-   */
-  struct DrawObjectAdjacencies : public DrawWithBoardModifier {
-    DrawObjectAdjacencies( bool drawAdj = true )
-      : myDrawAdj( drawAdj )
-    {}
-    void selfDraw( DGtalBoard & board ) const
-    {
-      board.myDrawObjectAdjacencies = myDrawAdj;
-    }
-    bool myDrawAdj;
-  };
-
-  /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * Modifier class in a DGtalBoard stream. Useful to choose your own
+   * style for a given class. Realizes the concept
    * CDrawableWithDGtalBoard.
    */
   struct CustomStyle : public DrawWithBoardModifier {
@@ -257,6 +268,30 @@ namespace DGtal
   private:
     std::string myClassname;
     CountedPtr<DrawableWithBoard> myStyle;
+  };
+
+  /**
+   * Modifier class in a DGtalBoard stream. Useful to choose your own
+   * mode for a given class. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct SetMode : public DrawWithBoardModifier {
+    /**
+     * @param classname the name of the class to which the style is associated.
+     *
+     * @param style a pointer on a dynamically allocated style, which
+     * is acquired by the class.
+     */
+    SetMode( std::string classname, std::string mode )
+      : myClassname( classname ), myMode( mode )
+    {}
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ myClassname ] = myMode;
+    }
+  private:
+    std::string myClassname;
+    std::string myMode;
   };
 
 } // namespace DGtal

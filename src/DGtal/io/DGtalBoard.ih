@@ -40,6 +40,18 @@
 // Implementation of inline methods                                          //
 
 /**
+ * @return the current mode for the given object name or "" if no
+ * specific mode has been set.
+ */
+INLINE
+std::string
+DGtal::DGtalBoard::getMode( const std::string & objectName ) const
+{
+  ModeMapping::const_iterator itm = myModes.find( objectName );
+  return itm == myModes.end() ? "" : itm->second;
+}
+
+/**
  * Draws the drawable [object] in this board. It should satisfy
  * the concept CDrawableWithBoard, which requires for instance a
  * method selfDraw( LibBoard::Board ).
@@ -52,16 +64,33 @@ INLINE
 DGtal::DGtalBoard & 
 DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
 {
-	
-	BOOST_CONCEPT_ASSERT((CDrawableWithBoard<TDrawableWithBoard>));
-	
-  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
+  BOOST_CONCEPT_ASSERT((CDrawableWithBoard<TDrawableWithBoard>));
+
   CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
+  // Apply default style
   if ( style.get() )
     style->selfDraw( *this );
+  // Apply Customized style
+  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       it->second->selfDraw( *this );
+  // Check for specific mode.
+  ModeMapping::const_iterator itm = myModes.find( object.styleName() );
+  if ( itm != myModes.end() )
+    {
+      // Apply default style for specific mode.
+      CountedPtr<DrawableWithBoard> style_mode
+	( object.defaultStyle( itm->second ) );
+      if ( style_mode.get() )
+	style_mode->selfDraw( *this );
+      // Apply customized style for specific mode.
+      std::string specific_style = object.styleName() + "/" + itm->second;
+      it = myStyles.find( specific_style );
+      if ( it != myStyles.end() ) 
+	if ( it->second.get() != 0 )
+	  it->second->selfDraw( *this );
+    }
   object.selfDraw( *this );
   return *this;
 }
@@ -73,6 +102,7 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
  * @param domain any domain.
  * @return a reference on 'this'.
  */
+/*
 template <typename TSpace>
 INLINE
 DGtal::DGtalBoard & 
@@ -91,7 +121,7 @@ DGtal::DGtalBoard::operator<<( const HyperRectDomain<TSpace> & domain )
     domain.selfDrawAsPaving( *this );
   return *this;
 }
-
+*/
 
 /**
  * Draws the object in this board. Draws adjacencies according to
@@ -101,6 +131,7 @@ DGtal::DGtalBoard::operator<<( const HyperRectDomain<TSpace> & domain )
  * @return a reference on 'this'.
  * @see DrawObjectAdjacencies
  */
+ /*
 template <typename TDigitalTopology, typename TDigitalSet>
 INLINE
 DGtal::DGtalBoard & 
@@ -120,6 +151,7 @@ DGtal::DGtalBoard::operator<<
     object.selfDraw( *this );
   return *this;
 }
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
