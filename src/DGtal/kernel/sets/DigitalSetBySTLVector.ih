@@ -505,7 +505,7 @@ DGtal::DigitalSetBySTLVector<Domain>::isValid() const
 template<typename Domain>
 inline
 DGtal::DrawableWithBoard* 
-DGtal::DigitalSetBySTLVector<Domain>::defaultStyle() const
+DGtal::DigitalSetBySTLVector<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }

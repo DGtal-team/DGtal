@@ -44,6 +44,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <string>
 #include <boost/array.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -532,7 +533,7 @@ namespace DGtal
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithBoard* defaultStyle() const;
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
 
       /**
        * @return the style name used for drawing this object.

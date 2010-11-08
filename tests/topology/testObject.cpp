@@ -572,11 +572,11 @@ bool testSimplePoints2D()
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
-  board << DrawDomainGrid()
+  board << SetMode( domain.styleName(), "Paving" ) // DrawDomainPaving()
 	<< domain;
   DGtalBoard board2;
   board2.setUnit(Board::UCentimeter);
-  board2 << DrawDomainPaving()
+  board2 << SetMode( domain.styleName(), "Grid" ) // DrawDomainGrid()
 	 << domain;
 
   // Greedy thinning.

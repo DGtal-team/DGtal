@@ -46,6 +46,7 @@
 // Inclusions
 #include <iostream>
 #include <set>
+#include <string>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -322,7 +323,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithBoard* defaultStyle() const;
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.

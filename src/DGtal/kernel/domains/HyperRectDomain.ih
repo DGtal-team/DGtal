@@ -405,9 +405,12 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 template<typename TSpace>
 inline
 DGtal::DrawableWithBoard*
-DGtal::HyperRectDomain<TSpace>::defaultStyle() const
+DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 {
-  return new DefaultDrawStyleGrid;
+  if ( ( mode == "" ) || ( mode == "Grid" ) ) 
+    return new DefaultDrawStyleGrid;
+  else // mode == "Paving"
+    return new DefaultDrawStylePaving;
 }
 
 /**
@@ -428,9 +431,16 @@ DGtal::HyperRectDomain<TSpace>::styleName() const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDraw( LibBoard::Board & board ) const
+DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
 {
-  selfDrawAsGrid( board );
+  std::string mode = board.getMode( this->styleName() );
+  if ( ( mode == "" ) || ( mode == "Grid" ) )
+    selfDrawAsGrid( board );
+  else if ( mode == "Paving" )
+    selfDrawAsPaving( board );
+  else
+    ASSERT(false && "DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode " + mode );
+  // selfDrawAsGrid( board );
 }
 
 

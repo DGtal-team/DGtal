@@ -525,7 +525,7 @@ DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
 template<std::size_t N, typename T>
 inline
 DGtal::DrawableWithBoard*
-DGtal::PointVector<N, T>::defaultStyle() const
+DGtal::PointVector<N, T>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }

@@ -47,6 +47,7 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
+#include "DGtal/io/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -344,57 +345,57 @@ namespace DGtal
         }
       };
 
-      // --------------- CDrawableWithBoard realization -------------------------
-    public:
+    // --------------- CDrawableWithBoard realization ------------------------
+  public:
+    
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
 
-      /**
-       * Default drawing style object.
-       * @return the dyn. alloc. default style for this object.
-       */
-      DrawableWithBoard* defaultStyle() const;
-
-      /**
-       * @return the style name used for drawing this object.
-       */
-      std::string styleName() const;
-
-      /**
-       * Draw the object on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDraw(LibBoard::Board & board ) const;
-
-
-      /**
-       * Draw the object (as a Grid) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       * @param asGrid to choose between paving vs. grid representation.
-       */
-      void selfDrawAsGrid( LibBoard::Board & board) const;
-
-			/**
-       * Draw the object (as a Grid) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       * @param asGrid to choose between paving vs. grid representation.
-       */
-      void selfDrawAsPaving( LibBoard::Board & board ) const;
+    /**
+     * Draw the object on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw( DGtalBoard & board ) const;
 
 
-      /**
-       * Writes/Displays the object on an output stream.
-       * @param out the output stream where the object is written.
-       */
-      void selfDisplay ( std::ostream & out ) const;
-
-      /**
-       * Checks the validity/consistency of the object.
-       * @return 'true' if the object is valid, 'false' otherwise.
-       */
-      bool isValid() const;
-
-
-
-      // ------------------------- Hidden services ------------------------------
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     */
+    void selfDrawAsGrid( LibBoard::Board & board) const;
+    
+    /**
+     * Draw the object (as a Grid) on a LiBoard board.
+     * @param board the output board where the object is drawn.
+     * @param asGrid to choose between paving vs. grid representation.
+     */
+    void selfDrawAsPaving( LibBoard::Board & board ) const;
+    
+    
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+    
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+    
+    
+    
+    // ------------------------- Hidden services ------------------------------
     private:
 
 
@@ -423,6 +424,29 @@ namespace DGtal
   template<typename TSpace>
   std::ostream&
   operator<< ( std::ostream & out, const HyperRectDomain<TSpace> & object );
+
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct DrawDomainGrid : public DrawWithBoardModifier {
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ "HyperRectDomain" ] = "Grid";
+    }
+  };
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct DrawDomainPaving : public DrawWithBoardModifier {
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ "HyperRectDomain" ] = "Paving";
+    }
+  };
 
 
 } // namespace DGtal

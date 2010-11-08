@@ -43,6 +43,8 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/DGtalBoard.h"
 
