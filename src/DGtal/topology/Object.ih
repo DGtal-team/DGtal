@@ -839,7 +839,7 @@ DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw
   else if ( mode == "DrawAdjacencies" )
     selfDrawWithAdjacencies( board );
   else
-    ASSERT(false && "DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode );
+    ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) ==""));
 }
 
 /**
