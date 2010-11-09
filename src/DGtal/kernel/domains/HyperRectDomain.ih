@@ -439,7 +439,7 @@ DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
   else if ( mode == "Paving" )
     selfDrawAsPaving( board );
   else
-    ASSERT(false && "DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode " + mode );
+    ASSERT(false && ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)==""  );
   // selfDrawAsGrid( board );
 }
 
