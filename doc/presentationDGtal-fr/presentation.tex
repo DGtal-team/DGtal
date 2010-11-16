@@ -1,0 +1,247 @@
+\documentclass[8pt]{beamer}
+%epackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage{wasysym}
+\usepackage[T1]{fontenc}
+
+
+\definecolor{mongris}{gray}{0.8}           % definition couleur grise
+\newcommand{\dd}{\footnotesize $\Diamond$}
+
+\newcommand{\HH}{ \vspace{0.5pt}\hrule}
+\newcommand{\round}[1]{\lceil #1 \rfloor}  % notation arrondi
+\def\eme{$^{\textrm{{\`e}me}}$}                  % i {\`e}me
+\def\num{n^{\circ}}                        % numero
+\def\Num{N^{\circ}}                        % Numero
+\def\sinc{\mathrm{sinc}}                   % sinus cardinal
+\def\ere{$^{\textrm{{\`e}re}}$}                % {\`e}re
+\def\er{$^{\textrm{{e}r}}$}                % {\`e}re
+\def\eg{\emph{e.g.} }                      % e.g.
+\def\ie{\emph{i.e.} }                      % i.e.
+\def\etc{\emph{etc}}                       % etc
+\def\cm{\,cm}                              % cm
+\def\met{\,m}                              % m
+\def\mm{\,mm}                              % mm
+\def\deg{$^\circ$}                         % degres
+\def\ud{\mathrm{d}}                        % pour dx dy ...
+
+
+\def \R {{\Bbb R}}
+\def \I {{\Bbb I}}
+\def \H{{\Bbb H}}
+\def \F {{\Bbb F}}
+\def \S {{\Bbb S}}
+\def \B {{\Bbb B}}
+\def \Z {{\mathbb Z}}
+\def \G {{\mathbb G}}
+\def \L {{\mathcal{L}}}
+\def \C {{\mathcal C}}
+\def \P {{\mathcal P}}
+\def \Q {{\mathcal Q}} 
+\def \E{{\mathcal E}}
+\def \D{{\mathcal D}}
+\definecolor{mybluecolor}{RGB}{116,121,149}
+
+\newcommand{\darky}[1]{{\usebeamercolor[fg]{block title example} #1}}
+\newcommand{\myblue}[1]{{\color{mybluecolor}\aut{[#1]}}}
+
+\newcommand{\ball}  {\ensuremath{B}}
+\newcommand{\AMDR}{\operatorname{AMD}}
+\newcommand{\AMD}{\operatorname{AMD}}
+
+\newcommand{\MAset}{\ensuremath{\mathrm{A\!M}} }
+\newcommand{\MAsetg}{\ensuremath{\MAset^g } }
+
+\def \PS {{\aut{Planar-4-3-SAT}}}
+\def \R {{\Bbb R}}
+\def \I {{\Bbb I}}
+\def \F {{\Bbb F}}
+\def \S {{\Bbb S}}
+\def \Z {{\mathbb Z}}
+\def \L {{\mathcal{L}}}
+\def \C {{\mathcal C}}
+\def \P {{\mathcal P}}
+\def \Q {{\mathcal Q}} 
+\def \E{{\mathcal E}}
+\def \D{{\mathcal D}}
+\def \BD {{\bar{\mathcal{D}}}}
+\def \etal {{\it et al.~}}
+\def\arc{\mbox{arc}}
+\definecolor{mongris}{gray}{0.8}          
+\newcommand{\fup}[1]{\uparrow#1\uparrow}
+\newcommand{\fdown}[1]{\downarrow#1\downarrow}
+\newcommand{\sI}[1]{\overline{\tt #1}}
+\newcommand{\iI}[1]{\underline{\tt #1}}
+\newcommand{\e}[5]{#1 & #2 & #3 & #4 & #5 \\}
+\newcommand{\eh}[5]{\text{#1} & \text{#2} &  \text{#3} &  \text{#4} & \text{#5}\\} 
+
+\usepackage{beamerthemeliris2}
+\useoutertheme{smoothbars}
+
+\title[]{DGtal: Digital  Geometry Tools and Algorithms Library}
+\subtitle{\url{http://liris.cnrs.fr/dgtal}}
+
+\author[DGtal~~~~~~~~~~~~~~~~~~~~~~~~~~David Coeurjolly]{David Coeurjolly}
+
+
+ \newcommand{\fod}[2]{\multicolumn{2}{p{3.5cm}}{\emph{#1}\dotfill} &
+      \multicolumn{2}{p{9cm}}{#2}\\}
+    \newcommand{\fodt}[4]{\emph{#1} & {\footnotesize \textsl{#2}} & #3 & \small #4\\}
+    % \newenvironment{ta}{\begin{tabular}{p{3.5cm}p{9cm}}}{\end{tabular}\\}
+    \newenvironment{ta}{\begin{tabular}{crll}}{\end{tabular}\\}
+    % \vfill
+
+
+\newcommand{\aut}[1]{{\sc #1}}             % auteur en small capsu
+
+
+\institute%[XXX]
+{
+
+  {\bf Laboratoire d'InfoRmatique en Image et Systèmes d'information} \\
+  { \scriptsize{
+  LIRIS UMR 5205 CNRS/INSA de Lyon/Université Claude Bernard Lyon 1/Université Lumière Lyon 2/Ecole Centrale de Lyon\\
+  INSA de Lyon, bâtiment J. Verne\\
+  20, Avenue Albert Einstein - 69622 Villeurbanne cedex\\
+  \url{http://liris.cnrs.fr}}
+  }
+}
+
+
+
+\graphicspath{{./Figures/}, {./Fig/}, {./ICPR2010/},{./Antoine/images/}}
+
+
+\begin{document}
+
+\small
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Objectifs}
+
+  \begin{block}{Bibliothèque Géométrie discrète\HH}
+    \begin{itemize}
+    \item faciliter l'appropriation de nos outils pour un néophyte
+      (nouveau doctorant, chercheur d'une autre discipline, ...)
+    \item tester rapidement une nouvelle idée, permettre une meilleure
+      comparaison d'un nouvel outil par rapport à l'existant
+    \item faciliter la construction de démonstrateurs (statiques, en
+      ligne, ...)
+    \item diffuser nos résultats de recherche à d'autres domaines
+      \item mettre en place un projet fédérateur
+\item \ldots
+    \end{itemize}
+  \end{block}
+ 
+
+  \begin{block}{Qui ?\HH}
+    \begin{itemize}
+    \item LIRIS      
+    \item LAMA (Chambéry)
+    \item Gipsa-lab (Grenoble)
+    \item LORIA (Nancy)
+    \item GREYC (Caen)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Objectifs (bis)}
+
+  
+  \begin{block}{Pourquoi faire ?\HH}
+    \begin{itemize}
+    \item Définir des objets discrets en dimension arbitraire
+    \item Proposer des algorithmes d'analyse geom. et topo
+    \item Définir des mécanismes d'I/O et de visualisation
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Structuration}
+
+  \begin{block}{Découpage\HH}
+    \begin{itemize}
+    \item Noyau topologique 
+      \begin{itemize}
+      \item Topologie digitale : ensembles, connexité, bords,
+        compos. connexes
+      \item Topologie discrète : modèle cellulaire, contours,
+        modèle de représentation de régions (Carte Topo/Combi)
+      \item Calculs d'invariants n-D
+      \end{itemize}
+    \item Noyau géométrique
+      \begin{itemize}
+      \item Analyse contour : reconnaissance structures discrètes,
+        estimateurs géométriques, ...
+      \item Analyse volumique : transformation en distance, axe
+        médian, ...
+      \end{itemize}
+    \item Modules haut niveau
+      \begin{itemize}
+      \item \ldots        
+      \end{itemize}
+      
+    \item Représentation des images
+      \begin{itemize}
+      \item Mécanisme de \emph{Container} générique
+      \item Structures adaptées pour de gros volumes (hashtree,...) 
+      \end{itemize}
+    \item Entrées/sorties: 
+      \begin{itemize}
+      \item Visualisation vectorielle 2D (svg, xfig, eps)
+      \item import/export  différents formats d'image
+      \item serialisation,...        
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Méthodologie}
+
+  \begin{block}{Design\HH}
+    \begin{itemize}
+    \item C++
+    \item Prog. générique
+    \item Concepts et modèles de concept
+      \item LGPL ( ou \emph{GPL with restrictions})
+    \end{itemize}
+  \end{block}
+
+
+  \begin{block}{Infrastructure\HH}
+    \begin{itemize}
+    \item  \url{http://liris.cnrs.fr/dgtal}
+    \item Tests unitaires
+    \item cmake/ctest/cdash
+    \item Mailing lists
+    \item Doxygen
+    \item Tickets trac 
+    \item multi-plateforme
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+
+exemples...
+
+\begin{itemize}
+\item Space, Domain, Object
+\item ImageContainer
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+
+
