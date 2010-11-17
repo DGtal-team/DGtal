@@ -53,7 +53,7 @@ using namespace LibBoard;
   nbok += ( x ) ? 1 : 0; \
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
-	       << #x << std::endl;
+  << #x << std::endl;
 
 #define INBLOCK_TEST2(x,y) \
   nbok += ( x ) ? 1 : 0; \
@@ -72,11 +72,11 @@ bool testObject()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef SpaceND< 2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
-  typedef HyperRectDomain< Z2 > DomainType; 
+  typedef HyperRectDomain< Z2 > DomainType;
   Point p1(  -449, -449  );
   Point p2( 449, 449  );
   DomainType domain( p1, p2 );
@@ -88,9 +88,9 @@ bool testObject()
   typedef DomainAdjacency< DomainType, MetricAdj4 > Adj4;
   typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
-  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
-     MediumSet;
-//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
+  typedef DigitalSetSelector < DomainType, MEDIUM_DS + HIGH_BEL_DS >::Type
+  MediumSet;
+//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type
 //     MediumSet;
   typedef Object<DT48, MediumSet> ObjectType;
   typedef ObjectType::SmallSet SmallSet;
@@ -106,35 +106,35 @@ bool testObject()
   DT48 dt48( adj4, adj8, JORDAN_DT );
 
   Coordinate r = 449;
-  double radius = (double) (r+1);
+  double radius = (double) (r + 1);
   Point c(  0, 0  );
   Point l(  r, 0  );
   MediumSet disk( domain );
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
-    {
-      if ( (*it - c ).norm() < radius ) // 450.0
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
-    }
+  for ( DomainType::ConstIterator it = domain.begin();
+      it != domain.end();
+      ++it )
+  {
+    if ( (*it - c ).norm() < radius ) // 450.0
+      // insertNew is very important for vector container.
+      disk.insertNew( *it );
+  }
   trace.endBlock();
 
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
   ObjectType disk_object( dt48, disk );
-  nbok += disk_object.size() == 636101 ? 1 : 0; 
+  nbok += disk_object.size() == 636101 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk (r=450.0) " << disk_object << std::endl;
+  << "Disk (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
   ObjectType disk_object2( disk_object );
-  nbok += disk_object2.size() == 636101 ? 1 : 0; 
+  nbok += disk_object2.size() == 636101 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk2 (r=450.0) " << disk_object2 << std::endl;
+  << "Disk2 (r=450.0) " << disk_object2 << std::endl;
   trace.info() << "  size=" << disk_object2.size() << std::endl;
   trace.endBlock();
 
@@ -142,105 +142,105 @@ bool testObject()
   trace.info() << "Removing center point in Disk." << std::endl;
   disk_object.pointSet().erase( c );
   disk_object2.pointSet().insert( c );
-  nbok += disk_object.size() == 636100 ? 1 : 0; 
+  nbok += disk_object.size() == 636100 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk - c (r=450.0) " << disk_object << std::endl;
+  << "Disk - c (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
-  nbok += disk_object2.size() == 636101 ? 1 : 0; 
+  nbok += disk_object2.size() == 636101 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk2 + c (r=450.0) " << disk_object2 << std::endl;
+  << "Disk2 + c (r=450.0) " << disk_object2 << std::endl;
   trace.info() << "  size=" << disk_object2.size() << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing neighborhoods ..." );
   Object<DT48, SmallSet> neigh = disk_object.neighborhood( c );
-  nbok += neigh.size() == 4 ? 1 : 0; 
+  nbok += neigh.size() == 4 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N_4(Disk, c).size() = " << neigh.size() 
-	       << " == 4" << std::endl;
+  << "N_4(Disk, c).size() = " << neigh.size()
+  << " == 4" << std::endl;
   neigh = disk_object.properNeighborhood( l );
-  nbok += neigh.size() == 3 ? 1 : 0; 
+  nbok += neigh.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N*_4(Disk, " << l << ").size() = " << neigh.size()
-	       << " == 3" << std::endl;
+  << "N*_4(Disk, " << l << ").size() = " << neigh.size()
+  << " == 3" << std::endl;
   Size size = disk_object.properNeighborhoodSize( l );
-  nbok += size == 3 ? 1 : 0; 
+  nbok += size == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "#N*_4(Disk, " << l << ") = " << size
-	       << " == 3" << std::endl;
+  << "#N*_4(Disk, " << l << ") = " << size
+  << " == 3" << std::endl;
 
   neigh = disk_object2.neighborhood( c );
-  nbok += neigh.size() == 5 ? 1 : 0; 
+  nbok += neigh.size() == 5 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N_4(Disk2, c).size() = " << neigh.size() 
-	       << " == 5" << std::endl;
+  << "N_4(Disk2, c).size() = " << neigh.size()
+  << " == 5" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing set converters ..." );
   DigitalSetConverter<SmallSet>::assign
-    ( neigh.pointSet(), disk_object.pointSet() );
-  nbok += neigh.size() == 636100 ? 1 : 0; 
+  ( neigh.pointSet(), disk_object.pointSet() );
+  nbok += neigh.size() == 636100 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "neigh = disk_object, size() = " << neigh.size() 
-	       << " == 636100" << std::endl;
+  << "neigh = disk_object, size() = " << neigh.size()
+  << " == 636100" << std::endl;
   SmallObjectType neigh2 = disk_object2.neighborhood( c );
   DigitalSetConverter<SmallSet>::assign
-    ( neigh.pointSet(), neigh2.pointSet() );
-  nbok += neigh.size() == 5 ? 1 : 0; 
+  ( neigh.pointSet(), neigh2.pointSet() );
+  nbok += neigh.size() == 5 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "neigh = N_4(Disk2, c), size() = " << neigh.size() 
-	       << " == 5" << std::endl;
+  << "neigh = N_4(Disk2, c), size() = " << neigh.size()
+  << " == 5" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing border extraction ..." );
   ObjectType bdisk = disk_object.border();
-  nbok += bdisk.size() == 3372 ? 1 : 0; 
+  nbok += bdisk.size() == 3372 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Border(Disk, c), size() = " << bdisk.size() 
-	       << " == 3372" << std::endl;
+  << "Border(Disk, c), size() = " << bdisk.size()
+  << " == 3372" << std::endl;
   ObjectType bdisk2 = disk_object2.border();
-  nbok += bdisk2.size() == 3364 ? 1 : 0; 
+  nbok += bdisk2.size() == 3364 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Border(Disk2, c), size() = " << bdisk2.size() 
-	       << " == 3364" << std::endl;
+  << "Border(Disk2, c), size() = " << bdisk2.size()
+  << " == 3364" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing expansion by layers on the boundary ..." );
   typedef Expander< ObjectType > ObjectExpander;
   ObjectExpander expander( bdisk, *(bdisk.pointSet().begin()) );
   while ( ! expander.finished() )
-    {
-      nbok += expander.layer().size() <= 2 ? 1 : 0; 
-      nb++;
-      trace.info() << "(" << nbok << "/" << nb << ") "
-		   << "expander.layer.size() <= 2 " 
-		   << expander << std::endl;
-      expander.nextLayer();
-    }
+  {
+    nbok += expander.layer().size() <= 2 ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+    << "expander.layer.size() <= 2 "
+    << expander << std::endl;
+    expander.nextLayer();
+  }
   trace.endBlock();
 
   trace.beginBlock ( "Testing expansion by layers on the disk from center..." );
   ObjectExpander expander2( disk_object2, c );
   while ( ! expander2.finished() )
-    {
-      trace.info() << expander2 << std::endl;
-      expander2.nextLayer();
-    }
-  nbok += expander2.distance() <= sqrt(2.0)*radius ? 1 : 0; 
+  {
+    trace.info() << expander2 << std::endl;
+    expander2.nextLayer();
+  }
+  nbok += expander2.distance() <= sqrt(2.0) * radius ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "expander.distance() = " << expander2.distance()
-	       << " <= " << sqrt(2.0)*radius << std::endl;
+  << "expander.distance() = " << expander2.distance()
+  << " <= " << sqrt(2.0)*radius << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -259,14 +259,14 @@ bool testObject3D()
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
   typedef Z3::Point Point;
-  typedef HyperRectDomain< Z3 > Domain; 
-  typedef Domain::ConstIterator DomainConstIterator; 
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef HyperRectDomain< Z3 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT6_18, DigitalSet> ObjectType;
   Adj6 adj6;
   Adj18 adj18;
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
- 
+
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
@@ -278,9 +278,10 @@ bool testObject3D()
   // diamond of radius 30
   DigitalSet diamond_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    {
-      if ( (*it - c ).norm1() <= 45 ) diamond_set.insertNew( *it );
-    }
+  {
+    if ( (*it - c ).norm1() <= 45 )
+      diamond_set.insertNew( *it );
+  }
   ObjectType diamond( dt6_18, diamond_set );
   trace.info() << "Cloning diamond" << endl;
   // The following line takes almost no time.
@@ -295,12 +296,12 @@ bool testObject3D()
   back_insert_iterator< vector< ObjectType > > inserter( objects );
   *inserter++ = diamond;
   *inserter++ = diamond_clone;
-  
+
   for (  vector<ObjectType>::const_iterator it = objects.begin();
-	 it != objects.end();
-	 ++it )
-    trace.info() << "- objects[" << (it - objects.begin() ) << "]" 
-		 << " = " << *it << endl;
+      it != objects.end();
+      ++it )
+    trace.info() << "- objects[" << (it - objects.begin() ) << "]"
+    << " = " << *it << endl;
 
   INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 2 ) );
   INBLOCK_TEST( objects[ 0 ].size() == 125671 );
@@ -308,7 +309,7 @@ bool testObject3D()
 
   trace.beginBlock ( "Testing connected component extraction  ..." );
   // JOL: do like this for output iterators pointing on the same
-  // container as 'this'. Works fine and nearly as fast. 
+  // container as 'this'. Works fine and nearly as fast.
   //
   // ObjectType( objects[ 0 ] ).writeComponents( inserter );
 
@@ -325,10 +326,10 @@ bool testObject3D()
   INBLOCK_TEST( nbc1 == 3 );
   trace.endBlock();
   for (  vector<ObjectType>::const_iterator it = objects2.begin();
-	 it != objects2.end();
-	 ++it )
-    trace.info() << "- objects2[" << (it - objects2.begin() ) << "]" 
-		 << " = " << *it << endl;
+      it != objects2.end();
+      ++it )
+    trace.info() << "- objects2[" << (it - objects2.begin() ) << "]"
+    << " = " << *it << endl;
   INBLOCK_TEST( objects2[ 0 ].size() == objects2[ 1 ].size() );
   INBLOCK_TEST( objects2[ 2 ].size() == objects2[ 3 ].size() );
   INBLOCK_TEST( objects2[ 0 ].size() == 15848 );
@@ -353,16 +354,16 @@ bool testSimplePoints3D()
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
   typedef Z3::Point Point;
-  typedef HyperRectDomain< Z3 > Domain; 
-  typedef Domain::ConstIterator DomainConstIterator; 
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef HyperRectDomain< Z3 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT6_18, DigitalSet> ObjectType;
   typedef Object<DT6_18, DigitalSet>::SmallObject SmallObjectType;
   typedef Object<DT6_18, DigitalSet>::SmallComplementObject SmallComplementObjectType;
   Adj6 adj6;
   Adj18 adj18;
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
- 
+
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
   Domain domain( p1, p2 );
@@ -373,9 +374,10 @@ bool testSimplePoints3D()
   // diamond of radius 4
   DigitalSet diamond_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    {
-      if ( (*it - c ).norm1() <= 3 ) diamond_set.insertNew( *it );
-    }
+  {
+    if ( (*it - c ).norm1() <= 3 )
+      diamond_set.insertNew( *it );
+  }
   diamond_set.erase( c );
   ObjectType diamond( dt6_18, diamond_set );
   trace.endBlock();
@@ -393,13 +395,13 @@ bool testSimplePoints3D()
 
   trace.beginBlock ( "Simple points ..." );
   for ( DigitalSet::ConstIterator it = diamond.pointSet().begin();
-	it != diamond.pointSet().end();
-	++it )
-    trace.info() << "- " << *it 
-		 << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
-		 << endl;
+      it != diamond.pointSet().end();
+      ++it )
+    trace.info() << "- " << *it
+    << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
+    << endl;
   trace.endBlock();
-  
+
 
   return nbok == nb;
 }
@@ -411,11 +413,11 @@ bool testDraw()
   unsigned int nb = 0;
 
   trace.beginBlock ( "testDraw(): testing drawing commands." );
-  
+
   typedef SpaceND<  2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
-  typedef HyperRectDomain< Z2 > DomainType; 
+  typedef HyperRectDomain< Z2 > DomainType;
   Point p1(  -10, -10  );
   Point p2( 10, 10  );
   DomainType domain( p1, p2 );
@@ -428,9 +430,9 @@ bool testDraw()
   typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef DigitalTopology< Adj8, Adj4 > DT84;
-  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
-     MediumSet;
-//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
+  typedef DigitalSetSelector < DomainType, MEDIUM_DS + HIGH_BEL_DS >::Type
+  MediumSet;
+//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type
 //     MediumSet;
   typedef Object<DT48, MediumSet> ObjectType;
   typedef Object<DT84, MediumSet> ObjectType84;
@@ -447,23 +449,23 @@ bool testDraw()
   Adj8 adj8( domain, madj8 );
   DT48 dt48( adj4, adj8, JORDAN_DT );
   DT84 dt84( adj8, adj4, JORDAN_DT );
-  
+
   Coordinate r = 5;
-  double radius = (double) (r+1);
+  double radius = (double) (r + 1);
   Point c(  0, 0  );
   Point l(  r, 0  );
   MediumSet disk( domain );
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
-    {
-      if ( (*it - c ).norm() < radius ) // 450.0
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
-    }
+  for ( DomainType::ConstIterator it = domain.begin();
+      it != domain.end();
+      ++it )
+  {
+    if ( (*it - c ).norm() < radius ) // 450.0
+      // insertNew is very important for vector container.
+      disk.insertNew( *it );
+  }
   trace.endBlock();
 
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
@@ -473,35 +475,35 @@ bool testDraw()
 
   trace.beginBlock ( "Testing export as SVG with libboard." );
 
-  Board board;
+  DGtalBoard board;
   board.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board);
   disk_object.selfDraw(board);
-  
+
   board.saveSVG("disk-object.svg");
-  
-  Board board2;
-  board2 << Board::UCentimeter;
+
+  DGtalBoard board2;
+  board2.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board2);
   disk_object.selfDrawWithAdjacencies(board2);
-  
+
   board2.saveSVG("disk-object-adj.svg");
 
-  Board board3;
-  board3 << Board::UCentimeter;
+  DGtalBoard board3;
+  board3.setUnit( Board::UCentimeter );
 
   domain.selfDrawAsGrid(board3);
   disk_object2.selfDrawWithAdjacencies(board3);
-  
+
   board3.saveSVG("disk-object-adj-bis.svg");
   trace.endBlock();
 
   trace.endBlock();
 
   return nbok == nb;
-  
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -515,9 +517,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testObject() && 
-    testObject3D() && testDraw()
-    && testSimplePoints3D();
+  bool res = testObject() &&
+      testObject3D() && testDraw()
+      && testSimplePoints3D();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

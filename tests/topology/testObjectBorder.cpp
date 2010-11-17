@@ -54,27 +54,20 @@ using namespace LibBoard;
 // Functions for testing class ObjectBorder.
 ///////////////////////////////////////////////////////////////////////////////
 
-struct SelfDrawStyleCustom
-{
-  SelfDrawStyleCustom(LibBoard::Board & aboard)
-  {
-    aboard.setFillColorRGBi(0,169,0);
-  }
-};
 
-struct SelfDrawStyleCustomRed
-{
-  SelfDrawStyleCustomRed(LibBoard::Board & aboard)
-  {
-    aboard.setFillColorRGBi(169,0,0);
-  }
-};
 
 struct MyObjectStyleCustom : public DrawableWithBoard
 {
   void selfDraw(LibBoard::Board & aboard) const
   {
-    aboard.setFillColorRGBi(0,169,0);
+    aboard.setFillColorRGBi(0, 169, 0);
+  }
+};
+struct MyObjectStyleCustomRed : public DrawableWithBoard
+{
+  void selfDraw(LibBoard::Board & aboard) const
+  {
+    aboard.setFillColorRGBi(169, 0, 0);
   }
 };
 
@@ -82,8 +75,8 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard
 {
   virtual void selfDraw(LibBoard::Board & aboard) const
   {
-    aboard.setFillColorRGBi(169,150,150);
-    aboard.setPenColorRGBi(0,0,0);
+    aboard.setFillColorRGBi(169, 150, 150);
+    aboard.setPenColorRGBi(0, 0, 0);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
@@ -93,8 +86,8 @@ struct MyDrawStyleCustomBlue : public DrawableWithBoard
 {
   virtual void selfDraw(LibBoard::Board & aboard) const
   {
-    aboard.setFillColorRGBi(150,150,250);
-    aboard.setPenColorRGBi(0,0,200);
+    aboard.setFillColorRGBi(150, 150, 250);
+    aboard.setPenColorRGBi(0, 0, 200);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
@@ -104,8 +97,8 @@ struct MyDrawStyleCustomGreen : public DrawableWithBoard
 {
   virtual void selfDraw(LibBoard::Board & aboard) const
   {
-    aboard.setFillColorRGBi(150,150,160);
-    aboard.setPenColorRGBi(150,150,160);	
+    aboard.setFillColorRGBi(150, 150, 160);
+    aboard.setPenColorRGBi(150, 150, 160);
     aboard.setLineStyle(LibBoard::Shape::DashStyle);
     aboard.setLineWidth( 1.0 );
   }
@@ -118,18 +111,18 @@ struct MyDrawStyleCustomGreen : public DrawableWithBoard
  *
  */
 bool testObjectBorder()
-{ 
+{
   trace.beginBlock ( "Testing Object Borders in 2D ..." );
 
   typedef int Integer;                // choose your digital line here.
   typedef SpaceND<2> Z2;          // Z^2
   typedef Z2::Point Point;
-  typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
-  typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type
+  typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
   typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
-  typedef HyperRectDomain< Z2 > Domain; 
+  typedef HyperRectDomain< Z2 > Domain;
   typedef Domain::ConstIterator DomainConstIterator;
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT8_4, DigitalSet> ObjectType;
 
 
@@ -139,50 +132,50 @@ bool testObjectBorder()
 
   Adj4 adj4;                          // instance of 4-adjacency
   Adj8 adj8;                          // instance of 8-adjacency
-  DT8_4 dt8_4(adj8,adj4, JORDAN_DT );
+  DT8_4 dt8_4(adj8, adj4, JORDAN_DT );
 
   Point c( 0, 0 );
-  
+
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    {
-      int x = (*it)[0];
-      int y = (*it)[1];
-      if (( x*x+y*y < 82) || 
-	  (  (x-14)*(x-14)+(y+1)*(y+1)< 17) ||
-	  (  (x+14)*(x+14)+(y-1)*(y-1)< 17) )
-	bubble_set.insertNew( *it);
-    }
-   
+  {
+    int x = (*it)[0];
+    int y = (*it)[1];
+    if (( x*x + y*y < 82) ||
+        (  (x - 14)*(x - 14) + (y + 1)*(y + 1) < 17) ||
+        (  (x + 14)*(x + 14) + (y - 1)*(y - 1) < 17) )
+      bubble_set.insertNew( *it);
+  }
+
   ObjectType bubble( dt8_4, bubble_set );
-  
+
   //Connectedness Check
   if (bubble.computeConnectedness() == ObjectType::CONNECTED)
-    trace.info() << "The object is (8,4)connected."<<endl;
+    trace.info() << "The object is (8,4)connected." << endl;
   else
-    trace.info() << "The object is not (8,4)connected."<<endl;
+    trace.info() << "The object is not (8,4)connected." << endl;
 
   //Border Computation
   ObjectType bubbleBorder = bubble.border();
   if (bubbleBorder.computeConnectedness() == ObjectType::CONNECTED)
-   trace.info() << "The object (8,4) border is connected."<<endl;
+    trace.info() << "The object (8,4) border is connected." << endl;
   else
-    trace.info() << "The object (8,4) border is not connected."<<endl;
-  
+    trace.info() << "The object (8,4) border is not connected." << endl;
+
   //Board Export
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
- 
+
   board << DrawDomainGrid() <<  domain << bubble_set;
   board.saveSVG("bubble-set.svg");
-  
-  board << DrawObjectAdjacencies() 
-    //	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
-    	<< CustomStyle( "Object", new MyObjectStyleCustom )
-	<< bubbleBorder;  
+
+  board << DrawObjectAdjacencies()
+  //	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+  << CustomStyle( "Object", new MyObjectStyleCustom )
+  << bubbleBorder;
   board.saveSVG("bubble-object-border.svg");
-  
+
   board.clear();
 
   //////////////////////:
@@ -191,42 +184,44 @@ bool testObjectBorder()
   DT8_4::ReverseTopology dt4_8 = dt8_4.reverseTopology();
 
   ObjectType48 bubble2( dt4_8, bubble_set );
-  
+
   //Border Computation
   ObjectType48 bubbleBorder2 = bubble2.border();
   if (bubbleBorder2.computeConnectedness() == ObjectType48::CONNECTED)
-    trace.info() << "The object (4,8) border is connected."<<endl;
+    trace.info() << "The object (4,8) border is connected." << endl;
   else
-    trace.info() << "The object (4,8) border is not connected."<<endl;
-  
+    trace.info() << "The object (4,8) border is not connected." << endl;
+
   domain.selfDrawAsGrid(board);
   bubble_set.selfDraw(board);
-  
-  bubbleBorder2.selfDrawWithAdjacencies<SelfDrawStyleCustom>(board);  
+  board << DrawObjectAdjacencies()
+  << CustomStyle( "Object", new MyObjectStyleCustom )
+  << bubbleBorder2;
+
   board.saveSVG("bubble-object-border-48.svg");
-  
+
   //We split the border according to its components
   vector<ObjectType48> borders(30);
-  int nbComponents; 
-  
-  vector<ObjectType48>::iterator it=borders.begin();
+  int nbComponents;
+
+  vector<ObjectType48>::iterator it = borders.begin();
   nbComponents = bubbleBorder2.writeComponents( it );
-  
-  trace.info() << "The Bubble object has "<< nbComponents<< " (4,8)-connected components"<<endl;
-  
-  bool flag=true;
-  for(unsigned int k=0;k<nbComponents ; k++)
-    {
-      if (flag)
-	borders[k].selfDrawWithAdjacencies<SelfDrawStyleCustom>(board);
-      else
-	borders[k].selfDrawWithAdjacencies<SelfDrawStyleCustomRed>(board);
-      flag = !flag;
-    }
-  
+
+  trace.info() << "The Bubble object has " << nbComponents << " (4,8)-connected components" << endl;
+
+  bool flag = true;
+  for (unsigned int k = 0;k < nbComponents ; k++)
+  {
+    if (flag)
+      board <<  DrawObjectAdjacencies() << CustomStyle( "Object", new MyObjectStyleCustom ) << borders[k];
+    else
+      board <<  DrawObjectAdjacencies() << CustomStyle( "Object", new MyObjectStyleCustom ) << borders[k];
+    flag = !flag;
+  }
+
   board.saveSVG("bubble-object-color-borders-48.svg");
   trace.endBlock();
-  
+
   return true;
 }
 
@@ -237,18 +232,18 @@ bool testObjectBorder()
  *
  */
 bool testDGtalBoard()
-{ 
+{
   trace.beginBlock ( "Testing DGtalBoard with Object Borders in 2D ..." );
 
   typedef int Integer;                // choose your digital line here.
   typedef SpaceND<2> Z2;          // Z^2
   typedef Z2::Point Point;
-  typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
-  typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type
+  typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
   typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
-  typedef HyperRectDomain< Z2 > Domain; 
+  typedef HyperRectDomain< Z2 > Domain;
   typedef Domain::ConstIterator DomainConstIterator;
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT8_4, DigitalSet> ObjectType;
 
 
@@ -258,51 +253,51 @@ bool testDGtalBoard()
 
   Adj4 adj4;                          // instance of 4-adjacency
   Adj8 adj8;                          // instance of 8-adjacency
-  DT8_4 dt8_4(adj8,adj4, JORDAN_DT );
+  DT8_4 dt8_4(adj8, adj4, JORDAN_DT );
 
   Point c( 0, 0 );
-  
+
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    {
-      int x = (*it)[0];
-      int y = (*it)[1];
-      if (( x*x+y*y < 82) || 
-	  (  (x-14)*(x-14)+(y+1)*(y+1)< 17) ||
-	  (  (x+14)*(x+14)+(y-1)*(y-1)< 17) )
-	bubble_set.insertNew( *it);
-    }
-   
+  {
+    int x = (*it)[0];
+    int y = (*it)[1];
+    if (( x*x + y*y < 82) ||
+        (  (x - 14)*(x - 14) + (y + 1)*(y + 1) < 17) ||
+        (  (x + 14)*(x + 14) + (y - 1)*(y - 1) < 17) )
+      bubble_set.insertNew( *it);
+  }
+
   ObjectType bubble( dt8_4, bubble_set );
-  
+
   //Connectedness Check
   if (bubble.computeConnectedness() == ObjectType::CONNECTED)
-    trace.info() << "The object is (8,4)connected."<<endl;
+    trace.info() << "The object is (8,4)connected." << endl;
   else
-    trace.info() << "The object is not (8,4)connected."<<endl;
+    trace.info() << "The object is not (8,4)connected." << endl;
 
   //Border Computation
   ObjectType bubbleBorder = bubble.border();
   if (bubbleBorder.computeConnectedness() == ObjectType::CONNECTED)
-   trace.info() << "The object (8,4) border is connected."<<endl;
+    trace.info() << "The object (8,4) border is connected." << endl;
   else
-    trace.info() << "The object (8,4) border is not connected."<<endl;
-  
+    trace.info() << "The object (8,4) border is not connected." << endl;
+
   //Board Export
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
- 
-  board << DrawDomainGrid() 
-	<< CustomStyle( domain.styleName(), new MyDrawStyleCustomGreen )
-	<< domain 
-	<< CustomStyle( bubble_set.styleName(), new MyDrawStyleCustomRed )
-	<< bubble_set;
+
+  board << DrawDomainGrid()
+  << CustomStyle( domain.styleName(), new MyDrawStyleCustomGreen )
+  << domain
+  << CustomStyle( bubble_set.styleName(), new MyDrawStyleCustomRed )
+  << bubble_set;
   board.saveSVG("bubble-set-dgtalboard.svg");
-  
-  board << DrawObjectAdjacencies( true ) 
-	<< CustomStyle( bubbleBorder.styleName(), new MyDrawStyleCustomBlue )
-	<< bubbleBorder;
+
+  board << DrawObjectAdjacencies( true )
+  << CustomStyle( bubbleBorder.styleName(), new MyDrawStyleCustomBlue )
+  << bubbleBorder;
   board.saveSVG("bubble-object-border-dgtalboard.svg");
   board.clear();
 
@@ -315,9 +310,9 @@ bool testDGtalBoard()
 
 int main( int argc, char** argv )
 {
- 
+
   bool res = testObjectBorder()
-    && testDGtalBoard();
+      && testDGtalBoard();
   return res ? 0 : 1;
 }
 //                                                                           //
