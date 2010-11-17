@@ -478,7 +478,7 @@ bool testDraw()
 
   trace.beginBlock ( "Testing export as SVG with libboard." );
 
-  Board board;
+  DGtalBoard board;
   board.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board);
@@ -486,16 +486,16 @@ bool testDraw()
   
   board.saveSVG("disk-object.svg");
   
-  Board board2;
-  board2 << Board::UCentimeter;
+  DGtalBoard board2;
+  board2.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board2);
   disk_object.selfDrawWithAdjacencies(board2);
   
   board2.saveSVG("disk-object-adj.svg");
 
-  Board board3;
-  board3 << Board::UCentimeter;
+  DGtalBoard board3;
+  board3.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board3);
   disk_object2.selfDrawWithAdjacencies(board3);

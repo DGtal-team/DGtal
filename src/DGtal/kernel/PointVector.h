@@ -52,7 +52,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/IntegerTraits.h"
-//#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -544,7 +545,7 @@ namespace DGtal
        * Draw the object on a LibBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDraw( LibBoard::Board & board ) const;
+      void selfDraw( DGtalBoard & board ) const;
 
 
       // ----------------------- Interface --------------------------------------
@@ -558,8 +559,7 @@ namespace DGtal
        * @param startingPoint the starting point of the vector
        * @tparam Functor a Functor to specialize the Board style
        */
-				void selfDraw( LibBoard::Board & board,
-          const PointVector &startingPoint ) const;
+				void selfDraw( DGtalBoard & board, const PointVector &startingPoint ) const;
 
 
       /**

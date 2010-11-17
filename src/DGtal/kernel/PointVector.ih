@@ -541,7 +541,7 @@ DGtal::PointVector<N, T>::styleName() const
 template<std::size_t N, typename T>
 inline
 void
-DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board ) const
+DGtal::PointVector<N, T>::selfDraw(DGtalBoard & board ) const
 {
   ASSERT(N == 2);
   board.drawRectangle( (float) myArray[0] - 0.5f, 
@@ -553,8 +553,7 @@ DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board ) const
 template<std::size_t N, typename T>
 inline
 void
-DGtal::PointVector<N, T>::selfDraw(LibBoard::Board & board,
-    const PointVector &apoint) const
+DGtal::PointVector<N, T>::selfDraw(DGtalBoard & board,const PointVector &apoint) const
 {
   ASSERT(N == 2);
 

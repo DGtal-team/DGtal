@@ -126,7 +126,7 @@ bool testSimpleExpander()
   
 
   //Board Export init
-  Board board;
+  DGtalBoard board;
   board.setUnit(Board::UCentimeter);
    
   //Border=4 Filling=4
