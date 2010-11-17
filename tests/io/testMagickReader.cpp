@@ -40,7 +40,7 @@
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
 #include "DGtal/io/readers/MagickReader.h"
-
+#include "DGtal/io/DGtalBoard.h"
 #include "ConfigTest.h"
 
 
@@ -51,7 +51,8 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class MagickReader.
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+///////////////
 /**
  * Example of a test. To be completed.
  *
@@ -89,6 +90,16 @@ bool testMagickReader()
 	       << "img.extent() = " << img.extent() 
 	       << "( == {400,400} )"
 	       << std::endl;
+
+  DGtalBoard board;
+  typedef HueShadeColorMap<unsigned char,2> HueTwice;
+  
+
+  board.setUnit(LibBoard::Board::UCentimeter);
+
+  img.selfDraw<HueTwice>(board,0,255);
+  board.saveSVG("testMagick-export.svg");
+    
   trace.endBlock();
   
   return nbok == nb;
