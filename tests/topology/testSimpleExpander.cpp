@@ -41,26 +41,27 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "Board/Board.h"
+#include "DGtal/io/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace LibBoard;
 
-struct SelfDrawStyleCustom
+
+
+struct MyStyleCustom : public DrawableWithBoard
 {
-  SelfDrawStyleCustom(LibBoard::Board & aboard)
+  void selfDraw(DGtalBoard & aboard) const
   {
-    aboard.setFillColorRGBi(0,169,0);
+    aboard.setFillColorRGBi(0, 169, 0);
   }
 };
 
-struct SelfDrawStyleCustomRed
+struct MyStyleCustomRed : public DrawableWithBoard
 {
-  SelfDrawStyleCustomRed(LibBoard::Board & aboard)
+  void selfDraw(DGtalBoard & aboard) const
   {
-    aboard.setFillColorRGBi(169,0,0);
+    aboard.setFillColorRGBi(169, 0, 0);
   }
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -74,18 +75,18 @@ bool testSimpleExpander()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "(4,8) Filling ..." );
 
   typedef int Integer;                // choose your digital line here.
   typedef SpaceND<2> Z2;          // Z^2
   typedef Z2::Point Point;
-  typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
-  typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type
+  typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
   typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
-  typedef HyperRectDomain< Z2 > Domain; 
+  typedef HyperRectDomain< Z2 > Domain;
   typedef Domain::ConstIterator DomainConstIterator;
-  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT8_4, DigitalSet> ObjectType;
 
 
@@ -100,110 +101,110 @@ bool testSimpleExpander()
 
   Adj4 adj4;                          // instance of 4-adjacency
   Adj8 adj8;                          // instance of 8-adjacency
-  DT8_4 dt8_4(adj8,adj4, JORDAN_DT );
-  DT8_4::ReverseTopology dt4_8(adj4,adj8, JORDAN_DT );
+  DT8_4 dt8_4(adj8, adj4, JORDAN_DT );
+  DT8_4::ReverseTopology dt4_8(adj4, adj8, JORDAN_DT );
 
   //We construct a simple "house" set
   DigitalSet houseSet( domain );
 
-  for ( int k=-3; k <3 ; k++)
-    {
-      houseSet.insert(Point(k,-3));
-      houseSet.insert(Point(-3,k));
-      houseSet.insert(Point(3,k));
-      houseSet.insert(Point(k,3));
-    }
+  for ( int k = -3; k < 3 ; k++)
+  {
+    houseSet.insert(Point(k, -3));
+    houseSet.insert(Point(-3, k));
+    houseSet.insert(Point(3, k));
+    houseSet.insert(Point(k, 3));
+  }
 
   //We compute the complement
   DigitalSet houseSetCompl( domain);
   houseSetCompl.assignFromComplement( houseSet );
-   
+
   //We create the objects associated to the sets
   ObjectType house8( dt8_4, houseSet );
   ObjectType houseCompl8( dt8_4, houseSetCompl );
   ObjectTypeReverseTopo house4(dt4_8, houseSet);
   ObjectTypeReverseTopo houseCompl4( dt4_8, houseSetCompl );
-  
+
 
   //Board Export init
   DGtalBoard board;
-  board.setUnit(Board::UCentimeter);
-   
+  board.setUnit(LibBoard::Board::UCentimeter);
+
   //Border=4 Filling=4
   board.clear();
-  domain.selfDrawAsGrid(board);
-  house4.selfDrawWithAdjacencies(board);
-  ObjectExpanderReverseTopo expander(houseCompl4, Point(0,0));
+	board <<  DrawDomainGrid()  << domain;
+	board << DrawObjectAdjacencies() << house4;
+  ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
-    {
-      for ( ObjectExpander::ConstIterator it = expander.begin();
-	    it != expander.end();
-	    ++it )
-        std::cout << " " << *it;
-      
-      expander.nextLayer();
-    } 
-  expander.core().selfDraw<SelfDrawStyleCustom>(board);
+  {
+    for ( ObjectExpander::ConstIterator it = expander.begin();
+        it != expander.end();
+        ++it )
+      std::cout << " " << *it;
+
+    expander.nextLayer();
+  }
+  board << CustomStyle(expander.core().styleName(), new MyStyleCustom) << expander.core();
   board.saveSVG("house4-4.svg");
-  
+
   //Border=4 Filling=8
   board.clear();
-  domain.selfDrawAsGrid(board);
-  house4.selfDrawWithAdjacencies(board);
-  ObjectExpander expander8(houseCompl8, Point(0,0));
+	board <<  DrawDomainGrid()  << domain;
+	board << DrawObjectAdjacencies() << house4;
+	ObjectExpander expander8(houseCompl8, Point(0, 0));
   while (!expander8.finished())
-    {
-      for ( ObjectExpander::ConstIterator it = expander8.begin();
-	    it != expander8.end();
-	    ++it )
-        std::cout << " " << *it;
-      
-      expander8.nextLayer();
-    } 
-  expander8.core().selfDraw<SelfDrawStyleCustom>(board);
+  {
+    for ( ObjectExpander::ConstIterator it = expander8.begin();
+        it != expander8.end();
+        ++it )
+      std::cout << " " << *it;
+
+    expander8.nextLayer();
+  }
+  board << CustomStyle(expander8.core().styleName(),new MyStyleCustom) << expander8.core();
   board.saveSVG("house4-8.svg");
-  
+
   //Border=8 Filling=8
   board.clear();
-  domain.selfDrawAsGrid(board);
-  house8.selfDrawWithAdjacencies(board); 
-  ObjectExpander expander88(houseCompl8, Point(0,0));
+	board <<  DrawDomainGrid()  << domain;
+	board << DrawObjectAdjacencies() << house8;
+	ObjectExpander expander88(houseCompl8, Point(0, 0));
   while (!expander88.finished())
-    {
-      for ( ObjectExpander::ConstIterator it = expander88.begin();
-	    it != expander88.end();
-	    ++it )
-        std::cout << " " << *it;
-      
-      expander88.nextLayer();
-    } 
-  expander88.core().selfDraw<SelfDrawStyleCustom>(board);
+  {
+    for ( ObjectExpander::ConstIterator it = expander88.begin();
+        it != expander88.end();
+        ++it )
+      std::cout << " " << *it;
+
+    expander88.nextLayer();
+  }
+  board << CustomStyle(expander88.core().styleName(), new MyStyleCustom) <<expander88.core();
   board.saveSVG("house8-8.svg");
 
   //Border=8 Filling=4
   board.clear();
-  domain.selfDrawAsGrid(board);
-  house8.selfDrawWithAdjacencies(board);
-  ObjectExpanderReverseTopo expander84(houseCompl4, Point(0,0));
+	board <<  DrawDomainGrid()  << domain;
+	board << DrawObjectAdjacencies() << house8;
+ObjectExpanderReverseTopo expander84(houseCompl4, Point(0, 0));
   while (!expander84.finished())
-    {
-      for ( ObjectExpander::ConstIterator it = expander84.begin();
-	    it != expander84.end();
-	    ++it )
-        std::cout << " " << *it;
-      
-      expander84.nextLayer();
-    } 
-  expander84.core().selfDraw<SelfDrawStyleCustom>(board);
+  {
+    for ( ObjectExpander::ConstIterator it = expander84.begin();
+        it != expander84.end();
+        ++it )
+      std::cout << " " << *it;
+
+    expander84.nextLayer();
+  }
+  board << CustomStyle(expander.core().styleName(),new MyStyleCustom) << expander84.core();
   board.saveSVG("house8-4.svg");
 
 
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+  << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -212,7 +213,7 @@ bool testSimpleExpander()
 
 int main( int argc, char** argv )
 {
-   trace.info() << "Args:";
+  trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;

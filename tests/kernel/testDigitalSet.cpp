@@ -57,7 +57,7 @@ using namespace LibBoard;
   nbok += ( x ) ? 1 : 0; \
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
-	       << #x << std::endl;
+  << #x << std::endl;
 
 #define INBLOCK_TEST2(x,y) \
   nbok += ( x ) ? 1 : 0; \
@@ -66,14 +66,14 @@ using namespace LibBoard;
   << y << std::endl;
 
 
-  struct SelfDrawStyleCustom
+struct MyDomainStyleCustomRed : public DrawableWithBoard
+{
+  void selfDraw(DGtalBoard & aboard) const
   {
-    SelfDrawStyleCustom(LibBoard::Board & aboard)
-      {
-	aboard.setFillColorRGBi(255,0,0);
-	aboard.setPenColorRGBi(0,255,0);
-      }
-    };
+    aboard.setFillColorRGBi(255, 0, 0);
+    aboard.setPenColorRGBi(0, 255, 0);
+  }
+};
 
 
 bool testDigitalSetBoardSnippet()
@@ -84,8 +84,7 @@ bool testDigitalSetBoardSnippet()
   Point p1(  -10, -10  );
   Point p2(  10, 10  );
   DomainType domain( p1, p2 );
-  typedef DigitalSetSelector
-    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  typedef DigitalSetSelector < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
   SpecificSet mySet( domain );
 
   Point c(  0, 0  );
@@ -95,33 +94,31 @@ bool testDigitalSetBoardSnippet()
   Point e(  1, -3  );
   mySet.insert( e );
 
-  Board board;
+  DGtalBoard board;
   board.setUnit(Board::UCentimeter);
-  mySet.selfDraw(board);
+  board << mySet;
   board.saveSVG("myset-export.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  domain.selfDrawAsGrid(board);
-  mySet.selfDraw(board);
+  board << DrawDomainGrid() << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  domain.selfDrawAsPaving(board);
-  mySet.selfDraw(board);
+  board << DrawDomainPaving() << domain;
+  board << mySet;
   board.saveSVG("simpleSet-paving.svg");
 
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  mySet.selfDraw<SelfDrawStyleCustom>(board);
+  board << CustomStyle( mySet.styleName(), new MyDomainStyleCustomRed ) << mySet;
   board.saveSVG("simpleSet-color.svg");
 
-  //FIXME check IO errors
   return true;
 }
 
@@ -133,21 +130,21 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
   typedef typename Point::Coordinate Coordinate;
   unsigned int nbok = 0;
   unsigned int nb = 0;
- 
+
   trace.beginBlock ( "Constructor." );
 
   DigitalSetType set1( domain );
-  nbok += set1.size() == 0 ? 1 : 0; 
+  nbok += set1.size() == 0 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Empty set: " << set1 << std::endl;
+  << "Empty set: " << set1 << std::endl;
   trace.endBlock();
 
-  Coordinate t []= { 4, 3, 3 ,4};
+  Coordinate t [] = { 4, 3, 3 , 4};
   Point p1( t );
-  Coordinate t2[] = { 2, 5, 3 ,5};
+  Coordinate t2[] = { 2, 5, 3 , 5};
   Point p2( t2);
-  Coordinate t3[]=  { 2, 5, 3 ,4} ;
+  Coordinate t3[] =  { 2, 5, 3 , 4} ;
   Point p3( t3);
 
   trace.beginBlock ( "Insertion." );
@@ -155,10 +152,10 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
   set1.insert( p2 );
   set1.insert( p3 );
   set1.insert( p2 );
-  nbok += set1.size() == 3 ? 1 : 0; 
+  nbok += set1.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Set (3 elements): " << set1 << std::endl;
+  << "Set (3 elements): " << set1 << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -166,26 +163,26 @@ bool testDigitalSet( const typename DigitalSetType::DomainType & domain )
 
 template < typename DigitalDomainType, int props >
 bool testDigitalSetSelector( const DigitalDomainType & domain,
-			     const std::string & comment )
+    const std::string & comment )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
- 
+
   trace.beginBlock ( "Test DigitalSetSelector( " + comment + ")." );
 
   typedef typename DigitalSetSelector
-    < DigitalDomainType, props >::Type SpecificSet; 
+  < DigitalDomainType, props >::Type SpecificSet;
   SpecificSet set1( domain );
   set1.insert( domain.lowerBound() );
   set1.insert( domain.upperBound() );
-  nbok += set1.size() == 2 ? 1 : 0; 
+  nbok += set1.size() == 2 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << comment << " (2 elements): " << set1 << std::endl;
+  << comment << " (2 elements): " << set1 << std::endl;
 
   trace.endBlock();
-  
-  
+
+
   return nbok == nb;
 }
 
@@ -201,23 +198,23 @@ bool testDigitalSetDraw()
   Point p2(  10, 10  );
   DomainType domain( p1, p2 );
   typedef DigitalSetSelector
-    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
   SpecificSet disk( domain );
   Point c(  0, 0  );
 
   trace.beginBlock ( "Creating disk( r=5.0 ) ..." );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
-    {
-      if ( (*it - c ).norm() < 5.0 )
-	// insertNew is very important for vector container.
-       	  disk.insertNew( *it );
-    }
+  for ( DomainType::ConstIterator it = domain.begin();
+      it != domain.end();
+      ++it )
+  {
+    if ( (*it - c ).norm() < 5.0 )
+      // insertNew is very important for vector container.
+      disk.insertNew( *it );
+  }
 
   //Board export test
   trace.beginBlock("SVG Export");
-  Board board;
+  DGtalBoard board;
   domain.selfDrawAsGrid(board);
   disk.selfDraw(board);
 
@@ -240,20 +237,20 @@ bool testDigitalSetDomain()
   Point p2(  449, 449  );
   DomainType domain( p1, p2 );
   typedef DigitalSetSelector
-    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+  < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
   SpecificSet disk( domain );
   Point c(  0, 0  );
   Point l(  449, 0  );
 
   trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
-    {
-      if ( (*it - c ).norm() < 450.0 )
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
-    }
+  for ( DomainType::ConstIterator it = domain.begin();
+      it != domain.end();
+      ++it )
+  {
+    if ( (*it - c ).norm() < 450.0 )
+      // insertNew is very important for vector container.
+      disk.insertNew( *it );
+  }
   disk.erase( c );
   INBLOCK_TEST( disk.size() == 636100 );
   trace.endBlock();
@@ -262,12 +259,12 @@ bool testDigitalSetDomain()
   RestrictedDomain disk_domain( disk );
   trace.beginBlock ( "Iterating over disk domain ..." );
   unsigned int nb_in_domain = 0;
-  for ( RestrictedDomain::ConstIterator it = disk_domain.begin(); 
-	it != disk_domain.end();
-	++it )
-    {
-      ++nb_in_domain;
-    }
+  for ( RestrictedDomain::ConstIterator it = disk_domain.begin();
+      it != disk_domain.end();
+      ++it )
+  {
+    ++nb_in_domain;
+  }
   INBLOCK_TEST( nb_in_domain == 636100 );
   INBLOCK_TEST( disk_domain.lowerBound() == Point(  -449, -449 ) );
   INBLOCK_TEST( disk_domain.upperBound() == Point(   449,  449 ) );
@@ -281,38 +278,38 @@ int main()
   typedef SpaceND<4> Space4Type;
   typedef HyperRectDomain<Space4Type> DomainType;
   typedef Space4Type::Point Point;
-  
-  DGtal::int32_t t[] =  { 1, 2, 3 ,4};
+
+  DGtal::int32_t t[] =  { 1, 2, 3 , 4};
   Point a ( t );
-  DGtal::int32_t t2[]={ 5, 5, 3 ,5};
+  DGtal::int32_t t2[] = { 5, 5, 3 , 5};
   Point b ( t2);
   trace.beginBlock ( "HyperRectDomain init" );
 
   ///Domain characterized by points a and b
-  DomainType domain ( a,b );
+  DomainType domain ( a, b );
   trace.info() << domain << std::endl;
-  trace.info() << "Domain Extent= "<< domain.extent() << std::endl;
+  trace.info() << "Domain Extent= " << domain.extent() << std::endl;
   trace.endBlock();
-  
+
   trace.beginBlock( "DigitalSetBySTLVector" );
   bool okVector = testDigitalSet< DigitalSetBySTLVector<DomainType> >( domain );
   trace.endBlock();
-  
+
   trace.beginBlock( "DigitalSetBySTLSet" );
   bool okSet = testDigitalSet< DigitalSetBySTLSet<DomainType> >( domain );
   trace.endBlock();
 
   bool okSelectorSmall = testDigitalSetSelector
-    < DomainType, SMALL_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS >
-    ( domain, "Small set" );
+      < DomainType, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
+      ( domain, "Small set" );
 
   bool okSelectorBig = testDigitalSetSelector
-    < DomainType, BIG_DS+LOW_VAR_DS+LOW_ITER_DS+LOW_BEL_DS >
-    ( domain, "Big set" );
+      < DomainType, BIG_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
+      ( domain, "Big set" );
 
   bool okSelectorMediumHBel = testDigitalSetSelector
-    < DomainType, MEDIUM_DS+LOW_VAR_DS+LOW_ITER_DS+HIGH_BEL_DS >
-    ( domain, "Medium set + High belonging test" );
+      < DomainType, MEDIUM_DS + LOW_VAR_DS + LOW_ITER_DS + HIGH_BEL_DS >
+      ( domain, "Medium set + High belonging test" );
 
   bool okDigitalSetDomain = testDigitalSetDomain();
 
@@ -320,9 +317,9 @@ int main()
 
   bool okDigitalSetDrawSnippet = testDigitalSetBoardSnippet();
 
-  bool res = okVector && okSet 
-    && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
-    && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
+  bool res = okVector && okSet
+      && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
+      && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
