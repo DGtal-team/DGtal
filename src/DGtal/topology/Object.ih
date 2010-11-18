@@ -832,10 +832,13 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDraw( DGtalBoard & board ) con
 {
   std::string mode = board.getMode( this->styleName() );
   if ( mode == "" )
-    pointSet().selfDraw( board );
+    board << pointSet();
   else
     if ( mode == "DrawAdjacencies" )
+    {
+      board << pointSet();
       selfDrawWithAdjacencies( board );
+    }
     else
       ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
 }
