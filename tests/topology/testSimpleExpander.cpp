@@ -133,7 +133,7 @@ bool testSimpleExpander()
   //Border=4 Filling=4
   board.clear();
   board <<  DrawDomainGrid()  << domain;
-  board << DrawObjectAdjacencies() << house4;
+	board <<  DrawObjectAdjacencies() << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
   {
