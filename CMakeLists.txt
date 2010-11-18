@@ -228,8 +228,8 @@ SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*)
 
 INCLUDE(CPack)
 
-
 #------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory (src)
+add_subdirectory (examples)
