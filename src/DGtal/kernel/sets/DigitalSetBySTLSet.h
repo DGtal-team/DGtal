@@ -286,22 +286,6 @@ namespace DGtal
      */
     std::set<Point> mySet;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    /** 
-     * Default Style Functor for selfDraw methods
-     * 
-     * @param aBoard 
-     */
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(LibBoard::Board & aBoard) 
-      {
-	aBoard.setFillColorRGBi(160,160,160);
-	aBoard.setPenColorRGBi(80,80,80);
-      }
-    };
 
   public:
     /** 
@@ -334,17 +318,7 @@ namespace DGtal
      * Draw the object on a LibBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw(LibBoard::Board & board ) const;
-
-  public:
-    
-    /**
-     * Draw the object on a LibBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    template<typename Functor>
-    void selfDraw(LibBoard::Board & board ) const;
+    void selfDraw(DGtalBoard & board ) const;
 
 
     // ------------------------- Hidden services ------------------------------
