@@ -44,7 +44,7 @@ namespace DGtal {
  *
  * \subsection basicusage Basic usage
  *
- * Many DGtal objects implement a mechanism which which aims at
+ * Many DGtal objects implement a mechanism which aims at
  * defining the way the objects export themselves with LibBoard
  * commands into a DGtalBoard stream.
  *
@@ -97,9 +97,9 @@ namespace DGtal {
  *
  * @image html simpleSet.png 
  *
- * We can enhance the drawing displaying digital domain (any models
- * of CDigitalDomain) containing the set. Since we have at least two
- * ways to display the domain: either as a paving or as a
+ * We can enhance the drawing displaying digital domain (any model
+ * of CDigitalDomain) containing the set. We have at least two
+ * ways to display the domain: either as a grid (mesh) or as a
  * paving. Hence, digital domains introduces stream modifier that can
  * be used as either
  *
@@ -137,12 +137,12 @@ namespace DGtal {
  * </tr>
  * </table>
  * 
- * Similarly, objects of the class PointVector can be drawn either as
+ * Similarly, an object of the class PointVector can be drawn either as
  * a Point (dot), or as a Vector (arrow). In this case, instead of
  * using the stream mecanism, the user can consider the methods:
  *
  *  - void selfDraw(DGtalBoard & board ): the object is drawn
- * as Point (Board::Dot)
+ * as a Point (Board::Dot)
  *  - void selfDraw(DGtalBoard & board , const PointVector &
  * aPoint): the object is drawn as a Vector (Board::Arrow)
  *
