@@ -132,8 +132,8 @@ bool testSimpleExpander()
 
   //Border=4 Filling=4
   board.clear();
-	board <<  DrawDomainGrid()  << domain;
-	board << DrawObjectAdjacencies() << house4;
+  board <<  DrawDomainGrid()  << domain;
+  board << DrawObjectAdjacencies() << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
   {
@@ -149,9 +149,9 @@ bool testSimpleExpander()
 
   //Border=4 Filling=8
   board.clear();
-	board <<  DrawDomainGrid()  << domain;
-	board << DrawObjectAdjacencies() << house4;
-	ObjectExpander expander8(houseCompl8, Point(0, 0));
+  board <<  DrawDomainGrid()  << domain;
+  board << DrawObjectAdjacencies() << house4;
+  ObjectExpander expander8(houseCompl8, Point(0, 0));
   while (!expander8.finished())
   {
     for ( ObjectExpander::ConstIterator it = expander8.begin();
@@ -161,14 +161,14 @@ bool testSimpleExpander()
 
     expander8.nextLayer();
   }
-  board << CustomStyle(expander8.core().styleName(),new MyStyleCustom) << expander8.core();
+  board << CustomStyle(expander8.core().styleName(), new MyStyleCustom) << expander8.core();
   board.saveSVG("house4-8.svg");
 
   //Border=8 Filling=8
   board.clear();
-	board <<  DrawDomainGrid()  << domain;
-	board << DrawObjectAdjacencies() << house8;
-	ObjectExpander expander88(houseCompl8, Point(0, 0));
+  board <<  DrawDomainGrid()  << domain;
+  board << DrawObjectAdjacencies() << house8;
+  ObjectExpander expander88(houseCompl8, Point(0, 0));
   while (!expander88.finished())
   {
     for ( ObjectExpander::ConstIterator it = expander88.begin();
@@ -178,14 +178,14 @@ bool testSimpleExpander()
 
     expander88.nextLayer();
   }
-  board << CustomStyle(expander88.core().styleName(), new MyStyleCustom) <<expander88.core();
+  board << CustomStyle(expander88.core().styleName(), new MyStyleCustom) << expander88.core();
   board.saveSVG("house8-8.svg");
 
   //Border=8 Filling=4
   board.clear();
-	board <<  DrawDomainGrid()  << domain;
-	board << DrawObjectAdjacencies() << house8;
-ObjectExpanderReverseTopo expander84(houseCompl4, Point(0, 0));
+  board <<  DrawDomainGrid()  << domain;
+  board << DrawObjectAdjacencies() << house8;
+  ObjectExpanderReverseTopo expander84(houseCompl4, Point(0, 0));
   while (!expander84.finished())
   {
     for ( ObjectExpander::ConstIterator it = expander84.begin();
@@ -195,7 +195,7 @@ ObjectExpanderReverseTopo expander84(houseCompl4, Point(0, 0));
 
     expander84.nextLayer();
   }
-  board << CustomStyle(expander.core().styleName(),new MyStyleCustom) << expander84.core();
+  board << CustomStyle(expander.core().styleName(), new MyStyleCustom) << expander84.core();
   board.saveSVG("house8-4.svg");
 
 
