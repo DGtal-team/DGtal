@@ -51,7 +51,7 @@
 
 #include "DGtal/geometry/2d/StraightLine.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
-	
+
 
 using namespace DGtal;
 
@@ -63,158 +63,206 @@ using namespace LibBoard;
 int main(int argc, char **argv)
 {
 
-	typedef int Coordinate;
-	typedef PointVector<2,Coordinate> Point;
-	typedef StraightLine<Coordinate> StraightLine;
-  typedef Preimage2D<StraightLine> Preimage2D; 
+  typedef int Coordinate;
+  typedef PointVector<2, Coordinate> Point;
+  typedef StraightLine<Coordinate> StraightLine;
+  typedef Preimage2D<StraightLine> Preimage2D;
 
-	//data
-	std::vector<Point> bInf, bSup;
+  //data
+  std::vector<Point> bInf, bSup;
 
 //////////////////////////// test 1 //////////////////////////////////////
-	bInf.push_back(Point(0,10));
-	bInf.push_back(Point(1,11));
-	bInf.push_back(Point(2,11));
-	bInf.push_back(Point(3,12));
-	bInf.push_back(Point(4,10));
-	bInf.push_back(Point(5,10));
-	bInf.push_back(Point(6,11));
-	bInf.push_back(Point(7,12));
-	bInf.push_back(Point(8,12));
-	bInf.push_back(Point(9,13));
+  bInf.push_back(Point(0, 10));
+  bInf.push_back(Point(1, 11));
+  bInf.push_back(Point(2, 11));
+  bInf.push_back(Point(3, 12));
 
-	bSup.push_back(Point(0,12));
-	bSup.push_back(Point(1,13));
-	bSup.push_back(Point(2,13));
-	bSup.push_back(Point(3,14));
-	bSup.push_back(Point(4,13));
-	bSup.push_back(Point(5,12));
-	bSup.push_back(Point(6,13));
-	bSup.push_back(Point(7,14));
-	bSup.push_back(Point(8,14));
-	bSup.push_back(Point(9,15));
+  bSup.push_back(Point(0, 12));
+  bSup.push_back(Point(1, 13));
+  bSup.push_back(Point(2, 13));
+  bSup.push_back(Point(3, 14));
+
+  //SimpleTest
+  trace.beginBlock("Simple Preimage test");
+  {
+    Board board;
+    board.setUnit(Board::UCentimeter);
+
+    int i = 0;
+    Preimage2D thePreimage(bInf.at(i), bSup.at(i));
+
+//draw range
+    Point P(bInf.at(i));
+    Point Q(bSup.at(i));
+    board.fillCircle(P[0], P[1], 0.1);
+    board.fillCircle(Q[0], Q[1], 0.1);
+    board.drawLine(P[0], P[1], Q[0], Q[1]);
+
+    i++;
+    int n;
+    n = bInf.size();
+    while ( (i < n) &&
+        (thePreimage.addFront(bInf.at(i), bSup.at(i))) )
+    {
+
+      trace.info() << "--- Constraint number " << i << " ---" << std::endl;
+      trace.info() << thePreimage << std::endl;
+
+      //draw range
+      Point P(bInf.at(i));
+      Point Q(bSup.at(i));
+      board.fillCircle(P[0], P[1], 0.1);
+      board.fillCircle(Q[0], Q[1], 0.1);
+      board.drawLine(P[0], P[1], Q[0], Q[1]);
+
+      i++;
+    }
+
+    //draw preimage
+    thePreimage.selfDraw(board);
+
+    board.saveEPS("testPreimage-simple.eps");
+  }
+  trace.endBlock();
+
+
+  bInf.push_back(Point(4, 10));
+  bInf.push_back(Point(5, 10));
+  bInf.push_back(Point(6, 11));
+  bInf.push_back(Point(7, 12));
+  bInf.push_back(Point(8, 12));
+  bInf.push_back(Point(9, 13));
+
+	bSup.push_back(Point(4, 13));
+  bSup.push_back(Point(5, 12));
+  bSup.push_back(Point(6, 13));
+  bSup.push_back(Point(7, 14));
+  bSup.push_back(Point(8, 14));
+  bSup.push_back(Point(9, 15));
 
   //preimage
-  trace.beginBlock("test 1");
+  trace.beginBlock("test limit case");
 
-	{
+  {
 		Board board;
-		board.setUnit(Board::UCentimeter);
+    board.setUnit(Board::UCentimeter);
 
-		int i = 0;
-		Preimage2D thePreimage(bInf.at(i),bSup.at(i));
+    int i = 0;
+    Preimage2D thePreimage2(bInf.at(i), bSup.at(i));
 
-		//draw range
-		Point P(bInf.at(i));
-		Point Q(bSup.at(i));
-		board.fillCircle(P[0],P[1],0.1);
-		board.fillCircle(Q[0],Q[1],0.1);
-		board.drawLine(P[0],P[1],Q[0],Q[1]);
+    //draw range
+    Point P(bInf.at(i));
+    Point Q(bSup.at(i));
+    board.fillCircle(P[0], P[1], 0.1);
+    board.fillCircle(Q[0], Q[1], 0.1);
+    board.drawLine(P[0], P[1], Q[0], Q[1]);
 
-		i++;
-		int n;
-		n = bInf.size();
-		while ( (i<n) && 
-					(thePreimage.addFront(bInf.at(i),bSup.at(i))) ) {
+    i++;
+    int n;
+    n = bInf.size();
+    while ( (i < n) &&
+        (thePreimage2.addFront(bInf.at(i), bSup.at(i))) )
+    {
 
-			trace.info() << "--- Constraint number " << i << " ---" << std::endl;
-			trace.info() << thePreimage << std::endl;
+      trace.info() << "--- Constraint number " << i << " ---" << std::endl;
+      trace.info() << thePreimage2 << std::endl;
 
-			//draw range
-			Point P(bInf.at(i));
-			Point Q(bSup.at(i));
-			board.fillCircle(P[0],P[1],0.1);
-			board.fillCircle(Q[0],Q[1],0.1);
-			board.drawLine(P[0],P[1],Q[0],Q[1]);
+      //draw range
+      Point P(bInf.at(i));
+      Point Q(bSup.at(i));
+      board.fillCircle(P[0], P[1], 0.1);
+      board.fillCircle(Q[0], Q[1], 0.1);
+      board.drawLine(P[0], P[1], Q[0], Q[1]);
 
-			i++;
-		}
+      i++;
+    }
 
-		//draw preimage
-		thePreimage.selfDraw(board);
-	
-		board.saveEPS("testPreimage1.eps");
+    //draw preimage
+    thePreimage2.selfDraw(board);
 
-	}
+    board.saveEPS("testPreimage-limitCase.eps");
+
+  }
   trace.endBlock();
 
 //////////////////////////// test 2 //////////////////////////////////////
 
-	bInf.clear();
-	bSup.clear();
+  bInf.clear();
+  bSup.clear();
 
-	bInf.push_back(Point(154,154));
-	bInf.push_back(Point(154,154));
-	bInf.push_back(Point(167,201));
-	bInf.push_back(Point(167,201));
-	bInf.push_back(Point(167,201));
-	bInf.push_back(Point(210,213));
-	bInf.push_back(Point(199,246));
-	bInf.push_back(Point(199,246));
-	bInf.push_back(Point(236,249));
-	bInf.push_back(Point(256,275));
-	bInf.push_back(Point(256,275));
-	bInf.push_back(Point(286,295));
-	bInf.push_back(Point(286,295));
+  bInf.push_back(Point(154, 154));
+  bInf.push_back(Point(154, 154));
+  bInf.push_back(Point(167, 201));
+  bInf.push_back(Point(167, 201));
+  bInf.push_back(Point(167, 201));
+  bInf.push_back(Point(210, 213));
+  bInf.push_back(Point(199, 246));
+  bInf.push_back(Point(199, 246));
+  bInf.push_back(Point(236, 249));
+  bInf.push_back(Point(256, 275));
+  bInf.push_back(Point(256, 275));
+  bInf.push_back(Point(286, 295));
+  bInf.push_back(Point(286, 295));
 
 
-	bSup.push_back(Point(74,211));
-	bSup.push_back(Point(122,210));
-	bSup.push_back(Point(122,210));
-	bSup.push_back(Point(139,239));
-	bSup.push_back(Point(159,243));
-	bSup.push_back(Point(159,243));
-	bSup.push_back(Point(159,243));
-	bSup.push_back(Point(184,271));
-	bSup.push_back(Point(184,271));
-	bSup.push_back(Point(184,271));
-	bSup.push_back(Point(225,294));
-	bSup.push_back(Point(225,294));
-	bSup.push_back(Point(234,338));
+  bSup.push_back(Point(74, 211));
+  bSup.push_back(Point(122, 210));
+  bSup.push_back(Point(122, 210));
+  bSup.push_back(Point(139, 239));
+  bSup.push_back(Point(159, 243));
+  bSup.push_back(Point(159, 243));
+  bSup.push_back(Point(159, 243));
+  bSup.push_back(Point(184, 271));
+  bSup.push_back(Point(184, 271));
+  bSup.push_back(Point(184, 271));
+  bSup.push_back(Point(225, 294));
+  bSup.push_back(Point(225, 294));
+  bSup.push_back(Point(234, 338));
 
 
   //preimage
-  trace.beginBlock("test 2");
+  trace.beginBlock("test General Case");
 
-	{
-		Board board;
-		board.setUnit(Board::UCentimeter);
+  {
+    Board board;
+    board.setUnit(Board::UCentimeter);
 
-		int i = 0;
-		Preimage2D thePreimage(bInf.at(i),bSup.at(i));
+    int i = 0;
+    Preimage2D thePreimage(bInf.at(i), bSup.at(i));
 
-		//draw range
-		Point P(bInf.at(i));
-		Point Q(bSup.at(i));
-		board.fillCircle(P[0],P[1],2);
-		board.fillCircle(Q[0],Q[1],2);
-		board.drawLine(P[0],P[1],Q[0],Q[1]);
+    //draw range
+    Point P(bInf.at(i));
+    Point Q(bSup.at(i));
+    board.fillCircle(P[0], P[1], 2);
+    board.fillCircle(Q[0], Q[1], 2);
+    board.drawLine(P[0], P[1], Q[0], Q[1]);
 
-		i++;
-		int n;
-		n = bInf.size();
-		while ( (i<n) && 
-					(thePreimage.addFront(bInf.at(i),bSup.at(i))) ) {
+    i++;
+    int n;
+    n = bInf.size();
+    while ( (i < n) &&
+        (thePreimage.addFront(bInf.at(i), bSup.at(i))) )
+    {
 
-			trace.info() << "--- Constraint number " << i << " ---" << std::endl;
-			trace.info() << thePreimage << std::endl;
+      trace.info() << "--- Constraint number " << i << " ---" << std::endl;
+      trace.info() << thePreimage << std::endl;
 
-			//draw range
-			Point P(bInf.at(i));
-			Point Q(bSup.at(i));
-			board.fillCircle(P[0],P[1],2);
-			board.fillCircle(Q[0],Q[1],2);
-			board.drawLine(P[0],P[1],Q[0],Q[1]);
+      //draw range
+      Point P(bInf.at(i));
+      Point Q(bSup.at(i));
+      board.fillCircle(P[0], P[1], 2);
+      board.fillCircle(Q[0], Q[1], 2);
+      board.drawLine(P[0], P[1], Q[0], Q[1]);
 
-			i++;
-		}
+      i++;
+    }
 
-		//draw preimage
-		thePreimage.selfDraw(board);
-	
-		board.saveEPS("testPreimage2.eps");
+    //draw preimage
+    thePreimage.selfDraw(board);
 
-	}
+    board.saveEPS("testPreimage-generalCase.eps");
+
+  }
   trace.endBlock();
 
 
