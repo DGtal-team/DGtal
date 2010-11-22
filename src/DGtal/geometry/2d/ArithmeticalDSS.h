@@ -62,6 +62,41 @@ namespace DGtal
  * defined as the sequence of connected points (x,y)
  * such that mu <= ax - by < mu + omega.  
  * (see Debled and Reveilles (1995)).
+ *
+ * For the classical naive and standard DSS, this class can be
+ * templated by one of two classes providing
+ * elementary services (such as the definition of the width paramater). 
+ *
+ * Here is a short example of how to use this class:
+ * @code 
+ typedef int Coordinate;
+ typedef PointVector<2,Coordinate> Point;
+ typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
+
+ std::vector<Point> contour;
+ contour.push_back(Point(0,0));
+ contour.push_back(Point(1,0));
+ contour.push_back(Point(1,1));
+ contour.push_back(Point(2,1));
+ contour.push_back(Point(3,1));
+ 
+ DSS4 theDSS4(contour.at(0),contour.at(1));
+ int i = 2;
+ while (theDSS4.addFront(contour.at(i))) {
+   i++;
+ }
+ HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+ 
+ Board board;
+ board.setUnit(Board::UCentimeter);
+ 
+ domain.selfDrawAsGrid(board);
+ theDSS4.selfDraw(board); 
+
+ board.saveSVG("DSS4.svg");
+ * @endcode
+ * @see StandardBase
+ * @see NaiveBase
  */
 template <typename TDSS>
 class ArithmeticalDSS
@@ -319,7 +354,10 @@ public:
 
 
     /**
-     * Draw the object on a LiBoard board
+     * Draw the DSS on a LiBoard board as its bounding box and the
+     * polyline of its points 
+     * @see BoundingBoxDraw
+     * @see DigitalPointsDraw
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
