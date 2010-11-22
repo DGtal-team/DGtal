@@ -53,11 +53,35 @@ namespace DGtal
    * Description of template class 'GreedyDecomposition' <p>
    * \brief Aim: Computes the greedy decomposition of a contour into primitives
    * (the last point of the primitive i is the first point of the primitive i+1).
-	 * The contour must provide a constIterator as a way of scanning its points 
+
+   * The contour must provide a constIterator as a way of scanning its points 
    * and must be able to return its size.
-	 * The primitive must have a method addFront() to check whether the primitive
+   * The primitive must have a method addFront() to check whether the primitive
    * can be extended at the front or not.  
-   * 
+   
+   * Here is an example of how to use this class to decompose a contour into DSSs :
+   * @code 
+   
+   
+   typedef int Coordinate;
+   typedef PointVector<2,Coordinate> Point;
+   
+   //Define the primitive as a standard DSS
+   typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
+   
+   // Define the contour as a FreemanChain
+   typedef FreemanChain<Coordinate> ContourType; 
+   
+   // Open the contour file
+   std::string filename = "myContour.fc";
+   std::fstream fst;
+   fst.open (filename.c_str(), std::ios::in);
+   ContourType theContour(fst);
+   
+   // Decomposition of the contour into DSSs
+   GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
+
+   * @endcode
    */
   template <typename Contour, typename Primitive>
   class GreedyDecomposition
