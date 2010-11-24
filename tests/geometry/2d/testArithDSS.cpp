@@ -101,8 +101,8 @@ int main(int argc, char **argv)
   DSS4 theDSS4(contour.at(0),contour.at(1));		
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
   trace.endBlock();
-
- 
+  
+  
   
   // Adding step
   trace.beginBlock("Add points while it is possible and draw the result in DSS4.svg");
@@ -115,11 +115,18 @@ int main(int argc, char **argv)
 
 		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
 
-		Board board;
+		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
 		
-		domain.selfDrawAsGrid(board);
-		theDSS4.selfDraw(board);
+		board << DrawDomainGrid() << domain;
+		// domain.selfDrawAsGrid(board);
+		
+		//board << DrawDSSBoundingBox()
+		//    << theDSS4;
+		
+		board << theDSS4;
+
+		//theDSS4.selfDraw(board);
 		
 		board.saveSVG("DSS4.svg");
 	}
@@ -206,11 +213,19 @@ int main(int argc, char **argv)
 
 		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
 
-		Board board;
+		
+		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
 		
-		domain.selfDrawAsGrid(board);
-		theDSS8.selfDraw(board);
+		board << DrawDSSBoundingBox() << theDSS8;
+		
+		
+
+		// Board board;
+		// board.setUnit(Board::UCentimeter);
+		
+		// domain.selfDrawAsGrid(board);
+		// theDSS8.selfDraw(board);
 		
 		board.saveSVG("DSS8.svg");
 

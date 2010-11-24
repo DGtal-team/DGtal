@@ -79,11 +79,15 @@ int main(int , char **)
   //Segmentation
   trace.beginBlock("Segmentation of a chain code into DSS");
   GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
+  
+  //Board aBoard;
+  //aBoard.setUnit(Board::UCentimeter);
+  //theContour.selfDraw(aBoard);
 
-  Board aBoard;
+  DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
-  theContour.selfDraw(aBoard);
-
+  
+  
   //for each segment
   GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
     theDecomposition.begin();
@@ -91,7 +95,8 @@ int main(int , char **)
     trace.info() << "segment number " << i.getPosition() << std::endl;
     PrimitiveType segment(*i); 
     trace.info() << segment << std::endl;	//standard output
-    segment.selfDraw(aBoard); //drawing
+    aBoard << segment; // draw each segment
+    //segment.selfDraw(aBoard); //drawing
   } 
   aBoard.saveSVG("segmentation.svg");
 
