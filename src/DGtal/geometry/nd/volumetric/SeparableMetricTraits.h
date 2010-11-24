@@ -107,7 +107,7 @@ namespace DGtal
      */
     InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
-		return std::pow( abs((long )pos - ci) , p) + hi;
+		return std::pow( fabs((double )pos - ci) , (double)p) + hi;
     }
 
     /**

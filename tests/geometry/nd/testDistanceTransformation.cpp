@@ -52,7 +52,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename Image>
-void randomSeeds(Image &input, const int nb, const int value)
+void randomSeeds(Image &input, const unsigned int nb, const int value)
 {
   typename Image::Point p, low = input.lowerBound();
   typename Image::Vector ext;

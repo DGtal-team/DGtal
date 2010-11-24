@@ -190,9 +190,14 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   Size maxSize = myExtent.normInfinity();
 
   //Stacks used in the envelope computation
-  Integer s[maxSize];
-  Integer t[maxSize];
-
+  Integer *s;
+  Integer *t;
+  s = (Integer*)malloc(sizeof(Integer)*maxSize);
+  t = (Integer*)malloc(sizeof(Integer)*maxSize);
+  
+  ASSERT( s != NULL);
+  ASSERT( t != NULL);
+  
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
       itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
