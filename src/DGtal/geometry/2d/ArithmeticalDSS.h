@@ -87,12 +87,13 @@ namespace DGtal
  }
  HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
  
- Board board;
+ DGtalBoard board;
  board.setUnit(Board::UCentimeter);
  
- domain.selfDrawAsGrid(board);
- theDSS4.selfDraw(board); 
-
+ // Draw the domain as a grid, and the DSS (default draws both the bounding box and the set of points)
+ board << DrawDomainGrid() << domain;
+ board << theDSS4;
+ 
  board.saveSVG("DSS4.svg");
  * @endcode
  * @see StandardBase
@@ -335,13 +336,39 @@ public:
     void selfDisplay ( std::ostream & out ) ;
 
 
-    /**
-     * Draw the bounding box of the DSS on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    template<typename Functor>
-      void BoundingBoxDraw( LibBoard::Board & board ) const;
+    /* /\** */
+    /*  * Draw the bounding box of the DSS on a LiBoard board */
+    /*  * @param board the output board where the object is drawn. */
+    /*  * @tparam Functor a Functor to specialize the Board style */
+    /*  *\/ */
+    /* template<typename Functor> */
+    /*   void BoundingBoxDraw( LibBoard::Board & board ) const; */
+    
+    /* /\** */
+    /*  * Draw the retrieved digital points of the DSS linked into a  */
+    /*  * polygonal line on a LiBoard board */
+    /*  * @param board the output board where the object is drawn. */
+    /*  * @tparam Functor a Functor to specialize the Board style */
+    /*  *\/ */
+    /* template<typename Functor> */
+    /*   void DigitalPointsDraw( LibBoard::Board & board ) const; */
+    
+
+    /* /\** */
+    /*  * Draw the DSS on a LiBoard board as its bounding box and the */
+    /*  * polyline of its points  */
+    /*  * @see BoundingBoxDraw */
+    /*  * @see DigitalPointsDraw */
+    /*  * @param board the output board where the object is drawn. */
+    /*  * @tparam Functor a Functor to specialize the Board style */
+    /*  *\/ */
+    /* void selfDraw( LibBoard::Board & board ) const */
+    /*   { */
+    /* 				BoundingBoxDraw<BoundingBoxStyle>(board); */
+    /* 				DigitalPointsDraw<DigitalPointsStyle>(board); */
+    /*   } */
+
+    
     
     /**
      * Draw the retrieved digital points of the DSS linked into a 
@@ -349,8 +376,64 @@ public:
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
-    template<typename Functor>
-      void DigitalPointsDraw( LibBoard::Board & board ) const;
+    
+    void selfDrawAsDigitalPoints( LibBoard::Board & board ) const;
+    
+    
+    /**
+     * Draw the bounding box of the DSS on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDrawAsBoundingBox( LibBoard::Board & board ) const;
+    
+    
+    
+    // ------------------------- Private Datas --------------------------------
+ private:
+
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStyleBB : public DrawableWithBoard
+    {
+      virtual void selfDraw(LibBoard::Board & aBoard) const
+      {
+	aBoard.setFillColor(LibBoard::Color::None);
+	//aBoard.setPenColor(LibBoard::Color::Red);
+	//aBoard.setLineWidth(1);	
+      }
+    };
+    
+    /**
+       * Default style.
+       */
+    struct DefaultDrawStylePoints : public DrawableWithBoard
+    {
+        virtual void selfDraw(LibBoard::Board & aBoard) const
+        {
+	  aBoard.setFillColor(LibBoard::Color::None);
+	  //aBoard.setPenColor(LibBoard::Color::Black);
+	  //aBoard.setLineWidth(2);
+	}
+    };
+
+    // --------------- CDrawableWithBoard realization ------------------------
+  public:
+    
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+
+
+
 
 
     /**
@@ -359,47 +442,51 @@ public:
      * @see BoundingBoxDraw
      * @see DigitalPointsDraw
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     *
      */
-    void selfDraw( LibBoard::Board & board ) const
-      {
-				BoundingBoxDraw<BoundingBoxStyle>(board);
-				DigitalPointsDraw<DigitalPointsStyle>(board);
-      }
+    void selfDraw(DGtalBoard & board ) const;
+    
 
-private:
+/* private: */
 
-   /** 
-     * Default Style Functor for bounding box drawing
-     * 
-     * @param aBoard 
-     */
+/*    /\**  */
+/*      * Default Style Functor for bounding box drawing */
+/*      *  */
+/*      * @param aBoard  */
+/*      *\/ */
 
-    struct BoundingBoxStyle
-    {
-      BoundingBoxStyle(LibBoard::Board & aBoard) 
-      {
-				aBoard.setFillColor(LibBoard::Color::None);
-				aBoard.setPenColor(LibBoard::Color::Red);
-				aBoard.setLineWidth(1);
-      }
-    };
+/*     struct BoundingBoxStyle */
+/*     { */
+/*       BoundingBoxStyle(LibBoard::Board & aBoard)  */
+/*       { */
+/* 				aBoard.setFillColor(LibBoard::Color::None); */
+/* 				aBoard.setPenColor(LibBoard::Color::Red); */
+/* 				aBoard.setLineWidth(1); */
+/*       } */
+/*     }; */
 
-   /** 
-     * Default Style Functor for digital points drawing
-     * 
-     * @param aBoard 
-     */
+/*    /\**  */
+/*      * Default Style Functor for digital points drawing */
+/*      *  */
+/*      * @param aBoard  */
+/*      *\/ */
 
-    struct DigitalPointsStyle
-    {
-      DigitalPointsStyle(LibBoard::Board & aBoard) 
-      {
-				aBoard.setFillColor(LibBoard::Color::None);
-				aBoard.setPenColor(LibBoard::Color::Black);
-				aBoard.setLineWidth(2);
-      }
-    };
+/*     struct DigitalPointsStyle */
+/*     { */
+/*       DigitalPointsStyle(LibBoard::Board & aBoard)  */
+/*       { */
+/* 				aBoard.setFillColor(LibBoard::Color::None); */
+/* 				aBoard.setPenColor(LibBoard::Color::Black); */
+/* 				aBoard.setLineWidth(2); */
+/*       } */
+/*     }; */
+
+    
+    
+
+
+
+
     // ------------------------- Protected Datas ------------------------------
 protected:
 
@@ -443,6 +530,30 @@ private:
 
 }; // end of class ArithmeticalDSS
 
+
+/**
+ * Modifier class in a DGtalBoard stream. Realizes the concept
+ * CDrawableWithDGtalBoard.
+ */
+ struct DrawDSSBoundingBox : public DrawWithBoardModifier {
+   void selfDraw( DGtalBoard & board ) const
+   {
+     board.myModes[ "ArithmeticalDSS" ] = "BB";
+   }
+ };
+ 
+ /**
+  * Modifier class in a DGtalBoard stream. Realizes the concept
+  * CDrawableWithDGtalBoard.
+  */
+ struct DrawDSSPoints : public DrawWithBoardModifier {
+   void selfDraw( DGtalBoard & board ) const
+   {
+     board.myModes[ "ArithmeticalDSS" ] = "Points";
+   }
+ };
+ 
+ 
 
 /////////////////////////////////////////////////////////////////////////////
 // class StandardBase
