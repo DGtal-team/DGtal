@@ -519,7 +519,7 @@ namespace DGtal
        */
       struct DefaultDrawStyle : public DrawableWithBoard
       {
-        virtual void selfDraw( LibBoard::Board & aBoard ) const
+        virtual void selfDraw( DGtalBoard & aBoard ) const
         {
           aBoard.setPenColorRGBi( 0, 0, 0 );
           aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
