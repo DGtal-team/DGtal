@@ -58,9 +58,9 @@ using namespace LibBoard;
 int main(int argc, char **argv)
 {
 
-
-	typedef int Coordinate;
-	typedef PointVector<2,Coordinate> Point;
+ typedef SpaceND<2> Space2Type;
+ typedef Space2Type::Point Point;
+ typedef SpaceND<2>::Integer Coordinate;
 
 //--------------------- DSS4 --------------------------
 
@@ -113,7 +113,9 @@ int main(int argc, char **argv)
 		}
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
-		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+	  Point a(-10,-10);
+	  Point b(10,10);
+	HyperRectDomain< Space2Type > domain( a , b );
 
 		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
