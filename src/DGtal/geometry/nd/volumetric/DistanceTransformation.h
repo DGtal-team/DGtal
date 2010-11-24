@@ -44,6 +44,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/geometry/nd/volumetric/CSeparableMetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -82,6 +83,8 @@ namespace DGtal
 
     public:
 
+			BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+			
       ///@todo check image concept
       typedef TImage Image;
       typedef TImageOutput ImageOutput;

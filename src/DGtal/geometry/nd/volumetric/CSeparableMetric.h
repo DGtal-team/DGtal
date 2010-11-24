@@ -17,53 +17,51 @@
 #pragma once
 
 /**
- * @file CDrawableWithBoard.h
+ * @file CSeparableMetric.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/10/21
+ * @date 2010/11/24
  *
- * Header file for concept CDrawableWithBoard.cpp
+ * Header file for concept CSeparableMetric.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithBoard_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithBoard.h
-#else // defined(CDrawableWithBoard_RECURSES)
+#if defined(CSeparableMetric_RECURSES)
+#error Recursive header files inclusion detected in CSeparableMetric.h
+#else // defined(CSeparableMetric_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithBoard_RECURSES
+#define CSeparableMetric_RECURSES
 
-#if !defined CDrawableWithBoard_h
+#if !defined CSeparableMetric_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithBoard_h
+#define CSeparableMetric_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithBoard
+  // class CSeparableMetric
   /**
-   * Description of \b concept '\b CDrawableWithBoard' <p>
+   * Description of \b concept '\b CSeparableMetric' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithBoard specifies what are the classes
-   * that admit an export with DGtalBoard.
-   *
-   *
+	 * Aim: The concept CSeparableMetric specifies what are the classes
+	 * that implement a model of separable metrics
+   * 
    * <p> Refinement of
    *
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithBoard
+   * - \t X : A type that is a model of CSeparableMetric
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -71,20 +69,12 @@ namespace DGtal
    * <p> Valid expressions and semantics <br>
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td>
+   * <td> \b Precondition </td> <td> \b Semantics </td> 
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
-   * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle() </td> <td></td><td> DrawableWithBoard * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model X </td><td> </td>
-   *  <td> O(1)</td>
-   * </tr>
-   * <tr>
-   * <td> the name of the model X</td> <td> x.styleName() </td> <td></td><td> std::string </td> <td> </td> <td> returns a string designing the name of the model X </td><td> </td>
-   *  <td> O(1)</td>
-   * </tr>
-   * <tr>
-   * <td> the way the object x are drawn</td> <td> x.selfDraw(DGtalBoard &board) </td> <td></td><td> std::string </td> <td> </td> <td> returns a string designing the name of the model X </td><td> </td>
-   *  <td> O(1)</td>
+   * <tr> 
+   * <td> </td> <td> </td> <td> </td> <td> </td>
+   * <td> </td> <td> </td> <td> </td> <td> </td>
    * </tr>
    * </table>
    *
@@ -95,42 +85,43 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-  struct CDrawableWithBoard
+  struct CSeparableMetric
   {
+
+		typedef typename T::InternalValueType InternalValueType;
+		typedef typename T::ValueType ValueType;
+		typedef typename T::Abscissa Abscissa;
+		
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE( CDrawableWithBoard )
-    {
-      //Drawable model should have a defaultStyle() returing a DrawableWithBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyle() );
-      //Drawable model should have a styleName() returing a string
-      ConceptUtils::sameType( myS, myT.styleName() );
-      //Drawable model should have a selfDraw()
-      ///@todo FIXME: si on décommente ça plante
-//      myT.selfDraw( myB );
-    }
-
+		BOOST_CONCEPT_USAGE( CSeparableMetric )
+		{
+			//SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValueType) returing an InternalValueType
+			ConceptUtils::sameType( h, myT.F(a,a,h) );
+			//SeparableMetric  model should have a Sep(Abscissa,InternalValueType, Abscissa,InternalValueType) returing an ValueType
+			
+			ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
+		}
+		
     // ------------------------- Private Datas --------------------------------
   private:
-    T myT;
-    DrawableWithBoard *myD;
-
-    ///@todo FIXME: si on décommente ça plante
-    // DGtalBoard myB;
-    std::string myS;
-
+    
     // ------------------------- Internals ------------------------------------
   private:
-
-  }; // end of concept CDrawableWithBoard
-
+		T myT;
+		Abscissa a;
+		InternalValueType h;
+		
+			
+  }; // end of concept CSeparableMetric
+  
 } // namespace DGtal
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithBoard_h
+#endif // !defined CSeparableMetric_h
 
-#undef CDrawableWithBoard_RECURSES
-#endif // else defined(CDrawableWithBoard_RECURSES)
+#undef CSeparableMetric_RECURSES
+#endif // else defined(CSeparableMetric_RECURSES)

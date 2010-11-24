@@ -43,6 +43,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/images/Morton.h"
@@ -116,6 +118,10 @@ namespace DGtal
 
 
       public:
+
+				BOOST_CONCEPT_ASSERT(( CValueType<TValueType> ));
+				BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+				
         typedef THashKey HashKey;
         typedef TValueType ValueType;
         typedef TDomain Domain;

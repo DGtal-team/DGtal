@@ -46,6 +46,9 @@
 #include <boost/serialization/nvp.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/domains/CDomain.h"
+
 #include "DGtal/io/DGtalBoard.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -72,6 +75,9 @@ namespace DGtal
   {
     public:
 
+			BOOST_CONCEPT_ASSERT(( CValueType<TValueType> ));
+			BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+			
       typedef TValueType ValueType;
       typedef TDomain Domain;
 
