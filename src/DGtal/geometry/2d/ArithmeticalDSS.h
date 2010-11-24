@@ -377,7 +377,7 @@ public:
      * @tparam Functor a Functor to specialize the Board style
      */
     
-    void selfDrawAsDigitalPoints( LibBoard::Board & board ) const;
+    void selfDrawAsDigitalPoints( DGtalBoard & board ) const;
     
     
     /**
