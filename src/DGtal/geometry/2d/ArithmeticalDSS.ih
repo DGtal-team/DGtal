@@ -674,7 +674,7 @@ DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( LibBoard::Board & aBoard) c
 template <typename TDSS>
 inline
 void 
-DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( LibBoard::Board & aBoard) const
+DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) const
 {
 
   // Set board style
@@ -688,6 +688,7 @@ DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( LibBoard::Board & aBoard)
   for (int i=0; i<ptsOfDSS.size();i++) {
 		Point p = ptsOfDSS.at(i);
 		contour.push_back(LibBoard::Point(p[0],p[1]));
+		aBoard << p;
   }
   
   aBoard.drawPolyline(contour);
