@@ -107,7 +107,7 @@ namespace DGtal
      */
     InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
-      return std::pow( asb(pos - ci) , p) + hi;
+      return std::pow( abs((long int)pos - ci) , p) + hi;
     }
 
     /**
@@ -151,10 +151,12 @@ namespace DGtal
    * L_2 specialization
    *
    */
-  template <typename Abscissa, typename TValueType>
-  struct SeparableMetricTraits<Abscissa, TValueType, 2>
+  template <typename TAbscissa, typename TValueType>
+  struct SeparableMetricTraits<TAbscissa, TValueType, 2>
   {
     typedef TValueType ValueType;
+		typedef TAbscissa Abscissa;
+		
 
     static const DGtal::uint32_t p = 2;
 
@@ -186,13 +188,15 @@ namespace DGtal
    * L_1 specialization
    *
    */
-  template <typename Abscissa, typename TValueType>
-  struct SeparableMetricTraits<Abscissa, TValueType, 1>
+  template <typename TAbscissa, typename TValueType>
+  struct SeparableMetricTraits<TAbscissa, TValueType, 1>
   {
 
     typedef TValueType ValueType;
     static const DGtal::uint32_t p = 1;
     typedef ValueType InternalValueType;
+		typedef TAbscissa Abscissa;
+		
 
     inline ValueType operator() ( const InternalValueType & aInternalValue ) const
     {
@@ -224,10 +228,11 @@ namespace DGtal
    * L_infinity specialization
    *
    */
-  template <typename Abscissa, typename TValueType>
-  struct SeparableMetricTraits<Abscissa, TValueType, 0>
+  template <typename TAbscissa, typename TValueType>
+  struct SeparableMetricTraits<TAbscissa, TValueType, 0>
   {
-
+		typedef TAbscissa Abscissa;
+		
     typedef TValueType ValueType;
     static const DGtal::uint32_t p = 0;
     typedef ValueType InternalValueType;

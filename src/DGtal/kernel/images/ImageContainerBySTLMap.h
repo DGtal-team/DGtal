@@ -44,6 +44,8 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,6 +65,11 @@ namespace DGtal
   {
 
   public:
+
+		BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
+		BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+		
+		
     typedef typename Domain::Point Point;
     typedef typename map<Point,ValueType>::size_type TSizeType;
     typedef typename map<Point,ValueType>::iterator Iterator;
