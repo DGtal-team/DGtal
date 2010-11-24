@@ -44,8 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Bits.h"
-#include "Board/Board.h"
-#include "Board/Color.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/images/Morton.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +71,7 @@ namespace DGtal
      *
      * The data can be accessed using keys, coordinates or Iterators
      * provided by the container.
-     * 
+     *
      * The parent of a given key can be found by simply shifting to the
      * left the key's bits by it's dimension.  exemples: for an octree
      * (N = 3) the parent key of the key 1110100001 is 1110100.  for a
@@ -83,7 +82,7 @@ namespace DGtal
      * combination of N bits at the right side of the key (least
      * important bits).  exemple: for a quadtree (N = 2) 1010100,
      * 1010101, 1010110 and 1010111 are the children of 10101.
-     * 
+     *
      * In order to disgard any ambiguous case, we need to make the
      * assertion that the root of the hash is at key 1.  Else we would
      * have to deal with the problem of the key 00000..0 which would
@@ -103,478 +102,524 @@ namespace DGtal
      * check for a key's validity.  Trying to access an invalid key may
      * destroy the validity off the tree's structure and/or get the
      * program stuck into an infinite loop.
-     * 
+     *
      * The method isKeyValid(..) is provided to verify the validity of a
      * key. Note that using this security strongly affects performances.
      */
-    template<typename TDomain, typename TValueType, typename THashKey = typename DGtal::uint64_t>
+    template < typename TDomain, typename TValueType, typename THashKey = typename DGtal::uint64_t >
     class ImageContainerByHashTree
     {
 
-    protected:
-      class Node;
-      template <int X, unsigned int exponent> struct POW;
-    
- 
-    public:
-      typedef THashKey HashKey;
-      typedef TValueType ValueType;
-      typedef TDomain Domain;
-      typedef typename Domain::Point Point;
-      typedef typename Domain::Vector Vector;
-
-      // static constants
-      static const typename TDomain::Space::Dimension dim = TDomain::staticDimension;
-      static const typename TDomain::Space::Dimension staticDimension = TDomain::staticDimension;
-      static const unsigned int NbChildrenPerNode = POW<2,staticDimension>::VALUE;
- 
-      static const HashKey ROOT_KEY = static_cast<HashKey>(1);
-  
-      /**
-       * The constructor. 
-       *
-       * @param hashKeySize Number of bit of the hash key. This
-       * parameter is important as it influences the amount of
-       * collisions in the hash table. A value K creates an array of
-       * length 2^K with potential unused cells so a compromise between
-       * speed and memory usage is to be done here.
-       *
-       * @param depth Determines the maximum depth of the tree and thus
-       * qthe "size" of the image. Each span then extends from 0 to
-       * 2^depth.  
-       *
-       * @param defaultValue In order for the tree to be valid it needs
-       * a default value at the root (key = 1)
-       */ 
-      ImageContainerByHashTree(const unsigned int hashKeySize, 
-			       const unsigned int depth, 
-			       const ValueType defaultValue);
-
-      ImageContainerByHashTree(const unsigned int hashKeySize, 
-			       const Point & p1, 
-			       const Point & p2, 
-			       const ValueType defaultValue);
-
-      ImageContainerByHashTree(const ImageContainerByHashTree<Domain, ValueType>& toCopy);
-
-	
-	
-      /**
-       * Returns the value corresponding to a key. 
-       * 
-       * This is the generic method working with any valid key.  For
-       * efficiency no check is performed on the key so be careful when
-       * calling this method.  If the leafs are deeper than the
-       * requested key, this method will recursively browse through the
-       * children nodes and compute a average of each child's value
-       * using blendChildren(..) which is very slow. Thus performances
-       * are much better when accessing a leaf from a deeper key (needs
-       * no blending).
-       * @param key the haskkey
-       * @return the value type
-       */ 
-      ValueType get(const HashKey key) const;
-
-      /**
-       * Returns the value at a given key.
-       *
-       * @param key the hash key used as an index.
-       */ 
-      ValueType operator () (const HashKey key) const;
-
-      /**
-       * Returns the value at a given point.
-       *
-       * @param aPoint The point.
-       */ 
-      ValueType operator()(const Point &aPoint) const;
-	
-      /**
-       * Returns the value at a given coordinate using upwardGet().
-       * @param aPoint The point.
-       */ 
-      ValueType get(const Point & aPoint) const;
-   
-
-      /**
-       * Returns the value corresponding to a key making the assomption
-       * that the key is at same depth or deeper than the leaf we are
-       * looking for.
-       *
-       * 
-       */ 
-      ValueType upwardGet(const HashKey key) const ;
-
-      /**
-       * A attempt to do the same thing as get(HashKey) but looking for
-       * deeper leafs in the first place instead of doing this in the
-       * second place. It hasn't show better results so far.
-       */ 
-      ValueType reverseGet(const HashKey key) const;
-
-
-      /**
-       * Sets the value of an element in the container, creating it if
-       * necessary. In order to keep the tree's coherence this method
-       * may add and remove several other nodes in the tree so
-       * performances strongly depend on wether or not and how much the
-       * tree's structure needs to be modified.  For efficiency no check
-       * is performed on the key
-       */ 
-      void setValue(const HashKey key, const ValueType object);
-
-      /**
-       * Sets the value of an element in the container, creating it if
-       * necessary. In order to keep the tree's coherence this method
-       * may add and remove several other nodes in the tree so
-       * performances strongly depend on wether or not and how much the
-       * tree's structure needs to be modified.  For efficiency no check
-       * is performed on the coordinates
-       */ 
-      void setValue(const Point& aPoint, const ValueType object);
-
-      /**
-       * Returns the size of a dimension (the container represents a
-       * line, a square, a cube, etc. depending on the dimmension so no
-       * need for distinctions between width, height, ect.)
-       */ 
-      inline unsigned int getSpanSize() const { return mySpanSize;}
-
-      /**
-       *  Returns the tree's depth.
-       */ 
-      inline unsigned int getDepth() const {return myTreeDepth;}
-
-      /**
-       *  Returns true if the key is valid.  A key is valid if the the
-       * most important bit that is equal to 1 is at a position of the
-       * type dim*k with dim the dimmension of the container (template
-       * parameter) and k a strictly positive integer.
-       */ 
-      bool isKeyValid(HashKey key) const;
-
-      /**
-       * Checks recursively that the sub-tree starting with key is
-       * valid.  A tree is valid if there's one (and only one) leaf for
-       * each position at maximal depth.
-       */
-      bool checkIntegrity(HashKey key=ROOT_KEY, bool leafAbove=false) const;
-
-      int myDebugCounter; //debug
-
-      //stuff that might be moved out of the class for reusability
-      HashKey getKey(const Point & aPoint) const;
-    
-      unsigned int getKeyDepth(HashKey key) const;
-    
-      int* getCoordinatesFromKey(HashKey key) const;
-
-      /**
-       * Save the container into a stream.
-       */ 
-      void save(std::ostream& out);
-
-      /**
-       * Load the container from a stream.
-       */ 
-      void load(std::istream& in);
-	
-      /**
-       * Prints in the state of the container as a tree. (Calls
-       * printTree)
-       */ 
-      void printState(std::ostream& out, bool displayKeys = false) const;
-
-      /**
-       * Prints the sub-tree starting with the node corresponding to
-       * key.
-       */ 
-      void printTree(HashKey key, std::ostream& out, bool displayKeys) const;
-
-      /**
-       * Prints the state of the container in a way that displays the
-       * hash table and every node as it is stored in memory instead of
-       * the usual tree representation.
-       */ 
-      void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
-
-      /**
-       * Prints informations about the state of the container without
-       * displaying the data:
-       *
-       * 		- Nunber of elements in the tree.
-       * 		- Amount of unused disk space due to blanks in the hash table.
-       * 		- The dimmension.
-       * 		- The number of bits of the HashKey.
-       * 		- The size of the image.
-       * 		- The average and the maximum amount of collisions.
-       * 		- The total memory usage.
-       */ 
-      void printInfo(std::ostream& out) const;
-
-      /**
-       * Returns the number of empty places in the hash table.
-       */ 
-      unsigned int getNbEmptyLists() const;
-
-      /**
-       * Returns The average number of collisions in the hash table,
-       * without counting the empty places.
-       */ 
-      double getAverageCollisions() const;
-
-      /**
-       * Returns the highest number of collisions in the hash table.
-       */ 
-      unsigned int getMaxCollisions() const;
-
-      /**
-       * Returns the number of elements for a givent key of the hash
-       * table.
-       */ 
-      unsigned int getNbNodes(unsigned int intermediateKey) const;
-
-      /**
-       * Returns the total amount of elements in the container.
-       */ 
-      unsigned int getNbNodes()const;
-
-
-      // -------------------------------------------------------------
-      //  Iterator inner-class
-      // -------------------------------------------------------------
-      class Iterator
-      {
-      public:
-	Iterator(Node** data, unsigned int position, unsigned int arraySize)
-	{
-	  myArraySize = arraySize;
-	  myContainerData = data;
-	  myNode = data[0];
-	  myCurrentCell = position;
-	  while((!myNode) && (myCurrentCell < myArraySize))
-	    {
-	      myNode = myContainerData[++myCurrentCell];
-	    }
-	}
-	bool isAtEnd()const{return myCurrentCell >= myArraySize;}
-	ValueType& operator*(){return myNode->getObject();}
-	bool operator ++ () {return next();}
-	bool operator == (const Iterator& it)
-	{
-	  if(isAtEnd() && it.isAtEnd()) return true;
-	  else return (myNode == it.myNode);
-	}
-	bool operator != (const Iterator& it)
-	{
-	  if(isAtEnd() && it.isAtEnd()) return false;
-	  else return (myNode != it.myNode);
-	}
-	inline HashKey getKey() const {return myNode->getKey();}
-	bool next();
       protected:
-	Node* myNode;
-	unsigned int myCurrentCell;
-	unsigned int myArraySize;
-	Node** myContainerData;
-      };
+        class Node;
+        template <int X, unsigned int exponent> struct POW;
 
-      /** 
-       * Returns an iterator to the first value as stored in the container.
-       */ 
-      Iterator begin(){ return Iterator(myData, 0, myArraySize);}
 
-      /** 
-       * Returns an iterator to the last value as stored in the container.
-       */ 
-      Iterator end(){ return Iterator(myData, myArraySize, myArraySize); }
-
-      void selfDisplay(std::ostream & out);
-
-      bool isValid() const  {return checkIntegrity();}
-      // ----------------------- LibBoard methods --------------------------------------
-    
-    private:
-      struct SelfDrawStyle
-      {
-	SelfDrawStyle(LibBoard::Board & aboard)
-	{
-	  aboard.setPenColorRGBi(60,60,60);
-	  aboard.setLineStyle(LibBoard::Shape::SolidStyle);
-	}
-      };
-    
-    public:
-  
-      /**
-       * Draw the image on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       * @param minValue the minimum value contained in the image (used in the colormap settings)
-       * @param maxValue the maximum value contained in the image (used in the colormap settings)
-       * @tparam FunctorStyle a Functor to specialize the Board style
-       * @tparam Coloramp any models of CColormap.
-       */
-      template<typename FunctorStyle, typename Colormap>
-      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue) const;
-
-      /**
-       * Draw the object on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       * @param minValue the minimum value contained in the image (used in the colormap settings)
-       * @param maxValue the maximum value contained in the image (used in the colormap settings)
-       * @tparam Coloramp any models of CColormap.
-       */
-      template<typename Colormap>
-      void selfDraw(LibBoard::Board & board, const ValueType & minValue, const ValueType & maxValue ) const
-      {
-	selfDraw<SelfDrawStyle,Colormap>(board,minValue,maxValue);
-      }
-    protected:
-
-      template <typename C>
-      void
-      recursiveDraw(HashKey key, const double p1[2], const double len, LibBoard::Board & board, const C& cmap) const;
-
-	
-      // -------------------------------------------------------------
-      /**
-       * @class ImageContainerByHashTree::Node
-       *
-       * An internal class that corresponds to a node of a linked list (as the hashTable points to linked
-       * lists to handle collisions). Each element in the container is placed in a Node.
-       */ 
-      class Node
-      {
       public:
-	Node(ValueType object, HashKey key){myData = object; myKey = key;}
-	inline Node* getNext() {return myNext;}
-	inline void setNext(Node* next) {myNext = next;}
-	inline HashKey getKey() {return myKey;}
-	inline ValueType& getObject() {return myData;}
-	~Node() { }
+        typedef THashKey HashKey;
+        typedef TValueType ValueType;
+        typedef TDomain Domain;
+        typedef typename Domain::Point Point;
+        typedef typename Domain::Vector Vector;
+
+        // static constants
+        static const typename TDomain::Space::Dimension dim = TDomain::staticDimension;
+        static const typename TDomain::Space::Dimension staticDimension = TDomain::staticDimension;
+        static const unsigned int NbChildrenPerNode = POW<2, staticDimension>::VALUE;
+
+        static const HashKey ROOT_KEY = static_cast<HashKey>(1);
+
+        /**
+         * The constructor.
+         *
+         * @param hashKeySize Number of bit of the hash key. This
+         * parameter is important as it influences the amount of
+         * collisions in the hash table. A value K creates an array of
+         * length 2^K with potential unused cells so a compromise between
+         * speed and memory usage is to be done here.
+         *
+         * @param depth Determines the maximum depth of the tree and thus
+         * qthe "size" of the image. Each span then extends from 0 to
+         * 2^depth.
+         *
+         * @param defaultValue In order for the tree to be valid it needs
+         * a default value at the root (key = 1)
+         */
+        ImageContainerByHashTree(const unsigned int hashKeySize,
+            const unsigned int depth,
+            const ValueType defaultValue);
+
+        ImageContainerByHashTree(const unsigned int hashKeySize,
+            const Point & p1,
+            const Point & p2,
+            const ValueType defaultValue);
+
+        ImageContainerByHashTree(const ImageContainerByHashTree<Domain, ValueType>& toCopy);
+
+
+
+        /**
+         * Returns the value corresponding to a key.
+         *
+         * This is the generic method working with any valid key.  For
+         * efficiency no check is performed on the key so be careful when
+         * calling this method.  If the leafs are deeper than the
+         * requested key, this method will recursively browse through the
+         * children nodes and compute a average of each child's value
+         * using blendChildren(..) which is very slow. Thus performances
+         * are much better when accessing a leaf from a deeper key (needs
+         * no blending).
+         * @param key the haskkey
+         * @return the value type
+         */
+        ValueType get(const HashKey key) const;
+
+        /**
+         * Returns the value at a given key.
+         *
+         * @param key the hash key used as an index.
+         */
+        ValueType operator () (const HashKey key) const;
+
+        /**
+         * Returns the value at a given point.
+         *
+         * @param aPoint The point.
+         */
+        ValueType operator()(const Point &aPoint) const;
+
+        /**
+         * Returns the value at a given coordinate using upwardGet().
+         * @param aPoint The point.
+         */
+        ValueType get(const Point & aPoint) const;
+
+
+        /**
+         * Returns the value corresponding to a key making the assomption
+         * that the key is at same depth or deeper than the leaf we are
+         * looking for.
+         *
+         *
+         */
+        ValueType upwardGet(const HashKey key) const ;
+
+        /**
+         * A attempt to do the same thing as get(HashKey) but looking for
+         * deeper leafs in the first place instead of doing this in the
+         * second place. It hasn't show better results so far.
+         */
+        ValueType reverseGet(const HashKey key) const;
+
+
+        /**
+         * Sets the value of an element in the container, creating it if
+         * necessary. In order to keep the tree's coherence this method
+         * may add and remove several other nodes in the tree so
+         * performances strongly depend on wether or not and how much the
+         * tree's structure needs to be modified.  For efficiency no check
+         * is performed on the key
+         */
+        void setValue(const HashKey key, const ValueType object);
+
+        /**
+         * Sets the value of an element in the container, creating it if
+         * necessary. In order to keep the tree's coherence this method
+         * may add and remove several other nodes in the tree so
+         * performances strongly depend on wether or not and how much the
+         * tree's structure needs to be modified.  For efficiency no check
+         * is performed on the coordinates
+         */
+        void setValue(const Point& aPoint, const ValueType object);
+
+        /**
+         * Returns the size of a dimension (the container represents a
+         * line, a square, a cube, etc. depending on the dimmension so no
+         * need for distinctions between width, height, ect.)
+         */
+        inline unsigned int getSpanSize() const
+        {
+          return mySpanSize;
+        }
+
+        /**
+         *  Returns the tree's depth.
+         */
+        inline unsigned int getDepth() const
+        {
+          return myTreeDepth;
+        }
+
+        /**
+         *  Returns true if the key is valid.  A key is valid if the the
+         * most important bit that is equal to 1 is at a position of the
+         * type dim*k with dim the dimmension of the container (template
+         * parameter) and k a strictly positive integer.
+         */
+        bool isKeyValid(HashKey key) const;
+
+        /**
+         * Checks recursively that the sub-tree starting with key is
+         * valid.  A tree is valid if there's one (and only one) leaf for
+         * each position at maximal depth.
+         */
+        bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
+
+        int myDebugCounter; //debug
+
+        //stuff that might be moved out of the class for reusability
+        HashKey getKey(const Point & aPoint) const;
+
+        unsigned int getKeyDepth(HashKey key) const;
+
+        int* getCoordinatesFromKey(HashKey key) const;
+
+        /**
+         * Save the container into a stream.
+         */
+        void save(std::ostream& out);
+
+        /**
+         * Load the container from a stream.
+         */
+        void load(std::istream& in);
+
+        /**
+         * Prints in the state of the container as a tree. (Calls
+         * printTree)
+         */
+        void printState(std::ostream& out, bool displayKeys = false) const;
+
+        /**
+         * Prints the sub-tree starting with the node corresponding to
+         * key.
+         */
+        void printTree(HashKey key, std::ostream& out, bool displayKeys) const;
+
+        /**
+         * Prints the state of the container in a way that displays the
+         * hash table and every node as it is stored in memory instead of
+         * the usual tree representation.
+         */
+        void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
+
+        /**
+         * Prints informations about the state of the container without
+         * displaying the data:
+         *
+         * 		- Nunber of elements in the tree.
+         * 		- Amount of unused disk space due to blanks in the hash table.
+         * 		- The dimmension.
+         * 		- The number of bits of the HashKey.
+         * 		- The size of the image.
+         * 		- The average and the maximum amount of collisions.
+         * 		- The total memory usage.
+         */
+        void printInfo(std::ostream& out) const;
+
+        /**
+         * Returns the number of empty places in the hash table.
+         */
+        unsigned int getNbEmptyLists() const;
+
+        /**
+         * Returns The average number of collisions in the hash table,
+         * without counting the empty places.
+         */
+        double getAverageCollisions() const;
+
+        /**
+         * Returns the highest number of collisions in the hash table.
+         */
+        unsigned int getMaxCollisions() const;
+
+        /**
+         * Returns the number of elements for a givent key of the hash
+         * table.
+         */
+        unsigned int getNbNodes(unsigned int intermediateKey) const;
+
+        /**
+         * Returns the total amount of elements in the container.
+         */
+        unsigned int getNbNodes()const;
+
+
+        // -------------------------------------------------------------
+        //  Iterator inner-class
+        // -------------------------------------------------------------
+        class Iterator
+        {
+          public:
+            Iterator(Node** data, unsigned int position, unsigned int arraySize)
+            {
+              myArraySize = arraySize;
+              myContainerData = data;
+              myNode = data[0];
+              myCurrentCell = position;
+              while ((!myNode) && (myCurrentCell < myArraySize))
+              {
+                myNode = myContainerData[++myCurrentCell];
+              }
+            }
+            bool isAtEnd()const
+            {
+              return myCurrentCell >= myArraySize;
+            }
+            ValueType& operator*()
+            {
+              return myNode->getObject();
+            }
+            bool operator ++ ()
+            {
+              return next();
+            }
+            bool operator == (const Iterator& it)
+            {
+              if (isAtEnd() && it.isAtEnd())
+                return true;
+              else
+                return (myNode == it.myNode);
+            }
+            bool operator != (const Iterator& it)
+            {
+              if (isAtEnd() && it.isAtEnd())
+                return false;
+              else
+                return (myNode != it.myNode);
+            }
+            inline HashKey getKey() const
+            {
+              return myNode->getKey();
+            }
+            bool next();
+          protected:
+            Node* myNode;
+            unsigned int myCurrentCell;
+            unsigned int myArraySize;
+            Node** myContainerData;
+        };
+
+        /**
+         * Returns an iterator to the first value as stored in the container.
+         */
+        Iterator begin()
+        {
+          return Iterator(myData, 0, myArraySize);
+        }
+
+        /**
+         * Returns an iterator to the last value as stored in the container.
+         */
+        Iterator end()
+        {
+          return Iterator(myData, myArraySize, myArraySize);
+        }
+
+        void selfDisplay(std::ostream & out);
+
+        bool isValid() const
+        {
+          return checkIntegrity();
+        }
+        // ----------------------- LibBoard methods --------------------------------------
+
+      private:
+        struct DefaultDrawStyle : public DrawableWithBoard
+        {
+          virtual void selfDraw(DGtalBoard & aboard)
+          {
+            aboard.setPenColorRGBi(60, 60, 60);
+            aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+          }
+        };
+
+      public:
+        /**
+         * Default drawing style object.
+         * @return the dyn. alloc. default style for this object.
+         */
+        DrawableWithBoard* defaultStyle() const;
+
+        /**
+         * @return the style name used for drawing this object.
+         */
+        std::string styleName() const;
+
+
+        /**
+         * Draw the object on a LibBoard board.
+         * @param board the output board where the object is drawn.
+         * @param minValue the minimum value contained in the image (used in the colormap settings)
+         * @param maxValue the maximum value contained in the image (used in the colormap settings)
+         * @tparam Coloramp any models of CColormap.
+         */
+        template<typename Colormap>
+        void selfDraw(DGtalBoard & board, const ValueType & minValue, const ValueType & maxValue ) const;
+				
       protected:
-	HashKey myKey;
-	Node* myNext;
-	ValueType myData;
-      };// -----------------------------------------------------------
+
+        template <typename C>
+        void
+        recursiveDraw(HashKey key, const double p1[2], const double len, LibBoard::Board & board, const C& cmap) const;
 
 
-      /**
-       * Template metaprogrammed power function.  To compute at
-       * compilation time the number of children per node (N) and save
-       * runtime calculations
-       */ 
-      template <int X, unsigned int exponent> struct POW
-      {
-	enum{ VALUE = X* POW<X, exponent-1>::VALUE};
-      };
-      template <int X > struct POW<X, 1>
-      {
-	enum{ VALUE = X };
-      };
+        // -------------------------------------------------------------
+        /**
+         * @class ImageContainerByHashTree::Node
+         *
+         * An internal class that corresponds to a node of a linked list (as the hashTable points to linked
+         * lists to handle collisions). Each element in the container is placed in a Node.
+         */
+        class Node
+        {
+          public:
+            Node(ValueType object, HashKey key)
+            {
+              myData = object;
+              myKey = key;
+            }
+            inline Node* getNext()
+            {
+              return myNext;
+            }
+            inline void setNext(Node* next)
+            {
+              myNext = next;
+            }
+            inline HashKey getKey()
+            {
+              return myKey;
+            }
+            inline ValueType& getObject()
+            {
+              return myData;
+            }
+            ~Node() { }
+          protected:
+            HashKey myKey;
+            Node* myNext;
+            ValueType myData;
+        };// -----------------------------------------------------------
 
-      /**
-       * This is part of the hash function. It is called whenever a key
-       * is accessed.  The mask used to compute the result is
-       * precomputed in the constructor for efficiency.
-       */ 
-      inline HashKey getIntermediateKey(const HashKey key) const;
-   
 
-      /**
-       * Add a Node to the tree.  This method is very used when writing
-       * in the tree (set method).
-       */ 
-      Node* addNode(const ValueType object, const HashKey key)
-      {
-	Node* n = getNode(key);
-	if(n)
-	  {
-	    n->getObject() = object;
-	    //n->setObject(object);
-	    return n;
-	  }
-	n = new Node(object, key);
-	HashKey key2 = getIntermediateKey(key);
-	n->setNext(myData[key2]);
-	myData[key2] = n;
-	return n;
-      }
+        /**
+         * Template metaprogrammed power function.  To compute at
+         * compilation time the number of children per node (N) and save
+         * runtime calculations
+         */
+        template <int X, unsigned int exponent> struct POW
+        {
+          enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
+        };
+        template <int X > struct POW<X, 1>
+        {
+          enum { VALUE = X };
+        };
 
-      /**
-       * Returns a pointer to the node corresponding to the key. If it
-       * does'nt exist, returns 0.  This method is called VERY often,
-       * and thus should operate as fast as possible.
-       */ 
-      inline Node* getNode(const HashKey key)	const	// very used !!
-      {
-	Node* iter = myData[getIntermediateKey(key)];
-	while(iter != 0)
-	  {
-	    if(iter->getKey() == key) return iter;
-	    iter = iter->getNext();
-	  }
-	return 0;
-      }
+        /**
+         * This is part of the hash function. It is called whenever a key
+         * is accessed.  The mask used to compute the result is
+         * precomputed in the constructor for efficiency.
+         */
+        inline HashKey getIntermediateKey(const HashKey key) const;
 
-      /**
-       * Remove the node corresponding to a key. Returns false if the
-       * node doesn't exist.
-       */ 
-      bool removeNode(HashKey key);
 
-      /**
-       * Recusrively calls RemoveNode on the key and its children.
-       */ 
-      void recursiveRemoveNode(HashKey key, unsigned int nbRecursions);
+        /**
+         * Add a Node to the tree.  This method is very used when writing
+         * in the tree (set method).
+         */
+        Node* addNode(const ValueType object, const HashKey key)
+        {
+          Node* n = getNode(key);
+          if (n)
+          {
+            n->getObject() = object;
+            //n->setObject(object);
+            return n;
+          }
+          n = new Node(object, key);
+          HashKey key2 = getIntermediateKey(key);
+          n->setNext(myData[key2]);
+          myData[key2] = n;
+          return n;
+        }
 
-	
-      /**
-       * Set the (maximum) depth of the tree and precompute a mask used
-       * for some calculations.  The depth of the tree must be known
-       * because accessing the data from coordinates depends on it.
-       */ 
-      void setDepth(unsigned int depth);
+        /**
+         * Returns a pointer to the node corresponding to the key. If it
+         * does'nt exist, returns 0.  This method is called VERY often,
+         * and thus should operate as fast as possible.
+         */
+        inline Node* getNode(const HashKey key)	const	// very used !!
+        {
+          Node* iter = myData[getIntermediateKey(key)];
+          while (iter != 0)
+          {
+            if (iter->getKey() == key)
+              return iter;
+            iter = iter->getNext();
+          }
+          return 0;
+        }
 
-      /**
-       * Recursively get the value of all the leafs below and blend it
-       * to get the value of a parent node. This is called in the get()
-       * method when it has been determined that the leafs are deeper
-       * than the requested key.
-       */ 
-      ValueType blendChildren(HashKey key) const;
+        /**
+         * Remove the node corresponding to a key. Returns false if the
+         * node doesn't exist.
+         */
+        bool removeNode(HashKey key);
 
-      /**
-       * The array of linked lists containing all the data
-       */ 
-      Node** myData;
+        /**
+         * Recusrively calls RemoveNode on the key and its children.
+         */
+        void recursiveRemoveNode(HashKey key, unsigned int nbRecursions);
 
-      /**
-       * The size of the intermediate hashkey. The bigger the less
-       * collisions, but at the same time the more chances to have
-       * unused memory allocated.
-       */
-      unsigned int myKeySize;
 
-      unsigned int myArraySize;
-	
-      /**
-       * The depth of the tree
-       */
-      unsigned int myTreeDepth;
+        /**
+         * Set the (maximum) depth of the tree and precompute a mask used
+         * for some calculations.  The depth of the tree must be known
+         * because accessing the data from coordinates depends on it.
+         */
+        void setDepth(unsigned int depth);
 
-      unsigned int mySpanSize;
+        /**
+         * Recursively get the value of all the leafs below and blend it
+         * to get the value of a parent node. This is called in the get()
+         * method when it has been determined that the leafs are deeper
+         * than the requested key.
+         */
+        ValueType blendChildren(HashKey key) const;
 
-      Point myOrigin;
-	
-      /**
-       * Precoputed masks to avoid recalculating it all the time
-       */ 
-      HashKey myDepthMask;
-      HashKey myPreComputedIntermediateMask; // ~((~0) << _keySize)
+        /**
+         * The array of linked lists containing all the data
+         */
+        Node** myData;
 
-      ///The morton code computer.
-      Morton<HashKey,Point> myMorton;
+        /**
+         * The size of the intermediate hashkey. The bigger the less
+         * collisions, but at the same time the more chances to have
+         * unused memory allocated.
+         */
+        unsigned int myKeySize;
+
+        unsigned int myArraySize;
+
+        /**
+         * The depth of the tree
+         */
+        unsigned int myTreeDepth;
+
+        unsigned int mySpanSize;
+
+        Point myOrigin;
+
+        /**
+         * Precoputed masks to avoid recalculating it all the time
+         */
+        HashKey myDepthMask;
+        HashKey myPreComputedIntermediateMask; // ~((~0) << _keySize)
+
+        ///The morton code computer.
+        Morton<HashKey, Point> myMorton;
 
     };
 
@@ -586,7 +631,7 @@ namespace DGtal
      */
     template<typename TDomain, typename TValueType, typename THashKey >
     std::ostream&
-    operator<< ( std::ostream & out,  ImageContainerByHashTree<TDomain,TValueType, THashKey> & object )
+    operator<< ( std::ostream & out,  ImageContainerByHashTree<TDomain, TValueType, THashKey> & object )
     {
       object.selfDisplay( out);
       return out;
@@ -596,8 +641,8 @@ namespace DGtal
 
 } // namespace DGtal
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // Includes inline functions.
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
 #include "DGtal/kernel/images/ImageContainerByHashTree.ih"
 
 //                                                                           //
