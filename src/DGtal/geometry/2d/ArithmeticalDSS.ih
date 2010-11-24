@@ -559,20 +559,88 @@ DGtal::ArithmeticalDSS<TDSS>::projectedSegmentLength() const
 
 
 
+// /**
+//  * Draw the bounding box of the DSS on a LiBoard board
+//  * @param board the output board where the object is drawn.
+//  * @tparam Functor a Functor to specialize the Board style
+//  */
+// template <typename TDSS>
+// template<typename Functor>
+// inline
+// void 
+// DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( LibBoard::Board & aBoard) const
+// {
+
+//   Functor applystyle(aBoard);
+
+//   //draw bounding box
+//   PointD topLeft = project(myF, myUf);
+//   PointD bottomLeft = project(myF,myLf);
+//   PointD bottomRight = project(myL, myLf);
+//   PointD topRight = project(myL,myUf);
+  
+
+//   LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
+//   LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
+//   LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
+//   LibBoard::Point topRightBoard(topRight[0],topRight[1]);
+  
+//   vector<LibBoard::Point> bb;
+//   bb.push_back(topLeftBoard);
+//   bb.push_back(bottomLeftBoard);
+//   bb.push_back(bottomRightBoard);
+//   bb.push_back(topRightBoard);
+  
+  
+//   aBoard.drawClosedPolyline(bb);  
+     
+
+// }
+
+// /**
+//  * Draw the retrieved digital points of the DSS linked into a 
+//  * polygonal line on a LiBoard board
+//  * @param board the output board where the object is drawn.
+//  * @tparam Functor a Functor to specialize the Board style
+//  */
+// template <typename TDSS>
+// template<typename Functor>
+// inline
+// void 
+// DGtal::ArithmeticalDSS<TDSS>::DigitalPointsDraw( LibBoard::Board & aBoard) const
+// {
+
+//   Functor applystyle(aBoard);
+
+// 	//draw contour
+//   vector<Point> ptsOfDSS = recover();
+//   vector<LibBoard::Point> contour;
+// 	for (int i=0; i<ptsOfDSS.size();i++) {
+// 		Point p = ptsOfDSS.at(i);
+// 		contour.push_back(LibBoard::Point(p[0],p[1]));
+// 	}
+
+//   aBoard.drawPolyline(contour);
+// }
+
+
+
 /**
  * Draw the bounding box of the DSS on a LiBoard board
  * @param board the output board where the object is drawn.
  * @tparam Functor a Functor to specialize the Board style
  */
 template <typename TDSS>
-template<typename Functor>
 inline
 void 
-DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( LibBoard::Board & aBoard) const
+DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( LibBoard::Board & aBoard) const
 {
-
-  Functor applystyle(aBoard);
-
+  
+  // Set board style
+  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+  aBoard.setPenColor(LibBoard::Color::Red);
+  aBoard.setLineWidth(1);	
+  
   //draw bounding box
   PointD topLeft = project(myF, myUf);
   PointD bottomLeft = project(myF,myLf);
@@ -604,24 +672,81 @@ DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( LibBoard::Board & aBoard) const
  * @tparam Functor a Functor to specialize the Board style
  */
 template <typename TDSS>
-template<typename Functor>
 inline
 void 
-DGtal::ArithmeticalDSS<TDSS>::DigitalPointsDraw( LibBoard::Board & aBoard) const
+DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( LibBoard::Board & aBoard) const
 {
 
-  Functor applystyle(aBoard);
-
-	//draw contour
+  // Set board style
+  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+  aBoard.setPenColor(LibBoard::Color::Black);
+  aBoard.setLineWidth(2);
+  
+  //draw contour
   vector<Point> ptsOfDSS = recover();
   vector<LibBoard::Point> contour;
-	for (int i=0; i<ptsOfDSS.size();i++) {
+  for (int i=0; i<ptsOfDSS.size();i++) {
 		Point p = ptsOfDSS.at(i);
 		contour.push_back(LibBoard::Point(p[0],p[1]));
-	}
-
+  }
+  
   aBoard.drawPolyline(contour);
 }
+
+
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template<typename TDSS>
+inline
+DGtal::DrawableWithBoard*
+DGtal::ArithmeticalDSS<TDSS>::defaultStyle( std::string mode ) const
+{
+  if ( ( mode == "" ) || ( mode == "BB" ) ) 
+    return new DefaultDrawStyleBB;
+  else // mode == "Paving"
+    return new DefaultDrawStylePoints;
+}
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template<typename TDSS>
+inline
+std::string
+DGtal::ArithmeticalDSS<TDSS>::styleName() const
+{
+  return "ArithmeticalDSS";
+}
+
+/**
+ * Draw the object on a LibBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template<typename TDSS>
+inline
+void
+DGtal::ArithmeticalDSS<TDSS>::selfDraw( DGtalBoard & board ) const
+{
+  std::string mode = board.getMode( this->styleName() );
+  if ( mode == "BB" )
+    selfDrawAsBoundingBox( board );
+  else if ( mode == "Points" )
+    selfDrawAsDigitalPoints( board );
+  else if ( mode == "" ) 
+    {
+      selfDrawAsBoundingBox( board );
+      selfDrawAsDigitalPoints( board );
+    }
+  else
+    ASSERT(false && ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
+  // selfDrawAsGrid( board );
+}
+
+
+
 
 /**
  * Writes/Displays the object on an output stream.
