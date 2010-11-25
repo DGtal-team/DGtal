@@ -106,7 +106,7 @@ namespace DGtal
         ASSERT( lower <= p && p <= upper );
         ASSERT( subDomain.size() <= TPoint::Dimension );
         mySubDomain.reserve( subDomain.size() );
-        for ( std::vector<Size>::const_iterator it = subDomain.begin();
+        for ( typename std::vector<Size>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
         {
           ASSERT( *it <= TPoint::Dimension );
