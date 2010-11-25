@@ -179,9 +179,24 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
+# the FindSubversion.cmake module is part of the standard distribution
+IF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
+FIND_PACKAGE(Subversion)
+ IF(Subversion_FOUND)
+    Subversion_WC_INFO(${PROJECT_SOURCE_DIR} Project)
+    MESSAGE("Current revision is ${Project_WC_REVISION}")
+    Subversion_WC_LOG(${PROJECT_SOURCE_DIR} Project)
+    MESSAGE("Last changed log is ${Project_LAST_CHANGED_LOG}")
+ else(Subversion_FOUND)
+    SET(Project_WC_REVISION 0)
+ENDIF(Subversion_FOUND)
+ENDIF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
+# ----------------------------------------------------------------------
+
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 1)
-SET(DGtal_VERSION_PATCH 0)
+SET(DGtal_VERSION_PATCH ${Project_WC_REVISION})
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 
 
@@ -203,8 +218,8 @@ INCLUDE(InstallRequiredSystemLibraries)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal Project")
 SET(CPACK_PACKAGE_VENDOR ".")
-#SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.txt") TODO
-#SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt") TODO
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_PACKAGE_CONTACT "dgtal@liris.cnrs.fr" )
 SET(CPACK_NSIS_CONTACT "dgtal@liris.cnrs.fr")
 
@@ -218,12 +233,12 @@ ELSE(WIN32 AND NOT UNIX)
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*)
+SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/html-Board/*;tests/ConfigTest.h)
 
  if(WIN32)
    SET(CPACK_GENERATOR "NSIS;")
  else(WIN32)
-   SET(CPACK_GENERATOR "TGZ;STGZ;DEB")
+   SET(CPACK_GENERATOR "TGZ;DEB")
  endif(WIN32)
 
 INCLUDE(CPack)
