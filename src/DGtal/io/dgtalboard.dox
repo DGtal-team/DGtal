@@ -12,20 +12,30 @@ namespace DGtal {
    * to 2D DGtal objects like CDomain, Object, CDigitalSet, Point,
    * ImageContainer. The current supported export formats are SVG,
    * EPS, and XFIG. It is currently based on LibBoard, but may evolve
-   * later (it will probably move to Cairo).
-   * This document is dedicated both to DGtal users and developers.
+   * later (it will probably move to <a
+   * href="http://www.cairographics.org">Cairo</a>).  This document is
+   * dedicated both to DGtal users and developers.
 
    *
    *
    * Table of contents:
    *  -# \ref dgtal_dgtalboard_sec1
    *    -# \ref dgtal_dgtalboard_sec11
+   *    -# \ref dgtal_dgtalboard_sec12
+   *    -# \ref dgtal_dgtalboard_sec13
+   *    -# \ref dgtal_dgtalboard_sec14
+   *    -# \ref dgtal_dgtalboard_sec15
    *  -# \ref dgtal_dgtalboard_sec2
    *    -# \ref dgtal_dgtalboard_sec21
    *
    * \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
    *
    * \subsection dgtal_dgtalboard_sec11 Elementary usage: displaying a domain and a few points
+   *
+   * To use the DGtalBoard stream, you must include the header
+   \code
+#include "DGtal/io/DGtalBoard.h"
+   \endcode
    *
    * The class DGtalBoard is designed so as to make easy the
    * visualization of digital objects, also it is for now limited to
@@ -40,7 +50,8 @@ namespace DGtal {
    * The following code snippet defines three points and a rectangular
    * domain in Z2. It then displays them in a DGtalBoard object. The
    * two last commands export the graphics in SVG and EPS format. The
-   * full code is in <a href="dgtalboard-1-points_8cpp-example.html">dgtalboard-1-points.cpp</a>.
+   * full code is in <a
+   * href="dgtalboard-1-points_8cpp-example.html">dgtalboard-1-points.cpp</a>.
    *
    \code
    using namespace DGtal;
@@ -66,8 +77,149 @@ namespace DGtal {
    *
    * \subsection dgtal_dgtalboard_sec12 Displaying sets and digital objects
    *
+   * Displaying a digital set uses also the stream mechanism. You just
+   * have to use the flux operator \c << with a DigitalSet in
+   * parameter.
+   *
+   \code
+   Point p1( -10, -7 );
+   Point p2( 10, 7 );
+   Domain domain( p1, p2 );
+   DigitalSet shape_set( domain );
+   Shapes<Domain>::addNorm1Ball( shape_set, Point( -5, -1 ), 7 );
+   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 1 ), 7 );
+   shape_set.erase( Point( -5, -1 ) );
+   shape_set.erase( Point( 5, 1 ) );
+
+   DGtalBoard board;
+   board << domain << shape_set; // display domain and set
+   board.saveSVG( "dgtalboard-2-sets-1.svg");
+   \endcode
+   *
+   * \image html dgtalboard-2-sets-1.png
+   *
+   * \subsection dgtal_dgtalboard_sec13 Mode selection: the example of digital objects
+   *
+   * Some digital elements (like Object, PointVector, ArithmeticalDSS)
+   * may have several possible ways to be rendered as a graphical
+   * object. For instance, a pixel may be seen more as a point or more
+   * as a unit square in the plane. In the same idea, a digital object
+   * may or may not be represented with its adjacency
+   * relations. Otherwise said, one may wish to see the set, another
+   * may wish to see the graph. 
+   *
+   * You may choose a \b mode for a drawable element by outputing on
+   * the stream a SetMode object. You just have to specify the
+   * classname (the easiest way is to call the method \c styleName()
+   * on an instance of the correct type) and the desired mode (a
+   * string). An Object is sensitive to the mode "" (default, just the
+   * set is displayed) and to the mode "DrawAdjacencies" (the graph is
+   * drawn). The following code snippet uses the digital set \c
+   * shape_set defined above.
+   *
+   \code
+  // Object with couple (4,8) of adjacency.
+  Object4_8 shape( dt4_8, shape_set );
+  board << domain // display domain
+	<< SetMode( shape.styleName(), "DrawAdjacencies" )
+	<< shape; // and object with mode "DrawAdjacencies"
+  board.saveSVG( "dgtalboard-2-sets-2.svg");
+  board.clear();
+
+  // Object with couple (8,4) of adjacency.
+  Object8_4 shape2( dt8_4, shape_set );
+  board << domain // display domain
+	<< SetMode( shape2.styleName(), "DrawAdjacencies" )
+	<< shape2; // and object with mode "DrawAdjacencies"
+  board.saveSVG( "dgtalboard-2-sets-3.svg");
+   \endcode
+   *
+   * Note the different adjacency relations depending on the topology
+   * chosen for the object. The full code is in <a
+   * href="dgtalboard-2-sets_8cpp-example.html">dgtalboard-2-sets.cpp</a>.
+   *
+   * <table>
+   * <tr><td> (4,8)-object </td><td> (8,4)-object </td></tr>
+   * <tr><td> \image html dgtalboard-2-sets-2.png</td>
+   * <td> \image html dgtalboard-2-sets-3.png</td></tr>
+   * </table>
    *
    *
+   * \subsection dgtal_dgtalboard_sec14 Useful modes for several drawable elements
+   *
+   * Here is a list of modes for several digital drawable elements (""
+   * is always default mode).
+   *
+   * - class PointVector, modes: "" / "Both", "Paving", "Grid"
+   * - class Object, modes: "", "DrawAdjacencies"
+   * - class HyperRectDomain, modes: "" / "Grid", "Paving"
+   * - class ArithmeticalDSS, modes: "" / "Both", "BoundingBox", "Points"
+   *
+   * For instance, to change the drawing mode for the next object \c dss of type
+   * ArithmeticalDSS, you may use the line
+   \code
+   board << SetMode( dss.styleName(), "BoundingBox" );
+   \endcode
+   *
+   * \subsection dgtal_dgtalboard_sec15 Changing the style for displaying drawable elements.
+   *
+   * All drawable elements have a default style for default. You may
+   * nevertheless modify it whenever you want for any object. You have
+   * nevertheless to create a minimal structure to hold the style. The
+   * following example shows how to change the pen and fill color
+   * on-the-fly. First of all, the custom style class:
+   *
+   \code
+struct MyDrawStyleCustomColor : public DrawableWithBoard
+{
+  DGtalBoard::Color myPenColor;
+  DGtalBoard::Color myFillColor;
+  MyDrawStyleCustomColor( const DGtalBoard::Color & penColor,
+			  const DGtalBoard::Color & fillColor )
+    : myPenColor( penColor ), myFillColor( fillColor )
+  {}
+
+  virtual void selfDraw( DGtalBoard & aboard) const
+  {
+    aboard.setFillColor( myFillColor); // specifies the fill color.
+    aboard.setPenColor( myPenColor );  // specifies the pen color.
+  }
+};
+   \endcode
+   *
+   * The custom style is then attached to drawable element by creating an instance of CustomStyle. Do not worry about deallocating the CustomStyle instances. This is done automatically. 
+   *
+   \code
+  Point p1( -3, -2 );
+  Point p2( 7, 3 );
+  Point p3( 0, 0 );
+  Domain domain( p1, p2 );
+
+  DGtalBoard::Color red( 255, 0, 0 );
+  DGtalBoard::Color dred( 192, 0, 0 );
+  DGtalBoard::Color green( 0, 255, 0 );
+  DGtalBoard::Color dgreen( 0, 192, 0 );
+  DGtalBoard::Color blue( 0, 0, 255 );
+  DGtalBoard::Color dblue( 0, 0, 192 );
+  
+  DGtalBoard board;
+  board << domain 
+	<< CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
+	<< p1
+	<< CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+	<< p2
+	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+	<< p3;
+  board.saveSVG("dgtalboard-3-custom-points.svg");
+   \endcode
+   *
+   * This program (see full source at <a
+   * href="dgtalboard-3-custom-points_8cpp-example.html">dgtalboard-3-custom-points.cpp</a>) outputs the following graphics.
+   *
+   * \image html dgtalboard-3-custom-points.png
+   *
+   * To be continued...
+   * 
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
    * \subsection dgtal_dgtalboard_sec21 Short overview of the LibBoard library
@@ -92,7 +244,8 @@ namespace DGtal {
    *
    * A clone of the LibBoard source code (release: 0.8.8-3) has been
    * included in DGtal. Its classes are grouped into the namespace Board.
-
+   *
+   * Written by Jacques-Olivier Lachaud.
    */
 
   /**
@@ -103,4 +256,25 @@ namespace DGtal {
    * HyperRectDomain and three points exported as SVG and EPS).
    */
 
+  /**
+   * \example dgtalboard-2-sets.cpp
+   *
+   * This simple example shows also some basic usage of a DGtalBoard
+   * to export graphical representations of dgtal objects (here, a
+   * digital set and a digital object). Note also the use of different
+   * modes that may be defined for some classes. An object may thus be
+   * displayed just as a set of points, but also as a set of points
+   * with neighborhood structure (a graph).
+   */
+
+  /**
+   * \example dgtalboard-3-custom-points.cpp
+   *
+   * This example shows you how to modify the style of each drawable
+   * elements. It is a matter of creating a custom style class which
+   * gives in its method \c selfDraw the specific style
+   * parameters. Then, you attach this style to your drawable elements
+   * with an instance of CustomStyle outputed in the DGtalBoard
+   * stream.
+   */
 }

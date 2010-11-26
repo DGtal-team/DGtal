@@ -83,6 +83,9 @@ namespace DGtal
      */
     typedef std::map< std::string, std::string > ModeMapping;
 
+    typedef LibBoard::Color Color;
+    typedef LibBoard::Shape Shape;
+
     // ----------------------- Standard services ------------------------------
   public:
     

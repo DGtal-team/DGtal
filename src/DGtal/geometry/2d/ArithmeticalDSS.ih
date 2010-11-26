@@ -708,7 +708,7 @@ inline
 DGtal::DrawableWithBoard*
 DGtal::ArithmeticalDSS<TDSS>::defaultStyle( std::string mode ) const
 {
-  if ( ( mode == "" ) || ( mode == "BB" ) ) 
+  if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "BoundingBox" ) ) 
     return new DefaultDrawStyleBB;
   else // mode == "Paving"
     return new DefaultDrawStylePoints;
@@ -735,11 +735,11 @@ void
 DGtal::ArithmeticalDSS<TDSS>::selfDraw( DGtalBoard & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
-  if ( mode == "BB" )
+  if ( mode == "BoundingBox" )
     selfDrawAsBoundingBox( board );
   else if ( mode == "Points" )
     selfDrawAsDigitalPoints( board );
-  else if ( mode == "" ) 
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
     {
       selfDrawAsDigitalPoints( board );
       selfDrawAsBoundingBox( board );

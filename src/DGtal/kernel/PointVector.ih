@@ -596,7 +596,7 @@ DGtal::PointVector<N,T>::selfDraw( DGtalBoard & board ) const
     selfDrawAsPaving( board );
   else if ( mode == "Grid" )
     selfDrawAsGrid( board );
-  else if ( mode == "" ) 
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
     {
       selfDrawAsPaving( board );
       selfDrawAsGrid( board );

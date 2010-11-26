@@ -58,14 +58,14 @@ using namespace LibBoard;
 
 struct MyObjectStyleCustom : public DrawableWithBoard
 {
-  void selfDraw(LibBoard::Board & aboard) const
+  void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(0, 169, 0);
   }
 };
 struct MyObjectStyleCustomRed : public DrawableWithBoard
 {
-  void selfDraw(LibBoard::Board & aboard) const
+  void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(169, 0, 0);
   }
@@ -73,33 +73,33 @@ struct MyObjectStyleCustomRed : public DrawableWithBoard
 
 struct MyDrawStyleCustomRed : public DrawableWithBoard
 {
-  virtual void selfDraw(LibBoard::Board & aboard) const
+  virtual void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(169, 150, 150);
     aboard.setPenColorRGBi(0, 0, 0);
-    aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+    aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
 };
 
 struct MyDrawStyleCustomBlue : public DrawableWithBoard
 {
-  virtual void selfDraw(LibBoard::Board & aboard) const
+  virtual void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(150, 150, 250);
     aboard.setPenColorRGBi(0, 0, 200);
-    aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+    aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
 };
 
 struct MyDrawStyleCustomGreen : public DrawableWithBoard
 {
-  virtual void selfDraw(LibBoard::Board & aboard) const
+  virtual void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(150, 150, 160);
     aboard.setPenColorRGBi(150, 150, 160);
-    aboard.setLineStyle(LibBoard::Shape::DashStyle);
+    aboard.setLineStyle(DGtalBoard::Shape::DashStyle);
     aboard.setLineWidth( 1.0 );
   }
 };

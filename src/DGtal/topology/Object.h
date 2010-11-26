@@ -68,6 +68,12 @@ namespace DGtal
    * points which touch the complement in the sense of background
    * adjacency.
    *
+   * \b export: An Object realizes the concept CDrawableWithBoard. It
+   * may be displayed with a DGtalBoard, and is by default displayed
+   * as a set of digital points. An Object reacts to the mode
+   * "DrawAdjacencies". In this case the set of points and the
+   * adjacency relations are displayed.
+   *
    * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam TDigitalSet any model of CDigitalSet.
    */
