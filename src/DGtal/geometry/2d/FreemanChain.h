@@ -50,6 +50,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
+#include "DGtal/io/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -64,6 +65,32 @@ namespace DGtal
    * 4-connected contour as a string of '0', '1', '2', and '3' and the
    * coordinate of the first point. When it is a loop, it is the
    * counterclockwise boundary of the shape.
+   
+   * Example :
+   * @code 
+   
+   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+   std::stringstream ss (stringstream::in | stringstream::out);
+   ss << "0 0 00001111222233" << endl;
+   
+   // Construct the Freeman chain
+   FreemanChain<int> fc(ss);
+   
+   // Compute a bounding box 
+   int minX, maxX, minY, maxY;
+   fc.computeBoundingBox(minX, minY, maxX, maxY);  
+   
+   // Compute the list of points of the contour
+   vector<FreemanChain<int>::PointI2> aContourPointVector; 
+   fc.getContourPoints(fc, aContourPointVector);
+   
+   // Draw the Freeman chain
+   LibBoard::Board aBoard;
+   aBoard.setUnit(Board::UMillimeter);
+   fc.selfDraw(aBoard);
+   
+
+   * @endcode
    */
 
   template <typename TInteger>
@@ -1284,7 +1311,7 @@ namespace DGtal
         @tparam Functor a Functor to specialize the Board style
       */
       template<typename Functor>
-      void selfDraw(LibBoard::Board & board ) const;
+      void selfDraw(DGtalBoard & board ) const;
 
 
 
@@ -1293,7 +1320,7 @@ namespace DGtal
         @param board the output board where the object is drawn.
       */
 
-      void selfDraw(LibBoard::Board & board ) const
+      void selfDraw(DGtalBoard & board ) const
       {
         selfDraw<SelfDrawStyle>(board);
       };
