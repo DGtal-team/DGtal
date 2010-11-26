@@ -120,17 +120,19 @@ int main(int argc, char **argv)
 		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
 		
-		board << DrawDomainGrid() << domain;
+		board << DrawDomainPaving() << domain;
 		// domain.selfDrawAsGrid(board);
 		
 		//board << DrawDSSBoundingBox()
 		//    << theDSS4;
+		board << DrawPavingPixel() <<  theDSS4;
 		
-		board << theDSS4;
+		board.saveEPS("DSS4.eps");
+		
+		
 
-		//theDSS4.selfDraw(board);
-		
-		board.saveSVG("DSS4.svg");
+
+
 	}
 
   trace.endBlock();
