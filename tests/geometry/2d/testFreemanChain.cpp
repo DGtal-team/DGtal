@@ -38,7 +38,7 @@
 #include <boost/program_options.hpp>
 #include "ConfigTest.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-
+#include "DGtal/io/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -114,21 +114,24 @@ bool testFreemanChain(stringstream & ss)
  */
 bool testDisplayFreemanChain(const string &file)
 {
-  LibBoard::Board aBoard;
-  aBoard.setUnit(Board::UMillimeter);
+  DGtalBoard aBoard;
+  aBoard.setUnit(Board::UCentimeter);
   
   fstream fst;
   fst.open (file.c_str(), ios::in);
   FreemanChain<int> fc(fst);  
   aBoard.setPenColor(Color::Red);
+  
+  //aBoard << DrawPavingPixel();
+
   fc.selfDraw(aBoard);
   fst.close();
   
   
-  std::string filenameImage = testPath + "samples/contourS.gif";
-  LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
-  image.shiftDepth(1);
-  aBoard << image;
+  // std::string filenameImage = testPath + "samples/contourS.gif";
+  // LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
+  // image.shiftDepth(1);
+  // aBoard << image;
   
   
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
@@ -154,6 +157,8 @@ int main( int argc, char** argv )
   trace.info() << endl;
   std::stringstream ss (stringstream::in | stringstream::out);
   ss << "0 0 00001111222233" << endl;
+  
+
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
