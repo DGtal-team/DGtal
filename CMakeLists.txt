@@ -103,11 +103,11 @@ message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 
-	FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS serialization program_options)
-	if ( Boost_FOUND )
-		message(STATUS "Boost and boost_serialization/boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
-		include_directories( ${Boost_INCLUDE_DIR} )
-	endif( Boost_FOUND )
+FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS serialization program_options)
+if ( Boost_FOUND )
+  message(STATUS "Boost and boost_serialization/boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
+  include_directories( ${Boost_INCLUDE_DIR} )
+endif( Boost_FOUND )
 
 
 ##########Check if libMagick++ exists
@@ -115,7 +115,7 @@ FIND_PACKAGE(Magick)
 
 IF(MAGICK++_FOUND)
   INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
-   message( "-- GraphicsMagick++ found." )
+  message( "-- GraphicsMagick++ found." )
 ENDIF(MAGICK++_FOUND)
 
 
@@ -138,7 +138,7 @@ if (INLINE_FUNCTION_BUILD)
 else (INLINE_FUNCTION_BUILD)
   ADD_DEFINITIONS(-DINLINE="")
 endif (INLINE_FUNCTION_BUILD)
-  
+
 
 # -----------------------------------------------------------------------------
 # Benchmark target
@@ -155,10 +155,10 @@ if (BUILD_TESTS)
   include(CTest)
   if (CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
-    endif (CMAKE_COMPILER_IS_GNUCXX)
-    if (CMAKE_COMPILER_IS_GNUCC)
-      SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
-      endif (CMAKE_COMPILER_IS_GNUCC)
+  endif (CMAKE_COMPILER_IS_GNUCXX)
+  if (CMAKE_COMPILER_IS_GNUCC)
+    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
+  endif (CMAKE_COMPILER_IS_GNUCC)
   add_subdirectory (tests)
 endif (BUILD_TESTS)
 
@@ -167,13 +167,13 @@ endif (BUILD_TESTS)
 # Prepare installations concerning global scope.
 #------------------------------------------------------------------------------
 if (CMAKE_MAJOR_VERSION EQUAL 2)
-   if (CMAKE_MINOR_VERSION GREATER 5)
-      install(DIRECTORY src/ DESTINATION include 
-      			FILES_MATCHING PATTERN "*.*h")
-   else (CMAKE_MINOR_VERSION GREATER 5)
-      install(DIRECTORY src/ DESTINATION include 
-      			PATTERN "*.*h")
-   endif (CMAKE_MINOR_VERSION GREATER 5)
+  if (CMAKE_MINOR_VERSION GREATER 5)
+    install(DIRECTORY src/ DESTINATION include 
+      FILES_MATCHING PATTERN "*.*h")
+  else (CMAKE_MINOR_VERSION GREATER 5)
+    install(DIRECTORY src/ DESTINATION include 
+      PATTERN "*.*h")
+  endif (CMAKE_MINOR_VERSION GREATER 5)
 endif (CMAKE_MAJOR_VERSION EQUAL 2)
 
 #------------------------------------------------------------------------------
@@ -182,23 +182,39 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 # ----------------------------------------------------------------------
 # the FindSubversion.cmake module is part of the standard distribution
 IF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
-FIND_PACKAGE(Subversion)
- IF(Subversion_FOUND)
+  FIND_PACKAGE(Subversion)
+  IF(Subversion_FOUND)
     Subversion_WC_INFO(${PROJECT_SOURCE_DIR} Project)
     MESSAGE("Current revision is ${Project_WC_REVISION}")
     Subversion_WC_LOG(${PROJECT_SOURCE_DIR} Project)
     MESSAGE("Last changed log is ${Project_LAST_CHANGED_LOG}")
- else(Subversion_FOUND)
+  else(Subversion_FOUND)
     SET(Project_WC_REVISION 0)
-ENDIF(Subversion_FOUND)
+  ENDIF(Subversion_FOUND)
+ELSE(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
+  IF(EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    MACRO(git_GET_REVISION dir variable)
+      EXECUTE_PROCESS(COMMAND  git svn info
+	OUTPUT_VARIABLE ${variable}
+	OUTPUT_STRIP_TRAILING_WHITESPACE)
+	MESSAGE(STATUS ${variable})
+      STRING(REGEX REPLACE "^(.*\n)?Revision: ([^\n]+).*"
+	"\\2" ${variable} "${${variable}}")
+    ENDMACRO(git_GET_REVISION)
+    git_GET_REVISION( ${PROJECT_SOURCE_DIR} Project_WC_REVISION)
+    MESSAGE(STATUS "Revision (git) is ${Project_WC_REVISION}")
+  ELSE(EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    SET(Project_WC_REVISION 0)
+  ENDIF(EXISTS "${PROJECT_SOURCE_DIR}/.git")
 ENDIF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
+
 # ----------------------------------------------------------------------
 
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 1)
 SET(DGtal_VERSION_PATCH r${Project_WC_REVISION})
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
-
+SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -235,11 +251,11 @@ ENDIF(WIN32 AND NOT UNIX)
 
 SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/html-Board/*;tests/ConfigTest.h)
 
- if(WIN32)
-   SET(CPACK_GENERATOR "NSIS;")
- else(WIN32)
-   SET(CPACK_GENERATOR "TGZ;DEB")
- endif(WIN32)
+if(WIN32)
+  SET(CPACK_GENERATOR "NSIS;")
+else(WIN32)
+  SET(CPACK_GENERATOR "TGZ;DEB")
+endif(WIN32)
 
 INCLUDE(CPack)
 
