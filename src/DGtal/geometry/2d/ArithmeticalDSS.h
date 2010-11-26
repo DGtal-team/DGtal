@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/io/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -385,7 +386,7 @@ public:
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
      */
-    void selfDrawAsBoundingBox( LibBoard::Board & board ) const;
+    void selfDrawAsBoundingBox( DGtalBoard & board ) const;
     
     
     
@@ -400,8 +401,6 @@ public:
       virtual void selfDraw(LibBoard::Board & aBoard) const
       {
 	aBoard.setFillColor(LibBoard::Color::None);
-	//aBoard.setPenColor(LibBoard::Color::Red);
-	//aBoard.setLineWidth(1);	
       }
     };
     
@@ -413,8 +412,6 @@ public:
         virtual void selfDraw(LibBoard::Board & aBoard) const
         {
 	  aBoard.setFillColor(LibBoard::Color::None);
-	  //aBoard.setPenColor(LibBoard::Color::Black);
-	  //aBoard.setLineWidth(2);
 	}
     };
 

@@ -628,18 +628,18 @@ DGtal::ArithmeticalDSS<TDSS>::projectedSegmentLength() const
 /**
  * Draw the bounding box of the DSS on a LiBoard board
  * @param board the output board where the object is drawn.
- * @tparam Functor a Functor to specialize the Board style
  */
 template <typename TDSS>
 inline
 void 
-DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( LibBoard::Board & aBoard) const
+DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( DGtalBoard & aBoard) const
 {
   
   // Set board style
   aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
   aBoard.setPenColor(LibBoard::Color::Red);
-  aBoard.setLineWidth(1);	
+  aBoard.setLineWidth(1);
+  aBoard.setFillColor(LibBoard::Color::None);
   
   //draw bounding box
   PointD topLeft = project(myF, myUf);
@@ -666,10 +666,8 @@ DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( LibBoard::Board & aBoard) c
 }
 
 /**
- * Draw the retrieved digital points of the DSS linked into a 
- * polygonal line on a LiBoard board
+ * Draw the retrieved digital points of the DSS on a LiBoard board
  * @param board the output board where the object is drawn.
- * @tparam Functor a Functor to specialize the Board style
  */
 template <typename TDSS>
 inline
@@ -691,7 +689,12 @@ DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) cons
 		aBoard << p;
   }
   
-  aBoard.drawPolyline(contour);
+  // Draw a linking polygonal line if the pixels are drawn as points. 
+  if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
+    {
+      aBoard.setFillColor(LibBoard::Color::None);
+      aBoard.drawPolyline(contour);
+    }
 }
 
 
@@ -738,8 +741,8 @@ DGtal::ArithmeticalDSS<TDSS>::selfDraw( DGtalBoard & board ) const
     selfDrawAsDigitalPoints( board );
   else if ( mode == "" ) 
     {
-      selfDrawAsBoundingBox( board );
       selfDrawAsDigitalPoints( board );
+      selfDrawAsBoundingBox( board );
     }
   else
     ASSERT(false && ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
