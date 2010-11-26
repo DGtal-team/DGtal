@@ -522,13 +522,22 @@ DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
 
 // --------------- CDrawableWithBoard realization -------------------------
 //------------------------------------------------------------------------------
+
+
 template<std::size_t N, typename T>
 inline
 DGtal::DrawableWithBoard*
-DGtal::PointVector<N, T>::defaultStyle( std::string ) const
+DGtal::PointVector<N, T>::defaultStyle( std::string mode) const
 {
-  return new DefaultDrawStyle;
+  if ( ( mode == "" ) || ( mode == "Paving" ) ) 
+    return new DefaultDrawStylePaving;
+  else // mode == "Grid"
+    return new DefaultDrawStyleGrid;
+  
 }
+
+
+
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
@@ -538,16 +547,66 @@ DGtal::PointVector<N, T>::styleName() const
   return "PointVector";
 }
 //------------------------------------------------------------------------------
+
+/**
+ * Draw a pixel as a unit square on a LiBoard board
+ * @param board the output board where the object is drawn.
+ */
+
+
 template<std::size_t N, typename T>
 inline
 void
-DGtal::PointVector<N, T>::selfDraw(DGtalBoard & board ) const
+DGtal::PointVector<N,T>::selfDrawAsPaving( DGtalBoard & board ) const
 {
   ASSERT(N == 2);
   board.drawRectangle( (float) myArray[0] - 0.5f, 
-		       (float) myArray[1] + 0.5f, 1, 1 );      
-  //board.drawDot((float) myArray[0], (float) myArray[1]);
+ 		       (float) myArray[1] + 0.5f, 1, 1 );     
 }
+
+
+/**
+ * Draw a pixel as a point on a LiBoard board
+ * @param board the output board where the object is drawn.
+ */
+
+
+template<std::size_t N, typename T>
+inline
+void
+DGtal::PointVector<N,T>::selfDrawAsGrid( DGtalBoard & board ) const
+{
+  ASSERT(N == 2);
+  board.setPenColor(LibBoard::Color::Black);
+  board.fillCircle((float) myArray[0], (float) myArray[1],0.1);
+}
+
+
+/**
+ * Draw the object on a LibBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template<std::size_t N, typename T>
+inline
+void
+DGtal::PointVector<N,T>::selfDraw( DGtalBoard & board ) const
+{
+  std::string mode = board.getMode( this->styleName() );
+  if ( mode == "Paving" )
+    selfDrawAsPaving( board );
+  else if ( mode == "Grid" )
+    selfDrawAsGrid( board );
+  else if ( mode == "" ) 
+    {
+      selfDrawAsPaving( board );
+      selfDrawAsGrid( board );
+    }
+  else
+    ASSERT(false && ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
+}
+
+
+
 
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
