@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+//LICENSE-END
 /**
  * @file testDecomposition.cpp
  * @ingroup Tests
@@ -62,11 +62,11 @@ using namespace LibBoard;
 
 int main(int , char **)
 {
-
-	typedef int Coordinate;
-	typedef PointVector<2,Coordinate> Point;
-	typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
-
+  
+  typedef int Coordinate;
+  typedef PointVector<2,Coordinate> Point;
+  typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
+  
   typedef FreemanChain<Coordinate> ContourType; 
 
   std::string filename = testPath + "samples/manche.fc";
@@ -87,6 +87,9 @@ int main(int , char **)
   DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
+  aBoard << DrawGridPixel();
+  
+  theContour.selfDraw(aBoard);
   
   //for each segment
   GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
@@ -95,7 +98,7 @@ int main(int , char **)
     trace.info() << "segment number " << i.getPosition() << std::endl;
     PrimitiveType segment(*i); 
     trace.info() << segment << std::endl;	//standard output
-    aBoard << segment; // draw each segment
+    aBoard << DrawDSSBoundingBox() << segment; // draw each segment
     //segment.selfDraw(aBoard); //drawing
   } 
   aBoard.saveSVG("segmentation.svg");
