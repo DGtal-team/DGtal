@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /**
  * @file GreedyDecomposition.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )

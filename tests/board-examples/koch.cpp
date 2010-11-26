@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /**
  * @file   koch.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
