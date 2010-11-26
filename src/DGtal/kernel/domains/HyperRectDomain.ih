@@ -407,7 +407,7 @@ inline
 DGtal::DrawableWithBoard*
 DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 {
-  if ( ( mode == "" ) || ( mode == "Grid" ) ) 
+  if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "Grid" ) ) 
     return new DefaultDrawStyleGrid;
   else // mode == "Paving"
     return new DefaultDrawStylePaving;

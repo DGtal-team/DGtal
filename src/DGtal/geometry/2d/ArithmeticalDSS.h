@@ -535,7 +535,7 @@ private:
  struct DrawDSSBoundingBox : public DrawWithBoardModifier {
    void selfDraw( DGtalBoard & board ) const
    {
-     board.myModes[ "ArithmeticalDSS" ] = "BB";
+     board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
    }
  };
  
