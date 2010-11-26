@@ -515,17 +515,29 @@ namespace DGtal
     private:
 
       /**
-       * Default style.
+       * Default styles.
        */
-      struct DefaultDrawStyle : public DrawableWithBoard
+    struct DefaultDrawStylePaving : public DrawableWithBoard
       {
-        virtual void selfDraw( DGtalBoard & aBoard ) const
+        virtual void selfDraw( LibBoard::Board & aBoard ) const
         {
-          aBoard.setPenColorRGBi( 0, 0, 0 );
-          aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
-          aBoard.setLineWidth( 1.0 );
-        }
+	  aBoard.setPenColorRGBi(160,160,160);
+	  aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+          aBoard.setFillColorRGBi(220,220,220);
+	  aBoard.setLineWidth(1);
+	}
       };
+
+
+    struct DefaultDrawStyleGrid : public DrawableWithBoard
+    {
+      virtual void selfDraw( LibBoard::Board & aBoard ) const
+      {
+	aBoard.setPenColor(LibBoard::Color::Black);
+	aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+      }
+    };
+
 
       // --------------- CDrawableWithBoard realization -------------------------
     public:
@@ -535,17 +547,35 @@ namespace DGtal
        * @return the dyn. alloc. default style for this object.
        */
     DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
-
+    
       /**
        * @return the style name used for drawing this object.
        */
       std::string styleName() const;
-
+    
       /**
        * Draw the object on a LibBoard board.
        * @param board the output board where the object is drawn.
        */
       void selfDraw( DGtalBoard & board ) const;
+
+    
+    /**
+     * Draw a pixel as a unit square on a LibBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    
+    void selfDrawAsPaving( DGtalBoard & board ) const;
+    
+    
+    /**
+     * Draw a pixel as a point on a LiBoard board
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawAsGrid( DGtalBoard & board ) const;
+    
+    
+
 
 
       // ----------------------- Interface --------------------------------------
@@ -559,7 +589,7 @@ namespace DGtal
        * @param startingPoint the starting point of the vector
        * @tparam Functor a Functor to specialize the Board style
        */
-				void selfDraw( DGtalBoard & board, const PointVector &startingPoint ) const;
+    void selfDraw( DGtalBoard & board, const PointVector &startingPoint ) const;
 
 
       /**
@@ -596,6 +626,31 @@ namespace DGtal
       boost::array<T, N> myArray;
 
   }; // end of class PointVector
+
+  
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+  struct DrawPavingPixel : public DrawWithBoardModifier {
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ "PointVector" ] = "Paving";
+    }
+  };
+  
+ /**
+  * Modifier class in a DGtalBoard stream. Realizes the concept
+  * CDrawableWithDGtalBoard.
+  */
+  struct DrawGridPixel : public DrawWithBoardModifier {
+   void selfDraw( DGtalBoard & board ) const
+   {
+     board.myModes[ "PointVector" ] = "Grid";
+   }
+ };
+
+
 
   /// Operator <<
   template<std::size_t N, typename T>
