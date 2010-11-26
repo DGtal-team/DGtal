@@ -309,7 +309,7 @@ namespace DGtal
      */
     struct SelfDrawStyle
     {
-      SelfDrawStyle(LibBoard::Board & aBoard) 
+      SelfDrawStyle(DGtalBoard & aBoard) 
       {
 	aBoard.setFillColorRGBi(160,160,160);
 	aBoard.setPenColorRGBi(80,80,80);
@@ -322,7 +322,7 @@ namespace DGtal
      */
     struct DefaultDrawStyle : public DrawableWithBoard
     {
-      virtual void selfDraw(LibBoard::Board & aBoard) const
+      virtual void selfDraw(DGtalBoard & aBoard) const
       {
 	aBoard.setFillColorRGBi(160,160,160);
 	aBoard.setPenColorRGBi(80,80,80);
@@ -347,7 +347,7 @@ namespace DGtal
      * Draw the object on a LibBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw(LibBoard::Board & board ) const;
+    void selfDraw(DGtalBoard & board ) const;
 
 
   public:
@@ -358,7 +358,7 @@ namespace DGtal
      * @tparam Functor a Functor to specialize the Board style
      */
     template<typename Functor>
-    void selfDraw(LibBoard::Board & board ) const;
+    void selfDraw(DGtalBoard & board ) const;
 
     // ------------------------- Hidden services ------------------------------
   protected:

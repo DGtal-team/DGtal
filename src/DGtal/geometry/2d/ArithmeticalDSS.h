@@ -343,7 +343,7 @@ public:
     /*  * @tparam Functor a Functor to specialize the Board style */
     /*  *\/ */
     /* template<typename Functor> */
-    /*   void BoundingBoxDraw( LibBoard::Board & board ) const; */
+    /*   void BoundingBoxDraw( DGtalBoard & board ) const; */
     
     /* /\** */
     /*  * Draw the retrieved digital points of the DSS linked into a  */
@@ -352,7 +352,7 @@ public:
     /*  * @tparam Functor a Functor to specialize the Board style */
     /*  *\/ */
     /* template<typename Functor> */
-    /*   void DigitalPointsDraw( LibBoard::Board & board ) const; */
+    /*   void DigitalPointsDraw( DGtalBoard & board ) const; */
     
 
     /* /\** */
@@ -363,7 +363,7 @@ public:
     /*  * @param board the output board where the object is drawn. */
     /*  * @tparam Functor a Functor to specialize the Board style */
     /*  *\/ */
-    /* void selfDraw( LibBoard::Board & board ) const */
+    /* void selfDraw( DGtalBoard & board ) const */
     /*   { */
     /* 				BoundingBoxDraw<BoundingBoxStyle>(board); */
     /* 				DigitalPointsDraw<DigitalPointsStyle>(board); */
@@ -398,7 +398,7 @@ public:
      */
     struct DefaultDrawStyleBB : public DrawableWithBoard
     {
-      virtual void selfDraw(LibBoard::Board & aBoard) const
+      virtual void selfDraw(DGtalBoard & aBoard) const
       {
 	aBoard.setFillColor(LibBoard::Color::None);
       }
@@ -409,7 +409,7 @@ public:
        */
     struct DefaultDrawStylePoints : public DrawableWithBoard
     {
-        virtual void selfDraw(LibBoard::Board & aBoard) const
+        virtual void selfDraw(DGtalBoard & aBoard) const
         {
 	  aBoard.setFillColor(LibBoard::Color::None);
 	}
@@ -454,7 +454,7 @@ public:
 
 /*     struct BoundingBoxStyle */
 /*     { */
-/*       BoundingBoxStyle(LibBoard::Board & aBoard)  */
+/*       BoundingBoxStyle(DGtalBoard & aBoard)  */
 /*       { */
 /* 				aBoard.setFillColor(LibBoard::Color::None); */
 /* 				aBoard.setPenColor(LibBoard::Color::Red); */
@@ -470,7 +470,7 @@ public:
 
 /*     struct DigitalPointsStyle */
 /*     { */
-/*       DigitalPointsStyle(LibBoard::Board & aBoard)  */
+/*       DigitalPointsStyle(DGtalBoard & aBoard)  */
 /*       { */
 /* 				aBoard.setFillColor(LibBoard::Color::None); */
 /* 				aBoard.setPenColor(LibBoard::Color::Black); */

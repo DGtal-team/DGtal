@@ -68,7 +68,7 @@ using namespace LibBoard;
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard
 {
-  void selfDraw(DGtalBoard & aboard) const
+  void selfDraw(LibBoard::Board & aboard) const
   {
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
@@ -116,7 +116,8 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << CustomStyle( mySet.styleName(), new MyDomainStyleCustomRed ) << mySet;
+  board << CustomStyle( mySet.styleName(), new MyDomainStyleCustomRed );
+  board << mySet;
   board.saveSVG("simpleSet-color.svg");
 
   return true;
@@ -233,26 +234,27 @@ bool testDigitalSetDomain()
   typedef SpaceND<2> Z2;
   typedef HyperRectDomain<Z2> DomainType;
   typedef Z2::Point Point;
-  Point p1(  -449, -449  );
-  Point p2(  449, 449  );
+  Point p1(  -49, -49  );
+  Point p2(  49, 49  );
   DomainType domain( p1, p2 );
   typedef DigitalSetSelector
   < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
   SpecificSet disk( domain );
   Point c(  0, 0  );
-  Point l(  449, 0  );
+  Point l(  49, 0  );
 
-  trace.beginBlock ( "Creating disk( r=450.0 ) ..." );
-  for ( DomainType::ConstIterator it = domain.begin();
-      it != domain.end();
-      ++it )
-  {
-    if ( (*it - c ).norm() < 450.0 )
-      // insertNew is very important for vector container.
-      disk.insertNew( *it );
-  }
+  trace.beginBlock ( "Creating disk( r=50.0 ) ..." );
+  for ( DomainType::ConstIterator it = domain.begin(); 
+	it != domain.end();
+	++it )
+    {
+      if ( (*it - c ).norm() < 50.0 )
+	// insertNew is very important for vector container.
+	disk.insertNew( *it );
+    }
   disk.erase( c );
-  INBLOCK_TEST( disk.size() == 636100 );
+  INBLOCK_TEST( disk.size() == 7824 );
+  trace.info() << "disk.size()=" << disk.size() << std::endl;
   trace.endBlock();
 
   typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
@@ -265,9 +267,9 @@ bool testDigitalSetDomain()
   {
     ++nb_in_domain;
   }
-  INBLOCK_TEST( nb_in_domain == 636100 );
-  INBLOCK_TEST( disk_domain.lowerBound() == Point(  -449, -449 ) );
-  INBLOCK_TEST( disk_domain.upperBound() == Point(   449,  449 ) );
+  INBLOCK_TEST( nb_in_domain == 7824 );
+  INBLOCK_TEST( disk_domain.lowerBound() == Point(  -49, -49 ) );
+  INBLOCK_TEST( disk_domain.upperBound() == Point(   49,  49 ) );
   trace.endBlock();
 
   return nbok == nb;
@@ -320,8 +322,8 @@ int main()
   bool res = okVector && okSet
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
       && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   return res ? 0 : 1;
 }
 

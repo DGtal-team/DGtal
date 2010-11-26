@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include "Board/Board.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 //#include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -233,7 +234,7 @@ namespace DGtal
   struct DrawWithBoardModifier {
     std::string styleName() const
     {
-      return "";
+      return "DrawWithBoardModifier";
     }
 
     DrawableWithBoard* defaultStyle( std::string = "" ) const
@@ -261,6 +262,12 @@ namespace DGtal
     CustomStyle( std::string classname, DrawableWithBoard* style )
       : myClassname( classname ), myStyle( style )
     {}
+
+    std::string styleName() const
+    {
+      return "CustomStyle";
+    }
+
     void selfDraw( DGtalBoard & board ) const
     {
       board.myStyles[ myClassname ] = myStyle;

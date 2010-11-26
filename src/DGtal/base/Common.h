@@ -61,7 +61,6 @@
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Exceptions.h"
-#include "Board/Board.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -76,7 +75,9 @@ namespace DGtal
   
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
-  
+
+  class DGtalBoard;
+
   /**
    * Interface that specifies that an object can draw itself on a
    * board. 
@@ -88,7 +89,7 @@ namespace DGtal
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( LibBoard::Board &  ) const {}
+    virtual void selfDraw( DGtalBoard &  ) const {}
   };
 
   /////////////////////////////////////////////////////////////////////////////

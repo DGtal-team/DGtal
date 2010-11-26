@@ -19,5 +19,5 @@ link_directories (${PROJECT_BINARY_DIR})
 
 #------TESTS subdirectories ------
 
-#add_subdirectory(kernel)
+add_subdirectory(io)
 

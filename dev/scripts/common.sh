@@ -11,6 +11,7 @@ PROFILES_DIR=${DGtal}/dev/profiles
 INCLUDE_DIR=${DGtal}/src/DGtal
 SRC_DIR=${DGtal}/src/DGtal
 TESTS_DIR=${DGtal}/tests
+EXAMPLES_DIR=${DGtal}/examples
 
 # system information
 namespace=DGtal

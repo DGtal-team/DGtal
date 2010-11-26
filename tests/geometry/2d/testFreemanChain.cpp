@@ -31,13 +31,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <boost/program_options.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "Board/Board.h"
-#include <boost/program_options.hpp>
-#include "ConfigTest.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/io/DGtalBoard.h"
+#include "ConfigTest.h"
 #include "DGtal/io/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -128,10 +128,11 @@ bool testDisplayFreemanChain(const string &file)
   fst.close();
   
   
-  // std::string filenameImage = testPath + "samples/contourS.gif";
-  // LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
-  // image.shiftDepth(1);
-  // aBoard << image;
+  std::string filenameImage = testPath + "samples/contourS.gif";
+  LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
+  image.shiftDepth(1);
+  LibBoard::Board & board = aBoard;
+  board << image;
   
   
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);

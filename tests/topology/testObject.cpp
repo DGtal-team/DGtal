@@ -511,9 +511,9 @@ bool testDraw()
 
 struct MyDrawStyleCustomRed : public DrawableWithBoard
 {
-  virtual void selfDraw(LibBoard::Board & aboard) const
+  virtual void selfDraw(DGtalBoard & aboard) const
   {
-    aboard.setFillColorRGBi(255,0,0);
+    aboard.setFillColor( LibBoard::Color::Red);
     aboard.setPenColorRGBi(200,0,0);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 2 );
@@ -526,7 +526,7 @@ struct MyDrawStyleCustomFillColor : public DrawableWithBoard
   MyDrawStyleCustomFillColor( const Color & c )
     : myColor( c )
   {}
-  virtual void selfDraw(LibBoard::Board & aboard) const
+  virtual void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColor( myColor );
     aboard.setPenColorRGBi( 0, 0, 0 );
