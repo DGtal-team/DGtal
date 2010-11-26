@@ -19,10 +19,13 @@ namespace DGtal {
    *
    * Table of contents:
    *  -# \ref dgtal_dgtalboard_sec1
+   *    -# \ref dgtal_dgtalboard_sec11
    *  -# \ref dgtal_dgtalboard_sec2
    *    -# \ref dgtal_dgtalboard_sec21
    *
    * \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
+   *
+   * \subsection dgtal_dgtalboard_sec11 Elementary usage: displaying a domain and a few points
    *
    * The class DGtalBoard is designed so as to make easy the
    * visualization of digital objects, also it is for now limited to
@@ -33,6 +36,37 @@ namespace DGtal {
    * use the stream \c operator \c << to output the object on the
    * board. When you are finished, there is a command to export your
    * graphics in SVG, XFIG or EPS format.
+   *
+   * The following code snippet defines three points and a rectangular
+   * domain in Z2. It then displays them in a DGtalBoard object. The
+   * two last commands export the graphics in SVG and EPS format. The
+   * full code is in <a href="dgtalboard-1-points_8cpp-example.html">dgtalboard-1-points.cpp</a>.
+   *
+   \code
+   using namespace DGtal;
+   using namespace DGtal::Z2i;
+
+   Point p1( -3, -2 );
+   Point p2( 7, 3 );
+   Point p3( 0, 0 );
+   Domain domain( p1, p2 );
+   
+   DGtalBoard board;
+   board << domain << p1 << p2 << p3;
+   board.saveSVG("dgtalboard-1-points.svg");
+   board.saveEPS("dgtalboard-1-points.eps");
+   \endcode
+   *
+   * This program outputs this image.
+   *
+   * \image html dgtalboard-1-points.png
+   *
+   * It is clear that the order in which you display elements has an
+   * influence on the exported graphics.
+   *
+   * \subsection dgtal_dgtalboard_sec12 Displaying sets and digital objects
+   *
+   *
    *
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
@@ -60,4 +94,13 @@ namespace DGtal {
    * included in DGtal. Its classes are grouped into the namespace Board.
 
    */
+
+  /**
+   * \example dgtalboard-1-points.cpp
+   *
+   * This simple example shows the basic usage of a DGtalBoard to
+   * export graphical representations of dgtal objects (here, a
+   * HyperRectDomain and three points exported as SVG and EPS).
+   */
+
 }
