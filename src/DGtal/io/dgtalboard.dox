@@ -23,6 +23,17 @@ namespace DGtal {
    *    -# \ref dgtal_dgtalboard_sec21
    *
    * \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
+   *
+   * The class DGtalBoard is designed so as to make easy the
+   * visualization of digital objects, also it is for now limited to
+   * 2D discrete geometry. For the user, it is very simple to
+   * visualize digital sets, objects and others. To do so, the user
+   * has just to instantiate a DGtalBoard object. This object is then
+   * an output stream, and if you wish to visualize some object, you
+   * use the stream \c operator \c << to output the object on the
+   * board. When you are finished, there is a command to export your
+   * graphics in SVG, XFIG or EPS format.
+   *
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
    * \subsection dgtal_dgtalboard_sec21 Short overview of the LibBoard library

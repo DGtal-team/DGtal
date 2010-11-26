@@ -1376,7 +1376,7 @@ namespace DGtal
 
       struct SelfDrawStyle
       {
-        SelfDrawStyle(LibBoard::Board & aBoard)
+        SelfDrawStyle(DGtalBoard & aBoard)
         {
           aBoard.setFillColor(LibBoard::Color::None);
           aBoard.setPenColor(LibBoard::Color::Black);

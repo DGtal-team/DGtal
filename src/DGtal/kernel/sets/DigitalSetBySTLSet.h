@@ -293,7 +293,7 @@ namespace DGtal
      */
     struct DefaultDrawStyle : public DrawableWithBoard
     {
-      virtual void selfDraw(LibBoard::Board & aBoard) const
+      virtual void selfDraw(DGtalBoard & aBoard) const
       {
 	aBoard.setFillColorRGBi(160,160,160);
 	aBoard.setPenColorRGBi(80,80,80);

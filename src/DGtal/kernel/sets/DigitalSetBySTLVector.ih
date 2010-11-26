@@ -528,7 +528,7 @@ DGtal::DigitalSetBySTLVector<Domain>::styleName() const
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDraw( LibBoard::Board & board ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDraw( DGtalBoard & board ) const
 {
   if (Domain::staticDimension == 2)
     {
@@ -544,7 +544,7 @@ template<typename Domain>
 template<typename Functor>
 inline
 void 
-DGtal::DigitalSetBySTLVector<Domain>::selfDraw(LibBoard::Board & aBoard) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDraw(DGtalBoard & aBoard) const
 {
   if (Domain::staticDimension == 2)
     {

@@ -61,6 +61,7 @@ DGtal::DGtalBoard::DGtalBoard( const LibBoard::Color & backgroundColor )
     myDrawObjectAdjacencies( false ),
     myStyles()
 {
+  this->setUnit(LibBoard::Board::UCentimeter);
 }
 
 /** 

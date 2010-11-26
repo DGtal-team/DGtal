@@ -448,7 +448,7 @@ DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 {
   if (TSpace::staticDimension == 2)
   {
@@ -469,7 +469,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( LibBoard::Board & aboard) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( LibBoard::Board & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
 {
   if (TSpace::staticDimension == 2)
   {

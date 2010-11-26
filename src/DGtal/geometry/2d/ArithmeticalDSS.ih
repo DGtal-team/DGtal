@@ -568,7 +568,7 @@ DGtal::ArithmeticalDSS<TDSS>::projectedSegmentLength() const
 // template<typename Functor>
 // inline
 // void 
-// DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( LibBoard::Board & aBoard) const
+// DGtal::ArithmeticalDSS<TDSS>::BoundingBoxDraw( DGtalBoard & aBoard) const
 // {
 
 //   Functor applystyle(aBoard);
@@ -607,7 +607,7 @@ DGtal::ArithmeticalDSS<TDSS>::projectedSegmentLength() const
 // template<typename Functor>
 // inline
 // void 
-// DGtal::ArithmeticalDSS<TDSS>::DigitalPointsDraw( LibBoard::Board & aBoard) const
+// DGtal::ArithmeticalDSS<TDSS>::DigitalPointsDraw( DGtalBoard & aBoard) const
 // {
 
 //   Functor applystyle(aBoard);

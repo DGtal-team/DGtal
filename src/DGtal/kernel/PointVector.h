@@ -519,7 +519,7 @@ namespace DGtal
        */
     struct DefaultDrawStylePaving : public DrawableWithBoard
       {
-        virtual void selfDraw( LibBoard::Board & aBoard ) const
+        virtual void selfDraw( DGtalBoard & aBoard ) const
         {
 	  aBoard.setPenColorRGBi(160,160,160);
 	  aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
@@ -531,7 +531,7 @@ namespace DGtal
 
     struct DefaultDrawStyleGrid : public DrawableWithBoard
     {
-      virtual void selfDraw( LibBoard::Board & aBoard ) const
+      virtual void selfDraw( DGtalBoard & aBoard ) const
       {
 	aBoard.setPenColor(LibBoard::Color::Black);
 	aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
