@@ -1152,7 +1152,7 @@ namespace DGtal
        */
 
       //BK
-      typename FreemanChain<TInteger>::FreemanChain::ConstIterator
+      typename FreemanChain<TInteger>::ConstIterator
       findQuadrantChange4( OrderedAlphabet & A ) const
       {
         typename FreemanChain<TInteger>::ConstIterator it = begin();

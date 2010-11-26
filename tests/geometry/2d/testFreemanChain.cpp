@@ -90,7 +90,7 @@ bool testFreemanChain(stringstream & ss)
   vector<FreemanChain<int>::PointI2> aContourPointVector; 
   fc.getContourPoints(fc, aContourPointVector);
   trace.info() << "List of point: ";
-  for (int i =0; i <aContourPointVector.size(); i++){
+  for (unsigned int i =0; i < aContourPointVector.size(); i++){
     trace.info()<< "(" << aContourPointVector.at(i).at(0) << "," << aContourPointVector.at(i).at(1) << ")";
   }
   

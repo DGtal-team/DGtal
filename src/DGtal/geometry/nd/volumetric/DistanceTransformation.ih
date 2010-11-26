@@ -137,11 +137,12 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   Point row = myLowerBoundCopy;
 
   typedef typename Domain::ConstIterator ConstDomIt;
-
+  typedef typename O::Size Size;
+  
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
-  std::vector<unsigned int> subdomain;
+  std::vector<Size> subdomain;
   subdomain.reserve(I::staticDimension - 1);
   for (unsigned int k = 1; k < I::staticDimension ; k++)
     subdomain.push_back( I::staticDimension - k );
@@ -170,20 +171,18 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
 
 
   typedef typename Domain::ConstIterator ConstDomIt;
-
+  typedef typename O::Size Size;
+  
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
-  std::vector<unsigned int> subdomain;
+  std::vector<Size> subdomain;
   subdomain.reserve(I::staticDimension - 1);
   for (unsigned int k = 0; k < I::staticDimension ; k++)
     if ( (I::staticDimension - 1 - k) != dim)
       subdomain.push_back( I::staticDimension - 1 - k );
 
-  /* std::copy ( subdomain.begin(),
-       subdomain.end(),
-       std::ostream_iterator<unsigned int> ( std::cerr, " - " ) );
-  */
+ 
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
 

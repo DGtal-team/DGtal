@@ -88,7 +88,7 @@ namespace DGtal
       typedef typename Domain::Vector Vector;
       typedef typename Domain::Dimension Dimension;
       typedef typename Domain::Integer Integer;
-      typedef typename vector<ValueType>::size_type Size;
+	  typedef typename Domain::Size Size;
       typedef typename vector<ValueType>::iterator Iterator;
       typedef typename vector<ValueType>::const_iterator ConstIterator;
 
