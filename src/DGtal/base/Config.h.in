@@ -54,6 +54,7 @@
  * - \ref dgtal_topology 
  * - \ref board_export 
  * - \ref image_io 
+ * - \ref dgtal_dgtalboard
  *
  * @section examples_sec_dgtal Code examples
  *
