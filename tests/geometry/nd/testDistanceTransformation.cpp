@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /**
  * @file testDistanceTransformation.cpp
  * @ingroup Tests

@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /** 
  * @file Common.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )

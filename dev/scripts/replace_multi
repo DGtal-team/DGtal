@@ -1,0 +1,51 @@
+#!/bin/bash
+# Replacement d'une chaine de caractère ( chaine 1) par une autre (chaine 2)
+# dans les fichiers defini par (fichiers)
+
+if [ $# -le 2 ] # si le nombre d'argument est différent de 3
+then   
+   echo "usage => $0 [-r] chaine-de-depart chaine-de-fin fichiers"
+   exit 1
+fi
+
+if [ "$1" = "-r" ] 
+then
+    mod=1
+    shift
+else
+    mod=0
+fi
+
+chfrom="$1"
+chto="$2"
+tempfile=/tmp/temp_sed_replace_multi
+shift 2
+
+for argfile in "$*"
+do
+    if [ $mod -eq 1 ]
+    then
+       list=`find $argfile -not -name "*.svn*"`
+    else
+       list="$argfile"
+    fi
+
+    for file in $list
+    do
+	if [ -f "$file" ]
+	then
+	    sed 's/'"$chfrom"'/'"$chto"'/g' "$file" > "$tempfile"
+	    var1=(`diff "$tempfile" "$file" | wc -c`)
+	    var2=(`wc -c "$tempfile"`)
+	    if [ "$var1" -ne 0 -a "$var2" -ne 0 ]
+	    then
+  		echo "Remplacement de \"$chfrom\" par \"$chto\" dans $file"
+  		cp -f $tempfile $file
+  	    fi
+	fi
+    done
+done
+
+rm -f "$tempfile"
+
+exit 0
