@@ -46,7 +46,7 @@
 
 namespace DGtal
 {
-
+	
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
@@ -95,14 +95,14 @@ namespace DGtal
      */
     ~GreedyDecomposition();
 
-
     /**
      * This class is an iterator on the contour, 
      * storing the current primitive.
      */
     class ConstIterator
     {
-      // ------------------------- data -----------------------
+      	   
+			   // ------------------------- data -----------------------
     private:
       /**
        * The contour visited by the iterator.
@@ -136,7 +136,9 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-      /**
+       friend class GreedyDecomposition<Contour,Primitive>;
+			   
+		 /**
        * Default Constructor.
        * The object is not valid.
        */
