@@ -36,7 +36,6 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
 
 int main( int argc, char** argv )
 {
