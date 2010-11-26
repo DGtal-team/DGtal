@@ -25,7 +25,7 @@ then
     exit 2;
 fi
 
-echo "--- Creating file ${EXAMPLES_DIR}/$2/test$1.cpp"
+echo "--- Creating file ${EXAMPLES_DIR}/$2/$1.cpp"
 
 if test "$#" = "3"; then namespace=$3; fi
 enspace="s@YYY@${namespace}@g"
