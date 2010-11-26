@@ -1,0 +1,52 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+  /**
+   * @page dgtal_dgtalboard DGtalBoard: a stream mechanism for displaying digital objects
+   *
+   * This part of the manual describes how to export DGtal objects
+   * into graphics files (and later buffers). For now, it is limited
+   * to 2D DGtal objects like CDomain, Object, CDigitalSet, Point,
+   * ImageContainer. The current supported export formats are SVG,
+   * EPS, and XFIG. It is currently based on LibBoard, but may evolve
+   * later (it will probably move to Cairo).
+   * This document is dedicated both to DGtal users and developers.
+
+   *
+   *
+   * Table of contents:
+   *  -# \ref dgtal_dgtalboard_sec1
+   *  -# \ref dgtal_dgtalboard_sec2
+   *    -# \ref dgtal_dgtalboard_sec21
+   *
+   * \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
+   * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
+   *
+   * \subsection dgtal_dgtalboard_sec21 Short overview of the LibBoard library
+   *
+   *  LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
+   *
+   * @image html logo_Board.png 
+   * (Copyleft, LGPL) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
+   *
+   * It allows simple drawings in:
+   * <ul>
+   *  <li>Encapsulated Postcript files (EPS) ;
+   *  <li>XFig files (FIG) ;
+   *  <li>Scalable Vector Graphics files (SVG).
+   * </ul>
+   *
+   * The main class of the library is the #LibBoard#Board class. It is
+   * intended to be as simple as possible so that it can be used
+   * quickly in programs to generate the kind of figure one would
+   * rather not draw by hand, but which can be easily drawn by a
+   * computer (C++) program.
+   *
+   * A clone of the LibBoard source code (release: 0.8.8-3) has been
+   * included in DGtal. Its classes are grouped into the namespace Board.
+
+   */
+}
