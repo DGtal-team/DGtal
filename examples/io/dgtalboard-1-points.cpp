@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -13,7 +14,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /**
  * @file dgtalboard-1-points.cpp
  * @ingroup Examples
@@ -23,7 +24,7 @@
  * @date 2010/11/26
  *
  * An example file named dgtalboard-1-points.
- *
+ * @example
  * This file is part of the DGtal library.
  */
 
