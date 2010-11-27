@@ -996,12 +996,6 @@ Board::save( const char * filename, PageSize size, double margin ) const
 
 } // namespace LibBoard;
 
-/**
- * @example koch.cpp
- * @example logo.cpp
- *
- */
-
 
 /**
  *  LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
