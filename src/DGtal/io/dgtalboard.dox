@@ -25,6 +25,7 @@ namespace DGtal {
    *    -# \ref dgtal_dgtalboard_sec13
    *    -# \ref dgtal_dgtalboard_sec14
    *    -# \ref dgtal_dgtalboard_sec15
+   *    -# \ref dgtal_dgtalboard_sec16
    *  -# \ref dgtal_dgtalboard_sec2
    *    -# \ref dgtal_dgtalboard_sec21
    *
@@ -164,10 +165,58 @@ namespace DGtal {
    * \subsection dgtal_dgtalboard_sec15 Changing the style for displaying drawable elements.
    *
    * All drawable elements have a default style for default. You may
-   * nevertheless modify it whenever you want for any object. You have
-   * nevertheless to create a minimal structure to hold the style. The
-   * following example shows how to change the pen and fill color
-   * on-the-fly. First of all, the custom style class:
+   * nevertheless modify it whenever you want for any object. 
+   * The simplest way is to use instances of the following classes:
+   *
+   * - CustomColors: to change pen color and fill color.   
+   * - CustomPenColor: to change only pen color.
+   * - CustomFillColor: to change only fill color.
+   * - CustomPen: to change pen color and fill color, but also optionnaly in this order the line width, the line style, the line cap, the line join.
+   *
+   * An instance of one of this class is then attached to the drawable
+   * element by creating an instance of CustomStyle. Do not worry
+   * about deallocating the CustomStyle instances. This is done
+   * automatically.  The following snippet indicates how to use these
+   * classes.
+   *
+   \code
+  Point p1( -3, -2 );
+  Point p2( 7, 3 );
+  Point p3( 0, 0 );
+  Domain domain( p1, p2 );
+
+  DGtalBoard::Color red( 255, 0, 0 );
+  DGtalBoard::Color dred( 192, 0, 0 );
+  DGtalBoard::Color dgreen( 0, 192, 0 );
+  DGtalBoard::Color blue( 0, 0, 255 );
+  DGtalBoard::Color dblue( 0, 0, 192 );
+  
+  DGtalBoard board;
+  board << domain 
+	<< CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
+	<< p1
+	<< CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
+	<< p2
+	<< CustomStyle( p3.styleName(), 
+			new CustomPen( blue, dblue, 3.0, 
+				       DGtalBoard::Shape::SolidStyle,
+				       DGtalBoard::Shape::RoundCap,
+				       DGtalBoard::Shape::RoundJoin ) )
+	<< p3;
+  board.saveSVG("dgtalboard-3-custom-classes.svg");
+   \endcode
+   *
+   * This program (see full source at <a
+   * href="dgtalboard-3-custom-classes_8cpp-example.html">dgtalboard-3-custom-classes.cpp</a>) outputs the following graphics.
+   *
+   * \image html dgtalboard-3-custom-classes.png
+   *
+   * \subsection dgtal_dgtalboard_sec16 Creating your own custom style class for displaying drawable elements.
+   *
+   * Another way to change the style is to create yourself a minimal
+   * structure to hold the style. The following example shows how to
+   * change the pen and fill color on-the-fly. First of all, the
+   * custom style class:
    *
    \code
 struct MyDrawStyleCustomColor : public DrawableWithBoard
@@ -190,19 +239,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    * The custom style is then attached to drawable element by creating an instance of CustomStyle. Do not worry about deallocating the CustomStyle instances. This is done automatically. 
    *
    \code
-  Point p1( -3, -2 );
-  Point p2( 7, 3 );
-  Point p3( 0, 0 );
-  Domain domain( p1, p2 );
-
-  DGtalBoard::Color red( 255, 0, 0 );
-  DGtalBoard::Color dred( 192, 0, 0 );
-  DGtalBoard::Color green( 0, 255, 0 );
-  DGtalBoard::Color dgreen( 0, 192, 0 );
-  DGtalBoard::Color blue( 0, 0, 255 );
-  DGtalBoard::Color dblue( 0, 0, 192 );
-  
-  DGtalBoard board;
+   // same shape as above
   board << domain 
 	<< CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
 	<< p1
@@ -265,6 +302,16 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    * modes that may be defined for some classes. An object may thus be
    * displayed just as a set of points, but also as a set of points
    * with neighborhood structure (a graph).
+   */
+
+  /**
+   * \example dgtalboard-3-custom-classes.cpp
+   *
+   * This example shows you how to modify the style of each drawable
+   * elements. You just have to create an instance of CustomColors,
+   * CustomPenColor, CustomFillColor or CustomPen and you attach this
+   * style to your drawable element type with an instance of CustomStyle
+   * outputed in the DGtalBoard stream.
    */
 
   /**

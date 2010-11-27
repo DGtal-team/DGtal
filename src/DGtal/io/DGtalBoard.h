@@ -234,6 +234,11 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const DGtalBoard & object );
 
+  /**
+   * Base class specifying the methods for classes which intend to
+   * modify a DGtalBoard stream.
+   * @todo merge DrawableWithBoard and DrawWithBoardModifier 
+   */
   struct DrawWithBoardModifier {
     std::string styleName() const
     {
@@ -302,6 +307,161 @@ namespace DGtal
   private:
     std::string myClassname;
     std::string myMode;
+  };
+
+  /**
+   * Custom style class redefining the pen color and the fill
+   * color. You may use DGtalBoard::Color::None for transparent color.
+   *
+   \code
+   DGtalBoard board;
+   board << CustomColors( DGtalBoard::Color::Red, DGtalBoard::Color::None );
+   ...
+   \endcode
+   * @see DGtalBoard
+   */
+  struct CustomColors : public DrawableWithBoard
+  {
+    DGtalBoard::Color myPenColor;
+    DGtalBoard::Color myFillColor;
+
+    /**
+     * Constructor.
+     *
+     * @param penColor specifies the pen color.
+     * @param fillColor specifies the fill color.
+     */
+    CustomColors( const DGtalBoard::Color & penColor,
+		  const DGtalBoard::Color & fillColor )
+      : myPenColor( penColor ), myFillColor( fillColor )
+    {}
+    
+    virtual void selfDraw( DGtalBoard & aboard) const
+    {
+      aboard.setFillColor( myFillColor);
+      aboard.setPenColor( myPenColor );
+    }
+  };
+
+  /**
+   * Custom style class redefining the pen color. You may use
+   * DGtalBoard::Color::None for transparent color.
+   *
+   \code
+   DGtalBoard board;
+   board << CustomPenColor( DGtalBoard::Color::Green );
+   ...
+   \endcode
+   * @see DGtalBoard
+   */
+  struct CustomPenColor : public DrawableWithBoard
+  {
+    DGtalBoard::Color myPenColor;
+
+    /**
+     * Constructor.
+     *
+     * @param penColor specifies the pen color.
+     */
+    CustomPenColor( const DGtalBoard::Color & penColor )
+      : myPenColor( penColor )
+    {}
+    
+    virtual void selfDraw( DGtalBoard & aboard) const
+    {
+      aboard.setPenColor( myPenColor );
+    }
+  };
+
+  /**
+   * Custom style class redefining the fill color. You may use
+   * DGtalBoard::Color::None for transparent color.
+   *
+   \code
+   DGtalBoard board;
+   board << CustomFillColor( DGtalBoard::Color::Green );
+   ...
+   \endcode
+   * @see DGtalBoard
+   */
+  struct CustomFillColor : public DrawableWithBoard
+  {
+    DGtalBoard::Color myFillColor;
+
+    /**
+     * Constructor.
+     *
+     * @param fillColor specifies the fill color.
+     */
+    CustomFillColor( const DGtalBoard::Color & fillColor )
+      : myFillColor( fillColor )
+    {}
+    
+    virtual void selfDraw( DGtalBoard & aboard) const
+    {
+      aboard.setFillColor( myFillColor );
+    }
+  };
+
+  /**
+   * Custom style class redefining the pen attributes. You may use
+   * DGtalBoard::Color::None for transparent color.
+   *
+   \code
+   DGtalBoard board;
+   board << CustomPen( DGtalBoard::Color::Green, DGtalBoard::Color::Black,
+                       3.0 );
+   ...
+   \endcode
+   * @see DGtalBoard
+   */
+  struct CustomPen : public DrawableWithBoard
+  {
+    DGtalBoard::Color myPenColor;
+    DGtalBoard::Color myFillColor;
+    double myLineWidth;
+    DGtalBoard::Shape::LineStyle myLineStyle; /**< The line style (solid, dashed, etc.). */
+    DGtalBoard::Shape::LineCap myLineCap; /**< The linecap attribute. (The way line terminates.) */
+    DGtalBoard::Shape::LineJoin myLineJoin; /**< The linejoin attribute. (The shape of line junctions.) */
+    int myDepth;    		/**< The depth of the shape. */
+
+    /**
+     * Constructor.
+     *
+     * @param penColor specifies the pen color.
+     * @param fillColor specifies the fill color.
+     * @param lineWidth specifies the width of the drawing line.
+     *
+     * @param lineStyle specifies the drawing line style (SolidStyle,
+     *      DashStyle, DotStyle, DashDotStyle, DashDotDotStyle,
+     *      DashDotDotDotStyle )
+     *  
+     * @param lineCap specifies the drawing line cap (ButtCap,
+     * RoundCap, SquareCap )
+     *
+     * @param lineJoin specifies the drawing line join (MiterJoin, RoundJoin, BevelJoin )
+     *
+     */
+    CustomPen( const DGtalBoard::Color & penColor,
+	       const DGtalBoard::Color & fillColor,
+	       double lineWidth = 1.0,
+	       DGtalBoard::Shape::LineStyle lineStyle = DGtalBoard::Shape::SolidStyle,
+	       DGtalBoard::Shape::LineCap lineCap = DGtalBoard::Shape::ButtCap,
+	       DGtalBoard::Shape::LineJoin lineJoin = DGtalBoard::Shape::MiterJoin )
+      : myPenColor( penColor ), myFillColor( fillColor ),
+	myLineWidth( lineWidth ), 
+	myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
+    {}
+    
+    virtual void selfDraw( DGtalBoard & aboard) const
+    {
+      aboard.setPenColor( myPenColor );
+      aboard.setFillColor( myFillColor );
+      aboard.setLineWidth( myLineWidth );
+      aboard.setLineStyle( myLineStyle );
+      aboard.setLineCap( myLineCap );
+      aboard.setLineJoin( myLineJoin );
+    }
   };
 
 } // namespace DGtal
