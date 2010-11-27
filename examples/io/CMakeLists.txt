@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC
    dgtalboard-1-points
    dgtalboard-2-sets
+   dgtalboard-3-custom-classes
    dgtalboard-3-custom-points
    )
 
