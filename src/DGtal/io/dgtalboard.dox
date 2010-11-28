@@ -26,6 +26,7 @@ namespace DGtal {
    *    -# \ref dgtal_dgtalboard_sec14
    *    -# \ref dgtal_dgtalboard_sec15
    *    -# \ref dgtal_dgtalboard_sec16
+   *    -# \ref dgtal_dgtalboard_sec17
    *  -# \ref dgtal_dgtalboard_sec2
    *    -# \ref dgtal_dgtalboard_sec21
    *
@@ -255,7 +256,56 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    *
    * \image html dgtalboard-3-custom-points.png
    *
-   * To be continued...
+   * \subsection dgtal_dgtalboard_sec17 Using colormaps in DGtalBoard streams
+   *
+   * You can use colormaps in conjunction with custom styles for DGtalBoard. Several classes represent colormaps: CColorMap, ColorBrightnessColorMap, GradientColorMap, GrayscaleColorMap, HueShadeColorMap. You can use any of them to produce colors. Here, we define a simple colormap going from blue to red then yellow. Then, each pixel of the digital set \c shape_set (see above) is displayed with a fill color that depends on its distance to the point \c c1.
+   *
+   * An interesting point of the exemple below is how we specify a custom style for a \b specific \b mode of some drawable element (here a Point). We just add "/"+ModeName to the name of the style.
+   *
+   \code
+  // Creating colormap.
+  GradientColorMap<int> cmap_grad( 0, 15 );
+  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
+  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
+  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+
+  // Creating board.
+  DGtalBoard board;
+  board << SetMode( domain.styleName(), "Paving" )
+	<< domain
+	<< SetMode( p1.styleName(), "Paving" );
+  // This is the name of the style for a Point in mode "Paving".
+  string specificStyle =  p1.styleName() + "/Paving";
+  for ( DigitalSet::ConstIterator it = shape_set.begin();
+	it != shape_set.end();
+	++it )
+    {
+      unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
+      // specific color depending on the distance to point c1.
+      board << CustomStyle( specificStyle,
+			    new CustomColors( DGtalBoard::Color::Black,
+					      cmap_grad( d ) ) )
+	    << *it;
+    }
+  board.saveSVG( "dgtalboard-4-colormaps.svg");
+   \endcode
+   *
+   * This program (see full source at <a
+   * href="dgtalboard-4-colormaps_8cpp-example.html">dgtalboard-4-colormaps.cpp</a>) outputs the following graphics.
+   *
+   * \image html dgtalboard-4-colormaps.png
+   *
+   * More precisely, several styles may be applied before some drawable element is displayed. They are called in this order.
+   * -# the default style (always applied)
+   * -# the user-specified style for default mode (when defined)
+   * -# the default style for the current mode (applied only if mode is not default, i.e. different from "")
+   * -# the user-specified style for the current mode (applied only if mode is not default, i.e. different from "", and defined)
+   *
+   * Therefore, if you change the drawing \b mode of a drawable element and if you wish to have a specific behavior, you must attach the custom style to the mode style of your object. For instance, if your object is \c p and the mode is "Special", there is some line:
+   *
+   \code
+   board << CustomStyle( p.styleName() +"/Special", new ... );
+   \endcode
    * 
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
@@ -323,5 +373,13 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    * parameters. Then, you attach this style to your drawable elements
    * with an instance of CustomStyle outputed in the DGtalBoard
    * stream.
+   */
+
+  /**
+   * \example dgtalboard-4-colormaps.cpp
+   *
+   * This example shows you how to use colormaps with DGtalBoard
+   * streams. Note how we redefine the style of a specific mode for
+   * the drawable element.
    */
 }
