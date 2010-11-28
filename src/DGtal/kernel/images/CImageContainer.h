@@ -102,8 +102,15 @@ namespace DGtal
       {
         //TContainer j(a,b);
         it=i.begin();  // require postincrement-dereference returning value_type	
-        same_type(i.operator()(itconst),v);        // require preincrement returning X&
 	same_type(i(a),v);
+	
+	//API
+	same_type(i.extent(), a); //get the extent 
+	i.setValue(a,v);
+	i.setValue(it,v); //set a value at an Iterator
+        same_type(i.operator()(itconst),v);        // get the value from a ConstIterator
+        same_type(i.operator()(a),v);        //get the value from a point
+
       }
 
     private:
