@@ -195,14 +195,14 @@ namespace DGtal
     typedef TValueType ValueType;
     static const DGtal::uint32_t p = 1;
     typedef ValueType InternalValueType;
-		typedef TAbscissa Abscissa;
+    typedef TAbscissa Abscissa;
 		
 
     inline ValueType operator() ( const InternalValueType & aInternalValue ) const
     {
       return ( ValueType ) aInternalValue;
     }
-
+ 
     inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
       return ( InternalValueType ) abs ( pos - ci ) + hi;
@@ -243,7 +243,7 @@ namespace DGtal
 
     inline InternalValueType F ( const Abscissa pos, const Abscissa ci, const InternalValueType hi ) const
     {
-      return ( InternalValueType ) std::max( (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
+     return ( InternalValueType ) std::max( (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
     }
 
     inline Abscissa Sep ( const Abscissa i, const InternalValueType hi, const Abscissa j, const InternalValueType hj ) const

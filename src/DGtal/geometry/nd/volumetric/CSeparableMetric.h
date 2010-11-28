@@ -53,8 +53,8 @@ namespace DGtal
   /**
    * Description of \b concept '\b CSeparableMetric' <p>
    * @ingroup Concepts
-	 * Aim: The concept CSeparableMetric specifies what are the classes
-	 * that implement a model of separable metrics
+   * Aim: The concept CSeparableMetric specifies what are the classes
+   * that implement a model of separable metrics
    * 
    * <p> Refinement of
    *
@@ -88,29 +88,28 @@ namespace DGtal
   struct CSeparableMetric
   {
 
-		typedef typename T::InternalValueType InternalValueType;
-		typedef typename T::ValueType ValueType;
-		typedef typename T::Abscissa Abscissa;
+    typedef typename T::InternalValueType InternalValueType;
+    typedef typename T::ValueType ValueType;
+    typedef typename T::Abscissa Abscissa;
 		
     // ----------------------- Concept checks ------------------------------
   public:
-		BOOST_CONCEPT_USAGE( CSeparableMetric )
-		{
-			//SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValueType) returing an InternalValueType
-			ConceptUtils::sameType( h, myT.F(a,a,h) );
-			//SeparableMetric  model should have a Sep(Abscissa,InternalValueType, Abscissa,InternalValueType) returing an ValueType
-			
-			ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
-		}
+    BOOST_CONCEPT_USAGE( CSeparableMetric )
+    {
+      //SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValueType) returing an InternalValueType
+      ConceptUtils::sameType( h, myT.F(a,a,h) );
+      //SeparableMetric  model should have a Sep(Abscissa,InternalValueType, Abscissa,InternalValueType) returing an ValueType	
+      ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
+    }
 		
     // ------------------------- Private Datas --------------------------------
   private:
     
     // ------------------------- Internals ------------------------------------
   private:
-		T myT;
-		Abscissa a;
-		InternalValueType h;
+    T myT;
+    Abscissa a;
+    InternalValueType h;
 		
 			
   }; // end of concept CSeparableMetric

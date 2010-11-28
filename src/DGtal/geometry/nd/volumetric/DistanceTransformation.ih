@@ -74,7 +74,7 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
 
   myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::staticDimension) * myExtent.normInfinity() + 1);
-
+  
   O output ( myLowerBoundCopy, myUpperBoundCopy );
   O swap ( myLowerBoundCopy, myUpperBoundCopy );
   bool isSwap = true;
@@ -82,9 +82,7 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   //First step
   computeFirstStep ( aImage, output, predicate );
 
-//return output;
-
-  typename		O::ConstIterator it = output.begin();
+  typename O::ConstIterator it = output.begin();
 
   //We process the dimensions
   for ( unsigned int dim = 1; dim < I::staticDimension ; dim++ )
@@ -133,11 +131,10 @@ inline
 void
 DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, O &output, const Functor &predicate ) const
 {
-  trace.beginBlock ( "DT dim 0" );
+  trace.beginBlock ( "DT dimension 0" );
   Point row = myLowerBoundCopy;
 
   typedef typename Domain::ConstIterator ConstDomIt;
-  typedef typename O::Size Size;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
@@ -166,33 +163,29 @@ inline
 void
 DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O &output, const Dimension dim ) const
 {
-  std::string title = "DT dim " +  boost::lexical_cast<string>( dim ); ;
+  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
 
-
   typedef typename Domain::ConstIterator ConstDomIt;
-  typedef typename O::Size Size;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
+
   std::vector<Size> subdomain;
   subdomain.reserve(I::staticDimension - 1);
   for (unsigned int k = 0; k < I::staticDimension ; k++)
     if ( (I::staticDimension - 1 - k) != dim)
       subdomain.push_back( I::staticDimension - 1 - k );
 
- 
-
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-
   Size maxSize = myExtent.normInfinity();
 
   //Stacks used in the envelope computation
   Integer *s;
   Integer *t;
-  s = (Integer*)malloc(sizeof(Integer)*maxSize);
-  t = (Integer*)malloc(sizeof(Integer)*maxSize);
+  s = (Integer*)malloc(sizeof(Integer)*(maxSize+1));
+  t = (Integer*)malloc(sizeof(Integer)*(maxSize+1));
   
   ASSERT( s != NULL);
   ASSERT( t != NULL);
@@ -205,6 +198,8 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
     computeOtherStep1D ( input, output, (*it), dim, s, t );
   }
 
+  free(s);
+  free(t);
   trace.endBlock();
 
 }
@@ -287,7 +282,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
     pU[dim] ++;
 
 
-  ASSERT( pU[dim] <= myUpperBoundCopy[dim]);///@todo otherwise, the image has no object (fixme)
+  ASSERT( pU[dim] <= myUpperBoundCopy[dim]);///@todo otherwise, the 1D slice  has no object point (fixme)
 
   q = 0;
   s[q] = pU[dim]; //myLowerBoundCopy[dim];
@@ -311,11 +306,13 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
 
     while ( ( q >= 0 ) &&
         ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
-            myMetric.F ( t[q], u, input ( pU ) ) ) )
+	  myMetric.F ( t[q], u, input ( pU ) ) ) )
     {
       //trace.info() << "Pop q=" << q << endl;
       q--;
-      sQ[dim] = s[q];
+      ///@todo optimize the test here
+      if (q>=0)
+	sQ[dim] = s[q];
     }
 
     if ( q < 0 )
@@ -345,15 +342,19 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
 
   Point last = row;
 
+  ASSERT(q>=0);
+
  //trace.error() << "q=" << q << endl;
   sQ[dim] = s[q];
   //trace.error() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
+ 
   //Backward Scan
   for (last[dim] = myUpperBoundCopy[dim];
       last[dim] >= myLowerBoundCopy[dim] ;
       last[dim]-- )
   {
     //trace.info() << "dt="<<myMetric.F ( last[dim] , s[q], input ( sQ ) )<<endl;
+    ASSERT(myMetric.F ( last[dim] , s[q], input ( sQ ) ) >=0);
     output.setValue ( last, myMetric.F ( last[dim] , s[q], input ( sQ ) ) );
     if (( last[dim] == t[q] ) && (q > 0))
     {

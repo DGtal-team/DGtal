@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC
-  distanceTransform2D
+  distancetransform2D
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

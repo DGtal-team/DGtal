@@ -88,9 +88,9 @@ namespace DGtal
     typedef Object<DT8_4, DigitalSet>::SmallObject SmallObject8_4;
     typedef Object<DT8_4, DigitalSet>::SmallComplementObject SmallComplementObject8_4;
 
-    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,2> L2Metric;
-    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,1> L1Metric;
-    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,0> LinfMetric;
+    typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint64_t,2> L2Metric;
+    typedef SeparableMetricTraits<DGtal::int32_t, DGtal::int32_t,1> L1Metric;
+    typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,0> LinfMetric;
 
     static const Adj4 adj4;
     static const Adj8 adj8;
@@ -145,8 +145,8 @@ namespace DGtal
     typedef Object<DT26_6, DigitalSet>::SmallComplementObject SmallComplementObject26_6;
 
     typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,2> L2Metric;
-    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,1> L1Metric;
-    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,0> LinfMetric;
+    typedef SeparableMetricTraits<typename Z3::Size, DGtal::int64_t,1> L1Metric;
+    typedef SeparableMetricTraits<typename Z3::Size, DGtal::int64_t,0> LinfMetric;
 
     static const Adj6 adj6;
     static const Adj18 adj18;

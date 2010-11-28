@@ -81,108 +81,108 @@ namespace DGtal
   class DistanceTransformation
   {
 
-    public:
-
-			BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+  public:
+    
+    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
 			
-      ///@todo check image concept
-      typedef TImage Image;
-      typedef TImageOutput ImageOutput;
-      typedef TSeparableMetric SeparableMetric;
-      typedef typename TSeparableMetric::InternalValueType InternalValueType;
-      typedef typename Image::ValueType ValueType;
-      typedef typename Image::Point Point;
-      typedef typename Image::Dimension Dimension;
-      typedef typename Image::Size Size;
-      typedef typename Image::Integer Integer;
-      typedef typename Image::Domain Domain;
+    ///@todo check image concept
+    typedef TImage Image;
+    typedef TImageOutput ImageOutput;
+    typedef TSeparableMetric SeparableMetric;
+    typedef typename TSeparableMetric::InternalValueType InternalValueType;
+    typedef typename Image::ValueType ValueType;
+    typedef typename Image::Point Point;
+    typedef typename Image::Dimension Dimension;
+    typedef typename Image::Size Size;
+    typedef typename Image::Integer Integer;
+    typedef typename Image::Domain Domain;
 
 
-      /**
-       * Default Constructor
-       */
-      DistanceTransformation();
+    /**
+     * Default Constructor
+     */
+    DistanceTransformation();
 
-      /**
-       * Default destructor
-       */
-      ~DistanceTransformation();
+    /**
+     * Default destructor
+     */
+    ~DistanceTransformation();
 
 
-      // ------- Private Functor to be used as a default template ----
+    // ------- Private Functor to be used as a default template ----
 
-    private:
-      /**
-       * Default foregroundPredicate : we return true if the value at a
-       * point differs from zero.
-       *
-       * @todo Refactoring needed to generalize this class !
-       */
-      struct DefaultForegroundPredicate
+  private:
+    /**
+     * Default foregroundPredicate : we return true if the value at a
+     * point differs from zero.
+     *
+     * @todo Refactoring needed to generalize this class !
+     */
+    struct DefaultForegroundPredicate
+    {
+      bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
       {
-        bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
-        {
-          return (aImage(aPoint) != 0);
-        }
+	return (aImage(aPoint) != 0);
+      }
 
-        bool operator()(const Image &aImage, const typename Image::Iterator &it) const
-        {
-          return (aImage(it) != 0);
-        }
+      bool operator()(const Image &aImage, const typename Image::Iterator &it) const
+      {
+	return (aImage(it) != 0);
+      }
 
-        bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
-        {
-          return (aImage(it) != 0);
-        }
+      bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
+      {
+	return (aImage(it) != 0);
+      }
 
-        bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
-        {
-          return (aImage(it) != 0);
-        }
+      bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
+      {
+	return (aImage(it) != 0);
+      }
 
-        /*bool operator()(const Image &aImage, const typename Image::ConstSpanIterator &it)
+      /*bool operator()(const Image &aImage, const typename Image::ConstSpanIterator &it)
         {
         return (aImage(it) !=0);
         }*/
-      };
-    public:
+    };
+  public:
 
-      /**
-       * Check the validity of the transformation. For instance, we
-       * check that the output image pixel range is ok with respect to
-       * the input image range and the SeparableMetric.
-       *
-       * Warning and advices are print in the trace system.
-       *
-       * @param aImage the image used to check the type consistency.
-       */
-      void checkTypesValidity(const Image & aImage);
+    /**
+     * Check the validity of the transformation. For instance, we
+     * check that the output image pixel range is ok with respect to
+     * the input image range and the SeparableMetric.
+     *
+     * Warning and advices are print in the trace system.
+     *
+     * @param aImage the image used to check the type consistency.
+     */
+    void checkTypesValidity(const Image & aImage);
 
-      /**
-       * Compute the Distance Transformation of an image with the SeparableMetric metric.
-       * The method associates to each point with value satisfying the
-       * foreground predicate, its distance to the closest background point.
-       *
-       * @param inputImage the input image
-       * @param foregroundPredicate a predicate to detect foreground
-       * point from the image valuetype
-       * @return the distance transformation image with the Internal format.
-       */
-      template <typename ForegroundPredicate>
-      ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate  );
+    /**
+     * Compute the Distance Transformation of an image with the SeparableMetric metric.
+     * The method associates to each point with value satisfying the
+     * foreground predicate, its distance to the closest background point.
+     *
+     * @param inputImage the input image
+     * @param foregroundPredicate a predicate to detect foreground
+     * point from the image valuetype
+     * @return the distance transformation image with the Internal format.
+     */
+    template <typename ForegroundPredicate>
+    ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate  );
 
-      /**
-       * Compute the Distance Transformation of an image with the SeparableMetric metric.
-       * The method associates to each point with value satisfying the
-       * foreground predicate, its distance to the closest background point.
-       *
-       * @param inputImage the input image
-       * @return the distance transformation image with the Internal format.
-       */
-      ImageOutput compute(const Image & inputImage )
-      {
-        return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
-      };
+    /**
+     * Compute the Distance Transformation of an image with the SeparableMetric metric.
+     * The method associates to each point with value satisfying the
+     * foreground predicate, its distance to the closest background point.
+     *
+     * @param inputImage the input image
+     * @return the distance transformation image with the Internal format.
+     */
+    ImageOutput compute(const Image & inputImage )
+    {
+      return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
+    };
 
 
     // ------------------- Private functions ------------------------
@@ -234,8 +234,8 @@ namespace DGtal
     void computeOtherStep1D (const ImageOutput & input, ImageOutput & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
 
 
-      // ------------------- Private members ------------------------
-    private:
+    // ------------------- Private members ------------------------
+  private:
 
     ///The separable metric instance
     SeparableMetric myMetric;
