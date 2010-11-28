@@ -106,7 +106,7 @@ namespace DGtal
 	
 	//API
 	same_type(i.extent(), a); //get the extent 
-	i.setValue(a,v);
+	i.setValue(a,v);   //set a value at a Point
 	i.setValue(it,v); //set a value at an Iterator
         same_type(i.operator()(itconst),v);        // get the value from a ConstIterator
         same_type(i.operator()(a),v);        //get the value from a point
