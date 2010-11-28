@@ -1,5 +1,4 @@
-#CMakeLists associated to the tests subdir
-#David Coeurjolly <david.coeurjolly@liris.cnrs.fr>
+#CMakeLists associated to the examples subdir
 
 
 # Make sure the compiler can find include files.

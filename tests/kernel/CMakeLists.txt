@@ -9,7 +9,9 @@ SET(DGTAL_TESTS_SRC
    testPointVector
    testSpaceND
    testMorton
-   testHashTree)
+   testHashTree
+   testCheckImageConcept
+   )
 
 SET(DGTAL_BENCH_SRC
   testImageContainerBenchmark

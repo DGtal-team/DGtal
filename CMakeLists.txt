@@ -112,13 +112,10 @@ endif( Boost_FOUND )
 
 ##########Check if libMagick++ exists
 FIND_PACKAGE(Magick)
-
 IF(MAGICK++_FOUND)
   INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
   message( "-- GraphicsMagick++ found." )
 ENDIF(MAGICK++_FOUND)
-
-
 
 # -----------------------------------------------------------------------------
 # Defines some variables
@@ -179,40 +176,9 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-# ----------------------------------------------------------------------
-# the FindSubversion.cmake module is part of the standard distribution
-IF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
-  FIND_PACKAGE(Subversion)
-  IF(Subversion_FOUND)
-    Subversion_WC_INFO(${PROJECT_SOURCE_DIR} Project)
-    MESSAGE("Current revision is ${Project_WC_REVISION}")
-    Subversion_WC_LOG(${PROJECT_SOURCE_DIR} Project)
-    MESSAGE("Last changed log is ${Project_LAST_CHANGED_LOG}")
-  else(Subversion_FOUND)
-    SET(Project_WC_REVISION 0)
-  ENDIF(Subversion_FOUND)
-ELSE(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
-  IF(EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    MACRO(git_GET_REVISION dir variable)
-      EXECUTE_PROCESS(COMMAND  git svn info
-	OUTPUT_VARIABLE ${variable}
-	OUTPUT_STRIP_TRAILING_WHITESPACE)
-	MESSAGE(STATUS ${variable})
-      STRING(REGEX REPLACE "^(.*\n)?Revision: ([^\n]+).*"
-	"\\2" ${variable} "${${variable}}")
-    ENDMACRO(git_GET_REVISION)
-    git_GET_REVISION( ${PROJECT_SOURCE_DIR} Project_WC_REVISION)
-    MESSAGE(STATUS "Revision (git) is ${Project_WC_REVISION}")
-  ELSE(EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    SET(Project_WC_REVISION 0)
-  ENDIF(EXISTS "${PROJECT_SOURCE_DIR}/.git")
-ENDIF(EXISTS "${PROJECT_SOURCE_DIR}/.svn")
-
-# ----------------------------------------------------------------------
-
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 1)
-SET(DGtal_VERSION_PATCH r${Project_WC_REVISION})
+SET(DGtal_VERSION_PATCH 0)
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
@@ -263,4 +229,8 @@ INCLUDE(CPack)
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory (src)
-add_subdirectory (examples)
+
+OPTION(BUILD_EXAMPLES "Build examples." ON)
+IF (BUILD_EXAMPLES)
+  add_subdirectory (examples)
+ENDIF(BUILD_EXAMPLES)
