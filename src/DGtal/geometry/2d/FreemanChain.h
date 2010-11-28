@@ -1304,29 +1304,30 @@ namespace DGtal
     public:
 
 
-
-      /*
-        Draw the object on a LibBoard board
-        @param board the output board where the object is drawn.
-        @tparam Functor a Functor to specialize the Board style
-      */
-      template<typename Functor>
-      void selfDraw(DGtalBoard & board ) const;
-
-
-
-      /*
-        Draw the object on a LibBoard board
-        @param board the output board where the object is drawn.
-      */
-
-      void selfDraw(DGtalBoard & board ) const
-      {
-        selfDraw<SelfDrawStyle>(board);
-      };
-
-
-
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+    
+    /**
+      Draw the object on a LibBoard board
+      @param board the output board where the object is drawn.
+      @tparam Functor a Functor to specialize the Board style
+    */
+    template<typename Functor>
+    void selfDraw(DGtalBoard & board ) const;
+    
+    /**
+      Draw the object on a LibBoard board
+      @param board the output board where the object is drawn.
+    */
+    void selfDraw(DGtalBoard & board ) const;
 
       // ------------------------- Public Datas ------------------------------
 
@@ -1381,6 +1382,19 @@ namespace DGtal
           aBoard.setFillColor(LibBoard::Color::None);
           aBoard.setPenColor(LibBoard::Color::Black);
         }
+      };
+
+    struct DefaultDrawStyle : public DrawableWithBoard
+      {
+        virtual void selfDraw( DGtalBoard & aBoard ) const
+        {
+          aBoard.setFillColor(LibBoard::Color::None);
+          aBoard.setPenColor(LibBoard::Color::Black);
+	  // aBoard.setPenColorRGBi(160,160,160);
+	  // aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+          // aBoard.setFillColorRGBi(220,220,220);
+	  // aBoard.setLineWidth(1);
+	}
       };
 
 

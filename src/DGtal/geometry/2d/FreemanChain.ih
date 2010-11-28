@@ -426,6 +426,42 @@ DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
   
 }
 
+//------------------------------------------------------------------------------
+template <typename TInteger>
+inline
+DGtal::DrawableWithBoard*
+DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode) const
+{
+  return new DefaultDrawStyle;
+}
+//------------------------------------------------------------------------------
+template <typename TInteger>
+inline
+std::string
+DGtal::FreemanChain<TInteger>::styleName() const
+{
+  return "FreemanChain";
+}
+//------------------------------------------------------------------------------
+template <typename TInteger>
+inline
+void 
+DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
+{
+  vector<typename FreemanChain<TInteger>::PointI2> aVContour;
+  FreemanChain<TInteger>::getContourPoints(*this, aVContour);
+  int minX, minY, maxX, maxY;
+  this->computeBoundingBox(minX, minY, maxX, maxY);
+  
+  vector<LibBoard::Point> contour;
+  for(unsigned int i=0; i< aVContour.size(); i++){
+    contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
+    aBoard << aVContour[i];
+  }
+  aBoard.setFillColor(LibBoard::Color::None);
+  aBoard.drawPolyline(contour);
+}
+//------------------------------------------------------------------------------
 
 
 /**

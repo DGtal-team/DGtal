@@ -3,6 +3,8 @@ SET(DGTAL_TESTS_SRC
    dgtalboard-2-sets
    dgtalboard-3-custom-classes
    dgtalboard-3-custom-points
+   dgtalboard-4-colormaps
+   dgtalboard-5-maxdss
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

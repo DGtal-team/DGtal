@@ -635,12 +635,6 @@ void
 DGtal::ArithmeticalDSS<TDSS>::selfDrawAsBoundingBox( DGtalBoard & aBoard) const
 {
   
-  // Set board style
-  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
-  aBoard.setPenColor(LibBoard::Color::Red);
-  aBoard.setLineWidth(1);
-  aBoard.setFillColor(LibBoard::Color::None);
-  
   //draw bounding box
   PointD topLeft = project(myF, myUf);
   PointD bottomLeft = project(myF,myLf);
@@ -675,10 +669,6 @@ void
 DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) const
 {
 
-  // Set board style
-  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
-  aBoard.setPenColor(LibBoard::Color::Black);
-  aBoard.setLineWidth(2);
   
   //draw contour
   vector<Point> ptsOfDSS = recover();

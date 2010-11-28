@@ -400,8 +400,13 @@ public:
     {
       virtual void selfDraw(DGtalBoard & aBoard) const
       {
+	//	aBoard.setFillColor(LibBoard::Color::None);
+	// Set board style
+	aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+	aBoard.setPenColor(LibBoard::Color::Red);
+	aBoard.setLineWidth(1);
 	aBoard.setFillColor(LibBoard::Color::None);
-      }
+        }
     };
     
     /**
@@ -412,6 +417,10 @@ public:
         virtual void selfDraw(DGtalBoard & aBoard) const
         {
 	  aBoard.setFillColor(LibBoard::Color::None);
+	  // Set board style
+	  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+	  aBoard.setPenColor(LibBoard::Color::Black);
+	  aBoard.setLineWidth(2);
 	}
     };
 
