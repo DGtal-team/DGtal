@@ -14,7 +14,6 @@
  *
  **/
 
-
 /**
  * @file XXX.cpp
  * @ingroup Examples

@@ -20,4 +20,5 @@ link_directories (${PROJECT_BINARY_DIR})
 #------TESTS subdirectories ------
 
 add_subdirectory(io)
+add_subdirectory(geometry)
 
