@@ -46,6 +46,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
@@ -86,15 +87,19 @@ namespace DGtal
     typedef Object<DT8_4, DigitalSet>::ComplementObject ComplementObject8_4;
     typedef Object<DT8_4, DigitalSet>::SmallObject SmallObject8_4;
     typedef Object<DT8_4, DigitalSet>::SmallComplementObject SmallComplementObject8_4;
+
+    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,2> L2Metric;
+    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,1> L1Metric;
+    typedef SeparableMetricTraits<typename Z2::Size, DGtal::uint64_t,0> LinfMetric;
+
     static const Adj4 adj4;
     static const Adj8 adj8;
     static const DT4_8 dt4_8 = DT4_8( adj4, adj8, JORDAN_DT );
     static const DT8_4 dt8_4 = DT8_4( adj8, adj4, JORDAN_DT );
   } // namespace Z2i
 
-
   /**
-   * This namespace gathers all standard type definitions as well as
+   * This namespacef gathers all standard type definitions as well as
    * some static instances for using a 3D digital space with integers
    * represented by 'int'. It is useful for a developer who wants to
    * develop an application in the 3D plane and who does not wish to
@@ -138,6 +143,11 @@ namespace DGtal
     typedef Object<DT26_6, DigitalSet>::ComplementObject ComplementObject26_6;
     typedef Object<DT26_6, DigitalSet>::SmallObject SmallObject26_6;
     typedef Object<DT26_6, DigitalSet>::SmallComplementObject SmallComplementObject26_6;
+
+    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,2> L2Metric;
+    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,1> L1Metric;
+    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,0> LinfMetric;
+
     static const Adj6 adj6;
     static const Adj18 adj18;
     static const Adj26 adj26;

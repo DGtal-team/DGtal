@@ -155,7 +155,7 @@ namespace DGtal
   struct SeparableMetricTraits<TAbscissa, TValueType, 2>
   {
     typedef TValueType ValueType;
-		typedef TAbscissa Abscissa;
+    typedef TAbscissa Abscissa;
 		
 
     static const DGtal::uint32_t p = 2;
@@ -231,8 +231,7 @@ namespace DGtal
   template <typename TAbscissa, typename TValueType>
   struct SeparableMetricTraits<TAbscissa, TValueType, 0>
   {
-		typedef TAbscissa Abscissa;
-		
+    typedef TAbscissa Abscissa;
     typedef TValueType ValueType;
     static const DGtal::uint32_t p = 0;
     typedef ValueType InternalValueType;
