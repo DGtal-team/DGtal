@@ -84,12 +84,15 @@ namespace DGtal
    * @todo Complete ImageContainer checking.
    */
 
-  template <typename TPoint, typename ValueType, typename TContainer>
+  template <typename IContainer>
     struct CImageContainer
     {
 
     public:
-      typedef typename TContainer::Iterator Iterator;
+      typedef typename IContainer::Iterator Iterator;
+      typedef typename IContainer::ValueType ValueType;
+      typedef typename IContainer::ConstIterator ConstIterator;
+      typedef typename IContainer::Point Point;
 
       BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
       BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
@@ -99,15 +102,16 @@ namespace DGtal
       {
         //TContainer j(a,b);
         it=i.begin();  // require postincrement-dereference returning value_type	
-        same_type(i(it),v);        // require preincrement returning X&
+        same_type(i.operator()(itconst),v);        // require preincrement returning X&
 	same_type(i(a),v);
       }
 
     private:
-      TContainer i;
+      IContainer i;
       Iterator it;
+      ConstIterator itconst;
       ValueType v;
-      TPoint a,b;
+      Point a,b;
  
       // Type deduction will fail unless the arguments have the same type.
       template <typename T>
