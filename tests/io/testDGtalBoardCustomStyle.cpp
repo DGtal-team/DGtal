@@ -48,7 +48,7 @@ using namespace DGtal;
 /**
  * Custom style.
  */
-struct MyDrawStyleCustomGreen : public DrawableWithBoard
+struct MyDrawStyleCustomGreen : public DrawableWithDGtalBoard
 {
   virtual void selfDraw( LibBoard::Board & aBoard ) const
    {

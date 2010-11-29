@@ -39,7 +39,7 @@ using namespace DGtal;
 using namespace DGtal::Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct MyDrawStyleCustomColor : public DrawableWithBoard
+struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
 {
   DGtalBoard::Color myPenColor;
   DGtalBoard::Color myFillColor;

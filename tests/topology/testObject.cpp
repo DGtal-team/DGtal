@@ -509,7 +509,7 @@ bool testDraw()
   
 }
 
-struct MyDrawStyleCustomRed : public DrawableWithBoard
+struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {
@@ -520,7 +520,7 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard
   }
 };
 
-struct MyDrawStyleCustomFillColor : public DrawableWithBoard
+struct MyDrawStyleCustomFillColor : public DrawableWithDGtalBoard
 {
   Color myColor;
   MyDrawStyleCustomFillColor( const Color & c )

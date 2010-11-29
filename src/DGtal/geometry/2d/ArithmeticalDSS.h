@@ -396,42 +396,42 @@ public:
     /**
      * Default style.
      */
-    struct DefaultDrawStyleBB : public DrawableWithBoard
+    struct DefaultDrawStyleBB : public DrawableWithDGtalBoard
     {
       virtual void selfDraw(DGtalBoard & aBoard) const
       {
-	//	aBoard.setFillColor(LibBoard::Color::None);
+	//	aBoard.setFillColor(DGtalBoard::Color::None);
 	// Set board style
-	aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
-	aBoard.setPenColor(LibBoard::Color::Red);
+	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+	aBoard.setPenColor(DGtalBoard::Color::Red);
 	aBoard.setLineWidth(1);
-	aBoard.setFillColor(LibBoard::Color::None);
+	aBoard.setFillColor(DGtalBoard::Color::None);
         }
     };
     
     /**
        * Default style.
        */
-    struct DefaultDrawStylePoints : public DrawableWithBoard
+    struct DefaultDrawStylePoints : public DrawableWithDGtalBoard
     {
         virtual void selfDraw(DGtalBoard & aBoard) const
         {
-	  aBoard.setFillColor(LibBoard::Color::None);
+	  aBoard.setFillColor(DGtalBoard::Color::None);
 	  // Set board style
-	  aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
-	  aBoard.setPenColor(LibBoard::Color::Black);
+	  aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+	  aBoard.setPenColor(DGtalBoard::Color::Black);
 	  aBoard.setLineWidth(2);
 	}
     };
 
-    // --------------- CDrawableWithBoard realization ------------------------
+    // --------------- CDrawableWithDGtalBoard realization --------------------
   public:
     
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -465,8 +465,8 @@ public:
 /*     { */
 /*       BoundingBoxStyle(DGtalBoard & aBoard)  */
 /*       { */
-/* 				aBoard.setFillColor(LibBoard::Color::None); */
-/* 				aBoard.setPenColor(LibBoard::Color::Red); */
+/* 				aBoard.setFillColor(DGtalBoard::Color::None); */
+/* 				aBoard.setPenColor(DGtalBoard::Color::Red); */
 /* 				aBoard.setLineWidth(1); */
 /*       } */
 /*     }; */
@@ -481,8 +481,8 @@ public:
 /*     { */
 /*       DigitalPointsStyle(DGtalBoard & aBoard)  */
 /*       { */
-/* 				aBoard.setFillColor(LibBoard::Color::None); */
-/* 				aBoard.setPenColor(LibBoard::Color::Black); */
+/* 				aBoard.setFillColor(DGtalBoard::Color::None); */
+/* 				aBoard.setPenColor(DGtalBoard::Color::Black); */
 /* 				aBoard.setLineWidth(2); */
 /*       } */
 /*     }; */

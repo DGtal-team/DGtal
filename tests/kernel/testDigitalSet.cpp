@@ -66,7 +66,7 @@ using namespace LibBoard;
   << y << std::endl;
 
 
-struct MyDomainStyleCustomRed : public DrawableWithBoard
+struct MyDomainStyleCustomRed : public DrawableWithDGtalBoard
 {
   void selfDraw(LibBoard::Board & aboard) const
   {

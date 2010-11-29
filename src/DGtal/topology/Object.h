@@ -68,7 +68,7 @@ namespace DGtal
    * points which touch the complement in the sense of background
    * adjacency.
    *
-   * \b export: An Object realizes the concept CDrawableWithBoard. It
+   * \b export: An Object realizes the concept CDrawableWithDGtalBoard. It
    * may be displayed with a DGtalBoard, and is by default displayed
    * as a set of digital points. An Object reacts to the mode
    * "DrawAdjacencies". In this case the set of points and the
@@ -465,7 +465,7 @@ namespace DGtal
       /**
        * Default style.
        */
-      struct DefaultDrawStyle : public DrawableWithBoard
+      struct DefaultDrawStyle : public DrawableWithDGtalBoard
       {
         virtual void selfDraw(DGtalBoard & aBoard) const
         {
@@ -475,14 +475,14 @@ namespace DGtal
       };
 
 
-      // --------------- CDrawableWithBoard realization -------------------------
+      // --------------- CDrawableWithDGtalBoard realization ------------------
     public:
 
       /**
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+      DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
 
       /**
        * @return the style name used for drawing this object.
@@ -490,7 +490,7 @@ namespace DGtal
       std::string styleName() const;
 
       /**
-       * Draw the object on a LibBoard board.
+       * Draw the object on a DGtalBoard board.
        * @param board the output board where the object is drawn.
        */
       void selfDraw( DGtalBoard & board ) const;

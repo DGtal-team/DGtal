@@ -121,7 +121,7 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board, const V &mi
 //------------------------------------------------------------------------------
 template <typename D, typename V>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::ImageContainerBySTLVector<D, V>::defaultStyle() const
 {
 	return new DefaultDrawStyle;

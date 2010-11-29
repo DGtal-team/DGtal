@@ -429,7 +429,7 @@ DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
 //------------------------------------------------------------------------------
 template <typename TInteger>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode) const
 {
   return new DefaultDrawStyle;

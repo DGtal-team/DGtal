@@ -520,13 +520,13 @@ DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
   out << "}";
 }
 
-// --------------- CDrawableWithBoard realization -------------------------
+// --------------- CDrawableWithDGtalBoard realization -------------------------
 //------------------------------------------------------------------------------
 
 
 template<std::size_t N, typename T>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::PointVector<N, T>::defaultStyle( std::string mode) const
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 

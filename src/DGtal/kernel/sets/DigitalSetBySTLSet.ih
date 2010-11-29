@@ -437,7 +437,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
 }
 
 
-// --------------- CDrawableWithBoard realization -------------------------
+// --------------- CDrawableWithDGtalBoard realization -------------------------
 
 /**
  * Default drawing style object.
@@ -445,7 +445,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithBoard* 
+DGtal::DrawableWithDGtalBoard* 
 DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
