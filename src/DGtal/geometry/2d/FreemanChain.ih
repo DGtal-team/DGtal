@@ -52,15 +52,6 @@
 
 // ------------------------- Standard services -----------------------
 
-/**
- * Default Constructor.
- * The object is not valid.
- */
-template <typename TInteger>
-DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator()
-  : myFc( 0 ), myPos( 0 )
-{
-}
 
 /**
  * Constructor.

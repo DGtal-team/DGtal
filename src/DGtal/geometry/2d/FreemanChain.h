@@ -137,11 +137,16 @@ namespace DGtal
 
           // ------------------------- Standard services -----------------------
         public:
-          /**
-           * Default Constructor.
-           * The object is not valid.
-           */
-          ConstIterator();
+
+/**
+ * Default Constructor.
+ * The object is not valid.
+ */
+
+	ConstIterator()
+	  : myFc( 0 ), myPos( 0 )
+	{
+	}
 
           /**
            * Constructor.

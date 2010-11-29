@@ -128,16 +128,16 @@ bool testDisplayFreemanChain(const string &file)
   fst.close();
   
   
-  std::string filenameImage = testPath + "samples/contourS.gif";
-  LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
+  std::string filenameImage =  "tmp.gif";
+  LibBoard::Image image(0,127, 128, 128, filenameImage, 20); 
   image.shiftDepth(1);
   LibBoard::Board & board = aBoard;
   board << image;
   
   
-  aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
-  aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
-  aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
+  aBoard.saveSVG( "tmp.svg", Board::BoundingBox, 5000);
+  aBoard.saveEPS( "tmp.eps", Board::BoundingBox, 5000 );
+  aBoard.saveFIG( "tmp.fig", Board::BoundingBox, 5000 );
   
   return true;
 }
@@ -163,7 +163,7 @@ int main( int argc, char** argv )
   bool res = testFreemanChain(ss); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
-  std::string filename = testPath + "samples/contourS.fc";
+  std::string filename =  "tmp.fc";
   std::cout << filename << std::endl;
   testDisplayFreemanChain(filename);
   trace.endBlock();
