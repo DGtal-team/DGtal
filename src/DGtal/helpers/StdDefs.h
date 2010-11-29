@@ -144,9 +144,9 @@ namespace DGtal
     typedef Object<DT26_6, DigitalSet>::SmallObject SmallObject26_6;
     typedef Object<DT26_6, DigitalSet>::SmallComplementObject SmallComplementObject26_6;
 
-    typedef SeparableMetricTraits<typename Z3::Size, DGtal::uint64_t,2> L2Metric;
-    typedef SeparableMetricTraits<typename Z3::Size, DGtal::int64_t,1> L1Metric;
-    typedef SeparableMetricTraits<typename Z3::Size, DGtal::int64_t,0> LinfMetric;
+    typedef SeparableMetricTraits<Z3::Size, DGtal::uint64_t,2> L2Metric;
+    typedef SeparableMetricTraits<Z3::Size, DGtal::int64_t,1> L1Metric;
+    typedef SeparableMetricTraits<Z3::Size, DGtal::int64_t,0> LinfMetric;
 
     static const Adj6 adj6;
     static const Adj18 adj18;
