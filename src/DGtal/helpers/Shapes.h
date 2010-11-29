@@ -90,6 +90,20 @@ namespace DGtal
     static void addNorm1Ball( TDigitalSet & aSet,
 			      const Point & aCenter, 
 			      UnsignedInteger aRadius );
+ 
+    /**
+     * Adds the discrete ball (norm-2) of center [aCenter] and radius
+     * [aRadius] to the (perhaps non empty) set [aSet].
+     *
+     * @tparam TDigitalSet the type chosen for the digital set.
+     * @param aSet the set (modified) which will contain the discrete ball.
+     * @param aCenter the center of the ball.
+     * @param aRadius the radius of the ball.
+     */
+    template <typename TDigitalSet>
+    static void addNorm2Ball( TDigitalSet & aSet,
+			      const Point & aCenter, 
+			      UnsignedInteger aRadius );
 
     // ----------------------- Standard services ------------------------------
   public:
