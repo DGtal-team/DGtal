@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file GrayscaleColorMap.h
+ * @file GrayScaleColorMap.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
  * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
- * Header file for module GrayscaleColorMap.cpp
+ * Header file for module GrayScaleColorMap.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GrayscaleColorMap_RECURSES)
+#if defined(GrayScaleColorMap_RECURSES)
 #error Recursive header files inclusion detected in GrayscaleColorMap.h
-#else // defined(GrayscaleColorMap_RECURSES)
+#else // defined(GrayScaleColorMap_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GrayscaleColorMap_RECURSES
+#define GrayScaleColorMap_RECURSES
 
-#if !defined GrayscaleColorMap_h
+#if !defined GrayScaleColorMap_h
 /** Prevents repeated inclusion of headers. */
-#define GrayscaleColorMap_h
+#define GrayScaleColorMap_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -216,5 +216,5 @@ namespace DGtal
 
 #endif // !defined GrayscaleColorMap_h
 
-#undef GrayscaleColorMap_RECURSES
-#endif // else defined(GrayscaleColorMap_RECURSES)
+#undef GrayScaleColorMap_RECURSES
+#endif // else defined(GrayScaleColorMap_RECURSES)
