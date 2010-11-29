@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file dgtalboard-5-maxdss.cpp
+ * @file dgtalboard-5-greedy-dss.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/11/26
  *
- * An example file named dgtalboard-5-maxdss.
+ * An example file named dgtalboard-5-greedy-dss.
  *
  * This file is part of the DGtal library.
  */
@@ -49,7 +49,7 @@ using namespace Z2i;
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example dgtalboard-5-maxdss" );
+  trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
   typedef ArithmeticalDSS<StandardBase<int> > DSS;
   typedef FreemanChain<int> ContourType; 
@@ -81,8 +81,8 @@ int main( int argc, char** argv )
 			     new CustomPenColor( DGtalBoard::Color::Blue ) )
 	     << segment; // draw each segment
     } 
-  aBoard.saveSVG("dgtalboard-5-maxdss.svg");
-  aBoard.saveSVG("dgtalboard-5-maxdss.eps");
+  aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
+  aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
 
   trace.endBlock();
   return 0;

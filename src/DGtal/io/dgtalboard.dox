@@ -27,8 +27,13 @@ namespace DGtal {
    *    -# \ref dgtal_dgtalboard_sec15
    *    -# \ref dgtal_dgtalboard_sec16
    *    -# \ref dgtal_dgtalboard_sec17
+   *    -# \ref dgtal_dgtalboard_sec18
    *  -# \ref dgtal_dgtalboard_sec2
    *    -# \ref dgtal_dgtalboard_sec21
+   *    -# \ref dgtal_dgtalboard_sec22
+   *    -# \ref dgtal_dgtalboard_sec23
+   *    -# \ref dgtal_dgtalboard_sec24
+   *    -# \ref dgtal_dgtalboard_sec25
    *
    * \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
    *
@@ -306,10 +311,27 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    \code
    board << CustomStyle( p.styleName() +"/Special", new ... );
    \endcode
+   *
+   * Another example involving ArithmeticDSS is <a
+   * href="dgtalboard-5-greedy-dss_8cpp-example.html">dgtalboard-5-greedy-dss.cpp</a>. It outputs the following graphics:
+   *
+   * \image html dgtalboard-5-greedy-dss.png
+   *
+   * \subsection dgtal_dgtalboard_sec18 Conclusion and future improvements
+   * 
+   * The DGtalBoard mechanism is a simple mechanism for displaying 2D digital objects and graphics. A 3D adaptation is under development. Furthermore, in order to enhance its graphics and export possibilities, the hidden drawing library will certainly move to Cairo.
    * 
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
-   * \subsection dgtal_dgtalboard_sec21 Short overview of the LibBoard library
+   * \subsection dgtal_dgtalboard_sec21 Overview of the DGtalBoard principle
+   *
+   * \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithBoard
+   *
+   * \subsection dgtal_dgtalboard_sec23 Developing a new drawable element
+   *
+   * \subsection dgtal_dgtalboard_sec24 Managing possible drawing modes 
+   *
+   * \subsection dgtal_dgtalboard_sec25 Short overview of the LibBoard library
    *
    *  LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
    *
@@ -381,5 +403,12 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    * This example shows you how to use colormaps with DGtalBoard
    * streams. Note how we redefine the style of a specific mode for
    * the drawable element.
+   */
+
+  /**
+   * \example dgtalboard-5-greedy-dss.cpp
+   *
+   * Another example where the specific mode style of the drawable
+   * element ArithmeticDSS is redefined.
    */
 }
