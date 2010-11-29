@@ -209,12 +209,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/colormaps/GrayscaleColorMap.ih"
+#include "DGtal/io/colormaps/GrayScaleColorMap.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GrayscaleColorMap_h
+#endif // !defined GrayScaleColorMap_h
 
 #undef GrayScaleColorMap_RECURSES
 #endif // else defined(GrayScaleColorMap_RECURSES)
