@@ -1,13 +1,46 @@
 
+\section{Structure}
 
 
 
 \begin{frame}
-  \frametitle{Structuration}
+  \frametitle{Schéma de structuration}
+\small
+    \begin{exampleblock}{}
+    \centering  Noyau de base
+    \end{exampleblock}
+    \begin{columns}
+      \column{5.5cm}
 
-  \begin{block}{Découpage\HH}
-    \begin{itemize}
-    \item Noyau topologique 
+
+     \begin{block}{Types et structures de données de base\HH}
+      \begin{itemize}
+      \item Espace discret, points, vecteurs, algèbre linéaire
+      \item Infrastructure logicielle : mécanisme de trace, de
+        validation de concepts, ...
+      \end{itemize}
+     \end{block}
+
+
+      \column{5.5cm}
+
+     \begin{block}{Représentation des images\HH}
+      \begin{itemize}
+      \item Mécanisme de \emph{Container} générique
+      \item Structures adaptées pour de gros volumes (hashtree,...) 
+      \end{itemize}
+     \end{block}
+      
+    \end{columns}
+
+
+
+    \begin{exampleblock}{}
+    \centering  Modules de base       
+    \end{exampleblock}
+    \begin{columns}
+      \column{5cm}
+   \begin{block}{Module topologique\HH}       
       \begin{itemize}
       \item Topologie digitale : ensembles, connexité, bords,
         compos. connexes
@@ -15,29 +48,61 @@
         modèle de représentation de régions (Carte Topo/Combi)
       \item Calculs d'invariants n-D
       \end{itemize}
-    \item Noyau géométrique
+    \end{block}
+
+
+      \column{5cm}
+    \begin{block}{Module géométrique\HH}       
       \begin{itemize}
-      \item Analyse contour : reconnaissance structures discrètes,
+      
+      \item Primitives géométriques (définition, reconnaissance,...) 
+      \item Analyse contour : decomposition en primitives,
         estimateurs géométriques, ...
       \item Analyse volumique : transformation en distance, axe
         médian, ...
       \end{itemize}
-    \item Modules haut niveau
-      \begin{itemize}
-      \item \ldots        
-      \end{itemize}
+    \end{block}
       
-    \item Représentation des images
+    \end{columns}
+\end{frame}
+\begin{frame}
+  \frametitle{Schéma de structuration (bis)}
+
+
+    \begin{exampleblock}{}
+   \centering Autres modules ou modules avec dépendences externes  
+    \centering       
+    \end{exampleblock}
+    \begin{columns}
+      \column{5cm}
+     \begin{block}{Modules spécifiques orientés projet\HH}
       \begin{itemize}
-      \item Mécanisme de \emph{Container} générique
-      \item Structures adaptées pour de gros volumes (hashtree,...) 
+      \item ANR Geodib (géométrie sur objets bruités)     
       \end{itemize}
-    \item Entrées/sorties: 
+     \end{block}
+     \begin{block}{Backends\HH}
+      \begin{itemize}
+      \item  Kiteware's VTK/ITK
+      \item  VIGRA
+      \item ... 
+      \end{itemize}
+     \end{block}
+    \column{5cm}
+
+     \begin{block}{Entrées/sorties\HH} 
       \begin{itemize}
       \item Visualisation vectorielle 2D (svg, xfig, eps)
       \item import/export  différents formats d'image
       \item serialisation,...        
       \end{itemize}
-    \end{itemize}
-  \end{block}
+     \end{block}
+        \begin{block}{Visualisation/Interfaces\HH} 
+      \begin{itemize}
+      \item Interface utilisateur
+      \item Services web       
+      \item ... 
+      \end{itemize}
+     \end{block}
+      
+    \end{columns}
 \end{frame}
