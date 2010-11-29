@@ -32,6 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/CDrawableWithDGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -53,20 +54,20 @@ DGtal::DGtalBoard::getMode( const std::string & objectName ) const
 
 /**
  * Draws the drawable [object] in this board. It should satisfy
- * the concept CDrawableWithBoard, which requires for instance a
+ * the concept CDrawableWithDGtalBoard, which requires for instance a
  * method selfDraw( LibBoard::Board ).
  *
  * @param domain any domain.
  * @return a reference on 'this'.
  */
-template <typename TDrawableWithBoard>
+template <typename TDrawableWithDGtalBoard>
 INLINE
 DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
+DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithBoard<TDrawableWithBoard>));
+  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalBoard<TDrawableWithDGtalBoard>));
 
-  CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
+  CountedPtr<DrawableWithDGtalBoard> style( object.defaultStyle() );
   std::cerr << "[operator<<] " << object.styleName();
   // Apply default style
   if ( style.get() )
@@ -88,7 +89,7 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
     {
       std::cerr << " [mode]";
       // Apply default style for specific mode.
-      CountedPtr<DrawableWithBoard> style_mode
+      CountedPtr<DrawableWithDGtalBoard> style_mode
 	( object.defaultStyle( itm->second ) );
       if ( style_mode.get() )
 	{
@@ -112,63 +113,6 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithBoard & object )
   return *this;
 }
 
-/**
- * Draws the domain in this board. Choose GRID or PAVING according
- * to the current state of this object.
- *
- * @param domain any domain.
- * @return a reference on 'this'.
- */
-/*
-template <typename TSpace>
-INLINE
-DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator<<( const HyperRectDomain<TSpace> & domain )
-{
-  StyleMapping::const_iterator it = myStyles.find( domain.styleName() );
-  CountedPtr<DrawableWithBoard> style( domain.defaultStyle() );
-  if ( style.get() )
-    style->selfDraw( *this );
-  if ( it != myStyles.end() ) 
-    if ( it->second.get() != 0 )
-      it->second->selfDraw( *this );
-  if ( myDomainDrawMode == GRID )
-    domain.selfDrawAsGrid( *this );
-  else
-    domain.selfDrawAsPaving( *this );
-  return *this;
-}
-*/
-
-/**
- * Draws the object in this board. Draws adjacencies according to
- * the current state of this object.
- *
- * @param domain any domain.
- * @return a reference on 'this'.
- * @see DrawObjectAdjacencies
- */
- /*
-template <typename TDigitalTopology, typename TDigitalSet>
-INLINE
-DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator<<
-( const Object<TDigitalTopology,TDigitalSet> & object )
-{
-  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
-  CountedPtr<DrawableWithBoard> style( object.defaultStyle() );
-  if ( style.get() )
-    style->selfDraw( *this );
-  if ( it != myStyles.end() ) 
-    if ( it->second.get() != 0 )
-      it->second->selfDraw( *this );
-  if ( myDrawObjectAdjacencies )
-    object.selfDrawWithAdjacencies( *this );
-  else
-    object.selfDraw( *this );
-  return *this;
-}
- */
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //

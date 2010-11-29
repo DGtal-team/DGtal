@@ -49,7 +49,7 @@ using namespace DGtal;
 
 
 
-struct MyStyleCustom : public DrawableWithBoard
+struct MyStyleCustom : public DrawableWithDGtalBoard
 {
   void selfDraw(DGtalBoard & aboard) const
   {
@@ -57,7 +57,7 @@ struct MyStyleCustom : public DrawableWithBoard
   }
 };
 
-struct MyStyleCustomRed : public DrawableWithBoard
+struct MyStyleCustomRed : public DrawableWithDGtalBoard
 {
   void selfDraw(DGtalBoard & aboard) const
   {

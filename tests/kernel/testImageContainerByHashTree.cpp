@@ -169,7 +169,11 @@ int main ( int argc, char** argv )
   typedef SpaceND<5> Space;
   typedef Space::Point Point;
   typedef HyperRectDomain<Space> Dom;
-  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree ( 12,5,1 );
+  typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
+  Tree tree ( 12,5,1 );
+  // Do not pass concept.
+  //BOOST_CONCEPT_ASSERT((CDrawableWithDGtalBoard<Tree>));
+
   //tree.printInternalState(cerr, 12);
   Dom::Point p1, p2, p3;
   cerr << "azertyuiop" << endl;

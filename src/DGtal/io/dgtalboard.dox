@@ -225,7 +225,7 @@ namespace DGtal {
    * custom style class:
    *
    \code
-struct MyDrawStyleCustomColor : public DrawableWithBoard
+struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
 {
   DGtalBoard::Color myPenColor;
   DGtalBoard::Color myFillColor;
@@ -323,9 +323,38 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard
    * 
    * \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
    *
+   * This section aims at helping the developer to understand the background of the DGtalStream mechanism, and then to create its own drawable elements.
+   *
    * \subsection dgtal_dgtalboard_sec21 Overview of the DGtalBoard principle
    *
-   * \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithBoard
+   * Following the concept paradigm adopted in DGtal, the DGtalBoard object may only displayed instances of classes that realize the concept CDrawableWithDGtalBoard. A drawable element must specify his classname and a default style under the form of a (simple) DrawableWithDGtalBoard object. For instance, the default style structure for a PointVector is:
+   * 
+   \code
+   struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+   {
+     virtual void selfDraw( DGtalBoard & aBoard ) const
+     {
+       aBoard.setPenColor(DGtalBoard::Color::Black);
+       aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+     }
+   };
+   \endcode
+   *
+   * A DrawableWithDGtalBoard is just an interface that specifies a virtual method \c selfDraw. Last but not least, the drawable element defines a (non-virtual) method \c selfDraw which contains the drawing commands.
+   *
+   * The DGtalBoard class operates as an output stream for drawable elements. It inherits from LibBoard::Board. This base class holds the drawing capabilities for several export formats. You must look at this class to see the drawing possibilities. 
+   *
+   * An important method of DGtalBoard is the templated DGtalBoard::operator<<. This method takes any drawable element (satisfying CDrawableWithDGtalBoard) and takes care of setting the correct style and calling the drawing method of the object.
+   *
+   * The DGtalBoard remembers what is the current style for a given drawable element type. Furthermore, it can remember its current mode. Last, it remembers also the specific style associated for this mode. Generally, as a developer, you do not have to take care at how user chooses their new style or new mode. You will only prepare in your class if you wish to have modes, and how you draw the object depending on the current mode.
+   *
+   * \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithDGtalBoard
+   *
+   * The concept CDrawableWithDGtalBoard requires that the three following methods are defined:
+   *
+   * - std::string styleName() const: name of the style for this drawable element, generally the name of the class.
+   * - DrawableWithDGtalBoard* defaultStyle( const std::string & mode = "" ) const: a dynamically allocated instance of the default style for this drawable element. It may eventually be tuned for a specific mode given as a string. 
+   * - void selfDraw( DGtalBoard & ) const: this methods draws the drawable element on the given DGtalBoard instance. The style has been applied automatically before. 
    *
    * \subsection dgtal_dgtalboard_sec23 Developing a new drawable element
    *

@@ -695,7 +695,7 @@ DGtal::ArithmeticalDSS<TDSS>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) cons
  */
 template<typename TDSS>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::ArithmeticalDSS<TDSS>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "BoundingBox" ) ) 

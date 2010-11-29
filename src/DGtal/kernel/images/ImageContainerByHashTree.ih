@@ -769,7 +769,7 @@ namespace DGtal
 //------------------------------------------------------------------------------
   template <typename Domain, typename ValueType, typename HashKey  >
   inline
-  DGtal::DrawableWithBoard*
+  DGtal::DrawableWithDGtalBoard*
   experimental::ImageContainerByHashTree<Domain, ValueType, HashKey >::defaultStyle() const
   {
     return new DefaultDrawStyle;

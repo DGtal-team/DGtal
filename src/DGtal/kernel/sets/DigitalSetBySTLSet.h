@@ -291,7 +291,7 @@ namespace DGtal
     /** 
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithBoard
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
     {
       virtual void selfDraw(DGtalBoard & aBoard) const
       {
@@ -300,14 +300,14 @@ namespace DGtal
       }
     };
 
-    // --------------- CDrawableWithBoard realization -------------------------
+    // --------------- CDrawableWithDGtalBoard realization ---------------------
   public:
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -315,7 +315,7 @@ namespace DGtal
     std::string styleName() const;
 
     /**
-     * Draw the object on a LibBoard board.
+     * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
     void selfDraw(DGtalBoard & board ) const;

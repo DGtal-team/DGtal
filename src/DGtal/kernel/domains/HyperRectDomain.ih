@@ -404,7 +404,7 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
  */
 template<typename TSpace>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "Grid" ) ) 

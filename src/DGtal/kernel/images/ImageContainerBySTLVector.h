@@ -391,19 +391,18 @@ namespace DGtal
     Point myLowerBound;
     Point myUpperBound;
 
-    // ---------------------- DGtalBoard methods --------------------------------------
-
+    // ------------- realization CDrawableWithDGtalBoard --------------------
   private:
 
     /**
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithBoard
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
 	aBoard.setPenColorRGBi(60, 60, 60);
-	aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
       }
     };
 
@@ -413,7 +412,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard* defaultStyle() const;
+    DrawableWithDGtalBoard* defaultStyle() const;
 
     /**
      * @return the style name used for drawing this object.
@@ -422,7 +421,7 @@ namespace DGtal
 
 
     /**
-     * Draw the object on a LibBoard board.
+     * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      * @param minValue the minimum value contained in the image (used in the colormap settings)
      * @param maxValue the maximum value contained in the image (used in the colormap settings)

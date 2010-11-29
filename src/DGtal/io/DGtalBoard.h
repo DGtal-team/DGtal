@@ -46,7 +46,7 @@
 #include "DGtal/base/CountedPtr.h"
 //#include "DGtal/kernel/domains/HyperRectDomain.h"
 //#include "DGtal/topology/Object.h"
-#include "DGtal/io/CDrawableWithBoard.h"
+//#include "DGtal/io/CDrawableWithDGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -75,7 +75,7 @@ namespace DGtal
      * The associated map type for storing the default styles of
      * digital objects.
      */
-    typedef std::map< std::string,CountedPtr<DrawableWithBoard> > StyleMapping;
+    typedef std::map< std::string,CountedPtr<DrawableWithDGtalBoard> > StyleMapping;
 
     /**
      * The associated map type for storing possible modes used for
@@ -99,8 +99,8 @@ namespace DGtal
      * 
      * @param backgroundColor A color for the drawing's background.
      */
-    DGtalBoard( const LibBoard::Color & backgroundColor 
-		= LibBoard::Color::None );
+    DGtalBoard( const DGtalBoard::Color & backgroundColor 
+		= DGtalBoard::Color::None );
 
     /** 
      * Copy constructor.
@@ -124,41 +124,15 @@ namespace DGtal
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
-     * the concept CDrawableWithBoard, which requires for instance a
-     * method selfDraw( LibBoard::Board ).
+     * the concept CDrawableWithDGtalBoard, which requires for instance a
+     * method selfDraw( DGtalBoard & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
      */
-    template <typename CDrawableWithBoard>
-    DGtalBoard & operator<<( const CDrawableWithBoard & object );
+    template <typename TDrawableWithDGtalBoard>
+    DGtalBoard & operator<<( const TDrawableWithDGtalBoard & object );
 
-    /**
-     * Draws the domain in this board. Choose GRID or PAVING according
-     * to the current state of this object.
-     *
-     * @param domain any domain.
-     * @return a reference on 'this'.
-     * @see DrawDomainGrid, DrawDomainPaving
-     */
-    /*
-    template <typename TSpace>
-    DGtalBoard & operator<<( const HyperRectDomain<TSpace> & domain );
-    */
-
-    /**
-     * Draws the object in this board. Draws adjacencies according to
-     * the current state of this object.
-     *
-     * @param domain any domain.
-     * @return a reference on 'this'.
-     * @see DrawObjectAdjacencies
-     */
-    /*
-    template <typename TDigitalTopology, typename TDigitalSet>
-    DGtalBoard & 
-    operator<<( const Object<TDigitalTopology,TDigitalSet> & object );
-    */
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -237,7 +211,7 @@ namespace DGtal
   /**
    * Base class specifying the methods for classes which intend to
    * modify a DGtalBoard stream.
-   * @todo merge DrawableWithBoard and DrawWithBoardModifier 
+   * @todo merge DrawableWithDGtalBoard and DrawWithBoardModifier 
    */
   struct DrawWithBoardModifier {
     std::string styleName() const
@@ -245,7 +219,7 @@ namespace DGtal
       return "DrawWithBoardModifier";
     }
 
-    DrawableWithBoard* defaultStyle( std::string = "" ) const
+    DrawableWithDGtalBoard* defaultStyle( std::string = "" ) const
     {
       return 0;
     }
@@ -267,7 +241,7 @@ namespace DGtal
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    CustomStyle( std::string classname, DrawableWithBoard* style )
+    CustomStyle( std::string classname, DrawableWithDGtalBoard* style )
       : myClassname( classname ), myStyle( style )
     {}
 
@@ -282,7 +256,7 @@ namespace DGtal
     }
   private:
     std::string myClassname;
-    CountedPtr<DrawableWithBoard> myStyle;
+    CountedPtr<DrawableWithDGtalBoard> myStyle;
   };
 
   /**
@@ -320,7 +294,7 @@ namespace DGtal
    \endcode
    * @see DGtalBoard
    */
-  struct CustomColors : public DrawableWithBoard
+  struct CustomColors : public DrawableWithDGtalBoard
   {
     DGtalBoard::Color myPenColor;
     DGtalBoard::Color myFillColor;
@@ -354,7 +328,7 @@ namespace DGtal
    \endcode
    * @see DGtalBoard
    */
-  struct CustomPenColor : public DrawableWithBoard
+  struct CustomPenColor : public DrawableWithDGtalBoard
   {
     DGtalBoard::Color myPenColor;
 
@@ -384,7 +358,7 @@ namespace DGtal
    \endcode
    * @see DGtalBoard
    */
-  struct CustomFillColor : public DrawableWithBoard
+  struct CustomFillColor : public DrawableWithDGtalBoard
   {
     DGtalBoard::Color myFillColor;
 
@@ -415,7 +389,7 @@ namespace DGtal
    \endcode
    * @see DGtalBoard
    */
-  struct CustomPen : public DrawableWithBoard
+  struct CustomPen : public DrawableWithDGtalBoard
   {
     DGtalBoard::Color myPenColor;
     DGtalBoard::Color myFillColor;

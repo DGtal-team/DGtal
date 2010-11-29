@@ -428,15 +428,15 @@ namespace DGtal
         {
           return checkIntegrity();
         }
-        // ----------------------- LibBoard methods --------------------------------------
 
+      // ------------- realization CDrawableWithDGtalBoard --------------------
       private:
-        struct DefaultDrawStyle : public DrawableWithBoard
+        struct DefaultDrawStyle : public DrawableWithDGtalBoard
         {
           virtual void selfDraw(DGtalBoard & aboard)
           {
             aboard.setPenColorRGBi(60, 60, 60);
-            aboard.setLineStyle(LibBoard::Shape::SolidStyle);
+            aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
           }
         };
 
@@ -445,7 +445,7 @@ namespace DGtal
          * Default drawing style object.
          * @return the dyn. alloc. default style for this object.
          */
-        DrawableWithBoard* defaultStyle() const;
+        DrawableWithDGtalBoard* defaultStyle() const;
 
         /**
          * @return the style name used for drawing this object.

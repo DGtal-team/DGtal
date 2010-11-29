@@ -56,14 +56,14 @@ using namespace LibBoard;
 
 
 
-struct MyObjectStyleCustom : public DrawableWithBoard
+struct MyObjectStyleCustom : public DrawableWithDGtalBoard
 {
   void selfDraw(DGtalBoard & aboard) const
   {
     aboard.setFillColorRGBi(0, 169, 0);
   }
 };
-struct MyObjectStyleCustomRed : public DrawableWithBoard
+struct MyObjectStyleCustomRed : public DrawableWithDGtalBoard
 {
   void selfDraw(DGtalBoard & aboard) const
   {
@@ -71,7 +71,7 @@ struct MyObjectStyleCustomRed : public DrawableWithBoard
   }
 };
 
-struct MyDrawStyleCustomRed : public DrawableWithBoard
+struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {
@@ -82,7 +82,7 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard
   }
 };
 
-struct MyDrawStyleCustomBlue : public DrawableWithBoard
+struct MyDrawStyleCustomBlue : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {
@@ -93,7 +93,7 @@ struct MyDrawStyleCustomBlue : public DrawableWithBoard
   }
 };
 
-struct MyDrawStyleCustomGreen : public DrawableWithBoard
+struct MyDrawStyleCustomGreen : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {

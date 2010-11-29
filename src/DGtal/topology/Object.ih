@@ -799,7 +799,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithBoard*
+DGtal::DrawableWithDGtalBoard*
 DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;

@@ -517,36 +517,36 @@ namespace DGtal
       /**
        * Default styles.
        */
-    struct DefaultDrawStylePaving : public DrawableWithBoard
+    struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
       {
         virtual void selfDraw( DGtalBoard & aBoard ) const
         {
 	  aBoard.setPenColorRGBi(160,160,160);
-	  aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+	  aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
           aBoard.setFillColorRGBi(220,220,220);
 	  aBoard.setLineWidth(1);
 	}
       };
 
 
-    struct DefaultDrawStyleGrid : public DrawableWithBoard
+    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-	aBoard.setPenColor(LibBoard::Color::Black);
-	aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+	aBoard.setPenColor(DGtalBoard::Color::Black);
+	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
       }
     };
 
 
-      // --------------- CDrawableWithBoard realization -------------------------
+      // --------------- CDrawableWithDGtalBoard realization -------------------
     public:
 
       /**
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
     
       /**
        * @return the style name used for drawing this object.
@@ -554,14 +554,14 @@ namespace DGtal
       std::string styleName() const;
     
       /**
-       * Draw the object on a LibBoard board.
+       * Draw the object on a DGtalBoard board.
        * @param board the output board where the object is drawn.
        */
       void selfDraw( DGtalBoard & board ) const;
 
     
     /**
-     * Draw a pixel as a unit square on a LibBoard board.
+     * Draw a pixel as a unit square on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
     
@@ -583,7 +583,7 @@ namespace DGtal
 
 
       /**
-       * Draw the object (as a Vector from aPoint) on a LibBoard board
+       * Draw the object (as a Vector from aPoint) on a DGtalBoard board
        *
        * @param board the output board where the object is drawn.
        * @param startingPoint the starting point of the vector

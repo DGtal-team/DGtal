@@ -83,7 +83,7 @@ namespace DGtal
    * board. 
    * @todo (JOL) Put this class elsewhere.
    */
-  struct DrawableWithBoard {
+  struct DrawableWithDGtalBoard {
     /**
      * Operation to override. Does nothing by default.
      *

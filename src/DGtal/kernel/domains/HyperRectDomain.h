@@ -323,37 +323,37 @@ namespace DGtal
       /**
        * Default style.
        */
-      struct DefaultDrawStylePaving : public DrawableWithBoard
+      struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
       {
         virtual void selfDraw(DGtalBoard & aBoard) const
         {
           aBoard.setPenColorRGBi(160, 160, 160);
           aBoard.setFillColorRGBi(255, 255, 255);
-          aBoard.setLineStyle(LibBoard::Shape::SolidStyle);
+          aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
         }
       };
 
       /**
        * Default style.
        */
-      struct DefaultDrawStyleGrid : public DrawableWithBoard
+      struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
       {
         virtual void selfDraw(DGtalBoard & aBoard) const
         {
           aBoard.setPenColorRGBi(160, 160, 160);
           aBoard.setFillColorRGBi(160, 160, 160);
-          aBoard.setLineStyle(LibBoard::Shape::DashStyle);
+          aBoard.setLineStyle(DGtalBoard::Shape::DashStyle);
         }
       };
 
-    // --------------- CDrawableWithBoard realization ------------------------
+    // --------------- CDrawableWithDGtalBoard realization --------------------
   public:
     
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -361,7 +361,7 @@ namespace DGtal
     std::string styleName() const;
 
     /**
-     * Draw the object on a LibBoard board.
+     * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
     void selfDraw( DGtalBoard & board ) const;

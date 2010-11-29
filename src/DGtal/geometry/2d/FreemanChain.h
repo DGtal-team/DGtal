@@ -85,7 +85,7 @@ namespace DGtal
    fc.getContourPoints(fc, aContourPointVector);
    
    // Draw the Freeman chain
-   LibBoard::Board aBoard;
+   DGtalBoard::Board aBoard;
    aBoard.setUnit(Board::UMillimeter);
    fc.selfDraw(aBoard);
    
@@ -1308,7 +1308,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -1316,7 +1316,7 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-      Draw the object on a LibBoard board
+      Draw the object on a DGtalBoard board
       @param board the output board where the object is drawn.
       @tparam Functor a Functor to specialize the Board style
     */
@@ -1324,7 +1324,7 @@ namespace DGtal
     void selfDraw(DGtalBoard & board ) const;
     
     /**
-      Draw the object on a LibBoard board
+      Draw the object on a DGtalBoard board
       @param board the output board where the object is drawn.
     */
     void selfDraw(DGtalBoard & board ) const;
@@ -1379,19 +1379,19 @@ namespace DGtal
       {
         SelfDrawStyle(DGtalBoard & aBoard)
         {
-          aBoard.setFillColor(LibBoard::Color::None);
-          aBoard.setPenColor(LibBoard::Color::Black);
+          aBoard.setFillColor(DGtalBoard::Color::None);
+          aBoard.setPenColor(DGtalBoard::Color::Black);
         }
       };
 
-    struct DefaultDrawStyle : public DrawableWithBoard
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
       {
         virtual void selfDraw( DGtalBoard & aBoard ) const
         {
-          aBoard.setFillColor(LibBoard::Color::None);
-          aBoard.setPenColor(LibBoard::Color::Black);
+          aBoard.setFillColor(DGtalBoard::Color::None);
+          aBoard.setPenColor(DGtalBoard::Color::Black);
 	  // aBoard.setPenColorRGBi(160,160,160);
-	  // aBoard.setLineStyle( LibBoard::Shape::SolidStyle );
+	  // aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
           // aBoard.setFillColorRGBi(220,220,220);
 	  // aBoard.setLineWidth(1);
 	}
