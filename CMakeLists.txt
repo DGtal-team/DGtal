@@ -146,10 +146,9 @@ ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
-OPTION(BUILD_TESTS "Build tests." ON)
-if (BUILD_TESTS)
-  ENABLE_TESTING()
-  include(CTest)
+ENABLE_TESTING()
+include(CTest)
+if (BUILD_TESTING)
   if (CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCXX)
@@ -157,7 +156,7 @@ if (BUILD_TESTS)
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCC)
   add_subdirectory (tests)
-endif (BUILD_TESTS)
+endif (BUILD_TESTING)
 
 
 #------------------------------------------------------------------------------
