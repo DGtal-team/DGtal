@@ -50,6 +50,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -91,6 +92,8 @@ namespace DGtal
     typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint64_t,2> L2Metric;
     typedef SeparableMetricTraits<DGtal::int32_t, DGtal::int32_t,1> L1Metric;
     typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,0> LinfMetric;
+
+    typedef ArithmeticalDSS<StandardBase<Space::Integer> > DSS4;
 
     static const Adj4 adj4;
     static const Adj8 adj8;

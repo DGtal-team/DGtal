@@ -108,15 +108,15 @@ class ArithmeticalDSS
     // ----------------------- Types ------------------------------
 public:
 
-		//2D point and 2D vector
-	  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-		//does not compile
-		typedef typename TDSS::Integer Integer;
-		typedef DGtal::PointVector<2,Integer> Point;
-		typedef DGtal::PointVector<2,Integer> Vector;
-		
-		typedef DGtal::PointVector<2,double> PointD;
-
+  //2D point and 2D vector
+  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+  //does not compile
+  typedef typename TDSS::Integer Integer;
+  typedef DGtal::PointVector<2,Integer> Point;
+  typedef DGtal::PointVector<2,Integer> Vector;
+  
+  typedef DGtal::PointVector<2,double> PointD;
+  
     // ----------------------- Standard services ------------------------------
 public:
 

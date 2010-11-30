@@ -37,21 +37,18 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 #include "DGtal/io/DGtalBoard.h"
-
+#include "DGtal/helpers/StdDefs.h"
 
 using namespace std;
 using namespace DGtal;
+using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
 {
-  typedef int Coordinate;
-  typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
-  typedef FreemanChain<Coordinate> ContourType; 
+  typedef FreemanChain<Space::Integer> ContourType; 
   
-
   // Construction of a contour defined as a Freeman chain  code
   std::stringstream ss (stringstream::in | stringstream::out);
   ss << "0 0 00010010033030" << endl;
