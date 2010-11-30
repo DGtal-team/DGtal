@@ -89,7 +89,7 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
  * @param other the iterator to copy.
  * @return a reference on 'this'.
  */
-template <typename Contour, typename Primitive>
+/*template <typename Contour, typename Primitive>
 inline
 typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator& 
 DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator=
@@ -104,7 +104,7 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator=
       myP = other.myP;
     }
   return *this;
-}
+}*/
     
 /**
  * Destructor.
