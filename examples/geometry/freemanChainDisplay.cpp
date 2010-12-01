@@ -13,16 +13,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+/*
 /**
- * @file DSS.cpp
+ * @file freemanChainDisplay.cpp
  * @ingroup Examples
- * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
- * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2010/11/30
- *
- * An example file named DSS.
+ * @date 2010/12/01
+ * 
+ * An example of FreemanChain display with background source image.
  *
  * This file is part of the DGtal library.
  */
