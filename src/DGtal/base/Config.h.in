@@ -68,4 +68,7 @@
  * @defgroup Concepts DGtal concepts
  * @defgroup Tests DGtal test files
  * @defgroup Examples DGtal examples
+ *
+ * @example DSS.cpp
+ * @example distancetransform2D.cpp
  */
