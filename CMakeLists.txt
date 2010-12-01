@@ -176,7 +176,7 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
 SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 1)
+SET(DGtal_VERSION_MINOR 2)
 SET(DGtal_VERSION_PATCH 0)
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
@@ -214,7 +214,7 @@ ELSE(WIN32 AND NOT UNIX)
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/html-Board/*)
+SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;dev;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/html-Board/*)
 
 if(WIN32)
   SET(CPACK_GENERATOR "NSIS;")
