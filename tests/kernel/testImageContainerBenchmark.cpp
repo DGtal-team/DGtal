@@ -45,78 +45,80 @@ using namespace DGtal;
 template<typename Image>
 double builtinIteratorScan(const Image &aImage)
 {
-  long int cpt=0;
+  long int cpt = 0;
   double timer;
 
   trace.beginBlock( "Built-in iterator simple scan ..." );
   for ( typename Image::ConstIterator it = aImage.begin(), itend = aImage.end();
-	it != itend ; 
-	++it)
+      it != itend ;
+      ++it)
     cpt += (long int)(*it);
-  
+
   timer =  trace.endBlock();
-  trace.info() << "Cpt="<<cpt<<endl;
+  trace.info() << "Cpt=" << cpt << endl;
   return timer;
 }
 
-template<typename Image,typename Domain>
+template<typename Image, typename Domain>
 double domainIteratorScan(const Image &aImage, const Domain &aDomain)
 {
-  long int cpt=0;
+  long int cpt = 0;
   double timer;
 
   trace.beginBlock( "Domain iterator simple scan ..." );
   for ( typename Domain::ConstIterator it = aDomain.begin(),
-	  itend= aDomain.end(); it!=itend; ++it)
-       cpt += (long int) aImage( (*it) );
-  
+      itend = aDomain.end(); it != itend; ++it)
+    cpt += (long int) aImage( (*it) );
+
   timer =  trace.endBlock();
-  trace.info() << "Cpt="<<cpt<<endl;
+  trace.info() << "Cpt=" << cpt << endl;
   return timer;
 }
 
 template<typename Point, typename Image, typename Domain>
 bool testSuite(unsigned int dim, unsigned int n)
 {
-  double alloc,builtinconstiter, domainiter;
-  
-  Point a=Point::zero,b;
-  for(unsigned int i=0; i < dim; i++)
-    b[i] = n;      
-  
-  try{
-    
-    Domain aDomain(a,b);
-    trace.info() << aDomain<<endl;
-    trace.beginBlock("init");    
-    Image image(a,b);
-    
+  double alloc, builtinconstiter, domainiter;
+
+  Point a = Point::zero, b;
+  for (unsigned int i = 0; i < dim; i++)
+    b[i] = n;
+
+  try
+  {
+
+    Domain aDomain(a, b);
+    trace.info() << aDomain << endl;
+
+    trace.beginBlock("init");
+    Image image(a, b);
     alloc = trace.endBlock();
+
     builtinconstiter = builtinIteratorScan(image);
-    domainiter = domainIteratorScan<Image,Domain>(image,aDomain);
+    domainiter = domainIteratorScan<Image, Domain>(image, aDomain);
 
-    trace.warning() << "Dim= "<< dim 
-		    << " n=" << n<<" Alloc="<<alloc
-		    << " Built-in Iter="<< builtinconstiter 
-		    << " DomainIter="<< domainiter
-		    << endl;    
+    trace.warning() << "Dim= " << dim
+    << " n=" << n << " Alloc=" << alloc
+    << " Built-in Iter=" << builtinconstiter
+    << " DomainIter=" << domainiter
+    << endl;
 
-    std::cout<< dim<<" "<<n<<" "<<alloc<<" "<<builtinconstiter
-	     <<" "<<domainiter<<std::endl;
+    std::cout << dim << " " << n << " " << alloc << " " << builtinconstiter
+        << " " << domainiter << std::endl;
 
-    trace.endBlock();   
+    trace.endBlock();
     return true;
   }
   catch (bad_alloc& ba)
-    {
-      trace.error() << "bad_alloc caught: " << ba.what() << endl;
-      trace.warning() << "Dim= "<< dim 
-		      << " n=" << n<<" Alloc= XX"
-		      << " Constiter= XX" << endl;   
-      std::cout<< dim<<" "<<n<<" "<<std::endl;      
-      trace.endBlock();
-      return false;
-    }  
+  {
+    trace.error() << "bad_alloc caught: " << ba.what() << endl;
+    trace.warning() << "Dim= " << dim
+    << " n=" << n << " Alloc= XX"
+    << " Constiter= XX" << endl;
+    std::cout << dim << " " << n << " " << std::endl;
+    trace.endBlock();
+    return false;
+  }
 }
 
 
@@ -128,77 +130,91 @@ bool testSuite(unsigned int dim, unsigned int n)
  *
  */
 bool testImageContainerBenchmark()
-{  
-  unsigned int dim=2;
+{
+  unsigned int dim = 2;
 
-  std::cout<< "#dim n alloc built-in-Iter domain-Iter"<<std::endl;
+  std::cout << "#dim n alloc built-in-Iter domain-Iter" << std::endl;
 
-  for(unsigned int n = 100; n < 2000 ; n=n+100)
+  for (unsigned int n = 100; n < 2000 ; n = n + 100)
+  {
+    trace.beginBlock("Begin test suite");
+    typedef SpaceND<2> Space;
+    typedef Space::Point Point;
+    typedef HyperRectDomain<Space> Domain;
+    //Default image selector = STLVector
+    typedef ImageSelector<Domain, int>::Type Image;
+
+
+
+    if (!testSuite<Point, Image, Domain>(dim, n))
     {
-      trace.beginBlock("Begin test suite");
-      typedef SpaceND<2> Space;
-      typedef Space::Point Point;
-      typedef HyperRectDomain<Space> Domain;
-      //Default image selector = STLVector
-      typedef ImageSelector<Domain, int>::Type Image;
-  
-      if (!testSuite<Point,Image,Domain>(dim,n))
-	break;
-
       trace.endBlock();
+      break;
     }
-  
-  
-  dim++;
-  
-  for(unsigned int n = 100; n < 2048 ; n=n+100)
-    {
-      trace.beginBlock("Begin test suite");
-      typedef SpaceND<3> Space;
-      typedef Space::Point Point;
-      typedef HyperRectDomain<Space> Domain;
-      //Default image selector = STLVector
-      typedef ImageSelector<Domain, int>::Type Image;
-            
-      if (!testSuite<Point,Image,Domain>(dim,n))
-	break;
 
-      trace.endBlock();      
+    trace.endBlock();
+  }
+
+
+  dim++;
+
+  for (unsigned int n = 100; n < 2048 ; n = n + 100)
+  {
+    trace.beginBlock("Begin test suite");
+    typedef SpaceND<3> Space;
+    typedef Space::Point Point;
+    typedef HyperRectDomain<Space> Domain;
+    //Default image selector = STLVector
+    typedef ImageSelector<Domain, int>::Type Image;
+
+    if (!testSuite<Point, Image, Domain>(dim, n))
+    {
+      trace.endBlock();
+      break;
     }
-  
+
+    trace.endBlock();
+  }
+
   dim++;
-  
-  for(unsigned int n = 50; n < 200 ; n=n+20)
+
+  for (unsigned int n = 50; n < 200 ; n = n + 20)
+  {
+    trace.beginBlock("Begin test suite");
+    typedef SpaceND<4> Space;
+    typedef Space::Point Point;
+    typedef HyperRectDomain<Space> Domain;
+    //Default image selector = STLVector
+    typedef ImageSelector<Domain, int>::Type Image;
+
+    if (!testSuite<Point, Image, Domain>(dim, n))
     {
-      trace.beginBlock("Begin test suite");
-      typedef SpaceND<4> Space;
-      typedef Space::Point Point;
-      typedef HyperRectDomain<Space> Domain;
-      //Default image selector = STLVector
-      typedef ImageSelector<Domain, int>::Type Image;
-            
-      if (!testSuite<Point,Image,Domain>(dim,n))
-	break;
+      trace.endBlock();
+      break;
+    }
 
-      trace.endBlock();      
-    }  
+    trace.endBlock();
+  }
 
- dim++;
-  
-  for(unsigned int n = 50; n < 100 ; n=n+10)
+  dim++;
+
+  for (unsigned int n = 50; n < 100 ; n = n + 10)
+  {
+    trace.beginBlock("Begin test suite");
+    typedef SpaceND<5> Space;
+    typedef Space::Point Point;
+    typedef HyperRectDomain<Space> Domain;
+    //Default image selector = STLVector
+    typedef ImageSelector<Domain, int>::Type Image;
+
+    if (!testSuite<Point, Image, Domain>(dim, n))
     {
-      trace.beginBlock("Begin test suite");
-      typedef SpaceND<5> Space;
-      typedef Space::Point Point;
-      typedef HyperRectDomain<Space> Domain;
-      //Default image selector = STLVector
-      typedef ImageSelector<Domain, int>::Type Image;
-            
-      if (!testSuite<Point,Image,Domain>(dim,n))
-	break;
+      trace.endBlock();
+      break;
+    }
 
-      trace.endBlock();      
-    }  
+    trace.endBlock();
+  }
 
 
   return true;

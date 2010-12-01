@@ -52,7 +52,7 @@ namespace DGtal
    *
    * @ingroup Concepts
    * Aim:
-   * 
+   *
    * <p> Refinement of
    *
    * <p> Associated types :
@@ -66,12 +66,12 @@ namespace DGtal
    * <p> Valid expressions and semantics <br>
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
+   * <td> \b Precondition </td> <td> \b Semantics </td>
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
+   * <tr>
+	 * <td> Image extent</td> <td>x.extent() </td> <td> </td> <td> X::Space::Vector</td>
+   * <td> </td> <td> returns the extent of the image  </td> <td> </td> <td> O(dimension)</td>
    * </tr>
    * </table>
    *
@@ -85,45 +85,44 @@ namespace DGtal
    */
 
   template <typename IContainer>
-    struct CImageContainer
+  struct CImageContainer
+  {
+
+  public:
+    typedef typename IContainer::Iterator Iterator;
+    typedef typename IContainer::ValueType ValueType;
+    typedef typename IContainer::ConstIterator ConstIterator;
+    typedef typename IContainer::Point Point;
+
+    BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
+    BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
+
+    BOOST_CONCEPT_USAGE(CImageContainer)
     {
+      //TContainer j(a,b);
+      it = i.begin();  // require postincrement-dereference returning value_type
+      same_type(i(a), v);
 
-    public:
-      typedef typename IContainer::Iterator Iterator;
-      typedef typename IContainer::ValueType ValueType;
-      typedef typename IContainer::ConstIterator ConstIterator;
-      typedef typename IContainer::Point Point;
+      //API
+      same_type(i.extent(), a); //get the extent
+      i.setValue(a, v);  //set a value at a Point
+      i.setValue(it, v); //set a value at an Iterator
+      same_type(i.operator()(itconst), v);       // get the value from a ConstIterator
+      same_type(i.operator()(a), v);       //get the value from a point
 
-      BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
-      BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
+    }
 
+  private:
+    IContainer i;
+    Iterator it;
+    ConstIterator itconst;
+    ValueType v;
+    Point a, b;
 
-      BOOST_CONCEPT_USAGE(CImageContainer)
-      {
-        //TContainer j(a,b);
-        it=i.begin();  // require postincrement-dereference returning value_type	
-	same_type(i(a),v);
-	
-	//API
-	same_type(i.extent(), a); //get the extent 
-	i.setValue(a,v);   //set a value at a Point
-	i.setValue(it,v); //set a value at an Iterator
-        same_type(i.operator()(itconst),v);        // get the value from a ConstIterator
-        same_type(i.operator()(a),v);        //get the value from a point
-
-      }
-
-    private:
-      IContainer i;
-      Iterator it;
-      ConstIterator itconst;
-      ValueType v;
-      Point a,b;
- 
-      // Type deduction will fail unless the arguments have the same type.
-      template <typename T>
-	void same_type(T const&, T const&);
-    };
+    // Type deduction will fail unless the arguments have the same type.
+    template <typename T>
+    void same_type(T const&, T const&);
+  };
 } // namespace DGtal
 
 //                                                                           //
