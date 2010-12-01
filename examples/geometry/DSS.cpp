@@ -64,6 +64,7 @@ int main( int argc, char** argv )
   board << theContour;
   board.saveSVG("exampleDSS-1.svg");
   board.saveEPS("exampleDSS-1.eps");
+  board.saveFIG("exampleDSS-1.fig");
   
   // Get and display the list of contour points
   vector<Point> ContourPoints; 
@@ -106,6 +107,7 @@ int main( int argc, char** argv )
   board << SetMode(aDSS.styleName(), "BoundingBox") << aDSS;
   board.saveSVG("exampleDSS-2.svg");
   board.saveEPS("exampleDSS-2.eps");
+  board.saveFIG("exampleDSS-2.fig");
   
   // Clear the board 
   board.clear();
@@ -131,6 +133,7 @@ int main( int argc, char** argv )
  
   board.saveSVG("exampleDSS-3.svg");
   board.saveEPS("exampleDSS-3.eps");
+  board.saveFIG("exampleDSS-3.fig");
 
   
   return 0;
