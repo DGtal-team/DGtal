@@ -471,6 +471,14 @@ namespace DGtal
     };
 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // class FreemanChain::ConstIterator
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
     // ------------------------- static services ------------------------------
   public:
 
@@ -1596,12 +1604,11 @@ namespace DGtal
       {
 	aBoard.setFillColor(DGtalBoard::Color::None);
 	aBoard.setPenColor(DGtalBoard::Color::Black);
-	// aBoard.setPenColorRGBi(160,160,160);
-	// aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
-	// aBoard.setFillColorRGBi(220,220,220);
-	// aBoard.setLineWidth(1);
       }
     };
+
+
+
 
 
   }; // end of class FreemanChain

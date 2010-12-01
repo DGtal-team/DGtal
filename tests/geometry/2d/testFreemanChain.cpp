@@ -123,8 +123,8 @@ bool testDisplayFreemanChain(const string &file)
   aBoard.setPenColor(Color::Red);
   
   //aBoard << DrawPavingPixel();
-
-  fc.selfDraw(aBoard);
+  
+  aBoard << fc;
   fst.close();
   
   

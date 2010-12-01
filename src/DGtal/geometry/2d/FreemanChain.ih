@@ -108,36 +108,7 @@ DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther 
   return *this;
 }
 
-template <typename TInteger>
-template<typename Functor>
-inline
-void 
-DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
-{
-  //  Functor applystyle(aBoard);
-  vector<typename FreemanChain<TInteger>::PointI2> aVContour;
-  FreemanChain<TInteger>::getContourPoints(*this, aVContour);
-  int minX, minY, maxX, maxY;
-  this->computeBoundingBox(minX, minY, maxX, maxY);
-  
-//   LibBoard::Rectangle rect ( minX-10, maxY+10, 
-// 			     maxX-minX+20, maxY-minY+20);
-//   rect.shift(0);
-//   aBoard.drawRectangle();
-  
-  vector<LibBoard::Point> contour;
-  for(unsigned int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(aVContour[i][0],aVContour[i][1]));
-   
-    aBoard << aVContour[i];
-      }
-  aBoard.setFillColor(LibBoard::Color::None);
-  aBoard.drawPolyline(contour);
-  
-  
 
-  
-}
 
 //------------------------------------------------------------------------------
 template <typename TInteger>
