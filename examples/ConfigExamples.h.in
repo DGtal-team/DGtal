@@ -9,5 +9,5 @@
 #include <string>
 
 ///Path to the DGtal test suite.
-const std::string examplesPath= "/Users/kerautre/EnCours/DGtal/examples/";
+const std::string examplesPath= "@PROJECT_SOURCE_DIR@/examples/";
 
