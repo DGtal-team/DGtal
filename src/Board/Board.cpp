@@ -366,6 +366,17 @@ Board::drawRectangle( double x, double y,
 }
 
 void
+Board::drawImage(std::string filename, double x, double y, 
+		 double width, double height,
+		 int depthValue /* = -1 */ )
+{
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
+  _shapes.push_back( new Image( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
+				filename, d ) );
+}
+
+
+void
 Board::fillRectangle( double x, double y,
 		      double width, double height,
 		      int depthValue /* = -1 */ )

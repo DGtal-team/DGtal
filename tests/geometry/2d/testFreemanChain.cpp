@@ -38,7 +38,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "ConfigTest.h"
-#include "DGtal/io/DGtalBoard.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
