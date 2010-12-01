@@ -330,6 +330,18 @@ public:
   void drawRectangle( double x, double y, 
 		      double width, double height,
 		      int depthValue = -1 );
+  /** 
+   * Draws an image.
+   * 
+   * @param x First coordinate of the upper left corner.
+   * @param y Second coordinate of the upper left corner.
+   * @param width Width of the rectangle.
+   * @param height Height of the rectangle.
+   * @param depthValue Depth of the rectangle.
+   */
+  void drawImage( std::string filename, double x, double y, 
+		      double width, double height,
+		      int depthValue = -1 );
 
   /** 
    * Draws a rectangle filled with the current pen color.

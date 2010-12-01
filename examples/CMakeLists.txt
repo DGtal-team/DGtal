@@ -16,6 +16,9 @@ include_directories (${PROJECT_SOURCE_DIR}/examples/)
 link_directories (${PROJECT_BINARY_DIR})
 
 
+# ConfigTest.h instanciation.
+configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in ${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h IMMEDIATE)
+
 #------TESTS subdirectories ------
 
 add_subdirectory(io)

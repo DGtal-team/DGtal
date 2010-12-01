@@ -1,0 +1,102 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DSS.cpp
+ * @ingroup Examples
+ * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
+ * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
+ *
+ * @date 2010/11/30
+ *
+ * An example file named DSS.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <fstream>
+#include "DGtal/base/Common.h"
+///////////////////////////////////////////////////////////////////////////////
+
+
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/base/BasicTypes.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/io/readers/MagickReader.h"
+#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/helpers/StdDefs.h"
+
+
+
+#include "ConfigExamples.h"
+
+
+using namespace std;
+using namespace DGtal;
+using namespace Z2i;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+int main( int argc, char** argv )
+{
+  
+  typedef SpaceND<2> Space2Type;
+  typedef HyperRectDomain<Space2Type> TDomain;
+  typedef TDomain::Vector Vector;
+
+  //Default image selector = STLVector
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
+  
+
+  // Creating FreemanChain from file
+  std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
+  fstream fst;
+  fst.open (freemanChainFilename.c_str(), ios::in);
+  FreemanChain<Space::Integer> fc(fst);
+  fst.close();
+  
+  
+  // Importing image with MagickReader
+  MagickReader<Image> reader;
+  std::string filenameImage = examplesPath + "samples/contourS.gif";
+  Image img = reader.importImage( filenameImage );
+  
+  Point ptInf = img.lowerBound(); 
+  Point ptSup = img.upperBound(); 
+  unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
+  unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
+  
+  // Draw the freemanchain and the contour 
+  DGtalBoard dgBoard;
+  
+  dgBoard.drawImage(filenameImage, 0,height-1, width, height );
+  dgBoard << fc;
+  
+  dgBoard.saveEPS("freemanChainDisplay.eps");
+  dgBoard.saveSVG("freemanChainDisplay.svg");
+  dgBoard.saveFIG("freemanChainDisplay.fig");
+  
+  
+  return 0;
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
