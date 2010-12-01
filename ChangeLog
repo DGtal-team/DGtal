@@ -1,3 +1,18 @@
+2010-01-12 dcoeurjo
+	* Release 0.2
+	* Kernel: DGtalBoard mechanism for 2D drawing of DGtal objects, ..
+	* Geometry package 
+	   - Volumetric: distance transformation with separable	metric
+	(l2, l1 and linfinity) in arbitrary dimension
+	   - 2D: Arithmetical DSS, Greedy decomposition of a contour into
+	primitives, FreemanChain code iterators
+	* Topolopy package: Set, Adjacencies, Object, border extraction,
+	connected components computation, ...
+	* IO: 2D file formats with Magick++, Vol/Raw format in 3D, Raw
+	format in n-D (non-portable)
+	* Misc: Compiles on linux, MacOS and VisualStudio 2008
+
+
 2010-21-05 dcoeurjo
 	* Iterators added to PointVector
   * Debug methods removed in Trace class
