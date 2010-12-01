@@ -70,5 +70,12 @@
  * @defgroup Examples DGtal examples
  *
  * @example DSS.cpp
+ *  Illustration of DSS recognition and segmentation on a Freeman contour.  
+ *
  * @example distancetransform2D.cpp
+ * An example file named distancetransform2D. The aim of this example
+ * is to demonstrate the distance transformation package of the DGtal
+ * library. Using a simple random seed example, we compute the
+ * distance transformation (linear in time algorithm) using the L1,
+ * Linfinity and L2 metrics.
  */
