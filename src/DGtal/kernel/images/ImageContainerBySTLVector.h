@@ -117,6 +117,19 @@ namespace DGtal
       return (*it);
     };
 
+
+    /**
+     * Get the value of an image at a given position given
+     * by a Iterator.
+     *
+     * @param it  position in the image.
+     * @return the value at aPoint.
+     */
+    ValueType operator()(Iterator &it) const
+    {
+      return (*it);
+    };
+
     /**
      * Set a value on an Image at aPoint.
      *
