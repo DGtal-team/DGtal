@@ -51,12 +51,15 @@ namespace DGtal
    * Description of \b concept '\b CImageContainer' <p>
    *
    * @ingroup Concepts
-   * Aim:
+   * Aim: Defines the concept describing an image container.
    *
    * <p> Refinement of
    *
    * <p> Associated types :
-   *
+   * - \t ValueType: the type of values stored in the image.
+   * - \t Iterator: an iterator in the image.
+   * - \t ConstIterator: a const iterator in the image.
+   * - \t SpanIterator: a 1D span iterator in the image.
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
    * - \t x, \t y	: Object of type X
@@ -70,8 +73,41 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr>
-	 * <td> Image extent</td> <td>x.extent() </td> <td> </td> <td> X::Space::Vector</td>
+   * <td> Image extent</td> <td>extent = x.extent() </td> <td> </td> <td> X::Space::Vector</td>
    * <td> </td> <td> returns the extent of the image  </td> <td> </td> <td> O(dimension)</td>
+   * </tr>
+   * <tr>
+   * <td>Set a value at a position</td> <td>x.setValue(point, val)
+   * </td> <td>point is of type X::Space::Point, val is of type
+   * X::ValueType </td> <td> </td>
+   * <td> the point is in the domain associted to
+   * the image </td> <td> associate a value  to a point  </td> <td> </td> <td> Depends on the model</td>
+   * </tr>
+   * <tr>
+   * <td>Set a value at a position</td> <td>x.setValue(it, val) </td>
+   * <td>it is of type X::Iterator or X::ConstIterator, val is of type
+   * X::ValueType </td> <td> </td>
+   * <td> the iterator is in the image range</td> <td> associate a value  to a point given by an
+   * iterator</td> <td> </td> <td> Depends on the model</td>
+   * </tr>
+   * <tr>
+   * <td>Get the value at a position</td> <td>val = x(point) </td>
+   * <td>point is of type X::Space::Point, val is of type X::ValueType
+   * </td> <td> X::ValueType </td>
+   * <td>  the point is in the domain associted to
+   * the image</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
+   * </tr>
+     * <tr>
+   * <td>Get the value at a position</td> <td>val = x(it) </td>
+   * <td>it is of type X::Iterator, val is of type X::ValueType
+   * </td> <td> X::ValueType </td>
+   * <td>  the iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
+   * </tr>
+     * <tr>
+   * <td>Get the value at a position</td> <td>val = x(constIt) </td>
+   * <td>constIt is of type X::ConstIterator, val is of type X::ValueType
+   * </td> <td> X::ValueType </td>
+   * <td>  the const iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
    * </tr>
    * </table>
    *
@@ -84,15 +120,15 @@ namespace DGtal
    * @todo Complete ImageContainer checking.
    */
 
-  template <typename IContainer>
+  template <typename ImageContainer>
   struct CImageContainer
   {
 
   public:
-    typedef typename IContainer::Iterator Iterator;
-    typedef typename IContainer::ValueType ValueType;
-    typedef typename IContainer::ConstIterator ConstIterator;
-    typedef typename IContainer::Point Point;
+    typedef typename ImageContainer::ValueType ValueType;
+    typedef typename ImageContainer::Iterator Iterator;
+    typedef typename ImageContainer::ConstIterator ConstIterator;
+    typedef typename ImageContainer::Point Point;
 
     BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
     BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
@@ -108,12 +144,13 @@ namespace DGtal
       i.setValue(a, v);  //set a value at a Point
       i.setValue(it, v); //set a value at an Iterator
       same_type(i.operator()(itconst), v);       // get the value from a ConstIterator
+      same_type(i.operator()(it), v);       // get the value from a ConstIterator
       same_type(i.operator()(a), v);       //get the value from a point
 
     }
 
   private:
-    IContainer i;
+    ImageContainer i;
     Iterator it;
     ConstIterator itconst;
     ValueType v;
