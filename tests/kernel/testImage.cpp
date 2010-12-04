@@ -42,92 +42,93 @@ using namespace std;
 
 
 /**
-* Simple test of Image construction.
-*
-**/
+ * Simple test of Image construction.
+ *
+ **/
 bool testSimpleImage()
 {
+  typedef DGtal::int64_t Integer;
+  typedef SpaceND<4, Integer > Space4Type;
+  typedef HyperRectDomain<Space4Type> Domain;
+  typedef Domain::Point Point;
 
-    typedef SpaceND<4> Space4Type;
-    typedef HyperRectDomain<Space4Type> TDomain;
-    typedef TDomain::Point Point;
+  //Default image selector = STLVector
+  typedef ImageSelector<Domain, int>::Type Image;
 
-    //Default image selector = STLVector
-    typedef ImageSelector<TDomain, int>::Type Image;
+  const Integer t[ ] = { 1, 2, 3 ,4};
+  const Integer t2[ ] = { 5, 5, 3 ,4};
+  const Integer t3[ ] = { 2, 2, 3 ,4};
+  Point a ( t );
+  Point b ( t2 );
+  Point c ( t3 );
 
-    const DGtal::int32_t t[ ] = { 1, 2, 3 ,4};
-    const DGtal::int32_t t2[ ] = { 5, 5, 3 ,4};
-    Point a ( t );
-    Point b ( t2 );
+  trace.beginBlock ( "Image init" );
 
-    trace.beginBlock ( "Image init" );
+  ///Domain characterized by points a and b
+  Image myImage ( a,b );
+  trace.info() << myImage << std::endl;
 
-    ///Domain characterized by points a and b
-    Image myImage ( a,b );
-    trace.info() << myImage << std::endl;
-    trace.endBlock();
+  trace.endBlock();
 
-    trace.beginBlock("Test of built-in iterators");
+  myImage.setValue( c, 128 );
 
-
-    trace.info() << " Vector iterator: ";
-    for ( Image::ConstIterator it = myImage.begin();
-            it != myImage.end();
-            ++it)
-        trace.info() << myImage(it) <<" ";
-
-    trace.info()<<std::endl;
-    trace.endBlock();
+  trace.beginBlock("Test of built-in iterators");
+  for ( Image::ConstIterator it = myImage.begin();
+	it != myImage.end();
+	++it)
+    trace.info() << myImage(it) <<" ";
+  trace.info()<<std::endl;
+  trace.endBlock();
     
-    return myImage.isValid();
+  return myImage.isValid();
 }
 
 /*
-bool testImageContainer()
-{
-    typedef SpaceND<int,4> Space4Type;
-    typedef Space4Type::Point Point;
-    typedef HyperRectDomain<Space4Type> TDomain;
-    typedef ImageContainerBySTLVector<Point, double> TContainerV;
-    typedef ImageContainerBySTLMap<Point, double> TContainerM;
+  bool testImageContainer()
+  {
+  typedef SpaceND<int,4> Space4Type;
+  typedef Space4Type::Point Point;
+  typedef HyperRectDomain<Space4Type> TDomain;
+  typedef ImageContainerBySTLVector<Point, double> TContainerV;
+  typedef ImageContainerBySTLMap<Point, double> TContainerM;
 
-    bool res = true;
+  bool res = true;
 
-    const int t[ ] = { 1, 2, 3 ,4};
-    const int t2[ ] = { 5, 5, 3 ,4};
-    const int t3[ ] = { 5, 3, 3 ,4};
-    Point a ( t );
-    Point b ( t2 );
+  const int t[ ] = { 1, 2, 3 ,4};
+  const int t2[ ] = { 5, 5, 3 ,4};
+  const int t3[ ] = { 5, 3, 3 ,4};
+  Point a ( t );
+  Point b ( t2 );
 
-    Point c ( t3 );
+  Point c ( t3 );
 
-    trace.beginBlock ( "Image Container" );
+  trace.beginBlock ( "Image Container" );
 
-    ///Domain characterized by points a and b
-    Image<TDomain,double, TContainerV> myImageV ( a,b );
-    trace.info() << "Vector container, value at c="<<myImageV( c )<< std::endl;
+  ///Domain characterized by points a and b
+  Image<TDomain,double, TContainerV> myImageV ( a,b );
+  trace.info() << "Vector container, value at c="<<myImageV( c )<< std::endl;
 
-    ///Domain characterized by points a and b
-    Image<TDomain,double, TContainerM> myImageM ( a,b );
+  ///Domain characterized by points a and b
+  Image<TDomain,double, TContainerM> myImageM ( a,b );
 
-    res = res && myImageM.isValid() && myImageV.isValid();
+  res = res && myImageM.isValid() && myImageV.isValid();
 
-    //We revert the bool flag to catch the exception
-    res = !res;
+  //We revert the bool flag to catch the exception
+  res = !res;
 
-    try {
-        trace.info() << "Map container, value at c="<<myImageM( c )<< std::endl;
-    }
-    catch (std::bad_alloc e)
-    {
-        trace.warning() << "Exception bad_alloc catched.. this is normal for the map container"<<std::endl;
-        res = !res;
-    }
+  try {
+  trace.info() << "Map container, value at c="<<myImageM( c )<< std::endl;
+  }
+  catch (std::bad_alloc e)
+  {
+  trace.warning() << "Exception bad_alloc catched.. this is normal for the map container"<<std::endl;
+  res = !res;
+  }
 
-    trace.endBlock();
+  trace.endBlock();
 
-    return res;
-}
+  return res;
+  }
 */
 
 
@@ -135,8 +136,8 @@ int main()
 {
 
   if ( testSimpleImage() )//&& testImageContainer() && testBuiltInIterators() && testConcepts() )
-        return 0;
-    else
-        return 1;
+    return 0;
+  else
+    return 1;
 }
 

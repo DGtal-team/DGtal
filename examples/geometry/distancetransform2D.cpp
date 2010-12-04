@@ -45,7 +45,6 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace DGtal::Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -77,11 +76,11 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example distancetransform2D" );
 
-  Point a ( 0, 0 );
-  Point b ( 127, 127);
+  Z2i::Point a ( 0, 0 );
+  Z2i::Point b ( 127, 127);
   
   //Input image with unsigned char values
-  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
   Image image ( a, b );
 
   //We fill the image with the 128 value
@@ -102,11 +101,11 @@ int main( int argc, char** argv )
 
   //Output image type with unsigned int values (note that we have to
   //store squares distances)
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
+  typedef ImageSelector<Z2i::Domain, long int>::Type ImageLong;
 
-  DistanceTransformation<Image, ImageLong, L2Metric> dtL2;
-  DistanceTransformation<Image, ImageLong, LinfMetric> dtLinf;
-  DistanceTransformation<Image, ImageLong, L1Metric> dtL1;
+  DistanceTransformation<Image, ImageLong, Z2i::L2Metric> dtL2;
+  DistanceTransformation<Image, ImageLong, Z2i::LinfMetric> dtLinf;
+  DistanceTransformation<Image, ImageLong, Z2i::L1Metric> dtL1;
 
   ImageLong resultL2 = dtL2.compute ( image );
   ImageLong resultLinf = dtLinf.compute ( image );
