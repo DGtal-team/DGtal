@@ -23,9 +23,20 @@ include(Board/ModuleSRC.txt)
 add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC} ${BOARD_SRC})
 target_link_libraries( ${LIBDGTAL_NAME}  ${Boost_LIBRARIES})
 
-
 install(TARGETS ${LIBDGTAL_NAME} 
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
+if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
+   ## each subdir must contain a ModuleSRC.txt file with a set command on the variable ${DGTALIV_SRC}
+   include(DGtal/inventor/ModuleSRC.txt)
+   add_library ( ${LIBDGTALIV_NAME}  ${DGTALIV_SRC} )
+   target_link_libraries( ${LIBDGTALIV_NAME}  ${Boost_LIBRARIES}
+   			  ${SOQT_LIBRARY} ${COIN3D_LIBRARY} ${QT_LIBRARIES} )
+   install(TARGETS ${LIBDGTALIV_NAME} 
+           RUNTIME DESTINATION bin
+           LIBRARY DESTINATION lib
+           ARCHIVE DESTINATION lib)
+
+endif ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )

@@ -118,9 +118,34 @@ IF(MAGICK++_FOUND)
 ENDIF(MAGICK++_FOUND)
 
 # -----------------------------------------------------------------------------
+# Look for Coin3D, Qt, SoQt for 3D display.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+find_package(COIN3D)
+if ( COIN3D_FOUND )
+   message( "[OK] Coin3d found. include=${COIN3D_INCLUDE_DIR}" )
+   include_directories( ${COIN3D_INCLUDE_DIR} )
+endif ( COIN3D_FOUND )
+
+find_package(Qt4)
+if ( QT4_FOUND )
+   message( "[OK] Qt4 found. include=${QT_INCLUDE_DIR}" )
+   set(QT_USE_QTXML 1)
+   include( ${QT_USE_FILE})
+   # include_directories( ${QT_INCLUDE_DIR} )
+endif ( QT4_FOUND )
+
+find_package(SOQT)
+if ( SOQT_FOUND )
+   message( "[OK] SoQt found. include=${SOQT_INCLUDE_DIR}" )
+   include_directories( ${SOQT_INCLUDE_DIR} )
+endif ( SOQT_FOUND )
+
+# -----------------------------------------------------------------------------
 # Defines some variables
 # -----------------------------------------------------------------------------
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
+set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options
