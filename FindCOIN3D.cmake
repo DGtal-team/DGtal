@@ -57,9 +57,15 @@ ELSE (WIN32)
     SET(COIN3D_LIBRARY "-framework Coin3d" CACHE STRING "Coin3D library for OSX")
    ELSE(APPLE)
 
-  FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h)
+  FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
+	  /usr/include/
+	  /usr/local/include/
+	 )
 
-  FIND_LIBRARY(COIN3D_LIBRARY Coin)   
+  FIND_LIBRARY(COIN3D_LIBRARY Coin
+	  /usr/lib/
+	  /usr/local/lib/
+    )   
   ENDIF(APPLE)
 
 ENDIF (WIN32)
