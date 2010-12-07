@@ -117,6 +117,9 @@ namespace DGtal
     DGtalBoard & operator= ( const DGtalBoard & other );
 
     /**
+     * @param objectName the name of the object (generally obtained
+     * with a 'object.styleName()').
+     *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
      */

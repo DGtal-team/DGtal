@@ -181,7 +181,7 @@ namespace DGtal {
    *
    * An instance of one of this class is then attached to the drawable
    * element by creating an instance of CustomStyle. Do not worry
-   * about deallocating the CustomStyle instances. This is done
+   * about deallocating the CustomXXX instances. This is done
    * automatically.  The following snippet indicates how to use these
    * classes.
    *
@@ -242,7 +242,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
 };
    \endcode
    *
-   * The custom style is then attached to drawable element by creating an instance of CustomStyle. Do not worry about deallocating the CustomStyle instances. This is done automatically. 
+   * The custom style is then attached to drawable element by creating an instance of CustomStyle. Do not worry about deallocating the MyDrawStyleCustomColor instances. This is done automatically. 
    *
    \code
    // same shape as above
