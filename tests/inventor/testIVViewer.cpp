@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <Qt/qapplication.h>
 #include <Inventor/nodes/SoCube.h>
 #include "DGtal/inventor/DGtalInventor.h"
 #include "DGtal/inventor/IVViewer.h"
@@ -48,6 +49,27 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
+bool testIVViewerSimpleWdw( int argc, char** argv )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing block ..." );
+  IVViewer ivv( argc, argv );
+  ivv.show();
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
 bool testIVViewer( int argc, char** argv )
 {
   unsigned int nbok = 0;
@@ -59,6 +81,7 @@ bool testIVViewer( int argc, char** argv )
     s += " " + string( argv[ i ] );
 
   IVViewer ivv( argc, argv );
+  //ivv.show();
   // Setting camera
   ivv.setCamera( 30.0, 25.0 );
   // Gives hand to Inventor
@@ -108,13 +131,16 @@ bool testIVViewer( int argc, char** argv )
 
 int main( int argc, char** argv )
 {
+  QApplication app( argc, argv );
   trace.beginBlock ( "Testing class IVViewer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testIVViewer( argc, argv ); // && ... other tests
+  bool res = 
+    // testIVViewerSimpleWdw( argc, argv ) &&
+    testIVViewer( argc, argv );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

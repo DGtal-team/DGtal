@@ -60,11 +60,13 @@ ELSE (WIN32)
   FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
 	  /usr/include/
 	  /usr/local/include/
+	  /home/lachaud/local/include/
 	 )
 
   FIND_LIBRARY(COIN3D_LIBRARY Coin
 	  /usr/lib/
 	  /usr/local/lib/
+	  /home/lachaud/local/lib/
     )   
   ENDIF(APPLE)
 

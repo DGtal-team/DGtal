@@ -56,8 +56,10 @@ ELSE (WIN32)
     )   
     SET(SOQT_LIBRARY "-framework SoQt" CACHE STRING "SoQt library for OSX")
    ELSE(APPLE)
-       FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h)
-       FIND_LIBRARY(SOQT_LIBRARY SoQt)   
+       FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h
+	/home/lachaud/local/include)
+       FIND_LIBRARY(SOQT_LIBRARY SoQt
+	/home/lachaud/local/lib)   
   ENDIF(APPLE)
 
 ENDIF (WIN32)
