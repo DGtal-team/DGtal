@@ -93,13 +93,19 @@ ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Check Dependencies
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
 set ( CMAKE_PREFIX_PATH "/home/lachaud/local:/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
 message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 
-##########Check if boost exists (2 round)
+# -----------------------------------------------------------------------------
+# Look for boost 
+# -----------------------------------------------------------------------------
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 
@@ -110,12 +116,27 @@ if ( Boost_FOUND )
 endif( Boost_FOUND )
 
 
-##########Check if libMagick++ exists
+# -----------------------------------------------------------------------------
+# Look for GraphicsMagic
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
 FIND_PACKAGE(Magick)
 IF(MAGICK++_FOUND)
   INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
-  message( "-- GraphicsMagick++ found." )
+  message(STATUS "(optional) GraphicsMagick++ found" )
 ENDIF(MAGICK++_FOUND)
+
+
+# -----------------------------------------------------------------------------
+# Look for VTK
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+FIND_PACKAGE(VTK)
+IF(VTK_FOUND)
+  INCLUDE(${VTK_USE_FILE})
+  MESSAGE(STATUS "(optional) VTK found")
+ENDIF(VTK_FOUND)
+
 
 # -----------------------------------------------------------------------------
 # Look for Coin3D, Qt, SoQt for 3D display.
@@ -123,13 +144,13 @@ ENDIF(MAGICK++_FOUND)
 # -----------------------------------------------------------------------------
 find_package(COIN3D)
 if ( COIN3D_FOUND )
-   message(STATUS "[OK] Coin3d found. include=${COIN3D_INCLUDE_DIR}" )
+   message(STATUS "(optional) Coin3d found. include=${COIN3D_INCLUDE_DIR}" )
    include_directories( ${COIN3D_INCLUDE_DIR} )
 endif ( COIN3D_FOUND )
 
 find_package(Qt4)
 if ( QT4_FOUND )
-   message(STATUS  "[OK] Qt4 found. include=${QT_INCLUDE_DIR}" )
+   message(STATUS  "(optional) Qt4 found. include=${QT_INCLUDE_DIR}" )
    set(QT_USE_QTXML 1)
    include( ${QT_USE_FILE})
    # include_directories( ${QT_INCLUDE_DIR} )
@@ -137,7 +158,7 @@ endif ( QT4_FOUND )
 
 find_package(SOQT)
 if ( SOQT_FOUND )
-   message(STATUS  "[OK] SoQt found. include=${SOQT_INCLUDE_DIR}" )
+   message(STATUS  "(optional) SoQt found. include=${SOQT_INCLUDE_DIR}" )
    include_directories( ${SOQT_INCLUDE_DIR} )
 endif ( SOQT_FOUND )
 
