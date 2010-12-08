@@ -44,6 +44,7 @@
 #include <iostream>
 #include <exception>
 #include <boost/concept_check.hpp>
+#include <boost/static_assert.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 #include <boost/serialization/access.hpp>
