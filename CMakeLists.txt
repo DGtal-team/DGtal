@@ -96,7 +96,7 @@ ADD_CUSTOM_TARGET(uninstall
 # Check Dependencies
 # -----------------------------------------------------------------------------
 
-set ( CMAKE_PREFIX_PATH "/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
+set ( CMAKE_PREFIX_PATH "/home/lachaud/local:/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
 message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 
 ##########Check if boost exists (2 round)

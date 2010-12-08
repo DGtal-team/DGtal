@@ -148,7 +148,7 @@ void DGtal::IVViewer::show() const
 #endif
  
   lViewer->setSceneGraph( myRoot );
-  lViewer->setTitle( myTitle.c_str() );
+  //  lViewer->setTitle( myTitle.c_str() );
   lViewer->show();
   lViewer->viewAll();
 
