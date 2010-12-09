@@ -18,24 +18,11 @@ SET(DGTAL_BENCH_SRC
   testImageContainerByHashTree
   )
 
-#VTK based tests
-IF(VTK_FOUND)
-  SET(DGTAL_TESTS_VTK_SRC testVTKImageContainer)
-  FOREACH(FILE ${DGTAL_TESTS_VTK_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} ${LIBDGTAL_NAME} vtkCommon vtkImaging vtkHybrid)
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
-ENDIF(VTK_FOUND)
-
-
-
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME} )
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
-
 
 #Benchmark target
 FOREACH(FILE ${DGTAL_BENCH_SRC})
@@ -45,3 +32,16 @@ FOREACH(FILE ${DGTAL_BENCH_SRC})
   ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
 ENDFOREACH(FILE)
 
+#VTK based tests
+IF(VTK_FOUND)
+  SET(DGTAL_TESTS_VTK_SRC testVTKImageContainer)
+ELSE(VTK_FOUND)
+  SET(DGTAL_TESTS_VTK_SRC )
+ENDIF(VTK_FOUND)
+
+
+FOREACH(FILE ${DGTAL_TESTS_VTK_SRC})
+  add_executable(${FILE} ${FILE})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} vtkCommon vtkImaging vtkHybrid)
+  add_test(${FILE} ${FILE})
+ENDFOREACH(FILE)

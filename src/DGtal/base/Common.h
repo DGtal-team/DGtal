@@ -47,7 +47,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
-#include <boost/serialization/access.hpp>
+
 
 
 #if ( (defined(WIN32)) )
