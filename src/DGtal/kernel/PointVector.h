@@ -46,9 +46,6 @@
 #include <iostream>
 #include <string>
 #include <boost/array.hpp>
-#include <boost/serialization/array.hpp>
-#include <boost/serialization/nvp.hpp>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/IntegerTraits.h"
@@ -608,23 +605,13 @@ namespace DGtal
       static PointVector zero;
 
 
-      // ----------------------- Serializarion methods ------------------------------------
-    private:
-
-      friend class boost::serialization::access;
-      template<class Archive>
-      void serialize( Archive & ar, const unsigned int version )
-      {
-        using boost::serialization::make_nvp;
-        ar & make_nvp( "PointVector", myArray );
-      }
-
-      // ------------------------- Hidden services ------------------------------
-    private:
-
-      ///Internal data-structure: boost/array with constant size.
-      boost::array<T, N> myArray;
-
+    
+    // ------------------------- Hidden services ------------------------------
+  private:
+    
+    ///Internal data-structure: boost/array with constant size.
+    boost::array<T, N> myArray;
+    
   }; // end of class PointVector
 
   
