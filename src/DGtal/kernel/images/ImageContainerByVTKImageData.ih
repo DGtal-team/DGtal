@@ -38,99 +38,100 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 namespace DGtal{
-  /**
-   * Destructor.
-   */
-  template <typename TDomain, typename TValueType>
-  inline
-  ImageContainerByVTKImageData<TDomain,TValueType>::~ImageContainerByVTKImageData()
-  {
-    myVTKImage->Delete();
-  }
+  namespace experimental{
+    /**
+     * Destructor.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    ImageContainerByVTKImageData<TDomain,TValueType>::~ImageContainerByVTKImageData()
+    {
+      myVTKImage->Delete();
+    }
 
-  /**
-   * Constructor.
-   */
-  template <typename TDomain, typename TValueType>
-  inline
-  ImageContainerByVTKImageData<TDomain,TValueType>::ImageContainerByVTKImageData(const Point &aPointA, 
-										 const Point &aPointB)
-  {
-    myVTKImage = vtkImageData::New();
-    if (aPointA < aPointB)
-      {
-	myLowerBound = aPointA;
-	myUpperBound = aPointB;
-      }
-    else
-      {
-	myLowerBound = aPointB;
-	myUpperBound = aPointA;
-      }
-    Point dec = myUpperBound - myLowerBound;
+    /**
+     * Constructor.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    ImageContainerByVTKImageData<TDomain,TValueType>::ImageContainerByVTKImageData(const Point &aPointA, 
+										   const Point &aPointB)
+    {
+      myVTKImage = vtkImageData::New();
+      if (aPointA < aPointB)
+	{
+	  myLowerBound = aPointA;
+	  myUpperBound = aPointB;
+	}
+      else
+	{
+	  myLowerBound = aPointB;
+	  myUpperBound = aPointA;
+	}
+      Point dec = myUpperBound - myLowerBound;
     
-    myVTKImage->SetDimensions(dec[0],dec[1],dec[2]);
-    myVTKImage->SetNumberOfScalarComponents(1);
+      myVTKImage->SetDimensions(dec[0],dec[1],dec[2]);
+      myVTKImage->SetNumberOfScalarComponents(1);
     
-    //Scalar Type
-    myVTKImage->SetScalarTypeToInt();
-    myVTKImage->AllocateScalars();
-  }
+      //Scalar Type
+      myVTKImage->SetScalarTypeToInt();
+      myVTKImage->AllocateScalars();
+    }
 
 
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // Interface - public :
+    ///////////////////////////////////////////////////////////////////////////////
+    // Interface - public :
 
 
-  /**
-   * Get the value of an image at a given position.
-   *
-   * @param aPoint  position in the image.
-   * @return the value at aPoint.
-   */
-  template <typename TDomain, typename TValueType>
-  inline
-  TValueType
-  ImageContainerByVTKImageData<TDomain,TValueType>::operator()(const Point &aPoint) const
-  {
-    return (int)myVTKImage->GetScalarComponentAsDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0);
-  }
+    /**
+     * Get the value of an image at a given position.
+     *
+     * @param aPoint  position in the image.
+     * @return the value at aPoint.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    TValueType
+    ImageContainerByVTKImageData<TDomain,TValueType>::operator()(const Point &aPoint) const
+    {
+      return (int)myVTKImage->GetScalarComponentAsDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0);
+    }
     
 
-  template <typename Domain, typename T>
-  inline
-  void
-  ImageContainerByVTKImageData<Domain, T>::setValue(const Point &aPoint, const T &V)
-  {
-    myVTKImage->SetScalarComponentFromDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0,V);    
-  }
+    template <typename Domain, typename T>
+    inline
+    void
+    ImageContainerByVTKImageData<Domain, T>::setValue(const Point &aPoint, const T &V)
+    {
+      myVTKImage->SetScalarComponentFromDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0,V);    
+    }
   
-  /**
-   * Writes/Displays the object on an output stream.
-   * @param out the output stream where the object is written.
-   */
-  template <typename TDomain, typename TValueType>
-  inline
-  void
-  ImageContainerByVTKImageData<TDomain,TValueType>::selfDisplay ( std::ostream & out ) const
-  {
-    out << "[ImageContainerByVTKImageData]";
-  }
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    void
+    ImageContainerByVTKImageData<TDomain,TValueType>::selfDisplay ( std::ostream & out ) const
+    {
+      out << "[ImageContainerByVTKImageData]";
+    }
 
-  /**
-   * Checks the validity/consistency of the object.
-   * @return 'true' if the object is valid, 'false' otherwise.
-   */
-  template <typename TDomain, typename TValueType>
-  inline
-  bool
-  ImageContainerByVTKImageData<TDomain,TValueType>::isValid() const
-  {
-    return true;
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    bool
+    ImageContainerByVTKImageData<TDomain,TValueType>::isValid() const
+    {
+      return true;
+    }
   }
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
@@ -139,7 +140,7 @@ template <typename TDomain, typename TValueType>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const ImageContainerByVTKImageData<TDomain,TValueType> & object )
+		    const DGtal::experimental::ImageContainerByVTKImageData<TDomain,TValueType> & object )
 {
   object.selfDisplay( out );
   return out;

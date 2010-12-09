@@ -59,7 +59,7 @@ bool testVTKImageContainer()
   typedef Domain::Point Point;
 
   //ATTENTION only the int container works at this point
-  typedef ImageContainerByVTKImageData<Domain, int> Image;
+  typedef experimental::ImageContainerByVTKImageData<Domain, int> Image;
 
   const Integer t[ ] = { 1, 1,1};
   const Integer t2[ ] = { 5, 5, 5};
