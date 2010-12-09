@@ -42,9 +42,6 @@
 // Inclusions
 #include <iostream>
 #include <vector>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/nvp.hpp>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CValueType.h"
 #include "DGtal/kernel/domains/CDomain.h"
@@ -442,19 +439,6 @@ namespace DGtal
      */
     template<typename Colormap>
     void selfDraw(DGtalBoard & board, const ValueType & minValue, const ValueType & maxValue ) const;
-
-    // ----------------------- Serializarion methods ------------------------------------
-  private:
-
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-      using boost::serialization::make_nvp;
-      ar & make_nvp("UpperBound", myUpperBound);
-      ar & make_nvp("LowerBound", myLowerBound);
-      ar & make_nvp("Image", boost::serialization::base_object< std::vector< ValueType > >(*this));
-    }
 
   };
 

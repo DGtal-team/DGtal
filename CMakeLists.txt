@@ -131,9 +131,9 @@ message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 
-FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS serialization program_options)
+FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS program_options)
 if ( Boost_FOUND )
-  message(STATUS "Boost and boost_serialization/boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
+  message(STATUS "Boost and boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
   include_directories( ${Boost_INCLUDE_DIR} )
 endif( Boost_FOUND )
 
