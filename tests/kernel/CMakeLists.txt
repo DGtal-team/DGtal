@@ -39,9 +39,23 @@ ELSE(VTK_FOUND)
   SET(DGTAL_TESTS_VTK_SRC )
 ENDIF(VTK_FOUND)
 
+#ITK based tests
+IF(ITK_FOUND)
+  SET(DGTAL_TESTS_ITK_SRC testITKImage)
+ELSE(ITK_FOUND)
+  SET(DGTAL_TESTS_ITK_SRC )
+ENDIF(ITK_FOUND)
+
 
 FOREACH(FILE ${DGTAL_TESTS_VTK_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME} vtkCommon vtkImaging vtkHybrid)
+  add_test(${FILE} ${FILE})
+ENDFOREACH(FILE)
+
+
+FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
+  add_executable(${FILE} ${FILE})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ITKCommon)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)

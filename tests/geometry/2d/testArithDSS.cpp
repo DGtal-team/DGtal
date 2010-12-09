@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 		trace.info() << "comparison" << std::endl;
 		ASSERT(v1.size() == v2.size());
 		bool isOk = true;
-		for (int k = 0; k < v1.size(); k++) {
+		for (unsigned int k = 0; k < v1.size(); k++) {
 			if (v1.at(k) != v2.at(k)) isOk = false;
 			trace.info() << "DSS4 :" << k << std::endl;
 			trace.info() << v1.at(k) << v2.at(k) << std::endl;

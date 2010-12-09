@@ -42,8 +42,6 @@ inline
 TImageContainer 
 DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename ) throw(DGtal::IOException)
 {
-  FILE * fin;
-  int errcode;
   int w,h;
   const Magick::PixelPacket *cacheRead;
   DGtal::IOException dgtalio;
@@ -77,8 +75,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
 
   //We scan the Raw file
   typename TImageContainer::Domain::ConstIterator it = domain.begin(),itend=domain.end();
-  unsigned int count=0;
-
+  
   for(; it != itend; ++it)
     {
       // const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;

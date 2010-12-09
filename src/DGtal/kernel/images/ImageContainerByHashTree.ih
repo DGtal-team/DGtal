@@ -107,7 +107,7 @@ namespace DGtal
 
     myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
 
-    unsigned int maxSize = 0;
+    int maxSize = 0;
     for ( unsigned int i = 0; i < dim; ++i )
       if ( maxSize < p1[i] - p2[i] )
         maxSize = p1[i] - p2[i];
