@@ -34,7 +34,7 @@
 /** Prevents recursive inclusion of headers. */
 #define ImageContainerByVTKImageData_RECURSES
 
-#if !defined ImageContainerByVTKImageData_h
+#if !defined ImageContainerByVTKImageData_hrm 
 /** Prevents repeated inclusion of headers. */
 #define ImageContainerByVTKImageData_h
 
