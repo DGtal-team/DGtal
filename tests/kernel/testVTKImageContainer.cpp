@@ -33,6 +33,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerByVTKImageData.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -65,22 +66,21 @@ bool testVTKImageContainer()
   const Integer t3[ ] = { 2, 2, 2};
   Point a ( t );
   Point b ( t2 );
-  Point c ( t3 );
+  Point c ( t3 ); 
+  int val;
 
-  trace.beginBlock ( "Image init" );
-
+  //  trace.beginBlock ( "Image init" );
   ///Domain characterized by points a and b
   Image myImage ( a,b );
-    
+  
   trace.info() << myImage << std::endl;
   trace.info() << "getvalue= "<< myImage(c)<<endl;
   trace.info() << "set value 23 "<< endl;
   myImage.setValue( c, 23);
   
-  int val =  myImage(c);
-
+  val =  myImage(c);
+  
   if (val == 23) nbok++;
-
   trace.info() << "getvalue= "<<val<<endl;
   
   trace.endBlock();
@@ -102,6 +102,7 @@ int main( int argc, char** argv )
   bool res = testVTKImageContainer(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+
   return res ? 0 : 1;
 }
 //                                                                           //

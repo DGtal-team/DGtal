@@ -56,7 +56,7 @@ namespace DGtal{
   ImageContainerByVTKImageData<TDomain,TValueType>::ImageContainerByVTKImageData(const Point &aPointA, 
 										 const Point &aPointB)
   {
-    myVTKImage = vtkSmartPointer<vtkImageData>::New();
+    myVTKImage = vtkImageData::New();
     if (aPointA < aPointB)
       {
 	myLowerBound = aPointA;
@@ -74,9 +74,7 @@ namespace DGtal{
     
     //Scalar Type
     myVTKImage->SetScalarTypeToInt();
-    
     myVTKImage->AllocateScalars();
-  
   }
 
 
@@ -96,7 +94,7 @@ namespace DGtal{
   TValueType
   ImageContainerByVTKImageData<TDomain,TValueType>::operator()(const Point &aPoint) const
   {
-    return *((int*)(myVTKImage->GetScalarPointer((int)aPoint[0],(int)aPoint[1],(int)aPoint[2])));
+    return (int)myVTKImage->GetScalarComponentAsDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0);
   }
     
 
@@ -105,8 +103,7 @@ namespace DGtal{
   void
   ImageContainerByVTKImageData<Domain, T>::setValue(const Point &aPoint, const T &V)
   {
-    T *pt = (T*)myVTKImage->GetScalarPointer((int)aPoint[0],(int)aPoint[1],(int)aPoint[2]);
-    *pt = V;
+    myVTKImage->SetScalarComponentFromDouble((int)aPoint[0],(int)aPoint[1],(int)aPoint[2],0,V);    
   }
   
   /**

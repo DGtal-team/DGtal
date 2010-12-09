@@ -64,7 +64,7 @@ namespace DGtal
    * \brief Aim:
    */
   template <typename TDomain, typename TValueType>
-  class ImageContainerByVTKImageData:  public vtkImageData
+  class ImageContainerByVTKImageData
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -172,7 +172,7 @@ namespace DGtal
 
     Point myLowerBound;
     Point myUpperBound;
-    vtkSmartPointer<vtkImageData> myVTKImage;
+    vtkImageData *myVTKImage;
 
   }; // end of class ImageContainerByVTKImageData
 
@@ -192,7 +192,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/images//ImageContainerByVTKImageData.ih"
+#include "DGtal/kernel/images/ImageContainerByVTKImageData.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

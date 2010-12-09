@@ -92,6 +92,28 @@ CONFIGURE_FILE(
 ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
+
+# -----------------------------------------------------------------------------
+# Defines some variables
+# -----------------------------------------------------------------------------
+set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
+set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
+
+# -----------------------------------------------------------------------------
+# Parsing cmake options
+# -----------------------------------------------------------------------------
+
+OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+
+OPTION(INLINE_FUNCTION_BUILD "Build inline functions." ON)
+
+if (INLINE_FUNCTION_BUILD)
+  ADD_DEFINITIONS(-DINLINE=inline)
+else (INLINE_FUNCTION_BUILD)
+  ADD_DEFINITIONS(-DINLINE="")
+endif (INLINE_FUNCTION_BUILD)
+
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -123,20 +145,30 @@ endif( Boost_FOUND )
 FIND_PACKAGE(Magick)
 IF(MAGICK++_FOUND)
   INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
-  message(STATUS "(optional) GraphicsMagick++ found" )
+  message(STATUS "(optional) GraphicsMagick++ found." )
+ELSE(MAGICK++_FOUND)
+   message(STATUS "(optional) GraphicsMagick++ not found." )
 ENDIF(MAGICK++_FOUND)
 
-
 # -----------------------------------------------------------------------------
-# Look for VTK
+# Look for VTK/ITK
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 FIND_PACKAGE(VTK)
 IF(VTK_FOUND)
   INCLUDE(${VTK_USE_FILE})
-  MESSAGE(STATUS "(optional) VTK found")
+  MESSAGE(STATUS "(optional) VTK found.")
+ELSE(VTK_FOUND)
+  MESSAGE(STATUS "(optional) VTK not found.")
 ENDIF(VTK_FOUND)
 
+FIND_PACKAGE(ITK)
+IF(ITK_FOUND)
+  INCLUDE(${ITK_USE_FILE})
+  MESSAGE(STATUS "(optional) ITK found.")
+ELSE(ITK_FOUND)
+  MESSAGE(STATUS "(optional) ITK not found.")
+ENDIF(ITK_FOUND)
 
 # -----------------------------------------------------------------------------
 # Look for Coin3D, Qt, SoQt for 3D display.
@@ -144,43 +176,30 @@ ENDIF(VTK_FOUND)
 # -----------------------------------------------------------------------------
 find_package(COIN3D)
 if ( COIN3D_FOUND )
-   message(STATUS "(optional) Coin3d found. include=${COIN3D_INCLUDE_DIR}" )
+   message(STATUS "(optional) Coin3d found. include=${COIN3D_INCLUDE_DIR}." )
    include_directories( ${COIN3D_INCLUDE_DIR} )
+else ( COIN3D_FOUND )
+   message(STATUS "(optional) Coin3d not found." )
 endif ( COIN3D_FOUND )
 
 find_package(Qt4)
 if ( QT4_FOUND )
-   message(STATUS  "(optional) Qt4 found. include=${QT_INCLUDE_DIR}" )
+   message(STATUS  "(optional) Qt4 found. include=${QT_INCLUDE_DIR}." )
    set(QT_USE_QTXML 1)
    include( ${QT_USE_FILE})
    # include_directories( ${QT_INCLUDE_DIR} )
+else ( QT4_FOUND )
+   message(STATUS  "(optional) Qt4 not found." )
 endif ( QT4_FOUND )
 
 find_package(SOQT)
 if ( SOQT_FOUND )
-   message(STATUS  "(optional) SoQt found. include=${SOQT_INCLUDE_DIR}" )
+   message(STATUS  "(optional) SoQt found. include=${SOQT_INCLUDE_DIR}." )
    include_directories( ${SOQT_INCLUDE_DIR} )
+else ( SOQT_FOUND )
+  message(STATUS  "(optional) SoQt not found." )
 endif ( SOQT_FOUND )
 
-# -----------------------------------------------------------------------------
-# Defines some variables
-# -----------------------------------------------------------------------------
-set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
-set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
-
-# -----------------------------------------------------------------------------
-# Parsing cmake options
-# -----------------------------------------------------------------------------
-
-OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
-
-OPTION(INLINE_FUNCTION_BUILD "Build inline functions." ON)
-
-if (INLINE_FUNCTION_BUILD)
-  ADD_DEFINITIONS(-DINLINE=inline)
-else (INLINE_FUNCTION_BUILD)
-  ADD_DEFINITIONS(-DINLINE="")
-endif (INLINE_FUNCTION_BUILD)
 
 
 # -----------------------------------------------------------------------------
