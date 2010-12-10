@@ -60,7 +60,12 @@ namespace DGtal
     // template class ImageContainerByITKImage
     /**
      * Description of template class 'ImageContainerByITKImage' <p>
-     * \brief Aim:
+     * \brief Aim: implements a model of CImageContainer using a ITK Image.
+     *
+     * Using this container, you can switch from DGtal alogrithms to
+     * ITK processing pipeline.
+     *
+     * \see testITKImage.cpp
      */
     template <typename TDomain, typename TValueType>
     class ImageContainerByITKImage
@@ -77,8 +82,6 @@ namespace DGtal
         // static constants
         static const typename Domain::Dimension staticDimension = Domain::staticDimension;
 
-        ///@todo IMPORTANT : Size must be int-compatible (see operator()(Point))
-
         typedef typename Domain::Point Point;
         typedef typename Domain::Vector Vector;
         typedef typename Domain::Dimension Dimension;
@@ -89,6 +92,8 @@ namespace DGtal
         typedef typename ITKImageType::Pointer ITKImagePointer;
         typedef typename itk::ImageRegionConstIterator< ITKImageType > ConstIterator;
         typedef typename itk::ImageRegionIterator< ITKImageType > Iterator;
+
+      ///@todo SpanIterator
 
         /**
          * Constructor.
@@ -232,7 +237,7 @@ namespace DGtal
 
         /**
          * end() iterator.
-         * @returns a ConstIterator at the endpoint \param aPoint
+I         * @returns a ConstIterator at the endpoint \param aPoint
          *
          **/
         ConstIterator end(const Point &aPoint) const;
