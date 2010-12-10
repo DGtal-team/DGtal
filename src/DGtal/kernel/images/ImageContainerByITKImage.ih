@@ -51,56 +51,100 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValueType>::~ImageContainerByITKImage()
     {
     }
- 
+
     template <typename TDomain, typename TValueType>
     inline
-    ImageContainerByITKImage<TDomain,TValueType>::ImageContainerByITKImage(const Point &aPointA, 
-									   const Point &aPointB)
-    //:  myITKImagePointer(ImageType::New())
+    ImageContainerByITKImage<TDomain, TValueType>::ImageContainerByITKImage(const Point &aPointA,
+        const Point &aPointB)
+        :  myITKImagePointer(ITKImageType::New())
     {
-      typename ImageType::IndexType start;
-      typename ImageType::SizeType size;
-     
+      typename ITKImageType::IndexType start;
+      typename ITKImageType::SizeType size;
+
       if (aPointA < aPointB)
-	{
-	  myLowerBound = aPointA;
-	  myUpperBound = aPointB;
-	}
+      {
+        myLowerBound = aPointA;
+        myUpperBound = aPointB;
+      }
       else
-	{
-	  myLowerBound = aPointB;
-	  myUpperBound = aPointA;
-	}
-      Point dec = myUpperBound - myLowerBound;     
-      
+      {
+        myLowerBound = aPointB;
+        myUpperBound = aPointA;
+      }
+      Point dec = myUpperBound - myLowerBound;
+
       //copy of domain information
-      for(unsigned int k=0; k<staticDimension; k++)
-	{
-	  start[k] = myLowerBound[k];
-	  size[k] = dec[k];
-	}
-      
+      for (unsigned int k = 0; k < staticDimension; k++)
+      {
+        start[k] = myLowerBound[k];
+        size[k] = dec[k];
+      }
+
       myRegion.SetSize( size );
       myRegion.SetIndex( start );
-      
-      myITKImagePointer = ImageType::New();
+
       myITKImagePointer->SetRegions(myRegion);
       myITKImagePointer->Allocate();
-      
+
       //ConstIterators
       myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
       myConstItBegin.GoToBegin();
       myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
       myConstItEnd.GoToEnd();
 
-      //Iterators 
+      //Iterators
       myItBegin = Iterator( myITKImagePointer, myRegion);
       myItBegin.GoToBegin();
       myItEnd = Iterator( myITKImagePointer, myRegion);
       myItEnd.GoToEnd();
- 
-      
     }
+
+    template <typename TDomain, typename TValueType>
+    inline
+    ImageContainerByITKImage<TDomain, TValueType>::ImageContainerByITKImage(const Point &aPointA,
+        const Point &aPointB, ITKImagePointer &aRef)
+        :  myITKImagePointer(aRef)
+    {
+      typename ITKImageType::IndexType start;
+      typename ITKImageType::SizeType size;
+
+      if (aPointA < aPointB)
+      {
+        myLowerBound = aPointA;
+        myUpperBound = aPointB;
+      }
+      else
+      {
+        myLowerBound = aPointB;
+        myUpperBound = aPointA;
+      }
+      Point dec = myUpperBound - myLowerBound;
+
+      //copy of domain information
+      for (unsigned int k = 0; k < staticDimension; k++)
+      {
+        start[k] = myLowerBound[k];
+        size[k] = dec[k];
+      }
+
+      myRegion.SetSize( size );
+      myRegion.SetIndex( start );
+
+      myITKImagePointer->SetRegions(myRegion);      
+
+      //ConstIterators
+      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
+      myConstItBegin.GoToBegin();
+      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
+      myConstItEnd.GoToEnd();
+
+      //Iterators
+      myItBegin = Iterator( myITKImagePointer, myRegion);
+      myItBegin.GoToBegin();
+      myItEnd = Iterator( myITKImagePointer, myRegion);
+      myItEnd.GoToEnd();
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
@@ -115,14 +159,14 @@ namespace DGtal
     template <typename TDomain, typename TValueType>
     inline
     TValueType
-    ImageContainerByITKImage<TDomain,TValueType>::operator()(const Point &aPoint) const
+    ImageContainerByITKImage<TDomain, TValueType>::operator()(const Point &aPoint) const
     {
-      typename ImageType::IndexType p;
-      for(unsigned int k=0; k<staticDimension; k++)
-	p[k] = aPoint[k];
+      typename ITKImageType::IndexType p;
+      for (unsigned int k = 0; k < staticDimension; k++)
+        p[k] = aPoint[k];
       return myITKImagePointer->GetPixel(p);
     }
-    
+
     /**
      * Get the value of an image at a given position.
      *
@@ -132,11 +176,11 @@ namespace DGtal
     template <typename TDomain, typename TValueType>
     inline
     TValueType
-    ImageContainerByITKImage<TDomain,TValueType>::operator()(const ConstIterator &it) const
-    {     
+    ImageContainerByITKImage<TDomain, TValueType>::operator()(const ConstIterator &it) const
+    {
       return it.Get();
     }
-    
+
     /**
      * Get the value of an image at a given position.
      *
@@ -146,20 +190,20 @@ namespace DGtal
     template <typename TDomain, typename TValueType>
     inline
     TValueType
-    ImageContainerByITKImage<TDomain,TValueType>::operator()(const Iterator &it) const
-    {     
+    ImageContainerByITKImage<TDomain, TValueType>::operator()(const Iterator &it) const
+    {
       return it.Get();
     }
-   
+
     template <typename Domain, typename T>
     inline
     void
     ImageContainerByITKImage<Domain, T>::setValue(const Point &aPoint, const T &V)
     {
-      typename ImageType::IndexType p;
-      for(unsigned int k=0; k<staticDimension; k++)
-	p[k] = aPoint[k];
-      myITKImagePointer->SetPixel(p,V);    
+      typename ITKImageType::IndexType p;
+      for (unsigned int k = 0; k < staticDimension; k++)
+        p[k] = aPoint[k];
+      myITKImagePointer->SetPixel(p, V);
     }
 
     template <typename Domain, typename T>
@@ -178,7 +222,7 @@ namespace DGtal
     template<typename TDomain, typename TValueType>
     inline
     void
-    ImageContainerByITKImage<TDomain,TValueType>::selfDisplay ( std::ostream & out ) const
+    ImageContainerByITKImage<TDomain, TValueType>::selfDisplay ( std::ostream & out ) const
     {
       out << "[ImageContainerByITKImage]";
     }
@@ -190,7 +234,7 @@ namespace DGtal
     template<typename TDomain, typename TValueType>
     inline
     bool
-    ImageContainerByITKImage<TDomain,TValueType>::isValid() const
+    ImageContainerByITKImage<TDomain, TValueType>::isValid() const
     {
       return true;
     }
@@ -204,8 +248,8 @@ namespace DGtal
   template<typename TDomain, typename TValueType>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
-	       const experimental::ImageContainerByITKImage<TDomain,TValueType> & object )
+  operator<< ( std::ostream & out,
+      const experimental::ImageContainerByITKImage<TDomain, TValueType> & object )
   {
     object.selfDisplay( out );
     return out;
