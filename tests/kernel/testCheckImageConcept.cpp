@@ -33,7 +33,9 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/images/ImageContainerBySTLMap.h"
+#ifdef WITH_ITK
 #include "DGtal/kernel/images/ImageContainerByITKImage.h"
+#endif
 #include "DGtal/kernel/images/ImageContainerByHashTree.h"
 #include "DGtal/kernel/images/CImageContainer.h"
 
@@ -59,15 +61,20 @@ bool testCheckImageConcept()
   
   typedef ImageContainerBySTLVector<Domain, int> ImageVector;
   typedef ImageContainerBySTLVector<Domain, int> ImageMap;
-  typedef experimental::ImageContainerByITKImage<Domain, int> ImageITK;
+ 
+#ifdef WITH_ITK
+ typedef experimental::ImageContainerByITKImage<Domain, int> ImageITK;
+#endif
 
   //HashTree is not (yet) a model of CImageContainer
   //typedef experimental::ImageContainerByHashTree<Domain, int>  ImageHash;
 
   BOOST_CONCEPT_ASSERT ((CImageContainer< ImageVector >));
   BOOST_CONCEPT_ASSERT ((CImageContainer< ImageMap >));
+#ifdef WITH_ITK
   BOOST_CONCEPT_ASSERT ((CImageContainer< ImageITK >));
-  
+#endif
+
   //BOOST_CONCEPT_ASSERT ((CImageContainer< ImageHash >));
 
   nbok += true ? 1 : 0; 
