@@ -1,0 +1,168 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ImageContainerByITKImage.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/12/09
+ *
+ * Implementation of inline methods defined in ImageContainerByITKImage.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+namespace DGtal
+{
+  namespace experimental
+  {
+
+    /**
+     * Destructor.
+     */
+    template<typename TDomain, typename TValueType>
+    inline
+    ImageContainerByITKImage<TDomain, TValueType>::~ImageContainerByITKImage()
+    {
+    }
+ 
+    template <typename TDomain, typename TValueType>
+    inline
+    ImageContainerByITKImage<TDomain,TValueType>::ImageContainerByITKImage(const Point &aPointA, 
+									   const Point &aPointB)
+    //:  myITKImagePointer(ImageType::New())
+    {
+      typename ImageType::IndexType start;
+      typename ImageType::SizeType size;
+     
+      if (aPointA < aPointB)
+	{
+	  myLowerBound = aPointA;
+	  myUpperBound = aPointB;
+	}
+      else
+	{
+	  myLowerBound = aPointB;
+	  myUpperBound = aPointA;
+	}
+      Point dec = myUpperBound - myLowerBound;     
+      
+      //copy of domain information
+      for(unsigned int k=0; k<staticDimension; k++)
+	{
+	  start[k] = myLowerBound[k];
+	  size[k] = dec[k];
+	}
+      
+      myRegion.SetSize( size );
+      myRegion.SetIndex( start );
+      
+      myITKImagePointer = ImageType::New();
+      myITKImagePointer->SetRegions(myRegion);
+      myITKImagePointer->Allocate();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // Interface - public :
+
+
+    /**
+     * Get the value of an image at a given position.
+     *
+     * @param aPoint  position in the image.
+     * @return the value at aPoint.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    TValueType
+    ImageContainerByITKImage<TDomain,TValueType>::operator()(const Point &aPoint) const
+    {
+      typename ImageType::IndexType p;
+      for(unsigned int k=0; k<staticDimension; k++)
+	p[k] = aPoint[k];
+      return myITKImagePointer->GetPixel(p);
+    }
+    
+
+    template <typename Domain, typename T>
+    inline
+    void
+    ImageContainerByITKImage<Domain, T>::setValue(const Point &aPoint, const T &V)
+    {
+      typename ImageType::IndexType p;
+      for(unsigned int k=0; k<staticDimension; k++)
+	p[k] = aPoint[k];
+      myITKImagePointer->SetPixel(p,V);    
+    }
+
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    template<typename TDomain, typename TValueType>
+    inline
+    void
+    ImageContainerByITKImage<TDomain,TValueType>::selfDisplay ( std::ostream & out ) const
+    {
+      out << "[ImageContainerByITKImage]";
+    }
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    template<typename TDomain, typename TValueType>
+    inline
+    bool
+    ImageContainerByITKImage<TDomain,TValueType>::isValid() const
+    {
+      return true;
+    }
+
+  }
+
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Implementation of inline functions                                        //
+
+  template<typename TDomain, typename TValueType>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, 
+	       const experimental::ImageContainerByITKImage<TDomain,TValueType> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
