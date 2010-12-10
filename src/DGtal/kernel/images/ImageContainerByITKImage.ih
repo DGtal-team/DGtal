@@ -214,7 +214,6 @@ namespace DGtal
       it.Set(V);
     }
 
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -224,7 +223,9 @@ namespace DGtal
     void
     ImageContainerByITKImage<TDomain, TValueType>::selfDisplay ( std::ostream & out ) const
     {
-      out << "[ImageContainerByITKImage]";
+      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValueType) 
+	  << "bytes lower=" << myLowerBound << " upper=" 
+	  << myUpperBound;
     }
 
     /**
