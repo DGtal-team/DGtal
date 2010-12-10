@@ -33,6 +33,10 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerByITKImage.h"
+
+//specific itk method
+#include <itkBinaryThresholdImageFilter.h>
+#include <itkImageFileWriter.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -49,65 +53,142 @@ bool testITKImage()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "ITK Image init..." );
-  
+
   typedef int Integer;
   typedef SpaceND<3, Integer > Space3Type;
   typedef HyperRectDomain<Space3Type> Domain;
   typedef Domain::Point Point;
-  
+
   //ATTENTION only the int container works at this point
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
-  
-  const Integer t[ ] = { 1, 1,1};
+
+  const Integer t[ ] = { 1, 1, 1};
   const Integer t2[ ] = { 5, 5, 5};
   const Integer t3[ ] = { 2, 2, 2};
   Point a ( t );
   Point b ( t2 );
-  Point c ( t3 ); 
+  Point c ( t3 );
   Integer val;
 
-  Image myImage ( a,b );
-  
+  Image myImage ( a, b );
+
   trace.info() << myImage << std::endl;
-  trace.info() << "getvalue= "<< myImage(c)<<endl;
-  trace.info() << "set value 23 "<< endl;
+  trace.info() << "getvalue= " << myImage(c) << endl;
+  trace.info() << "set value 23 " << endl;
   myImage.setValue( c, 23);
-  
+
   val =  myImage(c);
-  
-  if (val == 23) nbok++;
-  trace.info() << "getvalue= "<<val<<endl;
+
+  if (val == 23)
+    nbok++;
+  trace.info() << "getvalue= " << val << endl;
   nb++;
 
   //Iterator test
   trace.info() << "Simple Iterator=";
-  for(Image::ConstIterator it = myImage.begin(), itend= myImage.end();
+  for (Image::ConstIterator it = myImage.begin(), itend = myImage.end();
       it != itend;
       ++it)
-    trace.warning() << myImage(it)<<" ";
-  trace.info()<<endl;
+    trace.warning() << myImage(it) << " ";
+  trace.info() << endl;
 
   //We rewrite the image
-  int nbVal=0;
-  for(Image::Iterator it = myImage.begin(), itend= myImage.end();
+  int nbVal = 0;
+  for (Image::Iterator it = myImage.begin(), itend = myImage.end();
       it != itend;
       ++it)
-      myImage.setValue(it, nbVal++);
+    myImage.setValue(it, nbVal++);
 
- trace.info() << "Set Iterator=";
- for(Image::ConstIterator it = myImage.begin(), itend= myImage.end();
-     it != itend;
-     ++it)
-   trace.warning() << myImage(it)<<" ";
- trace.info()<<endl;
- 
+  trace.info() << "Set Iterator=";
+  for (Image::ConstIterator it = myImage.begin(), itend = myImage.end();
+      it != itend;
+      ++it)
+    trace.warning() << myImage(it) << " ";
+  trace.info() << endl;
+
 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+  << "true == true" << std::endl;
   trace.endBlock();
-  
+
+  return nbok == nb;
+}
+
+bool testITKMethod()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Test the use of a pure ITK method..." );
+
+  typedef unsigned short Integer;
+  typedef SpaceND<2, Integer > Space2Type;
+  typedef HyperRectDomain<Space2Type> Domain;
+  typedef Domain::Point Point;
+
+  //ATTENTION only the int container works at this point
+  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+
+  const Integer t[ ] = { 0, 0};
+  const Integer t2[ ] = { 25, 25};
+
+  Point a ( t );
+  Point b ( t2 );
+  Integer val;
+
+  Image myImage ( a, b );
+  trace.info() << myImage << std::endl;
+
+  //We rewrite the image
+  int nbVal = 0;
+  for (Image::Iterator it = myImage.begin(), itend = myImage.end();
+      it != itend;
+      ++it)
+    myImage.setValue(it, nbVal++);
+  trace.info() << "Input image=";
+  for (Image::ConstIterator it = myImage.begin(), itend = myImage.end();
+      it != itend;
+      ++it)
+    trace.warning() << myImage(it) << " ";
+  trace.info() << endl;
+
+
+  //we get an image pointer
+  Image::ITKImagePointer handle = myImage.getImagePointer();
+
+
+	//We construct an ITK pipeline
+  typedef itk::BinaryThresholdImageFilter< Image::ITKImageType, Image::ITKImageType> FilterType;
+  FilterType::Pointer filter = FilterType::New();
+
+  filter->SetInput( handle );
+  filter->SetOutsideValue( 0 );
+  filter->SetInsideValue( 10 );
+  filter->SetLowerThreshold( 34 );;
+  filter->SetUpperThreshold( 400 );;
+  filter->Update();
+
+	//We create a DGtal::Image from a pointer to the pipeline output 
+  Image::ITKImagePointer handleOut = filter->GetOutput();
+  Image myImageOut ( a, b, handleOut );
+
+
+  trace.info() << "Output image=";
+  for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
+      it != itend;
+      ++it)
+    trace.warning() << myImageOut(it) << " ";
+  trace.info() << endl;
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "true == true" << std::endl;
+  trace.endBlock();
+
+
+
+
   return nbok == nb;
 }
 
@@ -122,7 +203,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testITKImage(); // && ... other tests
+  bool res = testITKImage() && testITKMethod();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

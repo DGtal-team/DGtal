@@ -56,6 +56,6 @@ ENDFOREACH(FILE)
 
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ITKCommon)
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ITKCommon ITKIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
