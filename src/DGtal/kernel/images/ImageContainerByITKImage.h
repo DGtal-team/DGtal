@@ -44,7 +44,9 @@
 #include "DGtal/kernel/images/CValueType.h"
 #include "DGtal/kernel/domains/CDomain.h"
 
-#include "itkImage.h"
+#include <itkImage.h>
+#include <itkImageRegionConstIterator.h>
+#include <itkImageRegionIterator.h>
 #include <iostream>
 
 //////////////////////////////////////////////////////////////////////////////
@@ -82,12 +84,12 @@ namespace DGtal
       typedef typename Domain::Dimension Dimension;
       typedef typename Domain::Integer Integer;
       typedef typename Domain::Size Size;
-      //    typedef typename vector<ValueType>::iterator Iterator;
-      //    typedef typename vector<ValueType>::const_iterator ConstIterator;
 
       typedef typename itk::Image< TValueType, staticDimension> ImageType;
       typedef typename ImageType::Pointer ImagePointer;
-
+      typedef typename itk::ImageRegionConstIterator< ImageType > ConstIterator;
+      typedef typename itk::ImageRegionIterator< ImageType > Iterator;
+      
       /**
        * Constructor.
        */
@@ -111,6 +113,22 @@ namespace DGtal
        */
       ValueType operator()(const Point &aPoint) const;
     
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param it  position in the image.
+       * @return the value at aPoint.
+       */
+      ValueType operator()(const ConstIterator &it) const;
+
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param it  position in the image.
+       * @return the value at aPoint.
+       */
+      ValueType operator()(const Iterator &it) const;
+   
    
       /**
        * Set a value on an Image at aPoint.
@@ -120,6 +138,26 @@ namespace DGtal
        */
       void setValue(const Point &aPoint, const ValueType &aValue);
 
+      /**
+       * Set a value on an Image at aPoint.
+       *
+       * @param it location of the point (Iterator) to associate with aValue.
+       * @param aValue the value.
+       */
+      void setValue(Iterator &it, const ValueType &V);
+	
+      // ------------------------- methods ------------------------------
+
+      /**
+       * Returns the extent of the image
+       *
+       */
+      Point extent() const
+      {
+	return myUpperBound - myLowerBound;
+      }
+      
+      // ------------------------- stream ------------------------------
 
       /**
        * Writes/Displays the object on an output stream.
@@ -133,11 +171,59 @@ namespace DGtal
        */
       bool isValid() const;
 
-      // ------------------------- Protected Datas ------------------------------
-    private:
+      // ------------------------- Iterators ------------------------------
+      /**
+       * begin() const iterator.
+       *
+       **/
+      ConstIterator begin() const 
+      { 
+	return myConstItBegin;
+      }
+
+      /**
+       * begin() const iterator.
+       *
+       **/
+      Iterator begin()  
+      { 
+	return myItBegin;
+      }
+     
+      /**
+       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
+       *
+       **/
+      ConstIterator begin ( const Point &aPoint ) const;
+     
+      /**
+       * end() const iterator.
+       *
+       **/
+      const ConstIterator end() const
+      {
+	return myConstItEnd;
+      }
+         
+      /**
+       * end()  iterator.
+       *
+       **/
+      Iterator end()
+      {
+	return myItEnd;
+      }
+
+      /**
+       * end() iterator.
+       * @returns a ConstIterator at the endpoint \param aPoint
+       *
+       **/
+      ConstIterator end(const Point &aPoint) const;
+     
       // ------------------------- Private Datas --------------------------------
     private:
-
+      
       // ------------------------- Hidden services ------------------------------
     protected:
 
@@ -171,7 +257,10 @@ namespace DGtal
       Point myUpperBound;
       ImagePointer myITKImagePointer;
       typename ImageType::RegionType myRegion;
- 
+      ConstIterator myConstItBegin;
+      Iterator myItBegin;
+      ConstIterator myConstItEnd;
+      Iterator myItEnd;
 
     }; // end of class ImageContainerByITKImage
 
@@ -192,7 +281,7 @@ namespace DGtal
 // Includes inline functions.
 #include "DGtal/kernel/images/ImageContainerByITKImage.ih"
 
-//                                                                           //
+                                                                       //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined ImageContainerByITKImage_h

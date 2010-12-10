@@ -79,9 +79,31 @@ bool testITKImage()
   
   if (val == 23) nbok++;
   trace.info() << "getvalue= "<<val<<endl;
-  
-  nbok += true ? 1 : 0; 
   nb++;
+
+  //Iterator test
+  trace.info() << "Simple Iterator=";
+  for(Image::ConstIterator it = myImage.begin(), itend= myImage.end();
+      it != itend;
+      ++it)
+    trace.warning() << myImage(it)<<" ";
+  trace.info()<<endl;
+
+  //We rewrite the image
+  int nbVal=0;
+  for(Image::Iterator it = myImage.begin(), itend= myImage.end();
+      it != itend;
+      ++it)
+      myImage.setValue(it, nbVal++);
+
+ trace.info() << "Set Iterator=";
+ for(Image::ConstIterator it = myImage.begin(), itend= myImage.end();
+     it != itend;
+     ++it)
+   trace.warning() << myImage(it)<<" ";
+ trace.info()<<endl;
+ 
+
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
