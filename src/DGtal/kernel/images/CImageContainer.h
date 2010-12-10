@@ -59,7 +59,7 @@ namespace DGtal
    * - \t ValueType: the type of values stored in the image.
    * - \t Iterator: an iterator in the image.
    * - \t ConstIterator: a const iterator in the image.
-   * - \t SpanIterator: a 1D span iterator in the image.
+   * - \t SpanIterator: a 1D span iterator in the image (not yet tested).
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
    * - \t x, \t y	: Object of type X
@@ -130,18 +130,28 @@ namespace DGtal
     typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::Point Point;
 
-    //BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
-    // we just need to assert ++it and --it (itk does not statisfy STL
-    // bidirectionnal constraints
-
+ 
     BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
 
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
-      //TContainer j(a,b);
-      it = i.begin();  // require postincrement-dereference returning value_type
-      same_type(i(a), v);
+      //Iterators
+      it = i.begin();
+      itconst = i.begin();
+      ++it;
+      same_type(++itconst,itconst);
+      --it;
+      same_type(--itconst, itconst);
 
+      it = i.end();
+      itconst = i.end();
+      
+      
+      //Accessors
+      same_type(i(a), v);
+      same_type(i(it), v);
+      same_type(i(itconst), v);
+      
       //API
       same_type(i.extent(), a); //get the extent
       i.setValue(a, v);  //set a value at a Point
