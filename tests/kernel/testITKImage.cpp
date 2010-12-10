@@ -131,22 +131,21 @@ bool testITKMethod()
   //ATTENTION only the int container works at this point
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
 
-  const Integer t[ ] = { 0, 0};
-  const Integer t2[ ] = { 25, 25};
 
-  Point a ( t );
-  Point b ( t2 );
+  Point a ( 0, 0 );
+  Point b ( 25, 25);
   Integer val;
 
   Image myImage ( a, b );
   trace.info() << myImage << std::endl;
 
-  //We rewrite the image
+  //We fill the image
   int nbVal = 0;
   for (Image::Iterator it = myImage.begin(), itend = myImage.end();
       it != itend;
       ++it)
     myImage.setValue(it, nbVal++);
+
   trace.info() << "Input image=";
   for (Image::ConstIterator it = myImage.begin(), itend = myImage.end();
       it != itend;
@@ -154,27 +153,22 @@ bool testITKMethod()
     trace.warning() << myImage(it) << " ";
   trace.info() << endl;
 
-
-  //we get an image pointer
-  Image::ITKImagePointer handle = myImage.getImagePointer();
-
-
-	//We construct an ITK pipeline
+  //We construct an ITK pipeline
   typedef itk::BinaryThresholdImageFilter< Image::ITKImageType, Image::ITKImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
 
-  filter->SetInput( handle );
+  filter->SetInput( myImage.getImagePointer() );
   filter->SetOutsideValue( 0 );
   filter->SetInsideValue( 10 );
   filter->SetLowerThreshold( 34 );;
   filter->SetUpperThreshold( 400 );;
   filter->Update();
 
-	//We create a DGtal::Image from a pointer to the pipeline output 
+  //We create a DGtal::Image from a pointer to the pipeline output
   Image::ITKImagePointer handleOut = filter->GetOutput();
   Image myImageOut ( a, b, handleOut );
 
-
+	//We trace the result of the thresholding
   trace.info() << "Output image=";
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
       it != itend;
