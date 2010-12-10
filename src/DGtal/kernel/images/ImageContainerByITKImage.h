@@ -173,16 +173,6 @@ namespace DGtal
           return myITKImagePointer;
         }
 
-
-        /**
-         * Returns a copy of the itkImage smartPointer
-         */
-        void setImagePointer(ITKImagePointer &aPointer)
-        {
-          myITKImagePointer = aPointer;
-        }
-
-
         // ------------------------- stream ------------------------------
 
         /**
