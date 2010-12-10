@@ -130,7 +130,10 @@ namespace DGtal
     typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::Point Point;
 
-    BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
+    //BOOST_CONCEPT_ASSERT((boost::BidirectionalIterator<Iterator>));
+    // we just need to assert ++it and --it (itk does not statisfy STL
+    // bidirectionnal constraints
+
     BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
 
     BOOST_CONCEPT_USAGE(CImageContainer)

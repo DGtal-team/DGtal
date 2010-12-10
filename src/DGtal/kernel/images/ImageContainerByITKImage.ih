@@ -86,6 +86,20 @@ namespace DGtal
       myITKImagePointer = ImageType::New();
       myITKImagePointer->SetRegions(myRegion);
       myITKImagePointer->Allocate();
+      
+      //ConstIterators
+      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
+      myConstItBegin.GoToBegin();
+      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
+      myConstItEnd.GoToEnd();
+
+      //Iterators 
+      myItBegin = Iterator( myITKImagePointer, myRegion);
+      myItBegin.GoToBegin();
+      myItEnd = Iterator( myITKImagePointer, myRegion);
+      myItEnd.GoToEnd();
+ 
+      
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -109,7 +123,34 @@ namespace DGtal
       return myITKImagePointer->GetPixel(p);
     }
     
-
+    /**
+     * Get the value of an image at a given position.
+     *
+     * @param aPoint  position in the image.
+     * @return the value at aPoint.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    TValueType
+    ImageContainerByITKImage<TDomain,TValueType>::operator()(const ConstIterator &it) const
+    {     
+      return it.Get();
+    }
+    
+    /**
+     * Get the value of an image at a given position.
+     *
+     * @param aPoint  position in the image.
+     * @return the value at aPoint.
+     */
+    template <typename TDomain, typename TValueType>
+    inline
+    TValueType
+    ImageContainerByITKImage<TDomain,TValueType>::operator()(const Iterator &it) const
+    {     
+      return it.Get();
+    }
+   
     template <typename Domain, typename T>
     inline
     void
@@ -119,6 +160,14 @@ namespace DGtal
       for(unsigned int k=0; k<staticDimension; k++)
 	p[k] = aPoint[k];
       myITKImagePointer->SetPixel(p,V);    
+    }
+
+    template <typename Domain, typename T>
+    inline
+    void
+    ImageContainerByITKImage<Domain, T>::setValue(Iterator &it, const T &V)
+    {
+      it.Set(V);
     }
 
 

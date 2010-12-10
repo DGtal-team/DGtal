@@ -66,8 +66,8 @@ namespace DGtal
 
   public:
 
-		BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
-		BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
+    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
 		
 		
     typedef typename Domain::Point Point;
