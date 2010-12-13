@@ -1,0 +1,12 @@
+#---------------------------------------
+#------- DGtal Configuration file ------
+#---------------------------------------
+
+
+SET(DGtal_VERSION_MAJOR @DGtal_VERSION_MAJOR@)
+SET(DGtal_VERSION_MINOR @DGtal_VERSION_MINOR@)
+SET(DGtal_VERSION_PATCH @DGtal_VERSION_PATCH@)
+
+#-----DEPENDENCIES
+SET(ITK_FOUND @ITK_FOUND@)
+SET(ITK_LIBRARIES @ITK_LIBRARIES@)
