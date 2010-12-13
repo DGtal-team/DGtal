@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC
    testMorton
    testHashTree
    testCheckImageConcept
+   testDGtalGMP
    )
 
 SET(DGTAL_BENCH_SRC
@@ -20,7 +21,7 @@ SET(DGTAL_BENCH_SRC
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} )
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtal_Lib_Dependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -32,13 +33,14 @@ FOREACH(FILE ${DGTAL_BENCH_SRC})
   ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
 ENDFOREACH(FILE)
 
+#-----------------------
 #ITK based tests
+#----------------------
 IF(ITK_FOUND)
   SET(DGTAL_TESTS_ITK_SRC testITKImage)
 ELSE(ITK_FOUND)
   UNSET(DGTAL_TESTS_ITK_SRC )
 ENDIF(ITK_FOUND)
-
 
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})

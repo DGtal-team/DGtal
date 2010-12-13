@@ -21,7 +21,7 @@ include(Board/ModuleSRC.txt)
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
 add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC} ${BOARD_SRC})
-target_link_libraries( ${LIBDGTAL_NAME}  ${Boost_LIBRARIES})
+target_link_libraries( ${LIBDGTAL_NAME} ${Boost_LIBRARIES})
 
 install(TARGETS ${LIBDGTAL_NAME} 
         RUNTIME DESTINATION bin
