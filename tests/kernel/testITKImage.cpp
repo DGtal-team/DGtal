@@ -128,7 +128,7 @@ bool testITKMethod()
   typedef HyperRectDomain<Space2Type> Domain;
   typedef Domain::Point Point;
 
-  //ATTENTION only the int container works at this point
+
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
 
 
@@ -168,7 +168,7 @@ bool testITKMethod()
   Image::ITKImagePointer handleOut = filter->GetOutput();
   Image myImageOut ( a, b, handleOut );
 
-	//We trace the result of the thresholding
+  //We trace the result of the thresholding
   trace.info() << "Output image=";
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
       it != itend;
