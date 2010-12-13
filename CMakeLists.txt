@@ -135,8 +135,22 @@ FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS program_options)
 if ( Boost_FOUND )
   message(STATUS "Boost and boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
   include_directories( ${Boost_INCLUDE_DIR} )
+  SET(DGtal_Lib_Dependencies ${DGtal_Lib_Dependencies} ${Boost_LIBRAIRIES})
 endif( Boost_FOUND )
 
+
+# -----------------------------------------------------------------------------
+# Look for GMP (The GNU Multiple Precision Arithmetic Library)
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+FIND_PACKAGE(GMP)
+IF(GMP_FOUND)
+  INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
+  SET(DGtal_Lib_Dependencies ${DGtal_Lib_Dependencies} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
+  message(STATUS "(optional) gmp found." )
+ELSE(GMP_FOUND)
+   message(STATUS "(optional) gmp not found." )
+ENDIF(GMP_FOUND)
 
 # -----------------------------------------------------------------------------
 # Look for GraphicsMagic
@@ -217,7 +231,6 @@ if (BUILD_TESTING)
   add_subdirectory (tests)
 endif (BUILD_TESTING)
 
-
 #------------------------------------------------------------------------------
 # Prepare installations concerning global scope.
 #------------------------------------------------------------------------------
@@ -284,12 +297,6 @@ endif(WIN32)
 INCLUDE(CPack)
 
 #------------------------------------------------------------------------------
-# DGtal Configuration file
-#------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
-
-
-#------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory (src)
@@ -298,5 +305,12 @@ OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
+
+
+#------------------------------------------------------------------------------
+# DGtal Configuration file
+#------------------------------------------------------------------------------
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
+export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake )
 
 
