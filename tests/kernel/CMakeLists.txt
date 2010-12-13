@@ -32,13 +32,6 @@ FOREACH(FILE ${DGTAL_BENCH_SRC})
   ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
 ENDFOREACH(FILE)
 
-#VTK based tests
-IF(VTK_FOUND)
-  SET(DGTAL_TESTS_VTK_SRC testVTKImageContainer)
-ELSE(VTK_FOUND)
-  SET(DGTAL_TESTS_VTK_SRC )
-ENDIF(VTK_FOUND)
-
 #ITK based tests
 IF(ITK_FOUND)
   SET(DGTAL_TESTS_ITK_SRC testITKImage)
@@ -47,15 +40,8 @@ ELSE(ITK_FOUND)
 ENDIF(ITK_FOUND)
 
 
-FOREACH(FILE ${DGTAL_TESTS_VTK_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} vtkCommon vtkImaging vtkHybrid)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
-
-
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ITKCommon ITKIO)
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${ITK_LIBRARIES})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)

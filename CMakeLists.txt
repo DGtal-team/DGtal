@@ -151,21 +151,14 @@ ELSE(MAGICK++_FOUND)
 ENDIF(MAGICK++_FOUND)
 
 # -----------------------------------------------------------------------------
-# Look for VTK/ITK
+# Look for ITK
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-FIND_PACKAGE(VTK)
-IF(VTK_FOUND)
-  INCLUDE(${VTK_USE_FILE})
-  MESSAGE(STATUS "(optional) VTK found.")
-ELSE(VTK_FOUND)
-  MESSAGE(STATUS "(optional) VTK not found.")
-ENDIF(VTK_FOUND)
-
 FIND_PACKAGE(ITK)
 IF(ITK_FOUND)
   INCLUDE(${ITK_USE_FILE})
   MESSAGE(STATUS "(optional) ITK found.")
+  SET(ITK_LIBRARIES ITKCommon ITKIO)
   ADD_DEFINITIONS(-DWITH_ITK)
 ELSE(ITK_FOUND)
   MESSAGE(STATUS "(optional) ITK not found.")
@@ -291,6 +284,12 @@ endif(WIN32)
 INCLUDE(CPack)
 
 #------------------------------------------------------------------------------
+# DGtal Configuration file
+#------------------------------------------------------------------------------
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
+
+
+#------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory (src)
@@ -299,3 +298,5 @@ OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
+
+
