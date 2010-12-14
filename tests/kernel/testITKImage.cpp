@@ -33,6 +33,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerByITKImage.h"
+#include <boost/foreach.hpp>
 
 //specific itk method
 #include <itkBinaryThresholdImageFilter.h>
@@ -131,16 +132,14 @@ bool testITKMethod()
 
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
 
-
   Point a ( 0, 0 );
   Point b ( 25, 25);
-  Integer val;
 
   Image myImage ( a, b );
   trace.info() << myImage << std::endl;
 
   //We fill the image
-  int nbVal = 0;
+  Integer nbVal = 0;
   for (Image::Iterator it = myImage.begin(), itend = myImage.end();
       it != itend;
       ++it)
@@ -170,12 +169,13 @@ bool testITKMethod()
 
   //We trace the result of the thresholding
   trace.info() << "Output image=";
+  
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
-      it != itend;
-      ++it)
+       it != itend;
+       ++it)
     trace.warning() << myImageOut(it) << " ";
   trace.info() << endl;
-
+  
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "true == true" << std::endl;
   trace.endBlock();
