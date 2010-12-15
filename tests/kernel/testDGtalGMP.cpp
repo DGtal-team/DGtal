@@ -30,7 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-
+#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include <gmpxx.h>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -68,6 +73,53 @@ bool testDGtalGMP()
   return nbok == nb;
 }
 
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testGMPSpace()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "GMP Space test..." );
+  /* 
+  typedef SpaceND<2, mpz_class> Space2Type;
+  typedef Space2Type::Point Point;
+  typedef SpaceND<2>::Integer Coordinate;
+  typedef HyperRectDomain<Space2Type> Domain;
+
+  typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;  
+  typedef FreemanChain<Coordinate> ContourType; 
+  typedef GreedyDecomposition< ContourType, DSS4 > Decomposition;
+  
+  // Construct the Freeman chain
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  ContourType theContour( ss );
+  //Segmentation
+  Decomposition theDecomposition( theContour );
+  Point p1( 0, 0 );
+  Point p2( 31, 31 );
+  Domain domain( p1, p2 );
+  DGtalBoard aBoard;
+  aBoard << SetMode( domain.styleName(), "Grid" )
+	 << domain
+	 << theContour;
+
+  aBoard.saveSVG("testgmpcontour.svg");
+  */
+
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -79,7 +131,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDGtalGMP(); // && ... other tests
+  bool res = testDGtalGMP() && testGMPSpace(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

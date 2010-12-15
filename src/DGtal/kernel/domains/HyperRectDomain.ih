@@ -452,13 +452,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 {
   if (TSpace::staticDimension == 2)
   {
-    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
+    for (int x = myLowerBound[0]; x <=  myUpperBound[0]; x++)
       aboard.drawLine(x, myLowerBound[1] - 0.5, x, myUpperBound[1] + 0.5);
-    for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+    for (int y =  myLowerBound[1]; y <=  myUpperBound[1]; y++)
       aboard.drawLine(myLowerBound[0] - 0.5, y, myUpperBound[0] + 0.5, y);
 
-    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
-      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+    for (int x =  myLowerBound[0]; x <=  myUpperBound[0]; x++)
+      for (int y =  myLowerBound[1]; y <=  myUpperBound[1]; y++)
         aboard.fillCircle(x, y, 0.1);
   }
   else

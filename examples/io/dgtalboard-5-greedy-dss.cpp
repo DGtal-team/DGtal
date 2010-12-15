@@ -54,6 +54,7 @@ int main( int argc, char** argv )
   typedef ArithmeticalDSS<StandardBase<int> > DSS;
   typedef FreemanChain<int> ContourType; 
   typedef GreedyDecomposition< ContourType, DSS > Decomposition;
+
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
