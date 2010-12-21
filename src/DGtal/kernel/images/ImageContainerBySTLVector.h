@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CValueType.h"
 #include "DGtal/kernel/domains/CDomain.h"
-
+#include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/io/DGtalBoard.h"
 
 //////////////////////////////////////////////////////////////////////////////
