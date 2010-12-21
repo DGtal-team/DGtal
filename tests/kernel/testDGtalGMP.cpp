@@ -87,7 +87,7 @@ bool testGMPSpace()
    
   typedef SpaceND<2, mpz_class> Space2Type;
   typedef Space2Type::Point Point;
-  typedef Space2Type::Integer Coordinate;
+  typedef Space2Type::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2Type> Domain;
 
   typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;  
