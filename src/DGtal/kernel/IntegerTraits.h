@@ -140,6 +140,16 @@ namespace DGtal
      * @return SIGNED, UNSIGNED or SIGN_UNKNOWN.
      */
     static SignEnum isUnsigned();
+    
+    /**
+     * Cast method to DGtal::int64_t (for I/O or board export uses
+     * only).
+     */
+    static DGtal::int64_t castToInt64_t(const T & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
 
   }; // end of class IntegerTraits
 
@@ -190,6 +200,11 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+    static DGtal::int64_t castToInt64_t(const int & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
   }; // end of class IntegerTraits<int>.
 
   /**
@@ -235,6 +250,11 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+    static DGtal::int64_t castToInt64_t(const unsigned int & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
   }; // end of class IntegerTraits<unsigned int>.
 
   /**
@@ -280,6 +300,11 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+    static DGtal::int64_t castToInt64_t(const unsigned char & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
   }; // end of class IntegerTraits<unsigned char>.
 
 #endif //WIN32 or APPLE
@@ -328,6 +353,11 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+    static DGtal::int64_t castToInt64_t(const uint16_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
   }; // end of class IntegerTraits<uint16_t>.
 
   /**
@@ -372,6 +402,10 @@ namespace DGtal
     static SignEnum isUnsigned()
     {
       return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const int16_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
     }
   }; // end of class IntegerTraits<int16_t>.
 
@@ -418,6 +452,10 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+   static DGtal::int64_t castToInt64_t(const uint32_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
   }; // end of class IntegerTraits<uint32_t>.
 
   /**
@@ -462,6 +500,10 @@ namespace DGtal
     static SignEnum isUnsigned()
     {
       return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const int32_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
     }
   }; // end of class IntegerTraits<int32_t>.
 
@@ -508,6 +550,10 @@ namespace DGtal
     {
       return UNSIGNED;
     }
+   static DGtal::int64_t castToInt64_t(const uint64_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
   }; // end of class IntegerTraits<uint64_t>.
 
   /**
@@ -552,6 +598,10 @@ namespace DGtal
     static SignEnum isUnsigned()
     {
       return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const int64_t & aT)
+    {
+      return aT;
     }
   }; // end of class IntegerTraits<int64_t>.
 
@@ -601,11 +651,11 @@ namespace DGtal
     {
       return SIGNED;
     }
+    static DGtal::int64_t castToInt64_t(const mpz_class & aT)
+    {
+      return aT.get_si();
+    }
   }; // end of class IntegerTraits<mpz_class>.
-  
-  
-
-
 #endif
 
 
