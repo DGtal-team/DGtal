@@ -49,8 +49,8 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class HyperRectDomain_Iterator
+  /////////////////////////////////////////////////////////////////////////////
+  // class HyperRectDomain_Iterator
   /**
    * Description of class 'HyperRectDomain_Iterator' <p>
    * Aim:
@@ -58,251 +58,251 @@ namespace DGtal
   template<typename TPoint, typename TSize>
   class HyperRectDomain_Iterator
   {
-    public:
-      typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
-      typedef TPoint value_type;
-      typedef ptrdiff_t difference_type;
-      typedef TPoint* pointer;
-      typedef TPoint& reference;
-			typedef TSize Size;
+  public:
+    typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
+    typedef TPoint value_type;
+    typedef ptrdiff_t difference_type;
+    typedef TPoint* pointer;
+    typedef TPoint& reference;
+    typedef TSize Size;
 
 
-      HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
-          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUseSubDomain( false )
-      {
-        ASSERT( lower <= upper );
-        ASSERT( lower <= p && p <= upper );
-      }
+    HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
+      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+	myUseSubDomain( false )
+    {
+      ASSERT( lower <= upper );
+      ASSERT( lower <= p && p <= upper );
+    }
 
 #ifdef CPP0X_INITIALIZER_LIST
-      HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
-          const TPoint &upper,
-          std::initializer_list<Size> subDomain)
-          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUseSubDomain( true )
-      {
-        ASSERT( lower <= upper );
-        ASSERT( lower <= p && p <= upper );
-        ASSERT( subDomain.size() <= TPoint::Dimension );
-        mySubDomain.reserve( subDomain.size() );
-        for ( const unsigned int *c = subDomain.begin();
+    HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
+			     const TPoint &upper,
+			     std::initializer_list<Size> subDomain)
+      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+	myUseSubDomain( true )
+    {
+      ASSERT( lower <= upper );
+      ASSERT( lower <= p && p <= upper );
+      ASSERT( subDomain.size() <= TPoint::Dimension );
+      mySubDomain.reserve( subDomain.size() );
+      for ( const unsigned int *c = subDomain.begin();
             c != subDomain.end(); ++c )
         {
           ASSERT( *c <= TPoint::Dimension );
           mySubDomain.push_back( *c );
         }
 
-        // TODO: check the validity of the subDomain ?
-      }
+      // TODO: check the validity of the subDomain ?
+    }
 #endif
-      HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
-          const TPoint &upper,
-          const std::vector<Size> &subDomain)
-          : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
-          myUseSubDomain( true )
-      {
-        ASSERT( lower <= upper );
-        ASSERT( lower <= p && p <= upper );
-        ASSERT( subDomain.size() <= TPoint::Dimension );
-        mySubDomain.reserve( subDomain.size() );
-        for ( typename std::vector<Size>::const_iterator it = subDomain.begin();
+    HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
+			     const TPoint &upper,
+			     const std::vector<Size> &subDomain)
+      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
+	myUseSubDomain( true )
+    {
+      ASSERT( lower <= upper );
+      ASSERT( lower <= p && p <= upper );
+      ASSERT( subDomain.size() <= TPoint::Dimension );
+      mySubDomain.reserve( subDomain.size() );
+      for ( typename std::vector<Size>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
         {
           ASSERT( *it <= TPoint::Dimension );
           mySubDomain.push_back( *it );
         }
 
-        // TODO: check the validity of the subDomain ?
-      }
+      // TODO: check the validity of the subDomain ?
+    }
 
 
-      const TPoint & operator*() const
-      {
-        // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
-        return myPoint;
-      }
+    const TPoint & operator*() const
+    {
+      // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      return myPoint;
+    }
 
-      /**
-      * Operator ==
-      *
-      */
-      bool operator== ( const HyperRectDomain_Iterator<TPoint,TSize> &it ) const
-      {
-        return ( myPoint == ( *it ) );
-      }
+    /**
+     * Operator ==
+     *
+     */
+    bool operator== ( const HyperRectDomain_Iterator<TPoint,TSize> &it ) const
+    {
+      return ( myPoint == ( *it ) );
+    }
 
-      /**
-      * Operator !=
-      *
-      */
-      bool operator!= ( const HyperRectDomain_Iterator<TPoint,TSize> &aIt ) const
-      {
-        return ( myPoint != ( *aIt ) );
-      }
+    /**
+     * Operator !=
+     *
+     */
+    bool operator!= ( const HyperRectDomain_Iterator<TPoint,TSize> &aIt ) const
+    {
+      return ( myPoint != ( *aIt ) );
+    }
 
-      /**
-      * Implements the next() method to scan the domain points dimension by dimension
-      * (lexicographic order).
-      **/
-      void nextLexicographicOrder()
-      {
-        myPoint.at( myCurrentPos ) ++;
-        if (( myCurrentPos < TPoint::Dimension - 1 ) &&
-            ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) )
+    /**
+     * Implements the next() method to scan the domain points dimension by dimension
+     * (lexicographic order).
+     **/
+    void nextLexicographicOrder()
+    {
+      myPoint.at( myCurrentPos ) ++;
+      if (( myCurrentPos < TPoint::Dimension - 1 ) &&
+	  ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) )
         {
           do
-          {
-            myPoint.at( myCurrentPos ) = mylower.at( myCurrentPos );
-            myCurrentPos++;
-            if ( myCurrentPos < TPoint::Dimension )
-              myPoint.at( myCurrentPos ) ++;
-          }
+	    {
+	      myPoint.at( myCurrentPos ) = mylower.at( myCurrentPos );
+	      myCurrentPos++;
+	      if ( myCurrentPos < TPoint::Dimension )
+		myPoint.at( myCurrentPos ) ++;
+	    }
           while (( myCurrentPos < TPoint::Dimension - 1 ) &&
-              ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
+		 ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
-      }
+    }
 
-      /**
-      * Implements the next() method to scan the domain points dimension by dimension
-      * (by using the subDomain order given by the user).
-      **/
-      void nextSubDomainOrder()
-      {
-        ASSERT( myCurrentPos < mySubDomain.size() );
-        myPoint.at( mySubDomain[myCurrentPos] ) ++;
+    /**
+     * Implements the next() method to scan the domain points dimension by dimension
+     * (by using the subDomain order given by the user).
+     **/
+    void nextSubDomainOrder()
+    {
+      ASSERT( myCurrentPos < mySubDomain.size() );
+      myPoint.at( mySubDomain[myCurrentPos] ) ++;
 
-        if ( myCurrentPos < mySubDomain.size() - 1 &&
-            myPoint.at( mySubDomain[myCurrentPos] ) >
-            myupper.at( mySubDomain[myCurrentPos] ) )
+      if ( myCurrentPos < mySubDomain.size() - 1 &&
+	   myPoint.at( mySubDomain[myCurrentPos] ) >
+	   myupper.at( mySubDomain[myCurrentPos] ) )
         {
           do
-          {
-            myPoint.at( mySubDomain[myCurrentPos] ) =
-              mylower.at( mySubDomain[myCurrentPos] );
-            myCurrentPos++;
-            if ( myCurrentPos < mySubDomain.size() )
-              myPoint.at( mySubDomain[myCurrentPos] ) ++;
-          }
+	    {
+	      myPoint.at( mySubDomain[myCurrentPos] ) =
+		mylower.at( mySubDomain[myCurrentPos] );
+	      myCurrentPos++;
+	      if ( myCurrentPos < mySubDomain.size() )
+		myPoint.at( mySubDomain[myCurrentPos] ) ++;
+	    }
           while (( myCurrentPos < mySubDomain.size() - 1  ) &&
-              ( myPoint.at( mySubDomain[myCurrentPos] )  >
-                  myupper.at( mySubDomain[myCurrentPos] ) ) );
+		 ( myPoint.at( mySubDomain[myCurrentPos] )  >
+		   myupper.at( mySubDomain[myCurrentPos] ) ) );
           myCurrentPos = 0;
         }
-      }
+    }
 
-      /**
-      * Operator ++ (++it)
-      */
-      HyperRectDomain_Iterator<TPoint,TSize> &operator++()
-      {
-        if ( myUseSubDomain )
-          nextSubDomainOrder();
-        else
-          nextLexicographicOrder();
-        return *this;
-      }
+    /**
+     * Operator ++ (++it)
+     */
+    HyperRectDomain_Iterator<TPoint,TSize> &operator++()
+    {
+      if ( myUseSubDomain )
+	nextSubDomainOrder();
+      else
+	nextLexicographicOrder();
+      return *this;
+    }
 
-      /**
-      * Operator ++ (it++)
-      *
-      */
-      HyperRectDomain_Iterator<TPoint,TSize> operator++ ( int )
-      {
-        HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
-        ++*this;
-        return tmp;
-      }
+    /**
+     * Operator ++ (it++)
+     *
+     */
+    HyperRectDomain_Iterator<TPoint,TSize> operator++ ( int )
+    {
+      HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
+      ++*this;
+      return tmp;
+    }
 
-      /**
-      * Implements the prev() method to scan the domain points dimension by dimension
-      * (lexicographic order).
-      **/
-      void prevLexicographicOrder()
-      {
-        myPoint.at( myCurrentPos ) --;
-        if (( myCurrentPos < TPoint::Dimension - 1 ) &&
-            ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) )
+    /**
+     * Implements the prev() method to scan the domain points dimension by dimension
+     * (lexicographic order).
+     **/
+    void prevLexicographicOrder()
+    {
+      myPoint.at( myCurrentPos ) --;
+      if (( myCurrentPos < TPoint::Dimension - 1 ) &&
+	  ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) )
         {
           do
-          {
-            myPoint.at( myCurrentPos ) = myupper.at( myCurrentPos );
-            myCurrentPos++;
-            if ( myCurrentPos < TPoint::Dimension )
-              myPoint.at( myCurrentPos ) --;
-          }
+	    {
+	      myPoint.at( myCurrentPos ) = myupper.at( myCurrentPos );
+	      myCurrentPos++;
+	      if ( myCurrentPos < TPoint::Dimension )
+		myPoint.at( myCurrentPos ) --;
+	    }
           while (( myCurrentPos < TPoint::Dimension - 1 ) &&
-              ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
+		 ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
-      }
+    }
 
-      /**
-       * Implements the prev() method to scan the domain points dimension by dimension
-       * (subDomain order).
-       **/
-      void prevSubDomainOrder()
-      {
-        ASSERT( myCurrentPos < mySubDomain.size() );
-        myPoint.at( mySubDomain[myCurrentPos] ) --;
+    /**
+     * Implements the prev() method to scan the domain points dimension by dimension
+     * (subDomain order).
+     **/
+    void prevSubDomainOrder()
+    {
+      ASSERT( myCurrentPos < mySubDomain.size() );
+      myPoint.at( mySubDomain[myCurrentPos] ) --;
 
-        if (  myCurrentPos < mySubDomain.size() - 1 &&
+      if (  myCurrentPos < mySubDomain.size() - 1 &&
             myPoint.at( mySubDomain[myCurrentPos] )  <
             mylower.at( mySubDomain[myCurrentPos] ) )
         {
           do
-          {
-            myPoint.at( mySubDomain[myCurrentPos] ) =
-              myupper.at( mySubDomain[myCurrentPos] );
-            myCurrentPos++;
-            if ( myCurrentPos < mySubDomain.size() )
-              myPoint.at( mySubDomain[myCurrentPos] ) --;
-          }
+	    {
+	      myPoint.at( mySubDomain[myCurrentPos] ) =
+		myupper.at( mySubDomain[myCurrentPos] );
+	      myCurrentPos++;
+	      if ( myCurrentPos < mySubDomain.size() )
+		myPoint.at( mySubDomain[myCurrentPos] ) --;
+	    }
           while (( myCurrentPos < mySubDomain.size() - 1 ) &&
-              ( myPoint.at( mySubDomain[myCurrentPos] )  <
-                  mylower.at( mySubDomain[myCurrentPos] ) ) );
+		 ( myPoint.at( mySubDomain[myCurrentPos] )  <
+		   mylower.at( mySubDomain[myCurrentPos] ) ) );
           myCurrentPos = 0;
         }
-      }
+    }
 
-      /**
-      * Operator ++ (++it)
-      *
-      */
-      HyperRectDomain_Iterator<TPoint,TSize> &operator--()
-      {
-        if ( myUseSubDomain )
-          prevSubDomainOrder();
-        else
-          prevLexicographicOrder();
-        return *this;
-      }
+    /**
+     * Operator ++ (++it)
+     *
+     */
+    HyperRectDomain_Iterator<TPoint,TSize> &operator--()
+    {
+      if ( myUseSubDomain )
+	prevSubDomainOrder();
+      else
+	prevLexicographicOrder();
+      return *this;
+    }
 
-      /**
-      * Operator ++ (it++)
-      */
-      HyperRectDomain_Iterator<TPoint,TSize> &operator-- ( int )
-      {
-        HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
-        --*this;
-        return tmp;
-      }
+    /**
+     * Operator ++ (it++)
+     */
+    HyperRectDomain_Iterator<TPoint,TSize> &operator-- ( int )
+    {
+      HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
+      --*this;
+      return tmp;
+    }
 
 
-    private:
-      ///Current Point in the domain
-      TPoint myPoint;
-      ///Copies of the Domain limits
-      TPoint mylower, myupper;
-      ///Second index of the iterator position
-      Size myCurrentPos;
-      ///Vector of subDomain on dimension, to fix the order in which dimensions
-      /// are considered.
-      std::vector<Size> mySubDomain;
-      /// True iff we use the vector of subDomain, otherwise dimensions are
-      /// considered in increasing order.
-      bool myUseSubDomain;
+  private:
+    ///Current Point in the domain
+    TPoint myPoint;
+    ///Copies of the Domain limits
+    TPoint mylower, myupper;
+    ///Second index of the iterator position
+    Size myCurrentPos;
+    ///Vector of subDomain on dimension, to fix the order in which dimensions
+    /// are considered.
+    std::vector<Size> mySubDomain;
+    /// True iff we use the vector of subDomain, otherwise dimensions are
+    /// considered in increasing order.
+    bool myUseSubDomain;
   };
 
 

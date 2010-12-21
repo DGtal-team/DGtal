@@ -51,9 +51,9 @@ ImageContainerBySTLVector<Domain, T>::ImageContainerBySTLVector(const Point &aPo
   }
 
   Point dec = myUpperBound - myLowerBound;
-  size_t ext = 1;
+  Size ext = 1;
   for (Dimension k = 0;k <  Domain::staticDimension; k++)
-    ext *= dec[k] + 1;
+    ext = ext* (dec[k] + 1);
   this->resize(ext);
 }
 

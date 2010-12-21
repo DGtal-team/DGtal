@@ -36,6 +36,7 @@
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include <gmpxx.h>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -85,6 +86,7 @@ bool testGMPSpace()
   
   trace.beginBlock ( "GMP Space test..." );
    
+  //This space is weird...
   typedef SpaceND<2, mpz_class> Space2Type;
   typedef Space2Type::Point Point;
   typedef Space2Type::Point::Coordinate Coordinate;
@@ -94,6 +96,13 @@ bool testGMPSpace()
   typedef FreemanChain<Coordinate> ContourType; 
   typedef GreedyDecomposition< ContourType, DSS4 > Decomposition;
   
+  //mpz_class valuetype image
+  typedef SpaceND<2 > Space2Common;
+  typedef Space2Common::Point PointCommon;
+  typedef HyperRectDomain<Space2Common> DomainCommon;
+  typedef ImageContainerBySTLVector<DomainCommon, mpz_class> Imagempz;
+
+
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
@@ -102,6 +111,10 @@ bool testGMPSpace()
   Decomposition theDecomposition( theContour );
   Point p1( 0, 0 );
   Point p2( 31, 31 );
+  PointCommon p1c( 0, 0 );
+  PointCommon p2c( 31, 31 );
+
+
   Domain domain( p1, p2 );
   DGtalBoard aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
@@ -110,6 +123,8 @@ bool testGMPSpace()
 
   aBoard.saveSVG("testgmpcontour.svg");
   
+  //We try to instanciate image
+  Imagempz aImage(p1c,p2c);
 
   nbok += true ? 1 : 0; 
   nb++;
