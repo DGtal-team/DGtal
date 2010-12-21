@@ -148,7 +148,7 @@ namespace
    * 2 and 3 to prevent the use of a loop in these cases.
    *
    */
-  template < typename Domain, int Dimension, typename SizeType >
+  template < typename Domain, int staticDimension, typename SizeType >
   struct linearizer
   {
 
@@ -169,7 +169,7 @@ namespace
     {
       SizeType pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
       SizeType multiplier = 1;
-      for (Dimension k = 1 ; k < Point::Dimension ; ++k)
+      for (typename Domain::Dimension k = 1 ; k < staticDimension ; ++k)
       {
         multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
         pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
