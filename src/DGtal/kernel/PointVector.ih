@@ -560,8 +560,8 @@ void
 DGtal::PointVector<N,T>::selfDrawAsPaving( DGtalBoard & board ) const
 {
   ASSERT(N == 2);
-  board.drawRectangle( (float) myArray[0] - 0.5f, 
- 		       (float) myArray[1] + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) IntegerTraits<T>::castToInt64_t(myArray[0]) - 0.5f, 
+ 		       (float) IntegerTraits<T>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
 }
 
 
@@ -578,7 +578,8 @@ DGtal::PointVector<N,T>::selfDrawAsGrid( DGtalBoard & board ) const
 {
   ASSERT(N == 2);
   board.setPenColor(LibBoard::Color::Black);
-  board.fillCircle((float) myArray[0], (float) myArray[1],0.1);
+  board.fillCircle((float) IntegerTraits<T>::castToInt64_t(myArray[0]), 
+		   (float) IntegerTraits<T>::castToInt64_t(myArray[1]),0.1);
 }
 
 

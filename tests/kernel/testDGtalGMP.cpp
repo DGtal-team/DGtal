@@ -84,10 +84,10 @@ bool testGMPSpace()
   unsigned int nb = 0;
   
   trace.beginBlock ( "GMP Space test..." );
-  /* 
+   
   typedef SpaceND<2, mpz_class> Space2Type;
   typedef Space2Type::Point Point;
-  typedef SpaceND<2>::Integer Coordinate;
+  typedef Space2Type::Integer Coordinate;
   typedef HyperRectDomain<Space2Type> Domain;
 
   typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;  
@@ -109,7 +109,7 @@ bool testGMPSpace()
 	 << theContour;
 
   aBoard.saveSVG("testgmpcontour.svg");
-  */
+  
 
   nbok += true ? 1 : 0; 
   nb++;

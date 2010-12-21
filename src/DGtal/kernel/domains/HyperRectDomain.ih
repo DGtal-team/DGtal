@@ -452,13 +452,20 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 {
   if (TSpace::staticDimension == 2)
   {
-    for (int x = myLowerBound[0]; x <=  myUpperBound[0]; x++)
-      aboard.drawLine(x, myLowerBound[1] - 0.5, x, myUpperBound[1] + 0.5);
-    for (int y =  myLowerBound[1]; y <=  myUpperBound[1]; y++)
-      aboard.drawLine(myLowerBound[0] - 0.5, y, myUpperBound[0] + 0.5, y);
+    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      aboard.drawLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]) - 0.5, x, 
+		      IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]) + 0.5);
 
-    for (int x =  myLowerBound[0]; x <=  myUpperBound[0]; x++)
-      for (int y =  myLowerBound[1]; y <=  myUpperBound[1]; y++)
+    for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+      aboard.drawLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]) - 0.5, y, 
+		      IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]) + 0.5, y);
+
+    for (int64_t x =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.fillCircle(x, y, 0.1);
   }
   else
@@ -473,8 +480,10 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
 {
   if (TSpace::staticDimension == 2)
   {
-    for (int x = myLowerBound[0]; x <= myUpperBound[0]; x++)
-      for (int y = myLowerBound[1]; y <= myUpperBound[1]; y++)
+    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <= IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	   y <= IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
   }
   else

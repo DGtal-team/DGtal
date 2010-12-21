@@ -51,6 +51,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -1279,8 +1280,8 @@ namespace DGtal
      * @param max_x (returns) the maximal x-coordinate.
      * @param max_y (returns) the maximal y-coordinate.
      */
-    void computeBoundingBox( int & min_x, int & min_y,
-			     int & max_x, int & max_y ) const
+    void computeBoundingBox( TInteger & min_x, TInteger& min_y,
+			     TInteger& max_x, TInteger& max_y ) const
     {
 
       min_x = max_x = x0;
