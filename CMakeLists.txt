@@ -8,6 +8,10 @@
 # -----------------------------------------------------------------------------
 project (DGtal)
 cmake_minimum_required (VERSION 2.4) 
+
+#-- We remove the cmake warning on explicit lib paths
+#-- With ITK dependency, I don't know how to fix the warning
+#-- D.C
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 OLD)
 endif(COMMAND cmake_policy)
