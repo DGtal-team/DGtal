@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
    testHashTree
    testCheckImageConcept
    testDGtalGMP
+   testLinearAlgebra
    )
 
 SET(DGTAL_BENCH_SRC
