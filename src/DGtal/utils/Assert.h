@@ -54,7 +54,9 @@ namespace DGtal
   *
   **/
 #define ASSERT(expr) BOOST_ASSERT(expr)
-#define ASSERT2(expr,str) trace.info()<<str<<std::endl; BOOST_ASSERT(expr)
+
+#define ASSERT2(expr,str) trace.error()<<str<<std::endl; BOOST_ASSERT(expr)
+
 #if defined(CHECK_ALL_PRE)
 #define ASSERT_ALL_PRE(expr) BOOST_ASSERT(expr)
 #else // defined(CHECK_ALL_PRE)
