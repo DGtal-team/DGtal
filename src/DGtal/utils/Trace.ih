@@ -149,8 +149,10 @@ DGtal::Trace::endBlock()
     myKeywordStack.pop();
     myClockStack.pop();
     delete localClock;
-   }
    return tick;
+  }
+  //Should never happen
+  return 0;
 }
 
 
