@@ -194,7 +194,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
       itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
   {
-    //trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
+    //trace.info()  << "Processing 1D slice starting at =" << (*it) << "dim= "<<dim<<endl;
     computeOtherStep1D ( input, output, (*it), dim, s, t );
   }
 
@@ -276,11 +276,15 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   Point sQ = row;
   Point pU = row;
 
+  //trace.info()<<"Enter row="<<row<<endl;
+
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
-  while ((( input ( pU) == myInfinity))
-      && (pU[dim] <= myUpperBoundCopy[dim]))
+  while ((pU[dim] <= myUpperBoundCopy[dim]) 
+	 && (input ( pU ) == myInfinity))
     pU[dim] ++;
+
+  // trace.info()<<"Shift"<<endl;
 
   //the 1D slice  has no object point
   //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
@@ -288,7 +292,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
     {
       for(typename O::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
 	  it != itend; ++it)
-	output.setValue(it, myInfinity);
+	  output.setValue(it, myInfinity);
       return;
     }
   
