@@ -4,7 +4,6 @@ SET(DGTAL_TESTS_SRC
    dgtalboard-3-custom-classes
    dgtalboard-3-custom-points
    dgtalboard-4-colormaps
-   dgtalboard-5-greedy-dss
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
