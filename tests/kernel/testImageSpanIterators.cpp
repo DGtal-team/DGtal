@@ -37,68 +37,82 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/Image.h"
-#include "DGtal/kernel/images/ImageContainerBySTLMap.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 
 using namespace DGtal;
 using namespace std;
 
 
-
-
-
 bool testSpanIterators()
 {
-    typedef SpaceND<int,3> Space3Type;
+    typedef SpaceND<3> Space3Type;
     typedef Space3Type::Point Point;
     typedef HyperRectDomain<Space3Type> TDomain;
-    typedef ImageContainerBySTLVector<Point, double> TContainerV;
-    typedef ImageContainerBySTLMap<Point, double> TContainerM;
-
-
-    const int t[ ] = { 1, 1, 1};
+    typedef ImageContainerBySTLVector<TDomain, double> TContainerV;
+    
+    const int t[ ] = { 0, 0, 0};
     const int t2[ ] = { 5, 5, 5};
-    const int t3[ ] = { 1, 1, 1};
+    const int t3[ ] = { 0, 0, 0};
     Point a ( t );
     Point b ( t2 );
-    Point c( t3);
+    Point c( t3 );
 
     trace.beginBlock("Test of Concepts");
-    Image<TDomain,double, TContainerV> myImageV ( a,b );
-    Image<TDomain,double, TContainerM> myImageM ( a,b );
+    TContainerV myImageV ( a,b );
 
     double cpt=0;
     //Image Construction 
-    for ( Image<TDomain,double, TContainerV>::Iterator it = myImageV.begin();
+    for ( TContainerV::Iterator it = myImageV.begin();
             it != myImageV.end();
             ++it)
     {
-        myImageV.setValue( it, cpt );
-        //myImageM.setValue( (*it), cpt ); //Set value using (point,value) method
-        cpt++;
+      myImageV.setValue( it, cpt );
+      cpt++;
     }
 
-    trace.beginBlock("Builtin iterator on map");
-    for ( Image<TDomain,double, TContainerM>::Iterator it = myImageM.begin();
-	  it != myImageM.end();
+
+    //We process a 1D slice
+    trace.info()<<"Slice dim 0 ";
+    for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,0), itend = myImageV.spanEnd(c,0);
+	  it != itend;
 	  ++it)
-      trace.info() << myImageM(it)<<" ";
-    trace.info()<<endl;
-    trace.endBlock();
+      trace.info() << myImageV(it)<<" ";
+    trace.info() << endl;
     
-    for ( Image<TDomain,double, TContainerV>::SpanIterator it = myImageV.span_begin(c,1);
-            it != myImageV.span_end(c,1);
-            ++it)
-        trace.info() << myImageV(it)<<" ";
+    //We process a 1D slice
+    trace.info()<<"Slice dim 1 ";
+    for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
+	  it != itend;
+	  ++it)
+      trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
-
-    for ( Image<TDomain,double, TContainerM>::SpanIterator it = myImageM.span_begin(c,1);
-            it != myImageM.span_end(c,1);
-            ++it)
-        trace.info() << myImageM(it)<<" ";
+  
+    //We process a 1D slice
+    trace.info()<<"Slice dim 2 ";
+    for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,2), itend = myImageV.spanEnd(c,2);
+	  it != itend;
+	  ++it)
+      trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
+  
 
+    //We process a 1D slice to set a value
+    trace.info()<<"SetValue Slice dim 1 "<<endl;
+    for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
+	  it != itend;
+	  ++it)
+      myImageV.setValue(it, 12);
+    
+    //We check the a 1D slice
+    trace.info()<<"Check Slice dim 1 ";
+    for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
+	  it != itend;
+	  ++it)
+      trace.info() << myImageV(it)<<" ";
+    trace.info() << endl;
+  
 
+  
     trace.endBlock();
 
     return true;

@@ -220,16 +220,31 @@ namespace DGtal
 	//We compute the myShift quantity
 	myShift = 1;
 	for (unsigned int k = 0; k < myDimension  ; k++)
-	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k));
+	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
+	
+	//trace.warning() <<"SpanIter("<<p<<" "<<aDim<<") Pos="<<myPos<<" shift="<<myShift<<std::endl;
       }
 
+
+      /**
+       * Set a value at a SpanIterator position.
+       *
+       * @param aVal the value to set.
+       */
+      inline 
+      void setValue(const ValueType aVal)
+      {
+	ASSERT(myPos>=0);
+	(*myMap)[ myPos ] = aVal;
+      }
 
       /**
        * operator* on SpanIterators.
        *
        * @return the value associated to the current position.
        */
-      const ValueType & operator*() const
+      inline
+      const ValueType & operator*() 
       {
 	return (*myMap)[ myPos ];
       }
@@ -239,6 +254,7 @@ namespace DGtal
        *
        * @return true if this and it are equals.
        */
+      inline
       bool operator== ( const SpanIterator &it ) const
       {
 	return ( myPos == it.myPos );
@@ -249,16 +265,17 @@ namespace DGtal
        *
        * @return true if this and it are different.
        */
+      inline
       bool operator!= ( const SpanIterator &it ) const
       {
 	return ( myPos != it.myPos );
-
       }
 
       /**
        * Implements the next() method: we move on step forward.
        *
        **/
+      inline
       void next()
       {
 	myPos += myShift;
@@ -268,6 +285,7 @@ namespace DGtal
        * Implements the prev() method: we move on step backward.
        *
        **/
+      inline
       void prev()
       {
 	ASSERT((long int) myPos - myShift > 0);
@@ -278,6 +296,7 @@ namespace DGtal
        * Operator ++ (++it)
        *
        */
+      inline
       SpanIterator &operator++()
       {
 	this->next();
@@ -288,6 +307,7 @@ namespace DGtal
        * Operator ++ (it++)
        *
        */
+      inline
       SpanIterator &operator++ ( int )
       {
 	SpanIterator tmp = *this;
@@ -299,6 +319,7 @@ namespace DGtal
        * Operator -- (--it)
        *
        */
+      inline
       SpanIterator &operator--()
       {
 	this->prev();
@@ -309,6 +330,7 @@ namespace DGtal
        * Operator -- (it--)
        *
        */
+      inline
       SpanIterator &operator-- ( int )
       {
 	SpanIterator tmp = *this;
@@ -370,9 +392,7 @@ namespace DGtal
     SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
-	myUpperBound.at( aDimension ) -
-	myLowerBound.at( aDimension ) + 1;
+      tmp.at( aDimension ) = myUpperBound.at( aDimension ) + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
@@ -382,7 +402,7 @@ namespace DGtal
      * @param it position given by a SpanIterator.
      * @return an object of type ValueType.
      */
-    ValueType operator()(const SpanIterator &it)
+    ValueType operator()(SpanIterator &it)
     {
       return (*it);
     };

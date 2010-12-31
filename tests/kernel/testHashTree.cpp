@@ -225,9 +225,6 @@ bool testGetSetVal()
 
 bool testBadKeySizes()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
   typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;

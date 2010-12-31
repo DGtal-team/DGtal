@@ -268,6 +268,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
     Integer s[],
     Integer t[] ) const
 {
+  ///@todo must be removed if Integer is assumed to be Signed (see @ref SpaceND)
   typedef typename IntegerTraits<Integer>::SignedVersion SI;
   SI w;
   SI q = 0;
@@ -281,9 +282,16 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
       && (pU[dim] <= myUpperBoundCopy[dim]))
     pU[dim] ++;
 
-
-  ASSERT( pU[dim] <= myUpperBoundCopy[dim]);///@todo otherwise, the 1D slice  has no object point (fixme)
-
+  //the 1D slice  has no object point
+  //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
+  if ( pU[dim] > myUpperBoundCopy[dim] )
+    {
+      for(typename O::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
+	  it != itend; ++it)
+	output.setValue(it, myInfinity);
+      return;
+    }
+  
   q = 0;
   s[q] = pU[dim]; //myLowerBoundCopy[dim];
   sQ[dim] = s[q];
