@@ -75,6 +75,7 @@ bool testDistanceTransformND()
   Image image ( a, b );
   Domain domain(a,b);
 
+  //We create an object image with a signle background point (set to 0)
   for (Image::Iterator it=image.begin(),itend=image.end(); it!=itend; ++it)
     image.setValue ( it, 128 );
   image.setValue( c , 0 );
@@ -85,6 +86,7 @@ bool testDistanceTransformND()
   DistanceTransformation<Image, ImageLong, L_2> dt;
   dt.checkTypesValidity ( image );
 
+  //Distance transformation computation
   ImageLong result = dt.compute ( image );
   
   //We check the result
@@ -92,7 +94,7 @@ bool testDistanceTransformND()
   for(Domain::ConstIterator itDom = domain.begin(), itDomend = domain.end();
       itDom != itDomend; ++itDom)
     {
-      //distance
+      //distance from the point to the seed
       d = (*itDom) - c;
       ImageLong::Integer norm2=0;
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
@@ -104,9 +106,7 @@ bool testDistanceTransformND()
 		       << ": expected="<<norm2<<" and computed="<<result(*itDom)<<endl;
 	res=false;
 	}
-      
     }
-
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
