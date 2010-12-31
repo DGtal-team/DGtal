@@ -56,7 +56,8 @@ DGtal::Trace::Trace(DGtal::TraceWriter &writer):  myCurrentLevel(0), myCurrentPr
 /**
  * Destructor.
  * 
- * We send a last postfixReset to prevent bugs in some TraceWriterTerm terminals.
+ * We send a last postfixReset to prevent bugs in some TraceWriterTerm
+ * terminals.
  */
 inline
 DGtal::Trace::~Trace()
@@ -88,7 +89,8 @@ DGtal::Trace::isValid() const
 }
 
 /**
- * Reset all the variables of the Trace object (indentation level and keyword stack)
+ * Reset all the variables of the Trace object (indentation level and
+ * keyword stack).
  *
  */
 inline
@@ -125,7 +127,8 @@ DGtal::Trace::beginBlock(const std::string &keyword)
 
 
  /**
-  * Leave a current block, decrease the indentation level and display the associate keyword with ellapsed time in ms.
+  * Leave a current block, decrease the indentation level and display
+  * the associate keyword with ellapsed time in ms.
   *
   * @return  the ellapsed time in the block in milliseconds (Class Clock).
   *
