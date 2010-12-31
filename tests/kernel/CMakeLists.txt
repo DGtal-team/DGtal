@@ -4,7 +4,7 @@ SET(DGTAL_TESTS_SRC
    testHyperRectDomain
    testHyperRectDomain-snippet
    testImage
-#   testImageSpanIterators
+   testImageSpanIterators
    testInteger
    testPointVector
    testSpaceND
