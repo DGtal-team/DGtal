@@ -51,17 +51,17 @@ bool testLinearAlgebra()
   
   trace.beginBlock ( "Testing block ..." );
   
-  typedef SpaceND<3,int> Space3Int;
-  typedef Space3Int::Point Point;
-  typedef SpaceND<3,long int > Space3LongInt;
-  typedef Space3LongInt::Point Pointlong;
+  typedef SpaceND<2,int> Space2Int;
+  typedef Space2Int::Point Point;
+  typedef SpaceND<2,long int > Space2LongInt;
+  typedef Space2LongInt::Point Pointlong;
 
   Point a,b;
   Pointlong c,d;
 
-  LinearAlgebra<Space3Int>::determinant(a,b);
+  LinearAlgebra<Space2Int>::determinant(a,b);
 
-  LinearAlgebra<Space3LongInt>::determinant(c,d);
+  LinearAlgebra<Space2LongInt>::determinant(c,d);
 
   nbok += true ? 1 : 0; 
   nb++;
