@@ -901,10 +901,10 @@ namespace DGtal
       if ( ( n == nb ) )
         { // do nothing
           aCleanC.chain = c.chain;
-          for ( unsigned int n = 0; n < nb; ++n )
+          for ( unsigned int ni = 0; ni < nb; ++ni )
 	    {
-	      aC2clean.push_back( n );
-	      aClean2c.push_back( n );
+	      aC2clean.push_back( ni );
+	      aClean2c.push_back( ni );
 	    }
           if ( size_spike != 0 )
             cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
@@ -1025,29 +1025,29 @@ namespace DGtal
 	      ++k;
 	    }
         }
-      for ( unsigned int i = 0; i < nb; ++i )
-	if ( aC2clean[ i ] >= aCleanC.chain.size() )
+      for ( unsigned int ii = 0; ii < nb; ++ii )
+	if ( aC2clean[ ii ] >= aCleanC.chain.size() )
 	  { 
-	    if ( aC2clean[ i ] == aCleanC.chain.size() )
-	      aC2clean[ i ] = 0;
+	    if ( aC2clean[ ii ] == aCleanC.chain.size() )
+	      aC2clean[ ii ] = 0;
 	    else
 	      {
 		cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		     << "Bad correspondence for aC2clean[" << i << "]"
-		     << " = " << aC2clean[ i ] << " >= " << aCleanC.chain.size()
+		     << "Bad correspondence for aC2clean[" << ii << "]"
+		     << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
 		     << endl;
-		aC2clean[ i ] = aC2clean[ i ] % aCleanC.chain.size();
+		aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
 	      }
 	  }
       
-      for ( unsigned int j = 0; j < aCleanC.chain.size(); ++j )
-	if ( aClean2c[ j ] >= nb )
+      for ( unsigned int jj = 0; j < aCleanC.chain.size(); ++jj )
+	if ( aClean2c[ jj ] >= nb )
           {
             cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		 << "Bad correspondence for aClean2c[" << j << "]"
-		 << " = " << aClean2c[ j ] << " >= " << nb
+		 << "Bad correspondence for aClean2c[" << jj << "]"
+		 << " = " << aClean2c[ jj ] << " >= " << nb
 		 << endl;
-            aClean2c[ j ] = aClean2c[ j ] % nb;
+            aClean2c[ jj ] = aClean2c[ jj ] % nb;
           }
 
 
