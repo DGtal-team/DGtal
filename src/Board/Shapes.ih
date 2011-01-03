@@ -146,10 +146,10 @@ Rectangle::Rectangle( const Rect & rect,
 
 
   
-Image::Image( double x0, double y0, double width, double height, 
+Image::Image( double x0, double y0, double aWidth, double aHeight, 
 	      std::string fileName, int depthValue )
-  : Rectangle(x0, y0, width, height, Color::None, Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
-    _x0(x0), _y0(y0), _width(width), _height(height), _filename(fileName)
+  : Rectangle(x0, y0, aWidth, aHeight, Color::None, Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
+    _x0(x0), _y0(y0), _width(aWidth), _height(aHeight), _filename(fileName)
 {
 }
   

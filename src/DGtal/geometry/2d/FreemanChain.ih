@@ -114,7 +114,7 @@ DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther 
 template <typename TInteger>
 inline
 DGtal::DrawableWithDGtalBoard*
-DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode) const
+DGtal::FreemanChain<TInteger>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }

@@ -644,11 +644,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   Point p2( p );
   for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
     ++(*it);
-  LocalDomain domain( p1, p2 );
+  LocalDomain aDomain( p1, p2 );
 
   // Construct local X.
-  LocalTopology topology( adj, omega );
-  LocalObject X( topology, domain );
+  LocalTopology aTopology( adj, omega );
+  LocalObject X( aTopology, aDomain );
   X.pointSet().insertNew( local_points.begin(), local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
@@ -702,11 +702,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   Point p2( p );
   for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
     ++(*it);
-  LocalDomain domain( p1, p2 );
+  LocalDomain aDomain( p1, p2 );
 
   // Construct local Xcomp.
-  LocalTopology topology( adj, omega );
-  LocalObject Xcomp( topology, domain );
+  LocalTopology aTopology( adj, omega );
+  LocalObject Xcomp( aTopology, aDomain );
   Xcomp.pointSet().insertNew( local_points.begin(), local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
