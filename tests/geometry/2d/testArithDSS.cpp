@@ -47,6 +47,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/DGtalBoard.h"
+#include <gmpxx.h>
 
 using namespace DGtal;
 using namespace std;
@@ -58,15 +59,26 @@ using namespace LibBoard;
 int main(int argc, char **argv)
 {
 
- typedef SpaceND<2> Space2Type;
+ typedef SpaceND<2,long long int> Space2Type;
  typedef Space2Type::Point Point;
- typedef SpaceND<2>::Integer Coordinate;
+ typedef Space2Type::Integer Coordinate;
 
 //--------------------- DSS4 --------------------------
 
-	typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
-  
+//	typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
+	typedef experimental::ArithmeticalDSS<Coordinate,4> DSS4;  
+
 	std::vector<Point> contour;
+/*	contour.push_back(Point(0,0));
+	contour.push_back(Point(1,0));
+	contour.push_back(Point(2,0));
+	contour.push_back(Point(3,0));
+	contour.push_back(Point(3,1));
+	contour.push_back(Point(4,1));
+	contour.push_back(Point(5,1));
+	contour.push_back(Point(5,2));
+*/
+
 	contour.push_back(Point(0,0));
 	contour.push_back(Point(1,0));
 	contour.push_back(Point(1,1));
@@ -79,6 +91,7 @@ int main(int argc, char **argv)
 	contour.push_back(Point(6,3));
 	contour.push_back(Point(6,4));
 
+/*
   // Bad initialisation
   trace.beginBlock("Bad init");
 	trace.info() << "same point two times" << std::endl;
@@ -94,45 +107,48 @@ int main(int argc, char **argv)
 		trace.info() << e.what() << std::endl;
 	}
   trace.endBlock();
-
+*/
 
   // Good Initialisation
   trace.beginBlock("Init of a DSS4");
-  DSS4 theDSS4(contour.at(0),contour.at(1));		
+  DSS4 theDSS4(contour.at(0));		
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
   trace.endBlock();
   
   
   
   // Adding step
-  trace.beginBlock("Add points while it is possible and draw the result in DSS4.svg");
+  trace.beginBlock("Add points while it is possible and draw the result");
 	{
-		int i = 2;
-		while (theDSS4.addFront(contour.at(i))) {
+		int i = 1;
+		while ( (i<contour.size())
+					&&(theDSS4.extend(contour.at(i))) ) {
 			i++;
 		}
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
-	  Point a(-10,-10);
-	  Point b(10,10);
-	HyperRectDomain< Space2Type > domain( a , b );
+		HyperRectDomain< Space2Type > domain( Point(0,0), Point(10,10) );
 
 		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
 		
-		board << DrawDomainPaving() << domain;
-		// domain.selfDrawAsGrid(board);
-		
-		//board << DrawDSSBoundingBox()
-		//    << theDSS4;
-		board << DrawPavingPixel() <<  theDSS4;
-		
-		board.saveEPS("DSS4.eps");
-		
-		
+  	board << SetMode(domain.styleName(), "Grid")
+				  << domain;		
+    board << SetMode("PointVector", "Grid");
+
+//  	board << SetMode(theDSS4.styleName(), "Both") 
+//					<< theDSS4;
+//does not draw the default style
+
+  	board << SetMode(theDSS4.styleName(), "Points") 
+					<< theDSS4;
+  	board << SetMode(theDSS4.styleName(), "BoundingBox") 
+					<< theDSS4;
 
 
-
+		
+		board.saveSVG("DSS4.svg");
+	
 	}
 
   trace.endBlock();
@@ -143,14 +159,15 @@ int main(int argc, char **argv)
   trace.beginBlock("Checking consistency between adding and removing");
 
 		std::deque<DSS4 > v1,v2;
-  	DSS4 newDSS4(contour.at(0),contour.at(1));	 
+  	DSS4 newDSS4(contour.at(0));	 
 	  	v1.push_back(newDSS4);
 
 		//forward scan and store each DSS4
 		trace.info() << "forward scan" << std::endl;
 
-		int i = 2;
-		while (newDSS4.addFront(contour.at(i))) {
+		int i = 1;
+		while  ( (i<contour.size())
+					&&(newDSS4.extend(contour.at(i))) ) {
 	  	v1.push_back(newDSS4);
 			i++;
 		}
@@ -158,9 +175,9 @@ int main(int argc, char **argv)
 		//backward scan
 		trace.info() << "backward scan" << std::endl;
 
-  	DSS4 reverseDSS4(contour.at(i-1),contour.at(i-2));
-		int j = i-3;
-		while ( (j>=0)&&(reverseDSS4.addFront(contour.at(j))) ) {
+  	DSS4 reverseDSS4(contour.at(i-1));
+		int j = i-2;
+		while ( (j>=0)&&(reverseDSS4.extend(contour.at(j))) ) {
 			j--;
 		}
 		trace.info() << "removing" << std::endl;
@@ -169,7 +186,7 @@ int main(int argc, char **argv)
 		//removing step, store each DSS4 for comparison
 	  v2.push_front(reverseDSS4);
 		i--;
-		while (reverseDSS4.removeBack()) {
+		while (reverseDSS4.retract()) {
 	  	v2.push_front(reverseDSS4);
 			i--;
 		}		
@@ -189,53 +206,60 @@ int main(int argc, char **argv)
 
   trace.endBlock();
 
-//--------------------- DSS8 -----------------------------
+/*
   
-	typedef ArithmeticalDSS<NaiveBase<Coordinate> > DSS8; 
+	typedef experimental::ArithmeticalDSS<Coordinate,8> DSS8; 
 
-	std::vector<Point> bord;
-	bord.push_back(Point(0,0));
-	bord.push_back(Point(1,1));
-	bord.push_back(Point(2,1));
-	bord.push_back(Point(3,2));
-	bord.push_back(Point(4,2));
-	bord.push_back(Point(5,2));
-	bord.push_back(Point(6,3));
-	bord.push_back(Point(6,4));
+	std::vector<Point> boundary;
+	boundary.push_back(Point(0,0));
+	boundary.push_back(Point(1,1));
+	boundary.push_back(Point(2,1));
+	boundary.push_back(Point(3,2));
+	boundary.push_back(Point(4,2));
+	boundary.push_back(Point(5,2));
+	boundary.push_back(Point(6,3));
+	boundary.push_back(Point(6,4));
 
   // Good Initialisation
   trace.beginBlock("test of a DSS8");
-  DSS8 theDSS8(bord.at(0),bord.at(1));		
+  DSS8 theDSS8(boundary.at(0));		
   trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
 	{
-		int i = 2;
-		while (theDSS8.addFront(bord.at(i))) {
+		int i = 1;
+		while (theDSS8.extend(boundary.at(i))) {
 			i++;
 		}
 	  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
-		HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+		HyperRectDomain<Space2Type> domain( Point(0,0), Point(10,10) );
 
 		
 		DGtalBoard board;
 		board.setUnit(Board::UCentimeter);
 		
-		board << DrawDSSBoundingBox() << theDSS8;
-		
-		
+  	board << SetMode(domain.styleName(), "Paving")
+				  << domain;		
+    board << SetMode("PointVector", "Both");
 
-		// Board board;
-		// board.setUnit(Board::UCentimeter);
+
+//  	board << SetMode(theDSS8.styleName(), "Both") 
+//					<< theDSS8;
+//does not work
+
+
+  	board << SetMode(theDSS8.styleName(), "Points") 
+					<< theDSS8;
+  	board << SetMode(theDSS8.styleName(), "BoundingBox") 
+					<< theDSS8;
 		
-		// domain.selfDrawAsGrid(board);
-		// theDSS8.selfDraw(board);
 		
 		board.saveSVG("DSS8.svg");
 
 	}
 
   trace.endBlock();
+*/
 
   return 0;
 }
