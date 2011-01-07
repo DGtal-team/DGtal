@@ -301,36 +301,7 @@ private:
   std::ostream&
   operator<< ( std::ostream & out, const Preimage2D<Shape> & object );
 
-//////////////////////////////////////////////////////////////////////////////
-// generic classes for erasure in STL lists
-// that cannot be performed with reverse_iterator
-/*
-		//default
-		template <typename Container, typename Iterator>
-		struct ErasureInSTLContainers 
-		{
-			static Iterator erase(Container& aContainer,Iterator& anIterator) 
-			{
-				return aContainer.erase(anIterator);
-			}
-		};
 
-		//specialisation for reverse_iterator
-		template <typename Container>
-		struct ErasureInSTLContainers<
-			Container, 
-			std::reverse_iterator<typename Container::iterator> > 
-		{
-			typedef std::reverse_iterator<typename Container::iterator> reverseIterator;
-			static reverseIterator erase(
-									Container& aContainer,
-									reverseIterator& anIterator) 
-			{
-				aContainer.erase((++anIterator).base());
-				return anIterator;
-			}
-		};
-*/
 } // namespace DGtal
 
 

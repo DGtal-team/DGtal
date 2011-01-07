@@ -978,3 +978,867 @@ DGtal::NaiveBase<TInteger>::step1(const Integer& a, const Integer& b)
 		else return Vector(-1,-1);
 	}
 }
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+/**
+ * Constructor.
+ * @param aFirstPoint and aSecondPoint, 
+ * two connected points for initialisation
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::ArithmeticalDSS(
+	 const Point& aPoint)
+{
+
+	myF = aPoint;
+	myL = aPoint;
+
+	myUf = aPoint;
+	myLf = aPoint;
+	myUl = aPoint;
+	myLl = aPoint;
+
+	myA = 0; 
+	myB = 0; 
+	myMu = 0;
+	myOmega = 0;
+
+	init = true;
+
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ * Forbidden by default.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::ArithmeticalDSS ( 
+			const ArithmeticalDSS<TInteger,connectivity> & other ) : 
+					myA(other.myA), myB(other.myB), myMu(other.myMu), myOmega(other.myOmega),
+					myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
+					myF(other.myF), myL(other.myL), init(other.init) {
+	for (int i = 0; i < other.step.size(); i++) {
+		step.push_back(other.step.at(i));
+	}
+}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ * Forbidden by default.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity> &
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::operator= ( 
+			const ArithmeticalDSS<TInteger,connectivity> & other ) {
+	myA = other.myA;
+	myB = other.myB;
+	myMu = other.myMu;
+	myOmega = other.myOmega;
+	myUf = other.myUf;
+	myLf = other.myLf;
+	myUl = other.myUl;
+	myLl = other.myLl;
+	myF = other.myF;
+	myL = other.myL;
+	init = other.init;
+	for (int i = 0; i < other.step.size(); i++) {
+		step.push_back(other.step.at(i));
+	}
+	return *this;
+}
+
+/**
+ * Equality operator.
+ * @param other the object to compare with.
+ * @return 'true' either if the points perfectly match
+ * or if the first points match to the last ones
+ * (same DSS scanned in the conversed way) 
+ * and 'false' otherwise
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::operator==( 
+	const ArithmeticalDSS<TInteger,connectivity>& other ) const {
+	return ( ( (myOmega == other.myOmega) &&
+					  (myUf == other.myUf) && 
+						(myUl == other.myUl) &&  
+						(myLf == other.myLf) &&  
+						(myLl == other.myLl) && 
+						(myF == other.myF) &&  
+						(myL == other.myL) ) || 
+					( (myOmega == other.myOmega) &&
+					  (myUf == other.myLl) && 
+						(myUl == other.myLf) &&  
+						(myLf == other.myUl) &&  
+						(myLl == other.myUf) && 
+						(myF == other.myL) &&  
+						(myL == other.myF) ) );
+}
+
+/**
+ * Difference operator.
+ * @param other the object to compare with.
+ * @return 'false' if equal
+ * 'true' otherwise
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::operator!=( 
+				const ArithmeticalDSS<TInteger,connectivity> & other ) const {
+	return (!(*this == other));
+}
+
+
+/**
+ * Tests whether the union between a point 
+ * (adding to the front of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * Computes the parameters of the new DSS 
+ * with the adding point if true.
+ * @param aPoint the new pixel (connected to the DSS) 
+ * @return 'true' if the union is a DSS, 'false' otherwise.
+ */
+template <typename TInteger, int connectivity>
+inline
+bool 
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::extend(const Point & aPoint)
+{
+
+	Vector lastMove = aPoint-myL;
+	//if the two last points 
+  //are confounded or not connected
+	//return false
+	Integer deviation = Tools<TInteger,connectivity>
+												::norm(lastMove[0],lastMove[1]);
+	if ( (deviation>1)||(deviation<=0) ) return false;
+  else if (init) {
+
+		//initialisation stage
+
+		if (step.size()==0) {
+
+			step.push_back(lastMove);
+
+			//update
+			myL = aPoint; 
+			myUl = aPoint; 
+			myLl = aPoint;
+			myA += lastMove[1]; 
+			myB += lastMove[0]; 
+			myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+
+			return true;
+
+		} else {
+
+			if (lastMove == step.at(0)) {
+
+				//update
+				myL = aPoint; 
+				myUl = aPoint; 
+				myLl = aPoint;
+				myA += lastMove[1]; 
+				myB += lastMove[0]; 
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+
+				return true;
+
+			} else {
+
+				step.push_back(lastMove);
+				init = false;
+
+				//update
+				myL = aPoint; 
+				//remainder
+				Integer r = myA*aPoint[0] - myB*aPoint[1];
+				if ( r == myMu-1) {	//on the left
+					myUl = aPoint; 
+					myLf = myLl;
+				} else {            //on the right
+					myLl = aPoint; 
+					myUf = myUl;
+				}
+				myA += lastMove[1]; 
+				myB += lastMove[0]; 
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+
+				return true;
+
+			}
+
+		}
+
+	} else { 
+
+		//main stage
+
+		//if there only two steps at most
+		if (hasLessThanTwoSteps(lastMove)) {
+		
+			//remainder
+			Integer r = myA*aPoint[0] - myB*aPoint[1];
+				  
+			if ( (r < myMu-1)||(r > myMu+myOmega) )
+				return false; //strongly exterior
+			else { 
+
+				//add aPoint to the DSS
+				myL = aPoint; 
+				//update
+				//if weakly interior
+				if (r == myMu) myUl = aPoint;  
+				if (r == myMu+myOmega-1) myLl = aPoint;
+				//if weakly exterior  
+				if (r == myMu-1) {	            //on the left
+					myUl = aPoint; 
+					myLf = myLl;
+					myA = myUl[1] - myUf[1]; 
+					myB = myUl[0] - myUf[0]; 
+					myMu = myA*myUl[0] - myB*myUl[1];
+					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+				} else if (r == myMu+myOmega) { //on the right
+					myLl = aPoint; 
+					myUf = myUl; 
+					myA = myLl[1] - myLf[1]; 
+					myB = myLl[0] - myLf[0]; 
+					myMu = myA*myUl[0] - myB*myUl[1];
+					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+				}
+				return true;
+
+			}
+
+		} else { 
+			//if there is more than two steps 
+ 			return false;
+		}
+
+	} 
+
+}
+
+/**
+ * Remove the first point of a DSS
+ * (located at the back with respect to 
+ * the scan orientaion)
+ * if the DSS has more than two points
+ * @return 'true' the first point is removed, 'false' otherwise.
+ */
+template <typename TInteger, int connectivity>
+inline
+bool 
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::retract()
+{
+	
+	Vector v = myL-myF;
+
+	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
+
+		return false;
+
+	} else if (Tools<TInteger,connectivity>
+								::norm(v[0],v[1]) <= 1) {//if there are only two points
+
+		//init with myL
+		myF = myL;
+		myUf = myL;
+		myLf = myL;
+
+		myA = 0; 
+		myB = 0; 
+		myMu = 0;
+		myOmega = 0;
+
+		step.clear();
+		init = true;
+
+		return true;
+
+	} else {                   //there are more than two points
+
+		//update myF
+		Point ptToRemove = myF;
+		myF = next(ptToRemove);
+
+		//if the point to remove is the first upper leaning point...
+		if (ptToRemove == myUf) {
+			//... and if the first and last lower leaning points are confounded
+			if (myLf == myLl) {
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = myLf - ( myUf + vectorFrom0ToOmega() );
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector myFToMyUl = myUl - myF;
+				k = Tools<TInteger,connectivity>::norm(myFToMyUl[0],myFToMyUl[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				myUf = myUl - newMainVector*k;
+				Vector myLfToMyL = myL - myLf;
+				k = Tools<TInteger,connectivity>::norm(myLfToMyL[0],myLfToMyL[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				myLl = myLf + newMainVector*k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+			} else {
+				myUf = myUf + Vector(myB,myA);
+			}
+		}
+
+		//if the point to remove is the first lower leaning point...
+		if (ptToRemove == myLf) {
+			//... and if the first and last upper leaning points are confounded
+			if (myUf == myUl) { 
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = myUf - (myLf - vectorFrom0ToOmega() );
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector myFToMyLl = myLl - myF;
+				k = Tools<TInteger,connectivity>::norm(myFToMyLl[0],myFToMyLl[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				myLf = myLl - newMainVector*k;
+				Vector myUfToMyL = myL - myUf;
+				k = Tools<TInteger,connectivity>::norm(myUfToMyL[0],myUfToMyL[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				myUl = myUf + newMainVector*k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+			} else {
+				myLf = myLf + Vector(myB,myA);
+			}
+		}
+
+		return true;
+	}
+
+}
+
+
+//-------------------------------------------------------------------------
+/**
+ * Computes the sequence of (connected) points
+ * belonging to the DSL(a,b,mu,omega)
+ * between the first and last point of the DSS
+ * Nb: in O(omega)
+ * @return the computed sequence of points.
+ */
+template <typename TInteger, int connectivity>
+inline
+std::vector<typename DGtal::PointVector<2,TInteger> > 
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::retrieve() const
+{
+
+	std::vector<Point > contour;
+	Point firstPoint = myF;
+	while (firstPoint != myL) {
+		contour.push_back(firstPoint);
+		firstPoint = next(firstPoint);
+	}
+	contour.push_back(firstPoint);
+
+	return contour;
+}
+
+
+    
+
+/**
+ * Checks whether the DSS has less or more
+ * than two displacement vectors (steps)
+ * between two consecutive points
+ * (must be called only in the main stage)
+ * @param aStep, the last displacement vector. 
+ * @return 'true' if less or equal, 'false' otherwise.
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::hasLessThanTwoSteps(
+				const Vector& aStep) const
+{
+	if ( (aStep == step.at(0)) || 
+			 (aStep == step.at(1)) ) {
+		return true;
+	} else {
+		return false;
+	}
+
+}
+//-------------------------------------------------------------------------
+/**
+ * Computes the remainder of a point
+ * (that does not necessarily belong to the DSS)
+ * @param aPoint the point whose remainder is returned 
+ * @return the remainder.
+ */
+template <typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getRemainder(const Point & aPoint) const
+{
+	return myA*aPoint[0]-myB*aPoint[1];
+}
+
+//-------------------------------------------------------------------------
+/**
+ * Checks whether a point is in the DSL
+ * of parameters (myA,myB,myMu,myOmega)
+ * @return 'true' if yes, 'false' otherwise
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::isInDSL(const Point & aPoint) const
+{
+	Integer r = getRemainder(aPoint);
+	return ( (r >= myMu)&&(r < myMu+myOmega) );
+}
+
+//-------------------------------------------------------------------------
+/**
+ * Checks whether a point belongs to the DSS or not
+ * @return 'true' if yes, 'false' otherwise
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::isInDSS(const Point & aPoint) const
+{
+	Integer s = myA*aPoint[0] + myB*aPoint[1];
+	Integer smin = myA*myF[0] + myB*myF[1];
+	Integer smax = myA*myL[0] + myB*myL[1];
+	return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
+}
+
+
+//------------------------- Accessors --------------------------
+
+template <typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getA() const {
+	return myA;
+}
+
+template <typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getB() const {
+	return myB;
+}
+
+template <typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getMu() const {
+	return myMu;
+}
+
+template <typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getOmega() const {
+	return myOmega;
+}
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getUf() const {
+	return myUf;
+}
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getUl() const {
+	return myUl;
+}
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getLf() const {
+	return myLf;
+}
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getLl() const {
+	return myLl;
+}
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getBackPoint() const {
+	return myF;
+}
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::getFrontPoint() const {
+	return myL;
+}
+
+//-----------------------------------------------------------------
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::isValid() const
+{
+
+	if (myF == myL) { //init case with one point
+		return true; 
+	} else {
+		//remainders of leaning points
+		if (myA*myUf[0] - myB*myUf[1] != myMu) return false;
+		else if (myA*myUl[0] - myB*myUl[1] != myMu) return false;
+		else if (myA*myLf[0] - myB*myLf[1] != myMu+myOmega-1) return false;
+		else if (myA*myLl[0] - myB*myLl[1] != myMu+myOmega-1) return false;
+		else {
+
+			//relatively prime
+			Integer gcd = boost::math::gcd(myA, myB);
+			if (gcd != 1) return false;
+			else return true;	
+
+		} 
+	}
+
+}
+
+
+/**
+ * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
+ * @param m any point expressed in the local reference frame (may not be part of the segment).
+ * @return the projected point.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,double>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::project( const Point & m ) const
+{
+	//casts
+	double a = (double) IntegerTraits<TInteger>::castToInt64_t(myA);
+	double b = (double) IntegerTraits<TInteger>::castToInt64_t(myB);
+	double mu = (double) IntegerTraits<TInteger>::castToInt64_t(myMu);
+  double xm = (double) IntegerTraits<TInteger>::castToInt64_t(m[0]);
+  double ym = (double) IntegerTraits<TInteger>::castToInt64_t(m[1]);
+
+  double alpha = ( mu + mu + ( a >= 0 ? a : -a ) + b - 1 ) / 2.0f;
+  double d2 = ( a * a + b * b );
+  double s = b * xm + a * ym;
+  double xp = ( b * s + a * alpha ) / d2;
+  double yp = ( a * s - b * alpha ) / d2;
+  return PointD( xp, yp );
+}
+
+/**
+ * Projects the point [m] onto the straight line whose points have
+ * remainder [r].
+ *
+ * @param m any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @param r the remainder (may not be an integer).
+ * @return the projected point.
+ */
+
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,double>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::project( const Point & m, double r ) const
+{
+	//casts
+	double a = (double) IntegerTraits<TInteger>::castToInt64_t(myA);
+	double b = (double) IntegerTraits<TInteger>::castToInt64_t(myB);
+  double xm = (double) IntegerTraits<TInteger>::castToInt64_t(m[0]);
+  double ym = (double) IntegerTraits<TInteger>::castToInt64_t(m[1]);
+
+  double d2 = ( a * a + b * b );
+  double s = b * xm + a * ym;
+  double xp = ( b * s + a * r ) / d2;
+  double yp = ( a * s - b * r ) / d2;
+  
+  return PointD( xp, yp );
+}
+
+/**
+ * Projects the point [m] onto the straight line going through point [p].
+ *
+ * @param m any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @param p any point expressed in the local reference frame (may not
+ * be part of the segment).
+ *
+ * @return the projected point.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,double>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::project( const Point & m, const Point & p ) const
+{
+
+  double r = (double) IntegerTraits<TInteger>::castToInt64_t(getRemainder(p));
+	return project(m,r);
+
+}
+
+/**
+ * Defined as: norm( project(myL) - project(myF) )
+ * @return the projected length of the segment.
+ * @see projectRegularly
+ */
+template <typename TInteger, int connectivity>
+inline
+double
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::projectedSegmentLength() const
+{
+  PointD v = project( myL );
+  PointD u = project( myF );
+  v -= u;
+  return v.norm(DGtal::PointVector<2,double>::L_2);
+}
+
+
+
+
+/**
+ * Draw the bounding box of the DSS on a LiBoard board
+ * @param board the output board where the object is drawn.
+ */
+template <typename TInteger, int connectivity>
+inline
+void 
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::selfDrawAsBoundingBox( DGtalBoard & aBoard) const
+{
+  
+  //draw bounding box
+  PointD topLeft = project(myF, myUf);
+  PointD bottomLeft = project(myF,myLf);
+  PointD bottomRight = project(myL, myLf);
+  PointD topRight = project(myL,myUf);
+  
+
+  LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
+  LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
+  LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
+  LibBoard::Point topRightBoard(topRight[0],topRight[1]);
+  
+  vector<LibBoard::Point> bb;
+  bb.push_back(topLeftBoard);
+  bb.push_back(bottomLeftBoard);
+  bb.push_back(bottomRightBoard);
+  bb.push_back(topRightBoard);
+  
+  aBoard.drawClosedPolyline(bb);  
+     
+
+}
+
+/**
+ * Draw the retrieved digital points of the DSS on a LiBoard board
+ * @param board the output board where the object is drawn.
+ */
+template <typename TInteger, int connectivity>
+inline
+void 
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) const
+{
+
+	vector<Point> ptsOfDSS = retrieve();
+
+  // Draw a linking polygonal line if the pixels are drawn as points. 
+  if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
+    {
+
+			vector<LibBoard::Point> contour;
+			for (unsigned int i=0; i<ptsOfDSS.size();i++) {
+				Point p = ptsOfDSS.at(i);
+				double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
+				double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+				contour.push_back(LibBoard::Point(xp,yp));
+			}
+      aBoard.drawPolyline(contour);
+    }
+
+  // Draw points
+  for (unsigned int i=0; i<ptsOfDSS.size();i++) {
+		Point p = ptsOfDSS.at(i);
+		aBoard << p;
+  }
+  
+
+}
+
+
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::DrawableWithDGtalBoard*
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::defaultStyle( std::string mode ) const
+{
+  if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "BoundingBox" ) ) 
+    return new DefaultDrawStyleBB;
+  else // mode == "Points"
+    return new DefaultDrawStylePoints;
+}
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template <typename TInteger, int connectivity>
+inline
+std::string
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::styleName() const
+{
+  return "ArithmeticalDSS";
+}
+
+/**
+ * Draw the object on a LibBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template <typename TInteger, int connectivity>
+inline
+void
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::selfDraw( DGtalBoard & board ) const
+{
+  std::string mode = board.getMode( styleName() );
+  if ( mode == "BoundingBox" )
+    selfDrawAsBoundingBox( board );
+  else if ( mode == "Points" )
+    selfDrawAsDigitalPoints( board );
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
+    {
+      selfDrawAsDigitalPoints( board );
+			board << CustomStyle(styleName()+"/Both",new DefaultDrawStyleBB);
+      selfDrawAsBoundingBox( board );
+    }
+  else
+    ASSERT(false && ("DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::selfDraw: Unknown mode "+mode)==""  );
+
+}
+
+
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TInteger, int connectivity>
+inline
+void
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::selfDisplay ( std::ostream & out)
+{
+  
+  out << "[ArithmeticalDSS]" <<  endl;
+	out << "Parameters (a,b,mu,omega)=";
+	out << "("<< myA << ", " << myB << ", ";
+  out << myMu << ", " << myOmega << ")" <<  endl;
+  out << "First point " << myF << " Last point " << myL <<  endl;
+  out << "Leaning points:" <<  endl;
+  out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
+  out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;
+  out << "Steps:" <<  endl;
+	for (int i = 0; i < step.size(); i++) {
+		out << "   " << step.at(i) << endl;
+	}
+  out << "[End ArithmeticalDSS]" <<  endl;
+  
+}
+
+
+
+/**
+ * Returns the 2D vector 
+ * starting at a point of remainder 0
+ * and pointing at a point of remainder omega
+ * @return the 2D vector.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::vectorFrom0ToOmega() const
+{
+	Vector v = step.at(1) - step.at(0);
+	if ( (myA*v[0] - myB*v[1]) == myOmega) {
+		return v;
+	} else {
+		return ( step.at(0) - step.at(1) );
+	}
+
+}
+
+/**
+ * Returns the point that follows a given 
+ * point of a DSL
+ * @param a, b, mu, omega, the parameters 
+ * of the DSL and aPoint, a given point of 
+ * the DSL. 
+ * @return the next point.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::next(
+			const Point& aPoint) const
+{
+
+	Integer r = myA*aPoint[0] - myB*aPoint[1];
+	ASSERT( (r >= myMu)&&(r < myMu+myOmega) );
+
+	Point nextPoint = aPoint + step.at(0);
+	Integer r2 = myA*nextPoint[0] - myB*nextPoint[1];
+
+	if ( (r2 >= myMu)&&(r2 < myMu+myOmega) ) {
+			return nextPoint;
+	} else {
+			return aPoint + step.at(1);
+	}
+
+}
+

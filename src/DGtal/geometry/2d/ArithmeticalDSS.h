@@ -696,8 +696,6 @@ public:
 
 };
 
-
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
  * @param out the output stream where the object is written.
@@ -713,7 +711,514 @@ operator<< ( std::ostream & out,  ArithmeticalDSS<TDSS> & object )
     }
 
 
+
+namespace experimental
+{
+
+
+/////////////////////////////////////////////////////////////////////////////
+// class ArithmeticalDSS
+/**
+ * Description of class 'ArithmeticalDSS' <p>
+ * \brief Aim:
+ * Dynamic recognition of a digital straight segment (DSS)
+ * defined as the sequence of connected points (x,y)
+ * such that mu <= ax - by < mu + omega.  
+ * (see Debled and Reveilles (1995)).
+ *
+ * For the classical naive and standard DSS, this class can be
+ * templated by one of two classes providing
+ * elementary services (such as the definition of the width paramater). 
+ *
+ * Here is a short example of how to use this class:
+ * @code 
+ typedef int Coordinate;
+ typedef PointVector<2,Coordinate> Point;
+ typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;
+
+ std::vector<Point> contour;
+ contour.push_back(Point(0,0));
+ contour.push_back(Point(1,0));
+ contour.push_back(Point(1,1));
+ contour.push_back(Point(2,1));
+ contour.push_back(Point(3,1));
+ 
+ DSS4 theDSS4(contour.at(0),contour.at(1));
+ int i = 2;
+ while (theDSS4.addFront(contour.at(i))) {
+   i++;
+ }
+ HyperRectDomain<SpaceND<2> > domain( Point(  -10, -10  ), Point(  10, 10  ) );
+ 
+ DGtalBoard board;
+ board.setUnit(Board::UCentimeter);
+ 
+ // Draw the domain as a grid, and the DSS (default draws both the bounding box and the set of points)
+ board << DrawDomainGrid() << domain;
+ board << theDSS4;
+ 
+ board.saveSVG("DSS4.svg");
+ * @endcode
+ * @see StandardBase
+ * @see NaiveBase
+ */
+template <typename TInteger, int connectivity>
+class ArithmeticalDSS
+{
+
+
+    // ----------------------- Types ------------------------------
+public:
+
+  //2D point and 2D vector
+  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+  //does not compile
+  typedef TInteger Integer;
+  typedef DGtal::PointVector<2,Integer> Point;
+  typedef DGtal::PointVector<2,Integer> Vector;
+  
+  typedef DGtal::PointVector<2,double> PointD;
+  
+
+//////////////////////////////////////////////////////////////////////////////
+// generic class for computing the norm of (a,b)
+// max(a,b) for 8-connectivity 
+// |a|+|b| for 4-connectivity
+
+		//default (for 8-connectivity) 
+		template <typename TInt, int c>
+		struct Tools
+		{
+			static TInt norm(const TInt& a, const TInt& b) 
+			{
+				DGtal::PointVector<2,TInt> v(a,b);
+				return v.norm(DGtal::PointVector<2,TInt>::L_infty);
+			}
+
+		};
+
+		//specialisation for 4-connectivity
+		template <typename TInt>
+		struct Tools<TInt,4> 
+		{
+			static TInt norm(const TInt& a, const TInt& b) 
+			{
+				//ne compile pas si Tint est mpz_class
+				DGtal::PointVector<2,TInt> v(a,b);
+				return v.norm(DGtal::PointVector<2,TInt>::L_1);
+			}
+
+		};
+
+    // ----------------------- Standard services ------------------------------
+public:
+
+
+    /**
+     * Constructor.
+		 * @param aPoint  
+		 * a point
+     */
+    ArithmeticalDSS(const Point& aPoint);
+
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    ArithmeticalDSS ( const ArithmeticalDSS & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    ArithmeticalDSS & operator= ( const ArithmeticalDSS & other );
+
+    /**
+     * Equality operator.
+     * @param other the object to compare with.
+     * @return 'true' either if the leaning points perfectly match
+	 	 * or if the first leaning points match to the last ones
+     * (same DSS scanned in the conversed way) 
+     * and 'false' otherwise
+     */
+		bool operator==( const ArithmeticalDSS & other ) const;
+
+    /**
+     * Difference operator.
+     * @param other the object to compare with.
+     * @return 'false' if equal
+     * 'true' otherwise
+     */
+		bool operator!=( const ArithmeticalDSS & other ) const;
+
+    /**
+     * Destructor.
+     */
+    ~ArithmeticalDSS(){};
+
+    // ----------------------- Interface --------------------------------------
+public:
+     
+
+
+    /**
+		 * Tests whether the union between a point 
+     * (adding to the front of the DSS 
+     * with respect to the scan orientaion) 
+		 * and a DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param aPoint the new pixel (connected to the DSS) 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool extend(const Point & aPoint);
+
+    /**
+		 * Removes the first point of a DSS
+     * (located at the back with respect to 
+     * the scan orientaion)
+	   * if the DSS has more than two points
+     * @return 'true' if the first point is removed, 'false' otherwise.
+     */
+    bool retract();
+
+    /**
+		 * Computes the sequence of (connected) points
+		 * belonging to the DSL(a,b,mu,omega)
+     * between the first and last point of the DSS
+		 * Nb: in O(n)
+     * @return the computed sequence of points.
+     */
+    std::vector<Point> retrieve() const;
+
+
+    /**
+		 * Computes the remainder of a point
+     * (that does not necessarily belong to the DSS)
+     * @param aPoint the point whose remainder is returned 
+     * @return the remainder.
+     */
+    Integer getRemainder( const Point& aPoint ) const;
+
+    /**
+		 * Checks whether a point is in the DSL
+     * of parameters (myA,myB,myMu,myOmega)
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSL( const Point& aPoint ) const;
+
+    /**
+		 * Checks whether a point belongs to the DSS or not
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS( const Point& aPoint ) const;
+
+    // ------------------------- Accessors ------------------------------
+    /**
+		 * myA accessor
+     * @return an Integer of value myA.
+     */
+    Integer getA() const;
+    /**
+		 * myB accessor
+     * @return an Integer of value myB.
+     */
+    Integer getB() const;
+    /**
+		 * myMu accessor
+     * @return an Integer of value myMu.
+     */
+    Integer getMu() const;
+    /**
+		 * myOmega accessor
+     * @return an Integer of value myOmega.
+     */
+    Integer getOmega() const;
+    /**
+		 * Accessor to the first upper leaning point
+     * @return first upper leaning point.
+     */
+    Point getUf() const;
+    /**
+		 * Accessor to the last upper leaning point
+     * @return last upper leaning point.
+     */
+    Point getUl() const;
+    /**
+		 * Accessor to the first lower leaning point
+     * @return first lower leaning point.
+     */
+    Point getLf() const;
+    /**
+		 * Accessor to the last lower leaning point
+     * @return last lower leaning point.
+     */
+    Point getLl() const;
+    /**
+		 * Accessor to the first added point to the DSS
+     * @return point.
+     */
+    Point getBackPoint() const;
+    /**
+		 * Accessor to the last added point to the DSS
+     * @return point.
+     */
+    Point getFrontPoint() const;
+
+    /**
+     * Checks the validity/consistency of the object.
+     * NB: O(log(max(|myA|,|myB|)))
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+// ------------------ Display ------------------------------------------
+
+	public:
+    /**
+   * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
+   * @param m any point expressed in the local reference frame (may not be part of the segment).
+   * @return the projected point.
+   */
+    PointD project( const Point & m ) const;
+
+    /**
+     * Projects the point [m] onto the straight line whose points have
+     * remainder [r].
+     *
+     * @param m any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @param r the remainder (may not be an integer).
+     * @return the projected point.
+     */
+    PointD project( const Point & m, double r ) const;
+    
+    /**
+     * Projects the point [m] onto the straight line going through point [p].
+     *
+     * @param m any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @param p any point expressed in the local reference frame (may not
+     * be part of the segment).
+     *
+     * @return the projected point.
+     */
+    PointD project( const Point & m, const Point & p ) const;
+  
+
+    /**
+     * Defined as: norm( project(cp_n) - project(c_n) )
+     * @return the projected length of the segment.
+     * @see projectRegularly
+     */
+    double projectedSegmentLength() const;
+    
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) ;
+
+    
+    /**
+     * Draw the retrieved digital points of the DSS linked into a 
+     * polygonal line on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    
+    void selfDrawAsDigitalPoints( DGtalBoard & board ) const;
+    
+    
+    /**
+     * Draw the bounding box of the DSS on a LiBoard board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDrawAsBoundingBox( DGtalBoard & board ) const;
+    
+    
+    
+    // ------------------------- Private Datas --------------------------------
+ private:
+
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStyleBB : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw(DGtalBoard & aBoard) const
+      {
+				// Set board style
+				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+				aBoard.setPenColor(DGtalBoard::Color::Red);
+				aBoard.setLineWidth(1);
+				aBoard.setFillColor(DGtalBoard::Color::None);
+      }
+    };
+    
+    /**
+       * Default style.
+       */
+    struct DefaultDrawStylePoints : public DrawableWithDGtalBoard
+    {
+        virtual void selfDraw(DGtalBoard & aBoard) const
+        {
+				// Set board style
+				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+				aBoard.setPenColor(DGtalBoard::Color::Black);
+				aBoard.setLineWidth(2);
+				aBoard.setFillColor(DGtalBoard::Color::None);
+			  }
+    };
+
+    // --------------- CDrawableWithDGtalBoard realization --------------------
+  public:
+    
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+
+
+
+
+
+    /**
+     * Draw the DSS on a LiBoard board as its bounding box and the
+     * polyline of its points 
+     * @see BoundingBoxDraw
+     * @see DigitalPointsDraw
+     * @param board the output board where the object is drawn.
+     *
+     */
+    void selfDraw(DGtalBoard & board ) const;
+    
+    
+
+
+
+
+    // ------------------------- Protected Datas ------------------------------
+protected:
+
+	//parameters of the DSS
+	Integer myA, myB, myMu, myOmega;
+
+	//leaning points
+	Point myUf, myUl, myLf, myLl;
+
+	//first and last added points
+	Point myF, myL;
+
+	//steps of the DSS 
+  //e.g. right and up in the first octant
+	std::vector<Vector> step;
+
+	//flag that is true 
+  //during the initialisation stage
+  //and false after
+	bool init; 
+
+    // ------------------------- Private Datas --------------------------------
+	
+private:
+
+    // ------------------------- Hidden services ------------------------------
+private:
+
+		/**
+		 * Checks whether the DSS has less or more
+		 * than two displacement vectors (steps)
+		 * between two consecutive points
+		 * (must be called only in the main stage)
+		 * @param aStep, the last displacement vector. 
+		 * @return 'true' if less or equal, 'false' otherwise.
+		 */
+    bool hasLessThanTwoSteps(const Vector& aStep) const;
+
+
+    /**
+		 * Returns the 2D vector 
+		 * starting at a point of remainder 0
+		 * and pointing at the closer point of
+     * remainder omega
+     * @return the 2D vector.
+     */
+    Vector vectorFrom0ToOmega() const;
+
+    /**
+		 * Returns the point that follows a given 
+     * point of a DSL
+		 * @param a, b, mu, omega, the parameters 
+     * of the DSL and aPoint, a given point of 
+     * the DSL. 
+     * @return the next point.
+     */
+    Point next(const Point& aPoint) const;
+
+
+
+
+}; // end of class ArithmeticalDSS
+
+
+/**
+ * Modifier class in a DGtalBoard stream. Realizes the concept
+ * CDrawableWithDGtalBoard.
+ */
+ struct DrawDSSBoundingBox : public DrawWithBoardModifier {
+   void selfDraw( DGtalBoard & board ) const
+   {
+     board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
+   }
+ };
+ 
+ /**
+  * Modifier class in a DGtalBoard stream. Realizes the concept
+  * CDrawableWithDGtalBoard.
+  */
+ struct DrawDSSPoints : public DrawWithBoardModifier {
+   void selfDraw( DGtalBoard & board ) const
+   {
+     board.myModes[ "ArithmeticalDSS" ] = "Points";
+   }
+ };
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'ArithmeticalDSS' to write.
+ * @return the output stream after the writing.
+ */
+template <typename TInteger, int connectivity>
+std::ostream&
+operator<< ( std::ostream & out,  ArithmeticalDSS<TInteger,connectivity> & object )
+  {
+      object.selfDisplay( out);
+      return out;
+    }
+
+
+} // namespace DGtal::experimental
+
+
+
 } // namespace DGtal
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

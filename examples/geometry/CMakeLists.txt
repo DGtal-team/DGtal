@@ -2,6 +2,7 @@ SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
   distancetransform2D
   DSS
+	freemanChainDisplay
  )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
