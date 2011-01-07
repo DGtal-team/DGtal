@@ -803,9 +803,23 @@ public:
 		{
 			static TInt norm(const TInt& a, const TInt& b) 
 			{
-				//ne compile pas si Tint est mpz_class
-				DGtal::PointVector<2,TInt> v(a,b);
-				return v.norm(DGtal::PointVector<2,TInt>::L_1);
+				//does not compile with GMP type mpz_class
+				//DGtal::PointVector<2,TInt> v(a,b);
+				//return v.norm(DGtal::PointVector<2,TInt>::L_1);
+
+				if (a > 0) {
+					if (b > 0) {
+						return (a+b);
+					} else {
+						return (a-b);		
+					}
+				} else {
+					if (b > 0) {
+						return (-a+b);						
+					} else {
+						return (-a-b);		
+					}
+				}
 			}
 
 		};

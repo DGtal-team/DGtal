@@ -1147,6 +1147,7 @@ DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::extend(const Point 
 			myLl = aPoint;
 			myA += lastMove[1]; 
 			myB += lastMove[0]; 
+			myMu = myA*myUl[0] - myB*myUl[1]; 
 			myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 
 			return true;
@@ -1174,7 +1175,7 @@ DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::extend(const Point 
 				myL = aPoint; 
 				//remainder
 				Integer r = myA*aPoint[0] - myB*aPoint[1];
-				if ( r == myMu-1) {	//on the left
+				if ( r < myMu) {	//on the left
 					myUl = aPoint; 
 					myLf = myLl;
 				} else {            //on the right
@@ -1183,7 +1184,7 @@ DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::extend(const Point 
 				}
 				myA += lastMove[1]; 
 				myB += lastMove[0]; 
-				myMu = myA*myUl[0] - myB*myUl[1];
+				myMu = myA*myUl[0] - myB*myUl[1]; 
 				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 
 				return true;
@@ -1205,7 +1206,6 @@ DGtal::experimental::ArithmeticalDSS<TInteger,connectivity>::extend(const Point 
 			if ( (r < myMu-1)||(r > myMu+myOmega) )
 				return false; //strongly exterior
 			else { 
-
 				//add aPoint to the DSS
 				myL = aPoint; 
 				//update
