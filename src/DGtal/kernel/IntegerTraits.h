@@ -149,6 +149,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const T & aT)
+    {
+      return static_cast<double>(aT);
+    }
 
 
   }; // end of class IntegerTraits
@@ -204,6 +212,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+/**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const int & aT)
+    {
+      return static_cast<double>(aT);
+    }
 
   }; // end of class IntegerTraits<int>.
 
@@ -254,6 +270,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const unsigned int & aT)
+    {
+      return static_cast<double>(aT);
+    }
 
   }; // end of class IntegerTraits<unsigned int>.
 
@@ -303,6 +327,14 @@ namespace DGtal
     static DGtal::int64_t castToInt64_t(const unsigned char & aT)
     {
       return static_cast<DGtal::int64_t>(aT);
+    }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const unsigned char & aT)
+    {
+      return static_cast<double>(aT);
     }
 
   }; // end of class IntegerTraits<unsigned char>.
@@ -357,6 +389,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const uint16_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
 
   }; // end of class IntegerTraits<uint16_t>.
 
@@ -407,6 +447,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const int16_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
   }; // end of class IntegerTraits<int16_t>.
 
   /**
@@ -455,6 +503,10 @@ namespace DGtal
    static DGtal::int64_t castToInt64_t(const uint32_t & aT)
     {
       return static_cast<DGtal::int64_t>(aT);
+    }
+    static double castToDouble(const uint32_t & aT)
+    {
+      return static_cast<double>(aT);
     }
   }; // end of class IntegerTraits<uint32_t>.
 
@@ -505,6 +557,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const int32_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
   }; // end of class IntegerTraits<int32_t>.
 
   /**
@@ -554,6 +614,14 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const uint64_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
   }; // end of class IntegerTraits<uint64_t>.
 
   /**
@@ -602,6 +670,10 @@ namespace DGtal
    static DGtal::int64_t castToInt64_t(const int64_t & aT)
     {
       return aT;
+    }
+    static double castToDouble(const int64_t & aT)
+    {
+      return static_cast<double>(aT);
     }
   }; // end of class IntegerTraits<int64_t>.
 
@@ -657,6 +729,10 @@ namespace DGtal
     static DGtal::int64_t castToInt64_t(const mpz_class & aT)
     {
       return aT.get_si();
+    }
+    static double castToDouble(const mpz_class & aT)
+    {
+      return aT.get_d();
     }
   }; // end of class IntegerTraits<mpz_class>.
 #endif

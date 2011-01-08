@@ -441,18 +441,18 @@ DGtal::PointVector<N, T>::norm (const typename PointVector<N, T>::NormType aType
   {
     case L_2:
       for ( unsigned int i = 0; i < dimension(); i++ )
-        tmp += at ( i ) * at ( i );
+        tmp += IntegerTraits<T>::castToDouble(at ( i )) *IntegerTraits<T>::castToDouble(at ( i ));
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
       for ( unsigned int i = 0; i < dimension(); i++ )
-        tmp += fabs ( (double) at( i ) );
+        tmp += fabs (  IntegerTraits<T>::castToDouble(at( i ) ));
       break;
     case L_infty:
       tmp = at( 0 );
       for ( unsigned int i = 1; i < dimension(); i++ )
-        if ( tmp < fabs ( (double) at ( i ) ) )
-          tmp = fabs ( (double) at ( i ) );
+        if ( tmp < fabs ( IntegerTraits<T>::castToDouble(at ( i ) ) ))
+          tmp = fabs ( IntegerTraits<T>::castToDouble(at ( i ) ));
       break;
   }
   return tmp;

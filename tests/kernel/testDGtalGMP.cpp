@@ -115,6 +115,8 @@ bool testGMPSpace()
   PointCommon p2c( 31, 31 );
 
 
+  trace.info() <<"p2c.norm()= "<< p2c.norm()<<endl;
+
   Domain domain( p1, p2 );
   DGtalBoard aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
