@@ -290,7 +290,7 @@ int main()
   ///Domain characterized by points a and b
   DomainType domain ( a, b );
   trace.info() << domain << std::endl;
-  trace.info() << "Domain Extent= " << domain.extent() << std::endl;
+  trace.info() << "Domain size= " << domain.size() << std::endl;
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetBySTLVector" );

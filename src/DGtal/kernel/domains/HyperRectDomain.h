@@ -92,260 +92,249 @@ namespace DGtal
   template<typename TSpace>
   class HyperRectDomain
   {
-      // ----------------------- Standard services ------------------------------
-    public:
+    // ----------------------- Standard services ------------------------------
+  public:
 
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-
-
-      // typedef TSpace DigitalSpace;
-      // typedef TSpace SpaceType;
-      typedef TSpace Space;
-
-      // static constants
-      static const typename Space::Dimension staticDimension = Space::staticDimension;
-
-      typedef HyperRectDomain<Space> Domain;
-      typedef typename Space::Point Point;
-      typedef typename Space::Integer Integer;
-      typedef typename Space::Vector Vector;
-      typedef typename Space::Dimension Dimension;
-      typedef typename Space::Size Size;
-      typedef typename Point::Coordinate Coordinate;
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
 
 
-      // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
+    // typedef TSpace DigitalSpace;
+    // typedef TSpace SpaceType;
+    typedef TSpace Space;
 
-      ///Typedef of domain iterators
-      typedef HyperRectDomain_Iterator<Point,Size> ConstIterator;
-      typedef IsWithinPointPredicate<Point> Predicate;
+    // static constants
+    static const typename Space::Dimension staticDimension = Space::staticDimension;
 
-      /**
-       * Default Constructor.
-       */
-      HyperRectDomain();
-
-      /**
-       * Constructor from  two points \param aPointA and \param aPoint B
-       * defining the space diagonal.
-       *
-       */
-      HyperRectDomain ( const Point &aPointA, const Point &aPointB );
+    typedef HyperRectDomain<Space> Domain;
+    typedef typename Space::Point Point;
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+    typedef typename Space::Dimension Dimension;
+    typedef typename Space::Size Size;
+    typedef typename Point::Coordinate Coordinate;
 
 
-      /**
-       * Destructor.
-       */
-      ~HyperRectDomain();
+    // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
-      /**
-       * Copy constructor.
-       * @param other the object to clone.
-       * Forbidden by default.
-       */
-      HyperRectDomain ( const HyperRectDomain & other );
+    ///Typedef of domain iterators
+    typedef HyperRectDomain_Iterator<Point,Size> ConstIterator;
+    typedef IsWithinPointPredicate<Point> Predicate;
 
+    /**
+     * Default Constructor.
+     */
+    HyperRectDomain();
 
-      /**
-       * Assignment.
-       * @param other the object to copy.
-       * @return a reference on 'this'.
-       * Forbidden by default.
-       */
-      HyperRectDomain & operator= ( const HyperRectDomain & other );
+    /**
+     * Constructor from  two points \param aPointA and \param aPoint B
+     * defining the space diagonal.
+     *
+     */
+    HyperRectDomain ( const Point &aPointA, const Point &aPointB );
 
 
+    /**
+     * Destructor.
+     */
+    ~HyperRectDomain();
 
-      //------------- Global Iterator
-      /**
-       * begin() iterator.
-       *
-       **/
-      const ConstIterator begin() const;
-
-      /**
-       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-       *
-       **/
-      ConstIterator begin ( const Point &aPoint ) const;
-
-      /**
-       * end() iterator.
-       *
-       **/
-      const ConstIterator end() const;
-
-      /**
-       * end() iterator.
-       * @returns a ConstIterator at the endpoint \param aPoint
-       *
-       **/
-      ConstIterator end(const Point &aPoint) const;
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    HyperRectDomain ( const HyperRectDomain & other );
 
 
-      //------------ Subdomain/Permutation  Iterators
-
-#ifdef CPP0X_INITIALIZER_LIST
-      /**
-       * begin() iterator on a sub-domain with a order than the lexicographic one.
-       *
-       * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
-       * @return a ConstIterator
-       **/
-      ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain) const;
-
-			/**
-      * begin() iterator on a sub-domain with a order than the lexicographic one.
-      *
-      * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
-      * @return a ConstIterator
-      **/
-      ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain,
-          const Point & startingPoint) const;
-#endif
-      /**
-       * begin() iterator on a sub-domain with a order than the lexicographic one.
-       *
-       * @param aSubDomain the sub-domain given by a vector of dimension.
-       * @return a ConstIterator
-       **/
-      ConstIterator subDomainBegin(const std::vector<Size> & permutation) const;
-
-      /**
-      * begin() iterator on a sub-domain with a order than the lexicographic one.
-      *
-      * @param aSubDomain the sub-domain given by a vector of dimension.
-      * @return a ConstIterator
-      **/
-      ConstIterator subDomainBegin(const std::vector<Size> & permutation,
-          const Point & startingPoint) const;
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    HyperRectDomain & operator= ( const HyperRectDomain & other );
 
 
+
+    //------------- Global Iterator
+    /**
+     * begin() iterator.
+     *
+     **/
+    const ConstIterator begin() const;
+
+    /**
+     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
+     *
+     **/
+    ConstIterator begin ( const Point &aPoint ) const;
+
+    /**
+     * end() iterator.
+     *
+     **/
+    const ConstIterator end() const;
+
+    /**
+     * end() iterator.
+     * @returns a ConstIterator at the endpoint \param aPoint
+     *
+     **/
+    ConstIterator end(const Point &aPoint) const;
+
+
+    //------------ Subdomain/Permutation  Iterators
 
 #ifdef CPP0X_INITIALIZER_LIST
-      /**
-       * end() iterator with an order different from lexicographic.
-       *
-       **/
-      ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain,
-          const Point &startingPoint) const;
-      /**
-       * end() iterator with an order different from lexicographic.
-       *
-       **/
-      ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain) const;
+    /**
+     * begin() iterator on a sub-domain with a order than the lexicographic one.
+     *
+     * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
+     * @return a ConstIterator
+     **/
+    ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain) const;
+
+    /**
+     * begin() iterator on a sub-domain with a order than the lexicographic one.
+     *
+     * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2}).
+     * @return a ConstIterator
+     **/
+    ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain,
+				 const Point & startingPoint) const;
 #endif
-      /**
-       * end() iterator with an order different from lexicographic.
-       *
-       **/
-      ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain,
-          const Point &startingPoint) const;
-      /**
-       * end() iterator with an order different from lexicographic.
-       *
-       **/
-      ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain) const;
+    /**
+     * begin() iterator on a sub-domain with a order than the lexicographic one.
+     *
+     * @param aSubDomain the sub-domain given by a vector of dimension.
+     * @return a ConstIterator
+     **/
+    ConstIterator subDomainBegin(const std::vector<Size> & permutation) const;
+
+    /**
+     * begin() iterator on a sub-domain with a order than the lexicographic one.
+     *
+     * @param aSubDomain the sub-domain given by a vector of dimension.
+     * @return a ConstIterator
+     **/
+    ConstIterator subDomainBegin(const std::vector<Size> & permutation,
+				 const Point & startingPoint) const;
 
 
 
-      //------------- Span Iterator
-      /**
-       * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
-       *
-       **/
-      ConstIterator spanBegin ( const Point &aPoint, const std::size_t aDimension) const;
+#ifdef CPP0X_INITIALIZER_LIST
+    /**
+     * end() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain,
+			       const Point &startingPoint) const;
+    /**
+     * end() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain) const;
+#endif
+    /**
+     * end() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain,
+			       const Point &startingPoint) const;
+    /**
+     * end() iterator with an order different from lexicographic.
+     *
+     **/
+    ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain) const;
 
-      /**
-       * Creates a end() Span iterator along the dimension \param aDimension.
-       *
-       **/
-      ConstIterator spanEnd (const std::size_t aDimension) const;
-
-      // ----------------------- Interface --------------------------------------
-    public:
-
-      /**
-       * @return  the extent of the HyperRectDomain
-       *
-       **/
-      std::size_t extent() const;
 
 
-      /**
-       * Returns the extent of the HyperRectDomain (static method).
-       *
-       * @param aLowerBound  a Point corresponding to the lower bound.
-       * @param aUpperBound a Point corresponding to the upper bound.
-       *
-       * @return the extent.
-       */
-      static std::size_t extent(const Point &aLowerBound, const Point &aUpperBound)
+    //------------- Span Iterator
+    /**
+     * Returns a Span iterator starting at \param aPoint and moving toward the dimension \param aDimension.
+     *
+     **/
+    ConstIterator spanBegin ( const Point &aPoint, const std::size_t aDimension) const;
+
+    /**
+     * Creates a end() Span iterator along the dimension \param aDimension.
+     *
+     **/
+    ConstIterator spanEnd (const std::size_t aDimension) const;
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * @return  the size of the HyperRectDomain
+     *
+     **/
+    Point size() const
+    {
+      Point p;
+      for(typename Point::Iterator it=p.begin(), itend=p.end(); it != itend; ++it)
+	(*it) = 1;
+
+      return (myUpperBound - myLowerBound) + p;
+    }
+    
+
+    /**
+     * Returns the lowest point of the space diagonal.
+     *
+     **/
+    const Point &lowerBound() const;
+
+    /**
+     * Returns the highest point of the space diagonal.
+     *
+     **/
+    const Point &upperBound() const ;
+
+    /**
+     * @param p any point.
+     * @return 'true' if point [p] is inside this domain.
+     */
+    bool isInside( const Point & p ) const;
+
+    /**
+     * @return a const reference to the "IsInside" predicate.
+     *
+     * NB: Could have used template class DomainPredicate but, for
+     * performance reason, directly used the IsWithinPointPredicate
+     * which fits perfectly.
+     */
+    const Predicate & predicate() const;
+
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw(DGtalBoard & aBoard) const
       {
-        std::size_t val = 1;
-        for (Size k =  0; k < TSpace::staticDimension ; k++)
-          val *= (aUpperBound.at(k) - aLowerBound.at(k) + 1);
-
-        return val;
+	aBoard.setPenColorRGBi(160, 160, 160);
+	aBoard.setFillColorRGBi(255, 255, 255);
+	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
       }
+    };
 
-
-      /**
-       * Returns the lowest point of the space diagonal.
-       *
-       **/
-      const Point &lowerBound() const;
-
-      /**
-       * Returns the highest point of the space diagonal.
-       *
-       **/
-      const Point &upperBound() const ;
-
-      /**
-       * @param p any point.
-       * @return 'true' if point [p] is inside this domain.
-       */
-      bool isInside( const Point & p ) const;
-
-      /**
-       * @return a const reference to the "IsInside" predicate.
-       *
-       * NB: Could have used template class DomainPredicate but, for
-       * performance reason, directly used the IsWithinPointPredicate
-       * which fits perfectly.
-       */
-      const Predicate & predicate() const;
-
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-
-      /**
-       * Default style.
-       */
-      struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw(DGtalBoard & aBoard) const
       {
-        virtual void selfDraw(DGtalBoard & aBoard) const
-        {
-          aBoard.setPenColorRGBi(160, 160, 160);
-          aBoard.setFillColorRGBi(255, 255, 255);
-          aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
-        }
-      };
-
-      /**
-       * Default style.
-       */
-      struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
-      {
-        virtual void selfDraw(DGtalBoard & aBoard) const
-        {
-          aBoard.setPenColorRGBi(160, 160, 160);
-          aBoard.setFillColorRGBi(160, 160, 160);
-          aBoard.setLineStyle(DGtalBoard::Shape::DashStyle);
-        }
-      };
+	aBoard.setPenColorRGBi(160, 160, 160);
+	aBoard.setFillColorRGBi(160, 160, 160);
+	aBoard.setLineStyle(DGtalBoard::Shape::DashStyle);
+      }
+    };
 
     // --------------- CDrawableWithDGtalBoard realization --------------------
   public:
@@ -398,22 +387,22 @@ namespace DGtal
     
     
     // ------------------------- Hidden services ------------------------------
-    private:
+  private:
 
 
-      ///The lowest point of the space diagonal
-      Point myLowerBound;
-      ///The highest point of the space diagonal
-      Point myUpperBound;
+    ///The lowest point of the space diagonal
+    Point myLowerBound;
+    ///The highest point of the space diagonal
+    Point myUpperBound;
 
-      /// "IsInside" predicate.
-      Predicate myPredicate;
+    /// "IsInside" predicate.
+    Predicate myPredicate;
 
-      /// Begin iterator
-      ConstIterator myIteratorBegin;
+    /// Begin iterator
+    ConstIterator myIteratorBegin;
 
-      /// End iterator
-      ConstIterator myIteratorEnd;
+    /// End iterator
+    ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
 
 
