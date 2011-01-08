@@ -73,7 +73,7 @@ bool testSimpleHyperRectDomain()
   HyperRectDomain<Space4Type> myHyperRectDomain ( a, b );
   trace.info() << myHyperRectDomain << std::endl;
 
-  trace.info() << "Domain Extent= " << myHyperRectDomain.extent() << std::endl;
+  trace.info() << "Domain Size= " << myHyperRectDomain.size() << std::endl;
 
 
   trace.endBlock();
@@ -81,7 +81,7 @@ bool testSimpleHyperRectDomain()
 
   trace.beginBlock("Test Copy Constructor");
   HyperRectDomain<Space4Type> myHyperRectDomainBis( myHyperRectDomain );
-  trace.info() << "Domain Extent= " << myHyperRectDomainBis.extent() << std::endl;
+  trace.info() << "Domain Size= " << myHyperRectDomainBis.size() << std::endl;
   trace.endBlock();
 
   trace.beginBlock("Test Assignement");
@@ -89,7 +89,7 @@ bool testSimpleHyperRectDomain()
 
   myHyperRectDomainTer = myHyperRectDomain;
 
-  trace.info() << "Domain Extent= " << myHyperRectDomainTer.extent() << std::endl;
+  trace.info() << "Domain Size= " << myHyperRectDomainTer.size() << std::endl;
   trace.endBlock();
 
   return myHyperRectDomain.isValid();

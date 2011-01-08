@@ -134,13 +134,14 @@ DGtal::HyperRectDomain<TSpace>::operator= ( const typename DGtal::HyperRectDomai
  * Returns the extent of the HyperRectDomain
  *
  **/
+/*
 template<typename TSpace>
 inline
 std::size_t
 DGtal::HyperRectDomain<TSpace>::extent() const
 {
   return extent(myLowerBound, myUpperBound);
-}
+  }*/
 
 
 
