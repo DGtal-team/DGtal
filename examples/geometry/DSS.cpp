@@ -47,6 +47,8 @@ using namespace Z2i;
 
 int main( int argc, char** argv )
 {
+//TRIS
+//redondance avec greedy-dss-decomposition
 /*
   typedef FreemanChain<Space::Integer> ContourType; 
   
@@ -137,7 +139,98 @@ int main( int argc, char** argv )
   board.saveFIG("exampleDSS-3.fig");
 */
   
-  return 0;
+
+	/////////////////////////// DSS4 //////////////////////////////////
+	{
+		// Input points
+		std::vector<Point> contour;
+		contour.push_back(Point(0,0));
+		contour.push_back(Point(1,0));
+		contour.push_back(Point(1,1));
+		contour.push_back(Point(2,1));
+		contour.push_back(Point(3,1));
+		contour.push_back(Point(3,2));
+		contour.push_back(Point(4,2));
+		contour.push_back(Point(5,2));
+		contour.push_back(Point(6,2));
+		contour.push_back(Point(6,3));
+		contour.push_back(Point(6,4));
+
+		
+		// Add points while it is possible
+		DSS4 theDSS4(contour.at(0));		
+		unsigned int i = 1;
+		while ( (i<contour.size())
+					&&(theDSS4.extend(contour.at(i))) ) {
+			i++;
+		}
+
+		// Output parameters
+		cout << theDSS4 << endl;
+
+		// Draw the grid
+		DGtalBoard board;
+	
+		Domain domain( Point(0,0), Point(10,10) );
+		board << SetMode(domain.styleName(), "Grid")
+					<< domain;		
+
+		// Draw the points of the DSS
+		board << SetMode("PointVector", "Grid")
+			    << SetMode(theDSS4.styleName(), "Points") 
+					<< theDSS4;
+		// Draw the bounding box
+		board << SetMode(theDSS4.styleName(), "BoundingBox") 
+					<< theDSS4;
+	
+		board.saveSVG("DSS4.svg");
+	}
+
+	////////////////////// DSS8 ///////////////////////////////
+	{
+
+		// Input points
+		std::vector<Point> boundary;
+		boundary.push_back(Point(0,0));
+		boundary.push_back(Point(1,1));
+		boundary.push_back(Point(2,1));
+		boundary.push_back(Point(3,2));
+		boundary.push_back(Point(4,2));
+		boundary.push_back(Point(5,2));
+		boundary.push_back(Point(6,3));
+		boundary.push_back(Point(6,4));
+
+		// Add points while it is possible
+		DSS8 theDSS8(boundary.at(0));		
+		unsigned int i = 1;
+		while ( (i<boundary.size())
+					&& (theDSS8.extend(boundary.at(i))) ) {
+			i++;
+		}
+		// Output parameters
+		cout << theDSS8 << endl;
+
+		//Draw the pixels
+		DGtalBoard board;
+		Domain domain( Point(0,0), Point(10,10) );
+		board << SetMode(domain.styleName(), "Paving")
+					<< domain;		
+	
+		//Draw the points of the DSS
+		board << SetMode("PointVector", "Both");
+		board << SetMode(theDSS8.styleName(), "Points") 
+					<< theDSS8;
+
+		//Draw the bounding box of the DSS
+		board << SetMode(theDSS8.styleName(), "BoundingBox") 
+					<< theDSS8;
+		
+		
+		board.saveSVG("DSS8.svg");
+
+	}
+
+  return 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

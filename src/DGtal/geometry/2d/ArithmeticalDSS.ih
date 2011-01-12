@@ -709,6 +709,7 @@ void
 DGtal::ArithmeticalDSS<TInteger,connectivity>::selfDrawAsBoundingBox( DGtalBoard & aBoard) const
 {
   
+
   //draw bounding box
   PointD topLeft = project(myF, myUf);
   PointD bottomLeft = project(myF,myLf);
@@ -741,6 +742,7 @@ inline
 void 
 DGtal::ArithmeticalDSS<TInteger,connectivity>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) const
 {
+
 
 	vector<Point> ptsOfDSS = retrieve();
 
@@ -812,7 +814,6 @@ DGtal::ArithmeticalDSS<TInteger,connectivity>::selfDraw( DGtalBoard & board ) co
   else if ( ( mode == "Both" ) || ( mode == "" ) )
     {
       selfDrawAsDigitalPoints( board );
-			board << CustomStyle(styleName()+"/Both",new DefaultDrawStyleBB);
       selfDrawAsBoundingBox( board );
     }
   else

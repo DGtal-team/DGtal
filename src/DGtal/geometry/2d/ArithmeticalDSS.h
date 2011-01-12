@@ -68,37 +68,51 @@ namespace DGtal
  * the type of the coordinates of the points (satisfying CInteger) 
  * and by the integer 'connectivity', which may be equal to 
  * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
- * Any other integers act as 8. 
+ * Any other integers act as 8. The following shortcuts are provided in 
+ * the namespace Z2i:
+ * @code 
+ typedef ArithmeticalDSS<Coordinate,4> > DSS4;
+ typedef ArithmeticalDSS<Coordinate,8> > DSS8;
+ * @endcode
  *
  * Here is a short example of how to use this class:
  * @code 
- typedef int Coordinate;
- typedef PointVector<2,Coordinate> Point;
- typedef ArithmeticalDSS<Coordinate,4> > DSS4;
 
- //initialisation 
- DSS4 theDSS4(Point(0,0));
- //add some points
- theDSS4.extend(Point(1,0));
- theDSS4.extend(Point(1,1));
- theDSS4.extend(Point(2,1));
+	// Input points
+	std::vector<Point> contour;
+	contour.push_back(Point(0,0));
+	contour.push_back(Point(1,0));
+	contour.push_back(Point(2,0));
+	contour.push_back(Point(3,0));
+	contour.push_back(Point(3,1));
+	contour.push_back(Point(4,1));
+	contour.push_back(Point(5,1));
+	contour.push_back(Point(5,2));
 
- std::cout << theDSS4 << std::endl;
+  
+  // Add points while it is possible
+	DSS4 theDSS4(contour.at(0));		
+	unsigned int i = 1;
+	while ( (i<contour.size())
+				&&(theDSS4.extend(contour.at(i))) ) {
+		i++;
+	}
+
+	// Output parameters
+	cout << theDSS4 << endl;
+ //You must see:
  //[ArithmeticalDSS]
- //Parameters (a,b,mu,omega)=(1,1,0,2)
- //First point (1,1) Last point (2,1)
+ //Parameters (a,b,mu,omega)=(2, 5, 0, 7)
+ //First point (0,0) Last point (5,2)
  //Leaning points:
  //   Uf (0,0)
- //   Ul (1,1)
- //   Lf (1,0)
- //   Ll (2,1)
+ //   Ul (5,2)
+ //   Lf (3,0)
+ //   Ll (3,0)
  //Steps:
  //   (1,0)
  //   (0,1)
  //[End ArithmeticalDSS]
-
- bool isStillDSS4 = theDSS4.extend(Point(2,0));
- std::cout << isStillDSS4 << std::endl; //0 (false)
 
  * @endcode
  */
@@ -111,7 +125,7 @@ class ArithmeticalDSS
 public:
 
   //2D point and 2D vector
-  //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
   //does not compile
   typedef TInteger Integer;
   typedef DGtal::PointVector<2,Integer> Point;
