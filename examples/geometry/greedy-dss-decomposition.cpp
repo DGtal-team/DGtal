@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
-  typedef ArithmeticalDSS<StandardBase<int> > DSS;
+  typedef ArithmeticalDSS<int,4> DSS;
   typedef FreemanChain<int> ContourType; 
   typedef GreedyDecomposition< ContourType, DSS > Decomposition;
 
@@ -69,18 +69,21 @@ int main( int argc, char** argv )
   DGtalBoard aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
 	 << domain
+	 << SetMode( "PointVector", "Grid" )
 	 << theContour;
   //for each segment
-  DSS segment;
-  aBoard << SetMode( segment.styleName(), "BoundingBox" );
-  string styleName = segment.styleName() + "/BoundingBox";
+	DSS segment;
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition::ConstIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
-      segment = *i;
-      aBoard << CustomStyle( styleName, 
-			     new CustomPenColor( DGtalBoard::Color::Blue ) )
-	     << segment; // draw each segment
+ //     aBoard << CustomStyle( styleName, 
+//			     new CustomPenColor( DGtalBoard::Color::Blue ) )
+//	     << *i; // draw each segment
+			segment = *i;
+			std::cout << segment << std::endl;
+			aBoard << (*i); // draw each segment
     } 
   aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
   aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");

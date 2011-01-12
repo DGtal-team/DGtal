@@ -64,7 +64,7 @@ bool testDSS4drawing()
 {
 
 	typedef PointVector<2,int> Point;
-	typedef experimental::ArithmeticalDSS<int,4> DSS4;  
+	typedef ArithmeticalDSS<int,4> DSS4;  
 
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -126,7 +126,7 @@ bool testDSS8drawing()
 {
 
 	typedef PointVector<2,int> Point;
-	typedef experimental::ArithmeticalDSS<int,8> DSS8; 
+	typedef ArithmeticalDSS<int,8> DSS8; 
 
 	std::vector<Point> boundary;
 	boundary.push_back(Point(0,0));
@@ -192,7 +192,7 @@ bool testExtendRetract()
 
 
 	typedef PointVector<2,int> Point;
-	typedef experimental::ArithmeticalDSS<int,4> DSS4;  
+	typedef ArithmeticalDSS<int,4> DSS4;  
 
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -282,7 +282,7 @@ bool testGMP()
 
 	typedef mpz_class Coordinate;
 	typedef PointVector<2,Coordinate> Point;
-	typedef experimental::ArithmeticalDSS<Coordinate,4> DSS4;  
+	typedef ArithmeticalDSS<Coordinate,4> DSS4;  
 
   trace.beginBlock("Add some points of big coordinates");
 

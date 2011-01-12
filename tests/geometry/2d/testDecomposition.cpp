@@ -65,7 +65,7 @@ int main(int , char **)
   
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
+  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
   
   typedef FreemanChain<Coordinate> ContourType; 
 

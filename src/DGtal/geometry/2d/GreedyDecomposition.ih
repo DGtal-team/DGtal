@@ -168,13 +168,12 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::next()
 	if (myFront != myC->end()) { //if not the end
 
 		myBack = myFront;
-		++myFront;
-		myP = Primitive(*myBack,*myFront);
+		myP = Primitive(*myBack);
 
 		//while my primitive can grow
 		++myFront;
 		while ( (myFront != myC->end()) && 
-						(myP.addFront(*myFront)) ) {
+						(myP.extend(*myFront)) ) {
 			++myFront;
 		}
 		//
@@ -211,13 +210,12 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::previous()
 	if (myBack != myC->begin()) { //if not at the beginning
 
 		myFront = myBack;
-		--myBack;
-		myP(*myFront,*myBack);
+		myP = Primitive(*myFront);
 
 		//while my primitive can grow
 		--myBack;
 		while ( (myBack != myC->begin()) && 
-						(myP.addFront(*myBack)) ) {
+						(myP.extend(*myBack)) ) {
 			--myBack;
 		}
 
@@ -354,7 +352,6 @@ DGtal::GreedyDecomposition<Contour,Primitive>::GreedyDecomposition
 
 /**
  * Destructor.
- * Does nothing
  */
 template <typename Contour, typename Primitive>
 inline
