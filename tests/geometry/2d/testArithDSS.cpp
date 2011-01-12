@@ -145,7 +145,8 @@ bool testDSS8drawing()
 
 	{
 		int i = 1;
-		while (theDSS8.extend(boundary.at(i))) {
+		while ( (i<boundary.size())
+					&& (theDSS8.extend(boundary.at(i))) ) {
 			i++;
 		}
 	  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
