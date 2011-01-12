@@ -92,7 +92,7 @@ bool testGMPSpace()
   typedef Space2Type::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2Type> Domain;
 
-  typedef ArithmeticalDSS<StandardBase<Coordinate> > DSS4;  
+  typedef ArithmeticalDSS<Coordinate,4> DSS4;  
   typedef FreemanChain<Coordinate> ContourType; 
   typedef GreedyDecomposition< ContourType, DSS4 > Decomposition;
   

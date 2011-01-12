@@ -47,6 +47,7 @@ using namespace Z2i;
 
 int main( int argc, char** argv )
 {
+/*
   typedef FreemanChain<Space::Integer> ContourType; 
   
   // Construction of a contour defined as a Freeman chain  code
@@ -134,7 +135,7 @@ int main( int argc, char** argv )
   board.saveSVG("exampleDSS-3.svg");
   board.saveEPS("exampleDSS-3.eps");
   board.saveFIG("exampleDSS-3.fig");
-
+*/
   
   return 0;
 }
