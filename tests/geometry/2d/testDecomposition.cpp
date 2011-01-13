@@ -133,6 +133,7 @@ bool testDec8()
 	curve.push_back(Point(4,2));
 	curve.push_back(Point(5,2));
 	curve.push_back(Point(6,3));
+	curve.push_back(Point(6,4));
 	curve.push_back(Point(7,4));
 	curve.push_back(Point(8,4));
 	curve.push_back(Point(9,3));

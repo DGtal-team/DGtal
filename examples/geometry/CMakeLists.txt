@@ -1,7 +1,7 @@
 SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
   distancetransform2D
-  DSS
+  ArithmeticalDSS
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})

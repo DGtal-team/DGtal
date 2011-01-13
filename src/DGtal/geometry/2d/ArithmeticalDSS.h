@@ -148,7 +148,25 @@ public:
 				DGtal::PointVector<2,TInt> v(a,b);
 				return v.norm(DGtal::PointVector<2,TInt>::L_infty);
 			}
-
+			static TInt dualNorm(const TInt& a, const TInt& b) 
+			{
+				//does not compile with GMP type mpz_class
+				//DGtal::PointVector<2,TInt> v(a,b);
+				//return v.norm(DGtal::PointVector<2,TInt>::L_1);
+				if (a > 0) {
+					if (b > 0) {
+						return (a+b);
+					} else {
+						return (a-b);		
+					}
+				} else {
+					if (b > 0) {
+						return (-a+b);						
+					} else {
+						return (-a-b);		
+					}
+				}
+			}
 		};
 
 		//specialisation for 4-connectivity
@@ -173,6 +191,15 @@ public:
 						return (-a-b);		
 					}
 				}
+			}
+
+			static TInt dualNorm(const TInt& a, const TInt& b) 
+			{
+				//does not compile with GMP type mpz_class
+				//DGtal::PointVector<2,TInt> v(a,b);
+				//return v.norm(DGtal::PointVector<2,TInt>::L_infty);
+				//why???
+				return (a>=b)?a:b;
 			}
 
 		};
