@@ -69,6 +69,8 @@ int main(int , char **)
   
   typedef FreemanChain<Coordinate> ContourType; 
 
+	typedef GreedyDecomposition<ContourType::ConstIterator,PrimitiveType> DecompositionType;
+
   std::string filename = testPath + "samples/manche.fc";
   std::cout << filename << std::endl;
 
@@ -78,7 +80,7 @@ int main(int , char **)
 
   //Segmentation
   trace.beginBlock("Segmentation of a chain code into DSS");
-  GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
+  DecompositionType theDecomposition(theContour.begin(), theContour.end());
   
   DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
@@ -87,13 +89,12 @@ int main(int , char **)
   aBoard  << theContour;
   
   //for each segment
-  GreedyDecomposition<ContourType,PrimitiveType>::ConstIterator i = 
-    theDecomposition.begin();
+  DecompositionType::ConstIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-    trace.info() << "segment number " << i.getPosition() << std::endl;
     PrimitiveType segment(*i); 
     trace.info() << segment << std::endl;	//standard output
-    aBoard << DrawDSSBoundingBox() << segment; // draw each segment    
+    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+					 << segment; // draw each segment    
   } 
   aBoard.saveSVG("segmentation.svg");
 

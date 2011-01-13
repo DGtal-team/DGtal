@@ -94,7 +94,7 @@ bool testGMPSpace()
 
   typedef ArithmeticalDSS<Coordinate,4> DSS4;  
   typedef FreemanChain<Coordinate> ContourType; 
-  typedef GreedyDecomposition< ContourType, DSS4 > Decomposition;
+  typedef GreedyDecomposition< ContourType::ConstIterator, DSS4 > Decomposition;
   
   //mpz_class valuetype image
   typedef SpaceND<2 > Space2Common;
@@ -108,7 +108,11 @@ bool testGMPSpace()
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   ContourType theContour( ss );
   //Segmentation
-  Decomposition theDecomposition( theContour );
+  Decomposition theDecomposition( theContour.begin(),theContour.end() );
+  Decomposition::ConstIterator i = theDecomposition.begin();
+  DSS4 segment(*i); 
+
+
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   PointCommon p1c( 0, 0 );
@@ -121,7 +125,8 @@ bool testGMPSpace()
   DGtalBoard aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
 	 << domain
-	 << theContour;
+	 << theContour
+   << segment;
 
   aBoard.saveSVG("testgmpcontour.svg");
   

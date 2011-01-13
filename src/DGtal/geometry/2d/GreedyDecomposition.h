@@ -59,6 +59,7 @@ namespace DGtal
    * The primitive must have a method addFront() to check whether the primitive
    * can be extended at the front or not.  
    
+   * DEPRECATED:
    * Here is an example of how to use this class to decompose a contour into DSSs :
    * @code 
    
@@ -83,17 +84,18 @@ namespace DGtal
 
    * @endcode
    */
-  template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
   class GreedyDecomposition
   {
+
+	public: 
+		typedef TIterator Iterator;
+		typedef TSegment Segment;
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /**
-     * Destructor.
-     */
-    ~GreedyDecomposition();
+
 
     /**
      * This class is an iterator on the contour, 
@@ -104,39 +106,43 @@ namespace DGtal
       	   
 			   // ------------------------- data -----------------------
     private:
+
       /**
-       * The contour visited by the iterator.
+       * An iterator of the digital curve 
+       * at the beginning
        */
-      const Contour* myC;
+      Iterator myBegin;
+
+      /**
+       * An iterator of the digital curve 
+       * at the end
+       */
+      Iterator myEnd;
 
 
       /**
-       * An iterator of the contour 
-       * at the front of the current primitive
+       * An iterator of the digital curve  
+       * at the front of the current segment
        */
-      typename Contour::ConstIterator myFront;
+      Iterator myFront;
 
       /**
        * An iterator of the contour 
        * at the back of the current primitive
        */
-      typename Contour::ConstIterator myBack;
+      Iterator myBack;
 
-      /**
-       * The current position in the contour.
-       */
-      unsigned int myPosition;
 
       /**
        * The current primitive of the iterator.
        */
-      Primitive  myP;
+      Segment  mySegment;
       
 
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class GreedyDecomposition<Contour,Primitive>;
+       friend class GreedyDecomposition<TIterator,TSegment>;
 			   
 		 /**
        * Default Constructor.
@@ -148,11 +154,10 @@ namespace DGtal
        * Constructor.
        * Nb: complexity in O(n).
        *
-       * @param aContour a contour
-			 * @param n, the position in the sequence of primitives
-       * (Set at aContour.size() for the end iterator).
+       * @param aBegin an iterator at the beginning of a digital curve
+       * @param aEnd an iterator at the end of a digital curve
        */
-      ConstIterator( const Contour & aContour, unsigned int n );
+      ConstIterator( const Iterator& aBegin, const Iterator& aEnd );
 
       /**
        * Copy constructor.
@@ -178,12 +183,12 @@ namespace DGtal
       /**
        * @return the current primitive
        */
-      Primitive operator*() const;
+      Segment operator*() const;
 
       /**
        * @return the current primitive.
        */
-      Primitive get() const;
+      Segment get() const;
 
       /**
        * Pre-increment.
@@ -213,27 +218,16 @@ namespace DGtal
       void previous();
 
       /**
-       * @return the current position 
-       * (as an index in the sequence of primitives).
-       */
-      unsigned int getPosition() const;
-
-      /**
-       * @return the associated Contour.
-       */
-      const Contour* getContour() const;
-
-      /**
        * @return an iterator of the contour
        * at the front of the primitive.
        */
-      const typename Contour::ConstIterator getFront() const;
+      const Iterator getFront() const;
 
       /**
        * @return an iterator of the contour
        * at the back of the primitive.
        */
-      const typename Contour::ConstIterator getBack() const;
+      const Iterator getBack() const;
 
       /**
        * Equality operator.
@@ -255,16 +249,6 @@ namespace DGtal
        */
       bool operator!=( const ConstIterator & aOther ) const;
 
-      /**
-       * Inferior operator.
-       *
-       * @param aOther the iterator to compare with 
-       * (must be defined on the same contour).
-       *
-       * @return 'true' if the current position of 'this' is before
-       * the current position of [other].
-       */
-      bool operator<( const ConstIterator & aOther ) const;
       
     };
 
@@ -274,9 +258,15 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aContour, the contour whose decomposition is computed
+     * @param aBegin, begin iterator on a digital curve
+     * @param aEnd, end iterator on a digital curve
      */
-    GreedyDecomposition(const Contour& aContour);
+    GreedyDecomposition(const Iterator& aBegin, const Iterator& aEnd);
+
+    /**
+     * Destructor.
+     */
+    ~GreedyDecomposition();
 
     /**
      * Iterator service.
@@ -308,7 +298,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-		const Contour* myContour;
+		Iterator myBegin, myEnd;
 
     // ------------------------- Hidden services ------------------------------
 
