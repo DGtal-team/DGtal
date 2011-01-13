@@ -19,7 +19,8 @@
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2010/11/26
  *
  * An example file named greedy-dss-decomposition.
@@ -51,18 +52,19 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
-  typedef ArithmeticalDSS<int,4> DSS;
-  typedef FreemanChain<int> ContourType; 
-  typedef GreedyDecomposition< ContourType, DSS > Decomposition;
+  typedef ArithmeticalDSS<int,4> DSS4;
+  typedef FreemanChain<int> Contour4; 
+  typedef GreedyDecomposition< Contour4::ConstIterator, DSS4 > Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   
   // Construct the Freeman chain
-  ContourType theContour( ss );
+  Contour4 theContour( ss );
+
   //Segmentation
-  Decomposition theDecomposition( theContour );
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end() );
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   Domain domain( p1, p2 );
@@ -72,23 +74,24 @@ int main( int argc, char** argv )
 	 << SetMode( "PointVector", "Grid" )
 	 << theContour;
   //for each segment
-	DSS segment;
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
- //     aBoard << CustomStyle( styleName, 
-//			     new CustomPenColor( DGtalBoard::Color::Blue ) )
-//	     << *i; // draw each segment
-			segment = *i;
+
+			DSS4 segment(*i);
 			std::cout << segment << std::endl;
-			aBoard << (*i); // draw each segment
+			aBoard << CustomStyle( styleName, 
+												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+						 << segment; // draw each segment
+
     } 
   aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
   aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
 
   trace.endBlock();
+
   return 0;
 }
 //                                                                           //

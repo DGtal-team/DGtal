@@ -42,31 +42,27 @@
 // ------------------------- Standard services -----------------------
 
 
+
 /**
  * Constructor.
  * Nb: complexity in O(n).
  *
- * @param chain a Freeman chain,
- * @param n the position in [chain] (within 0 and chain.size()-1).
+ * @param anIterator an iterator on the digital curve
+ * to decompose
  */
-template <typename Contour, typename Primitive>
+ template <typename TIterator, typename TSegment>
 inline
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
-( const Contour & aContour, unsigned int n )
-  : myC( &aContour ), myPosition( 0 ),
-		myFront( aContour.begin() ), myBack( aContour.end() )
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
+( const Iterator& aBegin, const Iterator& aEnd )
+  : myBegin( aBegin ), 
+		myEnd( aEnd ), 
+		myFront( aBegin ), 
+		myBack( aBegin ), 
+		mySegment ( Segment(*aBegin) )
 {
-	myBack = myC->begin();
-	myFront = myBack;
-
-	//next segment until myPosition == n
-  while ( ( n < myC->size() ) && ( myPosition <= n ) ) {
+	if (myBegin != myEnd) {
 		this->next();
   }
-
-  if ( n >= myC->size() ) {
-    myPosition = myC->size(); // iterator end() 
-	}
 }
 
 
@@ -74,13 +70,13 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
  * Copy constructor.
  * @param other the iterator to clone.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
 ( const ConstIterator & aOther )
-  : myC( aOther.myC ), myPosition( aOther.myPosition ), 
+  : myBegin( aOther.myBegin ), myEnd( aOther.myEnd ), 
 		myFront( aOther.myFront ), myBack( aOther.myBack ), 
-		myP( aOther.myP ) 
+		mySegment( aOther.mySegment ) 
 {
 }
     
@@ -89,19 +85,19 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator
  * @param other the iterator to copy.
  * @return a reference on 'this'.
  */
-/*template <typename Contour, typename Primitive>
+/*  template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator& 
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator=
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator& 
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator=
 ( const ConstIterator & other )
 {
   if ( this != &other )
     {
-      myC = other.myC;
-      myPosition = other.myPosition;
+      myBegin = other.myBegin;
+      myEnd = other.myEnd;
       myFront = other.myFront;
       myBack = other.myBack;
-      myP = other.myP;
+      mySegment = other.mySegment;
     }
   return *this;
 }*/
@@ -110,9 +106,9 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator=
  * Destructor.
  * Does nothing
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::~ConstIterator()
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::~ConstIterator()
 {
 }
 
@@ -123,23 +119,23 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::~ConstIterator()
 /**
  * @return the current primitive.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-Primitive
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator*() const
+TSegment
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator*() const
 {
-  return myP;
+  return mySegment;
 }
 
 /**
  * @return the current primitive.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-Primitive
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::get() const
+TSegment
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::get() const
 {
-  return myP;
+  return mySegment;
 }
 
 /**
@@ -147,10 +143,10 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::get() const
  * Goes to the next primitive on the contour.
  */
 
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator& 
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator++()
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator& 
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator++()
 {
   this->next();
   return *this;
@@ -159,30 +155,28 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator++()
 /**
  * Goes to the next primitive on the contour.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::next()
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 {
 
-	if (myFront != myC->end()) { //if not the end
+	if (myFront != myEnd) { //if not the end
 
 		myBack = myFront;
-		myP = Primitive(*myBack);
+		mySegment = Segment(*myBack);
 
 		//while my primitive can grow
 		++myFront;
-		while ( (myFront != myC->end()) && 
-						(myP.extend(*myFront)) ) {
+		while ( (myFront != myEnd) && 
+						(mySegment.extend(*myFront)) ) {
 			++myFront;
 		}
 		//
-		if (myFront != myC->end()) --myFront;
-		
-		++myPosition;
+		if (myFront != myEnd) --myFront;
 
 	} else { //if the front of the primitive is at the end of the contour
-		myPosition = myC->size();
+		myBack = myEnd;
 	}
 }
 
@@ -190,10 +184,10 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::next()
  * Pre-decrement.
  * Goes to the previous primitive on the contour.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::ConstIterator& 
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator--()
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator& 
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator--()
 {
   this->previous();
   return *this;
@@ -202,27 +196,27 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator--()
 /**
  * Goes to the previous primitive on the contour if possible.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::previous()
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::previous()
 {
-	if (myBack != myC->begin()) { //if not at the beginning
+	if (myBack != myBegin) { //if not at the beginning
 
 		myFront = myBack;
-		myP = Primitive(*myFront);
+		mySegment = Segment(*myFront);
 
 		//while my primitive can grow
 		--myBack;
-		while ( (myBack != myC->begin()) && 
-						(myP.extend(*myBack)) ) {
+		while ( (myBack != myBegin) && 
+						(mySegment.extend(*myBack)) ) {
 			--myBack;
 		}
 
-		if (myBack != myC->begin()) ++myBack;
+		if (myBack != myBegin) ++myBack;
 
-		--myPosition;
-
+	} else { //if the back of the primitive is at the beginning of the contour
+		myFront = myBegin;
 	}
 
 }
@@ -230,109 +224,62 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::previous()
 
 
 /**
- * @return the current position 
- * (as an index in the sequence of primitive).
+ * @return an iterator of the digital curve
+ * at the front of the segment.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-unsigned int
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::getPosition() const
-{
-  return myPosition;
-}
-
-/**
- * @return an iterator of the contour
- * at the front of the primitive.
- */
-template <typename Contour, typename Primitive>
-inline
-const typename Contour::ConstIterator
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::getFront() const
+const TIterator
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::getFront() const
 {
   return myFront;
 }
 
 /**
- * @return an iterator of the contour
- * at the back of the primitive.
+ * @return an iterator of the digital curve
+ * at the back of the segment.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-const typename Contour::ConstIterator
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::getBack() const
+const TIterator
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::getBack() const
 {
   return myBack;
-}
-
-/**
- * @return the associated contour.
- */
-template <typename Contour, typename Primitive>
-inline
-const Contour* 
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::getContour() const
-{
-  return myC;
 }
 
 
 /**
  * Equality operator.
  *
- * @param aOther the iterator to compare with (must be defined on
- * the same contour).
+ * @param aOther the iterator to compare with 
  *
  * @return 'true' if their current positions coincide.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator==
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator==
 ( const ConstIterator & aOther ) const
 {
-  ASSERT( myC == aOther.myC );
-  return myPosition == aOther.myPosition;
+  return ( (myFront == aOther.myFront)&&(myBack == aOther.myBack) );
 }
 
 /**
  * Inequality operator.
  *
- * @param aOther the iterator to compare with (must be defined on
- * the same contour).
+ * @param aOther the iterator to compare with 
  *
  * @return 'true' if their current positions differs.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator!=
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator!=
 ( const ConstIterator & aOther ) const
 {
-  ASSERT( myC == aOther.myC );
-  return myPosition != aOther.myPosition;
+  return ( (myFront != aOther.myFront)||(myBack != aOther.myBack) );
 }
 
-
-/**
- * Inferior operator.
- *
- * @param aOther the iterator to compare with (must be defined on
- * the same contour).
- *
- * @return 'true' if the current position of 'this' is before
- * the current position of [aOther].
- */
-template <typename Contour, typename Primitive>
-inline
-bool
-DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator<
-( const ConstIterator & aOther ) const
-{
-
-  ASSERT( myC == aOther.myC );
-  return myPosition < aOther.myPosition;
-}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -341,11 +288,14 @@ DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator::operator<
 
 /**
  * Constructor.
- * @param aContour, the contour whose decomposition is computed
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
  */
-template <typename Contour, typename Primitive>
-DGtal::GreedyDecomposition<Contour,Primitive>::GreedyDecomposition
-(const Contour& aContour) : myContour(&aContour)
+  template <typename TIterator, typename TSegment>
+DGtal::GreedyDecomposition<TIterator,TSegment>::GreedyDecomposition
+(const Iterator& aBegin, const Iterator& aEnd)
+ : myBegin(aBegin),
+	 myEnd(aEnd)
 {
 }
 
@@ -353,34 +303,36 @@ DGtal::GreedyDecomposition<Contour,Primitive>::GreedyDecomposition
 /**
  * Destructor.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-DGtal::GreedyDecomposition<Contour,Primitive>::~GreedyDecomposition()
+DGtal::GreedyDecomposition<TIterator,TSegment>::~GreedyDecomposition()
 {
 }
 
 /**
  * Iterator service.
- * @return an iterator pointing on the first primitive of the contour.
+ * @return an iterator pointing on the first segment
+ * of the digital curve.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator 
-DGtal::GreedyDecomposition<Contour,Primitive>::begin() const
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator 
+DGtal::GreedyDecomposition<TIterator,TSegment>::begin() const
 {
-  return ConstIterator( *myContour, 0 );
+  return ConstIterator(myBegin,myEnd);
 }
 
 /**
  * Iterator service.
- * @return an iterator pointing after the last primitive of the contour.
+ * @return an iterator pointing after the last segment
+ * of the digital curve.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<Contour,Primitive>::ConstIterator 
-DGtal::GreedyDecomposition<Contour,Primitive>::end() const
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator 
+DGtal::GreedyDecomposition<TIterator,TSegment>::end() const
 {
-  return ConstIterator( *myContour, myContour->size() );
+  return ConstIterator(myEnd,myEnd);
 }
 
 
@@ -388,10 +340,10 @@ DGtal::GreedyDecomposition<Contour,Primitive>::end() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<Contour,Primitive>::selfDisplay ( std::ostream & out ) const
+DGtal::GreedyDecomposition<TIterator,TSegment>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GreedyDecomposition]";
 }
@@ -400,10 +352,10 @@ DGtal::GreedyDecomposition<Contour,Primitive>::selfDisplay ( std::ostream & out 
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<Contour,Primitive>::isValid() const
+DGtal::GreedyDecomposition<TIterator,TSegment>::isValid() const
 {
     return true;
 }
@@ -413,11 +365,11 @@ DGtal::GreedyDecomposition<Contour,Primitive>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Contour, typename Primitive>
+  template <typename TIterator, typename TSegment>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GreedyDecomposition<Contour,Primitive> & object )
+		  const GreedyDecomposition<TIterator,TSegment> & object )
 {
   object.selfDisplay( out );
   return out;
