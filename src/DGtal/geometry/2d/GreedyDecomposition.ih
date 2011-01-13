@@ -52,15 +52,15 @@
  */
  template <typename TIterator, typename TSegment>
 inline
-DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
-( const Iterator& aBegin, const Iterator& aEnd )
-  : myBegin( aBegin ), 
-		myEnd( aEnd ), 
-		myFront( aBegin ), 
-		myBack( aBegin ), 
-		mySegment ( Segment(*aBegin) )
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator ( 
+	const GreedyDecomposition<TIterator,TSegment> *aDec,
+	const TIterator& aBack)
+  : myDec( aDec ), 
+		myFront( aBack ), 
+		myBack( aBack ), 
+		mySegment ( Segment(*aDec->myBegin) )
 {
-	if (myBegin != myEnd) {
+	if (myBack != myDec->myEnd) {
 		this->next();
   }
 }
@@ -74,7 +74,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
 inline
 DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
 ( const ConstIterator & aOther )
-  : myBegin( aOther.myBegin ), myEnd( aOther.myEnd ), 
+  : myDec( aOther.myDec ), 
 		myFront( aOther.myFront ), myBack( aOther.myBack ), 
 		mySegment( aOther.mySegment ) 
 {
@@ -161,14 +161,14 @@ void
 DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 {
 
-	if (myFront != myEnd) { //if not the end
+	if (myFront != myDec->myEnd) { //if not the end
 
 		myBack = myFront;
 		mySegment = Segment(*myBack);
 
 		++myFront;
 
-		if (myFront != myEnd) { //if not the end
+		if (myFront != myDec->myEnd) { //if not the end
 
 			//special case where the two first
       //points do not form a segment
@@ -179,19 +179,19 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 
 			//while my segment can be extended at the front
 			++myFront;
-			while ( (myFront != myEnd) && 
+			while ( (myFront != myDec->myEnd) && 
 							(mySegment.extend(*myFront)) ) {
 				++myFront;
 			}
 			//
-			if (myFront != myEnd) --myFront;
+			if (myFront != myDec->myEnd) --myFront;
 
 		} else { //if the front of the segment is at the end of the contour
-		myBack = myEnd;
+			myBack = myDec->myEnd;
 		}
 
 	} else { //if the front of the segment is at the end of the contour
-		myBack = myEnd;
+		myBack = myDec->myEnd;
 	}
 }
 
@@ -271,10 +271,24 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator!=
 DGtal::GreedyDecomposition<TIterator,TSegment>::GreedyDecomposition
 (const Iterator& aBegin, const Iterator& aEnd)
  : myBegin(aBegin),
-	 myEnd(aEnd)
+	 myEnd(aEnd),
+	 isClosed(true)
 {
 }
 
+/**
+ * Constructor.
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
+ */
+  template <typename TIterator, typename TSegment>
+DGtal::GreedyDecomposition<TIterator,TSegment>::GreedyDecomposition
+(const Iterator& aBegin, const Iterator& aEnd, const bool& aFlag)
+ : myBegin(aBegin),
+	 myEnd(aEnd),
+	 isClosed(aFlag)
+{
+}
 
 /**
  * Destructor.
@@ -295,7 +309,7 @@ inline
 typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator 
 DGtal::GreedyDecomposition<TIterator,TSegment>::begin() const
 {
-  return ConstIterator(myBegin,myEnd);
+  return ConstIterator(this, myBegin);
 }
 
 /**
@@ -308,7 +322,7 @@ inline
 typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator 
 DGtal::GreedyDecomposition<TIterator,TSegment>::end() const
 {
-  return ConstIterator(myEnd,myEnd);
+  return ConstIterator(this, myEnd);
 }
 
 

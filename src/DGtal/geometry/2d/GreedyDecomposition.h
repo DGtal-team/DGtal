@@ -113,16 +113,9 @@ namespace DGtal
     private:
 
       /**
-       * An iterator of the digital curve 
-       * at the beginning
+       * Pointer to the decomposition
        */
-      Iterator myBegin;
-
-      /**
-       * An iterator of the digital curve 
-       * at the end
-       */
-      Iterator myEnd;
+			const GreedyDecomposition<TIterator,TSegment> *myDec;
 
 
       /**
@@ -155,10 +148,12 @@ namespace DGtal
        * Constructor.
        * Nb: complexity in O(n).
        *
-       * @param aBegin an iterator at the beginning of a digital curve
-       * @param aEnd an iterator at the end of a digital curve
+       * @param aDec a greedy decomposition of a digital curve
+       * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( const Iterator& aBegin, const Iterator& aEnd );
+      ConstIterator( const GreedyDecomposition<TIterator,TSegment> *aDec,
+										 const TIterator& aBack);
+
 
       /**
        * Copy constructor.
@@ -246,10 +241,21 @@ namespace DGtal
 
     /**
      * Constructor.
+		 * Nb: The digital curve is decompose as a closed one by default.
      * @param aBegin, begin iterator on a digital curve
      * @param aEnd, end iterator on a digital curve
      */
     GreedyDecomposition(const Iterator& aBegin, const Iterator& aEnd);
+
+    /**
+     * Constructor.
+		 * Nb: The digital curve is decompose as a closed one by default.
+     * @param aBegin, begin iterator on a digital curve
+     * @param aEnd, end iterator on a digital curve
+     * @param aFlag a boolean equal to TRUE to decompose the digital
+     * curve as a closed one, FALSE otherwise
+     */
+    GreedyDecomposition(const Iterator& aBegin, const Iterator& aEnd, const bool& aFlag);
 
     /**
      * Destructor.
@@ -287,6 +293,8 @@ namespace DGtal
   private:
 
 		Iterator myBegin, myEnd;
+
+		bool isClosed;
 
     // ------------------------- Hidden services ------------------------------
 

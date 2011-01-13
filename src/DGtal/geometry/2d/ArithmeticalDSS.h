@@ -199,7 +199,13 @@ public:
 				//DGtal::PointVector<2,TInt> v(a,b);
 				//return v.norm(DGtal::PointVector<2,TInt>::L_infty);
 				//why???
-				return (a>=b)?a:b;
+				TInt x;
+				if (a>=0) x = a;
+				else x = -a;
+				TInt y;
+				if (b>=0) y = b;
+				else y = -b;
+				return (x>=y)?x:y;
 			}
 
 		};
