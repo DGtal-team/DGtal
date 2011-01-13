@@ -54,15 +54,20 @@
 
 
 using namespace DGtal;
-
+using namespace std;
 using namespace LibBoard;
 
-
-
-
-int main(int , char **)
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class GreedyDecomposition.
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Test for the segmentation of 
+ * 4-connected digital curves into DSS
+ *
+ */
+bool testDec4()
 {
-  
+
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
@@ -82,11 +87,12 @@ int main(int , char **)
   trace.beginBlock("Segmentation of a chain code into DSS");
   DecompositionType theDecomposition(theContour.begin(), theContour.end());
   
+	// Draw the grid
   DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
-  aBoard << DrawGridPixel();
-  aBoard  << theContour;
+  aBoard << SetMode("PointVector", "Grid")
+				 << theContour;
   
   //for each segment
   DecompositionType::ConstIterator i = theDecomposition.begin();
@@ -96,10 +102,85 @@ int main(int , char **)
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
 					 << segment; // draw each segment    
   } 
-  aBoard.saveSVG("segmentation.svg");
+  aBoard.saveSVG("segmentationDSS4.svg");
 
   trace.endBlock();
 
+	return true;
+}
 
-  return 0;
+/**
+ * Test for the segmentation of 
+ * 8-connected digital curves into DSS
+ *
+ */
+bool testDec8()
+{
+
+  typedef int Coordinate;
+  typedef PointVector<2,Coordinate> Point;
+  typedef ArithmeticalDSS<Coordinate,8> PrimitiveType;
+  
+  typedef std::vector<Point> ContourType; 
+
+	typedef GreedyDecomposition<ContourType::iterator,PrimitiveType> DecompositionType;
+
+	std::vector<Point> curve;
+	curve.push_back(Point(0,0));
+	curve.push_back(Point(1,1));
+	curve.push_back(Point(2,1));
+	curve.push_back(Point(3,2));
+	curve.push_back(Point(4,2));
+	curve.push_back(Point(5,2));
+	curve.push_back(Point(6,3));
+	curve.push_back(Point(7,4));
+	curve.push_back(Point(8,4));
+	curve.push_back(Point(9,3));
+	curve.push_back(Point(10,2));
+	curve.push_back(Point(11,2));
+
+  //Segmentation
+  trace.beginBlock("Segmentation of a 8-connected digital curve into DSS");
+  DecompositionType theDecomposition(curve.begin(), curve.end());
+  
+	// Draw the pixels
+  DGtalBoard aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  aBoard << SetMode("PointVector", "Both");
+	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+  	aBoard << (*it);
+	}
+				 
+
+  //for each segment
+  DecompositionType::ConstIterator i = theDecomposition.begin();
+  for ( ; i != theDecomposition.end(); ++i) {
+    PrimitiveType segment(*i); 
+    trace.info() << segment << std::endl;	//standard output
+    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+					 << segment; // draw each segment    
+  } 
+
+  aBoard.saveSVG("segmentationDSS8.svg");
+
+  trace.endBlock();
+
+	return true;
+}
+
+int main(int argc, char **argv)
+{
+  
+  trace.beginBlock ( "Testing class GreedyDecomposition" );
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
+
+  bool res = testDec4() 
+					&& testDec8();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return res ? 0 : 1;
+
 }
