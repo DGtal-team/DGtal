@@ -166,16 +166,31 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 		myBack = myFront;
 		mySegment = Segment(*myBack);
 
-		//while my primitive can grow
 		++myFront;
-		while ( (myFront != myEnd) && 
-						(mySegment.extend(*myFront)) ) {
-			++myFront;
-		}
-		//
-		if (myFront != myEnd) --myFront;
 
-	} else { //if the front of the primitive is at the end of the contour
+		if (myFront != myEnd) { //if not the end
+
+			//special case where the two first
+      //points do not form a segment
+			if (!mySegment.extend(*myFront)) {
+				++myBack;
+				mySegment = Segment(*myBack);
+			} 
+
+			//while my segment can be extended at the front
+			++myFront;
+			while ( (myFront != myEnd) && 
+							(mySegment.extend(*myFront)) ) {
+				++myFront;
+			}
+			//
+			if (myFront != myEnd) --myFront;
+
+		} else { //if the front of the segment is at the end of the contour
+		myBack = myEnd;
+		}
+
+	} else { //if the front of the segment is at the end of the contour
 		myBack = myEnd;
 	}
 }
@@ -281,6 +296,9 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator!=
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+// class GreedyDecomposition
+///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
