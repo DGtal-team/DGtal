@@ -228,26 +228,34 @@ DGtal::ArithmeticalDSS<TInteger,connectivity>::extend(const Point & aPoint)
 
 			} else {
 
-				step.push_back(lastMove);
+				//difference of the two steps viewed as points
+				Vector diff = ( lastMove-step.at(0) );
+				if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+								 //the two steps are compatible
 
-				//update
-				myL = aPoint; 
-				//remainder
-				Integer r = myA*aPoint[0] - myB*aPoint[1];
-				if ( r < myMu) {	//on the left
-					myUl = aPoint; 
-					myLf = myLl;
-				} else {            //on the right
-					myLl = aPoint; 
-					myUf = myUl;
+					step.push_back(lastMove);
+
+					//update
+					myL = aPoint; 
+					//remainder
+					Integer r = myA*aPoint[0] - myB*aPoint[1];
+					if ( r < myMu) {	//on the left
+						myUl = aPoint; 
+						myLf = myLl;
+					} else {            //on the right
+						myLl = aPoint; 
+						myUf = myUl;
+					}
+					myA += lastMove[1]; 
+					myB += lastMove[0]; 
+					myMu = myA*myUl[0] - myB*myUl[1]; 
+					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+
+					return true;
+
+				} else {  //the two steps are not compatible
+					return false;
 				}
-				myA += lastMove[1]; 
-				myB += lastMove[0]; 
-				myMu = myA*myUl[0] - myB*myUl[1]; 
-				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
-
-				return true;
-
 			}
 
 		}

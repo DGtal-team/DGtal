@@ -312,6 +312,23 @@ bool testGMP()
 
 	return flag;
 }
+
+/**
+ * Test for corners
+ * in 8-connected curves
+ * (not compatible steps)
+ */
+bool testCorner()
+{
+	typedef PointVector<2,int> Point;
+	typedef ArithmeticalDSS<int,8> DSS8; 
+
+	DSS8 theDSS8(Point(10,10));		
+	theDSS8.extend(Point(10,11));
+	return ( !theDSS8.extend(Point(11,11)) );
+
+}
+
 int main(int argc, char **argv)
 {
 
@@ -324,6 +341,7 @@ int main(int argc, char **argv)
   bool res = testDSS4drawing() 
 					&& testDSS8drawing()
 					&& testExtendRetract()
+					&& testCorner()
 					&& testGMP();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
