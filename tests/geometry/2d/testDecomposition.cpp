@@ -244,6 +244,148 @@ bool testDisconnectedCurve()
 
 }
 
+/**
+ * Test for closed curves processed as closed
+ *
+ */
+bool testClosedCurvesProcessedAsClosed()
+{
+
+  trace.beginBlock ( "Test for closed curves processed as closed" );
+
+  typedef ArithmeticalDSS<int,4> DSS4;
+  typedef FreemanChain<int> Contour4; 
+  typedef GreedyDecomposition< Contour4::ConstIterator, DSS4 > Decomposition4;
+
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  
+  // Construct the Freeman chain
+  Contour4 theContour( ss );
+
+  //Segmentation
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end() );
+
+  DGtalBoard aBoard;
+  aBoard << SetMode( "PointVector", "Grid" )
+	 			 << theContour;
+  //for each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string styleName = "ArithmeticalDSS/BoundingBox";
+  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+	i != theDecomposition.end(); ++i ) 
+    {
+
+			DSS4 segment(*i);
+			aBoard << CustomStyle( styleName, 
+												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+						 << segment; // draw each segment
+
+    } 
+  aBoard.saveSVG("testClosedCurvesProcessedAsClosed.svg");
+
+  trace.endBlock();
+
+  return true;
+}
+
+/**
+ * Test for closed curves processed as closed
+ *
+ */
+bool testClosedCurvesProcessedAsOpen()
+{
+
+  trace.beginBlock ( "Test for closed curves processed as open" );
+
+  typedef ArithmeticalDSS<int,4> DSS4;
+  typedef FreemanChain<int> Contour4; 
+  typedef GreedyDecomposition< Contour4::ConstIterator, DSS4 > Decomposition4;
+
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  
+  // Construct the Freeman chain
+  Contour4 theContour( ss );
+
+  //Segmentation
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(), false );
+
+  DGtalBoard aBoard;
+  aBoard << SetMode( "PointVector", "Grid" )
+	 			 << theContour;
+  //for each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string styleName = "ArithmeticalDSS/BoundingBox";
+  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+	i != theDecomposition.end(); ++i ) 
+    {
+
+			DSS4 segment(*i);
+			aBoard << CustomStyle( styleName, 
+												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+						 << segment; // draw each segment
+
+    } 
+  aBoard.saveSVG("testClosedCurvesProcessedAsOpen.svg");
+
+  trace.endBlock();
+
+  return true;
+}
+
+/**
+ * Test for open curves processed as closed
+ *
+ */
+bool testOpenCurvesProcessedAsClosed()
+{
+
+  trace.beginBlock ( "Test for open curves processed as closed" );
+
+  typedef ArithmeticalDSS<int,4> DSS4;
+  typedef FreemanChain<int> Contour4; 
+  typedef GreedyDecomposition< Contour4::ConstIterator, DSS4 > Decomposition4;
+
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333" << endl;
+  
+  // Construct the Freeman chain
+  Contour4 theContour( ss );
+
+  //Segmentation
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(), true );
+
+  DGtalBoard aBoard;
+  aBoard << SetMode( "PointVector", "Grid" )
+	 			 << theContour;
+  //for each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string styleName = "ArithmeticalDSS/BoundingBox";
+  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+	i != theDecomposition.end(); ++i ) 
+    {
+
+			DSS4 segment(*i);
+			aBoard << CustomStyle( styleName, 
+												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+						 << segment; // draw each segment
+
+    } 
+  aBoard.saveSVG("testOpenCurvesProcessedAsClosed.svg");
+
+  trace.endBlock();
+
+  return true;
+}
+
+/////////////////////////////////////////////////////////////////////////
+//////////////// MAIN ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
 int main(int argc, char **argv)
 {
   
@@ -255,7 +397,10 @@ int main(int argc, char **argv)
 
   bool res = testDec4()
 					&& testDec8() 
-					&& testDisconnectedCurve();
+					&& testDisconnectedCurve()
+					&& testClosedCurvesProcessedAsClosed()
+					&& testClosedCurvesProcessedAsOpen()
+					&& testOpenCurvesProcessedAsClosed();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
