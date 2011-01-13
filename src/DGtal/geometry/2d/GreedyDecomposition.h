@@ -51,36 +51,41 @@ namespace DGtal
   // template class GreedyDecomposition
   /**
    * Description of template class 'GreedyDecomposition' <p>
-   * \brief Aim: Computes the greedy decomposition of a contour into primitives
-   * (the last point of the primitive i is the first point of the primitive i+1).
+   * \brief Aim: Computes the greedy decomposition of a sequence of 
+   * points viewed as a digital curve into subsequences called segments
+   * (the last point of a given segment is the first point of the next segment).
 
-   * The contour must provide a constIterator as a way of scanning its points 
-   * and must be able to return its size.
-   * The primitive must have a method addFront() to check whether the primitive
-   * can be extended at the front or not.  
+   * This class is templated by 'TIterator', an iterator that can provide the
+   * points (in order) of the digital curve, and by 'TSegment', the type of 
+   * the segment (4-connected DSS, 8-connected DSS, thick segment, etc.)
+   * The segment must have a method extend() taking as input what is returned
+   * by the iterator (usually a point) and returning a boolean equal to TRUE
+   * if the extension is possible and has been successfully performed and 
+   * FALSE otherwise.
    
-   * DEPRECATED:
-   * Here is an example of how to use this class to decompose a contour into DSSs :
+   * In the short example below, a contour stored as a Freeman chain is decomposed 
+   * into 4-connected DSSs whose parameters are sent to the standard output.
    * @code 
    
-   
-   typedef int Coordinate;
-   typedef PointVector<2,Coordinate> Point;
-   
-   //Define the primitive as a standard DSS
-   typedef ArithmeticalDSS<StandardBase<Coordinate> > PrimitiveType;
-   
-   // Define the contour as a FreemanChain
-   typedef FreemanChain<Coordinate> ContourType; 
-   
-   // Open the contour file
-   std::string filename = "myContour.fc";
-   std::fstream fst;
-   fst.open (filename.c_str(), std::ios::in);
-   ContourType theContour(fst);
-   
-   // Decomposition of the contour into DSSs
-   GreedyDecomposition<ContourType,PrimitiveType> theDecomposition(theContour);
+
+  typedef PointVector<2,Coordinate> Point;
+  typedef ArithmeticalDSS<int,4> PrimitiveType;
+  typedef FreemanChain<int> ContourType; 
+	typedef GreedyDecomposition<ContourType::ConstIterator,PrimitiveType> DecompositionType;
+
+	//A contour stored as a Freeman chain
+  std::string filename = testPath + "samples/manche.fc";
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  ContourType theContour(fst);
+
+  //Greedy segmentation of the contour
+  DecompositionType theDecomposition(theContour.begin(), theContour.end());
+  DecompositionType::ConstIterator i = theDecomposition.begin();
+  for ( ; i != theDecomposition.end(); ++i) {
+    PrimitiveType segment(*i); 
+    std::cout << segment << std::endl;	//standard output  
+  } 
 
    * @endcode
    */
@@ -98,8 +103,8 @@ namespace DGtal
 
 
     /**
-     * This class is an iterator on the contour, 
-     * storing the current primitive.
+     * This class is an iterator on a digital curve 
+     * storing the current segment.
      */
     class ConstIterator
     {
@@ -128,13 +133,13 @@ namespace DGtal
 
       /**
        * An iterator of the contour 
-       * at the back of the current primitive
+       * at the back of the current segment
        */
       Iterator myBack;
 
 
       /**
-       * The current primitive of the iterator.
+       * The current segment
        */
       Segment  mySegment;
       
@@ -144,11 +149,7 @@ namespace DGtal
     public:
        friend class GreedyDecomposition<TIterator,TSegment>;
 			   
-		 /**
-       * Default Constructor.
-       * The object is not valid.
-       */
-      ConstIterator();
+
 
       /**
        * Constructor.
@@ -181,51 +182,38 @@ namespace DGtal
     public:
       
       /**
-       * @return the current primitive
+       * @return the current segment
        */
       Segment operator*() const;
 
       /**
-       * @return the current primitive.
+       * @return the current segment.
        */
       Segment get() const;
 
       /**
        * Pre-increment.
-       * Goes to the next primitive on the contour (if possible).
+       * Goes to the next segment on the contour (if possible).
        * Nb: complexity in O(n).
        */
       ConstIterator& operator++();
       
       /**
-       * Goes to the next primitive on the contour (if possible).
+       * Goes to the next segment on the contour (if possible).
        * Nb: complexity in O(n).
        */
       void next();
 
 
       /**
-       * Pre-decrement.
-       * Goes to the previous primitive on the chain (if possible).
-       * Nb: complexity in O(n).
-       */
-      ConstIterator& operator--();
-      
-      /**
-       * Goes to the previous primitive on the chain (if possible).
-       * Nb: complexity in O(n).
-       */
-      void previous();
-
-      /**
-       * @return an iterator of the contour
-       * at the front of the primitive.
+       * @return an iterator of a digital curve
+       * at the front of the segment.
        */
       const Iterator getFront() const;
 
       /**
-       * @return an iterator of the contour
-       * at the back of the primitive.
+       * @return an iterator of a digital curve
+       * at the back of the segment.
        */
       const Iterator getBack() const;
 
@@ -233,9 +221,9 @@ namespace DGtal
        * Equality operator.
        *
        * @param aOther the iterator to compare with 
-       * (must be defined on the same contour).
        *
        * @return 'true' if their current positions coincide.
+       * (same front and back iterators)
        */
       bool operator==( const ConstIterator & aOther ) const;
 
@@ -243,9 +231,9 @@ namespace DGtal
        * Inequality operator.
        *
        * @param aOther the iterator to compare with 
-       * (must be defined on the same contour).
        *
        * @return 'true' if their current positions differs.
+       * (different front and back iterators)
        */
       bool operator!=( const ConstIterator & aOther ) const;
 
@@ -270,13 +258,13 @@ namespace DGtal
 
     /**
      * Iterator service.
-     * @return an iterator pointing on the first primitive of the contour.
+     * @return an iterator pointing on the first segment of a digital curve.
      */
     typename GreedyDecomposition::ConstIterator begin() const;
 
     /**
      * Iterator service.
-     * @return an iterator pointing after the last primitive of the contour.
+     * @return an iterator pointing after the last segment of a digital curve.
      */
     typename GreedyDecomposition::ConstIterator end() const;
 
@@ -308,7 +296,6 @@ namespace DGtal
     /**
      * Copy constructor.
      * @param other the object to clone.
-     * Forbidden by default.
      */
     GreedyDecomposition ( const GreedyDecomposition & other );
 
@@ -316,7 +303,6 @@ namespace DGtal
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
     GreedyDecomposition & operator= ( const GreedyDecomposition & other );
 

@@ -220,10 +220,14 @@ bool testDisconnectedCurve()
 				 
 
   //for each segment
+	unsigned int compteur = 0;
   DecompositionType::ConstIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-    PrimitiveType segment(*i); 
-    trace.info() << segment << std::endl;	//standard output
+
+		compteur++;
+    trace.info() << "Segment " << compteur << std::endl;
+    PrimitiveType segment(*i); 		
+		trace.info() << segment << std::endl;	//standard output
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
 					 << segment; // draw each segment    
   } 
@@ -232,7 +236,7 @@ bool testDisconnectedCurve()
 
   trace.endBlock();
 
-	return true;
+	return (compteur==4);
 
 }
 

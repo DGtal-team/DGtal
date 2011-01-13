@@ -117,7 +117,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::~ConstIterator()
     
       
 /**
- * @return the current primitive.
+ * @return the current segment.
  */
   template <typename TIterator, typename TSegment>
 inline
@@ -128,7 +128,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator*() const
 }
 
 /**
- * @return the current primitive.
+ * @return the current segment.
  */
   template <typename TIterator, typename TSegment>
 inline
@@ -140,7 +140,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::get() const
 
 /**
  * Pre-increment.
- * Goes to the next primitive on the contour.
+ * Goes to the next segment on a digital curve.
  */
 
   template <typename TIterator, typename TSegment>
@@ -153,7 +153,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator++()
 }
       
 /**
- * Goes to the next primitive on the contour.
+ * Goes to the next segment on a digital curve.
  */
   template <typename TIterator, typename TSegment>
 inline
@@ -194,48 +194,6 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 		myBack = myEnd;
 	}
 }
-
-/**
- * Pre-decrement.
- * Goes to the previous primitive on the contour.
- */
-  template <typename TIterator, typename TSegment>
-inline
-typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator& 
-DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator--()
-{
-  this->previous();
-  return *this;
-}
-
-/**
- * Goes to the previous primitive on the contour if possible.
- */
-  template <typename TIterator, typename TSegment>
-inline
-void
-DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::previous()
-{
-	if (myBack != myBegin) { //if not at the beginning
-
-		myFront = myBack;
-		mySegment = Segment(*myFront);
-
-		//while my primitive can grow
-		--myBack;
-		while ( (myBack != myBegin) && 
-						(mySegment.extend(*myBack)) ) {
-			--myBack;
-		}
-
-		if (myBack != myBegin) ++myBack;
-
-	} else { //if the back of the primitive is at the beginning of the contour
-		myFront = myBegin;
-	}
-
-}
-
 
 
 /**
