@@ -1,0 +1,406 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MaximalSegments.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/01/14
+ *
+ * Implementation of inline methods defined in MaximalSegments.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// class MaximalSegments::ConstIterator
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------- Standard services -----------------------
+
+
+
+/**
+ * Constructor.
+ * Nb: complexity in O(n).
+ *
+ * @param anIterator an iterator on the digital curve
+ * to decompose
+ */
+ template <typename TIterator, typename TSegment>
+inline
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator ( 
+	const MaximalSegments<TIterator,TSegment> *aDec,
+	const TIterator& aBack)
+  : myDec( aDec ), 
+		myFront( aBack ), 
+		myBack( aBack ), 
+		mySegment ( Segment(*aDec->myBegin) )
+{
+	if (myBack != myDec->myEnd) {
+		this->firstMaximalSegment();
+  }
+}
+
+
+/**
+ * Copy constructor.
+ * @param other the iterator to clone.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator
+( const ConstIterator & aOther )
+  : myDec( aOther.myDec ), 
+		myFront( aOther.myFront ), myBack( aOther.myBack ), 
+		mySegment( aOther.mySegment ) 
+{
+}
+    
+/**
+ * Assignment.
+ * @param other the iterator to copy.
+ * @return a reference on 'this'.
+ */
+/*  template <typename TIterator, typename TSegment>
+inline
+typename DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator& 
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator=
+( const ConstIterator & other )
+{
+  if ( this != &other )
+    {
+      myBegin = other.myBegin;
+      myEnd = other.myEnd;
+      myFront = other.myFront;
+      myBack = other.myBack;
+      mySegment = other.mySegment;
+    }
+  return *this;
+}*/
+    
+/**
+ * Destructor.
+ * Does nothing
+ */
+  template <typename TIterator, typename TSegment>
+inline
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::~ConstIterator()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ------------------------- iteration services -------------------------
+    
+      
+/**
+ * @return the current segment.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+TSegment
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator*() const
+{
+  return mySegment;
+}
+
+/**
+ * @return the current segment.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+TSegment
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::get() const
+{
+  return mySegment;
+}
+
+/**
+ * Pre-increment.
+ * Goes to the next segment on a digital curve.
+ */
+
+  template <typename TIterator, typename TSegment>
+inline
+typename DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator& 
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator++()
+{
+  this->nextMaximalSegment();
+  return *this;
+}
+
+/**
+ * Retrieves the first maximal segment found on the digital curve.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+void
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::firstMaximalSegment()
+{
+	if (myFront != myDec->myEnd) { //if not the end
+
+		myBack = myFront;
+		mySegment = Segment(*myBack);
+
+		//while my segment can be extended at the front
+		++myFront;
+		while ( (myFront != myDec->myEnd) && 
+						(mySegment.extend(*myFront)) ) {
+			++myFront;
+		}
+		//
+		if (myFront != myDec->myEnd) {
+			--myFront;
+		}
+
+
+	} else { //if the front of the segment is at the end of the contour
+		myBack = myDec->myEnd;
+	}
+
+}
+
+      
+/**
+ * Goes to the next maximal segment on a digital curve.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+void
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
+{
+
+	if (myFront != myDec->myEnd) { //if not the end
+
+		//backward extension
+		++myFront;
+		ASSERT( myFront != myDec->myEnd );
+		//myFront cannot be located at the last position
+		//before the increment because if it is, the next
+    //position (end) would have been tested, which is
+    //not done in the following 
+		myBack = myFront;
+		mySegment = Segment(*myFront);
+
+		//while my segment can be extended at the back
+		--myBack;
+		while (mySegment.extend(*myBack)) {
+			--myBack;
+		}
+
+		//forward extension
+		++myBack;
+		myFront = myBack;
+		mySegment = Segment(*myBack);
+
+		//while my segment can be extended at the front
+		++myFront;
+		while ( (myFront != myDec->myEnd) && 
+						(mySegment.extend(*myFront)) ) {
+			++myFront;
+		}
+
+		if (myFront != myDec->myEnd) --myFront;
+
+	} else { //if the front of the segment is at the end of the contour
+		myBack = myDec->myEnd;
+	}
+}
+
+
+/**
+ * @return an iterator of the digital curve
+ * at the front of the segment.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+const TIterator
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::getFront() const
+{
+  return myFront;
+}
+
+/**
+ * @return an iterator of the digital curve
+ * at the back of the segment.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+const TIterator
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::getBack() const
+{
+  return myBack;
+}
+
+
+/**
+ * Equality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions coincide.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+bool
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator==
+( const ConstIterator & aOther ) const
+{
+  return ( (myFront == aOther.myFront)&&(myBack == aOther.myBack) );
+}
+
+/**
+ * Inequality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions differs.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+bool
+DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator!=
+( const ConstIterator & aOther ) const
+{
+  return ( (myFront != aOther.myFront)||(myBack != aOther.myBack) );
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// class MaximalSegments
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+/**
+ * Constructor.
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
+ */
+  template <typename TIterator, typename TSegment>
+DGtal::MaximalSegments<TIterator,TSegment>::MaximalSegments
+(const Iterator& aBegin, const Iterator& aEnd)
+ : myBegin(aBegin),
+	 myEnd(aEnd),
+	 isClosed(true)
+{
+}
+
+/**
+ * Constructor.
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
+ */
+  template <typename TIterator, typename TSegment>
+DGtal::MaximalSegments<TIterator,TSegment>::MaximalSegments
+(const Iterator& aBegin, const Iterator& aEnd, const bool& aFlag)
+ : myBegin(aBegin),
+	 myEnd(aEnd),
+	 isClosed(aFlag)
+{
+}
+
+/**
+ * Destructor.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+DGtal::MaximalSegments<TIterator,TSegment>::~MaximalSegments()
+{
+}
+
+/**
+ * Iterator service.
+ * @return an iterator pointing on the first segment
+ * of the digital curve.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+typename DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator 
+DGtal::MaximalSegments<TIterator,TSegment>::begin() const
+{
+  return ConstIterator(this, myBegin);
+}
+
+/**
+ * Iterator service.
+ * @return an iterator pointing after the last segment
+ * of the digital curve.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+typename DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator 
+DGtal::MaximalSegments<TIterator,TSegment>::end() const
+{
+  return ConstIterator(this, myEnd);
+}
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+void
+DGtal::MaximalSegments<TIterator,TSegment>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[MaximalSegments]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+bool
+DGtal::MaximalSegments<TIterator,TSegment>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+  template <typename TIterator, typename TSegment>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const MaximalSegments<TIterator,TSegment> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
