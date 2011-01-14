@@ -108,15 +108,16 @@ namespace DGtal
      */
     class ConstIterator
     {
-      	   
-			   // ------------------------- data -----------------------
+
+
+			   // ------------------------- private data -----------------------
     private:
+			
 
       /**
        * Pointer to the decomposition
        */
-			const MaximalSegments<TIterator,TSegment> *myDec;
-
+			MaximalSegments<TIterator,TSegment> *myDec;
 
       /**
        * An iterator of the digital curve  
@@ -130,20 +131,24 @@ namespace DGtal
        */
       Iterator myBack;
 
-
       /**
        * The current segment
        */
       Segment  mySegment;
       
-
+      /**
+       * A flag equal to FALSE if the current segment
+       * lies between the begin and the end iterator 
+       * of the digital curve, TRUE otherwise. 
+       * Nb: always FALSE if the digital curve is 
+       * processed as open. 
+       */
+      bool  myFlag;
 
       // ------------------------- Standard services -----------------------
     public:
        friend class MaximalSegments<TIterator,TSegment>;
 			   
-
-
       /**
        * Constructor.
        * Nb: complexity in O(n).
@@ -151,7 +156,7 @@ namespace DGtal
        * @param aDec a greedy decomposition of a digital curve
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( const MaximalSegments<TIterator,TSegment> *aDec,
+      ConstIterator( MaximalSegments<TIterator,TSegment> *aDec,
 										 const TIterator& aBack);
 
 
@@ -218,6 +223,8 @@ namespace DGtal
        */
       const Iterator getBack() const;
 
+
+
       /**
        * Equality operator.
        *
@@ -237,6 +244,28 @@ namespace DGtal
        * (different front and back iterators)
        */
       bool operator!=( const ConstIterator & aOther ) const;
+
+      // ------------------------- hidden services -------------------------
+ 
+			private: 
+
+      /**
+       * @param anIt a reference of a given iterator
+       * @param aBegin begin iterator
+       * @param aEnd end iterator
+       * @return anIt incremented (but equal to begin instead of end)
+
+       */
+      Iterator incrementInLoop(Iterator& anIt, const Iterator& aBegin, const Iterator& aEnd);
+
+      /**
+       * @param anIt a reference of a given iterator
+       * @param aFirst an iterator pointing at the first point
+       * @param aLast an iterator pointing at the last point
+       * @return anIt decremented (but equal to aLast if anIt equal to aFirst)
+
+       */
+      Iterator decrementInLoop(Iterator& anIt, const Iterator& aFirst, const Iterator& aLast);
 
       
     };
@@ -272,13 +301,13 @@ namespace DGtal
      * Iterator service.
      * @return an iterator pointing on the first segment of a digital curve.
      */
-    typename MaximalSegments::ConstIterator begin() const;
+    typename MaximalSegments::ConstIterator begin();
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last segment of a digital curve.
      */
-    typename MaximalSegments::ConstIterator end() const;
+    typename MaximalSegments::ConstIterator end();
 
 
     /**
@@ -298,8 +327,30 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-		Iterator myBegin, myEnd;
+    /**
+     * begin iterator (pointing at the first point)
+     */
+		Iterator myBegin;
+    /**
+     * iterator pointing at the last point
+     */
+		Iterator myLast;
 
+    /**
+     * end iterator (pointing after the last point)
+     */
+		Iterator myEnd;
+
+    /**
+     * back iterator (first point) 
+     * of the first maximal segment
+     */
+		Iterator myFirstMaximalSegmentBack;
+
+    /**
+     * boolean equal to TRUE if the digital curve
+     * has to be processed as closed, FALSE otherwise
+     */
 		bool isClosed;
 
     // ------------------------- Hidden services ------------------------------

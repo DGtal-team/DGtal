@@ -143,7 +143,7 @@ bool testDisconnectedCurve()
 
   //Segmentation
   trace.beginBlock("Tangential cover of disconnected digital curves");
-  DecompositionType theDecomposition(curve.begin(), curve.end());
+  DecompositionType theDecomposition(curve.begin(), curve.end(), false);
   
 	// Draw the pixels
   DGtalBoard aBoard;
@@ -211,6 +211,7 @@ bool testClosedCurvesProcessedAsClosed()
     {
 
 			DSS4 segment(*i);
+			cout << segment << endl;
 			aBoard << CustomStyle( styleName, 
 												     new CustomPenColor( DGtalBoard::Color::Blue ) )
 						 << segment; // draw each segment
@@ -223,6 +224,51 @@ bool testClosedCurvesProcessedAsClosed()
   return true;
 }
 
+/**
+ * Test for closed curves processed as closed
+ *
+ */
+bool testClosedCurvesProcessedAsOpen()
+{
+
+  trace.beginBlock ( "Test for closed curves processed as open" );
+
+  typedef ArithmeticalDSS<int,4> DSS4;
+  typedef FreemanChain<int> Contour4; 
+  typedef MaximalSegments< Contour4::ConstIterator, DSS4 > Decomposition4;
+
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  
+  // Construct the Freeman chain
+  Contour4 theContour( ss );
+
+  //Segmentation
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(), false );
+
+  DGtalBoard aBoard;
+  aBoard << SetMode( "PointVector", "Grid" )
+	 			 << theContour;
+  //for each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string styleName = "ArithmeticalDSS/BoundingBox";
+  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+	i != theDecomposition.end(); ++i ) 
+    {
+
+			DSS4 segment(*i);
+			aBoard << CustomStyle( styleName, 
+												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+						 << segment; // draw each segment
+
+    } 
+  aBoard.saveSVG("testClosedCurvesProcessedAsOpen.svg");
+
+  trace.endBlock();
+
+  return true;
+}
 /////////////////////////////////////////////////////////////////////////
 //////////////// MAIN ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -238,7 +284,14 @@ int main(int argc, char **argv)
 
   bool res = testCover4() 
 					&& testDisconnectedCurve()
+					&& testClosedCurvesProcessedAsOpen()
 					&& testClosedCurvesProcessedAsClosed();
+
+//TODO
+//test : digital curves of zero, one or two points
+//test : construction with two end iterators
+//test : digital curves containing only one segment (DSS for instance)
+//       and processed as open or closed
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
