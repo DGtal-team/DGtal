@@ -75,11 +75,12 @@ namespace DGtal
  typedef ArithmeticalDSS<Coordinate,8> > DSS8;
  * @endcode
  *
- * Here is a short example of how to use this class:
+ * Here is a short example of how to use this class
+ * (assuming that the namespaces std and Z2i are defined):
  * @code 
 
 	// Input points
-	std::vector<Point> contour;
+	vector<Point> contour;
 	contour.push_back(Point(0,0));
 	contour.push_back(Point(1,0));
 	contour.push_back(Point(2,0));
@@ -145,14 +146,16 @@ public:
 		{
 			static TInt norm(const TInt& a, const TInt& b) 
 			{
-				DGtal::PointVector<2,TInt> v(a,b);
-				return v.norm(DGtal::PointVector<2,TInt>::L_infty);
+				TInt x;
+				if (a>=0) x = a;
+				else x = -a;
+				TInt y;
+				if (b>=0) y = b;
+				else y = -b;
+				return (x>=y)?x:y;
 			}
 			static TInt dualNorm(const TInt& a, const TInt& b) 
 			{
-				//does not compile with GMP type mpz_class
-				//DGtal::PointVector<2,TInt> v(a,b);
-				//return v.norm(DGtal::PointVector<2,TInt>::L_1);
 				if (a > 0) {
 					if (b > 0) {
 						return (a+b);
@@ -175,9 +178,6 @@ public:
 		{
 			static TInt norm(const TInt& a, const TInt& b) 
 			{
-				//does not compile with GMP type mpz_class
-				//DGtal::PointVector<2,TInt> v(a,b);
-				//return v.norm(DGtal::PointVector<2,TInt>::L_1);
 				if (a > 0) {
 					if (b > 0) {
 						return (a+b);
@@ -195,10 +195,6 @@ public:
 
 			static TInt dualNorm(const TInt& a, const TInt& b) 
 			{
-				//does not compile with GMP type mpz_class
-				//DGtal::PointVector<2,TInt> v(a,b);
-				//return v.norm(DGtal::PointVector<2,TInt>::L_infty);
-				//why???
 				TInt x;
 				if (a>=0) x = a;
 				else x = -a;
