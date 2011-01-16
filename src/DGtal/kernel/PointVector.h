@@ -81,14 +81,14 @@ namespace DGtal
    * @code
    *
    * ...
-   * typedef PointVector<5, double> VectorD5;
+   * typedef PointVector<5, int> VectorD5;
    * VectorD5 p, q, r;
    *
-   * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
-   * q.at(3) = -5.5   // q = {0.0, 0.0, 0.0, -5.5, 0.0}
-   * r =  p + q ;   //  r = {0.0, 2.0, 0.0, -5.5, 0.0}
+   * p.at(1) = 2;  // p = {0, 2, 0, 0, 0}
+   * q.at(3) = -5   // q = {0, 0, 0, -5, 0}
+   * r =  p + q ;   //  r = {0, 2, 0, -5, 0}
    *
-   * d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
+   * double d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
    * ...
    * @endcode
    * @todo continue snippet
