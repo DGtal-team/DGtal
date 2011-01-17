@@ -12,7 +12,7 @@
 
 /* 
  * Useful to avoid writing DGtal:: in front of every class.
- *  Do not forget to add an entry in src/DGtal/base/Config.h.in !i
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
