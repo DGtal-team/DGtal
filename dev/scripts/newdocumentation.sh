@@ -1,6 +1,5 @@
 #!/bin/bash
-# Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
-# Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+# David Coeurjolly
 
 if ! test -d "${DGtal}"; then
     echo "Environment variable DGtal is undefined."
@@ -9,33 +8,23 @@ fi
 SCRIPTS_DIR=${DGtal}/dev/scripts
 source ${SCRIPTS_DIR}/common.sh
 
-if test \( "$#" != "3" \) -a \( "$#" != "2" \);
+if test  \( "$#" != "2" \);
 then 
-    echo "usage: $0 test_name subdir [namespace]" ;
-    echo "       - creates a C++ skeleton file (.cpp) designed to test"
-    echo "         a class [test_name]. Tests are expected to be in a"
-    echo "         directory of the form: tests/subdir/test[test_name]."
-    echo "       - defaut namespace is ${namespace}."
+    echo "usage: $0 documenatation_name subdir" ;
+    echo "       - creates a doxygen documentation skeleton file (.dox)."
+    echo "         Documentation are expected to be in a"
+    echo "         directory of the form: ${INCLUDE_DIR}/subdir/[documentation_name]."
     exit 1
 fi
 
-
-if test -w "${INCLUDE_DIR}/$2/$1.h" ;
+if test -w "${INCLUDE_DIR}/$2/$1.dox" ;
 then
-    echo "File ${INCLUDE_DIR}/$2/$1.h exists and is writable. Please remove it before." ;
-    exit 2;
-fi
-if test -w "${INCLUDE_DIR}/$2/$1.ih" ;
-then
-    echo "File ${INCLUDE_DIR}/$2/$1.ih exists and is writable. Please remove it before." ;
+    echo "File ${INCLUDE_DIR}/$2/$1.dox exists and is writable. Please remove it before." ;
     exit 2;
 fi
 
 echo "--- Creating files ${INCLUDE_DIR}/$2/$1.dox"
 
-if test "$#" = "3"; then namespace=$3; fi
-enspace="s@YYY@${namespace}@g"
-esubdir="s@ZZZ@$2@g"
 ename="s@XXX@$1@g"
 #etoday='s/2000\/??\/??/'`date '+20%y\/%m\/%d'`'/g'
 etoday='s@2000/??/??@'"${today}"'@g'
@@ -57,11 +46,11 @@ einstitution="s@INSTITUTION@${institution}@g"
 #     institution=${INSTITUTION}
 # fi
 
-if test ! -r "${MODELS_DIR}/testXXX.cpp"; then
-    echo "Missing model testXXX.cpp in ${MODELS_DIR}."
+if test ! -r "${MODELS_DIR}/XXX.dox"; then
+    echo "Missing model XXX.dox in ${MODELS_DIR}."
     exit 2
 fi
 
-cat "${MODELS_DIR}/XXX.dox" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > " ${INCLUDE_DIR}/$2/$1.dox"
+cat "${MODELS_DIR}/XXX.dox" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.dox"
 
 echo "--> done."

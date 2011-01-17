@@ -4,51 +4,51 @@
  */
 namespace DGtal {
 
-/**
- * @page image_io Image import/export
- *
- * This part of the manual describes how to import and export images
- * in various formats. This document is dedicated both to DGtal users and
- * developers.
- * 
- * Table of contents:
- *  -# \ref usage
- *    -# \ref colormaps
- *  -# \ref fileformat  
- *    -# \ref io2D
- *    -# \ref io3D
- *    -# \ref nDio
- *
- * \section usage Overall usage
- *
- * TODO
- * \subsection colormaps Colormaps
- * Image::ValueType to RGB color conversion.
- *
- * TODO
- *
- * 
- * \section fileformat File formats
- *
- * \subsection io2D Image formats in 2-D
- * 
- *  - PNM/NetPBM formats: PNMReader and PNMWriter
- *    - PPM: RGB values (ASCII mode)
- *    - PGM: grayscale values (ASCII mode)
- *  - All image formats handled by ImageMagick: MagickReader and MagickWriter
- * 
- * \subsection io3D Image formats in 3-D
- *
- *  - Variants of PNM/NetPBM formats in 3D: PNMReader and PNMWriter
- *    - PPM3D: RGB values (ASCII mode)
- *    - PGM3D: grayscale values (ASCII mode)
- *  - Vol format (Simplevol project, http://liris.cnrs.fr/david.coeurjolly): VolReader
- * and VolWriter
- *
- * \subsection nDio Image formats in n-D
- *
- * - Raw foramts (binary file with raw values using the
- *   HyperRectDomain::Iterator order): RawReader and RawWriter
- *     - Raw8: import/export on raw 8bits
- */
+/*!
+@page image_io Image import/export
+
+This part of the manual describes how to import and export images
+in various formats. This document is dedicated both to DGtal users and
+developers.
+
+Table of contents:
+ -# \ref usage
+   -# \ref colormaps
+ -# \ref fileformat  
+   -# \ref io2D
+   -# \ref io3D
+   -# \ref nDio
+
+\section usage Overall usage
+
+TODO
+\subsection colormaps Colormaps
+Image::ValueType to RGB color conversion.
+
+TODO
+
+
+\section fileformat File formats
+
+\subsection io2D Image formats in 2-D
+
+ - PNM/NetPBM formats: PNMReader and PNMWriter
+   - PPM: RGB values (ASCII mode)
+   - PGM: grayscale values (ASCII mode)
+ - All image formats handled by ImageMagick: MagickReader and MagickWriter
+
+\subsection io3D Image formats in 3-D
+
+ - Variants of PNM/NetPBM formats in 3D: PNMReader and PNMWriter
+   - PPM3D: RGB values (ASCII mode)
+   - PGM3D: grayscale values (ASCII mode)
+ - Vol format (Simplevol project, http://liris.cnrs.fr/david.coeurjolly): VolReader
+and VolWriter
+
+\subsection nDio Image formats in n-D
+
+- Raw foramts (binary file with raw values using the
+  HyperRectDomain::Iterator order): RawReader and RawWriter
+    - Raw8: import/export on raw 8bits
+*/
 }
