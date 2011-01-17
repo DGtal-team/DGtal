@@ -1,0 +1,42 @@
+/**
+ * @file XXX.dox
+ * @author AUTHOR (\c EMAIL )
+ * INSTITUTION
+ *
+ * @date 2000/??/??
+ *
+ * Documentation file for feature XXX
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ *  Do not forget to add an entry in src/DGtal/base/Config.h.in !i
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page XXX Documentation for XXX
+
+
+Table of contents:
+ -# \ref sect1
+   -# \ref subsect11
+ -# \ref sect2  
+   -# \ref subsect21
+   -# \ref subsect22
+
+\section sect1 First Section
+
+\subsection subsect11 Subsection 1.1
+
+\section sect2 Section Two
+
+\subsection subsect21  Subsection 2.1
+
+\subsection subsect22  Subsection 2.2
+
+*/
+
+}
