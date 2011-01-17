@@ -471,7 +471,8 @@ namespace DGtal
       enum NormType { L_2, L_1, L_infty };
 
       /**
-       * Computes the norm of a point/vector. This method performs a conversion
+       * Computes the norm of a point/vector.
+       * \warning This method performs a conversion
        * from the type T to double for each components to compute the
        * norms. For exact norms (restricted to L_1 and L_infinity
        * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
