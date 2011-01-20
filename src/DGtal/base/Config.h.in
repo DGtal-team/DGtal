@@ -14,7 +14,7 @@
 #include <string>
 
 
-#define DGTAL_VERSION @DGtal_VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@
+#define DGTAL_VERSION "@DGtal_VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@"
 
 /*! \namespace DGtal
 *  \brief \p DGtal is the top-level namespace which contains all DGtal
