@@ -313,6 +313,8 @@ INCLUDE(CPack)
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory (src)
+add_subdirectory (tools)
+
 
 OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
