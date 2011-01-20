@@ -12,10 +12,10 @@ namespace po = boost::program_options;
 int main(int argc, char **argv)
 {
   // Declare the supported options.
-  po::options_description desc("DGtal Config command line.\n Allowed options");
+  po::options_description desc("DGtal Config command line.\nAllowed options");
   desc.add_options()
-    ("help,h", "produce help message")
-    ("version,v", "get the current DGtal version")
+    ("help,h", "produce this help message")
+    ("version,v", "return the current DGtal version")
     ;
   
   po::variables_map vm;
@@ -34,6 +34,9 @@ int main(int argc, char **argv)
       return 1;
     } 
   
+  // By default, we display the help message
+  cout << desc<<endl;
+
   return 0;
 }
 
