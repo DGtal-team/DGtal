@@ -145,7 +145,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::get() const
 
   template <typename TIterator, typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator& 
+typename DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator & 
 DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator++()
 {
   this->next();
