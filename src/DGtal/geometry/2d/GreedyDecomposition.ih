@@ -57,11 +57,21 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator (
 	const TIterator& aBack)
   : myDec( aDec ), 
 		myFront( aBack ), 
-		myBack( aBack ), 
-		mySegment ( Segment(*aDec->myBegin) )
+		myBack( aBack )
 {
 	if (myBack != myDec->myEnd) {
-		this->next();
+
+		++myFront;
+		if (myFront != myDec->myEnd) {
+
+			this->longestSegment();
+
+		} else {
+			
+			mySegment = Segment(*myBack);		
+	
+		}
+
   }
 }
 
@@ -75,8 +85,8 @@ inline
 DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::ConstIterator
 ( const ConstIterator & aOther )
   : myDec( aOther.myDec ), 
-		myFront( aOther.myFront ), myBack( aOther.myBack ), 
-		mySegment( aOther.mySegment ) 
+		myFront( aOther.myFront ), 
+		myBack( aOther.myBack )
 {
 }
     
@@ -151,31 +161,21 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::operator++()
   this->next();
   return *this;
 }
-      
+    
 /**
- * Goes to the next segment on a digital curve.
+ * Computes the longest possible segment from 
+ * two consecutive points.
  */
   template <typename TIterator, typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::longestSegment()
 {
 
-	if (myFront != myDec->myEnd) { //if not the end
-
-		myBack = myFront;
 		mySegment = Segment(*myBack);
 
-		++myFront;
-
-		ASSERT( myFront != myDec->myEnd );
-		//myFront cannot be located at the last position
-		//before the increment because if it is, the next
-    //position (end) would have been tested, which is
-    //not done in the following (l.191):
-
 		//special case where the two first
-    //points do not form a segment
+    //points do not form a valid segment
 		if (!mySegment.extend(*myFront)) {
 			++myBack;
 			mySegment = Segment(*myBack);
@@ -188,8 +188,7 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 			++myFront;
 		}
 		//
-		if (myFront != myDec->myEnd) --myFront;
-		else {
+		if (myFront == myDec->myEnd) {
 			//if the digital curve is processed as a closed one
 			//the first point of the digital curve is added if possible
 			if (myDec->isClosed) {
@@ -197,7 +196,24 @@ DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
 			} 
 		}
 
-//
+}
+
+  
+/**
+ * Goes to the next segment on a digital curve.
+ */
+  template <typename TIterator, typename TSegment>
+inline
+void
+DGtal::GreedyDecomposition<TIterator,TSegment>::ConstIterator::next()
+{
+
+	if (myFront != myDec->myEnd) { //if not the end
+
+		myBack = myFront;
+		--myBack;//always valid
+
+		this->longestSegment();
 
 	} else { //if the front of the segment is at the end of the contour
 		myBack = myDec->myEnd;
