@@ -152,7 +152,7 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       ConstIterator( const GreedyDecomposition<TIterator,TSegment> *aDec,
-										 const TIterator& aBack);
+		     const TIterator& aBack);
 
 
       /**
