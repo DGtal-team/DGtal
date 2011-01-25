@@ -232,6 +232,16 @@ namespace DGtal
        */
       bool operator!=( const ConstIterator & aOther ) const;
 
+    // ----------------------- hidden services --------------------------------------
+
+			private: 
+
+      /**
+       * Computes the longest possible segment from 
+       * two consecutive points.
+       * Nb: complexity in O(n).
+       */
+      void longestSegment();
       
     };
 
