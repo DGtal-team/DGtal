@@ -75,25 +75,23 @@ try_compile( CPP0X_AUTO
   )
 if ( CPP0X_AUTO )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_AUTO")
-  message( "-- [c++0x] with auto" )
+  message(STATUS "[c++0x] with auto" )
 else ( CPP0X_AUTO )
-  message( "-- [c++0x] auto not found" )
+  message(STATUS "[c++0x] auto not found" )
 endif ( CPP0X_AUTO )
 
 # -----------------------------------------------------------------------------
 # Check and configure CMake packages
 # -----------------------------------------------------------------------------
 # Look for modules
-set( CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
-list( APPEND CMAKE_MODULE_PATH . )
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # nead file 'doxy.config.in' for documentation
 include(doc/doxygen.cmake)
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
 INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
 
 CONFIGURE_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/TargetUninstall.cmake.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake"
   IMMEDIATE @ONLY)
 ADD_CUSTOM_TARGET(uninstall
@@ -129,8 +127,7 @@ endif (INLINE_FUNCTION_BUILD)
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-set ( CMAKE_PREFIX_PATH "/home/lachaud/local:/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}" )
-message(STATUS "CMAKE_PREFIX_PATH = " ${CMAKE_PREFIX_PATH} )
+set ( CMAKE_PREFIX_PATH "/home/lachaud/local:/usr:/usr/local:/opt/local:${CMAKE_PREFIX_PATH}/:${PROJECT_SOURCE_DIR}/cmake/)" )
 
 # -----------------------------------------------------------------------------
 # Look for boost 
@@ -328,7 +325,7 @@ ENDIF(BUILD_EXAMPLES)
 #------------------------------------------------------------------------------
 # DGtal Configuration file
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
 export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake )
 
 
