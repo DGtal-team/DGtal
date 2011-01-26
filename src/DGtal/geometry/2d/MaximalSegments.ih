@@ -48,33 +48,23 @@ inline
 void
 DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::firstMaximalSegment()
 {
-	if (myFront != myDec->myEnd) { //if not the end
-//is this if necessary ?
 
+	mySegment = Segment(*myBack);
 
-		myBack = myFront;
-		mySegment = Segment(*myBack);
-
-		//while my segment can be extended at the front
+	//while my segment can be extended at the front
+	++myFront;
+	while ( (myFront != myCov->myEnd) && 
+					(mySegment.extend(*myFront)) ) {
 		++myFront;
-		while ( (myFront != myDec->myEnd) && 
-						(mySegment.extend(*myFront)) ) {
-			++myFront;
-		}
-		//
-		if (myFront != myDec->myEnd) {
-			--myFront;
-			
-			if (myDec->isClosed) { //if processed as closed 
-				this->nextMaximalSegment();
-				myDec->myFirstMaximalSegmentBack = myBack;
-			}
-
+	}
+	//
+	if (myFront != myCov->myEnd) {
+		
+		if (myCov->isClosed) { //if processed as closed 
+			this->nextMaximalSegment();
+			myCov->myFirstMaximalSegmentBack = myBack;
 		}
 
-
-	} else { //if the front of the segment is at the end of the contour
-		myBack = myDec->myEnd;
 	}
 
 }
@@ -93,15 +83,9 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
     //the begin and the end iterator 
     //of the digital curve
 
-		if (myFront != myDec->myEnd) { //if not the end
+		if (myFront != myCov->myEnd) { //if not the end
 
 			//backward extension
-			++myFront;
-			ASSERT( myFront != myDec->myEnd );
-			//myFront cannot be located at the last position
-			//before the increment because if it is, the next
-		  //position (end) would have been tested, which is
-		  //not done in the following 
 			myBack = myFront;
 			mySegment = Segment(*myFront);
 
@@ -115,24 +99,23 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
       //(update of the position of the last point
       // of the digital curve in the same time)
 			++myBack;
-			myDec->myLast = myBack;
 			myFront = myBack;
+			myCov->myLast = myFront;
 			mySegment = Segment(*myBack);
 
 			//while my segment can be extended at the front
 			++myFront;
-			while ( (myFront != myDec->myEnd) && 
+			while ( (myFront != myCov->myEnd) && 
 							(mySegment.extend(*myFront)) ) {
 				++myFront;
-				++myDec->myLast;
+				++myCov->myLast;
 			}
 
-			if (myFront != myDec->myEnd) --myFront;
-			else {
+			if (myFront == myCov->myEnd) {
 
-				if (myDec->isClosed) { //if processed as closed 
+				if (myCov->isClosed) { //if processed as closed 
 					//while my segment can be extended at the beginning
-					myFront = myDec->myBegin;
+					myFront = myCov->myBegin;
 					while (mySegment.extend(*myFront)) {
 						++myFront;
 					}
@@ -143,7 +126,7 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
 
 		} else { //if the front of the segment is at the end
 						// of the digital curve
-			myBack = myDec->myEnd;
+			myBack = myCov->myEnd;
 		}
 	
 	} else {
@@ -152,34 +135,32 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
     //of the digital curve
 
 		//backward extension
-		myFront = incrementInLoop(myFront,myDec->myBegin,myDec->myEnd);
 		myBack = myFront;
 		mySegment = Segment(*myFront);
 
 		//while my segment can be extended at the back
-		myBack = decrementInLoop(myBack,myDec->myBegin,myDec->myLast);
+		myBack = decrementInLoop(myBack,myCov->myBegin,myCov->myLast);
 		while (mySegment.extend(*myBack)) {
-			myBack = decrementInLoop(myBack,myDec->myBegin,myDec->myLast);
+			myBack = decrementInLoop(myBack,myCov->myBegin,myCov->myLast);
 		}
-		myBack = incrementInLoop(myBack,myDec->myBegin,myDec->myEnd);
+		myBack = incrementInLoop(myBack,myCov->myBegin,myCov->myEnd);
 
-		if (myBack != myDec->myFirstMaximalSegmentBack) { //if not the end
+		if (myBack != myCov->myFirstMaximalSegmentBack) { //if not the end
 
 			//forward extension
 			myFront = myBack;
 			mySegment = Segment(*myBack);
 
 			//while my segment can be extended at the front
-			myFront = incrementInLoop(myFront,myDec->myBegin,myDec->myEnd);
+			myFront = incrementInLoop(myFront,myCov->myBegin,myCov->myEnd);
 			while (mySegment.extend(*myFront)) {
-				myFront = incrementInLoop(myFront,myDec->myBegin,myDec->myEnd);
+				myFront = incrementInLoop(myFront,myCov->myBegin,myCov->myEnd);
 			}
-			myFront = decrementInLoop(myFront,myDec->myBegin,myDec->myLast);
 
 		} else { //if the back of the segment is at the 
              //back of the first maximal segment 
-			myFront = myDec->myEnd;
-			myBack = myDec->myEnd;
+			myFront = myCov->myEnd;
+			myBack = myCov->myEnd;
 		}
 
 	}
@@ -198,15 +179,14 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::nextMaximalSegment()
  template <typename TIterator, typename TSegment>
 inline
 DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator ( 
-	MaximalSegments<TIterator,TSegment> *aDec,
+	MaximalSegments<TIterator,TSegment> *aCov,
 	const TIterator& aBack)
-  : myDec( aDec ), 
+  : myCov( aCov ), 
 		myFront( aBack ), 
 		myBack( aBack ), 
-		mySegment ( Segment(*aDec->myBegin) ),
 		myFlag(false)
 {
-	if (myBack != myDec->myEnd) {
+	if (myBack != myCov->myEnd) {
 		this->firstMaximalSegment();
   }
 }
@@ -220,9 +200,8 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator (
 inline
 DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::ConstIterator
 ( const ConstIterator & aOther )
-  : myDec( aOther.myDec ), 
+  : myCov( aOther.myCov ), 
 		myFront( aOther.myFront ), myBack( aOther.myBack ), 
-		mySegment( aOther.mySegment ),
 		myFlag( aOther.myFlag ) 
 {
 }
@@ -240,7 +219,7 @@ DGtal::MaximalSegments<TIterator,TSegment>::ConstIterator::operator=
 {
   if ( this != &other )
     {
-      myDec = other.myDec;
+      myCov = other.myCov;
       myFront = other.myFront;
       myBack = other.myBack;
       mySegment = other.mySegment;
@@ -415,8 +394,6 @@ DGtal::MaximalSegments<TIterator,TSegment>::MaximalSegments
 	 myFirstMaximalSegmentBack(aBegin),
 	 isClosed(true)
 {
-//myLast = myEnd;
-//--myLast;
 }
 
 /**
@@ -433,8 +410,6 @@ DGtal::MaximalSegments<TIterator,TSegment>::MaximalSegments
 	 myFirstMaximalSegmentBack(aBegin),
 	 isClosed(aFlag)
 {
-//myLast = myEnd;
-//--myLast;
 }
 
 /**

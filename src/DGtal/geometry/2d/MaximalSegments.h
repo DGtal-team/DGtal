@@ -115,9 +115,9 @@ namespace DGtal
 			
 
       /**
-       * Pointer to the decomposition
+       * Pointer to the cover of maximal segments
        */
-			MaximalSegments<TIterator,TSegment> *myDec;
+			MaximalSegments<TIterator,TSegment> *myCov;
 
       /**
        * An iterator of the digital curve  
@@ -153,10 +153,10 @@ namespace DGtal
        * Constructor.
        * Nb: complexity in O(n).
        *
-       * @param aDec a greedy decomposition of a digital curve
+       * @param aCov a greedy decomposition of a digital curve
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( MaximalSegments<TIterator,TSegment> *aDec,
+      ConstIterator( MaximalSegments<TIterator,TSegment> *aCov,
 										 const TIterator& aBack);
 
 
