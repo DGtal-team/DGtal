@@ -45,6 +45,6 @@ ENDIF(ITK_FOUND)
 
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${ITK_LIBRARIES})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtal_Lib_Dependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
