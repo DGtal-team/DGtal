@@ -45,7 +45,106 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//#include <iterator> // Buf for operator * => dangling reference !!!
+template<typename _Iterator>
+class myreverse_iterator
+	: public iterator<typename iterator_traits<_Iterator>::iterator_category,
+	typename iterator_traits<_Iterator>::value_type,
+	typename iterator_traits<_Iterator>::difference_type,
+	typename iterator_traits<_Iterator>::pointer,
+	typename iterator_traits<_Iterator>::reference>
+{
+protected:
+	_Iterator current;
+	_Iterator prev;
 
+public:
+  typedef _Iterator					       iterator_type;
+  typedef typename iterator_traits<_Iterator>::difference_type
+      difference_type;
+  typedef typename iterator_traits<_Iterator>::reference   reference;
+  typedef typename iterator_traits<_Iterator>::pointer     pointer;
+
+public:
+  explicit
+      myreverse_iterator(iterator_type __x) : current(__x),
+      prev(current)
+  { --prev; }
+
+  myreverse_iterator(const myreverse_iterator& __x)
+    : current(__x.current), prev(__x.prev) { }
+
+  iterator_type base() const
+  { return current; }
+
+  const reference operator*() const
+  { return *prev; }
+
+  reference operator*()
+  { return *prev; }
+
+  pointer operator->() const
+  { return &(operator*()); }
+
+  myreverse_iterator& operator++()
+  { --current; --prev;
+    return *this;
+  }
+
+  myreverse_iterator operator++(int)
+  {
+    myreverse_iterator __tmp = *this;
+    operator++();
+    return __tmp;
+  }
+
+  myreverse_iterator& operator--()
+  {
+    ++current; ++prev;
+    return *this;
+  }
+
+  myreverse_iterator operator--(int)
+  {
+    myreverse_iterator __tmp = *this;
+    operator--();
+    return __tmp;
+  }
+
+  myreverse_iterator operator+(difference_type __n) const
+  { return myreverse_iterator(current - __n); }
+
+  myreverse_iterator& operator+=(difference_type __n)
+                                {
+    current -= __n; prev = current; --prev;
+    return *this;
+  }
+
+  myreverse_iterator operator-(difference_type __n) const
+  { return myreverse_iterator(current + __n); }
+
+  myreverse_iterator& operator-=(difference_type __n)
+                                {
+    current += __n; prev = current; --prev;
+    return *this;
+  }
+
+  reference operator[](difference_type __n) const
+  { return *(*this + __n); }
+};
+template<typename _Iterator>
+inline bool
+    operator==(const myreverse_iterator<_Iterator>& __x,
+               const myreverse_iterator<_Iterator>& __y)
+{ return __x.base() == __y.base(); }
+template<typename _Iterator>
+inline bool
+    operator!=(const myreverse_iterator<_Iterator>& __x,
+               const myreverse_iterator<_Iterator>& __y)
+{ return !(__x == __y); }
+
+//******************************************************************************
 namespace DGtal
 {
 
@@ -122,6 +221,11 @@ namespace DGtal
       // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
       return myPoint;
     }
+    TPoint & operator*()
+    {
+      // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      return myPoint;
+      }
 
     /**
      * Operator ==
