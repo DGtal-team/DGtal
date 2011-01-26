@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC
 			 testHalfPlane
 			 testPreimage
 			 testMaximalSegments
+			 testFP
               )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

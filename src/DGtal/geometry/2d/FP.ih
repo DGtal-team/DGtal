@@ -1,0 +1,114 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FP.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/01/26
+ *
+ * Implementation of inline methods defined in FP.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::FP<TInteger,connectivity>::FP()
+{
+	std::cerr << "creation" << std::endl;
+	myPolygon.push_back(Point(0,1));
+	myPolygon.push_back(Point(10,5));
+	myPolygon.push_back(Point(15,10));
+}
+
+/**
+ * Destructor.
+ */
+template <typename TInteger, int connectivity>
+inline
+DGtal::FP<TInteger,connectivity>::~FP()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TInteger, int connectivity>
+inline
+void
+DGtal::FP<TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[FP]" << endl;
+	typename Polygon::const_iterator i = myPolygon.begin();
+	for ( ;i != myPolygon.end();++i)
+	{
+		out << "\t " << (*i) << endl;
+	}							
+  out << "[end FP]" << endl;
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TInteger, int connectivity>
+inline
+bool
+DGtal::FP<TInteger,connectivity>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TInteger, int connectivity>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const FP<TInteger,connectivity> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
