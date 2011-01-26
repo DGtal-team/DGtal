@@ -9,7 +9,7 @@
 namespace po = boost::program_options;
 
 
-#define LIBS "/opt/local/lib/libgmpxx.dylib;/opt/local/lib/libgmp.dylib;/opt/local/lib/libGraphicsMagick++.dylib;ITKCommon;ITKIO"
+#define LIBS "@DGtal_Lib_Dependencies@"
 
 
 int main(int argc, char **argv)
