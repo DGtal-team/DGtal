@@ -56,7 +56,7 @@ int main( int argc, char** argv )
   // A Freeman chain code is a string composed by the coordinates of the first pixel, 
 	//and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "1 11 030030330303303030300001010101101011010000030330303303030300001010110101011010000033" << endl;
+  ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
   
   // Construct the Freeman chain
   Contour4 theContour( ss );
@@ -78,7 +78,9 @@ int main( int argc, char** argv )
   for ( MDSSs4::ConstIterator i = theCover.begin();
 	i != theCover.end(); ++i ) 
     {
-			//first and last points
+			//begin and end iterators
+			//(back points on the first point)
+			//(front points after the last point)
 			Contour4::ConstIterator front = i.getFront();
 			Contour4::ConstIterator back = i.getBack();	
 			//parameters
@@ -96,7 +98,6 @@ int main( int argc, char** argv )
 				if (front == theContour.end()) {
 					aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
 				} else {
-					++front;
 					if ( (segment.getRemainder(*back)<mu-1)&&
 							 (segment.getRemainder(*front)<mu-1) ) {                //concave
 						aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
