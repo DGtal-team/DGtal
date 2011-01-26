@@ -16,9 +16,15 @@ include_directories (${PROJECT_SOURCE_DIR}/tools/)
 link_directories (${PROJECT_BINARY_DIR})
 
 
-#------TESTS subdirectories ------
+#------Tools subdirectories ------
 
 add_subdirectory(volumetric)
+
+
+#------ Basic tools ------
+
+##-- Cmake configuration for dgtal-config tool
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in" "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp" IMMEDIATE)
 
 
 SET(DGTAL_TOOLS_SRC
