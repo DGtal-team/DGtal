@@ -44,11 +44,67 @@
 #include <list>
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
+	/////////////////////////////////////////////////////////////////////////////
+	// template class adapterDSS,
+	// which is a tool class for FP
+	template <typename TInteger, int connectivity>
+	class AdapterDSS 
+	{
+		protected:
+			DGtal::ArithmeticalDSS<TInteger,connectivity>* myDSS;
+		public:
+			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const = 0;
+			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const = 0;
+	};
+
+	template <typename TInteger, int connectivity>
+	class AdapterDSS4ConvexPart : public AdapterDSS<TInteger,connectivity> 
+	{
+		public:
+			//constructor
+			AdapterDSS4ConvexPart(DGtal::ArithmeticalDSS<TInteger,connectivity>& aDSS)
+			{
+				this->myDSS = &aDSS;
+			}
+			//accessors
+			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			{
+				return this->myDSS->getUf();
+			}
+			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			{
+				return this->myDSS->getUl();
+			}
+	};
+
+	template <typename TInteger, int connectivity>
+	class AdapterDSS4ConcavePart : public AdapterDSS<TInteger,connectivity> 
+	{
+		public:
+			//constructor
+			AdapterDSS4ConcavePart(DGtal::ArithmeticalDSS<TInteger,connectivity>& aDSS)
+			{
+				this->myDSS = &aDSS;
+			}
+			//accessors
+			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			{
+				return this->myDSS->getLf();
+			}
+			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			{
+				return this->myDSS->getLl();
+			}
+	};
+	/////////////////////////////////////////////////////////////////////////////
+
 
   /////////////////////////////////////////////////////////////////////////////
   // template class FP
@@ -56,29 +112,35 @@ namespace DGtal
    * Description of template class 'FP' <p>
    * \brief Aim:
    */
-  template <typename TInteger, int connectivity>
+  template <typename TIterator, typename TInteger, int connectivity>
   class FP
   {
 
     // ----------------------- Types ------------------------------
-public:
+	public:
 
 
   BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
 
-  typedef TInteger Integer;
-  typedef DGtal::PointVector<2,Integer> Point;
-  typedef DGtal::PointVector<2,Integer> Vector;
+  typedef DGtal::PointVector<2,TInteger> Point;
+  typedef DGtal::PointVector<2,TInteger> Vector;
   typedef DGtal::ArithmeticalDSS<TInteger,connectivity> DSS;
+  typedef DGtal::AdapterDSS<TInteger,connectivity> AdapterDSS;
+  typedef DGtal::AdapterDSS4ConvexPart<TInteger,connectivity> AdapterDSS4ConvexPart;
+  typedef DGtal::AdapterDSS4ConcavePart<TInteger,connectivity> AdapterDSS4ConcavePart;
 	typedef std::list<Point> Polygon;
+
+
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor.
+     * @param aBegin pointer to the first point of the digital curve
+     * @param aEnd pointer after the last point of the digital curve
      */
-    FP();
+    FP(const TIterator& aBegin, const TIterator& aEnd) throw();
 
     /**
      * Destructor.
@@ -93,6 +155,12 @@ public:
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Draw the FP on a LiBoard board
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawAsPolygon( DGtalBoard & board ) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -137,6 +205,41 @@ public:
     // ------------------------- Internals ------------------------------------
   private:
 
+    /**
+       * Default style.
+       */
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    {
+        virtual void selfDraw(DGtalBoard & aBoard) const
+        {
+				// Set board style
+				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+				aBoard.setPenColor(DGtalBoard::Color::Red);
+				aBoard.setLineWidth(2);
+				aBoard.setFillColor(DGtalBoard::Color::None);
+			  }
+    };
+    // --------------- CDrawableWithDGtalBoard realization --------------------
+  public:
+    
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+
+    /**
+     * Draw the vertices of the FP as a polygonal line 
+     * @param board the output board where the object is drawn.
+     *
+     */
+    void selfDraw(DGtalBoard & board ) const;
+
   }; // end of class FP
 
 
@@ -146,9 +249,9 @@ public:
    * @param object the object of class 'FP' to write.
    * @return the output stream after the writing.
    */
-  template <typename TInteger, int connectivity>
+  template <typename TIterator, typename TInteger, int connectivity>
   std::ostream&
-  operator<< ( std::ostream & out, const FP<TInteger,connectivity> & object );
+  operator<< ( std::ostream & out, const FP<TIterator,TInteger,connectivity> & object );
 
 } // namespace DGtal
 

@@ -518,6 +518,7 @@ protected:
 
 	//parameters of the DSS
 	Integer myA, myB, myMu, myOmega;
+	Integer myNbUpPat, myNbLowPat; //number of patterns
 
 	//leaning points
 	Point myUf, myUl, myLf, myLl;
