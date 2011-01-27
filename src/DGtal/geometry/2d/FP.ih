@@ -41,22 +41,165 @@
 /**
  * Constructor.
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::FP<TInteger,connectivity>::FP()
+DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin, 
+																							 const TIterator& aEnd) throw()
 {
-	std::cerr << "creation" << std::endl;
-	myPolygon.push_back(Point(0,1));
-	myPolygon.push_back(Point(10,5));
-	myPolygon.push_back(Point(15,10));
+
+	TIterator i = aBegin;
+
+	if (i != aEnd) {
+
+		//----------------------------------------
+		//initialisation 
+		//----------------------------------------
+
+		DSS currentDSS(*i); //current DSS
+
+		AdapterDSS* adapter; //adapter for the current DSS
+
+		//list of successive upper (U) and lower (L)
+    // leaning points. 
+		std::list<Point> vTmpU, vTmpL;
+
+		vTmpU.push_back(*i);
+		vTmpL.push_back(*i);
+
+		//longest DSS
+		++i; //move forward
+		while ( (i != aEnd)&&(currentDSS.extend(*i)) ) {
+			//store the first upper leaning point
+			if (currentDSS.getUf() != vTmpU.back()) {
+				vTmpU.push_back(currentDSS.getUf());
+			}
+			//store the first lower leaning point
+			if (currentDSS.getLf() != vTmpL.back()) {
+				vTmpL.push_back(currentDSS.getLf());
+			}
+			++i; //move forward
+		}
+
+		
+		bool isConvex; //TRUE in convex parts, FALSE otherwise
+
+		if (i != aEnd) {
+
+			if ( currentDSS.getRemainder(*i) < (currentDSS.getMu()-1) ) { //concave part
+//		std::cout << "concave " << std::endl;
+				myPolygon = vTmpL;
+				isConvex = false;
+				adapter = new AdapterDSS4ConcavePart(currentDSS);
+			} else {                                                      //convex part
+//		std::cout << "convex " << std::endl;
+				myPolygon = vTmpU;
+				isConvex = true;
+				adapter = new AdapterDSS4ConvexPart(currentDSS);
+			}
+
+		} else {
+			//the part is assumed to be convex
+			//if it is straight
+			myPolygon = vTmpU;
+			isConvex = true;
+			adapter = new AdapterDSS4ConvexPart(currentDSS);
+		}
+
+		std::cout << "First longest DSS: " << std::endl;
+		std::cout << currentDSS << std::endl;
+
+		//----------------------------------------
+		//body 
+		//----------------------------------------
+
+		std::cout << "body" << std::endl;
+
+		while (i != aEnd) {
+
+			//store the last leaning point 
+			//if the first and last leaning points 
+			//of the MS are not confounded
+			if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
+				myPolygon.push_back(adapter->lastLeaningPoint());
+			}
+
+			//removing step
+			while ( (currentDSS.getRemainder(*i) < (currentDSS.getMu()-1))
+						|| (currentDSS.getRemainder(*i) > (currentDSS.getMu()+currentDSS.getOmega()))) {
+				//remove a point from the back
+				if ( currentDSS.retract() ) {
+					//store the last leaning point
+					if (adapter->lastLeaningPoint() != myPolygon.back()) {
+						myPolygon.push_back(adapter->lastLeaningPoint());
+					}
+				} else {
+					//disconnected digital curve
+					throw InputException();
+				}
+			}
+
+			//remove the last leaning point 
+			//if the first and last leaning points 
+			//of the current DSS are not confounded
+			if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
+				myPolygon.pop_back();
+			}		
+
+			//adding step
+			while ( (i != aEnd)&&(currentDSS.extend(*i)) ) {
+				//store the first leaning point
+				if (adapter->firstLeaningPoint() != myPolygon.back()) {
+					myPolygon.push_back(adapter->firstLeaningPoint());
+				}
+				++i; //move forward
+			}
+
+			//transition step
+			if (i != aEnd) {
+				if ( (isConvex)&&( currentDSS.getRemainder(*i) < 
+												  (currentDSS.getMu()-1) ) ) {
+					//from convex to concave
+					isConvex = false;
+					delete (adapter);
+					adapter = new AdapterDSS4ConcavePart(currentDSS);
+				} else if ( (!isConvex)&&( currentDSS.getRemainder(*i) > 
+												          (currentDSS.getMu()+currentDSS.getOmega()) ) ) {
+					//from concave to convex
+					isConvex = true;
+					delete (adapter);
+					adapter = new AdapterDSS4ConvexPart(currentDSS);
+				}
+			}
+
+		}
+
+
+		//----------------------------------------
+		//end 
+		//----------------------------------------
+
+		std::cout << "end" << std::endl;
+
+		//last removing step
+		while (currentDSS.retract()) {
+			//store the last leaning point
+			if (adapter->lastLeaningPoint() != myPolygon.back()) {
+				myPolygon.push_back(adapter->lastLeaningPoint());
+			}
+		}
+
+		delete (adapter);
+
+	}	
+
 }
 
 /**
  * Destructor.
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::FP<TInteger,connectivity>::~FP()
+DGtal::FP<TIterator,TInteger,connectivity>::~FP()
 {
 }
 
@@ -64,13 +207,91 @@ DGtal::FP<TInteger,connectivity>::~FP()
 // Interface - public :
 
 /**
+ * Draw the bounding box of the DSS on a LiBoard board
+ * @param board the output board where the object is drawn.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void 
+DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( DGtalBoard & aBoard) const
+{
+  //polyline to draw
+	vector<LibBoard::Point> polyline;
+
+	typename Polygon::const_iterator i = myPolygon.begin();
+	for ( ;i != myPolygon.end();++i) {
+			Point p = (*i);
+			double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
+			double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+			polyline.push_back(LibBoard::Point(xp,yp));
+	}
+
+  aBoard.drawPolyline(polyline);
+
+}
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::DrawableWithDGtalBoard*
+DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
+{
+
+		//TODO: draw also the digital points
+//  if ( ( mode == "" ) || ( mode == "Polygon" ) ) 
+//    return new DefaultDrawStyle;
+//  else // mode == "Points"
+//    return new DefaultDrawStyleDigitalPoints;
+	return new DefaultDrawStyle;
+}
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+std::string
+DGtal::FP<TIterator,TInteger,connectivity>::styleName() const
+{
+  return "FP";
+}
+
+/**
+ * Draw the object on a LibBoard board.
+ * @param board the output board where the object is drawn.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( DGtalBoard & board ) const
+{
+  std::string mode = board.getMode( styleName() );
+  if ( mode == "Polygon" )
+    selfDrawAsPolygon( board );
+//  else if ( mode == "Points" )
+    //selfDrawAsDigitalPoints( board );
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
+    {
+      selfDrawAsPolygon( board );
+      //selfDrawAsDigitalPoints( board );
+    }
+  else
+    ASSERT(false && ("DGtal::FP<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode)==""  );
+
+}
+
+
+/**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::FP<TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
+DGtal::FP<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
 {
   out << "[FP]" << endl;
 	typename Polygon::const_iterator i = myPolygon.begin();
@@ -85,10 +306,10 @@ DGtal::FP<TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::FP<TInteger,connectivity>::isValid() const
+DGtal::FP<TIterator,TInteger,connectivity>::isValid() const
 {
     return true;
 }
@@ -98,11 +319,11 @@ DGtal::FP<TInteger,connectivity>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const FP<TInteger,connectivity> & object )
+		  const FP<TIterator,TInteger,connectivity> & object )
 {
   object.selfDisplay( out );
   return out;

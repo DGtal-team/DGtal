@@ -29,12 +29,18 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/geometry/2d/FP.h"
+
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/FP.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FP.
@@ -46,10 +52,35 @@ using namespace DGtal;
 bool testFP()
 {
 
-  trace.beginBlock ( "Testing block ..." );
+	typedef int Coordinate;
+	typedef HyperRectDomain<SpaceND<2,Coordinate> > Domain;
+	typedef PointVector<2,Coordinate> Point;
+  typedef FreemanChain<Coordinate> Contour; 
+	typedef FP<Contour::ConstIterator,Coordinate,4> FP;
 
-	FP<int,4> theFP;
-  trace.info() << theFP << std::endl;
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, 
+	//and the list of elementary displacements. 
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
+  
+  // Construct the Freeman chain
+  Contour theContour( ss );
+
+  trace.beginBlock ( "FP of a 4-connected digital curve..." );
+
+	FP theFP( theContour.begin(),theContour.end() );
+  //trace.info() << theFP << std::endl;
+
+	// Draw the FP
+  Point p1( 0, 0 );
+  Point p2( 48, 12 );
+  Domain domain( p1, p2 );
+  DGtalBoard aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  aBoard << SetMode( domain.styleName(), "Grid" ) << domain
+	 			 << SetMode( "PointVector", "Grid" ) << theContour;
+  aBoard << theFP;
+  aBoard.saveSVG("FP4.svg");
 
   trace.endBlock();
   
