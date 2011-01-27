@@ -42,6 +42,8 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -137,7 +139,7 @@ bool testSimpleExpander()
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
   {
-    for ( ObjectExpander::ConstIterator it = expander.begin();
+   for ( ObjectExpander::ConstIterator it = expander.begin();
         it != expander.end();
         ++it )
       std::cout << " " << *it;
@@ -208,6 +210,108 @@ bool testSimpleExpander()
   return nbok == nb;
 }
 
+using namespace DGtal::Z2i;
+
+bool testLayers()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  GradientColorMap<int> cmap_grad( 0, 30 );
+  cmap_grad.addColor( DGtalBoard::Color( 128, 128, 255 ) );
+  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 128 ) );
+  cmap_grad.addColor( DGtalBoard::Color( 128, 255, 128 ) );
+  cmap_grad.addColor( DGtalBoard::Color( 128, 128, 128 ) );
+  //cmap_grad.addColor( Color( 220, 130, 25 ) );
+
+  trace.beginBlock ( "(4,8) Filling ..." );
+
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef Object8_4 ObjectType;
+  typedef Object4_8 ObjectTypeReverseTopo;
+  typedef Expander<ObjectTypeReverseTopo> ObjectExpanderReverseTopo;
+  typedef Expander<ObjectType> ObjectExpander;
+
+  Point p1( -5, -5 );
+  Point p2( 5, 5 );
+  Domain domain( p1, p2 );
+
+
+  //We construct a simple "house" set
+  DigitalSet houseSet( domain );
+
+  for ( int k = -3; k < 3 ; k++)
+  {
+    houseSet.insert(Point(k, -3));
+    houseSet.insert(Point(-3, k));
+    houseSet.insert(Point(3, k));
+    houseSet.insert(Point(k, 3));
+  }
+
+  //We compute the complement
+  DigitalSet houseSetCompl( domain);
+  houseSetCompl.assignFromComplement( houseSet );
+
+  //We create the objects associated to the sets
+  ObjectType house8( dt8_4, houseSet );
+  ObjectType houseCompl8( dt8_4, houseSetCompl );
+  ObjectTypeReverseTopo house4( dt4_8, houseSet);
+  ObjectTypeReverseTopo houseCompl4( dt4_8, houseSetCompl );
+
+
+  //Board Export init
+  DGtalBoard board;
+  board.setUnit(LibBoard::Board::UCentimeter);
+
+  //Border=4 Filling=4
+  board.clear();
+  board <<  DrawDomainGrid()  << domain;
+  board <<  DrawObjectAdjacencies() << house4;
+  ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
+  board << CustomStyle( expander.core().styleName(), 
+			new CustomFillColor( cmap_grad( 0 ) ) )
+	<< expander.core();
+  while (!expander.finished())
+    {
+      for ( ObjectExpander::ConstIterator it = expander.begin();
+	    it != expander.end();
+	    ++it )
+	std::cout << " " << *it;
+      board << CustomStyle( expander.layer().styleName(), 
+			    new CustomFillColor
+			    ( cmap_grad( expander.distance() ) ) )
+	    << expander.layer();
+      
+      expander.nextLayer();
+    }
+  board.saveSVG("house-layers4-4.svg");
+
+  //Border=4 Filling=8
+  board.clear();
+  board << DrawDomainGrid()  << domain;
+  board << DrawObjectAdjacencies() << house4;
+  ObjectExpander expander8(houseCompl8, Point(0, 0));
+  board << CustomStyle( expander.core().styleName(), 
+			new CustomFillColor( cmap_grad( 0 ) ) )
+	<< expander8.core();
+  while (!expander8.finished())
+    {
+      for ( ObjectExpander::ConstIterator it = expander8.begin();
+	    it != expander8.end();
+	    ++it )
+	std::cout << " " << *it;
+      
+      board << CustomStyle( expander8.layer().styleName(), 
+			    new CustomFillColor
+			    ( cmap_grad( expander8.distance() ) ) )
+	    << expander8.layer();
+      expander8.nextLayer();
+    }
+  board.saveSVG("house-layers4-8.svg");
+
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -218,7 +322,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleExpander(); // && ... other tests
+  bool res = testSimpleExpander()
+    && testLayers();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   return res ? 0 : 1;
 }

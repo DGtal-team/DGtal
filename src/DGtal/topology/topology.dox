@@ -67,15 +67,16 @@ namespace DGtal {
  *
  * @code
  * typedef int Integer;                // choose your digital line here.
- * typedef SpaceND<int,2> Z2;          // Z^2
+ * typedef SpaceND<2,Integer> Z2;      // Z^2
  * typedef MetricAdjacency<Z2,1> Adj4; // 4-adjacency type
  * typedef MetricAdjacency<Z2,2> Adj8; // 8-adjacency type
  * Adj4 adj4;                          // instance of 4-adjacency
  * Adj8 adj8;                          // instance of 8-adjacency
  * @endcode
  *
- * You can equivalently use the types \c Z2Adj4 and \c Z2Adj8, defined on
- * \c SpaceND<int,2>.
+ * You can equivalently use the types Z2i::Adj4 and Z2i::Adj8,
+ * (namespace Z2i in "DGtal/helpers/StdDefs.h"), defined on \c
+ * SpaceND<2,int>.
  *
  * It is well known that if you choose the 4-adjacency for an object,
  * one should choose the 8-adjacency for the background in order to
@@ -111,7 +112,7 @@ namespace DGtal {
  *
  * @code
  * typedef int Integer;                 // choose your digital line here.
- * typedef SpaceND<int,3> Z3;           // Z^3
+ * typedef SpaceND<3,Integer> Z3;       // Z^3
  * typedef MetricAdjacency<Z3,1> Adj6;  // 6-adjacency type
  * typedef MetricAdjacency<Z3,2> Adj18; // 18-adjacency type
  * typedef MetricAdjacency<Z3,3> Adj26; // 26-adjacency type
@@ -120,8 +121,9 @@ namespace DGtal {
  * Adj26 adj26;                         // instance of 26-adjacency
  * @endcode
  *
- * You can equivalently use the types \c Z3Adj6, \c Z3Adj18 and \c
- * Z3Adj26, defined on \c SpaceND<int,3>.
+ * You can equivalently use the types Z3i::Adj6, Z3i::Adj18 and Z3i::Adj26,
+ * (namespace Z3i in "DGtal/helpers/StdDefs.h"), defined on \c
+ * SpaceND<3,int>.
  *
  * \subsection dgtal_topology_sec1s3 Metric adjacencies in Zn
  *
@@ -130,13 +132,15 @@ namespace DGtal {
  * invariant, reflexive and symmetric. They include the standard 4-,
  * 8-adjacencies in Z2 and 6-, 18-, and 26-adjacencies in Z3. Given a
  * maximal 1-norm \c n1, two points \c p1 and \c p2 are adjacent if
- * and only if \f$ \| p2 - p1 \|_1 \le n1 \f$ and \f$ \| p2 - p1 \|_\infty
- * \le 1 \f$.
+ * and only if \f$ \| p2 - p1 \|_1 \le n1 \f$ and \f$ \| p2 - p1
+ * \|_\infty \le 1 \f$. Metric adjacencies are implemented in the
+ * template class MetricAdjacency. For now, only metric adjacencies in
+ * Z2 are specialized, so as to be (slightly) optimized.
  *
  * @code
  * const int n = ...;                   // choose your dimension.
  * typedef int Integer;                 // choose your digital line here.
- * typedef SpaceND<int,n> Zn;           // Z^N
+ * typedef SpaceND<n,int> Zn;           // Z^N
  * const int n1 = ...;                  // choose your max 1-norm here.
  * typedef MetricAdjacency<Zn,n1> MyAdj;// your adjacency type.
  * Myadj myAdj;                         // your instance.
@@ -186,7 +190,7 @@ namespace DGtal {
  * over \f$ Z^3 \f$.
  *
  * @code
- * typedef SpaceND< int, 3 > Z3;
+ * typedef SpaceND< 3,int > Z3;
  * typedef MetricAdjacency< Z3, 1 > Adj6;
  * typedef MetricAdjacency< Z3, 2 > Adj18;
  * typedef DigitalTopology< Adj6, Adj18 > DT6_18;
