@@ -1,0 +1,131 @@
+/**
+ * @file FAQDGtalCmake.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/01/25
+ *
+ * Documentation file for feature FAQDGtalCmake
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page FAQDGtalCmake DGtal Project Management
+
+Table of contents:
+ -# \ref intro
+  -# \ref linux 
+  -# \ref macos
+  -# \ref win   
+ -# \ref howtos  
+   -# \ref newclass
+   -# \ref newtest
+   -# \ref newexample
+   -# \ref newdep
+
+\section intro Introduction and first build
+
+The DGTal library uses <a href="http://www.cmake.org">cmake</a> to
+manage the project build on various systems. With the same project
+description syntax, cmake can do various things:
+  - Check the compiler and its options
+  - Check and locate the project dependencies
+  - Generate different build  backends (Unix makefile, VisualStudio
+  projects,..), also called generators.
+  - Create documentation build rules
+  - Manage unit tests
+  - ...
+
+\subsection linux Build on Linux-based distributions
+
+An important feature of cmake is the "out-of-source" build
+process. Let us suppose that DGtal sources are in the DGTALSOURCES
+folder. Hence, in a terminal you can create a build folder:
+@code
+cd DGTALSOURCES
+mkdir build
+cd build
+@endcode
+
+Next, use the cmake command to generate your Unix Makefile project
+(default generator on unix/linux):
+@code
+cmake ..
+@endcode
+
+If no error occurs, you can build the DGtal lib and install it:
+@code
+make 
+sudo make install
+@endcode
+
+
+\subsection macos Build on Mac Os
+
+Since recent MacOs distribution are unix-like operating systems. The
+easiest way to compile DGtal is to follow Unix/Linux instructions.
+
+@todo Describe the process to compile DGtal with XCode
+
+
+\subsection win Build on Windows/Visual Studio
+
+Use the Cmake Windows interface to generate your Visual Studio
+project. Again, a good practise is to specify a different folder in
+which cmake and VS will put their build results.
+
+On windows, there is no canonical locations on the folder
+tree where cmake could find the include files and the DLL of the DGtal
+dependencies. Hence, you will probably have to manually set the paths
+to find the boost headers and DLL for example.
+
+Once the VS project as been  created, you just have to simply open it
+with VS.
+
+@todo Add snapshots?
+
+
+\section howtos HowTos
+
+\subsection newclass Add a new class in DGtal
+
+To add a new class on linux, we encourage you to use the dedicated script in
+the "DGTALSOURCES/dev/scripts" folder. More precisely:
+ - Create a new profile in "DGTALSOURCES/dev/profiles" (check existing
+ profile files to see the syntax and the name of the brand new file
+ should match with you system login
+ - Then, the "DGTALSOURCES/dev/scripts/newclass.sh" script allows you
+ to create a new class from several models. E.g.
+@code
+newclass.sh MyNewDomainClass kernel/domains
+@endcode
+will create three files in the "DGTALSOURCES/src/DGtal/kernel/domains"
+folder:
+  - MyNewDomainClass.h
+  - MyNewDomainClass.ih for inlined functions
+  - MyNewDomainClass.cpp for definitions of methods.
+
+If you intend to create a class with template arguments (usually the
+case in DGtal), use the "newtemplateclass.sh" script instead (it will
+only generate .h and .ih files).
+
+You can now edit the files and add them to the build system.
+
+
+
+\subsection newtest Add a new test file class
+
+\subsection newexample Add a new example file in DGtal
+
+\subsection newdep Add a new dependency in DGtal
+
+*/
+
+}
