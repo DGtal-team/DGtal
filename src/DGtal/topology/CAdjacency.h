@@ -97,6 +97,30 @@ namespace DGtal
    * <td> </td> <td> Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 </td> <td> </td> <td> </td>
    * </tr>
    *
+   * <tr> 
+   * <td> write neighborhood </td> 
+   * <td> adj.writeNeighborhood( p, out_it ) </td> <td> \c p of type Point, \c out_it any output iterator. </td> <td> </td>
+   * <td> </td> <td> writes the whole neighborhood of \c p with the given output iterator \c out_it </td> <td> </td> <td> </td>
+   * </tr>
+   *
+   * <tr> 
+   * <td> write proper neighborhood </td> 
+   * <td> adj.writeProperNeighborhood( p, out_it ) </td> <td> \c p of type Point, \c out_it any output iterator. </td> <td> </td>
+   * <td> </td> <td> writes the whole neighborhood of \c p (except \c p itself), with the given output iterator \c out_it </td> <td> </td> <td> </td>
+   * </tr>
+   *
+   * <tr> 
+   * <td> write neighborhood satisfying a predicate </td> 
+   * <td> adj.writeNeighborhood( p, out_it,pred ) </td> <td> \c p of type Point, \c out_it any output iterator, \c pred any point predicate. </td> <td> </td>
+   * <td> </td> <td> writes the points of the neighborhood of \c p that satisfy the predicate \c pred, with the given output iterator \c out_it </td> <td> </td> <td> </td>
+   * </tr>
+   *
+   * <tr> 
+   * <td> write proper neighborhood satisfying a predicate </td> 
+   * <td> adj.writeProperNeighborhood( p, out_it,pred ) </td> <td> \c p of type Point, \c out_it any output iterator, \c pred any point predicate. </td> <td> </td>
+   * <td> </td> <td> writes the points of the neighborhood of \c p (except \c p itself) that satisfy the predicate \c pred, with the given output iterator \c out_it </td> <td> </td> <td> </td>
+   * </tr>
+   *
    * </table>
    *
    * <p> Invariants <br>

@@ -1,0 +1,65 @@
+%%%% debut macro %%%%
+%%%% cv document class
+%%%% Author: Jean-Marc Lasgouttes (Jean-Marc.Lasgouttes@inria.fr)
+%%%% Last modification: 29/11/1996
+%%%% WARNING: this documentclass is really a hack. Don't expect too much.
+
+
+%%% Basic usage:
+%% \leftheader[width]{text} : defines what should appear in the upper
+%%   left of the first page. The optionnal argument `width' specifies
+%%   the width of the header (default: 0.48\textwidth). `Text' may
+%%   contain \\ to break lines.
+%% \rightheader[width]{text} like \leftheader, but for the right
+%%   header.
+%% \makeheader: actually typesets the header.
+%%
+%% \section*{title}: gives a title for a new topic of the CV. The text
+%%   is typeset in font \topicfont (by default Sans Serif
+%%   semi-condensed bold).
+%% `topic' environment: begins an itemize-like environment where the
+%%   argument of \item[] is typeset in font \itemfont (by default Sans
+%%   serif). You can also use \\ just after \item[xxx] if the label is
+%%   too large.
+%%
+%% The cv document class also has some primitive support for
+%% bibliography. You can use the `thebibliography' environment as
+%% usual (or directly BibTeX). It will provide text similar to the
+%% `topic' environment.
+
+%% The fonts used for headings
+\newcommand\topicfont{\normalfont\sffamily\fontseries{sbc}\selectfont}
+\newcommand\itemfont{\sffamily}
+
+%% stuff needed for the header
+\newcommand\cv@lh{}\newcommand\cv@rh{}
+\newcommand\cv@lh@l{\z@} \newcommand\cv@rh@l{\z@}
+\newcommand\leftheader[2][0.48\textwidth]{
+	\def\cv@lh@l{#1}
+	\def\cv@lh{#2}}
+\newcommand\rightheader[2][0.48\textwidth]{
+	\def\cv@rh@l{#1}
+	\def\cv@rh{#2}}
+\newcommand\makeheader{\par\noindent
+  \parbox[t]{\cv@lh@l}{\raggedright\cv@lh}
+  \hfill
+  \parbox[t]{\cv@rh@l}{\raggedleft\cv@rh}\par\vspace*{0cm}}
+
+%% Redefine \section to use \topicfont
+\newcommand{\rubrique}[1]{\subsection*{{\topicfont #1}}}
+
+%% Define the topic environment
+\newcommand\@topic@setup{
+        \setlength{\@rightskip}{0pt plus 2cm}
+	\setlength{\leftmargin}{2cm}
+	\setlength{\rightmargin}{0cm}
+	\setlength{\labelwidth}{2cm}
+	\renewcommand{\makelabel}[1]{\itemfont ##1\hfill}}
+\newenvironment{topic}
+ {\list{}{
+	\@topic@setup
+	\let\CV@cr=\\
+	\renewcommand\\{\hspace{0cm}\CV@cr}}}
+ {\endlist}
+
+%%%% fin macro %%%%

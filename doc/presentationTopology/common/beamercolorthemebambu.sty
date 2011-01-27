@@ -1,0 +1,60 @@
+\ProvidesPackageRCS $Header: /local/chroot/cvsroot/algbinding/syntax/concur-slides/beamercolorthemebambu.sty,v 1.1 2009/08/21 15:56:21 thirscho Exp $
+
+% Copyright 2004 by Madhusudan Singh <madhusudan.singh@gmail.com>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+\mode<presentation>
+
+% \definecolor{bois}{rgb}{.3,0.1,0}
+% \definecolor{boise}{rgb}{.3,0.1,0}
+% \definecolor{bambu}{rgb}{1,1,.7}
+% \definecolor{leaf}{rgb}{0.9,1,0.8}
+
+
+ \definecolor{bois}{rgb}{.5,0,0}
+ \definecolor{bambu}{rgb}{.8,.8,.8}
+ \definecolor{leaf}{rgb}{0.9,1,0.8}
+
+
+
+\setbeamercolor{alerted text}{fg=bois}
+\setbeamercolor{palette primary}{fg=bois,bg=bambu}
+\setbeamercolor{palette secondary}{fg=bois,bg=bambu!40!white}
+\setbeamercolor{palette tertiary}{fg=bois,bg=bambu!40!white}
+\setbeamercolor{palette quaternary}{fg=bois,bg=bambu!40!white}
+
+\setbeamercolor{sidebar}{bg=bambu}
+%\setbeamercolor{sidebar}{use=structure,bg=structure.fg!20!white}
+
+\setbeamercolor{block title}{fg=bois,bg=bambu} %
+\setbeamercolor{block title alerted}{use=alerted text,fg=alerted
+  text.fr,bg=bambu} %
+\setbeamercolor{block title example}{use=example
+  text,fg=bois,bg=example text.fg!85!bg} %
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=bambu!40!white}
+
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!25!bg}
+
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!25!bg}
+
+
+\setbeamercolor{palette sidebar primary}{fg=black}
+\setbeamercolor{palette sidebar secondary}{fg=bois}
+\setbeamercolor{palette sidebar tertiary}{fg=black}
+\setbeamercolor{palette sidebar quaternary}{fg=black}
+
+\setbeamercolor{titlelike}{parent=palette primary}
+\setbeamercolor{frametitle}{bg=white}
+\setbeamercolor{frametitle right}{bg=white}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+\setbeamercolor{normal text}{fg=black}
+
+\setbeamertemplate{sidebar canvas \beamer@sidebarside}[vertical shading][top=bambu,bottom=bambu!50]
+
+\mode
+<all>

@@ -1,0 +1,702 @@
+% Copyright 2008 by Marc de Falco
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+\RequirePackage{tikz-inet}
+\RequirePackage{ifthen}
+
+% We need this to load the \emph{isosceles triangle} shape
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+%\usetikzlibrary{shadows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{backgrounds}
+
+
+% The definition of the shape of a cell
+\pgfdeclareshape{morphisme}{
+
+  \inheritbackgroundpath[from=rectangle]
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \inheritanchor[from=rectangle]{south}
+  \inheritanchor[from=rectangle]{west}
+  \inheritanchor[from=rectangle]{north east}
+  \inheritanchor[from=rectangle]{north west}
+  \inheritanchor[from=rectangle]{south east}
+  \inheritanchor[from=rectangle]{south west}
+  \inheritanchor[from=rectangle]{east}
+  \inheritanchor[from=rectangle]{north}
+  \inheritanchor[from=rectangle]{base east}
+  
+  \anchor{above north}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+  \anchor{above south}{
+    \pgf@process{\northeast}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{above west}{
+    \pgf@process{\northeast}%
+    \pgf@ya=.5\pgf@y%
+    \pgf@process{\southwest}%
+    \pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya%
+    \advance\pgf@x by -12pt%
+  }
+  \anchor{above east}{
+    \pgf@process{\southwest}%
+    \pgf@ya=.5\pgf@y%
+    \pgf@process{\northeast}%
+    \pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya%
+    \advance\pgf@x by 12pt%
+  }
+
+  \anchor{right pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@xa%
+  }
+  \anchor{above right pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+  \anchor{left pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+  }
+  \anchor{above left pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+  \anchor{right pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+  }
+  \anchor{above right pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{left pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+  }
+  \anchor{above left pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{above south}{
+    \pgf@process{\northeast}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{below north}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+  \anchor{below south}{
+    \pgf@process{\northeast}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+  \anchor{below west}{
+    \pgf@process{\northeast}%
+    \pgf@ya=.5\pgf@y%
+    \pgf@process{\southwest}%
+    \pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya%
+    \advance\pgf@x by 12pt%
+  }
+  \anchor{below east}{
+    \pgf@process{\southwest}%
+    \pgf@ya=.5\pgf@y%
+    \pgf@process{\northeast}%
+    \pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya%
+    \advance\pgf@x by -12pt%
+  }
+
+  \anchor{below right pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{below left pax}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+
+  \anchor{below right pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+  \anchor{below left pal}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+  \anchor{below south}{
+    \pgf@process{\northeast}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+
+
+}
+
+
+% The definition of the shape of an atom
+\pgfdeclareshape{atome}{
+
+    \inheritbackgroundpath[from=rectangle]
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \inheritanchor[from=rectangle]{left corner}
+    \inheritanchor[from=rectangle]{right corner}
+    \inheritanchor[from=rectangle]{south}
+    \inheritanchor[from=rectangle]{west}
+    \inheritanchor[from=rectangle]{north east}
+    \inheritanchor[from=rectangle]{north west}
+    \inheritanchor[from=rectangle]{south east}
+    \inheritanchor[from=rectangle]{south west}
+    \inheritanchor[from=rectangle]{east}
+    \inheritanchor[from=rectangle]{north}
+    \inheritanchor[from=rectangle]{lower left}
+   
+    \anchor{above north}{
+    \pgf@process{\southwest}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by 12pt%
+  }
+  \anchor{above south}{
+    \pgf@process{\northeast}%
+    \pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}%
+    \pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa%
+    \advance\pgf@y by -12pt%
+  }
+}
+
+
+\makeatletter
+
+\newcommand{\inetatom}[1][]{%
+    \@ifnextchar({%
+    \inetatom@ii[#1]%
+    }{%
+    \inetatom@iib[#1]%
+    }%
+}
+
+\def\inetatom@iib[#1]#2{%
+    \inetatom@ii[#1](#2){#2}%
+}
+
+\def\inetatom@ii[#1](#2)#3{%
+    \@ifnextchar[{\inetatom@iii[#1](#2){#3}%
+    }{\inetatom@iii[#1](#2){#3}[\inet@defaultangle]}%
+}
+
+\def\inetatom@iii[#1](#2)#3[#4]{%
+    \ifthenelse{\equal{#4}{U}}{\inet@angle=180}{%
+        \ifthenelse{\equal{#4}{D}}{\inet@angle=0}{%
+            \ifthenelse{\equal{#4}{L}}{\inet@angle=270}{%
+                \ifthenelse{\equal{#4}{R}}{\inet@angle=90}{\inet@angle=#4}%
+            }%
+        }%
+    }%
+    \node[%
+    shape border rotate=\inet@angle%
+    ,atome,%
+    baseline,%
+    shape border uses incircle%
+    ,inner sep=0pt,text depth=.2em,text height=.8em,#1] (#2) {\ensuremath{#3}};%
+}
+
+\newcommand{\inetmorstyle}{\inetcellstyle}
+
+\newcommand{\inetmor}[1][]{%
+    \@ifnextchar({%
+    \inetmor@ii[#1]%
+    }{%
+    \inetmor@iib[#1]%
+    }%
+}
+
+\def\inetmor@iib[#1]#2{%
+    \inetmor@ii[#1](#2){#2}%
+}
+
+\def\inetmor@ii[#1](#2)#3{%
+    \@ifnextchar[{\inetmor@iii[#1](#2){#3}%
+    }{\inetmor@iii[#1](#2){#3}[\inet@defaultangle]}%
+}
+
+\def\inetmor@iii[#1](#2)#3[#4]{%
+    \ifthenelse{\equal{#4}{U}}{\inet@angle=180}{%
+        \ifthenelse{\equal{#4}{D}}{\inet@angle=0}{%
+            \ifthenelse{\equal{#4}{L}}{\inet@angle=270}{%
+                \ifthenelse{\equal{#4}{R}}{\inet@angle=90}{\inet@angle=#4}%
+            }%
+        }%
+    }%
+    \node[%
+    \inetcellstyle=\inetcolor%
+    ,shape border rotate=\inet@angle%
+    ,morphisme %
+    ,shape border uses incircle,rounded corners%
+    ,minimum width=1cm,minimum height=1.3em%
+    ,inner sep=3pt,text depth=.2em,text height=.8em,#1] (#2) {\ensuremath{#3}};%
+}
+
+\def\bigraphdefaultwidth{1cm}
+\def\bigraphdefaultheight{1.4cm}
+
+\newcommand{\bigraphplace}[1][]{%
+    \@ifnextchar({%
+    \bigraphplace@ii[#1]%
+    }{%
+    \bigraphplace@iib[#1]%
+    }%
+}
+
+\def\bigraphplace@iib[#1]#2{%
+    \bigraphplace@ii[#1](#2){#2}%
+}
+
+\def\bigraphplace@ii[#1](#2)#3{%
+  \@ifnextchar[{\bigraphplace@iii[#1](#2){#3}%
+  }{\bigraphplace@iii[#1](#2){#3}[\bigraphdefaultwidth,\bigraphdefaultheight]}%
+}
+
+\def\bigraphplace@iii[#1](#2)#3[#4,#5]{%
+    \node[%
+    \inetcellstyle=\inetcolor%
+    ,shape border rotate=\inet@angle%
+    ,morphisme %
+    ,shape border uses incircle,rounded corners%
+    ,minimum height=#4,minimum width=#5,%
+    ,inner sep=3pt,text depth=.2em,text height=.8em,#1] (#2) {\ensuremath{#3}};%
+}
+
+\tikzset{cablestyle/.style = {draw, line width=0.25ex, line cap=rect}} %
+\tikzset{hole/.style = {fill=black!10}} %
+\tikzset{net/.style = {baseline=(current bounding box.center)}}
+
+\def\inetcable{%
+    \@ifnextchar[{\inetcable@i}{\inetcable@i[]}%
+}
+
+\def\inetcable@i[#1](#2.#3)(#4.#5){%
+    \begin{pgfonlayer}{wire layer}%
+        \draw[cablestyle,#1]%
+        (#2.#3) .. controls (#2.above #3) and (#4.above #5) .. (#4.#5);%
+    \end{pgfonlayer}%
+}
+
+\def\inetcablefree{%
+    \@ifnextchar[{\inetcablefree@i}{\inetcablefree@i[]}%
+}
+\def\inetcablefree@i[#1](#2.#3){%
+    \begin{pgfonlayer}{wire layer}%
+        \draw[#1]%
+        (#2.#3) -- (#2.above #3);%
+    \end{pgfonlayer}%
+}
+
+
+\def\inetwireext{%
+    \@ifnextchar[{\inetwireext@i}{\inetwireext@i[]}%
+}
+
+\def\inetwireext@i[#1]{%
+        \draw[\inetwirestyle=\inetcolor,#1]% 
+}
+
+\newcommand{\deco}[2]{ %
+  \node[anchor=north east,at={(#1.north east)},inner sep=.05cm] %
+  {\ensuremath{#2}} ; %
+}
+
+
+\def\diag{%
+    \@ifnextchar|{\diag@i}{\diag@i||}%
+}
+\def\diag@i|#1|{%
+    \@ifnextchar({\diag@ii|#1|}{\diag@ii|#1|(2,4)}%
+}
+\def\diag@ii|#1|(#2,#3){%
+    \@ifnextchar[{\diag@iii|#1|(#2,#3)}{\diag@iii|#1|(#2,#3)[]}%
+}
+\def\diag@iii|#1|(#2,#3)[#4]{%
+  \diagramme{#1}{#2}{#3}{#4} %
+}
+\def\diagpetit{%
+  \diag|scale=1|(1.5,2) %
+  }
+
+\makeatother
+\newenvironment{net}{\begin{tikzpicture}[baseline=(current bounding box.center),text depth=.2em,text height=.8em,inner sep=0pt]}{\end{tikzpicture}}
+
+\newcommand{\ssf}[2]{%
+\inetatom(#1){#2}%
+}
+
+\newcommand{\gimpll}{\ssf{Rien}{\impll}}
+\newcommand{\gtens}{\ssf{Rien}{\tens}}
+\newcommand{\gimpllof}[1]{\ssf{#1}{\impll}}
+\newcommand{\gtensof}[1]{\ssf{#1}{\tens}}
+\newcommand{\gun}[1]{\ssf{#1}{\un}}
+\newcommand{\rpare}[1]{\node[text depth=.2em,text height=.8em,inner sep=0pt] (#1) {\ensuremath{)}};}
+\newcommand{\lpare}[1]{\node[text depth=.2em,text height=.8em,inner sep=0pt] (#1) {\ensuremath{(}};}
+\newcommand{\point}[1]{\node[right=0cm of #1] {.} ; }
+\newcommand{\virgule}[1]{\node[right=0cm of #1] {,} ; }
+\newcommand{\poing}{\ssf{}{.}}
+\newcommand{\rieng}{\ssf{}{\,}}
+
+
+
+\pgfdeclaredecoration{single line}{initial}{
+                             \state{initial}[width=\pgfdecoratedpathlength-1sp]{\pgfpathmoveto{\pgfpointorigin}}
+                             \state{final}{\pgfpathlineto{\pgfpointorigin}}
+}
+
+\tikzset{
+        raise line/.style={
+              decoration={single line, raise=#1}, decorate
+              }
+}
+
+\tikzset{
+mod/.style={postaction={ 
+decorate, 
+decoration={ 
+markings, 
+mark=at position .5 with { 
+\path[draw,-] (0,-3pt) -- (0,3pt); 
+}}}}}
+
+\tikzset{
+label/.style={postaction={ 
+decorate, 
+decoration={ 
+markings, 
+mark=at position .5 with \node #1 ;
+}}}}
+
+\tikzset{
+two/.style 2 args={postaction={ 
+decorate, 
+decoration={ 
+markings, 
+mark=at position .5 with \node (#1) [#2] {} ;
+}}}}
+
+\tikzset{diag/.style 2 args={matrix of math nodes,ampersand replacement=\&, %
+text height=1.7ex, text depth=0.25ex, %
+row sep={#1 cm,between origins}, %
+column sep={#2 cm,between origins}  }}
+
+\tikzset{organigram/.style 2 args={matrix of nodes,ampersand replacement=\&, %
+text height=1.7ex, text depth=0.25ex, %
+row sep={#1 cm,between origins}, %
+column sep={#2 cm,between origins}  }}
+
+\tikzset{graphe/.style 2 args={matrix of math nodes,ampersand replacement=\&, %
+      row sep={#1 cm,between origins}, %
+      column sep={#2 cm,between origins}, %
+      inner sep=-.1ex}} %
+
+\tikzset{
+twol/.style={two={l}{right},label={[left]{$#1$}}}
+}
+\tikzset{
+twoleft/.style 2 args={two={#1}{right},label={[left]{$#2$}}}
+}
+\tikzset{
+twor/.style={two={r}{left},label={[right]{$#1$}}}
+}
+\tikzset{
+tworight/.style 2 args={two={#1}{left},label={[right]{$#2$}}}
+}
+\tikzset{
+twou/.style={two={u}{below},label={[above]{$#1$}}}
+}
+\tikzset{
+twoup/.style 2 args={two={#1}{below},label={[above]{$#2$}}}
+}
+\tikzset{
+twod/.style={two={d}{above},label={[below]{$#1$}}}
+}
+\tikzset{
+twodown/.style 2 args={two={#1}{above},label={[below]{$#2$}}}
+}
+
+\tikzset{
+labell/.style={label={[left]{$#1$}}}
+}
+\tikzset{
+labelr/.style={label={[right]{$#1$}}}
+}
+\tikzset{
+labelar/.style={label={[above right]{$#1$}}}
+}
+\tikzset{
+labelbr/.style={label={[below right]{$#1$}}}
+}
+\tikzset{
+labelu/.style={label={[above]{$#1$}}}
+}
+\tikzset{
+labeld/.style={label={[below]{$#1$}}}
+}
+\tikzset{
+labelal/.style={label={[above left]{$#1$}}}
+}
+\tikzset{
+labelbl/.style={label={[below left]{$#1$}}}
+}
+
+\newcommand{\cs}[2][draw,->]{ %
+  \path[#1] (#2-1-1) -- (#2-1-2) ; %
+  \path[#1] (#2-1-3) -- (#2-1-2) ; %
+}
+
+\newcommand{\cospan}{\cs{m}}
+
+\newcommand{\vdoublecs}[2][draw,->]{
+    \foreach \i in {1,2,3} %
+    {%
+    \path[#1] (#2-1-\i)  -- (#2-2-\i) ;%
+    \path[#1] (#2-3-\i) -- (#2-2-\i) ; %
+  }    ; %
+}
+
+\newcommand{\hdoublecs}[2][draw,->]{
+    \foreach \i in {1,2,3} %
+    {%
+    \path[#1] (#2-\i-1)  -- (#2-\i-2) ;%
+    \path[#1] (#2-\i-3) -- (#2-\i-2) ; %
+  }    ; %
+}
+
+\newcommand{\vdoubleisos}[1]{
+    \foreach \i in {1,2,3} %
+    {%
+    \isopath{#1-1-\i}{#1-2-\i} %
+    \isopath{#1-2-\i}{#1-3-\i} %
+  }    ; %
+}
+
+\newcommand{\hdoubleisos}[1]{
+    \foreach \i in {1,2,3} %
+    {%
+    \isopath{#1-\i-1}{#1-\i-2} %
+    \isopath{#1-\i-2}{#1-\i-3} %
+  }    ; %
+}
+
+\newcommand{\doublecs}[2][draw,->]{%
+  \vdoublecs[#1]{#2} %
+  \hdoublecs[#1]{#2} %
+}
+
+\newcommand{\doublecospan}{\doublecs{m}}
+
+\newcommand{\pbk}[3]{%
+ \path (#1) --  %
+ node[pos=.7,above=0pt,coordinate] (x) {}  (#2) ;%
+ \path (#3) -- %
+ node[pos=.7,above=0pt,coordinate] (y) {}  (#2) ;%
+ \node[coordinate] (c) at (barycentric cs:x=1,y=1,#2=-1) {} ; %
+ \path (x) -- node[pos=.1] (xup){} (c) ; %
+ \path (y) -- node[pos=.1] (yup){} (c) ; %
+ \draw (xup) -- (c) -- (yup) ; %
+ ;  % 
+}
+
+\tikzset{
+back/.style={densely dotted}
+}
+\tikzset{
+fore/.style={preaction={draw=white,-,line width=4pt}}
+}
+
+\tikzset{twocell/.style = {double equal sign distance,double,-implies,shorten <= .15cm,shorten >=.15cm,draw}}
+\tikzset{cell/.style = {double equal sign distance,double,-implies,shorten <= #1 cm,shorten >=#1 cm,draw}}
+\tikzset{doublecell/.style = {double equal sign distance,double,-implies,shorten >=.3cm,shorten <=.3cm,draw}}
+\tikzset{identity/.style = {-,double equal sign distance,double,draw}}
+\tikzset{iso/.style = {label={[]{$\iso$}}}}
+\tikzset{baseline= (current bounding box.center)}
+\tikzset{foreground/.style = {draw=white,very thick,double=black}}
+\tikzset{background/.style = {draw=white,-,line width=3pt}}
+\tikzset{diagram/.style = {column sep=1.5cm,row sep=1cm,nodes={minimum width=1cm}}}
+\tikzset{nuage/.style = {cloud,draw,minimum width=2cm,minimum height=.6cm,cloud puffs=30,anchor=center}}
+\tikzset{into/.style = {right hook->}}
+
+\newcommand{\cellule}[3][]{ %
+  \path (#3) +(#2:-.4cm) [twocell,#1] -- +(#2:.4cm) ; %
+}
+
+\newcommand{\celluled}[2]{ %
+  \cellule[labell={#2}]{-90}{#1} %
+}
+\newcommand{\celluler}[2]{ %
+  \cellule[labelu={#2}]{0}{#1} %
+}
+
+\newcommand{\isopath}[2]{%
+            \path %
+            (#1) -- node[sloped] {$\iso$} (#2) ; %
+}
+
+\newcommand{\adj}[5][1]{%
+          \begin{tikzpicture} %
+            \matrix (m) [diag={1}{#1},column sep={#1 cm,between borders}]{ %
+              |[anchor=east,text height=.1cm,text depth=-.1cm]| #2 %
+              \& |[anchor=center]| \bot %
+              \& |[anchor=west,text height=.1cm,text depth=-.1cm]| #3 \\
+              } ; %
+              \path[->] %
+              (m-1-1.north east) edge[labelu={#4},bend left=15] (m-1-3.north west) %
+              (m-1-3.south west) edge[labeld={#5},bend left=15] (m-1-1.south east) %
+              ; %
+          \end{tikzpicture} %
+}
+
+\newcommand{\adjs}[8][1]{%
+          \begin{tikzpicture} %
+            \matrix (m) [diag={1}{#1},column sep={#1 cm,between borders}]{ %
+              |[anchor=east,text height=.1cm,text depth=-.1cm]| #2 %
+              \& |[anchor=center]| \bot %
+              \& |[anchor=west,text height=.1cm,text depth=-.1cm]| #3 
+              \& |[anchor=center]| \bot %
+              \& |[anchor=west,text height=.1cm,text depth=-.1cm]| #6 \\
+              } ; %
+              \path[->] %
+              (m-1-1.north east) edge[labelu={#4},bend left=15] (m-1-3.north west) %
+              (m-1-3.south west) edge[labeld={#5},bend left=15] (m-1-1.south east) %
+              (m-1-3.north east) edge[labelu={#7},bend left=15] (m-1-5.north west) %
+              (m-1-5.south west) edge[labeld={#8},bend left=15] (m-1-3.south east) %
+              ; %
+          \end{tikzpicture} %
+}
+
+\newcommand{\retr}[5][1]{%
+          \begin{tikzpicture} %
+            \matrix (m) [diag={1}{#1},column sep={#1 cm,between borders}]{ %
+              |[anchor=east,text height=.1cm,text depth=-.1cm]| #2 %
+              \& |[anchor=center]| \triangleleft %
+              \& |[anchor=west,text height=.1cm,text depth=-.1cm]| #3 \\
+              } ; %
+              \path[->] %
+              (m-1-1.north east) edge[labelu={#4},bend left=15] (m-1-3.north west) %
+              (m-1-3.south west) edge[labeld={#5},bend left=15] (m-1-1.south east) %
+              ; %
+          \end{tikzpicture} %
+}
+
+\newcommand{\diagramme}[6]{%
+    \begin{tikzpicture}[#1]
+      \matrix (m) [diag={#2}{#3}] { %
+        #5 \\ %
+        } ; %
+        \path[->] %
+        #6 %
+         ; %
+         #4
+    \end{tikzpicture}
+}
+
+
+
+\newcommand{\Vdots}{|[anchor=center,text height=.1cm]| \vdots}
+
+\endinput
