@@ -85,13 +85,11 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 
 		if (i != aEnd) {
 
-			if ( currentDSS.getRemainder(*i) < (currentDSS.getMu()-1) ) { //concave part
-//		std::cout << "concave " << std::endl;
+			if ( currentDSS.getRemainder(*i) < (currentDSS.getMu()) ) { //concave part
 				myPolygon = vTmpL;
 				isConvex = false;
 				adapter = new AdapterDSS4ConcavePart(currentDSS);
 			} else {                                                      //convex part
-//		std::cout << "convex " << std::endl;
 				myPolygon = vTmpU;
 				isConvex = true;
 				adapter = new AdapterDSS4ConvexPart(currentDSS);
@@ -105,14 +103,14 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 			adapter = new AdapterDSS4ConvexPart(currentDSS);
 		}
 
-		std::cout << "First longest DSS: " << std::endl;
-		std::cout << currentDSS << std::endl;
+//		std::cout << "First longest DSS: " << std::endl;
+//		std::cout << currentDSS << std::endl;
 
 		//----------------------------------------
 		//body 
 		//----------------------------------------
 
-		std::cout << "body" << std::endl;
+//		std::cout << "body" << std::endl;
 
 		while (i != aEnd) {
 
@@ -124,8 +122,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 			}
 
 			//removing step
-			while ( (currentDSS.getRemainder(*i) < (currentDSS.getMu()-1))
-						|| (currentDSS.getRemainder(*i) > (currentDSS.getMu()+currentDSS.getOmega()))) {
+			while (!currentDSS.isExtendable(*i)) {
 				//remove a point from the back
 				if ( currentDSS.retract() ) {
 					//store the last leaning point
@@ -157,12 +154,12 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 			//transition step
 			if (i != aEnd) {
 				if ( (isConvex)&&( currentDSS.getRemainder(*i) < 
-												  (currentDSS.getMu()-1) ) ) {
+												  (currentDSS.getMu()) ) ) {
 					//from convex to concave
 					isConvex = false;
 					delete (adapter);
 					adapter = new AdapterDSS4ConcavePart(currentDSS);
-				} else if ( (!isConvex)&&( currentDSS.getRemainder(*i) > 
+				} else if ( (!isConvex)&&( currentDSS.getRemainder(*i) >= 
 												          (currentDSS.getMu()+currentDSS.getOmega()) ) ) {
 					//from concave to convex
 					isConvex = true;
@@ -178,7 +175,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 		//end 
 		//----------------------------------------
 
-		std::cout << "end" << std::endl;
+//		std::cout << "end" << std::endl;
 
 		//last removing step
 		while (currentDSS.retract()) {

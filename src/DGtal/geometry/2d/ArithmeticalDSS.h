@@ -273,10 +273,20 @@ public:
 		 * and a DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param aPoint the new pixel (connected to the DSS) 
+     * @param aPoint the new point
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool extend(const Point & aPoint);
+
+    /**
+		 * Tests whether the union between a point 
+     * (adding to the front of the DSS 
+     * with respect to the scan orientaion) 
+		 * and a DSS is a DSS. 
+     * @param aPoint the new point 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool isExtendable(const Point & aPoint);
 
     /**
 		 * Removes the first point of a DSS
