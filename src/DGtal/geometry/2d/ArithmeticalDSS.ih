@@ -228,11 +228,6 @@ DGtal::ArithmeticalDSS<TInteger,connectivity>::extend(const Point & aPoint)
 				myLl = aPoint;
 				myNbUpPat++;
 				myNbLowPat++;
-/*				myA += lastMove[1]; 
-				myB += lastMove[0]; 
-				myMu = myA*myUl[0] - myB*myUl[1]; 
-				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
-*/
 
 				return true;
 
@@ -333,6 +328,83 @@ DGtal::ArithmeticalDSS<TInteger,connectivity>::extend(const Point & aPoint)
 	} 
 
 }
+
+
+/**
+ * Tests whether the union between a point 
+ * (adding to the front of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * @param aPoint the new point 
+ * @return 'true' if the union is a DSS, 'false' otherwise.
+ */
+template <typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TInteger,connectivity>::isExtendable(const Point & aPoint)
+{
+
+	Vector lastMove = aPoint-myL;
+	//if the two last points 
+  //are confounded or not connected
+	//return false
+	Integer deviation = Tools<TInteger,connectivity>
+												::norm(lastMove[0],lastMove[1]);
+	if ( (deviation>1)||(deviation<=0) ) return false;
+  else if (step.size()<2) {
+
+		//initialisation stage
+
+		if (step.size()==0) {
+
+			return true;
+
+		} else { //step.size() == 1
+
+			if (lastMove == step.at(0)) {
+
+				return true;
+
+			} else {
+
+				//difference of the two steps viewed as points
+				Vector diff = ( lastMove-step.at(0) );
+				if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+								 //the two steps are compatible
+					return true;
+
+				} else {  //the two steps are not compatible
+					return false;
+				}
+			}
+
+		}
+
+	} else {  //step.size() == 2
+
+		//main stage
+
+		//if there only two steps at most
+		if (hasLessThanTwoSteps(lastMove)) {
+		
+			//remainder
+			Integer r = myA*aPoint[0] - myB*aPoint[1];
+				  
+			if ( (r < myMu-1)||(r > myMu+myOmega) )
+				return false; //strongly exterior
+			else { 
+				return true;
+			}
+
+		} else { 
+			//if there is more than two steps 
+ 			return false;
+		}
+
+	} 
+
+}
+
 
 /**
  * Remove the first point of a DSS
