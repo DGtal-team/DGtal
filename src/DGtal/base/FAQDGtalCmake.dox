@@ -202,7 +202,7 @@ such file, you can use the
     <em>DGTALSOURCES}/dev/scripts/newdocumentation.sh</em> script. Once
     you're done, edit the
     file <em>DGTALSOURCES/src/DGtal/base/Config.h.in</em> and add a
-    <em>\ref</em> to the new
+    <em>\\ref</em> to the new
     section added in the new file <em>newdomain.dox</em>.
 
 
