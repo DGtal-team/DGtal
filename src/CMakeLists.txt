@@ -21,7 +21,7 @@ include(Board/ModuleSRC.txt)
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
 add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC} ${BOARD_SRC})
-target_link_libraries( ${LIBDGTAL_NAME} ${DGtal_Lib_Dependencies} )
+target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
 
 install(TARGETS ${LIBDGTAL_NAME} 
         RUNTIME DESTINATION bin
@@ -31,7 +31,7 @@ install(TARGETS ${LIBDGTAL_NAME}
 if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
    include(DGtal/inventor/ModuleSRC.txt)
    add_library ( ${LIBDGTALIV_NAME}  ${DGTALIV_SRC} )
-   target_link_libraries( ${LIBDGTALIV_NAME}  ${DGtal_Lib_Dependencies} )
+   target_link_libraries( ${LIBDGTALIV_NAME}  ${DGtalLibDependencies} )
    install(TARGETS ${LIBDGTALIV_NAME} 
            RUNTIME DESTINATION bin
            LIBRARY DESTINATION lib

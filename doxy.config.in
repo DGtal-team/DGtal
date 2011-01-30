@@ -214,7 +214,7 @@ OPTIMIZE_OUTPUT_VHDL   = NO
 # func(std::string) {}). This also make the inheritance and collaboration 
 # diagrams that involve STL classes more complete and accurate.
 
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
 
 # If you use Microsoft's C++/CLI language, you should set this option to YES to
 # enable parsing support.
@@ -675,7 +675,7 @@ FILTER_SOURCE_FILES    = NO
 # Note: To get rid of all source code in the generated output, make sure also 
 # VERBATIM_HEADERS is set to NO.
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body 
 # of functions and classes directly in the documentation.
@@ -928,7 +928,7 @@ ENUM_VALUES_PER_LINE   = 4
 # releases of Doxygen, the values YES and NO are equivalent to FRAME and NONE
 # respectively.
 
-GENERATE_TREEVIEW      = YES
+GENERATE_TREEVIEW      = HIERARCHIES
 
 # If the treeview is enabled (see GENERATE_TREEVIEW) then this tag can be 
 # used to set the initial width (in pixels) of the frame in which the tree 

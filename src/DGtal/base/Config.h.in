@@ -58,6 +58,11 @@
  *
  * @section examples_sec_dgtal Code examples
  *
+ * 
+ * @section manueldev Manual pages for DGtal developers
+ * - \ref FAQDGtalCmake
+ *
+ *
  * @section links_sec_dgtal Links
  *
  * <ul>

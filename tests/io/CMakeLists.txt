@@ -22,7 +22,7 @@ IF(MAGICK++_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${LIBBOARD_NAME} ${MAGICK++_LIBRARIES})
+    target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 

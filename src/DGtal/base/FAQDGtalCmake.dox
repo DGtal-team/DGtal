@@ -17,7 +17,12 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake DGtal Project Management
+@page FAQDGtalCmake DGtal Project Build System
+
+
+This part of the manual describes how the build sequence of the  DGtal
+project is managed and how to extend DGtal with new classes and examples. 
+
 
 Table of contents:
  -# \ref intro
@@ -29,6 +34,7 @@ Table of contents:
    -# \ref newtest
    -# \ref newexample
    -# \ref newdep
+   -# \ref newdoc
 
 \section intro Introduction and first build
 
@@ -97,34 +103,108 @@ with VS.
 \subsection newclass Add a new class in DGtal
 
 To add a new class on linux, we encourage you to use the dedicated script in
-the "DGTALSOURCES/dev/scripts" folder. More precisely:
- - Create a new profile in "DGTALSOURCES/dev/profiles" (check existing
+the <em>DGTALSOURCES/dev/scripts</em> folder. More precisely:
+ - Create a new profile in <em>DGTALSOURCES/dev/profiles</em> (check existing
  profile files to see the syntax and the name of the brand new file
  should match with you system login
- - Then, the "DGTALSOURCES/dev/scripts/newclass.sh" script allows you
+ - Then, the <em>DGTALSOURCES/dev/scripts/newclass.sh</em> script allows you
  to create a new class from several models. E.g.
 @code
 newclass.sh MyNewDomainClass kernel/domains
 @endcode
-will create three files in the "DGTALSOURCES/src/DGtal/kernel/domains"
+will create three files in the <em>DGTALSOURCES/src/DGtal/kernel/domains</em>
 folder:
   - MyNewDomainClass.h
   - MyNewDomainClass.ih for inlined functions
   - MyNewDomainClass.cpp for definitions of methods.
 
 If you intend to create a class with template arguments (usually the
-case in DGtal), use the "newtemplateclass.sh" script instead (it will
+case in DGtal), use the <em>newtemplateclass.sh</em> script instead (it will
 only generate .h and .ih files).
 
 You can now edit the files and add them to the build system.
+
+If your class contains a implementation file (i.e. a CPP file), it
+must be added to the list of prerequisites for the main DGtal lib
+target. Hence, let us suppose that you would like to insert <em>DGTALSOURCES/src/DGtal/kernel/domains/MyNewDomainClass.*</em>
+in the build system.  Hence, you have to edit the corresponding
+<em>DGTALSOURCES/src/DGtal/kernel/ModuleSRC.txt</em> file in order to add a new line with
+<em>DGtal/kernel/domains/MyNewDomainClass</em>. Indeed Each DGtal module (<em>kernel</em> module in
+this example) has got a <em>ModuleSRC.txt</em> file containing the list of
+classes to add to the DGtal lib target.
+
+If your class is  a templated class, you don't have to edit the
+ModuleSRC.txt file.
 
 
 
 \subsection newtest Add a new test file class
 
+In DGtal, we use a test suite in order to check the consistence of the
+library through the time. When you add a new class, it's very
+important to add one or more tests files in the folder
+@code
+DGTALSOURCES/tests/MODULE/
+@endcode
+
+Basically, a test file is an executable with a return code <em>0</em> if all
+the tests of the file are satisfied and <em>1</em> otherwise. Unit testing is
+a method by which individual units of source code are tested to
+determine if they are fit for use. If they are, the return code <em>0</em> is used.
+In the <em>dev</em>
+folder, there is script and a file skeleton that help you creating a
+test file for a given functionality. In that case, you can simply 
+
+@code
+newtest.sh MyNewDomainClass kernel/
+@endcode
+
+This script will add a <em>testMyDomainClass.cpp</em> in the
+<em>DGTALSOURES/tests/kernel</em> folder. You can now edit this file to create
+your test. The last step is to add it to the build system. To do that,
+just edit the <em>DGTALSOURES/tests/kernel/CMakeLists.txt</em> file and add a
+new line with <em>testMyDomainClass</em> in the test suite.
+
+To run all the DGtal tests, you can either build the <em>tests</em> target on
+VS or to a <em>make test</em> on linux.
+
+
 \subsection newexample Add a new example file in DGtal
 
+
+To add a new example (clean and educational piece of code), the
+process is similar to the previous section with the script 
+@code
+newexample.sh simpleExample kernel/
+@endcode
+
+
 \subsection newdep Add a new dependency in DGtal
+
+To add a new dependency  (e.g. ExtraLib in the following), several
+things have to be done:
+
+ -# Create an appropriate <em>FindExtraLib.cmake</em> script in the
+    \e DGTALSOURCES/cmake/ folder;
+ -# Edit the file <em> DGTALSOURCES/cmake/CheckDGtalDependencies.cmake</em> and
+    cute/paste a new block starting with the <em>FIND</em> cmake command. If
+    cmake detects the library, it is important to append such lib to
+    the \e DGtalLibDependencies variable.
+
+\subsection newdoc Add a new documentation file
+
+
+For each DGtal feature or module, specific documentations are required
+(user-guide and manual). The documentation file must be a  valid
+doxygen file, added in to the module folder (e.g.
+<em>src/DGtal/kernel/domains/newDomain.dox</em>). To easily create
+such file, you can use the
+    <em>DGTALSOURCES}/dev/scripts/newdocumentation.sh</em> script. Once
+    you're done, edit the
+    file <em>DGTALSOURCES/src/DGtal/base/Config.h.in</em> and add a
+    <em>\ref</em> to the new
+    section added in the new file <em>newdomain.dox</em>.
+
 
 */
 
