@@ -28,7 +28,6 @@ message( "----------------------------------------------------------------------
 
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 
-
 # -----------------------------------------------------------------------------
 # Display some information
 # -----------------------------------------------------------------------------
@@ -202,6 +201,6 @@ ENDIF(BUILD_EXAMPLES)
 # DGtal Configuration file
 #------------------------------------------------------------------------------
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
-export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake )
+export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibDependencies.cmake )
 
 

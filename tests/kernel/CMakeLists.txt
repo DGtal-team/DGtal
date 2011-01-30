@@ -22,7 +22,7 @@ SET(DGTAL_BENCH_SRC
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtal_Lib_Dependencies})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -45,6 +45,6 @@ ENDIF(ITK_FOUND)
 
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtal_Lib_Dependencies})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)

@@ -7,7 +7,7 @@ if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
   FOREACH(FILE ${DGTALIV_TESTS_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} ${LIBDGTALIV_NAME} ${LIBDGTAL_NAME}
-                            ${DGtal_Lib_Dependencies})
+                            ${DGtalLibDependencies})
     #add_test(${FILE} ${FILE})
     #not a test since IHM
   ENDFOREACH(FILE)
