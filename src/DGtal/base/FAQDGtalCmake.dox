@@ -4,7 +4,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/01/25
- *
+ * 
  * Documentation file for feature FAQDGtalCmake
  *
  * This file is part of the DGtal library.
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake DGtal Project Build System
+@page FAQDGtalCmake DGtal Project Build System (cmake)
 
 
 This part of the manual describes how the build sequence of the  DGtal

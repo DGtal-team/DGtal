@@ -58,8 +58,12 @@ endif (APPLE)
 # Look for modules
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# nead file 'doxy.config.in' for documentation
-include(doc/doxygen.cmake)
+SET(DGtal_VERSION_MAJOR 0)
+SET(DGtal_VERSION_MINOR 2)
+SET(DGtal_VERSION_PATCH 1)
+
+# Needed file 'doxy.config.in' for documentation
+INCLUDE(doc/doxygen.cmake)
 INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
 
 CONFIGURE_FILE(
@@ -135,9 +139,6 @@ endif (CMAKE_MAJOR_VERSION EQUAL 2)
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 2)
-SET(DGtal_VERSION_PATCH 0)
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 

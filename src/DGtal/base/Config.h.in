@@ -55,12 +55,12 @@
  * - \ref board_export 
  * - \ref image_io 
  * - \ref dgtal_dgtalboard
- *
- * @section examples_sec_dgtal Code examples
- *
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake
+ * - \ref FAQDGtalSVN
+ *
+ * @section examples_sec_dgtal Code examples
  *
  *
  * @section links_sec_dgtal Links
