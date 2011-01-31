@@ -61,6 +61,9 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 2)
 SET(DGtal_VERSION_PATCH 1)
+SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
+
+MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 
 # Needed file 'doxy.config.in' for documentation
 INCLUDE(doc/doxygen.cmake)

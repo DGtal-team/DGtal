@@ -16,7 +16,7 @@
 
 # This tag specifies the encoding used for all characters in the config file 
 # that follow. The default is UTF-8 which is also the encoding used for all 
-# text before the first occurrence of this tag. Doxygen uses libiconv (or the 
+# text before the first occurrence of this tag. Doxygen uses libiconv (or the b
 # iconv built into libc) for the transcoding. See 
 # http://www.gnu.org/software/libiconv for the list of possible encodings.
 
@@ -31,7 +31,7 @@ PROJECT_NAME           = @PACKAGE@
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = @VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@
+PROJECT_NUMBER         = @VERSION@
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
