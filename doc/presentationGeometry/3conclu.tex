@@ -1,0 +1,63 @@
+
+\section{Bilan et perspectives}
+
+\begin{frame}
+  \frametitle{Bilan}
+ 
+
+ \begin{block}{Définition des concepts (à discuter) } 
+   \begin{itemize}
+   \item courbe : liste (circulaire) de points (ordre)
+		\begin{itemize}
+			\item fournit un itérateur sur les points (ou les vecteurs de déplacement entre deux points consécutifs ?)
+		\end{itemize}
+   \item primitive : courbe vérifiant une propriété donnée
+		 \begin{itemize}
+		 \item initialisation (un point plutôt que deux pour que la propriété soit toujours vérifiée) 
+		 \item ajout à l'avant (un point, un vecteur déplacement ?), retourne V si la propriété reste vraie (et le point est ajouté), F sinon (et le point n'est pas ajouté pour que la propriété reste vraie) 
+		 \item ...
+%\only<1>{
+%		 \item ...
+%}
+%\only<2>{
+%		 \item retrait à l'arrière s'il y a plus d'un point, la propriété reste toujours vraie
+%}
+		 \end{itemize}
+   \item décomposition : liste (circulaire) de primitives recouvrant une courbe (ordre)
+		\begin{itemize}
+			\item fournit un itérateur sur les primitives
+%			\item modélise les relations entre les points de la courbe et les primitives ? 
+		\end{itemize}
+   \end{itemize}
+ \end{block}
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Perspectives}
+
+ \begin{block}{Regarder ce qu'on a fait} 
+   \begin{itemize}
+   \item Améliorations de \emph{FreemanChain}, \emph{ArithmeticalDSS}, \emph{GreedySegmentation} (si besoin)
+   \item Ecriture des concepts de courbe, primitive et décomposition (si on est d'accord).        
+   \end{itemize}
+ \end{block}
+
+ \begin{block}{Aller plus loin...} 
+   \begin{itemize}
+   \item D'autres courbes (8-connexes ?)
+		 \begin{itemize}
+		 \item discrétisation de courbes euclidiennes
+		 \item extraction du bord de régions connexes
+		 \end{itemize}
+   \item D'autres primitives (il y a le choix!)
+   \item D'autres décompositions (couverture)        
+   \end{itemize}
+
+ \end{block}
+
+\end{frame}
+
+
+
