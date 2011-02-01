@@ -1,0 +1,59 @@
+
+\section{Choix}
+
+
+\begin{frame}
+  \frametitle{Choix algorithmiques}
+
+  \begin{block}{Algorithme de Debled et Reveillès (1995)}
+    \begin{itemize}
+    \item caractéristiques $a$, $b$, $\mu$, $\omega$
+    \item 4 points d'appui
+		\item premier et dernier points
+    \item pas de changement d'octant, mais une orientation
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{~~~~~~~~~~~~(2,5,0,7)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (-2,-5,-6,7)}
+ \begin{center}
+   \includegraphics[width=0.3\textwidth,page=1]{DSS}\hspace{0.2\textwidth}
+   \includegraphics[width=0.3\textwidth,page=2]{DSS}
+ \end{center}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Choix d'implémentation}
+  
+
+  \begin{block}{Paramètres templates}
+    \begin{itemize}
+    \item Entier (Domaine ?)
+%pas de domaine (image)
+    \item Connexité $\{ \text{naïf}, \text{standard} \}$ 
+%eviter les redondances entre les versions
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Méthodes principales}
+    \begin{itemize}
+    \item Initialisation à partir de deux points (un seul point ?)
+    \item ajout d'un point à l'avant
+		  \begin{itemize}
+		  \item \emph{addFront}
+			\item prends un point comme paramètre en entrée (un vecteur, un caractère ?)
+		  \item retourne un booleen (V si DSS, F sinon)
+		  \end{itemize}
+    \item retrait d'un point à l'arrière
+		  \begin{itemize}
+		  \item \emph{removeBack}
+			\item pas de paramètre en entrée
+		  \item retourne un booleen (V s'il reste plus de 2 points, F sinon)
+		  \end{itemize}
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
