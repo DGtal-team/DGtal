@@ -178,7 +178,7 @@ ELSE(WIN32 AND NOT UNIX)
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;dev;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/html-Board/*)
+SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;dev;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/latex/*;doc/html-Board/*)
 
 if(WIN32)
   SET(CPACK_GENERATOR "NSIS;")
