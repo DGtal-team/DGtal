@@ -88,7 +88,6 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  * @section manuals_dgtal DGtal user-guides
  *
  * - \ref dgtal_topology 
- * - \ref board_export 
  * - \ref image_io 
  * - \ref dgtal_dgtalboard
  * 
