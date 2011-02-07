@@ -49,9 +49,9 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example convex-and-concave-parts" );
 
-  typedef ArithmeticalDSS<int,4> DSS4;
   typedef FreemanChain<int> Contour4; 
-  typedef MaximalSegments< Contour4::ConstIterator, DSS4 > MDSSs4;
+  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef MaximalSegments<DSS4> MDSSs4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, 
 	//and the list of elementary displacements. 
@@ -62,7 +62,8 @@ int main( int argc, char** argv )
   Contour4 theContour( ss );
 
   //Maximal Segments
-  MDSSs4 theCover( theContour.begin(),theContour.end(),false );
+	DSS4 computer;
+  MDSSs4 theCover( theContour.begin(),theContour.end(),computer,false );
   Point p1( 0, 0 );
   Point p2( 48, 12 );
   Domain domain( p1, p2 );

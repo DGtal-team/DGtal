@@ -65,6 +65,7 @@ namespace DGtal
    
    * In the short example below, a contour stored as a Freeman chain is decomposed 
    * into 4-connected DSSs whose parameters are sent to the standard output.
+   * TODO
    * @code 
    
 
@@ -89,13 +90,14 @@ namespace DGtal
 
    * @endcode
    */
-  template <typename TIterator, typename TSegment>
+  template <typename TSegment>
   class GreedyDecomposition
   {
 
 	public: 
-		typedef TIterator Iterator;
+
 		typedef TSegment Segment;
+		typedef typename Segment::Iterator Iterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -115,7 +117,7 @@ namespace DGtal
       /**
        * Pointer to the decomposition
        */
-			const GreedyDecomposition<TIterator,TSegment> *myDec;
+			const GreedyDecomposition<TSegment> *myDec;
 
 
       /**
@@ -140,7 +142,7 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class GreedyDecomposition<TIterator,TSegment>;
+       friend class GreedyDecomposition<TSegment>;
 			   
 
 
@@ -151,8 +153,9 @@ namespace DGtal
        * @param aDec a greedy decomposition of a digital curve
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( const GreedyDecomposition<TIterator,TSegment> *aDec,
-		     const TIterator& aBack);
+      ConstIterator( const GreedyDecomposition<TSegment> *aDec,
+		     const typename TSegment::Iterator& aBack,
+				 const TSegment& aSegment);
 
 
       /**
@@ -249,23 +252,20 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    /**
-     * Constructor.
-		 * Nb: The digital curve is decompose as a closed one by default.
-     * @param aBegin, begin iterator on a digital curve
-     * @param aEnd, end iterator on a digital curve
-     */
-    GreedyDecomposition(const Iterator& aBegin, const Iterator& aEnd);
 
     /**
      * Constructor.
 		 * Nb: The digital curve is decompose as a closed one by default.
      * @param aBegin, begin iterator on a digital curve
      * @param aEnd, end iterator on a digital curve
+     * @param aSegment, a segment computer
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
-    GreedyDecomposition(const Iterator& aBegin, const Iterator& aEnd, const bool& aFlag);
+    GreedyDecomposition(const Iterator& aBegin, 
+												const Iterator& aEnd, 
+												const Segment& aSegment, 
+												const bool& aFlag);
 
     /**
      * Destructor.
@@ -304,6 +304,8 @@ namespace DGtal
 
 		Iterator myBegin, myEnd;
 
+		Segment mySegment;
+
 		bool isClosed;
 
     // ------------------------- Hidden services ------------------------------
@@ -336,9 +338,9 @@ namespace DGtal
    * @param object the object of class 'GreedyDecomposition' to write.
    * @return the output stream after the writing.
    */
-  template <typename Contour, typename Primitive>
+  template <typename Segment>
   std::ostream&
-  operator<< ( std::ostream & out, const GreedyDecomposition<Contour, Primitive> & object );
+  operator<< ( std::ostream & out, const GreedyDecomposition<Segment> & object );
 
 } // namespace DGtal
 

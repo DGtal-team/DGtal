@@ -64,7 +64,8 @@ bool testDSS4drawing()
 {
 
 	typedef PointVector<2,int> Point;
-	typedef ArithmeticalDSS<int,4> DSS4;  
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
 
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -83,11 +84,14 @@ bool testDSS4drawing()
   // Adding step
   trace.beginBlock("Add points while it is possible and draw the result");
 
-		DSS4 theDSS4(contour.at(0));		
+		DSS4 theDSS4;	
+		Iterator i = contour.begin();	
+		theDSS4.init(i);
+		i++;
 		trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
-		int i = 1;
-		while ( (i<contour.size())
-					&&(theDSS4.extend(contour.at(i))) ) {
+
+		while ( (i!=contour.end())
+					&&(theDSS4.extend(i)) ) {
 			i++;
 		}
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
@@ -126,7 +130,8 @@ bool testDSS8drawing()
 {
 
 	typedef PointVector<2,int> Point;
-	typedef ArithmeticalDSS<int,8> DSS8; 
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
 
 	std::vector<Point> boundary;
 	boundary.push_back(Point(0,0));
@@ -140,13 +145,16 @@ bool testDSS8drawing()
 
   // Good Initialisation
   trace.beginBlock("Add points while it is possible and draw the result");
-  DSS8 theDSS8(boundary.at(0));		
+  DSS8 theDSS8;		
+	Iterator i = boundary.begin();
+	theDSS8.init(i);
+	i++;
   trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
 	{
-		int i = 1;
-		while ( (i<boundary.size())
-					&& (theDSS8.extend(boundary.at(i))) ) {
+
+		while ( (i!=boundary.end())
+					&&(theDSS8.extend(i)) ) {
 			i++;
 		}
 	  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
@@ -193,7 +201,9 @@ bool testExtendRetract()
 
 
 	typedef PointVector<2,int> Point;
-	typedef ArithmeticalDSS<int,4> DSS4;  
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+
 
 	std::vector<Point> contour;
 	contour.push_back(Point(0,0));
@@ -212,30 +222,35 @@ bool testExtendRetract()
   trace.beginBlock("Checking consistency between adding and removing");
 
 		std::deque<DSS4 > v1,v2;
-  	DSS4 newDSS4(contour.at(0));	 
-	  	v1.push_back(newDSS4);
+  	DSS4 newDSS4;
+		Iterator i = contour.begin();
+		newDSS4.init(i);	 
+		i++;
+	  v1.push_back(newDSS4);
 
 		//forward scan and store each DSS4
 		trace.info() << "forward scan" << std::endl;
 
-		int i = 1;
-		while  ( (i<contour.size())
-					&&(newDSS4.extend(contour.at(i))) ) {
+		while ( (i!=contour.end())
+					&&(newDSS4.extend(i)) ) {
 	  	v1.push_back(newDSS4);
-
 			i++;
 		}
+
 
 		//backward scan
 
 		trace.info() << "backward scan" << std::endl;
 
-  	DSS4 reverseDSS4(contour.at(i-1));
+		i--;
+  	DSS4 reverseDSS4;
+		reverseDSS4.init(i);
 
-		int j = i-2;
-		while ( (j>=0)&&(reverseDSS4.extend(contour.at(j))) ) {
+		Iterator j = i; j--;
+		while ( (j!=contour.begin())&&(reverseDSS4.extend(j)) ) {
 			j--;
 		}
+		reverseDSS4.extend(j);
 
 		trace.info() << "removing" << std::endl;
 		trace.info() << reverseDSS4 << std::endl;
@@ -243,16 +258,14 @@ bool testExtendRetract()
 		//removing step, store each DSS4 for comparison
 
 	  v2.push_front(reverseDSS4);
-		i--;
 		while (reverseDSS4.retract()) {
-
 	  	v2.push_front(reverseDSS4);
-			i--;
 		}		
 		
 
 		//comparison
 		trace.info() << "comparison" << std::endl;
+		trace.info() << v1.size() << " == " << v2.size() << std::endl;
 		ASSERT(v1.size() == v2.size());
 
 		bool isOk = true;
@@ -281,20 +294,34 @@ bool testGMP()
 {
 	bool flag = false;
 
+
 	typedef mpz_class Coordinate;
 	typedef PointVector<2,Coordinate> Point;
-	typedef ArithmeticalDSS<Coordinate,4> DSS4;  
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,Coordinate,4> DSS4;  
+
+
 
   trace.beginBlock("Add some points of big coordinates");
 
-		DSS4 theDSS4(Point(1000000000,1000000000));	
-		theDSS4.extend(Point(1000000001,1000000000));
-		theDSS4.extend(Point(1000000002,1000000000));
-		theDSS4.extend(Point(1000000003,1000000000));
-		theDSS4.extend(Point(1000000003,1000000001));
-		theDSS4.extend(Point(1000000004,1000000001));
-		theDSS4.extend(Point(1000000005,1000000001));
-		theDSS4.extend(Point(1000000005,1000000002));
+		std::vector<Point> contour;
+		contour.push_back(Point(1000000000,1000000000));	
+		contour.push_back(Point(1000000001,1000000000));
+		contour.push_back(Point(1000000002,1000000000));
+		contour.push_back(Point(1000000003,1000000000));
+		contour.push_back(Point(1000000003,1000000001));
+		contour.push_back(Point(1000000004,1000000001));
+		contour.push_back(Point(1000000005,1000000001));
+		contour.push_back(Point(1000000005,1000000002));
+
+		DSS4 theDSS4;
+		Iterator i = contour.begin();
+		theDSS4.init(i);
+		i++;
+		while (i != contour.end()) {
+			theDSS4.extend(i);
+			i++;
+		}
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
 		Coordinate mu;
@@ -320,12 +347,24 @@ bool testGMP()
  */
 bool testCorner()
 {
-	typedef PointVector<2,int> Point;
-	typedef ArithmeticalDSS<int,8> DSS8; 
 
-	DSS8 theDSS8(Point(10,10));		
-	theDSS8.extend(Point(10,11));
-	return ( !theDSS8.extend(Point(11,11)) );
+	typedef PointVector<2,int> Point;
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
+
+	std::vector<Point> boundary;
+	boundary.push_back(Point(10,10));
+	boundary.push_back(Point(10,11));
+	boundary.push_back(Point(11,11));
+
+
+	DSS8 theDSS8;
+	Iterator i = boundary.begin();
+	theDSS8.init(i);
+	i++;
+	theDSS8.extend(i);
+	i++;
+	return ( !theDSS8.extend(i) );
 
 }
 

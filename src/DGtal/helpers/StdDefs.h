@@ -93,8 +93,7 @@ namespace DGtal
     typedef SeparableMetricTraits<DGtal::int32_t, DGtal::int32_t,1> L1Metric;
     typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,0> LinfMetric;
 
-    typedef ArithmeticalDSS<int,4> DSS4;
-    typedef ArithmeticalDSS<int,8> DSS8;
+
 
     static const Adj4 adj4;
     static const Adj8 adj8;

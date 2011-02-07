@@ -70,11 +70,11 @@ bool testCover4()
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
-  
   typedef FreemanChain<Coordinate> ContourType; 
 
-	typedef MaximalSegments<ContourType::ConstIterator,PrimitiveType> DecompositionType;
+  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> PrimitiveType;
+  
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
   std::string filename = testPath + "samples/manche.fc";
   std::cout << filename << std::endl;
@@ -85,7 +85,8 @@ bool testCover4()
 
   //Segmentation
   trace.beginBlock("Tangential cover of 4-connected digital curves");
-  DecompositionType theDecomposition(theContour.begin(), theContour.end());
+	PrimitiveType primitive;
+  DecompositionType theDecomposition(theContour.begin(), theContour.end(), primitive, true);
   
 	// Draw the grid
   DGtalBoard aBoard;
@@ -117,11 +118,9 @@ bool testDisconnectedCurve()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   
-  typedef std::vector<Point> ContourType; 
-
-	typedef MaximalSegments<ContourType::iterator,PrimitiveType> DecompositionType;
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
 	curve.push_back(Point(0,0));
@@ -143,13 +142,14 @@ bool testDisconnectedCurve()
 
   //Segmentation
   trace.beginBlock("Tangential cover of disconnected digital curves");
-  DecompositionType theDecomposition(curve.begin(), curve.end(), false);
+	PrimitiveType primitive;
+  DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, true);
   
 	// Draw the pixels
   DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Grid");
-	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
   	aBoard << (*it);
 	}
 				 
@@ -178,17 +178,17 @@ bool testDisconnectedCurve()
 }
 
 /**
- * Test for closed curves processed as closed
+ * Test for closed curves
  *
  */
-bool testClosedCurvesProcessedAsClosed()
+bool testClosedCurves(const bool& aFlag)
 {
 
-  trace.beginBlock ( "Test for closed curves processed as closed" );
+  trace.beginBlock ( "Test for closed curves" );
 
-  typedef ArithmeticalDSS<int,4> DSS4;
   typedef FreemanChain<int> Contour4; 
-  typedef MaximalSegments< Contour4::ConstIterator, DSS4 > Decomposition4;
+  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef MaximalSegments<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
@@ -198,7 +198,8 @@ bool testClosedCurvesProcessedAsClosed()
   Contour4 theContour( ss );
 
   //Segmentation
-  Decomposition4 theDecomposition( theContour.begin(),theContour.end() );
+	DSS4 dss;
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(),dss,aFlag );
 
   DGtalBoard aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
@@ -217,58 +218,17 @@ bool testClosedCurvesProcessedAsClosed()
 						 << segment; // draw each segment
 
     } 
-  aBoard.saveSVG("testClosedCurvesProcessedAsClosed.svg");
+	std::string filename = "testClosedCurves";
+	if (aFlag) filename += "ProcessedAsOpen"; 
+	else filename += "ProcessedAsClosed";
+	filename += ".svg";
+  aBoard.saveSVG(filename.c_str());
 
   trace.endBlock();
 
   return true;
 }
 
-/**
- * Test for closed curves processed as closed
- *
- */
-bool testClosedCurvesProcessedAsOpen()
-{
-
-  trace.beginBlock ( "Test for closed curves processed as open" );
-
-  typedef ArithmeticalDSS<int,4> DSS4;
-  typedef FreemanChain<int> Contour4; 
-  typedef MaximalSegments< Contour4::ConstIterator, DSS4 > Decomposition4;
-
-  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
-  std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
-  
-  // Construct the Freeman chain
-  Contour4 theContour( ss );
-
-  //Segmentation
-  Decomposition4 theDecomposition( theContour.begin(),theContour.end(), false );
-
-  DGtalBoard aBoard;
-  aBoard << SetMode( "PointVector", "Grid" )
-	 			 << theContour;
-  //for each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
-	i != theDecomposition.end(); ++i ) 
-    {
-
-			DSS4 segment(*i);
-			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( DGtalBoard::Color::Blue ) )
-						 << segment; // draw each segment
-
-    } 
-  aBoard.saveSVG("testClosedCurvesProcessedAsOpen.svg");
-
-  trace.endBlock();
-
-  return true;
-}
 
 /**
  * Test with no point
@@ -278,17 +238,16 @@ bool testNoPoint()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
-  
-  typedef std::vector<Point> ContourType; 
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
-	typedef MaximalSegments<ContourType::iterator,PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
 	try {
 
 		trace.beginBlock("Digital curve having no point");
-		DecompositionType theDecomposition(curve.begin(), curve.end());
+		PrimitiveType primitive;
+		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
 		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
@@ -311,18 +270,17 @@ bool testOnePoint()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
-  
-  typedef std::vector<Point> ContourType; 
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
-	typedef MaximalSegments<ContourType::iterator,PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
 	curve.push_back(Point(5,5));
 	try {
 
 		trace.beginBlock("Digital curve having one point");
-		DecompositionType theDecomposition(curve.begin(), curve.end());
+		PrimitiveType primitive;
+		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
 		DGtalBoard aBoard;
 		aBoard << curve.at(0);
@@ -354,11 +312,9 @@ bool testTwoEndIterators()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,4> PrimitiveType;
-  
-  typedef std::vector<Point> ContourType; 
-
-	typedef MaximalSegments<ContourType::iterator,PrimitiveType> DecompositionType;
+  typedef FreemanChain<Coordinate> ContourType; 
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
 	curve.push_back(Point(5,5));
@@ -366,7 +322,8 @@ bool testTwoEndIterators()
 	try {
 
 		trace.beginBlock("Two end iterators");
-		DecompositionType theDecomposition(curve.end(), curve.end());
+		PrimitiveType primitive;
+		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
 		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
@@ -392,11 +349,9 @@ bool testOneDSS()
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<Coordinate,8> PrimitiveType;
-  
-  typedef std::vector<Point> ContourType; 
-
-	typedef MaximalSegments<ContourType::iterator,PrimitiveType> DecompositionType;
+  typedef FreemanChain<Coordinate> ContourType; 
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
 	curve.push_back(Point(0,0));
@@ -410,13 +365,14 @@ bool testOneDSS()
 
   //Segmentation
   trace.beginBlock("Segmentation of one DSS");
-  DecompositionType theDecomposition(curve.begin(), curve.end());
+	PrimitiveType primitive;
+	DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
   
 	// Draw the pixels
   DGtalBoard aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
-	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
   	aBoard << (*it);
 	}
 				 
@@ -454,8 +410,8 @@ int main(int argc, char **argv)
 
   bool res = testCover4() 
 					&& testDisconnectedCurve()
-					&& testClosedCurvesProcessedAsOpen()
-					&& testClosedCurvesProcessedAsClosed()
+					&& testClosedCurves(true)
+					&& testClosedCurves(false)
 					&& testNoPoint()
 					&& testOnePoint()
 					&& testTwoEndIterators()
