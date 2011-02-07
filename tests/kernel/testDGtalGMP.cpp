@@ -92,9 +92,9 @@ bool testGMPSpace()
   typedef Space2Type::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2Type> Domain;
 
-  typedef ArithmeticalDSS<Coordinate,4> DSS4;  
   typedef FreemanChain<Coordinate> ContourType; 
-  typedef GreedyDecomposition< ContourType::ConstIterator, DSS4 > Decomposition;
+  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> DSS4;  
+  typedef GreedyDecomposition<DSS4> Decomposition;
   
   //mpz_class valuetype image
   typedef SpaceND<2 > Space2Common;
@@ -108,7 +108,7 @@ bool testGMPSpace()
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   ContourType theContour( ss );
   //Segmentation
-  Decomposition theDecomposition( theContour.begin(),theContour.end() );
+  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
   Decomposition::ConstIterator i = theDecomposition.begin();
   DSS4 segment(*i); 
 

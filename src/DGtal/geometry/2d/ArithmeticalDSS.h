@@ -63,13 +63,15 @@ namespace DGtal
  * defined as the sequence of connected points (x,y)
  * such that mu <= ax - by < mu + omega.  
  * (see Debled and Reveilles [1995]).
+ * This class is a model of the concept CSegmentComputer. 
  *
- * This class is templated by the typename 'TInteger',
+ * This class is templated by the typename 'TIterator', the type
+ * of an iterator on a sequence of points, the typename 'TInteger',
  * the type of the coordinates of the points (satisfying CInteger) 
  * and by the integer 'connectivity', which may be equal to 
  * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
  * Any other integers act as 8. The following shortcuts are provided in 
- * the namespace Z2i:
+ * the namespace Z2i (TODO):
  * @code 
  typedef ArithmeticalDSS<Coordinate,4> > DSS4;
  typedef ArithmeticalDSS<Coordinate,8> > DSS8;
@@ -92,10 +94,10 @@ namespace DGtal
 
   
   // Add points while it is possible
-	DSS4 theDSS4(contour.at(0));		
-	unsigned int i = 1;
-	while ( (i<contour.size())
-				&&(theDSS4.extend(contour.at(i))) ) {
+	vector<Point>::iterator i = contour.begin();
+	DSS4 theDSS4(i);		
+	while ( (i!=contour.end())
+				&&(theDSS4.extend(i)) ) {
 		i++;
 	}
 
@@ -117,7 +119,7 @@ namespace DGtal
 
  * @endcode
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 class ArithmeticalDSS
 {
 
@@ -125,10 +127,14 @@ class ArithmeticalDSS
     // ----------------------- Types ------------------------------
 public:
 
-  //2D point and 2D vector
+
+	typedef TIterator Iterator;
+
+	//entier
   BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-  //does not compile
   typedef TInteger Integer;
+
+  //2D point and 2D vector
   typedef DGtal::PointVector<2,Integer> Point;
   typedef DGtal::PointVector<2,Integer> Vector;
   
@@ -212,15 +218,21 @@ public:
 
     /**
      * Default constructor.
+     * not valid
      */
     ArithmeticalDSS();
 
     /**
-     * Constructor.
-		 * @param aPoint  
-		 * a point
+     * Constructor with initialisation
+     * @param it an iterator on a sequence of points
      */
-    ArithmeticalDSS(const Point& aPoint);
+    ArithmeticalDSS(const Iterator& it);
+
+    /**
+     * Initialisation.
+     * @param it an iterator on a sequence of points
+     */
+    void init(const Iterator& it);
 
 
     /**
@@ -273,20 +285,20 @@ public:
 		 * and a DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param aPoint the new point
+     * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const Point & aPoint);
+    bool extend(const Iterator & itf);
 
     /**
 		 * Tests whether the union between a point 
      * (adding to the front of the DSS 
      * with respect to the scan orientaion) 
 		 * and a DSS is a DSS. 
-     * @param aPoint the new point 
+     * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable(const Point & aPoint);
+    bool isExtendable(const Iterator & itf);
 
     /**
 		 * Removes the first point of a DSS
@@ -298,14 +310,23 @@ public:
     bool retract();
 
     /**
+  	 * obsolete:
 		 * Computes the sequence of (connected) points
 		 * belonging to the DSL(a,b,mu,omega)
      * between the first and last point of the DSS
 		 * Nb: in O(n)
      * @return the computed sequence of points.
      */
-    std::vector<Point> retrieve() const;
+//    std::vector<Point> retrieve() const;
 
+
+    /**
+		 * Computes the remainder of a point
+     * (that does not necessarily belong to the DSS)
+     * @param itf an iterator on a sequence of points
+     * @return the remainder.
+     */
+    Integer getRemainder(const Iterator & it) const;
 
     /**
 		 * Computes the remainder of a point
@@ -318,15 +339,32 @@ public:
     /**
 		 * Checks whether a point is in the DSL
      * of parameters (myA,myB,myMu,myOmega)
+     * @param aPoint the point checked 
      * @return 'true' if yes, 'false' otherwise
      */
     bool isInDSL( const Point& aPoint ) const;
 
     /**
+		 * Checks whether a point is in the DSL
+     * of parameters (myA,myB,myMu,myOmega)
+     * @param it an iterator on the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSL(const Iterator & it) const;
+
+    /**
 		 * Checks whether a point belongs to the DSS or not
+     * @param aPoint the point checked
      * @return 'true' if yes, 'false' otherwise
      */
     bool isInDSS( const Point& aPoint ) const;
+
+    /**
+		 * Checks whether a point belongs to the DSS or not
+     * @param it an iterator on the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS(const Iterator & it) const;
 
     // ------------------------- Accessors ------------------------------
     /**
@@ -382,7 +420,6 @@ public:
 
     /**
      * Checks the validity/consistency of the object.
-     * NB: O(log(max(|myA|,|myB|)))
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
@@ -534,7 +571,7 @@ protected:
 	Point myUf, myUl, myLf, myLl;
 
 	//first and last added points
-	Point myF, myL;
+	Iterator myF, myL;
 
 	//steps of the DSS 
   //e.g. right and up in the first octant
@@ -568,6 +605,7 @@ private:
     Vector vectorFrom0ToOmega() const;
 
     /**
+     * obsolete:
 		 * Returns the point that follows a given 
      * point of a DSL
 		 * @param a, b, mu, omega, the parameters 
@@ -575,7 +613,7 @@ private:
      * the DSL. 
      * @return the next point.
      */
-    Point next(const Point& aPoint) const;
+//    Point next(const Point& aPoint) const;
 
 
 
@@ -611,9 +649,9 @@ private:
  * @param object the object of class 'ArithmeticalDSS' to write.
  * @return the output stream after the writing.
  */
-template <typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity>
 std::ostream&
-operator<< ( std::ostream & out,  ArithmeticalDSS<TInteger,connectivity> & object )
+operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivity> & object )
   {
       object.selfDisplay( out);
       return out;

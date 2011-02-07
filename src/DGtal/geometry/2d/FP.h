@@ -54,22 +54,22 @@ namespace DGtal
 	/////////////////////////////////////////////////////////////////////////////
 	// template class adapterDSS,
 	// which is a tool class for FP
-	template <typename TInteger, int connectivity>
+	template <typename TIterator, typename TInteger, int connectivity>
 	class AdapterDSS 
 	{
 		protected:
-			DGtal::ArithmeticalDSS<TInteger,connectivity>* myDSS;
+			DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>* myDSS;
 		public:
 			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const = 0;
 			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const = 0;
 	};
 
-	template <typename TInteger, int connectivity>
-	class AdapterDSS4ConvexPart : public AdapterDSS<TInteger,connectivity> 
+	template <typename TIterator, typename TInteger, int connectivity>
+	class AdapterDSS4ConvexPart : public AdapterDSS<TIterator,TInteger,connectivity> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConvexPart(DGtal::ArithmeticalDSS<TInteger,connectivity>& aDSS)
+			AdapterDSS4ConvexPart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
@@ -84,12 +84,12 @@ namespace DGtal
 			}
 	};
 
-	template <typename TInteger, int connectivity>
-	class AdapterDSS4ConcavePart : public AdapterDSS<TInteger,connectivity> 
+	template <typename TIterator, typename TInteger, int connectivity>
+	class AdapterDSS4ConcavePart : public AdapterDSS<TIterator,TInteger,connectivity> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConcavePart(DGtal::ArithmeticalDSS<TInteger,connectivity>& aDSS)
+			AdapterDSS4ConcavePart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
@@ -124,10 +124,10 @@ namespace DGtal
 
   typedef DGtal::PointVector<2,TInteger> Point;
   typedef DGtal::PointVector<2,TInteger> Vector;
-  typedef DGtal::ArithmeticalDSS<TInteger,connectivity> DSS;
-  typedef DGtal::AdapterDSS<TInteger,connectivity> AdapterDSS;
-  typedef DGtal::AdapterDSS4ConvexPart<TInteger,connectivity> AdapterDSS4ConvexPart;
-  typedef DGtal::AdapterDSS4ConcavePart<TInteger,connectivity> AdapterDSS4ConcavePart;
+  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSS;
+  typedef DGtal::AdapterDSS<TIterator,TInteger,connectivity> AdapterDSS;
+  typedef DGtal::AdapterDSS4ConvexPart<TIterator,TInteger,connectivity> AdapterDSS4ConvexPart;
+  typedef DGtal::AdapterDSS4ConcavePart<TIterator,TInteger,connectivity> AdapterDSS4ConcavePart;
 	typedef std::list<Point> Polygon;
 
 

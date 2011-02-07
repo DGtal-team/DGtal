@@ -52,9 +52,9 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
-  typedef ArithmeticalDSS<int,4> DSS4;
   typedef FreemanChain<int> Contour4; 
-  typedef GreedyDecomposition< Contour4::ConstIterator, DSS4 > Decomposition4;
+  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef GreedyDecomposition<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
@@ -64,7 +64,7 @@ int main( int argc, char** argv )
   Contour4 theContour( ss );
 
   //Segmentation
-  Decomposition4 theDecomposition( theContour.begin(),theContour.end() );
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   Domain domain( p1, p2 );

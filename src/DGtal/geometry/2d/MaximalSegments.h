@@ -65,6 +65,7 @@ namespace DGtal
    
    * In the short example below, a contour stored as a Freeman chain is decomposed 
    * into 4-connected DSSs whose parameters are sent to the standard output.
+   * TODO
    * @code 
    
 
@@ -89,13 +90,15 @@ namespace DGtal
 
    * @endcode
    */
-  template <typename TIterator, typename TSegment>
+  template <typename TSegment>
   class MaximalSegments
   {
 
 	public: 
-		typedef TIterator Iterator;
+
 		typedef TSegment Segment;
+		typedef typename TSegment::Iterator Iterator;
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -117,7 +120,7 @@ namespace DGtal
       /**
        * Pointer to the cover of maximal segments
        */
-			MaximalSegments<TIterator,TSegment> *myCov;
+			MaximalSegments<TSegment> *myCov;
 
       /**
        * An iterator of the digital curve  
@@ -147,7 +150,7 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class MaximalSegments<TIterator,TSegment>;
+       friend class MaximalSegments<TSegment>;
 			   
       /**
        * Constructor.
@@ -156,8 +159,9 @@ namespace DGtal
        * @param aCov a greedy decomposition of a digital curve
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( MaximalSegments<TIterator,TSegment> *aCov,
-										 const TIterator& aBack);
+      ConstIterator( MaximalSegments<TSegment> *aCov,
+										 const typename TSegment::Iterator& aBack,
+										 const TSegment& aSegment);
 
 
       /**
@@ -274,23 +278,20 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    /**
-     * Constructor.
-		 * Nb: The digital curve is decompose as a closed one by default.
-     * @param aBegin, begin iterator on a digital curve
-     * @param aEnd, end iterator on a digital curve
-     */
-    MaximalSegments(const Iterator& aBegin, const Iterator& aEnd);
 
     /**
      * Constructor.
 		 * Nb: The digital curve is decompose as a closed one by default.
      * @param aBegin, begin iterator on a digital curve
      * @param aEnd, end iterator on a digital curve
+     * @param aSegment, a segment computer
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
-    MaximalSegments(const Iterator& aBegin, const Iterator& aEnd, const bool& aFlag);
+    MaximalSegments(const Iterator& aBegin, 
+                    const Iterator& aEnd, 
+                    const Segment& aSegment, 
+                    const bool& aFlag);
 
     /**
      * Destructor.
@@ -353,6 +354,11 @@ namespace DGtal
      */
 		bool isClosed;
 
+    /**
+     * a segment Computer
+     */
+		Segment mySegment;
+
     // ------------------------- Hidden services ------------------------------
 
 
@@ -383,9 +389,9 @@ namespace DGtal
    * @param object the object of class 'MaximalSegments' to write.
    * @return the output stream after the writing.
    */
-  template <typename Contour, typename Primitive>
+  template <typename TSegment>
   std::ostream&
-  operator<< ( std::ostream & out, const MaximalSegments<Contour, Primitive> & object );
+  operator<< ( std::ostream & out, const MaximalSegments<TSegment> & object );
 
 } // namespace DGtal
 

@@ -55,7 +55,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 		//initialisation 
 		//----------------------------------------
 
-		DSS currentDSS(*i); //current DSS
+		DSS currentDSS(i); //current DSS
 
 		AdapterDSS* adapter; //adapter for the current DSS
 
@@ -68,7 +68,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 
 		//longest DSS
 		++i; //move forward
-		while ( (i != aEnd)&&(currentDSS.extend(*i)) ) {
+		while ( (i != aEnd)&&(currentDSS.extend(i)) ) {
 			//store the first upper leaning point
 			if (currentDSS.getUf() != vTmpU.back()) {
 				vTmpU.push_back(currentDSS.getUf());
@@ -85,7 +85,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 
 		if (i != aEnd) {
 
-			if ( currentDSS.getRemainder(*i) < (currentDSS.getMu()) ) { //concave part
+			if ( currentDSS.getRemainder(i) < (currentDSS.getMu()) ) { //concave part
 				myPolygon = vTmpL;
 				isConvex = false;
 				adapter = new AdapterDSS4ConcavePart(currentDSS);
@@ -122,7 +122,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 			}
 
 			//removing step
-			while (!currentDSS.isExtendable(*i)) {
+			while (!currentDSS.isExtendable(i)) {
 				//remove a point from the back
 				if ( currentDSS.retract() ) {
 					//store the last leaning point
@@ -143,7 +143,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 			}		
 
 			//adding step
-			while ( (i != aEnd)&&(currentDSS.extend(*i)) ) {
+			while ( (i != aEnd)&&(currentDSS.extend(i)) ) {
 				//store the first leaning point
 				if (adapter->firstLeaningPoint() != myPolygon.back()) {
 					myPolygon.push_back(adapter->firstLeaningPoint());
@@ -153,13 +153,13 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(const TIterator& aBegin,
 
 			//transition step
 			if (i != aEnd) {
-				if ( (isConvex)&&( currentDSS.getRemainder(*i) < 
+				if ( (isConvex)&&( currentDSS.getRemainder(i) < 
 												  (currentDSS.getMu()) ) ) {
 					//from convex to concave
 					isConvex = false;
 					delete (adapter);
 					adapter = new AdapterDSS4ConcavePart(currentDSS);
-				} else if ( (!isConvex)&&( currentDSS.getRemainder(*i) >= 
+				} else if ( (!isConvex)&&( currentDSS.getRemainder(i) >= 
 												          (currentDSS.getMu()+currentDSS.getOmega()) ) ) {
 					//from concave to convex
 					isConvex = true;
