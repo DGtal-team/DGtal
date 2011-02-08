@@ -276,7 +276,15 @@ public:
     // ----------------------- Interface --------------------------------------
 public:
      
-
+    /**
+		 * Tests whether the union between a point 
+     * (adding to the front of the DSS 
+     * with respect to the scan orientaion) 
+		 * and a DSS is a DSS. 
+     * @param itf an iterator on a sequence of points
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool isExtendable(const Iterator & itf);
 
     /**
 		 * Tests whether the union between a point 
@@ -292,13 +300,15 @@ public:
 
     /**
 		 * Tests whether the union between a point 
-     * (adding to the front of the DSS 
+     * (adding to the back of the DSS 
      * with respect to the scan orientaion) 
 		 * and a DSS is a DSS. 
-     * @param itf an iterator on a sequence of points
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable(const Iterator & itf);
+    bool extendOppositeEnd(const Iterator & itb);
 
     /**
 		 * Removes the first point of a DSS
@@ -310,14 +320,14 @@ public:
     bool retract();
 
     /**
-  	 * obsolete:
-		 * Computes the sequence of (connected) points
-		 * belonging to the DSL(a,b,mu,omega)
-     * between the first and last point of the DSS
-		 * Nb: in O(n)
-     * @return the computed sequence of points.
+		 * Removes the last point of a DSS
+     * (located at the front with respect to 
+     * the scan orientaion)
+	   * if the DSS has more than two points
+     * @return 'true' if the first point is removed, 'false' otherwise.
      */
-//    std::vector<Point> retrieve() const;
+    bool retractOppositeEnd();
+
 
 
     /**
@@ -584,6 +594,47 @@ private:
     // ------------------------- Hidden services ------------------------------
 private:
 
+    /**
+		 * Tests whether the union between a point 
+     * (pointing by lastIt) and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param it an iterator on a sequence of points
+     * @param lastIt, an iterator pointing at the end of the DSS 
+     * @param lastMove, end shift vector of the DSS  
+     * @param Uf, first upper leaning point  
+     * @param Ul, last upper leaning point 
+     * @param Lf, first lower leaning point  
+     * @param Ll, last lower leaning point 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool extend( const Iterator & it, 
+								       Iterator & lastIt, 
+								 const Vector & lastMove,
+								       Point & Uf,	Point & Ul,
+								       Point & Lf,	Point & Ll );
+
+    /**
+		 * Removes the end point of a DSS
+     * (pointing by firstIt)
+     * @param firstIt, an iterator pointing at the end of the DSS 
+     * @param lastIt, an iterator pointing at the other end of the DSS 
+     * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
+     * @param Uf, first upper leaning point  
+     * @param Ul, last upper leaning point 
+     * @param Lf, first lower leaning point  
+     * @param Ll, last lower leaning point 
+		 * @param s, a signed integer equal to 1 or -1
+     * @return 'true'.
+     */
+    bool retract( Iterator & firstIt,
+									Iterator & lastIt,
+				 					Iterator & nextIt, 		  
+					       	Point & Uf,	Point & Ul,
+					       	Point & Lf,	Point & Ll,
+									const Integer& s );
+
+
 		/**
 		 * Checks whether the DSS has less or more
 		 * than two displacement vectors (steps)
@@ -603,18 +654,6 @@ private:
      * @return the 2D vector.
      */
     Vector vectorFrom0ToOmega() const;
-
-    /**
-     * obsolete:
-		 * Returns the point that follows a given 
-     * point of a DSL
-		 * @param a, b, mu, omega, the parameters 
-     * of the DSL and aPoint, a given point of 
-     * the DSL. 
-     * @return the next point.
-     */
-//    Point next(const Point& aPoint) const;
-
 
 
 

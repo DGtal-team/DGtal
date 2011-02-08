@@ -91,7 +91,7 @@ DGtal::MaximalSegments<TSegment>::ConstIterator::nextMaximalSegment()
 
 			//while my segment can be extended at the back
 			--myBack;
-			while (mySegment.extend(myBack)) {
+			while (mySegment.extendOppositeEnd(myBack)) {
 				--myBack;
 			}
 

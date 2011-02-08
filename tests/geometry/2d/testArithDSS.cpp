@@ -224,9 +224,9 @@ bool testExtendRetract()
 		std::deque<DSS4 > v1,v2;
   	DSS4 newDSS4;
 		Iterator i = contour.begin();
-		newDSS4.init(i);	 
+		newDSS4.init(i);
+	  v1.push_back(newDSS4);	 
 		i++;
-	  v1.push_back(newDSS4);
 
 		//forward scan and store each DSS4
 		trace.info() << "forward scan" << std::endl;
@@ -237,28 +237,24 @@ bool testExtendRetract()
 			i++;
 		}
 
-
 		//backward scan
-
 		trace.info() << "backward scan" << std::endl;
 
-		i--;
+		i--; 
   	DSS4 reverseDSS4;
 		reverseDSS4.init(i);
 
 		Iterator j = i; j--;
-		while ( (j!=contour.begin())&&(reverseDSS4.extend(j)) ) {
+		while ( (j!=contour.begin())&&(reverseDSS4.extendOppositeEnd(j)) ) {
 			j--;
 		}
-		reverseDSS4.extend(j);
+		reverseDSS4.extendOppositeEnd(j);
 
 		trace.info() << "removing" << std::endl;
-		trace.info() << reverseDSS4 << std::endl;
 
 		//removing step, store each DSS4 for comparison
-
 	  v2.push_front(reverseDSS4);
-		while (reverseDSS4.retract()) {
+		while (reverseDSS4.retractOppositeEnd()) {
 	  	v2.push_front(reverseDSS4);
 		}		
 		

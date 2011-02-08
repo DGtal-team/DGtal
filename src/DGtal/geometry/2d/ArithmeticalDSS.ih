@@ -97,6 +97,7 @@ void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const Iterato
 	myNbUpPat = 0;
 	myNbLowPat = 0;
 
+	step.clear();
 
 }
 
@@ -197,22 +198,33 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=(
 
 /**
  * Tests whether the union between a point 
- * (adding to the front of the DSS 
+ * (adding to one of the end of the DSS 
  * with respect to the scan orientaion) 
  * and a DSS is a DSS. 
  * Computes the parameters of the new DSS 
  * with the adding point if true.
- * @param it an iterator on a sequence of points
+ * @param it, an iterator pointing at a point
+ * @param lastIt, an iterator pointing at the end of the DSS 
+ * @param lastMove, move vector  
+ * @param Uf, first upper leaning point  
+ * @param Ul, last upper leaning point 
+ * @param Lf, first lower leaning point  
+ * @param Ll, last lower leaning point 
  * @return 'true' if the union is a DSS, 'false' otherwise.
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& it)
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+     ::extend( const Iterator & it, 
+							       Iterator & lastIt, 
+							 const Vector & lastMove,
+							       Point & Uf,	Point & Ul,
+							       Point & Lf,	Point & Ll )
 {
 
 	Point lastPoint = *it;
-	Vector lastMove = lastPoint-(*myL);
+
 	//if the two last points 
   //are confounded or not connected
 	//return false
@@ -228,9 +240,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 			step.push_back(lastMove);
 
 			//update
-			myL = it; 
-			myUl = lastPoint; 
-			myLl = lastPoint;
+			lastIt = it; 
+			Ul = lastPoint; 
+			Ll = lastPoint;
 			myA += lastMove[1]; 
 			myB += lastMove[0]; 
 			myMu = myA*myUl[0] - myB*myUl[1]; 
@@ -245,9 +257,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 			if (lastMove == step.at(0)) {
 
 				//update
-				myL = it; 
-				myUl = lastPoint; 
-				myLl = lastPoint;
+				lastIt = it; 
+				Ul = lastPoint; 
+				Ll = lastPoint;
 				myNbUpPat++;
 				myNbLowPat++;
 
@@ -261,19 +273,19 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 								 //the two steps are compatible
 
 					//update
-					myL = it; 
+					lastIt = it; 
 					//remainder
 					Integer r = myA*lastPoint[0] - myB*lastPoint[1];
 					if ( r < myMu) {	//on the left
-						myUl = lastPoint; 
-						myLf = myLl;
+						Ul = lastPoint; 
+						Lf = Ll;
 						myA = myNbUpPat*step.at(0)[1] + lastMove[1];
 						myB = myNbUpPat*step.at(0)[0] + lastMove[0];
 						myNbUpPat = 1;
 						myNbLowPat = 0;
 					} else {            //on the right
-						myLl = lastPoint; 
-						myUf = myUl;
+						Ll = lastPoint; 
+						Uf = Ul;
 						myA = myNbUpPat*step.at(0)[1] + lastMove[1];
 						myB = myNbUpPat*step.at(0)[0] + lastMove[0];
 						myNbUpPat = 0;
@@ -297,7 +309,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 
 		//main stage
 
-		//if there only two steps at most
+		//if there are only two steps at most
 		if (hasLessThanTwoSteps(lastMove)) {
 		
 			//remainder
@@ -307,21 +319,21 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 				return false; //strongly exterior
 			else { 
 				//add the point to the DSS
-				myL = it; 
+				lastIt = it; 
 				//update
 				//if weakly interior
 				if (r == myMu) {
-					myUl = lastPoint;  
+					Ul = lastPoint;  
 					myNbUpPat++;
 				}
 				if (r == myMu+myOmega-1) {
-					myLl = lastPoint;
+					Ll = lastPoint;
 					myNbLowPat++;
 				}
 				//if weakly exterior  
 				if (r == myMu-1) {	            //on the left
-					myUl = lastPoint; 
-					myLf = myLl;
+					Ul = lastPoint; 
+					Lf = Ll;
 					myA = myUl[1] - myUf[1]; 
 					myB = myUl[0] - myUf[0]; 
 					myMu = myA*myUl[0] - myB*myUl[1];
@@ -329,8 +341,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 					myNbUpPat = 1;
 					myNbLowPat = 0;
 				} else if (r == myMu+myOmega) { //on the right
-					myLl = lastPoint; 
-					myUf = myUl; 
+					Ll = lastPoint; 
+					Uf = Ul; 
 					myA = myLl[1] - myLf[1]; 
 					myB = myLl[0] - myLf[0]; 
 					myMu = myA*myUl[0] - myB*myUl[1];
@@ -351,6 +363,220 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& 
 
 }
 
+
+/**
+ * Tests whether the union between a point 
+ * (adding to the front of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * Computes the parameters of the new DSS 
+ * with the adding point if true.
+ * @param it an iterator on a sequence of points
+ * @return 'true' if the union is a DSS, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& it)
+{
+
+	return extend(it, myL, (*it - *myL), myUf, myUl, myLf, myLl); 
+
+}
+
+
+
+/**
+ * Tests whether the union between a point 
+ * (adding to the back of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * Computes the parameters of the new DSS 
+ * with the adding point if true.
+ * @param it an iterator on a sequence of points
+ * @return 'true' if the union is a DSS, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const Iterator& it)
+{
+
+	return extend(it, myF, (*myF - *it), myUl, myUf, myLl, myLf); 
+
+}
+
+
+/**
+ * Removes the end point of a DSS
+ * (pointing by firstIt)
+ * @param firstIt, an iterator pointing at the end of the DSS 
+ * @param lastIt, an iterator pointing at the other end of the DSS 
+ * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
+ * @param Uf, first upper leaning point  
+ * @param Ul, last upper leaning point 
+ * @param Lf, first lower leaning point  
+ * @param Ll, last lower leaning point 
+ * @param s, a signed integer equal to 1 or -1
+ * @return 'true'.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+     ::retract( Iterator & firstIt,
+								Iterator & lastIt,
+								Iterator & nextIt, 		  
+				       	Point & Uf,	Point & Ul,
+				       	Point & Lf,	Point & Ll,
+								const Integer& s )
+{
+
+
+	Vector v = (*myL)-(*myF);
+	if (Tools<TInteger,connectivity>
+								::norm(v[0],v[1]) <= 1) {//if there are only two points
+
+		//init with nextIt
+		firstIt = nextIt;
+		Uf = *firstIt;
+		Lf = *firstIt;
+
+		myA = 0; 
+		myB = 0; 
+		myMu = 0;
+		myOmega = 0;
+		myNbUpPat = 0;
+		myNbLowPat = 0;
+
+		step.clear();
+
+	} else {                   //there are strictly more than two points
+
+		//update myF
+		Point ptToRemove = *firstIt;
+		firstIt = nextIt;
+
+		//if the point to remove is the first upper leaning point...
+		if (ptToRemove == Uf) {
+			//... and if the first and last lower leaning points are confounded
+			if (Lf == Ll) {
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = ( Lf - ( Uf + vectorFrom0ToOmega() ) )*s;
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector toUl = (Ul - *firstIt)*s;
+				k = Tools<TInteger,connectivity>::norm(toUl[0],toUl[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				Uf = Ul - newMainVector*k*s;
+				myNbUpPat = k;
+				Vector toLastIt = *lastIt - Lf;
+				k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				Ll = Lf + newMainVector*k*s;
+				myNbLowPat = k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+			} else {
+				Uf = Uf + Vector(myB,myA)*s;
+				myNbUpPat--;
+			}
+		}
+
+		//if the point to remove is the first lower leaning point...
+		if (ptToRemove == Lf) {
+			//... and if the first and last upper leaning points are confounded
+			if (Uf == Ul) { 
+				//update of the parameters:
+				//a,b
+				Vector newMainVector = ( Uf - (Lf - vectorFrom0ToOmega() ) )*s;
+				myA = newMainVector[1];
+				myB = newMainVector[0];
+				//leaning points
+				Integer k; //repetitions of the newMainVector
+				Vector toLl = Ll - *firstIt;
+				k = Tools<TInteger,connectivity>::norm(toLl[0],toLl[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				Lf = Ll - newMainVector*k*s;
+				myNbLowPat = k;
+				Vector toLastIt = *lastIt - Uf;
+				k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
+						/Tools<TInteger,connectivity>::norm(myA,myB);
+				Ul = Uf + newMainVector*k*s;
+				myNbUpPat = k;
+				//mu, omega
+				myMu = myA*myUl[0] - myB*myUl[1];
+				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+			} else {
+				Lf = Lf + Vector(myB,myA)*s;
+				myNbLowPat--;
+			}
+		}
+
+		//steps update
+		if (Vector(myB,myA) == step.at(0)) {
+			Vector tmp(step.at(0));
+			step.clear();
+			step.push_back(tmp);
+		} else if (Vector(myB,myA) == step.at(1)) {
+			Vector tmp(step.at(1));
+			step.clear();
+			step.push_back(tmp);
+		}
+
+	}
+
+	return true;
+}
+
+
+/**
+ * Remove the first point of a DSS
+ * (located at the back with respect to 
+ * the scan orientaion)
+ * if the DSS has more than two points
+ * @return 'true' the first point is removed, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
+{
+
+	Vector v = (*myL)-(*myF);
+	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
+		return false;
+	} else {                           //otherwise
+		Iterator next = myF; ++next;
+		return retract(myF, myL, next, myUf, myUl, myLf, myLl, 1);
+	}
+}
+
+/**
+ * Remove the first point of a DSS
+ * (located at the front with respect to 
+ * the scan orientaion)
+ * if the DSS has more than two points
+ * @return 'true' the first point is removed, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
+{
+
+	Vector v = (*myL)-(*myF);
+	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
+		return false;
+	} else {                           //otherwise
+		Iterator previous = myL; --previous;
+		return retract(myL, myF, previous, myUl, myUf, myLl, myLf, -1);
+	}
+}
 
 /**
  * Tests whether the union between a point 
@@ -429,213 +655,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Iter
 }
 
 
-/**
- * Remove the first point of a DSS
- * (located at the back with respect to 
- * the scan orientaion)
- * if the DSS has more than two points
- * @return 'true' the first point is removed, 'false' otherwise.
- */
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
-{
-	
-	Vector v = (*myL)-(*myF);
 
-	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
-
-		return false;
-
-	} else if (Tools<TInteger,connectivity>
-								::norm(v[0],v[1]) <= 1) {//if there are only two points
-
-		//init with myL
-		myF = myL;
-		myUf = *myL;
-		myLf = *myL;
-
-		myA = 0; 
-		myB = 0; 
-		myMu = 0;
-		myOmega = 0;
-		myNbUpPat = 0;
-		myNbLowPat = 0;
-
-		step.clear();
-
-		return true;
-
-	} else {                   //there are more than two points
-
-		//update myF
-/*
-		obsolete:
-		Point ptToRemove = myF;
-		myF = next(ptToRemove);
-*/
-		Point ptToRemove = *myF;
-		++myF;
-
-		//if the point to remove is the first upper leaning point...
-		if (ptToRemove == myUf) {
-			//... and if the first and last lower leaning points are confounded
-			if (myLf == myLl) {
-				//update of the parameters:
-				//a,b
-				Vector newMainVector = myLf - ( myUf + vectorFrom0ToOmega() );
-				myA = newMainVector[1];
-				myB = newMainVector[0];
-				//leaning points
-				Integer k; //repetitions of the newMainVector
-				Vector myFToMyUl = myUl - *myF;
-				k = Tools<TInteger,connectivity>::norm(myFToMyUl[0],myFToMyUl[1])
-						/Tools<TInteger,connectivity>::norm(myA,myB);
-				myUf = myUl - newMainVector*k;
-				myNbUpPat = k;
-				Vector myLfToMyL = *myL - myLf;
-				k = Tools<TInteger,connectivity>::norm(myLfToMyL[0],myLfToMyL[1])
-						/Tools<TInteger,connectivity>::norm(myA,myB);
-				myLl = myLf + newMainVector*k;
-				myNbLowPat = k;
-				//mu, omega
-				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
-			} else {
-				myUf = myUf + Vector(myB,myA);
-				myNbUpPat--;
-			}
-		}
-
-		//if the point to remove is the first lower leaning point...
-		if (ptToRemove == myLf) {
-			//... and if the first and last upper leaning points are confounded
-			if (myUf == myUl) { 
-				//update of the parameters:
-				//a,b
-				Vector newMainVector = myUf - (myLf - vectorFrom0ToOmega() );
-				myA = newMainVector[1];
-				myB = newMainVector[0];
-				//leaning points
-				Integer k; //repetitions of the newMainVector
-				Vector myFToMyLl = myLl - *myF;
-				k = Tools<TInteger,connectivity>::norm(myFToMyLl[0],myFToMyLl[1])
-						/Tools<TInteger,connectivity>::norm(myA,myB);
-				myLf = myLl - newMainVector*k;
-				myNbLowPat = k;
-				Vector myUfToMyL = *myL - myUf;
-				k = Tools<TInteger,connectivity>::norm(myUfToMyL[0],myUfToMyL[1])
-						/Tools<TInteger,connectivity>::norm(myA,myB);
-				myUl = myUf + newMainVector*k;
-				myNbUpPat = k;
-				//mu, omega
-				myMu = myA*myUl[0] - myB*myUl[1];
-				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
-			} else {
-				myLf = myLf + Vector(myB,myA);
-				myNbLowPat--;
-			}
-		}
-
-		//steps update
-		if (Vector(myB,myA) == step.at(0)) {
-			Vector tmp(step.at(0));
-			step.clear();
-			step.push_back(tmp);
-		} else if (Vector(myB,myA) == step.at(1)) {
-			Vector tmp(step.at(1));
-			step.clear();
-			step.push_back(tmp);
-		}
-
-		return true;
-	}
-
-}
-
-/**
- * Returns the point that follows a given 
- * point of a DSL
- * @param a, b, mu, omega, the parameters 
- * of the DSL and aPoint, a given point of 
- * the DSL. 
- * @return the next point.
- */
-/*
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-DGtal::PointVector<2,TInteger>
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::next(
-			const Point& aPoint) const
-{
-
-
-	Integer r = myA*aPoint[0] - myB*aPoint[1];
-	ASSERT( (r >= myMu)&&(r < myMu+myOmega) );
-
-	Point nextPoint = aPoint + step.at(0);
-	Integer r2 = myA*nextPoint[0] - myB*nextPoint[1];
-
-	if ( (r2 >= myMu)&&(r2 < myMu+myOmega) ) {
-			return nextPoint;
-	} else {
-			return aPoint + step.at(1);
-	}
-
-}
-*/
-//-------------------------------------------------------------------------
-/**
- * Computes the sequence of (connected) points
- * belonging to the DSL(a,b,mu,omega)
- * between the first and last point of the DSS
- * Nb: in O(omega)
- * @return the computed sequence of points.
- */
-/*
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-std::vector<typename DGtal::PointVector<2,TInteger> > 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retrieve() const
-{
-
-	std::vector<Point > contour;
-	Point firstPoint = myF;
-	while (firstPoint != myL) {
-		contour.push_back(firstPoint);
-		firstPoint = next(firstPoint);
-	}
-	contour.push_back(firstPoint);
-
-	return contour;
-}
-*/
-
-    
-
-/**
- * Checks whether the DSS has less or more
- * than two displacement vectors (steps)
- * between two consecutive points
- * (must be called only in the main stage)
- * @param aStep, the last displacement vector. 
- * @return 'true' if less or equal, 'false' otherwise.
- */
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
-				const Vector& aStep) const
-{
-	if ( (aStep == step.at(0)) || 
-			 (aStep == step.at(1)) ) {
-		return true;
-	} else {
-		return false;
-	}
-
-}
 //-------------------------------------------------------------------------
 /**
  * Computes the remainder of a point
@@ -1084,7 +1104,30 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
   
 }
 
+//-------------------------------------------------------------------------
 
+/**
+ * Checks whether the DSS has less or more
+ * than two displacement vectors (steps)
+ * between two consecutive points
+ * (must be called only in the main stage)
+ * @param aStep, the last displacement vector. 
+ * @return 'true' if less or equal, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
+				const Vector& aStep) const
+{
+	if ( (aStep == step.at(0)) || 
+			 (aStep == step.at(1)) ) {
+		return true;
+	} else {
+		return false;
+	}
+
+}
 
 /**
  * Returns the 2D vector 

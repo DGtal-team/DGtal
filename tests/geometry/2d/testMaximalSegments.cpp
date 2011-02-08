@@ -350,7 +350,7 @@ bool testOneDSS()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef FreemanChain<Coordinate> ContourType; 
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
 	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
