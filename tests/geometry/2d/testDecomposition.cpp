@@ -577,6 +577,7 @@ int main(int argc, char **argv)
 					&& testOneDSS();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+
   return res ? 0 : 1;
 
 }

@@ -380,6 +380,7 @@ int main(int argc, char **argv)
 					&& testGMP();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+
   return res ? 0 : 1;
 
 }

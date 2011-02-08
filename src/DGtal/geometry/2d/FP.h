@@ -110,7 +110,8 @@ namespace DGtal
   // template class FP
   /**
    * Description of template class 'FP' <p>
-   * \brief Aim:
+   * \brief Aim:Computes the faithful polygon (FP)
+   * of a digital curve. 
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class FP

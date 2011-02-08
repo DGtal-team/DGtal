@@ -60,7 +60,7 @@ namespace DGtal
  * Description of class 'ArithmeticalDSS' <p>
  * \brief Aim:
  * Dynamic recognition of a digital straight segment (DSS)
- * defined as the sequence of connected points (x,y)
+ * defined as the sequence of simply connected points (x,y)
  * such that mu <= ax - by < mu + omega.  
  * (see Debled and Reveilles [1995]).
  * This class is a model of the concept CSegmentComputer. 
@@ -70,19 +70,19 @@ namespace DGtal
  * the type of the coordinates of the points (satisfying CInteger) 
  * and by the integer 'connectivity', which may be equal to 
  * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
- * Any other integers act as 8. The following shortcuts are provided in 
- * the namespace Z2i (TODO):
- * @code 
- typedef ArithmeticalDSS<Coordinate,4> > DSS4;
- typedef ArithmeticalDSS<Coordinate,8> > DSS8;
- * @endcode
+ * Any other integers act as 8. 
  *
- * Here is a short example of how to use this class
- * (assuming that the namespaces std and Z2i are defined):
+ * Here is a short example of how to use this class:
  * @code 
 
-	// Input points
-	vector<Point> contour;
+	//type definitions: sequence of points, iterator and DSS recognition
+	typedef PointVector<2,int> Point;
+	typedef std::vector<Point> Sequence;
+	typedef Sequence::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator, int, 4> DSS4;
+
+	// Sequence of input points
+	Sequence contour;
 	contour.push_back(Point(0,0));
 	contour.push_back(Point(1,0));
 	contour.push_back(Point(2,0));
@@ -94,28 +94,31 @@ namespace DGtal
 
   
   // Add points while it is possible
-	vector<Point>::iterator i = contour.begin();
+	Iterator i = contour.begin();
 	DSS4 theDSS4(i);		
-	while ( (i!=contour.end())
-				&&(theDSS4.extend(i)) ) {
+	do {
 		i++;
-	}
+	} while ( (i!=contour.end())
+				  &&(theDSS4.extend(i)) );
 
 	// Output parameters
 	cout << theDSS4 << endl;
- //You must see:
- //[ArithmeticalDSS]
- //Parameters (a,b,mu,omega)=(2, 5, 0, 7)
- //First point (0,0) Last point (5,2)
- //Leaning points:
- //   Uf (0,0)
- //   Ul (5,2)
- //   Lf (3,0)
- //   Ll (3,0)
- //Steps:
- //   (1,0)
- //   (0,1)
- //[End ArithmeticalDSS]
+
+ //You must get:
+//[ArithmeticalDSS]
+//Parameters (a,b,mu,omega)=(2, 5, 0, 7)
+//Number of upper patterns: 1
+//Number of lower patterns: 0
+//First point [PointVector] {0, 0} Last point [PointVector] {5, 2}
+//Leaning points:
+//   Uf [PointVector] {0, 0}
+//   Ul [PointVector] {5, 2}
+//   Lf [PointVector] {3, 0}
+//   Ll [PointVector] {3, 0}
+//Steps:
+//   [PointVector] {1, 0}
+//   [PointVector] {0, 1}
+//[End ArithmeticalDSS]
 
  * @endcode
  */
@@ -238,7 +241,6 @@ public:
     /**
      * Copy constructor.
      * @param other the object to clone.
-     * Forbidden by default.
      */
     ArithmeticalDSS ( const ArithmeticalDSS & other );
 
@@ -246,7 +248,6 @@ public:
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
     ArithmeticalDSS & operator= ( const ArithmeticalDSS & other );
 
@@ -255,7 +256,7 @@ public:
      * @param other the object to compare with.
      * @return 'true' either if the leaning points perfectly match
 	 	 * or if the first leaning points match to the last ones
-     * (same DSS scanned in the conversed way) 
+     * (same DSS scanned in the reverse way) 
      * and 'false' otherwise
      */
 		bool operator==( const ArithmeticalDSS & other ) const;
@@ -311,7 +312,7 @@ public:
     bool extendOppositeEnd(const Iterator & itb);
 
     /**
-		 * Removes the first point of a DSS
+		 * Removes the back point of a DSS
      * (located at the back with respect to 
      * the scan orientaion)
 	   * if the DSS has more than two points
@@ -320,7 +321,7 @@ public:
     bool retract();
 
     /**
-		 * Removes the last point of a DSS
+		 * Removes the front point of a DSS
      * (located at the front with respect to 
      * the scan orientaion)
 	   * if the DSS has more than two points
@@ -333,7 +334,7 @@ public:
     /**
 		 * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
-     * @param itf an iterator on a sequence of points
+     * @param it an iterator on a sequence of points
      * @return the remainder.
      */
     Integer getRemainder(const Iterator & it) const;
@@ -471,9 +472,7 @@ public:
   
 
     /**
-     * Defined as: norm( project(cp_n) - project(c_n) )
      * @return the projected length of the segment.
-     * @see projectRegularly
      */
     double projectedSegmentLength() const;
     
@@ -486,7 +485,7 @@ public:
 
     
     /**
-     * Draw the retrieved digital points of the DSS linked into a 
+     * Draw the digital points of the DSS linked into a 
      * polygonal line on a LiBoard board
      * @param board the output board where the object is drawn.
      * @tparam Functor a Functor to specialize the Board style
@@ -575,12 +574,13 @@ protected:
 
 	//parameters of the DSS
 	Integer myA, myB, myMu, myOmega;
-	Integer myNbUpPat, myNbLowPat; //number of patterns
+	//number of upper and lower patterns
+	Integer myNbUpPat, myNbLowPat; 
 
 	//leaning points
 	Point myUf, myUl, myLf, myLl;
 
-	//first and last added points
+	//first (at the front) and last (at the back) points of the DSS
 	Iterator myF, myL;
 
 	//steps of the DSS 
@@ -596,7 +596,7 @@ private:
 
     /**
 		 * Tests whether the union between a point 
-     * (pointing by lastIt) and the DSS is a DSS. 
+     * (pointing by it) and the DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
      * @param it an iterator on a sequence of points
