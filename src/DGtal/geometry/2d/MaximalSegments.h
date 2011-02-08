@@ -51,41 +51,51 @@ namespace DGtal
   // template class MaximalSegments
   /**
    * Description of template class 'MaximalSegments' <p>
-   * \brief Aim: Computes the set of maximal segments of a sequence of 
-   * points viewed as a digital curve into subsequences called segments,
-   * which are maximal for inclusion (they cannot be included in other segments. 
-
-   * This class is templated by 'TIterator', an iterator that can provide the
-   * points (in order) of the digital curve, and by 'TSegment', the type of 
-   * the segment (4-connected DSS, 8-connected DSS, thick segment, etc.)
-   * The segment must have a method extend() taking as input what is returned
-   * by the iterator (usually a point) and returning a boolean equal to TRUE
-   * if the extension is possible and has been successfully performed and 
-   * FALSE otherwise.
-   
-   * In the short example below, a contour stored as a Freeman chain is decomposed 
-   * into 4-connected DSSs whose parameters are sent to the standard output.
-   * TODO
+   * \brief Aim: Computes the set of maximal segments of a sequence.
+   * Maximal segments are segments that cannot be included in other segments. 
+   * This class is a model of CDecomposition.
+   * 
+   * This class is templated by 'TSegment', a model of CBidirectionnalSegmentComputer,
+   * i.e. an object that is able to manage the on-line recognition of a given class of 
+   * segments (4-connected DSS, 8-connected DSS, thick segment, etc.)
+   * 'TSegment' must have an internal type 'Iterator' that is a means of 
+   * of accessing the sequence elements. 
+   * 'TSegment' must have the methods init(), extend() and extendOppositeEnd(), 
+   * taking an input parameter of type 'Iterator'. The last two methods must return 
+   * a boolean equal to TRUE if the extension is possible and has been successfully
+   * performed and FALSE otherwise.
+   *    
+   * In the short example below, the parameters of the maximal 8-connected DSSs
+   * of a digital curve stored in a STL vector are sent to the standard output.
+   * The set of maximal DSSs of a digital curve is also called tangential cover. 
    * @code 
-   
+  //types definition
+  typedef PointVector<2,int> Point;
+  typedef std::vector<Point> Sequence;
+  typedef Sequence::iterator Iterator;
+  typedef ArithmeticalDSS<Iterator,int,8> DSS;
+	typedef MaximalSegments<DSS> Cover;
 
-  typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<int,4> PrimitiveType;
-  typedef FreemanChain<int> ContourType; 
-	typedef MaximalSegments<ContourType::ConstIterator,PrimitiveType> DecompositionType;
+	//sequence of input points
+	Sequence curve;
+	curve.push_back(Point(1,1));
+	curve.push_back(Point(2,1));
+	curve.push_back(Point(3,2));
+	curve.push_back(Point(4,2));
+	curve.push_back(Point(5,2));
+	curve.push_back(Point(6,2));
+	curve.push_back(Point(7,2));
+	curve.push_back(Point(8,1));
+	curve.push_back(Point(9,1));
 
-	//A contour stored as a Freeman chain
-  std::string filename = testPath + "samples/manche.fc";
-  std::fstream fst;
-  fst.open (filename.c_str(), std::ios::in);
-  ContourType theContour(fst);
-
-  //Greedy segmentation of the contour
-  DecompositionType theDecomposition(theContour.begin(), theContour.end());
-  DecompositionType::ConstIterator i = theDecomposition.begin();
-  for ( ; i != theDecomposition.end(); ++i) {
-    PrimitiveType segment(*i); 
-    std::cout << segment << std::endl;	//standard output  
+  //Segmentation
+	DSS dssRecognition;
+  Cover theCover(curve.begin(), curve.end(), dssRecognition, false);
+				 
+  Cover::ConstIterator i = theCover.begin();
+  for ( ; i != theCover.end(); ++i) {
+		DSS currentSegment(*i);
+		trace.info() << currentSegment << std::endl;	//standard output
   } 
 
    * @endcode

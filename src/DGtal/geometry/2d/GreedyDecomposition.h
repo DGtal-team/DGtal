@@ -51,45 +51,69 @@ namespace DGtal
   // template class GreedyDecomposition
   /**
    * Description of template class 'GreedyDecomposition' <p>
-   * \brief Aim: Computes the greedy decomposition of a sequence of 
-   * points viewed as a digital curve into subsequences called segments
-   * (the last point of a given segment is the first point of the next segment).
-
-   * This class is templated by 'TIterator', an iterator that can provide the
-   * points (in order) of the digital curve, and by 'TSegment', the type of 
-   * the segment (4-connected DSS, 8-connected DSS, thick segment, etc.)
-   * The segment must have a method extend() taking as input what is returned
-   * by the iterator (usually a point) and returning a boolean equal to TRUE
-   * if the extension is possible and has been successfully performed and 
-   * FALSE otherwise.
-   
-   * In the short example below, a contour stored as a Freeman chain is decomposed 
-   * into 4-connected DSSs whose parameters are sent to the standard output.
-   * TODO
+   * \brief Aim: Computes the greedy decomposition of a sequence 
+   * into segments (the last element of a given segment is the first one
+   * one of the next segment).
+   * This class is a model of CDecomposition.
+   * 
+   * This class is templated by 'TSegment', a model of CSegmentComputer
+   * that is able to manage the on-line recognition of a given class of 
+   * segments (4-connected DSS, 8-connected DSS, thick segment, etc.)
+   * 'TSegment' must have an internal type 'Iterator' that is a means of 
+   * of accessing the sequence elements. 
+   * 'TSegment' must have the methods init() and extend() taking as input
+   * a parameter of type 'Iterator'. The extend method must return a boolean
+   * equal to TRUE if the extension is possible and has been successfully
+   * performed and FALSE otherwise.
+   *
+   * In the short example below, a digital curve stored in a STL vector
+   * is decomposed into 8-connected DSSs whose parameters are sent to 
+   * the standard output.
    * @code 
    
+  //types definition
+  typedef PointVector<2,int> Point;
+  typedef std::vector<Point> Sequence;
+  typedef Sequence::iterator Iterator;
+  typedef ArithmeticalDSS<Iterator,int,8> DSS;
+	typedef GreedyDecomposition<DSS> Decomposition;
 
-  typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<int,4> PrimitiveType;
-  typedef FreemanChain<int> ContourType; 
-	typedef GreedyDecomposition<ContourType::ConstIterator,PrimitiveType> DecompositionType;
+	//sequence of input points
+	Sequence curve;
+	curve.push_back(Point(1,1));
+	curve.push_back(Point(2,1));
+	curve.push_back(Point(3,2));
+	curve.push_back(Point(4,2));
+	curve.push_back(Point(5,2));
+	curve.push_back(Point(6,2));
+	curve.push_back(Point(7,2));
+	curve.push_back(Point(8,1));
+	curve.push_back(Point(9,1));
 
-	//A contour stored as a Freeman chain
-  std::string filename = testPath + "samples/manche.fc";
-  std::fstream fst;
-  fst.open (filename.c_str(), std::ios::in);
-  ContourType theContour(fst);
-
-  //Greedy segmentation of the contour
-  DecompositionType theDecomposition(theContour.begin(), theContour.end());
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  //Segmentation
+	DSS dssRecognition;
+  Decomposition theDecomposition(curve.begin(), curve.end(), dssRecognition, false);
+				 
+  Decomposition::ConstIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-    PrimitiveType segment(*i); 
-    std::cout << segment << std::endl;	//standard output  
+		DSS currentSegment(*i);
+		trace.info() << currentSegment << std::endl;	//standard output
   } 
 
    * @endcode
+   *
+   * If you want to get the DSSs decomposition of the digital curve
+   * when it is scanned in the reverse way, you can use the reverse
+   * iterator of the STL vector:   
+   * @code 
+...
+	typedef Sequence::reverse_iterator Iterator;
+...
+  Decomposition theDecomposition(curve.rbegin(), curve.rend(), dssRecognition, false);
+...
+   * @endcode
    */
+
   template <typename TSegment>
   class GreedyDecomposition
   {
