@@ -60,17 +60,6 @@ bool testFP()
   typedef FreemanChain<Coordinate> Contour; 
 	typedef FP<Contour::ConstIterator,Coordinate,4> FP;
 
-/*
-  // A Freeman chain code is a string composed by the coordinates of the first pixel, 
-	//and the list of elementary displacements. 
-  std::stringstream ss(stringstream::in | stringstream::out);
-//  ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
-//  ss << "36 15 1121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
-//  ss << "165 78 112332323323332323332323223232322322323232300030003000300300300303003030330330330330300303003003030030300300303003030333333333332323222222322232323222223222222222" << endl;
-  // Construct the Freeman chain
-  Contour theContour( ss );
-
-*/
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
 

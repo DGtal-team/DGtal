@@ -76,6 +76,7 @@ bool testDec4()
   
 	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
+
   std::string filename = testPath + "samples/manche.fc";
   std::cout << filename << std::endl;
 
@@ -189,7 +190,7 @@ bool testDisconnectedCurve()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
-  typedef ArithmeticalDSS<ContourType::iterator,Coordinate,8> PrimitiveType;
+  typedef ArithmeticalDSS<ContourType::iterator,Coordinate,4> PrimitiveType;
   
 	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -507,7 +508,7 @@ bool testOneDSS()
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
 	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;
