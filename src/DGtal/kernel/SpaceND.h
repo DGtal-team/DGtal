@@ -59,9 +59,10 @@ namespace DGtal
    *
    * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
    * \todo documentation here!
-   *
-   * @tparam Dimension the dimension of the Digital Space.
-   * @tparam Integer the Integer class used to specify the arithmetic (default type = int).
+   * @tparam dim the dimension of the digital space.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int).
+   * @tparam TSize the Integer class used to represent the sizes in the space (default type = unsigned int).
+   * @tparam TDimension the type used to represent indices of coordinates.
    */
 
   template < std::size_t dim,

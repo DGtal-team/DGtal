@@ -63,6 +63,11 @@ inline
 DGtal::Trace::~Trace()
 {
   myWriter.outputStream() << myWriter.postfixReset();
+  while ( ! myClockStack.empty() )
+    {
+      delete myClockStack.top();
+      myClockStack.pop();
+    }
 }
 
 
