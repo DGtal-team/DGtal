@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
+   testCellularGridSpaceND
    testDigitalTopology
    testExpander
    testObject
