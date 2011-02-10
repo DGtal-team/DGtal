@@ -46,7 +46,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-//#include <iterator> // Buf for operator * => dangling reference !!!
+//#include <iterator> // Bug for operator * => dangling reference !!!
 template<typename _Iterator>
 class myreverse_iterator
 	: public iterator<typename iterator_traits<_Iterator>::iterator_category,
@@ -408,7 +408,6 @@ namespace DGtal
     /// considered in increasing order.
     bool myUseSubDomain;
   };
-
 
 } //namespace
 //                                                                           //
