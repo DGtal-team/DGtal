@@ -204,7 +204,8 @@ namespace DGtal
 
 #ifdef CPP0X_INITIALIZER_LIST
       /**
-       * Partial copy of a given PointVector.
+       * Partial copy of a given PointVector. Only coordinates in dimensions
+       * are copied.
        *
        * @param other the object to copy.
        * @param dim the dimensions of v to copy
@@ -213,19 +214,46 @@ namespace DGtal
        */
 			template<typename Size>
       PointVector& partialCopy (const PointVector & pv,
-          std::initializer_list<Size> dimensions);
-#endif
+				std::initializer_list<Size> dimensions);
+
       /**
-       * Partial copy of a given PointVector.
+       * Inverse partial copy of a given PointVector. Only coordinates not 
+       * in dimensions are copied.
        *
        * @param other the object to copy.
        * @param dim the dimensions of v to copy
        *        (Size between 0 and N, all differents).
        * @return a reference on 'this'.
        */
-			template<typename Size>
-      PointVector<N,T>& partialCopy (const PointVector<N,T> & pv,
-																		 const std::vector<Size> &dimensions);
+    template<typename Size>
+    PointVector& partialCopyInv (const PointVector & pv,
+				 std::initializer_list<Size> dimensions);
+#endif
+      /**
+       * Partial copy of a given PointVector. Only coordinates in dimensions
+       * are copied.
+       *
+       * @param other the object to copy.
+       * @param dim the dimensions of v to copy
+       *        (Size between 0 and N, all differents).
+       * @return a reference on 'this'.
+       */
+    template<typename Size>
+    PointVector<N,T>& partialCopy (const PointVector<N,T> & pv,
+				   const std::vector<Size> &dimensions);
+
+      /**
+       * Partial copy of a given PointVector. Only coordinates not 
+       * in dimensions are copied.
+       *
+       * @param other the object to copy.
+       * @param dim the dimensions of v to copy
+       *        (Size between 0 and N, all differents).
+       * @return a reference on 'this'.
+       */
+    template<typename Size>
+    PointVector<N,T>& partialCopyInv (const PointVector<N,T> & pv,
+				      const std::vector<Size> &dimensions);
 
 
       // ----------------------- Iterator services ------------------------------
@@ -324,6 +352,26 @@ namespace DGtal
        * @return true iff points are equal.
        */
       bool operator== ( const PointVector & pv ) const;
+
+    /**
+     * Partial equality.
+     *
+     * @param pv Point/Vector to compare to this.
+     *
+     * @return true iff points are equal for given dimensions .
+     */
+    bool partialEqual ( const PointVector & pv,
+			const std::vector<Size> &dimensions )  const;
+
+    /**
+     * Partial inverse equality.
+     *
+     * @param pv Point/Vector to compare to this.
+     *
+     * @return true iff points are equal for dimensions not in dimensions.
+     */
+    bool partialEqualInv ( const PointVector & pv,
+			   const std::vector<Size> &dimensions )  const;
 
       /**
        * Difference operator on Points/Vectors.

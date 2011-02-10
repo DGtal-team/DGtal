@@ -36,6 +36,30 @@
 #include <cmath>
 #include <DGtal/base/BasicFunctors.h>
 //////////////////////////////////////////////////////////////////////////////
+template<std::size_t N>
+template<typename Size>
+inline
+std::bitset<N+1> setDimensionsIn( const std::vector<Size> &dimensions )
+{
+  std::bitset<N+1> t1; 
+  for ( std::vector<Size>::iterator it=dimensions.begin(); 
+	it!=dimensions.end(); ++it )
+    t1.set(*dimensions);
+  return t1;
+}
+//------------------------------------------------------------------------------
+template<std::size_t N>
+template<typename Size>
+inline
+std::bitset<N+1> setDimensionsNotIn( const std::vector<Size> &dimensions )
+{
+  std::bitset<N+1> t1; t1.set();
+  for ( std::vector<Size>::iterator it=dimensions.begin(); 
+	it!=dimensions.end(); ++it )
+    t1.clear(*dimensions);
+  return t1;
+}
+//------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 DGtal::PointVector<N, T>::PointVector()
@@ -239,62 +263,69 @@ template<std::size_t N, typename T>
 template<typename Size>
 inline
 DGtal::PointVector<N, T>&
-DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
-    std::initializer_list<Size> dimensions
-                                      )
+DGtal::PointVector<N, T>::partialCopy( const PointVector<N, T> & pv,
+				       std::initializer_list<Size> dimensions )
 {
-  std::vector<Size> sortedDim;
-  sortedDim.reserve(dimensions.size());
-  for (const Size *c = dimensions.begin ();
-      c != dimensions.end (); ++c)
-  {
-    ASSERT( *c < N );
-    sortedDim.push_back(*c);
-  }
-  std::sort(sortedDim.begin(), sortedDim.end());
-
-  Size i = 0, j = 0;
-  for ( ; i < sortedDim.size() && j < N; ++j )
-  {
-    if ( sortedDim[i] == j )
-    {
-      myArray[j] = pv.myArray[j];
-      ++i;
-      ASSERT(i == sortedDim.size() || sortedDim[i-1] != sortedDim[i]);
-    }
-  }
-  return *this;
+  std::vector<Size> dims;
+  dims.reserve(dimensions.size());
+  for (const Size *c = dimensions.begin (); c != dimensions.end (); ++c)
+    dims.push_back(*c);
+  return partialCopy(pv, dims);
+}
+//------------------------------------------------------------------------------
+template<std::size_t N, typename T>
+template<typename Size>
+inline
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::partialCopyInv( const PointVector<N, T> & pv,
+					  std::initializer_list<Size> dimensions )
+{
+  std::vector<Size> dims;
+  dims.reserve(dimensions.size());
+  for (const Size *c = dimensions.begin (); c != dimensions.end (); ++c)
+    dims.push_back(*c);
+  return partialCopyInv(pv, dims);
 }
 #endif
+//------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 template<typename Size>
 inline
 DGtal::PointVector<N, T>&
 DGtal::PointVector<N, T>::partialCopy ( const PointVector<N, T> & pv,
-    const std::vector<Size> &dimensions)
+					const std::vector<Size> &dimensions)
 {
-  std::vector<Size> sortedDim;
-  typedef typename std::vector<Size>::const_iterator const_iterator;
-  sortedDim.reserve(dimensions.size());
-  for (const_iterator it = dimensions.begin ();
-      it != dimensions.end (); ++it)
+  std::bitset<N+1> dims = setDimensionsIn(dimensions);
+  for ( Size i = 0; i < N+1; ++i )
   {
-    ASSERT( *it < N );
-    sortedDim.push_back(*it);
-  }
-  std::sort(sortedDim.begin(), sortedDim.end());
-
-  Size i = 0, j = 0;
-  for ( ; i < sortedDim.size() && j < N; ++j )
-  {
-    if ( sortedDim[i] == j )
+    if ( dims.is_set(i) )
     {
       myArray[j] = pv.myArray[j];
       ++i;
-      ASSERT(i == sortedDim.size() || sortedDim[i-1] != sortedDim[i]);
+      ASSERT( sortedDim[i-1] < N );
+      ASSERT( i == sortedDim.size() || sortedDim[i-1] != sortedDim[i] );
     }
   }
   return *this;
+}
+//------------------------------------------------------------------------------
+template<std::size_t N, typename T>
+template<typename Size>
+inline
+DGtal::PointVector<N, T>&
+DGtal::PointVector<N, T>::partialCopyInv ( const PointVector<N, T> & pv,
+					   const std::vector<Size> &dimensions)
+{
+  std::bitset<N+1> t1; t1.set();
+  for ( std::vector<Size>::iterator it=dimensions.begin(); 
+	it!=dimensions.end(); ++it )
+    t1.clear(*dimensions);
+
+  std::vector<Size> t2;
+  t2.reserve( N+1-dimensions.size() );
+  for (  Size i=0; i<=N; ++i )
+    if ( t1.is_set(i) ) t2.push_back(i);
+  return partialCopy(pv,t2);
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
@@ -303,6 +334,23 @@ bool
 DGtal::PointVector<N, T>::operator== ( const PointVector<N, T> & pv ) const
 {
   return (myArray == pv.myArray);
+}
+//------------------------------------------------------------------------------
+template<std::size_t N, typename T>
+inline
+bool
+DGtal::PointVector<N, T>::partialEqual( const PointVector<N, T> & pv,
+					const std::vector<Size> &dimensions)
+{
+  
+}
+//------------------------------------------------------------------------------
+template<std::size_t N, typename T>
+inline
+bool
+DGtal::PointVector<N, T>::partialEqualInv( const PointVector<N, T> & pv,
+					   const std::vector<Size> &dimensions)
+{
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
@@ -486,7 +534,6 @@ DGtal::PointVector<N, T>::normInfinity() const
   }
   return val;
 }
-// ------------------------- Standard vectors ------------------------------
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
@@ -519,11 +566,7 @@ DGtal::PointVector<N,T>::selfDisplay( std::ostream & out ) const
     out << at( i ) << (i == dimension() - 1 ? "" : ", ");
   out << "}";
 }
-
-// --------------- CDrawableWithDGtalBoard realization -------------------------
 //------------------------------------------------------------------------------
-
-
 template<std::size_t N, typename T>
 inline
 DGtal::DrawableWithDGtalBoard*
@@ -532,12 +575,8 @@ DGtal::PointVector<N, T>::defaultStyle( std::string mode) const
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
     return new DefaultDrawStylePaving;
   else // mode == "Grid"
-    return new DefaultDrawStyleGrid;
-  
+    return new DefaultDrawStyleGrid;  
 }
-
-
-
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
@@ -547,13 +586,6 @@ DGtal::PointVector<N, T>::styleName() const
   return "PointVector";
 }
 //------------------------------------------------------------------------------
-
-/**
- * Draw a pixel as a unit square on a LiBoard board
- * @param board the output board where the object is drawn.
- */
-
-
 template<std::size_t N, typename T>
 inline
 void
@@ -563,14 +595,7 @@ DGtal::PointVector<N,T>::selfDrawAsPaving( DGtalBoard & board ) const
   board.drawRectangle( (float) IntegerTraits<T>::castToInt64_t(myArray[0]) - 0.5f, 
  		       (float) IntegerTraits<T>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
 }
-
-
-/**
- * Draw a pixel as a point on a LiBoard board
- * @param board the output board where the object is drawn.
- */
-
-
+//------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 void
@@ -581,12 +606,7 @@ DGtal::PointVector<N,T>::selfDrawAsGrid( DGtalBoard & board ) const
   board.fillCircle((float) IntegerTraits<T>::castToInt64_t(myArray[0]), 
 		   (float) IntegerTraits<T>::castToInt64_t(myArray[1]),0.1);
 }
-
-
-/**
- * Draw the object on a LibBoard board.
- * @param board the output board where the object is drawn.
- */
+//------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
 void
@@ -605,10 +625,6 @@ DGtal::PointVector<N,T>::selfDraw( DGtalBoard & board ) const
   else
     ASSERT(false && ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
 }
-
-
-
-
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
 inline
@@ -618,9 +634,8 @@ DGtal::PointVector<N, T>::selfDraw(DGtalBoard & board,const PointVector &apoint)
   ASSERT(N == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-      (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
-      true);
-
+		  (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
+		  true);
 }
 //------------------------------------------------------------------------------
 template<std::size_t N, typename T>
