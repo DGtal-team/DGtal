@@ -116,7 +116,7 @@ namespace DGtal
     // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point,Size> ConstIterator; // PB THIS IS NOT A CONST ITERATOR !!!!!
+    typedef HyperRectDomain_Iterator<Point,Size> ConstIterator; 
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
     //typedef std::reverse_iterator<ConstIterator> ReverseConstIterator; BUG !
 
@@ -156,37 +156,65 @@ namespace DGtal
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
+    struct ConstRange 
+    {
+      typedef ConstIterator        const_iterator;
+      typedef ReverseConstIterator reverse_const_iterator;
+      
+      ConstRange(const HyperRectDomain<TSpace>& domain) : myDomain(domain)
+      {}
+      const_iterator begin()
+      { return myDomain.myIteratorBegin; }
+      const_iterator begin(const Point& aPoint)
+      { ASSERT(myDomain.isInside(aPoint));
+	return const_iterator(aPoint, 
+			      myDomain.myUpperBound, myDomain.myUpperBound); }
+      const_iterator end()
+      { return myDomain.myIteratorEnd; }
 
+      reverse_const_iterator rbegin()
+      { return reverse_const_iterator(end()); }
+      reverse_const_iterator rbegin(const Point& aPoint)
+      {  ASSERT(myDomain.isInside(aPoint));
+	return reverse_const_iterator(begin(aPoint)+1); }
+      reverse_const_iterator rend()
+      { return reverse_const_iterator(begin()); }
+    private:
+      const HyperRectDomain<TSpace>& myDomain;
+    };
+
+    ConstRange range() const
+    { return ConstRange(*this); }
 
     //------------- Global Iterator
     /**
      * begin() iterator.
      *
      **/
-    ConstIterator begin() const;
-    ReverseConstIterator rbegin() const;
+    // ConstIterator begin() const;
+    //ReverseConstIterator rbegin() const;
 
     /**
      * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
      *
      **/
-    ConstIterator begin ( const Point &aPoint ) const;
-    ReverseConstIterator rbegin ( const Point &aPoint ) const;
+    //ConstIterator begin ( const Point &aPoint ) const;
+    //ReverseConstIterator rbegin ( const Point &aPoint ) const;
 
     /**
      * end() iterator.
      *
      **/
-    ConstIterator end() const;
-    ReverseConstIterator rend() const;
+    //ConstIterator end() const;
+    //ReverseConstIterator rend() const;
 
     /**
      * end() iterator.
      * @returns a ConstIterator at the endpoint \param aPoint
      *
      **/
-    ConstIterator end(const Point &aPoint) const;
-    ReverseConstIterator rend(const Point &aPoint) const;
+    //ConstIterator end(const Point &aPoint) const;
+    //ReverseConstIterator rend(const Point &aPoint) const;
 
 
     //------------ Subdomain/Permutation  Iterators

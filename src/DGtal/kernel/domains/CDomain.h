@@ -149,9 +149,9 @@ namespace DGtal
       // Domain should have a predicate() returning a Predicate.
       ConceptUtils::sameType( myPred, myT.predicate() );
       // Domain should have a begin() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.begin() );
+      //ConceptUtils::sameType( myIt, myT.begin() );
       // Domain should have a end() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.end() );
+      //ConceptUtils::sameType( myIt, myT.end() );
     }
 
     // ------------------------- Private Datas --------------------------------

@@ -202,7 +202,7 @@ DGtal::HyperRectDomain<TSpace>::upperBound() const
  * begin() iterator.
  *
  **/
-template<typename TSpace>
+/*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin() const
@@ -215,20 +215,20 @@ typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::rbegin() const
 {
   return ReverseConstIterator(end());
-}
+}*/
 
 /**
  * begin(aPoint) iterator.
  *
  **/
-template<typename TSpace>
+/*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::begin ( const Point &aPoint ) const
 {
   ASSERT(isInside(aPoint));
   return ConstIterator ( aPoint, myLowerBound, myUpperBound );
-}
+  }*/
 /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
@@ -240,7 +240,7 @@ DGtal::HyperRectDomain<TSpace>::rbegin ( const Point &aPoint ) const
  * end() iterator.
  *
  **/
-template<typename TSpace>
+ /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end() const
@@ -253,13 +253,13 @@ typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::rend() const
 {
   return ReverseConstIterator(begin());
-}
+  }*/
 
 /**
  * end(aPoint) iterator.
  *
  **/
-template<typename TSpace>
+/*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::end(const Point & aPoint) const
@@ -267,7 +267,7 @@ DGtal::HyperRectDomain<TSpace>::end(const Point & aPoint) const
   ASSERT(isInside(aPoint));
   ConstIterator it( aPoint, myLowerBound, myUpperBound );
   return ++it;
-}
+  }*/
 /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator

@@ -54,8 +54,8 @@ int main()
   HyperRectDomain<Space4DType> myDomain ( A, B );
 
   //We just iterate on the Domain points and print out the point coordinates.
-  std::copy ( myDomain.begin(),
-	      myDomain.end(),
+  std::copy ( myDomain.range().begin(),
+	      myDomain.range().end(),
 	      std::ostream_iterator<Point4DType> ( std::cout, " " ) );
 }
 /** @ingroup Tests **/
