@@ -68,7 +68,7 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
 
   //We scan the domain instead of the image because we cannot
   //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+  for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
       it!=itend;
       ++it)
     {

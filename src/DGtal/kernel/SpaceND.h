@@ -87,10 +87,10 @@ namespace DGtal
       typedef TDimension Dimension;
 
       //Points and Vectors
-      typedef PointVector<dim,Integer> Point;
-      typedef PointVector<dim,Integer> Vector;
+    typedef PointVector<dim, Integer, Dimension> Point;
+    typedef PointVector<dim, Integer, Dimension> Vector;
 
-      typedef SpaceND<dim, Integer, Size> Space;
+    typedef SpaceND<dim, Integer, Size, Dimension> Space;
 
       // static constants
       static const Dimension staticDimension = dim;
