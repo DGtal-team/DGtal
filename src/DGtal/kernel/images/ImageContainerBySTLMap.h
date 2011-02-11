@@ -19,6 +19,7 @@
 /**
  * @file ImageContainerBySTLMap.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/06/15
@@ -67,13 +68,15 @@ namespace DGtal
   public:
 
     BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
-		
+    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));		
 		
     typedef typename Domain::Point Point;
     typedef typename map<Point,ValueType>::size_type TSizeType;
     typedef typename map<Point,ValueType>::iterator Iterator;
     typedef typename map<Point,ValueType>::const_iterator ConstIterator;
+    typedef typename map<Point,ValueType>::reverse_iterator ReverseIterator;
+    typedef typename map<Point,ValueType>::const_reverse_iterator
+    ConstReverseIterator;
 
     ///\todo create span iterators
     class SpanIterator: public Iterator
@@ -180,8 +183,8 @@ namespace DGtal
 
     };
 
-    ImageContainerBySTLMap(const Point &aPointA,
-			   const Point &aPointB ) {};
+    ImageContainerBySTLMap(const Point &,
+			   const Point & ) {};
 
     ~ImageContainerBySTLMap() {};
 
@@ -191,7 +194,7 @@ namespace DGtal
       if ( it == this->end() )
 	throw std::bad_alloc();
       else
-	return this->operator[]( aPoint );
+	return (*it).second; // this->operator[]( aPoint );
     }
 
 

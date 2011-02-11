@@ -46,7 +46,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
-    const Point &aPointB ) :
+						  const Point &aPointB ) :
     myLowerBound(std::min(aPointA, aPointB)),
     myUpperBound(std::max(aPointA, aPointB)),
     myPredicate( myLowerBound, myUpperBound ),
@@ -167,7 +167,7 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving") &&
+  ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
 	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   if ( ( mode == "" ) || ( mode == "Grid" ) )
@@ -182,7 +182,7 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 {
-  ASSERT(TSpace::staticDimension == 2 && "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(TSpace::staticDimension == 2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::staticDimension == 2)
   {
@@ -217,7 +217,7 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
 {
-  ASSERT(TSpace::staticDimension==2 && "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
+  ASSERT(TSpace::staticDimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
   
   if (TSpace::staticDimension == 2)
   {
