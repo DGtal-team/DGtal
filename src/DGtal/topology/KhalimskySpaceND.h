@@ -307,15 +307,15 @@ namespace DGtal
     typedef TInteger Integer;
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
 
+    //Size & Dimension
+    typedef TSize Size;
+    typedef TDimension Dimension;
+    
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
     typedef bool Sign;
     typedef CellDirectionIterator< Integer, Dimension > DirIterator;
-    
-    //Size & Dimension
-    typedef TSize Size;
-    typedef TDimension Dimension;
     
     //Points and Vectors
     typedef PointVector< dim, Integer > Point;
