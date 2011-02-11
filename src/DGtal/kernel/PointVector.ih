@@ -621,7 +621,7 @@ void
 DGtal::PointVector<N, T, TDimension>::selfDraw( DGtalBoard & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both") &&
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
 	  ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
 
   if ( mode == "Paving" )
