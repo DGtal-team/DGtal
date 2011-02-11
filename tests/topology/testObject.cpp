@@ -118,8 +118,8 @@ bool testObject()
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
+  for ( DomainType::ConstIterator it = domain.range().begin(); 
+	it != domain.range().end();
 	++it )
     {
       if ( (*it - c ).norm() < radius ) // 450.0
@@ -282,7 +282,7 @@ bool testObject3D()
   trace.info() << "Creating diamond (r=15)" << endl;
   // diamond of radius 30
   DigitalSet diamond_set( domain );
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
     {
       if ( (*it - c ).norm1() <= 45 ) diamond_set.insertNew( *it );
     }
@@ -377,7 +377,7 @@ bool testSimplePoints3D()
   trace.beginBlock ( "Creating Diamond (r=4)" );
   // diamond of radius 4
   DigitalSet diamond_set( domain );
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
     {
       if ( (*it - c ).norm1() <= 3 ) diamond_set.insertNew( *it );
     }
@@ -461,8 +461,8 @@ bool testDraw()
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
+  for ( DomainType::ConstIterator it = domain.range().begin(); 
+	it != domain.range().end();
 	++it )
     {
       if ( (*it - c ).norm() < radius ) // 450.0

@@ -91,7 +91,7 @@ bool testDistanceTransformND()
   
   //We check the result
   bool res=true;
-  for(Domain::ConstIterator itDom = domain.begin(), itDomend = domain.end();
+  for(Domain::ConstIterator itDom = domain.range().begin(), itDomend = domain.range().end();
       itDom != itDomend; ++itDom)
     {
       //distance from the point to the seed

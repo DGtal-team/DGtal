@@ -19,7 +19,7 @@
 /**
  * @file PointVector.h
  * @author David Coeurjolly (@c david.coeurjolly@liris.cnrs.fr )
- * @author Guillaume Damiand (@c guillaume.damiand@liris.cnrs.fr )
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include <string>
+#include <bitset>
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
@@ -55,6 +56,13 @@
 
 namespace DGtal
 {
+  /// @return a bitset having true for each dimension presents in dimensions.
+  template<std::size_t N, typename TContainer>
+  std::bitset<N> setDimensionsIn( const TContainer &dimensions );
+
+  /// @return a bitset having true for each dimension not presents in dimensions.
+  template<std::size_t N, typename TContainer>
+  std::bitset<N> setDimensionsNotIn( const TContainer &dimensions );
 
   /////////////////////////////////////////////////////////////////////////////
   // class PointVector
@@ -94,264 +102,171 @@ namespace DGtal
    * @todo continue snippet
    *
    * @see testPointVector.cpp
+   * @tparam T the Integer class used to specify the arithmetic computations (default type = int).
+   * @tparam TDimension the type used to represent indices of coordinates.
    *
+   * @TODO rename T in TInteger; rename Component and UnsignedComponent (uniform name with space)
+   *       correct all the use of size_t, Dimension, .....
    */
-  template < std::size_t N, typename T = DGtal::int32_t >
+  template < std::size_t N,
+	     typename T = DGtal::int32_t,
+	     typename TDimension = DGtal::uint32_t >
   class PointVector
   {
-      // ----------------------- Standard services ------------------------------
-    public:
+    // ----------------------- Standard services ------------------------------
+  public:
+    
+    /**
+     *  Copy of the Boost::array iterator type
+     *
+     **/
+    typedef typename boost::array<T, N>::iterator Iterator;
+    typedef typename boost::array<T, N>::const_iterator ConstIterator;
+    
+    ///\todo documentation here!
+    typedef T Component;
+    typedef TDimension DimensionType;
+    //      typedef TDimension Dimension; @TODO C'EST LE BORDEL
+    typedef T Coordinate; // TODO REVOIR NOM
+    //      typedef std::size_t DimensionType;
+    
+    // JOL need it in various norm().
+    typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
+    // @todo T is not a model of Integer!
+    // typedef T UnsignedComponent;
+    
+    typedef PointVector<N,T,TDimension> Self;
+    
+    static const std::size_t Dimension = N;
+    
+    /**
+     * Constructor.
+     */
+    PointVector();
+    
+    /**
+     * Constructor from array of values.
+     *
+     * @param ptrValues the array of values.
+     */
+    explicit PointVector( const T * ptrValues );
+    
+    /**
+     * Constructor from two values (the Dimension of the vector should
+     * be at least 2). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     */
+    PointVector( const T & x, const T & y );
+    
+    /**
+     * Constructor from three values (the Dimension of the vector should
+     * be at least 3). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     * @param z the third value.
+     */
+    PointVector( const T & x, const T & y, const T & z );
 
-      /**
-       *  Copy of the Boost::array iterator type
-       *
-       **/
-      typedef typename boost::array<T, N>::iterator Iterator;
-      typedef typename boost::array<T, N>::const_iterator ConstIterator;
-
-      ///\todo documentation here!
-      typedef T Component;
-      typedef T Coordinate;
-    typedef std::size_t DimensionType;
-
-      // JOL need it in various norm().
-      typedef typename IntegerTraits<T>::UnsignedVersion UnsignedComponent;
-      // @todo T is not a model of Integer!
-      // typedef T UnsignedComponent;
-
-
-      static const std::size_t Dimension = N;
-
-      /**
-       * Constructor.
-       */
-      PointVector();
-
-      /**
-       * Constructor from array of values.
-       *
-       * @param ptrValues the array of values.
-      */
-      explicit PointVector( const T * ptrValues );
-
-      /**
-       * Constructor from two values (the Dimension of the vector should
-       * be at least 2). Other components are set to 0.
-       *
-       * @param x the first value.
-       * @param y the second value.
-       */
-      PointVector( const T & x, const T & y );
-
-      /**
-       * Constructor from three values (the Dimension of the vector should
-       * be at least 3). Other components are set to 0.
-       *
-       * @param x the first value.
-       * @param y the second value.
-       * @param z the third value.
-       */
-      PointVector( const T & x, const T & y, const T & z );
-
-      /**
-       * Constructor from four values (the Dimension of the vector should
-       * be at least 4). Other components are set to 0.
-       *
-       * @param x the first value.
-       * @param y the second value.
-       * @param z the third value.
-       * @param t the fourth value.
-       */
-      PointVector( const T & x, const T & y, const T & z, const T & t );
+    /**
+     * Constructor from four values (the Dimension of the vector should
+     * be at least 4). Other components are set to 0.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     * @param z the third value.
+     * @param t the fourth value.
+     */
+    PointVector( const T & x, const T & y, const T & z, const T & t );
 
 #ifdef CPP0X_INITIALIZER_LIST
-      /**
-       * Constructor from initializer list.
-       * @param the initializer list.
-       */
-      PointVector( std::initializer_list<T> init );
+    /**
+     * Constructor from initializer list.
+     * @param the initializer list.
+     */
+    PointVector( std::initializer_list<T> init );
 #endif // CPP0X_INITIALIZER_LIST
 
-      /** Constructor taking apoint and a functor as parameters.
-       *  The new point is initialized by the result of functor f
-       *  for each coordinate of apoint1 and apoint2
-       */
-      template<typename Functor>
-      PointVector( const PointVector& apoint1, const PointVector& apoint2,
-          const Functor& f );
+    /** Constructor taking apoint and a functor as parameters.
+     *  The new point is initialized by the result of functor f
+     *  for each coordinate of apoint1 and apoint2
+     */
+    template<typename Functor>
+    PointVector( const Self& apoint1, const Self& apoint2,
+		 const Functor& f );
 
-      /**
-       * Destructor.
-       */
-      ~PointVector();
+    /**
+     * Destructor.
+     */
+    ~PointVector();
 
-      // ----------------------- Iterator services ------------------------------
-    public:
-      /**
-       * Copy constructor.
-       * @param other the object to clone.
-       */
-      PointVector( const PointVector & other );
+    // ----------------------- Iterator services ------------------------------
+  public:
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    PointVector( const Self & other );
 
-      /**
-       * Assignement Operator
-       *
-       * @param other the object to copy.
-       * @return a reference on 'this'.
-       */
-      PointVector & operator= ( const PointVector & pv );
+    /**
+     * Assignement Operator
+     *
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Self & operator= ( const Self & pv );
 
 
 #ifdef CPP0X_INITIALIZER_LIST
-      /**
-       * Partial copy of a given PointVector. Only coordinates in dimensions
-       * are copied.
-       *
-       * @param other the object to copy.
-       * @param dim the dimensions of v to copy
-       *        (Size between 0 and N, all differents).
-       * @return a reference on 'this'.
-       */
-			template<typename Size>
-      PointVector& partialCopy (const PointVector & pv,
-				std::initializer_list<Size> dimensions);
+    /**
+     * Partial copy of a given PointVector. Only coordinates in dimensions
+     * are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopy (const Self & pv,
+		       std::initializer_list<TDimension> dimensions);
 
-      /**
-       * Inverse partial copy of a given PointVector. Only coordinates not 
-       * in dimensions are copied.
-       *
-       * @param other the object to copy.
-       * @param dim the dimensions of v to copy
-       *        (Size between 0 and N, all differents).
-       * @return a reference on 'this'.
-       */
-    template<typename Size>
-    PointVector& partialCopyInv (const PointVector & pv,
-				 std::initializer_list<Size> dimensions);
+    /**
+     * Inverse partial copy of a given PointVector. Only coordinates not 
+     * in dimensions are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopyInv (const Self & pv,
+			  std::initializer_list<TDimension> dimensions);
 #endif
-      /**
-       * Partial copy of a given PointVector. Only coordinates in dimensions
-       * are copied.
-       *
-       * @param other the object to copy.
-       * @param dim the dimensions of v to copy
-       *        (Size between 0 and N, all differents).
-       * @return a reference on 'this'.
-       */
-    template<typename Size>
-    PointVector<N,T>& partialCopy (const PointVector<N,T> & pv,
-				   const std::vector<Size> &dimensions);
+    /**
+     * Partial copy of a given PointVector. Only coordinates in dimensions
+     * are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopy (const Self & pv,
+		       const std::vector<TDimension> &dimensions);
 
-      /**
-       * Partial copy of a given PointVector. Only coordinates not 
-       * in dimensions are copied.
-       *
-       * @param other the object to copy.
-       * @param dim the dimensions of v to copy
-       *        (Size between 0 and N, all differents).
-       * @return a reference on 'this'.
-       */
-    template<typename Size>
-    PointVector<N,T>& partialCopyInv (const PointVector<N,T> & pv,
-				      const std::vector<Size> &dimensions);
-
-
-      // ----------------------- Iterator services ------------------------------
-    public:
-
-      /**
-       * PointVector begin() iterator.
-       *
-       * @return an Iterator on the first element of a Point/Vector.
-       **/
-      Iterator begin();
-
-      /**
-       * PointVector end() iterator.
-       *
-       * @return an Iterator on the last element of a Point/Vector.
-       **/
-      Iterator end();
-
-      /**
-       * PointVector begin() const iterator.
-       *
-       * @return an ConstIterator on the first element of a Point/Vector.
-       **/
-      ConstIterator begin() const;
-
-      /**
-       * PointVector end() const iterator.
-       *
-       * @return a ConstIterator on the last element of a Point/Vector.
-       **/
-      ConstIterator end() const;
-
-      // ----------------------- Array services ------------------------------
-    public:
-
-      /**
-       * Returns the size of the vector (i.e. the number of its
-       * coefficients).
-       * Same as getDimension
-       */
-      static std::size_t size();
-
-      /**
-       * Static method to obtain the dimension of a Point/Vector
-       * @return  the size of the vector (i.e. the number of its elements).
-       */
-      static std::size_t dimension();
-
-      /**
-       * Returns the  @a i-th coefficient of the vector.
-       *
-       * @pre The @a i index must lie between @a 0 and @a size() .
-       *
-       * @param i is the index of the retrieved coefficient.
-       */
-      const T& at( std::size_t i ) const;
-
-      /**
-       * Returns a non-const reference to the @a i-th element of the
-       * vector.
-       *
-       * @pre The @a i index must lie between @a 0 and @a size() .
-       *
-       * @param i is the index of the retrieved coefficient.
-       */
-      T& at( std::size_t i );
-
-      /**
-       * Returns the  @a i-th coefficient of the vector.
-       *
-       * @pre The @a i index must lie between @a 0 and @a size() .
-       *
-       * @param i is the index of the retrieved coefficient.
-       */
-      const T& operator[]( std::size_t i ) const;
-
-      /**
-       * Returns a non-const reference to the @a i-th element of the
-       * vector.
-       *
-       * @pre The @a i index must lie between @a 0 and @a size() .
-       *
-       * @param i is the index of the retrieved coefficient.
-       */
-      T& operator[]( std::size_t i );
-
-      // ----------------------- Comparison operations --------------------------
-    public:
-
-      /**
-       * Equality operator.
-       *
-       * @param pv Point/Vector to compare to this.
-       *
-       * @return true iff points are equal.
-       */
-      bool operator== ( const PointVector & pv ) const;
+    /**
+     * Partial copy of a given PointVector. Only coordinates not 
+     * in dimensions are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopyInv (const Self & pv,
+			  const std::vector<TDimension> &dimensions);
 
     /**
      * Partial equality.
@@ -360,8 +275,8 @@ namespace DGtal
      *
      * @return true iff points are equal for given dimensions .
      */
-    bool partialEqual ( const PointVector & pv,
-			const std::vector<Size> &dimensions )  const;
+    bool partialEqual ( const Self & pv,
+			const std::vector<TDimension> &dimensions )  const;
 
     /**
      * Partial inverse equality.
@@ -370,179 +285,276 @@ namespace DGtal
      *
      * @return true iff points are equal for dimensions not in dimensions.
      */
-    bool partialEqualInv ( const PointVector & pv,
-			   const std::vector<Size> &dimensions )  const;
+    bool partialEqualInv ( const Self & pv,
+			   const std::vector<TDimension> &dimensions )  const;
+    
+    // ----------------------- Iterator services ------------------------------
+  public:
 
-      /**
-       * Difference operator on Points/Vectors.
-       *
-       * @param pv the Point/Vector to compare to this.
-       *
-       * @return true iff this differs from pv, false otherwise.
-       */
-      bool operator!= ( const PointVector & pv ) const;
+    /**
+     * PointVector begin() iterator.
+     *
+     * @return an Iterator on the first element of a Point/Vector.
+     **/
+    Iterator begin();
 
-      /**
-       * Comparison operator on Points/Vectors (LesserThan).
-       *
-       * @param pv the Point/Vector to compare to this.
-       *
-       * @return true iff this < pv, false otherwise.
-       */
-      bool operator< ( const PointVector & pv ) const;
+    /**
+     * PointVector end() iterator.
+     *
+     * @return an Iterator on the last element of a Point/Vector.
+     **/
+    Iterator end();
 
-      /**
-       * Comparison operator on Points/Vectors (LesserOrEqualThan).
-       *
-       * @param pv the Point/Vector to compare to this.
-       *
-       * @return true iff this <= pv, false otherwise.
-       */
-      bool operator<= ( const PointVector & pv ) const;
+    /**
+     * PointVector begin() const iterator.
+     *
+     * @return an ConstIterator on the first element of a Point/Vector.
+     **/
+    ConstIterator begin() const;
 
-      /**
-       * Comparison operator on Points/Vectors (GreaterThan).
-       *
-       * @param pv the Point/Vector to compare to this.
-       *
-       * @return true iff this > pv, false otherwise.
-       */
-      bool operator> ( const PointVector & pv ) const;
+    /**
+     * PointVector end() const iterator.
+     *
+     * @return a ConstIterator on the last element of a Point/Vector.
+     **/
+    ConstIterator end() const;
 
-      /**
-       * Comparison operator on Points/Vectors (GreaterOrEqualThan).
-       *
-       * @param pv the Point/Vector to compare to this.
-       *
-       * @return true iff this >= pv, false otherwise.
-       */
-      bool operator>= ( const PointVector & pv ) const;
+    // ----------------------- Array services ------------------------------
+  public:
+
+    /**
+     * Returns the size of the vector (i.e. the number of its
+     * coefficients).
+     * Same as getDimension
+     */
+    static std::size_t size();
+
+    /**
+     * Static method to obtain the dimension of a Point/Vector
+     * @return  the size of the vector (i.e. the number of its elements).
+     */
+    static std::size_t dimension();
+
+    /**
+     * Returns the  @a i-th coefficient of the vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    const T& at( std::size_t i ) const;
+
+    /**
+     * Returns a non-const reference to the @a i-th element of the
+     * vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    T& at( std::size_t i );
+
+    /**
+     * Returns the  @a i-th coefficient of the vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    const T& operator[]( std::size_t i ) const;
+
+    /**
+     * Returns a non-const reference to the @a i-th element of the
+     * vector.
+     *
+     * @pre The @a i index must lie between @a 0 and @a size() .
+     *
+     * @param i is the index of the retrieved coefficient.
+     */
+    T& operator[]( std::size_t i );
+
+    // ----------------------- Comparison operations --------------------------
+  public:
+
+    /**
+     * Equality operator.
+     *
+     * @param pv Point/Vector to compare to this.
+     *
+     * @return true iff points are equal.
+     */
+    bool operator== ( const Self & pv ) const;
+
+    /**
+     * Difference operator on Points/Vectors.
+     *
+     * @param pv the Point/Vector to compare to this.
+     *
+     * @return true iff this differs from pv, false otherwise.
+     */
+    bool operator!= ( const Self & pv ) const;
+
+    /**
+     * Comparison operator on Points/Vectors (LesserThan).
+     *
+     * @param pv the Point/Vector to compare to this.
+     *
+     * @return true iff this < pv, false otherwise.
+     */
+    bool operator< ( const Self & pv ) const;
+
+    /**
+     * Comparison operator on Points/Vectors (LesserOrEqualThan).
+     *
+     * @param pv the Point/Vector to compare to this.
+     *
+     * @return true iff this <= pv, false otherwise.
+     */
+    bool operator<= ( const Self & pv ) const;
+
+    /**
+     * Comparison operator on Points/Vectors (GreaterThan).
+     *
+     * @param pv the Point/Vector to compare to this.
+     *
+     * @return true iff this > pv, false otherwise.
+     */
+    bool operator> ( const Self & pv ) const;
+
+    /**
+     * Comparison operator on Points/Vectors (GreaterOrEqualThan).
+     *
+     * @param pv the Point/Vector to compare to this.
+     *
+     * @return true iff this >= pv, false otherwise.
+     */
+    bool operator>= ( const Self & pv ) const;
 
 
-      // ----------------------- Operations ------------------------------
-    public:
+    // ----------------------- Operations ------------------------------
+  public:
 
-      /**
-       * Multiplies @a *this by the @a coeff scalar number.
-       *
-       * @param coeff is the factor @a *this get multiplied by.
-       * @return a reference on 'this'.
-       */
-      PointVector & operator*= ( T coeff );
+    /**
+     * Multiplies @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get multiplied by.
+     * @return a reference on 'this'.
+     */
+    Self & operator*= ( T coeff );
 
-      /**
-       * Multiplication operator with a scalar number
-       *
-       * @param coeff is the factor 'this' is multiplied by.
-       * @return a new Point that is the multiplication of 'this' by coeff.
-       */
-      PointVector operator*( T coeff );
-      /**
-       * Addition operator with assignement.
-       *
-       * @param v is the Point that gets added to @a *this.
-       * @return a reference on 'this'.
-       */
-      PointVector & operator+= ( const PointVector & v );
+    /**
+     * Multiplication operator with a scalar number
+     *
+     * @param coeff is the factor 'this' is multiplied by.
+     * @return a new Point that is the multiplication of 'this' by coeff.
+     */
+    Self operator*( T coeff );
+    /**
+     * Addition operator with assignement.
+     *
+     * @param v is the Point that gets added to @a *this.
+     * @return a reference on 'this'.
+     */
+    Self & operator+= ( const Self & v );
 
-      /**
-       * Addition operator.
-       *
-       * @param v is the Point that gets added to @a *this.
-       * @return a new Point that is the addition of 'this' to [v].
-       */
-      PointVector operator+ ( const PointVector & v ) const;
+    /**
+     * Addition operator.
+     *
+     * @param v is the Point that gets added to @a *this.
+     * @return a new Point that is the addition of 'this' to [v].
+     */
+    Self operator+ ( const Self & v ) const;
 
 
-      /**
-       * Substraction operator with assignement.
-       *
-       * @param v is the Point that gets substracted to  *this.
-       * @return a reference on 'this'.
-       */
-      PointVector & operator-= ( const PointVector & v );
+    /**
+     * Substraction operator with assignement.
+     *
+     * @param v is the Point that gets substracted to  *this.
+     * @return a reference on 'this'.
+     */
+    Self & operator-= ( const Self & v );
 
-      /**
-       * Substraction operator.
-       * Point - Vector => Point
-       *
-       * @param v is the Point that gets added to @a *this.
-       * @return a new Point that is the subtraction 'this'-[v].
-       */
-      PointVector operator- ( const PointVector & v ) const;
+    /**
+     * Substraction operator.
+     * Point - Vector => Point
+     *
+     * @param v is the Point that gets added to @a *this.
+     * @return a new Point that is the subtraction 'this'-[v].
+     */
+    Self operator- ( const Self & v ) const;
 
-      /**
-       * Resets all the values to zero.
-       */
-      void reset();
+    /**
+     * Resets all the values to zero.
+     */
+    void reset();
 
-      /**
-       * Implements the infimum (or greatest lower bound). It means the
-       * point whose coordinates are exactly the minimum of the two
-       * points coordinate by coordinate.
-       *
-       * @param apoint any point.
-       * @return a new point being the inf between *this and apoint.
-       * @see isLower
-       */
-      PointVector inf( const PointVector& apoint ) const;
+    /**
+     * Implements the infimum (or greatest lower bound). It means the
+     * point whose coordinates are exactly the minimum of the two
+     * points coordinate by coordinate.
+     *
+     * @param apoint any point.
+     * @return a new point being the inf between *this and apoint.
+     * @see isLower
+     */
+    Self inf( const Self& apoint ) const;
 
-      /**
-       * Implements the supremum (or least upper bound). It means the
-       * point whose coordinates are exactly the maximum of the two
-       * points coordinate by coordinate.
-       *
-       * @param apoint any point.
-       * @return a new point being the sup between *this and apoint.
-       * @see isUpper
-       */
-      PointVector sup( const PointVector& apoint ) const;
+    /**
+     * Implements the supremum (or least upper bound). It means the
+     * point whose coordinates are exactly the maximum of the two
+     * points coordinate by coordinate.
+     *
+     * @param apoint any point.
+     * @return a new point being the sup between *this and apoint.
+     * @see isUpper
+     */
+    Self sup( const Self& apoint ) const;
 
-      /**
-       * @param p any point.
-       * @return true if this is below p (ie. this==inf(this,p))
-       * NB: faster than computing the infimum and compare it afterwards.
-       */
-      bool isLower( const PointVector& p ) const;
+    /**
+     * @param p any point.
+     * @return true if this is below p (ie. this==inf(this,p))
+     * NB: faster than computing the infimum and compare it afterwards.
+     */
+    bool isLower( const Self& p ) const;
 
-      /**
-       * @param p any point.
-       * @return true if this is upper p (ie. this==sup(this,p))
-       * NB: faster than computing the supremum and compare it afterwards.
-       */
-      bool isUpper( const PointVector& p ) const;
+    /**
+     * @param p any point.
+     * @return true if this is upper p (ie. this==sup(this,p))
+     * NB: faster than computing the supremum and compare it afterwards.
+     */
+    bool isUpper( const Self& p ) const;
 
-      /**
-       * Specify the set of norm types
-       *
-       */
-      enum NormType { L_2, L_1, L_infty };
+    /**
+     * Specify the set of norm types
+     *
+     */
+    enum NormType { L_2, L_1, L_infty };
 
-      /**
-       * Computes the norm of a point/vector.
-       * \warning This method performs a conversion
-       * from the type T to double for each components to compute the
-       * norms. For exact norms (restricted to L_1 and L_infinity
-       * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
-       *
-       * @param type specifies the type of norm to consider (see @ref NormType).
-       * @return the norm of the point/vector as a double.
-       */
-      double norm( const NormType type = L_2 ) const;
+    /**
+     * Computes the norm of a point/vector.
+     * \warning This method performs a conversion
+     * from the type T to double for each components to compute the
+     * norms. For exact norms (restricted to L_1 and L_infinity
+     * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
+     *
+     * @param type specifies the type of norm to consider (see @ref NormType).
+     * @return the norm of the point/vector as a double.
+     */
+    double norm( const NormType type = L_2 ) const;
 
-      /**
-       * Computes the 1-norm of a vector.
-       *
-       * @return the absolute sum of the components of this vector.
-       */
-      UnsignedComponent norm1() const;
+    /**
+     * Computes the 1-norm of a vector.
+     *
+     * @return the absolute sum of the components of this vector.
+     */
+    UnsignedComponent norm1() const;
 
-      /**
-       * Computes the infinity-norm of a vector.
-       *
-       * @return the maximum absolute value of the components of this vector.
-       */
-      UnsignedComponent normInfinity() const;
+    /**
+     * Computes the infinity-norm of a vector.
+     *
+     * @return the maximum absolute value of the components of this vector.
+     */
+    UnsignedComponent normInfinity() const;
 
     // ------------------------- Standard vectors ------------------------------
   public:
@@ -551,31 +563,31 @@ namespace DGtal
      * @param val any value.
      * @return the diagonal vector (val,val, .. val).
      */
-    static PointVector diagonal( Component val = 1 );
+    static Self diagonal( Component val = 1 );
 
     /**
      * @param k any number between 0 and Dimension-1.
      * @param val any value.
      * @return the [k]-th base vector (0,0, ..., 0, val, 0, ..., 0).
      */
-    static PointVector base( DimensionType k, Component val = 1 );
+    static Self base( TDimension k, Component val = 1 );
 
-      // ------------------------- Private Datas -------------------------------
-    private:
+    // ------------------------- Private Datas -------------------------------
+  private:
 
-      /**
-       * Default styles.
-       */
+    /**
+     * Default styles.
+     */
     struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-        virtual void selfDraw( DGtalBoard & aBoard ) const
-        {
-	  aBoard.setPenColorRGBi(160,160,160);
-	  aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
-          aBoard.setFillColorRGBi(220,220,220);
-	  aBoard.setLineWidth(1);
-	}
-      };
+	aBoard.setPenColorRGBi(160,160,160);
+	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setFillColorRGBi(220,220,220);
+	aBoard.setLineWidth(1);
+      }
+    };
 
 
     struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
@@ -588,25 +600,25 @@ namespace DGtal
     };
 
 
-      // --------------- CDrawableWithDGtalBoard realization -------------------
-    public:
+    // --------------- CDrawableWithDGtalBoard realization -------------------
+  public:
 
-      /**
-       * Default drawing style object.
-       * @return the dyn. alloc. default style for this object.
-       */
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
     DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
     
-      /**
-       * @return the style name used for drawing this object.
-       */
-      std::string styleName() const;
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
     
-      /**
-       * Draw the object on a DGtalBoard board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDraw( DGtalBoard & board ) const;
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw( DGtalBoard & board ) const;
 
     
     /**
@@ -627,34 +639,34 @@ namespace DGtal
 
 
 
-      // ----------------------- Interface --------------------------------------
-    public:
+    // ----------------------- Interface --------------------------------------
+  public:
 
 
-      /**
-       * Draw the object (as a Vector from aPoint) on a DGtalBoard board
-       *
-       * @param board the output board where the object is drawn.
-       * @param startingPoint the starting point of the vector
-       * @tparam Functor a Functor to specialize the Board style
-       */
-    void selfDraw( DGtalBoard & board, const PointVector &startingPoint ) const;
+    /**
+     * Draw the object (as a Vector from aPoint) on a DGtalBoard board
+     *
+     * @param board the output board where the object is drawn.
+     * @param startingPoint the starting point of the vector
+     * @tparam Functor a Functor to specialize the Board style
+     */
+    void selfDraw( DGtalBoard & board, const Self &startingPoint ) const;
 
 
-      /**
-       * Writes/Displays the object on an output stream.
-       * @param out the output stream where the object is written.
-       */
-      void selfDisplay( std::ostream & out ) const;
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay( std::ostream & out ) const;
 
-      /**
-       * Checks the validity/consistency of the object.
-       * @return 'true' if the object is valid, 'false' otherwise.
-       */
-      bool isValid() const;
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
 
-      /// Static const for zero PointVector.
-      static PointVector zero;
+    /// Static const for zero PointVector.
+    static Self zero;
 
 
     
@@ -678,26 +690,26 @@ namespace DGtal
     }
   };
   
- /**
-  * Modifier class in a DGtalBoard stream. Realizes the concept
-  * CDrawableWithDGtalBoard.
-  */
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
   struct DrawGridPixel : public DrawWithBoardModifier {
-   void selfDraw( DGtalBoard & board ) const
-   {
-     board.myModes[ "PointVector" ] = "Grid";
-   }
- };
+    void selfDraw( DGtalBoard & board ) const
+    {
+      board.myModes[ "PointVector" ] = "Grid";
+    }
+  };
 
 
 
   /// Operator <<
-  template<std::size_t N, typename T>
+  template<std::size_t N, typename T, typename TDimension>
   std::ostream&
-  operator<<( std::ostream & out, const PointVector<N, T> & object );
+  operator<<( std::ostream & out, const PointVector<N, T, TDimension>& object );
 
-  template< std::size_t N, typename T>
-  PointVector<N, T>  PointVector<N, T>::zero;
+  template< std::size_t N, typename T, typename TDimension>
+  PointVector<N, T, TDimension>  PointVector<N, T, TDimension>::zero;
 
 } // namespace DGtal
 

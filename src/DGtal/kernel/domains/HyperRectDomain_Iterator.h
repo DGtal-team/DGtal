@@ -19,7 +19,7 @@
 /**
  * @file HyperRectDomain_Iterator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * @author Guillaume Damiand (\c guillaume.damiand@liris.cnrs.fr )
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/31
@@ -147,7 +147,6 @@ inline bool
 //******************************************************************************
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
   // class HyperRectDomain_Iterator
   /**
@@ -218,12 +217,15 @@ namespace DGtal
 
     const TPoint & operator*() const
     {
-      // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      // pb for reverse iterator
+      trace.warning()<<"const TPoint & operator* "<<myPoint<<"  "<<mylower<<"  "<<myupper<<std::endl;
+      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
       return myPoint;
     }
     TPoint & operator*()
     {
-      // pb for reverse iterator ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      // pb for reverse iterator
+      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
       return myPoint;
       }
 
@@ -233,7 +235,7 @@ namespace DGtal
      */
     bool operator== ( const HyperRectDomain_Iterator<TPoint,TSize> &it ) const
     {
-      return ( myPoint == ( *it ) );
+      return ( myPoint==it.myPoint );
     }
 
     /**
@@ -242,7 +244,7 @@ namespace DGtal
      */
     bool operator!= ( const HyperRectDomain_Iterator<TPoint,TSize> &aIt ) const
     {
-      return ( myPoint != ( *aIt ) );
+      return ( myPoint!=aIt.myPoint );
     }
 
     /**
@@ -392,7 +394,6 @@ namespace DGtal
       --*this;
       return tmp;
     }
-
 
   private:
     ///Current Point in the domain

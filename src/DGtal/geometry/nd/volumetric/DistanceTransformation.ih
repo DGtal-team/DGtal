@@ -147,8 +147,8 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
 
   //We process the dimensions to construct a Point
-  for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
-      itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
   {
     // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
     computeFirstStep1D ( aImage, output, (*it), predicate );
@@ -191,8 +191,8 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   ASSERT( t != NULL);
   
   //We process the dimensions to construct a Point
-  for (ConstDomIt it = localDomain.subDomainBegin( subdomain ),
-      itend = localDomain.subDomainEnd( subdomain ); it != itend; ++it)
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).begin(); it != itend; ++it)
   {
     //trace.info()  << "Processing 1D slice starting at =" << (*it) << "dim= "<<dim<<endl;
     computeOtherStep1D ( input, output, (*it), dim, s, t );
