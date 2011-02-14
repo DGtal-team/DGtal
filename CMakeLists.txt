@@ -88,13 +88,21 @@ set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
 # -----------------------------------------------------------------------------
 
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
-OPTION(INLINE_FUNCTION_BUILD "Build inline functions." ON)
+OPTION(BUILD_INLINE_FUNCTIONS "Build inline functions." ON)
+OPTION(DEBUG_VERBOSE "Verbose messages in debug mode." OFF)
 
-if (INLINE_FUNCTION_BUILD)
+if ( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+  IF (DEBUG_VERBOSE)
+    ADD_DEFINITIONS(-DDEBUG_VERBOSE)
+    MESSAGE(STATUS "Debug verbose mode activated")
+  ENDIF(DEBUG_VERBOSE)
+endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+
+if (BUILD_INLINE_FUNCTIONS)
   ADD_DEFINITIONS(-DINLINE=inline)
-else (INLINE_FUNCTION_BUILD)
+else (BUILD_INLINE_FUNCTIONS)
   ADD_DEFINITIONS(-DINLINE="")
-endif (INLINE_FUNCTION_BUILD)
+endif (BUILD_INLINE_FUNCTIONS)
 
 # -----------------------------------------------------------------------------
 # Check CPP0X

@@ -9,9 +9,9 @@ try_compile( CPP0X_INITIALIZER_LIST
   )
 if ( CPP0X_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP0X_INITIALIZER_LIST")
-  message( "-- [c++0x] with initializer_list" )
+  message(STATUS "[c++0x] with initializer_list" )
 else ( CPP0X_INITIALIZER_LIST )
-  message( "-- [c++0x] initializer_list not found" )
+  message(STATUS "[c++0x] initializer_list not found" )
 endif ( CPP0X_INITIALIZER_LIST )
 
 try_compile( CPP0X_AUTO 
