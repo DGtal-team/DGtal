@@ -68,11 +68,16 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
   BOOST_CONCEPT_ASSERT((CDrawableWithDGtalBoard<TDrawableWithDGtalBoard>));
 
   CountedPtr<DrawableWithDGtalBoard> style( object.defaultStyle() );
-  std::cerr << "[operator<<] " << object.styleName();
+#ifdef DEBUG_VERBOSE
+  trace.info() << "[operator<<] " << object.styleName();
+#endif
+
   // Apply default style
   if ( style.get() )
     {
-      std::cerr << " [default style]";
+#ifdef DEBUG_VERBOSE
+      trace.info() << " [default style]";
+#endif
       style->selfDraw( *this );
     }
   // Apply Customized style
@@ -80,7 +85,9 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
-	std::cerr << " [specific style]";
+#ifdef DEBUG_VERBOSE
+	trace.info() << " [specific style]";
+#endif
 	it->second->selfDraw( *this );
       }
   // Check for specific mode.
@@ -93,7 +100,9 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
 	( object.defaultStyle( itm->second ) );
       if ( style_mode.get() )
 	{
-	  std::cerr << " [default style for mode]";
+#ifdef DEBUG_VERBOSE
+	  trace.info() << " [default style for mode]";
+#endif
 	  style_mode->selfDraw( *this );
 	}
       // Apply customized style for specific mode.
@@ -102,12 +111,17 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
       if ( it != myStyles.end() ) 
 	if ( it->second.get() != 0 )
 	  {
-	    std::cerr << " [specific style for mode: " 
+#ifdef DEBUG_VERBOSE
+	    trace.info() << " [specific style for mode: " 
 		      << specific_style << "]";
+#endif
 	    it->second->selfDraw( *this );
 	  }
     }
-  std::cerr << "  [draw]";
+#ifdef DEBUG_VERBOSE
+  trace.info() << "  [draw]";
+#endif
+
   object.selfDraw( *this );
   std::cerr << std::endl;
   return *this;
