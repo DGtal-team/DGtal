@@ -73,8 +73,26 @@ operator=( const KhalimskyCell & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger >
+inline
+bool
+DGtal::KhalimskyCell< dim, TInteger >::
+operator==( const KhalimskyCell & other ) const
+{
+  return myCoordinates == other.myCoordinates;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger >
+inline
+bool
+DGtal::KhalimskyCell< dim, TInteger >::
+operator<( const KhalimskyCell & other ) const
+{
+  return myCoordinates < other.myCoordinates;
+}
+//-----------------------------------------------------------------------------
 template < std::size_t dim,
-	   typename TInteger = DGtal::int32_t >
+	   typename TInteger >
 inline
 std::ostream & 
 DGtal::operator<<( std::ostream & out, 
@@ -128,8 +146,29 @@ operator=( const SignedKhalimskyCell & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger >
+inline
+bool
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator==( const SignedKhalimskyCell & other ) const
+{
+  return ( myPositive == other.myPositive )
+    && ( myCoordinates == other.myCoordinates );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger >
+inline
+bool
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator<( const SignedKhalimskyCell & other ) const
+{
+  return ( myPositive < other.myPositive )
+    || ( ( myPositive == other.myPositive )
+	 && ( myCoordinates < other.myCoordinates ) );
+}
+//-----------------------------------------------------------------------------
 template < std::size_t dim,
-	   typename TInteger = DGtal::int32_t >
+	   typename TInteger >
 inline
 std::ostream & 
 DGtal::operator<<( std::ostream & out, 
@@ -177,30 +216,30 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 bool 
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-init( const Point & lower_included,
-      const Point & upper_excluded, 
+init( const Point & lower,
+      const Point & upper,
       bool closed )
 {
   myIsClosed = closed;
-  myLowerIncluded = lower_included;
-  myUpperExcluded = upper_excluded;
+  myLower = lower;
+  myUpper = upper;
   if ( IntegerTraits< Integer >::isBounded() == BOUNDED )
     {
       for ( Dimension i = 0; i < staticDimension; ++i )
 	{
-	  if ( ( lower_included[ i ] 
+	  if ( ( lower[ i ] 
 		 <= ( IntegerTraits< Integer >::min() / 2 ) )
-	       || ( upper_excluded[ i ] 
+	       || ( upper[ i ] 
 		    >= ( IntegerTraits< Integer >::max() / 2 ) ) )
 	    return false;
 	}
     }
   for ( Dimension i = 0; i < staticDimension; ++i )
     {
-      myKLowerIncluded[ i ] = lower_included[ i ] * 2
-	- closed ? 1 : 0;
-      myKUpperExcluded[ i ] = upper_excluded[ i ] * 2
-	- closed ? 0 : 1;
+      myCellLower.myCoordinates[ i ] = lower[ i ] * 2
+	+ closed ? 0 : 1;
+      myCellUpper.myCoordinates[ i ] = upper[ i ] * 2
+	+ closed ? 2 : 1;
     }
   return true;
 }
@@ -223,7 +262,7 @@ DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
 size( Dimension k ) const
 {
   ASSERT( k < staticDimension );
-  return myUpperExcluded[ k ] - myLowerIncluded[ k ];
+  return myUpper[ k ] + IntegerTraits<Integer>::ONE - myLower[ k ];
 }
 //-----------------------------------------------------------------------------
 template < std::size_t dim, typename TInteger, typename TSize, 
@@ -451,7 +490,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell 
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-sopp( const SCell & p ) const
+sOpp( const SCell & p ) const
 {
   return sCell( p.myCoordinates, ! p.myPositive );
 }
@@ -461,11 +500,11 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-usetKCoord( Cell & c, Dimension k, const Integer & i ) const
+uSetKCoord( Cell & c, Dimension k, const Integer & i ) const
 {
   ASSERT( k < DIM 
-	  && myKLowerIncluded[ k ] <= i 
-	  && i < myKUpperExcluded[ k ] );
+	  && myCellLower.myCoordinates[ k ] <= i 
+	  && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
 }
 //-----------------------------------------------------------------------------
@@ -474,11 +513,11 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-ssetKCoord( SCell & c, Dimension k, const Integer & i ) const
+sSetKCoord( SCell & c, Dimension k, const Integer & i ) const
 {
   ASSERT( k < DIM 
-	  && myKLowerIncluded[ k ] <= i 
-	  && i < myKUpperExcluded[ k ] );
+	  && myCellLower.myCoordinates[ k ] <= i 
+	  && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
 }
 //-----------------------------------------------------------------------------
@@ -487,12 +526,12 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-usetCoord( Cell & c, Dimension k, const Integer & i ) const
+uSetCoord( Cell & c, Dimension k, const Integer & i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
-  ASSERT( myKLowerIncluded[ k ] <= i 
-	  && i < myKUpperExcluded[ k ] );
+  ASSERT( myCellLower.myCoordinates[ k ] <= i 
+	  && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
 }
 //-----------------------------------------------------------------------------
@@ -501,12 +540,12 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-ssetCoord( SCell & c, Dimension k, const Integer & i ) const
+sSetCoord( SCell & c, Dimension k, const Integer & i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
-  ASSERT( myKLowerIncluded[ k ] <= i 
-	  && i < myKUpperExcluded[ k ] );
+  ASSERT( myCellLower.myCoordinates[ k ] <= i 
+	  && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
 }
 //-----------------------------------------------------------------------------
@@ -515,7 +554,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-usetKCoords( Cell & c, const Point & kp ) const
+uSetKCoords( Cell & c, const Point & kp ) const
 {
   c.myCoordinates = kp;
 }
@@ -525,7 +564,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-ssetKCoords( SCell & c, const Point & kp ) const
+sSetKCoords( SCell & c, const Point & kp ) const
 {
   c.myCoordinates = kp;
 }
@@ -535,14 +574,14 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-usetCoords( Cell & c, const Point & p ) const
+uSetCoords( Cell & c, const Point & p ) const
 {
   Integer i;
   for ( Dimension k = 0; k < DIM; ++k )
     {
       i = ( p[ k ] << 1 ) + ( c.myCoordinates[ k ] & 1 );
-      ASSERT( myKLowerIncluded[ k ] <= i 
-	      && i < myKUpperExcluded[ k ] );
+      ASSERT( myCellLower.myCoordinates[ k ] <= i 
+	      && i <= myCellUpper.myCoordinates[ k ] );
       c.myCoordinates[ k ] = i;
     }
 }
@@ -552,14 +591,14 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-ssetCoords( SCell & c, const Point & p ) const
+sSetCoords( SCell & c, const Point & p ) const
 {
   Integer i;
   for ( Dimension k = 0; k < DIM; ++k )
     {
       i = ( p[ k ] << 1 ) + ( c.myCoordinates[ k ] & 1 );
-      ASSERT( myKLowerIncluded[ k ] <= i 
-	      && i < myKUpperExcluded[ k ] );
+      ASSERT( myCellLower.myCoordinates[ k ] <= i 
+	      && i <= myCellUpper.myCoordinates[ k ] );
       c.myCoordinates[ k ] = i;
     }
 }
@@ -569,7 +608,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-ssetSign( SCell & c, Sign s ) const
+sSetSign( SCell & c, Sign s ) const
 {
   c.myPositive = ( s == POS );
 }
@@ -581,7 +620,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 TInteger
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-utopology( const Cell & p ) const
+uTopology( const Cell & p ) const
 {
   Integer i = IntegerTraits<Integer>::ZERO;
   Integer j = IntegerTraits<Integer>::ONE;
@@ -599,7 +638,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 TInteger
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-stopology( const SCell & p ) const
+sTopology( const SCell & p ) const
 {
   Integer i = IntegerTraits<Integer>::ZERO;
   Integer j = IntegerTraits<Integer>::ONE;
@@ -617,7 +656,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 TDimension
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-udim( const Cell & p ) const
+uDim( const Cell & p ) const
 {
   Integer i = IntegerTraits<Integer>::ZERO;
   for ( Dimension k = 0; k < DIM; ++k )
@@ -631,7 +670,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 TDimension
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-sdim( const SCell & p ) const
+sDim( const SCell & p ) const
 {
   Integer i = IntegerTraits<Integer>::ZERO;
   for ( Dimension k = 0; k < DIM; ++k )
@@ -645,7 +684,7 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-uisSurfel( const Cell & b ) const
+uIsSurfel( const Cell & b ) const
 {
   return udim( b ) == ( DIM - 1 );
 }
@@ -655,13 +694,317 @@ template < std::size_t dim, typename TInteger, typename TSize,
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
-sisSurfel( const SCell & b ) const
+sIsSurfel( const SCell & b ) const
 {
  return sdim( b ) == ( DIM - 1 );
 }
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uIsOpen( const Cell & p, Dimension k ) const
+{
+  return p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+sIsOpen( const SCell & p, Dimension k ) const
+{
+  return p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE;
+}
 
 //-----------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::DirIterator
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uDirs( const Cell & p ) const
+{
+  return DirIterator( uTopology( p ) );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::DirIterator
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+sDirs( const SCell & p ) const
+{
+  return DirIterator( sTopology( p ) );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::DirIterator
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uOrthDirs( const Cell & p ) const
+{
+  Integer i = IntegerTraits<Integer>::ZERO;
+  Integer j = IntegerTraits<Integer>::ONE;
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( ! ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE ) )
+	i |= j;
+      j <<= 1;
+    }
+  return DirIterator( i );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::DirIterator
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+sOrthDirs( const SCell & p ) const
+{
+  Integer i = IntegerTraits<Integer>::ZERO;
+  Integer j = IntegerTraits<Integer>::ONE;
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( ! ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE ) )
+	i |= j;
+      j <<= 1;
+    }
+  return DirIterator( i );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+TDimension 
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uOrthDir( const Cell & s ) const
+{
+  Integer i = IntegerTraits<Integer>::ZERO;
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( ! ( s.myCoordinates[ k ] & IntegerTraits<Integer>::ONE ) )
+	return k;
+    }
+  ASSERT( false );
+  return IntegerTraits<Dimension>::ZERO;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+TDimension 
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+sOrthDir( const SCell & s ) const
+{
+  Integer i = IntegerTraits<Integer>::ZERO;
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( ! ( s.myCoordinates[ k ] & IntegerTraits<Integer>::ONE ) )
+	return k;
+    }
+  ASSERT( false );
+  return IntegerTraits<Dimension>::ZERO;
+}
+//-----------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uFirst( const Cell & p ) const
+{
+  return uCell( myLower, p );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uLast( const Cell & p ) const
+{
+  return uCell( myUpper, p );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetIncr( const Cell & p, Dimension k ) const
+{
+  Cell q = p;
+  q.myCoordinates[ k ] += 2;
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+bool 
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uIsMax( const Cell & p, Dimension k ) const
+{
+  return p.myCoordinates[ k ] >= myCellUpper.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetMax( const Cell & p, Dimension k ) const
+{
+  return uProjection( p, myCellUpper, k );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetDecr( const Cell & p, Dimension k ) const
+{
+  Cell q = p;
+  q.myCoordinates[ k ] -= 2;
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uIsMin( const Cell & p, Dimension k ) const
+{
+  return p.myCoordinates[ k ] <= myCellLower.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetMin( const Cell & p, Dimension k ) const
+{
+  return uProjection( p, myCellLower, k );
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetAdd( const Cell & p, Dimension k, const Integer & x ) const
+{
+  Cell q = p;
+  q.myCoordinates[ k ] += 2*x;
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uGetSub( const Cell & p, Dimension k, const Integer & x ) const
+{
+  Cell q = p;
+  q.myCoordinates[ k ] -= 2*x;
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+TInteger
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uDistanceToMax( const Cell & p, Dimension k ) const
+{
+  return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+TInteger
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uDistanceToMin( const Cell & p, Dimension k ) const
+{
+  return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uTranslation( const Cell & p, const Vector & vec ) const
+{
+  Cell q = p;
+  for ( Dimension k = 0; k < DIM; ++k )
+    q.myCoordinates[ k ] += ( vec[ k ] << 1 );
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::Cell
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uProjection( const Cell & p, const Cell & bound, Dimension k ) const
+{
+  Cell q = p;
+  q.myCoordinates[ k ] = bound.myCoordinates[ k ];
+  return q;
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+void
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uProject( Cell & p, const Cell & bound, Dimension k ) const
+{
+  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < std::size_t dim, typename TInteger, typename TSize, 
+	   typename TDimension >
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+uNext( Cell & p, const Cell & lower, const Cell & upper ) const
+{
+  Dimension k = IntegerTraits<Dimension>::ZERO;
+  if ( uCoord( p, k ) == uCoord( upper, k ) )
+    {
+      if ( p == upper ) return false;
+      uProject( p, lower, k );
+      for ( k = 1; k < DIM; ++k )
+	{
+	  if ( uCoord( p, k ) == uCoord( upper, k ) )
+	    uProject( p, lower, k );
+	  else  
+	    {
+	      p.myCoordinates[ k ] += 2;
+	      break;
+	    }
+	}
+      return true;
+    }
+  p.myCoordinates[ k ] += 2;
+  return true;
+}
 
 
 //-----------------------------------------------------------------------------
