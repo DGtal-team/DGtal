@@ -56,9 +56,9 @@ bool testCellularGridSpaceND()
   trace.beginBlock ( "Testing block ..." );
 
   KSpace K;
-  Point low = { -4, -4, 7 };
-  Point high = { 50, 40, 30 };
-  bool space_ok = K.init( low, high, false );
+  Point low = { -3, -2, 2 };
+  Point high = { 5, 3, 4 };
+  bool space_ok = K.init( low, high, true );
   nbok += space_ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -70,7 +70,20 @@ bool testCellularGridSpaceND()
   Cell c1 = K.uCell( kp );
   Cell clow = K.uCell( low, kp );
   Cell chigh = K.uCell( high, kp );
-  trace.info() << c1 << clow << chigh << endl;
+  trace.info() << c1 << clow << chigh 
+	       << " topo(c1)=" << K.uTopology( c1 ) << " dirs=";
+  for ( typename KSpace::DirIterator q = K.uDirs( clow ); q != 0; ++q )
+    trace.info() << " " << *q;
+  trace.info() << endl;
+  Cell f = K.uFirst( c1 );
+  Cell l = K.uLast( c1 );
+  trace.info() << "Loop in " << clow << chigh << endl;
+
+  c1 = f;
+  do {
+    trace.info() << c1;
+  } while ( K.uNext( c1, f, l ) );
+  trace.info() << endl;
   trace.endBlock();
   
   return nbok == nb;
