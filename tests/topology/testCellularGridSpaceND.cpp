@@ -56,8 +56,10 @@ bool testCellularGridSpaceND()
   trace.beginBlock ( "Testing block ..." );
 
   KSpace K;
-  Point low = { -3, -2, 2 };
-  Point high = { 5, 3, 4 };
+  int xlow[ 3 ] = { -3, -2, 2 };
+  int xhigh[ 3 ] = { 5, 3, 4 };
+  Point low( xlow );
+  Point high( xhigh ); 
   bool space_ok = K.init( low, high, true );
   nbok += space_ok ? 1 : 0; 
   nb++;
@@ -66,7 +68,8 @@ bool testCellularGridSpaceND()
   trace.info() << "K.dim()=" << K.dimension() << endl;
   trace.info() << "K.size( 0 )=" << K.size( 0 ) << endl;
   trace.info() << "K.size( 1 )=" << K.size( 1 ) << endl;
-  Point kp = { 1, 1, 1 }; // pixel
+  int spel[ 3 ] = { 1, 1, 1 }; // pixel
+  Point kp( spel );
   Cell c1 = K.uCell( kp );
   Cell clow = K.uCell( low, kp );
   Cell chigh = K.uCell( high, kp );
