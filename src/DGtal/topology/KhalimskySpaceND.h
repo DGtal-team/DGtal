@@ -92,10 +92,21 @@ namespace DGtal
      */
     KhalimskyCell & operator=( const KhalimskyCell & other );
 
+    /**
+       Equality operator.
+       @param other any other cell.
+    */
+    bool operator==( const KhalimskyCell & other ) const;
+
+    /**
+       Inferior operator. (lexicographic order).
+       @param other any other cell.
+    */
+    bool operator<( const KhalimskyCell & other ) const;
   }; 
 
   template < std::size_t dim,
-	     typename TInteger = DGtal::int32_t >
+	     typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
 	      const KhalimskyCell< dim, TInteger > & object );
@@ -143,10 +154,22 @@ namespace DGtal
      */
     SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other );
 
+    /**
+       Equality operator.
+       @param other any other cell.
+    */
+    bool operator==( const SignedKhalimskyCell & other ) const;
+
+    /**
+       Inferior operator. (lexicographic order).
+       @param other any other cell.
+    */
+    bool operator<( const SignedKhalimskyCell & other ) const;
+
   }; 
 
   template < std::size_t dim,
-	     typename TInteger = DGtal::int32_t >
+	     typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
 	      const SignedKhalimskyCell< dim, TInteger > & object );
@@ -155,11 +178,15 @@ namespace DGtal
      This class is useful for looping on all "interesting" coordinates of a
      cell. For instance, surfels in Z3 have two interesting coordinates (the
      ones spanned by the surfel).
-     <pre>
+     @code
      KSpace::Cell p;
      KnSpace::DirIterator q;
-     for ( q = ks.uDirs( p ); q != 0; ++q ) ...
-     </pre>
+     for ( q = ks.uDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
    */
   template < typename TInteger = DGtal::int32_t,
 	     typename TDimension = DGtal::uint32_t >
@@ -310,12 +337,11 @@ namespace DGtal
     //Size & Dimension
     typedef TSize Size;
     typedef TDimension Dimension;
-
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
     typedef bool Sign;
-    typedef CellDirectionIterator< Integer, Dimension > DirIterator;    
+    typedef CellDirectionIterator< Integer, Dimension > DirIterator;
     
     //Points and Vectors
     typedef PointVector< dim, Integer > Point;
@@ -529,7 +555,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void usetKCoord( Cell & c, Dimension k, const Integer & i ) const;
+    void uSetKCoord( Cell & c, Dimension k, const Integer & i ) const;
 
     /**
      * Sets the [k]-th Khalimsky coordinate of [c] to [i].
@@ -537,7 +563,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void ssetKCoord( SCell & c, Dimension k, const Integer & i ) const;
+    void sSetKCoord( SCell & c, Dimension k, const Integer & i ) const;
 
     /**
      * Sets the [k]-th digital coordinate of [c] to [i].
@@ -545,7 +571,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void usetCoord( Cell & c, Dimension k, const Integer & i ) const;
+    void uSetCoord( Cell & c, Dimension k, const Integer & i ) const;
 
     /**
      * Sets the [k]-th digital coordinate of [c] to [i].
@@ -553,42 +579,42 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void ssetCoord( SCell & c, Dimension k, const Integer & i ) const;
+    void sSetCoord( SCell & c, Dimension k, const Integer & i ) const;
 
     /**
      * Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    void usetKCoords( Cell & c, const Point & kp ) const;
+    void uSetKCoords( Cell & c, const Point & kp ) const;
 
     /**
      * Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    void ssetKCoords( SCell & c, const Point & kp ) const;
+    void sSetKCoords( SCell & c, const Point & kp ) const;
 
     /**
      * Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    void usetCoords( Cell & c, const Point & kp ) const;
+    void uSetCoords( Cell & c, const Point & kp ) const;
 
     /**
      * Sets the digital coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    void ssetCoords( SCell & c, const Point & kp ) const;
+    void sSetCoords( SCell & c, const Point & kp ) const;
 
     /**
      * Sets the sign of the cell.
      * @param c (modified) any signed cell.
      * @param s any sign.
      */
-    void ssetSign( SCell & c, Sign s ) const;
+    void sSetSign( SCell & c, Sign s ) const;
 
     // -------------------- Conversion signed/unsigned ------------------------
   public:
@@ -612,7 +638,7 @@ namespace DGtal
      * @param p any signed cell.
      * @return the cell [p] with opposite sign.
      */
-    SCell sopp( const SCell & p ) const;
+    SCell sOpp( const SCell & p ) const;
 
     // ------------------------- Cell topology services -----------------------
   public:
@@ -620,39 +646,327 @@ namespace DGtal
      * @param p any unsigned cell.
      * @return the topology word of [p].
      */
-    Integer utopology( const Cell & p ) const;
+    Integer uTopology( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the topology word of [p].
      */
-    Integer stopology( const SCell & p ) const;
+    Integer sTopology( const SCell & p ) const;
 
     /**
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
      */
-    Dimension udim( const Cell & p ) const;
+    Dimension uDim( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the dimension of the cell [p].
      */
-    Dimension sdim( const SCell & p ) const;
+    Dimension sDim( const SCell & p ) const;
 
     /**
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool uisSurfel( const Cell & b ) const;
+    bool uIsSurfel( const Cell & b ) const;
 
     /**
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool sisSurfel( const SCell & b ) const;
-  
+    bool sIsSurfel( const SCell & b ) const;
+    
+    /**
+       @param p any cell.
+       @param k any direction.
+       @return 'true' if [p] is open along the direction [k].
+    */
+    bool uIsOpen( const Cell & p, Dimension k ) const;
 
+    /**
+       @param p any signed cell.
+       @param k any direction.
+       @return 'true' if [p] is open along the direction [k].
+    */
+    bool sIsOpen( const SCell & p, Dimension k ) const;
+
+    // -------------------- Iterator services for cells ------------------------
+  public:
+
+    /**
+     Given an unsigned cell [p], returns an iterator to iterate over
+     each coordinate the cell spans. (A spel spans all coordinates; a
+     surfel all but one, etc). Example:
+
+     @code
+     KSpace::Cell p;
+     ...
+     for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
+     
+     @param p any unsigned cell.
+     
+     @return an iterator that points on the first coordinate spanned
+     by the cell.
+    */
+    DirIterator uDirs( const Cell & p ) const;
+
+    /**
+     Given a signed cell [p], returns an iterator to iterate over
+     each coordinate the cell spans. (A spel spans all coordinates; a
+     surfel all but one, etc). Example:
+
+     @code
+     KSpace::SCell p;
+     ...
+     for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
+     
+     @param p any signed cell.
+     
+     @return an iterator that points on the first coordinate spanned
+     by the cell.
+    */
+    DirIterator sDirs( const SCell & p ) const;
+
+    /**
+     Given an unsigned cell [p], returns an iterator to iterate over each 
+     coordinate the cell does not span. (A spel spans all coordinates; 
+     a surfel all but one, etc). Example: 
+
+     @code
+     KSpace::Cell p;
+     ...
+     for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
+     
+     @param p any unsigned cell.
+     
+     @return an iterator that points on the first coordinate spanned
+     by the cell.
+    */
+    DirIterator uOrthDirs( const Cell & p ) const;
+
+    /**
+     Given a signed cell [p], returns an iterator to iterate over each 
+     coordinate the cell does not span. (A spel spans all coordinates; 
+     a surfel all but one, etc). Example: 
+
+     @code
+     KSpace::SCell p;
+     ...
+     for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
+     
+     @param p any signed cell.
+     
+     @return an iterator that points on the first coordinate spanned
+     by the cell.
+    */
+    DirIterator sOrthDirs( const SCell & p ) const;
+
+    /**
+       Given an unsigned surfel [s], returns its orthogonal direction (ie,
+       the coordinate where the surfel is closed).
+       
+       @param s an unsigned surfel
+       @return the orthogonal direction of [s]
+    */
+    Dimension uOrthDir( const Cell & s ) const;
+
+    /**
+       Given a signed surfel [s], returns its orthogonal direction (ie,
+       the coordinate where the surfel is closed).
+
+       @param s a signed surfel
+       @return the orthogonal direction of [s]
+    */
+    Dimension sOrthDir( const SCell & s ) const;
+
+  // -------------------- Unsigned cell geometry services --------------------
+ public:
+
+    /**
+       @return the first cell of the space with the same type as [p].
+    */
+    Cell uFirst( const Cell & p ) const;
+    
+    /**
+       @return the last cell of the space with the same type as [p].
+    */
+    Cell uLast( const Cell & p ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       
+       @return the same element as [p] except for the incremented
+       coordinate [k].
+    */
+    Cell uGetIncr( const Cell & p, Dimension k ) const;
+ 
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate augmented
+       without leaving the space.
+    */
+    bool uIsMax( const Cell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the maximum allowed
+       [k]-coordinate.
+    */
+    Cell uGetMax( const Cell & p, Dimension k ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       
+       @return the same element as [p] except for an decremented
+       coordinate [k].
+     */
+    Cell uGetDecr( const Cell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate decreased
+       without leaving the space.
+    */
+    bool uIsMin( const Cell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the minimum allowed
+       [k]-coordinate.
+    */
+    Cell uGetMin( const Cell & p, Dimension k ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param x the increment.
+       
+       @return the same element as [p] except for a coordinate [k]
+       incremented with x.
+    */
+    Cell uGetAdd( const Cell & p, Dimension k, const Integer & x ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param x the decrement.
+
+       @return the same element as [p] except for a coordinate [k]
+       decremented with x.
+    */
+    Cell uGetSub( const Cell & p, Dimension k, const Integer & x ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the coordinate that is tested.
+       @return the number of increment to do to reach the maximum value.
+    */
+    Integer uDistanceToMax( const Cell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the coordinate that is tested.
+       
+       @return the number of decrement to do to reach the minimum
+       value.
+    */
+    Integer uDistanceToMin( const Cell & p, Dimension k ) const;
+
+    /**
+       Add the vector [vec] to [p]. 
+       NB: you can go out of the space.
+       @param p any cell.
+       @param vec any pointel.
+       @return the unsigned code of the cell [p] translated by [coord].
+    */
+    Cell uTranslation( const Cell & p, const Vector & vec ) const;
+
+    /**
+       Return the projection of [p] along the [k]th direction toward
+       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+
+       @param p any cell.
+       @param bound the element acting as bound (same topology as p).
+       @param k the concerned coordinate.
+       @return the projection.
+    */
+    Cell uProjection( const Cell & p, const Cell & bound, Dimension k ) const;
+
+    /**
+       Projects [p] along the [k]th direction toward
+       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+
+       @param p any cell.
+       @param bound the element acting as bound (same topology as p).
+       @param k the concerned coordinate.
+       @return the projection.
+    */
+    void uProject( Cell & p, const Cell & bound, Dimension k ) const;
+
+    /**
+       Increment the cell [p] to its next position (as classically done in
+       a scanning). Example:
+
+       \code
+       KSpace K;
+       Cell first, last; // lower and upper bounds 
+       Cell p = first;
+       do 
+       { // ... whatever [p] is the current cell
+       }
+       while ( K.uNext( p, first, last ) ); 
+       \endcode
+       
+       @param p any cell.
+       @param lower the lower bound.
+       @param upper the upper bound.
+       
+       @return true if p is still within the bounds, false if the
+       scanning is finished.
+    */
+    bool uNext( Cell & p, const Cell & lower, const Cell & upper ) const;
 
 
     // ----------------------- Interface --------------------------------------
@@ -674,10 +988,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    Point myLowerIncluded;
-    Point myUpperExcluded;
-    Point myKLowerIncluded;
-    Point myKUpperExcluded;
+    Point myLower;
+    Point myUpper;
+    Cell myCellLower;
+    Cell myCellUpper;
     bool myIsClosed;
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -713,9 +1027,9 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template < std::size_t dim,
-	     typename TInteger = DGtal::int32_t,
-	     typename TSize = DGtal::uint32_t,
-	     typename TDimension = DGtal::uint32_t >
+	     typename TInteger,
+	     typename TSize,
+	     typename TDimension >
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const KhalimskySpaceND<dim, TInteger, TSize, TDimension > & object );

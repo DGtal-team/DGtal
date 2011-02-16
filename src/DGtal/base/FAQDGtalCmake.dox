@@ -29,6 +29,7 @@ Table of contents:
   -# \ref linux 
   -# \ref macos
   -# \ref win   
+ -# \ref cmakeDGtal
  -# \ref howtos  
    -# \ref newclass
    -# \ref newtest
@@ -96,6 +97,31 @@ Once the VS project as been  created, you just have to simply open it
 with VS.
 
 @todo Add snapshots?
+
+\section cmakeDGtal DGtal cmake options
+
+In DGtal CmakeLists, serval options can be specified to custom the
+library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) such as:
+  - \e CMAKE_BUILD_TYPE
+     - \b Debug: debug mode (e.g.  C++ debug flags, DEBUG variable, ...)
+     - \b Release: release build (optimized C++ compiler options, NDEBUG variable,...)
+  - \e CMAKE_INSTALL_PREFIX: a string containing the DGtal install path
+  (e.g. by default on some linux: "/usr/local/").
+
+Beside these options, user can also specify:
+
+- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
+- \e BUILD_TESTING (ON/OFF): to build the test suite (default: ON)
+- \e BUILD_TOOLS (ON/OFF): to build DGtal tools (default: ON)
+- \e BUILD_INLINE_FUNCTIONS (ON/OFF): to build inline functions (default: ON)
+- \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
+ (default: OFF). If set to ON and in Debug build type, verbose
+debug messages are traced out.
+
+- \e BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) \todo Default should be OFF on windows (to test).
+
+
+
 
 
 \section howtos HowTos
@@ -190,6 +216,11 @@ things have to be done:
     cute/paste a new block starting with the <em>FIND</em> cmake command. If
     cmake detects the library, it is important to append such lib to
     the \e DGtalLibDependencies variable.
+
+ -# If the dependency is detected, a C definition "USE_<DEP>" must be defined and 
+transfered to the compiler (e.g. "USE_ITK")
+
+
 
 \subsection newdoc Add a new documentation file
 
