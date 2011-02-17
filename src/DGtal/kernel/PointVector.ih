@@ -503,7 +503,7 @@ DGtal::PointVector<dim,Component>::diagonal( Component val )
 template<DGtal::uint32_t dim,typename Component>
 inline
 DGtal::PointVector<dim,Component>
-DGtal::PointVector<dim,Component>::base( DimensionType k, Component val )
+DGtal::PointVector<dim,Component>::base( Dimension k, Component val )
 {
   PointVector p;
   p.myArray[ k ] = val;

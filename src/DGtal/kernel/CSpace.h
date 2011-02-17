@@ -104,7 +104,6 @@ namespace DGtal
     typedef typename T::Dimension Dimension;
     BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
     typedef typename T::Size Size;
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
     BOOST_CONCEPT_USAGE( CSpace )
     {
       // Should have a dimension() method.
