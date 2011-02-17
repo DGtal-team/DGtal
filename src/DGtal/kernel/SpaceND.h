@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +76,7 @@ namespace DGtal
 
 typedef SpaceND<4, int> Space4Int;
    
-//We get back the type to represent a point in this space
+//We deduce the type to represent points in this space
 typedef Space4::Point Point4Int;
 
 //and we use it (see PointVector documentation).
