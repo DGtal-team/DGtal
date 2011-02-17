@@ -183,12 +183,12 @@ namespace DGtal
     {
       ASSERT( lower <= upper );
       ASSERT( lower <= p && p <= upper );
-      ASSERT( subDomain.size() <= TPoint::Dimension );
+      ASSERT( subDomain.size() <= TPoint::staticDimension );
       mySubDomain.reserve( subDomain.size() );
       for ( const unsigned int *c = subDomain.begin();
             c != subDomain.end(); ++c )
         {
-          ASSERT( *c <= TPoint::Dimension );
+          ASSERT( *c <= TPoint::staticDimension );
           mySubDomain.push_back( *c );
         }
 
@@ -203,12 +203,12 @@ namespace DGtal
     {
       ASSERT( lower <= upper );
       ASSERT( lower <= p && p <= upper );
-      ASSERT( subDomain.size() <= TPoint::Dimension );
+      ASSERT( subDomain.size() <= TPoint::staticDimension );
       mySubDomain.reserve( subDomain.size() );
       for ( typename std::vector<Size>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
         {
-          ASSERT( *it <= TPoint::Dimension );
+          ASSERT( *it <= TPoint::staticDimension );
           mySubDomain.push_back( *it );
         }
 
@@ -252,17 +252,17 @@ namespace DGtal
     void nextLexicographicOrder()
     {
       myPoint.at( myCurrentPos ) ++;
-      if (( myCurrentPos < TPoint::Dimension - 1 ) &&
+      if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
 	  ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) )
         {
           do
 	    {
 	      myPoint.at( myCurrentPos ) = mylower.at( myCurrentPos );
 	      myCurrentPos++;
-	      if ( myCurrentPos < TPoint::Dimension )
+	      if ( myCurrentPos < TPoint::staticDimension )
 		myPoint.at( myCurrentPos ) ++;
 	    }
-          while (( myCurrentPos < TPoint::Dimension - 1 ) &&
+          while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
 		 ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
@@ -326,17 +326,17 @@ namespace DGtal
     void prevLexicographicOrder()
     {
       myPoint.at( myCurrentPos ) --;
-      if (( myCurrentPos < TPoint::Dimension - 1 ) &&
+      if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
 	  ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) )
         {
           do
 	    {
 	      myPoint.at( myCurrentPos ) = myupper.at( myCurrentPos );
 	      myCurrentPos++;
-	      if ( myCurrentPos < TPoint::Dimension )
+	      if ( myCurrentPos < TPoint::staticDimension )
 		myPoint.at( myCurrentPos ) --;
 	    }
-          while (( myCurrentPos < TPoint::Dimension - 1 ) &&
+          while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
 		 ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
           myCurrentPos = 0;
         }
