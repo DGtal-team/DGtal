@@ -64,9 +64,14 @@ namespace DGtal
    * space in dimension n. For instance, it specifies the type of a
    * Point lying in this space, the type of a Vector or the type of subspace.
    * 
-   * Code snippet:
+   * @tparam dim static constant of type DGtal::uint32_t that specifies the static  dimension of the space.
+   * @tparam Integer speficies the integer number type to use as a
+   * ring for the computations or as coordinates type. Integer must be
+   * a model of CInteger and CSignedInteger concepts.  
+   * 
+   * Example of use:
    *@code
-
+   
 #include <DGtal/kernel/SpaceND.h>
 
 //...
@@ -86,17 +91,20 @@ Point4Int a= {2, 3 , -5 , 6};
    **/
 
   template < DGtal::uint32_t dim,
-	     typename Integer = DGtal::int32_t >
+	     typename TInteger = DGtal::int32_t >
   class SpaceND
   {
   public:
-
+    
     //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
  
    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<Integer> ) );
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
+    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
+    typedef TInteger Integer;
+    
     ///Type used to represent sizes in the digital space.
     typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
     
@@ -111,7 +119,7 @@ Point4Int a= {2, 3 , -5 , 6};
 
     ///Type to denote the space itself.
     typedef SpaceND<dim, Integer> Space;
-
+    
     ///static constants to store the dimension.
     static const Dimension staticDimension = dim;
 
@@ -184,7 +192,7 @@ Point4Int a= {2, 3 , -5 , 6};
      */
     static void selfDisplay( std::ostream & out )
     {
-      out << "[SpaceND dim=" << dimension() << " size_elem=" << sizeof( Integer ) << " ]";
+      out << "[SpaceND dim=" << dimension() << " size of Integers=" << sizeof( Integer ) << " ]";
     }
 
   private:
@@ -208,9 +216,9 @@ Point4Int a= {2, 3 , -5 , 6};
    * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
-  template <std::size_t dim, typename Integer, typename Size, typename Dimension>
+  template <DGtal::uint32_t dim, typename Integer>
   static std::ostream&
-  operator<<( std::ostream & out, const SpaceND<dim, Integer, Size, Dimension> & object )
+  operator<<( std::ostream & out, const SpaceND<dim, Integer> & object )
   {
     object.selfDisplay( out );
     return out;

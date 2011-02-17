@@ -44,7 +44,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
@@ -127,9 +126,6 @@ namespace DGtal
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/CSpace.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
