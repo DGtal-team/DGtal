@@ -123,7 +123,7 @@ DGtal::IntegerTraits<T>::isBounded()
 template <typename T>
 inline
 DGtal::SignEnum
-DGtal::IntegerTraits<T>::isUnsigned()
+DGtal::IntegerTraits<T>::isSigned()
 {
     return SIGN_UNKNOWN;
 }

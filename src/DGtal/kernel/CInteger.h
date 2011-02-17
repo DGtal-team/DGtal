@@ -131,6 +131,7 @@ namespace DGtal
     T myX;
     T myY;
     typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
+    typename IntegerTraits<T>::IsUnsigned myIsSigned;
     typename IntegerTraits<T>::IsBounded myIsBounded;
     typename IntegerTraits<T>::SignedVersion mySignedVersion;
     typename IntegerTraits<T>::UnsignedVersion myUnsignedVersion;
