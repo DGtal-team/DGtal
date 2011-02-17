@@ -41,7 +41,7 @@ template<DGtal::uint32_t dim, typename Component>
 inline
 DGtal::PointVector<dim, Component>::PointVector()
 {
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ DGtal::PointVector<dim, Component>::PointVector(const PointVector& apoint1,
     const PointVector& apoint2,
     const Functor& f)
 {
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
 }
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ inline
 DGtal::PointVector<dim, Component>::PointVector( const Component * ptrValues )
 {
   // The problem here is that we have no guaranty on the size of init !!
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = ptrValues[ i ];
 }
 
@@ -79,7 +79,7 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x, const Comp
   ASSERT( dim >= 2 );
   myArray[ 0 ] = x;
   myArray[ 1 ] = y;
-  for ( std::size_t i = 2; i < dim; ++i )
+  for ( Dimension i = 2; i < dim; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x, const Comp
   myArray[ 0 ] = x;
   myArray[ 1 ] = y;
   myArray[ 2 ] = z;
-  for ( std::size_t i = 3; i < dim; ++i )
+  for ( Dimension i = 3; i < dim; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x, const Comp
   myArray[ 1 ] = y;
   myArray[ 2 ] = z;
   myArray[ 3 ] = t;
-  for ( std::size_t i = 4; i < dim; ++i )
+  for ( Dimension i = 4; i < dim; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ DGtal::PointVector<dim, Component>::end() const
 //------------------------------------------------------------------------------
 template<DGtal::uint32_t dim, typename Component>
 inline
-std::size_t
+typename DGtal::PointVector<dim, Component>::Dimension
 DGtal::PointVector<dim, Component>::size()
 {
   return dim;
@@ -170,7 +170,7 @@ DGtal::PointVector<dim, Component>::size()
 //------------------------------------------------------------------------------
 template<DGtal::uint32_t dim, typename Component>
 inline
-std::size_t
+typename DGtal::PointVector<dim, Component>::Dimension
 DGtal::PointVector<dim, Component>::dimension()
 {
   return dim;
@@ -179,14 +179,14 @@ DGtal::PointVector<dim, Component>::dimension()
 template<DGtal::uint32_t dim, typename Component>
 inline
 const Component&
-DGtal::PointVector<dim, Component>::at ( std::size_t i ) const
+DGtal::PointVector<dim, Component>::at ( Dimension i ) const
 {
   ASSERT ( i < dim );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
 template<DGtal::uint32_t dim, typename Component>
-inline Component& DGtal::PointVector<dim, Component>::at( std::size_t i )
+inline Component& DGtal::PointVector<dim, Component>::at( Dimension i )
 {
   ASSERT ( i < dim );
   return myArray.at( i );
@@ -195,14 +195,14 @@ inline Component& DGtal::PointVector<dim, Component>::at( std::size_t i )
 template<DGtal::uint32_t dim, typename Component>
 inline
 const Component&
-DGtal::PointVector<dim, Component>::operator[]( std::size_t i ) const
+DGtal::PointVector<dim, Component>::operator[]( Dimension i ) const
 {
   ASSERT ( i < dim );
   return myArray[i];
 }
 //------------------------------------------------------------------------------
 template<DGtal::uint32_t dim, typename Component>
-inline Component& DGtal::PointVector<dim, Component>::operator[]( std::size_t i )
+inline Component& DGtal::PointVector<dim, Component>::operator[]( Dimension i )
 {
   ASSERT ( i < dim );
   return myArray[i];
@@ -212,7 +212,7 @@ template<DGtal::uint32_t dim, typename Component>
 DGtal::PointVector<dim, Component>&
 DGtal::PointVector<dim, Component>::operator*= ( Component coeff )
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
+  for ( Dimension i = 0; i < myArray.size(); ++i )
     myArray[ i ] *= coeff;
   return *this;
 }
@@ -351,7 +351,7 @@ inline
 DGtal::PointVector<dim, Component>&
 DGtal::PointVector<dim, Component>::operator+= ( const PointVector<dim, Component>& v )
 {
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] += v.at ( i );
   return *this;
 }
@@ -369,7 +369,7 @@ inline
 DGtal::PointVector<dim, Component>&
 DGtal::PointVector<dim, Component>::operator-= ( const PointVector<dim, Component>& v )
 {
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] -= v.at ( i );
   return *this;
 }
@@ -387,7 +387,7 @@ inline
 void
 DGtal::PointVector<dim, Component>::reset()
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
+  for ( Dimension i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
@@ -412,7 +412,7 @@ inline
 bool
 DGtal::PointVector<dim, Component>::isLower( const PointVector& p ) const
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
+  for ( Dimension i = 0; i < myArray.size(); ++i )
     if ( p[ i ] < myArray[ i ] )
       return false;
   return true;
@@ -423,7 +423,7 @@ inline
 bool
 DGtal::PointVector<dim, Component>::isUpper( const PointVector& p ) const
 {
-  for ( std::size_t i = 0; i < myArray.size(); ++i )
+  for ( Dimension i = 0; i < myArray.size(); ++i )
     if ( p[ i ] > myArray[ i ] )
       return false;
   return true;
@@ -495,7 +495,7 @@ DGtal::PointVector<dim,Component>
 DGtal::PointVector<dim,Component>::diagonal( Component val )
 {
   PointVector p;
-  for ( std::size_t i = 0; i < dim; ++i )
+  for ( Dimension i = 0; i < dim; ++i )
     p.myArray[ i ] = val;
   return p;
 }
