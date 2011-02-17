@@ -58,11 +58,31 @@ namespace DGtal
    * Description of class 'SpaceND' <p>
    *
    * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
-   * \todo documentation here!
-   * @tparam dim the dimension of the digital space.
-   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32_t).
-   * @tparam TSize the Integer class used to represent the sizes in the space (default type = uint32_t).
-   */
+   *
+   * This class just defines fundamental types associated to a digital
+   * space in dimension n. For instance, it specifies the type of a
+   * point, the type of a vector or the type of subspace.
+   * 
+   * Code snippet:
+   *@code
+
+#include <DGtal/kernel/SpaceND.h>
+
+//...
+
+//We define the type of a digital domain on dimension 4 using the
+//"int" arithmetic ring.
+
+typedef SpaceND<4, int> Space4Int;
+   
+//We get the associated type to represent a point in this space
+typedef Space4::Point Point4Int;
+
+//and we use it (see PointVector documentation).
+Point4Int a= {2, 3 , -5 , 6};
+   @endcode
+   *
+   **/
 
   template < DGtal::uint32_t dim,
 	     typename Integer = DGtal::int32_t >
@@ -70,7 +90,6 @@ namespace DGtal
   {
   public:
 
-    /// \todo fixer des concept check sur Integer
     BOOST_CONCEPT_ASSERT(( CInteger<Integer> ) );
     BOOST_CONCEPT_ASSERT(( CSignedInteger<Integer> ) );
 
@@ -82,6 +101,7 @@ namespace DGtal
 
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
+
     ///Vectors in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Vector;
 
