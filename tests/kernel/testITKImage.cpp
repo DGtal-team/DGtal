@@ -124,7 +124,7 @@ bool testITKMethod()
 
   trace.beginBlock ( "Test the use of a pure ITK method..." );
 
-  typedef unsigned short Integer;
+  typedef short Integer;
   typedef SpaceND<2, Integer > Space2Type;
   typedef HyperRectDomain<Space2Type> Domain;
   typedef Domain::Point Point;

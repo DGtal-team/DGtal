@@ -114,13 +114,13 @@ bool testComparison()
  **/
 bool testSimplePoint()
 {
-  PointVector<3>  aPVInt3; 
+  PointVector<3, int>  aPVInt3; 
 
-  double t[]={-3 ,4 ,4.5 ,0};
-  PointVector<4,double> aPoint(t);
-  PointVector<4,double> aFPoint;
+  int t[]={-3 ,4 ,4 ,0};
+  PointVector<4,int> aPoint(t);
+  PointVector<4,int> aFPoint;
 
-  aPoint *= 5.6;
+  aPoint *= 5;
 
   cout << "aPoint=" << aPoint << endl;
 
@@ -131,8 +131,8 @@ bool testSimplePoint()
   if ( aPoint.dimension() != 4 )
     return false;
 
-  double tt[] = { 3.5, 4.1, 2.2, 3.2 };
-  PointVector<4,double> v (tt);
+  int tt[] = { 3, 4, 2, 2 };
+  PointVector<4,int> v (tt);
   aPoint = aFPoint + v;
   trace.beginBlock ( "Test point addition with vector" );
   trace.info() << "aPoint = "<< aFPoint << " + " << v << endl;
@@ -144,7 +144,7 @@ bool testSimplePoint()
 
 bool testNorms()
 {
-  typedef PointVector<3> PointType;
+  typedef PointVector<3, int> PointType;
   PointType aPoint;
 
   aPoint.at ( 2 ) =  2;
@@ -169,9 +169,9 @@ bool testNorms()
  **/
 bool testSimpleVector()
 {
-  PointVector<3>  aPVInt3;
-  PointVector<4> aVector;
-  PointVector<4> aFVector;
+  PointVector<3, int>  aPVInt3;
+  PointVector<4, int> aVector;
+  PointVector<4, int> aFVector;
 
   trace.beginBlock ( "Test of Vector Dimension" );
   trace.info() << "aVector dimension="<< aVector.dimension() <<endl;
@@ -189,8 +189,8 @@ bool testSimpleVector()
 
 bool testIterator()
 {
-  PointVector<25,double> aPoint;
-  PointVector<4> avector;
+  PointVector<25,int> aPoint;
+  PointVector<4, int> avector;
   
   trace.beginBlock("Point Iterator Test");
 
@@ -199,7 +199,7 @@ bool testIterator()
   trace.info() << "aPoint="<<aPoint<< std::endl;
 
   trace.info() << "With iterator: ";
-  for (PointVector<25,double>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
+  for (PointVector<25,int>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
     trace.info() << (*it) <<" " ;
 
   trace.info() << std::endl;
@@ -214,9 +214,9 @@ bool testOperators()
   trace.beginBlock("Point Operators Test");
   
   DGtal::int32_t t1[] = {1,2,3,4};
-  PointVector<4> p1( t1 );
+  PointVector<4, DGtal::int32_t> p1( t1 );
   DGtal::int32_t t2[]= {5,4,3,2};
-  PointVector<4> p2( t2 );
+  PointVector<4,DGtal::int32_t> p2( t2 );
 
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
   trace.info() << "p1+p2: "<<p1+p2 <<std::endl;
@@ -234,10 +234,10 @@ bool testIntegerNorms()
   unsigned int nb = 0;
 
   DGtal::int32_t t[]= {2,1,3,4};
-  PointVector<4> p1(t);
+  PointVector<4,DGtal::int32_t> p1(t);
   DGtal::int32_t t2[]= {4,5,3,2};
-  PointVector<4> p2(t2);
-  PointVector<4> p = p2 - p1;
+  PointVector<4,DGtal::int32_t> p2(t2);
+  PointVector<4,DGtal::int32_t> p = p2 - p1;
   
   trace.beginBlock ( "Checking Integer norm1" );
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;

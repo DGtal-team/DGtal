@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -59,8 +60,15 @@ namespace DGtal
 	     typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
+
+    //Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    //Integer must be signed to characterize a ring.
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
+    
   public:
     typedef TInteger Integer;
+    
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
@@ -119,6 +127,11 @@ namespace DGtal
 	     typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
+    //Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    //Integer must be signed to characterize a ring.
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
+ 
   public:
     typedef TInteger Integer;
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
@@ -317,27 +330,22 @@ namespace DGtal
    * @tparam TSize the Integer class used to represent the sizes in the space (default type = unsigned int).
    * @tparam TDimension the type used to represent indices of coordinates.
    */
-  template < std::size_t dim,
-	     typename TInteger = DGtal::int32_t,
-	     typename TSize = DGtal::uint32_t,
-	     typename TDimension = DGtal::uint32_t >
+  template < Dimension dim,
+	     typename TInteger = DGtal::int32_t >
   class KhalimskySpaceND
   {
-    /// \todo fixer des concept check sur Integer
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger<TSize> ) );
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger<TDimension> ) );
+    //Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) ); 
+    //Integer must be signed to characterize a ring.
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
-    // ----------------------- Public types ------------------------------
   public:
-    //Arithmetic
+    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
     typedef TInteger Integer;
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
-
-    //Size & Dimension
-    typedef TSize Size;
-    typedef TDimension Dimension;
     
+    ///Type used to represent sizes in the digital space.
+    typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
+      
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
@@ -348,8 +356,8 @@ namespace DGtal
     typedef PointVector< dim, Integer > Point;
     typedef PointVector< dim, Integer > Vector;
     
-    typedef SpaceND<dim, Integer, Size> Space;
-    typedef KhalimskySpaceND<dim, Integer, Size, Dimension> KhalimskySpace;
+    typedef SpaceND<dim, Integer> Space;
+    typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
     // static constants
     static const Dimension staticDimension = dim;
@@ -1027,13 +1035,11 @@ namespace DGtal
    * @param object the object of class 'KhalimskySpaceND' to write.
    * @return the output stream after the writing.
    */
-  template < std::size_t dim,
-	     typename TInteger,
-	     typename TSize,
-	     typename TDimension >
+  template < DGtal::uint32_t dim,
+	     typename TInteger >
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const KhalimskySpaceND<dim, TInteger, TSize, TDimension > & object );
+	       const KhalimskySpaceND<dim, TInteger > & object );
 
 } // namespace DGtal
 

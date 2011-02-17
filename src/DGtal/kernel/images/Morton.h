@@ -63,7 +63,7 @@ namespace DGtal
     typedef THashKey HashKey;
     typedef TPoint Point;
     typedef typename Point::Coordinate Coordinate;
-    static const std::size_t Dimension = Point::Dimension;    
+    static const Dimension staticDimension = Point::staticDimension;    
     
 
     /**
@@ -105,7 +105,7 @@ namespace DGtal
      */ 
     inline HashKey parentKey(const HashKey key) const
     {
-      return key >> Dimension;
+      return key >> staticDimension;
     }
 
     /**

@@ -64,7 +64,7 @@ namespace DGtal
    * space in dimension n. For instance, it specifies the type of a
    * Point lying in this space, the type of a Vector or the type of subspace.
    * 
-   * @tparam dim static constant of type DGtal::uint32_t that specifies the static  dimension of the space.
+   * @tparam dim static constant of type DGtal::Dimension that specifies the static  dimension of the space.
    * @tparam Integer speficies the integer number type to use as a
    * ring for the computations or as coordinates type. Integer must be
    * a model of CInteger and CSignedInteger concepts.  
@@ -90,27 +90,23 @@ Point4Int a= {2, 3 , -5 , 6};
    *
    **/
 
-  template < DGtal::uint32_t dim,
+  template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
   class SpaceND
   {
-  public:
-    
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
  
    //Integer must be signed to characterize a ring.
     BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
+  public:
     ///Arithmetic ring induced by (+,-,*) and Integre numbers.
     typedef TInteger Integer;
     
     ///Type used to represent sizes in the digital space.
     typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
     
-    ///Type used to handle the space dimension.
-    typedef DGtal::uint32_t Dimension;
-
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
 
@@ -119,19 +115,22 @@ Point4Int a= {2, 3 , -5 , 6};
 
     ///Type to denote the space itself.
     typedef SpaceND<dim, Integer> Space;
+
+    ///Copy of the type used for the  dimension.
+    typedef DGtal::Dimension Dimension;
     
     ///static constants to store the dimension.
     static const Dimension staticDimension = dim;
 
     ///Define the type of a sub co-Space
-    template <DGtal::uint32_t codimension>
+    template <Dimension codimension>
     struct Subcospace
     {
       typedef SpaceND < dim - codimension, Integer > Type;
     };
    
     ///Define the type of a subspace.
-    template <DGtal::uint32_t subdimension>
+    template <Dimension subdimension>
     struct Subspace
     {
       typedef SpaceND<subdimension, Integer> Type;
@@ -155,7 +154,7 @@ Point4Int a= {2, 3 , -5 , 6};
     /**
      * @return the digital space of specified subdimension of this space.
      */
-    template <DGtal::uint32_t subdimension>
+    template <Dimension subdimension>
     static
     typename Subspace<subdimension>::Type subspace()
     {
@@ -167,7 +166,7 @@ Point4Int a= {2, 3 , -5 , 6};
     /**
      * @return the digital space of specified codimension of this space.
      */
-    template <DGtal::uint32_t codimension>
+    template <Dimension codimension>
     static
     typename Subcospace<codimension>::Type subcospace()
     {
@@ -216,7 +215,7 @@ Point4Int a= {2, 3 , -5 , 6};
    * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
-  template <DGtal::uint32_t dim, typename Integer>
+  template <Dimension dim, typename Integer>
   static std::ostream&
   operator<<( std::ostream & out, const SpaceND<dim, Integer> & object )
   {
