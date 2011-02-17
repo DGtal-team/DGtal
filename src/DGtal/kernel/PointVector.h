@@ -51,6 +51,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/kernel/CInteger.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -104,7 +105,7 @@ namespace DGtal
    * @see testPointVector.cpp
    *
    */
-  template < DGtal::uint32_t dim, typename Integer >
+  template < DGtal::Dimension dim, typename Integer >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
@@ -116,14 +117,15 @@ namespace DGtal
  
     typedef Integer Component;
     typedef Integer Coordinate;
-    typedef DGtal::uint32_t Dimension;
 
     // JOL need it in various norm().
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedComponent;
     
+    ///Copy of the dimension type
+    typedef DGtal::Dimension Dimension;
+
     ///Copy of the static dimension of the Point/Vector.
     static const Dimension staticDimension = dim;
-
 
     /**
      *  Copy of the Boost::array iterator type

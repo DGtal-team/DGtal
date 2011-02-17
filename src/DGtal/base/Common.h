@@ -70,10 +70,14 @@
 namespace DGtal 
 {
   
+  /**
+   * Global static type to represent the dimension in DGtal
+   */
+  typedef DGtal::uint32_t Dimension;
+
   /** DGtal Global variables
    *
    **/
-  
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
 

@@ -215,10 +215,7 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
-/**
-     * Cast method to double (for I/O or board export uses
-     * only).
-     */
+
     static double castToDouble(const int & aT)
     {
       return static_cast<double>(aT);
@@ -344,8 +341,68 @@ namespace DGtal
 
   }; // end of class IntegerTraits<unsigned char>.
 
-#endif //WIN32 or APPLE
+#endif //WIN32
 
+ /**
+   * Specialization for <long int>.
+   */
+  template <>
+  struct IntegerTraits<long int>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef long int SignedVersion;
+    typedef unsigned long int UnsignedVersion;
+    typedef long int ReturnType;
+    typedef boost::call_traits<long int>::param_type ParamType;
+    static const long int ZERO = 0;
+    static const long int ONE = 1;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<long int>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<long int>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<long int>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   
+    static DGtal::int64_t castToInt64_t(const long int & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const long int & aT)
+    {
+      return static_cast<double>(aT);
+    }
+
+  }; // end of class IntegerTraits<int>.
 
   /**
    * Specialization for <uint16_t>.
