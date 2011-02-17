@@ -111,7 +111,7 @@ namespace DGtal
 
       ///\todo documentation here!
       typedef T Component;
-      typedef T Coordinate;
+    typedef T Coordinate;
     typedef std::size_t DimensionType;
 
       // JOL need it in various norm().
