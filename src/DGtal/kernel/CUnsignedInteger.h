@@ -111,12 +111,7 @@ namespace DGtal
   
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/CUnsignedInteger.ih"
-
-//                                                                           //
+                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CUnsignedInteger_h
