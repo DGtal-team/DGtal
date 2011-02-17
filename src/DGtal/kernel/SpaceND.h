@@ -61,7 +61,7 @@ namespace DGtal
    *
    * This class just defines fundamental types associated to a digital
    * space in dimension n. For instance, it specifies the type of a
-   * point, the type of a vector or the type of subspace.
+   * Point lying in this space, the type of a Vector or the type of subspace.
    * 
    * Code snippet:
    *@code
@@ -75,7 +75,7 @@ namespace DGtal
 
 typedef SpaceND<4, int> Space4Int;
    
-//We get the associated type to represent a point in this space
+//We get back the type to represent a point in this space
 typedef Space4::Point Point4Int;
 
 //and we use it (see PointVector documentation).
