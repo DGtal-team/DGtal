@@ -103,9 +103,13 @@ Point4Int a= {2, 3 , -5 , 6};
   public:
     ///Arithmetic ring induced by (+,-,*) and Integre numbers.
     typedef TInteger Integer;
+
+    ///Unsigned version of the Integers.
+    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     
     ///Type used to represent sizes in the digital space.
-    typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
+    typedef UnsignedInteger Size;
+    
     
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
