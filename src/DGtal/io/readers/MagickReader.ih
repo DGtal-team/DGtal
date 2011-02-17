@@ -74,7 +74,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   typename TImageContainer::ValueType val;
 
   //We scan the Raw file
-  typename TImageContainer::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  typename TImageContainer::Domain::ConstIterator it = domain.range().begin(),itend=domain.range().end();
   
   for(; it != itend; ++it)
     {
