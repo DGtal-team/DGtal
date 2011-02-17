@@ -90,7 +90,10 @@ Point4Int a= {2, 3 , -5 , 6};
   {
   public:
 
+    //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<Integer> ) );
+ 
+   //Integer must be signed to characterize a ring.
     BOOST_CONCEPT_ASSERT(( CSignedInteger<Integer> ) );
 
     ///Type used to represent sizes in the digital space.
