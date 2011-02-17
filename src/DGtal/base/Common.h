@@ -55,7 +55,7 @@
 #endif //win32
 #include <cmath>
 
-#include <DGtal/base/Config.h>
+#include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
