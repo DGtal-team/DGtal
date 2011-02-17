@@ -41,8 +41,7 @@
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
-DGtal::KhalimskyCell< dim, TInteger >::
-KhalimskyCell()
+DGtal::KhalimskyCell< dim, TInteger >::KhalimskyCell()
 {
 }
 //-----------------------------------------------------------------------------
@@ -111,8 +110,7 @@ DGtal::operator<<( std::ostream & out,
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
-DGtal::SignedKhalimskyCell< dim, TInteger >::
-SignedKhalimskyCell()
+DGtal::SignedKhalimskyCell< dim, TInteger >::SignedKhalimskyCell()
 {
 }
 //-----------------------------------------------------------------------------
@@ -243,7 +241,7 @@ init( const Point & lower,
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TDimension
+DGtal::Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 dimension() const
 {
@@ -252,7 +250,7 @@ dimension() const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TSize
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Size
 DGtal::KhalimskySpaceND< dim, TInteger>::
 size( Dimension k ) const
 {
@@ -617,7 +615,7 @@ sTopology( const SCell & p ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TDimension
+Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDim( const Cell & p ) const
 {
@@ -630,7 +628,7 @@ uDim( const Cell & p ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TDimension
+Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sDim( const SCell & p ) const
 {
@@ -734,7 +732,7 @@ sOrthDirs( const SCell & p ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TDimension 
+Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uOrthDir( const Cell & s ) const
 {
@@ -750,7 +748,7 @@ uOrthDir( const Cell & s ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
-TDimension 
+Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sOrthDir( const SCell & s ) const
 {
