@@ -277,13 +277,13 @@ namespace DGtal
      * coefficients).
      * Same as getDimension
      */
-    static std::size_t size();
+    static Dimension size();
 
     /**
      * Static method to obtain the dimension of a Point/Vector
      * @return  the size of the vector (i.e. the number of its elements).
      */
-    static std::size_t dimension();
+    static Dimension dimension();
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -292,7 +292,7 @@ namespace DGtal
      *
      * @param i is the index of the retrieved coefficient.
      */
-    const Component& at( std::size_t i ) const;
+    const Component& at( Dimension i ) const;
 
     /**
      * Returns a non-const reference to the @a i-th element of the
@@ -302,7 +302,7 @@ namespace DGtal
      *
      * @param i is the index of the retrieved coefficient.
      */
-    Component& at( std::size_t i );
+    Component& at( Dimension i );
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -311,7 +311,7 @@ namespace DGtal
      *
      * @param i is the index of the retrieved coefficient.
      */
-    const Component& operator[]( std::size_t i ) const;
+    const Component& operator[]( Dimension i ) const;
 
     /**
      * Returns a non-const reference to the @a i-th element of the
@@ -321,7 +321,7 @@ namespace DGtal
      *
      * @param i is the index of the retrieved coefficient.
      */
-    Component& operator[]( std::size_t i );
+    Component& operator[](Dimension i );
 
     // ----------------------- Comparison operations --------------------------
   public:
