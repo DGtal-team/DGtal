@@ -56,7 +56,7 @@ namespace DGtal
      Represents an (unsigned) cell in a cellular grid space by its
      Khalimsky coordinates.
    */
-  template < std::size_t dim,
+  template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
@@ -113,7 +113,7 @@ namespace DGtal
     bool operator<( const KhalimskyCell & other ) const;
   }; 
 
-  template < std::size_t dim,
+  template < Dimension dim,
 	     typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
@@ -123,7 +123,7 @@ namespace DGtal
      Represents a signed cell in a cellular grid space by its
      Khalimsky coordinates and a boolean value.
    */
-  template < std::size_t dim,
+  template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
@@ -181,7 +181,7 @@ namespace DGtal
 
   }; 
 
-  template < std::size_t dim,
+  template < Dimension dim,
 	     typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
@@ -1035,7 +1035,7 @@ namespace DGtal
    * @param object the object of class 'KhalimskySpaceND' to write.
    * @return the output stream after the writing.
    */
-  template < DGtal::uint32_t dim,
+  template < Dimension dim,
 	     typename TInteger >
   std::ostream&
   operator<< ( std::ostream & out, 
