@@ -283,7 +283,7 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainBegin
-(std::initializer_list<Size> aSubDomain,
+(std::initializer_list<Dimension> aSubDomain,
  const Point & startingPoint) const
 {
   Point partialUpperBound(myUpperBound);
@@ -295,7 +295,7 @@ DGtal::HyperRectDomain<TSpace>::subDomainBegin
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainRBegin
-(std::initializer_list<Size> aSubDomain,
+(std::initializer_list<Dimension> aSubDomain,
  const Point & startingPoint) const
  { return ReverseConstIterator(subDomainEnd(aSubDomain)); }*/
 
@@ -303,7 +303,7 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainBegin
-(std::initializer_list<Size> aSubDomain) const
+(std::initializer_list<Dimension> aSubDomain) const
 {
   return subDomainBegin(aSubDomain, myLowerBound);
 }
@@ -311,7 +311,7 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainRBegin
-(std::initializer_list<Size> aSubDomain) const
+(std::initializer_list<Dimension> aSubDomain) const
 { return ReverseConstIterator(subDomainEnd(aSubDomain)); }
 #endif
 
@@ -319,7 +319,7 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainBegin
-(const std::vector<Size> & aSubDomain,
+(const std::vector<Dimension> & aSubDomain,
  const Point & startingPoint) const
 {
   Point partialUpperBound(myLowerBound);
@@ -331,21 +331,21 @@ DGtal::HyperRectDomain<TSpace>::subDomainBegin
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::subDomainRBegin
-(const std::vector<Size> & aSubDomain,
+(const std::vector<Dimension> & aSubDomain,
  const Point & startingPoint) const
  { return ReverseConstIterator(subDomainEnd(aSubDomain, startingPoint)); }*/
 
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainBegin(const std::vector<Size> &
+DGtal::HyperRectDomain<TSpace>::subDomainBegin(const std::vector<Dimension> &
 					       aSubDomain) const
 { return subDomainBegin(aSubDomain, myLowerBound); }
 
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainRBegin(const std::vector<Size> &
+DGtal::HyperRectDomain<TSpace>::subDomainRBegin(const std::vector<Dimension> &
 						aSubDomain) const
 { return ReverseConstIterator(subDomainEnd(aSubDomain)); }
 
@@ -353,7 +353,7 @@ DGtal::HyperRectDomain<TSpace>::subDomainRBegin(const std::vector<Size> &
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Size>
+DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Dimension>
 					     aSubDomain,
 					     const Point &startingPoint) const
 {
@@ -368,7 +368,7 @@ DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Size>
 /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainREnd(std::initializer_list<Size>
+DGtal::HyperRectDomain<TSpace>::subDomainREnd(std::initializer_list<Dimension>
 					      aSubDomain,
 					      const Point &startingPoint) const
 { return ReverseConstIterator(subDomainBegin(aSubDomain, startingPoint)); }*/
@@ -376,7 +376,7 @@ DGtal::HyperRectDomain<TSpace>::subDomainREnd(std::initializer_list<Size>
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Size>
+DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Dimension>
 					     aSubDomain) const
 {
   Point partialUpperBound(myLowerBound);
@@ -390,14 +390,14 @@ DGtal::HyperRectDomain<TSpace>::subDomainEnd(std::initializer_list<Size>
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainREnd(std::initializer_list<Size>
+DGtal::HyperRectDomain<TSpace>::subDomainREnd(std::initializer_list<Dimension>
 					      aSubDomain) const
 { return ReverseConstIterator(subDomainBegin(aSubDomain)); }
 #endif
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Size> &
+DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Dimension> &
 					     aSubDomain,
 					     const Point &startingPoint) const
 {
@@ -412,14 +412,14 @@ DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Size> &
 /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainREnd(const std::vector<Size> &aSubDomain,
+DGtal::HyperRectDomain<TSpace>::subDomainREnd(const std::vector<Dimension> &aSubDomain,
 					      const Point &startingPoint) const
 { return ReverseConstIterator(subDomainBegin(aSubDomain, startingPoint)); }*/
 
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Size> &
+DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Dimension> &
 					     aSubDomain) const
 {
   Point partialUpperBound(myLowerBound);
@@ -433,7 +433,7 @@ DGtal::HyperRectDomain<TSpace>::subDomainEnd(const std::vector<Size> &
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::subDomainREnd(const std::vector<Size> &
+DGtal::HyperRectDomain<TSpace>::subDomainREnd(const std::vector<Dimension> &
 					      aSubDomain) const
 { return ReverseConstIterator(subDomainBegin(aSubDomain)); }
 //------------Span Iterators
@@ -446,12 +446,12 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::spanBegin
 ( const typename HyperRectDomain<TSpace>::Point &aPoint ,
-  const std::size_t aDimension) const
+  const Dimension aDimension) const
 {
   ASSERT(isInside(aPoint));
   ASSERT(aDimension < staticDimension);
 
-  std::vector<Size> sub;
+  std::vector<Dimension> sub;
   sub.push_back(aDimension);
   return subDomainBegin(sub, aPoint);
 }
@@ -460,14 +460,14 @@ inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::spanRBegin
 ( const typename HyperRectDomain<TSpace>::Point &aPoint ,
-  const std::size_t aDimension) const
+  const Dimension aDimension) const
   { return ReverseConstIterator(spanEnd(aPoint, aDimension)); }*/
 
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::spanBegin
-( const std::size_t aDimension) const
+( const Dimension aDimension) const
 {
   return spanBegin(myLowerBound, aDimension);
 }
@@ -475,7 +475,7 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::spanRBegin
-( const std::size_t aDimension) const
+( const Dimension aDimension) const
 {
   return spanRBegin(myLowerBound, aDimension);
 }
@@ -488,10 +488,10 @@ template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
 DGtal::HyperRectDomain<TSpace>::spanEnd( //const typename HyperRectDomain<TSpace>::Point &aPoint ,
-					 const std::size_t aDimension ) const
+					 const Dimension aDimension ) const
 {
   ASSERT(aDimension < staticDimension);
-  std::vector<Size> sub;
+  std::vector<Dimension> sub;
   sub.push_back(aDimension);
   return subDomainEnd(sub/*, aPoint*/);
 }
@@ -499,18 +499,18 @@ DGtal::HyperRectDomain<TSpace>::spanEnd( //const typename HyperRectDomain<TSpace
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
 DGtal::HyperRectDomain<TSpace>::spanREnd( const typename HyperRectDomain<TSpace>::Point &aPoint ,
-					  const std::size_t aDimension ) const
+					  const Dimension aDimension ) const
 { return ReverseConstIterator(spanBegin(aPoint, aDimension)); }*/
 
  /*template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ConstIterator
-DGtal::HyperRectDomain<TSpace>::spanEnd( const std::size_t aDimension ) const
+DGtal::HyperRectDomain<TSpace>::spanEnd( const Dimension aDimension ) const
 { return spanEnd(myUpperBound, aDimension); }*/
 template<typename TSpace>
 inline
 typename DGtal::HyperRectDomain<TSpace>::ReverseConstIterator
-DGtal::HyperRectDomain<TSpace>::spanREnd( const std::size_t aDimension ) const
+DGtal::HyperRectDomain<TSpace>::spanREnd( const Dimension aDimension ) const
 { return spanREnd(myUpperBound, aDimension); }
 
 
