@@ -154,7 +154,7 @@ namespace DGtal
    * Description of class 'HyperRectDomain_Iterator' <p>
    * Aim:
    */
-  template<typename TPoint, typename TSize>
+  template<typename TPoint>
   class HyperRectDomain_Iterator
   {
   public:
@@ -163,7 +163,7 @@ namespace DGtal
     typedef ptrdiff_t difference_type;
     typedef TPoint* pointer;
     typedef TPoint& reference;
-    typedef TSize Size;
+    typedef typename TPoint::Dimension Dimension;
 
 
     HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
@@ -177,7 +177,7 @@ namespace DGtal
 #ifdef CPP0X_INITIALIZER_LIST
     HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
 			     const TPoint &upper,
-			     std::initializer_list<Size> subDomain)
+			     std::initializer_list<Dimension> subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
 	myUseSubDomain( true )
     {
@@ -197,7 +197,7 @@ namespace DGtal
 #endif
     HyperRectDomain_Iterator(const TPoint & p, const TPoint& lower,
 			     const TPoint &upper,
-			     const std::vector<Size> &subDomain)
+			     const std::vector<Dimension> &subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 ),
 	myUseSubDomain( true )
     {
@@ -205,7 +205,7 @@ namespace DGtal
       ASSERT( lower <= p && p <= upper );
       ASSERT( subDomain.size() <= TPoint::staticDimension );
       mySubDomain.reserve( subDomain.size() );
-      for ( typename std::vector<Size>::const_iterator it = subDomain.begin();
+      for ( typename std::vector<Dimension>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
         {
           ASSERT( *it <= TPoint::staticDimension );
@@ -231,7 +231,7 @@ namespace DGtal
      * Operator ==
      *
      */
-    bool operator== ( const HyperRectDomain_Iterator<TPoint,TSize> &it ) const
+    bool operator== ( const HyperRectDomain_Iterator<TPoint> &it ) const
     {
       return ( myPoint == ( *it ) );
     }
@@ -240,7 +240,7 @@ namespace DGtal
      * Operator !=
      *
      */
-    bool operator!= ( const HyperRectDomain_Iterator<TPoint,TSize> &aIt ) const
+    bool operator!= ( const HyperRectDomain_Iterator<TPoint> &aIt ) const
     {
       return ( myPoint != ( *aIt ) );
     }
@@ -299,7 +299,7 @@ namespace DGtal
     /**
      * Operator ++ (++it)
      */
-    HyperRectDomain_Iterator<TPoint,TSize> &operator++()
+    HyperRectDomain_Iterator<TPoint> &operator++()
     {
       if ( myUseSubDomain )
 	nextSubDomainOrder();
@@ -312,9 +312,9 @@ namespace DGtal
      * Operator ++ (it++)
      *
      */
-    HyperRectDomain_Iterator<TPoint,TSize> operator++ ( int )
+    HyperRectDomain_Iterator<TPoint> operator++ ( int )
     {
-      HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
+      HyperRectDomain_Iterator<TPoint> tmp = *this;
       ++*this;
       return tmp;
     }
@@ -374,7 +374,7 @@ namespace DGtal
      * Operator ++ (++it)
      *
      */
-    HyperRectDomain_Iterator<TPoint,TSize> &operator--()
+    HyperRectDomain_Iterator<TPoint> &operator--()
     {
       if ( myUseSubDomain )
 	prevSubDomainOrder();
@@ -386,9 +386,9 @@ namespace DGtal
     /**
      * Operator ++ (it++)
      */
-    HyperRectDomain_Iterator<TPoint,TSize> &operator-- ( int )
+    HyperRectDomain_Iterator<TPoint> &operator-- ( int )
     {
-      HyperRectDomain_Iterator<TPoint,TSize> tmp = *this;
+      HyperRectDomain_Iterator<TPoint> tmp = *this;
       --*this;
       return tmp;
     }
@@ -400,10 +400,10 @@ namespace DGtal
     ///Copies of the Domain limits
     TPoint mylower, myupper;
     ///Second index of the iterator position
-    Size myCurrentPos;
+    Dimension myCurrentPos;
     ///Vector of subDomain on dimension, to fix the order in which dimensions
     /// are considered.
-    std::vector<Size> mySubDomain;
+    std::vector<Dimension> mySubDomain;
     /// True iff we use the vector of subDomain, otherwise dimensions are
     /// considered in increasing order.
     bool myUseSubDomain;

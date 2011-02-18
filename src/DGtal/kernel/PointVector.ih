@@ -436,7 +436,7 @@ DGtal::PointVector<dim, Component>::norm (const typename PointVector<dim, Compon
 {
   double tmp = 0.0;
 
-  ASSERT ( dimension() > 0 );
+  ASSERT ( dim > 0 );
 
   switch ( aType )
   {
@@ -450,7 +450,7 @@ DGtal::PointVector<dim, Component>::norm (const typename PointVector<dim, Compon
         tmp += fabs (  IntegerTraits<Component>::castToDouble(at( i ) ));
       break;
     case L_infty:
-      tmp = at( 0 );
+      tmp = IntegerTraits<Component>::castToDouble( at( 0 ));
       for ( unsigned int i = 1; i < dimension(); i++ )
         if ( tmp < fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ) ))
           tmp = fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ));
