@@ -202,7 +202,7 @@ bool testObjectBorder()
 
   //We split the border according to its components
   vector<ObjectType48> borders(30);
-  int nbComponents;
+  unsigned int nbComponents;
 
   vector<ObjectType48>::iterator it = borders.begin();
   nbComponents = bubbleBorder2.writeComponents( it );

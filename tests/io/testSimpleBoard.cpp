@@ -66,7 +66,7 @@ bool testSimpleBoard()
   board.saveEPS( "simpleboard.eps" );
   nbok++;
 
-  typedef  PointVector<2> Point2D;
+  typedef  PointVector<2,int> Point2D;
   Point2D apoint, p2;
   apoint[0] = 5;
   p2[0] = 1;
@@ -113,7 +113,7 @@ bool testDomain()
 
     trace.endBlock();
 
-    PointVector<3> pl;
+    PointVector<3,int> pl;
     //An assert should be raised 
     //pl.selfDraw(b2);
 
