@@ -63,7 +63,7 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     typedef TDigitalSet DigitalSet;
-    typedef typename DigitalSet::DomainType Domain;
+    typedef typename DigitalSet::Domain Domain;
     typedef typename Domain::Point Point;
 
     /**

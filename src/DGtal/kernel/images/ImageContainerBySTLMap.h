@@ -45,7 +45,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CValueType.h"
-#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/domains/CBoundedDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -67,7 +67,7 @@ namespace DGtal
   public:
 
     BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedDomain<Domain> ));
 		
 		
     typedef typename Domain::Point Point;

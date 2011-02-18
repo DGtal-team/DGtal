@@ -17,26 +17,25 @@
 #pragma once
 
 /**
- * @file CDomain.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file CBoundedDomain.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
- * @date 2010/07/01
+ * @date 2011/02/17
  *
- * Header file for concept CDomain.cpp
+ * Header file for concept CBoundedDomain.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDomain_RECURSES)
-#error Recursive header files inclusion detected in CDomain.h
-#else // defined(CDomain_RECURSES)
+#if defined(CBoundedDomain_RECURSES)
+#error Recursive header files inclusion detected in CBoundedDomain.h
+#else // defined(CBoundedDomain_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDomain_RECURSES
+#define CBoundedDomain_RECURSES
 
-#if !defined CDomain_h
+#if !defined CBoundedDomain_h
 /** Prevents repeated inclusion of headers. */
-#define CDomain_h
+#define CBoundedDomain_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -44,22 +43,24 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/kernel/domains/CDomain.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CDomain
+  // class CBoundedDomain
   /**
-   * Description of \b concept '\b CDomain' <p> \brief Aim: This
-   * concept represents a digital domain, i.e. a non mutable subset of
+   * Description of \b concept '\b CBoundedDomain' <p> \brief Aim: This
+   * concept represents a bounded digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 
-   * <p> Refinement of
+   * <p> Refinement of concept CDomain
    *
    * <p> Associated types :
-   * - Domain : the type itself of the CDomain model.
+   * - Domain : the type itself of the CBoundedDomain model.
    * - Space : the embedding digital space.
    * - Point : the point type of the space
    * - SizeType : the type used for counting elements of the space.
@@ -69,7 +70,7 @@ namespace DGtal
    * 
    * 
    * <p> Notation
-   * - \t X : A type that is a model of CDomain
+   * - \t X : A type that is a model of CBoundedDomain
    * - \t x	: Object of type X
    * - \t p	: Object of type Point
    * - \t it	: Object of type ConstIterator
@@ -124,56 +125,28 @@ namespace DGtal
    * @todo Complete domain checking.
    */
   template <typename T>
-  struct CDomain
+  struct CBoundedDomain: CDomain<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Domain Domain;
-    typedef typename T::Space Space;
-    typedef typename T::Point Point;
-    typedef typename T::Vector Vector;
-    typedef typename T::Integer Integer;
-    typedef typename T::Size Size;
-    typedef typename T::Dimension Dimension;
-    typedef typename T::ConstIterator ConstIterator;
-    typedef typename T::Predicate Predicate;
-    typedef typename T::IsBounded IsBounded;
-
-    BOOST_CONCEPT_USAGE( CDomain )
+    
+    BOOST_CONCEPT_USAGE( CBoundedDomain )
     {
-      // Domain should have a lowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.lowerBound() );
-      // Domain should have an upperBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.upperBound() );
-      // Domain should have a isInside(p) returning a bool.
-      ConceptUtils::sameType( myBool, myT.isInside( myP ) );
-      // Domain should have a predicate() returning a Predicate.
-      ConceptUtils::sameType( myPred, myT.predicate() );
-      // Domain should have a begin() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.begin() );
-      // Domain should have a end() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.end() );
+      // Bounded Domain should have a TagTrue tag to IsBounded type.
+      ConceptUtils::checkTrue( myIsBounded );
     }
 
-    // ------------------------- Private Datas --------------------------------
   private:
-    T myT;
-    Point myP;
-    Predicate myPred;
-    bool myBool;
-    ConstIterator myIt;
+    typename T::IsBounded myIsBounded;
 
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDomain
+
+   }; // end of concept CBoundedDomain
   
 } // namespace DGtal
 
-//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDomain_h
+#endif // !defined CBoundedDomain_h
 
-#undef CDomain_RECURSES
-#endif // else defined(CDomain_RECURSES)
+#undef CBoundedDomain_RECURSES
+#endif // else defined(CBoundedDomain_RECURSES)

@@ -59,11 +59,11 @@ namespace DGtal
    * Description of template class 'DigitalSetBySTLSet' <p>
    * \brief Aim:
    */
-  template <typename Domain>
+  template <typename TDomain>
   class DigitalSetBySTLSet
   {
   public:
-    typedef Domain DomainType;
+    typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
     typedef typename std::set<Point>::iterator Iterator;

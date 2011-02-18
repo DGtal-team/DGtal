@@ -112,6 +112,8 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate;
 
+    ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
+    typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
 
     // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 

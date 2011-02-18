@@ -90,7 +90,7 @@ namespace DGtal
       // should be the same as Point.
       typedef typename DigitalTopology::Point DTPoint;
 
-      typedef typename DigitalSet::DomainType Domain;
+      typedef typename DigitalSet::Domain Domain;
       typedef typename Domain::Space Space;
       typedef
       typename DigitalSetSelector < Domain,
