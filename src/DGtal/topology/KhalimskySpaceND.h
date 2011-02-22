@@ -357,6 +357,26 @@ namespace DGtal
     static const Sign POS = true;
     static const Sign NEG = false;
 
+    template <typename CellType>
+    struct AnyCellCollection : public std::deque<CellType> {
+      typedef CellType ValueType;
+      typedef typename std::deque<CellType> Container;
+      typedef typename std::deque<CellType>::iterator Iterator;
+      typedef typename std::deque<CellType>::const_iterator ConstIterator;
+      // inline
+      // Iterator begin()            { return myCells.begin(); }
+      // inline
+      // Iterator end()              { return myCells.end(); }
+      // inline
+      // ConstIterator begin() const { return myCells.begin(); }
+      // inline
+      // ConstIterator end() const   { return myCells.end(); }
+    };
+
+    // Neighborhoods, Incident cells, Faces and Cofaces
+    typedef AnyCellCollection<Cell> Neighborhood;
+    typedef AnyCellCollection<SCell> SNeighborhood;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -375,14 +395,14 @@ namespace DGtal
      * this space.
      *
      * @param lower_included the lowest point in this space (digital coords)
-     * @param upper_excluded the upper point in this space (digital coords) + (1,...,1)
+     * @param upper_included the upper point in this space (digital coords)
      * @param closed 'true' if this space is closed, 'false' if open.
      *
      * @return true if the initialization was valid (ie, such bounds
      * are representable with these integers).
      */
-    bool init( const Point & lower_included,
-	       const Point & upper_excluded,
+    bool init( const Point & lower,
+	       const Point & upper,
 	       bool closed );
 
     // ------------------------- Basic services ------------------------------
@@ -968,6 +988,194 @@ namespace DGtal
        scanning is finished.
     */
     bool uNext( Cell & p, const Cell & lower, const Cell & upper ) const;
+
+  // -------------------- Signed cell geometry services --------------------
+ public:
+
+    /**
+       @return the first cell of the space with the same type as [p].
+    */
+    SCell sFirst( const SCell & p ) const;
+    
+    /**
+       @return the last cell of the space with the same type as [p].
+    */
+    SCell sLast( const SCell & p ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       
+       @return the same element as [p] except for the incremented
+       coordinate [k].
+    */
+    SCell sGetIncr( const SCell & p, Dimension k ) const;
+ 
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate augmented
+       without leaving the space.
+    */
+    bool sIsMax( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the maximum allowed
+       [k]-coordinate.
+    */
+    SCell sGetMax( const SCell & p, Dimension k ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       
+       @return the same element as [p] except for an decremented
+       coordinate [k].
+     */
+    SCell sGetDecr( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate decreased
+       without leaving the space.
+    */
+    bool sIsMin( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the minimum allowed
+       [k]-coordinate.
+    */
+    SCell sGetMin( const SCell & p, Dimension k ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param x the increment.
+       
+       @return the same element as [p] except for a coordinate [k]
+       incremented with x.
+    */
+    SCell sGetAdd( const SCell & p, Dimension k, const Integer & x ) const;
+
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param x the decrement.
+
+       @return the same element as [p] except for a coordinate [k]
+       decremented with x.
+    */
+    SCell sGetSub( const SCell & p, Dimension k, const Integer & x ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the coordinate that is tested.
+       @return the number of increment to do to reach the maximum value.
+    */
+    Integer sDistanceToMax( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the coordinate that is tested.
+       
+       @return the number of decrement to do to reach the minimum
+       value.
+    */
+    Integer sDistanceToMin( const SCell & p, Dimension k ) const;
+
+    /**
+       Add the vector [vec] to [p]. 
+       NB: you can go out of the space.
+       @param p any cell.
+       @param vec any pointel.
+       @return the signed code of the cell [p] translated by [coord].
+    */
+    SCell sTranslation( const SCell & p, const Vector & vec ) const;
+
+    /**
+       Return the projection of [p] along the [k]th direction toward
+       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+
+       @param p any cell.
+       @param bound the element acting as bound (same topology as p).
+       @param k the concerned coordinate.
+       @return the projection.
+    */
+    SCell sProjection( const SCell & p, const SCell & bound, Dimension k ) const;
+
+    /**
+       Projects [p] along the [k]th direction toward
+       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+
+       @param p any cell.
+       @param bound the element acting as bound (same topology as p).
+       @param k the concerned coordinate.
+       @return the projection.
+    */
+    void sProject( SCell & p, const SCell & bound, Dimension k ) const;
+
+    /**
+       Increment the cell [p] to its next position (as classically done in
+       a scanning). Example:
+
+       \code
+       KSpace K;
+       Cell first, last; // lower and upper bounds 
+       Cell p = first;
+       do 
+       { // ... whatever [p] is the current cell
+       }
+       while ( K.uNext( p, first, last ) ); 
+       \endcode
+       
+       @param p any cell.
+       @param lower the lower bound.
+       @param upper the upper bound.
+       
+       @return true if p is still within the bounds, false if the
+       scanning is finished.
+    */
+    bool sNext( SCell & p, const SCell & lower, const SCell & upper ) const;
+
+    // ----------------------- Neighborhood services --------------------------
+  public:
+
+    /**
+       Computes the 1-neighborhood of the cell [c] and returns
+       it. It is the set of cells with same topology that are adjacent
+       to [c].
+       
+       @param cell the unsigned cell of interest.
+    */
+    Neighborhood uNeighborhood( const Cell & c ) const;
+
+    /**
+       Computes the 1-neighborhood of the cell [c] and returns
+       it. It is the set of cells with same topology that are adjacent
+       to [c].
+       
+       @param cell the signed cell of interest.
+    */
+    SNeighborhood sNeighborhood( const SCell & cell ) const;
 
 
     // ----------------------- Interface --------------------------------------

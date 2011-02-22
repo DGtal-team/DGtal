@@ -160,12 +160,19 @@ namespace DGtal {
    * - class PointVector, modes: "" / "Both", "Paving", "Grid"
    * - class Object, modes: "", "DrawAdjacencies"
    * - class HyperRectDomain, modes: "" / "Grid", "Paving"
-   * - class ArithmeticalDSS, modes: "" / "Both", "BoundingBox", "Points"
+   * - class ArithmeticalDSS, modes: "" / "BoundingBox", "Points"
    *
    * For instance, to change the drawing mode for the next object \c dss of type
    * ArithmeticalDSS, you may use the line
    \code
    board << SetMode( dss.styleName(), "BoundingBox" );
+   \endcode
+
+   If you wish to display both the points of a DSS an its bounding
+   box, you must draw it twice, as follows:
+   \code
+   board << SetMode( dss.styleName(), "BoundingBox" ) << dss
+         << SetMode( dss.styleName(), "Points" ) << dss;
    \endcode
    *
    * \subsection dgtal_dgtalboard_sec15 Changing the style for displaying drawable elements.
