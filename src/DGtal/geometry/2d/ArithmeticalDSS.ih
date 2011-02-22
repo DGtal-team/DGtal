@@ -1032,7 +1032,7 @@ inline
 DGtal::DrawableWithDGtalBoard*
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
 {
-  if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "BoundingBox" ) ) 
+  if ( ( mode == "" ) || ( mode == "BoundingBox" ) ) 
     return new DefaultDrawStyleBB;
   else // mode == "Points"
     return new DefaultDrawStylePoints;
@@ -1063,7 +1063,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( DGtalBoard & 
     selfDrawAsBoundingBox( board );
   else if ( mode == "Points" )
     selfDrawAsDigitalPoints( board );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
+  else if ( ( mode == "" ) )
     {
       selfDrawAsDigitalPoints( board );
       selfDrawAsBoundingBox( board );
