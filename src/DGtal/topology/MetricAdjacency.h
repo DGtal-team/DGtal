@@ -72,8 +72,8 @@ namespace DGtal
    *
    * @see testAdjacency.cpp
    */
-  template <typename TSpace, std::size_t maxNorm1, 
-	    std::size_t dimension = TSpace::staticDimension >
+  template <typename TSpace, Dimension maxNorm1, 
+	    Dimension dimension = TSpace::staticDimension >
   class MetricAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
@@ -279,7 +279,7 @@ namespace DGtal
    * @param object the object of class 'MetricAdjacency' to write.
    * @return the output stream after the writing.
    */
-  template <typename TSpace, std::size_t maxNorm1>
+  template <typename TSpace, Dimension maxNorm1>
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const MetricAdjacency< TSpace,maxNorm1,
