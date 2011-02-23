@@ -5,9 +5,9 @@
 ##   ENABLE_TESTING()
 ##   INCLUDE(CTest)
 set(CTEST_PROJECT_NAME "DGtal")
-set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
+set(CTEST_NIGHTLY_START_TIME "01:00:00 CEST")
 
 set(CTEST_DROP_METHOD "http")
-set(CTEST_DROP_SITE "liris.cnrs.fr")
-set(CTEST_DROP_LOCATION "/cdash/submit.php?project=DGtal")
+set(CTEST_DROP_SITE "my.cdash.org")
+set(CTEST_DROP_LOCATION "/submit.php?project=DGtal")
 set(CTEST_DROP_SITE_CDASH TRUE)
