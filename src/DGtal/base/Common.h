@@ -55,7 +55,7 @@
 #endif //win32
 #include <cmath>
 
-#include <DGtal/base/Config.h>
+#include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 #include "DGtal/utils/TraceWriterFile.h"
@@ -70,10 +70,14 @@
 namespace DGtal 
 {
   
+  /**
+   * Global static type to represent the dimension in DGtal
+   */
+  typedef DGtal::uint32_t Dimension;
+
   /** DGtal Global variables
    *
    **/
-  
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
 

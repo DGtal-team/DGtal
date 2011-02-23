@@ -70,8 +70,8 @@ namespace DGtal
      * maxNorm1.
      *
      */
-    template <typename Domain, std::size_t maxNorm1, 
-	      std::size_t dimension = Domain::Space::staticDimension >
+    template <typename Domain, Dimension maxNorm1, 
+	      Dimension dimension = Domain::Space::staticDimension >
     class DomainMetricAdjacency
     {
       BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
@@ -206,7 +206,7 @@ namespace DGtal
      * @param object the object of class 'DomainMetricAdjacency' to write.
      * @return the output stream after the writing.
      */
-    template <typename Domain, std::size_t maxNorm1>
+    template <typename Domain, Dimension maxNorm1>
     std::ostream&
     operator<< ( std::ostream & out, 
 		 const DomainMetricAdjacency< Domain, maxNorm1,

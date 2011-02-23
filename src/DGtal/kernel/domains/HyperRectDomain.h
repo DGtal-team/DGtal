@@ -102,7 +102,7 @@ namespace DGtal
 
     // static constants
     static const typename Space::Dimension
-        staticDimension = Space::staticDimension;
+    staticDimension = Space::staticDimension;
 
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
@@ -112,11 +112,13 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate;
 
+    ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
+    typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
 
     // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
 
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point,Size> ConstIterator; // PB THIS IS NOT A CONST ITERATOR !!!!!
+    typedef HyperRectDomain_Iterator<Point> ConstIterator; // PB THIS IS NOT A CONST ITERATOR !!!!!
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
     //typedef std::reverse_iterator<ConstIterator> ReverseConstIterator; BUG !
 
@@ -198,9 +200,9 @@ namespace DGtal
      * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2})
      * @return a ConstIterator
      **/
-    ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain) const;
+    ConstIterator subDomainBegin(std::initializer_list<Dimension> aSubDomain) const;
     ReverseConstIterator
-        subDomainRBegin(std::initializer_list<Size> aSubDomain) const;
+        subDomainRBegin(std::initializer_list<Dimension> aSubDomain) const;
 
     /**
      * begin iterator on a sub-domain with a order than the lexicographic one.
@@ -208,9 +210,9 @@ namespace DGtal
      * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2})
      * @return a ConstIterator
      **/
-    ConstIterator subDomainBegin(std::initializer_list<Size> aSubDomain,
+    ConstIterator subDomainBegin(std::initializer_list<Dimension> aSubDomain,
                                  const Point & startingPoint) const;
-    ReverseConstIterator subDomainRBegin(std::initializer_list<Size>
+    ReverseConstIterator subDomainRBegin(std::initializer_list<Dimension>
                                          aSubDomain,
                                          const Point & startingPoint) const;
 #endif
@@ -220,8 +222,8 @@ namespace DGtal
      * @param aSubDomain the sub-domain given by a vector of dimension.
      * @return a ConstIterator
      **/
-    ConstIterator subDomainBegin(const std::vector<Size> & permutation) const;
-    ReverseConstIterator subDomainRBegin(const std::vector<Size> &
+    ConstIterator subDomainBegin(const std::vector<Dimension> & permutation) const;
+    ReverseConstIterator subDomainRBegin(const std::vector<Dimension> &
                                          permutation) const;
 
     /**
@@ -230,9 +232,9 @@ namespace DGtal
      * @param aSubDomain the sub-domain given by a vector of dimension.
      * @return a ConstIterator
      **/
-    ConstIterator subDomainBegin(const std::vector<Size> & permutation,
+    ConstIterator subDomainBegin(const std::vector<Dimension> & permutation,
                                  const Point & startingPoint) const;
-    ReverseConstIterator subDomainRBegin(const std::vector<Size> & permutation,
+    ReverseConstIterator subDomainRBegin(const std::vector<Dimension> & permutation,
                                          const Point & startingPoint) const;
 
 #ifdef CPP0X_INITIALIZER_LIST
@@ -240,32 +242,32 @@ namespace DGtal
      * end iterator with an order different from lexicographic.
      *
      **/
-    ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain,
+    ConstIterator subDomainEnd(std::initializer_list<Dimension> aSubDomain,
                                const Point &startingPoint) const;
-    ReverseConstIterator subDomainREnd(std::initializer_list<Size> aSubDomain,
+    ReverseConstIterator subDomainREnd(std::initializer_list<Dimension> aSubDomain,
                                        const Point &startingPoint) const;
     /**
      * end iterator with an order different from lexicographic.
      *
      **/
-    ConstIterator subDomainEnd(std::initializer_list<Size> aSubDomain) const;
-    ReverseConstIterator subDomainREnd(std::initializer_list<Size>
+    ConstIterator subDomainEnd(std::initializer_list<Dimension> aSubDomain) const;
+    ReverseConstIterator subDomainREnd(std::initializer_list<Dimension>
                                        aSubDomain) const;
 #endif
     /**
      * end iterator with an order different from lexicographic.
      *
      **/
-    ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain,
+    ConstIterator subDomainEnd(const std::vector<Dimension> & aSubDomain,
                                const Point &startingPoint) const;
-    ReverseConstIterator subDomainREnd(const std::vector<Size> & aSubDomain,
+    ReverseConstIterator subDomainREnd(const std::vector<Dimension> & aSubDomain,
                                        const Point &startingPoint) const;
     /**
      * end iterator with an order different from lexicographic.
      *
      **/
-    ConstIterator subDomainEnd(const std::vector<Size> & aSubDomain) const;
-    ReverseConstIterator subDomainREnd(const std::vector<Size> &
+    ConstIterator subDomainEnd(const std::vector<Dimension> & aSubDomain) const;
+    ReverseConstIterator subDomainREnd(const std::vector<Dimension> &
                                        aSubDomain) const;
 
     //------------- Span Iterator
@@ -274,25 +276,25 @@ namespace DGtal
      * toward the dimension \param aDimension.
      *
      **/
-    ConstIterator spanBegin ( const std::size_t aDimension) const;
-    ReverseConstIterator spanRBegin( const std::size_t aDimension) const;
+    ConstIterator spanBegin ( const Dimension aDimension) const;
+    ReverseConstIterator spanRBegin( const Dimension aDimension) const;
 
     ConstIterator spanBegin ( const Point &aPoint,
-                              const std::size_t aDimension) const;
+                              const Dimension  aDimension) const;
     ReverseConstIterator spanRBegin( const Point &aPoint,
-                                     const std::size_t aDimension) const;
+                                     const Dimension aDimension) const;
 
     /**
      * Creates a end() Span iterator along the dimension \param aDimension.
      *
      **/
-    ConstIterator spanEnd (const std::size_t aDimension) const;
-    ReverseConstIterator spanREnd (const std::size_t aDimension) const;
+    ConstIterator spanEnd (const Dimension aDimension) const;
+    ReverseConstIterator spanREnd (const Dimension aDimension) const;
 
     ConstIterator spanEnd (const Point &aPoint,
-			   const std::size_t aDimension) const;
+			   const Dimension aDimension) const;
     ReverseConstIterator spanREnd (const Point &aPoint,
-				   const std::size_t aDimension) const;
+				   const Dimension aDimension) const;
 
     // ----------------------- Interface --------------------------------------
   public:

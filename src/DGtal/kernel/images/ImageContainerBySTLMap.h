@@ -45,7 +45,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CValueType.h"
-#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/domains/CBoundedDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -71,6 +71,7 @@ namespace DGtal
 		
 		
     typedef typename Domain::Point Point;
+    typedef typename Domain::Dimension Dimension;
     typedef typename map<Point,ValueType>::size_type TSizeType;
     typedef typename map<Point,ValueType>::iterator Iterator;
     typedef typename map<Point,ValueType>::const_iterator ConstIterator;
@@ -82,7 +83,7 @@ namespace DGtal
 
     public:
       SpanIterator( const Point & p ,
-		    const std::size_t aDim ,
+		    const Dimension aDim ,
 		    ImageContainerBySTLMap<Domain,ValueType> *aMap ) :   
 	myStartingPoint( p ),	myDimension ( aDim ), 	myMap ( aMap )
       {
@@ -176,7 +177,7 @@ namespace DGtal
       ImageContainerBySTLMap<Domain,ValueType> *myMap;
 
       ///Dimension on which the iterator must iterate
-      std::size_t myDimension;
+      Dimension myDimension;
 
     };
 
@@ -223,12 +224,12 @@ namespace DGtal
     }
 
 
-    SpanIterator span_begin(const Point &aPoint, const std::size_t aDimension)
+    SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
     {
       return SpanIterator ( aPoint, aDimension, this);
     }
 
-    SpanIterator span_end(const Point &aPoint,const std::size_t aDimension)
+    SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
     {
       Point tmp = aPoint;
       tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
