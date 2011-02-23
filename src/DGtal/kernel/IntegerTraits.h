@@ -164,7 +164,7 @@ namespace DGtal
 
 
 
-#if ( defined(WIN32) )
+#if ( defined(WIN32)  )
 /// On VS2008, unsigned int and uint??_t are different
   /**
    * Specialization for <int>.
@@ -341,9 +341,7 @@ namespace DGtal
 
   }; // end of class IntegerTraits<unsigned char>.
 
-#endif //WIN32
-
- /**
+  /**
    * Specialization for <long int>.
    */
   template <>
@@ -404,6 +402,11 @@ namespace DGtal
 
   }; // end of class IntegerTraits<int>.
 
+
+
+#endif //WIN32
+
+  
   /**
    * Specialization for <uint16_t>.
    */
