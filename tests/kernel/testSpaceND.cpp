@@ -52,7 +52,7 @@ bool testSimpleSpace()
 {
 
     SpaceND<6> aSpace6;
-    SpaceND<2,long int> aSpace2;
+    SpaceND<2,DGtal::int64_t> aSpace2;
 
     cout << "aSpace6 = " << aSpace6 << endl;
     cout << "aSpace2 = " << aSpace2 << endl;

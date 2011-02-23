@@ -944,31 +944,28 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sFirst( const SCell & p ) const
 {
   return sCell( myLower, p );
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sLast( const SCell & p ) const
 {
   return sCell( myUpper, p );
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetIncr( const SCell & p, Dimension k ) const
 {
   SCell q = p;
@@ -976,31 +973,28 @@ sGetIncr( const SCell & p, Dimension k ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 bool 
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sIsMax( const SCell & p, Dimension k ) const
 {
   return p.myCoordinates[ k ] >= myCellUpper.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMax( const SCell & p, Dimension k ) const
 {
   return sProjection( p, myCellUpper, k );
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetDecr( const SCell & p, Dimension k ) const
 {
   SCell q = p;
@@ -1008,31 +1002,28 @@ sGetDecr( const SCell & p, Dimension k ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 bool
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sIsMin( const SCell & p, Dimension k ) const
 {
   return p.myCoordinates[ k ] <= myCellLower.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMin( const SCell & p, Dimension k ) const
 {
   return sProjection( p, myCellLower, k );
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetAdd( const SCell & p, Dimension k, const Integer & x ) const
 {
   SCell q = p;
@@ -1040,11 +1031,10 @@ sGetAdd( const SCell & p, Dimension k, const Integer & x ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetSub( const SCell & p, Dimension k, const Integer & x ) const
 {
   SCell q = p;
@@ -1052,31 +1042,28 @@ sGetSub( const SCell & p, Dimension k, const Integer & x ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 TInteger
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMax( const SCell & p, Dimension k ) const
 {
   return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 TInteger
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMin( const SCell & p, Dimension k ) const
 {
   return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sTranslation( const SCell & p, const Vector & vec ) const
 {
   SCell q = p;
@@ -1085,11 +1072,10 @@ sTranslation( const SCell & p, const Vector & vec ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::SCell
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sProjection( const SCell & p, const SCell & bound, Dimension k ) const
 {
   SCell q = p;
@@ -1097,21 +1083,19 @@ sProjection( const SCell & p, const SCell & bound, Dimension k ) const
   return q;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 void
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sProject( SCell & p, const SCell & bound, Dimension k ) const
 {
   p.myCoordinates[ k ] = bound.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
 bool
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sNext( SCell & p, const SCell & lower, const SCell & upper ) const
 {
   Dimension k = IntegerTraits<Dimension>::ZERO;
@@ -1138,12 +1122,10 @@ sNext( SCell & p, const SCell & lower, const SCell & upper ) const
 //-----------------------------------------------------------------------------
 // ----------------------- Neighborhood services --------------------------
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, 
-				  TSize, TDimension >::Neighborhood 
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::Neighborhood 
+DGtal::KhalimskySpaceND< dim, TInteger >::
 uNeighborhood( const Cell & c ) const
 {
   Neighborhood N;
@@ -1157,12 +1139,10 @@ uNeighborhood( const Cell & c ) const
   return N;
 }
 //-----------------------------------------------------------------------------
-template < std::size_t dim, typename TInteger, typename TSize, 
-	   typename TDimension >
+template < Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskySpaceND< dim, TInteger, 
-				  TSize, TDimension >::SNeighborhood 
-DGtal::KhalimskySpaceND< dim, TInteger, TSize, TDimension >::
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SNeighborhood 
+DGtal::KhalimskySpaceND< dim, TInteger >::
 sNeighborhood( const SCell & c ) const
 {
   SNeighborhood N;

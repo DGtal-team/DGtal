@@ -53,7 +53,7 @@ bool testLinearAlgebra()
   
   typedef SpaceND<2,int> Space2Int;
   typedef Space2Int::Point Point;
-  typedef SpaceND<2,long int > Space2LongInt;
+  typedef SpaceND<2,int64_t > Space2LongInt;
   typedef Space2LongInt::Point Pointlong;
 
   Point a,b;
