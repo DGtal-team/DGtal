@@ -65,7 +65,7 @@ namespace DGtal
    * Point lying in this space, the type of a Vector or the type of subspace.
    * 
    * @tparam dim static constant of type DGtal::Dimension that specifies the static  dimension of the space.
-   * @tparam Integer speficies the integer number type to use as a
+   * @tparam Integer specifies the integer number type to use as a
    * ring for the computations or as coordinates type. Integer must be
    * a model of CInteger and CSignedInteger concepts.  
    * 
