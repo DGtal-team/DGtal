@@ -44,7 +44,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
@@ -105,7 +104,6 @@ namespace DGtal
     typedef typename T::Dimension Dimension;
     BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
     typedef typename T::Size Size;
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
     BOOST_CONCEPT_USAGE( CSpace )
     {
       // Should have a dimension() method.
@@ -127,9 +125,6 @@ namespace DGtal
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/CSpace.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

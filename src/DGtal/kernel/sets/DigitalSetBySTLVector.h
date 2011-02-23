@@ -66,11 +66,11 @@ namespace DGtal
    * @tparam Domain a realization of the concept CDomain.
    * @see CDigitalSet,CDomain
    */
-  template <typename Domain>
+  template <typename TDomain>
   class DigitalSetBySTLVector
   {
   public:
-    typedef Domain DomainType;
+    typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
     typedef typename std::vector<Point>::iterator Iterator;

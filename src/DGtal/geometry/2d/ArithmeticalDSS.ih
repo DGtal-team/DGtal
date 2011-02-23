@@ -116,7 +116,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS (
 					myF(other.myF), myL(other.myL) {
 
 	step.clear();
-	for (int i = 0; i < other.step.size(); i++) {
+	for (unsigned int i = 0; i < other.step.size(); i++) {
 		step.push_back(other.step.at(i));
 	}
 }

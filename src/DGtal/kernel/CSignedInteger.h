@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CUnsignedInteger.h
+ * @file CSignedInteger.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
@@ -25,24 +25,25 @@
  *
  * @date 2010/07/02
  *
- * Header file for concept CUnsignedInteger.cpp
+ * Header file for concept CSignedInteger.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CUnsignedInteger_RECURSES)
-#error Recursive header files inclusion detected in CUnsignedInteger.h
-#else // defined(CUnsignedInteger_RECURSES)
+#if defined(CSignedInteger_RECURSES)
+#error Recursive header files inclusion detected in CSignedInteger.h
+#else // defined(CSignedInteger_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CUnsignedInteger_RECURSES
+#define CSignedInteger_RECURSES
 
-#if !defined CUnsignedInteger_h
+#if !defined CSignedInteger_h
 /** Prevents repeated inclusion of headers. */
-#define CUnsignedInteger_h
+#define CSignedInteger_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
@@ -53,11 +54,11 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CUnsignedInteger
+  // class CSignedInteger
   /**
-   * Description of \b concept '\b CUnsignedInteger' <p>
+   * Description of \b concept '\b CSignedInteger' <p>
    * @ingroup Concepts
-   * Aim: Concept checking for Unsigned Integer. 
+   * Aim: Concept checking for Signed Integer. 
    * 
    * <p> Refinement of CInteger
    *
@@ -65,7 +66,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CUnsignedInteger
+   * - \t X : A type that is a model of CSignedInteger
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -89,14 +90,14 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-  struct CUnsignedInteger: CInteger<T>
+  struct CSignedInteger: CInteger<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE(CUnsignedInteger)
+    BOOST_CONCEPT_USAGE(CSignedInteger)
     {
-      // Will compile iff Unsigned.
-      ConceptUtils::checkTrue( myIsUnsigned );
+      // Will compile iff Signed.
+      ConceptUtils::checkTrue( myIsSigned );
     }
     
     // ------------------------- Private Datas --------------------------------
@@ -104,16 +105,17 @@ namespace DGtal
     
     // ------------------------- Internals ------------------------------------
   private:
-    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
+    typename IntegerTraits<T>::IsSigned myIsSigned;
 
-  }; // end of concept CUnsignedInteger
+  }; // end of concept CSignedInteger
   
 } // namespace DGtal
 
-                                                                           //
+
+//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CUnsignedInteger_h
+#endif // !defined CSignedInteger_h
 
-#undef CUnsignedInteger_RECURSES
-#endif // else defined(CUnsignedInteger_RECURSES)
+#undef CSignedInteger_RECURSES
+#endif // else defined(CSignedInteger_RECURSES)

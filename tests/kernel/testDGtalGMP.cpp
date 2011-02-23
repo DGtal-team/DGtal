@@ -92,17 +92,16 @@ bool testGMPSpace()
   typedef Space2Type::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2Type> Domain;
 
+  mpz_class a, b, c;
+  
+  a = 1234;
+  b = "-5678";
+  Point p(a,b);
+ 
   typedef FreemanChain<Coordinate> ContourType; 
   typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> DSS4;  
   typedef GreedyDecomposition<DSS4> Decomposition;
-  
-  //mpz_class valuetype image
-  typedef SpaceND<2 > Space2Common;
-  typedef Space2Common::Point PointCommon;
-  typedef HyperRectDomain<Space2Common> DomainCommon;
-  typedef ImageContainerBySTLVector<DomainCommon, mpz_class> Imagempz;
-
-
+ 
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
@@ -112,14 +111,10 @@ bool testGMPSpace()
   Decomposition::ConstIterator i = theDecomposition.begin();
   DSS4 segment(*i); 
 
-
   Point p1( 0, 0 );
   Point p2( 31, 31 );
-  PointCommon p1c( 0, 0 );
-  PointCommon p2c( 31, 31 );
 
-
-  trace.info() <<"p2c.norm()= "<< p2c.norm()<<endl;
+  trace.info() <<"p2.norm()= "<< p2.norm()<<endl;
 
   Domain domain( p1, p2 );
   DGtalBoard aBoard;
@@ -130,8 +125,6 @@ bool testGMPSpace()
 
   aBoard.saveSVG("testgmpcontour.svg");
   
-  //We try to instanciate image
-  Imagempz aImage(p1c,p2c);
 
   nbok += true ? 1 : 0; 
   nb++;

@@ -75,6 +75,7 @@ namespace DGtal
     // ----------------------- Associated types ------------------------------
     typedef TagUnknown IsBounded;
     typedef TagUnknown IsUnsigned;
+    typedef TagUnknown IsSigned;
     typedef TagFalse IsSpecialized;
     typedef T SignedVersion;
     typedef T UnsignedVersion;
@@ -139,8 +140,8 @@ namespace DGtal
     /**
      * @return SIGNED, UNSIGNED or SIGN_UNKNOWN.
      */
-    static SignEnum isUnsigned();
-    
+    static SignEnum isSigned();
+   
     /**
      * Cast method to DGtal::int64_t (for I/O or board export uses
      * only).
@@ -173,6 +174,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int SignedVersion;
     typedef unsigned int UnsignedVersion;
@@ -204,18 +206,16 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
-      return UNSIGNED;
+      return SIGNED;
     }
+   
     static DGtal::int64_t castToInt64_t(const int & aT)
     {
       return static_cast<DGtal::int64_t>(aT);
     }
-/**
-     * Cast method to double (for I/O or board export uses
-     * only).
-     */
+
     static double castToDouble(const int & aT)
     {
       return static_cast<double>(aT);
@@ -231,6 +231,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
+    typedef TagFalse isSigned;
     typedef TagTrue IsSpecialized;
     typedef int SignedVersion;
     typedef unsigned int UnsignedVersion;
@@ -262,7 +263,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return UNSIGNED;
     }
@@ -289,6 +290,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
     typedef TagTrue IsSpecialized;
     typedef char SignedVersion;
     typedef unsigned char UnsignedVersion;
@@ -320,7 +322,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return UNSIGNED;
     }
@@ -339,8 +341,68 @@ namespace DGtal
 
   }; // end of class IntegerTraits<unsigned char>.
 
-#endif //WIN32 or APPLE
+#endif //WIN32
 
+ /**
+   * Specialization for <long int>.
+   */
+  template <>
+  struct IntegerTraits<long int>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef long int SignedVersion;
+    typedef unsigned long int UnsignedVersion;
+    typedef long int ReturnType;
+    typedef boost::call_traits<long int>::param_type ParamType;
+    static const long int ZERO = 0;
+    static const long int ONE = 1;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<long int>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<long int>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<long int>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   
+    static DGtal::int64_t castToInt64_t(const long int & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const long int & aT)
+    {
+      return static_cast<double>(aT);
+    }
+
+  }; // end of class IntegerTraits<int>.
 
   /**
    * Specialization for <uint16_t>.
@@ -350,6 +412,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int16_t SignedVersion;
     typedef uint16_t UnsignedVersion;
@@ -381,7 +444,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return UNSIGNED;
     }
@@ -408,6 +471,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int16_t SignedVersion;
     typedef uint16_t UnsignedVersion;
@@ -439,7 +503,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return SIGNED;
     }
@@ -465,6 +529,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int32_t SignedVersion;
     typedef uint32_t UnsignedVersion;
@@ -496,7 +561,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return UNSIGNED;
     }
@@ -518,6 +583,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int32_t SignedVersion;
     typedef uint32_t UnsignedVersion;
@@ -549,7 +615,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return SIGNED;
     }
@@ -575,6 +641,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int64_t SignedVersion;
     typedef uint64_t UnsignedVersion;
@@ -606,7 +673,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return UNSIGNED;
     }
@@ -632,6 +699,7 @@ namespace DGtal
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef int64_t SignedVersion;
     typedef uint64_t UnsignedVersion;
@@ -663,7 +731,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return SIGNED;
     }
@@ -687,6 +755,7 @@ namespace DGtal
   {
     typedef TagFalse IsBounded;
     typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef mpz_class SignedVersion;
     typedef mpz_class UnsignedVersion;
@@ -722,7 +791,7 @@ namespace DGtal
     {
       return BOUNDED;
     }
-    static SignEnum isUnsigned()
+    static SignEnum isSigned()
     {
       return SIGNED;
     }

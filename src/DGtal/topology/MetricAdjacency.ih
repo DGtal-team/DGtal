@@ -42,7 +42,7 @@
 /**
  * Destructor.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
 {
@@ -52,7 +52,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
  * Constructor. Does nothing. Due to the symmetry and translation
  * invariance of this digital topology, all methods are static.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
 {
@@ -68,7 +68,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
@@ -85,7 +85,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation and p1 != p2.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
@@ -113,7 +113,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
  * @param out_it any output iterator.
  * @param pred the predicate.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 template <typename OutputIterator, typename PointPredicate>
 void 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
@@ -149,7 +149,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
  * @param p any point of this space.
  * @param out_it any output iterator.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 template <typename OutputIterator>
 void 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
@@ -176,7 +176,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 template <typename OutputIterator, typename PointPredicate>
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
@@ -202,7 +202,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 template <typename OutputIterator>
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
@@ -235,7 +235,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay 
@@ -249,7 +249,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, std::size_t maxNorm1, std::size_t dimension>
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 bool
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
@@ -262,7 +262,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TSpace, std::size_t maxNorm1>
+template <typename TSpace, Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

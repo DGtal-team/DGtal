@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -58,125 +59,155 @@ namespace DGtal
    * Description of class 'SpaceND' <p>
    *
    * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
-   * \todo documentation here!
-   * @tparam dim the dimension of the digital space.
-   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int).
-   * @tparam TSize the Integer class used to represent the sizes in the space (default type = unsigned int).
-   * @tparam TDimension the type used to represent indices of coordinates.
-   */
+   *
+   * This class just defines fundamental types associated to a digital
+   * space in dimension n. For instance, it specifies the type of a
+   * Point lying in this space, the type of a Vector or the type of subspace.
+   * 
+   * @tparam dim static constant of type DGtal::Dimension that specifies the static  dimension of the space.
+   * @tparam Integer speficies the integer number type to use as a
+   * ring for the computations or as coordinates type. Integer must be
+   * a model of CInteger and CSignedInteger concepts.  
+   * 
+   * Example of use:
+   *@code
+   
+#include <DGtal/kernel/SpaceND.h>
 
-  template < std::size_t dim,
-	     typename TInteger = DGtal::int32_t,
-	     typename TSize = DGtal::uint32_t,
-	     typename TDimension = DGtal::uint32_t >
+//...
+
+//We define the type of a digital domain on dimension 4 using the
+//"int" arithmetic ring.
+
+typedef SpaceND<4, int> Space4Int;
+   
+//We deduce the type to represent points in this space
+typedef Space4::Point Point4Int;
+
+//and we use it (see PointVector documentation).
+Point4Int a= {2, 3 , -5 , 6};
+   @endcode
+   *
+   **/
+
+  template < Dimension dim,
+	     typename TInteger = DGtal::int32_t >
   class SpaceND
   {
-    public:
+    //Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+ 
+   //Integer must be signed to characterize a ring.
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
-      /// \todo fixer des concept check sur Integer
-      BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-      BOOST_CONCEPT_ASSERT(( CUnsignedInteger<TSize> ) );
-      BOOST_CONCEPT_ASSERT(( CUnsignedInteger<TDimension> ) );
+  public:
+    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
+    typedef TInteger Integer;
+    ///Unsigned version of the Integers.
+    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    
+    ///Type used to represent sizes in the digital space.
+    typedef UnsignedInteger Size;
+    
+    
+    ///Points in DGtal::SpaceND.
+    typedef PointVector<dim,Integer> Point;
 
-      //Arithmetic
-      typedef TInteger Integer;
-      typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    ///Vectors in DGtal::SpaceND.
+    typedef PointVector<dim,Integer> Vector;
 
-      //Size & Dimension
-      typedef TSize Size;
-      typedef TDimension Dimension;
+    ///Type to denote the space itself.
+    typedef SpaceND<dim, Integer> Space;
 
-      //Points and Vectors
-      typedef PointVector<dim,Integer> Point;
-      typedef PointVector<dim,Integer> Vector;
+    ///Copy of the type used for the  dimension.
+    typedef DGtal::Dimension Dimension;
+    
+    ///static constants to store the dimension.
+    static const Dimension staticDimension = dim;
 
-      typedef SpaceND<dim, Integer, Size> Space;
-
-      // static constants
-      static const Dimension staticDimension = dim;
-
-      //typedef Matrix<dimT,DimensionT,Integer> Matrix;
-      template <std::size_t codimension>
-      struct Subcospace
-      {
-        typedef SpaceND < dim - codimension, Integer, Size, Dimension > Type;
-      };
-      template <std::size_t subdimension>
-      struct Subspace
-      {
-        typedef SpaceND<subdimension, Integer, Size, Dimension> Type;
-      };
-
-
-      // ----------------------- Standard services ------------------------------
-    public:
-
-      /**
-       * Constructor
-       *
-       */
-      SpaceND() {};
-
-      /**
-       * Destructor.
-       */
-      ~SpaceND() {};
-
-      /**
-       * @return the digital space of specified subdimension of this space.
-       */
-      template <std::size_t subdimension>
-      static
-      typename Subspace<subdimension>::Type subspace()
-      {
-        ASSERT( subdimension <= dim );
-        return SpaceND<subdimension, Integer, Size, Dimension>();
-      }
+    ///Define the type of a sub co-Space
+    template <Dimension codimension>
+    struct Subcospace
+    {
+      typedef SpaceND < dim - codimension, Integer > Type;
+    };
+   
+    ///Define the type of a subspace.
+    template <Dimension subdimension>
+    struct Subspace
+    {
+      typedef SpaceND<subdimension, Integer> Type;
+    };
 
 
-      /**
-       * @return the digital space of specified codimension of this space.
-       */
-      template <std::size_t codimension>
-      static
-      typename Subcospace<codimension>::Type subcospace()
-      {
-        ASSERT( codimension <= dim );
-        return SpaceND < dim - codimension, Integer, Size, Dimension > ();
-      }
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Constructor
+     *
+     */
+    SpaceND() {};
+
+    /**
+     * Destructor.
+     */
+    ~SpaceND() {};
+
+    /**
+     * @return the digital space of specified subdimension of this space.
+     */
+    template <Dimension subdimension>
+    static
+    typename Subspace<subdimension>::Type subspace()
+    {
+      ASSERT( subdimension <= dim );
+      return SpaceND<subdimension, Integer>();
+    }
 
 
-      /**
-       * @return the dimension of the digital space.
-       */
-      static Dimension dimension()
-      {
-        return dim;
-      }
+    /**
+     * @return the digital space of specified codimension of this space.
+     */
+    template <Dimension codimension>
+    static
+    typename Subcospace<codimension>::Type subcospace()
+    {
+      ASSERT( codimension <= dim );
+      return SpaceND < dim - codimension, Integer > ();
+    }
 
-      // ----------------------- Interface --------------------------------------
-    public:
+    /**
+     * @return the dimension of the digital space.
+     */
+    static Dimension dimension()
+    {
+      return staticDimension;
+    }
 
-      /**
-       * Writes/Displays the object on an output stream.
-       * @param out the output stream where the object is written.
-       */
-      static void selfDisplay( std::ostream & out )
-      {
-        out << "[SpaceND dim=" << dimension() << " size_elem=" << sizeof( Integer ) << " ]";
-      }
+    // ----------------------- Interface --------------------------------------
+  public:
 
-    private:
-      /**
-       * Assignment.
-       * @param other the object to copy.
-       * @return a reference on 'this'.
-       * Forbidden by default.
-       */
-      SpaceND & operator=( const SpaceND & other );
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    static void selfDisplay( std::ostream & out )
+    {
+      out << "[SpaceND dim=" << dimension() << " size of Integers=" << sizeof( Integer ) << " ]";
+    }
 
-      // ------------------------- Internals ------------------------------------
-    private:
+  private:
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    SpaceND & operator=( const SpaceND & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
 
   }; // end of class SpaceND
 
@@ -187,9 +218,9 @@ namespace DGtal
    * @param object the object of class 'SpaceND' to write.
    * @return the output stream after the writing.
    */
-  template <std::size_t dim, typename Integer, typename Size, typename Dimension>
+  template <Dimension dim, typename Integer>
   static std::ostream&
-  operator<<( std::ostream & out, const SpaceND<dim, Integer, Size, Dimension> & object )
+  operator<<( std::ostream & out, const SpaceND<dim, Integer> & object )
   {
     object.selfDisplay( out );
     return out;
