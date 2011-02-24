@@ -115,13 +115,10 @@ namespace DGtal
     ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
     typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
 
-    // BOOST_CONCEPT_ASSERT(( CDomain< HyperRectDomain >));
-
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point> ConstIterator; // PB THIS IS NOT A CONST ITERATOR !!!!!
+    typedef HyperRectDomain_Iterator<Point> ConstIterator; // @todo PB THIS IS NOT A CONST ITERATOR !!!!!
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
-    //typedef std::reverse_iterator<ConstIterator> ReverseConstIterator; BUG !
-
+  
     typedef IsWithinPointPredicate<Point> Predicate;
 
     /**
