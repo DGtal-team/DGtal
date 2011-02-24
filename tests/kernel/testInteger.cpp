@@ -57,6 +57,10 @@ bool testInteger()
   BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::uint16_t> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
+
+  //OS depedent instances
+  BOOST_CONCEPT_ASSERT(( CInteger<long int> ));
+  
   // These tests fail : bool is not a model of CInteger.
   // BOOST_CONCEPT_ASSERT(( CInteger<std::string> ));
   // BOOST_CONCEPT_ASSERT(( CInteger<bool> ));
@@ -101,6 +105,20 @@ bool testInteger()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
+
+  trace.beginBlock ( "Checking IntegerTraits on  built-in OS dependent types ..." );
+  trace.info() << "  - digits int = " << IntegerTraits<int>::digits()<< std::endl;
+  trace.info() << "  - digits unsigned int = " << IntegerTraits<unsigned int>::digits()<< std::endl;
+  trace.info() << "  - digits long int = " << IntegerTraits<long int>::digits()<< std::endl;
+  trace.info() << "  - digits long long int = " << IntegerTraits<long long int>::digits()<< std::endl;
+
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+
+
   
   return nbok == nb;
 }
