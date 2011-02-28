@@ -42,16 +42,16 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
-			  const ValueType & minV, const ValueType & maxV)
+			  const Value & minV, const Value & maxV)
 {
-  ///@todo  the ValueType of I should match with the one in C
+  ///@todo  the Value of I should match with the one in C
 
   BOOST_STATIC_ASSERT(I::Domain::staticDimension == 2);
   
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
-  typename I::ValueType val;
+  typename I::Value val;
   C colormap(minV,maxV);
   LibBoard::Color col;
   
@@ -84,16 +84,16 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
-			  const ValueType & minV, const ValueType & maxV)
+			  const Value & minV, const Value & maxV)
 {
-  ///@todo  the ValueType of I should match with the one in C
+  ///@todo  the Value of I should match with the one in C
 
   BOOST_STATIC_ASSERT(I::Domain::staticDimension == 2);
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
-  typename I::ValueType val;
+  typename I::Value val;
   C colormap(minV,maxV);
   LibBoard::Color col;
   
@@ -126,16 +126,16 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
-			    const ValueType & minV, const ValueType & maxV)
+			    const Value & minV, const Value & maxV)
 {
-  ///@todo  the ValueType of I should match with the one in C
+  ///@todo  the Value of I should match with the one in C
 
   BOOST_STATIC_ASSERT(I::Domain::staticDimension == 3);
   
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
-  typename I::ValueType val;
+  typename I::Value val;
   C colormap(minV,maxV);
   LibBoard::Color col;
   
@@ -168,16 +168,16 @@ PNMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
-			  const ValueType & minV, const ValueType & maxV)
+			  const Value & minV, const Value & maxV)
 {
-  ///@todo  the ValueType of I should match with the one in C
+  ///@todo  the Value of I should match with the one in C
 
   BOOST_STATIC_ASSERT(I::Domain::staticDimension == 3);
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
-  typename I::ValueType val;
+  typename I::Value val;
   C colormap(minV,maxV);
   LibBoard::Color col;
   

@@ -44,7 +44,7 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -60,38 +60,38 @@ namespace DGtal
    * @see test_Image.cpp
    */
 
-  template <typename Domain, typename ValueType>
-  class ImageContainerBySTLMap: public map<typename Domain::Point,ValueType>
+  template <typename Domain, typename Value>
+  class ImageContainerBySTLMap: public map<typename Domain::Point,Value>
   {
 
   public:
 
-    BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
+    BOOST_CONCEPT_ASSERT(( CValue<Value> ));
     BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
 		
 		
     typedef typename Domain::Point Point;
     typedef typename Domain::Dimension Dimension;
-    typedef typename map<Point,ValueType>::size_type TSizeType;
-    typedef typename map<Point,ValueType>::iterator Iterator;
-    typedef typename map<Point,ValueType>::const_iterator ConstIterator;
+    typedef typename map<Point,Value>::size_type TSize;
+    typedef typename map<Point,Value>::iterator Iterator;
+    typedef typename map<Point,Value>::const_iterator ConstIterator;
 
     ///\todo create span iterators
     class SpanIterator: public Iterator
     {
-      friend class ImageContainerBySTLMap<Domain,ValueType>;
+      friend class ImageContainerBySTLMap<Domain,Value>;
 
     public:
       SpanIterator( const Point & p ,
 		    const Dimension aDim ,
-		    ImageContainerBySTLMap<Domain,ValueType> *aMap ) :   
+		    ImageContainerBySTLMap<Domain,Value> *aMap ) :   
 	myStartingPoint( p ),	myDimension ( aDim ), 	myMap ( aMap )
       {
 	myPos = myMap->find( p );
       }
 
 
-      const ValueType & operator*() const
+      const Value & operator*() const
       {
 	return (*myPos).second;
       }
@@ -174,7 +174,7 @@ namespace DGtal
       Iterator myPos;
 
       /// Copy of the underlying images
-      ImageContainerBySTLMap<Domain,ValueType> *myMap;
+      ImageContainerBySTLMap<Domain,Value> *myMap;
 
       ///Dimension on which the iterator must iterate
       Dimension myDimension;
@@ -186,7 +186,7 @@ namespace DGtal
 
     ~ImageContainerBySTLMap() {};
 
-    ValueType operator()(const Point &aPoint) throw( std::bad_alloc )
+    Value operator()(const Point &aPoint) throw( std::bad_alloc )
     {
       Iterator it = this->find( aPoint );
       if ( it == this->end() )
@@ -196,7 +196,7 @@ namespace DGtal
     }
 
 
-    ValueType operator()(const Iterator &it) throw( std::bad_alloc )
+    Value operator()(const Iterator &it) throw( std::bad_alloc )
     {
       if ( it == this->end() )
 	throw std::bad_alloc();
@@ -205,22 +205,22 @@ namespace DGtal
     }
     
 
-    void setValue(const Point &aPoint, const ValueType &aValueType)
+    void setValue(const Point &aPoint, const Value &aValue)
     {
       Iterator it  = find( aPoint ) ;
       if (it != this->end() )
-	(*it).second = aValueType;
+	(*it).second = aValue;
     }
 
 
-    void setValue(SpanIterator &it, const ValueType &aValueType)
+    void setValue(SpanIterator &it, const Value &aValue)
     {
       ASSERT("NOT-YET-IMPLEMENTED");
     }
 
-    void setValue(Iterator &it, const ValueType &aValueType)
+    void setValue(Iterator &it, const Value &aValue)
     {
-      it->second = aValueType;
+      it->second = aValue;
     }
 
 

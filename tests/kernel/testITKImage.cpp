@@ -153,8 +153,8 @@ bool testITKMethod()
   trace.info() << endl;
 
   //We construct an ITK pipeline
-  typedef itk::BinaryThresholdImageFilter< Image::ITKImageType, Image::ITKImageType> FilterType;
-  FilterType::Pointer filter = FilterType::New();
+  typedef itk::BinaryThresholdImageFilter< Image::ITKImage, Image::ITKImage> Filter;
+  Filter::Pointer filter = Filter::New();
 
   filter->SetInput( myImage.getImagePointer() );
   filter->SetOutsideValue( 0 );

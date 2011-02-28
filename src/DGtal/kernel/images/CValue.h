@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CValueType.h
+ * @file CValue.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/01
  *
- * Header file for concept CValueType.cpp
+ * Header file for concept CValue.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CValueType_RECURSES)
-#error Recursive header files inclusion detected in CValueType.h
-#else // defined(CValueType_RECURSES)
+#if defined(CValue_RECURSES)
+#error Recursive header files inclusion detected in CValue.h
+#else // defined(CValue_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CValueType_RECURSES
+#define CValue_RECURSES
 
-#if !defined CValueType_h
+#if !defined CValue_h
 /** Prevents repeated inclusion of headers. */
-#define CValueType_h
+#define CValue_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,19 +49,19 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CValueType
+  // class CValue
   /**
-   * Description of \b concept '\b CValueType' <p>
+   * Description of \b concept '\b CValue' <p>
    * @ingroup Concepts
    *
-   * Aim: Represents a ValueType.
+   * Aim: Represents a Value.
    * 
    * <p> Refinement of
    *
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CValueType
+   * - \t X : A type that is a model of CValue
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -85,7 +85,7 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-    struct CValueType  : boost::Assignable<T>, boost::EqualityComparable<T>, boost::DefaultConstructible<T>
+    struct CValue  : boost::Assignable<T>, boost::EqualityComparable<T>, boost::DefaultConstructible<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:
@@ -96,19 +96,15 @@ namespace DGtal
       // ------------------------- Internals ------------------------------------
     private:
     
-    }; // end of concept CValueType
+    }; // end of concept CValue
   
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/images/CValueType.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CValueType_h
+#endif // !defined CValue_h
 
-#undef CValueType_RECURSES
-#endif // else defined(CValueType_RECURSES)
+#undef CValue_RECURSES
+#endif // else defined(CValue_RECURSES)

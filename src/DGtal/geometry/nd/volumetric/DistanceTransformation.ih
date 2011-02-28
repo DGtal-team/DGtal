@@ -116,10 +116,10 @@ DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage
   if (SeparableMetric::p != 0)
     bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
   else
-    bitSize =  sizeof ( typename I::ValueType ) * 8;
+    bitSize =  sizeof ( typename I::Value ) * 8;
 
-  if ( bitSize > sizeof ( typename O::ValueType ) * 8 )
-    trace.warning() << "(DistanceTransformation) The output image ValueType range may not be sufficient to store the exact values  according to the input image extent." << endl;
+  if ( bitSize > sizeof ( typename O::Value ) * 8 )
+    trace.warning() << "(DistanceTransformation) The output image Value range may not be sufficient to store the exact values  according to the input image extent." << endl;
 
 }
 

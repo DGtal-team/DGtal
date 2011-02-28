@@ -66,21 +66,21 @@ namespace DGtal
    * ...
    *
    * //We create a digital Space based on 'int' integers and in dimension 4
-   * typedef DGtal::Space<4> Space4DType;
-   * typedef Space4DType::TPoint Point4DType;
+   * typedef DGtal::Space<4> Space4D;
+   * typedef Space4D::TPoint Point4D;
    *
    * const int rawA[ ] = { 1, 2, 3 ,4};
    * const int rawB[ ] = { 5, 5, 3 ,4};
-   * Point4DType A ( rawA );
-   * Point4DType B ( rawB );
+   * Point4D A ( rawA );
+   * Point4D B ( rawB );
    *
    * //Domain construction from two points
-   * DGtal::HyperRectDomain<Space4DType> myDomain ( A, B );
+   * DGtal::HyperRectDomain<Space4D> myDomain ( A, B );
    *
    * //We iterate on the Domain points and print out the point coordinates.
    * std::copy ( myDomain.begin(),
    *             myDomain.end(),
-   *             std::ostream_iterator<Point4DType> ( std::cout, " " ) );
+   *             std::ostream_iterator<Point4D> ( std::cout, " " ) );
    *  \endcode
    *
    *
@@ -97,7 +97,7 @@ namespace DGtal
 
 
     // typedef TSpace DigitalSpace;
-    // typedef TSpace SpaceType;
+    // typedef TSpace Space;
     typedef TSpace Space;
 
     // static constants

@@ -59,8 +59,8 @@ using namespace Z2i;
 int main( int argc, char** argv )
 {
   
-  typedef SpaceND<2> Space2Type;
-  typedef HyperRectDomain<Space2Type> TDomain;
+  typedef SpaceND<2> Space2;
+  typedef HyperRectDomain<Space2> TDomain;
   typedef TDomain::Vector Vector;
 
   //Default image selector = STLVector

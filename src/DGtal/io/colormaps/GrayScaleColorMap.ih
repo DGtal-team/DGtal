@@ -38,31 +38,31 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename ValueType>
+template <typename Value>
 inline
-DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap( const ValueType & aMin,
-							const ValueType & aMax )
+DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap( const Value & aMin,
+							const Value & aMax )
   : myMin( aMin ), myMax( aMax )
 { }
 
-template <typename ValueType>
+template <typename Value>
 inline
-DGtal::GrayscaleColorMap<ValueType>::GrayscaleColorMap
-( const GrayscaleColorMap<ValueType> & other )
+DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap
+( const GrayscaleColorMap<Value> & other )
   : myMin( other.myMin ), myMax( other.myMax )
 { 
 }
 
-template <typename ValueType>
+template <typename Value>
 inline
-DGtal::GrayscaleColorMap<ValueType>::~GrayscaleColorMap()
+DGtal::GrayscaleColorMap<Value>::~GrayscaleColorMap()
 {
 }
 
-template <typename ValueType>
-GrayscaleColorMap<ValueType> &
-GrayscaleColorMap<ValueType>::operator=
-( const GrayscaleColorMap<ValueType> & other )
+template <typename Value>
+GrayscaleColorMap<Value> &
+GrayscaleColorMap<Value>::operator=
+( const GrayscaleColorMap<Value> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -75,38 +75,38 @@ GrayscaleColorMap<ValueType>::operator=
 // Interface - public :
 
 
-template<typename ValueType>
+template<typename Value>
 inline
-const ValueType &
-DGtal::GrayscaleColorMap<ValueType>::min() const
+const Value &
+DGtal::GrayscaleColorMap<Value>::min() const
 {
   return myMin;
 }
 
-template<typename ValueType>
+template<typename Value>
 inline
-const ValueType &
-DGtal::GrayscaleColorMap<ValueType>::max() const
+const Value &
+DGtal::GrayscaleColorMap<Value>::max() const
 {
   return myMax;
 }
 
-template<typename ValueType>
+template<typename Value>
 inline
 LibBoard::Color
-DGtal::GrayscaleColorMap<ValueType>::operator()( const ValueType & value ) const
+DGtal::GrayscaleColorMap<Value>::operator()( const Value & value ) const
 {
-  return GrayscaleColorMap<ValueType>::getColor( myMin, myMax, value );
+  return GrayscaleColorMap<Value>::getColor( myMin, myMax, value );
 }
 
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename ValueType>
+template <typename Value>
 inline
 void
-DGtal::GrayscaleColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
+DGtal::GrayscaleColorMap<Value>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GrayscaleColorMap " 
       << " min=" << myMin
@@ -118,21 +118,21 @@ DGtal::GrayscaleColorMap<ValueType>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename ValueType>
+template <typename Value>
 inline
 bool
-DGtal::GrayscaleColorMap<ValueType>::isValid() const
+DGtal::GrayscaleColorMap<Value>::isValid() const
 {
     return true;
 }
 
 
-template <typename ValueType>
+template <typename Value>
 inline
 LibBoard::Color
-DGtal::GrayscaleColorMap<ValueType>::getColor( const ValueType & min,
-					       const ValueType & max,
-					       const ValueType & value )
+DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
+					       const Value & max,
+					       const Value & value )
 {
   double range = static_cast<double>( max - min );
   double scale = static_cast<double>( value - min );
@@ -143,11 +143,11 @@ DGtal::GrayscaleColorMap<ValueType>::getColor( const ValueType & min,
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename ValueType>
+template <typename Value>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GrayscaleColorMap<ValueType> & object )
+		  const GrayscaleColorMap<Value> & object )
 {
   object.selfDisplay( out );
   return out;

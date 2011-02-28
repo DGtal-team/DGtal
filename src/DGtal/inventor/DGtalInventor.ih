@@ -177,7 +177,7 @@ void
 DGtal::DGtalInventor<TSpace>::drawPoint( const Point & c, const float* n )
 {
   Point q;
-  for ( typename Point::DimensionType i = 0; i < c.dimension(); ++i )
+  for ( typename Point::Dimension i = 0; i < c.dimension(); ++i )
     q[ i ] = 2*c[ i ] + 1;
   drawCell( q, n );
 }
@@ -227,7 +227,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
   typedef float vec3[ 3 ];
   typedef DGtal::int32_t int32;
   typedef DGtal::uint32_t uint32;
-  typedef typename Point::DimensionType Dimension;
+  typedef typename Point::Dimension Dimension;
 
   SoShapeHints *myShapeHints = new SoShapeHints;
   myShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;//COUNTERCLOCKWISE; //UNKNOWN_ORDERING; //COUNTERCLOCKWISE;

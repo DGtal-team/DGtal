@@ -71,13 +71,13 @@ bool testDGtalBoardCustomStyle()
 
   typedef SpaceND<2> Z2;
  
-  typedef HyperRectDomain<Z2> DomainType;
+  typedef HyperRectDomain<Z2> Domain;
   typedef Z2::Point Point;
   Point p1(  -10, -10  );
   Point p2(  10, 10  );
-  DomainType domain( p1, p2 );
+  Domain domain( p1, p2 );
   typedef DigitalSetSelector
-    < DomainType, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+    < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
   SpecificSet mySet( domain );
  
   Point c(  0, 0  );

@@ -48,14 +48,14 @@ using namespace LibBoard;
 template <typename TColorMap>
 void addColorMapSample( const char * name,
 			const TColorMap & aColorMap, 
-			const typename TColorMap::ValueType step,
+			const typename TColorMap::Value step,
 			Board & board )
 { 
   BOOST_CONCEPT_ASSERT(( CColorMap<TColorMap> ));
 
-  typedef typename TColorMap::ValueType ValueType;
+  typedef typename TColorMap::Value Value;
   board.translate( 0, 15 );
-  for ( ValueType x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
+  for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setPenColor(Color::Black);
     board.setFont( LibBoard::Fonts::Courier, 12 );
     board.drawText( -150, 0, name );

@@ -43,7 +43,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/io/DGtalBoard.h"
@@ -108,7 +108,7 @@ namespace DGtal
      * The method isKeyValid(..) is provided to verify the validity of a
      * key. Note that using this security strongly affects performances.
      */
-    template < typename TDomain, typename TValueType, typename THashKey = typename DGtal::uint64_t >
+    template < typename TDomain, typename TValue, typename THashKey = typename DGtal::uint64_t >
     class ImageContainerByHashTree
     {
 
@@ -119,11 +119,11 @@ namespace DGtal
 
     public:
 
-      BOOST_CONCEPT_ASSERT(( CValueType<TValueType> ));
+      BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
       BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
 				
       typedef THashKey HashKey;
-      typedef TValueType ValueType;
+      typedef TValue Value;
       typedef TDomain Domain;
       typedef typename Domain::Point Point;
       typedef typename Domain::Vector Vector;
@@ -153,14 +153,14 @@ namespace DGtal
        */
       ImageContainerByHashTree(const unsigned int hashKeySize,
 			       const unsigned int depth,
-			       const ValueType defaultValue);
+			       const Value defaultValue);
 
       ImageContainerByHashTree(const unsigned int hashKeySize,
 			       const Point & p1,
 			       const Point & p2,
-			       const ValueType defaultValue);
+			       const Value defaultValue);
 
-      ImageContainerByHashTree(const ImageContainerByHashTree<Domain, ValueType>& toCopy);
+      ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& toCopy);
 
 
 
@@ -178,27 +178,27 @@ namespace DGtal
        * @param key the haskkey
        * @return the value type
        */
-      ValueType get(const HashKey key) const;
+      Value get(const HashKey key) const;
 
       /**
        * Returns the value at a given key.
        *
        * @param key the hash key used as an index.
        */
-      ValueType operator () (const HashKey key) const;
+      Value operator () (const HashKey key) const;
 
       /**
        * Returns the value at a given point.
        *
        * @param aPoint The point.
        */
-      ValueType operator()(const Point &aPoint) const;
+      Value operator()(const Point &aPoint) const;
 
       /**
        * Returns the value at a given coordinate using upwardGet().
        * @param aPoint The point.
        */
-      ValueType get(const Point & aPoint) const;
+      Value get(const Point & aPoint) const;
 
 
       /**
@@ -208,14 +208,14 @@ namespace DGtal
        *
        *
        */
-      ValueType upwardGet(const HashKey key) const ;
+      Value upwardGet(const HashKey key) const ;
 
       /**
        * A attempt to do the same thing as get(HashKey) but looking for
        * deeper leafs in the first place instead of doing this in the
        * second place. It hasn't show better results so far.
        */
-      ValueType reverseGet(const HashKey key) const;
+      Value reverseGet(const HashKey key) const;
 
 
       /**
@@ -226,7 +226,7 @@ namespace DGtal
        * tree's structure needs to be modified.  For efficiency no check
        * is performed on the key
        */
-      void setValue(const HashKey key, const ValueType object);
+      void setValue(const HashKey key, const Value object);
 
       /**
        * Sets the value of an element in the container, creating it if
@@ -236,7 +236,7 @@ namespace DGtal
        * tree's structure needs to be modified.  For efficiency no check
        * is performed on the coordinates
        */
-      void setValue(const Point& aPoint, const ValueType object);
+      void setValue(const Point& aPoint, const Value object);
 
       /**
        * Returns the size of a dimension (the container represents a
@@ -372,7 +372,7 @@ namespace DGtal
 	{
 	  return myCurrentCell >= myArraySize;
 	}
-	ValueType& operator*()
+	Value& operator*()
 	{
 	  return myNode->getObject();
 	}
@@ -461,7 +461,7 @@ namespace DGtal
        * @tparam Coloramp any models of CColormap.
        */
       template<typename Colormap>
-      void selfDraw(DGtalBoard & board, const ValueType & minValue, const ValueType & maxValue ) const;
+      void selfDraw(DGtalBoard & board, const Value & minValue, const Value & maxValue ) const;
 				
     protected:
 
@@ -480,7 +480,7 @@ namespace DGtal
       class Node
       {
       public:
-	Node(ValueType object, HashKey key)
+	Node(Value object, HashKey key)
 	{
 	  myData = object;
 	  myKey = key;
@@ -497,7 +497,7 @@ namespace DGtal
 	{
 	  return myKey;
 	}
-	inline ValueType& getObject()
+	inline Value& getObject()
 	{
 	  return myData;
 	}
@@ -505,7 +505,7 @@ namespace DGtal
       protected:
 	HashKey myKey;
 	Node* myNext;
-	ValueType myData;
+	Value myData;
       };// -----------------------------------------------------------
 
 
@@ -535,7 +535,7 @@ namespace DGtal
        * Add a Node to the tree.  This method is very used when writing
        * in the tree (set method).
        */
-      Node* addNode(const ValueType object, const HashKey key)
+      Node* addNode(const Value object, const HashKey key)
       {
 	Node* n = getNode(key);
 	if (n)
@@ -593,7 +593,7 @@ namespace DGtal
        * method when it has been determined that the leafs are deeper
        * than the requested key.
        */
-      ValueType blendChildren(HashKey key) const;
+      Value blendChildren(HashKey key) const;
 
       /**
        * The array of linked lists containing all the data
@@ -635,9 +635,9 @@ namespace DGtal
      * @param object the object of class 'ImageContainerByHashTree' to write.
      * @return the output stream after the writing.
      */
-    template<typename TDomain, typename TValueType, typename THashKey >
+    template<typename TDomain, typename TValue, typename THashKey >
     std::ostream&
-    operator<< ( std::ostream & out,  ImageContainerByHashTree<TDomain, TValueType, THashKey> & object )
+    operator<< ( std::ostream & out,  ImageContainerByHashTree<TDomain, TValue, THashKey> & object )
     {
       object.selfDisplay( out);
       return out;

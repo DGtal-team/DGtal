@@ -67,16 +67,16 @@ namespace DGtal
    * to the hints given by the user.
    *
    * @code
-   typedef SpaceND<int,4> Space4Type;
-   typedef HyperRectDomain<Space4Type> DomainType;
-   typedef Space4Type::Point Point;
+   typedef SpaceND<int,4> Space4;
+   typedef HyperRectDomain<Space4> Domain;
+   typedef Space4::Point Point;
    Point a ( { 1, 2, 3 ,4} );
    Point b ( { 5, 5, 3 ,5} );
    // Domain characterized by points a and b
-   DomainType domain ( a,b );
+   Domain domain ( a,b );
    // Specifies a small point set but with a high variability.
    typedef typename DigitalSetSelector
-     < DomainType, SMALL_DS + HIGH_VAR_DS >::Type SpecificSet; 
+     < Domain, SMALL_DS + HIGH_VAR_DS >::Type SpecificSet; 
    SpecificSet set1( domain );
    *
    * @endcode

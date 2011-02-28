@@ -115,9 +115,9 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-		typedef typename Shape::Coordinate CoordinateType;
-		typedef DGtal::PointVector<2,CoordinateType> Point;
-		typedef DGtal::PointVector<2,CoordinateType> Vector;
+		typedef typename Shape::Coordinate Coordinate;
+		typedef DGtal::PointVector<2,Coordinate> Point;
+		typedef DGtal::PointVector<2,Coordinate> Vector;
 
 	private:
 

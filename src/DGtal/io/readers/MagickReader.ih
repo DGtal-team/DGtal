@@ -71,7 +71,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(firstPoint,lastPoint);
-  typename TImageContainer::ValueType val;
+  typename TImageContainer::Value val;
 
   //We scan the Raw file
   typename TImageContainer::Domain::ConstIterator it = domain.begin(),itend=domain.end();
@@ -80,7 +80,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
     {
       // const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;
       const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 );
-      ///@todo create converters RGB->ValueType
+      ///@todo create converters RGB->Value
       val = (pixel->red + pixel->green + pixel->blue) % 256;
       image.setValue( (*it), val  );
     }

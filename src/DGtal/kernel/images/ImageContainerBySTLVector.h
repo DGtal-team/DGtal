@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/io/DGtalBoard.h"
@@ -67,15 +67,15 @@ namespace DGtal
    * @see testImageContainerBenchmark.cpp
    */
 
-  template <typename TDomain, typename TValueType>
-  class ImageContainerBySTLVector: public vector<TValueType>
+  template <typename TDomain, typename TValue>
+  class ImageContainerBySTLVector: public vector<TValue>
   {
   public:
 
-    BOOST_CONCEPT_ASSERT(( CValueType<TValueType> ));
+    BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
     BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
 			
-    typedef TValueType ValueType;
+    typedef TValue Value;
     typedef TDomain Domain;
 
     // static constants
@@ -86,8 +86,8 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
-    typedef typename vector<ValueType>::iterator Iterator;
-    typedef typename vector<ValueType>::const_iterator ConstIterator;
+    typedef typename vector<Value>::iterator Iterator;
+    typedef typename vector<Value>::const_iterator ConstIterator;
 
     ImageContainerBySTLVector(const Point &aPointA,
 			      const Point &aPointB );
@@ -100,7 +100,7 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    ValueType operator()(const Point &aPoint) const;
+    Value operator()(const Point &aPoint) const;
 
     /**
      * Get the value of an image at a given position given
@@ -109,7 +109,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    ValueType operator()(ConstIterator &it) const
+    Value operator()(ConstIterator &it) const
     {
       return (*it);
     };
@@ -122,7 +122,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    ValueType operator()(Iterator &it) const
+    Value operator()(Iterator &it) const
     {
       return (*it);
     };
@@ -133,7 +133,7 @@ namespace DGtal
      * @param aPoint location of the point to associate with aValue.
      * @param aValue the value.
      */
-    void setValue(const Point &aPoint, const ValueType &aValue);
+    void setValue(const Point &aPoint, const Value &aValue);
 
     /**
      * Set a value on an Image at a position specified by an Iterator.
@@ -141,7 +141,7 @@ namespace DGtal
      * @param it  iterator on the location.
      * @param aValue the value.
      */
-    void setValue(Iterator &it, const ValueType &aValue)
+    void setValue(Iterator &it, const Value &aValue)
     {
       (*it) = aValue;
     }
@@ -189,20 +189,20 @@ namespace DGtal
      * Specific SpanIterator on ImageContainerBySTLVector.
      *
      * @tparam Domain the HyperRectDomain on which the iterator iterates.
-     * @tparam ValueType
+     * @tparam Value
      */
     class SpanIterator
     {
 
-      friend class ImageContainerBySTLVector<Domain, ValueType>;
+      friend class ImageContainerBySTLVector<Domain, Value>;
 
     public:
 
       typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
-      typedef ValueType value_type;
+      typedef Value value_type;
       typedef ptrdiff_t difference_type;
-      typedef ValueType* pointer;
-      typedef ValueType& reference;
+      typedef Value* pointer;
+      typedef Value& reference;
 
       /**
        * Constructor.
@@ -213,7 +213,7 @@ namespace DGtal
        */
       SpanIterator( const Point & p ,
 		    const Dimension aDim ,
-		    ImageContainerBySTLVector<Domain, ValueType> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+		    ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
 	myPos = aMap->linearized(p);
 
@@ -232,7 +232,7 @@ namespace DGtal
        * @param aVal the value to set.
        */
       inline 
-      void setValue(const ValueType aVal)
+      void setValue(const Value aVal)
       {
 	ASSERT(myPos>=0);
 	(*myMap)[ myPos ] = aVal;
@@ -244,7 +244,7 @@ namespace DGtal
        * @return the value associated to the current position.
        */
       inline
-      const ValueType & operator*() 
+      const Value & operator*() 
       {
 	return (*myMap)[ myPos ];
       }
@@ -343,7 +343,7 @@ namespace DGtal
       Size myPos;
 
       /// Copy of the underlying images
-      ImageContainerBySTLVector<Domain, ValueType> *myMap;
+      ImageContainerBySTLVector<Domain, Value> *myMap;
 
       ///Dimension on which the iterator must iterate
       Dimension  myDimension;
@@ -359,7 +359,7 @@ namespace DGtal
      * @param it  iterator on the location.
      * @param aValue the value.
      */
-    void setValue(SpanIterator &it, const ValueType &aValue)
+    void setValue(SpanIterator &it, const Value &aValue)
     {
       it.setValue(aValue);
     }
@@ -400,9 +400,9 @@ namespace DGtal
      * Returns the value of the image at a given SpanIterator position.
      *
      * @param it position given by a SpanIterator.
-     * @return an object of type ValueType.
+     * @return an object of type Value.
      */
-    ValueType operator()(SpanIterator &it)
+    Value operator()(SpanIterator &it)
     {
       return (*it);
     };
@@ -458,7 +458,7 @@ namespace DGtal
      * @tparam Coloramp any models of CColormap.
      */
     template<typename Colormap>
-    void selfDraw(DGtalBoard & board, const ValueType & minValue, const ValueType & maxValue ) const;
+    void selfDraw(DGtalBoard & board, const Value & minValue, const Value & maxValue ) const;
 
   };
 

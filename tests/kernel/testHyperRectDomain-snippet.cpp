@@ -42,20 +42,20 @@ using namespace DGtal;
 int main()
 {
   //We create a digital Space based on 'int' integers and in dimension 4
-  typedef DGtal::SpaceND<4> Space4DType;
-  typedef Space4DType::Point Point4DType;
+  typedef DGtal::SpaceND<4> Space4D;
+  typedef Space4D::Point Point4D;
 
   const DGtal::int32_t rawA[ ] = { 1, 2, 3 ,4};
   const DGtal::int32_t rawB[ ] = { 4, 4, 5 ,5};
-  Point4DType A ( rawA );
-  Point4DType B ( rawB );
+  Point4D A ( rawA );
+  Point4D B ( rawB );
 
   //Domain construction from two points
-  HyperRectDomain<Space4DType> myDomain ( A, B );
+  HyperRectDomain<Space4D> myDomain ( A, B );
 
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( myDomain.begin(),
 	      myDomain.end(),
-	      std::ostream_iterator<Point4DType> ( std::cout, " " ) );
+	      std::ostream_iterator<Point4D> ( std::cout, " " ) );
 }
 /** @ingroup Tests **/

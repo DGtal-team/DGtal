@@ -46,20 +46,20 @@ namespace DGtal
     /**
      * Destructor.
      */
-    template<typename TDomain, typename TValueType>
+    template<typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValueType>::~ImageContainerByITKImage()
+    ImageContainerByITKImage<TDomain, TValue>::~ImageContainerByITKImage()
     {
     }
 
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValueType>::ImageContainerByITKImage(const Point &aPointA,
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
         const Point &aPointB)
-        :  myITKImagePointer(ITKImageType::New())
+        :  myITKImagePointer(ITKImage::New())
     {
-      typename ITKImageType::IndexType start;
-      typename ITKImageType::SizeType size;
+      typename ITKImage::IndexType start;
+      typename ITKImage::SizeType size;
 
       if (aPointA < aPointB)
       {
@@ -99,14 +99,14 @@ namespace DGtal
       myItEnd.GoToEnd();
     }
 
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValueType>::ImageContainerByITKImage(const Point &aPointA,
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
         const Point &aPointB, ITKImagePointer &aRef)
         :  myITKImagePointer(aRef)
     {
-      typename ITKImageType::IndexType start;
-      typename ITKImageType::SizeType size;
+      typename ITKImage::IndexType start;
+      typename ITKImage::SizeType size;
 
       if (aPointA < aPointB)
       {
@@ -156,12 +156,12 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     inline
-    TValueType
-    ImageContainerByITKImage<TDomain, TValueType>::operator()(const Point &aPoint) const
+    TValue
+    ImageContainerByITKImage<TDomain, TValue>::operator()(const Point &aPoint) const
     {
-      typename ITKImageType::IndexType p;
+      typename ITKImage::IndexType p;
       for (unsigned int k = 0; k < staticDimension; k++)
         p[k] = aPoint[k];
       return myITKImagePointer->GetPixel(p);
@@ -173,10 +173,10 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     inline
-    TValueType
-    ImageContainerByITKImage<TDomain, TValueType>::operator()(const ConstIterator &it) const
+    TValue
+    ImageContainerByITKImage<TDomain, TValue>::operator()(const ConstIterator &it) const
     {
       return it.Get();
     }
@@ -187,10 +187,10 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     inline
-    TValueType
-    ImageContainerByITKImage<TDomain, TValueType>::operator()(const Iterator &it) const
+    TValue
+    ImageContainerByITKImage<TDomain, TValue>::operator()(const Iterator &it) const
     {
       return it.Get();
     }
@@ -200,7 +200,7 @@ namespace DGtal
     void
     ImageContainerByITKImage<Domain, T>::setValue(const Point &aPoint, const T &V)
     {
-      typename ITKImageType::IndexType p;
+      typename ITKImage::IndexType p;
       for (unsigned int k = 0; k < staticDimension; k++)
         p[k] = aPoint[k];
       myITKImagePointer->SetPixel(p, V);
@@ -218,12 +218,12 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    template<typename TDomain, typename TValueType>
+    template<typename TDomain, typename TValue>
     inline
     void
-    ImageContainerByITKImage<TDomain, TValueType>::selfDisplay ( std::ostream & out ) const
+    ImageContainerByITKImage<TDomain, TValue>::selfDisplay ( std::ostream & out ) const
     {
-      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValueType) 
+      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) 
 	  << "bytes lower=" << myLowerBound << " upper=" 
 	  << myUpperBound;
     }
@@ -232,10 +232,10 @@ namespace DGtal
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    template<typename TDomain, typename TValueType>
+    template<typename TDomain, typename TValue>
     inline
     bool
-    ImageContainerByITKImage<TDomain, TValueType>::isValid() const
+    ImageContainerByITKImage<TDomain, TValue>::isValid() const
     {
       return true;
     }
@@ -246,11 +246,11 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
 
-  template<typename TDomain, typename TValueType>
+  template<typename TDomain, typename TValue>
   inline
   std::ostream&
   operator<< ( std::ostream & out,
-      const experimental::ImageContainerByITKImage<TDomain, TValueType> & object )
+      const experimental::ImageContainerByITKImage<TDomain, TValue> & object )
   {
     object.selfDisplay( out );
     return out;

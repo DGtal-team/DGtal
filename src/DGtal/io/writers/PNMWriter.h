@@ -93,16 +93,16 @@ namespace DGtal
     BOOST_STATIC_ASSERT( (TImage::Domain::staticDimension == 2) || 
 			 (TImage::Domain::staticDimension == 3));
 
-    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::ValueType, 
-			 typename TImage::ValueType>::value));
+    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
+			 typename TImage::Value>::value));
     
     typedef TImage Image;
-    typedef typename TImage::ValueType ValueType;
+    typedef typename TImage::Value Value;
     typedef TColormap Colormap;
 
     /** 
      * Export an Image with PPM format. The colormap specified
-     * in the template arguments is used to convert ValueType 
+     * in the template arguments is used to convert Value 
      * to RBG colors.
      * 
      * @param filename name of the output file
@@ -113,11 +113,11 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPPM(const std::string & filename, const Image &aImage, 
-			  const ValueType & minV, const ValueType & maxV);
+			  const Value & minV, const Value & maxV);
 
     /** 
      * Export an Image with PPM3Dformat. The colormap specified
-     * in the template arguments is used to convert ValueType 
+     * in the template arguments is used to convert Value 
      * to RBG colors.
      * 
      * @param filename name of the output file
@@ -128,12 +128,12 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPPM3D(const std::string & filename, const Image &aImage, 
-			    const ValueType & minV, const ValueType & maxV);
+			    const Value & minV, const Value & maxV);
 
 
     /** 
      * Export an Image with PGM format. The colormap specified
-     * in the template arguments is used to convert ValueType 
+     * in the template arguments is used to convert Value 
      * to RBG colors. Then, a RGB to Grayscale conversion is performed.
      * 
      * @param filename name of the output file
@@ -144,11 +144,11 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
-			  const ValueType & minV, const ValueType & maxV);
+			  const Value & minV, const Value & maxV);
   
     /** 
      * Export an Image with PGM3D format. The colormap specified
-     * in the template arguments is used to convert ValueType 
+     * in the template arguments is used to convert Value 
      * to RBG colors. Then, a RGB to Grayscale conversion is performed.
      * 
      * @param filename name of the output file
@@ -159,7 +159,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM3D(const std::string & filename, const Image &aImage, 
-			    const ValueType & minV, const ValueType & maxV);
+			    const Value & minV, const Value & maxV);
     
   };
 }//namespace
