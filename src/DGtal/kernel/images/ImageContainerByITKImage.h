@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 
 #include <itkImage.h>
@@ -67,16 +67,16 @@ namespace DGtal
      *
      * \see testITKImage.cpp
      */
-    template <typename TDomain, typename TValueType>
+    template <typename TDomain, typename TValue>
     class ImageContainerByITKImage
     {
         // ----------------------- Standard services ------------------------------
       public:
 
-        BOOST_CONCEPT_ASSERT(( CValueType<TValueType> ));
+        BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
         BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
 
-        typedef TValueType ValueType;
+        typedef TValue Value;
         typedef TDomain Domain;
 
         // static constants
@@ -88,10 +88,10 @@ namespace DGtal
         typedef typename Domain::Integer Integer;
         typedef typename Domain::Size Size;
 
-        typedef typename itk::Image< TValueType, staticDimension> ITKImageType;
-        typedef typename ITKImageType::Pointer ITKImagePointer;
-        typedef typename itk::ImageRegionConstIterator< ITKImageType > ConstIterator;
-        typedef typename itk::ImageRegionIterator< ITKImageType > Iterator;
+        typedef typename itk::Image< TValue, staticDimension> ITKImage;
+        typedef typename ITKImage::Pointer ITKImagePointer;
+        typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
+        typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
 
       ///@todo SpanIterator
 
@@ -123,7 +123,7 @@ namespace DGtal
          * @param aPoint  position in the image.
          * @return the value at aPoint.
          */
-        ValueType operator()(const Point &aPoint) const;
+        Value operator()(const Point &aPoint) const;
 
         /**
          * Get the value of an image at a given position.
@@ -131,7 +131,7 @@ namespace DGtal
          * @param it  position in the image.
          * @return the value at aPoint.
          */
-        ValueType operator()(const ConstIterator &it) const;
+        Value operator()(const ConstIterator &it) const;
 
         /**
          * Get the value of an image at a given position.
@@ -139,7 +139,7 @@ namespace DGtal
          * @param it  position in the image.
          * @return the value at aPoint.
          */
-        ValueType operator()(const Iterator &it) const;
+        Value operator()(const Iterator &it) const;
 
 
         /**
@@ -148,7 +148,7 @@ namespace DGtal
          * @param aPoint location of the point to associate with aValue.
          * @param aValue the value.
          */
-        void setValue(const Point &aPoint, const ValueType &aValue);
+        void setValue(const Point &aPoint, const Value &aValue);
 
         /**
          * Set a value on an Image at aPoint.
@@ -156,7 +156,7 @@ namespace DGtal
          * @param it location of the point (Iterator) to associate with aValue.
          * @param aValue the value.
          */
-        void setValue(Iterator &it, const ValueType &V);
+        void setValue(Iterator &it, const Value &V);
 
         // ------------------------- methods ------------------------------
 
@@ -277,7 +277,7 @@ I         * @returns a ConstIterator at the endpoint \param aPoint
         Point myLowerBound;
         Point myUpperBound;
         ITKImagePointer myITKImagePointer;
-        typename ITKImageType::RegionType myRegion;
+        typename ITKImage::RegionType myRegion;
         ConstIterator myConstItBegin;
         Iterator myItBegin;
         ConstIterator myConstItEnd;

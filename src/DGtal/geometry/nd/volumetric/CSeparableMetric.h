@@ -88,17 +88,17 @@ namespace DGtal
   struct CSeparableMetric
   {
 
-    typedef typename T::InternalValueType InternalValueType;
-    typedef typename T::ValueType ValueType;
+    typedef typename T::InternalValue InternalValue;
+    typedef typename T::Value Value;
     typedef typename T::Abscissa Abscissa;
 		
     // ----------------------- Concept checks ------------------------------
   public:
     BOOST_CONCEPT_USAGE( CSeparableMetric )
     {
-      //SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValueType) returing an InternalValueType
+      //SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValue) returing an InternalValue
       ConceptUtils::sameType( h, myT.F(a,a,h) );
-      //SeparableMetric  model should have a Sep(Abscissa,InternalValueType, Abscissa,InternalValueType) returing an ValueType	
+      //SeparableMetric  model should have a Sep(Abscissa,InternalValue, Abscissa,InternalValue) returing an Value	
       ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
     }
 		
@@ -109,7 +109,7 @@ namespace DGtal
   private:
     T myT;
     Abscissa a;
-    InternalValueType h;
+    InternalValue h;
 		
 			
   }; // end of concept CSeparableMetric

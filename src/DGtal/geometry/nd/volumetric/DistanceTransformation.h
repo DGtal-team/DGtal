@@ -89,8 +89,8 @@ namespace DGtal
     typedef TImage Image;
     typedef TImageOutput ImageOutput;
     typedef TSeparableMetric SeparableMetric;
-    typedef typename TSeparableMetric::InternalValueType InternalValueType;
-    typedef typename Image::ValueType ValueType;
+    typedef typename TSeparableMetric::InternalValue InternalValue;
+    typedef typename Image::Value Value;
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
@@ -250,7 +250,7 @@ namespace DGtal
     Point myExtent;
 
     ///Value to act as a +infinity value
-    InternalValueType myInfinity;
+    InternalValue myInfinity;
 
 
   }; // end of class DistanceTransformation

@@ -40,7 +40,7 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 
 namespace DGtal
 {
@@ -56,7 +56,7 @@ namespace DGtal
    * <p> Refinement of
    *
    * <p> Associated types :
-   * - \t ValueType: the type of values stored in the image.
+   * - \t Value: the type of values stored in the image.
    * - \t Iterator: an iterator in the image.
    * - \t ConstIterator: a const iterator in the image.
    * - \t SpanIterator: a 1D span iterator in the image (not yet tested).
@@ -79,34 +79,34 @@ namespace DGtal
    * <tr>
    * <td>Set a value at a position</td> <td>x.setValue(point, val)
    * </td> <td>point is of type X::Space::Point, val is of type
-   * X::ValueType </td> <td> </td>
+   * X::Value </td> <td> </td>
    * <td> the point is in the domain associted to
    * the image </td> <td> associate a value  to a point  </td> <td> </td> <td> Depends on the model</td>
    * </tr>
    * <tr>
    * <td>Set a value at a position</td> <td>x.setValue(it, val) </td>
    * <td>it is of type X::Iterator or X::ConstIterator, val is of type
-   * X::ValueType </td> <td> </td>
+   * X::Value </td> <td> </td>
    * <td> the iterator is in the image range</td> <td> associate a value  to a point given by an
    * iterator</td> <td> </td> <td> Depends on the model</td>
    * </tr>
    * <tr>
    * <td>Get the value at a position</td> <td>val = x(point) </td>
-   * <td>point is of type X::Space::Point, val is of type X::ValueType
-   * </td> <td> X::ValueType </td>
+   * <td>point is of type X::Space::Point, val is of type X::Value
+   * </td> <td> X::Value </td>
    * <td>  the point is in the domain associted to
    * the image</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
    * </tr>
      * <tr>
    * <td>Get the value at a position</td> <td>val = x(it) </td>
-   * <td>it is of type X::Iterator, val is of type X::ValueType
-   * </td> <td> X::ValueType </td>
+   * <td>it is of type X::Iterator, val is of type X::Value
+   * </td> <td> X::Value </td>
    * <td>  the iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
    * </tr>
      * <tr>
    * <td>Get the value at a position</td> <td>val = x(constIt) </td>
-   * <td>constIt is of type X::ConstIterator, val is of type X::ValueType
-   * </td> <td> X::ValueType </td>
+   * <td>constIt is of type X::ConstIterator, val is of type X::Value
+   * </td> <td> X::Value </td>
    * <td>  the const iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
    * </tr>
    * </table>
@@ -125,13 +125,13 @@ namespace DGtal
   {
 
   public:
-    typedef typename ImageContainer::ValueType ValueType;
+    typedef typename ImageContainer::Value Value;
     typedef typename ImageContainer::Iterator Iterator;
     typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::Point Point;
 
  
-    BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
+    BOOST_CONCEPT_ASSERT((CValue<Value>));
 
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
@@ -166,10 +166,10 @@ namespace DGtal
     ImageContainer i;
     Iterator it;
     ConstIterator itconst;
-    ValueType v;
+    Value v;
     Point a, b;
 
-    // Type deduction will fail unless the arguments have the same type.
+    //  deduction will fail unless the arguments have the same type.
     template <typename T>
     void same_type(T const&, T const&);
   };

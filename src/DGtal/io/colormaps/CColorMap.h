@@ -43,7 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/utils/ConceptUtils.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/base/Common.h"
 #include "Board/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -76,11 +76,11 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td>Construction</td> <td>CMap<ValueType> cmap(min,max);</td> <td>min and max are of the same ValueType</td> <td> </td>
+   * <td>Construction</td> <td>CMap<Value> cmap(min,max);</td> <td>min and max are of the same Value</td> <td> </td>
    * <td> </td> <td> </td> <td> </td> <td> </td>
    * </tr>
    * <tr> 
-   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a ValueType</td> <td>LibBoard::Color</td>
+   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>LibBoard::Color</td>
    * <td>min &le; value &le; max </td> <td>Returns a color computed after the position of \em value \em within
    * the range [min,max]</td> <td> </td> <td> </td>
    * </tr>
@@ -98,14 +98,14 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     
-    typedef typename CMap::ValueType ValueType;
+    typedef typename CMap::Value Value;
     
-    BOOST_CONCEPT_ASSERT(( CValueType<ValueType> ));
+    BOOST_CONCEPT_ASSERT(( CValue<Value> ));
     
     BOOST_CONCEPT_USAGE( CColorMap )
     {
       CMap myCMap( myMin, myMax );
-      // operator() exists, takes a ValueType, and returns a LibBoard::Color.
+      // operator() exists, takes a Value, and returns a LibBoard::Color.
       ConceptUtils::sameType( myColor, myCMap.operator()( myValue ) );
     }
     
@@ -115,7 +115,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     LibBoard::Color myColor;
-    ValueType myMin, myMax, myValue;    
+    Value myMin, myMax, myValue;    
   }; // end of concept CColorMap
   
 } // namespace DGtal

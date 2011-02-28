@@ -148,7 +148,7 @@ namespace
    * 2 and 3 to prevent the use of a loop in these cases.
    *
    */
-  template < typename Domain, int staticDimension, typename SizeType >
+  template < typename Domain, int staticDimension, typename Size >
   struct linearizer
   {
 
@@ -163,12 +163,12 @@ namespace
      *
      * @return
      */
-    static SizeType apply( const Point & aPoint,
+    static Size apply( const Point & aPoint,
         const Point & lowerBound,
         const Point & upperBound )
     {
-      SizeType pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
-      SizeType multiplier = 1;
+      Size pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
+      Size multiplier = 1;
       for (typename Domain::Dimension k = 1 ; k < staticDimension ; ++k)
       {
         multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
@@ -182,12 +182,12 @@ namespace
    * Specialization of the linearizer class for dimension 1.
    *
    */
-  template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 1, SizeType >
+  template < typename Domain, typename Size >
+  struct linearizer< Domain, 1, Size >
   {
     typedef typename Domain::Point Point;
 
-    static SizeType apply( const Point & aPoint,
+    static Size apply( const Point & aPoint,
         const Point & lowerBound,
         const Point & upperBound )
     {
@@ -199,16 +199,16 @@ namespace
    * Specialization of the linearizer class for dimension 2.
    *
    */
-  template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 2, SizeType >
+  template < typename Domain, typename Size >
+  struct linearizer< Domain, 2, Size >
   {
     typedef typename Domain::Point Point;
 
-    static SizeType apply( const Point & aPoint,
+    static Size apply( const Point & aPoint,
         const Point & lowerBound,
         const Point & upperBound )
     {
-      SizeType multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
+      Size multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
       return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + multiplier * (aPoint[ 1 ] - lowerBound[ 1 ] );
     }
   };
@@ -217,17 +217,17 @@ namespace
    * Specialization of the linearizer class for dimension 3.
    *
    */
-  template < typename Domain, typename SizeType >
-  struct linearizer< Domain, 3, SizeType >
+  template < typename Domain, typename Size >
+  struct linearizer< Domain, 3, Size >
   {
     typedef typename Domain::Point Point;
 
-    static SizeType apply( const Point & aPoint,
+    static Size apply( const Point & aPoint,
         const Point & lowerBound,
         const Point & upperBound )
     {
-      SizeType res = aPoint[ 0 ] - lowerBound[ 0 ];
-      SizeType multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
+      Size res = aPoint[ 0 ] - lowerBound[ 0 ];
+      Size multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
       res += multiplier * ( aPoint[ 1 ] - lowerBound[ 1 ] );
       multiplier *= 1 + upperBound[ 1 ] - lowerBound[ 1 ];
       res += multiplier * ( aPoint[ 2 ] - lowerBound[ 2 ] );

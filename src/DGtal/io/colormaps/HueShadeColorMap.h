@@ -81,17 +81,17 @@ namespace DGtal
    * }
    * @endcode
    * 
-   * @tparam PValueType The type of the range values.
+   * @tparam PValue The type of the range values.
    * @tparam DefaultCycles The default number of cycles (used as a default
    *         parameter by the constructor).
    */
-  template <typename PValueType, int DefaultCycles = 1 >
+  template <typename PValue, int DefaultCycles = 1 >
     class HueShadeColorMap
     {
 
     public:
     
-    typedef PValueType ValueType;
+    typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
     public:
@@ -103,8 +103,8 @@ namespace DGtal
      * @param max The upper bound of the value range.
      * @param cycles The number of cycles in the colormap.
      */
-    HueShadeColorMap( const PValueType & min,
-		      const PValueType & max,
+    HueShadeColorMap( const PValue & min,
+		      const PValue & max,
 		      const unsigned int cycles = DefaultCycles );
     
     /** 
@@ -114,7 +114,7 @@ namespace DGtal
      * @return A color whose hue linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValueType & value ) const;
+    LibBoard::Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -154,14 +154,14 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const PValueType & min() const;
+    const PValue & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const PValueType & max() const;
+    const PValue & max() const;
 
 
     /** 
@@ -185,9 +185,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static LibBoard::Color getColor( const unsigned int cycles,
-				     const PValueType & min,
-				     const PValueType & max,
-				     const PValueType & value );
+				     const PValue & min,
+				     const PValue & max,
+				     const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
     private:
@@ -198,8 +198,8 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
     protected:
 
-    PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;           /**< The lower bound of the value range.  */
+    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMax;           /**< The lower bound of the value range.  */
     unsigned int myCycles;	/**< The number of cycles in the color map. */
     
     /**
@@ -235,9 +235,9 @@ namespace DGtal
    * @param object the object of class 'HueShadeColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType, int DefaultCycles >
+  template <typename PValue, int DefaultCycles >
     std::ostream&
-    operator<< ( std::ostream & out, const HueShadeColorMap<PValueType,DefaultCycles> & object );
+    operator<< ( std::ostream & out, const HueShadeColorMap<PValue,DefaultCycles> & object );
   
 } // namespace DGtal
 

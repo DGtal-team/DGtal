@@ -87,10 +87,10 @@ bool testGMPSpace()
   trace.beginBlock ( "GMP Space test..." );
    
   //This space is weird...
-  typedef SpaceND<2, mpz_class> Space2Type;
-  typedef Space2Type::Point Point;
-  typedef Space2Type::Point::Coordinate Coordinate;
-  typedef HyperRectDomain<Space2Type> Domain;
+  typedef SpaceND<2, mpz_class> Space2;
+  typedef Space2::Point Point;
+  typedef Space2::Point::Coordinate Coordinate;
+  typedef HyperRectDomain<Space2> Domain;
 
   mpz_class a, b, c;
   
@@ -98,14 +98,14 @@ bool testGMPSpace()
   b = "-5678";
   Point p(a,b);
  
-  typedef FreemanChain<Coordinate> ContourType; 
-  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> DSS4;  
+  typedef FreemanChain<Coordinate> Contour; 
+  typedef ArithmeticalDSS<Contour::ConstIterator,Coordinate,4> DSS4;  
   typedef GreedyDecomposition<DSS4> Decomposition;
  
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
-  ContourType theContour( ss );
+  Contour theContour( ss );
   //Segmentation
   Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
   Decomposition::ConstIterator i = theDecomposition.begin();

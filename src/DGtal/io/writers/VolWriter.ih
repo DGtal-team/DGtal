@@ -42,14 +42,14 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
-			  const ValueType & minV, const ValueType & maxV)
+			  const Value & minV, const Value & maxV)
 {
-  ///@todo  the ValueType of I should match with the one in C
+  ///@todo  the Value of I should match with the one in C
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
-  typename I::ValueType val;
+  typename I::Value val;
   C colormap(minV,maxV);
   LibBoard::Color col;
   

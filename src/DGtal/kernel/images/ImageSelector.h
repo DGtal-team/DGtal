@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/CValueType.h"
+#include "DGtal/kernel/images/CValue.h"
 #include "DGtal/kernel/images/ImageContainerBySTLMap.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -60,17 +60,17 @@ namespace DGtal
    * \brief Aim:  Automatically defines an adequate image type according
    * to the hints given by the user.  
    */
-  template <typename Domain,  typename ValueType, int Preferences = 0 >
+  template <typename Domain,  typename Value, int Preferences = 0 >
   struct ImageSelector
   {
 
-    BOOST_CONCEPT_ASSERT((CValueType<ValueType>));
+    BOOST_CONCEPT_ASSERT((CValue<Value>));
 
     // ----------------------- Local types ------------------------------
     /**
      * Adequate digital set representation for the given preferences.
      */
-    typedef ImageContainerBySTLVector<Domain,ValueType> Type;
+    typedef ImageContainerBySTLVector<Domain,Value> Type;
     
   };
 } // namespace DGtal

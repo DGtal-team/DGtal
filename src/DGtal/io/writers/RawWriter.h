@@ -67,16 +67,16 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
 
-    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::ValueType, 
-			 typename TImage::ValueType>::value));
+    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
+			 typename TImage::Value>::value));
     
     typedef TImage Image;
-    typedef typename TImage::ValueType ValueType;
+    typedef typename TImage::Value Value;
     typedef TColormap Colormap;
 
     /** 
      * Export an Image to  Raw format (8bits). The pipeline can be sketched
-     * as follows: ValueType --<colormap>--> Board::Color ----> unsigned char.
+     * as follows: Value --<colormap>--> Board::Color ----> unsigned char.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
@@ -86,7 +86,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportRaw8(const std::string & filename, const Image &aImage, 
-			  const ValueType & minV, const ValueType & maxV);
+			  const Value & minV, const Value & maxV);
     
   };
 }//namespace

@@ -39,34 +39,34 @@
 // ----------------------- Standard services ------------------------------
 
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::HueShadeColorMap
-( const ValueType & amin,
-  const ValueType & amax,
+DGtal::HueShadeColorMap<Value,DefaultCycles>::HueShadeColorMap
+( const Value & amin,
+  const Value & amax,
   const unsigned int cycles )
   : myMin( amin ), myMax( amax ), myCycles( cycles )
 { }
 
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::HueShadeColorMap
-( const HueShadeColorMap<ValueType,DefaultCycles> & other )
+DGtal::HueShadeColorMap<Value,DefaultCycles>::HueShadeColorMap
+( const HueShadeColorMap<Value,DefaultCycles> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myCycles( other.myCycles )
 { 
 }
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::~HueShadeColorMap()
+DGtal::HueShadeColorMap<Value,DefaultCycles>::~HueShadeColorMap()
 {
 }
 
-template <typename ValueType, int DefaultCycles>
-HueShadeColorMap<ValueType,DefaultCycles> &
-HueShadeColorMap<ValueType,DefaultCycles>::operator=
-( const HueShadeColorMap<ValueType,DefaultCycles> & other )
+template <typename Value, int DefaultCycles>
+HueShadeColorMap<Value,DefaultCycles> &
+HueShadeColorMap<Value,DefaultCycles>::operator=
+( const HueShadeColorMap<Value,DefaultCycles> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -79,36 +79,36 @@ HueShadeColorMap<ValueType,DefaultCycles>::operator=
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template<typename ValueType, int DefaultCycles>
+template<typename Value, int DefaultCycles>
 inline
-const ValueType &
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::min() const
+const Value &
+DGtal::HueShadeColorMap<Value,DefaultCycles>::min() const
 {
   return myMin;
 }
 
-template<typename ValueType, int DefaultCycles>
+template<typename Value, int DefaultCycles>
 inline
-const ValueType &
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::max() const
+const Value &
+DGtal::HueShadeColorMap<Value,DefaultCycles>::max() const
 {
   return myMax;
 }
 
-template<typename ValueType, int DefaultCycles>
+template<typename Value, int DefaultCycles>
 inline
 void
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::setCycles( int cycles )
+DGtal::HueShadeColorMap<Value,DefaultCycles>::setCycles( int cycles )
 {
   myCycles = cycles;
 }
 
 
-template<typename ValueType, int DefaultCycles>
+template<typename Value, int DefaultCycles>
 inline
 LibBoard::Color
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::operator()
-  ( const ValueType & value ) const
+DGtal::HueShadeColorMap<Value,DefaultCycles>::operator()
+  ( const Value & value ) const
 {
   return getColor( myCycles, myMin, myMax, value );
 }
@@ -117,10 +117,10 @@ DGtal::HueShadeColorMap<ValueType,DefaultCycles>::operator()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
 void
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::selfDisplay ( std::ostream & out ) const
+DGtal::HueShadeColorMap<Value,DefaultCycles>::selfDisplay ( std::ostream & out ) const
 {
   out << "[HueShadeColorMap " 
       << " min=" << myMin
@@ -133,27 +133,27 @@ DGtal::HueShadeColorMap<ValueType,DefaultCycles>::selfDisplay ( std::ostream & o
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
 bool
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::isValid() const
+DGtal::HueShadeColorMap<Value,DefaultCycles>::isValid() const
 {
     return true;
 }
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
 LibBoard::Color
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::getColor
+DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
 ( const unsigned int cycles,
-  const ValueType & min,
-  const ValueType & max,
-  const ValueType & value )
+  const Value & min,
+  const Value & max,
+  const Value & value )
 {
   const double scale = ( value - min ) / static_cast<double>( max - min );
   const double hue = 360 * ( scale * cycles - floor(scale * cycles));
   double red, green, blue;
-  HueShadeColorMap<ValueType,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
+  HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
   return LibBoard::Color( static_cast<int>( red * 255), 
 			  static_cast<int>( green * 255),
 			  static_cast<int>( blue * 255) );
@@ -162,11 +162,11 @@ DGtal::HueShadeColorMap<ValueType,DefaultCycles>::getColor
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const HueShadeColorMap<ValueType,DefaultCycles> & object )
+		  const HueShadeColorMap<Value,DefaultCycles> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -179,10 +179,10 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
 
-template <typename ValueType, int DefaultCycles>
+template <typename Value, int DefaultCycles>
 inline
 void
-DGtal::HueShadeColorMap<ValueType,DefaultCycles>::HSVtoRGB
+DGtal::HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB
 ( double & r, double & g, double & b,
   const double h, const double s, const double v)
 {

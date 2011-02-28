@@ -103,7 +103,7 @@ namespace DGtal
    * }
    * @endcode
    *
-   * @tparam ValueType The type of the range values.
+   * @tparam Value The type of the range values.
    * @tparam PDefaultPreset The default gradient preset (e.g. CMAP_GRAYSCALE,
    *         CMAP_HOT, or CMAP_CUSTOM
    * @tparam PDefaultFirstColor If DefaultPreset is CMAP_CUSTOM, this is the
@@ -111,7 +111,7 @@ namespace DGtal
    * @tparam PDefaultLastColor If DefaultPreset is CMAP_CUSTOM, this is the
    *         ending color of the gradient.
    */
-  template <typename PValueType, 
+  template <typename PValue, 
     int PDefaultPreset = CMAP_CUSTOM,
     int PDefaultFirstColor = -1,
     int PDefaultLastColor = -1 >
@@ -120,7 +120,7 @@ namespace DGtal
 
   public:
     
-    typedef PValueType ValueType;
+    typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -134,8 +134,8 @@ namespace DGtal
      * @param firstColor The "left" color of the gradient if preset is CMAP_CUSTOM.
      * @param lastColor  The "right" color of the gradient if preset is CMAP_CUSTOM.
      */
-    GradientColorMap( const PValueType & min,
-		      const PValueType & max,
+    GradientColorMap( const PValue & min,
+		      const PValue & max,
 		      const ColorGradientPreset preset
 		      = static_cast<ColorGradientPreset>( PDefaultPreset ),
 		      const LibBoard::Color firstColor
@@ -159,7 +159,7 @@ namespace DGtal
      * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValueType & value ) const;
+    LibBoard::Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -212,14 +212,14 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const PValueType & min() const;
+    const PValue & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const PValueType & max() const;
+    const PValue & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
@@ -234,9 +234,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static LibBoard::Color getColor( const std::vector<LibBoard::Color> & colors,
-				     const PValueType & min,
-				     const PValueType & max,
-				     const PValueType & value );
+				     const PValue & min,
+				     const PValue & max,
+				     const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -247,8 +247,8 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;           /**< The lower bound of the value range.  */
+    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMax;           /**< The lower bound of the value range.  */
     std::vector<LibBoard::Color> myColors;	/**< The gradients boundary colors. */
     
     /**
@@ -269,12 +269,12 @@ namespace DGtal
    * @param object the object of class 'GradientColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType,
+  template <typename PValue,
 	  int PDefaultPreset,
 	  int PDefaultFirstColor,
 	  int PDefaultLastColor >
   std::ostream&
-  operator<< ( std::ostream & out, const GradientColorMap<PValueType,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object );
+  operator<< ( std::ostream & out, const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object );
   
 } // namespace DGtal
 

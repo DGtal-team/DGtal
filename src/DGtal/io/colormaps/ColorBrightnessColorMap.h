@@ -82,15 +82,15 @@ namespace DGtal
    * }
    * @endcode
    *
-   * @tparam PValueType The type of the range values.
+   * @tparam PValue The type of the range values.
    * @tparam PDefaultColor The default color as an integer built using the DGTAL_RGB2INT macro.
    */
-  template <typename PValueType, int PDefaultColor = DGTAL_RGB2INT( 255, 255, 255 ) >
+  template <typename PValue, int PDefaultColor = DGTAL_RGB2INT( 255, 255, 255 ) >
   class ColorBrightnessColorMap
   {
   public:
     
-    typedef PValueType ValueType;
+    typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -101,8 +101,8 @@ namespace DGtal
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      */
-    ColorBrightnessColorMap( const PValueType & min,
-			     const PValueType & max,
+    ColorBrightnessColorMap( const PValue & min,
+			     const PValue & max,
 			     const LibBoard::Color color
 			     = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultColor ),
 						DGTAL_GREEN_COMPONENT( PDefaultColor ),
@@ -115,7 +115,7 @@ namespace DGtal
      * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValueType & value ) const;
+    LibBoard::Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -155,14 +155,14 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const PValueType & min() const;
+    const PValue & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const PValueType & max() const;
+    const PValue & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
@@ -178,9 +178,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static LibBoard::Color getColor( const LibBoard::Color color,
-				     const PValueType & min,
-				     const PValueType & max,
-				     const PValueType & value );
+				     const PValue & min,
+				     const PValue & max,
+				     const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -191,8 +191,8 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValueType myMin;		/**< The lower bound of the value range.  */
-    PValueType myMax;            /**< The lower bound of the value range.  */
+    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMax;            /**< The lower bound of the value range.  */
     LibBoard::Color myColor;	/**< The color of the upper bound value. */
     
     /**
@@ -241,9 +241,9 @@ namespace DGtal
    * @param object the object of class 'ColorBrightnessColorMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename PValueType, int PDefaultColor>
+  template <typename PValue, int PDefaultColor>
   std::ostream&
-  operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValueType,PDefaultColor> & object );
+  operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValue,PDefaultColor> & object );
   
 } // namespace DGtal
 

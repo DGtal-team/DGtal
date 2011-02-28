@@ -39,32 +39,32 @@
 // ----------------------- Standard services ------------------------------
 
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::ColorBrightnessColorMap
-( const PValueType & minV,  const PValueType & maxV, const LibBoard::Color color )
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::ColorBrightnessColorMap
+( const PValue & minV,  const PValue & maxV, const LibBoard::Color color )
   : myMin( minV ), myMax( maxV ), myColor( color )
 { }
 
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::ColorBrightnessColorMap
-( const ColorBrightnessColorMap<PValueType,PDefaultColor> & other )
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::ColorBrightnessColorMap
+( const ColorBrightnessColorMap<PValue,PDefaultColor> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColor( other.myColor )
 { 
 }
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::~ColorBrightnessColorMap()
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::~ColorBrightnessColorMap()
 {
 }
 
-template <typename PValueType, int PDefaultColor>
-ColorBrightnessColorMap<PValueType,PDefaultColor> &
-ColorBrightnessColorMap<PValueType,PDefaultColor>::operator=
-( const ColorBrightnessColorMap<PValueType,PDefaultColor> & other )
+template <typename PValue, int PDefaultColor>
+ColorBrightnessColorMap<PValue,PDefaultColor> &
+ColorBrightnessColorMap<PValue,PDefaultColor>::operator=
+( const ColorBrightnessColorMap<PValue,PDefaultColor> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -77,38 +77,38 @@ ColorBrightnessColorMap<PValueType,PDefaultColor>::operator=
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template<typename PValueType, int PDefaultColor>
+template<typename PValue, int PDefaultColor>
 inline
-const PValueType &
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::min() const
+const PValue &
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::min() const
 {
   return myMin;
 }
 
-template<typename PValueType, int PDefaultColor>
+template<typename PValue, int PDefaultColor>
 inline
-const PValueType &
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::max() const
+const PValue &
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::max() const
 {
   return myMax;
 }
 
-template<typename PValueType, int PDefaultColor>
+template<typename PValue, int PDefaultColor>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::operator()( const PValueType & value ) const
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::operator()( const PValue & value ) const
 {
-  return ColorBrightnessColorMap<PValueType,PDefaultColor>::getColor( myColor, myMin, myMax, value );
+  return ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( myColor, myMin, myMax, value );
 }
 
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::selfDisplay ( std::ostream & out ) const
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ColorBrightnessColorMap " 
       << " min=" << myMin
@@ -124,31 +124,31 @@ DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::selfDisplay ( std::ost
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 bool
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::isValid() const
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::isValid() const
 {
     return true;
 }
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 LibBoard::Color
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::getColor( const LibBoard::Color color,
-						     const PValueType & min,
-						     const PValueType & max,
-						     const PValueType & value )
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const LibBoard::Color color,
+						     const PValue & min,
+						     const PValue & max,
+						     const PValue & value )
 {
   double h,s,v;
-  ColorBrightnessColorMap<PValueType,PDefaultColor>::RGBtoHSV( h, s, v,
+  ColorBrightnessColorMap<PValue,PDefaultColor>::RGBtoHSV( h, s, v,
 						color.red(),
 						color.green(),
 						color.blue() );
   const double range = static_cast<double>( max - min );
   const double scale = static_cast<double>( value - min ) / range;
   double red, green, blue;
-  ColorBrightnessColorMap<PValueType,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
+  ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
   return LibBoard::Color( static_cast<int>( red * 255), 
 			  static_cast<int>( green * 255),
 			  static_cast<int>( blue * 255) );
@@ -157,11 +157,11 @@ DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::getColor( const LibBoa
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ColorBrightnessColorMap<PValueType,PDefaultColor> & object )
+		  const ColorBrightnessColorMap<PValue,PDefaultColor> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -174,10 +174,10 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::HSVtoRGB
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB
 ( double &r, double &g, double &b,
   const double h, const double s, const double v)
 {
@@ -214,10 +214,10 @@ DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::HSVtoRGB
   }
 }
 
-template <typename PValueType, int PDefaultColor>
+template <typename PValue, int PDefaultColor>
 inline
 void
-DGtal::ColorBrightnessColorMap<PValueType,PDefaultColor>::RGBtoHSV
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::RGBtoHSV
 ( double &h, double &s, double &v,
   const unsigned char r,
   const unsigned char g,
