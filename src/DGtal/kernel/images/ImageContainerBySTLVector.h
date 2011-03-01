@@ -234,7 +234,6 @@ namespace DGtal
       inline 
       void setValue(const Value aVal)
       {
-	ASSERT(myPos>=0);
 	(*myMap)[ myPos ] = aVal;
       }
 

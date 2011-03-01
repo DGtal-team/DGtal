@@ -66,7 +66,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   typename T::Value val;
 
   //We scan the Raw file
-  typename T::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  typename T::Domain::ConstIterator it = domain.range().begin(),itend=domain.range().end();
   unsigned int count=0;
 
   while ((fin) && (it != itend))

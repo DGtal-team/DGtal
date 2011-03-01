@@ -19,7 +19,7 @@
 /**
  * @file HyperRectDomain.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * @author Guillaume Damiand (\c guillaume.damiand@liris.cnrs.fr )
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/25
@@ -110,13 +110,13 @@ namespace DGtal
     typedef typename Space::Vector Vector;
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
-    typedef typename Point::Coordinate Coordinate;
+    typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
 
     ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
     typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
 
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point> ConstIterator; // @todo PB THIS IS NOT A CONST ITERATOR !!!!!
+    typedef HyperRectDomain_Iterator<Point> ConstIterator;
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
   
     typedef IsWithinPointPredicate<Point> Predicate;
@@ -155,144 +155,237 @@ namespace DGtal
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
-
-
-    //------------- Global Iterator
     /**
-     * begin() iterator.
-     *
-     **/
-    ConstIterator begin() const;
-    ReverseConstIterator rbegin() const;
+     * Range through the whole domain.
+     */
+    struct ConstRange 
+    {
+      typedef ConstIterator        const_iterator;
+      typedef ReverseConstIterator reverse_const_iterator;
+      
+      ConstRange(const HyperRectDomain<TSpace>& domain)
+	: myDomain(domain),
+	  myIteratorBegin(domain.myLowerBound,
+			  domain.myLowerBound,
+			  domain.myUpperBound),
+	  myIteratorEnd(domain.myUpperBound,
+			domain.myLowerBound,
+			domain.myUpperBound)
+      { ++myIteratorEnd; }
+      
+      /// @return Iterator on the beginning of the range.
+      const_iterator begin() const
+      { return myIteratorBegin; }
 
-    /**
-     * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-     *
-     **/
-    ConstIterator begin ( const Point &aPoint ) const;
-    ReverseConstIterator rbegin ( const Point &aPoint ) const;
+      /// @return Iterator initialized to aPoint.
+      /// @pre aPoint must belong to the range.
+      const_iterator begin(const Point& aPoint) const
+      { ASSERT(myDomain.isInside(aPoint));
+	return const_iterator(aPoint, 
+			      myDomain.myLowerBound, myDomain.myUpperBound); }
 
-    /**
-     * end() iterator.
-     *
-     **/
-    ConstIterator end() const;
-    ReverseConstIterator rend() const;
+      /// @return Iterator on the end of the range.
+      const_iterator end() const
+      { return myIteratorEnd; }
 
-    /**
-     * end() iterator.
-     * @returns a ConstIterator at the endpoint \param aPoint
-     *
-     **/
-    ConstIterator end(const Point &aPoint) const;
-    ReverseConstIterator rend(const Point &aPoint) const;
+      /// @return Reverse iterator on the end of the range.
+      reverse_const_iterator rbegin() const
+      { return reverse_const_iterator(end()); }
 
+      /// @return Reverse iterator initialized to aPoint.
+      /// @pre aPoint must belong to the range.
+      reverse_const_iterator rbegin(const Point& aPoint) const
+      {  ASSERT(myDomain.isInside(aPoint));
+	const_iterator it(begin(aPoint)); ++it;
+	return reverse_const_iterator(it); }
 
-    //------------ Subdomain/Permutation  Iterators
+      /// @return Reverse iterator on the beginning of the range.
+      reverse_const_iterator rend() const
+      { return reverse_const_iterator(begin()); }
 
+    private:
+      /// Domain associated to the range.
+      const HyperRectDomain<TSpace>& myDomain;
+      /// Begin iterator
+      ConstIterator myIteratorBegin;
+      /// End iterator
+      ConstIterator myIteratorEnd;
+    };
+
+    /// @return a range through the whole domain.
+    const ConstRange& range() const
+    { return myRange; }
+
+    /*
+     * Class for sub range.
+     */
+    struct ConstSubRange 
+    {
+      typedef ConstIterator        const_iterator;
+      typedef ReverseConstIterator reverse_const_iterator;
+
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+		    const std::vector<Size> & permutation,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
+      {
+	myPermutation.reserve( permutation.size() );
+	std::copy(permutation.begin(),permutation.end(),
+		 std::back_inserter(myPermutation));
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+      }
+
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+		    std::initializer_list<Size> permutation,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
+      {
+	myPermutation.reserve( permutation.size() );
+	for ( const unsigned int *c = permutation.begin();
+            c != permutation.end(); ++c )
+	  {
+	    myPermutation.push_back( *c );
+	  }
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+      }
+
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+		    Size adim,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
+      {
+	myPermutation.push_back( adim );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+      }
+      
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+		    Size adim1, Size adim2,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
+      {
+	myPermutation.push_back( adim1 );
+	myPermutation.push_back( adim2 );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+      }
+      
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+		    Size adim1, Size adim2, Size adim3,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
+      {
+	myPermutation.push_back( adim1 );
+	myPermutation.push_back( adim2 );
+	myPermutation.push_back( adim3 );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+      }
+      
+      /// @return Iterator on the beginning of the range.
+      const_iterator begin() const
+      {	return const_iterator(myLowerBound, myLowerBound,
+			      myUpperBound, myPermutation); }
+      
+      /// @return Iterator initialized to aPoint.
+      /// @pre aPoint must belong to the range.
+      const_iterator begin(const Point& aPoint) const
+      { 
+	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
+	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
+	return const_iterator(aPoint, myLowerBound,
+			      myUpperBound, myPermutation);
+      }
+
+      /// @return Iterator on the end of the range.
+      const_iterator end() const
+      {
+	const_iterator it = const_iterator(myUpperBound, myLowerBound,
+					   myUpperBound, myPermutation);
+	++it;
+	return it;
+      }
+
+      /// @return Reverse iterator on the end of the range.
+      reverse_const_iterator rbegin() const
+      { return reverse_const_iterator(end()); }
+
+      /// @return Reverse iterator initialized to aPoint.
+      /// @pre aPoint must belong to the range.
+      reverse_const_iterator rbegin(const Point& aPoint) const
+      { const_iterator it(begin(aPoint)); ++it;
+	return reverse_const_iterator(it); }
+
+      /// @return Reverse iterator on the beginning of the range.
+      reverse_const_iterator rend() const
+      { return reverse_const_iterator(begin()); }
+
+    private:
+      Point                          myLowerBound;
+      Point                          myUpperBound;
+      Point                          myStartingPoint;
+      std::vector<Size>              myPermutation;
+   };
+
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(const std::vector<Size> & permutation) const
+    { return ConstSubRange(*this, permutation, myLowerBound); }
+
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(const std::vector<Size> & permutation,
+			   const Point & startingPoint) const
+    { return ConstSubRange(*this, permutation, startingPoint); }
+    
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim) const
+    { return ConstSubRange(*this, adim, myLowerBound); }
+
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim,
+			   const Point & startingPoint) const
+    { return ConstSubRange(*this, adim, startingPoint); }
+    
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim1, Size adim2) const
+    { return ConstSubRange(*this, adim1, adim2, myLowerBound); }
+
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim1, Size adim2,
+			   const Point & startingPoint) const
+    { return ConstSubRange(*this, adim1, adim2, startingPoint); }
+    
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim1, Size adim2, Size adim3) const
+    { return ConstSubRange(*this, adim1, adim2, adim3, myLowerBound); }
+
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(Size adim1, Size adim2, Size adim3,
+			   const Point & startingPoint) const
+    { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
+    
 #ifdef CPP0X_INITIALIZER_LIST
-    /**
-     * begin iterator on a sub-domain with a order than the lexicographic one.
-     *
-     * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2})
-     * @return a ConstIterator
-     **/
-    ConstIterator subDomainBegin(std::initializer_list<Dimension> aSubDomain) const;
-    ReverseConstIterator
-        subDomainRBegin(std::initializer_list<Dimension> aSubDomain) const;
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(std::initializer_list<Size> permutation)
+    { return ConstSubRange(*this, permutation, myLowerBound); }
 
-    /**
-     * begin iterator on a sub-domain with a order than the lexicographic one.
-     *
-     * @param aSubDomain the sub-domain given as a constant list (e.g. {1,3,2})
-     * @return a ConstIterator
-     **/
-    ConstIterator subDomainBegin(std::initializer_list<Dimension> aSubDomain,
-                                 const Point & startingPoint) const;
-    ReverseConstIterator subDomainRBegin(std::initializer_list<Dimension>
-                                         aSubDomain,
-                                         const Point & startingPoint) const;
+    /// @return a sub-range of the domain.
+    ConstSubRange subRange(std::initializer_list<Size> permutation,
+			   const Point & startingPoint)
+    { return ConstSubRange(*this, permutation, startingPoint); }
 #endif
-    /**
-     * begin iterator on a sub-domain with a order than the lexicographic one
-     *
-     * @param aSubDomain the sub-domain given by a vector of dimension.
-     * @return a ConstIterator
-     **/
-    ConstIterator subDomainBegin(const std::vector<Dimension> & permutation) const;
-    ReverseConstIterator subDomainRBegin(const std::vector<Dimension> &
-                                         permutation) const;
-
-    /**
-     * begin iterator on a sub-domain with a order than the lexicographic one
-     *
-     * @param aSubDomain the sub-domain given by a vector of dimension.
-     * @return a ConstIterator
-     **/
-    ConstIterator subDomainBegin(const std::vector<Dimension> & permutation,
-                                 const Point & startingPoint) const;
-    ReverseConstIterator subDomainRBegin(const std::vector<Dimension> & permutation,
-                                         const Point & startingPoint) const;
-
-#ifdef CPP0X_INITIALIZER_LIST
-    /**
-     * end iterator with an order different from lexicographic.
-     *
-     **/
-    ConstIterator subDomainEnd(std::initializer_list<Dimension> aSubDomain,
-                               const Point &startingPoint) const;
-    ReverseConstIterator subDomainREnd(std::initializer_list<Dimension> aSubDomain,
-                                       const Point &startingPoint) const;
-    /**
-     * end iterator with an order different from lexicographic.
-     *
-     **/
-    ConstIterator subDomainEnd(std::initializer_list<Dimension> aSubDomain) const;
-    ReverseConstIterator subDomainREnd(std::initializer_list<Dimension>
-                                       aSubDomain) const;
-#endif
-    /**
-     * end iterator with an order different from lexicographic.
-     *
-     **/
-    ConstIterator subDomainEnd(const std::vector<Dimension> & aSubDomain,
-                               const Point &startingPoint) const;
-    ReverseConstIterator subDomainREnd(const std::vector<Dimension> & aSubDomain,
-                                       const Point &startingPoint) const;
-    /**
-     * end iterator with an order different from lexicographic.
-     *
-     **/
-    ConstIterator subDomainEnd(const std::vector<Dimension> & aSubDomain) const;
-    ReverseConstIterator subDomainREnd(const std::vector<Dimension> &
-                                       aSubDomain) const;
-
-    //------------- Span Iterator
-    /**
-     * Returns a Span iterator starting at \param aPoint and moving
-     * toward the dimension \param aDimension.
-     *
-     **/
-    ConstIterator spanBegin ( const Dimension aDimension) const;
-    ReverseConstIterator spanRBegin( const Dimension aDimension) const;
-
-    ConstIterator spanBegin ( const Point &aPoint,
-                              const Dimension  aDimension) const;
-    ReverseConstIterator spanRBegin( const Point &aPoint,
-                                     const Dimension aDimension) const;
-
-    /**
-     * Creates a end() Span iterator along the dimension \param aDimension.
-     *
-     **/
-    ConstIterator spanEnd (const Dimension aDimension) const;
-    ReverseConstIterator spanREnd (const Dimension aDimension) const;
-
-    ConstIterator spanEnd (const Point &aPoint,
-			   const Dimension aDimension) const;
-    ReverseConstIterator spanREnd (const Point &aPoint,
-				   const Dimension aDimension) const;
-
+    
     // ----------------------- Interface --------------------------------------
   public:
     /**
@@ -418,8 +511,6 @@ namespace DGtal
     
     // ------------------------- Hidden services ------------------------------
   private:
-
-
     ///The lowest point of the space diagonal
     Point myLowerBound;
     ///The highest point of the space diagonal
@@ -428,11 +519,8 @@ namespace DGtal
     /// "IsInside" predicate.
     Predicate myPredicate;
 
-    /// Begin iterator
-    ConstIterator myIteratorBegin;
-
-    /// End iterator
-    ConstIterator myIteratorEnd;
+    /// Range
+    ConstRange myRange;
   }; // end of class HyperRectDomain
 
 

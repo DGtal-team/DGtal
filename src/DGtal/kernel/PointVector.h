@@ -19,7 +19,7 @@
 /**
  * @file PointVector.h
  * @author David Coeurjolly (@c david.coeurjolly@liris.cnrs.fr )
- * @author Guillaume Damiand (@c guillaume.damiand@liris.cnrs.fr )
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include <string>
+#include <bitset>
 #include <boost/array.hpp>
 
 #include "DGtal/base/Common.h"
@@ -57,6 +58,13 @@
 
 namespace DGtal
 {
+  /// @return a bitset having true for each dimension presents in dimensions.
+  template<Dimension dim, typename Container>
+  std::bitset<dim> setDimensionsIn( const Container &dimensions );
+
+  /// @return a bitset having true for each dimension not presents in dimensions.
+  template<Dimension dim, typename Container>
+  std::bitset<dim> setDimensionsNotIn( const Container &dimensions );
 
   /////////////////////////////////////////////////////////////////////////////
   // class PointVector
@@ -103,17 +111,21 @@ namespace DGtal
    * @todo continue snippet
    *
    * @see testPointVector.cpp
+   * @tparam T the Integer class used to specify the arithmetic computations (default type = int).
+   * @tparam TDimension the type used to represent indices of coordinates.
    *
+   * @TODO rename T in TInteger; rename Component and UnsignedComponent (uniform name with space)
+   *       correct all the use of size_t, Dimension, .....
    */
   template < DGtal::Dimension dim, typename Integer >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
-
-    
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<Integer> ) );
+
+    typedef PointVector<dim, Integer> Self;
  
     typedef Integer Component;
     typedef Integer Coordinate;
@@ -189,7 +201,7 @@ namespace DGtal
      *  for each coordinate of apoint1 and apoint2
      */
     template<typename Functor>
-    PointVector( const PointVector& apoint1, const PointVector& apoint2,
+    PointVector( const Self& apoint1, const Self& apoint2,
 		 const Functor& f );
 
     /**
@@ -203,7 +215,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    PointVector( const PointVector & other );
+    PointVector( const Self & other );
 
     /**
      * Assignement Operator
@@ -211,38 +223,80 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    PointVector & operator= ( const PointVector & pv );
+    Self & operator= ( const Self & pv );
 
 
 #ifdef CPP0X_INITIALIZER_LIST
     /**
-     * Partial copy of a given PointVector.
+     * Partial copy of a given PointVector. Only coordinates in dimensions
+     * are copied.
      *
      * @param other the object to copy.
      * @param dim the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
-    template<typename Size>
-    PointVector& partialCopy (const PointVector & pv,
-			      std::initializer_list<Size> dimensions);
+    Self& partialCopy (const Self & pv,
+		       std::initializer_list<Dimension> dimensions);
+
+    /**
+     * Inverse partial copy of a given PointVector. Only coordinates not 
+     * in dimensions are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopyInv (const Self & pv,
+			  std::initializer_list<Dimension> dimensions);
 #endif
     /**
-     * Partial copy of a given PointVector.
+     * Partial copy of a given PointVector. Only coordinates in dimensions
+     * are copied.
      *
      * @param other the object to copy.
      * @param dim the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
-    template<typename Size>
-    PointVector& partialCopy (const PointVector & pv,
-			      const std::vector<Size> &dimensions);
+    Self& partialCopy (const Self & pv,
+		       const std::vector<Dimension> &dimensions);
 
+    /**
+     * Partial copy of a given PointVector. Only coordinates not 
+     * in dimensions are copied.
+     *
+     * @param other the object to copy.
+     * @param dim the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopyInv (const Self & pv,
+			  const std::vector<Dimension> &dimensions);
 
+    /**
+     * Partial equality.
+     *
+     * @param pv Point/Vector to compare to this.
+     *
+     * @return true iff points are equal for given dimensions .
+     */
+    bool partialEqual ( const Self & pv,
+			const std::vector<Dimension> &dimensions )  const;
+
+    /**
+     * Partial inverse equality.
+     *
+     * @param pv Point/Vector to compare to this.
+     *
+     * @return true iff points are equal for dimensions not in dimensions.
+     */
+    bool partialEqualInv ( const Self & pv,
+			   const std::vector<Dimension> &dimensions )  const;
+    
     // ----------------------- Iterator services ------------------------------
   public:
-
     /**
      * PointVector begin() iterator.
      *
@@ -273,7 +327,6 @@ namespace DGtal
 
     // ----------------------- Array services ------------------------------
   public:
-
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
@@ -327,7 +380,6 @@ namespace DGtal
 
     // ----------------------- Comparison operations --------------------------
   public:
-
     /**
      * Equality operator.
      *
@@ -335,7 +387,7 @@ namespace DGtal
      *
      * @return true iff points are equal.
      */
-    bool operator== ( const PointVector & pv ) const;
+    bool operator== ( const Self & pv ) const;
 
     /**
      * Difference operator on Points/Vectors.
@@ -344,7 +396,7 @@ namespace DGtal
      *
      * @return true iff this differs from pv, false otherwise.
      */
-    bool operator!= ( const PointVector & pv ) const;
+    bool operator!= ( const Self & pv ) const;
 
     /**
      * Comparison operator on Points/Vectors (LesserThan).
@@ -353,7 +405,7 @@ namespace DGtal
      *
      * @return true iff this < pv, false otherwise.
      */
-    bool operator< ( const PointVector & pv ) const;
+    bool operator< ( const Self & pv ) const;
 
     /**
      * Comparison operator on Points/Vectors (LesserOrEqualThan).
@@ -362,7 +414,7 @@ namespace DGtal
      *
      * @return true iff this <= pv, false otherwise.
      */
-    bool operator<= ( const PointVector & pv ) const;
+    bool operator<= ( const Self & pv ) const;
 
     /**
      * Comparison operator on Points/Vectors (GreaterThan).
@@ -371,8 +423,8 @@ namespace DGtal
      *
      * @return true iff this > pv, false otherwise.
      */
-    bool operator> ( const PointVector & pv ) const;
-
+    bool operator> ( const Self & pv ) const;
+    
     /**
      * Comparison operator on Points/Vectors (GreaterOrEqualThan).
      *
@@ -380,12 +432,10 @@ namespace DGtal
      *
      * @return true iff this >= pv, false otherwise.
      */
-    bool operator>= ( const PointVector & pv ) const;
-
+    bool operator>= ( const Self & pv ) const;
 
     // ----------------------- Operations ------------------------------
   public:
-
     /**
      * Multiplies @a *this by the @a coeff scalar number.
      *
@@ -401,13 +451,14 @@ namespace DGtal
      * @return a new Point that is the multiplication of 'this' by coeff.
      */
     PointVector operator*( Component coeff );
+
     /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
      * @return a reference on 'this'.
      */
-    PointVector & operator+= ( const PointVector & v );
+    Self & operator+= ( const Self & v );
 
     /**
      * Addition operator.
@@ -415,8 +466,7 @@ namespace DGtal
      * @param v is the Point that gets added to @a *this.
      * @return a new Point that is the addition of 'this' to [v].
      */
-    PointVector operator+ ( const PointVector & v ) const;
-
+    Self operator+ ( const Self & v ) const;
 
     /**
      * Substraction operator with assignement.
@@ -424,7 +474,7 @@ namespace DGtal
      * @param v is the Point that gets substracted to  *this.
      * @return a reference on 'this'.
      */
-    PointVector & operator-= ( const PointVector & v );
+    Self & operator-= ( const Self & v );
 
     /**
      * Substraction operator.
@@ -433,7 +483,7 @@ namespace DGtal
      * @param v is the Point that gets added to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
      */
-    PointVector operator- ( const PointVector & v ) const;
+    Self operator- ( const Self & v ) const;
 
     /**
      * Resets all the values to zero.
@@ -449,7 +499,7 @@ namespace DGtal
      * @return a new point being the inf between *this and apoint.
      * @see isLower
      */
-    PointVector inf( const PointVector& apoint ) const;
+    Self inf( const Self& apoint ) const;
 
     /**
      * Implements the supremum (or least upper bound). It means the
@@ -460,21 +510,21 @@ namespace DGtal
      * @return a new point being the sup between *this and apoint.
      * @see isUpper
      */
-    PointVector sup( const PointVector& apoint ) const;
+    Self sup( const Self& apoint ) const;
 
     /**
      * @param p any point.
      * @return true if this is below p (ie. this==inf(this,p))
      * NB: faster than computing the infimum and compare it afterwards.
      */
-    bool isLower( const PointVector& p ) const;
+    bool isLower( const Self& p ) const;
 
     /**
      * @param p any point.
      * @return true if this is upper p (ie. this==sup(this,p))
      * NB: faster than computing the supremum and compare it afterwards.
      */
-    bool isUpper( const PointVector& p ) const;
+    bool isUpper( const Self& p ) const;
 
     /**
      * Specify the set of norm types
@@ -485,7 +535,7 @@ namespace DGtal
     /**
      * Computes the norm of a point/vector.
      * \warning This method performs a conversion
-     * from the type Component to double for each components to compute the
+     * from the type T to double for each components to compute the
      * norms. For exact norms (restricted to L_1 and L_infinity
      * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
      *
@@ -515,14 +565,14 @@ namespace DGtal
      * @param val any value.
      * @return the diagonal vector (val,val, .. val).
      */
-    static PointVector diagonal( Component val = 1 );
+    static Self diagonal( Component val = 1 );
 
     /**
      * @param k any number between 0 and Dimension-1.
      * @param val any value.
      * @return the [k]-th base vector (0,0, ..., 0, val, 0, ..., 0).
      */
-    static PointVector base( Dimension k, Component val = 1 );
+    static Self base( Dimension k, Component val = 1 );
 
     // ------------------------- Private Datas -------------------------------
   private:
@@ -593,8 +643,6 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-
-
     /**
      * Draw the object (as a Vector from aPoint) on a DGtalBoard board
      *
@@ -602,8 +650,7 @@ namespace DGtal
      * @param startingPoint the starting point of the vector
      * @tparam Functor a Functor to specialize the Board style
      */
-    void selfDraw( DGtalBoard & board, const PointVector &startingPoint ) const;
-
+    void selfDraw( DGtalBoard & board, const Self &startingPoint ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -618,9 +665,7 @@ namespace DGtal
     bool isValid() const;
 
     /// Static const for zero PointVector.
-    static PointVector zero;
-
-
+    static Self zero;
     
     // ------------------------- Hidden services ------------------------------
   private:
@@ -653,8 +698,6 @@ namespace DGtal
     }
   };
 
-
-
   /// Operator <<
   template<DGtal::uint32_t dim, typename Integer>
   std::ostream&
@@ -662,7 +705,6 @@ namespace DGtal
 
   template< DGtal::uint32_t dim, typename Integer>
   PointVector<dim, Integer>  PointVector<dim, Integer>::zero;
-
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

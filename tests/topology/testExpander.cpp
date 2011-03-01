@@ -112,8 +112,8 @@ bool testExpander()
   ostringstream sstr;
   sstr << "Creating 3D ball( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainConstIterator it = domain.begin(); 
-	it != domain.end();
+  for ( DomainConstIterator it = domain.range().begin(); 
+	it != domain.range().end();
 	++it )
     {
       if ( (*it - c ).norm() < radius )

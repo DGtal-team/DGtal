@@ -138,7 +138,7 @@ bool testObjectBorder()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];
@@ -259,7 +259,7 @@ bool testDGtalBoard()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];
@@ -308,9 +308,8 @@ bool testDGtalBoard()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main(/* int argc, char** argv*/)
 {
-
   bool res = testObjectBorder()
       && testDGtalBoard();
   return res ? 0 : 1;

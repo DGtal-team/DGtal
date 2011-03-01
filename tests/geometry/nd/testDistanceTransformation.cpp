@@ -113,13 +113,13 @@ bool testDistanceTransformation()
   board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
-      image.end(),
-      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
-
-
-
+	      image.end(),
+	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+  
+  
+  
   ImageLong result = dt.compute ( image );
-
+  
   trace.warning() << result << endl;
   //We just iterate on the Domain points and print out the point coordinates.
   ImageLong::ConstIterator it = result.begin();
@@ -247,7 +247,8 @@ bool testDistanceTransformation3D()
   Point c(8, 8, 8);
   Domain dom(a, b);
 
-  for (Domain::ConstIterator it = dom.begin(), itend = dom.end(); it != itend; ++it)
+  for (Domain::ConstIterator it = dom.range().begin(),
+	 itend = dom.range().end(); it != itend; ++it)
   {
     if ( ((*it) - c).norm() < 7)
       image.setValue ( *it, 128 );
@@ -411,7 +412,7 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
+   bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

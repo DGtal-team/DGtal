@@ -65,14 +65,14 @@ namespace DGtal
    * - SizeType : the type used for counting elements of the space.
    * - Vector : the vector type of the space
    * - Predicate : the type of the predicate returning true for exactly the points of this domain.  
-   * - ConstIterator : the type used for iterating/visiting the points of the domain.
+   * - ConstRange : the type used for describing the range of all the points of the domain.
    * 
    * 
    * <p> Notation
    * - \t X : A type that is a model of CDomain
    * - \t x	: Object of type X
    * - \t p	: Object of type Point
-   * - \t it	: Object of type ConstIterator
+   * - \t range	: Object of type ConstRange
    *
    * <p> Definitions
    *
@@ -83,12 +83,12 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> Const Iterator \c begin</td> <td> it = x.begin() </td> 
+   * <td> Const Range \c begin</td> <td> it = x.range().begin() </td> 
    * <td> </td> <td> const ConstIterator &</td>
    * <td> </td> <td> return the iterator pointing on the first element of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
    * <tr> 
-   * <td> Const Iterator \c end</td> <td> it = x.end() </td> 
+   * <td> Const Range \c end</td> <td> it = x.range().end() </td> 
    * <td> </td> <td> const ConstIterator &</td>
    * <td> </td> <td> return the iterator pointing after the last element of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
@@ -135,6 +135,7 @@ namespace DGtal
     typedef typename T::Integer Integer;
     typedef typename T::Size Size;
     typedef typename T::Dimension Dimension;
+    // typedef typename T::ConstRange ConstRange;
     typedef typename T::ConstIterator ConstIterator;
     typedef typename T::Predicate Predicate;
     typedef typename T::IsBounded IsBounded;
@@ -149,10 +150,12 @@ namespace DGtal
       ConceptUtils::sameType( myBool, myT.isInside( myP ) );
       // Domain should have a predicate() returning a Predicate.
       ConceptUtils::sameType( myPred, myT.predicate() );
-      // Domain should have a begin() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.begin() );
+      // Domain should have a range() returning an range.
+      //      ConceptUtils::sameType( myRange, myT.range() );
+      // Range should have a begin() returning an iterator.
+      // ConceptUtils::sameType( myIt, myT.range().begin() );
       // Domain should have a end() returning an iterator.
-      ConceptUtils::sameType( myIt, myT.end() );
+      // ConceptUtils::sameType( myIt, myT.range().end() );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -161,6 +164,7 @@ namespace DGtal
     Point myP;
     Predicate myPred;
     bool myBool;
+    // ConstRange myRange;
     ConstIterator myIt;
 
     // ------------------------- Internals ------------------------------------

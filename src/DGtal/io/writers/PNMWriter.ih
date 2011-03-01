@@ -65,7 +65,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 
   //We scan the domain instead of the image becaus we cannot
   //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+  for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
       it!=itend;
       ++it)
     {
@@ -107,7 +107,7 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 
   //We scan the domain instead of the image becaus we cannot
   //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+  for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
       it!=itend;
       ++it)
     {
