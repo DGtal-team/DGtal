@@ -238,6 +238,7 @@ namespace DGtal
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 
+#ifdef CPP0X_INITIALIZER_LIST
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    std::initializer_list<Size> permutation,
 		    const Point & startingPoint)
@@ -254,6 +255,7 @@ namespace DGtal
 	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
+#endif
 
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    Size adim,
