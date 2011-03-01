@@ -128,8 +128,8 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
+  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
+	it != domain.range().end();
 	++it )
     {
       Vector v( p - *it );
@@ -164,8 +164,8 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
+  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
+	it != domain.range().end();
 	++it )
     {
       Vector v( p - *it );
@@ -190,8 +190,8 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
+  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
+	it != domain.range().end();
 	++it )
     {
       Vector v( p - *it );
@@ -216,8 +216,8 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
+  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
+	it != domain.range().end();
 	++it )
     {
       Vector v( p - *it );
