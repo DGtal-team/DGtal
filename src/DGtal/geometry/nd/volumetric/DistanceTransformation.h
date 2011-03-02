@@ -200,12 +200,12 @@ namespace DGtal
      * 
      * @param aImage the input image
      * @param output the output image  with the first step DT values
-     * @param row a point to specify the starting point of the 1D row
+     * @param starting a point to specify the starting point of the 1D row
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep1D (const Image & aImage, ImageOutput & output, const Point &row, const ForegroundPredicate &predicate) const;
+    void computeFirstStep1D (const Image & aImage, ImageOutput & output, const Point &starting, const ForegroundPredicate &predicate) const;
 
     /** 
      *  Compute the other steps of the separable distance transformation.

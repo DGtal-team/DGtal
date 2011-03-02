@@ -137,7 +137,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
-  std::vector<Size> subdomain;
+  std::vector<Dimension> subdomain;
   subdomain.reserve(I::staticDimension - 1);
   for (Dimension k = 1; k < I::staticDimension ; k++)
     subdomain.push_back( I::staticDimension - k );
@@ -170,14 +170,14 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
 
-  std::vector<Size> subdomain;
+  std::vector<Dimension> subdomain;
   subdomain.reserve(I::staticDimension - 1);
-  for (unsigned int k = 0; k < I::staticDimension ; k++)
+  for(Dimension k = 0; k < I::staticDimension ; k++)
     if ( (I::staticDimension - 1 - k) != dim)
       subdomain.push_back( I::staticDimension - 1 - k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-  Size maxSize = myExtent.normInfinity();
+  Dimension maxSize = myExtent.normInfinity();
 
   //Stacks used in the envelope computation
   Integer *s = new Integer[maxSize+1];
@@ -206,11 +206,11 @@ template <typename ForegroundPredicate>
 void
 DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage,
     O & output,
-    const Point &row,
+    const Point &starting,
     const ForegroundPredicate &isForeground ) const
 {
-  Point prec = row;
-  Point point = row;
+  Point prec = starting;
+  Point point = starting;
 
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
@@ -219,36 +219,44 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
   else
     output.setValue ( point, 0 );
 
-  //Forward scan
-  for ( point[0] = myLowerBoundCopy[0] + 1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-  {
-    // trace.warning() << point << " ";
-    if ( isForeground ( aImage, point ) )
-      output.setValue ( point, 1 + output ( prec ) );
-    else
-      output.setValue ( point, 0 );
+  Domain::ConstSubRange scanline(0,starting);
+  Domain::ConstIterator it = scanline.begin();
+  Domain::ConstIterator itend = scanline.end();
+  Domain::ConstIterator prevIt = scanline.begin();
+ 
+  //Forward scan (starting at the second cell)
+  for(++it;
+      it != itend;
+      ++it,++prevIt)
+    {
+      if ( isForeground ( aImage, (*it) ) )
+	output.setValue ( (*it), 1 + output ( *prevIt ) );
+      else
+	output.setValue ( point, 0 );
+    }
 
-    prec[0] = point[0];
-  }
-
-
-  //prec is the the rightmost point of "point'
-  prec[0] =  myUpperBoundCopy[0];
-
+  it = scanline.rbegin();
+  //prevIt is the rightmost point of "it"
+  prevIt = it;
+  ++it;
+  
   //Backward scan
-  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >=  myLowerBoundCopy[0]; point[0]-- )
-  {
-    if ( output ( prec ) < output ( point ) )
-      output.setValue ( point, 1 + output ( prec ) );
-    prec[0] = point[0];
-  }
-
+  for(itend = scanline.rend(); 
+      it != itend;
+      ++it,++prevIt )
+    {
+      if ( output ( *prevIt ) < output ( *it ) )
+	output.setValue ( (*it) , 1 + output ( *prevIt ) );
+    }
+  
   //final computation
-  for ( point[0] = myLowerBoundCopy[0]; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-    if (output( point) < myInfinity)
-      output.setValue ( point, myMetric.power( output ( point ) ));
+  for ( it = scanline.begin(),itend = scanline.end();
+	it != itend;
+	++it )
+    if (output( *it ) < myInfinity)
+      output.setValue ( point, myMetric.power( output ( *it ) ));
     else
-      output.setValue ( point, myInfinity);
+      output.setValue ( *it, myInfinity);
 }
 
 
@@ -259,7 +267,7 @@ void
 DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
     O & output,
     const Point &row,
-    const Size dim,
+    const Dimension dim,
     Integer s[],
     Integer t[] ) const
 {
