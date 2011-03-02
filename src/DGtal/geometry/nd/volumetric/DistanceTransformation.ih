@@ -58,6 +58,28 @@ DGtal::DistanceTransformation<I, O, SepM>::~DistanceTransformation()
 }
 
 
+
+
+template <typename I, typename O, typename SepM>
+inline
+void
+DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage )
+{
+  typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
+
+  //Estimate worst-case bit size (special case for p=0 == Linfinity
+  double bitSize;
+
+  if (SeparableMetric::p != 0)
+    bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
+  else
+    bitSize =  sizeof ( typename I::Value ) * 8;
+
+  if ( bitSize > sizeof ( typename O::Value ) * 8 )
+    trace.warning() << "(DistanceTransformation) The output image Value range may not be sufficient to store the exact values  according to the input image extent." << endl;
+
+}
+
 template <typename I, typename O, typename SepM>
 template <typename Functor>
 inline
@@ -82,10 +104,8 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   //First step
   computeFirstStep ( aImage, output, predicate );
 
-  typename O::ConstIterator it = output.begin();
-
-  //We process the dimensions
-  for ( unsigned int dim = 1; dim < I::staticDimension ; dim++ )
+  //We process the dimensions swaping the temporary buffers
+  for ( Dimension dim = 1; dim < I::staticDimension ; dim++ )
   {
     if ( isSwap )
       computeOtherSteps ( output, swap, dim );
@@ -99,28 +119,6 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
     return swap;
   else
     return output;
-}
-
-
-
-template <typename I, typename O, typename SepM>
-inline
-void
-DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage )
-{
-  typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
-
-  //Estimate worst-case bit size (special case for p=0 == Linfinity
-  double bitSize;
-
-  if (SeparableMetric::p != 0)
-    bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
-  else
-    bitSize =  sizeof ( typename I::Value ) * 8;
-
-  if ( bitSize > sizeof ( typename O::Value ) * 8 )
-    trace.warning() << "(DistanceTransformation) The output image Value range may not be sufficient to store the exact values  according to the input image extent." << endl;
-
 }
 
 
@@ -141,7 +139,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
   std::vector<Size> subdomain;
   subdomain.reserve(I::staticDimension - 1);
-  for (unsigned int k = 1; k < I::staticDimension ; k++)
+  for (Dimension k = 1; k < I::staticDimension ; k++)
     subdomain.push_back( I::staticDimension - k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);

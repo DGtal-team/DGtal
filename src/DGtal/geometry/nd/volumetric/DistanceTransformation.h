@@ -140,10 +140,6 @@ namespace DGtal
 	return (aImage(it) != 0);
       }
 
-      /*bool operator()(const Image &aImage, const typename Image::ConstSpanIterator &it)
-        {
-        return (aImage(it) !=0);
-        }*/
     };
   public:
 
