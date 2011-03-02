@@ -225,7 +225,7 @@ namespace DGtal
       typedef ReverseConstIterator reverse_const_iterator;
 
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    const std::vector<Size> & permutation,
+		    const std::vector<Dimension> & permutation,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
 	  myUpperBound(domain.myUpperBound),
@@ -240,7 +240,7 @@ namespace DGtal
 
 #ifdef CPP0X_INITIALIZER_LIST
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    std::initializer_list<Size> permutation,
+		    std::initializer_list<Dimension> permutation,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
 	  myUpperBound(domain.myUpperBound),
@@ -258,7 +258,7 @@ namespace DGtal
 #endif
 
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Size adim,
+		    Dimension adim,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
 	  myUpperBound(domain.myUpperBound),
@@ -270,7 +270,7 @@ namespace DGtal
       }
       
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Size adim1, Size adim2,
+		    Dimension adim1, Dimension adim2,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
 	  myUpperBound(domain.myUpperBound),
@@ -283,7 +283,7 @@ namespace DGtal
       }
       
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Size adim1, Size adim2, Size adim3,
+		    Dimension adim1, Dimension adim2, Dimension adim3,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
 	  myUpperBound(domain.myUpperBound),
@@ -338,52 +338,52 @@ namespace DGtal
       Point                          myLowerBound;
       Point                          myUpperBound;
       Point                          myStartingPoint;
-      std::vector<Size>              myPermutation;
+      std::vector<Dimension>              myPermutation;
    };
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(const std::vector<Size> & permutation) const
+    ConstSubRange subRange(const std::vector<Dimension> & permutation) const
     { return ConstSubRange(*this, permutation, myLowerBound); }
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(const std::vector<Size> & permutation,
+    ConstSubRange subRange(const std::vector<Dimension> & permutation,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, permutation, startingPoint); }
     
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim) const
+    ConstSubRange subRange(Dimension adim) const
     { return ConstSubRange(*this, adim, myLowerBound); }
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim,
+    ConstSubRange subRange(Dimension adim,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim, startingPoint); }
     
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim1, Size adim2) const
+    ConstSubRange subRange(Dimension adim1, Dimension adim2) const
     { return ConstSubRange(*this, adim1, adim2, myLowerBound); }
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim1, Size adim2,
+    ConstSubRange subRange(Dimension adim1, Dimension adim2,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, startingPoint); }
     
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim1, Size adim2, Size adim3) const
+    ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3) const
     { return ConstSubRange(*this, adim1, adim2, adim3, myLowerBound); }
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(Size adim1, Size adim2, Size adim3,
+    ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
     
 #ifdef CPP0X_INITIALIZER_LIST
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(std::initializer_list<Size> permutation)
+    ConstSubRange subRange(std::initializer_list<Dimension> permutation)
     { return ConstSubRange(*this, permutation, myLowerBound); }
 
     /// @return a sub-range of the domain.
-    ConstSubRange subRange(std::initializer_list<Size> permutation,
+    ConstSubRange subRange(std::initializer_list<Dimension> permutation,
 			   const Point & startingPoint)
     { return ConstSubRange(*this, permutation, startingPoint); }
 #endif
