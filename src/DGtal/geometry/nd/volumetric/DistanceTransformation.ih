@@ -96,6 +96,8 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
 
   myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::staticDimension) * myExtent.normInfinity() + 1);
+
+  myDomain = Domain(myLowerBoundCopy,myUpperBoundCopy);
   
   O output ( myLowerBoundCopy, myUpperBoundCopy );
   O swap ( myLowerBoundCopy, myUpperBoundCopy );
@@ -104,6 +106,8 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   //First step
   computeFirstStep ( aImage, output, predicate );
 
+  return output;
+  
   //We process the dimensions swaping the temporary buffers
   for ( Dimension dim = 1; dim < I::staticDimension ; dim++ )
   {
@@ -142,11 +146,9 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   for (Dimension k = 1; k < I::staticDimension ; k++)
     subdomain.push_back( I::staticDimension - k );
 
-  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-
   //We process the dimensions to construct a Point
-  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
-	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
+  for (ConstDomIt it = myDomain.subRange( subdomain ).begin(),
+	 itend = myDomain.subRange( subdomain ).end(); it != itend; ++it)
   {
     // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
     computeFirstStep1D ( aImage, output, (*it), predicate );
@@ -169,14 +171,12 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
-
   std::vector<Dimension> subdomain;
   subdomain.reserve(I::staticDimension - 1);
   for(Dimension k = 0; k < I::staticDimension ; k++)
     if ( (I::staticDimension - 1 - k) != dim)
       subdomain.push_back( I::staticDimension - 1 - k );
 
-  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   Dimension maxSize = myExtent.normInfinity();
 
   //Stacks used in the envelope computation
@@ -187,9 +187,10 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   ASSERT( t != NULL);
   
   //We process the dimensions to construct a Point
-  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
-	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
+  for (ConstDomIt it = myDomain.subRange( subdomain ).begin(),
+	 itend = myDomain.subRange( subdomain ).end(); it != itend; ++it)
   {
+    trace.info() << "Othersteps on "<<(*it)<<endl;
     computeOtherStep1D ( input, output, (*it), dim, s, t );
   }
 
@@ -219,34 +220,36 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
   else
     output.setValue ( point, 0 );
 
-  Domain::ConstSubRange scanline(0,starting);
-  Domain::ConstIterator it = scanline.begin();
-  Domain::ConstIterator itend = scanline.end();
-  Domain::ConstIterator prevIt = scanline.begin();
- 
+  typename Domain::ConstSubRange scanline = myDomain.subRange(0,starting);
+  typename Domain::ConstIterator it = scanline.begin();
+  typename Domain::ConstIterator itend = scanline.end();
+  typename Domain::ConstIterator prevIt = scanline.begin();
+  ++it;
+
   //Forward scan (starting at the second cell)
-  for(++it;
-      it != itend;
-      ++it,++prevIt)
+  for( ;
+       it != itend;
+       ++it,++prevIt)
     {
       if ( isForeground ( aImage, (*it) ) )
 	output.setValue ( (*it), 1 + output ( *prevIt ) );
       else
 	output.setValue ( point, 0 );
     }
-
-  it = scanline.rbegin();
-  //prevIt is the rightmost point of "it"
-  prevIt = it;
-  ++it;
+  
+  typename Domain::ReverseConstIterator rit = scanline.rbegin();
+  typename Domain::ReverseConstIterator rPrevIt = scanline.rbegin();
+  typename Domain::ReverseConstIterator ritend = scanline.rend();
+  //rPrevIt is the rightmost point of "rit"
+  ++rit;
   
   //Backward scan
-  for(itend = scanline.rend(); 
-      it != itend;
-      ++it,++prevIt )
+  for( ; 
+      rit != ritend;
+      ++rit,++rPrevIt )
     {
-      if ( output ( *prevIt ) < output ( *it ) )
-	output.setValue ( (*it) , 1 + output ( *prevIt ) );
+      if ( output ( *rPrevIt ) < output ( *rit ) )
+	output.setValue ( (*rit) , 1 + output ( *rPrevIt ) );
     }
   
   //final computation
