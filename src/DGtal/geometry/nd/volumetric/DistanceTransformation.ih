@@ -132,15 +132,15 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   trace.beginBlock ( "DT dimension 0" );
   Point row = myLowerBoundCopy;
 
-  typedef typename Domain::ConstIterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
   std::vector<Size> subdomain;
   subdomain.reserve(I::staticDimension - 1);
-  for (Dimension k = 1; k < I::staticDimension ; k++)
-    subdomain.push_back( I::staticDimension - k );
+  for (Dimension k = I::staticDimension-1; k>0 ; --k)
+    subdomain.push_back( k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
 
@@ -164,7 +164,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
 
-  typedef typename Domain::ConstIterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
