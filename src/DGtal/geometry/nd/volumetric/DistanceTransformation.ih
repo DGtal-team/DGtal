@@ -287,9 +287,10 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
-      for(typename O::SpanIterator it= output.spanBegin(startingPoint,dim), itend=output.spanEnd(startingPoint,dim); 
+      for(typename O::SpanIterator it= output.spanBegin(startingPoint,dim),
+	    itend=output.spanEnd(startingPoint,dim); 
 	  it != itend; ++it)
-	  output.setValue(it, myInfinity);
+	output.setValue(it, myInfinity);
       return;
     }
   
