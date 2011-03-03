@@ -74,7 +74,7 @@ bool testDT2Dperf()
   unsigned int nb = 0;
   
   Z2i::Point a (0, 0 );
-  Z2i::Point b ( 128, 128 );
+  Z2i::Point b ( 500, 500 );
 
   typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
   Image image ( a, b );
