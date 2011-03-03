@@ -69,8 +69,9 @@ bool testIterator()
   trace.emphase() << mySpan << std::endl;
 
   ///iterates from  {1,2,1,1} to { 3,6,3,3} along the dimension 1
-  for ( HyperRectDomain<SpaceType4D>::ConstIterator it = mySpan.subRange(1, c4D).begin();
-      it != mySpan.subRange(1, c4D).end(); ++it )
+  for ( HyperRectDomain<SpaceType4D>::ConstSubRange::const_iterator 
+	  it = mySpan.subRange(1, c4D).begin();
+	it != mySpan.subRange(1, c4D).end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.endBlock();
