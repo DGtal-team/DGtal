@@ -105,8 +105,6 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
 
   //First step
   computeFirstStep ( aImage, output, predicate );
-
-  return output;
   
   //We process the dimensions swaping the temporary buffers
   for ( Dimension dim = 1; dim < I::staticDimension ; dim++ )
@@ -189,10 +187,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   //We process the dimensions to construct a Point
   for (ConstDomIt it = myDomain.subRange( subdomain ).begin(),
 	 itend = myDomain.subRange( subdomain ).end(); it != itend; ++it)
-  {
-    trace.info() << "Othersteps on "<<(*it)<<endl;
     computeOtherStep1D ( input, output, (*it), dim, s, t );
-  }
 
   free(s);
   free(t);
@@ -210,20 +205,19 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
     const Point &starting,
     const ForegroundPredicate &isForeground ) const
 {
-  Point prec = starting;
-  Point point = starting;
-
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
-  if ( isForeground ( aImage, point ) )
-    output.setValue ( point, myInfinity );
-  else
-    output.setValue ( point, 0 );
-
+  
   typename Domain::ConstSubRange scanline = myDomain.subRange(0,starting);
   typename Domain::ConstIterator it = scanline.begin();
   typename Domain::ConstIterator itend = scanline.end();
   typename Domain::ConstIterator prevIt = scanline.begin();
+ 
+  //First cell
+  if ( isForeground ( aImage, (*it) ) )
+    output.setValue ( (*it), myInfinity );
+  else
+    output.setValue ( (*it), 0 );
   ++it;
 
   //Forward scan (starting at the second cell)
@@ -234,7 +228,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
       if ( isForeground ( aImage, (*it) ) )
 	output.setValue ( (*it), 1 + output ( *prevIt ) );
       else
-	output.setValue ( point, 0 );
+	output.setValue ( (*it), 0 );
     }
   
   typename Domain::ReverseConstIterator rit = scanline.rbegin();
@@ -257,32 +251,29 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
 	it != itend;
 	++it )
     if (output( *it ) < myInfinity)
-      output.setValue ( point, myMetric.power( output ( *it ) ));
+      output.setValue ( (*it), myMetric.power( output ( *it ) ));
     else
-      output.setValue ( *it, myInfinity);
+      output.setValue ( (*it), myInfinity);
 }
-
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Other Phases
 template <typename I, typename O, typename SepM>
 void
 DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
-    O & output,
-    const Point &row,
-    const Dimension dim,
-    Integer s[],
-    Integer t[] ) const
+								O & output,
+								const Point &startingPoint,
+								const Dimension dim,
+								Integer s[],
+								Integer t[] ) const
 {
-  ///@todo must be removed if Integer is assumed to be Signed (see @ref SpaceND)
-  typedef typename IntegerTraits<Integer>::SignedVersion SI;
-  SI w;
-  SI q = 0;
+  Integer w;
+  Integer q = 0;
 
-  Point sQ = row;
-  Point pU = row;
+  Point sQ = startingPoint;
+  Point pU = startingPoint;
 
-  //trace.info()<<"Enter row="<<row<<endl;
+  //trace.info()<<"Enter startingPoint="<<startingPoint<<endl;
 
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
@@ -296,7 +287,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
-      for(typename O::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
+      for(typename O::SpanIterator it= output.spanBegin(startingPoint,dim), itend=output.spanEnd(startingPoint,dim); 
 	  it != itend; ++it)
 	  output.setValue(it, myInfinity);
       return;
@@ -358,7 +349,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
     }
   }
 
-  Point last = row;
+  Point last = startingPoint;
 
   ASSERT(q>=0);
 

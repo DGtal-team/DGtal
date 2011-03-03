@@ -222,13 +222,13 @@ namespace DGtal
      * 
      * @param aImage the input image
      * @param output the output image  with the  DT values
-     * @param row a point to specify the starting point of the 1D row
+     * @param startingPoint a point to specify the starting point of the 1D row
      * @param dim the dimension to process
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,
-			     const Point &row, const Dimension dim, 
+			     const Point &startingPoint, const Dimension dim, 
 			     Integer s[], Integer t[]) const;
 
 
