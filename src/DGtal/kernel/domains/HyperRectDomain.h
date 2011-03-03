@@ -174,7 +174,7 @@ namespace DGtal
       { ++myIteratorEnd; }
       
       /// @return Iterator on the beginning of the range.
-      const_iterator begin() const
+      const const_iterator& begin() const
       { return myIteratorBegin; }
 
       /// @return Iterator initialized to aPoint.
@@ -185,7 +185,7 @@ namespace DGtal
 			      myDomain.myLowerBound, myDomain.myUpperBound); }
 
       /// @return Iterator on the end of the range.
-      const_iterator end() const
+      const const_iterator& end() const
       { return myIteratorEnd; }
 
       /// @return Reverse iterator on the end of the range.
@@ -216,13 +216,21 @@ namespace DGtal
     const ConstRange& range() const
     { return myRange; }
 
+    /// @return a begin iterator on the domain 
+    const ConstIterator& begin() const
+    { return myRange.begin(); }
+
+    /// @return an end iterator on the domain 
+    const ConstIterator& end() const
+    { return myRange.end(); }
+
     /*
      * Class for sub range.
      */
     struct ConstSubRange 
     {
-      typedef ConstIterator        const_iterator;
-      typedef ReverseConstIterator reverse_const_iterator;
+      typedef HyperRectDomain_subIterator<Point> const_iterator;
+      typedef myreverse_iterator<const_iterator> reverse_const_iterator;
 
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    const std::vector<Dimension> & permutation,

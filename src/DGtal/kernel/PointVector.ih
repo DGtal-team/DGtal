@@ -353,6 +353,7 @@ DGtal::PointVector<dim, Component>::partialEqualInv
   }
   return true;
 }
+//------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
 bool
@@ -407,7 +408,7 @@ DGtal::PointVector<dim, Component>&
 DGtal::PointVector<dim, Component>::operator+= ( const Self& v )
 {
   for ( Dimension i = 0; i < dim; ++i )
-    this->myArray[ i ] += v.at ( i );
+    this->myArray[ i ] += v[ i ];
   return *this;
 }
 //------------------------------------------------------------------------------
@@ -425,7 +426,7 @@ DGtal::PointVector<dim, Component>&
 DGtal::PointVector<dim, Component>::operator-= ( const Self& v )
 {
   for ( Dimension i = 0; i < dim; ++i )
-    this->myArray[ i ] -= v.at ( i );
+    this->myArray[ i ] -= v[ i ];
   return *this;
 }
 //------------------------------------------------------------------------------
