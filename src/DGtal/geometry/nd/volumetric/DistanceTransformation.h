@@ -227,7 +227,9 @@ namespace DGtal
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
+    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,
+			     const Point &row, const Dimension dim, 
+			     Integer s[], Integer t[]) const;
 
 
     // ------------------- Private members ------------------------
@@ -248,6 +250,8 @@ namespace DGtal
     ///Value to act as a +infinity value
     InternalValue myInfinity;
 
+    ///Copy of the internal domain
+    Domain myDomain;
 
   }; // end of class DistanceTransformation
 
