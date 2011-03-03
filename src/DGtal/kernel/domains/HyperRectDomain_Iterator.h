@@ -253,19 +253,19 @@ namespace DGtal
      **/
     void nextLexicographicOrder()
     {
-      myPoint.at( myCurrentPos ) ++;
+      ++myPoint[myCurrentPos];
       if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
-	  ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) )
+	  ( myPoint[myCurrentPos] > myupper[myCurrentPos] ) )
         {
           do
 	    {
-	      myPoint.at( myCurrentPos ) = mylower.at( myCurrentPos );
+	      myPoint[myCurrentPos] = mylower[myCurrentPos];
 	      myCurrentPos++;
 	      if ( myCurrentPos < TPoint::staticDimension )
-		myPoint.at( myCurrentPos ) ++;
+		++myPoint[myCurrentPos];
 	    }
           while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
-		 ( myPoint.at( myCurrentPos )  >  myupper.at( myCurrentPos ) ) );
+		 ( myPoint[myCurrentPos]  >  myupper[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
     }
@@ -277,23 +277,23 @@ namespace DGtal
     void nextSubDomainOrder()
     {
       ASSERT( myCurrentPos < mySubDomain.size() );
-      myPoint.at( mySubDomain[myCurrentPos] ) ++;
+      ++myPoint[ mySubDomain[myCurrentPos] ];
 
       if ( myCurrentPos < mySubDomain.size() - 1 &&
-	   myPoint.at( mySubDomain[myCurrentPos] ) >
-	   myupper.at( mySubDomain[myCurrentPos] ) )
+	   myPoint[ mySubDomain[myCurrentPos] ] >
+	   myupper[ mySubDomain[myCurrentPos] ] )
         {
           do
 	    {
-	      myPoint.at( mySubDomain[myCurrentPos] ) =
-		mylower.at( mySubDomain[myCurrentPos] );
-	      myCurrentPos++;
+	      myPoint[ mySubDomain[myCurrentPos] ] =
+		mylower[ mySubDomain[myCurrentPos] ];
+	      ++myCurrentPos;
 	      if ( myCurrentPos < mySubDomain.size() )
-		myPoint.at( mySubDomain[myCurrentPos] ) ++;
+		++myPoint[ mySubDomain[myCurrentPos] ];
 	    }
           while (( myCurrentPos < mySubDomain.size() - 1  ) &&
-		 ( myPoint.at( mySubDomain[myCurrentPos] )  >
-		   myupper.at( mySubDomain[myCurrentPos] ) ) );
+		 ( myPoint[ mySubDomain[myCurrentPos] ]  >
+		   myupper[ mySubDomain[myCurrentPos] ] ) );
           myCurrentPos = 0;
         }
     }
@@ -327,19 +327,19 @@ namespace DGtal
      **/
     void prevLexicographicOrder()
     {
-      myPoint.at( myCurrentPos ) --;
+      --myPoint[ myCurrentPos ];
       if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
-	  ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) )
+	  ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) )
         {
           do
 	    {
-	      myPoint.at( myCurrentPos ) = myupper.at( myCurrentPos );
-	      myCurrentPos++;
+	      myPoint[ myCurrentPos ] = myupper[ myCurrentPos ];
+	      ++myCurrentPos;
 	      if ( myCurrentPos < TPoint::staticDimension )
-		myPoint.at( myCurrentPos ) --;
+		--myPoint[ myCurrentPos ];
 	    }
           while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
-		 ( myPoint.at( myCurrentPos )  <  mylower.at( myCurrentPos ) ) );
+		 ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
     }
@@ -351,29 +351,29 @@ namespace DGtal
     void prevSubDomainOrder()
     {
       ASSERT( myCurrentPos < mySubDomain.size() );
-      myPoint.at( mySubDomain[myCurrentPos] ) --;
+      --myPoint[ mySubDomain[myCurrentPos] ];
 
       if (  myCurrentPos < mySubDomain.size() - 1 &&
-            myPoint.at( mySubDomain[myCurrentPos] )  <
-            mylower.at( mySubDomain[myCurrentPos] ) )
+            myPoint[ mySubDomain[myCurrentPos] ]  <
+            mylower[ mySubDomain[myCurrentPos] ] )
         {
           do
 	    {
-	      myPoint.at( mySubDomain[myCurrentPos] ) =
-		myupper.at( mySubDomain[myCurrentPos] );
-	      myCurrentPos++;
+	      myPoint[ mySubDomain[myCurrentPos] ] =
+		myupper[ mySubDomain[myCurrentPos] ];
+	      ++myCurrentPos;
 	      if ( myCurrentPos < mySubDomain.size() )
-		myPoint.at( mySubDomain[myCurrentPos] ) --;
+		--myPoint[ mySubDomain[myCurrentPos] ];
 	    }
           while (( myCurrentPos < mySubDomain.size() - 1 ) &&
-		 ( myPoint.at( mySubDomain[myCurrentPos] )  <
-		   mylower.at( mySubDomain[myCurrentPos] ) ) );
+		 ( myPoint[ mySubDomain[myCurrentPos] ]  <
+		   mylower[ mySubDomain[myCurrentPos] ] ) );
           myCurrentPos = 0;
         }
     }
 
     /**
-     * Operator ++ (++it)
+     * Operator -- (--it)
      *
      */
     HyperRectDomain_Iterator<TPoint> &operator--()
@@ -386,7 +386,7 @@ namespace DGtal
     }
 
     /**
-     * Operator ++ (it++)
+     * Operator -- (it--)
      */
     HyperRectDomain_Iterator<TPoint> &operator-- ( int )
     {
