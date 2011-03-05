@@ -16,7 +16,7 @@
  */
 /*!
 @page FAQDGtalSVN Subversion  source code management in DGtal (SVN)
-
+@author David Coeurjolly
 
 This part of the manual describes how the DGtal SVN repository is used
 and gives a couple of details on the SVN management.
