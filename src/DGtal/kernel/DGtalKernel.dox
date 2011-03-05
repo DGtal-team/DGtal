@@ -1,0 +1,173 @@
+/**
+ * @file DGtalKernel.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/03/04
+ *
+ * Documentation file for feature DGtalKernel
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page DGtalKernel DGtal Kernel 
+@author David Coeurjolly
+
+
+This part of the manual describes the DGtal kernel and its
+classes. More precisely, we define several key concepts in DGtal such as
+Space or Domain. All classes and utilities defined in the DGtal
+library require a specification of the digital space in which the
+objects are defined. 
+
+For DGtal users, the specification of the digital Space  usually
+corresponds to the first lines of DGtal codes. 
+
+Table of contents:
+ -# \ref sectSpace
+ -# \ref sectDomain 
+   -# \ref sectDomDef
+   -# \ref sectDomIter
+ -# \ref sectImage
+
+
+\section sectSpace DGtal Space
+
+A DGtal Space parametrized by two things: a dimension
+ (SpaceND::dimension) and a type for
+ integers (SpaceND::Integer). Using these information,  we aim at approximating the
+ digital space \f$Z^n\f$ by \f$\text{Integer}^{\text{dimension}}\f$.
+ Hence, we have several constraints these parameters:
+ - the dimension should also be a integer;
+ - Integer should characterize a commutative ring with unity using the
+ addition and multiplication operators. 
+
+
+Since the Space is obtained by direct product of the range associated
+to the type Integer. Such type is also used to characterized the
+coordinates of points lying in this space.
+
+In DGtal, Space specification is addresses by the class
+DGtal::SpaceND. More precisely, this class is templated by two
+arguments (the static dimension and the Integer type) and provides
+types for several objects that can be deduced from the template
+parameters. For example, once the parameter are specified, the
+class provides a type Point for all points in the space. 
+
+For example, digital spaces can be defined as follows:
+
+@code
+#include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
+{...}
+typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
+typedef DGtal::SpaceND<1, DGtal::int8_t> MySpace8;
+typedef DGtal::SpaceND<3, mpz_class> MySpaceGMP;
+@endcode
+
+In the latter example, we construct a digital space using the GMP
+arbitrary precision integers.
+
+However, if we try:
+@code
+typedef DGtal::SpaceND<2, unsigned char> MySpaceUChar;
+@endcode
+a build error is raised by the compiler since we cannot define a ring
+based on "unsigned char". 
+
+@note To check the constraints on template parameter types, DGtal is
+based on a concept framework and concept checking utilities (see
+dedicated documentation). In this example, the type "unsigned char" is
+not a model of the concept CSignedInteger and thus cannot be used to
+define a DGtal space.
+
+Using the shortcuts provides in StdDefs.h, the types defined in the
+namespace  DGtal::Z2i correspond to a digital space in dimension 2
+based on unsigned int (uint32_t). Hence, we can simple define MySpace
+as:
+
+@code
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+{...}
+typedef DGtal::Z2i::Space MySpace; 
+@endcode
+
+Now, we can construct a point lying in this space as follows:
+
+@code
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+{...}
+typedef DGtal::Z2i::Space MySpace; 
+typedef MySpace::Point MyPoint;
+
+MyPoint p(13,-5);
+@endcode
+
+
+Beside the type Point (defined as a specialization of the class
+PointVector),  SpaceND (or Z2i::Space) provides several other types
+and methodes such as
+ - types associated to the canonical vector space  (SpaceND::Point, SpaceND::Vector,...)
+ - types and methods for subspace and subcospace construction
+ - ...
+
+
+\section sectDomain Domains and HyperRectDomains
+
+\subsection sectDomDef Definition
+
+Once we have defined the fundamental characteristics of our digital
+space, we can define a domain on which all the computations will
+done. A domain is characterized by a starting point A, an end point B and
+a way to scan all the point  between A and B. In most situation, one
+may want the domain to be a finite isothetic subset of the digital
+space. Hence, an important model of the concept of domain (specified
+in the CDomain class) is the class HyperRectDomain. Since the domain
+lies on a digital space, the HyperRectDomain class has a template
+argument which correspond to the type of space we consider.
+
+For example, let us consider the following code snippet
+@code
+#include <DGtal/base/Common.h>
+#include <DGtal/kernel/SpaceND.h>
+#include <DGtal/kernel/domains/HyperRectDomain.h>
+{...}
+typedef SpaceND<2,DGtal::uint32_t> MySpace;
+typedef MySpace::Point MyPoint;
+@endcode
+
+An instance of HyperRectDomain can be created as follows:
+@code
+typedef HyperRectDomain<MySpace> MyDomain;
+MyPoint a(-3,-4);
+MyPoint b(10,10);
+MyDomain domain(a,b);
+@endcode
+
+The instance is thus an isothetic domain lying on the space SpaceND<2,DGtal::uint32_t> 
+defined by the bounding box of the point a and b. We can visualise the domain using the DGtalBoard stream mecanism (see \ref dgtal_dgtalboard).
+
+
+
+
+\subsection sectDomIter Iterating over an  HyperRectDomain
+
+
+
+
+\section sectImage Image
+
+
+
+*/
+
+}

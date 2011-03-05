@@ -18,6 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page FAQDGtalCmake DGtal Project Build System (cmake)
+@author David Coeurjolly
 
 
 This part of the manual describes how the build sequence of the  DGtal
