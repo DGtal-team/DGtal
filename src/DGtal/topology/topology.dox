@@ -95,9 +95,11 @@ namespace DGtal {
  * <tr>
  * <td>
  * @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
+ * @image latex DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency" width=5cm
  * </td>
  * <td>
  * @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
+ * @image latex DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" width=5cm
  * </td>
  * </tr>
  * </table>
