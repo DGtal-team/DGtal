@@ -43,7 +43,7 @@ Table of contents:
 A DGtal Space parametrized by two things: a dimension
  (SpaceND::dimension) and a type for
  integers (SpaceND::Integer). Using these information,  we aim at approximating the
- digital space \f$Z^n\f$ by \f$\text{Integer}^{\text{dimension}}\f$.
+ digital space \f$Z^n\f$ by \f$Integer^{dimension}\f$.
  Hence, we have several constraints these parameters:
  - the dimension should also be a integer;
  - Integer should characterize a commutative ring with unity using the
@@ -215,7 +215,7 @@ Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtal
 
     }
   board.saveSVG("kernel-domain-it.svg");
-@encode
+@endcode
 
 \image html kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order."
 \image latex kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order." width=5cm
