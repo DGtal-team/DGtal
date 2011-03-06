@@ -123,8 +123,10 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
 #endif
 
   object.selfDraw( *this );
+#ifdef DEBUG_VERBOSE
   std::cerr << std::endl;
-  return *this;
+#endif
+   return *this;
 }
 
 
