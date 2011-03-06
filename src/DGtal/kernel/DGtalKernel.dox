@@ -68,7 +68,7 @@ For example, digital spaces can be defined as follows:
 #include "DGtal/kernel/SpaceND.h"
 {...}
 typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
-typedef DGtal::SpaceND<1, DGtal::int8_t> MySpace8;
+typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace64;
 typedef DGtal::SpaceND<3, mpz_class> MySpaceGMP;
 @endcode
 
@@ -149,18 +149,76 @@ An instance of HyperRectDomain can be created as follows:
 @code
 typedef HyperRectDomain<MySpace> MyDomain;
 MyPoint a(-3,-4);
-MyPoint b(10,10);
+MyPoint b(10,4);
 MyDomain domain(a,b);
 @endcode
 
 The instance is thus an isothetic domain lying on the space SpaceND<2,DGtal::uint32_t> 
-defined by the bounding box of the point a and b. We can visualise the domain using the DGtalBoard stream mecanism (see \ref dgtal_dgtalboard).
+defined by the bounding box of the point a and b. We can visualise the domain using the DGtalBoard stream mechanism (see \ref dgtal_dgtalboard).
 
+@image html kernel-domain.png "Illustration of a simple 2-D domain"
+@image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
 
+The HyperRectDomain class provides several methods such as HyperRectDomain::isInside to decide if a point is inside the domain or not.
+
+@code
+ MyPoint c(5,1);
+ if ( domain.isInside( c ) )
+    trace.info() << "C is inside the domain"<<endl;
+ else
+    trace.info() << "C is outside the domain"<<endl;
+ @endcode
+
+@image html kernel-domain-point.png "Illustration of a simple 2-D domain with a point"
+@image latex kernel-domain-point.png "Illustration of a simple 2-D domain with a point"  width=6cm
 
 
 \subsection sectDomIter Iterating over an  HyperRectDomain
 
+An important feature of DGtal domain is based on iterators it defines to scan the grid points in various orders. For example, to scan the domain we can use
+
+@code
+for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
+     it != itend;   
+     ++it)
+  trace.info() << "Processing point"<< (*it) << endl;
+@endcode    
+
+By default, HyperRectDomain iterators use the lexicographic order on the dimensions. To visualise this order, we can use the following code snippet in which we display each point by a color map from blue to red according to the order (blue point corresponds to the first point and the red one to the last point).
+Note that in this example, we also use several domain methods such as HyperRectDomain::lowerBound, HyperRectDomain::upperBound and HyperRectDomain::size().
+
+Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtalboard.
+
+@code
+  //Let us prepare the mapping from iterator to colors
+  MyPoint lower = domain.lowerBound();
+  MyPoint upper = domain.upperBound();
+  MyPoint size = domain.size();
+  MySpace::Integer extent = size[0]*size[1];
+
+  //since DGtal::Integer may be unbounded, we have to cast it to int64_t
+  // to be able to use the build-in '/' operator.
+  DGtal::int64_t castExtent = IntegerTraits<MySpace::Integer>::castToInt64_t(extent);
+  DGtal::int64_t pos=0;
+  
+  //we draw each point with a custom color  
+  for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
+       it != itend;   
+       ++it)
+    {
+      board << CustomStyle( (*it).styleName(), 
+			    new CustomFillColor( DGtalBoard::Color( (255*pos) / castExtent,
+								    0,
+								    255 - (255*pos) / castExtent)))
+	    << (*it);
+      pos++;
+
+    }
+  board.saveSVG("kernel-domain-it.svg");
+@encode
+
+\image html kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order."
+\image latex kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order." width=5cm
 
 
 
