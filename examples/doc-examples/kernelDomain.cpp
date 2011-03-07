@@ -82,6 +82,22 @@ int main( int argc, char** argv )
   board << c;
   board.saveSVG("kernel-domain-point.svg");
   
+
+  //PointVector example
+  MyPoint q;
+  MyPoint::Coordinate coord = 24;
+  for(MySpace::Dimension d = 0 ; d < MySpace::staticDimension; d++)
+    q[d] = coord;
+  trace.info()<<"Q="<<q<<endl;
+
+  MyPoint r;
+  for(MyPoint::Iterator it=r.begin(), itend=r.end() ; 
+      it != itend;
+      ++it)
+    (*it) = coord;
+  trace.info()<<"R="<<r<<endl;
+
+
   //We scan the domain
   for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
        it != itend;   

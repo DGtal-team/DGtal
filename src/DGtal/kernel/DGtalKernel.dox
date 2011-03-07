@@ -123,13 +123,38 @@ and methodes such as
 
 \section sectPointVector Points and Vectors
 
-Points and Vectors are fundamental objects in the digital space. Indeed, they allow  us to access to grid point location or to represent displacements between grid points. Points and Vectors....@todo finish 
+Points and Vectors are fundamental objects in the digital space. Indeed, they allow  us to access to grid point location or to represent displacements between grid points. Many methods are defined for Point and Vector instances. For example we have 
+ - arithmetic operators (*, -, ...)
+ - comparison operators (< ,>, ...)
+ - methods associate to the canonical lattice associated to points (inf, sup, isLower,...)
+ - methods to compute various norms of Points/Vectors.
+ - last but not least, the interface also provides iterators and accessors.
 
 
+ @note For the sake of simplicity, both SpaceND::Point and SpaceND::Vector in a space DGtal::SpaceND<dimension,Integer> are aliases of the specialized type DGtal::PointVector<dimension,Integer>. In other words, these two types can be exchanged without any problem, even if it does not make sense in a  mathematical. For instance, from a vector, we can define its opposite but the opposite does not make sense for a point. 
+
+ An element of a Point has type Coordinate and an element of a Vector has type Component. For instance, the following code is valid in terms of type.
+@code
+ MyPoint p;
+ MyPoint::Coordinate coord = 24;
+ for(Dimension d = 0 ; d < MySpace::staticDimension; ++d)
+    p[d] = coord;
+@endcode
+However, we encourage the use of iterators as follows
+@code
+ MyPoint p;
+ MyPoint::Coordinate coord = 24;
+ for(MyPoint::Iterator it=p.begin(), itend=p.end() ; 
+     it != itend;
+     ++it)
+     (*it) = coord;
+@endcode
 
 
+@note Similarly to the previous note and since Vector and Space are aliases, SpaceND::Point::Coordinate and SpaceND::Vector::Component are aliases of  SpaceND::Integer. It does not lead to a strong typing of Point and Vector but it helps the user to design code as close as possible to a mathematical formulation.
 
-\section sectDomain Domains and HyperRectDomains
+
+\section sectDomain Domains and) HyperRectDomains
 
 \subsection sectDomDef Definition
 
