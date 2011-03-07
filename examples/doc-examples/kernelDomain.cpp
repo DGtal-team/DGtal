@@ -87,37 +87,25 @@ int main( int argc, char** argv )
        it != itend;   
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
-    
-  //We clean up the current board
+   
+
   board.clear();
   board << domain;
+  //We draw an arrow between two consecutive points during the iteration.
+  MyDomain::ConstIterator itPrec = domain.begin();
+  MyDomain::ConstIterator it = itPrec;
+  MyDomain::Vector shift;
+  ++it;
 
-  //Let us prepare the mapping between coordinates and colors
-  MyPoint lower = domain.lowerBound();
-  MyPoint upper = domain.upperBound();
-  MyPoint size = domain.size();
-  MySpace::Integer extent = size[0]*size[1];
-
-  //since DGtal::Integer may be unbounded, we have to cast it to int64_t
-  // to be able to use the build-in '/' operator.
-  DGtal::int64_t castExtent = IntegerTraits<MySpace::Integer>::castToInt64_t(extent);
-  DGtal::int64_t pos=0;
-  
-  //we draw each point with a custom color  
-  for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
+  board << (*itPrec); //We display the first point as a pixel.
+  for( MyDomain::ConstIterator itend = domain.end();
        it != itend;   
-       ++it)
+       ++it, ++itPrec)
     {
-      board << CustomStyle( (*it).styleName(), 
-			    new CustomFillColor( DGtalBoard::Color( (255*pos) / castExtent,
-								    0,
-								    255 - (255*pos) / castExtent)))
-	    << (*it);
-      pos++;
-
+      shift =   (*it) -(*itPrec);
+      shift.selfDraw(board, (*itPrec));
     }
-  board.saveSVG("kernel-domain-it.svg");
-
+  board.saveSVG("kernel-domain-it-arrow.svg");
 
   trace.endBlock();
   return 0;

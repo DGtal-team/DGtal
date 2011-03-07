@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page DGtalKernel DGtal Kernel 
+@page DGtalKernel Introduction to DGtal Kernel 
 @author David Coeurjolly
 
 
@@ -32,6 +32,7 @@ corresponds to the first lines of DGtal codes.
 
 Table of contents:
  -# \ref sectSpace
+ -# \ref sectPointVector
  -# \ref sectDomain 
    -# \ref sectDomDef
    -# \ref sectDomIter
@@ -120,6 +121,13 @@ and methodes such as
  - types and methods for subspace and subcospace construction
  - ...
 
+\section sectPointVector Points and Vectors
+
+Points and Vectors are fundamental objects in the digital space. Indeed, they allow  us to access to grid point location or to represent displacements between grid points. Points and Vectors 
+
+
+
+
 
 \section sectDomain Domains and HyperRectDomains
 
@@ -184,42 +192,34 @@ for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
   trace.info() << "Processing point"<< (*it) << endl;
 @endcode    
 
-By default, HyperRectDomain iterators use the lexicographic order on the dimensions. To visualise this order, we can use the following code snippet in which we display each point by a color map from blue to red according to the order (blue point corresponds to the first point and the red one to the last point).
-Note that in this example, we also use several domain methods such as HyperRectDomain::lowerBound, HyperRectDomain::upperBound and HyperRectDomain::size().
+By default, HyperRectDomain iterators use the lexicographic order on the dimensions. To visualise this order in dimension 2, we can use the following code snippet in which we display each point by a color map from blue to red according to the order (blue point corresponds to the first point and the red one to the last point).
+Note that in this example, we use a specific drawing primitive (selfDraw) in order to draw a SpaceND::Vector as an arrow..
 
 Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtalboard.
 
 @code
-  //Let us prepare the mapping from iterator to colors
-  MyPoint lower = domain.lowerBound();
-  MyPoint upper = domain.upperBound();
-  MyPoint size = domain.size();
-  MySpace::Integer extent = size[0]*size[1];
+ //We draw an arrow between two consecutive points during the iteration.
+  MyDomain::ConstIterator itPrec = domain.begin();
+  MyDomain::ConstIterator it = itPrec;
+  MyDomain::Vector shift;
+  ++it;
 
-  //since DGtal::Integer may be unbounded, we have to cast it to int64_t
-  // to be able to use the build-in '/' operator.
-  DGtal::int64_t castExtent = IntegerTraits<MySpace::Integer>::castToInt64_t(extent);
-  DGtal::int64_t pos=0;
-  
-  //we draw each point with a custom color  
-  for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
+  board << (*itPrec); //We display the first point as a pixel.
+  for( MyDomain::ConstIterator itend = domain.end();
        it != itend;   
-       ++it)
+       ++it, ++itPrec)
     {
-      board << CustomStyle( (*it).styleName(), 
-			    new CustomFillColor( DGtalBoard::Color( (255*pos) / castExtent,
-								    0,
-								    255 - (255*pos) / castExtent)))
-	    << (*it);
-      pos++;
-
+      shift =   (*it) -(*itPrec);
+      shift.selfDraw(board, (*itPrec));
     }
-  board.saveSVG("kernel-domain-it.svg");
+  board.saveSVG("kernel-domain-it-arrow.svg");
 @endcode
 
-\image html kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order."
-\image latex kernel-domain-it.png "Iteration over a domain where the color (from blue to red) indicates the order." width=5cm
+\image html kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."
+\image latex kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."  width=5cm
 
+
+@todo A specific section of the documentation will be devoted to customizable iterators. 
 
 
 \section sectImage Image
