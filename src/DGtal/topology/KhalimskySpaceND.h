@@ -107,6 +107,12 @@ namespace DGtal
     bool operator==( const KhalimskyCell & other ) const;
 
     /**
+       Difference operator.
+       @param other any other cell.
+    */
+    bool operator!=( const KhalimskyCell & other ) const;
+
+    /**
        Inferior operator. (lexicographic order).
        @param other any other cell.
     */
@@ -172,6 +178,12 @@ namespace DGtal
        @param other any other cell.
     */
     bool operator==( const SignedKhalimskyCell & other ) const;
+
+    /**
+       Difference operator.
+       @param other any other cell.
+    */
+    bool operator!=( const SignedKhalimskyCell & other ) const;
 
     /**
        Inferior operator. (lexicographic order).
@@ -1244,7 +1256,43 @@ namespace DGtal
        @return the proper cofaces of [c] (chain of upper incidence).
     */
     Cells uCoFaces( const Cell & c ) const;
- 
+
+    /**
+       Return 'true' if the direct orientation of [p] along [k] is in
+       the positive coordinate direction. The direct orientation in a
+       direction allows to go from positive incident cells to positive
+       incident cells.  This means that 
+       @code
+       K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
+       @endcode
+       is always true.
+
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the direct orientation of [p] along [k] (true is
+       upward, false is backward).
+    */
+    bool sDirect( const SCell & p, Dimension k ) const;
+
+    /**
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the direct incident cell of [p] along [k] (the incident
+       cell along [k] whose sign is positive).
+    */
+    SCell sDirectIncident( const SCell & p, Dimension k ) const;
+
+    /**
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the indirect incident cell of [p] along [k] (the incident
+       cell along [k] whose sign is negative).
+    */
+    SCell sIndirectIncident( const SCell & p, Dimension k ) const;
+   
 
     // ----------------------- Interface --------------------------------------
   public:
