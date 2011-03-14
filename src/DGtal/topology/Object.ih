@@ -505,17 +505,17 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
  * Computes the connected components of the object and writes
  * them on the output iterator [it].
  *
- * @tparam TOutputObjectIterator the type of an output iterator in
+ * @tparam OutputObjectIterator the type of an output iterator in
  * a container of Object s.
  *
  * @param it the output iterator. *it is an Object.
  */
 template <typename TDigitalTopology, typename TDigitalSet>
-template <typename TOutputObjectIterator>
+template <typename OutputObjectIterator>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
-::writeComponents( TOutputObjectIterator & it ) const
+::writeComponents( OutputObjectIterator & it ) const
 {
   Size nb_components = 0;
   if ( pointSet().empty() )
