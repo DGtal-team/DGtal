@@ -85,6 +85,15 @@ template < Dimension dim, typename TInteger >
 inline
 bool
 DGtal::KhalimskyCell< dim, TInteger >::
+operator!=( const KhalimskyCell & other ) const
+{
+  return myCoordinates != other.myCoordinates;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+bool
+DGtal::KhalimskyCell< dim, TInteger >::
 operator<( const KhalimskyCell & other ) const
 {
   return myCoordinates < other.myCoordinates;
@@ -152,6 +161,16 @@ operator==( const SignedKhalimskyCell & other ) const
 {
   return ( myPositive == other.myPositive )
     && ( myCoordinates == other.myCoordinates );
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+bool
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator!=( const SignedKhalimskyCell & other ) const
+{
+  return ( myPositive != other.myPositive )
+    || ( myCoordinates != other.myCoordinates );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
@@ -1429,6 +1448,64 @@ uCoFaces( const Cell & c ) const
 	}
     }
   return N;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger >::
+sDirect( const SCell & p, Dimension k ) const
+{
+  ASSERT( k < dim );
+  bool sign = p.myPositive;
+  for ( Dimension i = 0; i < k; ++i )
+    if ( sIsOpen( p, i ) ) 
+      sign = ! sign;
+  return sign;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
+sDirectIncident( const SCell & p, Dimension k ) const
+{
+  ASSERT( k < dim );
+  SCell d( p );
+  bool sign = d.myPositive;
+  for ( Dimension i = 0; i < k; ++i )
+    if ( sIsOpen( d, i ) ) 
+      sign = ! sign;
+
+  bool up = sign;
+  d.myPositive = POS;
+  ASSERT( ( up )   && ( sCoord( d, k ) < uCoord( myCellUpper, k ) ) ); 
+  ASSERT( ( ! up ) && ( uCoord( myCellLower, k ) < sCoord( d, k ) ) ); 
+  if ( up ) ++d.myCoordinates[ k ];
+  else      --d.myCoordinates[ k ];
+  return d;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
+DGtal::KhalimskySpaceND< dim, TInteger >::
+sIndirectIncident( const SCell & p, Dimension k ) const
+{
+  ASSERT( k < dim );
+  SCell d( p );
+  bool sign = d.myPositive;
+  for ( Dimension i = 0; i < k; ++i )
+    if ( sIsOpen( d, i ) ) 
+      sign = ! sign;
+
+  bool up = ! sign;
+  d.myPositive = NEG;
+  ASSERT( ( up )   && ( sCoord( d, k ) < uCoord( myCellUpper, k ) ) ); 
+  ASSERT( ( ! up ) && ( uCoord( myCellLower, k ) < sCoord( d, k ) ) ); 
+  if ( up ) ++d.myCoordinates[ k ];
+  else      --d.myCoordinates[ k ];
+  return d;
 }
 
 

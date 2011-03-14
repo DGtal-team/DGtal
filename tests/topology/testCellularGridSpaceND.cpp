@@ -143,6 +143,41 @@ bool testCellularGridSpaceND()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "anti-commutativity of incidence operators." << std::endl;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing direct Incidence in KSpace..." );
+  for ( DirIterator q1 = K.sDirs( sspel ); q1 != 0; ++q1 )
+    for ( DirIterator q2 = K.sDirs( sspel ); q2 != 0; ++q2 )
+      {
+	if ( *q1 != *q2 )
+	  {
+	    SCell s0 = K.sDirectIncident( sspel, *q1 );
+	    SCell l10 = K.sDirectIncident( s0, *q2 );
+	    SCell s1 = K.sDirectIncident( sspel, *q2 );
+	    SCell l01 = K.sDirectIncident( s1, *q1 );
+	    trace.info() << "Dd_" << *q2 << "(Dd_" << *q1 << "(V))=" << l10 
+			 << " Dd_" << *q1 << "(Dd_" << *q2 << "(V))=" << l01
+			 << endl;
+	    nbok += l10 != l01 ? 1 : 0; 
+	    nbok += K.sSign( s0 ) == K.POS ? 1 : 0;
+	    nbok += K.sSign( s1 ) == K.POS ? 1 : 0;
+	    nbok += K.sSign( l10 ) == K.POS ? 1 : 0;
+	    nbok += K.sSign( l01 ) == K.POS ? 1 : 0;
+	    nbok += s0 == K.sIncident( sspel, *q1, K.sDirect( sspel, *q1 ) )
+	      ? 1 : 0;
+	    nbok += s1 == K.sIncident( sspel, *q2, K.sDirect( sspel, *q2 ) )
+	      ? 1 : 0;
+	    nbok += l10 == K.sIncident( s0, *q2, K.sDirect( s0, *q2 ) )
+	      ? 1 : 0;
+	    nbok += l01 == K.sIncident( s1, *q1, K.sDirect( s1, *q1 ) )
+	      ? 1 : 0;
+	    nb += 9;
+	  }
+      }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "correctness of direct and indirect orientations." << std::endl;
+  
+  trace.endBlock();
+  
   
   return nbok == nb;
 }
