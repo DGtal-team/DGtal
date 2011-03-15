@@ -107,8 +107,25 @@ namespace DGtal
      */
     InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
-		return std::pow( fabs((double )pos - ci) , (double)p) + hi;
+      return std::pow( fabs((double )pos - ci) , (double)p) + hi;
     }
+
+    /**
+     * Returns the height at a point  pos of a reversed Lp-parabola with
+     * center  ci and height hi.
+     *
+     * @param pos an abscissa.
+     * @param ci center of the Lp-parabola.
+     * @param hi height of the Lp-parabola.
+     *
+     * @return the height of the reversed parabola (ci,hi) at pos.
+     */
+    InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    {
+      return hi - std::pow( fabs((double )pos - ci) , (double)p);
+    }
+
+
 
     /**
      * Returns the InternalValue value of order p for a given
@@ -140,7 +157,6 @@ namespace DGtal
       ASSERT(false && "Not-Yet-Implemented");
     }
 
-
   }; // end of class SeparableMetricTraits
 
   // ------------------------------------------------------------------------
@@ -171,6 +187,11 @@ namespace DGtal
     inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
       return ( pos - ci ) * ( pos - ci ) + hi;
+    }
+
+    inline InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    {
+      return hi - ( pos - ci ) * ( pos - ci ) ;
     }
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
@@ -207,8 +228,13 @@ namespace DGtal
     {
       return ( InternalValue ) abs ( pos - ci ) + hi;
     }
+    
+    inline InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    {
+      return ( InternalValue ) hi - abs ( pos - ci );
+    }
 
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
         return IntegerTraits<Abscissa>::max();
@@ -244,6 +270,11 @@ namespace DGtal
     inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
      return ( InternalValue ) std::max( (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
+    }
+
+    inline InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    {
+     return ( InternalValue ) std::min( 2*hi - (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
     }
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
