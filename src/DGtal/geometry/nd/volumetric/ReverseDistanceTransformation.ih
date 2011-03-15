@@ -100,7 +100,7 @@ DGtal::ReverseDistanceTransformation<I, O, SepM>::compute ( const I & aImage )
 
 
   //We process the dimensions swaping the temporary buffers
-  for ( Dimension dim = 0; dim < I::staticDimension ; dim++ )
+  for ( Dimension dim = 0; dim < I::dimension ; dim++ )
   {
     if ( isSwap )
       computeSteps ( output, swap, dim );
@@ -160,16 +160,16 @@ DGtal::ReverseDistanceTransformation<I, O, SepM>::computeSteps ( const I &input,
     std::cerr << std::endl;
   }
 
-  typedef typename Domain::ConstIterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
   std::vector<Dimension> subdomain;
-  subdomain.reserve(I::staticDimension - 1);
-  for(Dimension k = 0; k < I::staticDimension ; k++)
-    if ( (I::staticDimension - 1 - k) != dim)
-      subdomain.push_back( I::staticDimension - 1 - k );
+  subdomain.reserve(I::dimension - 1);
+  for(Dimension k = 0; k < I::dimension ; k++)
+    if ( (I::dimension - 1 - k) != dim)
+      subdomain.push_back( I::dimension - 1 - k );
 
   Dimension maxSize = myExtent.normInfinity();
 

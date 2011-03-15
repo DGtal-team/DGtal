@@ -210,9 +210,9 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
   
   typename Domain::ConstSubRange scanline = myDomain.subRange(0,starting);
-  typename Domain::ConstIterator it = scanline.begin();
-  typename Domain::ConstIterator itend = scanline.end();
-  typename Domain::ConstIterator prevIt = scanline.begin();
+  typename Domain::ConstSubRange::const_iterator it = scanline.begin();
+  typename Domain::ConstSubRange::const_iterator itend = scanline.end();
+  typename Domain::ConstSubRange::const_iterator prevIt = scanline.begin();
  
   //First cell
   if ( isForeground ( aImage, (*it) ) )
@@ -232,9 +232,9 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
 	output.setValue ( (*it), 0 );
     }
   
-  typename Domain::ReverseConstIterator rit = scanline.rbegin();
-  typename Domain::ReverseConstIterator rPrevIt = scanline.rbegin();
-  typename Domain::ReverseConstIterator ritend = scanline.rend();
+  typename Domain::ConstSubRange::reverse_const_iterator rit = scanline.rbegin();
+  typename Domain::ConstSubRange::reverse_const_iterator rPrevIt = scanline.rbegin();
+  typename Domain::ConstSubRange::reverse_const_iterator ritend = scanline.rend();
   //rPrevIt is the rightmost point of "rit"
   ++rit;
   

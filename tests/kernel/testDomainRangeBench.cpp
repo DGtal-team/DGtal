@@ -56,7 +56,7 @@ bool testDomainRangeBench()
   
   long int cpt=0;
 
-  typedef Z3i::Domain::ConstIterator CIt;
+  typedef Z3i::Domain::ConstSubRange::const_iterator CIt;
 
   trace.beginBlock ( "Testing 1D Range Iterator z ..." );
   for(CIt it = domain.subRange(2,start).begin(),
