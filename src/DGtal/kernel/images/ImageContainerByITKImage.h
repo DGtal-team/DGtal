@@ -80,7 +80,7 @@ namespace DGtal
         typedef TDomain Domain;
 
         // static constants
-        static const typename Domain::Dimension staticDimension = Domain::staticDimension;
+        static const typename Domain::Dimension dimension = Domain::dimension;
 
         typedef typename Domain::Point Point;
         typedef typename Domain::Vector Vector;
@@ -88,7 +88,7 @@ namespace DGtal
         typedef typename Domain::Integer Integer;
         typedef typename Domain::Size Size;
 
-        typedef typename itk::Image< TValue, staticDimension> ITKImage;
+        typedef typename itk::Image< TValue, dimension> ITKImage;
         typedef typename ITKImage::Pointer ITKImagePointer;
         typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
         typedef typename itk::ImageRegionIterator< ITKImage > Iterator;

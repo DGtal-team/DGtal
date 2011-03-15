@@ -165,7 +165,7 @@ namespace DGtal
 // class StdDefs
 /**
  * Description of class 'StdDefs' <p>
- * \brief Aim:
+ * \brief Aim: For now, useless.
  */
 class StdDefs
 {

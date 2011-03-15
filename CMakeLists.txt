@@ -212,7 +212,7 @@ ENDIF(BUILD_EXAMPLES)
 #------------------------------------------------------------------------------
 # DGtal Configuration file
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "${PROJECT_SOURCE_DIR}/build/DGtalConfig.cmake" IMMEDIATE)
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "DGtalConfig.cmake" IMMEDIATE)
 export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibDependencies.cmake )
 
 

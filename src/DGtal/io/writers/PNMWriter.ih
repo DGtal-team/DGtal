@@ -46,7 +46,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 {
   ///@todo  the Value of I should match with the one in C
 
-  BOOST_STATIC_ASSERT(I::Domain::staticDimension == 2);
+  BOOST_STATIC_ASSERT(I::Domain::dimension == 2);
   
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
@@ -88,7 +88,7 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 {
   ///@todo  the Value of I should match with the one in C
 
-  BOOST_STATIC_ASSERT(I::Domain::staticDimension == 2);
+  BOOST_STATIC_ASSERT(I::Domain::dimension == 2);
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
@@ -130,7 +130,7 @@ PNMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
 {
   ///@todo  the Value of I should match with the one in C
 
-  BOOST_STATIC_ASSERT(I::Domain::staticDimension == 3);
+  BOOST_STATIC_ASSERT(I::Domain::dimension == 3);
   
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
@@ -172,7 +172,7 @@ PNMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
 {
   ///@todo  the Value of I should match with the one in C
 
-  BOOST_STATIC_ASSERT(I::Domain::staticDimension == 3);
+  BOOST_STATIC_ASSERT(I::Domain::dimension == 3);
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();

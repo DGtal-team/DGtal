@@ -505,17 +505,17 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
  * Computes the connected components of the object and writes
  * them on the output iterator [it].
  *
- * @tparam TOutputObjectIterator the type of an output iterator in
+ * @tparam OutputObjectIterator the type of an output iterator in
  * a container of Object s.
  *
  * @param it the output iterator. *it is an Object.
  */
 template <typename TDigitalTopology, typename TDigitalSet>
-template <typename TOutputObjectIterator>
+template <typename OutputObjectIterator>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
-::writeComponents( TOutputObjectIterator & it ) const
+::writeComponents( OutputObjectIterator & it ) const
 {
   Size nb_components = 0;
   if ( pointSet().empty() )
@@ -621,7 +621,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
 {
   // Local types.
   typedef std::vector<Point> Container;
-  typedef MetricAdjacency<Space, Space::staticDimension> AlphaAdjacency;
+  typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
   typedef typename Container::const_iterator ContainerConstIterator;
@@ -678,7 +678,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
 {
   // Local types.
   typedef std::vector<Point> Container;
-  typedef MetricAdjacency<Space, Space::staticDimension> AlphaAdjacency;
+  typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
   typedef typename Container::const_iterator ContainerConstIterator;
@@ -742,7 +742,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   SmallObject Gkappa_X
   = geodesicNeighborhood( topology().kappa(),
       v,
-      Space::staticDimension );
+      Space::dimension );
 
   if ( Gkappa_X.computeConnectedness() == SmallObject::CONNECTED )
   {
@@ -751,7 +751,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     SmallComplementObject Glambda_compX
     = geodesicNeighborhoodInComplement( topology().lambda(),
         v,
-        Space::staticDimension );
+        Space::dimension );
     return ( Glambda_compX.computeConnectedness()
         == SmallComplementObject::CONNECTED )
         && ( ! Glambda_compX.pointSet().empty() );

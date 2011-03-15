@@ -233,7 +233,7 @@ inline
 std::ostream&
 DGtal::deprecated::operator<< ( std::ostream & out, 
 		    const DomainMetricAdjacency<Domain,maxNorm1,
-		    Domain::Space::staticDimension> & object )
+		    Domain::Space::dimension> & object )
 {
   object.selfDisplay( out );
   return out;
