@@ -328,43 +328,44 @@ namespace DGtal
     public:
 
       /**
-       * Computes the connected components of the object and writes
-       * them on the output iterator [it].
-       *
-       * @tparam TOutputObjectIterator the type of an output iterator in
-       * a container of Object s.
-       *
-       * @param it the output iterator. *it is an Object.
-       * @return the number of components.
-       *
-       * NB: Be careful that the [it] should not be an output iterator
-       * pointing in the same container containing 'this'. The following
-       * example might make a 'bus error' because the vector might be
-       * resized() during insertion.
-       *
-       * @code
-       * vector<ObjectType> objects;
-       * objects[ 0 ] = ... some object;
-       * ...
-       * back_insert_iterator< vector<ObjectType> > it( objects );
-       * objects[ 0 ].writeComponents( it ); // it points in same container as this.
-       * // might 'bus error'.
-       * @endcode
-       *
-       * If you wish to use an output iterator (like a
-       * std::back_insert_iterator) in the same container containing
-       * your object, you can write:
-       *
-       * @code
-       * ObjectType( objects[ 0 ] ).writeComponents( it );
-       * @endcode
-       *
-       * It is nearly as efficient (the clone uses smart copy on write
-       * pointers) and works in any case. You might even overwrite your
-       * object while doing this.
+         Computes the connected components of the object and writes
+         them on the output iterator [it].
+        
+         @tparam OutputObjectIterator the type of an output iterator in
+         a container of Object s.
+        
+         @param it the output iterator. *it is an Object.
+         @return the number of components.
+        
+         NB: Be careful that the [it] should not be an output iterator
+         pointing in the same container containing 'this'. The following
+         example might make a 'bus error' because the vector might be
+         resized during insertion.
+        
+         @code
+	 typedef ... MyObject;
+         vector<MyObject> objects;
+         objects[ 0 ] = ... some object;
+         ...
+         back_insert_iterator< vector<MyObject> > it( objects );
+         objects[ 0 ].writeComponents( it ); // it points in same container as this.
+         // might 'bus error'.
+         @endcode
+        
+         If you wish to use an output iterator (like a
+         std::back_insert_iterator) in the same container containing
+         your object, you can write:
+        
+         @code
+         MyObject( objects[ 0 ] ).writeComponents( it );
+         @endcode
+        
+         It is nearly as efficient (the clone uses smart copy on write
+         pointers) and works in any case. You might even overwrite your
+         object while doing this.
        */
-      template <typename TOutputObjectIterator>
-      Size writeComponents( TOutputObjectIterator & it ) const;
+      template <typename OutputObjectIterator>
+      Size writeComponents( OutputObjectIterator & it ) const;
 
       /**
        * @return the connectedness of this object. Either CONNECTED,

@@ -471,7 +471,7 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::selfDraw( DGtalBoard & board ) const
 {
-  ASSERT(Domain::Space::staticDimension == 2);
+  ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
     board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
 }

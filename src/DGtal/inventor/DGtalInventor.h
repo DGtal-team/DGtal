@@ -122,7 +122,7 @@ namespace DGtal
      * the lattice [l].
      *
      * @param l the lattice space which should be of dimension
-     * TSpace::staticDimension.
+     * TSpace::dimension.
      */
     void setLattice( const Lattice<Space> & l );
 

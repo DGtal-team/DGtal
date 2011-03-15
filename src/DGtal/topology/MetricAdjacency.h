@@ -73,7 +73,7 @@ namespace DGtal
    * @see testAdjacency.cpp
    */
   template <typename TSpace, Dimension maxNorm1, 
-	    Dimension dimension = TSpace::staticDimension >
+	    Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
@@ -283,7 +283,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const MetricAdjacency< TSpace,maxNorm1,
-	       TSpace::staticDimension > & object );
+	       TSpace::dimension > & object );
 
 } // namespace DGtal
 

@@ -77,7 +77,8 @@ namespace DGtal {
    *
    * This program outputs this image.
    *
-   * \image html dgtalboard-1-points.png
+   * \image html dgtalboard-1-points.png "Drawing points with Board." 
+   * \image latex dgtalboard-1-points.png "Drawing points with Board." width=5cm
    *
    * It is clear that the order in which you display elements has an
    * influence on the exported graphics.
@@ -103,7 +104,8 @@ namespace DGtal {
    board.saveSVG( "dgtalboard-2-sets-1.svg");
    \endcode
    *
-   * \image html dgtalboard-2-sets-1.png
+   * \image html dgtalboard-2-sets-1.png "Digital set drawing with Board." 
+   * \image latex dgtalboard-2-sets-1.png "Digital set drawing with Board." width=6cm
    *
    * \subsection dgtal_dgtalboard_sec13 Mode selection: the example of digital objects
    *
@@ -146,9 +148,12 @@ namespace DGtal {
    * href="dgtalboard-2-sets_8cpp-example.html">dgtalboard-2-sets.cpp</a>.
    *
    * <table>
-   * <tr><td> (4,8)-object </td><td> (8,4)-object </td></tr>
-   * <tr><td> \image html dgtalboard-2-sets-2.png</td>
-   * <td> \image html dgtalboard-2-sets-3.png</td></tr>
+   * <tr><td> \image html dgtalboard-2-sets-2.png "(4,8)-object"
+   \image latex dgtalboard-2-sets-2.png "(4,8)-object" width=5cm 
+   </td>
+   * <td> \image html dgtalboard-2-sets-3.png "(8,4)-object"
+   \image latex dgtalboard-2-sets-3.png "(8,4)-object" width=5cm 
+   </td></tr>
    * </table>
    *
    *
@@ -222,7 +227,8 @@ namespace DGtal {
    * This program (see full source at <a
    * href="dgtalboard-3-custom-classes_8cpp-example.html">dgtalboard-3-custom-classes.cpp</a>) outputs the following graphics.
    *
-   * \image html dgtalboard-3-custom-classes.png
+   * \image html dgtalboard-3-custom-classes.png "Custom drawing."
+   * \image latex dgtalboard-3-custom-classes.png "Custom drawing." width=5cm
    *
    * \subsection dgtal_dgtalboard_sec16 Creating your own custom style class for displaying drawable elements.
    *
@@ -266,7 +272,8 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
    * This program (see full source at <a
    * href="dgtalboard-3-custom-points_8cpp-example.html">dgtalboard-3-custom-points.cpp</a>) outputs the following graphics.
    *
-   * \image html dgtalboard-3-custom-points.png
+   * \image html dgtalboard-3-custom-points.png "Custom drawing of point." 
+   * \image latex dgtalboard-3-custom-points.png "Custom drawing of point." width=6cm
    *
    * \subsection dgtal_dgtalboard_sec17 Using colormaps in DGtalBoard streams
    *
@@ -305,7 +312,8 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
    * This program (see full source at <a
    * href="dgtalboard-4-colormaps_8cpp-example.html">dgtalboard-4-colormaps.cpp</a>) outputs the following graphics.
    *
-   * \image html dgtalboard-4-colormaps.png
+   * \image html dgtalboard-4-colormaps.png "Colormap example." 
+   * \image latex dgtalboard-4-colormaps.png "Colormap example." width=5cm
    *
    * More precisely, several styles may be applied before some drawable element is displayed. They are called in this order.
    * -# the default style (always applied)
@@ -322,7 +330,8 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
    * Another example involving ArithmeticDSS is <a
    * href="dgtalboard-5-greedy-dss_8cpp-example.html">dgtalboard-5-greedy-dss.cpp</a>. It outputs the following graphics:
    *
-   * \image html dgtalboard-5-greedy-dss.png
+   * \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
+   * \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
    *
    * \subsection dgtal_dgtalboard_sec18 Conclusion and future improvements
    * 
@@ -372,6 +381,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
    *  LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
    *
    * @image html logo_Board.png 
+   * @image latex logo_Board.png  "LibBoard Logo" width=4cm
    * (Copyleft, LGPL) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
    *
    * It allows simple drawings in:

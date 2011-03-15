@@ -137,14 +137,14 @@ namespace DGtal
     typedef DGtal::Dimension Dimension;
 
     ///Copy of the static dimension of the Point/Vector.
-    static const Dimension staticDimension = dim;
+    static const Dimension dimension = dim;
 
     /**
      *  Copy of the Boost::array iterator type
      *
      **/
-    typedef typename boost::array<Component, staticDimension>::iterator Iterator;
-    typedef typename boost::array<Component, staticDimension>::const_iterator ConstIterator;
+    typedef typename boost::array<Component, dimension>::iterator Iterator;
+    typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
     
     /**
      * Constructor.
@@ -333,12 +333,6 @@ namespace DGtal
      * Same as getDimension
      */
     static Dimension size();
-
-    /**
-     * Static method to obtain the dimension of a Point/Vector
-     * @return  the size of the vector (i.e. the number of its elements).
-     */
-    static Dimension dimension();
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -671,7 +665,7 @@ namespace DGtal
   private:
     
     ///Internal data-structure: boost/array with constant size.
-    boost::array<Component, staticDimension> myArray;
+    boost::array<Component, dimension> myArray;
     
   }; // end of class PointVector
 

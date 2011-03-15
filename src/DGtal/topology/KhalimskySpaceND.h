@@ -107,6 +107,12 @@ namespace DGtal
     bool operator==( const KhalimskyCell & other ) const;
 
     /**
+       Difference operator.
+       @param other any other cell.
+    */
+    bool operator!=( const KhalimskyCell & other ) const;
+
+    /**
        Inferior operator. (lexicographic order).
        @param other any other cell.
     */
@@ -174,6 +180,12 @@ namespace DGtal
     bool operator==( const SignedKhalimskyCell & other ) const;
 
     /**
+       Difference operator.
+       @param other any other cell.
+    */
+    bool operator!=( const SignedKhalimskyCell & other ) const;
+
+    /**
        Inferior operator. (lexicographic order).
        @param other any other cell.
     */
@@ -201,114 +213,76 @@ namespace DGtal
      } 
      @endcode
    */
-  template < typename TInteger = DGtal::int32_t,
-	     typename TDimension = DGtal::uint32_t >
+  template < Dimension dim,
+	     typename TInteger = DGtal::int32_t >
   class CellDirectionIterator 
   {
   public:
     typedef TInteger Integer;
-    typedef TDimension Dimension;
+    // Cells
+    typedef KhalimskyCell< dim, Integer > Cell;
+    typedef SignedKhalimskyCell< dim, Integer > SCell;
 
   public:
     /**
-     * Constructor from directions of cell.
-     * @param dirs the directions of a cell.
+     * Constructor from cell.
+     * @param cell any unsigned cell
      */
-    CellDirectionIterator( Integer dirs ) 
-      : m_k( 0 ), m_dirs( dirs )
-    {
-      if ( m_dirs ) find();
-    }
+    CellDirectionIterator( Cell cell, bool open = true );
+
+    /**
+     * Constructor from signed cell.
+     * @param scell any signed cell
+     */
+    CellDirectionIterator( SCell scell, bool open = true );
 
     /**
      * @return the current direction.
      */
-    Dimension operator*() const
-    {
-      return m_k;
-    }
-
-    /**
-     * @return the current coded directions.
-     */
-    Integer codedDirs() const
-    {
-      return m_dirs;
-    }
+    Dimension operator*() const;
 
     /**
      * Pre-increment. Go to next direction.
      */
-    CellDirectionIterator & operator++()
-    {
-      m_dirs >>= 1;
-      ++m_k;
-      if ( m_dirs ) find();
-      return *this;
-    }
+    CellDirectionIterator & operator++();
     
     /** 
-     * Fast comparison with unsigned integer. Comparison == with 0 is 'true' at
-     * the end of the iteration.
-     * @param coded_dirs any coded directions.
-     * @return 'true' if the iterator dirs are different from the coded dirs.
+     * Fast comparison with unsigned integer (unused
+     * parameter). Comparison is 'false' at the end of the iteration.
+     *
+     * @return 'true' if the iterator is finished.
      */
-    bool operator!=( Integer coded_dirs ) const
-    {
-      return m_dirs != coded_dirs;
-    }
+    bool operator!=( const Integer ) const;
 
     /** 
      * @return 'true' if the iteration is ended.
      */
-    bool end() const
-    {
-      return m_dirs == 0;
-    }
+    bool end() const;
 
     /** 
      * Slow comparison with other iterator. Useful to check for end of loop.
      * @param other any direction iterator.
      */
-    bool operator!=( const CellDirectionIterator & other ) const
-    {
-      return ( m_dirs != other.m_dirs )
-	|| ( m_k != other.m_k );
-    }
+    bool operator!=( const CellDirectionIterator & other ) const;
 
     /** 
      * Slow comparison with other iterator.
      * @param other any direction iterator.
      */
-    bool operator==( const CellDirectionIterator & other ) const
-    {
-      return ( m_dirs == other.m_dirs )
-	&& ( m_k == other.m_k );
-    }
+    bool operator==( const CellDirectionIterator & other ) const;
     
   private:
-    /**
-     * the current direction.
-     */
-    Dimension m_k;
-
-    /**
-     * the directions to iterate (topology word).
-     */
-    Integer m_dirs;
+    /** the current direction. */
+    Dimension myDir;
+    /** the cell. */
+    Cell myCell;
+    /** If 'true', returns open coordinates, otherwise returns closed
+	coordinates. */
+    bool myOpen;
 
   private:
-    /**
-     * Look for valid coordinate (m_dirs must be != 0).
-     */
-    void find()
-    {
-      while ( ( m_dirs & 1 ) == 0 )
-	{
-	  m_dirs >>= 1;
-	  ++m_k;
-	}
-    }
+    /** Look for next valid coordinate. */
+    void find();
   };
 
 
@@ -326,9 +300,7 @@ namespace DGtal
    * space or an open cell space.
    *
    * @tparam dim the dimension of the digital space.
-   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int).
-   * @tparam TSize the Integer class used to represent the sizes in the space (default type = unsigned int).
-   * @tparam TDimension the type used to represent indices of coordinates.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    */
   template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
@@ -340,7 +312,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
   public:
-    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
+    ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;
     
     ///Type used to represent sizes in the digital space.
@@ -350,7 +322,7 @@ namespace DGtal
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
     typedef bool Sign;
-    typedef CellDirectionIterator< Integer, Dimension > DirIterator;
+    typedef CellDirectionIterator< dim, Integer > DirIterator;
     
     //Points and Vectors
     typedef PointVector< dim, Integer > Point;
@@ -360,10 +332,14 @@ namespace DGtal
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
     // static constants
-    static const Dimension staticDimension = dim;
-    static const Dimension DIM = dim;
-    static const Sign POS = true;
-    static const Sign NEG = false;
+//     static const Dimension dimension = dim;
+//     static const Dimension DIM = dim;
+//     static const Sign POS = true;
+//     static const Sign NEG = false;
+    static const Dimension dimension;
+    static const Dimension DIM;
+    static const Sign POS;
+    static const Sign NEG;
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
@@ -382,6 +358,8 @@ namespace DGtal
     };
 
     // Neighborhoods, Incident cells, Faces and Cofaces
+    typedef AnyCellCollection<Cell> Cells;
+    typedef AnyCellCollection<SCell> SCells;
     typedef AnyCellCollection<Cell> Neighborhood;
     typedef AnyCellCollection<SCell> SNeighborhood;
 
@@ -415,10 +393,6 @@ namespace DGtal
 
     // ------------------------- Basic services ------------------------------
   public:
-    /**
-     * @return the dimension of the space.
-     */
-    Dimension dimension() const;
 
     /**
      * @param k a coordinate (from 0 to 'dim()-1').
@@ -1173,8 +1147,9 @@ namespace DGtal
        to [c].
        
        @param cell the unsigned cell of interest.
+       @return the cells of the 1-neighborhood of [cell].
     */
-    Neighborhood uNeighborhood( const Cell & c ) const;
+    Cells uNeighborhood( const Cell & cell ) const;
 
     /**
        Computes the 1-neighborhood of the cell [c] and returns
@@ -1182,9 +1157,146 @@ namespace DGtal
        to [c].
        
        @param cell the signed cell of interest.
+       @return the cells of the 1-neighborhood of [cell].
     */
-    SNeighborhood sNeighborhood( const SCell & cell ) const;
+    SCells sNeighborhood( const SCell & cell ) const;
 
+    /**
+       Computes the proper 1-neighborhood of the cell [c] and returns
+       it. It is the set of cells with same topology that are adjacent
+       to [c].
+       
+       @param cell the unsigned cell of interest.
+       @return the cells of the proper 1-neighborhood of [cell].
+    */
+    Cells uProperNeighborhood( const Cell & cell ) const;
+
+    /**
+       Computes the proper 1-neighborhood of the cell [c] and returns
+       it. It is the set of cells with same topology that are adjacent
+       to [c].
+       
+       @param cell the signed cell of interest.
+       @return the cells of the proper 1-neighborhood of [cell].
+    */
+    SCells sProperNeighborhood( const SCell & cell ) const;
+
+    // ----------------------- Incidence services --------------------------
+  public:
+
+    /**
+       @param c any unsigned cell.
+       @param k any coordinate.
+
+       @param forward if 'true' the orientation is forward along axis
+       [k], otherwise backward.
+       
+       @return the forward or backward unsigned cell incident to [c]
+       along axis [k], depending on [forward].
+
+       @note It may be a lower incident cell if [c] is open along axis
+       [k], else an upper incident cell.
+
+       @note The cell should have an incident cell in this
+       direction/orientation.
+    */
+    Cell uIncident( const Cell & c, Dimension k, bool up ) const;
+
+    /**
+       @param c any signed cell.
+       @param k any coordinate.
+
+       @param forward if 'true' the orientation is forward along axis
+       [k], otherwise backward.
+       
+       @return the forward or backward signed cell incident to [c]
+       along axis [k], depending on [forward]. It is worthy to note
+       that the forward and backward cell have opposite
+       sign. Furthermore, the sign of these cells is defined so as to
+       satisfy a boundary operator.
+
+       @note It may be a lower incident cell if [c] is open along axis
+       [k], else an upper incident cell.
+
+       @note The cell should have an incident cell in this
+       direction/orientation.
+    */
+    SCell sIncident( const SCell & c, Dimension k, bool up ) const;
+
+    /**
+       @param c any unsigned cell.
+       @return the cells directly low incident to c in this space.
+    */
+    Cells uLowerIncident( const Cell & c ) const;
+
+    /**
+       @param c any unsigned cell.
+       @return the cells directly up incident to c in this space.
+    */
+    Cells uUpperIncident( const Cell & c ) const;
+
+    /**
+       @param c any signed cell.
+       @return the signed cells directly low incident to c in this space.
+       @note it is the lower boundary of c expressed as a list of signed cells.
+    */
+    SCells sLowerIncident( const SCell & c ) const;
+
+    /**
+       @param c any signed cell.
+       @return the signed cells directly up incident to c in this space.
+       @note it is the upper boundary of c expressed as a list of signed cells.
+    */
+    SCells sUpperIncident( const SCell & c ) const;
+
+    /**
+       @param c any unsigned cell.
+       @return the proper faces of [c] (chain of lower incidence).
+    */
+    Cells uFaces( const Cell & c ) const;
+
+    /**
+       @param c any unsigned cell.
+       @return the proper cofaces of [c] (chain of upper incidence).
+    */
+    Cells uCoFaces( const Cell & c ) const;
+
+    /**
+       Return 'true' if the direct orientation of [p] along [k] is in
+       the positive coordinate direction. The direct orientation in a
+       direction allows to go from positive incident cells to positive
+       incident cells.  This means that 
+       @code
+       K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
+       @endcode
+       is always true.
+
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the direct orientation of [p] along [k] (true is
+       upward, false is backward).
+    */
+    bool sDirect( const SCell & p, Dimension k ) const;
+
+    /**
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the direct incident cell of [p] along [k] (the incident
+       cell along [k] whose sign is positive).
+    */
+    SCell sDirectIncident( const SCell & p, Dimension k ) const;
+
+    /**
+       @param p any signed cell.
+       @param k any coordinate.
+
+       @return the indirect incident cell of [p] along [k] (the incident
+       cell along [k] whose sign is negative).
+    */
+    SCell sIndirectIncident( const SCell & p, Dimension k ) const;
+   
 
     // ----------------------- Interface --------------------------------------
   public:

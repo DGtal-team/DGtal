@@ -51,7 +51,7 @@ bool testLinearAlgebra()
   
   trace.beginBlock ( "Testing block ..." );
   
-  typedef SpaceND<2,int> Space2Int;
+  typedef SpaceND<2,DGtal::int32_t> Space2Int;
   typedef Space2Int::Point Point;
   typedef SpaceND<2,DGtal::int64_t > Space2LongInt;
   typedef Space2LongInt::Point Pointlong;
@@ -60,7 +60,6 @@ bool testLinearAlgebra()
   Pointlong c,d;
 
   LinearAlgebra<Space2Int>::determinant(a,b);
-
   LinearAlgebra<Space2LongInt>::determinant(c,d);
 
   nbok += true ? 1 : 0; 

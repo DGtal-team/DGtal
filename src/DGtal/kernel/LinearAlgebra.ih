@@ -46,7 +46,7 @@ namespace DGtal{
   typename LinearAlgebra<Space>::Integer 
   LinearAlgebra<Space>::determinant(const Point &a, const Point &b)
   {
-    if (staticDimension == 2)
+    if (dimension == 2)
       return a[0]*b[1]-a[1]*b[0];
     
     ASSERT2(false, "Determinant not yet implemented");

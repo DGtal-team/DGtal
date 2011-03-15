@@ -122,38 +122,46 @@ bool testIterator()
   
 #ifdef CPP0X_INITIALIZER_LIST
   trace.emphase() << "Iterator 2d (permutation initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subRange( {1, 0} ).begin();
+  for ( HyperRectDomain<TSpace>::ConstSubRange::const_iterator 
+	  it = myHyperRectDomain.subRange( {1, 0} ).begin();
 	it != myHyperRectDomain.subRange( {1, 0} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (permutation initializer list): ";
-  for ( HyperRectDomain<TSpace>::ReverseConstIterator it = myHyperRectDomain.subRange( {1, 0} ).rbegin(),
+  for ( HyperRectDomain<TSpace>::ConstSubRange::reverse_const_iterator 
+	  it = myHyperRectDomain.subRange( {1, 0} ).rbegin(),
 	  itend=myHyperRectDomain.subRange( {1, 0} ).rend(); it!=itend;  ++it )
     trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Iterator 2d (permutation+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subRange( {1, 0} ).begin(c);
+  for ( HyperRectDomain<TSpace>::ConstSubRange::const_iterator
+	  it = myHyperRectDomain.subRange( {1, 0} ).begin(c);
 	it != myHyperRectDomain.subRange( {1, 0} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (permutation+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ReverseConstIterator it = myHyperRectDomain.subRange( {1, 0} ).rbegin(c),
+  for ( HyperRectDomain<TSpace>::ConstSubRange::reverse_const_iterator 
+	  it = myHyperRectDomain.subRange( {1, 0} ).rbegin(c),
 	  itend=myHyperRectDomain.subRange( {1, 0} ).rend(); it !=itend ; ++it )
     trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Iterator 2d (span initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subRange( {1} ).begin();
+  for ( HyperRectDomain<TSpace>::ConstSubRange::const_iterator
+	  it = myHyperRectDomain.subRange( {1} ).begin();
 	it != myHyperRectDomain.subRange( {1} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (span initializer list): ";
-  for ( HyperRectDomain<TSpace>::ReverseConstIterator it = myHyperRectDomain.subRange( {1} ).rbegin(),
+  for ( HyperRectDomain<TSpace>::ConstSubRange::reverse_const_iterator 
+	  it = myHyperRectDomain.subRange( {1} ).rbegin(),
 	  itend=myHyperRectDomain.subRange( {1} ).rend(); it != itend; ++it )
     trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Iterator 2d (span+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.subRange( {1} , c ).begin(c);
+  for ( HyperRectDomain<TSpace>::ConstSubRange::const_iterator
+	  it = myHyperRectDomain.subRange( {1} , c ).begin(c);
 	it != myHyperRectDomain.subRange( {1} , c ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (span+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ReverseConstIterator it = myHyperRectDomain.subRange( {1} , c ).rbegin(c),
+  for ( HyperRectDomain<TSpace>::ConstSubRange::reverse_const_iterator 
+	  it = myHyperRectDomain.subRange( {1} , c ).rbegin(c),
 	  itend=myHyperRectDomain.subRange( {1} , c ).rend(); it !=itend; ++it )
     trace.warning() << ( *it ) << std::endl;
 #endif
@@ -169,14 +177,16 @@ bool testIterator()
 
   HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D, b4D );
   trace.emphase() << myHyperRectDomain4D << std::endl;
-  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.range().begin();
+  for ( HyperRectDomain<TSpace4D>::ConstRange::const_iterator
+	  it = myHyperRectDomain4D.range().begin();
       it != myHyperRectDomain4D.range().end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.endBlock();
 
   trace.emphase() << "Reverse Iterator 4d: ";
-  for ( HyperRectDomain<TSpace4D>::ReverseConstIterator it = myHyperRectDomain4D.range().rbegin(),
+  for ( HyperRectDomain<TSpace4D>::ConstRange::reverse_const_iterator
+	  it = myHyperRectDomain4D.range().rbegin(),
 	  itend=myHyperRectDomain4D.range().rend(); it != itend; ++it )
     trace.info() << ( *it ) << std::endl;
 
@@ -185,26 +195,32 @@ bool testIterator()
   
 #ifdef CPP0X_INITIALIZER_LIST
   trace.emphase() << "Iterator 4d by using order different from lexicographic initializer list: ";
-  for ( HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
+  for ( HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator
+	  it = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
 	it != myHyperRectDomain4D.subRange( {3, 2, 1, 0}).end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.emphase() << "Decreasing Iterator 4d by using order different from lexicographic initializer list: ";
-  HyperRectDomain<TSpace4D>::ConstIterator it1 = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
-  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).end();
+  HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator
+    it1 = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
+  HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator
+    it2 = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).end();
   --it1;
   --it2;
   for ( ; it1 != it2; --it2 )
     trace.info() << ( *it2 ) << std::endl;
 
   trace.emphase() << "Iterator on a subset of 4d by using order different from lexicographic initializer list: ";
-  for ( HyperRectDomain<TSpace4D>::ConstIterator it3 = myHyperRectDomain4D.subRange( {1, 3}).begin();
+  for ( HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator
+	  it3 = myHyperRectDomain4D.subRange( {1, 3}).begin();
 	it3 != myHyperRectDomain4D.subRange( {1, 3}).end(); ++it3 )
     trace.info() << ( *it3 ) << std::endl;
 
   trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic initializer list: ";
-  HyperRectDomain<TSpace4D>::ConstIterator it4 = myHyperRectDomain4D.subRange({1, 3}).begin();
-  HyperRectDomain<TSpace4D>::ConstIterator it5 = myHyperRectDomain4D.subRange({1, 3}).end();
+  HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator 
+    it4 = myHyperRectDomain4D.subRange({1, 3}).begin();
+  HyperRectDomain<TSpace4D>::ConstSubRange::const_iterator
+    it5 = myHyperRectDomain4D.subRange({1, 3}).end();
   --it4;
   --it5;
   for ( ; it4 != it5; --it5 )
@@ -231,12 +247,14 @@ bool testReverseIterator()
 
   trace.emphase() << "Increasing order: ";
 
-  HyperRectDomain<TSpace4D>::ConstIterator it = myHyperRectDomain4D.range().begin();
+  HyperRectDomain<TSpace4D>::ConstRange::const_iterator 
+    it = myHyperRectDomain4D.range().begin();
   for ( ; it != myHyperRectDomain4D.range().end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.emphase() << "Now decreasing order: ";
-  HyperRectDomain<TSpace4D>::ConstIterator it2 = myHyperRectDomain4D.range().begin();
+  HyperRectDomain<TSpace4D>::ConstRange::const_iterator 
+    it2 = myHyperRectDomain4D.range().begin();
   --it;
   --it2;
   for ( ; it != it2; --it )

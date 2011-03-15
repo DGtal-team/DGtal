@@ -55,7 +55,7 @@ inline
 DGtal::DGtalInventor<TSpace>::DGtalInventor()
   : myLattice()
 {
-  myLattice.init( Space::staticDimension, 3 );
+  myLattice.init( Space::dimension, 3 );
 }
 
 /**
@@ -76,14 +76,14 @@ DGtal::DGtalInventor<TSpace>::getMode( const std::string & objectName ) const
  * the lattice [l].
  *
  * @param l the lattice space which should be of dimension
- * TSpace::staticDimension.
+ * TSpace::dimension.
  */
 template <typename TSpace>
 inline
 void 
 DGtal::DGtalInventor<TSpace>::setLattice( const Lattice<Space> & l )
 {
-  ASSERT( l.n() == Space::staticDimension );
+  ASSERT( l.n() == Space::dimension );
   myLattice = l;
 }
 
@@ -238,7 +238,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
   result->addChild( myShapeHints ); 
 
   // some initialization
-  Integer* ijk = new Integer[ Space::staticDimension ];
+  Integer* ijk = new Integer[ Space::dimension ];
   uint32 nb_vtx;  // number of vertices to display 
   uint32 nb_cells;  // number of cells
   vec3* coords; // array of vertex coordinates

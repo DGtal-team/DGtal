@@ -106,10 +106,8 @@ namespace DGtal
     typedef typename T::Size Size;
     BOOST_CONCEPT_USAGE( CSpace )
     {
-      // Should have a dimension() method.
-      myX.dimension();
-      // This method shoud return the correct type.
-      ConceptUtils::sameType( myDim, myX.dimension() );
+      //Should have a static dimnesion.
+      ConceptUtils::sameType( myDim, myX.dimension );
     }
 
     // ------------------------- Private Datas --------------------------------

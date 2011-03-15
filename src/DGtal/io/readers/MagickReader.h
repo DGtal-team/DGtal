@@ -70,7 +70,7 @@ namespace DGtal
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
 
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::staticDimension == 2));
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
 
     /** 
      * Main method to import an Image into an instance of the 
