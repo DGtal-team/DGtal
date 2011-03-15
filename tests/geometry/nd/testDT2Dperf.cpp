@@ -51,9 +51,9 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
 
   ext = input.extent();
 
-  for (unsigned int k = 0 ; k < nb; k++)
+  for (Dimension k = 0 ; k < nb; k++)
   {
-    for (unsigned int dim = 0; dim < Image::staticDimension; dim++)
+    for (Dimension dim = 0; dim < Image::dimension; dim++)
     {
       p[dim] = rand() % (ext[dim]) +  low[dim];
     }
