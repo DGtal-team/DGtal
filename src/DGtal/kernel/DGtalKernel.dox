@@ -130,7 +130,8 @@ Points and Vectors are fundamental objects in the digital space. Indeed, they al
  - last but not least, the interface also provides iterators and accessors.
 
 
- @note For the sake of simplicity, both SpaceND::Point and SpaceND::Vector in a space DGtal::SpaceND<dimension,Integer> are aliases of the specialized type DGtal::PointVector<dimension,Integer>. In other words, these two types can be exchanged without any problem, even if it does not make sense in a  mathematical. For instance, from a vector, we can define its opposite but the opposite does not make sense for a point. 
+@note For the sake of simplicity, both SpaceND::Point and SpaceND::Vector in a space DGtal::SpaceND<dimension,Integer> are aliases of the specialized type DGtal::PointVector<dimension,Integer>. In other words, these two types can be exchanged without any problem, even if it does not make sense in a  mathematical. For instance, from a vector, we can define its opposite but the opposite does not make sense for a point. 
+
 
  An element of a Point has type Coordinate and an element of a Vector has type Component. For instance, the following code is valid in terms of type.
 @code
@@ -171,6 +172,7 @@ For example, let us consider the following code snippet
 @code
 #include <DGtal/base/Common.h>
 #include <DGtal/kernel/SpaceND.h>
+#include <DGtal/helpers/StdDefs.h>
 #include <DGtal/kernel/domains/HyperRectDomain.h>
 {...}
 using namespace DGtal::Z2i;
