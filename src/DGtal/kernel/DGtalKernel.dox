@@ -101,16 +101,15 @@ as:
 typedef DGtal::Z2i::Space MySpace; 
 @endcode
 
-Now, we can construct a point lying in this space as follows:
+We can construct a point lying in this space as follows:
 
 @code
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 {...}
-typedef DGtal::Z2i::Space MySpace; 
-typedef MySpace::Point MyPoint;
-
-MyPoint p(13,-5);
+using namespace DGtal::Z2i;
+//We use default types Z2i::Space and Z2i::Point
+Point p(13,-5);
 @endcode
 
 
@@ -135,16 +134,16 @@ Points and Vectors are fundamental objects in the digital space. Indeed, they al
 
  An element of a Point has type Coordinate and an element of a Vector has type Component. For instance, the following code is valid in terms of type.
 @code
- MyPoint p;
- MyPoint::Coordinate coord = 24;
- for(Dimension d = 0 ; d < MySpace::staticDimension; ++d)
+ Point p;
+ Point::Coordinate coord = 24;
+ for(Dimension d = 0 ; d < Space::staticDimension; ++d)
     p[d] = coord;
 @endcode
 However, we encourage the use of iterators as follows
 @code
- MyPoint p;
- MyPoint::Coordinate coord = 24;
- for(MyPoint::Iterator it=p.begin(), itend=p.end() ; 
+ Point p;
+ Point::Coordinate coord = 24;
+ for(Point::Iterator it=p.begin(), itend=p.end() ; 
      it != itend;
      ++it)
      (*it) = coord;
@@ -174,20 +173,20 @@ For example, let us consider the following code snippet
 #include <DGtal/kernel/SpaceND.h>
 #include <DGtal/kernel/domains/HyperRectDomain.h>
 {...}
-typedef SpaceND<2,DGtal::uint32_t> MySpace;
-typedef MySpace::Point MyPoint;
+using namespace DGtal::Z2i;
 @endcode
 
 An instance of HyperRectDomain can be created as follows:
 @code
-typedef HyperRectDomain<MySpace> MyDomain;
-MyPoint a(-3,-4);
-MyPoint b(10,4);
+typedef HyperRectDomain<Space> MyDomain;
+Point a(-3,-4);
+Point b(10,4);
 MyDomain domain(a,b);
 @endcode
 
 The instance is thus an isothetic domain lying on the space SpaceND<2,DGtal::uint32_t> 
-defined by the bounding box of the point a and b. We can visualise the domain using the DGtalBoard stream mechanism (see \ref dgtal_dgtalboard).
+defined by the bounding box of the points a and b. Note that  type  Z2i::Domain in StdDefs.h exctly corresponds to HyperRectDomain<Space>.
+ We can visualise the domain using the DGtalBoard stream mechanism (see \ref dgtal_dgtalboard).
 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
 @image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
@@ -195,7 +194,7 @@ defined by the bounding box of the point a and b. We can visualise the domain us
 The HyperRectDomain class provides several methods such as HyperRectDomain::isInside to decide if a point is inside the domain or not.
 
 @code
- MyPoint c(5,1);
+ Point c(5,1);
  if ( domain.isInside( c ) )
     trace.info() << "C is inside the domain"<<endl;
  else
@@ -226,7 +225,7 @@ Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtal
  //We draw an arrow between two consecutive points during the iteration.
   MyDomain::ConstIterator itPrec = domain.begin();
   MyDomain::ConstIterator it = itPrec;
-  MyDomain::Vector shift;
+  Space::Vector shift;
   ++it;
 
   board << (*itPrec); //We display the first point as a pixel.
