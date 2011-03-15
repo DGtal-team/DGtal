@@ -247,12 +247,12 @@ namespace DGtal
     CellDirectionIterator & operator++();
     
     /** 
-     * Fast comparison with unsigned integer. Comparison is 'false' at
-     * the end of the iteration.
-     * @param any (not used)
+     * Fast comparison with unsigned integer (unused
+     * parameter). Comparison is 'false' at the end of the iteration.
+     *
      * @return 'true' if the iterator is finished.
      */
-    bool operator!=( const Integer any ) const;
+    bool operator!=( const Integer ) const;
 
     /** 
      * @return 'true' if the iteration is ended.
@@ -332,10 +332,14 @@ namespace DGtal
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
     // static constants
-    static const Dimension dimension = dim;
-    static const Dimension DIM = dim;
-    static const Sign POS = true;
-    static const Sign NEG = false;
+//     static const Dimension dimension = dim;
+//     static const Dimension DIM = dim;
+//     static const Sign POS = true;
+//     static const Sign NEG = false;
+    static const Dimension dimension;
+    static const Dimension DIM;
+    static const Sign POS;
+    static const Sign NEG;
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
