@@ -241,7 +241,7 @@ void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay 
 ( std::ostream & out )
 {
-  out << "[MetricAdjacency Z" << Space::staticDimension
+  out << "[MetricAdjacency Z" << Space::dimension
       << " n1<=" << maxNorm1 << " ]";
 }
 
@@ -267,7 +267,7 @@ inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
 		    const MetricAdjacency<TSpace,maxNorm1,
-		    TSpace::staticDimension> & object )
+		    TSpace::dimension> & object )
 {
   object.selfDisplay( out );
   return out;

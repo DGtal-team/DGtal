@@ -208,17 +208,17 @@ namespace DGtal
     void nextLexicographicOrder()
     {
       ++myPoint[myCurrentPos];
-      if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
+      if (( myCurrentPos < TPoint::dimension - 1 ) &&
 	  ( myPoint[myCurrentPos] > myupper[myCurrentPos] ) )
         {
           do
 	    {
 	      myPoint[myCurrentPos] = mylower[myCurrentPos];
 	      myCurrentPos++;
-	      if ( myCurrentPos < TPoint::staticDimension )
+	      if ( myCurrentPos < TPoint::dimension )
 		++myPoint[myCurrentPos];
 	    }
-          while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
+          while (( myCurrentPos < TPoint::dimension - 1 ) &&
 		 ( myPoint[myCurrentPos]  >  myupper[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
@@ -251,17 +251,17 @@ namespace DGtal
     void prevLexicographicOrder()
     {
       --myPoint[ myCurrentPos ];
-      if (( myCurrentPos < TPoint::staticDimension - 1 ) &&
+      if (( myCurrentPos < TPoint::dimension - 1 ) &&
 	  ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) )
         {
           do
 	    {
 	      myPoint[ myCurrentPos ] = myupper[ myCurrentPos ];
 	      ++myCurrentPos;
-	      if ( myCurrentPos < TPoint::staticDimension )
+	      if ( myCurrentPos < TPoint::dimension )
 		--myPoint[ myCurrentPos ];
 	    }
-          while (( myCurrentPos < TPoint::staticDimension - 1 ) &&
+          while (( myCurrentPos < TPoint::dimension - 1 ) &&
 		 ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
@@ -320,12 +320,12 @@ namespace DGtal
     {
       ASSERT( lower <= upper );
       ASSERT( lower <= p && p <= upper );
-      ASSERT( subDomain.size() <= TPoint::staticDimension );
+      ASSERT( subDomain.size() <= TPoint::dimension );
       mySubDomain.reserve( subDomain.size() );
       for ( const unsigned int *c = subDomain.begin();
             c != subDomain.end(); ++c )
         {
-          ASSERT( *c <= TPoint::staticDimension );
+          ASSERT( *c <= TPoint::dimension );
           mySubDomain.push_back( *c );
         }
 
@@ -339,12 +339,12 @@ namespace DGtal
     {
       ASSERT( lower <= upper );
       ASSERT( lower <= p && p <= upper );
-      ASSERT( subDomain.size() <= TPoint::staticDimension );
+      ASSERT( subDomain.size() <= TPoint::dimension );
       mySubDomain.reserve( subDomain.size() );
       for ( typename std::vector<Dimension>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
         {
-          ASSERT( *it <= TPoint::staticDimension );
+          ASSERT( *it <= TPoint::dimension );
           mySubDomain.push_back( *it );
         }
 

@@ -71,7 +71,7 @@ namespace DGtal
      *
      */
     template <typename Domain, Dimension maxNorm1, 
-	      Dimension dimension = Domain::Space::staticDimension >
+	      Dimension dimension = Domain::Space::dimension >
     class DomainMetricAdjacency
     {
       BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
@@ -210,7 +210,7 @@ namespace DGtal
     std::ostream&
     operator<< ( std::ostream & out, 
 		 const DomainMetricAdjacency< Domain, maxNorm1,
-		 Domain::Space::staticDimension > & object );
+		 Domain::Space::dimension > & object );
   } //deprecated
 } // namespace DGtal
 

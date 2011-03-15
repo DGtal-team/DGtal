@@ -90,8 +90,8 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
 
-    BOOST_STATIC_ASSERT( (TImage::Domain::staticDimension == 2) || 
-			 (TImage::Domain::staticDimension == 3));
+    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
+			 (TImage::Domain::dimension == 3));
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
 			 typename TImage::Value>::value));

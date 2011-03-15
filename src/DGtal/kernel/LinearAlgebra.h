@@ -66,7 +66,7 @@ namespace DGtal
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
-    static const typename Space::Dimension staticDimension = Space::staticDimension;
+    static const typename Space::Dimension dimension = Space::dimension;
 
     static Integer determinant(const Point &a, const Point &b);
 
