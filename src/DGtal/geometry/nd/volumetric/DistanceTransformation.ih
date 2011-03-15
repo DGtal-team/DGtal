@@ -71,7 +71,7 @@ DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage
   double bitSize;
 
   if (SeparableMetric::p != 0)
-    bitSize = SeparableMetric::p * (log ((double) I::staticDimension * 2 * maxExtent ) / log(2.0));
+    bitSize = SeparableMetric::p * (log ((double) I::dimension * 2 * maxExtent ) / log(2.0));
   else
     bitSize =  sizeof ( typename I::Value ) * 8;
 
@@ -95,7 +95,7 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   myUpperBoundCopy = aImage.upperBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
 
-  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::staticDimension) * myExtent.normInfinity() + 1);
+  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * myExtent.normInfinity() + 1);
   
   O output ( myLowerBoundCopy, myUpperBoundCopy );
   O swap ( myLowerBoundCopy, myUpperBoundCopy );
@@ -105,7 +105,7 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
   computeFirstStep ( aImage, output, predicate );
 
   //We process the dimensions swaping the temporary buffers
-  for ( Dimension dim = 1; dim < I::staticDimension ; dim++ )
+  for ( Dimension dim = 1; dim < I::dimension ; dim++ )
   {
     if ( isSwap )
       computeOtherSteps ( output, swap, dim );
@@ -138,8 +138,8 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
   std::vector<Size> subdomain;
-  subdomain.reserve(I::staticDimension - 1);
-  for (Dimension k = I::staticDimension-1; k>0 ; --k)
+  subdomain.reserve(I::dimension - 1);
+  for (Dimension k = I::dimension-1; k>0 ; --k)
     subdomain.push_back( k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
@@ -171,10 +171,10 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
 
   std::vector<Size> subdomain;
-  subdomain.reserve(I::staticDimension - 1);
-  for (unsigned int k = 0; k < I::staticDimension ; k++)
-    if ( (I::staticDimension - 1 - k) != dim)
-      subdomain.push_back( I::staticDimension - 1 - k );
+  subdomain.reserve(I::dimension - 1);
+  for (unsigned int k = 0; k < I::dimension ; k++)
+    if ( (I::dimension - 1 - k) != dim)
+      subdomain.push_back( I::dimension - 1 - k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   Size maxSize = myExtent.normInfinity();

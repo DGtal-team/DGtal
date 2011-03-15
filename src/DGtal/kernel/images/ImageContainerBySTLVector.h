@@ -79,7 +79,7 @@ namespace DGtal
     typedef TDomain Domain;
 
     // static constants
-    static const typename Domain::Dimension staticDimension = Domain::staticDimension;
+    static const typename Domain::Dimension dimension = Domain::dimension;
     
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;

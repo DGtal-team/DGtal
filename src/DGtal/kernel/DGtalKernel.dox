@@ -137,7 +137,7 @@ Points and Vectors are fundamental objects in the digital space. Indeed, they al
 @code
  Point p;
  Point::Coordinate coord = 24;
- for(Dimension d = 0 ; d < Space::staticDimension; ++d)
+ for(Dimension d = 0 ; d < Space::dimension; ++d)
     p[d] = coord;
 @endcode
 However, we encourage the use of iterators as follows

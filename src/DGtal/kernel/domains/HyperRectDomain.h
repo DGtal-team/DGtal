@@ -101,8 +101,7 @@ namespace DGtal
     typedef TSpace Space;
 
     // static constants
-    static const typename Space::Dimension
-    staticDimension = Space::staticDimension;
+    static const typename Space::Dimension dimension = Space::dimension;
 
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;

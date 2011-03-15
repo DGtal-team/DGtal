@@ -86,7 +86,7 @@ int main( int argc, char** argv )
   //PointVector example
   MyPoint q;
   MyPoint::Coordinate coord = 24;
-  for(MySpace::Dimension d = 0 ; d < MySpace::staticDimension; d++)
+  for(MySpace::Dimension d = 0 ; d < MySpace::dimension; d++)
     q[d] = coord;
   trace.info()<<"Q="<<q<<endl;
 

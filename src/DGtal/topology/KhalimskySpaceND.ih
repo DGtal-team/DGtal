@@ -372,15 +372,6 @@ init( const Point & lower,
   return true;
 }
 //-----------------------------------------------------------------------------
-// template < Dimension dim, typename TInteger>
-// inline
-// DGtal::Dimension
-// DGtal::KhalimskySpaceND< dim, TInteger>::
-// dimension() const
-// {
-//   return dimension;
-// }
-//-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Size

@@ -182,9 +182,9 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 {
-  ASSERT(TSpace::staticDimension == 2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(TSpace::dimension == 2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
-  if (TSpace::staticDimension == 2)
+  if (TSpace::dimension == 2)
   {
     for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
 	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
@@ -217,9 +217,9 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
 {
-  ASSERT(TSpace::staticDimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
+  ASSERT(TSpace::dimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
   
-  if (TSpace::staticDimension == 2)
+  if (TSpace::dimension == 2)
   {
     for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
 	 x <= IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)

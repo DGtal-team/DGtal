@@ -125,10 +125,10 @@ bool testSimplePoint()
   cout << "aPoint=" << aPoint << endl;
 
   trace.beginBlock ( "Test point dimension" );
-  trace.info() << "aPoint dimension="<<aPoint.dimension() <<endl;
+  trace.info() << "aPoint dimension="<<aPoint.dimension <<endl;
   trace.endBlock();
 
-  if ( aPoint.dimension() != 4 )
+  if ( aPoint.dimension != 4 )
     return false;
 
   int tt[] = { 3, 4, 2, 2 };
@@ -174,11 +174,11 @@ bool testSimpleVector()
   PointVector<4, int> aFVector;
 
   trace.beginBlock ( "Test of Vector Dimension" );
-  trace.info() << "aVector dimension="<< aVector.dimension() <<endl;
+  trace.info() << "aVector dimension="<< aVector.dimension <<endl;
   trace.info() << "aVector = "<< aVector <<endl;
   trace.endBlock();
 
-  if ( aVector.dimension() != 4 )
+  if ( aVector.dimension != 4 )
     return false;
 
   aVector += aFVector;

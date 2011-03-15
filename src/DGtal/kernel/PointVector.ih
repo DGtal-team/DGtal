@@ -199,14 +199,6 @@ DGtal::PointVector<dim, Component>::size()
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
-typename DGtal::Dimension
-DGtal::PointVector<dim, Component>::dimension()
-{
-  return dim;
-}
-//------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-inline
 const Component&
 DGtal::PointVector<dim, Component>::at ( Dimension i ) const
 {
@@ -498,18 +490,18 @@ DGtal::PointVector<dim, Component>::norm (const
   switch ( aType )
     {
     case L_2:
-      for ( unsigned int i = 0; i < dimension(); i++ )
+      for ( Dimension i = 0; i < dimension; i++ )
         tmp += IntegerTraits<Component>::castToDouble(at ( i )) *
 	  IntegerTraits<Component>::castToDouble(at ( i ));
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
-      for ( unsigned int i = 0; i < dimension(); i++ )
+      for ( Dimension i = 0; i < dimension; i++ )
         tmp += fabs (  IntegerTraits<Component>::castToDouble(at( i ) ));
       break;
     case L_infty:
       tmp = IntegerTraits<Component>::castToDouble( at( 0 ));
-      for ( unsigned int i = 1; i < dimension(); i++ )
+      for ( Dimension i = 1; i < dimension; i++ )
         if ( tmp < fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ) ))
           tmp = fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ));
       break;
@@ -522,9 +514,9 @@ inline
 typename DGtal::PointVector<dim, Component>::UnsignedComponent
 DGtal::PointVector<dim, Component>::norm1() const
 {
-  ASSERT ( dimension() > 0 );
+  ASSERT ( dimension > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
-  for ( unsigned int i = 1; i < dimension(); ++i )
+  for ( Dimension i = 1; i < dimension; ++i )
     val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
   return val;
 }
@@ -534,9 +526,9 @@ inline
 typename DGtal::PointVector<dim, Component>::UnsignedComponent
 DGtal::PointVector<dim, Component>::normInfinity() const
 {
-  ASSERT ( dimension() > 0 );
+  ASSERT ( dimension > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
-  for ( unsigned int i = 1; i < dimension(); ++i )
+  for ( Dimension i = 1; i < dimension; ++i )
     {
       UnsignedComponent tmp( ( myArray[ i ] >= 0 )
 			     ? myArray[ i ] : -myArray[ i ] );
@@ -573,8 +565,8 @@ void
 DGtal::PointVector<dim,Component>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
-  for (unsigned int i = 0; i < dimension() ; ++i)
-    out << at( i ) << (i == dimension() - 1 ? "" : ", ");
+  for (Dimension i = 0; i < dimension ; ++i)
+    out << at( i ) << (i == dimension - 1 ? "" : ", ");
   out << "}";
 }
 //------------------------------------------------------------------------------

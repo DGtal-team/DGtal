@@ -124,7 +124,7 @@ Point4Int a= {2, 3 , -5 , 6};
     typedef DGtal::Dimension Dimension;
     
     ///static constants to store the dimension.
-    static const Dimension staticDimension = dim;
+    static const Dimension dimension = dim;
 
     ///Define the type of a sub co-Space
     template <Dimension codimension>
@@ -178,13 +178,6 @@ Point4Int a= {2, 3 , -5 , 6};
       return SpaceND < dim - codimension, Integer > ();
     }
 
-    /**
-     * @return the dimension of the digital space.
-     */
-    static Dimension dimension()
-    {
-      return staticDimension;
-    }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -195,7 +188,7 @@ Point4Int a= {2, 3 , -5 , 6};
      */
     static void selfDisplay( std::ostream & out )
     {
-      out << "[SpaceND dim=" << dimension() << " size of Integers=" << sizeof( Integer ) << " ]";
+      out << "[SpaceND dim=" << dimension << " size of Integers=" << sizeof( Integer ) << " ]";
     }
 
   private:

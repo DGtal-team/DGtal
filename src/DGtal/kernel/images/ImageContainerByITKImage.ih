@@ -74,7 +74,7 @@ namespace DGtal
       Point dec = myUpperBound - myLowerBound;
 
       //copy of domain information
-      for (unsigned int k = 0; k < staticDimension; k++)
+      for (Dimension k = 0; k < dimension; k++)
       {
         start[k] = myLowerBound[k];
         size[k] = dec[k];
@@ -121,7 +121,7 @@ namespace DGtal
       Point dec = myUpperBound - myLowerBound;
 
       //copy of domain information
-      for (unsigned int k = 0; k < staticDimension; k++)
+      for (Dimension k = 0; k < dimension; k++)
       {
         start[k] = myLowerBound[k];
         size[k] = dec[k];
@@ -162,7 +162,7 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValue>::operator()(const Point &aPoint) const
     {
       typename ITKImage::IndexType p;
-      for (unsigned int k = 0; k < staticDimension; k++)
+      for (Dimension k = 0; k < dimension; k++)
         p[k] = aPoint[k];
       return myITKImagePointer->GetPixel(p);
     }
@@ -201,7 +201,7 @@ namespace DGtal
     ImageContainerByITKImage<Domain, T>::setValue(const Point &aPoint, const T &V)
     {
       typename ITKImage::IndexType p;
-      for (unsigned int k = 0; k < staticDimension; k++)
+      for (Dimension k = 0; k < dimension; k++)
         p[k] = aPoint[k];
       myITKImagePointer->SetPixel(p, V);
     }

@@ -44,7 +44,7 @@ ImageContainerBySTLVector(const Point &aPointA, const Point &aPointB ) :
 {
   Point dec = myUpperBound - myLowerBound;
   Size ext = 1;
-  for (Dimension k = 0;k <  Domain::staticDimension; k++)
+  for (Dimension k = 0;k <  Domain::dimension; k++)
     ext = ext* (dec[k] + 1);
   this->resize(ext);
 }
@@ -79,7 +79,7 @@ typename ImageContainerBySTLVector<Domain, T>::Vector
 ImageContainerBySTLVector<Domain, T>::extent() const
 {
   Vector one;
-  for (Dimension i = 0; i < Domain::staticDimension; i++)
+  for (Dimension i = 0; i < Domain::dimension; i++)
     one[i] = myUpperBound[i] - myLowerBound[i] + 1;
 
   return one;
@@ -96,7 +96,7 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board,
 						 const V &minV,
 						 const V &maxV ) const
 {
-  ASSERT(D::staticDimension == 2);
+  ASSERT(D::dimension == 2);
 
   Colormap colormap(minV, maxV);
   LibBoard::Color c;
@@ -144,7 +144,7 @@ namespace
    * 2 and 3 to prevent the use of a loop in these cases.
    *
    */
-  template < typename Domain, int staticDimension, typename Size >
+  template < typename Domain, int dimension, typename Size >
   struct linearizer
   {
 
@@ -165,7 +165,7 @@ namespace
     {
       Size pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
       Size multiplier = 1;
-      for (typename Domain::Dimension k = 1 ; k < staticDimension ; ++k)
+      for (typename Domain::Dimension k = 1 ; k < dimension ; ++k)
       {
         multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
         pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
@@ -241,7 +241,7 @@ inline
 typename ImageContainerBySTLVector<Domain, T>::Size
 ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) const
 {
-  return linearizer<Domain, Point::staticDimension, Size >::apply( aPoint, myLowerBound, myUpperBound );
+  return linearizer<Domain, Point::dimension, Size >::apply( aPoint, myLowerBound, myUpperBound );
 }
 
 
