@@ -245,7 +245,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
 
   //final computation
   for ( point[0] = myLowerBoundCopy[0]; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-    if (output( point) < myInfinity)
+    if (output( point) < static_cast<typename O::Value>(myInfinity))
       output.setValue ( point, myMetric.power( output ( point ) ));
     else
       output.setValue ( point, myInfinity);
@@ -276,7 +276,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
   while ((pU[dim] <= myUpperBoundCopy[dim]) 
-	 && (input ( pU ) == myInfinity))
+	 && (input ( pU ) == static_cast<typename O::Value>(myInfinity)))
     pU[dim] ++;
 
   // trace.info()<<"Shift"<<endl;
@@ -302,7 +302,7 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
   for ( int u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
   {
     pU[ dim ] = u;
-    if ( input( pU ) == myInfinity )
+    if ( input( pU ) == static_cast<typename O::Value>(myInfinity) )
     {
       //    trace.info() << "Ctd " << pU << endl;
       continue;
@@ -360,8 +360,6 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
       last[dim] >= myLowerBoundCopy[dim] ;
       last[dim]-- )
   {
-    //trace.info() << "dt="<<myMetric.F ( last[dim] , s[q], input ( sQ ) )<<endl;
-    ASSERT(myMetric.F ( last[dim] , s[q], input ( sQ ) ) >=0);
     output.setValue ( last, myMetric.F ( last[dim] , s[q], input ( sQ ) ) );
     if (( last[dim] == t[q] ) && (q > 0))
     {

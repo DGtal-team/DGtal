@@ -385,9 +385,9 @@ bool testChessboard()
 
 
 	maxv = 0;
-  for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();it != itend; ++it)
-    if ( (*it) > maxv)
-      maxv = (*it);
+  for ( ImageLong::Iterator it2 = result1.begin(), itend = result1.end();it != itend; ++it)
+    if ( (*it2) > maxv)
+      maxv = (*it2);
 
   board.clear();
   result1.selfDraw<Hue> ( board, 0, maxv + 1);

@@ -132,7 +132,7 @@ bool testGrayscaleColorMap()
   return nbok == nb;
 }
 
-int main( int argc, char** argv )
+int main()
 {
   Board board;
   trace.beginBlock ( "Testing GrayscaleColorMap" );
