@@ -116,7 +116,7 @@ bool test_setVal ( experimental::ImageContainerByHashTree<Domain , T, DGtal::uin
 
 
 template<typename Domain, typename T >
-bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool checkAfterEachSet )
+bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool  )
 {
   srand ( time ( NULL ) );
   unsigned count = 0;
