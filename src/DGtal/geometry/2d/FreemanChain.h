@@ -928,7 +928,7 @@ namespace DGtal
           mc.increment( i );
           // cerr << "- i=" << i << " (" << clean_code.back()
           // 	   << it.getCode() << ") ";
-          unsigned int size_spike = 0;
+          size_spike = 0;
           unsigned int last_spike_idx = end_outer_spike.empty() ?
 	    start_idx :
 	    end_outer_spike.back();
