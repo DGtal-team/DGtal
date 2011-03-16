@@ -72,7 +72,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
   }
 }
 
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example distancetransform2D" );
 
