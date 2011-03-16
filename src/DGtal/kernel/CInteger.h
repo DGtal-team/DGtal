@@ -119,9 +119,10 @@ namespace DGtal
       x = x - y;
       ConceptUtils::sameType( myX, ++x );
       ConceptUtils::sameType( myX, --x );
+      //ConceptUtils::sameType( myX, myX+myY );
+      //ConceptUtils::sameType( myX, x-y );
       // @todo x+y with short is promoted to int. We should use some
       // verification with possible promoting.
-      // ConceptUtils::sameType( myX, x + y );
       ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
       ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
     }

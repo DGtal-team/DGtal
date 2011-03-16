@@ -114,7 +114,7 @@ namespace DGtal
    * <p> Invariants <br>
    *
    * <p> Models <br>
-   *
+   * ImageContainerBySTLVector, ImageContainerByITKImage
    * <p> Notes <br>
    *
    * @todo Complete ImageContainer checking.
