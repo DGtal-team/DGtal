@@ -177,7 +177,7 @@ void
 DGtal::DGtalInventor<TSpace>::drawPoint( const Point & c, const float* n )
 {
   Point q;
-  for ( typename Point::Dimension i = 0; i < c.dimension(); ++i )
+  for ( typename Point::Dimension i = 0; i < c.dimension; ++i )
     q[ i ] = 2*c[ i ] + 1;
   drawCell( q, n );
 }
@@ -279,7 +279,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
 	  bool orient = ip->second;
 	  Point e;
 	  Dimension dirs[ 2 ];
-	  for ( Dimension i = 0; i < c.dimension(); ++i )
+	  for ( Dimension i = 0; i < c.dimension; ++i )
 	    {
 	      if ( c[ i ] & 0x1 ) 
 		dirs[ d++ ] = i;
