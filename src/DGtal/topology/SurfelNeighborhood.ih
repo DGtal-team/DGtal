@@ -1,0 +1,371 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SurfelNeighborhood.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2011/03/18
+ *
+ * Implementation of inline methods defined in SurfelNeighborhood.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::SurfelNeighborhood<TKSpace>::
+~SurfelNeighborhood()
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::SurfelNeighborhood<TKSpace>::
+SurfelNeighborhood()
+  : mySpace( 0 ), mySurfelAdj( 0 )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::SurfelNeighborhood<TKSpace>::
+SurfelNeighborhood( const SurfelNeighborhood & other )
+  : mySpace( other.mySpace ), mySurfelAdj( other.mySurfelAdj ),
+    mySurfel( other.mySurfel ), myOrthDir( other.myOrthDir ),
+    myOrthDirect( other.myOrthDirect )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::SurfelNeighborhood<TKSpace> &
+DGtal::SurfelNeighborhood<TKSpace>::
+operator= ( const SurfelNeighborhood & other )
+{
+  if ( this != &other )
+    {
+      mySpace = other.mySpace;
+      mySurfelAdj = other.mySurfelAdj;
+      mySurfel = other.mySurfel;
+      myOrthDir = other.myOrthDir;
+      myOrthDirect = other.myOrthDirect;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+void 
+DGtal::SurfelNeighborhood<TKSpace>::
+init( const KSpace* space, 
+      const SurfelAdjacency<KSpace::dimension>* adj,
+      const SCell & surfel )
+{
+  mySpace = space;
+  mySurfelAdj = adj;
+  setSurfel( surfel );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+void 
+DGtal::SurfelNeighborhood<TKSpace>::
+setSurfel( const SCell & surfel )
+{
+  ASSERT( mySpace != 0 );
+  mySurfel = surfel;
+  myOrthDir = mySpace->sOrthDir( surfel );
+  myOrthDirect = mySpace->sDirect( surfel, myOrthDir );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+const typename DGtal::SurfelNeighborhood<TKSpace>::SCell &
+DGtal::SurfelNeighborhood<TKSpace>::
+surfel() const
+{
+  return mySurfel;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+Dimension
+DGtal::SurfelNeighborhood<TKSpace>::
+orthDir() const
+{
+  return myOrthDir;
+}
+
+//-----------------------------------------------------------------------------
+//----------------------- spel services -------------------------
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+innerSpel() const
+{
+  ASSERT( mySpace != 0 );
+  return mySpace->sIncident( surfel(), orthDir(), myOrthDirect );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+outerSpel() const
+{
+  ASSERT( mySpace != 0 );
+  return mySpace->sIncident( surfel(), orthDir(), ! myOrthDirect );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+innerAdjacentSpel( Dimension track_dir, bool pos ) const
+{
+  ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
+  return mySpace->sAdjacent( innerSpel(), track_dir, pos );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+outerAdjacentSpel( Dimension track_dir, bool pos ) const
+{
+  ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
+  return mySpace->sAdjacent( outerSpel(), track_dir, pos );
+}
+
+//-----------------------------------------------------------------------------
+//----------------------- follower services -------------------------
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+follower1( Dimension track_dir, bool pos ) const
+{
+  ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
+  return mySpace->sIncident( innerSpel(), track_dir, pos );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+follower2( Dimension track_dir, bool pos ) const
+{
+  ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
+  return mySpace->sAdjacent( surfel(), track_dir, pos );
+  // return pos 
+  //   ? mySpace->sGetIncr( surfel(), track_dir )
+  //   : mySpace->sGetDecr( surfel(), track_dir );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::SurfelNeighborhood<TKSpace>::SCell
+DGtal::SurfelNeighborhood<TKSpace>::
+follower3( Dimension track_dir, bool pos ) const
+{
+  ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
+  return mySpace->sIncident( outerSpel(), track_dir, pos );
+}
+
+//-----------------------------------------------------------------------------
+// ----------------------- Surfel adjacency services --------------------
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SpelSet>
+inline
+unsigned int
+DGtal::SurfelNeighborhood<TKSpace>::
+getAdjacentOnSpelSet( SCell & adj_surfel,
+		      const SpelSet & obj, 
+		      Dimension track_dir,
+		      bool pos ) const
+{
+    // Check that [m_surfel] is a bel.
+  ASSERT( mySpace != 0 );
+  ASSERT( mySurfelAdj != 0 );
+  Cell uinner_spel = mySpace->unsigns( innerSpel() );
+  ASSERT( obj.find( uinner_spel ) != obj.end() );
+  ASSERT( obj.find( mySpace->unsigns( outerSpel() ) ) == obj.end() );
+  
+  // Check if it goes outside the space.
+  if ( ( pos && mySpace->uisMax( uinner_spel, track_dir ) )  
+       || ( ( ! pos ) && mySpace->uisMin( uinner_spel, track_dir ) ) )
+    return 0;
+  // Check type of surfel adjacency.
+  if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+    { // interior to exterior
+      // Check first next bel.
+      if ( obj.find( mySpace->unsigns( innerAdjacentSpel( track_dir, pos ) ) )
+	   == obj.end() )
+	{
+	  adj_surfel = follower1( track_dir, pos );
+	  return 1;
+	}
+      // Check second next bel.
+      if ( obj.find( mySpace->unsigns( outerAdjacentSpel( track_dir, pos ) ) )
+	   == obj.end() )
+	{
+	  adj_surfel = follower2( track_dir, pos ); 
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower3( track_dir, pos ); 
+      return 3;
+    }
+  else // if ( mySurfelAdj->getAdjacency( m_orth_dir, track_dir ) )
+    { // exterior to interior
+      // Check first next bel.
+      if ( obj.find( mySpace->unsigns( outerAdjacentSpel( track_dir, pos ) ) )
+	   != obj.end() )
+	{
+	  adj_surfel = follower3( track_dir, pos );
+	  return 3;
+	}
+      // Check second next bel.
+      if ( obj.find( mySpace->unsigns( innerAdjacentSpel( track_dir, pos ) ) )
+	   != obj.end() )
+	{
+	  adj_surfel = follower2( track_dir, pos );
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower1( track_dir, pos );
+      return 1;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet>
+inline
+unsigned int
+DGtal::SurfelNeighborhood<TKSpace>::
+getAdjacentOnDigitalSet( SCell & adj_surfel,
+			 const DigitalSet & obj, 
+			 Dimension track_dir,
+			 bool pos ) const
+{
+    // Check that [m_surfel] is a bel.
+  ASSERT( mySpace != 0 );
+  ASSERT( mySurfelAdj != 0 );
+  Point inner_spel_pt = mySpace->sCoords( innerSpel() );
+  ASSERT( obj.find( inner_spel_pt ) != obj.end() );
+  ASSERT( obj.find( mySpace->sCoords( outerSpel() ) ) == obj.end() );
+  
+  // Check if it goes outside the space.
+  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
+       || 
+       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
+       )
+    return 0;
+  // Check type of surfel adjacency.
+  if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+    { // interior to exterior
+      // Check first next bel.
+      if ( obj.find( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) )
+	   == obj.end() )
+	{
+	  adj_surfel = follower1( track_dir, pos );
+	  return 1;
+	}
+      // Check second next bel.
+      if ( obj.find( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) )
+	   == obj.end() )
+	{
+	  adj_surfel = follower2( track_dir, pos ); 
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower3( track_dir, pos ); 
+      return 3;
+    }
+  else // if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+    { // exterior to interior
+      // Check first next bel.
+      if ( obj.find( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) )
+	   != obj.end() )
+	{
+	  adj_surfel = follower3( track_dir, pos );
+	  return 3;
+	}
+      // Check second next bel.
+      if ( obj.find( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) )
+	   != obj.end() )
+	{
+	  adj_surfel = follower2( track_dir, pos );
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower1( track_dir, pos );
+      return 1;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+void
+DGtal::SurfelNeighborhood<TKSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[SurfelNeighborhood]";
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+bool
+DGtal::SurfelNeighborhood<TKSpace>::isValid() const
+{
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TKSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const SurfelNeighborhood<TKSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

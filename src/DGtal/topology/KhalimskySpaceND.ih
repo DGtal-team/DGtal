@@ -384,6 +384,25 @@ size( Dimension k ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
+TInteger 
+DGtal::KhalimskySpaceND< dim, TInteger>::
+min( Dimension k ) const
+{
+  return myLower[ k ];
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+TInteger 
+DGtal::KhalimskySpaceND< dim, TInteger>::
+max( Dimension k ) const
+{
+  return myUpper[ k ];
+}
+
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const Point & kp ) const
@@ -1289,6 +1308,24 @@ sProperNeighborhood( const SCell & c ) const
     }
   return N;
 }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger >::Cell 
+DGtal::KhalimskySpaceND< dim, TInteger >::
+uAdjacent( const Cell & p, Dimension k, bool up ) const
+{
+  return up ? uGetIncr( p, k ) : uGetDecr( p, k );
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell 
+DGtal::KhalimskySpaceND< dim, TInteger >::
+sAdjacent( const SCell & p, Dimension k, bool up ) const
+{
+  return up ? sGetIncr( p, k ) : sGetDecr( p, k );
+}
 
 // ----------------------- Incidence services --------------------------
 //-----------------------------------------------------------------------------
@@ -1318,7 +1355,7 @@ sIncident( const SCell & c, Dimension k, bool up ) const
   ASSERT( (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( c, k ) ) ); 
   SCell d( c );
   bool sign = up ? d.myPositive : ! d.myPositive;
-  for ( Dimension i = 0; i < k; ++i )
+  for ( Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( d, i ) ) 
       sign = ! sign;
   d.myPositive = sign;
@@ -1469,7 +1506,7 @@ sDirect( const SCell & p, Dimension k ) const
 {
   ASSERT( k < dim );
   bool sign = p.myPositive;
-  for ( Dimension i = 0; i < k; ++i )
+  for ( Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( p, i ) ) 
       sign = ! sign;
   return sign;
@@ -1484,7 +1521,7 @@ sDirectIncident( const SCell & p, Dimension k ) const
   ASSERT( k < dim );
   SCell d( p );
   bool sign = d.myPositive;
-  for ( Dimension i = 0; i < k; ++i )
+  for ( Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( d, i ) ) 
       sign = ! sign;
 
@@ -1506,7 +1543,7 @@ sIndirectIncident( const SCell & p, Dimension k ) const
   ASSERT( k < dim );
   SCell d( p );
   bool sign = d.myPositive;
-  for ( Dimension i = 0; i < k; ++i )
+  for ( Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( d, i ) ) 
       sign = ! sign;
 
