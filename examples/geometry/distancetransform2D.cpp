@@ -103,9 +103,9 @@ int main()
   //store squares distances)
   typedef ImageSelector<Z2i::Domain, long int>::Type ImageLong;
 
-  DistanceTransformation<Image, ImageLong, Z2i::L2Metric> dtL2;
-  DistanceTransformation<Image, ImageLong, Z2i::LinfMetric> dtLinf;
-  DistanceTransformation<Image, ImageLong, Z2i::L1Metric> dtL1;
+  DistanceTransformation<Image, ImageLong, 2> dtL2;
+  DistanceTransformation<Image, ImageLong, 0> dtLinf;
+  DistanceTransformation<Image, ImageLong, 1> dtL1;
 
   ImageLong resultL2 = dtL2.compute ( image );
   ImageLong resultLinf = dtLinf.compute ( image );

@@ -43,6 +43,7 @@
 #include <iostream>
 #include <cmath>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 #include <boost/concept_check.hpp>
 
@@ -57,16 +58,21 @@ namespace DGtal
    * by separable volumetric algorithms.
    *
    * @tparam TAbscissa Type used to store the coordinaites of the Domain.
-   * @tparam TValue the type of the input map.
+   * @tparam TInternalValue the type used to store the internal
+   * numbers for exact computations. More precisely,
+   * TInternalValueType must be able to represent numbers of type
+   * TAbscissa to the power tp
    * @tparam tp the order p of the L_p metric.
    *
+   * @warning this  code is node GMP compliant
+   * @todo Fix the integer type problems.
    */
-  template <typename TAbscissa, typename TValue, DGtal::uint32_t tp>
+  template <typename TAbscissa, typename TInternalValue, DGtal::uint32_t tp>
   struct SeparableMetricTraits
   {
     // ----------------------- Standard services ------------------------------
 
-    typedef TValue Value;
+    typedef TInternalValue InternalValue;
     typedef TAbscissa Abscissa;
 
     /**
@@ -77,22 +83,17 @@ namespace DGtal
 
 
     /**
-     * Default Internal.
-     */
-    typedef double InternalValue;
-
-
-    /**
-     * Operator () in order to return the correct value from the
-     * InternalValuetype used to ensure exact computations.
+     * Returns an approximation (double) of the InternalValues
+     * associated to the metric. 
      *
      * @param aInternalValue the internal value to convert
      *
      * @return the converted value.
      */
-    Value operator() ( const InternalValue & aInternalValue ) const
+    double getApproxValue( const InternalValue & aInternalValue ) const
     {
-      return (Value) std::pow((double) aInternalValue, (double) 1.0 / p);
+      return std::pow( IntegerTraits<InternalValue>::castToDouble(aInternalValue),
+		      (double) 1.0 / p);
     }
 
     /**
@@ -107,7 +108,8 @@ namespace DGtal
      */
     InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
-		return std::pow( fabs((double )pos - ci) , (double)p) + hi;
+      return std::pow( fabs(IntegerTraits<Abscissa>::castToDouble(pos - ci)),
+		       (double)p) + hi;
     }
 
     /**
@@ -151,21 +153,17 @@ namespace DGtal
    * L_2 specialization
    *
    */
-  template <typename TAbscissa, typename TValue>
-  struct SeparableMetricTraits<TAbscissa, TValue, 2>
+  template <typename TAbscissa, typename TInternalValue>
+  struct SeparableMetricTraits<TAbscissa, TInternalValue, 2>
   {
-    typedef TValue Value;
+    typedef TInternalValue InternalValue;
     typedef TAbscissa Abscissa;
 		
-
     static const DGtal::uint32_t p = 2;
 
-    //Check if Value sizeof() > capacité max
-    typedef Value InternalValue;
-
-    inline Value operator() ( const InternalValue & aInternalValue ) const
+    inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
-      return ( Value ) sqrt ( aInternalValue );
+      return ( double ) sqrt ( IntegerTraits<InternalValue>::castToDouble(aInternalValue) );
     }
 
     inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
@@ -175,6 +173,7 @@ namespace DGtal
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
     {
+      ///@warning GMP compliant problem here
       return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
     }
 
@@ -188,27 +187,28 @@ namespace DGtal
    * L_1 specialization
    *
    */
-  template <typename TAbscissa, typename TValue>
-  struct SeparableMetricTraits<TAbscissa, TValue, 1>
+  template <typename TAbscissa, typename TInternalValue>
+  struct SeparableMetricTraits<TAbscissa, TInternalValue, 1>
   {
 
-    typedef TValue Value;
+    typedef TInternalValue InternalValue;
     static const DGtal::uint32_t p = 1;
-    typedef Value InternalValue;
     typedef TAbscissa Abscissa;
 		
 
-    inline Value operator() ( const InternalValue & aInternalValue ) const
+    inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
-      return ( Value ) aInternalValue;
+      return ( double ) aInternalValue;
     }
  
-    inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
+			     const InternalValue hi ) const
     {
-      return ( InternalValue ) abs ( pos - ci ) + hi;
+      return ( InternalValue ) std::abs ( (long int) pos - ci ) + hi;
     }
 
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
+			  const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
         return IntegerTraits<Abscissa>::max();
@@ -219,7 +219,7 @@ namespace DGtal
 
     inline InternalValue power ( const Abscissa i ) const
     {
-      return (InternalValue) abs(i);
+      return (InternalValue) std::abs((long int)i);
     }
 
   }; // end of class SeparableMetricTraits
@@ -228,25 +228,26 @@ namespace DGtal
    * L_infinity specialization
    *
    */
-  template <typename TAbscissa, typename TValue>
-  struct SeparableMetricTraits<TAbscissa, TValue, 0>
+  template <typename TAbscissa, typename TInternalValue>
+  struct SeparableMetricTraits<TAbscissa, TInternalValue, 0>
   {
     typedef TAbscissa Abscissa;
-    typedef TValue Value;
+    typedef TInternalValue InternalValue;
     static const DGtal::uint32_t p = 0;
-    typedef Value InternalValue;
-
-    inline Value operator() ( const InternalValue & aInternalValue ) const
+ 
+    inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
-      return ( Value ) aInternalValue;
+      return ( double ) aInternalValue;
     }
 
-    inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
+			     const InternalValue hi ) const
     {
-     return ( InternalValue ) std::max( (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
+      return ( InternalValue ) std::max( (Abscissa)std::abs ( (long int)pos - ci ) , (Abscissa) hi);
     }
 
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    inline Abscissa Sep ( const Abscissa i, const InternalValue hi,
+			  const Abscissa j, const InternalValue hj ) const
     {
       if (hi <= hj)
         return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
@@ -256,7 +257,8 @@ namespace DGtal
 
     inline InternalValue power ( const Abscissa i ) const
     {
-      return (InternalValue) abs(i);
+      ///@todo define Abs somewhere
+      return (InternalValue) std::abs((long int)i);
     }
 
   }; // end of class SeparableMetricTraits

@@ -82,8 +82,7 @@ bool testDistanceTransformND()
 
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, ImageLong, 2> dt;
   dt.checkTypesValidity ( image );
 
   //Distance transformation computation
