@@ -44,7 +44,8 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/geometry/nd/volumetric/CSeparableMetric.h"
+#include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,8 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'DistanceTransformation' <p>
    * \brief Aim: Implementation of the linear in time distance
-   * transformation for a class of separable metrics (see
-   * SeparableMetric).
+   * transformation.
    * 
    * Example:
    * @code
@@ -64,9 +64,8 @@ namespace DGtal
    * typedef ImageSelector<Domain, unsigned int>::Type Image; //image with "unsigned in value type
    * typedef ImageSelector<Domain, long int>::Type ImageLong; //output image with long int value type
    *
-   * typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,2> L_2; //L_2 = Euclidean metric
-   *
-   * DistanceTransformation<Image, ImageLong, L_2> dt; 
+   * //Distance transformation for the l_2 metric
+   * DistanceTransformation<Image, ImageLong, 2> dt; 
    *
    * // ...
    * //Construction of an instance "image" of Image (with an io reader for instance)
@@ -77,19 +76,19 @@ namespace DGtal
    *
    * @endcode  
    */
-  template <typename TImage, typename TImageOutput, typename TSeparableMetric >
+  template <typename Image, typename ImageOutput, DGtal::uint32_t p >
   class DistanceTransformation
   {
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    BOOST_CONCEPT_ASSERT(( CImageContainer<ImageOutput> ));
 			
-    ///@todo check image concept
-    typedef TImage Image;
-    typedef TImageOutput ImageOutput;
-    typedef TSeparableMetric SeparableMetric;
-    typedef typename TSeparableMetric::InternalValue InternalValue;
+    ///We construct the type associated to the separable metric
+    typedef SeparableMetricTraits<typename Image::Value,typename ImageOutput::Value,p> SeparableMetric;
+  
+    typedef typename SeparableMetric::InternalValue InternalValue;
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;

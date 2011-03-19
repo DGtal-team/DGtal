@@ -42,28 +42,28 @@
 /**
  * Constructor.
  */
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 inline
-DGtal::DistanceTransformation<I, O, SepM>::DistanceTransformation()
+DGtal::DistanceTransformation<I, O, p>::DistanceTransformation()
 {
 }
 /**
  * Destructor.
  */
 
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 inline
-DGtal::DistanceTransformation<I, O, SepM>::~DistanceTransformation()
+DGtal::DistanceTransformation<I, O, p>::~DistanceTransformation()
 {
 }
 
 
 
 
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 inline
 void
-DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage )
+DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
 {
   typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
 
@@ -80,11 +80,11 @@ DGtal::DistanceTransformation<I, O, SepM>::checkTypesValidity ( const I & aImage
 
 }
 
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 template <typename Functor>
 inline
 O
-DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Functor & predicate )
+DGtal::DistanceTransformation<I, O, p>::compute ( const I & aImage, const Functor & predicate )
 {
 
   //We trace type validdity check result;
@@ -123,11 +123,11 @@ DGtal::DistanceTransformation<I, O, SepM>::compute ( const I & aImage, const Fun
 
 
 
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 template <typename Functor>
 inline
 void
-DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, O &output, const Functor &predicate ) const
+DGtal::DistanceTransformation<I, O, p>::computeFirstStep ( const I & aImage, O &output, const Functor &predicate ) const
 {
   trace.beginBlock ( "DT dimension 0" );
   Point row = myLowerBoundCopy;
@@ -156,10 +156,10 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep ( const I & aImage, 
 }
 
 
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 inline
 void
-DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O &output, const Dimension dim ) const
+DGtal::DistanceTransformation<I, O, p>::computeOtherSteps ( const O &input, O &output, const Dimension dim ) const
 {
   std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
@@ -201,10 +201,10 @@ DGtal::DistanceTransformation<I, O, SepM>::computeOtherSteps ( const O &input, O
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Phase X
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 template <typename ForegroundPredicate>
 void
-DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage,
+DGtal::DistanceTransformation<I, O, p>::computeFirstStep1D ( const I & aImage,
     O & output,
     const Point &row,
     const ForegroundPredicate &isForeground ) const
@@ -254,9 +254,9 @@ DGtal::DistanceTransformation<I, O, SepM>::computeFirstStep1D ( const I & aImage
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Other Phases
-template <typename I, typename O, typename SepM>
+template <typename I, typename O, DGtal::uint32_t p>
 void
-DGtal::DistanceTransformation<I, O, SepM>::computeOtherStep1D ( const O & input,
+DGtal::DistanceTransformation<I, O, p>::computeOtherStep1D ( const O & input,
     O & output,
     const Point &row,
     const Size dim,

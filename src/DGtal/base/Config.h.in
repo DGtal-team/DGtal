@@ -88,9 +88,16 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  * @section manuals_dgtal DGtal user-guides
  *
  * - \ref DGtalKernel
+ *
  * - \ref dgtal_topology 
- * - \ref image_io 
- * - \ref dgtal_dgtalboard
+ *
+ * - Geometric Package
+ *    - \ref volpackage
+ *    - \ref geometry2D
+ * 
+ * - Helpers and tools
+ *  - \ref dgtal_dgtalboard
+ *  - \ref image_io 
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake

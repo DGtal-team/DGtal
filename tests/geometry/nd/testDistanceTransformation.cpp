@@ -37,7 +37,6 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
@@ -101,9 +100,8 @@ bool testDistanceTransformation()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, ImageLong, 2> dt;
 
   dt.checkTypesValidity ( image );
 
@@ -178,9 +176,7 @@ bool testDistanceTransformationBorder()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, ImageLong, 2> dt;
 
   dt.checkTypesValidity ( image );
 
@@ -256,9 +252,7 @@ bool testDistanceTransformation3D()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, ImageLong, 2> dt;
 
   dt.checkTypesValidity ( image );
 
@@ -304,14 +298,12 @@ bool testTypeValidity()
   Image image ( a, b );
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, ImageLong, 2> dt;
 
   //No problem should be reported on the std:cerr.
   dt.checkTypesValidity ( image );
 
-  typedef SeparableMetricTraits<unsigned int, char, 34> L_34;
-  DistanceTransformation<Image, ImageLong, L_34> dt34;
+  DistanceTransformation<Image, ImageLong, 34> dt34;
 
   //Type problem should be reported.
   dt34.checkTypesValidity ( image );
@@ -348,11 +340,11 @@ bool testChessboard()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 0> L_infty;
-  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 1> L_1;
-
-  DistanceTransformation<Image, ImageLong, L_infty> dt;
-  DistanceTransformation<Image, ImageLong, L_1> dt1;
+  //L_infinity metric
+  DistanceTransformation<Image, ImageLong, 0> dt;
+  
+  //L_1 metric
+  DistanceTransformation<Image, ImageLong, 1> dt1;
 
   dt.checkTypesValidity ( image );
 
