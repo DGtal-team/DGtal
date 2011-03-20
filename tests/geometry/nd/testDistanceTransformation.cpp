@@ -370,20 +370,30 @@ bool testChessboard()
     std::cout << std::endl;
   }
 
+  trace.info()<< "Exporting to SVG"<<endl;
+
   DGtalBoard board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-linfty.svg" );
+  trace.info()<< "done"<<endl;
 
 
-	maxv = 0;
-  for ( ImageLong::Iterator it2 = result1.begin(), itend = result1.end();it != itend; ++it)
-    if ( (*it2) > maxv)
-      maxv = (*it2);
 
+  trace.info()<< "max  L1"<<endl;
+  maxv = 0;
+  for ( ImageLong::Iterator it2 = result1.begin(), itend = result1.end();
+	it2 != itend; ++it2)
+    {
+      if ( result1(it2) > maxv)
+	maxv = (*it2);
+    }
+
+  trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
   result1.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-l1.svg" );
+  trace.info()<< "done"<<endl;
 
 
   trace.info() << result << endl;
