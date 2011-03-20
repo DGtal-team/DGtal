@@ -81,8 +81,9 @@ bool testDistanceTransformND()
   image.setValue( c , 0 );
 
 
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
-  DistanceTransformation<Image, ImageLong, 2> dt;
+  DistanceTransformation<Image, 2> dt;
+  typedef  DistanceTransformation<Image, 2>::OutputImage ImageLong;
+
   dt.checkTypesValidity ( image );
 
   //Distance transformation computation
