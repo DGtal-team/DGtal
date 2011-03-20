@@ -238,7 +238,6 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
   result->addChild( myShapeHints ); 
 
   // some initialization
-  Integer* ijk = new Integer[ Space::dimension ];
   uint32 nb_vtx;  // number of vertices to display 
   uint32 nb_cells;  // number of cells
   vec3* coords; // array of vertex coordinates
@@ -283,7 +282,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
 	    {
 	      if ( c[ i ] & 0x1 ) 
 		dirs[ d++ ] = i;
-	      e[ i ] = ( c[ i ] >= 0 ) ? ( c[ i ] / 2 ) : ( c[ i ] / 2 );
+	      e[ i ] = c[ i ] >> 1;
 	    }
 	  
 	  // creating face coordinates

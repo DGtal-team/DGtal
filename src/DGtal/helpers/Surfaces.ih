@@ -1,0 +1,191 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Surfaces.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2011/03/19
+ *
+ * Implementation of inline methods defined in Surfaces.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <queue>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename TKSpace>
+inline
+DGtal::Surfaces<TKSpace>::~Surfaces()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+trackBoundary( SCellSet & surface,
+	       const KSpace & K,
+	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const DigitalSet & shape,
+	       const SCell & start_surfel )
+{
+  SCell b;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  surface.clear(); // boundary being extracted.
+
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  std::queue<SCell> qbels;
+  qbels.push( start_surfel );
+  surface.insert( start_surfel );
+  // For all pending bels
+  while ( ! qbels.empty() )
+    {
+      SCell b = qbels.front();
+      qbels.pop();
+      SN.setSurfel( b );
+      for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+	{
+	  Dimension track_dir = *q;
+	  // ----- 1st pass with positive orientation ------
+	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, true ) )
+	    {
+	      if ( surface.find( bn ) == surface.end() )
+		{
+		  surface.insert( bn );
+		  qbels.push( bn );
+		}
+	    }
+	  // ----- 2nd pass with negative orientation ------
+	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, false ) )
+	    {
+	      if ( surface.find( bn ) == surface.end() )
+		{
+		  surface.insert( bn );
+		  qbels.push( bn );
+		}
+	    }
+	} // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+    } // while ( ! qbels.empty() )
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+trackClosedBoundary( SCellSet & surface,
+		     const KSpace & K,
+		     const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+		     const DigitalSet & shape,
+		     const SCell & start_surfel )
+{
+  SCell b;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  surface.clear(); // boundary being extracted.
+
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  std::queue<SCell> qbels;
+  qbels.push( start_surfel );
+  surface.insert( start_surfel );
+  // For all pending bels
+  while ( ! qbels.empty() )
+    {
+      SCell b = qbels.front();
+      qbels.pop();
+      SN.setSurfel( b );
+      for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+	{
+	  Dimension track_dir = *q;
+	  // ----- One pass, look for direct orientation ------
+	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, 
+					   K.sDirect( b, track_dir ) ) )
+	    {
+	      if ( surface.find( bn ) == surface.end() )
+		{
+		  surface.insert( bn );
+		  qbels.push( bn );
+		}
+	    }
+	} // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+    } // while ( ! qbels.empty() )
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TKSpace>
+inline
+void
+DGtal::Surfaces<TKSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Surfaces]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TKSpace>
+inline
+bool
+DGtal::Surfaces<TKSpace>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TKSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const Surfaces<TKSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

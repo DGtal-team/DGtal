@@ -37,6 +37,7 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 #include "DGtal/helpers/Shapes.h"
+#include "DGtal/helpers/Surfaces.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -205,8 +206,8 @@ bool testSurfelAdjacency()
   
   trace.beginBlock ( "Testing block KSpace instantiation and scan ..." );
   KSpace K;
-  int xlow[ 4 ] = { -3, -2, -2, -1 };
-  int xhigh[ 4 ] = { 5, 3, 2, 3 };
+  int xlow[ 4 ] = { -3, -3, -3, -3 };
+  int xhigh[ 4 ] = { 5, 3, 3, 3 };
   Point low( xlow );
   Point high( xhigh ); 
   bool space_ok = K.init( low, high, true );
@@ -264,6 +265,7 @@ bool testSurfelAdjacency()
   trace.info() << "follower3(-)=" << SN.follower3( 1, false ) << endl;
   trace.endBlock();
 
+  trace.beginBlock ( "Testing surface tracking ..." );
   typedef SpaceND< KSpace::dimension, Integer > Space;
   typedef HyperRectDomain<Space> Domain;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
@@ -280,7 +282,28 @@ bool testSurfelAdjacency()
     SN.getAdjacentOnDigitalSet( other2, shape_set, 1, !K.sDirect( surfel, 1 ) );
   trace.info() << "directNext  = " << other1 << endl;
   trace.info() << "indirectNext= " << other2 << endl;
-
+  std::set<SCell> bdry;
+  Surfaces<KSpace>::trackBoundary( bdry,
+				   K, SAdj, shape_set, surfel );
+  trace.info() << "tracking finished, size=" << bdry.size() 
+	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+  nbok += bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "bdry.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+	       << std::endl;
+  std::set<SCell> bdry_direct;
+  Surfaces<KSpace>::trackClosedBoundary( bdry_direct,
+					 K, SAdj, shape_set, surfel );
+  trace.info() << "fast direct tracking finished, size=" << bdry_direct.size() 
+	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+  nbok += bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+	       << std::endl;
+  
+  trace.endBlock();
   return nbok == nb;
 }
 
