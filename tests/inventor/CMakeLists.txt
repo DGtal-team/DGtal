@@ -1,5 +1,6 @@
 SET(DGTALIV_TESTS_SRC
    testIVViewer
+   volIVViewer
    )
 
 if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
