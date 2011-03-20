@@ -42,28 +42,28 @@
 /**
  * Constructor.
  */
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 inline
-DGtal::DistanceTransformation<I, O, p>::DistanceTransformation()
+DGtal::DistanceTransformation<I, p, IntLong>::DistanceTransformation()
 {
 }
 /**
  * Destructor.
  */
 
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 inline
-DGtal::DistanceTransformation<I, O, p>::~DistanceTransformation()
+DGtal::DistanceTransformation<I, p, IntLong>::~DistanceTransformation()
 {
 }
 
 
 
 
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 inline
 bool
-DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
+DGtal::DistanceTransformation<I, p, IntLong>::checkTypesValidity ( const I & aImage )
 {
   typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
 
@@ -75,7 +75,7 @@ DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
   else
     bitSize =  sizeof ( typename I::Value ) * 8;
 
-  if ( bitSize > sizeof ( typename O::Value ) * 8 )
+  if ( bitSize > sizeof ( typename OutputImage::Value ) * 8 )
     {
       trace.warning() << "(DistanceTransformation) The output image Value range may"
 		      <<" not be sufficient to store the exact values  according to"
@@ -85,11 +85,12 @@ DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
   return true;
 }
 
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 template <typename Functor>
 inline
-O
-DGtal::DistanceTransformation<I, O, p>::compute ( const I & aImage, const Functor & predicate )
+typename DGtal::DistanceTransformation<I, p, IntLong>::OutputImage
+DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage, 
+							const Functor & predicate )
 {
 
   //We trace type validdity check result;
@@ -102,8 +103,8 @@ DGtal::DistanceTransformation<I, O, p>::compute ( const I & aImage, const Functo
 
   myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * myExtent.normInfinity() + 1);
   
-  O output ( myLowerBoundCopy, myUpperBoundCopy );
-  O swap ( myLowerBoundCopy, myUpperBoundCopy );
+  OutputImage output ( myLowerBoundCopy, myUpperBoundCopy );
+  OutputImage swap ( myLowerBoundCopy, myUpperBoundCopy );
   bool isSwap = true;
 
   //First step
@@ -128,11 +129,13 @@ DGtal::DistanceTransformation<I, O, p>::compute ( const I & aImage, const Functo
 
 
 
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 template <typename Functor>
 inline
 void
-DGtal::DistanceTransformation<I, O, p>::computeFirstStep ( const I & aImage, O &output, const Functor &predicate ) const
+DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( const I & aImage, 
+								 OutputImage &output, 
+								 const Functor &predicate ) const
 {
   trace.beginBlock ( "DT dimension 0" );
   Point row = myLowerBoundCopy;
@@ -161,10 +164,12 @@ DGtal::DistanceTransformation<I, O, p>::computeFirstStep ( const I & aImage, O &
 }
 
 
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 inline
 void
-DGtal::DistanceTransformation<I, O, p>::computeOtherSteps ( const O &input, O &output, const Dimension dim ) const
+DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputImage &input, 
+								  OutputImage &output,
+								  const Dimension dim ) const
 {
   std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
@@ -206,11 +211,11 @@ DGtal::DistanceTransformation<I, O, p>::computeOtherSteps ( const O &input, O &o
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Phase X
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 template <typename ForegroundPredicate>
 void
-DGtal::DistanceTransformation<I, O, p>::computeFirstStep1D ( const I & aImage,
-    O & output,
+DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( const I & aImage,
+    OutputImage & output,
     const Point &row,
     const ForegroundPredicate &isForeground ) const
 {
@@ -250,7 +255,7 @@ DGtal::DistanceTransformation<I, O, p>::computeFirstStep1D ( const I & aImage,
 
   //final computation
   for ( point[0] = myLowerBoundCopy[0]; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-    if (output( point) < static_cast<typename O::Value>(myInfinity))
+    if (output( point) < static_cast< typename OutputImage::Value >(myInfinity))
       output.setValue ( point, myMetric.power( output ( point ) ));
     else
       output.setValue ( point, myInfinity);
@@ -259,10 +264,10 @@ DGtal::DistanceTransformation<I, O, p>::computeFirstStep1D ( const I & aImage,
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Other Phases
-template <typename I, typename O, DGtal::uint32_t p>
+template <typename I, DGtal::uint32_t p, typename IntLong>
 void
-DGtal::DistanceTransformation<I, O, p>::computeOtherStep1D ( const O & input,
-    O & output,
+DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputImage & input,
+    OutputImage & output,
     const Point &row,
     const Size dim,
     Integer s[],
@@ -281,7 +286,7 @@ DGtal::DistanceTransformation<I, O, p>::computeOtherStep1D ( const O & input,
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
   while ((pU[dim] <= myUpperBoundCopy[dim]) 
-	 && (input ( pU ) == static_cast<typename O::Value>(myInfinity)))
+	 && (input ( pU ) == static_cast<typename OutputImage::Value>(myInfinity)))
     pU[dim] ++;
 
   // trace.info()<<"Shift"<<endl;
@@ -290,7 +295,7 @@ DGtal::DistanceTransformation<I, O, p>::computeOtherStep1D ( const O & input,
   //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
-      for(typename O::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
+      for(typename OutputImage::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
 	  it != itend; ++it)
 	  output.setValue(it, myInfinity);
       return;
@@ -307,7 +312,7 @@ DGtal::DistanceTransformation<I, O, p>::computeOtherStep1D ( const O & input,
   for ( int u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
   {
     pU[ dim ] = u;
-    if ( input( pU ) == static_cast<typename O::Value>(myInfinity) )
+    if ( input( pU ) == static_cast<typename OutputImage::Value>(myInfinity) )
     {
       //    trace.info() << "Ctd " << pU << endl;
       continue;

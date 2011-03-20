@@ -105,8 +105,25 @@ numbers @f$ (x_i-y_i)^p@f$.
 As a consequence, the class DistanceTransformation is parametrized by
 three elements:
 - an Input image type
-- an Output image type
 - and a static number "p" used to define the @f$l_p@f$ metric
+
+An optional InterLong template parameter with default type
+DGtal::uint64_t can be specified to represent the sums of @f$x_i^p@f$
+values. This type is important because it corresponds to the Value
+type of the DistanceTransformation::OutputImage type that is used to
+store the output result.
+
+Hence, the DistanceTransformation class provides 
+- a output image type;
+- a method to compute the distance transformation of an input image.
+
+
+@note The output image type provided by DistanceTransformation is a
+ImageContainerBySTLVector whose domain specification is copied from
+the input image type and whose value type is IntegerLong to return
+exact values.
+  
+
 
 For example (using the DGtal::StdDefs shortcuts):
 @code
@@ -122,18 +139,15 @@ Image image ( a, b );
 // pixels, otherwise, see ForegroundPredicate in DistanceTransformation).
 //...
 
-//Output image with unsigned char values
-typedef ImageSelector<Z2i::Domain, long int>::Type ImageOutput;
-
 //Definition of the DistanceTransformation operator for the l_2 metric
-DistanceTransformation< Image, ImageOutput, 2> dt;
+typedef DistanceTransformation< Image, 2> DTL2;
+typedef DTL2::OutputImage OutputImage
+DTL2 dt;
 
-ImageOutput result = dt.compute( image );
+OutputImage result = dt.compute( image );
 @endcode
 
-@warning attention ce n'est pas correct::::::: à reprendre.....
-This code snippet is valid since in the worst case, sum of two square of "unsigned char" maximum value can be stored without error in a "long int".
-Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
+Few comments can be made from this example. First, Z2i::Image is defined on a Z2i::Domain whose pixel coordinates Z2i::Space::Coordinate have type DGtal::int32_t. In this example, we have used the default DGtal::uint64_t type to store sum of two square of Coordinate differences.  Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
 
 
 
