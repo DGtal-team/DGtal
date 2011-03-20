@@ -173,7 +173,7 @@ namespace DGtal
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
     {
-      ///@warning GMP compliant problem here
+      ///@warning GMP compliant problem here /
       return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
     }
 

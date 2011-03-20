@@ -25,9 +25,9 @@ classes.
 
 Table of contents:
  -# \ref introvol
- -# \ref sep
  -# \ref dt 
  -# \ref rdt
+ -# \ref sep
  -# \ref ma
 
 \section introvol Introduction
@@ -72,22 +72,70 @@ tools can be used on a wider class of metrics (see [HIRA_96] or
 
 can be considered. 
 
-In DGtal, we have chosen to separate the metric from the algorithmic decomposition.
-
-\section sep Separable Metric Traits
-
-As discussed in the introduction, the same algorithmic decomposition
-can be used on different metrics. In DGtal, such suitable metrics are
-models of the concept CSeparableMetric, defined in the
-SeparableMetricTraits class. At this point, we have
-specialization for the Euclidean metric (@f$l_2@f$), the Chessboard distance
-(@f$l_1@f$) and the Manhattan distance (@f$l_\infty@f$). 
-
-
-
-
+In DGtal, we have chosen to separate the metric from the algorithmic
+decomposition. We discuss in section \ref sep on the construction of
+a separable metric type. 
 
 \section dt Distance Transformation
+
+Given a binary object @f$ X @f$ and its complementary @f$\bar{X}@f$,
+the distance transformation is a mapping of  points @f$ x\in X@f$ with
+distance values such that
+@f[
+DT(x) = \min_{y\in\bar{X}} ( d(x,y))
+@f]
+
+For the Euclidean metric in dimension 2, it is equivalent to
+@f[
+DT(x) =\sqrt{ \min_{y\in\bar{X}} ( (x_0-y_0)^2 + (x_1-y_1)^2 ) }
+@f]
+with @f$x(x_0,x_1)\in R^2@f$.
+
+Hence, the key point for exact computations is to consider square of
+distances and to represent these quantities as integers. In other
+words, we have to specify a type for the output values such that it
+can be used to 
+represent square of input integers (to be precise, @e n sums of squares
+in dimension @e n).
+ For @f$l_p@f$ metrics, the
+output type should be able to represent  integers made of sums of
+numbers @f$ (x_i-y_i)^p@f$.
+
+As a consequence, the class DistanceTransformation is parametrized by
+three elements:
+- an Input image type
+- an Output image type
+- and a static number "p" used to define the @f$l_p@f$ metric
+
+For example (using the DGtal::StdDefs shortcuts):
+@code
+Z2i::Point a ( 0, 0 );
+Z2i::Point b ( 127, 127);
+
+//Input image with unsigned char values
+typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
+Image image ( a, b );
+
+//...
+// set values in image (by default 0-value pixels are background
+// pixels, otherwise, see ForegroundPredicate in DistanceTransformation).
+//...
+
+//Output image with unsigned char values
+typedef ImageSelector<Z2i::Domain, long int>::Type ImageOutput;
+
+//Definition of the DistanceTransformation operator for the l_2 metric
+DistanceTransformation< Image, ImageOutput, 2> dt;
+
+ImageOutput result = dt.compute( image );
+@endcode
+
+This code snippet is valid since in the worst case, sum of two square of "unsigned char" maximum value can be stored without error in a "long int".
+Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
+
+
+
+
 
 \section rdt Reverse Distance Transformation
 
@@ -96,6 +144,23 @@ specialization for the Euclidean metric (@f$l_2@f$), the Chessboard distance
 \section ma Discrete Medial Axis Extraction
 
 @todo complete code/doc
+
+
+\section sep Separable Metric Traits
+
+As discussed in the introduction, the same algorithmic decomposition
+can be used on different metrics. In DGtal, such suitable metrics are
+models of the concept CSeparableMetric, defined in the
+SeparableMetricTraits class. At this point, we have
+specialization for the Euclidean metric (@f$l_2@f$), the Chessboard distance
+(@f$l_1@f$) and the Manhattan distance  
+
+@warning In SeparableMetricTraits the power "p" is a static number of
+type DGtal::uint32_t. Hence, to specify a @f$l_\infty@f$ metric, we
+use the value "0" for the template parameter "p" (and thus we forbid the
+use of @f$l_0@f$ metric).  It does not make sense in a mathematical
+point of view but it makes the code simpler. 
+
 
 
 \section refsvol References

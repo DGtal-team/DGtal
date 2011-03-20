@@ -147,11 +147,12 @@ namespace DGtal
      * check that the output image pixel range is ok with respect to
      * the input image range and the SeparableMetric.
      *
-     * Warning and advices are print in the trace system.
+     * Warning and advices are printed in the trace system.
      *
      * @param aImage the image used to check the type consistency.
+     * @return true if a warning has been raised. 
      */
-    void checkTypesValidity(const Image & aImage);
+    bool checkTypesValidity(const Image & aImage);
 
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.

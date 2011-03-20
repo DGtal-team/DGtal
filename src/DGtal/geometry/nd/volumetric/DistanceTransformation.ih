@@ -62,7 +62,7 @@ DGtal::DistanceTransformation<I, O, p>::~DistanceTransformation()
 
 template <typename I, typename O, DGtal::uint32_t p>
 inline
-void
+bool
 DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
 {
   typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
@@ -76,8 +76,13 @@ DGtal::DistanceTransformation<I, O, p>::checkTypesValidity ( const I & aImage )
     bitSize =  sizeof ( typename I::Value ) * 8;
 
   if ( bitSize > sizeof ( typename O::Value ) * 8 )
-    trace.warning() << "(DistanceTransformation) The output image Value range may not be sufficient to store the exact values  according to the input image extent." << endl;
-
+    {
+      trace.warning() << "(DistanceTransformation) The output image Value range may"
+		      <<" not be sufficient to store the exact values  according to"
+		      <<" the input image extent." << endl;
+      return false;
+    }
+  return true;
 }
 
 template <typename I, typename O, DGtal::uint32_t p>
