@@ -130,6 +130,7 @@ DistanceTransformation< Image, ImageOutput, 2> dt;
 ImageOutput result = dt.compute( image );
 @endcode
 
+@warning attention ce n'est pas correct::::::: à reprendre.....
 This code snippet is valid since in the worst case, sum of two square of "unsigned char" maximum value can be stored without error in a "long int".
 Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
 
