@@ -120,7 +120,9 @@ if( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
   message(STATUS  "(optional) No 3D visualisation possible  (QGLViewer and IV )." )
   set( WITH_VISU3D FALSE)
 endif( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
-
+else()
+  set( WITH_VISU3D TRUE )
+endif
 
 
  
