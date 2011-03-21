@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDrawableWithDGtalBoard.h
+ * @file CDrawableWithDGtalQGLViewer.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,39 +25,55 @@
  *
  * @date 2010/10/21
  *
- * Header file for concept CDrawableWithDGtalBoard.cpp
+ * Header file for concept CDrawableWithDGtalQGLViewer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithDGtalBoard_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithDGtalBoard.h
-#else // defined(CDrawableWithDGtalBoard_RECURSES)
+#if defined(CDrawableWithDGtalQGLViewer_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithDGtalQGLViewer.h
+#else // defined(CDrawableWithDGtalQGLViewer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithDGtalBoard_RECURSES
+#define CDrawableWithDGtalQGLViewer_RECURSES
 
-#if !defined CDrawableWithDGtalBoard_h
+#if !defined CDrawableWithDGtalQGLViewer_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithDGtalBoard_h
+#define CDrawableWithDGtalQGLViewer_h
 
 //////////////////////////////////////////////////////////////////////////////
+
 // Inclusions
 
 #include <iostream>
 #include "boost/concept_check.hpp"
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
+
+
+
+
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithDGtalBoard
+  // class CDrawableWithDGtalQGLViewer
   /**
-   * Description of \b concept '\b CDrawableWithDGtalBoard' <p>
+   * Description of \b concept '\b CDrawableWithDGtalQGLViewer' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithDGtalBoard specifies what are the classes
+   * Aim:  The concept CDrawableWithDGtalQGLViewer specifies what are the classes
    * that admit an export with DGtalBoard.
    * An object x satisfying this concept may then be used as:
    * 
@@ -72,7 +88,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithDGtalBoard
+   * - \t X : A type that is a model of CDrawableWithDGtalQGLViewer
    * - \t x, \t y	: Object of type X
    * - \t m	: a string of characters
    *
@@ -108,36 +124,36 @@ namespace DGtal
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
-  struct CDrawableWithDGtalBoard
+  struct CDrawableWithDGtalQGLViewer
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE( CDrawableWithDGtalBoard )
+    BOOST_CONCEPT_USAGE( CDrawableWithDGtalQGLViewer )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyle() );
+      ConceptUtils::sameType( myD, myT.defaultStyleQGL() );
       //Drawable model should have a defaultStyle( string ) returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyle( myS ) );
+      ConceptUtils::sameType( myD, myT.defaultStyleQGL( myS ) );
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
       ///@todo FIXME: si on décommente ça plante
-      myT.selfDraw( myB );
+      myT.selfDrawQGL( myB );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     T myT;
-    DrawableWithDGtalBoard *myD;
+    DrawableWithDGtalQGLViewer *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    DGtalBoard myB;
+    DGTalQGLViewer myB;
     std::string myS;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithDGtalBoard
+  }; // end of concept CDrawableWithDGtalQGLViewer
 
 } // namespace DGtal
 
@@ -145,7 +161,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithDGtalBoard_h
+#endif // !defined CDrawableWithDGtalQGLViewer_h
 
-#undef CDrawableWithDGtalBoard_RECURSES
-#endif // else defined(CDrawableWithDGtalBoard_RECURSES)
+#undef CDrawableWithDGtalQGLViewer_RECURSES
+#endif // else defined(CDrawableWithDGtalQGLViewer_RECURSES)

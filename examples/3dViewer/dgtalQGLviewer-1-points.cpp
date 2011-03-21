@@ -15,38 +15,55 @@
  **/
 
 /**
- * @file CDigitalSet.ih
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file dgtalQGLviewer-1-points.cpp
+ * @ingroup examples/3dViewer
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et
- * Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * @date 2011/19/03
  *
- * @date 2010/07/01
- *
- * Implementation of inline methods defined for concept CDigitalSet in CDigitalSet.h
+ * Simple example of class DGtalQGLViewer.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
-//////////////////////////////////////////////////////////////////////////////
-
-
+#include <iostream>
+#include <QtGui/qapplication.h>
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
 
+using namespace std;
+using namespace DGtal;
+using namespace Z3i;
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+int main( int argc, char** argv )
+{
+
+ QApplication application(argc,argv);
+
+ Point p1( 0, 0, 0 );
+ Point p2( 5, 5 ,5 );
+ Point p3( 2, 3, 4 );
+ Domain domain( p1, p2 );
+
+ DGTalQGLViewer viewer;
+ viewer.show();
+ viewer << domain;  
+ viewer << p1 << p2 << p3;
+ 
+ viewer.updateList();
+ return application.exec();
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 
 

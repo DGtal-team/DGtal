@@ -31,3 +31,4 @@ add_subdirectory(topology)
 add_subdirectory(io)
 
 add_subdirectory(inventor)
+add_subdirectory(3dViewer)
