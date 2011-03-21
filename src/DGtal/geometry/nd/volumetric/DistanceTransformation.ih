@@ -138,7 +138,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( const I & aImag
 								 const Functor &predicate ) const
 {
   trace.beginBlock ( "DT dimension 0" );
-  Point row = myLowerBoundCopy;
+  Point startingPoint = myLowerBoundCopy;
 
   typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
   
@@ -216,11 +216,11 @@ template <typename ForegroundPredicate>
 void
 DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( const I & aImage,
     OutputImage & output,
-    const Point &row,
+    const Point &startingPoint,
     const ForegroundPredicate &isForeground ) const
 {
-  Point prec = row;
-  Point point = row;
+  Point prec = startingPoint;
+  Point point = startingPoint;
 
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
@@ -268,20 +268,18 @@ template <typename I, DGtal::uint32_t p, typename IntLong>
 void
 DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputImage & input,
     OutputImage & output,
-    const Point &row,
+    const Point &startingPoint,
     const Size dim,
     Integer s[],
     Integer t[] ) const
 {
-  ///@todo must be removed if Integer is assumed to be Signed (see @ref SpaceND)
-  typedef typename IntegerTraits<Integer>::SignedVersion SI;
-  SI w;
-  SI q = 0;
+  Coordinate w;
+  Coordinate q = 0;
 
-  Point sQ = row;
-  Point pU = row;
+  Point sQ = startingPoint;
+  Point pU = startingPoint;
 
-  //trace.info()<<"Enter row="<<row<<endl;
+  //trace.info()<<"Enter startingPoint="<<startingPoint<<endl;
 
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
@@ -295,7 +293,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
   //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
-      for(typename OutputImage::SpanIterator it= output.spanBegin(row,dim), itend=output.spanEnd(row,dim); 
+      for(typename OutputImage::SpanIterator it= output.spanBegin(startingPoint,dim), itend=output.spanEnd(startingPoint,dim); 
 	  it != itend; ++it)
 	  output.setValue(it, myInfinity);
       return;
@@ -337,6 +335,8 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
       q = 0;
       s[0] = u;
       sQ[dim] = u;
+      t[0] = myLowerBoundCopy[dim];
+  
     }
     else
     {
@@ -357,7 +357,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
     }
   }
 
-  Point last = row;
+  Point last = startingPoint;
 
   ASSERT(q>=0);
 
