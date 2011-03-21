@@ -71,7 +71,7 @@ trackBoundary( SCellSet & surface,
   // For all pending bels
   while ( ! qbels.empty() )
     {
-      SCell b = qbels.front();
+      b = qbels.front();
       qbels.pop();
       SN.setSurfel( b );
       for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
@@ -122,7 +122,7 @@ trackClosedBoundary( SCellSet & surface,
   // For all pending bels
   while ( ! qbels.empty() )
     {
-      SCell b = qbels.front();
+      b = qbels.front();
       qbels.pop();
       SN.setSurfel( b );
       for ( DirIterator q = K.sDirs( b ); q != 0; ++q )

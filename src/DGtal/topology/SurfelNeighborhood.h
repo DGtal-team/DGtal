@@ -104,17 +104,17 @@ namespace DGtal
        
        @param space the cellular grid space (only referenced).
        @param adj the chosen surfel adjacency (only referenced).
-       @param surfel any signed surfel of [space] ((n-1)-cell).
+       @param aSurfel any signed surfel of [space] ((n-1)-cell).
     */
     void init( const KSpace* space, 
 	       const SurfelAdjacency<KSpace::dimension>* adj,
-	       const SCell & surfel );
+	       const SCell & aSurfel );
 
     /**
        Sets the neighborhood to the given [surfel].
-       @param surfel any signed surfel of this space ((n-1)-cell).
+       @param aSurfel any signed surfel of this space ((n-1)-cell).
     */
-    void setSurfel( const SCell & surfel );
+    void setSurfel( const SCell & aSurfel );
 
     /** @return the current surfel. */
     const SCell & surfel() const;
