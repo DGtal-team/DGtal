@@ -101,7 +101,8 @@ namespace DGtal
     typedef typename Image::Size Size;
     typedef typename Image::Integer Integer;
     typedef typename Image::Domain Domain;
-  
+    typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
+ 
     ///We construct the type associated to the separable metric
     typedef SeparableMetricTraits<  Integer ,  IntegerLong , p > SeparableMetric;
   
@@ -209,12 +210,15 @@ namespace DGtal
      * 
      * @param aImage the input image
      * @param output the output image  with the first step DT values
-     * @param row a point to specify the starting point of the 1D row
+     * @param startingPoint a point to specify the starting point of the 1D row
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep1D (const Image & aImage, OutputImage & output, const Point &row, const ForegroundPredicate &predicate) const;
+    void computeFirstStep1D (const Image & aImage, 
+			     OutputImage & output, 
+			     const Point &startingPoint, 
+			     const ForegroundPredicate &predicate) const;
 
     /** 
      *  Compute the other steps of the separable distance transformation.

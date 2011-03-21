@@ -113,6 +113,22 @@ namespace DGtal
     }
 
     /**
+     * Returns the height at a point  pos of a reversed Lp-parabola with
+     * center  ci and height hi.
+     *
+     * @param pos an abscissa.
+     * @param ci center of the Lp-parabola.
+     * @param hi height of the Lp-parabola.
+     *
+     * @return the height of the reversed parabola (ci,hi) at pos.
+     */
+    InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    {
+      return hi - std::pow( fabs((double )pos - ci) , (double)p);
+    }
+
+
+    /**
      * Returns the InternalValue value of order p for a given
      * position. Basically, its computes @paramp pos^p.
      *
@@ -126,6 +142,22 @@ namespace DGtal
     }
 
 
+    /**
+     * Returns the abscissa of the intersection point between two reversed
+     * Lp-parabolas (ci,hi) and (cj,hj).
+     *
+     * @param ci center of the first Lp-parabola.
+     * @param hi height of the first Lp-parabola power p (hi = real height^p)
+     * @param cj center of the first Lp-parabola.
+     * @param hj height of the first Lp-parabola power p (hj = real height^p).
+     *
+     * @return
+     */
+    Abscissa reversedSep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    {
+      ASSERT(false && "Not-Yet-Implemented");
+    }
+    
     /**
      * Returns the abscissa of the intersection point between two
      * Lp-parabolas (ci,hi) and (cj,hj).
@@ -166,15 +198,33 @@ namespace DGtal
       return ( double ) sqrt ( IntegerTraits<InternalValue>::castToDouble(aInternalValue) );
     }
 
-    inline InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
+    inline InternalValue F ( const Abscissa pos, 
+			     const Abscissa ci, 
+			     const InternalValue hi ) const
     {
       return ( pos - ci ) * ( pos - ci ) + hi;
     }
 
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    inline InternalValue reversedF ( const Abscissa pos, 
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
+    {
+      return hi - ( pos - ci ) * ( pos - ci ) ;
+    }
+
+
+    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
+			  const Abscissa j, const InternalValue hj ) const
     {
       ///@warning GMP compliant problem here /
       return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
+    }
+
+    inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
+				  const Abscissa j, const InternalValue hj ) const
+    {
+      ///@warning GMP compliant problem here /
+      return ( ( i*i -j*j ) + hj - hi )  / ( 2* ( i - j ) );
     }
 
     inline InternalValue power ( const Abscissa i ) const
@@ -201,11 +251,20 @@ namespace DGtal
       return ( double ) aInternalValue;
     }
  
-    inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
+    inline InternalValue F ( const Abscissa pos, 
+			     const Abscissa ci, 
 			     const InternalValue hi ) const
     {
       return ( InternalValue ) std::abs ( (long int) pos - ci ) + hi;
     }
+
+    inline InternalValue reversedF ( const Abscissa pos, 
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
+    {
+      return ( InternalValue ) hi - abs ( pos - ci );
+    }
+
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
 			  const Abscissa j, const InternalValue hj ) const
@@ -216,6 +275,16 @@ namespace DGtal
         return IntegerTraits<Abscissa>::min();
       return (hj - hi + j + i) / 2;
     }
+
+    inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
+			  const Abscissa j, const InternalValue hj ) const
+    {
+      ASSERT(false && "Not-Yet-Implemented");
+    }
+
+
+    
+    
 
     inline InternalValue power ( const Abscissa i ) const
     {
@@ -246,6 +315,14 @@ namespace DGtal
       return ( InternalValue ) std::max( (Abscissa)std::abs ( (long int)pos - ci ) , (Abscissa) hi);
     }
 
+    inline InternalValue reversedF ( const Abscissa pos, 
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
+    {
+     return ( InternalValue ) std::min( 2*hi - (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
+    }
+
+
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi,
 			  const Abscissa j, const InternalValue hj ) const
     {
@@ -254,6 +331,14 @@ namespace DGtal
       else
         return std::min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
+
+    inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
+			  const Abscissa j, const InternalValue hj ) const
+    {
+      ASSERT(false && "not yet implemented");
+    }
+
+    
 
     inline InternalValue power ( const Abscissa i ) const
     {
