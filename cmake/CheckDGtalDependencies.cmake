@@ -117,7 +117,7 @@ else ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
 endif ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
 
 if( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
-  message(STATUS  "(optional) No 3D visualiasation possible  (QGLViewer and IV )." )
+  message(STATUS  "(optional) No 3D visualisation possible  (QGLViewer and IV )." )
   set( WITH_VISU3D FALSE)
 endif( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
 
