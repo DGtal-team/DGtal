@@ -48,7 +48,7 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( )
 {
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 

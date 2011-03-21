@@ -25,3 +25,8 @@ add_subdirectory(io)
 add_subdirectory(geometry)
 add_subdirectory(doc-examples)
 
+
+if( WITH_VISU3D_QGLVIEWER  )
+add_subdirectory(3dViewer)
+endif ( WITH_VISU3D_QGLVIEWER )
+

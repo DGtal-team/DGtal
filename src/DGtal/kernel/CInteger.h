@@ -119,17 +119,23 @@ namespace DGtal
       x = x - y;
       ConceptUtils::sameType( myX, ++x );
       ConceptUtils::sameType( myX, --x );
-      // @todo x+y with short is promoted to int. We should use some
-      // verification with possible promoting.
-      // ConceptUtils::sameType( myX, x + y );
       ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
       ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
+      
+      // @todo x+y with short is promoted to int. We should use some
+      // verification with possible promoting.
+      //
+      // @note T(x+y) is required (instead of 'x+y') because of
+      // gmpxx. Indeed, x+y returns an expression template in GMP and
+      // thus cannot be of type T.
+      ConceptUtils::sameType( myX, T(x-y) );
+      ConceptUtils::sameType( myX, T(x+y) );
+      
     }
       
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    T myY;
     typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
     typename IntegerTraits<T>::IsUnsigned myIsSigned;
     typename IntegerTraits<T>::IsBounded myIsBounded;

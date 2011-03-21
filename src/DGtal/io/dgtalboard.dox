@@ -5,7 +5,7 @@
 namespace DGtal {
 
   /**
-   * @page dgtal_dgtalboard DGtalBoard: a stream mechanism for displaying digital objects
+   * @page dgtal_dgtalboard DGtalBoard: a stream mechanism for displaying 2D digital objects
    *
    * This part of the manual describes how to export DGtal objects
    * into graphics files (and later buffers). For now, it is limited

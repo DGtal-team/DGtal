@@ -44,7 +44,9 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/geometry/nd/volumetric/CSeparableMetric.h"
+#include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,48 +57,54 @@ namespace DGtal
   /**
    * Description of template class 'DistanceTransformation' <p>
    * \brief Aim: Implementation of the linear in time distance
-   * transformation for a class of separable metrics (see
-   * SeparableMetric).
-   * 
+   * transformation.
+   *  
+   * @tparam Image an input image type.
+   * @tparam p the static integer value to define the l_p metric.
+   * @tparam IntegerLong (optional) type used to represent exact
+   * distance value according to p (default: DGtal::uint64_t)
+   *
    * Example:
    * @code
    * //Types definition
    * typedef ImageSelector<Domain, unsigned int>::Type Image; //image with "unsigned in value type
-   * typedef ImageSelector<Domain, long int>::Type ImageLong; //output image with long int value type
    *
-   * typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t,2> L_2; //L_2 = Euclidean metric
-   *
-   * DistanceTransformation<Image, ImageLong, L_2> dt; 
+   * //Distance transformation for the l_2 metric
+   * typedef DistanceTransformation<Image, 2> DTl2; 
+   * DTl2 dt; 
    *
    * // ...
    * //Construction of an instance "image" of Image (with an io reader for instance)
    * // ...
    *
    * //EDT computation
-   * ImageLong result = dt.compute(image);
+   * DTl2::OutputImage result = dt.compute(image);
    *
    * @endcode  
    */
-  template <typename TImage, typename TImageOutput, typename TSeparableMetric >
+  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::uint64_t >
   class DistanceTransformation
   {
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
-			
-    ///@todo check image concept
-    typedef TImage Image;
-    typedef TImageOutput ImageOutput;
-    typedef TSeparableMetric SeparableMetric;
-    typedef typename TSeparableMetric::InternalValue InternalValue;
+    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    BOOST_CONCEPT_ASSERT(( CInteger<IntegerLong> ));
+    
+
+    ///Type of resulting image
+    typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerLong > OutputImage;
+  
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
     typedef typename Image::Integer Integer;
     typedef typename Image::Domain Domain;
-
+  
+    ///We construct the type associated to the separable metric
+    typedef SeparableMetricTraits<  Integer ,  IntegerLong , p > SeparableMetric;
+  
 
     /**
      * Default Constructor
@@ -148,11 +156,12 @@ namespace DGtal
      * check that the output image pixel range is ok with respect to
      * the input image range and the SeparableMetric.
      *
-     * Warning and advices are print in the trace system.
+     * Warning and advices are printed in the trace system.
      *
      * @param aImage the image used to check the type consistency.
+     * @return true if a warning has been raised. 
      */
-    void checkTypesValidity(const Image & aImage);
+    bool checkTypesValidity(const Image & aImage);
 
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
@@ -165,7 +174,7 @@ namespace DGtal
      * @return the distance transformation image with the Internal format.
      */
     template <typename ForegroundPredicate>
-    ImageOutput compute(const Image & inputImage, const ForegroundPredicate & predicate  );
+    OutputImage compute(const Image & inputImage, const ForegroundPredicate & predicate  );
 
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
@@ -175,7 +184,7 @@ namespace DGtal
      * @param inputImage the input image
      * @return the distance transformation image with the Internal format.
      */
-    ImageOutput compute(const Image & inputImage )
+    OutputImage compute(const Image & inputImage )
     {
       return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
     };
@@ -193,19 +202,19 @@ namespace DGtal
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep(const Image & aImage, ImageOutput & output, const ForegroundPredicate &predicate) const;
+    void computeFirstStep(const Image & aImage, OutputImage & output, const ForegroundPredicate &predicate) const;
 
     /** 
      * Compute the 1D DT associated to the first step.
      * 
      * @param aImage the input image
      * @param output the output image  with the first step DT values
-     * @param starting a point to specify the starting point of the 1D row
+     * @param row a point to specify the starting point of the 1D row
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep1D (const Image & aImage, ImageOutput & output, const Point &starting, const ForegroundPredicate &predicate) const;
+    void computeFirstStep1D (const Image & aImage, OutputImage & output, const Point &row, const ForegroundPredicate &predicate) const;
 
     /** 
      *  Compute the other steps of the separable distance transformation.
@@ -215,21 +224,19 @@ namespace DGtal
      * @param output the output image 
      * @param dim the dimension to process
      */		
-    void computeOtherSteps(const ImageOutput & inputImage, ImageOutput & output, const Dimension dim)const;
+    void computeOtherSteps(const OutputImage & inputImage, OutputImage & output, const Dimension dim)const;
 
     /** 
      * Compute the 1D DT associated to the steps except the first one.
      * 
      * @param aImage the input image
      * @param output the output image  with the  DT values
-     * @param startingPoint a point to specify the starting point of the 1D row
+     * @param row a point to specify the starting point of the 1D row
      * @param dim the dimension to process
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    void computeOtherStep1D (const ImageOutput & input, ImageOutput & output,
-			     const Point &startingPoint, const Dimension dim, 
-			     Integer s[], Integer t[]) const;
+    void computeOtherStep1D (const OutputImage & input, OutputImage & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
 
 
     // ------------------- Private members ------------------------
@@ -248,10 +255,8 @@ namespace DGtal
     Point myExtent;
 
     ///Value to act as a +infinity value
-    InternalValue myInfinity;
+    IntegerLong myInfinity;
 
-    ///Copy of the internal domain
-    Domain myDomain;
 
   }; // end of class DistanceTransformation
 

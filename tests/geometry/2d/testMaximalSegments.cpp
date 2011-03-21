@@ -277,10 +277,9 @@ bool testOnePoint()
 	std::vector<Point> curve;
 	curve.push_back(Point(5,5));
 	try {
-
-		trace.beginBlock("Digital curve having one point");
-		PrimitiveType primitive;
-		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
+	  PrimitiveType primitive;
+	  trace.beginBlock("Digital curve having one point");
+	  DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
 		DGtalBoard aBoard;
 		aBoard << curve.at(0);
@@ -289,9 +288,9 @@ bool testOnePoint()
 		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
 																				i != theDecomposition.end(); ++i ) 
 			{
-				PrimitiveType primitive(*i);
-				trace.info() << primitive << endl;
-				aBoard << primitive; 
+				PrimitiveType primitive2(*i);
+				trace.info() << primitive2 << endl;
+				aBoard << primitive2; 
 				
 			} 
 		aBoard.saveSVG("testOnePoint.svg");

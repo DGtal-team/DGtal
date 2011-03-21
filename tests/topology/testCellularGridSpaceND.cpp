@@ -30,7 +30,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/SurfelNeighborhood.h"
+#include "DGtal/helpers/Shapes.h"
+#include "DGtal/helpers/Surfaces.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -182,6 +190,121 @@ bool testCellularGridSpaceND()
   return nbok == nb;
 }
 
+
+template <typename KSpace>
+bool testSurfelAdjacency()
+{
+  typedef typename KSpace::Integer Integer;
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::SCell SCell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::DirIterator DirIterator;
+  typedef typename KSpace::Cells Cells;
+  typedef typename KSpace::SCells SCells;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing block KSpace instantiation and scan ..." );
+  KSpace K;
+  int xlow[ 4 ] = { -3, -3, -3, -3 };
+  int xhigh[ 4 ] = { 5, 3, 3, 3 };
+  Point low( xlow );
+  Point high( xhigh ); 
+  bool space_ok = K.init( low, high, true );
+  nbok += space_ok ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init( low, high )" << std::endl;
+  trace.info() << "K.dim()=" << K.dimension << endl;
+  trace.endBlock();
+  trace.beginBlock ( "Testing surfel adjacency ..." );
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
+  for ( Dimension i = 0; i < K.dimension; ++i )
+    for ( Dimension j = 0; j < K.dimension; ++j )
+      if ( i != j )
+	trace.info() << "(" << i << "," << j << ")=" 
+		     << ( SAdj.getAdjacency( i, j ) ? "i2e" : "e2i" );
+  trace.info() << endl;
+  trace.endBlock();
+
+  int spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
+  Point kp( spel );
+  SCell sspel = K.sCell( kp, K.POS );
+  trace.beginBlock ( "Testing surfel directness ..." );
+  for ( Dimension k = 0; k < K.dimension; ++k )
+    {
+      SCell surfel = K.sIncident( sspel, k, true );
+      SCell innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
+      trace.info() << "spel=" << sspel << " surfel=" << surfel
+		   << " innerspel=" << innerspel << endl;
+      nbok += sspel == innerspel ? 1 : 0; 
+      nb++;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+		   << "spel == innerspel" << std::endl;
+      surfel = K.sIncident( sspel, k, false );
+      innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
+      trace.info() << "spel=" << sspel << " surfel=" << surfel
+		   << " innerspel=" << innerspel << endl;
+      nbok += sspel == innerspel ? 1 : 0; 
+      nb++;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+		   << "spel == innerspel" << std::endl;
+    }
+  trace.endBlock();
+
+  SurfelNeighborhood<KSpace> SN;
+  trace.beginBlock ( "Testing surfel neighborhood ..." );
+  SCell surfel = K.sIncident( sspel, 0, false );
+  SN.init( &K, &SAdj, surfel );
+  trace.info() << "surfel      =" << surfel << endl;
+  trace.info() << "follower1(+)=" << SN.follower1( 1, true ) << endl;
+  trace.info() << "follower2(+)=" << SN.follower2( 1, true ) << endl;
+  trace.info() << "follower3(+)=" << SN.follower3( 1, true ) << endl;
+  trace.info() << "follower1(-)=" << SN.follower1( 1, false ) << endl;
+  trace.info() << "follower2(-)=" << SN.follower2( 1, false ) << endl;
+  trace.info() << "follower3(-)=" << SN.follower3( 1, false ) << endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing surface tracking ..." );
+  typedef SpaceND< KSpace::dimension, Integer > Space;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  Domain domain( low, high );
+  DigitalSet shape_set( domain );
+  int center[ 4 ] = { 1, 0, 0, 0 }; // pixel
+  Point pcenter( center );
+  Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
+  trace.info() << "surfel      = " << surfel << endl;
+  SCell other1, other2;
+  SN.getAdjacentOnDigitalSet( other1, shape_set, 1, K.sDirect( surfel, 1 ) );
+  SN.getAdjacentOnDigitalSet( other2, shape_set, 1, !K.sDirect( surfel, 1 ) );
+  trace.info() << "directNext  = " << other1 << endl;
+  trace.info() << "indirectNext= " << other2 << endl;
+  std::set<SCell> bdry;
+  Surfaces<KSpace>::trackBoundary( bdry,
+				   K, SAdj, shape_set, surfel );
+  trace.info() << "tracking finished, size=" << bdry.size() 
+	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+  nbok += bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "bdry.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+	       << std::endl;
+  std::set<SCell> bdry_direct;
+  Surfaces<KSpace>::trackClosedBoundary( bdry_direct,
+					 K, SAdj, shape_set, surfel );
+  trace.info() << "fast direct tracking finished, size=" << bdry_direct.size() 
+	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+  nbok += bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+	       << std::endl;
+  
+  trace.endBlock();
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -197,8 +320,11 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<3> K3;
   typedef KhalimskySpaceND<4> K4;
   bool res = testCellularGridSpaceND<K2>()
-   && testCellularGridSpaceND<K3>()
-   && testCellularGridSpaceND<K4>();
+    && testCellularGridSpaceND<K3>()
+    && testCellularGridSpaceND<K4>()
+    && testSurfelAdjacency<K2>()
+    && testSurfelAdjacency<K3>()
+    && testSurfelAdjacency<K4>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

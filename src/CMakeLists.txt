@@ -28,12 +28,30 @@ install(TARGETS ${LIBDGTAL_NAME}
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
-   include(DGtal/inventor/ModuleSRC.txt)
-   add_library ( ${LIBDGTALIV_NAME}  ${DGTALIV_SRC} )
-   target_link_libraries( ${LIBDGTALIV_NAME}  ${DGtalLibDependencies} )
-   install(TARGETS ${LIBDGTALIV_NAME} 
+
+	
+
+if ( WITH_VISU3D_IV  AND WITH_VISU3D_QGLVIEWER )
+    include(DGtal/inventor/ModuleSRC.txt)
+    include(DGtal/3dViewer/ModuleSRC.txt)		
+    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
+elseif ( WITH_VISU3D_IV  )
+    include(DGtal/inventor/ModuleSRC.txt)
+    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALIV_SRC} )
+elseif ( WITH_VISU3D_QGLVIEWER  )
+    include(DGtal/3dViewer/ModuleSRC.txt)			
+    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALQGLV_SRC} )
+endif( WITH_VISU3D_IV  AND WITH_VISU3D_QGLVIEWER )
+
+
+
+
+if( WITH_VISU3D )
+target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
+install(TARGETS ${LIBDGTALVISU3D_NAME} 
            RUNTIME DESTINATION bin
            LIBRARY DESTINATION lib
            ARCHIVE DESTINATION lib)
-endif ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
+endif( WITH_VISU3D )
+
+

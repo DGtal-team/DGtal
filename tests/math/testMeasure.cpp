@@ -99,10 +99,18 @@ void testUnitSquareCentroid()
 
 int main(int argc, char **argv)
 {
-
-    testUnitSquare();
-    testUnitSquareCentroid();
-    return 0;
+  trace.beginBlock ( "Testing class MeasureOfStraightLines" );
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
+  
+  testUnitSquare();
+  testUnitSquareCentroid();
+  
+  trace.endBlock();
+  
+  return 0;
 }
 
 /** @ingroup Tests **/

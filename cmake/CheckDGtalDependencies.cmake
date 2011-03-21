@@ -40,7 +40,7 @@ IF(MAGICK++_FOUND)
   message(STATUS "(optional) GraphicsMagick++ found." )
   ADD_DEFINITIONS("-DWITH_MAGICK ")
  SET(DGtalLibDependencies ${DGtalLibDependencies} ${MAGICK++_LIBRARIES})
-ELSE(MAGICK++_FOUND)
+ ELSE(MAGICK++_FOUND)
    message(STATUS "(optional) GraphicsMagick++ not found." )
 ENDIF(MAGICK++_FOUND)
 
@@ -73,13 +73,13 @@ else ( COIN3D_FOUND )
    message(STATUS "(optional) Coin3d not found." )
 endif ( COIN3D_FOUND )
 
-find_package(Qt4)
+find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL)
 if ( QT4_FOUND )
    message(STATUS  "(optional) Qt4 found. include=${QT_INCLUDE_DIR} libs=${QT_LIBRARIES}." )
    set(QT_USE_QTXML 1)
    ADD_DEFINITIONS("-DWITH_QT4 ")
    include( ${QT_USE_FILE})
-   SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES})
+   SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
 else ( QT4_FOUND )
    message(STATUS  "(optional) Qt4 not found." )
 endif ( QT4_FOUND )
@@ -96,3 +96,28 @@ endif ( SOQT_FOUND )
 
 
 
+
+if ( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
+    SET ( WITH_VISU3D_IV TRUE )
+    ADD_DEFINITIONS("-DWITH_VISU3D_IV")
+endif( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
+
+
+
+find_package(QGLVIEWER)
+if ( QGLVIEWER_FOUND AND QT4_FOUND AND QT_QTOPENGL_FOUND)
+  find_package(OpenGL REQUIRED)
+  message(STATUS  "(optional) libQGLViewer found. include=${QGLVIEWER_INCLUDE_DIR} Libs=${QGLVIEWER_LIBRARIES}." )
+  include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+  set ( WITH_VISU3D_QGLVIEWER TRUE )
+  ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
+  SET(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
+else ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
+  message(STATUS  "(optional) libQGLViewer not found (or Qt4 not found)." )
+endif ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
+
+
+
+set( WITH_VISU3D (WITH_VISU3D_QGLVIEWER OR WITH_VISU3D_IV))
+
+ 

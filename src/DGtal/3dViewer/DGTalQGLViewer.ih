@@ -1,0 +1,245 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DGTalQGLViewer.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/01/03
+ *
+ * Implementation of inline methods defined in DGTalQGLViewer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/io/CDrawableWithDGtalQGLViewer.h"
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+
+
+INLINE
+DGtal::DGTalQGLViewer & 
+DGtal::DGTalQGLViewer::operator<<(const QColor & aColor){
+  myDefaultColor=aColor;
+  return *this;
+}
+
+
+
+
+  /**
+   * Set the default color for future drawing.
+   *
+   * @param aColor: a QColor (allow to set a transparency value).
+   *
+   **/
+
+INLINE
+DGtal::DGTalQGLViewer & 
+DGtal::DGTalQGLViewer::operator<<(const DGTalQGLViewer::StreamKey  & key){
+  switch (key){
+  case updateDisplay:{
+    updateList();
+  }
+  case addNewList:{
+    createNewVoxelList();
+  }
+  }
+  return *this;
+}
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::createNewVoxelList(bool depthTest){
+  std::vector< voxelGL > v;
+  myVoxelSetList.push_back(v);
+  myListVoxelDepthTest.push_back(depthTest);
+  
+}
+
+INLINE
+void
+DGtal::DGTalQGLViewer::createNewLineList(){
+  std::vector< lineGL > v;
+  myLineSetList.push_back(v);
+}
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::createNewPointList(){
+  std::vector< pointGL > v;
+  myPointSetList.push_back(v);
+}
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::setFillColor(QColor aColor){
+  myCurrentFillColor=aColor;  
+}
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::setLineColor(QColor aColor){
+  myCurrentLineColor=aColor;  
+}
+
+
+INLINE
+QColor
+DGtal::DGTalQGLViewer::getFillColor(){
+  return myCurrentFillColor;  
+}
+
+INLINE
+QColor
+DGtal::DGTalQGLViewer::getLineColor(){
+  return myCurrentLineColor;  
+}
+
+
+
+
+template <typename TDrawableWithDGtalQGLViewer>
+INLINE
+DGtal::DGTalQGLViewer & 
+DGtal::DGTalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
+{
+  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalQGLViewer< TDrawableWithDGtalQGLViewer >));
+  
+  object.selfDrawQGL( *this );
+  return *this;
+}
+
+
+
+
+
+
+INLINE
+std::string
+DGtal::DGTalQGLViewer::getMode( const std::string & objectName ) const
+{
+  ModeMapping::const_iterator itm = myModes.find( objectName );
+  return itm == myModes.end() ? "" : itm->second;
+}
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
+  voxelGL v;
+  v.x=x;
+  v.y=y;
+  v.z=z;
+  v.R=aColor.red();
+  v.G=aColor.green();
+  v.B=aColor.blue();
+  v.T=aColor.alpha();
+  v.width=width;
+  
+  (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
+   
+}
+
+
+
+INLINE
+void
+DGtal::DGTalQGLViewer::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+  pointGL p;
+  p.x=x;
+  p.y=y;
+  p.z=z;
+  p.R=aColor.red();
+  p.G=aColor.green();
+  p.B=aColor.blue();
+  p.T=aColor.alpha();
+  p.size=size;
+  
+  (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
+   
+}
+
+INLINE
+void
+DGtal::DGTalQGLViewer::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+			       const QColor & aColor, double width){
+  lineGL l;
+  l.x1=x1;
+  l.y1=y1;
+  l.z1=z1;
+
+  l.x2=x2;
+  l.y2=y2;
+  l.z2=z2;
+
+  l.R=aColor.red();
+  l.G=aColor.green();
+  l.B=aColor.blue();
+  l.T=aColor.alpha();
+  l.width=width;
+  
+  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);  
+   
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'DGTalQGLViewer'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'DGTalQGLViewer' to write.
+ * @return the output stream after the writing.
+ */
+INLINE
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const DGTalQGLViewer & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

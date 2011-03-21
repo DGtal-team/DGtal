@@ -72,7 +72,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
   }
 }
 
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example distancetransform2D" );
 
@@ -103,25 +103,29 @@ int main( int argc, char** argv )
   //store squares distances)
   typedef ImageSelector<Z2i::Domain, long int>::Type ImageLong;
 
-  DistanceTransformation<Image, ImageLong, Z2i::L2Metric> dtL2;
-  DistanceTransformation<Image, ImageLong, Z2i::LinfMetric> dtLinf;
-  DistanceTransformation<Image, ImageLong, Z2i::L1Metric> dtL1;
-
-  ImageLong resultL2 = dtL2.compute ( image );
-  ImageLong resultLinf = dtLinf.compute ( image );
-  ImageLong resultL1 = dtL1.compute ( image );
+  typedef  DistanceTransformation<Image, 2> DTL2;
+  typedef  DistanceTransformation<Image, 0> DTLInf;
+  typedef  DistanceTransformation<Image, 1> DTL1;
+ 
+  DTL2 dtL2;
+  DTLInf dtLinf;
+  DTL1 dtL1;
+  
+  DTL2::OutputImage resultL2 = dtL2.compute ( image );
+  DTLInf::OutputImage resultLinf = dtLinf.compute ( image );
+  DTL1::OutputImage resultL1 = dtL1.compute ( image );
   
   unsigned int maxv=0;
   //We compute the maximum DT value on the Linf map
-  for ( ImageLong::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
+  for ( DTLInf::OutputImage::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
     if ( (*it) > maxv)  maxv = (*it);
   unsigned int maxv2=0;
   //We compute the maximum DT value on the L2 map
-  for ( ImageLong::ConstIterator it = resultL2.begin(), itend = resultL2.end();it != itend; ++it)
+  for ( DTL2::OutputImage::ConstIterator it = resultL2.begin(), itend = resultL2.end();it != itend; ++it)
     if ( (*it) > maxv2)  maxv2 = (*it);
   unsigned int maxv1=0;
   //We compute the maximum DT value on the L1 map
-  for ( ImageLong::ConstIterator it = resultL1.begin(), itend = resultL1.end();it != itend; ++it)
+  for ( DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend = resultL1.end();it != itend; ++it)
     if ( (*it) > maxv1)  maxv1 = (*it);
   
   

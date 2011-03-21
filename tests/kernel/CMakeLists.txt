@@ -13,7 +13,6 @@ SET(DGTAL_TESTS_SRC
    testCheckImageConcept
    testDGtalGMP
    testLinearAlgebra
-   testDomainRangeBench
    )
 
 SET(DGTAL_BENCH_SRC

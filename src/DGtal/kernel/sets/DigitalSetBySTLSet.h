@@ -50,6 +50,10 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#endif
+
 namespace DGtal
 {
 
@@ -319,6 +323,43 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      */
     void selfDraw(DGtalBoard & board ) const;
+
+
+
+
+#ifdef WITH_VISU3D_QGLVIEWER
+     /** 
+     * Default style.
+     */
+    struct DefaultDrawStyleQGL : public  DrawableWithDGtalQGLViewer 
+    {
+       virtual void selfDrawQGL(DGTalQGLViewer & viewer) const
+        {
+	  viewer.myModes[ "DigitalSetBySTLSet" ] = "";
+	}
+
+    };
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+  DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+  void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
+  void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
+  void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
+  
+
+
+
+
+
+#endif
 
 
     // ------------------------- Hidden services ------------------------------

@@ -42,6 +42,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
@@ -132,7 +133,7 @@ namespace DGtal
     ///@todo FIXME: si on décommente ça plante
     DGtalBoard myB;
     std::string myS;
-
+    
     // ------------------------- Internals ------------------------------------
   private:
 
