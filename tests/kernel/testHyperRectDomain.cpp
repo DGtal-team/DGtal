@@ -36,9 +36,9 @@
 #include <fstream>
 #include <algorithm>
 
-#include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 

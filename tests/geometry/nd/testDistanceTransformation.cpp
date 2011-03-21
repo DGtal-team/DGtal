@@ -37,7 +37,6 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
@@ -99,11 +98,10 @@ bool testDistanceTransformation()
     image.setValue ( a, 128 );
   }
 
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
 
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
   dt.checkTypesValidity ( image );
 
@@ -116,7 +114,7 @@ bool testDistanceTransformation()
 	      image.end(),
 	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
   
-  trace.info()<< endl;
+  
   
   ImageLong result = dt.compute ( image );
   
@@ -176,15 +174,13 @@ bool testDistanceTransformationBorder()
 
   randomSeeds(image, 19, 0);
 
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
-
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+ 
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
   dt.checkTypesValidity ( image );
 
- DGtalBoard board;
+  DGtalBoard board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Hue> ( board, 0, 150 );
   board.saveSVG ( "image-preDT-border.svg" );
@@ -254,11 +250,8 @@ bool testDistanceTransformation3D()
       image.setValue ( *it, 128 );
   }
 
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
-
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
   dt.checkTypesValidity ( image );
 
@@ -302,16 +295,14 @@ bool testTypeValidity()
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image ( a, b );
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
-
-  typedef SeparableMetricTraits<DGtal::int32_t, DGtal::uint32_t, 2> L_2;
-  DistanceTransformation<Image, ImageLong, L_2> dt;
+ 
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
   //No problem should be reported on the std:cerr.
   dt.checkTypesValidity ( image );
 
-  typedef SeparableMetricTraits<unsigned int, char, 34> L_34;
-  DistanceTransformation<Image, ImageLong, L_34> dt34;
+  DistanceTransformation<Image, 34> dt34;
 
   //Type problem should be reported.
   dt34.checkTypesValidity ( image );
@@ -348,23 +339,25 @@ bool testChessboard()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
-  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 0> L_infty;
-  typedef SeparableMetricTraits< DGtal::int32_t, DGtal::uint32_t, 1> L_1;
-
-  DistanceTransformation<Image, ImageLong, L_infty> dt;
-  DistanceTransformation<Image, ImageLong, L_1> dt1;
-
+  //L_infinity metric
+  typedef DistanceTransformation<Image, 0> DT;
+  DT dt;
+  
+  //L_1 metric
+  typedef DistanceTransformation<Image, 1> DT1;
+  DT1 dt1;
+  
   dt.checkTypesValidity ( image );
 
-  ImageLong result = dt.compute ( image );
-  ImageLong result1 = dt1.compute ( image );
+  DT::OutputImage result = dt.compute ( image );
+  DT1::OutputImage result1 = dt1.compute ( image );
 
   long int maxv = 0;
-  for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
+  for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
 
-  ImageLong::ConstIterator it = result.begin();
+  DT::OutputImage::ConstIterator it = result.begin();
 
   trace.warning() << result << "MaxV = " << maxv << endl;
   //We display the values on a 2D slice
@@ -378,20 +371,30 @@ bool testChessboard()
     std::cout << std::endl;
   }
 
+  trace.info()<< "Exporting to SVG"<<endl;
+
   DGtalBoard board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-linfty.svg" );
+  trace.info()<< "done"<<endl;
 
 
-	maxv = 0;
-  for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();it != itend; ++it)
-    if ( (*it) > maxv)
-      maxv = (*it);
 
+  trace.info()<< "max  L1"<<endl;
+  maxv = 0;
+  for ( DT1::OutputImage::Iterator it2 = result1.begin(), itend = result1.end();
+	it2 != itend; ++it2)
+    {
+      if ( result1(it2) > maxv)
+	maxv = (*it2);
+    }
+
+  trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
   result1.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-l1.svg" );
+  trace.info()<< "done"<<endl;
 
 
   trace.info() << result << endl;
@@ -412,7 +415,7 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testTypeValidity() && testDistanceTransformation(); // && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
+   bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

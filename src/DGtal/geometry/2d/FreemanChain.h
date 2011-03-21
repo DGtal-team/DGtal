@@ -928,7 +928,7 @@ namespace DGtal
           mc.increment( i );
           // cerr << "- i=" << i << " (" << clean_code.back()
           // 	   << it.getCode() << ") ";
-          unsigned int size_spike = 0;
+          size_spike = 0;
           unsigned int last_spike_idx = end_outer_spike.empty() ?
 	    start_idx :
 	    end_outer_spike.back();
@@ -1402,20 +1402,20 @@ namespace DGtal
       typename FreemanChain<TInteger>::ConstIterator it = begin();
       typename FreemanChain<TInteger>::ConstIterator it_end = end();
       // find first letters a and b.
-      uint code1 = it.getCode();
+      uint8_t code1 = it.getCode();
       it.next();
       while ( ( it != it_end ) && ( it.getCode() == code1 ) )
 	it.next();
       ASSERT( ( it != it_end )
 	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
-      uint code2 = it.getCode();
+      uint8_t code2 = it.getCode();
       // find third letter c.
       while ( ( it != it_end ) && ( ( it.getCode() == code1 )
 				    || ( it.getCode() == code2 ) ) )
 	it.next();
       ASSERT( ( it != it_end )
 	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-      unsigned int code3 = it.getCode();
+      uint8_t code3 = it.getCode();
       // find fourth letter d.
       while ( ( it != it_end ) && ( ( it.getCode() == code1 )
 				    || ( it.getCode() == code2 )
@@ -1423,7 +1423,7 @@ namespace DGtal
 	it.next();
       ASSERT( ( it != it_end )
 	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
-      unsigned int  code4 = it.getCode();
+      uint8_t  code4 = it.getCode();
       // define true c.
       it.previous();
       code3 = it.getCode();
@@ -1477,7 +1477,7 @@ namespace DGtal
           int code1 = it.getCode();
           it_suiv.nextInLoop();
           int code2 = it_suiv.getCode();
-          uint diff = ( code2 - code1 + 4 ) % 4;
+          uint8_t diff = ( code2 - code1 + 4 ) % 4;
           if ( diff == 1 )
             ++nb_ccw_turns;
           else

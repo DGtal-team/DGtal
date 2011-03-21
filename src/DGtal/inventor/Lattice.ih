@@ -183,25 +183,25 @@ DGtal::Lattice<TSpace>::operator= ( const Lattice<Space> & other )
 template <typename TSpace>
 inline
 void 
-DGtal::Lattice<TSpace>::init( Dimension n, Dimension m, double dh )
+DGtal::Lattice<TSpace>::init( Dimension aN, Dimension aM, double dh )
 {
-  ASSERT( n > 0 );
-  ASSERT( m > 0 );
-  if ( ( m != myM ) || ( n != myN ) )
+  ASSERT( aN > 0 );
+  ASSERT( aM > 0 );
+  if ( ( aM != myM ) || ( aN != myN ) )
     {
-      myN = n;
-      myM = m;
+      myN = aN;
+      myM = aM;
       if ( myX0 != 0 ) delete[] myX0;
       if ( myV != 0 ) delete[] myV;
-      myX0 = new double[ m ];
-      myV = new double[ m*n ];
+      myX0 = new double[ aM ];
+      myV = new double[ aM*aN ];
     }
-  for ( Dimension j = 0; j < m; j++ )
+  for ( Dimension j = 0; j < aM; j++ )
     myX0[ j ] = 0.0;
-  for ( Dimension i = 0; i < n; i++ )
+  for ( Dimension i = 0; i < aN; i++ )
     {
-      for ( Dimension j = 0; j < m; j++ )
-	myV[ m*i + j ] = ( j == ( i % m ) ) ? dh : 0.0;  
+      for ( Dimension j = 0; j < aM; j++ )
+	myV[ aM*i + j ] = ( j == ( i % aM ) ) ? dh : 0.0;  
     }
 }
 

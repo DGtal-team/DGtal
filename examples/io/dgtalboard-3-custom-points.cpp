@@ -55,7 +55,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
   }
 };
 
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example dgtalboard-3-custom-points" );
 

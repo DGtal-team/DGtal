@@ -52,8 +52,7 @@
 
 namespace DGtal
 {
-  typedef unsigned int uint;
-
+  
   typedef boost::uint16_t uint16_t;
   typedef boost::uint32_t uint32_t;
   typedef boost::uint64_t uint64_t;

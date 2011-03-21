@@ -45,7 +45,7 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example convex-and-concave-parts" );
 
@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   typedef MaximalSegments<DSS4> MDSSs4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, 
-	//and the list of elementary displacements. 
+  //and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
   
@@ -62,7 +62,7 @@ int main( int argc, char** argv )
   Contour4 theContour( ss );
 
   //Maximal Segments
-	DSS4 computer;
+  DSS4 computer;
   MDSSs4 theCover( theContour.begin(),theContour.end(),computer,false );
   Point p1( 0, 0 );
   Point p2( 48, 12 );
@@ -79,48 +79,48 @@ int main( int argc, char** argv )
   for ( MDSSs4::ConstIterator i = theCover.begin();
 	i != theCover.end(); ++i ) 
     {
-			//begin and end iterators
-			//(back points on the first point)
-			//(front points after the last point)
-			Contour4::ConstIterator front = i.getFront();
-			Contour4::ConstIterator back = i.getBack();	
-			//parameters
-			DSS4 segment(*i);
-			int mu = segment.getMu();
-			int omega = segment.getOmega();
+      //begin and end iterators
+      //(back points on the first point)
+      //(front points after the last point)
+      Contour4::ConstIterator front = i.getFront();
+      Contour4::ConstIterator back = i.getBack();	
+      //parameters
+      DSS4 segment(*i);
+      int mu = segment.getMu();
+      int omega = segment.getOmega();
 
-			//choose pen color
-			CustomPenColor* aPenColor;
-			if (back == theContour.begin()) {
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
-			} else {
-				--back;
-				//the front of the last segment points at the end
-				if (front == theContour.end()) {
-					aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
-				} else {
-					if ( (segment.getRemainder(*back)<mu-1)&&
-							 (segment.getRemainder(*front)<mu-1) ) {                //concave
-						aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
-					} else if ( (segment.getRemainder(*back)>mu+omega)&&
-									    (segment.getRemainder(*front)>mu+omega) ) {     //convex
-						aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
-					} else if ( (segment.getRemainder(*back)>mu+omega)&&
-									    (segment.getRemainder(*front)<mu-1) ) {         //convex to concave
-						aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
-					} else if ( (segment.getRemainder(*back)<mu-1)&&
-									    (segment.getRemainder(*front)>mu+omega) ) {     //concave to convex
-						aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
-					} else {                                                    //pb
-						aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
-					}
-				}
-			}
+      //choose pen color
+      CustomPenColor* aPenColor;
+      if (back == theContour.begin()) {
+	aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
+      } else {
+	--back;
+	//the front of the last segment points at the end
+	if (front == theContour.end()) {
+	  aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
+	} else {
+	  if ( (segment.getRemainder(*back)<mu-1)&&
+	       (segment.getRemainder(*front)<mu-1) ) {                //concave
+	    aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
+	  } else if ( (segment.getRemainder(*back)>mu+omega)&&
+		      (segment.getRemainder(*front)>mu+omega) ) {     //convex
+	    aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
+	  } else if ( (segment.getRemainder(*back)>mu+omega)&&
+		      (segment.getRemainder(*front)<mu-1) ) {         //convex to concave
+	    aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+	  } else if ( (segment.getRemainder(*back)<mu-1)&&
+		      (segment.getRemainder(*front)>mu+omega) ) {     //concave to convex
+	    aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+	  } else {                                                    //pb
+	    aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
+	  }
+	}
+      }
 
 			 
-			// draw each segment
-			aBoard << CustomStyle( aStyleName, aPenColor )
-						 << segment; 
+      // draw each segment
+      aBoard << CustomStyle( aStyleName, aPenColor )
+	     << segment; 
 
     } 
   aBoard.saveSVG("convex-and-concave-parts.svg");

@@ -214,8 +214,6 @@ using namespace DGtal::Z2i;
 
 bool testLayers()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
 
   GradientColorMap<int> cmap_grad( 0, 30 );
   cmap_grad.addColor( DGtalBoard::Color( 128, 128, 255 ) );

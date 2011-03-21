@@ -48,6 +48,13 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#endif
+
+
+
 namespace DGtal
 {
 
@@ -475,6 +482,9 @@ namespace DGtal
         }
       };
 
+    
+
+    
 
       // --------------- CDrawableWithDGtalBoard realization ------------------
     public:
@@ -513,7 +523,54 @@ namespace DGtal
       void selfDrawWithAdjacencies(DGtalBoard & board ) const;
 
 
-      // ------------------------- Internals ------------------------------------
+
+       
+#ifdef WITH_VISU3D_QGLVIEWER
+    
+
+  private:
+       /**
+       * Default style.
+       */
+    struct DefaultDrawStyleQGL : public  DrawableWithDGtalQGLViewer 
+    {
+        virtual void selfDrawQGL(DGTalQGLViewer & viewer) const
+        {
+	  viewer.myModes[ "Object" ] = "";
+         }
+      };
+
+  public:
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalQGLViewer * defaultStyleQGL( std::string mode = "" ) const;
+    
+       /**
+       * Draw the object on a DGtalBoard board.
+       * @param board the output board where the object is drawn.
+       */
+      void selfDrawQGL( DGTalQGLViewer & viewer ) const;
+
+
+      template<typename Functor>
+      void selfDrawWithAdjacenciesQGL( DGTalQGLViewer & viewer ) const;
+
+      /**
+       * Draw the object (with Adjacency relationships) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       */
+      void selfDrawWithAdjacenciesQGL( DGTalQGLViewer & viewer ) const;
+
+
+    
+
+#endif
+
+
+
+      // ------------------------- internals ------------------------------------
     private:
 
   }; // end of class Object

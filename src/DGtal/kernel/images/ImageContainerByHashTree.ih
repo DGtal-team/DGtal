@@ -459,6 +459,7 @@ namespace DGtal
       {
         return ( i ) / dim;
       }
+    return 0;
   }
 
 

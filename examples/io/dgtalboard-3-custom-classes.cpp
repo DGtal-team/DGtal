@@ -39,7 +39,7 @@ using namespace DGtal;
 using namespace DGtal::Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example dgtalboard-3-custom-classes" );
 

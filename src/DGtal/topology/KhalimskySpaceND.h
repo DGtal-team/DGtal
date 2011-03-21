@@ -72,7 +72,7 @@ namespace DGtal
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
-    PointVector< dim, TInteger > myCoordinates;
+    Point myCoordinates;
 
     /**
      * Constructor.
@@ -143,7 +143,7 @@ namespace DGtal
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
-    PointVector< dim, TInteger > myCoordinates;
+    Point myCoordinates;
     bool myPositive;
 
     /**
@@ -395,10 +395,20 @@ namespace DGtal
   public:
 
     /**
-     * @param k a coordinate (from 0 to 'dim()-1').
-     * @return the width of the space in the [k]-dimension.
+       @param k a coordinate (from 0 to 'dim()-1').
+       @return the width of the space in the [k]-dimension.
      */
     Size size( Dimension k ) const;
+    /**
+       @param k a coordinate (from 0 to 'dim()-1').
+       @return the minimal coordinate in the [k]-dimension.
+     */
+    Integer min( Dimension k ) const;
+    /**
+       @param k a coordinate (from 0 to 'dim()-1').
+       @return the maximal coordinate in the [k]-dimension.
+     */
+    Integer max( Dimension k ) const;
 
     // ----------------------- Cell creation services --------------------------
   public:
@@ -1181,6 +1191,33 @@ namespace DGtal
     */
     SCells sProperNeighborhood( const SCell & cell ) const;
 
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param up if 'true' the orientation is forward along axis
+       [k], otherwise backward.
+ 
+       @return the adjacent element to [p] along axis [k] in the given
+       direction and orientation.
+       
+       @note It is an alias to 'up ? uGetIncr( p, k ) : uGetDecr( p, k )'.
+    */
+    Cell uAdjacent( const Cell & p, Dimension k, bool up ) const;
+    /**
+       NB: you can go out of the space.
+       @param p any cell.
+       @param k the coordinate that is changed.
+       @param up if 'true' the orientation is forward along axis
+       [k], otherwise backward.
+ 
+       @return the adjacent element to [p] along axis [k] in the given
+       direction and orientation.
+       
+       @note It is an alias to 'up ? sGetIncr( p, k ) : sGetDecr( p, k )'.
+    */
+    SCell sAdjacent( const SCell & p, Dimension k, bool up ) const;
+
     // ----------------------- Incidence services --------------------------
   public:
 
@@ -1188,7 +1225,7 @@ namespace DGtal
        @param c any unsigned cell.
        @param k any coordinate.
 
-       @param forward if 'true' the orientation is forward along axis
+       @param up if 'true' the orientation is forward along axis
        [k], otherwise backward.
        
        @return the forward or backward unsigned cell incident to [c]
@@ -1206,7 +1243,7 @@ namespace DGtal
        @param c any signed cell.
        @param k any coordinate.
 
-       @param forward if 'true' the orientation is forward along axis
+       @param up if 'true' the orientation is forward along axis
        [k], otherwise backward.
        
        @return the forward or backward signed cell incident to [c]

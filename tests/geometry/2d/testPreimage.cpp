@@ -60,7 +60,7 @@ using namespace LibBoard;
 
 /**** small test, to be completed *******/
 
-int main(int argc, char **argv)
+int main()
 {
 
   typedef int Coordinate;
@@ -109,11 +109,11 @@ int main(int argc, char **argv)
       trace.info() << thePreimage << std::endl;
 
       //draw range
-      Point P(bInf.at(i));
-      Point Q(bSup.at(i));
-      board.fillCircle(P[0], P[1], 0.1);
-      board.fillCircle(Q[0], Q[1], 0.1);
-      board.drawLine(P[0], P[1], Q[0], Q[1]);
+      Point P2(bInf.at(i));
+      Point Q2(bSup.at(i));
+      board.fillCircle(P2[0], P2[1], 0.1);
+      board.fillCircle(Q2[0], Q2[1], 0.1);
+      board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }
@@ -168,11 +168,11 @@ int main(int argc, char **argv)
       trace.info() << thePreimage2 << std::endl;
 
       //draw range
-      Point P(bInf.at(i));
-      Point Q(bSup.at(i));
-      board.fillCircle(P[0], P[1], 0.1);
-      board.fillCircle(Q[0], Q[1], 0.1);
-      board.drawLine(P[0], P[1], Q[0], Q[1]);
+      Point P2(bInf.at(i));
+      Point Q2(bSup.at(i));
+      board.fillCircle(P2[0], P2[1], 0.1);
+      board.fillCircle(Q2[0], Q2[1], 0.1);
+      board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }
@@ -248,11 +248,11 @@ int main(int argc, char **argv)
       trace.info() << thePreimage << std::endl;
 
       //draw range
-      Point P(bInf.at(i));
-      Point Q(bSup.at(i));
-      board.fillCircle(P[0], P[1], 2);
-      board.fillCircle(Q[0], Q[1], 2);
-      board.drawLine(P[0], P[1], Q[0], Q[1]);
+      Point P2(bInf.at(i));
+      Point Q2(bSup.at(i));
+      board.fillCircle(P2[0], P2[1], 2);
+      board.fillCircle(Q2[0], Q2[1], 2);
+      board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }

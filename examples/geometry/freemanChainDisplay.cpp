@@ -56,7 +56,7 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   
   typedef SpaceND<2> Space2;

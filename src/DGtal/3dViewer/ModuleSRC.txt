@@ -1,0 +1,7 @@
+## Sources associated to the module helpers
+##
+
+SET(DGTALQGLV_SRC ${DGTALQGLV_SRC} 
+	DGtal/3dViewer/DGTalQGLViewer)
+
+

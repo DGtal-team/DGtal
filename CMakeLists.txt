@@ -81,7 +81,9 @@ ADD_CUSTOM_TARGET(uninstall
 # Defines some variables
 # -----------------------------------------------------------------------------
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
-set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
+set ( LIBDGTALVISU3D_NAME "DGtal-visu3d${SUFFIXLIB}" )
+
+
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options
@@ -126,7 +128,7 @@ ENABLE_TESTING()
 include(CTest)
 if (BUILD_TESTING)
   if (CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -pg -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCXX)
   if (CMAKE_COMPILER_IS_GNUCC)
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
