@@ -84,23 +84,23 @@ void
 DGtal::SurfelNeighborhood<TKSpace>::
 init( const KSpace* space, 
       const SurfelAdjacency<KSpace::dimension>* adj,
-      const SCell & surfel )
+      const SCell & aSurfel )
 {
   mySpace = space;
   mySurfelAdj = adj;
-  setSurfel( surfel );
+  setSurfel( aSurfel );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 inline
 void 
 DGtal::SurfelNeighborhood<TKSpace>::
-setSurfel( const SCell & surfel )
+setSurfel( const SCell & aSurfel )
 {
   ASSERT( mySpace != 0 );
-  mySurfel = surfel;
-  myOrthDir = mySpace->sOrthDir( surfel );
-  myOrthDirect = mySpace->sDirect( surfel, myOrthDir );
+  mySurfel = aSurfel;
+  myOrthDir = mySpace->sOrthDir( aSurfel );
+  myOrthDirect = mySpace->sDirect( aSurfel, myOrthDir );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

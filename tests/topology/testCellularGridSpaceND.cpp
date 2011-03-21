@@ -276,10 +276,8 @@ bool testSurfelAdjacency()
   Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
   trace.info() << "surfel      = " << surfel << endl;
   SCell other1, other2;
-  unsigned int move_direct = 
-    SN.getAdjacentOnDigitalSet( other1, shape_set, 1, K.sDirect( surfel, 1 ) );
-  unsigned int move_indirect = 
-    SN.getAdjacentOnDigitalSet( other2, shape_set, 1, !K.sDirect( surfel, 1 ) );
+  SN.getAdjacentOnDigitalSet( other1, shape_set, 1, K.sDirect( surfel, 1 ) );
+  SN.getAdjacentOnDigitalSet( other2, shape_set, 1, !K.sDirect( surfel, 1 ) );
   trace.info() << "directNext  = " << other1 << endl;
   trace.info() << "indirectNext= " << other2 << endl;
   std::set<SCell> bdry;

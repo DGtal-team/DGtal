@@ -122,17 +122,17 @@ namespace DGtal
     Lattice<Space> & operator= ( const Lattice<Space> & other );
 
     /**
-     * Defines the standard lattice when n=m, the standard injection
-     * when n < m, and when m > n, vectors are overlapping.
+     * Defines the standard lattice when aN=aM, the standard injection
+     * when aN < aM, and when aM > aN, vectors are overlapping.
      *
-     * @param n the dimension of the lattice space
+     * @param aN the dimension of the lattice space
      *
-     * @param m the dimension of the target space where the lattice is
+     * @param aM the dimension of the target space where the lattice is
      * represented.
      *
      * @param dh the length of the elementary displacement.
      */
-    void init( Dimension n, Dimension m, double dh = 1.0 );
+    void init( Dimension aN, Dimension aM, double dh = 1.0 );
 
     /**
      * Resets the lattice.

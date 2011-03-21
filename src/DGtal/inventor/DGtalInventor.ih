@@ -177,7 +177,7 @@ void
 DGtal::DGtalInventor<TSpace>::drawPoint( const Point & c, const float* n )
 {
   Point q;
-  for ( typename Point::Dimension i = 0; i < c.dimension; ++i )
+  for ( Dimension i = 0; i < c.dimension; ++i )
     q[ i ] = 2*c[ i ] + 1;
   drawCell( q, n );
 }
@@ -227,7 +227,6 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
   typedef float vec3[ 3 ];
   typedef DGtal::int32_t int32;
   typedef DGtal::uint32_t uint32;
-  typedef typename Point::Dimension Dimension;
 
   SoShapeHints *myShapeHints = new SoShapeHints;
   myShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;//COUNTERCLOCKWISE; //UNKNOWN_ORDERING; //COUNTERCLOCKWISE;
@@ -353,23 +352,23 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
       node_squares->addChild( myCoords ); 
 
       // Normals
-      SoNormal* myNormals = new SoNormal;
-      myNormals->vector.setValues( 0, idx, normals );
+      SoNormal* iNormals = new SoNormal;
+      iNormals->vector.setValues( 0, idx, normals );
       delete[] normals;
-      node_squares->addChild( myNormals );
-      SoNormalBinding *myNormalBinding = new SoNormalBinding;
-      myNormalBinding->value = SoNormalBinding::PER_FACE; 
+      node_squares->addChild( iNormals );
+      SoNormalBinding *iNormalBinding = new SoNormalBinding;
+      iNormalBinding->value = SoNormalBinding::PER_FACE; 
       // instead of SoNormalBinding::PER_VERTEX_INDEXED;
-      node_squares->addChild( myNormalBinding );
+      node_squares->addChild( iNormalBinding );
 
       // Colors
-      SoMaterial* myMaterials = new SoMaterial;
-      myMaterials->diffuseColor.setValues( 0, idx, colors );
+      SoMaterial* iMaterials = new SoMaterial;
+      iMaterials->diffuseColor.setValues( 0, idx, colors );
       delete[] colors;
-      node_squares->addChild( myMaterials );
-      SoMaterialBinding* myMaterialBinding = new SoMaterialBinding;
-      myMaterialBinding->value = SoMaterialBinding::PER_FACE;
-      node_squares->addChild( myMaterialBinding );
+      node_squares->addChild( iMaterials );
+      SoMaterialBinding* iMaterialBinding = new SoMaterialBinding;
+      iMaterialBinding->value = SoMaterialBinding::PER_FACE;
+      node_squares->addChild( iMaterialBinding );
 
       // Faces
       SoFaceSet* face_set = new SoFaceSet;
