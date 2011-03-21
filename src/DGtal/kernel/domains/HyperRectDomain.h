@@ -42,6 +42,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#endif
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
@@ -49,6 +53,11 @@
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/io/DGtalBoard.h"
+
+
+
+
+
 
 namespace DGtal
 {
@@ -495,6 +504,7 @@ namespace DGtal
      * @param asGrid to choose between paving vs. grid representation.
      */
     void selfDrawAsGrid( DGtalBoard & board) const;
+
     
     /**
      * Draw the object (as a Grid) on a LiBoard board.
@@ -503,6 +513,29 @@ namespace DGtal
      */
     void selfDrawAsPaving( DGtalBoard & board ) const;
     
+
+
+
+#ifdef WITH_VISU3D_QGLVIEWER
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
+    void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
+    void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
+    void selfDrawAsPavingPointsQGL( DGTalQGLViewer & viewer ) const;
+
+#endif
+
+
     
     /**
      * Writes/Displays the object on an output stream.
@@ -531,6 +564,36 @@ namespace DGtal
     /// Range
     ConstRange myRange;
   }; // end of class HyperRectDomain
+
+
+
+
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+
+#ifdef WITH_VISU3D_QGLVIEWER
+
+  struct DrawPavingVoxel3D : public DrawableWithDGtalQGLViewer {
+      void selfDrawQGL( DGTalQGLViewer & viewer ) const
+      {
+	viewer.myModes[ "HyperRectDomain" ] = "Paving";
+      }
+  };
+  
+  
+  struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
+    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    {
+      viewer.myModes[ "HyperRectDomain" ] = "Grid";
+    }
+  };
+
+
+
+#endif
 
 
   /**
@@ -565,7 +628,7 @@ namespace DGtal
       board.myModes[ "HyperRectDomain" ] = "Paving";
     }
   };
-
+  
 
 } // namespace DGtal
 

@@ -54,6 +54,11 @@
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/CInteger.h"
 
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#endif
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -585,7 +590,7 @@ namespace DGtal
       }
     };
 
-
+    
     struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
@@ -596,6 +601,7 @@ namespace DGtal
     };
 
 
+
     // --------------- CDrawableWithDGtalBoard realization -------------------
   public:
 
@@ -604,6 +610,8 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+
+
     
     /**
      * @return the style name used for drawing this object.
@@ -632,8 +640,24 @@ namespace DGtal
     void selfDrawAsGrid( DGtalBoard & board ) const;
     
     
+#ifdef WITH_VISU3D_QGLVIEWER
 
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
 
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawQGL ( DGTalQGLViewer & viewer ) const;
+    void selfDrawQGL ( DGTalQGLViewer & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
+    void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
+
+#endif
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -691,6 +715,48 @@ namespace DGtal
       board.myModes[ "PointVector" ] = "Grid";
     }
   };
+
+
+
+
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+
+#ifdef WITH_VISU3D_QGLVIEWER
+
+  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
+      void selfDrawQGL( DGTalQGLViewer & viewer ) const
+      {
+	viewer.myModes[ "PointVector" ] = "Paving";
+      }
+  };
+  
+  
+  struct DrawGridVoxel : public DrawableWithDGtalQGLViewer {
+    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    {
+      viewer.myModes[ "PointVector" ] = "Grid";
+    }
+  };
+
+  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
+
+    virtual void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    {
+	//aBoard.setPenColor(DGtalBoard::Color::Black);
+	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+      }
+    };
+
+
+
+#endif
+
+
+
+
 
   /// Operator <<
   template<DGtal::uint32_t dim, typename Integer>

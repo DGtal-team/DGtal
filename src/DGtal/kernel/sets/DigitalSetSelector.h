@@ -49,7 +49,9 @@
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
-
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#endif
 namespace DGtal
 {
 
@@ -89,6 +91,7 @@ namespace DGtal
      * Adequate digital set representation for the given preferences.
      */
     typedef DigitalSetBySTLSet<Domain> Type;
+
 
   }; // end of class DigitalSetSelector
 

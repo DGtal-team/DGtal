@@ -43,9 +43,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"

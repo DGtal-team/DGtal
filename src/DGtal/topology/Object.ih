@@ -866,6 +866,86 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(DGtalBoard
   }
 }
 
+
+
+
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//   3D DRAWING 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+#ifdef WITH_VISU3D_QGLVIEWER
+
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::DrawableWithDGtalQGLViewer *
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleQGL( std::string ) const
+{
+  return new DefaultDrawStyleQGL;
+}
+
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( DGTalQGLViewer & viewer ) const
+{
+  std::string mode = viewer.getMode( this->styleName() );
+  if ( mode == "" )
+    pointSet().selfDrawQGL( viewer );
+  else
+    if ( mode == "DrawAdjacencies" )
+    {
+      pointSet().selfDrawQGL( viewer );
+      selfDrawWithAdjacenciesQGL( viewer );
+    }
+    else
+      ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
+}
+
+
+
+template<typename TDigitalTopology, typename TDigitalSet>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(DGTalQGLViewer & viewer) const
+{
+  Point p;
+  for (typename TDigitalSet::ConstIterator it = pointSet().begin();
+      it != pointSet().end();
+      ++it)
+  {
+    //Brute-force scan of the neighborhood.
+    SmallObject neig = this->properNeighborhood(*it);
+    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
+        it2 != neig.pointSet().end();
+        ++it2)
+    {
+      p = (*it2) - (*it);
+      p.selfDrawQGL(viewer, (*it));
+    }
+  }
+}
+
+
+
+
+#endif
+
+
+
+
+
+
 /*
 template<typename TDigitalTopology, typename TDigitalSet>
 inline

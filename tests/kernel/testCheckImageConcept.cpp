@@ -28,9 +28,9 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "DGtal/helpers/StdDefs.h"
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/images/ImageContainerBySTLMap.h"
 #ifdef WITH_ITK

@@ -557,6 +557,84 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(DGtalBoard & aBoard) const
 
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//    3D SelfDisplay
+///////////////////////////////////////////////////////////////////////////////
+
+
+#ifdef WITH_VISU3D_QGLVIEWER
+
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template<typename Domain>
+inline
+DGtal::DrawableWithDGtalQGLViewer *
+DGtal::DigitalSetBySTLVector<Domain>::defaultStyleQGL( std::string ) const
+{
+  return new DefaultDrawStyleQGL;
+}
+
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const
+{
+  
+  
+  ASSERT(Domain::Space::dimension == 3);
+  
+  for (  ConstIterator it = this->begin(); 
+	 it != this->end();
+	 ++it )
+    {
+      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+    }
+
+}
+//------------------------------------------------------------------------------
+template<typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( DGTalQGLViewer & viewer ) const
+{
+  ASSERT(Domain::Space::dimension == 3);
+  for ( ConstIterator it = this->begin(); 
+	it != this->end();
+        ++it )
+    {
+      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor(),3);
+    }
+
+}
+
+
+template<typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawQGL( DGTalQGLViewer & viewer ) const
+{
+  ASSERT(Domain::Space::dimension == 3);
+  
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" )
+    selfDrawAsPavingQGL( viewer );
+  else if ( mode == "Grid" )
+    selfDrawAsGridQGL( viewer );
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
+    {
+      selfDrawAsPavingQGL(viewer);
+      selfDrawAsGridQGL( viewer );
+    }
+  
+}
+
+#endif
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //

@@ -81,7 +81,9 @@ ADD_CUSTOM_TARGET(uninstall
 # Defines some variables
 # -----------------------------------------------------------------------------
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
-set ( LIBDGTALIV_NAME "DGtal-iv${SUFFIXLIB}" )
+set ( LIBDGTALVISU3D_NAME "DGtal-visu3d${SUFFIXLIB}" )
+
+
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options

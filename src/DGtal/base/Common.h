@@ -41,6 +41,14 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+
+#ifdef WITH_VISU3D_QGLVIEWER
+#include <QGLViewer/qglviewer.h>
+#include <QColor>
+#include <QGLWidget>
+#include <QKeyEvent>
+#endif
+ 
 #include <iostream>
 #include <exception>
 #include <boost/concept_check.hpp>
@@ -55,6 +63,7 @@
 #endif //win32
 #include <cmath>
 
+
 #include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
 #include "DGtal/utils/TraceWriterTerm.h"
@@ -63,6 +72,7 @@
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Exceptions.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -83,6 +93,29 @@ namespace DGtal
 
   class DGtalBoard;
 
+#ifdef WITH_VISU3D_QGLVIEWER 
+  class DGTalQGLViewer;
+#endif
+  
+
+#ifdef WITH_VISU3D_QGLVIEWER
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  DGtalQGLViewer 
+   * (BK)
+   */
+  struct DrawableWithDGtalQGLViewer {
+    /**
+     * Operation to override. Does nothing by default.
+     *
+     * @param board any object of type Board.
+     */
+    virtual void selfDraw( DGTalQGLViewer &  ) const {}
+  };
+#endif
+
+  
+
   /**
    * Interface that specifies that an object can draw itself on a
    * board. 
@@ -96,6 +129,9 @@ namespace DGtal
      */
     virtual void selfDraw( DGtalBoard &  ) const {}
   };
+
+
+
 
   /////////////////////////////////////////////////////////////////////////////
   // class Common
