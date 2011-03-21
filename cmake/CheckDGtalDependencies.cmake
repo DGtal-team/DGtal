@@ -116,8 +116,11 @@ else ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
   message(STATUS  "(optional) libQGLViewer not found (or Qt4 not found)." )
 endif ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
 
+if( (NOT WITH_VISU3D_QGLVIEWER)  OR (NOT WITH_VISU3D_IV) )
+  message(STATUS  "(optional) No 3D visualiasation possible  (QGLViewer and IV )." )
+  set( WITH_VISU3D FALSE)
+endif( (NOT WITH_VISU3D_QGLVIEWER)  OR (NOT WITH_VISU3D_IV) )
 
 
-set( WITH_VISU3D (WITH_VISU3D_QGLVIEWER OR WITH_VISU3D_IV))
 
  
