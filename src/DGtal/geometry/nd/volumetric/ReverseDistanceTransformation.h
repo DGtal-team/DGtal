@@ -57,16 +57,18 @@ namespace DGtal
   // template class ReverseDistanceTransformation
   /**
    * Description of template class 'ReverseDistanceTransformation' <p>
-   * \brief Aim: Implementation of the linear in time distance
+   * \brief Aim: Implementation of the linear in time reverse distance
    * transformation.
-   *  
-   * @tparam Image an input image type.
+   *
+   * More precisely, given an input image where value V at a point P
+   * corresponds to a disc with center P and radius V. The aim of the
+   * reverse distance transformation is thus to reconstruct the binary
+   * shape as the union of all balls defined in the input map.
+   *
+   * @tparam Image an input image type containng distance values.
    * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
-   *
-   *
-   * @endcode  
+   * @tparam IntegerShort (optional) type used to represent the output
+   * object values (default: DGtal::int32_t).xs
    */
   template <typename Image, DGtal::uint32_t p, typename IntegerShort = DGtal::int32_t >
   class ReverseDistanceTransformation
@@ -79,8 +81,7 @@ namespace DGtal
     
 
     ///Type of resulting image
-    typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , 
-					IntegerShort > OutputImage;
+    typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerShort > OutputImage;
   
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
@@ -158,8 +159,6 @@ namespace DGtal
      * @param output the output image  with the  DT values
      * @param startingPoint a point to specify the starting point of the 1D row
      * @param dim the dimension to process
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeSteps1D (const Image & input, 
 			 Image & output, 
@@ -170,15 +169,12 @@ namespace DGtal
 
     // ------------------- Private members ------------------------
   private:
-
-
-
     ///The separable metric instance
     SeparableMetric myMetric;
-
+  
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
-
+    
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
 
