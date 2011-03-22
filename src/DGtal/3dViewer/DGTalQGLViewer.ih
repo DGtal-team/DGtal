@@ -216,6 +216,28 @@ DGtal::DGTalQGLViewer::addLine(double x1, double y1, double z1,  double x2, doub
 
 
 
+  
+  /**
+   * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
+   * 
+   *
+   * @param a, b, c, d : plane equation.
+   **/
+
+INLINE
+void
+DGtal::DGTalQGLViewer::addClippingPlane(double a, double b, double c, double d){
+  if(myClippingPlaneList.size()<5){
+    clippingPlaneGL cp;
+    cp.a=a; cp.b=b; cp.c=c; cp.d=d;
+    myClippingPlaneList.push_back(cp);
+  }else{
+    std::cerr <<"Warning maximal clipping plane added" << endl;
+  }
+}
+
+
+
 
 
 
