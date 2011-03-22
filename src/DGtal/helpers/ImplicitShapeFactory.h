@@ -55,7 +55,8 @@ namespace DGtal
   // template class ImplicitShapeFactory
   /**
    * Description of template class 'ImplicitShapeFactory' <p>
-   * \brief Aim:
+   * \brief Aim: collects all models of CImplicitShape concept to create a shape factory.
+   *
    */
   
   

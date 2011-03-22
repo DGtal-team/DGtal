@@ -48,6 +48,14 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'ImplicitBall' <p>
+   * \brief Aim: model of CImplicitShape concept to create a ball in
+   * nD..
+   *
+   * @tparam TSpace the Digital space definition.
+   */
+  
   template <typename TSpace>
   class ImplicitBall
   {

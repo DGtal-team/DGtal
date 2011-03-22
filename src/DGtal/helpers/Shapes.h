@@ -43,6 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/helpers/implicitShapes/CImplicitShape.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

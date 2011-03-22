@@ -48,6 +48,13 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'ImplicitHyperCube' <p>
+   * \brief Aim: model of CImplicitShape concept to create an
+   * hypercube in  nD..
+   *
+   * @tparam TSpace the Digital space definition.
+   */
   template <typename TSpace>
   class ImplicitHyperCube
   {

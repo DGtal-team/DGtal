@@ -48,6 +48,16 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'ImplicitRoundedHyperCube' <p>
+   * \brief Aim: model of CImplicitShape concept to create a rounded
+   * hypercube in  nD..
+   *
+   * Rounded hypercubes corresponds to balls for the @f$l_p@f$ norm.
+   *
+   * @tparam TSpace the Digital space definition.
+   */
   template <typename TSpace>
   class ImplicitRoundedHyperCube
   {
@@ -59,7 +69,7 @@ namespace DGtal
     
    
     /** 
-     * Constructor. Contructs a ball with center aCenter and width
+     * Constructor. Contructs a rounded hypercube with center aCenter and width
      * aWidth.
      * 
      * @param aCenter the cube center. 
