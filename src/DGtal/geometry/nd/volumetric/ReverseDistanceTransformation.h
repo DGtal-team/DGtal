@@ -183,10 +183,9 @@ namespace DGtal
 
     ///Value for foreground grid points.
     IntegerShort myForegroundValue;
+  
     ///Value for background grid points.
     IntegerShort myBackgroundValue;
-    
-
 
   }; // end of class ReverseDistanceTransformation
 

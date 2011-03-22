@@ -107,7 +107,7 @@ three elements:
 - an Input image type
 - and a static number "p" used to define the @f$l_p@f$ metric
 
-An optional InterLong template parameter with default type
+An optional IntegerLong template parameter with default type
 DGtal::uint64_t can be specified to represent the sums of @f$x_i^p@f$
 values. This type is important because it corresponds to the Value
 type of the DistanceTransformation::OutputImage type that is used to
@@ -155,7 +155,48 @@ Few comments can be made from this example. First, Z2i::Image is defined on a Z2
 
 \section rdt Reverse Distance Transformation
 
-@todo complete code/doc
+Given a set of balls and a domain, the aim of the reverse reconstruction is to compute the binary shape defined as the union of the 
+input balls. In other word, a point @e x belong to the set @f$X@f$ is there exists at least one ball containing @f$x@f$.
+
+This notion is deeply linked to the distance transformation computation since it can interpreted as a reverse operator:
+@f[
+REDT(DT(X)) = X
+@f]
+
+In DGtal, the input set of balls is specified by an image and a  grid point with value greater than 0 indicates a ball. 
+Hence, the ReverseDistanceTransformation class has a similar usage than the DistanceTransformation one:
+
+@code
+Z2i::Point a ( 0, 0 );
+Z2i::Point b ( 127, 127);
+
+//Input image with unsigned char values
+typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
+Image image ( a, b );
+
+//...
+// set values in image (by default 0-value pixels are background
+// pixels, otherwise, see ForegroundPredicate in DistanceTransformation).
+//...
+
+//Definition of the DistanceTransformation operator for the l_2 metric
+typedef DistanceTransformation< Image, 2> DTL2;
+typedef DTL2::OutputImage OutputImage
+DTL2 dt;
+
+OutputImage result = dt.compute( image );
+
+//Definition of the ReverseDistanceTransformation opertor for the l_2
+//metric
+typedef ReverseDistanceTransformation< OutputImage, 2> RDTL2;
+typedef RDTL2::OutputImage OutputReconstruction;
+RDTL2 rdt;
+
+OutputReconstruction reconstruction = rdt.compute(results);
+
+//we can check that reconstruction ~ image
+@endcode
+
 
 \section ma Discrete Medial Axis Extraction
 
