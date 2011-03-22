@@ -105,7 +105,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const 
 
   bool isSwap = reconstructionInternal(aImage,output,swap);
 
-  Set result;
+  Set result(domain);
 
   for(typename I::Domain::ConstIterator it=domain.begin(),
 	itend = domain.end();
@@ -113,13 +113,13 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const 
       ++it)
     if (isSwap)
       {
-	if ( output(it)  > 0)
-	  result.insertNew(it);
+	if ( output(*it)  > 0)
+	  result.insertNew(*it);
       }
     else
       {
-	if ( swap(it)  > 0)
-	  result.insertNew(it);
+	if ( swap(*it)  > 0)
+	  result.insertNew(*it);
       }
   
   return result;  
