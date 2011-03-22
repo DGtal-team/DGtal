@@ -43,20 +43,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtr.h"
+
 #include <QGLViewer/qglviewer.h>
 #include <QColor>
 #include <QGLWidget>
 #include <QKeyEvent>
 
-
-
-
-
-
-
-
+#include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 
 
 
@@ -85,19 +79,19 @@ public:
   enum StreamKey {addNewList, updateDisplay};
   
   /**
-     * The associated map type for storing possible modes used for
-     * displaying for digital objects.
-     */
-    typedef std::map< std::string, std::string > ModeMapping;
+   * The associated map type for storing possible modes used for
+   * displaying for digital objects.
+   */
+  typedef std::map< std::string, std::string > ModeMapping;
   
 
-
-    /**
-     * The associated map type for storing the default styles of
-     * digital objects.
-     */
-    typedef std::map< std::string,CountedPtr<DrawableWithDGtalQGLViewer> > StyleMapping;
-
+  
+  /**
+   * The associated map type for storing the default styles of
+   * digital objects.
+   */
+  typedef std::map< std::string,CountedPtr<DrawableWithDGtalQGLViewer> > StyleMapping;
+  
   
   QColor myDefaultColor;
 
@@ -452,18 +446,20 @@ private:
 
 
 
- /**
-   * Custom style class redefining the pen color and the fill
-   * color. You may use DGtalBoard::Color::None for transparent color.
+  /**
+   * Custom style class redefining the fill color and the
+   * gl_LINE/gl_POINT color. You can use Qcolor with alpha
+   * transparency value but you nedd to take into account the z-buffer
+   * during the Open-GL based rendering.
    *
    \code
-   DGtalBoard board;
-   board << CustomColors( DGtalBoard::Color::Red, DGtalBoard::Color::None );
+   DGTalQGLviewer viewer;
+   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
    ...
    \endcode
-   * @see DGtalBoard
+   * @see DGTalQGLviewer
    */
-  struct CustomColors3D : public DrawWithQGLViewerModifier//ableWithDGtalQGLViewer
+  struct CustomColors3D : public DrawWithQGLViewerModifier
   {
     QColor myPenColor;
     QColor myFillColor;
@@ -483,8 +479,6 @@ private:
     {
       viewer.setFillColor(myFillColor);
       viewer.setLineColor(myPenColor);
-      //aboard.setFillColor( myFillColor);
-      //aboard.setPenColor( myPenColor );
     }
   };
 
