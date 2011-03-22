@@ -120,6 +120,27 @@ DGtal::Shapes<TDomain>::addNorm2Ball
     }
 }
 
+template <typename TDomain>
+template <typename TDigitalSet, typename TImplicitShapeFunctor>
+void
+DGtal::Shapes<TDomain>::implicitShaper( TDigitalSet & aSet,
+					const TImplicitShapeFunctor & aFunctor)
+{
+  typedef DGtal::HyperRectDomain<Space> LocalSpace;
+  
+  Point pLow = aFunctor.getLowerBound();
+  Point pUpp = aFunctor.getUpperBound();
+
+  LocalSpace implicitDomain( pLow, pUpp );
+  for ( typename LocalSpace::ConstIterator it = implicitDomain.begin(); 
+	it != implicitDomain.end(); 
+	++it )
+    {
+      if ( aFunctor( *it ) > 0.0)
+	aSet.insert( *it );
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

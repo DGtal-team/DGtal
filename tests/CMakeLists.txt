@@ -29,6 +29,7 @@ add_subdirectory(geometry/2d)
 add_subdirectory(geometry/nd)
 add_subdirectory(topology)
 add_subdirectory(io)
+add_subdirectory(helpers)
 
 add_subdirectory(inventor)
 add_subdirectory(3dViewer)

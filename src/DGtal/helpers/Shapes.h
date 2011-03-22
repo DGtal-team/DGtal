@@ -77,24 +77,38 @@ namespace DGtal
 
     // ----------------------- Static services ------------------------------
   public:
+
+    /** 
+     * Adds to the (perhaps non empty) set [aSet] an shape defined by
+     * an instance of ImplicitShapeFunctor.
+     * 
+     * @param aSet the set (modified) which will contain the shape.
+     * @param aFunctor a functor defining the shape.
+     */
+    template <typename TDigitalSet, typename TImplicitShapeFunctor>
+    static void implicitShaper( TDigitalSet & aSet,
+				const TImplicitShapeFunctor & aFunctor);
+
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
      *
+     * @warning deprecated Use implicitShaper instead.
      * @tparam TDigitalSet the type chosen for the digital set.
      * @param aSet the set (modified) which will contain the discrete ball.
      * @param aCenter the center of the ball.
      * @param aRadius the radius of the ball.
      */
-    template <typename TDigitalSet>
+    template<typename TDigitalSet>
     static void addNorm1Ball( TDigitalSet & aSet,
 			      const Point & aCenter, 
 			      UnsignedInteger aRadius );
- 
+    
     /**
      * Adds the discrete ball (norm-2) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
      *
+     * @warning deprecated Use implicitShaper instead.
      * @tparam TDigitalSet the type chosen for the digital set.
      * @param aSet the set (modified) which will contain the discrete ball.
      * @param aCenter the center of the ball.
