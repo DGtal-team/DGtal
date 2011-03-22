@@ -48,22 +48,16 @@
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 
 #include "ConfigExamples.h"
 
-using namespace boost::program_options;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-
-namespace po = boost::program_options;
-
 
 
 /** 
@@ -117,7 +111,7 @@ int main( int argc, char** argv )
  typedef ImageSelector<TDomain, unsigned char>::Type Image;
  Image image = VolReader<Image>::importVol( inputFilename );
  TDomain domain(image.lowerBound(), image.upperBound());
- bool found=false;
+
 
  Image imageSeeds (image.lowerBound(), image.upperBound());
  for ( Image::Iterator it = imageSeeds.begin(), itend = imageSeeds.end();it != itend; ++it)
@@ -156,8 +150,6 @@ int main( int argc, char** argv )
        max=(*it);
    }
      
-
- cerr << "min " << min << "max " << max << endl;
      
   GradientColorMap<long> gradient( min,max);
   gradient.addColor(LibBoard::Color::Blue);
@@ -181,14 +173,16 @@ int main( int argc, char** argv )
    LibBoard::Color c= gradient(valDist);
 
    if(image(*it)<=thresholdMax && image(*it) >=thresholdMin){
-     viewer << CustomColors3D(QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), 255), QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), 255));
+     viewer << CustomColors3D(QColor((float)(c.red()), 
+				     (float)(c.green()),
+				     (float)(c.blue())), 
+			      QColor((float)(c.red()), 
+				     (float)(c.green()),
+				     (float)(c.blue())));
      viewer << *it ;
    }     
  }
  
-
- viewer << ClippingPlane(1.0,0.0,0.0,-40.0);
- viewer << ClippingPlane(0.0,0.0,1.0,-10.0);
  viewer.updateList();
  
  return application.exec();
