@@ -74,6 +74,21 @@ namespace DGtal
     {return x-y;}
   };
 
+  /**
+   * Abs functor. 
+   */
+  template <class T>
+  struct AbsFunctor : unary_function<T,T>
+  { 
+   inline
+   T operator() (const T &x) const
+    {
+      if (x < 0)
+	return -x;
+      else 
+	return x;
+    }
+  };
 }
 ///////////////////////////////////////////////////////////////////////////////
 
