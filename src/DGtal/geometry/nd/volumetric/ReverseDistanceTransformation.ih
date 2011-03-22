@@ -62,12 +62,10 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::~ReverseDistanceTransforma
 }
 
 
-
-
 template <typename I, DGtal::uint32_t p, typename IntShort>
 inline
 typename DGtal::ReverseDistanceTransformation<I, p, IntShort>::OutputImage
-DGtal::ReverseDistanceTransformation<I, p, IntShort>::compute(const I & aImage)
+DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstruction(const I & aImage)
 {
   //We copy the image extent.
   myLowerBoundCopy = aImage.lowerBound();
@@ -77,7 +75,65 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::compute(const I & aImage)
   I output ( myLowerBoundCopy, myUpperBoundCopy );
   I swap ( myLowerBoundCopy, myUpperBoundCopy );
 
+  bool isSwap = reconstructionInternal(aImage,output,swap);
 
+  if ( !isSwap )
+    return castValues(swap);
+  else
+    return castValues(output);
+}
+
+
+template <typename I, DGtal::uint32_t p, typename IntShort>
+template <typename Set>
+inline
+Set
+DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const I & aImage)
+{
+    
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
+  
+  //We copy the image extent.
+  myLowerBoundCopy = aImage.lowerBound();
+  myUpperBoundCopy = aImage.upperBound();
+  myExtent = myUpperBoundCopy - myLowerBoundCopy;
+
+  typename I::Domain domain(myLowerBoundCopy,myUpperBoundCopy);
+
+  I output ( myLowerBoundCopy, myUpperBoundCopy );
+  I swap ( myLowerBoundCopy, myUpperBoundCopy );
+
+  bool isSwap = reconstructionInternal(aImage,output,swap);
+
+  Set result;
+
+  for(typename I::Domain::ConstIterator it=domain.begin(),
+	itend = domain.end();
+      it != itend;
+      ++it)
+    if (isSwap)
+      {
+	if ( output(it)  > 0)
+	  result.insertNew(it);
+      }
+    else
+      {
+	if ( swap(it)  > 0)
+	  result.insertNew(it);
+      }
+  
+  return result;  
+}
+
+
+
+
+template <typename I, DGtal::uint32_t p, typename IntShort>
+inline
+bool
+DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(const I & aImage, I &output, I &swap)
+{
+ 
   //We copy input image
   typename I::Iterator ito=output.begin();
   
@@ -99,11 +155,11 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::compute(const I & aImage)
     isSwap = !isSwap;
   }
 
-  if ( !isSwap )
-    return castValues(swap);
-  else
-    return castValues(output);
+  return isSwap;
 }
+
+
+
 
 template <typename I, DGtal::uint32_t p, typename IntShort>
 inline

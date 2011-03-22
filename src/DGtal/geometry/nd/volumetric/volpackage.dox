@@ -192,10 +192,22 @@ typedef ReverseDistanceTransformation< OutputImage, 2> RDTL2;
 typedef RDTL2::OutputImage OutputReconstruction;
 RDTL2 rdt;
 
-OutputReconstruction reconstruction = rdt.compute(results);
+OutputReconstruction reconstruction = rdt.reconstruction(results);
 
 //we can check that reconstruction ~ image
 @endcode
+
+From this example, we can notice that:
+ - the first template  parameter type of ReverseDistanceTransformation is an image type whose Value must be consistent with the @f$l_p@f$ metric as discussed in the DistanceTransformation section;
+ - the second parmeter is the static integer @f$p@f$.
+
+ There is an optional third template parameter to specify the value type of the output binary image (default is DGta::int8_t). During the construction of the @e rdt object, we can also optionnaly specify the value used to represent object grid points (set @f$X@f$, default value is 1) and background grid points (default value is '0'). For instance
+@code
+RDTL2 rdt(128,0);
+@endcode
+will affect the value 128 to object points and 0 otherwise.
+
+@warning Obviously, the reconstruction will be incorrect if the metric used in the distance transformation is not the same as the metric used for the reconstruction. 
 
 
 \section ma Discrete Medial Axis Extraction
