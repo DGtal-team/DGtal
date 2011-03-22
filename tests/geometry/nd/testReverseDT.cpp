@@ -204,6 +204,7 @@ bool testReverseDTSet()
     std::cout << std::endl;
   }
 
+  /*
 
   ReverseDistanceTransformation< ImageDT, 2 > reverseDT;
 
@@ -231,6 +232,7 @@ bool testReverseDTSet()
   trace.endBlock();
   
   return nbok == nb;
+  */
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -244,7 +246,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testReverseDT(); // && ... other tests
+  bool res = testReverseDT() && testReverseDTSet; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
