@@ -523,6 +523,124 @@ namespace DGtal
       return static_cast<double>(aT);
     }
   }; // end of class IntegerTraits<int16_t>.
+ 
+
+  /**
+   * Specialization for <uint8_t>.
+   */
+  template <>
+  struct IntegerTraits<uint8_t>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef int8_t SignedVersion;
+    typedef uint8_t UnsignedVersion;
+    typedef uint8_t ReturnType;
+    typedef boost::call_traits<uint8_t>::param_type ParamType;
+    static const uint8_t ZERO = 0;
+    static const uint8_t ONE = 1;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<uint8_t>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<uint8_t>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<uint8_t>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return UNSIGNED;
+    }
+    static DGtal::int64_t castToInt64_t(const uint8_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const uint8_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
+
+  }; // end of class IntegerTraits<uint8_t>.
+
+  /**
+   * Specialization for <int8_t>.
+   */
+  template <>
+  struct IntegerTraits<int8_t>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef int8_t SignedVersion;
+    typedef uint8_t UnsignedVersion;
+    typedef int8_t ReturnType;
+    typedef boost::call_traits<int8_t>::param_type ParamType;
+    static const int8_t ZERO = 0;
+    static const int8_t ONE = 1;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<int8_t>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<int8_t>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<int8_t>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const int8_t & aT)
+    {
+      return static_cast<DGtal::int64_t>(aT);
+    }
+    /**
+     * Cast method to double (for I/O or board export uses
+     * only).
+     */
+    static double castToDouble(const int8_t & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class IntegerTraits<int16_t>.
 
   /**
    * Specialization for <uint32_t>.

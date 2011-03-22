@@ -119,7 +119,7 @@ bool testReverseDT()
   ReverseDistanceTransformation< ImageDT, 2 > reverseDT;
   typedef ReverseDistanceTransformation< ImageDT, 2 >::OutputImage ImageRDT;
 
-  ImageRDT reconstruction = reverseDT.compute( result );
+  ImageRDT reconstruction = reverseDT.reconstruction( result );
   
   // board.clear();
   // result.selfDraw<Hue> ( board, 0, 10); //maxval 

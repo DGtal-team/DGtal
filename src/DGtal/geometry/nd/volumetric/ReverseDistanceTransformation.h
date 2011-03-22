@@ -48,6 +48,7 @@
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -68,9 +69,9 @@ namespace DGtal
    * @tparam Image an input image type containng distance values.
    * @tparam p the static integer value to define the l_p metric.
    * @tparam IntegerShort (optional) type used to represent the output
-   * object values (default: DGtal::int32_t).xs
+   * object values (default: DGtal::int8_t).xs
    */
-  template <typename Image, DGtal::uint32_t p, typename IntegerShort = DGtal::int32_t >
+  template <typename Image, DGtal::uint32_t p, typename IntegerShort = DGtal::int8_t >
   class ReverseDistanceTransformation
   {
 
@@ -120,11 +121,35 @@ namespace DGtal
      * @param inputImage the input image with distance values
      * @return the distance transformation image with the Internal format.
      */
-    OutputImage compute(const Image & inputImage);
+    OutputImage reconstruction(const Image & inputImage);
 
+    /** 
+     * Compute the reverse distance transformation and return the
+     * result as a Digital Set.
+     * 
+     * @param inputImage the input image with distance values.
+     * @tparam DigitalSet the type of set to use.
+     * @return the reconstruction as a digital set.
+     */
+    template<typename DigitalSet>
+    DigitalSet reconstructionAsSet(const Image &inputImage);
+    
+    
 
     // ------------------- Private functions ------------------------
   private:
+
+    
+    /** 
+     * Internal method for the reconstruction (with double buffering)
+     * 
+     * @param aImage input image with distances
+     * @param output buffer with partial reconstruction.
+     * @param swap buffer with partial reconstruction
+     * 
+     * @return a boolean to indicate which buffer contains the result (true->output).
+     */
+    bool reconstructionInternal(const Image &aImage, Image &output, Image &swap);
 
     /** 
      * Cast values in order to output an image of type
