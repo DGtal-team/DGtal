@@ -44,6 +44,7 @@
 #include <vector>
 #include <algorithm>
 
+
 #include <QGLViewer/qglviewer.h>
 #include <QColor>
 #include <QGLWidget>
@@ -54,12 +55,35 @@
 
 
 
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 
 
 namespace DGtal
 {
+ /**
+   * Base class specifying the methods for classes which intend to
+   * modify a DGTalQGLViewer stream.
+   * 
+   */
+  struct DrawWithQGLViewerModifier {
+    std::string styleName() const
+    {
+      return "DrawWithQGLViewerModifier";
+    }
+
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string = "" ) const
+    {
+      return 0;
+    }
+
+    virtual void selfDrawQGL( DGTalQGLViewer &  ) const 
+    {}
+  };
+
+
 
 
 
@@ -189,9 +213,18 @@ public:
   void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
 
   
-  
   void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
 	       const QColor &color=QColor(20,20,20,200), double width=1.5);
+  
+  
+  /**
+   * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
+   * A maximal of five clipping plane can be added.
+   *
+   * @param a, b, c, d : plane equation.
+   **/
+  
+  void addClippingPlane(double a, double b, double c, double d);
   
 
   
@@ -230,8 +263,8 @@ public:
   
   /**
    * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithDGtalBoard, which requires for instance a
-   * method selfDraw( DGtalBoard & ).
+   * the concept CDrawableWithDGtalQGLViewer, which requires for instance a
+   * method selfDraw( DGTalQGLViewer & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
@@ -308,30 +341,35 @@ private:
     double size;
   };
 
-
+  struct clippingPlaneGL{
+    double a,b,c,d;
+  };
   
+    
   // Used to represent all the list used in the display.
   std::vector< std::vector<voxelGL> > myVoxelSetList;
   
   // Used to represent all the list of line primitive
   std::vector< std::vector<lineGL> > myLineSetList;
-
+  
   // Used to represent all the list of line primitive
   std::vector< std::vector<pointGL> > myPointSetList;
 
+  // Represent all the clipping planes added to the scene (of maxSize=5).
+  std::vector< clippingPlaneGL > myClippingPlaneList;
   
+
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
-  
 
   qglviewer::Vec myBoundingPtUp;
   qglviewer::Vec myBoundingPtLow;
 
   GLuint myListToAff;
-  bool myReverseOrderList;
-  bool myCheckDepth;
+  bool myReverseOrderList;  
   
   uint myNbListe;
+  
   
     // ------------------------- Hidden services ------------------------------
 protected:
@@ -360,36 +398,16 @@ protected :
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class DGTalQGLViewer
+  }; // end of class DGTalQGLViewer
 
 
 
-  /**
-   * Base class specifying the methods for classes which intend to
-   * modify a DGtalBoard stream.
-   * @todo merge DrawableWithDGtalBoard and DrawWithBoardModifier 
-   */
-  struct DrawWithQGLViewerModifier {
-    std::string styleName() const
-    {
-      return "DrawWithQGLViewerModifier";
-    }
-
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string = "" ) const
-    {
-      return 0;
-    }
-
-    virtual void selfDrawQGL( DGTalQGLViewer &  ) const 
-    {}
-  };
-
-
+ 
 
  /**
-   * Modifier class in a DGtalBoard stream. Useful to choose your own
-   * mode for a given class. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a DGTalQGLViewer stream. Useful to choose your
+   * own mode for a given class. Realizes the concept
+   * CDrawableWithDGtalQGLViewer.
    */
   struct SetMode3D : public DrawWithQGLViewerModifier {
     /**
@@ -413,10 +431,13 @@ private:
 
 
 
+
+
+
   /**
-   * Modifier class in a DGtalBoard stream. Useful to choose your own
+   * Modifier class in a DGTalQGLViewer stream. Useful to choose your own
    * style for a given class. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * CDrawableWithDGtalQGLViewer.
    */
   struct CustomStyle3D : public DrawWithQGLViewerModifier {
     /**
@@ -480,6 +501,45 @@ private:
       viewer.setFillColor(myFillColor);
       viewer.setLineColor(myPenColor);
     }
+  };
+
+ /**
+   * Class for adding a Clipping plane through the DGTalQGLViewer
+   * stream. Realizes the concept CDrawableWithDGtalQGLViewer.
+   */
+
+
+  struct ClippingPlane : public DrawWithQGLViewerModifier {
+    /**
+     * @param classname the name of the class to which the style is associated.
+     *
+     * @param style a pointer on a dynamically allocated style, which
+     * is acquired by the class.
+     */
+    ClippingPlane( double a, double b, double c, double d )
+      : myA( a ), myB( b ), myC( c ), myD ( d )  
+    {}
+    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    {
+      viewer.addClippingPlane(myA, myB, myC, myD);
+      
+    }
+    double * getEquation(){
+      double *r = new double[4];
+      r[0] = myA;
+      r[1] = myB;
+      r[2] = myC;
+      r[3] = myD;
+      return r;
+    } 
+  
+  private:
+    double myA;
+    double myB;
+    double myC;
+    double myD;
+    
+    
   };
 
 

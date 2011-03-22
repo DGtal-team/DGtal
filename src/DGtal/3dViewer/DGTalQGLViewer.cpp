@@ -35,6 +35,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
+using namespace qglviewer;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,6 +80,21 @@ void
 DGtal::DGTalQGLViewer::draw()
 {
 
+  for(uint i =0; i< myClippingPlaneList.size(); i++){
+      clippingPlaneGL cp = myClippingPlaneList.at(i);
+      double eq [4];
+      eq[0]=cp.a;
+      eq[1]=cp.b;
+      eq[2]=cp.c;
+      eq[3]=cp.d;
+      glPushMatrix();
+      glMultMatrixd(manipulatedFrame()->matrix());
+      glEnable(GL_CLIP_PLANE0+i); 
+      glDisable(GL_DEPTH_TEST);
+      glClipPlane(GL_CLIP_PLANE0+i, eq );
+      
+  }
+  
   if(myReverseOrderList){
     for(uint i=0; i<myPointSetList.size(); i++){
       glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+myPointSetList.size()+i-1);
@@ -103,6 +119,7 @@ DGtal::DGTalQGLViewer::draw()
       glCallList(myListToAff+i);
     }
   }
+
 }
 
 
@@ -123,11 +140,8 @@ DGtal::DGTalQGLViewer::init(){
   myDefaultColor= QColor(255, 255, 255);
   setBackgroundColor(QColor(255, 255,255));
   myReverseOrderList=true;
-  myCheckDepth=true;
   
-  glLineWidth(0.05);
-
- 
+  setManipulatedFrame(new ManipulatedFrame());
   restoreStateFromFile();
 }
 
@@ -159,8 +173,7 @@ DGtal::DGTalQGLViewer:: updateList()
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
   
-  glEnable(GL_BLEND); 
-  
+  glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
