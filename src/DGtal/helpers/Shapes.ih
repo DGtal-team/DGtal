@@ -128,6 +128,9 @@ DGtal::Shapes<TDomain>::implicitShaper( TDigitalSet & aSet,
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   
+  BOOST_CONCEPT_ASSERT((CImplicitShape<TImplicitShapeFunctor>));
+ 
+
   Point pLow = aFunctor.getLowerBound();
   Point pUpp = aFunctor.getUpperBound();
 
