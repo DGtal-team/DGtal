@@ -19,6 +19,7 @@ link_directories (${PROJECT_BINARY_DIR})
 #------Tools subdirectories ------
 
 add_subdirectory(volumetric)
+add_subdirectory(shapeGenerator)
 
 
 #------ Basic tools ------
