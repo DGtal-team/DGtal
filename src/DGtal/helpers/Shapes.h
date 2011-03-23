@@ -121,6 +121,35 @@ namespace DGtal
 			      const Point & aCenter, 
 			      UnsignedInteger aRadius );
 
+    /**
+     * Removes the discrete ball (norm-1) of center [aCenter] and radius
+     * [aRadius] to the (perhaps non empty) set [aSet].
+     *
+     * @tparam TDigitalSet the type chosen for the digital set.
+     * @param aSet the set (modified) which will contain the discrete ball.
+     * @param aCenter the center of the ball.
+     * @param aRadius the radius of the ball.
+     */
+    template <typename TDigitalSet>
+    static void removeNorm1Ball( TDigitalSet & aSet,
+			      const Point & aCenter, 
+			      UnsignedInteger aRadius );
+ 
+    /**
+     * Removes the discrete ball (norm-2) of center [aCenter] and radius
+     * [aRadius] to the (perhaps non empty) set [aSet].
+     *
+     * @tparam TDigitalSet the type chosen for the digital set.
+     * @param aSet the set (modified) which will contain the discrete ball.
+     * @param aCenter the center of the ball.
+     * @param aRadius the radius of the ball.
+     */
+    template <typename TDigitalSet>
+    static void removeNorm2Ball( TDigitalSet & aSet,
+			      const Point & aCenter, 
+			      UnsignedInteger aRadius );
+
+
     // ----------------------- Standard services ------------------------------
   public:
 

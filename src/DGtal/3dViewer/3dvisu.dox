@@ -147,6 +147,7 @@ using namespace Z3i;
 As for \c DGtalBoard the object can be displayed with different possible mode:
 
    * - class PointVector, modes: "" / "Both", "Paving", "Grid"
+   * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving", "PavingTransp", "Grid"
    * - class Object, modes: "", "DrawAdjacencies"
    * - class HyperRectDomain, modes: "" / "Grid", "Paving", "PavingPoints", "PavingGrids"
 
@@ -267,9 +268,9 @@ we can add for instance two differents clipping planes:
 *<TD  align=CENTER>
 \image html visuClippingAll.png "(a) Visualisation of the initial set." width=5cm </TD>
 <TD  align=CENTER>
- \image html  visuClipping1.png "(b) Visualisation after adding the first Clipping plane (1,0,0,-4.9)."  width=5cm </TD>
+ \image html  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm </TD>
 <TD  align=CENTER>
- \image html  visuClipping2.png "(c) Visualisation after adding the first Clipping plane (0,1,0.3,-10)."  width=5cm </TD>
+ \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ."  width=5cm </TD>
 * </TR>
 *</TABLE>
 *</CENTER>

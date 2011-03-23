@@ -150,15 +150,6 @@ public:
   void createNewPointList();
 
   
-  /**
-   * Allow to change the order between displayed objects in order to
-   * fit good OpenGL display constraint (first position: the object
-   * inside another one) .
-   *
-   **/
-
-  void inverseListGLOrder();
-
 
 
     /**
@@ -366,8 +357,6 @@ private:
   qglviewer::Vec myBoundingPtLow;
 
   GLuint myListToAff;
-  bool myReverseOrderList;  
-  
   uint myNbListe;
   
   

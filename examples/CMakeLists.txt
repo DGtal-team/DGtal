@@ -24,6 +24,7 @@ configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in ${PROJECT_SOUR
 add_subdirectory(io)
 add_subdirectory(geometry)
 add_subdirectory(doc-examples)
+add_subdirectory(topology)
 
 
 if( WITH_VISU3D_QGLVIEWER  )

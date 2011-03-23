@@ -619,11 +619,11 @@ DGtal::PointVector<dim,Component>::selfDraw( DGtalBoard & board ) const
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
 	  ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
 
-  if ( mode == "Paving" )
+  if ( mode == "Paving"  || ( mode == "" )  )
     selfDrawAsPaving( board );
   else if ( mode == "Grid" )
     selfDrawAsGrid( board );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
+  else if ( ( mode == "Both" ))
     {
       selfDrawAsPaving( board );
       selfDrawAsGrid( board );
