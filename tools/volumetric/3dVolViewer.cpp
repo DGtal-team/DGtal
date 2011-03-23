@@ -43,7 +43,6 @@
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 
-using namespace boost::program_options;
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
@@ -62,12 +61,9 @@ int main( int argc, char** argv )
     ("thresholdMin,m",  po::value<int>()->default_value(0), "threshold min to define binary shape" ) 
     ("thresholdMax,M",  po::value<int>()->default_value(255), "threshold max to define binary shape" )
     ("transparency,t",  po::value<uint>()->default_value(255), "transparency") ; 
-
-
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  po::notify(vm);  
-  
+  po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
       std::cout << "Usage: " << argv[0] << " [input-file]\n"
@@ -75,7 +71,6 @@ int main( int argc, char** argv )
 		<< general_opt << "\n";
       return 0;
     }
-
  string inputFilename = vm["input-file"].as<std::string>();
  int thresholdMin = vm["thresholdMin"].as<int>();
  int thresholdMax = vm["thresholdMax"].as<int>();
@@ -89,14 +84,11 @@ int main( int argc, char** argv )
  typedef ImageSelector<Domain, unsigned char>::Type Image;
  Image image = VolReader<Image>::importVol( inputFilename );
  Domain domain(image.lowerBound(), image.upperBound());
- 
- GradientColorMap<long> gradient( thresholdMin, thresholdMax);
+  GradientColorMap<long> gradient( thresholdMin, thresholdMax);
  gradient.addColor(LibBoard::Color::Blue);
  gradient.addColor(LibBoard::Color::Green);
  gradient.addColor(LibBoard::Color::Yellow);
  gradient.addColor(LibBoard::Color::Red);
-
- viewer << SetMode3D((*(domain.begin())).styleName(), "Paving");
  for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
    unsigned char  val= image( (*it) );     
    LibBoard::Color c= gradient(val);
