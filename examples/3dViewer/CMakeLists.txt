@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
    dgtalQGLviewer-2-sets
    dgtalQGLviewer-3-objects
    dgtalQGLviewer-5-custom
+   dgtalQGLviewer-6-clipping
 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

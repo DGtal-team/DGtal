@@ -79,22 +79,20 @@ DGtal::DGTalQGLViewer::isValid() const
 void
 DGtal::DGTalQGLViewer::draw()
 {
-
+  glPushMatrix();
+  glMultMatrixd(manipulatedFrame()->matrix());
   for(uint i =0; i< myClippingPlaneList.size(); i++){
-      clippingPlaneGL cp = myClippingPlaneList.at(i);
-      double eq [4];
-      eq[0]=cp.a;
-      eq[1]=cp.b;
-      eq[2]=cp.c;
-      eq[3]=cp.d;
-      glPushMatrix();
-      glMultMatrixd(manipulatedFrame()->matrix());
-      glEnable(GL_CLIP_PLANE0+i); 
-      glDisable(GL_DEPTH_TEST);
-      glClipPlane(GL_CLIP_PLANE0+i, eq );
-      
-  }
-  
+    clippingPlaneGL cp = myClippingPlaneList.at(i);
+    double eq [4];
+    eq[0]=cp.a;
+    eq[1]=cp.b;
+    eq[2]=cp.c;
+    eq[3]=cp.d;
+    glEnable(GL_CLIP_PLANE0+i); 
+    glClipPlane(GL_CLIP_PLANE0+i, eq );
+  }  
+  glPopMatrix();
+   
   if(myReverseOrderList){
     for(uint i=0; i<myPointSetList.size(); i++){
       glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+myPointSetList.size()+i-1);
@@ -119,7 +117,7 @@ DGtal::DGTalQGLViewer::draw()
       glCallList(myListToAff+i);
     }
   }
-
+  
 }
 
 
@@ -172,7 +170,8 @@ DGtal::DGTalQGLViewer:: updateList()
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
-  
+
+
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
@@ -301,8 +300,12 @@ DGtal::DGTalQGLViewer:: updateList()
     glEndList();
     
   }    
+
+
   setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
   showEntireScene();
+
+ 
 }
 
 

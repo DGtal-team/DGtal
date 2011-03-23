@@ -17,6 +17,7 @@ namespace DGtal {
  *  -# \ref DGtalGLV_ModeEx 
  *  -# \ref DGtalGLV_Mode  
  *  -# \ref DGtalGLV_Custom
+ *  -# \ref DGtalGLV_CLipping 
  *
  * \section DGtalGLV_VisualizeSimpleObject DGTalQGLViewer: simple visualization based on libQGLViewer 
  *  
@@ -236,6 +237,42 @@ The example <a  href="dgtalQGLviewer-5-custom_8cpp-example.html"> dgtalQGLviewer
 
 
 
+\section DGtalGLV_CLipping Adding clipping planes 
+
+It also possible through the stream mechanism to add clipping plane
+with the object \c ClippingPlane. We just have to add the real plane
+equation and adding as for displaying an element. The file <a
+href="dgtalQGLviewer-6-clipping_8cpp-example.html"
+>dgtalQGLviewer-6-clipping.cpp</a> gives a simple example.
+
+From displaying a digital set defined from a Norm2 ball,
+@code
+ Point p1( 0, 0, 0 );
+ Point p2( 20, 20, 20 );
+ Domain domain(p1, p2);
+ DigitalSet shape_set( domain ); 
+ Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+@endcode
+
+we can add for instance two differents clipping planes:
+
+@code 
+ viewer << ClippingPlane(1,0,0,-4.9);
+ viewer << ClippingPlane(0,1,0.3,-10);
+@endcode
+
+*<CENTER>
+*<TABLE> 
+*<TR>
+*<TD  align=CENTER>
+\image html visuClippingAll.png "(a) Visualisation of the initial set." width=5cm </TD>
+<TD  align=CENTER>
+ \image html  visuClipping1.png "(b) Visualisation after adding the first Clipping plane (1,0,0,-4.9)."  width=5cm </TD>
+<TD  align=CENTER>
+ \image html  visuClipping2.png "(c) Visualisation after adding the first Clipping plane (0,1,0.3,-10)."  width=5cm </TD>
+* </TR>
+*</TABLE>
+*</CENTER>
 */
 
 /**
@@ -257,6 +294,10 @@ The example <a  href="dgtalQGLviewer-5-custom_8cpp-example.html"> dgtalQGLviewer
 */
 /**
 \example dgtalQGLviewer-5-custom.cpp
+* 
+*/
+/**
+\example dgtalQGLviewer-6-clipping.cpp
 * 
 */
  
