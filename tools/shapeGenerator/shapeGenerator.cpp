@@ -40,8 +40,8 @@
 #include <boost/program_options/variables_map.hpp>
 
 using namespace DGtal;
-using namespace Z3i;
-using namespace Z2i;
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
@@ -52,19 +52,22 @@ int main( int argc, char** argv )
   po::options_description general_opt("Allowed options are: ");
   general_opt.add_options()
     ("help,h", "display this message")
+    ("dimension,d", po::value<unsigned int>()->default_value(2), "Dimension of the shape") 
     ("shape,i", po::value<std::string>(), "Shape type")
     ("list,l",  "List all available shapes")
-    ("radius,r",  po::value<int>()->default_value(0), "Radius or Halfwidth of the shape" );
+    ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius or Halfwidth of the shape" )
+    ("power,p",   po::value<double>()->default_value(2.0), "Power of the shape" );
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      std::cout << "Usage: " <<  " \n"
-		<< "Generate shapes using DGtal library"
+      std::cout	<< "Generate shapes using DGtal library" << "Usage: " <<  " \n"
 		<< general_opt << "\n";
       return 0;
     }
+
+  
 
 }
