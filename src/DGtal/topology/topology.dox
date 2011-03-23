@@ -337,6 +337,24 @@ namespace DGtal {
  * \subsection dgtal_topology_sec3s5 Simple points
  *
  * \b TODO
+ *
+ *   The file <a href="homotopicThinning3D_8cpp-example.html" >
+ *   homotopicThinning3D.cpp </a> illustrates the homotopic thinning on
+ *  a 26_6 object. We obtain the following result:
+ * @image html visuThinning.png  "Illustration of a Digital Object with the 4-adjacency"
+ * @image latex DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency" width=5cm	
+
 
  */
+
+
+
+
+/**
+\example homotopicThinning3D.cpp
+* 
+*/
 }
+
+
+
