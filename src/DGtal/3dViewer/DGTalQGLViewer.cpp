@@ -292,15 +292,18 @@ DGtal::DGTalQGLViewer:: updateList()
 
 void 
 DGtal::DGTalQGLViewer::keyPressEvent(QKeyEvent *e){
-
+  bool handled = false;
   
   if ((e->key()==Qt::Key_S) ){
+    handled=true;
     cerr << "sorting surfel according camera position...";
     sortSurfelFromCamera();
     cerr << " [done]"<< endl;
     updateList();    
     updateGL();
   }
+  if (!handled)
+    QGLViewer::keyPressEvent(e);
 
 }
 
