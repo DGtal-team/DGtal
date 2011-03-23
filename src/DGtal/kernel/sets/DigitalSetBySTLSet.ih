@@ -486,16 +486,30 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDraw( DGtalBoard & board ) const
 
 #ifdef WITH_VISU3D_QGLVIEWER
 
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( DGTalQGLViewer & viewer ) const
+{  
+  ASSERT(Domain::Space::dimension == 3);
+  viewer.createNewVoxelList(false);
+  for (  ConstIterator it = this->begin(); 
+	 it != this->end();
+	 ++it )
+    {
+      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+    }
+
+}
+
 
 template <typename Domain>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const
-{
-  
-  
+{   
   ASSERT(Domain::Space::dimension == 3);
-  
+  viewer.createNewVoxelList(true);
   for (  ConstIterator it = this->begin(); 
 	 it != this->end();
 	 ++it )
@@ -529,13 +543,15 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( DGTalQGLViewer & viewer ) const
   ASSERT(Domain::Space::dimension == 3);
   
   std::string mode = viewer.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
-  if ( mode == "Paving" )
+  if ( mode == "Paving" || ( mode == "" ) )
     selfDrawAsPavingQGL( viewer );
+  else if ( mode == "PavingTransp" )
+    selfDrawAsPavingTransparentQGL( viewer );
   else if ( mode == "Grid" )
     selfDrawAsGridQGL( viewer );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
+  else if ( ( mode == "Both" ) )
     {
       selfDrawAsPavingQGL(viewer);
       selfDrawAsGridQGL( viewer );

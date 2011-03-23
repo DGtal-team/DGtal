@@ -350,11 +350,12 @@ namespace DGtal
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-  void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
-  void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
-  void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
-  
-
+    void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
+    void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
+    void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
+    void selfDrawAsPavingTransparentQGL( DGTalQGLViewer & viewer ) const;
+    
+    
 
 
 

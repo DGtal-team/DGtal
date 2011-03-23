@@ -91,31 +91,16 @@ DGtal::DGTalQGLViewer::draw()
     glEnable(GL_CLIP_PLANE0+i); 
     glClipPlane(GL_CLIP_PLANE0+i, eq );
   }  
-  glPopMatrix();
-   
-  if(myReverseOrderList){
-    for(uint i=0; i<myPointSetList.size(); i++){
-      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+myPointSetList.size()+i-1);
-    }
-    for(uint i=0; i<myLineSetList.size(); i++){
-      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i-1);
-    }
-   
-    for(uint i=0; i<myVoxelSetList.size(); i++){
-      glCallList(myListToAff+myVoxelSetList.size()-i-1);
-    }
-    
-  }else{
-    for(uint i=0; i<myPointSetList.size(); i++){
-      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
-    }   
-    for(uint i=0; i<myLineSetList.size(); i++){
-      glCallList(myListToAff+myVoxelSetList.size()+i);
-    }
-
-    for(uint i=0; i<myVoxelSetList.size(); i++){
-      glCallList(myListToAff+i);
-    }
+  glPopMatrix();   
+  
+  for(uint i=0; i<myPointSetList.size(); i++){
+    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+  }   
+  for(uint i=0; i<myLineSetList.size(); i++){
+    glCallList(myListToAff+myVoxelSetList.size()+i);
+  }
+  for(uint i=0; i<myVoxelSetList.size(); i++){
+    glCallList(myListToAff+i);
   }
   
 }
@@ -132,12 +117,10 @@ DGtal::DGTalQGLViewer::init(){
   myPointSetList.push_back(listePoint);
   myCurrentFillColor = QColor (220, 220, 220);
   myCurrentLineColor = QColor (22, 22, 22, 50);
-  
-
+    
   camera()->showEntireScene();
   myDefaultColor= QColor(255, 255, 255);
   setBackgroundColor(QColor(255, 255,255));
-  myReverseOrderList=true;
   
   setManipulatedFrame(new ManipulatedFrame());
   restoreStateFromFile();
@@ -155,11 +138,6 @@ DGtal::DGTalQGLViewer::sortSurfelFromCamera(){
 }
 
 
-
-void 
-DGtal::DGTalQGLViewer::inverseListGLOrder(){
-  myReverseOrderList=true;
-}
 
 
 

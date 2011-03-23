@@ -49,6 +49,42 @@ DGtal::Shapes<TDomain>::~Shapes()
 {
 }
 
+
+/**
+ * Removes  the discrete ball (norm-1) of center [aCenter] and radius
+ * [aRadius] to the (perhaps non empty) set [aSet].
+ *
+ * @tparam TDigitalSet the type chosen for the digital set.
+ * @param aSet the set (modified) which will contain the discrete ball.
+ * @param aCenter the center of the ball.
+ * @param aRadius the radius of the ball.
+ */
+ template <typename TDomain>
+template <typename TDigitalSet>
+inline
+void
+DGtal::Shapes<TDomain>::removeNorm1Ball
+( TDigitalSet & aSet,
+  const Point & aCenter, 
+  UnsignedInteger aRadius )
+{
+  Point v1( aCenter.diagonal( aRadius ) );
+  Point p1( aCenter );
+  Point p2( p1 );
+  p1 -= v1;
+  p2 += v1;
+  const Domain & domain = aSet.domain(); 
+  typedef DGtal::HyperRectDomain<Space> LocalSpace;
+  LocalSpace ballDomain( p1, p2 );
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
+	it != ballDomain.end(); 
+	++it )
+    {
+      if ( domain.isInside( *it ) 
+	   && ( (*it - aCenter ).norm1() <= aRadius ) )
+	aSet.erase( *it );
+    }
+}
 /**
  * Adds the discrete ball (norm-1) of center [aCenter] and radius
  * [aRadius] to the (perhaps non empty) set [aSet].
@@ -84,6 +120,45 @@ DGtal::Shapes<TDomain>::addNorm1Ball
 	aSet.insert( *it );
     }
 }
+
+
+/**
+ * Removes the discrete ball (norm-2) of center [aCenter] and radius
+ * [aRadius] to the (perhaps non empty) set [aSet].
+ *
+ * @tparam TDigitalSet the type chosen for the digital set.
+ * @param aSet the set (modified) which will contain the discrete ball.
+ * @param aCenter the center of the ball.
+ * @param aRadius the radius of the ball.
+ */
+template <typename TDomain>
+template <typename TDigitalSet>
+inline
+void
+DGtal::Shapes<TDomain>::removeNorm2Ball
+( TDigitalSet & aSet,
+  const Point & aCenter, 
+  UnsignedInteger aRadius )
+{
+  Point v1( aCenter.diagonal( aRadius ) );
+  Point p1( aCenter );
+  Point p2( p1 );
+  p1 -= v1;
+  p2 += v1;
+  const Domain & domain = aSet.domain(); 
+  typedef DGtal::HyperRectDomain<Space> LocalSpace;
+  LocalSpace ballDomain( p1, p2 );
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
+	it != ballDomain.end(); 
+	++it )
+    {
+      if ( domain.isInside( *it ) 
+	   && ( (*it - aCenter ).norm() <= aRadius ) )
+	aSet.erase( *it );
+    }
+}
+
+
 /**
  * Adds the discrete ball (norm-2) of center [aCenter] and radius
  * [aRadius] to the (perhaps non empty) set [aSet].
