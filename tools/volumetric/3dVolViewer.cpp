@@ -102,7 +102,7 @@ int main( int argc, char** argv )
      viewer << *it;     
    }     
  }
- viewer << ClippingPlane(0,0,-1, 20);
+ // viewer << ClippingPlane(0,0,-1, 20);
  viewer.updateList();
  return application.exec();
 }
