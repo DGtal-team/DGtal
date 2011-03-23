@@ -336,15 +336,82 @@ namespace DGtal {
  *
  * \subsection dgtal_topology_sec3s5 Simple points
  *
- * \b TODO
  *
  *   The file <a href="homotopicThinning3D_8cpp-example.html" >
  *   homotopicThinning3D.cpp </a> illustrates the homotopic thinning on
- *  a 26_6 object. We obtain the following result:
- * @image html visuThinning.png  "Illustration of a Digital Object with the 4-adjacency"
- * @image latex DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency" width=5cm	
+ *  a 26_6 object. 
+ *
+ First a digital object (with 6_26 adjacency) is defined from a digital set representing two rings :
+@code 
+  using namespace Z3i;
+  ...
+  Point p1( -50, -50, -50 );
+  Point p2( 50, 50, 50 );
+  Domain domain( p1, p2 );
+  
+  Point ringCenter( 0, 0, 0 );  
+  DigitalSet shape_set( domain );
+  for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
+    {
+      if ( ((*it - ringCenter ).norm() <= 25) && ((*it - ringCenter ).norm() >= 18)
+	   && ( (((*it)[0] <= 3)&& ((*it)[0] >= -3))|| (((*it)[1] <= 3)&& ((*it)[1] >= -3)))){
+	shape_set.insertNew( *it );
+      }
+    }  
+  Object6_26 shape( dt6_26, shape_set );
+@endcode
+
+Then the thinning is performed by testing if a point is simple:
+
+@code 
+do 
+    {
+      DigitalSet & S = shape.pointSet();
+      std::queue<DigitalSet::Iterator> Q;
+      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+	if ( shape.isSimple( *it ) )
+	  Q.push( it );
+      nb_simple = 0;
+      while ( ! Q.empty() )
+	{
+	  DigitalSet::Iterator it = Q.front();
+	  Q.pop();
+	  if ( shape.isSimple( *it ) )
+	    {
+	      cerr << "point simple " << (*it) << endl; 
+	      S.erase( *it );
+	      ++nb_simple;
+	    }
+	}
+      ++layer;
+    }
+  while ( nb_simple != 0 );
+@endcode
 
 
+Finally the result can simply be displayed using QGLviewer:
+@code
+ DigitalSet & S = shape.pointSet();
+
+  // Display by using two different list to manage OpenGL transparency.
+
+  viewer << SetMode3D( shape_set.styleName(), "Paving" );
+  viewer << CustomColors3D(QColor(25,25,255, 255), QColor(25,25,255, 255));
+  viewer << S ; 
+
+  viewer << SetMode3D( shape_set.styleName(), "PavingTransp" );
+  viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
+  viewer << shape_set;
+
+  viewer.updateList();
+@endcode
+
+
+ We obtain the following result:
+ * @image html visuThinning.png  "Resulting 3d thinning  with the 6_26 object"
+ * @image latex DiskWithAdj4.png  "Resulting 3d thinning  with the 6_26 object" width=5cm	
+ * \b TODO
+ *
  */
 
 
