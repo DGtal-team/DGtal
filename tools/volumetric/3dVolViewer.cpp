@@ -83,6 +83,9 @@ int main( int argc, char** argv )
  
  typedef ImageSelector<Domain, unsigned char>::Type Image;
  Image image = VolReader<Image>::importVol( inputFilename );
+
+ trace.info() << "Image loaded: "<<image<< std::endl;
+
  Domain domain(image.lowerBound(), image.upperBound());
   GradientColorMap<long> gradient( thresholdMin, thresholdMax);
  gradient.addColor(LibBoard::Color::Blue);
@@ -91,6 +94,7 @@ int main( int argc, char** argv )
  gradient.addColor(LibBoard::Color::Red);
  for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
    unsigned char  val= image( (*it) );     
+   
    LibBoard::Color c= gradient(val);
    if(val<=thresholdMax && val >=thresholdMin){
      viewer <<  CustomColors3D(QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
