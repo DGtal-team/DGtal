@@ -140,7 +140,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( const I & aImag
   trace.beginBlock ( "DT dimension 0" );
   Point startingPoint = myLowerBoundCopy;
 
-  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
@@ -174,7 +174,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputIm
   std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
 
-  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:

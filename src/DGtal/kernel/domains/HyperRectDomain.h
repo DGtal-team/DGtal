@@ -135,7 +135,7 @@ namespace DGtal
     HyperRectDomain();
 
     /**
-     * Constructor from  two points \param aPointA and \param aPoint B
+     * Constructor from  two points \param aPointA and \param aPointB
      * defining the space diagonal.
      *
      */
@@ -164,13 +164,21 @@ namespace DGtal
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
     /**
-     * Range through the whole domain.
+     * Description of class 'ConstRange' <p> \brief Aim:
+     * range through all the points in the domain.
+     * Defines a constructor taking a domain in parameter,
+     * begin and end methods returning ConstIterator, and
+     * rbegin and rend methods returning ReverseConstIterator.
      */
     struct ConstRange 
     {
-      typedef ConstIterator        const_iterator;
-      typedef ReverseConstIterator reverse_const_iterator;
-      
+      typedef Domain::ConstIterator        ConstIterator;
+      typedef Domain::ReverseConstIterator ReverseConstIterator;
+
+      /**
+       * ConstRange constructor from a given domain.
+       * @param domain the domain.
+       */
       ConstRange(const HyperRectDomain<TSpace>& domain)
 	: myDomain(domain),
 	  myIteratorBegin(domain.myLowerBound,
@@ -180,36 +188,56 @@ namespace DGtal
 			domain.myLowerBound,
 			domain.myUpperBound)
       { ++myIteratorEnd; }
-      
-      /// @return Iterator on the beginning of the range.
-      const const_iterator& begin() const
+
+      /*
+       * begin method.
+       * @return ConstIterator on the beginning of the range.
+       */
+      const ConstIterator& begin() const
       { return myIteratorBegin; }
 
-      /// @return Iterator initialized to aPoint.
-      /// @pre aPoint must belong to the range.
-      const_iterator begin(const Point& aPoint) const
+      /*
+       * begin method from a given point.
+       * @param aPoint the initial point.
+       * @return a ConstIterator initialized to aPoint.
+       * @pre aPoint must belong to the range.
+       */
+      ConstIterator begin(const Point& aPoint) const
       { ASSERT(myDomain.isInside(aPoint));
-	return const_iterator(aPoint, 
+	return ConstIterator(aPoint, 
 			      myDomain.myLowerBound, myDomain.myUpperBound); }
 
-      /// @return Iterator on the end of the range.
-      const const_iterator& end() const
+      /*
+       * end method.
+       * @return ConstIterator on the end of the range.
+       */
+      const ConstIterator& end() const
       { return myIteratorEnd; }
 
-      /// @return Reverse iterator on the end of the range.
-      reverse_const_iterator rbegin() const
-      { return reverse_const_iterator(end()); }
+      /*
+       * reverse begin method.
+       * @return ConstIterator on the beginning of the reverse range.
+       */
+      ReverseConstIterator rbegin() const
+      { return ReverseConstIterator(end()); }
 
-      /// @return Reverse iterator initialized to aPoint.
-      /// @pre aPoint must belong to the range.
-      reverse_const_iterator rbegin(const Point& aPoint) const
+      /*
+       * reverse begin method from a given point.
+       * @param aPoint the initial point.
+       * @return a ConstIterator initialized to aPoint.
+       * @pre aPoint must belong to the range.
+       */
+      ReverseConstIterator rbegin(const Point& aPoint) const
       {  ASSERT(myDomain.isInside(aPoint));
-	const_iterator it(begin(aPoint)); ++it;
-	return reverse_const_iterator(it); }
+	ConstIterator it(begin(aPoint)); ++it;
+	return ReverseConstIterator(it); }
 
-      /// @return Reverse iterator on the beginning of the range.
-      reverse_const_iterator rend() const
-      { return reverse_const_iterator(begin()); }
+      /*
+       * reverse end method.
+       * @return ConstIterator on the end of the reverse range.
+       */
+      ReverseConstIterator rend() const
+      { return ReverseConstIterator(begin()); }
 
     private:
       /// Domain associated to the range.
@@ -232,14 +260,27 @@ namespace DGtal
     const ConstIterator& end() const
     { return myRange.end(); }
 
-    /*
-     * Class for sub range.
+    /**
+     * Description of class 'ConstSubRange' <p> \brief Aim:
+     * range through some subdomain of all the points in the domain.
+     * Defines a constructor taking a domain in parameter plus some
+     * additional parameters to specify the subdomain,
+     * begin and end methods returning ConstIterator, and
+     * rbegin and rend methods returning ReverseConstIterator.
      */
     struct ConstSubRange 
     {
-      typedef HyperRectDomain_subIterator<Point> const_iterator;
-      typedef myreverse_iterator<const_iterator> reverse_const_iterator;
+      typedef HyperRectDomain_subIterator<Point> ConstIterator;
+      typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
 
+      /**
+       * ConstSubRange constructor from a given domain.
+       * @param domain the domain.
+       * @param permutation a vector containing the dimensions used for
+       *        the subrange. Dimensions are iterated in the given order.
+       * @param startingPoint the initial point.
+       * @pre startingPoint must belong to the range.     
+       */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    const std::vector<Dimension> & permutation,
 		    const Point & startingPoint)
@@ -255,6 +296,14 @@ namespace DGtal
       }
 
 #ifdef CPP0X_INITIALIZER_LIST
+      /**
+       * ConstSubRange constructor from a given domain.
+       * @param domain the domain.
+       * @param permutation an initializer_list containing the dimensions used for
+       *        the subrange. Dimensions are iterated in the given order.
+       * @param startingPoint the initial point.
+       * @pre startingPoint must belong to the range.     
+       */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    std::initializer_list<Dimension> permutation,
 		    const Point & startingPoint)
@@ -273,7 +322,14 @@ namespace DGtal
       }
 #endif
 
-      ConstSubRange(const HyperRectDomain<TSpace>& domain,
+      /**
+       * ConstSubRange constructor from a given domain for one dimension.
+       * @param domain the domain.
+       * @param adim the dimension used for the subrange. 
+       * @param startingPoint the initial point.
+       * @pre startingPoint must belong to the range.     
+       */
+       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    Dimension adim,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
@@ -285,6 +341,14 @@ namespace DGtal
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
+      /**
+       * ConstSubRange constructor from a given domain for two dimensions.
+       * @param domain the domain.
+       * @param adim1 the first dimension used for the subrange.
+       * @param adim2 the second dimension used for the subrange. 
+       * @param startingPoint the initial point.
+       * @pre startingPoint must belong to the range.     
+       */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    Dimension adim1, Dimension adim2,
 		    const Point & startingPoint)
@@ -298,6 +362,15 @@ namespace DGtal
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
+      /**
+       * ConstSubRange constructor from a given domain for two dimensions.
+       * @param domain the domain.
+       * @param adim1 the first dimension used for the subrange.
+       * @param adim2 the second dimension used for the subrange.
+       * @param adim3 the third dimension used for the subrange. 
+       * @param startingPoint the initial point.
+       * @pre startingPoint must belong to the range.     
+       */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    Dimension adim1, Dimension adim2, Dimension adim3,
 		    const Point & startingPoint)
@@ -312,93 +385,150 @@ namespace DGtal
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
-      /// @return Iterator on the beginning of the range.
-      const_iterator begin() const
-      {	return const_iterator(myLowerBound, myLowerBound,
+      /*
+       * begin method.
+       * @return ConstIterator on the beginning of the range.
+       */
+      ConstIterator begin() const
+      {	return ConstIterator(myLowerBound, myLowerBound,
 			      myUpperBound, myPermutation); }
       
-      /// @return Iterator initialized to aPoint.
-      /// @pre aPoint must belong to the range.
-      const_iterator begin(const Point& aPoint) const
+      /*
+       * begin method from a given point.
+       * @param aPoint the initial point.
+       * @return a ConstIterator initialized to aPoint.
+       * @pre aPoint must belong to the range.
+       */
+      ConstIterator begin(const Point& aPoint) const
       { 
 	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
 	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
-	return const_iterator(aPoint, myLowerBound,
+	return ConstIterator(aPoint, myLowerBound,
 			      myUpperBound, myPermutation);
       }
 
-      /// @return Iterator on the end of the range.
-      const_iterator end() const
+      /*
+       * end method.
+       * @return ConstIterator on the end of the range.
+       */
+      ConstIterator end() const
       {
-	const_iterator it = const_iterator(myUpperBound, myLowerBound,
+	ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
 					   myUpperBound, myPermutation);
 	++it;
 	return it;
       }
 
-      /// @return Reverse iterator on the end of the range.
-      reverse_const_iterator rbegin() const
-      { return reverse_const_iterator(end()); }
+      /*
+       * reverse begin method.
+       * @return ConstIterator on the beginning of the reverse range.
+       */
+      ReverseConstIterator rbegin() const
+      { return ReverseConstIterator(end()); }
 
-      /// @return Reverse iterator initialized to aPoint.
-      /// @pre aPoint must belong to the range.
-      reverse_const_iterator rbegin(const Point& aPoint) const
-      { const_iterator it(begin(aPoint)); ++it;
-	return reverse_const_iterator(it); }
+      /*
+       * reverse begin method from a given point.
+       * @param aPoint the initial point.
+       * @return a ConstIterator initialized to aPoint.
+       * @pre aPoint must belong to the range.
+       */
+      ReverseConstIterator rbegin(const Point& aPoint) const
+      { ConstIterator it(begin(aPoint)); ++it;
+	return ReverseConstIterator(it); }
 
-      /// @return Reverse iterator on the beginning of the range.
-      reverse_const_iterator rend() const
-      { return reverse_const_iterator(begin()); }
+      /*
+       * reverse end method.
+       * @return ConstIterator on the end of the reverse range.
+       */
+      ReverseConstIterator rend() const
+      { return ReverseConstIterator(begin()); }
 
     private:
-      Point                          myLowerBound;
-      Point                          myUpperBound;
-      Point                          myStartingPoint;
-      std::vector<Dimension>              myPermutation;
+      /// Lower bound of the subrange.
+      Point                  myLowerBound;
+      /// Upper bound of the subrange.
+      Point                  myUpperBound;
+      /// Starting point of the subrange.
+      Point                  myStartingPoint;
+      /// Permutation on dimensions used in the subrange.
+      std::vector<Dimension> myPermutation;
    };
 
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange.
+     * @param permutation a vector containing the dimensions used for
+     *        the subrange. Dimensions are iterated in the given order.
+     * @return a sub-range of the domain for the given permutation.
+     */
     ConstSubRange subRange(const std::vector<Dimension> & permutation) const
     { return ConstSubRange(*this, permutation, myLowerBound); }
 
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange from an initial point.
+     * @param permutation a vector containing the dimensions used for
+     *        the subrange. Dimensions are iterated in the given order.
+     * @param startingPoint the initial point.
+     * @return a sub-range of the domain for the given permutation.
+     * @pre startingPoint must belong to the range.     
+     */
     ConstSubRange subRange(const std::vector<Dimension> & permutation,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, permutation, startingPoint); }
     
-    /// @return a sub-range of the domain.
-    ConstSubRange subRange(Dimension adim) const
-    { return ConstSubRange(*this, adim, myLowerBound); }
-
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange of one dimension.
+     * @param adim the dimension of the subrange.
+     * @param startingPoint the initial point.
+     * @return a sub-range of the domain for the given dimension.
+     * @pre startingPoint must belong to the range.     
+     */
     ConstSubRange subRange(Dimension adim,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim, startingPoint); }
     
-    /// @return a sub-range of the domain.
-    ConstSubRange subRange(Dimension adim1, Dimension adim2) const
-    { return ConstSubRange(*this, adim1, adim2, myLowerBound); }
-
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange of two dimensions.
+     * @param adim1 the first dimension of the subrange.
+     * @param adim2 the second dimension of the subrange.
+     * @param startingPoint the initial point.
+     * @return a sub-range of the domain for the given two dimensions.
+     * @pre startingPoint must belong to the range.     
+     */
     ConstSubRange subRange(Dimension adim1, Dimension adim2,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, startingPoint); }
     
-    /// @return a sub-range of the domain.
-    ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3) const
-    { return ConstSubRange(*this, adim1, adim2, adim3, myLowerBound); }
-
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange of three dimensions.
+     * @param adim1 the first dimension of the subrange.
+     * @param adim2 the second dimension of the subrange.
+     * @param adim3 the third dimension of the subrange.
+     * @param startingPoint the initial point.
+     * @return a sub-range of the domain for the given three dimensions.
+     * @pre startingPoint must belong to the range.     
+     */
     ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3,
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
     
 #ifdef CPP0X_INITIALIZER_LIST
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange.
+     * @param permutation an initializer_list containing the dimensions used for
+     *        the subrange. Dimensions are iterated in the given order.
+     * @return a sub-range of the domain for the given permutation.
+     */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation)
     { return ConstSubRange(*this, permutation, myLowerBound); }
 
-    /// @return a sub-range of the domain.
+    /**
+     * get a subRange from an initial point.
+     * @param permutation an initializer_list containing the dimensions used for
+     *        the subrange. Dimensions are iterated in the given order.
+     * @param startingPoint the initial point.
+     * @return a sub-range of the domain for the given permutation.
+     * @pre startingPoint must belong to the range.     
+     */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation,
 			   const Point & startingPoint)
     { return ConstSubRange(*this, permutation, startingPoint); }
