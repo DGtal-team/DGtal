@@ -122,6 +122,8 @@ DGtal::DGTalQGLViewer::init(){
   camera()->showEntireScene();
   myDefaultColor= QColor(255, 255, 255);
   
+  setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
+  setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors");
   
   setManipulatedFrame(new ManipulatedFrame());
   restoreStateFromFile();
