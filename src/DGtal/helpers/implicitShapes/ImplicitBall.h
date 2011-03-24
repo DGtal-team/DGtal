@@ -111,7 +111,7 @@ namespace DGtal
     RealPoint gradient(const RealPoint &aRealPoint) const
     {
       RealPoint res;
-      for(Dimension dim=0;dim< Space::dimension; dim++)
+      for(Dimension i=0;i< Space::dimension; i++)
 	{
 	  res[i] = aRealPoint[i] - IntegerTraits<Integer>::castToDouble(myCenter[i]);
 	}
