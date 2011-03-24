@@ -117,10 +117,11 @@ DGtal::DGTalQGLViewer::init(){
   myPointSetList.push_back(listePoint);
   myCurrentFillColor = QColor (220, 220, 220);
   myCurrentLineColor = QColor (22, 22, 22, 50);
-    
+  myDefaultBackgroundColor = backgroundColor ();
+  myIsBackgroundDefault=true;
   camera()->showEntireScene();
   myDefaultColor= QColor(255, 255, 255);
-  setBackgroundColor(QColor(255, 255,255));
+  
   
   setManipulatedFrame(new ManipulatedFrame());
   restoreStateFromFile();
@@ -294,12 +295,22 @@ void
 DGtal::DGTalQGLViewer::keyPressEvent(QKeyEvent *e){
   bool handled = false;
   
-  if ((e->key()==Qt::Key_S) ){
+  if ((e->key()==Qt::Key_T) ){
     handled=true;
     cerr << "sorting surfel according camera position...";
     sortSurfelFromCamera();
     cerr << " [done]"<< endl;
     updateList();    
+    updateGL();
+  }
+  if( (e->key()==Qt::Key_B)){
+    handled=true;
+    myIsBackgroundDefault=!myIsBackgroundDefault;
+    if(!myIsBackgroundDefault){
+      setBackgroundColor(QColor(255, 255,255));
+    }else{
+      setBackgroundColor(QColor(51, 51, 51));
+    }
     updateGL();
   }
   if (!handled)

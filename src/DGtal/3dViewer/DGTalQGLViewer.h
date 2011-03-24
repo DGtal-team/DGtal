@@ -116,12 +116,11 @@ public:
    */
   typedef std::map< std::string,CountedPtr<DrawableWithDGtalQGLViewer> > StyleMapping;
   
-  
+  QColor myDefaultBackgroundColor;
   QColor myDefaultColor;
-
   QColor myCurrentFillColor;
   QColor myCurrentLineColor;
-
+  bool myIsBackgroundDefault;
 
 
   /**
