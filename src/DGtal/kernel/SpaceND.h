@@ -142,7 +142,7 @@ Point4Int a= {2, 3 , -5 , 6};
 
     ///Point with "double" as  coordinate type with the same dimension
     ///as SpaceND.
-    typedef typename boost::array<dim,double> RealPoint;
+    typedef typename boost::array<double,dim> RealPoint;
 
     // ----------------------- Standard services ------------------------------
   public:
