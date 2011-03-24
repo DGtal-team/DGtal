@@ -172,8 +172,8 @@ namespace DGtal
      */
     struct ConstRange 
     {
-      typedef Domain::ConstIterator        ConstIterator;
-      typedef Domain::ReverseConstIterator ReverseConstIterator;
+      typedef typename Domain::ConstIterator        ConstIterator;
+      typedef typename Domain::ReverseConstIterator ReverseConstIterator;
 
       /**
        * ConstRange constructor from a given domain.
