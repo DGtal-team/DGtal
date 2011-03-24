@@ -63,8 +63,8 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
+    typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
-    
     
 
     /** 
@@ -107,6 +107,17 @@ namespace DGtal
       return (myCenter + Point::diagonal(myRadius)); 
     }
     
+    inline
+    RealPoint gradient(const RealPoint &aRealPoint) const
+    {
+      RealPoint res;
+      for(Dimension dim=0;dim< Space::dimension; dim++)
+	{
+	  res[i] = aRealPoint[i] - IntegerTraits<Integer>::castToDouble(myCenter[i]);
+	}
+      return res;
+    }  
+
     // ----------------------- Interface --------------------------------------
   public:
     

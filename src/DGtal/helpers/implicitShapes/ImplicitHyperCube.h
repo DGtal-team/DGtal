@@ -125,6 +125,7 @@ namespace DGtal
       return (myCenter + Point::diagonal(myHalfWidth)); 
     }
     
+
     // ----------------------- Interface --------------------------------------
   public:
     
