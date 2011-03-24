@@ -47,6 +47,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //#include <iterator> // Bug for operator * => dangling reference !!!
+// Class allowing to build a reverse iterator of a given iterator.
 template<typename _Iterator>
 class myreverse_iterator
 	: public iterator<typename iterator_traits<_Iterator>::iterator_category,

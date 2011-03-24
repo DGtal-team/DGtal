@@ -207,7 +207,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
   }
   */
 
-  typedef typename Domain::ConstSubRange::const_iterator ConstDomIt;
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
   
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
@@ -236,8 +236,8 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
     computeSteps1D ( input, output, (*it), dim, s, t );
   }
 
-  free(s);
-  free(t);
+  delete []s;
+  delete []t;
 
   /*trace.info()<<"out"<<endl;
    
