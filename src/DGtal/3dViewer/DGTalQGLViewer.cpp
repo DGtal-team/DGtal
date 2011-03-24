@@ -76,6 +76,25 @@ DGtal::DGTalQGLViewer::isValid() const
 
 
 
+
+void
+DGtal::DGTalQGLViewer::drawWithNames(){   
+  
+  for(uint i=0; i<myVoxelSetList.size(); i++){
+    glCallList(myListToAff+i);
+  }
+  for(uint i=0; i<myLineSetList.size(); i++){
+    glCallList(myListToAff+myVoxelSetList.size()+i);
+  }
+  
+  for(uint i=0; i<myPointSetList.size(); i++){
+    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+  }   
+
+
+}
+
+
 void
 DGtal::DGTalQGLViewer::draw()
 {
@@ -123,9 +142,10 @@ DGtal::DGTalQGLViewer::init(){
   myDefaultColor= QColor(255, 255, 255);
   
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
-  setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors");
-  
-  setManipulatedFrame(new ManipulatedFrame());
+  setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
+
+  setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
+  setManipulatedFrame(new ManipulatedFrame());  
   restoreStateFromFile();
 }
 
@@ -142,23 +162,54 @@ DGtal::DGTalQGLViewer::sortSurfelFromCamera(){
 
 
 
+void 
+DGtal::DGTalQGLViewer::postSelection(const QPoint& point)
+{
+  camera()->convertClickToLine(point, myOrig, myDir);
+  bool found;
+  this->myPosSelector= point;
+  mySelectedPoint = camera()->pointUnderPixel(point, found);
+  if(found){
+    cerr << "Element of liste= " << selectedName() << "selected" << endl; 
+    if(selectedName() !=-1){
+      uint id = abs(selectedName()-1);
+      if(id< myVoxelSetList.size()){
+	cerr << "deleting list="<< id<<endl;
+	myVoxelSetList.erase(myVoxelSetList.begin()+id);
+	updateList(false);
+      }else if (id< myVoxelSetList.size()+myLineSetList.size()){
+	myLineSetList.erase(myLineSetList.begin()+(id-myVoxelSetList.size()));
+	updateList(false);
+      }else if (id< myPointSetList.size()+myLineSetList.size()+myVoxelSetList.size()){
+	myPointSetList.erase(myPointSetList.begin()+(id-myVoxelSetList.size()-myLineSetList.size()));
+	updateList(false);
+      } 
+      
+    }
+  }
+  
+  
+}
+
+
 
 
 void
-DGtal::DGTalQGLViewer:: updateList()
+DGtal::DGTalQGLViewer::updateList(bool updateBoundingBox)
 {
   uint nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
-
-
+  
+  uint listeID=0;
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
   for (uint i=0; i<myVoxelSetList.size(); i++){  
+
     glNewList(myListToAff+i, GL_COMPILE);
     if(myListVoxelDepthTest.at(i)){
       glEnable( GL_DEPTH_TEST );
@@ -166,7 +217,8 @@ DGtal::DGTalQGLViewer:: updateList()
       glDisable( GL_DEPTH_TEST );
     }
     myNbListe++;
-      glBegin(GL_QUADS);
+    glPushName(myNbListe);  
+    glBegin(GL_QUADS);
       for (std::vector<voxelGL>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it){
@@ -220,13 +272,15 @@ DGtal::DGTalQGLViewer:: updateList()
       }
       glEnd();
       glEndList();
-    }
+  }
   
 
   for (uint i=0; i<myLineSetList.size(); i++){  
+    listeID++;
     glNewList(myListToAff+myVoxelSetList.size()+i, GL_COMPILE);
     myNbListe++;
     glDisable(GL_LIGHTING);
+    glPushName(myNbListe);  
     glBegin(GL_LINES);      
     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
@@ -269,6 +323,7 @@ DGtal::DGTalQGLViewer:: updateList()
     if(myPointSetList.at(i).size()!=0){
       glPointSize((*myPointSetList.at(i).begin()).size);
     }
+    glPushName(myNbListe);  
     glBegin(GL_POINTS);      
     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
@@ -283,10 +338,10 @@ DGtal::DGTalQGLViewer:: updateList()
   }    
 
 
-  setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
-  showEntireScene();
-
- 
+  if( updateBoundingBox){
+    setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
+    showEntireScene();
+  }
 }
 
 
