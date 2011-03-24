@@ -233,7 +233,7 @@ public:
    *
    **/
   
-  void updateList();
+  void updateList(bool updateBoundingBox=true);
 
 
 
@@ -357,7 +357,8 @@ private:
 
   GLuint myListToAff;
   uint myNbListe;
-  
+  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
+  QPoint myPosSelector;
   
     // ------------------------- Hidden services ------------------------------
 protected:
@@ -377,10 +378,12 @@ protected:
 
 
 protected :
+  virtual void drawWithNames();
   virtual void draw();
   virtual void init();
   virtual QString helpString() const;
-
+  virtual void postSelection(const QPoint& point);
+  
 
 
     // ------------------------- Internals ------------------------------------
