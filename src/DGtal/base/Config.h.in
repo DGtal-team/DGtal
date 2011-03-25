@@ -100,6 +100,9 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  *  - \ref threeD_visu
  *  - \ref image_io 
  *  - \ref Tools3dVolViewer
+ *
+ * - Miscellaneous
+ *  - \ref dgtalITK
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake
