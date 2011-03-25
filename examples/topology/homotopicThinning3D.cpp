@@ -112,7 +112,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
   viewer << shape_set;
 
-  viewer.updateList();
+  viewer<< DGTalQGLViewer::updateDisplay;
    
   
   trace.endBlock();

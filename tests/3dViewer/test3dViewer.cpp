@@ -129,10 +129,7 @@ int main( int argc, char** argv )
   viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain2;
   
-  
-
-  
- viewer.updateList();
+  viewer << DGTalQGLViewer::updateDisplay;
  
 
  bool res = application.exec();

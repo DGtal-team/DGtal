@@ -72,7 +72,7 @@ int main( int argc, char** argv )
  viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
  //viewer << shape2;
  
- viewer.updateList();
+ viewer<< DGTalQGLViewer::updateDisplay;
  return application.exec();
 }
 //                                                                           //

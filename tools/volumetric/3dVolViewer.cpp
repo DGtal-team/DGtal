@@ -103,6 +103,6 @@ int main( int argc, char** argv )
    }     
  }
  // viewer << ClippingPlane(0,0,-1, 20);
- viewer.updateList();
+ viewer << DGTalQGLViewer::updateDisplay;
  return application.exec();
 }

@@ -50,12 +50,10 @@ int main( int argc, char** argv )
   QApplication application(argc,argv);
   DGTalQGLViewer viewer;
   viewer.show(); 
-  viewer.setWindowTitle("simple Volume Viewer");
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Z3i::DigitalSet set3d = VolReader<Image>::importDigitalSet(inputFilename , 
 							     1, 255 );
-  viewer << set3d;
-  viewer.updateList();
+  viewer << set3d << DGTalQGLViewer::updateDisplay;
   return application.exec();
 }
 //                                                                           //

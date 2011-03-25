@@ -64,10 +64,8 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set;  
+ viewer << shape_set<< DGTalQGLViewer::updateDisplay; 
  
- 
- viewer.updateList();
  return application.exec();
 }
 //                                                                           //

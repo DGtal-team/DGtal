@@ -60,9 +60,9 @@ using namespace Z3i;
  Domain domain( p1, p2 );
 
  viewer << domain;  
- viewer << p1 << p2 << p3;
- 
- viewer.updateList();
+ viewer << p1 << p2 << p3; 
+ viewer << << DGTalQGLViewer::updateDisplay;
+
 
 * @endcode
 *
@@ -94,11 +94,8 @@ using namespace Z3i;
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set;  
+ viewer << shape_set << DGTalQGLViewer::updateDisplay
  
- viewer.updateList();  
-
-
  @endcode
 *
 * You should obtain the following visualisation (see example: <a href="dgtalQGLviewer-2-sets_8cpp-example.html">dgtalQGLviewer-2-sets.cpp </a>):
