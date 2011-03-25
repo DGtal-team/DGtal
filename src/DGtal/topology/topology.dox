@@ -299,6 +299,21 @@ namespace DGtal {
  * ObjectType bdiamond_clone = diamond_clone.border(); // two components
  * @endcode
  *
+ 
+ The resulting border can be visualized for instance by: 
+ (see. <a href="" >  3dBorderExtraction.cpp</a>
+@code 
+DGTalQGLViewer viewer;
+ viewer.show(); 
+ viewer<<  CustomColors3D(QColor(250, 250,250),QColor(250, 250,250));
+ viewer << bdiamond_clone;
+ viewer << bdiamond ;
+ viewer << ClippingPlane(1,1,0,5)<< DGTalQGLViewer::updateDisplay;
+@endcode
+* @image html visuBorderExtraction.png  "Border extraction visualisation"
+ * @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm	
+ 
+
  * 
  * \subsection dgtal_topology_sec3s4 Connectedness and connected components
  *
@@ -421,6 +436,17 @@ Finally the result can simply be displayed using QGLviewer:
 \example homotopicThinning3D.cpp
 * 
 */
+/**
+\example  3dBorderExtraction.cpp
+* 
+*/
+/**
+\example  3dBorderExtractionVol.cpp
+* 
+*/
+
+
+
 }
 
 
