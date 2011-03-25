@@ -37,7 +37,7 @@
 #include "Board/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/helpers/StdDefs.h"
+
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -87,7 +87,7 @@ int main( int argc, char** argv )
  trace.info() << "Image loaded: "<<image<< std::endl;
 
  Domain domain(image.lowerBound(), image.upperBound());
-  GradientColorMap<long> gradient( thresholdMin, thresholdMax);
+ GradientColorMap<long> gradient( thresholdMin, thresholdMax);
  gradient.addColor(LibBoard::Color::Blue);
  gradient.addColor(LibBoard::Color::Green);
  gradient.addColor(LibBoard::Color::Yellow);

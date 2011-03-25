@@ -43,6 +43,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
+
+
+
+template <typename T>
+inline
+Z3i::DigitalSet 
+DGtal::VolReader<T>::importDigitalSet(const std::string & filename, 
+				      int thresholdMin, int thresholdMax)
+				      throw(DGtal::IOException){
+  
+  
+  T imageVol = importVol(filename);
+  Z3i::Domain domain(imageVol.lowerBound(), imageVol.upperBound());
+  Z3i::DigitalSet resultSet  (domain);
+  for(Z3i::Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
+    int  val= imageVol( (*it) );     
+     if(val<=thresholdMax && val >=thresholdMin){
+       resultSet.insertNew(*it);
+     }
+  }
+
+  return resultSet;
+}
+
+
+
 template <typename T>
 inline
 T

@@ -135,7 +135,7 @@ DGtal::DGTalQGLViewer::init(){
   vector<pointGL> listePoint;
   myPointSetList.push_back(listePoint);
   myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 22, 50);
+  myCurrentLineColor = QColor (22, 22, 222, 50);
   myDefaultBackgroundColor = backgroundColor ();
   myIsBackgroundDefault=true;
   camera()->showEntireScene();
