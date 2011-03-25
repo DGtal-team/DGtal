@@ -21,7 +21,7 @@ Table of contents:
    -# \ref nDio
 
  -# \ref io_examples
-
+   -# \ref importDigitalSet 
 \section usage Overall usage
 
 TODO
@@ -57,16 +57,45 @@ and VolWriter
 
 \section io_examples Example
 
-\subsection Importing a digital set volume:
+\subsection importDigitalSet Importing a 3D digital set from volume file:
+
+Importing and visualizing a digital set from a vol file can be done in
+few code lines. (see. file <a href="digitalSetFromVol_8cpp-example.html"). 
+
+First we select the Image type with \c int:
+
+@code
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/helpers/StdDefs.h"
+...
+typedef ImageSelector < Z3i::Domain, int>::Type Image;
+@endcode
+
+Then the digital set is simply imported with two threshold (1, 255)
+@code
+ Z3i::DigitalSet set3d = VolReader<Image>::importDigitalSet(inputFilename, 1, 255 );
+@endcode
+
+and we can display the result with a QGTalQGLviewer:
+
+@code
+DGTalQGLViewer viewer;
+viewer.show(); 
+viewer << set3d << DGTalQGLViewer::updateDisplay;
+@endcode
 
 
+Then you will obtain the following visualisation:
 
-
+\image html visuDigitalSet3D.png "3D digital with DGtalQGLviewer" width=5cm
 
 
 
 */
+
 }
 
-
-
+/**
+* \example digitalSetFromVol.cpp
+**/

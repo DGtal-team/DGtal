@@ -75,13 +75,9 @@ int main( int argc, char** argv )
 
 
   viewer << SetMode3D(domain.styleName(), "Paving");
-  viewer << domain;
-   
+  viewer << domain << DGTalQGLViewer::updateDisplay;   
 
 
-
- 
- viewer.updateList();
  return application.exec();
 }
 //                                                                           //

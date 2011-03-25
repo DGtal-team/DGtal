@@ -183,7 +183,7 @@ int main( int argc, char** argv )
    }     
  }
  
- viewer.updateList();
+ viewer<< DGTalQGLViewer::updateDisplay;
  
  return application.exec();
 }

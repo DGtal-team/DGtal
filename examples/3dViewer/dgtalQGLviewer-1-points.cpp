@@ -59,7 +59,7 @@ int main( int argc, char** argv )
  viewer << domain;  
  viewer << p1 << p2 << p3;
  
- viewer.updateList();
+ viewer<< DGTalQGLViewer::updateDisplay;
  return application.exec();
 }
 //                                                                           //

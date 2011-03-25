@@ -227,14 +227,6 @@ public:
 
 
 
-  /**
-   *  Permit to update the OpenGL list to be displayed. 
-   *  Need to called after a number of addVoxel or after a sortSurfelFromCamera().
-   *
-   **/
-  
-  void updateList(bool updateBoundingBox=true);
-
 
 
 
@@ -362,7 +354,17 @@ private:
   
     // ------------------------- Hidden services ------------------------------
 protected:
+  
+  
+  /**
+   *  Permit to update the OpenGL list to be displayed. 
+   *  Need to called after a number of addVoxel or after a sortSurfelFromCamera().
+   *
+   **/
+  void updateList(bool updateBoundingBox=true);
+  
 
+  
   virtual void keyPressEvent(QKeyEvent *e);
   
   struct compFarthestFromCamera{
