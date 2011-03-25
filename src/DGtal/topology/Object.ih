@@ -902,8 +902,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( DGTalQGLViewer & view
   std::string mode = viewer.getMode( this->styleName() );
   if ( mode == "" )
     pointSet().selfDrawQGL( viewer );
-  else
-    if ( mode == "DrawAdjacencies" )
+  else if ( mode == "PavingTransp" ){
+    pointSet().selfDrawAsPavingTransparentQGL(viewer);
+    
+  }
+  else if ( mode == "DrawAdjacencies" )
     {
       pointSet().selfDrawQGL( viewer );
       selfDrawWithAdjacenciesQGL( viewer );

@@ -145,7 +145,7 @@ As for \c DGtalBoard the object can be displayed with different possible mode:
 
    * - class PointVector, modes: "" / "Both", "Paving", "Grid"
    * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving", "PavingTransp", "Grid"
-   * - class Object, modes: "", "DrawAdjacencies"
+   * - class Object, modes: "", "DrawAdjacencies", "PavingTransp"."
    * - class HyperRectDomain, modes: "" / "Grid", "Paving", "PavingPoints", "PavingGrids"
 
 

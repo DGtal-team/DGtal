@@ -112,7 +112,7 @@ namespace DGtal
      **/
     
     static Z3i::DigitalSet importDigitalSet(const std::string & filename, 
-					    int thresholdMin=0, int thresholdMax=1)
+					    int thresholdMin=0, int thresholdMax=1, uint marge=0)
       throw(DGtal::IOException);
   
     

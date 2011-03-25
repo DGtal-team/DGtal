@@ -1,0 +1,66 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file 3dBorderExtraction.cpp
+ * @ingroup Examples
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/03/25
+ *
+ * An example file named 3dBorderExtraction.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include "DGtal/base/Common.h"
+#include <QtGui/qapplication.h>
+#include "DGtal/base/Common.h"
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "ConfigExamples.h"
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+using namespace DGtal;
+
+///////////////////////////////////////////////////////////////////////////////
+
+int main( int argc, char** argv )
+{
+
+  std::string inputFilename = examplesPath + "samples/implicitrounded.vol~"; 
+  QApplication application(argc,argv);
+  DGTalQGLViewer viewer;
+  viewer.show(); 
+  
+  typedef ImageSelector < Z3i::Domain, int>::Type Image;
+  Z3i::DigitalSet set3d = VolReader<Image>::importDigitalSet(inputFilename , 
+							     1, 255, 10 );
+  Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
+  Z3i::Object18_6 border = obj3d.border();
+  viewer << border  << DGTalQGLViewer::updateDisplay;
+  return application.exec();   
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
