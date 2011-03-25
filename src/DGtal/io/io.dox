@@ -20,6 +20,8 @@ Table of contents:
    -# \ref io3D
    -# \ref nDio
 
+ -# \ref io_examples
+
 \section usage Overall usage
 
 TODO
@@ -51,5 +53,20 @@ and VolWriter
 - Raw foramts (binary file with raw values using the
   HyperRectDomain::Iterator order): RawReader and RawWriter
     - Raw8: import/export on raw 8bits
+
+
+\section io_examples Example
+
+\subsection Importing a digital set volume:
+
+
+
+
+
+
+
 */
 }
+
+
+
