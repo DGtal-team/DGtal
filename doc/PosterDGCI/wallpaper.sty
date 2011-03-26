@@ -1,0 +1,149 @@
+%% 
+%% This is file `wallpaper.sty' v 1.00
+%%
+%% Author Michael H.F. Wilkinson 
+%%   December 22, 2004
+%% 
+%% Create background, either centered or tiled   
+%% relies heavily on eso-pic.sty, corrects for changes in \hoffset 
+%% by classes such as sciposter.cls
+%% Problems, bugs and comments to 
+%%        michael@cs.rug.nl
+
+\ProvidesPackage{wallpaper}[2004/12/22, v1.00 easy wallpaper formatting (MHFW)]
+\NeedsTeXFormat{LaTeX2e}[1995/06/01]
+
+\RequirePackage{ifthen}
+\RequirePackage{calc}
+\RequirePackage{eso-pic}
+\RequirePackage{graphicx}
+
+\newlength{\wpXoffset}
+\setlength{\wpXoffset}{-\hoffset}
+\newlength{\wpYoffset}
+\setlength{\wpYoffset}{0pt}
+\newlength{\tileXoffset}
+\newlength{\tileYoffset}
+\newlength{\tilewidth}
+\newlength{\tileheight}
+\newlength{\tileX}
+\newlength{\tileY}
+
+\newcommand{\CenterWallPaper}[2]{%
+\AddToShipoutPicture{\put(\LenToUnit{\wpXoffset},\LenToUnit{\wpYoffset}){%
+     \parbox[b][\paperheight]{\paperwidth}{%       
+       \vfill
+       \centering
+       \includegraphics[width=#1\paperwidth,height=#1\paperheight,%
+                        keepaspectratio]{#2}%
+       \vfill
+     }}}
+}  
+
+\newcommand{\ThisCenterWallPaper}[2]{%
+\AddToShipoutPicture*{\put(\LenToUnit{\wpXoffset},\LenToUnit{\wpYoffset}){%
+     \parbox[b][\paperheight]{\paperwidth}{%       
+       \vfill
+       \centering
+       \includegraphics[width=#1\paperwidth,height=#1\paperheight,%
+                        keepaspectratio]{#2}%
+       \vfill
+     }}}
+}  
+
+
+
+\newcommand{\TileSquareWallPaper}[2]{%
+\AddToShipoutPicture{%
+  \begingroup
+    \setlength{\tileYoffset}{\wpYoffset}
+    \setlength{\tilewidth}{\paperwidth/#1}%
+    \setlength{\tileheight}{\tilewidth}%
+    \setlength{\tileY}{0pt}%
+    \whiledo{\lengthtest{\tileY < \paperheight}}{% 
+      \setlength{\tileX}{0pt}%
+      \setlength{\tileXoffset}{\wpXoffset}%
+      \whiledo{\lengthtest{\tileX < \paperwidth}}{% 
+        \put(\LenToUnit{\tileXoffset},\LenToUnit{\tileYoffset}){%
+          \includegraphics[height=\tileheight,width=\tilewidth]{#2}}%
+        \addtolength{\tileX}{\tilewidth}
+        \addtolength{\tileXoffset}{\tilewidth}
+      }%
+      \addtolength{\tileY}{\tileheight}
+      \addtolength{\tileYoffset}{\tileheight}
+    }%
+  \endgroup  
+}%
+}
+
+\newcommand{\ThisTileSquareWallPaper}[2]{%
+\AddToShipoutPicture*{%
+  \begingroup
+    \setlength{\tileYoffset}{\wpYoffset}
+    \setlength{\tilewidth}{\paperwidth/#1}%
+    \setlength{\tileheight}{\tilewidth}%
+    \setlength{\tileY}{0pt}%
+    \whiledo{\lengthtest{\tileY < \paperheight}}{% 
+      \setlength{\tileX}{0pt}%
+      \setlength{\tileXoffset}{\wpXoffset}%
+      \whiledo{\lengthtest{\tileX < \paperwidth}}{% 
+        \put(\LenToUnit{\tileXoffset},\LenToUnit{\tileYoffset}){%
+          \includegraphics[height=\tileheight,width=\tilewidth]{#2}}%
+        \addtolength{\tileX}{\tilewidth}
+        \addtolength{\tileXoffset}{\tilewidth}
+      }%
+      \addtolength{\tileY}{\tileheight}
+      \addtolength{\tileYoffset}{\tileheight}
+    }%
+  \endgroup  
+}%
+}
+
+
+\newcommand{\TileWallPaper}[3]{%
+\AddToShipoutPicture{%
+  \begingroup
+    \setlength{\tileYoffset}{\wpYoffset}
+    \setlength{\tilewidth}{#1}%
+    \setlength{\tileheight}{#2}%
+    \setlength{\tileY}{0pt}%
+    \whiledo{\lengthtest{\tileY < \paperheight}}{% 
+      \setlength{\tileX}{0pt}%
+      \setlength{\tileXoffset}{\wpXoffset}%
+      \whiledo{\lengthtest{\tileX < \paperwidth}}{% 
+        \put(\LenToUnit{\tileXoffset},\LenToUnit{\tileYoffset}){%
+          \includegraphics[height=\tileheight,width=\tilewidth]{#3}}%
+        \addtolength{\tileX}{\tilewidth}
+        \addtolength{\tileXoffset}{\tilewidth}
+      }%
+      \addtolength{\tileY}{\tileheight}
+      \addtolength{\tileYoffset}{\tileheight}
+    }%
+  \endgroup  
+}%
+}
+
+\newcommand{\ThisTileWallPaper}[3]{%
+\AddToShipoutPicture*{%
+  \begingroup
+    \setlength{\tileYoffset}{\wpYoffset}
+    \setlength{\tilewidth}{#1}%
+    \setlength{\tileheight}{#2}%
+    \setlength{\tileY}{0pt}%
+    \whiledo{\lengthtest{\tileY < \paperheight}}{% 
+      \setlength{\tileX}{0pt}%
+      \setlength{\tileXoffset}{\wpXoffset}%
+      \whiledo{\lengthtest{\tileX < \paperwidth}}{% 
+        \put(\LenToUnit{\tileXoffset},\LenToUnit{\tileYoffset}){%
+          \includegraphics[height=\tileheight,width=\tilewidth]{#3}}%
+        \addtolength{\tileX}{\tilewidth}
+        \addtolength{\tileXoffset}{\tilewidth}
+      }%
+      \addtolength{\tileY}{\tileheight}
+      \addtolength{\tileYoffset}{\tileheight}
+    }%
+  \endgroup  
+}%
+}
+
+\newcommand{\ClearWallPaper}{\ClearShipoutPicture}

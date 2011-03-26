@@ -1,0 +1,227 @@
+%\documentclass[landscape,a0b,final]{a0poster}
+\documentclass[landscape,a0]{a0poster}
+\pagestyle{empty}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pst-all}
+\usepackage{epsfig}
+\usepackage{wallpaper}
+\usepackage{url}
+\usepackage[latin1]{inputenc}
+
+\input{macros}
+
+
+\newcounter{posterPartNum}
+\setcounter{posterPartNum}{0}
+
+
+
+\definecolor{Rouge}{rgb}{1.0, 0.0, 0.0}
+\definecolor{RougeSombre}{rgb}{0.8, 0.0, 0.0}
+\definecolor{Vert}{rgb}{0.0, 1.0, 0.0}
+\definecolor{VertSombre}{rgb}{0.0, 0.5, 0.0}
+\definecolor{Bleu}{rgb}{0.0, 0.0, 1.0}
+\definecolor{BleuSombre}{rgb}{0.0, 0.0, 0.8}
+\definecolor{PartColor}{rgb}{0.0, 0.5, 0.0}
+
+\newrgbcolor{lcolor}{0. 0. 0.80}
+\newrgbcolor{gcolor1}{1. 1. 1.}
+\newrgbcolor{gcolor2}{.80 .80 1.}
+
+
+
+\renewcommand{\vec}[1]{\overrightarrow{\strut #1}}
+
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+
+\newlength{\pfLeft}
+\newlength{\pfRight}
+\newlength{\pfTop}
+\newlength{\pfBottom}
+
+%% Pour faire des jolis itemize
+\newlength{\svg}
+\newenvironment{posterDescription}
+{
+	\begin{list}{}
+	{
+		\setlength{\leftmargin}{1.0cm}
+		\setlength{\labelsep}{0.1cm}
+		\setlength{\labelwidth}{1.0cm}
+		\setlength{\itemindent}{0cm}
+		\setlength{\listparindent}{0cm}
+		\setlength{\itemsep}{0.1cm}
+	}
+}
+{
+	\end{list}
+}
+
+
+
+
+
+
+
+\newenvironment{colonne}[1]{
+\begin{minipage}[t]{#1\textwidth}
+  \begin{center}
+}{
+  \end{center}
+  \end{minipage}}
+
+
+
+
+\newcommand{\pbox}[4]{
+\psshadowbox[#3]{
+\begin{minipage}[t][#2][t]{#1}
+#4
+\end{minipage}
+}}
+
+
+
+
+
+
+\newenvironment{poster}[1]
+{ 
+  \begin{center}
+    {\Huge \bf \sffamily  #1}
+    %	\posterPartSeparator
+  \end{center}
+}
+
+
+\setlength{\wpYoffset}{-2.5cm}
+
+
+\begin{document}
+
+
+
+%----------------------------------------------------------------
+%
+%     Image de fond
+%\wpYoffset{0.2cm}
+
+\CenterWallPaper{1.0}{./Logos/DGtalLogoFond.eps}	
+
+\sffamily
+\newrgbcolor{lightblue}{0. 0.2 0.20}
+\newrgbcolor{white}{1. 1. 1.}
+\newrgbcolor{whiteblue}{.80 .80 1.}
+
+
+
+
+
+
+\begin{poster}{
+
+\begin{colonne}{0.98}
+%\psframe[linewidth=2mm,framearc=0.2,linecolor=lightblue,framesep=1em](-47,3)(47,-12.5)
+\begin{center}
+\vspace{-1.5cm}
+\centering \rput(4cm,1cm){\includegraphics[width=8cm]{Logos/DGtalLogo.eps}} \hskip 10cm Digital Geometry Tools and Algorithms \\
+\center \rput(0cm,-2cm){\includegraphics[width=14cm]{Logos/logoDGCI.eps}} \\
+\vspace{7cm}
+\hrule width 25cm
+\center \Large{LORIA 6-8 avril 2011}  
+
+\vspace{5.5cm}
+
+\end{center}
+
+
+\end{colonne}
+}
+
+%-------------------------------------------------------------------------------
+% Colonne 1
+%-------------------------------------------------------------------------------
+
+
+
+\vskip 4cm
+
+\begin{colonne}{0.32}
+
+
+\medskip
+
+
+
+
+\section{Colonne 1}
+
+
+
+
+
+
+
+
+
+\end{colonne}
+\hfill
+%-------------------------------------------------------------------------------
+% Colonne 2
+%-------------------------------------------------------------------------------
+\begin{colonne}{0.32}
+
+\section{Colonne 2}
+
+
+
+
+\end{colonne}
+\hfill
+%-------------------------------------------------------------------------------
+%Partie Droite
+%-------------------------------------------------------------------------------
+\begin{colonne}{0.32}
+
+\begin{minipage}[t]{\textwidth}
+
+
+\vskip -4cm
+\section{Colonne Droite}
+
+
+
+
+
+
+\end{minipage}
+
+
+\begin{minipage}{\textwidth}
+\bigskip
+\bibliographystyle{plain}
+\small{\bibliography{posterDGCI}}
+
+\end{minipage}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{colonne}
+
+
+
+\end{poster}
+
+\end{document}
