@@ -26,6 +26,9 @@ InsightToolkit ITK library (http://www.itk.org).
 @image html itk-logo.png
 @image latex itk-logo.png width=5cm
 
+@see testITKImage.cpp
+
+
 @note The features  detailed below require to have built DGtal with
 the ITK dependency.  Furthermore, since it is on-going work, the
 features has been declared in the DGtal::experimental namespace.
