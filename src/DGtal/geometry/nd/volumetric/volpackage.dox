@@ -276,4 +276,9 @@ T. Saito and J I Toriwaki. New algorithms for Euclidean distance transformations
 
 */
 
+
+
+/**
+* \example distancetransform3D.cpp 
+*/
 }

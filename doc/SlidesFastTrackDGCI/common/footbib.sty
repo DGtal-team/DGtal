@@ -1,0 +1,729 @@
+%%
+%% This is file `footbib.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% footbib.dtx  (with options: `package,checkoutput')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from footbib.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file footbib.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%% File: footbib.dtx Copyright (C) 1997-2007 Eric Domenjoud
+%%
+%% Eric Domenjoud,
+%% CRIN/CNRS & INRIA Lorraine
+%% E-mail: Eric.Domenjoud@loria.fr
+%%
+
+\def\fileversion{2.0.6}
+\def\filedate{2007/03/13}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{footbib}[\filedate\space v\fileversion\space(E.Domenjoud)]
+\@makeother\`
+\edef\@tempa{\catcode\string`\string`=\the\catcode\string``\relax}
+\def\@tempb#1{\catcode`\noexpand#1\string=\the\catcode`#1\relax}
+\edef\@tempa{\@tempa
+  \@tempb\:\@tempb\?\@tempb\=\@tempb\<\@tempb\>\@tempb\+\@tempb\-%
+  \@tempb\.\@tempb\'\@tempb\~}
+\expandafter\AtEndOfPackage\expandafter{\@tempa}
+\@makeother\: \@makeother\? \@makeother\= \@makeother\< \@makeother\>
+\@makeother\+ \@makeother\- \@makeother\. \@makeother\'
+\catcode`\~=\active
+\@ifpackagelater{footbib}\fmtversion\@tempswafalse\@tempswatrue
+\if@tempswa
+\def\@tempa#1#2{\def\@tempb{#2}\ifx#1\@tempb\else\@tempswatrue\fi}
+\@tempswafalse
+\@tempa\@specialoutput{\ifnum\outputpenalty>-\@Mii\@doclearpage\else
+  \ifnum\outputpenalty<-\@Miii\ifnum\outputpenalty<-\@MM\deadcycles\z@
+  \fi\global\setbox\@holdpg\vbox{\unvbox\@cclv}\else\global\setbox
+  \@holdpg\vbox{\unvbox\@holdpg\unvbox\@cclv\setbox\@tempboxa\lastbox
+  \unskip}\@pagedp\dp\@holdpg\@pageht\ht\@holdpg\unvbox\@holdpg\@next
+  \@currbox\@currlist{\ifnum\count\@currbox>\z@\advance\@pageht\@pagedp
+  \ifvoid\footins\else\advance\@pageht\ht\footins\advance\@pageht\skip
+  \footins\advance\@pageht\dp\footins\fi\ifvbox\@kludgeins\ifdim\wd
+  \@kludgeins=\z@\advance\@pageht\ht\@kludgeins\fi\fi\@reinserts
+  \@addtocurcol\else\@reinserts\@addmarginpar\fi}\@latexbug\ifnum
+  \outputpenalty<\z@\if@nobreak\nobreak\else\addpenalty\interlinepenalty
+  \fi\fi\fi\fi}
+\@tempa\@doclearpage{\ifvoid\footins\ifvbox\@kludgeins{\setbox\@tempboxa
+  \box\@kludgeins}\fi\setbox\@tempboxa\vsplit\@cclv to\z@
+  \unvbox\@tempboxa\setbox\@tempboxa\box\@cclv\xdef\@deferlist{\@toplist
+  \@botlist\@deferlist}\global\let\@toplist\@empty\global\let\@botlist
+  \@empty\global\@colroom\@colht\ifx\@currlist\@empty\else\@latexerr
+  {Float(s) lost}\@ehb\global\let\@currlist\@empty\fi\@makefcolumn
+  \@deferlist\@whilesw\if@fcolmade\fi{\@opcol\@makefcolumn\@deferlist
+  }\if@twocolumn\if@firstcolumn\xdef\@dbldeferlist{\@dbltoplist
+  \@dbldeferlist}\global\let\@dbltoplist\@empty\global\@colht\textheight
+  \begingroup\@dblfloatplacement\@makefcolumn\@dbldeferlist\@whilesw
+  \if@fcolmade\fi{\@outputpage\@makefcolumn\@dbldeferlist}\endgroup\else
+  \vbox{}\clearpage\fi\fi\else\setbox\@cclv\vbox{\box\@cclv\vfil}\@makecol
+  \@opcol\clearpage\fi}
+\@tempa\@makecol{\ifvoid\footins\setbox\@outputbox\box\@cclv\else\setbox
+  \@outputbox\vbox{\boxmaxdepth\@maxdepth\unvbox\@cclv
+  \vskip\skip\footins\color@begingroup\normalcolor\footnoterule\unvbox
+  \footins\color@endgroup}\fi\let\@elt\relax\xdef\@freelist{\@freelist
+  \@midlist}\global\let\@midlist\@empty\@combinefloats\ifvbox\@kludgeins
+  \@makespecialcolbox\else\setbox\@outputbox\vbox to\@colht{\@texttop\dimen@
+  \dp\@outputbox\unvbox\@outputbox\vskip-\dimen@\@textbottom}\fi\global
+  \maxdepth\@maxdepth}
+\@tempa\@reinserts{\ifvoid\footins\else\insert\footins{\unvbox\footins}\fi
+  \ifvbox\@kludgeins\insert\@kludgeins{\unvbox\@kludgeins}\fi}
+\fi
+\if@tempswa
+  \PackageError{footbib}{the output routine of LaTeX changed}
+  {The output routine of LaTeX changed since the current version of
+   `footbib'.\MessageBreak Since `footbib' patches this routine,
+   using it may produce unexpected\MessageBreak results. Send a mail to \space
+   Eric.Domenjoud@loria.fr \space to get a new version.\MessageBreak\MessageBreak
+   Type \space X <return> \space to quit or cross your fingers and
+   just type <return>.\MessageBreak}
+\fi
+\newif\iffb@twoside     \let\iffb@twoside\if@twoside
+\newif\iffb@citeonce    \fb@citeoncefalse
+\newif\iffb@pagecite    \fb@pagecitefalse
+\let\fb@chaptercite\@empty
+\let\fb@partcite\@empty
+\newif\iffb@firstcite   \fb@firstcitefalse
+\newif\iffb@pagenum     \fb@pagenumfalse
+\let\fb@chapternum\@empty
+\let\fb@partnum\@empty
+\newif\iffb@xref        \fb@xreffalse
+\newif\iffb@crossrefs   \fb@crossrefsfalse
+\newif\iffb@xcrossrefs  \fb@xcrossrefsfalse
+\newif\iffb@nosplit     \fb@nosplitfalse
+\newcommand\fb@checksec[2]{%
+  \ifx#1\@undefined
+    \PackageError{footbib}{Bad option `\CurrentOption'}%
+    {{footbib}: The current document class does not define `\string#1'}%
+  \else
+    #2%
+  \fi}
+\DeclareOption{oneside}{\fb@twosidefalse}
+\DeclareOption{twoside}{\fb@twosidetrue}
+\DeclareOption{firstcite}{\fb@firstcitetrue}
+\DeclareOption{firstcite(page)}{\fb@firstcitetrue\fb@pagenumtrue}
+\DeclareOption{firstcite(chapter)}{\fb@firstcitetrue
+    \fb@checksec\chapter{\def\fb@chapternum{\fb@newnumunit}}}
+\DeclareOption{firstcite(part)}{\fb@firstcitetrue
+    \fb@checksec\part{\def\fb@partnum{\fb@newnumunit}}}
+\DeclareOption{firstcite(document)}{\fb@firstcitetrue}
+\DeclareOption{citeonce}{\fb@citeoncetrue}
+\DeclareOption{citeonce(page)}{\fb@pagecitetrue}
+\DeclareOption{citeonce(chapter)}{\fb@citeoncetrue
+    \fb@checksec\chapter{\def\fb@chaptercite{\fb@newciteunit}}}
+\DeclareOption{citeonce(part)}{\fb@citeoncetrue
+    \fb@checksec\part{\def\fb@partcite{\fb@newciteunit}}}
+\DeclareOption{citeonce(document)}{\fb@citeoncetrue}
+\DeclareOption{citeonce*}{\fb@citeoncetrue\fb@xreftrue}
+\DeclareOption{citeonce*(chapter)}{%
+    \ExecuteOptions{citeonce(chapter)}\fb@xreftrue}
+\DeclareOption{citeonce*(part)}{%
+    \ExecuteOptions{citeonce(part)}\fb@xreftrue}
+\DeclareOption{citeonce*(document)}{\ExecuteOptions{citeonce*}}
+\DeclareOption{crossrefs}{\fb@crossrefstrue\fb@xcrossrefstrue}
+\DeclareOption{crossrefs*}{\fb@crossrefstrue\fb@xcrossrefsfalse}
+\DeclareOption{nocrossrefs}{\fb@crossrefsfalse\fb@xcrossrefsfalse}
+\DeclareOption{split}{\fb@nosplitfalse}
+\DeclareOption{nosplit}{\fb@nosplittrue}
+\ProcessOptions*
+\iffb@pagecite
+  \fb@citeoncefalse
+  \fb@xreffalse
+\fi
+\let\fb@firstcitetrue\@undefined  \let\fb@firstcitefalse\@undefined
+\let\fb@citeoncetrue\@undefined   \let\fb@citeoncefalse\@undefined
+\let\fb@pagecitetrue\@undefined   \let\fb@pagecitefalse\@undefined
+\let\fb@xreftrue\@undefined       \let\fb@xreffalse\@undefined
+\let\fb@crossrefstrue\@undefined  \let\fb@crossrefsfalse\@undefined
+\let\fb@xcrossrefstrue\@undefined \let\fb@xcrossrefsfalse\@undefined
+\let\fb@pagenumtrue\@undefined    \let\fb@pagenumfalse\@undefined
+\let\fb@nosplittrue\@undefined    \let\fb@nosplitfalse\@undefined
+\let\fb@checksec\@undefined
+\AtBeginDocument{%
+  \begingroup
+    \def\@tempb#1{%
+      \ifx\@tempa\@empty\else
+        \edef\@tempa{\noexpand\clearpage\@tempa}%
+        \toks@\expandafter\expandafter\expandafter{\expandafter\@tempa#1}%
+        \xdef#1{\the\toks@}%
+      \fi}%
+    \let\fb@newnumunit\relax
+    \let\fb@newciteunit\relax
+    \edef\@tempa{\fb@partcite\fb@partnum}%
+    \@tempb\part
+    \edef\@tempa{\fb@chaptercite\fb@chapternum}%
+    \@tempb\chapter
+  \endgroup}
+\newcommand*\footbibliographyname[1]{%
+  \edef\@tempa{#1}%
+  \edef\@tempa{\expandafter\strip@prefix\meaning\@tempa}%
+  \edef\@tempb{\jobname}%
+  \ifx\@tempa\@tempb
+    \PackageError{footbib}{Bad argument `#1'\on@line}%
+      {The name supplied to `\string\footbibliographyname' must be
+         different from the name\MessageBreak
+       of the current document to avoid conflicts with the standard
+         bibliography.\MessageBreak\MessageBreak
+       Type \space X <return> \space to quit.\MessageBreak}%
+  \else
+    \xdef\fb@bibname{#1}%
+  \fi}
+\@onlypreamble\footbibliographyname
+\footbibliographyname{\jobname.fb}
+\newcommand*\footcitelabel[1]{#1}
+\newcommand*\putfootcitelabel[1]{\textsuperscript{\normalfont#1}}
+\newcommand*\fb@putfootcitelabel[1]{%
+  {\m@th\scriptspace\z@\putfootcitelabel{#1}}}
+\newcommand*\footcitelistformat[4]{%
+  \def\fb@citestart{\fb@putfootcitelabel{#1}}%
+  \def\fb@citesep{\fb@putfootcitelabel{#2}#3}%
+  \def\fb@citeend{\putfootcitelabel{#4}}}%
+\footcitelistformat[,{\penalty\@m}]
+\newinsert\fb@ins
+\count\fb@ins=1000
+\AtBeginDocument{\dimen\fb@ins=\textheight}
+\newcommand\footbibskip{\skip\fb@ins}
+\footbibskip=\bigskipamount
+\newcommand\footbibrule{\kern-3\p@\hrule\kern 2.6\p@}% \hrule is .4pt high
+\newcommand\footrefstyle{\normalfont\footnotesize}
+\newcommand*\footreflabel[1]{[#1]}
+\newcommand*\footxref[2]{See~#1~on page~#2.}
+\newcommand*\fb@doactive[1]{\lccode`~=`#1\lowercase{\def~{\string~}}}
+\newcommand*\fb@vedef[2]{%
+  \begingroup
+    \let\do\fb@doactive \dospecials
+    \edef\@tempa{\endgroup\def\noexpand#1{#2}}%
+  \@tempa}
+\newcommand*\fb@namexdef[1]{\expandafter\xdef\csname#1\endcsname}
+\newwrite\fb@auxout
+\newcommand*\fb@writeaux[2]{%
+  \AtBeginDocument{%
+    \if@filesw
+      \immediate\write\fb@auxout{\string#1{#2}}%
+    \fi}}
+\newcount\fb@numunit  \fb@numunit\@ne
+\newcount\fb@citeunit \fb@citeunit\@ne
+\newcount\fb@xrefunit \fb@xrefunit\@ne
+\newcommand\fb@theunits{%
+  {\the\fb@citeunit}{\the\fb@xrefunit}{\the\fb@numunit}{\thepage}}
+\newcommand*\fb@getunits[1]{%
+  \ifx#1\relax
+    \xdef#1{{\fb@key}\fb@theunits}%
+  \fi
+  \expandafter\fb@get@units#1}
+\newcommand*\fb@get@units[5]{%
+  \def\fb@refciteunit{#2}%
+  \def\fb@refxrefunit{#3}%
+  \def\fb@refnumunit{#4}%
+  \def\fb@refpage{#5}}%
+\newcommand\fb@newciteunit{%
+  \global\advance\fb@citeunit\@ne
+  \global\advance\fb@xrefunit\@ne}
+\newcommand\fb@newnumunit{\global\advance\fb@numunit\@ne}
+\newcount\fb@prevpage \fb@prevpage\@ne
+\newcommand*\fb@checkpage{%
+  \@tempswatrue
+  \iffb@twoside
+    \global\advance\fb@prevpage\@ne
+    \ifnum\fb@prevpage=\c@page
+      \ifodd\c@page
+        \@tempswafalse
+      \fi
+    \fi
+  \fi
+  \if@tempswa
+    \iffb@pagenum
+      \global\advance\fb@numunit\@ne
+    \fi
+    \iffb@citeonce
+      \global\advance\fb@xrefunit\@ne
+    \else
+      \global\advance\fb@citeunit\@ne
+    \fi
+  \fi
+  \global\fb@prevpage\c@page}
+\catcode`\%=11
+\newcommand\c@fb%checkpage{\count@\z@
+  \fb@checkpage
+  \count@}
+\@addtoreset{fb%checkpage}{page}
+\catcode`\%=14
+\newcount\fb@refcount
+\newtoks\fb@lbl
+\newtoks\fb@txt
+\newcommand\fb@setref{%
+  \fb@namexdef{fb@r.\fb@key}{{\the\fb@lbl}{\the\fb@txt}}}
+\newcommand\fb@getref{\afterassignment\fb@txt\fb@lbl}
+\newcommand\fb@setlbl{%
+  \global\advance\fb@refcount\@ne
+  \edef\@tempa{{\fb@refnumunit}{\the\fb@refcount}}%
+  \global\fb@lbl\expandafter{\expandafter\fb@getlbl\@tempa}%
+  \fb@setref
+  \the\fb@refcount}
+\newcommand*\fb@getlbl[2]{\ifnum\fb@refnumunit=#1{#2}\else\fb@setlbl\fi}
+\newcommand\fb@settxt[1]{%
+  \toks@=\the\fb@lbl
+  \toks@\expandafter\expandafter\expandafter{\expandafter
+    \footreflabel\expandafter{\the\toks@}}%
+  \edef\@tempa{{\fb@refciteunit}{\the\toks@}{\fb@refpage}}%
+  \global\fb@txt\expandafter{\expandafter\fb@gettxt\@tempa{#1}}%
+  \fb@setref
+  #1}
+\newcommand\fb@gettxt[4]{%
+  \ifnum\fb@refciteunit=#1\relax
+    \footxref{#2}{#3}%
+  \else
+    \fb@settxt{#4}%
+  \fi}
+\newcommand\footbibliography{\fb@writeaux\bibdata}
+\newcommand\footbibliographystyle{\fb@writeaux\bibstyle}
+\newcommand*\fb@refnotfound[1]{%
+  {?}{*** ERROR: citation `{\normalfont\bfseries#1}' undefined ***}}
+\newif\iffb@lbl
+\newif\iffb@txt
+\DeclareRobustCommand\footcite{%
+  \fb@lbltrue\@ifstar{\fb@txtfalse\fb@@cite}{\fb@txttrue\fb@@cite}}
+\newcommand\footnocite{\fb@lblfalse\fb@txttrue\fb@cite}
+\newcommand*\fb@@cite[1][\@nil]{%
+  \def\fb@optlbl{#1}%
+  \ifx\fb@optlbl\@nnil
+    \let\fb@optlbl\relax
+  \else
+    \def\fb@optlbl{\fb@putfootcitelabel{, #1}}%
+  \fi
+  \fb@cite}
+\newcommand*\fb@cite[1]{%
+  \fb@vedef\fb@keys{#1}%
+  \iffb@lbl
+    \fb@citestart
+    \def\fb@citea{\let\fb@citea\fb@citesep}%
+  \fi
+  \ifx\fb@keys\@empty
+    \PackageWarning{footbib}{Empty citation on page \thepage}%
+  \fi
+  \@for\fb@key:=\fb@keys\do{%
+    \iffb@lbl\fb@citea\fi
+    \fb@xcite
+    \ifx\fb@deferredcite\@empty\else
+      \begingroup
+        \fb@lblfalse
+        \expandafter\fb@xnocite\fb@deferredcite\@nil
+      \endgroup
+    \fi}%
+  \iffb@lbl\fb@optlbl\fb@citeend\fi}
+\newcommand\fb@xfootcite[2][\@nil]{%
+  \footcite*[#1]{#2}%
+  \iffb@xcrossrefs
+    \fb@vedef\fb@keys{#2}%
+    \xdef\fb@deferredcite{\fb@keys,\fb@deferredcite}%
+  \fi}
+\let\fb@deferredcite\@empty
+\def\fb@xnocite#1,#2\@nil{%
+  \gdef\fb@deferredcite{#2}%
+  \def\fb@key{#1}%
+  \fb@xcite
+  \ifx\fb@deferredcite\@empty
+    \let\@tempa\@gobble
+  \else
+    \let\@tempa\fb@xnocite
+  \fi
+  \expandafter\@tempa\fb@deferredcite\@nil}
+\newcommand\fb@xcite{%
+  \edef\fb@key{\expandafter\@firstofone\fb@key\@empty}%
+  \ifx\fb@key\@empty
+    \PackageWarning{footbib}{Empty citation on page \thepage}%
+    \G@refundefinedtrue
+  \else
+    \@ifundefined{fb@r.\fb@key}%
+      {\G@refundefinedtrue
+       \PackageWarning{footbib}{%
+          Citation `\fb@key' on page \thepage \space undefined}%
+       \fb@getref\fb@refnotfound\fb@key\fb@setref}%
+      {\fb@getref\@nameuse{fb@r.\fb@key}}%
+    \fb@bibcite
+    \iffb@lbl\fb@putfootcitelabel{\footcitelabel{\the\fb@lbl}}\fi
+    \iffb@txt
+      \expandafter\let\expandafter\@tempa\csname
+          fb@fn\fb@key.\fb@refciteunit\endcsname
+      \@tempswatrue
+      \ifx\@tempa\relax\else
+        \iffb@xref
+          \ifx\@tempa\fb@refxrefunit
+            \@tempswafalse
+          \fi
+        \else
+          \@tempswafalse
+        \fi
+      \fi
+      \if@tempswa
+        \fb@namexdef{fb@fn\fb@key.\fb@refciteunit}{\fb@refxrefunit}%
+        \fb@citefn
+      \fi
+    \fi
+  \fi}
+\newcount\fb@citecount
+\newcount\fb@lastrefnumunit \fb@lastrefnumunit\m@ne
+\newcommand\fb@bibcite{%
+  \fb@writeaux\citation\fb@key
+  \global\advance\fb@citecount\@ne
+  \expandafter\fb@getunits\csname fb@c.\the\fb@citecount\endcsname
+  \ifnum\fb@refnumunit=\fb@lastrefnumunit\else
+    \global\fb@lastrefnumunit\fb@refnumunit\relax
+    \global\fb@refcount\z@
+  \fi
+  \if@filesw
+    \write\fb@auxout\expandafter{\expandafter\string\expandafter
+      \bibcite\expandafter{\fb@key}\fb@theunits}%
+  \fi}
+\newcommand\fb@citefn{%
+  \insert\fb@ins{%
+    \color@begingroup
+      \reset@font\footrefstyle
+      \interlinepenalty\iffb@nosplit\@M\else\interfootnotelinepenalty\fi
+      \splittopskip 1.2\ht\strutbox
+      \splitmaxdepth \dp\strutbox
+      \floatingpenalty \@MM
+      \hsize\columnwidth
+      \@parboxrestore
+      \ifx\newblock\@undefined\let\newblock\relax\fi
+      \iffb@crossrefs\let\cite\fb@xfootcite\fi
+      \@tempdima\fb@lblwidth
+      \advance\@tempdima\labelsep
+      \leftskip\@tempdima
+      \setbox\@tempboxa\hbox{\footreflabel{\the\fb@lbl}}%
+      \hskip-\@tempdima
+      \ifdim\wd\@tempboxa<\fb@lblwidth
+        \hbox to\fb@lblwidth{\unhbox\@tempboxa\hfil}%
+      \else
+        \box\@tempboxa
+      \fi
+      \hskip\labelsep
+      \rule\z@{1.2\ht\strutbox}\ignorespaces\the\fb@txt\@finalstrut\strutbox
+    \color@endgroup}}
+\AtBeginDocument{%
+  \let\fb@savethebibliography\thebibliography
+  \let\thebibliography\fb@thebibliography
+  \let\fb@thebibliography\@undefined
+  \global\fb@lblwidth=-\maxdimen
+  \fb@refcount\z@
+  \@input{\fb@bibname.bbl}%
+  \let\thebibliography\fb@savethebibliography
+  \let\fb@savethebibliography\@undefined
+  \ifdim\fb@lblwidth<\z@
+    \settowidth\fb@lblwidth
+      {\footrefstyle\footreflabel{\expandafter\@firstoftwo\fb@refnotfound{?}}}%
+  \fi
+  \fb@citecount\z@
+  \begingroup
+    \let\citation\@gobble \let\bibstyle\@gobble \let\bibdata\@gobble
+    \def\bibcite#1#2#3#4#5{%
+        \advance\fb@citecount\@ne
+        \fb@vedef\fb@key{#1}%
+        \fb@namexdef{fb@c.\the\fb@citecount}{{\fb@key}{#2}{#3}{#4}{#5}}}%
+    \@input{\fb@bibname.aux}%
+  \endgroup
+  \if@filesw
+    \immediate\openout\fb@auxout=\fb@bibname.aux
+    \immediate\write\fb@auxout{\relax}%
+  \fi
+  \renewcommand*\fb@writeaux[2]{%
+    \if@filesw
+      \immediate\write\fb@auxout{\string#1{#2}}%
+    \fi}%
+}
+\newdimen\fb@lblwidth
+\newcommand*\fb@thebibliography[1]{%
+  \begingroup
+  \let\endthebibliography\endgroup
+  \settowidth\dimen@{\footrefstyle\footreflabel{#1}}%
+  \ifdim\dimen@>\fb@lblwidth\global\fb@lblwidth=\dimen@\fi
+  \newcount\@bracelevel
+  \newcount\@bgrouplineno
+  \def\@on@line{\on@line\space of \fb@bibname.bbl}%
+  \def\@eat{\let\@tempa= }%
+  \let\@bgroup{%
+  \let\@egroup}%
+  \let\bgroup\relax
+  \let\egroup\relax
+  \def\@actlet##1{%
+      \catcode`##1=\active
+      \begingroup\lccode`~=`##1\lowercase{\endgroup\let~}}%
+  \def\@noitemerr{%
+      \PackageError{footbib}{Missing \string\bibitem\@on@line}\@empty
+      \afterassignment\@readbib\@eat}%
+  \def\@errifbraces##1{%
+      \ifnum\@bracelevel##1\z@
+        {\ifx##1>\let\inputlineno\@bgrouplineno\fi
+        \PackageError{footbib}{%
+           \ifx##1>Unmatched begin\else Extra end\fi-group
+           character\@on@line}\@empty}%
+      \fi}%
+  \def\@readbib{\futurelet\@tok\@xreadbib}%
+  \def\@xreadbib{%
+      \ifx\@tok\@sptoken\let\@tempa\@readsp
+      \else\ifx\@tok\par\let\@tempa\@readpar
+      \else\ifx\@tok\bibitem\let\@tempa\@endbibitem
+      \else\ifx\@tok\end\let\@tempa\@checkendbib
+      \else\if@newlist\let\@tempa\@noitemerr
+      \else\ifx\@tok\@bgroup\let\@tempa\@eat\afterassignment\@begingroup
+      \else\ifx\@tok\@egroup\let\@tempa\@eat\afterassignment\@endgroup
+      \else\ifx\@tok\verb\let\@tempa\relax
+      \else\let\@tempa\@addtotxt
+      \fi\fi\fi\fi\fi\fi\fi\fi\@tempa}%
+  \def\bibitem{%
+      \@errifbraces>%
+      \@newlistfalse
+      \@ifnextchar[\@lbibitem\@bibitem}%
+  \iffb@firstcite
+    \def\@bibitem{\@lbibitem[\fb@setlbl]}%
+  \else
+    \def\@bibitem{%
+      \advance\fb@refcount\@ne
+      \expandafter\@lbibitem\expandafter[\the\fb@refcount]}%
+  \fi
+  \def\@lbibitem[##1]##2{%
+      \fb@lbl{{##1}}%
+      \fb@vedef\fb@key{##2}%
+      \fb@txt{}%
+      \let\@lastsptok\@empty
+      \@inlabeltrue
+      \@readbib}%
+  \def\@checkendbib\end##1{%
+      \def\@tempa{##1}\def\@tempb{thebibliography}%
+      \ifx\@tempa\@tempb
+        \def\@tempa{\@endbibitem\end{##1}}%
+      \else
+        \if@newlist
+          \let\@tempa\@noitemerr
+        \else
+          \def\@tempa{\@addtotxt{\end{##1}}}%
+        \fi
+      \fi\@tempa}%
+  \def\@endbibitem{%
+      \if@newlist\else
+        \@errifbraces>%
+        \iffb@xref
+          \fb@txt\expandafter{\expandafter\fb@settxt\expandafter{\the\fb@txt}}%
+        \fi
+        \fb@setref
+      \fi}%
+  \long\def\@addtotxt##1{%
+      \fb@txt\expandafter\expandafter\expandafter
+        {\expandafter\the\expandafter\fb@txt\@lastsptok##1}%
+      \let\@lastsptok\@empty
+      \@inlabelfalse
+      \@readbib}%
+  \expandafter\def\expandafter\@readsp\space{%
+      \if@inlabel\else\let\@lastsptok\space\fi
+      \@readbib}%
+  \def\@readpar\par{%
+      \if@inlabel\else\def\@lastsptok{\par}\fi
+      \@readbib}%
+  \def\@begingroup{%
+      \@bgroup
+      \advance\@bracelevel\@ne
+      \@bgrouplineno=\inputlineno
+      \fb@txt{}%
+      \let\@lastsptok\@empty
+      \@readbib}%
+  \def\@endgroup{%
+      \@errifbraces=%
+      \edef\@tempa{\@egroup\noexpand\@addtotxt{{\the\fb@txt\@lastsptok}}}%
+      \@tempa}%
+  \def\verb{%
+      \begingroup
+      \let\do\@makeother \dospecials
+      \def\do####1{\@actlet####1\relax}\verbatim@nolig@list
+      \@actlet\^^M\verb@eol@error
+      \@ifstar{\@sverb*}{\@actlet\ \relax\@sverb\@empty}}%
+  \def\@sverb##1##2{%
+      \@actlet##2\verb@egroup
+      \edef\@tempa{\noexpand\verb##1\noexpand~\iffalse}\fi}%
+  \def\verb@egroup{%
+      \noexpand~\iffalse{\fi}%
+      \expandafter\endgroup\expandafter\@addtotxt\expandafter{\@tempa}}%
+  \def\verb@eol@error{\iffalse{\fi}%
+      \GenericError\@empty{LaTeX Error:
+          \noexpand\verb ended by end of line\@on@line}\@gobble%
+          {The argument of \string\verb\@on@line\space contains
+               an end of line.\MessageBreak
+           Type \space X <return> \space to quit.\MessageBreak}%
+      \toks@\expandafter{\@tempa}%
+      \edef\@tempa{\the\toks@\iffalse}\fi}%
+  \@bracelevel\z@
+  \@newlisttrue
+  \@inlabeltrue
+  \@readbib}
+\AtEndDocument{%
+  \clearpage
+  \if@filesw
+    \immediate\closeout\fb@auxout
+    \begingroup
+      \let\citation\@gobble \let\bibstyle\@gobble \let\bibdata\@gobble
+      \def\bibcite#1#2#3#4#5{%
+        \advance\fb@citecount\@ne
+        \fb@vedef\@tempa{{#1}{#2}{#3}{#4}{#5}}%
+        \expandafter\ifx\csname fb@c.\the\fb@citecount\endcsname
+          \@tempa\else\@tempswatrue\fi}%
+      \fb@citecount\z@
+      \@tempswafalse
+      \input\fb@bibname.aux
+      \if@tempswa
+        \PackageWarning{footbib}{Bibliography not yet stable. Rerun
+                                   LaTeX\@gobble}%
+      \fi
+    \endgroup
+  \fi}
+\def\@specialoutput{%
+  \ifnum \outputpenalty>-\@Mii
+    \@doclearpage
+  \else
+    \ifnum \outputpenalty<-\@Miii
+      \ifnum \outputpenalty<-\@MM \deadcycles \z@ \fi
+      \global \setbox\@holdpg \vbox {\unvbox\@cclv}%
+    \else
+      \global \setbox\@holdpg \vbox{%
+                     \unvbox\@holdpg
+                     \unvbox\@cclv
+                     \setbox\@tempboxa \lastbox
+                     \unskip}%
+      \@pagedp \dp\@holdpg
+      \@pageht \ht\@holdpg
+      \unvbox \@holdpg
+      \@next\@currbox\@currlist{%
+        \ifnum \count\@currbox>\z@
+          \advance \@pageht \@pagedp
+          \ifvoid\footins \else
+            \advance \@pageht \ht\footins
+            \advance \@pageht \skip\footins
+            \advance \@pageht \dp\footins
+          \fi
+          \ifvoid\fb@ins\else
+            \advance\@pageht\ht\fb@ins
+            \advance\@pageht\skip\fb@ins
+            \advance\@pageht\dp\fb@ins
+          \fi
+          \ifvbox \@kludgeins
+            \ifdim \wd\@kludgeins=\z@
+              \advance \@pageht \ht\@kludgeins
+            \fi
+          \fi
+          \@reinserts
+          \@addtocurcol
+        \else
+          \@reinserts
+          \@addmarginpar
+        \fi}%
+       \@latexbug
+      \ifnum \outputpenalty<\z@
+        \if@nobreak
+          \nobreak
+        \else
+          \addpenalty \interlinepenalty
+        \fi
+      \fi
+    \fi
+  \fi}
+\def \@doclearpage {%
+  \@tempswatrue
+  \ifvoid\footins\else\@tempswafalse\fi
+  \ifvoid\fb@ins\else\@tempswafalse\fi
+  \if@tempswa
+    \ifvbox\@kludgeins
+      {\setbox \@tempboxa \box \@kludgeins}%
+    \fi
+    \setbox\@tempboxa\vsplit\@cclv to\z@ \unvbox\@tempboxa
+    \setbox\@tempboxa\box\@cclv
+    \xdef\@deferlist{\@toplist\@botlist\@deferlist}%
+    \global \let \@toplist \@empty
+    \global \let \@botlist \@empty
+    \global \@colroom \@colht
+    \ifx \@currlist\@empty
+    \else
+      \@latexerr{Float(s) lost}\@ehb
+      \global \let \@currlist \@empty
+    \fi
+    \@makefcolumn\@deferlist
+    \@whilesw\if@fcolmade \fi{\@opcol\@makefcolumn\@deferlist}%
+    \if@twocolumn
+      \if@firstcolumn
+        \xdef\@dbldeferlist{\@dbltoplist\@dbldeferlist}%
+        \global \let \@dbltoplist \@empty
+        \global \@colht \textheight
+        \begingroup
+          \@dblfloatplacement
+          \@makefcolumn\@dbldeferlist
+          \@whilesw\if@fcolmade \fi{\@outputpage\@makefcolumn\@dbldeferlist}%
+        \endgroup
+      \else
+        \vbox{}\clearpage
+      \fi
+    \fi
+  \else
+    \setbox\@cclv\vbox{\box\@cclv\vfil}%
+    \@makecol\@opcol
+    \clearpage
+  \fi}
+\def \@makecol {%
+  \@tempswatrue
+  \ifvoid\footins\else\@tempswafalse\fi
+  \ifvoid\fb@ins\else\@tempswafalse\fi
+  \if@tempswa
+    \setbox\@outputbox \box\@cclv
+  \else
+    \setbox\@outputbox \vbox {%
+      \boxmaxdepth \@maxdepth
+      \unvbox \@cclv
+      \ifvoid\footins \else
+        \vskip \skip\footins
+        \color@begingroup
+          \normalcolor
+          \footnoterule
+          \unvbox \footins
+        \color@endgroup
+      \fi
+      \ifvoid\fb@ins\else
+        \vskip\skip\fb@ins
+        \color@begingroup
+          \normalcolor
+          \footbibrule
+          \unvbox\fb@ins
+        \color@endgroup
+      \fi
+      }%
+  \fi
+  \let\@elt\relax
+  \xdef\@freelist{\@freelist\@midlist}%
+  \global \let \@midlist \@empty
+  \@combinefloats
+  \ifvbox\@kludgeins
+    \@makespecialcolbox
+  \else
+    \setbox\@outputbox \vbox to\@colht {%
+      \@texttop
+      \dimen@ \dp\@outputbox
+      \unvbox \@outputbox
+      \vskip -\dimen@
+      \@textbottom}%
+  \fi
+  \global \maxdepth \@maxdepth}
+\def\@reinserts{%
+  \ifvoid\footins\else\insert\footins{\unvbox\footins}\fi
+  \ifvoid\fb@ins\else\insert\fb@ins{\unvbox\fb@ins}\fi
+  \ifvbox\@kludgeins\insert\@kludgeins{\unvbox\@kludgeins}\fi}
+\endinput
+%%
+%% End of file `footbib.sty'.
