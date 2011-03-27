@@ -62,8 +62,9 @@ int main( int argc, char** argv )
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
   Z3i::Object18_6 border = obj3d.border();
-  viewer << border  << DGTalQGLViewer::updateDisplay;
-  //viewer << set3d <<  DGTalQGLViewer::updateDisplay;
+  viewer << border;
+  viewer << ClippingPlane(0,1,0, -40)<< DGTalQGLViewer::updateDisplay;
+  
   return application.exec();   
 }
 //                                                                           //

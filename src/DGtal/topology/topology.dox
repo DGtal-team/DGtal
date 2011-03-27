@@ -301,7 +301,7 @@ namespace DGtal {
  *
  
  The resulting border can be visualized for instance by: 
- (see. <a href="" >  3dBorderExtraction.cpp</a>
+ (see. <a href="" >  3dBorderExtraction.cpp</a>)
 @code 
 DGTalQGLViewer viewer;
  viewer.show(); 
@@ -310,10 +310,17 @@ DGTalQGLViewer viewer;
  viewer << bdiamond ;
  viewer << ClippingPlane(1,1,0,5)<< DGTalQGLViewer::updateDisplay;
 @endcode
-* @image html visuBorderExtraction.png  "Border extraction visualisation"
- * @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm	
  
-
+ <TABLE> 
+<TR>
+<TD> @image html visuBorderExtraction.png  "Border extraction visualisation" 
+ * @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm	</TD>
+<TD> @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
+ * @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm	</TD>
+ </TR>
+<TR>
+<TD> </TD> <TD> see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a></TD>
+</TR>
  * 
  * \subsection dgtal_topology_sec3s4 Connectedness and connected components
  *
@@ -441,7 +448,7 @@ Finally the result can simply be displayed using QGLviewer:
 * 
 */
 /**
-\example  3dBorderExtractionVol.cpp
+\example  3dBorderExtractionImg.cpp
 * 
 */
 
