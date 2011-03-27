@@ -184,6 +184,14 @@ namespace DGtal
       return myUpperBound;
     };
 
+    /**
+     * @return the domain associated to the image.
+     */
+    Domain domain() const
+    {
+      return Domain(myLowerBound, myUpperBound);
+    }
+    
     /////////////////////////// Custom Iterators ////////////////////:
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.

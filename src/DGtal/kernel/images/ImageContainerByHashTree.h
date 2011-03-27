@@ -180,6 +180,7 @@ namespace DGtal
        */
       Value get(const HashKey key) const;
 
+
       /**
        * Returns the value at a given key.
        *

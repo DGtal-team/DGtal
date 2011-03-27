@@ -79,6 +79,17 @@ namespace DGtal
     typedef typename map<Point,Value>::const_reverse_iterator
     ConstReverseIterator;
 
+
+
+    /**
+     * @return the domain associated to the image.
+     */
+    Domain domain() const
+    {
+      return Domain(myLowerBound, myUpperBound);
+    }
+    
+
     ///\todo create span iterators
     class SpanIterator: public Iterator
     {
