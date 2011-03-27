@@ -70,218 +70,227 @@ namespace DGtal
     template <typename TDomain, typename TValue>
     class ImageContainerByITKImage
     {
-        // ----------------------- Standard services ------------------------------
-      public:
+      // ----------------------- Standard services ------------------------------
+    public:
 
-        BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
-        BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
+      BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
+      BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
 
-        typedef TValue Value;
-        typedef TDomain Domain;
+      typedef TValue Value;
+      typedef TDomain Domain;
 
-        // static constants
-        static const typename Domain::Dimension dimension = Domain::dimension;
+      // static constants
+      static const typename Domain::Dimension dimension = Domain::dimension;
 
-        typedef typename Domain::Point Point;
-        typedef typename Domain::Vector Vector;
-        typedef typename Domain::Dimension Dimension;
-        typedef typename Domain::Integer Integer;
-        typedef typename Domain::Size Size;
+      typedef typename Domain::Point Point;
+      typedef typename Domain::Vector Vector;
+      typedef typename Domain::Dimension Dimension;
+      typedef typename Domain::Integer Integer;
+      typedef typename Domain::Size Size;
 
-        typedef typename itk::Image< TValue, dimension> ITKImage;
-        typedef typename ITKImage::Pointer ITKImagePointer;
-        typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
-        typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
+      typedef typename itk::Image< TValue, dimension> ITKImage;
+      typedef typename ITKImage::Pointer ITKImagePointer;
+      typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
+      typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
 
       ///@todo SpanIterator
 
-        /**
-         * Constructor.
-         */
-        ImageContainerByITKImage(const Point &aPointA,
-            const Point &aPointB );
+      /**
+       * Constructor.
+       */
+      ImageContainerByITKImage(const Point &aPointA,
+			       const Point &aPointB );
 
-        /**
-         * Constructor.
-         */
-        ImageContainerByITKImage(const Point &aPointA,
-            const Point &aPointB,
-            ITKImagePointer &aRef);
+      /**
+       * Constructor.
+       */
+      ImageContainerByITKImage(const Point &aPointA,
+			       const Point &aPointB,
+			       ITKImagePointer &aRef);
 
-        /**
-         * Destructor.
-         */
-        ~ImageContainerByITKImage();
+      /**
+       * Destructor.
+       */
+      ~ImageContainerByITKImage();
 
-        // ----------------------- Interface --------------------------------------
-      public:
-
-
-        /**
-         * Get the value of an image at a given position.
-         *
-         * @param aPoint  position in the image.
-         * @return the value at aPoint.
-         */
-        Value operator()(const Point &aPoint) const;
-
-        /**
-         * Get the value of an image at a given position.
-         *
-         * @param it  position in the image.
-         * @return the value at aPoint.
-         */
-        Value operator()(const ConstIterator &it) const;
-
-        /**
-         * Get the value of an image at a given position.
-         *
-         * @param it  position in the image.
-         * @return the value at aPoint.
-         */
-        Value operator()(const Iterator &it) const;
+      // ----------------------- Interface --------------------------------------
+    public:
 
 
-        /**
-         * Set a value on an Image at aPoint.
-         *
-         * @param aPoint location of the point to associate with aValue.
-         * @param aValue the value.
-         */
-        void setValue(const Point &aPoint, const Value &aValue);
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param aPoint  position in the image.
+       * @return the value at aPoint.
+       */
+      Value operator()(const Point &aPoint) const;
 
-        /**
-         * Set a value on an Image at aPoint.
-         *
-         * @param it location of the point (Iterator) to associate with aValue.
-         * @param aValue the value.
-         */
-        void setValue(Iterator &it, const Value &V);
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param it  position in the image.
+       * @return the value at aPoint.
+       */
+      Value operator()(const ConstIterator &it) const;
 
-        // ------------------------- methods ------------------------------
-
-        /**
-         * Returns the extent of the image
-         *
-         */
-        Point extent() const
-        {
-          return myUpperBound - myLowerBound;
-        }
+      /**
+       * Get the value of an image at a given position.
+       *
+       * @param it  position in the image.
+       * @return the value at aPoint.
+       */
+      Value operator()(const Iterator &it) const;
 
 
-        /**
-         * Returns a copy of the itkImage smartPointer
-         */
-        ITKImagePointer getImagePointer() const
-        {
-          return myITKImagePointer;
-        }
+      /**
+       * Set a value on an Image at aPoint.
+       *
+       * @param aPoint location of the point to associate with aValue.
+       * @param aValue the value.
+       */
+      void setValue(const Point &aPoint, const Value &aValue);
 
-        // ------------------------- stream ------------------------------
+      /**
+       * Set a value on an Image at aPoint.
+       *
+       * @param it location of the point (Iterator) to associate with aValue.
+       * @param aValue the value.
+       */
+      void setValue(Iterator &it, const Value &V);
 
-        /**
-         * Writes/Displays the object on an output stream.
-         * @param out the output stream where the object is written.
-         */
-        void selfDisplay ( std::ostream & out ) const;
+      // ------------------------- methods ------------------------------
 
-        /**
-         * Checks the validity/consistency of the object.
-         * @return 'true' if the object is valid, 'false' otherwise.
-         */
-        bool isValid() const;
 
-        // ------------------------- Iterators ------------------------------
-        /**
-         * begin() const iterator.
-         *
-         **/
-        ConstIterator begin() const
-        {
-          return myConstItBegin;
-        }
+      /**
+       * @return the domain associated to the image.
+       */
+      Domain domain() const
+      {
+	return Domain(myLowerBound, myUpperBound);
+      }
+    
+      /**
+       * Returns the extent of the image
+       *
+       */
+      Point extent() const
+      {
+	return myUpperBound - myLowerBound;
+      }
 
-        /**
-         * begin() const iterator.
-         *
-         **/
-        Iterator begin()
-        {
-          return myItBegin;
-        }
 
-        /**
-         * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-         *
-         **/
-        ConstIterator begin ( const Point &aPoint ) const;
+      /**
+       * Returns a copy of the itkImage smartPointer
+       */
+      ITKImagePointer getImagePointer() const
+      {
+	return myITKImagePointer;
+      }
 
-        /**
-         * end() const iterator.
-         *
-         **/
-        const ConstIterator end() const
-        {
-          return myConstItEnd;
-        }
+      // ------------------------- stream ------------------------------
 
-        /**
-         * end()  iterator.
-         *
-         **/
-        Iterator end()
-        {
-          return myItEnd;
-        }
+      /**
+       * Writes/Displays the object on an output stream.
+       * @param out the output stream where the object is written.
+       */
+      void selfDisplay ( std::ostream & out ) const;
 
-        /**
-         * end() iterator.
-I         * @returns a ConstIterator at the endpoint \param aPoint
-         *
-         **/
-        ConstIterator end(const Point &aPoint) const;
+      /**
+       * Checks the validity/consistency of the object.
+       * @return 'true' if the object is valid, 'false' otherwise.
+       */
+      bool isValid() const;
 
-        // ------------------------- Private Datas --------------------------------
-      private:
+      // ------------------------- Iterators ------------------------------
+      /**
+       * begin() const iterator.
+       *
+       **/
+      ConstIterator begin() const
+      {
+	return myConstItBegin;
+      }
 
-        // ------------------------- Hidden services ------------------------------
-      protected:
+      /**
+       * begin() const iterator.
+       *
+       **/
+      Iterator begin()
+      {
+	return myItBegin;
+      }
 
-        /**
-         * Constructor.
-         * Forbidden by default (protected to avoid g++ warnings).
-         */
-        ImageContainerByITKImage();
+      /**
+       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
+       *
+       **/
+      ConstIterator begin ( const Point &aPoint ) const;
 
-      private:
+      /**
+       * end() const iterator.
+       *
+       **/
+      const ConstIterator end() const
+      {
+	return myConstItEnd;
+      }
 
-        /**
-         * Copy constructor.
-         * @param other the object to clone.
-         * Forbidden by default.
-         */
-        ImageContainerByITKImage ( const ImageContainerByITKImage & other );
+      /**
+       * end()  iterator.
+       *
+       **/
+      Iterator end()
+      {
+	return myItEnd;
+      }
 
-        /**
-         * Assignment.
-         * @param other the object to copy.
-         * @return a reference on 'this'.
-         * Forbidden by default.
-         */
-        ImageContainerByITKImage & operator= ( const ImageContainerByITKImage & other );
+      /**
+       * end() iterator.
+       I         * @returns a ConstIterator at the endpoint \param aPoint
+       *
+       **/
+      ConstIterator end(const Point &aPoint) const;
 
-        // ------------------------- Internals ------------------------------------
-      private:
+      // ------------------------- Private Datas --------------------------------
+    private:
 
-        Point myLowerBound;
-        Point myUpperBound;
-        ITKImagePointer myITKImagePointer;
-        typename ITKImage::RegionType myRegion;
-        ConstIterator myConstItBegin;
-        Iterator myItBegin;
-        ConstIterator myConstItEnd;
-        Iterator myItEnd;
+      // ------------------------- Hidden services ------------------------------
+    protected:
+
+      /**
+       * Constructor.
+       * Forbidden by default (protected to avoid g++ warnings).
+       */
+      ImageContainerByITKImage();
+
+    private:
+
+      /**
+       * Copy constructor.
+       * @param other the object to clone.
+       * Forbidden by default.
+       */
+      ImageContainerByITKImage ( const ImageContainerByITKImage & other );
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       * Forbidden by default.
+       */
+      ImageContainerByITKImage & operator= ( const ImageContainerByITKImage & other );
+
+      // ------------------------- Internals ------------------------------------
+    private:
+
+      Point myLowerBound;
+      Point myUpperBound;
+      ITKImagePointer myITKImagePointer;
+      typename ITKImage::RegionType myRegion;
+      ConstIterator myConstItBegin;
+      Iterator myItBegin;
+      ConstIterator myConstItEnd;
+      Iterator myItEnd;
 
     }; // end of class ImageContainerByITKImage
 
