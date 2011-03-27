@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CImageContainer.h"
+#include "DGTal/base/CowPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -70,44 +71,49 @@ namespace DGtal
      * @param minVal the minimum value (first value excluded).
      * @param maxVal the maximum value (last value considered).
      */
-    SimpleForegroundPredicate(const Value minVal, const Value maxVal): 
-      myMaxVal(maxVal), myMinVal(minVal) {};
+    SimpleForegroundPredicate(const Image & aImage,
+			      const Value minVal, 
+			      const Value maxVal): 
+      myImage(new Image(aImage)), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
+    bool operator()(const typename Image::Point &aPoint) const
     {
-      return (aImage(aPoint) > myMinVal) && (aImage(aPoint) <= myMaxVal);
+      return ((*myImage)(aPoint) > myMinVal) && ((*myImage)(aPoint) <= myMaxVal);
     }
     
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const Image &aImage, const typename Image::Iterator &it) const
+    bool operator()(const typename Image::Iterator &it) const
     {
-      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
+      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
     }
     
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
+    bool operator()(const typename Image::ConstIterator &it) const
     {
-      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
+      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
     }
     
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
+    bool operator()(const typename Image::SpanIterator &it) const
     {
-      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
+      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
     }
     
   private:
     Value myMaxVal, myMinVal;
+    CountedPtr<Image> myImage;
     
+  protected:
+    SimpleForegroundPredicate();
     
   };
 
