@@ -30,7 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+
 #include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -51,7 +53,7 @@ bool testImagesSetsUtilities()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing imageFormSet ..." );
+  trace.beginBlock ( "Testing ImageFormSet ..." );
   
   Point a(0,0);
   Point b(23,435);
