@@ -62,11 +62,18 @@ bool testImagesSetsUtilities()
   DigitalSet aSet(Domain(a,b));
   aSet.insert(c);
   
+  //test of the append method
   ImageFromSet<Image>::append<DigitalSet>(image, aSet, 128);
-
-
   nbok += (image(c) == 128) ? 1 : 0; 
   nb++;
+
+  //test of the create method
+  Image imageBis =   ImageFromSet<Image>::create<DigitalSet>(aSet, 128);
+  nbok += (imageBis(c) == 128) ? 1 : 0; 
+  nb++;
+
+
+  
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();

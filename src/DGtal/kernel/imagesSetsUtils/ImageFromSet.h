@@ -43,6 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -74,14 +76,36 @@ namespace DGtal
      * @tparam Set model of CDigitalSet 
      * @param aSet an instance of Set to convert into an image
      * @param defaultValue the default value for points in the set
+     * @param itBegin ConstIterator on the set to specify the first point
+     * to copy.
+     * @param itEnd ConstIterator on the set to specify the last point
+     * to copy.
+     * @return an image.
+     */
+    template <typename Set>
+    static
+    Image create(const Set &aSet, const Value &defaultValue,
+		 typename Set::ConstIterator itBegin, 
+		 typename Set::ConstIterator itEnd);
+
+    /** 
+     * Create an Image from a DigitalSet. The size of the output image
+     * is given from the set bounding box.
+     *
+     * @tparam Set model of CDigitalSet 
+     * @param aSet an instance of Set to convert into an image
+     * @param defaultValue the default value for points in the set
      * 
      * @return an image.
      */
     template <typename Set>
     static
-    Image create(const Set &aSet, const Value &defaultValue);
-
-
+    Image create(const Set &aSet, const Value &defaultValue)
+    {
+      return create(aSet,defaultValue,aSet.begin(), aSet.end());
+    }		    
+    
+    
     /** 
      * Append a Set to an existing image. Only points in the Set
      * between itBegin and itEnd contained in the image domain are
@@ -119,9 +143,7 @@ namespace DGtal
     {
       append(aImage,aSet,defaultValue,aSet.begin(),aSet.end());
     }
-
-
-  }; // end of class ImageFromSet
+  }   ; // end of class ImageFromSet
 
 
  
