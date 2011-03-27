@@ -1,8 +1,8 @@
 LATEX  = latex
 BIBTEX = posterDGCI 
 SRC    = posterDGCI
-DVI     = dvips 
-BIB     = /usr/bin/bibtex
+DVI    = dvips 
+BIB    = bibtex
 PDF_FILE   = $(SRC).pdf	
 PS2PDF_OPTIONS = -dPDFSETTINGS=/prepress -dUseFlateCompression=true -sColorImageFilter=FlateEncode -sGrayImageFilter=FlateEncode -dAutoFilterColorImages=false  -dAutoFilterGrayImages=false -dEncodeColorImages=false  -dEncodeGrayImages=false  -dEncodeMonoImages=false
 PS2PDF_OPTIONS2 = -dPDFSETTINGS=/prepress 
