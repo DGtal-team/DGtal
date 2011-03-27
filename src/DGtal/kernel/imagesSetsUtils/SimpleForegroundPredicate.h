@@ -50,7 +50,7 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'SetFromImage' <p>
+   * Description of template class 'SimpleForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
    * image values  between to constant values.
    *
