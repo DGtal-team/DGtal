@@ -83,6 +83,39 @@ bool testImagesSetsUtilities()
   return nbok == nb;
 }
 
+bool testSetFromImage()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing SetFromImage ..." );
+  
+  Point a(0,0);
+  Point b(23,435);
+  Point c(12,12);
+
+  typedef ImageContainerBySTLVector<Domain,int> Image;
+  Image image(a,b);
+  image.setValue(c,128);
+  
+  DigitalSet aSet(Domain(a,b));
+  
+  //test of the append method
+  SetFromImage<DigitalSet>::append<Image>(aSet, image, 0,255);
+
+  nbok += (image(c) == 128) ? 1 : 0; 
+  nb++;
+
+
+
+  
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -94,7 +127,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testImagesSetsUtilities(); // && ... other tests
+  bool res = testImagesSetsUtilities() && testSetFromImage(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
