@@ -60,7 +60,7 @@ and VolWriter
 \subsection importDigitalSet Importing a 3D digital set from volume file:
 
 Importing and visualizing a digital set from a vol file can be done in
-few code lines. (see. file <a href="digitalSetFromVol_8cpp-example.html"). 
+few code lines. (see. file <a href="digitalSetFromVol_8cpp-example.html"> digitalSetFromVol.cpp</a>). 
 
 First we select the Image type with \c int:
 
@@ -75,7 +75,7 @@ typedef ImageSelector < Z3i::Domain, int>::Type Image;
 Then the initial image is imported:
 @code
  typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
+ Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
 @endcode
 
 Afterwards the set is thresholded in ]0,255[: 
