@@ -69,8 +69,16 @@ namespace DGtal
         
     
     /** 
-     * Append an Image value set  to an existing Set (maybe empty).
-     * 
+      * Append a Set to an existing image. Only points in the Set
+     * contained in the image domain are considered. 
+     * @pre the ForegroundPredicate instance must have been created on the image aImage.
+     *
+     * @param aSet the set (maybe empty) to which points are added.
+     * @param aImage image to convert to a Set.
+     * @param isForeground instance of ForegroundPredicate to decide
+     * @param itBegin starting point in the input image Domain.
+     * @param itEnd ending point in the input image domain.
+     * which points to copy.
      */
     template<typename Image, typename ForegroundPredicate>
     static
@@ -81,6 +89,16 @@ namespace DGtal
   
     /** 
      * Append an Image value set  to an existing Set (maybe empty).
+     * This method will construct a default ForegroundPredicate
+     * instance as a simple thresholding (SimpleForegroundPredicate)
+     * of values in ]minVal,maxVal].
+     *
+     * @param aSet the set (maybe empty) to which points are added.
+     * @param aImage image to convert to a Set.
+     * @param minVal minimum value of the thresholding
+     * @param maxVal maximum value of the thresholding
+     * @param itBegin starting point in the input image Domain.
+     * @param itEnd ending point in the input image domain.
      * 
      */
     template<typename Image>
@@ -91,7 +109,7 @@ namespace DGtal
 		typename Image::Domain::ConstIterator itBegin, 
 		typename Image::Domain::ConstIterator itEnd)
     {
-      SimpleForegroundPredicate<Image> isForeground(minVal,maxVal);
+      SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
       append(aSet, aImage, isForeground,itBegin,itEnd);
     }
@@ -99,7 +117,12 @@ namespace DGtal
     /** 
      * Append a Set to an existing image. Only points in the Set
      * contained in the image domain are considered. 
-     * 
+     * @pre the ForegroundPredicate instance must have been created on the image aImage.
+     *
+     * @param aSet the set (maybe empty) to which points are added.
+     * @param aImage image to convert to a Set.
+     * @param isForeground instance of ForegroundPredicate to decide
+     * which points to copy.
      */
     template<typename Image,typename ForegroundPredicate>
     static
@@ -113,7 +136,15 @@ namespace DGtal
     /** 
      * Append a Set to an existing image. Only points in the Set
      * contained in the image domain are considered. 
-     * 
+     * This method will construct a default ForegroundPredicate
+     * instance as a simple thresholding (SimpleForegroundPredicate)
+     * of values in ]minVal,maxVal].
+     *
+     * @param aSet the set (maybe empty) to which points are added.
+     * @param aImage image to convert to a Set.
+     * @param minVal minimum value of the thresholding
+     * @param maxVal maximum value of the thresholding
+     *
      */
     template<typename Image>
     static
@@ -121,8 +152,7 @@ namespace DGtal
 		const typename Image::Value minVal,
 		const typename Image::Value maxVal)
     {
-      SimpleForegroundPredicate<Image> isForeground(minVal,maxVal);
-      
+      SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);
     }
 

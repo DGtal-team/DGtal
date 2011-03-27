@@ -196,7 +196,6 @@ namespace DGtal
 
     /**
      * @param p any digital point.
-     * @return a const iterator pointing on [p] if found, otherwise end().
      */
     ConstIterator find( const Point & p ) const;
 
