@@ -91,7 +91,7 @@ bool testSetFromImage()
   trace.beginBlock ( "Testing SetFromImage ..." );
   
   Point a(0,0);
-  Point b(23,435);
+  Point b(23,43);
   Point c(12,12);
 
   typedef ImageContainerBySTLVector<Domain,int> Image;
@@ -103,7 +103,14 @@ bool testSetFromImage()
   //test of the append method
   SetFromImage<DigitalSet>::append<Image>(aSet, image, 0,255);
 
-  nbok += (image(c) == 128) ? 1 : 0; 
+  trace.info()<< "DigitalSet:= ";
+  for(DigitalSet::ConstIterator it= aSet.begin(),itend=aSet.end();
+      it != itend;
+      ++it)
+    trace.info() << *it<< " ";
+  trace.info()<<endl;
+
+  nbok += (aSet.find(c) != aSet.end() ) ? 1 : 0; 
   nb++;
 
 

@@ -48,10 +48,9 @@ DGtal::SetFromImage<Set>::append(Set &aSet, const Image &aImage,
 				 typename Image::Domain::ConstIterator itEnd)
 {
   BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
- 
+  
   for( ; itBegin != itEnd;  ++itBegin)
     if (isForeground(aImage, *itBegin))
       aSet.insert( *itBegin);
-
 }
 
