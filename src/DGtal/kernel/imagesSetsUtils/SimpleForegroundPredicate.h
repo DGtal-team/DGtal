@@ -49,9 +49,11 @@ namespace DGtal
 {
 
   /**
-   * Default foregroundPredicate : we return true if the value at a
-   * point differs from zero.
+   * Description of template class 'SetFromImage' <p>
+   * \brief Aim: Define a simple Foreground predicate thresholding
+   * image values  between to constant values.
    *
+   * @tparam TImage an model of CImageContainer concept. 
    */
   template <typename Image>
   class SimpleForegroundPredicate
@@ -61,25 +63,43 @@ namespace DGtal
     
     typedef typename Image::Value Value;
 
+    /** 
+     * Constructor. This functor can be used to threshold image values
+     * in the interval ]minVal,maxVal].
+     * 
+     * @param minVal the minimum value (first value excluded).
+     * @param maxVal the maximum value (last value considered).
+     */
     SimpleForegroundPredicate(const Value minVal, const Value maxVal): 
       myMaxVal(maxVal), myMinVal(minVal) {};
     
-    
+    /** 
+     * @return True if the point belongs to the value interval.
+     */
     bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
     {
       return (aImage(aPoint) > myMinVal) && (aImage(aPoint) <= myMaxVal);
     }
     
+    /** 
+     * @return True if the point belongs to the value interval.
+     */
     bool operator()(const Image &aImage, const typename Image::Iterator &it) const
     {
       return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
     }
     
+    /** 
+     * @return True if the point belongs to the value interval.
+     */
     bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
     {
       return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
     }
     
+    /** 
+     * @return True if the point belongs to the value interval.
+     */
     bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
     {
       return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
