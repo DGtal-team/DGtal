@@ -103,19 +103,7 @@ namespace DGtal
      */
     static ImageContainer importVol(const std::string & filename) throw(DGtal::IOException);
     
-    /**
-     * Method to import a DigitalSet associated to all the voxels
-     * contained betwen the two thresholds min and max
-     *
-     * @param thresholdMin: the min threshold applied on the image.
-     * @param thresholdMax: the max threshold applied on the image
-     **/
-    
-    static Z3i::DigitalSet importDigitalSet(const std::string & filename, 
-					    int thresholdMin=0, int thresholdMax=1, uint marge=0)
-      throw(DGtal::IOException);
-  
-    
+   
     
   private:
 

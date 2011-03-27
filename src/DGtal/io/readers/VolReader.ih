@@ -48,42 +48,6 @@
 
 template <typename T>
 inline
-Z3i::DigitalSet 
-DGtal::VolReader<T>::importDigitalSet(const std::string & filename, 
-				      int thresholdMin, int thresholdMax, uint marge)
-				      throw(DGtal::IOException){
-  
-  
-  T imageVol = importVol(filename);
-  
-  Z3i::Point low=   imageVol.lowerBound();
-  Z3i::Point up=   imageVol.upperBound();
-  
-  low[0]-=marge;
-  low[1]-=marge;
-  low[2]-=marge;
-  up[0]+=marge;
-  up[1]+=marge;
-  up[2]+=marge;
-  
-  
-  Z3i::Domain domain( imageVol.lowerBound(), imageVol.upperBound());
-  Z3i::Domain domainL(low, up);
-  Z3i::DigitalSet resultSet  (domainL);
-  for(Z3i::Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
-    int  val= imageVol( (*it) );     
-    if(val<=thresholdMax && val >=thresholdMin){
-       resultSet.insertNew(*it);
-     }
-  }
-
-  return resultSet;
-}
-
-
-
-template <typename T>
-inline
 T
 DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::IOException )
 {
