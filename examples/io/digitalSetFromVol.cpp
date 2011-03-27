@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/3dViewer/DGTalQGLViewer.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
@@ -51,8 +52,9 @@ int main( int argc, char** argv )
   DGTalQGLViewer viewer;
   viewer.show(); 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  Z3i::DigitalSet set3d = VolReader<Image>::importDigitalSet(inputFilename , 
-							     1, 255 );
+  Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
+  Z3i::DigitalSet set3d (image.domain());
+  SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   viewer << set3d << DGTalQGLViewer::updateDisplay;
   return application.exec();
 }
