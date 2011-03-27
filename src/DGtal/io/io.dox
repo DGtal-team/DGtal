@@ -72,17 +72,20 @@ First we select the Image type with \c int:
 typedef ImageSelector < Z3i::Domain, int>::Type Image;
 @endcode
 
-Then the digital set is simply imported with two threshold (1, 255)
+Then the initial image is imported:
 @code
- Z3i::DigitalSet set3d = VolReader<Image>::importDigitalSet(inputFilename, 1, 255 );
+ typedef ImageSelector < Z3i::Domain, int>::Type Image;
+  Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
 @endcode
 
-and we can display the result with a QGTalQGLviewer:
+Afterwards the set is thresholded in ]0,255[: 
 
 @code
-DGTalQGLViewer viewer;
-viewer.show(); 
-viewer << set3d << DGTalQGLViewer::updateDisplay;
+  Z3i::DigitalSet set3d (image.domain());
+  SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
+  DGTalQGLViewer viewer;
+  viewer.show(); 
+  viewer << set3d << DGTalQGLViewer::updateDisplay;
 @endcode
 
 

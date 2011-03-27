@@ -301,7 +301,7 @@ namespace DGtal {
  *
  
  The resulting border can be visualized for instance by: 
- (see. <a href="" >  3dBorderExtraction.cpp</a>)
+ (see <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction.cpp</a>)
 @code 
 DGTalQGLViewer viewer;
  viewer.show(); 
@@ -319,7 +319,7 @@ DGTalQGLViewer viewer;
  * @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm	</TD>
  </TR>
 <TR>
-<TD> </TD> <TD> see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a></TD>
+<TD>see example <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction.cpp</a> </TD> <TD> see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a></TD>
 </TR>
  * 
  * \subsection dgtal_topology_sec3s4 Connectedness and connected components
