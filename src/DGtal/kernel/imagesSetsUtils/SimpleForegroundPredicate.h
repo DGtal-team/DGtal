@@ -52,8 +52,7 @@ namespace DGtal
    * Default foregroundPredicate : we return true if the value at a
    * point differs from zero.
    *
-   * @todo Refactoring needed to generalize this class !
-     */
+   */
   template <typename Image>
   class SimpleForegroundPredicate
   {
@@ -62,28 +61,28 @@ namespace DGtal
     
     typedef typename Image::Value Value;
 
-    SimpleForegroundPredicate(const Value maxVal, const Value minVal): 
+    SimpleForegroundPredicate(const Value minVal, const Value maxVal): 
       myMaxVal(maxVal), myMinVal(minVal) {};
     
     
     bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
     {
-      return (aImage(aPoint) >= myMinVal) && (aImage(aPoint) <= myMaxVal);
+      return (aImage(aPoint) > myMinVal) && (aImage(aPoint) <= myMaxVal);
     }
     
     bool operator()(const Image &aImage, const typename Image::Iterator &it) const
     {
-      return (aImage(it) >= myMinVal) && (aImage(it) <= myMaxVal);
+      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
     }
     
     bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
     {
-      return (aImage(it) >= myMinVal) && (aImage(it) <= myMaxVal);
+      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
     }
     
     bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
     {
-      return (aImage(it) >= myMinVal) && (aImage(it) <= myMaxVal);
+      return (aImage(it) > myMinVal) && (aImage(it) <= myMaxVal);
     }
     
   private:
