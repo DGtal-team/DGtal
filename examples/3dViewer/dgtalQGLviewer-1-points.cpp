@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -54,12 +54,12 @@ int main( int argc, char** argv )
  Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.show();
  viewer << domain;  
  viewer << p1 << p2 << p3;
  
- viewer<< DGTalQGLViewer::updateDisplay;
+ viewer<< DGtalQGLViewer::updateDisplay;
  return application.exec();
 }
 //                                                                           //

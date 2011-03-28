@@ -50,7 +50,7 @@
 
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #endif
 
 
@@ -534,7 +534,7 @@ namespace DGtal
        */
     struct DefaultDrawStyleQGL : public  DrawableWithDGtalQGLViewer 
     {
-        virtual void selfDrawQGL(DGTalQGLViewer & viewer) const
+        virtual void selfDrawQGL(DGtalQGLViewer & viewer) const
         {
 	  viewer.myModes[ "Object" ] = "";
          }
@@ -551,17 +551,17 @@ namespace DGtal
        * Draw the object on a DGtalBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawQGL( DGTalQGLViewer & viewer ) const;
+      void selfDrawQGL( DGtalQGLViewer & viewer ) const;
 
 
       template<typename Functor>
-      void selfDrawWithAdjacenciesQGL( DGTalQGLViewer & viewer ) const;
+      void selfDrawWithAdjacenciesQGL( DGtalQGLViewer & viewer ) const;
 
       /**
        * Draw the object (with Adjacency relationships) on a LiBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawWithAdjacenciesQGL( DGTalQGLViewer & viewer ) const;
+      void selfDrawWithAdjacenciesQGL( DGtalQGLViewer & viewer ) const;
 
 
     

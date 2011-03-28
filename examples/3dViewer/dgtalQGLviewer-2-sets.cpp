@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -50,7 +50,7 @@ int main( int argc, char** argv )
 
  QApplication application(argc,argv);
 
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set<< DGTalQGLViewer::updateDisplay; 
+ viewer << shape_set<< DGtalQGLViewer::updateDisplay; 
  
  return application.exec();
 }

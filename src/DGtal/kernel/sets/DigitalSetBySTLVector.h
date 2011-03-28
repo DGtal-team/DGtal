@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #endif
 
 
@@ -362,7 +362,7 @@ namespace DGtal
      */
     struct DefaultDrawStyleQGL : public  DrawableWithDGtalQGLViewer 
     {
-       virtual void selfDrawQGL(DGTalQGLViewer & viewer) const
+       virtual void selfDrawQGL(DGtalQGLViewer & viewer) const
         {
 	  viewer.myModes[ "DigitalSetBySTLVector" ] = "";
 	}
@@ -379,10 +379,10 @@ namespace DGtal
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
-    void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
-    void selfDrawAsPavingTransparentQGL( DGTalQGLViewer & viewer ) const;
+    void selfDrawQGL(  DGtalQGLViewer & viewer ) const;
+    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
+    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsPavingTransparentQGL( DGtalQGLViewer & viewer ) const;
 
 
 

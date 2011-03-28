@@ -83,9 +83,9 @@ Afterwards the set is thresholded in ]0,255[:
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  DGTalQGLViewer viewer;
+  DGtalQGLViewer viewer;
   viewer.show(); 
-  viewer << set3d << DGTalQGLViewer::updateDisplay;
+  viewer << set3d << DGtalQGLViewer::updateDisplay;
 @endcode
 
 

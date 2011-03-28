@@ -36,7 +36,7 @@
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -53,7 +53,7 @@ int main( int argc, char** argv )
 
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   QApplication application(argc,argv);
-  DGTalQGLViewer viewer;
+  DGtalQGLViewer viewer;
   viewer.show(); 
   
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
@@ -63,7 +63,7 @@ int main( int argc, char** argv )
   Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
-  viewer << ClippingPlane(0,1,0, -40)<< DGTalQGLViewer::updateDisplay;
+  viewer << ClippingPlane(0,1,0, -40)<< DGtalQGLViewer::updateDisplay;
   
   return application.exec();   
 }

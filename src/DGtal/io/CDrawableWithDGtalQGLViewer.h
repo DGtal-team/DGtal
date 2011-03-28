@@ -46,7 +46,7 @@
 
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 
 
@@ -147,7 +147,7 @@ namespace DGtal
     DrawableWithDGtalQGLViewer *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    DGTalQGLViewer myB;
+    DGtalQGLViewer myB;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------

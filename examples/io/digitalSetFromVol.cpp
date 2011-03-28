@@ -34,7 +34,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -49,13 +49,13 @@ int main( int argc, char** argv )
 {
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   QApplication application(argc,argv);
-  DGTalQGLViewer viewer;
+  DGtalQGLViewer viewer;
   viewer.show(); 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  viewer << set3d << DGTalQGLViewer::updateDisplay;
+  viewer << set3d << DGtalQGLViewer::updateDisplay;
   return application.exec();
 }
 //                                                                           //

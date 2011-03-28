@@ -94,7 +94,7 @@ namespace DGtal
   class DGtalBoard;
 
 #ifdef WITH_VISU3D_QGLVIEWER 
-  class DGTalQGLViewer;
+  class DGtalQGLViewer;
 #endif
   
 
@@ -110,7 +110,7 @@ namespace DGtal
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( DGTalQGLViewer &  ) const {}
+    virtual void selfDraw( DGtalQGLViewer &  ) const {}
   };
 #endif
 

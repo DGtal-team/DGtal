@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file DGTalQGLViewer.ih
+ * @file DGtalQGLViewer.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/01/03
  *
- * Implementation of inline methods defined in DGTalQGLViewer.h
+ * Implementation of inline methods defined in DGtalQGLViewer.h
  *
  * This file is part of the DGtal library.
  */
@@ -45,8 +45,8 @@
 
 
 INLINE
-DGtal::DGTalQGLViewer & 
-DGtal::DGTalQGLViewer::operator<<(const QColor & aColor){
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<(const QColor & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -62,8 +62,8 @@ DGtal::DGTalQGLViewer::operator<<(const QColor & aColor){
    **/
 
 INLINE
-DGtal::DGTalQGLViewer & 
-DGtal::DGTalQGLViewer::operator<<(const DGTalQGLViewer::StreamKey  & key){
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<(const DGtalQGLViewer::StreamKey  & key){
   switch (key){
   case updateDisplay:{
     updateList();
@@ -78,7 +78,7 @@ DGtal::DGTalQGLViewer::operator<<(const DGTalQGLViewer::StreamKey  & key){
 
 INLINE
 void
-DGtal::DGTalQGLViewer::createNewVoxelList(bool depthTest){
+DGtal::DGtalQGLViewer::createNewVoxelList(bool depthTest){
   std::vector< voxelGL > v;
   myVoxelSetList.push_back(v);
   myListVoxelDepthTest.push_back(depthTest);
@@ -87,7 +87,7 @@ DGtal::DGTalQGLViewer::createNewVoxelList(bool depthTest){
 
 INLINE
 void
-DGtal::DGTalQGLViewer::createNewLineList(){
+DGtal::DGtalQGLViewer::createNewLineList(){
   std::vector< lineGL > v;
   myLineSetList.push_back(v);
 }
@@ -95,7 +95,7 @@ DGtal::DGTalQGLViewer::createNewLineList(){
 
 INLINE
 void
-DGtal::DGTalQGLViewer::createNewPointList(){
+DGtal::DGtalQGLViewer::createNewPointList(){
   std::vector< pointGL > v;
   myPointSetList.push_back(v);
 }
@@ -103,27 +103,27 @@ DGtal::DGTalQGLViewer::createNewPointList(){
 
 INLINE
 void
-DGtal::DGTalQGLViewer::setFillColor(QColor aColor){
+DGtal::DGtalQGLViewer::setFillColor(QColor aColor){
   myCurrentFillColor=aColor;  
 }
 
 
 INLINE
 void
-DGtal::DGTalQGLViewer::setLineColor(QColor aColor){
+DGtal::DGtalQGLViewer::setLineColor(QColor aColor){
   myCurrentLineColor=aColor;  
 }
 
 
 INLINE
 QColor
-DGtal::DGTalQGLViewer::getFillColor(){
+DGtal::DGtalQGLViewer::getFillColor(){
   return myCurrentFillColor;  
 }
 
 INLINE
 QColor
-DGtal::DGTalQGLViewer::getLineColor(){
+DGtal::DGtalQGLViewer::getLineColor(){
   return myCurrentLineColor;  
 }
 
@@ -132,8 +132,8 @@ DGtal::DGTalQGLViewer::getLineColor(){
 
 template <typename TDrawableWithDGtalQGLViewer>
 INLINE
-DGtal::DGTalQGLViewer & 
-DGtal::DGTalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDGtalQGLViewer< TDrawableWithDGtalQGLViewer >));
   
@@ -148,7 +148,7 @@ DGtal::DGTalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
 
 INLINE
 std::string
-DGtal::DGTalQGLViewer::getMode( const std::string & objectName ) const
+DGtal::DGtalQGLViewer::getMode( const std::string & objectName ) const
 {
   ModeMapping::const_iterator itm = myModes.find( objectName );
   return itm == myModes.end() ? "" : itm->second;
@@ -157,7 +157,7 @@ DGtal::DGTalQGLViewer::getMode( const std::string & objectName ) const
 
 INLINE
 void
-DGtal::DGTalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
+DGtal::DGtalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
   voxelGL v;
   v.x=x;
   v.y=y;
@@ -176,7 +176,7 @@ DGtal::DGTalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width
 
 INLINE
 void
-DGtal::DGTalQGLViewer::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+DGtal::DGtalQGLViewer::addPoint(double x, double y, double z ,const QColor &aColor, double size){
   pointGL p;
   p.x=x;
   p.y=y;
@@ -193,7 +193,7 @@ DGtal::DGTalQGLViewer::addPoint(double x, double y, double z ,const QColor &aCol
 
 INLINE
 void
-DGtal::DGTalQGLViewer::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const QColor & aColor, double width){
   lineGL l;
   l.x1=x1;
@@ -226,7 +226,7 @@ DGtal::DGTalQGLViewer::addLine(double x1, double y1, double z1,  double x2, doub
 
 INLINE
 void
-DGtal::DGTalQGLViewer::addClippingPlane(double a, double b, double c, double d){
+DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d){
   if(myClippingPlaneList.size()<5){
     clippingPlaneGL cp;
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
@@ -247,15 +247,15 @@ DGtal::DGTalQGLViewer::addClippingPlane(double a, double b, double c, double d){
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGTalQGLViewer'.
+ * Overloads 'operator<<' for displaying objects of class 'DGtalQGLViewer'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGTalQGLViewer' to write.
+ * @param object the object of class 'DGtalQGLViewer' to write.
  * @return the output stream after the writing.
  */
 INLINE
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const DGTalQGLViewer & object )
+                  const DGtalQGLViewer & object )
 {
     object.selfDisplay ( out );
     return out;
