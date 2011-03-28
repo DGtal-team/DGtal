@@ -552,6 +552,67 @@ bool testOneDSS()
 
 	return (compteur==1);
 }
+
+/**
+ * Test for the segmentation of 
+ * 8-connected digital curves into DSS
+ *
+ */
+bool testDec8Reverse()
+{
+
+  typedef int Coordinate;
+  typedef PointVector<2,Coordinate> Point;
+  typedef std::vector<Point> ContourType;
+  typedef ArithmeticalDSS<ContourType::reverse_iterator,Coordinate,8> PrimitiveType;
+  
+	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+
+	std::vector<Point> curve;
+curve.push_back(Point(1,1));                    //input elements
+curve.push_back(Point(2,1));
+curve.push_back(Point(3,2));
+curve.push_back(Point(4,2));
+curve.push_back(Point(5,2));
+curve.push_back(Point(6,2));
+curve.push_back(Point(7,2));
+curve.push_back(Point(8,1));
+curve.push_back(Point(9,1));
+
+  //Segmentation
+  trace.beginBlock("Segmentation of a 8-connected digital curve into DSS");
+	PrimitiveType computer;
+  DecompositionType theDecomposition(curve.rbegin(), curve.rend(), computer, false);
+  
+	// Draw the pixels
+  DGtalBoard aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  aBoard << SetMode("PointVector", "Both");
+	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+  	aBoard << (*it);
+	}
+				 
+
+  //for each segment
+	unsigned int compteur = 0;
+  DecompositionType::ConstIterator i = theDecomposition.begin();
+  for ( ; i != theDecomposition.end(); ++i) {
+
+		compteur++;
+    trace.info() << "Segment " << compteur << std::endl;
+    PrimitiveType segment(*i); 		
+		trace.info() << segment << std::endl;	//standard output
+    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+					 << segment; // draw each segment    
+  } 
+
+  aBoard.saveSVG("right_left.svg");
+
+  trace.endBlock();
+
+	return (compteur==2);
+}
+
 /////////////////////////////////////////////////////////////////////////
 //////////////// MAIN ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -574,7 +635,8 @@ int main(int argc, char **argv)
 					&& testNoPoint()
 					&& testOnePoint()
 					&& testTwoEndIterators()
-					&& testOneDSS();
+					&& testOneDSS()
+					&& testDec8Reverse();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

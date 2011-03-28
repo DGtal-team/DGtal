@@ -90,7 +90,7 @@ int main()
     // Draw the grid
     DGtalBoard board;
 	
-    Domain domain( Point(0,0), Point(10,10) );
+    Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Grid")
 	  << domain;		
 
@@ -139,7 +139,7 @@ int main()
 
     //Draw the pixels
     DGtalBoard board;
-    Domain domain( Point(0,0), Point(10,10) );
+    Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Paving")
 	  << domain;		
 	
