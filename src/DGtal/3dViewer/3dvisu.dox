@@ -6,7 +6,7 @@
 namespace DGtal {
 
 /**
- * @page threeD_visu DGTalQGLViewer: a stream mechanism for displaying  3D DGtal objects 
+ * @page threeD_visu DGtalQGLViewer: a stream mechanism for displaying  3D DGtal objects 
  *
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
@@ -19,17 +19,17 @@ namespace DGtal {
  *  -# \ref DGtalGLV_Custom
  *  -# \ref DGtalGLV_CLipping 
  *
- * \section DGtalGLV_VisualizeSimpleObject DGTalQGLViewer: simple visualization based on libQGLViewer 
+ * \section DGtalGLV_VisualizeSimpleObject DGtalQGLViewer: simple visualization based on libQGLViewer 
  *  
- * First to use the DGTalQGLViewer stream,  you need to include the following hearders:
+ * First to use the DGtalQGLViewer stream,  you need to include the following hearders:
  *
  * @code
- #include "DGtal/3dViewer/DGTalQGLViewer.h"
+ #include "DGtal/3dViewer/DGtalQGLViewer.h"
 *  @endcode
 *
  *  LibQGLViewer  ( http://www.libqglviewer.com ) is a C++ library based on QT allowing to access 
  *  to simple 3D fonctionalities like camera moving, mouse, keyboard interaction, clipping plane 
- *  .... etc.   The class DGTalQGLViewer inherits from the base class QGLViewer (which is based on QGLwidget). 
+ *  .... etc.   The class DGtalQGLViewer inherits from the base class QGLViewer (which is based on QGLwidget). 
  * It permits to display simple 3D shapes. 
  *
  *	
@@ -39,7 +39,7 @@ namespace DGtal {
  *
  *	
  * 
- * The first step to visualize 3D object with DGTalQGLViewer is to create a QApplication can be done as follows:
+ * The first step to visualize 3D object with DGtalQGLViewer is to create a QApplication can be done as follows:
  *
  *
 *
@@ -51,7 +51,7 @@ using namespace DGtal;
 using namespace Z3i;
 
  QApplication application(argc,argv);
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.show();
  
  Point p1( 0, 0, 0 );
@@ -61,14 +61,14 @@ using namespace Z3i;
 
  viewer << domain;  
  viewer << p1 << p2 << p3; 
- viewer << << DGTalQGLViewer::updateDisplay;
+ viewer << << DGtalQGLViewer::updateDisplay;
 
 
 * @endcode
 *
 * You should obtain the following visualisation:
 *
-* \image html simple3dVisu1.png "Digital point visualization  with DGTalQGLViewer." width=5cm
+* \image html simple3dVisu1.png "Digital point visualization  with DGtalQGLViewer." width=5cm
 *
 *
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
@@ -80,7 +80,7 @@ using namespace Z3i;
 * @code
 
  QApplication application(argc,argv);
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -94,13 +94,13 @@ using namespace Z3i;
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << DGTalQGLViewer::updateDisplay
+ viewer << shape_set << DGtalQGLViewer::updateDisplay
  
  @endcode
 *
 * You should obtain the following visualisation (see example: <a href="dgtalQGLviewer-2-sets_8cpp-example.html">dgtalQGLviewer-2-sets.cpp </a>):
 *
-* \image html simple3dVisu2.png "Digital point visualization  with DGTalQGLViewer." width=5cm
+* \image html simple3dVisu2.png "Digital point visualization  with DGtalQGLViewer." width=5cm
 *
 *
 *
@@ -127,8 +127,8 @@ using namespace Z3i;
 *<CENTER>
 *<TABLE> 
 *<TR>
-*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with DGTalQGLViewer." width=5cm </TD>
-*<TD  align=CENTER> \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with DGTalQGLViewer." width=5cm </TD>
+*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with DGtalQGLViewer." width=5cm </TD>
+*<TD  align=CENTER> \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with DGtalQGLViewer." width=5cm </TD>
 * </TR>
 *</TABLE>
 *</CENTER>

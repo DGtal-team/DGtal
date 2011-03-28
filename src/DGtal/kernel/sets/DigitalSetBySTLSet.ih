@@ -489,7 +489,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDraw( DGtalBoard & board ) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( DGTalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( DGtalQGLViewer & viewer ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(false);
@@ -506,7 +506,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( DGTalQGLViewe
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
 {   
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(true);
@@ -522,7 +522,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( DGTalQGLViewer & viewer 
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( DGTalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   for ( ConstIterator it = this->begin(); 
@@ -538,7 +538,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( DGTalQGLViewer & viewer ) 
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( DGTalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   

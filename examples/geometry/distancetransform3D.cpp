@@ -37,7 +37,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 
 #include "Board/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -101,7 +101,7 @@ int main( int argc, char** argv )
 
   
  QApplication application(argc,argv);
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
 
@@ -183,7 +183,7 @@ int main( int argc, char** argv )
    }     
  }
  
- viewer<< DGTalQGLViewer::updateDisplay;
+ viewer<< DGtalQGLViewer::updateDisplay;
  
  return application.exec();
 }

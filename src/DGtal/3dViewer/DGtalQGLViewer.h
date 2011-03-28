@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file DGTalQGLViewer.h
+ * @file DGtalQGLViewer.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/01/03
  *
- * Header file for module DGTalQGLViewer.cpp
+ * Header file for module DGtalQGLViewer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DGTalQGLViewer_RECURSES)
-#error Recursive header files inclusion detected in DGTalQGLViewer.h
-#else // defined(DGTalQGLViewer_RECURSES)
+#if defined(DGtalQGLViewer_RECURSES)
+#error Recursive header files inclusion detected in DGtalQGLViewer.h
+#else // defined(DGtalQGLViewer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DGTalQGLViewer_RECURSES
+#define DGtalQGLViewer_RECURSES
 
-#if !defined DGTalQGLViewer_h
+#if !defined DGtalQGLViewer_h
 /** Prevents repeated inclusion of headers. */
-#define DGTalQGLViewer_h
+#define DGtalQGLViewer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -65,7 +65,7 @@ namespace DGtal
 {
  /**
    * Base class specifying the methods for classes which intend to
-   * modify a DGTalQGLViewer stream.
+   * modify a DGtalQGLViewer stream.
    * 
    */
   struct DrawWithQGLViewerModifier {
@@ -79,7 +79,7 @@ namespace DGtal
       return 0;
     }
 
-    virtual void selfDrawQGL( DGTalQGLViewer &  ) const 
+    virtual void selfDrawQGL( DGtalQGLViewer &  ) const 
     {}
   };
 
@@ -90,12 +90,12 @@ namespace DGtal
 
 
 /////////////////////////////////////////////////////////////////////////////
-// class DGTalQGLViewer
+// class DGtalQGLViewer
 /**
- * Description of class 'DGTalQGLViewer' <p>
+ * Description of class 'DGtalQGLViewer' <p>
  * \brief Aim:
  */
-  class DGTalQGLViewer : public QGLViewer
+  class DGtalQGLViewer : public QGLViewer
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -172,7 +172,7 @@ public:
    *
    **/  
   
-  DGTalQGLViewer & operator<<(const QColor & aColor);
+  DGtalQGLViewer & operator<<(const QColor & aColor);
   
   
 
@@ -183,7 +183,7 @@ public:
    *
    **/
   
-  DGTalQGLViewer & operator<<(const DGTalQGLViewer::StreamKey  & key);
+  DGtalQGLViewer & operator<<(const DGtalQGLViewer::StreamKey  & key);
   
   
   
@@ -246,13 +246,13 @@ public:
   /**
    * Draws the drawable [object] in this board. It should satisfy
    * the concept CDrawableWithDGtalQGLViewer, which requires for instance a
-   * method selfDraw( DGTalQGLViewer & ).
+   * method selfDraw( DGtalQGLViewer & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
   template <typename TDrawableWithDGtalQGLViewer>
-  DGTalQGLViewer & operator<<( const  TDrawableWithDGtalQGLViewer & object );
+  DGtalQGLViewer & operator<<( const  TDrawableWithDGtalQGLViewer & object );
   
 
 
@@ -391,14 +391,14 @@ protected :
     // ------------------------- Internals ------------------------------------
 private:
 
-  }; // end of class DGTalQGLViewer
+  }; // end of class DGtalQGLViewer
 
 
 
  
 
  /**
-   * Modifier class in a DGTalQGLViewer stream. Useful to choose your
+   * Modifier class in a DGtalQGLViewer stream. Useful to choose your
    * own mode for a given class. Realizes the concept
    * CDrawableWithDGtalQGLViewer.
    */
@@ -412,7 +412,7 @@ private:
     SetMode3D( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
       viewer.myModes[ myClassname ] = myMode;
     }
@@ -428,7 +428,7 @@ private:
 
 
   /**
-   * Modifier class in a DGTalQGLViewer stream. Useful to choose your own
+   * Modifier class in a DGtalQGLViewer stream. Useful to choose your own
    * style for a given class. Realizes the concept
    * CDrawableWithDGtalQGLViewer.
    */
@@ -448,7 +448,7 @@ private:
       return "CustomStyle3D";
     }
 
-    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
       viewer.myStyles[ myClassname ] = myStyle;
     }
@@ -467,11 +467,11 @@ private:
    * during the Open-GL based rendering.
    *
    \code
-   DGTalQGLviewer viewer;
+   DGtalQGLviewer viewer;
    viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
    ...
    \endcode
-   * @see DGTalQGLviewer
+   * @see DGtalQGLviewer
    */
   struct CustomColors3D : public DrawWithQGLViewerModifier
   {
@@ -489,7 +489,7 @@ private:
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDrawQGL( DGTalQGLViewer & viewer) const
+    virtual void selfDrawQGL( DGtalQGLViewer & viewer) const
     {
       viewer.setFillColor(myFillColor);
       viewer.setLineColor(myPenColor);
@@ -497,7 +497,7 @@ private:
   };
 
  /**
-   * Class for adding a Clipping plane through the DGTalQGLViewer
+   * Class for adding a Clipping plane through the DGtalQGLViewer
    * stream. Realizes the concept CDrawableWithDGtalQGLViewer.
    */
 
@@ -512,7 +512,7 @@ private:
     ClippingPlane( double a, double b, double c, double d )
       : myA( a ), myB( b ), myC( c ), myD ( d )  
     {}
-    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
       viewer.addClippingPlane(myA, myB, myC, myD);
       
@@ -537,13 +537,13 @@ private:
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGTalQGLViewer'.
+ * Overloads 'operator<<' for displaying objects of class 'DGtalQGLViewer'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGTalQGLViewer' to write.
+ * @param object the object of class 'DGtalQGLViewer' to write.
  * @return the output stream after the writing.
  */
 std::ostream&
-operator<< ( std::ostream & out, const DGTalQGLViewer & object );
+operator<< ( std::ostream & out, const DGtalQGLViewer & object );
 
 
 } // namespace DGtal
@@ -552,13 +552,13 @@ operator<< ( std::ostream & out, const DGTalQGLViewer & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/3dViewer/DGTalQGLViewer.ih"
+#include "DGtal/3dViewer/DGtalQGLViewer.ih"
 #endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DGTalQGLViewer_h
+#endif // !defined DGtalQGLViewer_h
 
-#undef DGTalQGLViewer_RECURSES
-#endif // else defined(DGTalQGLViewer_RECURSES)
+#undef DGtalQGLViewer_RECURSES
+#endif // else defined(DGtalQGLViewer_RECURSES)

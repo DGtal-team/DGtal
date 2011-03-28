@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- DGTalQGLViewer viewer;
+ DGtalQGLViewer viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
 
@@ -129,7 +129,7 @@ int main( int argc, char** argv )
   viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain2;
   
-  viewer << DGTalQGLViewer::updateDisplay;
+  viewer << DGtalQGLViewer::updateDisplay;
  
 
  bool res = application.exec();

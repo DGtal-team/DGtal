@@ -32,7 +32,7 @@
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -52,7 +52,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Example simple example of DGtalQGLviewer" );
   
   QApplication application(argc,argv);
-  DGTalQGLViewer viewer;
+  DGtalQGLViewer viewer;
   viewer.setWindowTitle("simpleExampleDGtalQGLviewer");
   viewer.show();  
   
@@ -112,7 +112,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
   viewer << shape_set;
 
-  viewer<< DGTalQGLViewer::updateDisplay;
+  viewer<< DGtalQGLViewer::updateDisplay;
    
   
   trace.endBlock();

@@ -43,7 +43,7 @@
 // Inclusions
 #include <iostream>
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGTalQGLViewer.h"
+#include "DGtal/3dViewer/DGtalQGLViewer.h"
 #endif
 
 #include "DGtal/base/Common.h"
@@ -658,10 +658,10 @@ namespace DGtal
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL(  DGTalQGLViewer & viewer ) const;
-    void selfDrawAsGridQGL( DGTalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGTalQGLViewer & viewer ) const;
-    void selfDrawAsPavingPointsQGL( DGTalQGLViewer & viewer ) const;
+    void selfDrawQGL(  DGtalQGLViewer & viewer ) const;
+    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
+    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsPavingPointsQGL( DGtalQGLViewer & viewer ) const;
 
 #endif
 
@@ -707,7 +707,7 @@ namespace DGtal
 #ifdef WITH_VISU3D_QGLVIEWER
 
   struct DrawPavingVoxel3D : public DrawableWithDGtalQGLViewer {
-      void selfDrawQGL( DGTalQGLViewer & viewer ) const
+      void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
 	viewer.myModes[ "HyperRectDomain" ] = "Paving";
       }
@@ -715,7 +715,7 @@ namespace DGtal
   
   
   struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGTalQGLViewer & viewer ) const
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }
