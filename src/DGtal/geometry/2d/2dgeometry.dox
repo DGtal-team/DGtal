@@ -13,8 +13,9 @@ namespace DGtal {
 
 //----------------------------------------
 /*!
- @page 2dgeometry Decomposition of 2D digital curves
- @author Tristan Roussillon
+
+@page geometry2d Decomposition of 2D digital curves
+@author Tristan Roussillon
 
 
  This part of the manual describes how to decompose a digital curve

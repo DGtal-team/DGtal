@@ -93,7 +93,7 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  *
  * - Geometric Package
  *    - \ref volpackage
- *    - \ref geometry2D
+ *    - \ref geometry2d
  * 
  * - Helpers and tools
  *  - \ref dgtal_dgtalboard
