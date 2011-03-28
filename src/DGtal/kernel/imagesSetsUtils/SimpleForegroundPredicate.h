@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/images/CImageContainer.h"
-#include "DGTal/base/CowPtr.h"
+#include "DGtal/base/CowPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
