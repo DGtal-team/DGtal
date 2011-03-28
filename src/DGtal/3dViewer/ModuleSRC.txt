@@ -2,6 +2,6 @@
 ##
 
 SET(DGTALQGLV_SRC ${DGTALQGLV_SRC} 
-	DGtal/3dViewer/DGTalQGLViewer)
+	DGtal/3dViewer/DGtalQGLViewer)
 
 
