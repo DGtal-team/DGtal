@@ -11,7 +11,6 @@ SET(DGTAL_TESTS_SRC
    testMorton
    testHashTree
    testCheckImageConcept
-   testDGtalGMP
    testLinearAlgebra
    testImagesSetsUtilities
    )
@@ -33,6 +32,22 @@ FOREACH(FILE ${DGTAL_BENCH_SRC})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME})
   add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
   ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+ENDFOREACH(FILE)
+
+
+#-----------------------
+#ITK based tests
+#----------------------
+IF(GMP_FOUND)
+  SET(DGTAL_TESTS_GMP_SRC testDGtalGMP)
+ELSE(GMP_FOUND)
+  UNSET(DGTAL_TESTS_GMP_SRC)
+ENDIF(GMP_FOUND)
+
+FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
+  add_executable(${FILE} ${FILE})
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
+  add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
 #-----------------------

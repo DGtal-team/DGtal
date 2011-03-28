@@ -37,7 +37,11 @@
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+
+#ifdef WITH_GMP
 #include <gmpxx.h>
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
