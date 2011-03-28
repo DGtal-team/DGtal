@@ -47,7 +47,10 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/DGtalBoard.h"
+
+#ifdef WITH_GMP
 #include <gmpxx.h>
+#endif
 
 using namespace DGtal;
 using namespace std;
@@ -282,6 +285,7 @@ bool testExtendRetract()
 }
 
 
+#ifdef WITH_GMP
 /**
  * Test for 4-connected points
  *
@@ -336,6 +340,8 @@ bool testGMP()
 	return flag;
 }
 
+#endif
+
 /**
  * Test for corners
  * in 8-connected curves
@@ -377,7 +383,10 @@ int main(int argc, char **argv)
 					&& testDSS8drawing()
 					&& testExtendRetract()
 					&& testCorner()
-					&& testGMP();
+#ifdef WITH_GMP
+					&& testGMP()
+#endif
+    ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
