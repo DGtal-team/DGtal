@@ -24,7 +24,7 @@ This part of the manual describe the interactions between DGTal and
 InsightToolkit ITK library (http://www.itk.org).
 
 @image html itk-logo.png
-@image latex itk-logo.png width=5cm
+@image latex itk-logo.png "Insight Toolkit" width=5cm
 
 @see testITKImage.cpp
 
