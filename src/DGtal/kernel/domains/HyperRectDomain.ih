@@ -230,10 +230,10 @@ DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   
-  if ( ( mode == "" ) || ( mode == "BoundingBox" ) ){
+  if (  mode == "BoundingBox"  ){
     viewer.createNewLineList();
     selfDrawAsBoundingBox( viewer );
-  }else if( mode == "Grid"){
+  }else if( ( mode == "" ) ||  (mode == "Grid")){
      viewer.createNewLineList();
     selfDrawAsGridQGL( viewer );
   }

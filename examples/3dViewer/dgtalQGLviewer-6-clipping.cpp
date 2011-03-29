@@ -63,8 +63,8 @@ int main( int argc, char** argv )
  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
  viewer <<  SetMode3D( p1.styleName(), "Paving" );
  
- viewer << ClippingPlane(1,0,0,-4.9);
- viewer << ClippingPlane(0,1,0.3,-10); 
+ //viewer << ClippingPlane(1,0,0,-4.9);
+ //viewer << ClippingPlane(0,1,0.3,-10); 
  
  
  
