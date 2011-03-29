@@ -9,7 +9,7 @@
 namespace po = boost::program_options;
 
 
-#define LIBS "@DGtal_Lib_Dependencies@"
+#define LIBS "@DGtalLibDependencies@"
 
 
 int main(int argc, char **argv)
