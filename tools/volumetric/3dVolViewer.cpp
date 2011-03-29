@@ -102,7 +102,7 @@ int main( int argc, char** argv )
      viewer << *it;     
    }     
  }
- viewer << ClippingPlane(0,0,-1, 20, false);
+ //viewer << ClippingPlane(0,0,-1, 20, false);
  viewer << DGtalQGLViewer::updateDisplay;
  return application.exec();
 }
