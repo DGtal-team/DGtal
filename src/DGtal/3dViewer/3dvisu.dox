@@ -147,10 +147,10 @@ using namespace Z3i;
 
 As for \c DGtalBoard the object can be displayed with different possible mode:
 
-   * - class PointVector, modes: "" / "Both", "Paving", "Grid"
+   * - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
    * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid"
    * - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
-   * - class HyperRectDomain, modes: "" / "Grid", "Paving", "PavingPoints", "PavingGrids", "BoundingBox" (default).
+   * - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
 
 
 
@@ -284,6 +284,14 @@ we can add for instance two differents clipping planes:
 *</TABLE>
 *</CENTER>
 */
+
+
+It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
+
+@code
+ viewer << ClippingPlane(0,1,0.3,-10, false);
+@endcode
+
 
 /**
 \example dgtalQGLviewer-1-points.cpp

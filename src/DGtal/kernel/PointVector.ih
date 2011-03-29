@@ -687,11 +687,11 @@ DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
   std::string mode = viewer.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
 
-  if ( mode == "Paving" )
+  if ( mode == "Paving" || ( mode == "" ) )
     selfDrawAsPavingQGL( viewer );
   else if ( mode == "Grid" )
     selfDrawAsGridQGL( viewer );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
+  else if ( ( mode == "Both" ) )
     {
       selfDrawAsPavingQGL(viewer);
       selfDrawAsGridQGL( viewer );

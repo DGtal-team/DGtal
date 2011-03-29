@@ -63,8 +63,8 @@ int main( int argc, char** argv )
   Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
-   viewer << ClippingPlane(0,1,0, -40)<< DGtalQGLViewer::updateDisplay;
-
+  viewer << ClippingPlane(0,1,0, -40)<< DGtalQGLViewer::updateDisplay;
+   
   
   
 
