@@ -55,7 +55,7 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  viewer << set3d << DGtalQGLViewer::updateDisplay;
+  viewer << set3d << image.domain()  << DGtalQGLViewer::updateDisplay;
   return application.exec();
 }
 //                                                                           //

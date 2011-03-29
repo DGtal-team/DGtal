@@ -2,6 +2,7 @@ SET(DGTAL_TESTS_SRC
    dgtalQGLviewer-1-points
    dgtalQGLviewer-2-sets
    dgtalQGLviewer-3-objects
+   dgtalQGLviewer-4-modes
    dgtalQGLviewer-5-custom
    dgtalQGLviewer-6-clipping
 )

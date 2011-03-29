@@ -121,7 +121,32 @@ DGtal::DGtalQGLViewer::draw()
   for(uint i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
-  
+
+
+  for(uint i=0; i<myQuadList.size(); i++){
+    double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
+    double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
+    double  uz=myQuadList.at(i).z2-myQuadList.at(i).z1; 
+    
+    double  vx=myQuadList.at(i).x3-myQuadList.at(i).x2; 
+    double  vy=myQuadList.at(i).y3-myQuadList.at(i).y2; 
+    double  vz=myQuadList.at(i).z3-myQuadList.at(i).z2; 
+
+    Vec n( uy*vz-uz*vy, uz*vx-ux*vz,  ux*vy-uy*vx );
+    double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+    
+
+    glBegin(GL_QUADS);
+    glColor4ub(myQuadList.at(i).R, myQuadList.at(i).G, myQuadList.at(i).B, myQuadList.at(i).T);    
+    glNormal3f(-n[0]/normeN,-n[1]/normeN,-n[2]/normeN);
+    glVertex3f(myQuadList.at(i).x1, myQuadList.at(i).y1, myQuadList.at(i).z1);
+    glVertex3f(myQuadList.at(i).x2, myQuadList.at(i).y2, myQuadList.at(i).z2);
+    glVertex3f(myQuadList.at(i).x3, myQuadList.at(i).y3, myQuadList.at(i).z3);
+    glVertex3f(myQuadList.at(i).x4, myQuadList.at(i).y4, myQuadList.at(i).z4);
+    glEnd();
+    
+
+  }
 }
 
 
@@ -187,7 +212,6 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
       
     }
   }
-  
   
 }
 
