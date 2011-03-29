@@ -66,6 +66,9 @@ int main( int argc, char** argv )
  viewer << ClippingPlane(1,0,0,-4.9);
  viewer << ClippingPlane(0,1,0.3,-10); 
  
+ 
+ 
+ 
  viewer << DGtalQGLViewer::updateDisplay;
  return application.exec();
 }
