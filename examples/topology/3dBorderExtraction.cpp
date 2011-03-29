@@ -87,7 +87,7 @@ int main( int argc, char** argv )
  viewer<<  CustomColors3D(QColor(250, 250,250),QColor(250, 250,250));
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5)<< DGtalQGLViewer::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false)<< DGtalQGLViewer::updateDisplay;
  
  return application.exec();
  
