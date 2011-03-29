@@ -214,6 +214,25 @@ DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, doub
    
 }
 
+INLINE
+void
+DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
+  quadGL aQuad;
+  aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
+  aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
+  aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
+  aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
+  aQuad.R=aColor.red();
+  aQuad.G=aColor.green();
+  aQuad.B=aColor.blue();
+  aQuad.T=aColor.alpha();
+  
+  myQuadList.push_back(aQuad);  
+}
+  
+
+
 
 
   

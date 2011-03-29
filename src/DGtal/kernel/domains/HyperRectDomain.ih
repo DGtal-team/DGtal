@@ -225,12 +225,16 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids") ||
+  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+	  mode=="BoundingBox")||
 	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   
-  if ( ( mode == "" ) || ( mode == "Grid" ) ){
+  if ( ( mode == "" ) || ( mode == "BoundingBox" ) ){
     viewer.createNewLineList();
+    selfDrawAsBoundingBox( viewer );
+  }else if( mode == "Grid"){
+     viewer.createNewLineList();
     selfDrawAsGridQGL( viewer );
   }
   else if ( mode == "Paving" ){
@@ -252,6 +256,58 @@ DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 
 
 
+
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( DGtalQGLViewer & viewer) const
+{
+  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+  QColor colDef(250,250,250,10);
+  if (TSpace::dimension == 3)
+    {
+      //Z upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+		     colDef);
+      //Z lower face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+		     colDef);
+      
+      //Y upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     colDef);
+      //Y lower face
+      viewer.addQuad(myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     colDef);
+      
+      // X upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+		     colDef);
+      
+      //  X lower face
+      viewer.addQuad(myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     colDef);
+      
+    }  
+}
 
 
 template<typename TSpace>
@@ -310,12 +366,10 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridQGL( DGtalQGLViewer & viewer) cons
       }
     }
     
-    
-    
   }
 
-
 }
+
 
 template<typename TSpace>
 inline

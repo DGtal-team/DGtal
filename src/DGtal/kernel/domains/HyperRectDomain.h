@@ -662,6 +662,7 @@ namespace DGtal
     void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
     void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
     void selfDrawAsPavingPointsQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsBoundingBox ( DGtalQGLViewer & viewer) const;
 
 #endif
 

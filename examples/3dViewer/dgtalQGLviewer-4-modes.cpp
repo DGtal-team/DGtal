@@ -68,7 +68,7 @@ int main( int argc, char** argv )
  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
   
 
- viewer << SetMode3D(domain.styleName(), "PavingGrids");
+ //viewer << SetMode3D(domain.styleName(), "PavingGrids");
  viewer << domain << DGtalQGLViewer::updateDisplay;
  
 

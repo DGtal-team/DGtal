@@ -206,7 +206,12 @@ public:
   void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
 	       const QColor &color=QColor(20,20,20,200), double width=1.5);
   
+ 
+  void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+  	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
   
+  
+
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
    * A maximal of five clipping plane can be added.
@@ -304,6 +309,7 @@ public:
 private:
 
   
+  
   struct lineGL{
     double x1, y1, z1;
     double x2, y2, z2;
@@ -322,11 +328,16 @@ private:
     uint R,G,B,T;
     double size;
   };
-
   struct clippingPlaneGL{
     double a,b,c,d;
   };
-  
+  struct  quadGL{
+    double x1,y1,z1;
+    double x2,y2,z2;
+    double x3,y3,z3;
+    double x4,y4,z4;    
+    uint R,G,B,T;
+  };
     
   // Used to represent all the list used in the display.
   std::vector< std::vector<voxelGL> > myVoxelSetList;
@@ -340,7 +351,10 @@ private:
   // Represent all the clipping planes added to the scene (of maxSize=5).
   std::vector< clippingPlaneGL > myClippingPlaneList;
   
-
+  // Represent all the drawed planes
+  std::vector< quadGL > myQuadList;
+  
+  
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
 
