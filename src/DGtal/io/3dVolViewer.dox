@@ -102,7 +102,7 @@ namespace DGtal {
    You can also add a clipping plane:
 
    @code 
-   viewer << ClippingPlane(0,0,-1, 20);
+   viewer << ClippingPlane(0,0,-1, 20, false);
    @endcode
 
    You will get the following visualisation:
