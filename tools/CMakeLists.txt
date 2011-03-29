@@ -28,6 +28,8 @@ add_subdirectory(shapeGenerator)
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in" "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp" IMMEDIATE)
 
 
+MESSAGE("DgtalLibDep= ${DGtalLibDependencies}")
+
 SET(DGTAL_TOOLS_SRC
   dgtal-config
  )
