@@ -173,14 +173,25 @@ DGtal::DGtalQGLViewer::init(){
   myCurrentLineColor = QColor (22, 22, 222, 50);
   myDefaultBackgroundColor = backgroundColor ();
   myIsBackgroundDefault=true;
-  camera()->showEntireScene();
-  myDefaultColor= QColor(255, 255, 255);
+  myBoundingPtLow[0]=numeric_limits<double>::max( );
+  myBoundingPtLow[1]=numeric_limits<double>::max( );
+  myBoundingPtLow[2]=numeric_limits<double>::max( );
+
+  myBoundingPtUp[0]=numeric_limits<double>::min( );
+  myBoundingPtUp[1]=numeric_limits<double>::min( );
+  myBoundingPtUp[2]=numeric_limits<double>::min( );
   
+
+  
+  myDefaultColor= QColor(255, 255, 255);
+  camera()->showEntireScene();
+    
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
+
   restoreStateFromFile();
 }
 
@@ -259,14 +270,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 	
 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
 	double width=(*s_it).width;
-	if((*s_it).x <myBoundingPtLow[0])   myBoundingPtLow[0]= (*s_it).x;
-	if((*s_it).y <myBoundingPtLow[1])   myBoundingPtLow[1]= (*s_it).y;
-	if((*s_it).z <myBoundingPtLow[2])   myBoundingPtLow[2]= (*s_it).z;
-
-	if((*s_it).x >myBoundingPtUp[0])   myBoundingPtUp[0]= (*s_it).x;
-	if((*s_it).y >myBoundingPtUp[1])   myBoundingPtUp[1]= (*s_it).y;
-	if((*s_it).z >myBoundingPtUp[2])   myBoundingPtUp[2]= (*s_it).z;
-									   
+   
 	//z+
 	glNormal3f( 0.0, 0.0, 1.0);
 	glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width);
@@ -319,21 +323,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it){
-	if((*s_it).x1 <myBoundingPtLow[0])   myBoundingPtLow[0]= (*s_it).x1;
-	if((*s_it).y1 <myBoundingPtLow[1])   myBoundingPtLow[1]= (*s_it).y1;
-	if((*s_it).z1 <myBoundingPtLow[2])   myBoundingPtLow[2]= (*s_it).z1;
-	
-	if((*s_it).x1 >myBoundingPtUp[0])   myBoundingPtUp[0]= (*s_it).x1;
-	if((*s_it).y1 >myBoundingPtUp[1])   myBoundingPtUp[1]= (*s_it).y1;
-	if((*s_it).z1 >myBoundingPtUp[2])   myBoundingPtUp[2]= (*s_it).z1;
-
-	if((*s_it).x2 <myBoundingPtLow[0])   myBoundingPtLow[0]= (*s_it).x2;
-	if((*s_it).y2 <myBoundingPtLow[1])   myBoundingPtLow[1]= (*s_it).y2;
-	if((*s_it).z2 <myBoundingPtLow[2])   myBoundingPtLow[2]= (*s_it).z2;
-	
-	if((*s_it).x2 >myBoundingPtUp[0])   myBoundingPtUp[0]= (*s_it).x2;
-	if((*s_it).y2 >myBoundingPtUp[1])   myBoundingPtUp[1]= (*s_it).y2;
-	if((*s_it).z2 >myBoundingPtUp[2])   myBoundingPtUp[2]= (*s_it).z2;
 
 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
 	glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);

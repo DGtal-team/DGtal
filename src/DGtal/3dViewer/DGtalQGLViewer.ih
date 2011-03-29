@@ -159,6 +159,14 @@ INLINE
 void
 DGtal::DGtalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
   voxelGL v;
+  if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
+  if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
+  if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
+  
+  if(x >myBoundingPtUp[0])   myBoundingPtUp[0]= x;
+  if(y >myBoundingPtUp[1])   myBoundingPtUp[1]= y;
+  if(z >myBoundingPtUp[2])   myBoundingPtUp[2]= z;
+  
   v.x=x;
   v.y=y;
   v.z=z;
@@ -203,7 +211,22 @@ DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, doub
   l.x2=x2;
   l.y2=y2;
   l.z2=z2;
+  if(x1 <myBoundingPtLow[0])   myBoundingPtLow[0]= x1;
+  if(y1 <myBoundingPtLow[1])   myBoundingPtLow[1]= y1;
+  if(z1 <myBoundingPtLow[2])   myBoundingPtLow[2]= z1;
+  
+  if(x1 >myBoundingPtUp[0])   myBoundingPtUp[0]= x1;
+  if(y1 >myBoundingPtUp[1])   myBoundingPtUp[1]= y1;
+  if(z1 >myBoundingPtUp[2])   myBoundingPtUp[2]= z1;
 
+  if(x2 <myBoundingPtLow[0])   myBoundingPtLow[0]= x2;
+  if(y2 <myBoundingPtLow[1])   myBoundingPtLow[1]= y2;
+  if(z2 <myBoundingPtLow[2])   myBoundingPtLow[2]= z2;
+  
+  if(x2 >myBoundingPtUp[0])   myBoundingPtUp[0]= x2;
+  if(y2 >myBoundingPtUp[1])   myBoundingPtUp[1]= y2;
+  if(z2 >myBoundingPtUp[2])   myBoundingPtUp[2]= z2;
+  
   l.R=aColor.red();
   l.G=aColor.green();
   l.B=aColor.blue();
@@ -245,11 +268,59 @@ DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, doub
 
 INLINE
 void
-DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d){
+DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
   if(myClippingPlaneList.size()<5){
     clippingPlaneGL cp;
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
     myClippingPlaneList.push_back(cp);
+    if(drawPlane){
+      double x1,x2,x3,x4;	
+      double y1,y2,y3,y4;
+      double z1,z2,z3,z4;
+      double norm = sqrt(a*a+b*b+c*c);
+      double dec=0.1;
+      // Z dominant projection of the upper face
+      if(abs(c)>=abs(b) && abs(c) >= abs(a)){
+	x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
+	z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
+	x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
+	z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
+	x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
+	z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
+	x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
+	z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;
+      }// Y dominant projection of the upper face
+      else   if(abs(b)>=abs(c) && abs(b) >= abs(a)){
+	x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	y1=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
+	
+	x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
+	y2=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
+	
+	x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	y3=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
+
+	x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
+	y4=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
+      }// X dominant projection of the upper face
+      else   if(abs(a)>=abs(c) && abs(a) >= abs(b)){
+	y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	x1=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
+	
+	y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
+	x2=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
+	
+	y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	x3=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
+
+	y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
+	x4=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
+      }
+      
+      addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+      
+    }
+  
   }else{
     std::cerr <<"Warning maximal clipping plane added" << endl;
   }

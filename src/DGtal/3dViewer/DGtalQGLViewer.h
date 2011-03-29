@@ -56,7 +56,6 @@
 
 
 
-
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -81,7 +80,8 @@ namespace DGtal
 
     virtual void selfDrawQGL( DGtalQGLViewer &  ) const 
     {}
-  };
+    
+};
 
 
 
@@ -219,7 +219,7 @@ public:
    * @param a, b, c, d : plane equation.
    **/
   
-  void addClippingPlane(double a, double b, double c, double d);
+  void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
   
 
   
@@ -523,12 +523,12 @@ private:
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    ClippingPlane( double a, double b, double c, double d )
-      : myA( a ), myB( b ), myC( c ), myD ( d )  
+    ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
+      : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
     void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
-      viewer.addClippingPlane(myA, myB, myC, myD);
+      viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
       
     }
     double * getEquation(){
@@ -545,7 +545,7 @@ private:
     double myB;
     double myC;
     double myD;
-    
+    bool myDrawPlane;
     
   };
 
