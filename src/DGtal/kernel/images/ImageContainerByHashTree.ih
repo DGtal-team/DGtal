@@ -872,7 +872,7 @@ namespace DGtal
         result += blendChildren ( children[i] );
         //cerr << "dbg > " << result << endl;
       }
-      return static_cast<float> ( result / N );
+      return static_cast<Value> ( result / N );
     }
   }
 
