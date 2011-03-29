@@ -4,7 +4,7 @@ SET(DGTAL_TOOLS_SRC
 
 FOREACH(FILE ${DGTAL_TOOLS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME}  ${DGtal_Lib_Dependencies} )
+  target_link_libraries (${FILE} ${LIBDGTAL_NAME}  ${DGtalLibDependencies} )
   install(TARGETS ${FILE} 
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
