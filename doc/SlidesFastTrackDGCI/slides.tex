@@ -14,26 +14,24 @@
 %\usecolortheme{crane}
 
 \usepackage{multirow}
-%\usepackage[latin1]{inputenc}           %%%  
-%\usepackage[T1]{fontenc}                %%%
-%\usepackage[francais]{babel}            %%%
+\usepackage[latin1]{inputenc}           %%%  
+\usepackage[T1]{fontenc}                %%%
+\usepackage[francais]{babel}            %%%
 
 \usepackage{multimedia}
 \usepackage{hyperref}
 \usepackage{tikz}
-%\newtheorem{theorem}{ThÃ©orÃ¨me}
+%\newtheorem{theorem}{Théorème}
 
 %\setbeamercovered{transparent}
 
-\title{DGtal:  Digital Geometry Tools and Algorithms}
-
-\author[ ]{  \\[3mm]
-  \small
-
-  \normalsize
+\title[DGtal library]{DGtal: Digital Geometry Tools and Algorithms\\
+     \url{http://liris.cnrs.fr/dgtal}
 }
 
-\date{DGCI, 2011}
+\author[The DGtal Team]{The DGtal Team}
+
+\date{DGCI demo session, April 2011}
 
 
 \graphicspath{{Figures/},{Images/},{Graphs/}}
@@ -48,10 +46,31 @@
 
 \input{macros}
 
-\setbeamercolor{qcolor}{fg={blue!20!black},bg={blue!15!white}}
-\setbeamercolor{qcoloru}{fg={blue!10!black},bg={blue!30!white}}
-\newenvironment{myblock}[2]%
-	       {\begin{beamerboxesrounded}[lower=qcolor,upper=qcoloru,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\setbeamercolor{qcolorb}{fg={blue!20!black},bg={blue!15!white}}
+\setbeamercolor{qcolorub}{fg={blue!10!black},bg={blue!30!white}}
+\setbeamercolor{qcolorlb}{fg={blue!20!black},bg={blue!8!white}}
+\setbeamercolor{qcolorulb}{fg={blue!10!black},bg={blue!40!white}}
+\setbeamercolor{qcolorg}{fg={green!20!black},bg={green!15!white}}
+\setbeamercolor{qcolorug}{fg={green!10!black},bg={green!30!white}}
+\setbeamercolor{qcolorlg}{fg={green!20!black},bg={green!8!white}}
+\setbeamercolor{qcolorulg}{fg={green!10!black},bg={green!40!white}}
+\setbeamercolor{qcolorr}{fg={red!20!black},bg={red!15!white}}
+\setbeamercolor{qcolorur}{fg={red!10!black},bg={red!30!white}}
+\setbeamercolor{qcolorlr}{fg={red!20!black},bg={red!8!white}}
+\setbeamercolor{qcolorulr}{fg={red!10!black},bg={red!40!white}}
+\newenvironment{myblockbluish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorb,upper=qcolorub,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\newenvironment{myblocklbluish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorlb,upper=qcolorulb,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\newenvironment{myblockgreenish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorg,upper=qcolorug,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\newenvironment{myblocklgreenish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorlg,upper=qcolorulg,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\newenvironment{myblockredish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorr,upper=qcolorur,width=#1
+,shadow=true]{#2}}{\end{beamerboxesrounded}}
+\newenvironment{myblocklredish}[2]%
+	       {\begin{beamerboxesrounded}[lower=qcolorlr,upper=qcolorulr,width=#1,shadow=true]{#2}}{\end{beamerboxesrounded}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,24 +87,206 @@
 %------------------------------------------------------------------------------
 
 %------------------------------------------------------------------------------
-\begin{frame}
-  \frametitle{DGtal: topology module}
+\begin{frame}%[allowframebreaks]
+  \frametitle{DGtal: why, who}
   
+  \small
   \begin{block}{Objectives}
-    Basic types and operations for representing a cartesian digital
-    space equipped with a digital topology, and objects lying in this
-    space.
+    \small
+    \begin{itemize}
+    \item to make easier discrete geometry for the neophyte (student, researcher from another field, \ldots)
+    \item to test quickly new ideas, with objective comparison wrt
+      existant works
+    \item to make easier the implementation of demonstrators
+    \item to help spread our research results to other domains
+    \item to pursue a federative project
+    \end{itemize}
   \end{block}
 
-  \begin{itemize}
-  \item Arbitrary adjacencies in $\Z^n$, but also in subdomains
-  \item Digital topology = couple of adjacencies (Rosenfeld)
-  \item Object = Topology + Set
-  \item Operations: neighborhoods, border, connectedness and connected
-    components, decomposition into digital layers, simple points
-  \end{itemize}
+  \small
+  \begin{block}{Who ? for now \ldots}
+    \small \vspace{-0.4cm}
+    \begin{columns}
+      \begin{column}{0.45\textwidth}
+        \begin{itemize}
+        \item LIRIS (Lyon)      
+        \item Gipsa-lab (Grenoble)
+        \item GREYC (Caen)
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.45\textwidth}
+        \begin{itemize}
+        \item LAMA (Chambéry)
+        \item LORIA (Nancy)
+        \end{itemize}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
+\begin{frame}%[allowframebreaks]
+  \frametitle{DGtal: what for ?}
+  
+  \small
+  \begin{block}{Main features}
+    \small
+    \begin{itemize}
+    \item to define digital objects in arbitrary dimension
+    \item to propose algorithms for topological and geometric analysis
+    \item to provide I/O mechanisms and visualization tools
+    \end{itemize}
+  \end{block}
+  \medskip
+
+  \begin{tabular}{cccc}
+    \includegraphics[height=0.15\textheight]{exampleDSS-3}
+    &
+    \includegraphics[height=0.2\textheight]{edt-2d}
+    &
+    \includegraphics[height=0.2\textheight]{object-3d-18-6}
+    &
+    \includegraphics[height=0.2\textwidth]{thinning-3d}
+    \\
+    DSS & EDT & Objects & Thinning\\
+  \end{tabular}
+\end{frame}
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\begin{frame}%[allowframebreaks]
+  \frametitle{DGtal philosophy and structure}
+
+  \begin{block}{}
+    \small
+    - Genericity and efficiency: C++ library, concepts\\
+    - LGPL or GPL with restrictions\\
+    - user friendly, not necessarily kernel-developer friendly
+  \end{block}
+  \begin{myblockbluish}{\textwidth}{\centering Kernel}
+    \begin{columns}
+      \begin{column}{0.44\textwidth}
+        \begin{myblocklbluish}{\textwidth}{Basic types, data structures}
+          \scriptsize
+          - digital space, point, sets, lin. algebra\\
+          - software infrastructure: trace, concept validation, \ldots
+        \end{myblocklbluish}
+      \end{column}
+      \begin{column}{0.44\textwidth}
+        \begin{myblocklbluish}{\textwidth}{Images}
+          \scriptsize
+          - generic container\\
+          - several implementation: standard, other adapted to big images
+        \end{myblocklbluish}
+      \end{column}
+    \end{columns}
+  \end{myblockbluish}
+  \begin{myblockgreenish}{\textwidth}{\centering Base modules}
+   \begin{columns}
+      \begin{column}{0.44\textwidth}
+        \begin{myblocklgreenish}{\textwidth}{Topology module}
+          \scriptsize
+          - digital topology: connectedness, border, simple points\\
+          - grid topology: cells, contours, surfaces, tracking
+        \end{myblocklgreenish}
+      \end{column}
+      \begin{column}{0.44\textwidth}
+        \begin{myblocklgreenish}{\textwidth}{Geometry module}
+          \scriptsize
+          - primitives, DSS recognition\\
+          - contour analysis: decomposition, convexity\\
+          - volumetric analysis: distance transforms, medial axis
+        \end{myblocklgreenish}
+      \end{column}
+    \end{columns}
+   \end{myblockgreenish}
 
 \end{frame}
+%------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
+\begin{frame}%[allowframebreaks]
+  \frametitle{Other modules, or modules with external dependencies}
+  
+  \begin{columns}
+    \scriptsize
+    \begin{column}{0.32\textwidth}
+      \begin{myblocklredish}{\textwidth}{2D vector export (SVG,\ldots)}
+        \includegraphics[width=\textwidth]{house-layers4-4}
+      \end{myblocklredish}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{myblocklredish}{\textwidth}{3D visualization}
+        \includegraphics[width=\textwidth]{al-clipped}
+      \end{myblocklredish}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{myblocklredish}{\textwidth}{Backends}
+        \begin{itemize}
+        \item Kiteware's VTK/ITK
+        \item VIGRA (soon)
+        \end{itemize}
+      \end{myblocklredish}\\
+      \begin{myblocklredish}{\textwidth}{Import/export}
+        \begin{itemize}
+        \item images (ImageMagick)
+        \item volumes (libvol)
+        \end{itemize}
+      \end{myblocklredish}
+      \begin{myblocklredish}{\textwidth}{Project modules}
+        \begin{itemize}
+        \item noisy objects (GeoDIB)
+        \item \ldots
+        \end{itemize}
+      \end{myblocklredish}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+%------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
+\begin{frame}%[allowframebreaks]
+  \frametitle{DGtal Roadmap}
+
+  \begin{block}{New in milestone 0.3 (now)}
+    \small
+    \begin{itemize}
+    \item Kernel update: integer genericity, concept checking, span iterators
+    \item 2D geometry: primitive decomposition, tangential cover
+    \item 3D visualization with QGLviewer: stream mechanism as in 2D
+    \item grid or interpixel topology: cells, digital surfaces,
+      surface tracking
+    \item shape construction
+    \end{itemize}
+  \end{block}
+
+  \begin{myblockredish}{\textwidth}{Join DGtal}
+    \small
+    \begin{itemize}
+    \item new contributors are welcome 
+    \item collaborative forge, development infrastructure
+    \item DGtal week this summer
+    \end{itemize}
+  \end{myblockredish}
+  
+\end{frame}
+
+%------------------------------------------------------------------------------
+\input{./team}
+%------------------------------------------------------------------------------
+
+
+
+%% \begin{itemize}
+%%   \item Arbitrary adjacencies in $\Z^n$, but also in subdomains
+%%   \item Digital topology = couple of adjacencies (Rosenfeld)
+%%   \item Object = Topology + Set
+%%   \item Operations: neighborhoods, border, connectedness and connected
+%%     components, decomposition into digital layers, simple points
+%%   \end{itemize}
+
+%% \end{frame}
 %% %------------------------------------------------------------------------------
 
 %% %------------------------------------------------------------------------------
