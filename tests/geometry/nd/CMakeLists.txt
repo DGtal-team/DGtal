@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
   testDistanceTransformation
-  testDistanceTransformND
+  testDistanceTransformationND
   testReverseDT
   )
 
