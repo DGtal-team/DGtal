@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC
    dgtalQGLviewer-4-modes
    dgtalQGLviewer-5-custom
    dgtalQGLviewer-6-clipping
+   demo-kernel-2
 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
