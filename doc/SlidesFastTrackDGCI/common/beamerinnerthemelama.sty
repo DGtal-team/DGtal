@@ -15,8 +15,10 @@
       \input{UniversiteDeSavoie}
     }
     \fi
-    \pgftransformshift{\pgfpointadd{\pgfpointanchor{current page}{north west}}{\pgfqpoint{1cm}{-8cm}}}
-    \input{lama.logo}
+    \pgftransformshift{\pgfpointadd{\pgfpointanchor{current page}{north west}}{\pgfqpoint{2cm}{-8cm}}}
+% JOL    \input{lama.logo}
+    \node (dgtal) {\includegraphics[width=0.3\textwidth]{dgtal-logo-small}};
+% end JOL
     \pgftransformshift{\pgfpointadd{\pgfpointanchor{current page}{north west}}{\pgfqpoint{11.3cm}{-7.5cm}}}
         \node (cnrs) {\includegraphics[scale=.3]{cnrs} }  ;
         \node[text=textLogoColor!80!white,at={(cnrs.south)},anchor=north]{\sffamily\fontsize{6}{6}\selectfont UMR 5127};
