@@ -149,7 +149,7 @@
     &
     \includegraphics[height=0.2\textwidth]{thinning-3d}
     \\
-    DSS & EDT & Objects & Thinning\\
+    DSS & DT & Objects & Thinning\\
   \end{tabular}
 \end{frame}
 %------------------------------------------------------------------------------
@@ -223,7 +223,7 @@
     \begin{column}{0.32\textwidth}
       \begin{myblocklredish}{\textwidth}{Backends}
         \begin{itemize}
-        \item Kiteware's VTK/ITK
+        \item Kiteware's ITK
         \item VIGRA (soon)
         \end{itemize}
       \end{myblocklredish}\\
@@ -248,12 +248,12 @@
 %------------------------------------------------------------------------------
 \begin{frame}%[allowframebreaks]
   \frametitle{DGtal Roadmap}
-
+\small
   \begin{block}{New in milestone 0.3 (now)}
     \small
     \begin{itemize}
-    \item Kernel update: integer genericity, concept checking, span iterators
-    \item 2D geometry: primitive decomposition, tangential cover
+    \item Kernel update: integer genericity, concept checking, domain iterators
+    \item 2D, nD-volumetric geometry: primitive decomposition, tangential cover, reverse distance transformation
     \item 3D visualization with QGLviewer: stream mechanism as in 2D
     \item grid or interpixel topology: cells, digital surfaces,
       surface tracking
@@ -264,7 +264,7 @@
   \begin{myblockredish}{\textwidth}{Join DGtal}
     \small
     \begin{itemize}
-    \item new contributors are welcome 
+    \item new contributors are welcome (new bug-reporters, documentation readers are welcome too)
     \item collaborative forge, development infrastructure
     \item DGtal week this summer
     \end{itemize}
