@@ -364,10 +364,10 @@ init( const Point & lower,
     }
   for ( Dimension i = 0; i < dimension; ++i )
     {
-      myCellLower.myCoordinates[ i ] = lower[ i ] * 2
-	+ closed ? 0 : 1;
-      myCellUpper.myCoordinates[ i ] = upper[ i ] * 2
-	+ closed ? 2 : 1;
+      myCellLower.myCoordinates[ i ] = ( lower[ i ] * 2 )
+	+ ( closed ? 0 : 1 );
+      myCellUpper.myCoordinates[ i ] = ( upper[ i ] * 2 )
+	+ ( closed ? 2 : 1 );
     }
   return true;
 }
