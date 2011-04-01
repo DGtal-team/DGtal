@@ -1,0 +1,96 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file PointListReader.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/03/31
+ *
+ * Implementation of inline methods defined in PointListReader.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <sstream>
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+
+
+
+
+template<typename Point>
+inline
+std::vector<Point> 
+DGtal::PointListReader<Point>::getPointsFromInputStream (std::istream &in, std::vector<uint> aVectPosition)
+{
+  if(aVectPosition.size()==0){
+    for(uint i=0; i<Point::dimension; i++){
+      aVectPosition.push_back(i);
+    }
+  }
+  vector<Point> vectResult;
+  string str;
+  getline(in, str );
+  while ( in.good() ){
+    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
+      istringstream in_str( str );
+      uint idx = 0;
+      typename Point::Component val;
+      uint nbFound=0;
+      Point p;
+      while ( in_str.good()&& (nbFound<Point::dimension)){
+	bool isOK = (in_str >> val);
+	for(uint j=0; j< Point::dimension; j++){
+	  if (isOK && (idx == aVectPosition.at(j)) ){
+	    nbFound++;
+	    p[j]=val;
+	  }
+	}
+	++idx;
+      }      
+      if(nbFound==Point::dimension){
+	vectResult.push_back(p);
+      }
+    }
+    getline(in, str );
+  }
+  return vectResult;
+
+}
+
+
+
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
