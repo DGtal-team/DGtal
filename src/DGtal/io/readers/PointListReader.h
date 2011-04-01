@@ -64,17 +64,15 @@ namespace DGtal
  *  @code
  *  #include "DGtal/helpers/StdDefs.h"
  *  .... 
- *  ifstream infile;
  *  string filename= "testFile.dat"; 
- *  infile.open (filename.c_str(), ifstream::in);
- *  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile);
+ *  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename);
  * @endcode 
  * and you can specifying the point position:
  *  @code
  vector<uint> vIndice;
  vIndice.push_back(1); // select for X coordinate the second position number of the line.
  vIndice.push_back(2); // select for Y coordinate the third position number of the line.
- vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile,vectPos);
+ vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,vectPos);
  *  @endcode
  *   
   **/
@@ -89,20 +87,35 @@ template <typename TPoint>
 public:
 
   
+
+
+
   /** 
    * Main method to import a vector containing a list of points
    * defined in a file where each line defines a point. 
    * 
    * 
-   * @param in the input stream to import.
-   * @param aVectPosition used to specify the position of indices of points value (default set to 0,..dimension) 
-   * @return a DigitalSet containing the in elements.
+   * @param in the input stream.
+   * @param aVectPosition used to specify the position of indices of value points  (default set to 0,..,dimension) 
+   * @return a vector containing the set of points.
    **/
 
-  //  static void  getSetFromInputStream(std::istream &in, std::vector<uint> position);
-  
   static std::vector<Point>  getPointsFromInputStream (std::istream &in, 
 						       std::vector<uint> aVectPosition=std::vector<uint>());
+  
+
+  /** 
+   * Main method to import a vector containing a list of points
+   * defined in a file where each line defines a point. 
+   * 
+   * 
+   * @param filename  
+   * @param aVectPosition used to specify the position of indices of value points  (optional: default set to 0,..,dimension) 
+   * @return a vector containing the set of points.
+   **/
+
+  static std::vector<Point>  getPointsFromFile (const std::string &filename, 
+						 std::vector<uint>  aVectPosition=std::vector<uint>());
   
 
   

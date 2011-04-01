@@ -5,7 +5,7 @@
 namespace DGtal {
 
 /*!
-@page image_io Image import/export
+@page image_io Image and digital object import/export
 @author David Coeurjolly
 
 This part of the manual describes how to import and export images
@@ -19,9 +19,10 @@ Table of contents:
    -# \ref io2D
    -# \ref io3D
    -# \ref nDio
-
+   -# \ref pointListnD
  -# \ref io_examples
    -# \ref importDigitalSet 
+   -# \ref importPointList
 \section usage Overall usage
 
 TODO
@@ -50,10 +51,18 @@ and VolWriter
 
 \subsection nDio Image formats in n-D
 
-- Raw foramts (binary file with raw values using the
+- Raw formats (binary file with raw values using the
   HyperRectDomain::Iterator order): RawReader and RawWriter
     - Raw8: import/export on raw 8bits
 
+
+\subsection pointListnD Point list format in n-D
+
+	 The static class \c PointListReader allows to read discrete
+	points represented in simple file where each line represent a
+	single point. 
+	
+	
 
 \section io_examples Example
 
@@ -92,7 +101,40 @@ Afterwards the set is thresholded in ]0,255[:
 
 Then you will obtain the following visualisation:
 
-\image html visuDigitalSet3D.png "3D digital with DGtalQGLviewer" width=5cm
+\image html visuDigitalSet3D.png "3D digital with DGtalQGLviewer" 
+\image latex visuDigitalSet3D.png "3D digital with DGtalQGLviewer" width=5cm
+
+
+\subsection importPointList Import 3D point list from file
+
+The example <a href="digitalSetFromPointList_8cpp-example.html" >  digitalSetFromPointList.cpp </a> shows a simple example of 3d set importation:
+
+@code
+vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
+  for(uint i=0; i<vectPoints.size();i++){
+    viewer << vectPoints.at(i);
+  }
+@endcode
+We can change the way to select the coordinate field:
+
+@code
+ vector<uint> vPos;
+  vPos.push_back(0);
+  vPos.push_back(2);
+  vPos.push_back(1);
+  vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
+  viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
+  for(uint i=0; i<vectPoints.size();i++){
+    viewer << vectPoints.at(i);
+  }
+ viewer   << DGtalQGLViewer::updateDisplay;
+@endcode
+
+You may obtain the following visualisation:
+
+\image html visuPointList.png "Visualisation of 3d imported point list " 
+\image latex visuPointList.png "Visualisation of 3d imported point list" width=5cm
+
 
 
 
@@ -102,4 +144,7 @@ Then you will obtain the following visualisation:
 
 /**
 * \example digitalSetFromVol.cpp
+**/
+/**
+* \example digitalSetFromPointList.cpp
 **/

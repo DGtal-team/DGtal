@@ -29,7 +29,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "ConfigTest.h"
@@ -57,13 +56,11 @@ bool testPointListReader()
   nbok += true ? 1 : 0; 
   nb++;
   std::string filename = testPath + "samples/pointList1.pl";
-  ifstream infile;
-  infile.open (filename.c_str(), ifstream::in);
   std::vector<uint> vectPos;
   vectPos.push_back(1);
   vectPos.push_back(2);
-  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile,
-											vectPos);
+  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,
+										 vectPos);
   for(uint k=0;k < vectPoints.size(); k++){
     trace.info() << " pt: "<< vectPoints.at(k)<< endl;
   }
