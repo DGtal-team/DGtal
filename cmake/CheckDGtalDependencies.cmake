@@ -105,7 +105,7 @@ endif( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
 
 
 find_package(QGLVIEWER)
-if ( QGLVIEWER_FOUND AND QT4_FOUND AND QT_QTOPENGL_FOUND)
+if(QGLVIEWER_FOUND AND QT4_FOUND AND QT_QTOPENGL_FOUND)
   find_package(OpenGL REQUIRED)
   message(STATUS  "(optional) libQGLViewer found. include=${QGLVIEWER_INCLUDE_DIR} Libs=${QGLVIEWER_LIBRARIES}." )
   include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
@@ -116,12 +116,15 @@ else ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
   message(STATUS  "(optional) libQGLViewer not found (or Qt4 not found)." )
 endif ( QGLVIEWER_FOUND  AND QT4_FOUND AND QT_QTOPENGL_FOUND)
 
-if( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
-  message(STATUS  "(optional) No 3D visualisation possible  (QGLViewer and IV )." )
-  set( WITH_VISU3D FALSE)
-else ()
+if(NOT WITH_VISU3D_QGLVIEWER)
+  if(NOT WITH_VISU3D_IV)
+    message(STATUS  "(optional) No 3D visualisation possible  (QGLViewer and IV )." )
+    set( WITH_VISU3D FALSE)
+  else (NOT WITH_VISU3D_IV)
+    set( WITH_VISU3D TRUE )
+  endif(NOT WITH_VISU3D_IV)
+else(NOT WITH_VISU3D_QGLVIEWER)
   set( WITH_VISU3D TRUE )
-endif( (NOT WITH_VISU3D_QGLVIEWER)  AND (NOT WITH_VISU3D_IV) )
+endif(NOT WITH_VISU3D_QGLVIEWER)
 
 
- 
