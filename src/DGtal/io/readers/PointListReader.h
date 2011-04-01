@@ -59,27 +59,25 @@ namespace DGtal
  * "#" are skipped.
  *
  *  
-   * Simple example:
-   * 
-   *  @code
-   *  #include "DGtal/helpers/StdDefs.h"
-   *  .... 
-   *  ifstream infile;
-   *  string filename= "testFile.dat"; 
-   *  infile.open (filename.c_str(), ifstream::in);
-   *  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile);
-   * @endcode 
-   * and you can specifying the point position:
-   *  @code
-   vector<uint> vIndice;
-   vIndice.push_back(1); // select for X coordinate the second position number of the line.
-   vIndice.push_back(2); // select for Y coordinate the third position number of the line.
-   vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile,vectPos);
-   *  @endcode
-   *   
-   */
- *
- */
+ * Simple example:
+ * 
+ *  @code
+ *  #include "DGtal/helpers/StdDefs.h"
+ *  .... 
+ *  ifstream infile;
+ *  string filename= "testFile.dat"; 
+ *  infile.open (filename.c_str(), ifstream::in);
+ *  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile);
+ * @endcode 
+ * and you can specifying the point position:
+ *  @code
+ vector<uint> vIndice;
+ vIndice.push_back(1); // select for X coordinate the second position number of the line.
+ vIndice.push_back(2); // select for Y coordinate the third position number of the line.
+ vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromInputStream(infile,vectPos);
+ *  @endcode
+ *   
+  **/
 
 template <typename TPoint>
  struct  PointListReader
