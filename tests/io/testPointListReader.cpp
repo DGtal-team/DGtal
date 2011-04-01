@@ -31,7 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/Readers/PointListReader.h"
+#include "DGtal/io/readers/PointListReader.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 
