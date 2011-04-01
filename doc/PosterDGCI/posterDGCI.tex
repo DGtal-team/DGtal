@@ -68,8 +68,7 @@
 
 \newenvironment{colonne}[1]{
 \begin{minipage}[t]{#1\textwidth}
-  \begin{center}
-}{
+  \begin{center}}{
   \end{center}
   \end{minipage}}
 
@@ -109,7 +108,7 @@
 %     Image de fond
 %\wpYoffset{0.2cm}
 
-\CenterWallPaper{1.0}{./Logos/DGtalLogoFond.eps}	
+\CenterWallPaper{1.0}{./Logos/DGtalLogoFond2.eps}	
 
 \sffamily
 \newrgbcolor{lightblue}{0. 0.2 0.20}
@@ -128,7 +127,7 @@
 \begin{center}
 \vspace{-1.5cm}
 \centering \rput(4cm,1cm){\includegraphics[width=8cm]{Logos/DGtalLogo.eps}} \hskip 10cm Digital Geometry Tools and Algorithms \\
-\center \rput(0cm,-2cm){\includegraphics[width=14cm]{Logos/logoDGCI.eps}} \\
+\center \rput(0cm,-2cm){\includegraphics[width=14cm]{Logos/logoDGCI2.eps}} \\
 \vspace{6cm}
 {\LARGE \url{http://liris.cnrs.fr/dgtal}}
 \hrule width 15cm
@@ -148,6 +147,7 @@
 %\vskip 4cm
 \begin{colonne}{0.32}
 
+\begin{minipage}[t]{\textwidth}
 \section{DGtal: a software library for the discrete geometry community}
 
 \subsection{Objectives}
@@ -213,6 +213,9 @@ GREYC (Caen)\\
 \item Sébastien Fourey (GREYC): kernel, board
 \item Isabelle Sivignon (Gipsa-lab): DSS
 \end{itemize}
+
+\end{minipage}
+
 \end{colonne}
 \hfill
 %-------------------------------------------------------------------------------
@@ -220,6 +223,7 @@ GREYC (Caen)\\
 %-------------------------------------------------------------------------------
 \begin{colonne}{0.32}
 
+\begin{minipage}[t]{\textwidth}
 \section{Structure}
 
 \includegraphics[width=0.7\textwidth]{Images/structure.eps}
@@ -263,6 +267,7 @@ GREYC (Caen)\\
   \includegraphics[height=0.3\textwidth]{Images/hashtree-2.eps}%
 }\\
 \end{tabular}
+\end{minipage}
 \end{colonne}
 \hfill
 %-------------------------------------------------------------------------------
@@ -323,7 +328,8 @@ GREYC (Caen)\\
 
 \begin{tabular}{cc}
 \framebox{%
-  \includegraphics[height=0.2\textwidth]{Images/contourS1-2.eps}%
+%  \includegraphics[height=0.2\textwidth]{Images/contourS1-2.eps}%
+  \includegraphics[trim= 1cm 1.5cm 1cm 0.5cm, clip, height=0.2\textwidth]{Images/contourS1-2.eps}%
 }&
 \framebox{%
   \includegraphics[height=0.17\textwidth]{Images/convex-and-concave-parts.eps}%
