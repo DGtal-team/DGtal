@@ -1,3 +1,16 @@
+2011-04-01 dcoeurjo
+	* Release 0.3.0
+	* Kernel: global enhancement of different Integer types and
+	associated concepts.
+	* Topology: interpixel topology, cells, surface tracking
+	* Geometry2D: contour primitive decomposition, tangential cover,
+	convexity/concavity decomposition.
+	* GeometrynD: Reverse DT transformation (Euclidean)
+	* Infrastructure: 3D visualisation of DGtal objects with
+	libQGLViewer, shape factory
+	* Documentation: first DGtal user-guide
+
+
 2010-01-12 dcoeurjo
 	* Release 0.2
 	* Kernel: DGtalBoard mechanism for 2D drawing of DGtal objects, ..
