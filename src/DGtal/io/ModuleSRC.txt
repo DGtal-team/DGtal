@@ -3,5 +3,6 @@
 
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-	DGtal/io/DGtalBoard	)
+	      DGtal/io/DGtalBoard
+	      DGtal/io/readers	)
 

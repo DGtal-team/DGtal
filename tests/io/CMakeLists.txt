@@ -5,7 +5,8 @@ SET(DGTAL_TESTS_SRC_IO
        testColorMaps
        testRawReader
        testDGtalBoardCustomStyle
-       )
+       testPointListReader       )
+
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO})
   add_executable(${FILE} ${FILE})
