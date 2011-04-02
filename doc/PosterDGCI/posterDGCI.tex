@@ -127,13 +127,15 @@
 \begin{center}
 \vspace{-1.5cm}
 \centering \rput(4cm,1cm){\includegraphics[width=8cm]{Logos/DGtalLogo.eps}} \hskip 10cm Digital Geometry Tools and Algorithms \\
-\center \rput(0cm,-2cm){\includegraphics[width=14cm]{Logos/logoDGCI2.eps}} \\
-\vspace{6cm}
+\rput(-40cm,1cm){\psline(0,0)(80cm,0)}
+\center \rput(0cm,-0cm){\includegraphics[width=14cm]{Logos/logoDGCI2.eps}} \\
+\vspace{2cm}
 {\LARGE \url{http://liris.cnrs.fr/dgtal}}
-\hrule width 15cm
+
 \center \Large{LORIA 6-8 avril 2011}  
 
-\vspace{5.5cm}
+\rput(-30cm,1cm){\psline(0,0)(60cm,0)}
+\vspace{4.5cm}
 
 \end{center}
 
@@ -225,8 +227,9 @@ GREYC (Caen)\\
 
 \begin{minipage}[t]{\textwidth}
 \section{Structure}
-
+\begin{center}
 \includegraphics[width=0.7\textwidth]{Images/structure.eps}
+\end{center}
 
 \section{Features and examples}
 
@@ -259,7 +262,8 @@ GREYC (Caen)\\
 \item several image containers (vector, hashtree), ITK backend
 \end{itemize}
 
-\begin{tabular}{cc}
+\begin{center}
+\begin{tabular}{c@{\hskip 4cm}c}
 \framebox{%
   \includegraphics[height=0.3\textwidth]{Images/hashtree-1.eps}%
 }&
@@ -267,6 +271,7 @@ GREYC (Caen)\\
   \includegraphics[height=0.3\textwidth]{Images/hashtree-2.eps}%
 }\\
 \end{tabular}
+\end{center}
 \end{minipage}
 \end{colonne}
 \hfill
@@ -294,7 +299,7 @@ GREYC (Caen)\\
   }&
   \multirow{2}{*}{
     \framebox{%
-      \includegraphics[height=0.27\textwidth]{Images/code-thinning.eps}%
+      \includegraphics[trim= 0 0 0 1cm , clip, height=0.27\textwidth]{Images/code-thinning.eps}%
     }
   }&
   \raisebox{-4cm}{
@@ -329,7 +334,7 @@ GREYC (Caen)\\
 \begin{tabular}{cc}
 \framebox{%
 %  \includegraphics[height=0.2\textwidth]{Images/contourS1-2.eps}%
-  \includegraphics[trim= 1cm 1.5cm 1cm 0.5cm, clip, height=0.2\textwidth]{Images/contourS1-2.eps}%
+  \includegraphics[trim= 1cm 1.5cm 0cm 0.5cm, clip, height=0.2\textwidth]{Images/contourS1-2.eps}%
 }&
 \framebox{%
   \includegraphics[height=0.17\textwidth]{Images/convex-and-concave-parts.eps}%
@@ -340,7 +345,7 @@ GREYC (Caen)\\
 \item $n$D volumetric distance transforms
 \end{itemize}
 \begin{center}
-\begin{tabular}{ccc}
+\begin{tabular}{cccc}
 \framebox{%
   \includegraphics[height=0.2\textwidth]{Images/dt-2d.eps}%
 }&
@@ -348,12 +353,17 @@ GREYC (Caen)\\
   \includegraphics[height=0.2\textwidth]{Images/edt-2d.eps}%
 }&
 \framebox{%
-  \includegraphics[height=0.2\textwidth]{Images/al-dt.eps}%
+%  \includegraphics[height=0.2\textwidth]{Images/al-dt.eps}%
+  \includegraphics[height=0.2\textwidth]{Images/dt3dl1.eps}%
+}&
+\framebox{%
+%  \includegraphics[height=0.2\textwidth]{Images/al-dt.eps}%
+  \includegraphics[height=0.2\textwidth]{Images/dt3d.eps}%
 }\\
 \end{tabular}
 \end{center}
 
-\end{minipage}
+
 
 \subsection{Additional features}
 
@@ -386,7 +396,7 @@ GREYC (Caen)\\
 \end{tabular}
 \end{center}
 
-
+\end{minipage}
 %% \begin{minipage}{\textwidth}
 %% \bigskip
 %% \bibliographystyle{plain}
