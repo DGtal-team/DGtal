@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +82,7 @@ template <typename TPoint>
  struct  PointListReader
 {
  
-  typedef TPoint Point;
+
   
    // ----------------------- Standard services ------------------------------
 public:
@@ -100,8 +101,8 @@ public:
    * @return a vector containing the set of points.
    **/
 
-  static std::vector<Point>  getPointsFromInputStream (std::istream &in, 
-						       std::vector<uint> aVectPosition=std::vector<uint>());
+  static std::vector< TPoint>  getPointsFromInputStream (std::istream &in, 
+							 std::vector<uint> aVectPosition=std::vector<uint>());
   
 
   /** 
@@ -114,8 +115,8 @@ public:
    * @return a vector containing the set of points.
    **/
 
-  static std::vector<Point>  getPointsFromFile (const std::string &filename, 
-						 std::vector<uint>  aVectPosition=std::vector<uint>());
+  static std::vector< TPoint>  getPointsFromFile (const std::string &filename, 
+						  std::vector<uint>  aVectPosition=std::vector<uint>());
   
 
   
