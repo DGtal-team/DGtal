@@ -44,10 +44,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal;
 using namespace std;
@@ -273,6 +275,11 @@ bool testDigitalSetDomain()
   trace.endBlock();
 
   return nbok == nb;
+}
+
+bool testDigitalSetConcept()
+{
+  //  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
 }
 
 int main()

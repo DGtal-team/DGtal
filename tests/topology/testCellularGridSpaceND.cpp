@@ -302,9 +302,71 @@ bool testSurfelAdjacency()
 	       << std::endl;
   
   trace.endBlock();
+  if ( K.dimension == 2 )
+    {
+      DGtalBoard board;
+      board.setUnit( LibBoard::Board::UCentimeter );
+      board << SetMode( domain.styleName(), "Paving" )
+	    << domain;
+      for ( typename std::set<SCell>::const_iterator it = bdry_direct.begin(),
+	      it_end = bdry_direct.end(); it != it_end; ++it )
+	board << *it;
+      board.saveEPS( "cells-2.eps" );
+      board.saveSVG( "cells-2.svg" );
+    }
   return nbok == nb;
 }
 
+template <typename KSpace>
+bool testCellDrawOnBoard()
+{
+  typedef typename KSpace::Integer Integer;
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::SCell SCell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::DirIterator DirIterator;
+  typedef typename KSpace::Cells Cells;
+  typedef typename KSpace::SCells SCells;
+  typedef SpaceND<2, Integer> Z2;
+  typedef HyperRectDomain<Z2> Domain;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing cell draw on digital board ..." );
+  KSpace K;
+  int xlow[ 4 ] = { -3, -3 };
+  int xhigh[ 4 ] = { 5, 3 };
+  Point low( xlow );
+  Point high( xhigh ); 
+  bool space_ok = K.init( low, high, true );
+  Domain domain( low, high );
+  DGtalBoard board;
+  board.setUnit( LibBoard::Board::UCentimeter );
+  board << SetMode( domain.styleName(), "Paving" )
+	<< domain;
+  int spel[ 2 ] = { 1, 1 }; // pixel 0,0
+  Point kp( spel );
+  Cell uspel = K.uCell( kp );
+  board << uspel 
+	<< low << high
+	<< K.uIncident( uspel, 0, false )
+	<< K.uIncident( uspel, 1, false );
+  int spel2[ 2 ] = { 5, 1 }; // pixel 2,0
+  Point kp2( spel2 );
+  SCell sspel2 = K.sCell( kp2, K.POS );
+  board << CustomStyle( sspel2.styleName(), 
+			new CustomPen( DGtalBoard::Color( 200, 0, 0 ), 
+				       DGtalBoard::Color( 255, 100, 100 ),
+				       2.0, 
+				       DGtalBoard::Shape::SolidStyle ) )
+	<< sspel2 
+    	<< K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) )
+	<< K.sIncident( sspel2, 1, K.sDirect( sspel2, 0 ) );
+  board.saveEPS( "cells-1.eps" );
+  board.saveSVG( "cells-1.svg" );
+  trace.endBlock();
+  return nbok == nb;
+}
+  
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -324,7 +386,8 @@ int main( int argc, char** argv )
     && testCellularGridSpaceND<K4>()
     && testSurfelAdjacency<K2>()
     && testSurfelAdjacency<K3>()
-    && testSurfelAdjacency<K4>();
+    && testSurfelAdjacency<K4>()
+    && testCellDrawOnBoard<K2>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

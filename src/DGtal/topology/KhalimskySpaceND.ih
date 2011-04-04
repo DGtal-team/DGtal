@@ -118,8 +118,7 @@ operator<( const KhalimskyCell & other ) const
   return myCoordinates < other.myCoordinates;
 }
 //-----------------------------------------------------------------------------
-template < Dimension dim,
-	   typename TInteger >
+template < Dimension dim, typename TInteger >
 inline
 std::ostream & 
 DGtal::operator<<( std::ostream & out, 
@@ -130,6 +129,45 @@ DGtal::operator<<( std::ostream & out,
     out << "," << object.myCoordinates[ i ];
   out << ")";
   return out;
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+DGtal::DrawableWithDGtalBoard*
+DGtal::KhalimskyCell<dim, TInteger>::
+defaultStyle( std::string mode) const
+{
+  return new DGtal::KhalimskyCell<dim, TInteger>::DefaultDrawStyle;
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+std::string
+DGtal::KhalimskyCell<dim, TInteger>::
+styleName() const
+{
+  return "KhalimskyCell";
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+void
+DGtal::KhalimskyCell<dim, TInteger>::
+selfDraw( DGtalBoard & board ) const
+{
+  ASSERT( dim == 2 );
+  float x = (float) 
+    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+  float y = (float) 
+    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+  float retract = 0.05f;
+  bool xodd = ( myCoordinates[ 0 ] & 1 );
+  bool yodd = ( myCoordinates[ 1 ] & 1 );
+  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
+		       !yodd ? y + retract - 0.5 : y - retract + 0.5,
+		       dx, dy );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -216,6 +254,45 @@ DGtal::operator<<( std::ostream & out,
   out << "," << ( object.myPositive ? '+' : '-' );
   out << ")";
   return out;
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+DGtal::DrawableWithDGtalBoard*
+DGtal::SignedKhalimskyCell<dim, TInteger>::
+defaultStyle( std::string mode) const
+{
+  return new DGtal::SignedKhalimskyCell<dim, TInteger>::DefaultDrawStyle;
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+std::string
+DGtal::SignedKhalimskyCell<dim, TInteger>::
+styleName() const
+{
+  return "SignedKhalimskyCell";
+}
+//------------------------------------------------------------------------------
+template < Dimension dim, typename TInteger >
+inline
+void
+DGtal::SignedKhalimskyCell<dim, TInteger>::
+selfDraw( DGtalBoard & board ) const
+{
+  ASSERT( dim == 2 );
+  float x = (float) 
+    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+  float y = (float) 
+    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+  float retract = 0.05f;
+  bool xodd = ( myCoordinates[ 0 ] & 1 );
+  bool yodd = ( myCoordinates[ 1 ] & 1 );
+  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
+		       !yodd ? y + retract - 0.5 : y - retract + 0.5,
+		       dx, dy );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
