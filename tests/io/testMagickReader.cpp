@@ -71,7 +71,7 @@ bool testMagickReader()
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
 
-  std::string filename = testPath + "samples/simpleSet-paving.png";
+  std::string filename = testPath + "samples/color64.png";
 
   trace.info()<<"Importing: "<<filename<<endl;
 
@@ -88,7 +88,7 @@ bool testMagickReader()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "img.extent() = " << img.extent() 
-	       << "( == {400,400} )"
+	       << "( == {64,64} )"
 	       << std::endl;
 
   DGtalBoard board;
