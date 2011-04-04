@@ -246,7 +246,7 @@ Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtal
 \image latex kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."  width=5cm
 
 
-For each iterator XXX, there is a corresponding ReverseXXX class allowing to run through the same elements but in reverse dimension. For the whole domain, we wan use
+For each iterator XXX, there is a corresponding ReverseXXX class allowing to run through the same elements but in reverse direction. For the whole domain, we wan use
 
 @code
 for( MyDomain::ReverseConstIterator it = domain.rbegin(), itend = domain.rend();
@@ -258,48 +258,47 @@ for( MyDomain::ReverseConstIterator it = domain.rbegin(), itend = domain.rend();
 
 Note that the begin and rbegin methods can take an optional Point as parameter which is used as starting point for the iterator. In this case, the point must belongs to the domain.
 
-Last, there are some classes and methods to run through a given subdomain, and allowing to change the order in which dimension are considered. To facilitate their use, these subdomains use the range concept. A range provides provides iterators for accessing a half-open range [first,one_past_last) of elements. There iterators are accessible by begin() and end() methods. Moreover, a range can be iterated in reverse direction thanks to iterators returned by rbegin() and rend() methods. As for the global begin and rbegin methods, the begin and rbegin range methods can have an optional point as parameter which is used as starting point for the iterator. In this case, the point must belongs to the given range.
+There are some classes and methods to run through a given subdomain, and allowing to change the order in which dimension are considered. To facilitate their use, these subdomains use the range concept. A range provides iterators for accessing a half-open range [first,one_past_last) of elements. There iterators are accessible by begin() and end() methods of each range class. Moreover, a range can be iterated in reverse direction thanks to iterators returned by rbegin() and rend() methods. As for the begin and rbegin methods on the whole domain, the begin and rbegin range methods can have an optional point as parameter which is used as starting point for the iterator. In this case, the point must belongs to the given range.
 
-To use these ranges, we need first to get a subrange thanks to one subRange method. As illustrate below, the basic method take a std::vector<Dimension> as first parameter, describing the dimensions of the subdomain, and a Point as second parameter which is the starting point of the subdomain.
-
-@code
- typedef SpaceND<3> TSpace;
- HyperRectDomain<TSpace> domain(a,b);
-
- Point a(1, 1, 1);
- Point b(5, 5, 5);
- std::vector<TSpace::Dimension> v(2); v[0]=2; v[1]=1;
- Point c(3,1,1);
- for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
-      it = domain.subRange(v, c).rbegin(), itend =  domain.subRange(v, c).rend();
-      it != itend; 
-      ++it)
- trace.info() << "Processing point"<< (*it) << endl;
-@endcode    
-
-This example run through all the points in the plane x=3 in reverse direction. Note that you can chose to instantiate domain.subRange(v, c) only once before the loop, but the gain is negligible regarding the given example where the subrange is instantiated twice. However, the gain can be important comparing with the bad version where the range is instantiated at each step of the loop to compare it with domain.subRange(v, c).rend().
-
-Note also that the vector give the dimensions of the subrange and the order in which these dimension are considered. In the example above, we start to iterate through Z, then to X since vector v={2,1}. For this reason, the subrange class can also be used to run through a whole given domain but considering the dimension in a different order.
-
-There are some shotcut for the subRange method to facilitate the iteration through subRange of 1, 2, and 3 dimensions: subRange(Dimension adim, const Point & startingPoint); subRange(Dimension adim1, Dimension adim2, const Point & startingPoint); and subRange(Dimension adim1, Dimension adim2, Dimension adim3, const Point & startingPoint).
-
-Lastly, if your compiler supports C++0X initializer list, there is a custom subRange method taking an std::initializer_list<Dimension> instead of the std::vector<Dimension>. This simplify the use as we can see in the following example
+To use these ranges, we need first to get a subrange thanks to one subRange method. As illustrate below, the basic method take a std::vector<Dimension> as first parameter, describing the dimensions of the subdomain, and a Point as second parameter which give the position of the subdomain for the dimensions not in the vector. Other dimensions are not used. In the example below, Point c(3,1,1) is only used for its first dimension. Thus we would have obtained the same subRange by using for example Point d(3,2,4).
 
 @code
- typedef SpaceND<3> TSpace;
- HyperRectDomain<TSpace> domain(a,b);
+  typedef SpaceND<3> TSpace;  
+  TSpace::Point a(1, 1, 1);
+  TSpace::Point b(5, 5, 5);
+  HyperRectDomain<TSpace> domain(a,b);
 
- Point a(1, 1, 1);
- Point b(5, 5, 5);
- Point c(3,1,1);
- for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
-      it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
-      it != itend; 
-      ++it)
- trace.info() << "Processing point"<< (*it) << endl;
+  std::vector<TSpace::Dimension> v(2); v[0]=2; v[1]=1;
+  TSpace::Point c(3,1,1);
+  for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
+	 it = domain.subRange(v, c).rbegin(), itend =  domain.subRange(v, c).rend();
+       it != itend; 
+       ++it)
+    trace.info() << "Processing point"<< (*it) << endl;
 @endcode    
 
-@todo A specific section of the documentation will be devoted to customizable iterators. 
+This example run through all the points in the plane X=3 (if we suppose that dimension 0 is X, dimension 1 is Y and dimension 2 is Z) in reverse direction. Note that you can chose to instantiate domain.subRange(v, c) only once before the loop, but the gain is negligible regarding the given example where the subrange is instantiated twice. However, the gain can be important comparing with the bad version where the range is instantiated at each step of the loop to compare it with domain.subRange(v, c).rend().
+
+Note also that the vector gives not only the dimensions of the subrange but also the order in which these dimensions are considered. In the example above, we start to iterate through Z, then to Y since vector v={2,1}. For this reason, the subrange class can also be used to run through a whole given domain but considering the dimensions in a different order.
+
+There are some shortcuts for the subRange method to facilitate the iteration through subRange having 1, 2, and 3 dimensions: subRange(Dimension adim, const Point & startingPoint); subRange(Dimension adim1, Dimension adim2, const Point & startingPoint); and subRange(Dimension adim1, Dimension adim2, Dimension adim3, const Point & startingPoint).
+
+Lastly, if your compiler supports C++0X initializer list, there is a custom subRange method taking an std::initializer_list<Dimension> instead of the std::vector<Dimension>. This simplifies the use as we can see in the following example since this avoid the creation of a std::vector and its initialization
+
+@code
+  typedef SpaceND<3> TSpace;  
+  TSpace::Point a(1, 1, 1);
+  TSpace::Point b(5, 5, 5);
+  HyperRectDomain<TSpace> domain(a,b);
+
+#ifdef CPP0X_INITIALIZER_LIST
+  for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
+	 it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
+       it != itend; 
+       ++it)
+    trace.info() << "Processing point"<< (*it) << endl;
+#endif  
+@endcode    
 
 
 \section sectImage Image
