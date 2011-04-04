@@ -1,0 +1,223 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+   @page dgtal_cellular_topology Cellular grid space and topology, cells, digital surfaces
+   
+   @author Jacques-Olivier Lachaud
+  
+   This part of the manual describes how to define cellular grid space
+   or cartesian cubic spaces, as well as the main objects living in
+   these spaces. A part of this documentation comes from project <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. A
+   lot of the ideas, concepts, algorithms, and code is also a backport
+   from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+
+   -# \ref dgtal_ctopo_sec1
+      -# \ref dgtal_ctopo_sec1_1
+      -# \ref dgtal_ctopo_sec1_2
+      -# \ref dgtal_ctopo_sec1_3
+      -# \ref dgtal_ctopo_sec1_4
+      -# \ref dgtal_ctopo_sec1_5
+   -# \ref dgtal_ctopo_sec2
+
+
+   @section dgtal_ctopo_sec1 The digital space is a cubic grid
+
+   @subsection dgtal_ctopo_sec1_1 Images and digital spaces
+
+   2D images are often seen as two dimensional arrays, where each cell
+   is a pixel with some value (a gray level, a color). If
+   \f$\mathbf{Z}\f$ is the set of integer numbers, then an image is a
+   map from a rectangular subset of \f$\mathbf{Z} \times \mathbf{Z}\f$
+   to some space (gray levels, colors).
+
+   More generally, a nD image is a map from a parallelepipedic subset of
+   \f$\mathbf{Z}^n\f$ to some space (gray levels, colors).
+
+   Many algorithms need to represent positions in images (ie pixels
+   and voxels), in order to represent regions in images. Often, we
+   need also to measure the shape of a region, for instance its
+   perimeter, or we may be interested in the interface between two
+   regions. In these cases, it is often convenient (and generally it
+   is also the theoretic way) to represent other elements in digital
+   spaces, such as paths in-between regions, the thin boundary or
+   surface of a region, etc. We need in this case to represent not
+   only the "squares" (pixels) or "cubes" (voxels) of images, but also
+   their faces, edges, vertices.
+
+   We therefore model not only n-dimensional cells (the hypercubes in
+   nD), but also all the lower dimensional cells of the space. For
+   instance, in 2D, we have:
+
+   - 2-dimensional cells (closed unit square) = pixels
+   - 1-dimensional cells (closed unit segment) = linels
+   - 0-dimensional cells (closed point) = pointels
+
+   The set of all cells \f$\mathbf{F}^n\f$ is called the n-dimensional
+   space of cubical complexes, or n-dimensional cellular grid
+   space. The couple \f$(\mathbf{F}^n,\subseteq)\f$ is a partially
+   ordered set or poset. Let \f$X\f$ be any subset of
+   \f$\mathbf{F}^n\f$. The set \f$\mathcal{U}=\{U \subseteq X / \forall
+   x \in U, x^{\uparrow} \subseteq U \}\f$, where \f$x^{\uparrow}=\{y \in
+   X, x \le y\}\f$ or the up incident cells of x, is a topology on
+   \f$X\f$, called the Aleksandrov topology. Therefore we can use
+   standard combinatorial topology results for any subset of the
+   cellular grid space.
+
+   Cells of the cellular grid space are illustrated below. The paving
+   mode of digital space gives a nice illustration of what is this
+   space. The 2-cell is in red, the 1-cell in green, the 0-cell in blue.
+   
+   @image html cellular-grid-space-1.png
+
+
+   @subsection dgtal_ctopo_sec1_2 Cells in the cubical grid and Khalimsky coordinates
+ 
+   We use now the regularity of the cubical grid to represent it
+   efficiently. In 1D, the cubical grid is a simple line alternating
+   closed points {k} and open unit segments (k,k+1). Khalimsky noticed
+   that this (topological) space is homeomorphic to the integer set
+   \f$\mathbf{Z}\f$, if we declare every even integer as closed and
+   every odd integer as open.
+
+   A digital cell in 1D is thus just an integer. Its topology is defined
+   by its parity. The cell 2k is the closed point {k}; the cell 2k+1 is
+   the segment (k,k+1) (considered open).
+
+   In 2D, we use the fact that \f$\mathbf{Z}^2\f$ is a cartesian
+   product. A digital cell in 2D is thus a couple of integer
+
+   - (2i, 2j): a pointel which is the point set {(i,j)} in the plane
+
+   - (2i+1, 2j): an horizontal linel which is the open segment
+     {(i,i+1) x j} in the plane.
+
+   - (2i, 2j+1): a vertical linel which is the open segment {i x
+     (j,j+1)} in the plane.
+
+   - (2i+1, 2j+1): a pixel which is the open square {(i,i+1) x
+     (j,j+1)} in the plane.
+
+   In nD, the principle is the same. A cell is thus uniquely identifed by
+   an n-tuple of integers whose parities define the topology of the
+   cell. These integers are called the @b Khalimsky @b coordinates of the
+   cell.
+
+   For instance, the pixel (x,y) of the digital space
+   \f$\mathbf{Z}^2\f$ corresponds to the 2-cell (2x+1,2y+1) of the
+   cellular grid space \f$\mathbf{F}^2\f$.
+
+   @subsection dgtal_ctopo_sec1_3 Models for cellular grid spaces 
+
+   Instead of chosing a specific implementation of a cellular grid
+   space, we keep the genericity and efficiency objective of DGtal by
+   defining a cellular grid space as the concept
+   CCellularGridSpaceND. It provides a set of types (Cell, SCell, etc)
+   and methods to manipulate cells of arbitrary dimension. Models of
+   CCellularGridSpaceND are:
+
+   -# the KhalimskySpaceND template class.
+   -# the --- yet to come --- CodedKhalimskySpaceND class, a backport
+   from class KnSpace of <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+
+   The inner types are:
+   - Integer: the type for representing a coordinate or component in this space.
+   - Size: the type for representing a size (unsigned) 
+   - Cell: the type of unsigned cells
+   - SCell: the type of signed cells
+   - Sign: the sign type for cells
+   - DirIterator: the type for iterating over directions of a cell
+   - Point: the type for representing a digital point in this space
+   - Vector: the type for representing a digital vector in this space
+   - Space: the associated digital space type
+   - KhalimskySpace: this cellular grid space
+   - Cells: a sequence of unsigned cells
+   - SCells: a sequence of signed cells
+   - Neighborhood: a sequence of unsigned cells representing a neighborhood
+   - SNeighborhood: a sequence of signed cells representing a neighborhood
+   
+   Methods include:
+   - Cell creation services
+   - Read accessors to cells
+   - Write accessors to cells 
+   - Conversion signed/unsigned cells
+   - Cell topology services
+   - Direction iterator services for cells
+   - Unsigned cell geometry services
+   - Signed cell geometry services
+   - Neighborhood services
+   - Incidence services
+   - Interface
+
+   @subsection dgtal_ctopo_sec1_4 Creating a cellular grid space
+
+   We use hereafter the model KhalimskySpaceND. To create a 2D
+   cellular grid space where cells have coordinates coded with
+   standard \c int (32 bits generally), we can write:
+   
+   @code
+   #include "DGtal/topology/KhalimskySpaceND.h"
+   ...
+   typedef KhalimskySpaceND< 2, int > KSpace;
+   KSpace K;
+   Point low( -3, -4 );
+   Point high( 5, 3 ); 
+   // true for closed space, false for open space.
+   bool space_ok = K.init( low, high, true );
+   @endcode
+
+   Note that the cellular grid space is limited by the given
+   bounds. Since the user has chosen a closed space, the Khalimsky
+   coordinates of cells are bounded by:
+   
+   - lower bound: (-3*2, -4*2)
+   - upper bound: (5*2+2, 3*2+2)
+
+   Another frequent way of constructing a cellular grid space is to
+   start from a preexisting digital space and HyperRectDomain. You can
+   define the associated cellular grid space as follows:
+
+   @code
+   ...
+   typedef SpaceND<3, int> Z;
+   typedef HyperRectDomain<Z> Domain;
+   ...
+   Domain domain( a, b );
+   ...
+   typedef KhalimskySpaceND< Z::dimension, Z::Integer > KSpace;
+   KSpace K;
+   bool space_ok = K.init( domain.lowerBound(), domain.upperBound(), true );
+   @endcode
+
+   If you wish to build a digital space and a HyperRectDomain from a
+   cellular grid space K, you may write:
+
+   @code
+   ...
+   typedef SpaceND<KSpace::dimension, KSpace::Integer> Z;
+   typedef HyperRectDomain<Z> Domain;
+   Domain domain( K.lowerBound(), K.upperBound() );
+   @endcode
+
+   @subsection dgtal_ctopo_sec1_5 Creating (unsigned) cells in a cellular grid space
+
+   There are many ways of creating cells within a cellular grid
+   space. The simplest way is certainly to give the Khalimsky
+   coordinates of the cell you wish to create. Its topology is then
+   induced by its coordinates. We use generally
+   KhalimskySpaceND::uCell for arbitrary cells,
+   KhalimskySpaceND::uSpel for n-dimensional cells,
+   KhalimskySpaceND::uPointel for 0-dimensional cells.
+
+   @section dgtal_ctopo_sec2 Surfel adjacency and digital surfaces
+
+
+*/
+}

@@ -364,6 +364,25 @@ bool testCellDrawOnBoard()
   board.saveEPS( "cells-1.eps" );
   board.saveSVG( "cells-1.svg" );
   trace.endBlock();
+  board.clear();
+  board << domain;
+  SCell slinel0 = K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) );
+  SCell spointel01 = K.sIncident( slinel0, 1, K.sDirect( slinel0, 1 ) );
+  board << CustomStyle( sspel2.styleName(), 
+			new CustomColors( DGtalBoard::Color( 200, 0, 0 ), 
+					  DGtalBoard::Color( 255, 100, 100 ) ) )
+	<< sspel2
+	<< CustomStyle( slinel0.styleName(), 
+			new CustomColors( DGtalBoard::Color( 0, 200, 0 ), 
+					  DGtalBoard::Color( 100, 255, 100 ) ) )
+	<< slinel0
+	<< CustomStyle( spointel01.styleName(), 
+			new CustomColors( DGtalBoard::Color( 0, 0, 200 ), 
+					  DGtalBoard::Color( 100, 100, 255 ) ) )
+	<< spointel01;
+  board.saveEPS( "cells-3.eps" );
+  board.saveSVG( "cells-3.svg" );
+  
   return nbok == nb;
 }
   

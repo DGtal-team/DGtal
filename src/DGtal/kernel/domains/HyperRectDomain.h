@@ -591,6 +591,7 @@ namespace DGtal
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(255, 255, 255);
         aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+        aBoard.setLineWidth( 1 );
       }
     };
 
@@ -604,6 +605,7 @@ namespace DGtal
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(160, 160, 160);
         aBoard.setLineStyle(DGtalBoard::Shape::DashStyle);
+        aBoard.setLineWidth( 1 );
       }
     };
 
