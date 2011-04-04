@@ -1,7 +1,10 @@
 === DGtal 0.3.1 ===
 Posted on April 4, 2011 by David Coeurjolly
 	
-	* Quick release due to a build problem on linux. No more feature added.
+	* Quick release due to a build problem on linux. No more feature
+	added.
+	* Preliminary cellular grid documentation added.
+	* Documentation cleanup.
 
 
 
