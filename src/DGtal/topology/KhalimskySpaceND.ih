@@ -476,6 +476,24 @@ max( Dimension k ) const
 {
   return myUpper[ k ];
 }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+const typename DGtal::KhalimskySpaceND< dim, TInteger>::Point &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+lowerBound() const
+{
+  return myLower;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+const typename DGtal::KhalimskySpaceND< dim, TInteger>::Point &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+upperBound() const
+{
+  return myUpper;
+}
 
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>

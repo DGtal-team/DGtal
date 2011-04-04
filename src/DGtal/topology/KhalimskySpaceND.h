@@ -479,6 +479,14 @@ namespace DGtal
        @return the maximal coordinate in the [k]-dimension.
      */
     Integer max( Dimension k ) const;
+    /**
+       @return the lower bound for digital points in this space.
+    */
+    const Point & lowerBound() const;
+    /**
+       @return the upper bound for digital points in this space.
+    */
+    const Point & upperBound() const;
 
     // ----------------------- Cell creation services --------------------------
   public:
