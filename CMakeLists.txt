@@ -60,7 +60,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 3)
-SET(DGtal_VERSION_PATCH "0")
+SET(DGtal_VERSION_PATCH 1)
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
@@ -188,7 +188,7 @@ ELSE(WIN32 AND NOT UNIX)
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;dev;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/latex/*;doc/html-Board/*)
+SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/latex/*;doc/html-Board/*)
 
 if(WIN32)
   SET(CPACK_GENERATOR "NSIS;")
