@@ -47,6 +47,7 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/io/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -117,6 +118,41 @@ namespace DGtal
        @param other any other cell.
     */
     bool operator<( const KhalimskyCell & other ) const;
+
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setPenColorRGBi( 50, 50, 50 );
+	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setFillColorRGBi( 80, 80, 80 );
+	aBoard.setLineWidth( 1 );
+      }
+    };
+
+    // --------------- CDrawableWithDGtalBoard realization -------------------
+  public:
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+    
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw( DGtalBoard & board ) const;
+
   }; 
 
   template < Dimension dim,
@@ -190,6 +226,40 @@ namespace DGtal
        @param other any other cell.
     */
     bool operator<( const SignedKhalimskyCell & other ) const;
+
+    /**
+     * Default style.
+     */
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setPenColorRGBi( 50, 50, 50 );
+	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setFillColorRGBi( 80, 80, 80 );
+	aBoard.setLineWidth( 1 );
+      }
+    };
+
+    // --------------- CDrawableWithDGtalBoard realization -------------------
+  public:
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+    
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDraw( DGtalBoard & board ) const;
 
   }; 
 

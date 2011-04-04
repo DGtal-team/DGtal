@@ -255,7 +255,8 @@ namespace DGtal
 			     const Abscissa ci, 
 			     const InternalValue hi ) const
     {
-      return ( InternalValue ) std::abs ( (long int) pos - ci ) + hi;
+      return ( InternalValue ) ( ((long int) pos - ci)>=0 ? ((long int) pos - ci) : - ((long int) pos - ci) ) + hi;
+      //std::abs ( (long int) pos - ci ) + hi;
     }
 
     inline InternalValue reversedF ( const Abscissa pos, 
@@ -312,7 +313,8 @@ namespace DGtal
     inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
 			     const InternalValue hi ) const
     {
-      return ( InternalValue ) std::max( (Abscissa)std::abs ( (long int)pos - ci ) , (Abscissa) hi);
+      return ( InternalValue ) 
+	std::max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) : -((long int)pos - ci)), (Abscissa) hi);
     }
 
     inline InternalValue reversedF ( const Abscissa pos, 
