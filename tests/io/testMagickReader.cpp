@@ -84,7 +84,7 @@ bool testMagickReader()
 	       << "img.isValid() == true"
 	       << std::endl;
 
-  nbok += img.extent() == Image::Vector( 400, 400 ) ? 1 : 0; 
+  nbok += img.extent() == Image::Vector( 64, 64 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "img.extent() = " << img.extent() 
