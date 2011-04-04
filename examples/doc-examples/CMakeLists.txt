@@ -1,6 +1,7 @@
 SET(DGTAL_DOC_EX_SRC
   demo-kernel-1
   kernelDomain
+  range
   )
 
 FOREACH(FILE ${DGTAL_DOC_EX_SRC})
