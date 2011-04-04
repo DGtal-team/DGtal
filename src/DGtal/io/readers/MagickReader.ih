@@ -46,11 +46,20 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   const Magick::PixelPacket *cacheRead;
   DGtal::IOException dgtalio;
 
-
   Magick::InitializeMagick(NULL);
   
-  Magick::Image img = Magick::Image ( filename );
+  Magick::Image img;
 
+  try 
+    {
+      img.read ( filename );
+    }
+  catch( ... )
+    {
+      trace.error() << "MagickReader : can't open " << filename << endl;
+      throw dgtalio;
+    }
+  
   w = img.size().width();
   h = img.size().height();
 
@@ -74,14 +83,13 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   typename TImageContainer::Value val;
 
   //We scan the file
-  typename TImageContainer::Domain::ConstIterator it = domain.range().begin(),itend=domain.range().end();
+  typename TImageContainer::Domain::ConstIterator it = domain.range().begin(),
+    itend=domain.range().end();
   
   for(; it != itend; ++it)
     {
-      // const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - j ) + i;
-      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 );
+      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - (*it)[1] ) + (*it)[0];
       ///@todo create converters RGB->Value
-      std::cout<<"PIXEL: R "<< (int)pixel->red <<" , "<< (int)pixel->green<<std::endl;
       val = (pixel->red + pixel->green + pixel->blue) % 256;
       image.setValue( (*it), val  );
     }
