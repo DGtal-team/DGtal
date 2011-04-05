@@ -26,7 +26,7 @@
 
 namespace {
 const char * xFigDashStylesPS[] = {
-    "", // SolidStyle
+    " [] 0 sd ", // SolidStyle
     " [1 1] 0 sd ", //DashStyle,
     " [1.5 4.5] 45 sd ", // DotStyle
     " [4.5 2.3 1.5 2.3] 0 sd ", // DashDotStyle:
@@ -1207,9 +1207,7 @@ Polyline::flushPostscript( std::ostream & stream,
         _path.flushPostscript( stream, transform );
         stream << " ";
         _fillColor.flushPostscript( stream );
-        stream << _lineWidth << " slw ";
-        stream << _lineCap << " slc ";
-        stream << _lineJoin << " slj";
+	stream << " " << postscriptProperties();
         stream << " fill" << std::endl;
     }
     if ( _penColor != Color::None ) {
