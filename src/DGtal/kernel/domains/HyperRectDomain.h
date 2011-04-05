@@ -174,7 +174,7 @@ namespace DGtal
     {
       typedef typename Domain::ConstIterator        ConstIterator;
       typedef typename Domain::ReverseConstIterator ReverseConstIterator;
-
+      
       /**
        * ConstRange constructor from a given domain.
        * @param domain the domain.
