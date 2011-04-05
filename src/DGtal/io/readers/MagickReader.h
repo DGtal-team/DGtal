@@ -43,7 +43,6 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
-#include <boost/static_assert.hpp>
 #include <Magick++.h>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
