@@ -111,8 +111,8 @@ bool testIterator()
   trace.info() << myHyperRectDomain << std::endl;
 
   trace.emphase() << "Iterator 2d: ";
-  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.range().begin();
-	it != myHyperRectDomain.range().end(); ++it )
+  for ( HyperRectDomain<TSpace>::ConstIterator it = myHyperRectDomain.begin();
+	it != myHyperRectDomain.end(); ++it )
     trace.warning() << ( *it ) << std::endl;
 
   trace.emphase() << "Reverse Iterator 2d: ";
