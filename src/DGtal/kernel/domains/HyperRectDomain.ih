@@ -79,7 +79,7 @@ DGtal::HyperRectDomain<TSpace>::operator=
     myLowerBound = other.myLowerBound;
     myUpperBound = other.myUpperBound;
     myPredicate = other.myPredicate;
-    myRange = ConstRange(*this);
+    new(&myRange) ConstRange(*this);
   }
   return *this;
 }

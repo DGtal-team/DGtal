@@ -72,6 +72,17 @@ int main()
     trace.info() << "Processing point"<< (*it) << endl;
   
   trace.endBlock();
+
+
+  HyperRectDomain<TSpace> domain2;
+  domain2=domain;
+
+  for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
+	 it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
+       it != itend; 
+       ++it)
+    trace.info() << "Processing point"<< (*it) << endl;
+
 #endif  
 
   return 0;
