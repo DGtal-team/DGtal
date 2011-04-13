@@ -430,8 +430,6 @@ namespace DGtal
     // Neighborhoods, Incident cells, Faces and Cofaces
     typedef AnyCellCollection<Cell> Cells;
     typedef AnyCellCollection<SCell> SCells;
-    typedef AnyCellCollection<Cell> Neighborhood;
-    typedef AnyCellCollection<SCell> SNeighborhood;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -1232,7 +1230,7 @@ namespace DGtal
     /**
        Computes the 1-neighborhood of the cell [c] and returns
        it. It is the set of cells with same topology that are adjacent
-       to [c].
+       to [c] and which are within the bounds of this space.
        
        @param cell the unsigned cell of interest.
        @return the cells of the 1-neighborhood of [cell].
@@ -1242,7 +1240,7 @@ namespace DGtal
     /**
        Computes the 1-neighborhood of the cell [c] and returns
        it. It is the set of cells with same topology that are adjacent
-       to [c].
+       to [c] and which are within the bounds of this space.
        
        @param cell the signed cell of interest.
        @return the cells of the 1-neighborhood of [cell].
@@ -1252,7 +1250,8 @@ namespace DGtal
     /**
        Computes the proper 1-neighborhood of the cell [c] and returns
        it. It is the set of cells with same topology that are adjacent
-       to [c].
+       to [c], different from [c] and which are within the bounds of
+       this space.
        
        @param cell the unsigned cell of interest.
        @return the cells of the proper 1-neighborhood of [cell].
@@ -1262,7 +1261,8 @@ namespace DGtal
     /**
        Computes the proper 1-neighborhood of the cell [c] and returns
        it. It is the set of cells with same topology that are adjacent
-       to [c].
+       to [c], different from [c] and which are within the bounds of
+       this space.
        
        @param cell the signed cell of interest.
        @return the cells of the proper 1-neighborhood of [cell].

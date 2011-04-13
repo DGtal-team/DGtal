@@ -24,6 +24,12 @@ namespace DGtal {
       -# \ref dgtal_ctopo_sec1_3
       -# \ref dgtal_ctopo_sec1_4
       -# \ref dgtal_ctopo_sec1_5
+      -# \ref dgtal_ctopo_sec1_6
+      -# \ref dgtal_ctopo_sec1_7
+      -# \ref dgtal_ctopo_sec1_8
+      -# \ref dgtal_ctopo_sec1_9
+      -# \ref dgtal_ctopo_sec1_10
+      -# \ref dgtal_ctopo_sec1_11
    -# \ref dgtal_ctopo_sec2
 
 
@@ -140,8 +146,6 @@ namespace DGtal {
    - KhalimskySpace: this cellular grid space
    - Cells: a sequence of unsigned cells
    - SCells: a sequence of signed cells
-   - Neighborhood: a sequence of unsigned cells representing a neighborhood
-   - SNeighborhood: a sequence of signed cells representing a neighborhood
    
    Methods include:
    - Cell creation services
@@ -206,6 +210,17 @@ namespace DGtal {
    Domain domain( K.lowerBound(), K.upperBound() );
    @endcode
 
+   Last but not least, for standard users it is generally enough to
+   use the default types provided in "DGtal/helpers/StdDefs.h".
+   @code
+   #include "DGtal/helpers/StdDefs.h"
+   ...
+   using namespace Z2i;
+   KSpace K; // or K2 K;
+   ...
+   @endcode
+
+
    @subsection dgtal_ctopo_sec1_5 Creating (unsigned) cells in a cellular grid space
 
    There are many ways of creating cells within a cellular grid
@@ -216,8 +231,287 @@ namespace DGtal {
    KhalimskySpaceND::uSpel for n-dimensional cells,
    KhalimskySpaceND::uPointel for 0-dimensional cells.
 
+   The full code of this example is in file <a
+   href="ctopo-1_8cpp-example.html" > ctopo-1.cpp</a>. Pointels or
+   0-cells are displayed in blue, linels or 1-cells in green, pixels
+   or 2-cells in red. Note that KhalimskySpaceND::uCell requires
+   Khalimsky coordinates while the two others require digital
+   coordinates (the topology is known in the two latter cases).
+
+   @code
+  KSpace K;
+  Point plow(-3,-2);
+  Point pup(5,3);
+  K.init( plow, pup, true );
+  Cell pixlow = K.uSpel( plow ); // pixel (-3*2+1,-2*2+1)
+  Cell ptlow = K.uPointel( plow ); // pointel (-3*2,-2*2)
+  Cell pixup = K.uSpel( pup ); // pixel (5*2+1,3*2+1)
+  Cell ptup1 = K.uPointel( pup );   // pointel (5*2,3*2)
+  Cell ptup2 = K.uTranslation( ptup1, Point::diagonal() ); // pointel (6*2,4*2)
+  Cell linelb = K.uCell( Point( 1, 0 ) ); // linel (1,0) bottom
+  Cell linelt = K.uCell( Point( 1, 2 ) ); // linel (1,2) top
+  Cell linell = K.uCell( Point( 0, 1 ) ); // linel (0,1) left
+  Cell linelr = K.uCell( Point( 2, 1 ) ); // linel (2,1) right
+   @endcode
+
+   @image html ctopo-1.png
+   
+   @subsection dgtal_ctopo_sec1_6 Cells may be unsigned or signed
+
+   Up to now, we have only consider unsigned cells (type
+   Cell). However it is often convenient to assign a sign (POS or NEG)
+   to a cell, a kind of orientation. The sign is especially useful to
+   define boundary operators and digital surfaces. It is also used in
+   algebraic topological models of cubical complexes, for instance to
+   define chains (formal sums of cells). 
+
+   Signed cells have type SCell. They are created using methods
+   KhalimskySpaceND::sCell for arbitrary cells,
+   KhalimskySpaceND::sSpel for n-dimensional cells,
+   KhalimskySpaceND::sPointel for 0-dimensional cells. The user gives
+   the sign at creation, either K.POS or K.NEG if K is the space.
+   
+   You may use methods KhalimskySpaceND::sSign,
+   KhalimskySpaceND::sSetSign KhalimskySpaceND::signs,
+   KhalimskySpaceND::unsigns, KhalimskySpaceND::sOpp, respectively to
+   get the sign of a signed cell, to change the sign of a signed cell,
+   to sign an unsigned cell, to unsign a signed cell, and to compute
+   the cell with opposite sign.
+
+   All methods concerning unsigned cells are prefixed by \c u, all
+   methods concerning signed cells are prefixed by \c s.
+ 
+   @subsection dgtal_ctopo_sec1_7 Accessing and modifying cell coordinates.
+
+   Since one does not necessarily know which model of
+   CCellularGridSpaceND you may be using, you cannot access the cell
+   coordinates directly. Therefore a model of CCellularGridSpaceND
+   provides a set of methods to access and modify cell coordinates and
+   topology. Here a few of them (with the model example KhalimskySpaceND)
+
+   - Read accessors to coordinate(s)
+     - KhalimskySpaceND::uKCoord, KhalimskySpaceND::sKCoord (read Khalimsky coordinate)
+     - KhalimskySpaceND::uCoord, KhalimskySpaceND::sCoord (read digital coordinate)
+     - KhalimskySpaceND::uKCoords, KhalimskySpaceND::sKCoords (read Khalimsky coordinates)
+     - KhalimskySpaceND::uCoords, KhalimskySpaceND::sCoords (read digital coordinates)
+   - Write accessors to coordinate(s)
+     - KhalimskySpaceND::uSetKCoord, KhalimskySpaceND::sSetKCoord (write Khalimsky coordinate)
+     - KhalimskySpaceND::uSetCoord, KhalimskySpaceND::sSetCoord (write digital coordinate)
+     - KhalimskySpaceND::uSetKCoords, KhalimskySpaceND::sSetKCoords (write Khalimsky coordinates)
+     - KhalimskySpaceND::uSetCoords, KhalimskySpaceND::sSetCoords (write digital coordinates)
+
+   @subsection dgtal_ctopo_sec1_8 Moving within the cellular grid space
+
+   Note that you dispose also of a whole set of methods to determine
+   cells according to different geometric queries. The following
+   methods do not change the topology of the input cell only the
+   coordiantes. Again the prefix \c u is related to method taking as
+   input unsigned cells while the prefix \c s is related to signed
+   cells:
+
+   - Getting the first or last cell of the space:
+     KhalimskySpaceND::uFirst, KhalimskySpaceND::uLast,
+     KhalimskySpaceND::sFirst, KhalimskySpaceND::sLast
+
+   - Moving to the adjacent cell with one coordinate greater or one
+     coordinate lower: KhalimskySpaceND::uGetIncr,
+     KhalimskySpaceND::uGetDecr, KhalimskySpaceND::sGetIncr,
+     KhalimskySpaceND::sGetDecr, or moving to an arbitrary cell along
+     some axis with KhalimskySpaceND::uGetAdd and
+     KhalimskySpaceND::uGetSub, KhalimskySpaceND::sGetAdd and
+     KhalimskySpaceND::sGetSub.
+
+   - Testing whether you are the cell with maximal or minimal
+     coordinate along some axis with KhalimskySpaceND::uIsMax or
+     KhalimskySpaceND::uIsMin, KhalimskySpaceND::sIsMax or
+     KhalimskySpaceND::sIsMin
+
+   - Getting the cell along some axis that has same coordinates as the
+     input cell but for one which belongs the minimal or maximal
+     accepted in this space: KhalimskySpaceND::uGetMax and
+     KhalimskySpaceND::uGetMin, KhalimskySpaceND::sGetMax and
+     KhalimskySpaceND::sGetMin
+
+   - Projet a cell along some coordinate onto the axis-aligned
+     hyperplanes spanned by a cell with KhalimskySpaceND::uProject and
+     KhalimskySpaceND::uProjection, KhalimskySpaceND::sProject and
+     KhalimskySpaceND::sProjection
+
+   - Computes the distance of the cell to the bounds of the space
+     along some axis with KhalimskySpaceND::uDistanceToMax and
+     KhalimskySpaceND::uDistanceToMin, KhalimskySpaceND::sDistanceToMax and
+     KhalimskySpaceND::sDistanceToMin
+
+   - Getting the next cell in this space such that if one starts from
+     the first cell (with same topology) of the space and iterates
+     this process, then all cells of the space with same topology were
+     visited. This may be done with KhalimskySpaceND::uNext,
+     KhalimskySpaceND::sNext. Below is a code snippet that does a
+     scanning of all cells of same topology between first and last
+     cell.
+
+       \code
+       KSpace K;
+       Cell first, last; // lower and upper bounds 
+       Cell p = first;
+       do 
+       { // ... whatever [p] is the current cell
+       }
+       while ( K.uNext( p, first, last ) ); 
+       \endcode
+
+   - Translating arbitrarily a cell in the space with
+     KhalimskySpaceND::uTranslation and
+     KhalimskySpaceND::sTranslation.
+
+   @subsection dgtal_ctopo_sec1_9 Cell topology and directions
+
+   As said above, the cell topology is defined by the parity of its
+   Khalimsky coordinates. The number of coordinates where the cell is
+   open define the dimension of the cell. A cell of maximal dimension
+   (n) is called a \e pixel in 2D, a \e voxel in 3D, and sometimes
+   called a \e spel or \e xel in nD. A cell of minimial dimension (0)
+   is often called a \e pointel. n-1 cells are called \e surfels (or
+   sometimes \e linels in 2D). Here are the methods related to the
+   cell topology.
+
+   - the dimension of a cell is given by KhalimskySpaceND::uDim and
+     KhalimskySpaceND::sDim.
+
+   - whether a cell is open or not along some axis is returned by
+     KhalimskySpaceND::uIsOpen and KhalimskySpaceND::sIsOpen.
+
+   - whether a cell is a surfel or not is returned by
+     KhalimskySpaceND::uIsSurfel and KhalimskySpaceND::sIsSurfel. NB:
+     you should use it instead of comparing the dimension of the cell
+     with n-1, depending on the model of cellular grid space chosen.
+
+   - the integer coding the topology of the cell such that the k-th
+     bit is 1 whenever the cell is open along the k-th axis is
+     returned by KhalimskySpaceND::uTopology and
+     KhalimskySpaceND::sTopology.
+
+   - you may iterate over all open coordinates (or all closed
+     coordinates) of a cell with the iterator returned by
+     KhalimskySpaceND::uDirs and KhalimskySpaceND::sDirs
+     (KhalimskySpaceND::uOrthDirs and KhalimskySpaceND::sOrthDirs for
+     closed coordinates), such as in this snippet:
+
+     @code
+     KSpace::Cell p;
+     ...
+     for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+     { 
+        KSpace::Dimension dir = *q;
+	...
+     } 
+     @endcode
+
+   @subsection dgtal_ctopo_sec1_10 Cell adjacency and neighborhood
+
+   You may obtain the cells of same topology which are (face-)adjacent
+   to a given cell with the following methods:
+
+   - the neighborhood of a given cell within the space are given by
+     KhalimskySpaceND::uNeighborhood and
+     KhalimskySpaceND::sNeighborhood, while the proper neighborhood is
+     returned by KhalimskySpaceND::uProperNeighborhood and
+     KhalimskySpaceND::sProperNeighborhood.
+
+   - the cell that is adjacent forward or backward along some given
+     axis is returned by KhalimskySpaceND::uAdjacent and
+     KhalimskySpaceND::sAdjacent. 
+
+   @subsection dgtal_ctopo_sec1_11 Cell incidence
+
+   Cells incident to some cell touch the cell but do not have the same
+   dimension. Cells lower incident to a cell have lower dimensions,
+   cells upper incident to a cell have higher dimensions. Specific
+   rules determine the sign of incident cells to a signed cell: 
+
+   -# A first rule is that along some axis, the forward and the
+      backward incident cell have opposite sign.
+
+   -# A second rule is that the rules are invariant by translation of
+      cells.
+
+   -# A third rule is that changing the sign of the cell changes the
+      sign of all incident cells.
+
+   -# A last rule is that taking an incident cell along some axis k
+      then taking an incident cell along some other axis l will give a
+      cell that has the opposite sign as if the incidence was taken
+      before along l and after along k.
+
+   These rules together allow the definition of (co)boundary
+   operators, which are homomorphisms between chains of cells. They
+   have the property that applied twice they give the null
+   chain. Otherwise said, the boundary of a set of cells has an empty
+   boundary.
+
+   - The cell incident to some given cell along some axis and in
+     forward or backward direction is returned by
+     KhalimskySpaceND::uIncident and KhalimskySpaceND::sIncident.
+
+     @code
+     SCell pix = K.sSpel( Point( 0,0 ), K.POS ); // pixel (0+1,0+1)
+     SCell leftl = K.sIncident( pix, 0, false ); // linel (0,0+1)
+     SCell rightl = K.sIncident( pix, 0, true ); // linel (2,0+1)
+     SCell downl = K.sIncident( pix, 1, false ); // linel (0+1,0)
+     SCell upl = K.sIncident( pix, 1, true );    // linel (0+1,2)
+     SCell ptld = K.sIncident( leftl, 1, false );// pointel (0,0)
+     SCell ptdl = K.sIncident( downl, 0, false );// pointel (0,0)
+     // ptld and ptdl have opposite signs.
+     @endcode
+  
+   - The set of cells low incident to a given cell (i.e. just 1
+     dimension less) is returned by
+     KhalimskySpaceND::uLowerIncident and
+     KhalimskySpaceND::sLowerIncident.
+
+   - The set of cells up incident to a given cell (i.e. just 1
+     dimension more) is returned by
+     KhalimskySpaceND::uUpperIncident and
+     KhalimskySpaceND::sUpperIncident.
+
+   - The proper faces of an unsigned cell are returned by
+     KhalimskySpaceND::uFaces.
+
+   - The proper cofaces of an unsigned cell are returned by
+     KhalimskySpaceND::uCoFaces.
+
+   - One of the two cells that are incident to some signed cells along
+     some axis has a positive sign. The orientation (forward or
+     backward) is called the \e direct orientation. It is returned by
+     KhalimskySpaceND::sDirect. It is worth to note that the following
+     assertion is always true:
+
+     @code
+     // c is a signed cell, k a direction
+     ASSERT( K.sSign( K.sIncident( c, k, K.sDirect( c, k ) ) ) == K.POS );
+     @endcode
+
+   - You may obtain straightforwardly the positive incident cell along
+     some axis with KhalimskySpaceND::sDirectIncident and the negative
+     incident cell along some axis with
+     KhalimskySpaceND::sIndirectIncident.
+
    @section dgtal_ctopo_sec2 Surfel adjacency and digital surfaces
 
+   The preceding definitions of signed cells and their incidence will
+   help us to define consistently what is a digital surface and how to
+   move over it.
 
 */
+
+/**
+\example ctopo-1.cpp
+
+A simple example of cellular grid space with several cells
+instantiated and visualized. This program outputs this image.
+
+   @image html ctopo-1.png
+
+*/
+
 }

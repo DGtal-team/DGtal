@@ -79,13 +79,12 @@ int main( )
   for ( Decomposition4::ConstIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
-
-			DSS4 segment(*i);
-			std::cout << segment << std::endl;
-			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( DGtalBoard::Color::Blue ) )
-						 << segment; // draw each segment
-
+      DSS4 segment(*i);
+      std::cout << segment << std::endl;
+      aBoard << CustomStyle( styleName, 
+			     new CustomPenColor( DGtalBoard::Color::Blue ) )
+	     << segment; // draw each segment
+      
     } 
   aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
   aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
