@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file kernelDomain.cpp
+ * @file demo-kernel-1.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @date 2011/03/05
  *
- * An example file named demo-kernel-domain.
+ * An example file named demo-kernel-1.
  *
  * This file is part of the DGtal library.
  */

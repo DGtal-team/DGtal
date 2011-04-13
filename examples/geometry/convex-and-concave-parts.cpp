@@ -30,6 +30,7 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/helpers/Shapes.h"
@@ -38,6 +39,7 @@
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/MaximalSegments.h"
 ///////////////////////////////////////////////////////////////////////////////
+#include "ConfigExamples.h"
 
 using namespace std;
 using namespace DGtal;
@@ -57,9 +59,17 @@ int main()
   //and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
-  
   // Construct the Freeman chain
   Contour4 theContour( ss );
+  
+  // std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
+  // fstream fst;
+  // fst.open (freemanChainFilename.c_str(), ios::in);
+  // // Construct the Freeman chain
+  // Contour4 theContour( fst );
+  // fst.close();
+
+  
 
   //Maximal Segments
   DSS4 computer;

@@ -50,6 +50,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -68,8 +69,15 @@ namespace DGtal
    * arbitrary integers).
    */
   namespace Z2i {
-    typedef SpaceND<2> Space;
+    typedef DGtal::int32_t Integer;
+    typedef SpaceND< 2, Integer > Space;
     typedef Space Z2;
+    typedef KhalimskySpaceND< 2, Integer > KSpace;
+    typedef KSpace K2;
+    typedef KSpace::Cell Cell;
+    typedef KSpace::SCell SCell;
+    typedef KSpace::Cells Cells;
+    typedef KSpace::SCells SCells;
     /** Standard 4-neighborhood for a 2D digital space. */
     typedef MetricAdjacency< Space, 1> Adj4;
     /** Standard 8-neighborhood for a 2D digital space. */
@@ -109,8 +117,15 @@ namespace DGtal
    * arbitrary integers).
    */
   namespace Z3i {
-    typedef SpaceND<3> Space;
+    typedef DGtal::int32_t Integer;
+    typedef SpaceND< 3, Integer > Space;
     typedef Space Z3;
+    typedef KhalimskySpaceND< 3, Integer > KSpace;
+    typedef KSpace K3;
+    typedef KSpace::Cell Cell;
+    typedef KSpace::SCell SCell;
+    typedef KSpace::Cells Cells;
+    typedef KSpace::SCells SCells;
     /** Standard 6-neighborhood for a 3D digital space. */
     typedef MetricAdjacency< Space, 1> Adj6;
     /** Standard 18-neighborhood for a 3D digital space. */
