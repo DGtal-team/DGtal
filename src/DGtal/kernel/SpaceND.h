@@ -48,6 +48,7 @@
 #include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/RealPointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -117,6 +118,14 @@ Point4Int a= {2, 3 , -5 , 6};
     ///Vectors in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Vector;
 
+    ///Point with "double" as  coordinate type with the same dimension
+    ///as SpaceND.
+    typedef RealPointVector<dim> RealPoint;
+    
+    ///Point with "double" as  coordinate type with the same dimension
+    ///as SpaceND.
+    typedef RealPointVector<dim> RealVector;
+
     ///Type to denote the space itself.
     typedef SpaceND<dim, Integer> Space;
 
@@ -140,9 +149,6 @@ Point4Int a= {2, 3 , -5 , 6};
       typedef SpaceND<subdimension, Integer> Type;
     };
 
-    ///Point with "double" as  coordinate type with the same dimension
-    ///as SpaceND.
-    typedef typename boost::array<double,dim> RealPoint;
 
     // ----------------------- Standard services ------------------------------
   public:

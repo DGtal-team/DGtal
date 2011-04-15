@@ -57,7 +57,7 @@ int main( int argc, char** argv )
     ("list,l",  "List all available shapes")
     ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius or Halfwidth of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the shape" );
-  
+ 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
@@ -67,6 +67,8 @@ int main( int argc, char** argv )
 		<< general_opt << "\n";
       return 0;
     }
+
+
 
   
 
