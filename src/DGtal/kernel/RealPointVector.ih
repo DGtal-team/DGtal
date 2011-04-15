@@ -1,0 +1,352 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file RealPointVector.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Guillaume Damiand
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2010/05/14
+ *
+ * Implementation of inline methods defined in RealPointVector.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <cmath>
+#include <DGtal/base/BasicFunctors.h>
+
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector(): DGtal::PointVector<dim,double>()
+{
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+template<typename Functor>
+inline
+DGtal::RealPointVector<dim>::RealPointVector(const Self& apoint1,
+					     const Self& apoint2,
+					     const Functor& f): 
+  DGtal::PointVector<dim,double>(apoint1,apoint2,f)
+{
+}
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector( const Component * ptrValues ): 
+  DGtal::PointVector<dim,double>(ptrValues)
+{
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector( const Component & x, const Component & y ): 
+  DGtal::PointVector<dim,double>(x,y)
+{
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector( const Component & x,
+					      const Component & y,
+					      const Component & z ): 
+  DGtal::PointVector<dim,double>(x,y,z)
+{
+}
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector( const Component & x,
+					      const Component & y,
+					      const Component & z,
+					      const Component & t ):
+  DGtal::PointVector<dim,double>(x,y,z,t)
+{
+}
+//------------------------------------------------------------------------------
+#ifdef CPP0X_INITIALIZER_LIST
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>::RealPointVector(std::initializer_list<Component> init):
+  DGtal::PointVector<dim,double>(init)
+{
+}
+#endif // CPP0X_INITIALIZER_LIST
+
+
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+template<typename Compo>
+inline
+DGtal::RealPointVector<dim>&
+DGtal::RealPointVector<dim>::operator= ( const DGtal::PointVector<dim,Compo> & v )
+{
+  for ( Dimension i = 0; i < dim; ++i )
+    this->myArray[ i ] = v[ i ];
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>&
+DGtal::RealPointVector<dim>::operator/= ( const Self& v )
+{
+  for ( Dimension i = 0; i < dim; ++i )
+    this->myArray[ i ] /= v[ i ];
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+DGtal::RealPointVector<dim>
+DGtal::RealPointVector<dim>::operator/ ( const Self& v ) const
+{
+  return Self(*this, v, std::divides<Component>());
+}
+
+
+
+//------------------------------------------------------------------------------
+
+
+
+template<Dimension dim>
+inline
+double
+DGtal::RealPointVector<dim>::norm (const
+				   typename Self::NormType aType ) const
+{
+  double tmp = 0.0;
+
+  ASSERT ( dim > 0 );
+
+  switch ( aType )
+    {
+    case L_2:
+      for ( Dimension i = 0; i < dimension; i++ )
+        tmp += this->at ( i ) *
+	  this->at ( i );
+      tmp = ( double ) sqrt ( tmp );
+      break;
+    case L_1:
+      for ( Dimension i = 0; i < dimension; i++ )
+        tmp += fabs ( this->at( i ) );
+      break;
+    case L_infty:
+      tmp = this->at( 0 );
+      for ( Dimension i = 1; i < dimension; i++ )
+        if ( tmp < fabs ( this->at ( i ) ) )
+          tmp = fabs ( this->at ( i ) );
+      break;
+    }
+  return tmp;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+double
+DGtal::RealPointVector<dim>::norm1() const
+{
+  ASSERT ( dimension > 0 );
+  double val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  for ( Dimension i = 1; i < dimension; ++i )
+    val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
+  return val;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+double
+DGtal::RealPointVector<dim>::normInfinity() const
+{
+  ASSERT ( dimension > 0 );
+  double val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  for ( Dimension i = 1; i < dimension; ++i )
+    {
+      double tmp( ( myArray[ i ] >= 0 )
+		  ? myArray[ i ] : -myArray[ i ] );
+      if ( tmp > val )
+	val = tmp;
+    }
+  return val;
+}
+
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+void 
+DGtal::RealPointVector<dim>::selfDisplay( std::ostream & out ) const
+{
+  out << "[RealPointVector] {";
+  for (Dimension i = 0; i < dimension ; ++i)
+    out << this->at( i ) << (i == dimension - 1 ? "" : ", ");
+  out << "}";
+}
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+std::string
+DGtal::RealPointVector<dim>::styleName() const
+{
+  return "RealPointVector";
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawAsPaving( DGtalBoard & board ) const
+{
+  ASSERT(dim == 2);
+  board.drawRectangle( (float) myArray[0] - 0.5f, 
+ 		       (float) myArray[1] + 0.5f, 1, 1 );     
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawAsGrid( DGtalBoard & board ) const
+{
+  ASSERT(dim == 2);
+  board.setPenColor(LibBoard::Color::Black);
+  board.fillCircle((float) myArray[0], 
+		   (float) myArray[1],0.1);
+}
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDraw(DGtalBoard & board,
+				      const Self &apoint) const
+{
+  ASSERT(dim == 2);
+
+  board.drawArrow((float)apoint[0], (float) apoint[1],
+		  (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
+		  true);
+}
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//   3D DRAWING 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+    
+#ifdef WITH_VISU3D_QGLVIEWER
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+{
+  ASSERT(dim == 3);
+  viewer.addVoxel(myArray[0],
+		  myArray[1],
+		  myArray[2], viewer.getFillColor());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
+{
+  ASSERT(dim == 3);
+  viewer.addPoint(myArray[0],
+		  myArray[1],
+		  myArray[2],viewer.getLineColor(), 10);
+
+}
+
+
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+{
+  ASSERT(dim == 3);
+ 
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    selfDrawAsPavingQGL( viewer );
+  else if ( mode == "Grid" )
+    selfDrawAsGridQGL( viewer );
+  else if ( ( mode == "Both" ) )
+    {
+      selfDrawAsPavingQGL(viewer);
+      selfDrawAsGridQGL( viewer );
+    }
+  
+}
+
+
+
+
+
+template<Dimension dim>
+inline
+void
+DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &aPoint ) const
+{
+  ASSERT(dim == 3);
+  
+  viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
+		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
+  
+}
+
+#endif
+
+
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+std::ostream&
+DGtal::operator<<( std::ostream & out,
+		   const  RealPointVector<dim>& object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim>
+inline
+bool
+DGtal::RealPointVector<dim>::isValid() const
+{
+  return true;
+}
+//------------------------------------------------------------------------------

@@ -280,6 +280,8 @@ bool testDigitalSetDomain()
 bool testDigitalSetConcept()
 {
   //  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
+
+  return true;
 }
 
 int main()

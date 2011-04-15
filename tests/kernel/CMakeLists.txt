@@ -7,6 +7,7 @@ SET(DGTAL_TESTS_SRC
    testImageSpanIterators
    testInteger
    testPointVector
+   testRealPointVector
    testSpaceND
    testMorton
    testHashTree

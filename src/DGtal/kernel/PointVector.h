@@ -759,11 +759,11 @@ namespace DGtal
 
 
   /// Operator <<
-  template<DGtal::uint32_t dim, typename Integer>
+  template<Dimension dim, typename Integer>
   std::ostream&
   operator<<( std::ostream & out, const PointVector<dim, Integer> & object );
 
-  template< DGtal::uint32_t dim, typename Integer>
+  template< Dimension dim, typename Integer>
   PointVector<dim, Integer>  PointVector<dim, Integer>::zero;
 } // namespace DGtal
 
