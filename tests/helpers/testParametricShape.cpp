@@ -35,7 +35,6 @@
 #include "DGtal/helpers/parametricShapes/Circle2D.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 

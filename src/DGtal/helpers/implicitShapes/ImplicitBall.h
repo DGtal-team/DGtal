@@ -107,16 +107,6 @@ namespace DGtal
       return (myCenter + Point::diagonal(myRadius)); 
     }
     
-    inline
-    RealPoint gradient(const RealPoint &aRealPoint) const
-    {
-      RealPoint res;
-      for(Dimension i=0;i< Space::dimension; i++)
-	{
-	  res[i] = aRealPoint[i] - IntegerTraits<Integer>::castToDouble(myCenter[i]);
-	}
-      return res;
-    }  
 
     // ----------------------- Interface --------------------------------------
   public:
