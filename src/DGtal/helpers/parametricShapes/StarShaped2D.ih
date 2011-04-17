@@ -52,6 +52,25 @@
 template<typename TSpace>
 inline
 bool
+DGtal::StarShaped2D<TSpace>::operator()( const Point & p ) const
+{
+
+  RealPoint prel(IntegerTraits<Integer>::castToDouble(p[0]),
+		 IntegerTraits<Integer>::castToDouble(p[1]));
+  
+  return this->operator()(prel);
+}
+
+
+/**
+ * @param p any point in the plane.
+ *
+ * @return 'true' if the point is inside the shape, 'false' if it
+ * is strictly outside.
+ */
+template<typename TSpace>
+inline
+bool
 DGtal::StarShaped2D<TSpace>::operator()( const RealPoint & p ) const
 {
   double t = parameter( p );
@@ -89,7 +108,7 @@ DGtal::StarShaped2D<TSpace>::tangent( double t ) const
  *
  * @return the vector (x''(t),y''(t)) made unitary which is the unit
  * normal to the shape boundary looking inside the shape.  
- */
+b */
 template<typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint

@@ -78,11 +78,28 @@ namespace DGtal
     /**
      * @return a point p such that 'isInside(p)' returns 'true'.
      */
-    virtual RealPoint interiorPoint() const;
+    virtual RealPoint interiorPoint() const
+    {
+      return center();
+    }
  
+  
 
     // ------------------------- Abstract services ----------------------------
   public:
+    
+    /**
+     * @return the lower bound of the shape bounding box.
+     *
+     */
+    virtual Point getLowerBound() const;
+    
+    /**
+     * @return the upper bound of the shape bounding box.
+     *
+     */
+    virtual Point getUpperBound() const;
+    
 
     /**
      * @return the center of the star-shaped object.
@@ -95,7 +112,7 @@ namespace DGtal
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    virtual float parameter( const RealPoint & p ) const = 0;
+    virtual double parameter( const RealPoint & p ) const = 0;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -103,7 +120,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    virtual RealPoint x( float t ) const = 0;
+    virtual RealPoint x( double t ) const = 0;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -111,14 +128,14 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    virtual RealPoint xp( float t ) const = 0;
+    virtual RealPoint xp( double t ) const = 0;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    virtual RealPoint xpp( float t ) const = 0;
+    virtual RealPoint xpp( double t ) const = 0;
     
 
     // ------------------------- star-shaped services -------------------------
@@ -204,7 +221,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    StarShaped2D ( const StarShaped2D & other );
+    //StarShaped2D ( const StarShaped2D & other );
 
     /**
      * Assignment.
