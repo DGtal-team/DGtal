@@ -107,7 +107,9 @@ namespace DGtal
       // ImplicitShape should have a getLowerBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getLowerBound() );
       // ImplicitShape should have a operator() returning a double.
-      ConceptUtils::sameType( aDouble, myT(myP) );
+      //    ConceptUtils::sameType( aDouble, myT(myP) );
+      // ImplicitShape should have an isInside() function returning a bool.
+      ConceptUtils::sameType( aBool, myT.isInside(myP) );
       
     }
 
@@ -115,6 +117,7 @@ namespace DGtal
   private:
     TShape myT;
     Point myP;
+    bool aBool;
     double aDouble;
     
   }; // end of concept CImplicitShape

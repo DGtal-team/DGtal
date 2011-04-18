@@ -96,6 +96,12 @@ namespace DGtal
     }
 
     inline
+    bool isInside(const Point &aPoint) const
+    {
+      return (this->operator()(aPoint) > 0.0);
+    }
+
+    inline
     Point getLowerBound() const
     {
       return (myCenter - Point::diagonal(myRadius));
@@ -107,6 +113,7 @@ namespace DGtal
       return (myCenter + Point::diagonal(myRadius)); 
     }
     
+
 
     // ----------------------- Interface --------------------------------------
   public:

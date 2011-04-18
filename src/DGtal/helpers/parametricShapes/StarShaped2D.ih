@@ -52,13 +52,13 @@
 template<typename TSpace>
 inline
 bool
-DGtal::StarShaped2D<TSpace>::operator()( const Point & p ) const
+DGtal::StarShaped2D<TSpace>::isInside( const Point & p ) const
 {
 
-  RealPoint prel(IntegerTraits<Integer>::castToDouble(p[0]),
-		 IntegerTraits<Integer>::castToDouble(p[1]));
+  RealPoint prel(IntegerTraits<typename Point::Component>::castToDouble(p[0]),
+		 IntegerTraits<typename Point::Component>::castToDouble(p[1]));
   
-  return this->operator()(prel);
+  return this->isInside(prel);
 }
 
 
@@ -71,7 +71,7 @@ DGtal::StarShaped2D<TSpace>::operator()( const Point & p ) const
 template<typename TSpace>
 inline
 bool
-DGtal::StarShaped2D<TSpace>::operator()( const RealPoint & p ) const
+DGtal::StarShaped2D<TSpace>::isInside( const RealPoint & p ) const
 {
   double t = parameter( p );
   RealPoint x_rel = x( t );

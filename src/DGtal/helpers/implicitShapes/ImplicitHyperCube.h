@@ -101,6 +101,19 @@ namespace DGtal
 	(aPoint - myCenter ).norm(Point::L_infty);
     }
 
+
+    /** 
+     * Return true if the given point belongs to the shape.
+     * 
+     * @param aPoint the point to evalute the function at.
+     * @return the distance of aPoint to the ball center.
+     */
+    inline
+    bool isInside(const Point &aPoint) const
+    {
+      return this->operator()(aPoint) >0.0;
+    }
+
     /** 
      * Returns the lower bound of the Shape bounding box.
      * 
