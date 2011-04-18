@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CImplicitShape.h
+ * @file CShape.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for concept CImplicitShape.cpp
+ * Header file for concept CShape.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CImplicitShape_RECURSES)
-#error Recursive header files inclusion detected in CImplicitShape.h
-#else // defined(CImplicitShape_RECURSES)
+#if defined(CShape_RECURSES)
+#error Recursive header files inclusion detected in CShape.h
+#else // defined(CShape_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CImplicitShape_RECURSES
+#define CShape_RECURSES
 
-#if !defined CImplicitShape_h
+#if !defined CShape_h
 /** Prevents repeated inclusion of headers. */
-#define CImplicitShape_h
+#define CShape_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,18 +52,18 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CImplicitShape
+  // class CShape
   /**
-   * Description of \b concept '\b CImplicitShape' <p>
+   * Description of \b concept '\b CShape' <p>
    * @ingroup Concepts
-   * Aim: designs the concept if implicit functions constructible in DGtal.
+   * Aim: designs the concept of constructible shapes in DGtal.
    * 
    * <p> Refinement of
    *
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CImplicitShape
+   * - \t X : A type that is a model of CShape
    * - \t x, \t y	: Object of type X
    *
    * <p> Definitions
@@ -84,12 +84,12 @@ namespace DGtal
    *
    * <p> Models <br>
    *
-   * All models of CImplicitShape are specified in the ImplicitShapeFactory.
+   * All models of CShape are specified in the ShapeFactory.
    *
    * <p> Notes <br>
    */
   template <typename TShape>
-  struct CImplicitShape
+  struct CShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -100,15 +100,15 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
 
  
-    BOOST_CONCEPT_USAGE( CImplicitShape )
+    BOOST_CONCEPT_USAGE( CShape )
     {
-      // ImplicitShape should have a getUpperBound() returning a Point.
+      // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
-      // ImplicitShape should have a getLowerBound() returning a Point.
+      // Shape should have a getLowerBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getLowerBound() );
-      // ImplicitShape should have a operator() returning a double.
+      // Shape should have a operator() returning a double.
       //    ConceptUtils::sameType( aDouble, myT(myP) );
-      // ImplicitShape should have an isInside() function returning a bool.
+      // Shape should have an isInside() function returning a bool.
       ConceptUtils::sameType( aBool, myT.isInside(myP) );
       
     }
@@ -120,7 +120,7 @@ namespace DGtal
     bool aBool;
     double aDouble;
     
-  }; // end of concept CImplicitShape
+  }; // end of concept CShape
   
 } // namespace DGtal
 
@@ -128,7 +128,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CImplicitShape_h
+#endif // !defined CShape_h
 
-#undef CImplicitShape_RECURSES
-#endif // else defined(CImplicitShape_RECURSES)
+#undef CShape_RECURSES
+#endif // else defined(CShape_RECURSES)

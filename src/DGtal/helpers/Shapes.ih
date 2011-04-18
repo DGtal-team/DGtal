@@ -196,14 +196,14 @@ DGtal::Shapes<TDomain>::addNorm2Ball
 }
 
 template <typename TDomain>
-template <typename TDigitalSet, typename TImplicitShapeFunctor>
+template <typename TDigitalSet, typename ShapeFunctor>
 void
-DGtal::Shapes<TDomain>::implicitShaper( TDigitalSet & aSet,
-					const TImplicitShapeFunctor & aFunctor)
+DGtal::Shapes<TDomain>::shaper( TDigitalSet & aSet,
+					const ShapeFunctor & aFunctor)
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   
-  BOOST_CONCEPT_ASSERT((CImplicitShape<TImplicitShapeFunctor>));
+  BOOST_CONCEPT_ASSERT((CShape<ShapeFunctor>));
  
 
   Point pLow = aFunctor.getLowerBound();

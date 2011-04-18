@@ -63,8 +63,8 @@ bool testParametricShape()
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
   
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       Circle2D<Z2i::Space>( c, 10));
+  Shapes<Z2i::Domain>::shaper( set,
+			       Circle2D<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("parametricball.svg");
   
