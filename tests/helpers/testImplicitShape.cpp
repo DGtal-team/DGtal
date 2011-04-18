@@ -64,38 +64,38 @@ bool testImplicitShape()
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
   
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       ImplicitBall<Z2i::Space>( c, 10));
+  Shapes<Z2i::Domain>::shaper( set,
+			       ImplicitBall<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitball.svg");
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       ImplicitHyperCube<Z2i::Space>( c, 10));
+  Shapes<Z2i::Domain>::shaper( set,
+			       ImplicitHyperCube<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitcube.svg");
   
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       ImplicitNorm1Ball<Z2i::Space>( c, 10));
+  Shapes<Z2i::Domain>::shaper( set,
+			       ImplicitNorm1Ball<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitlosange.svg");
   
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 1));
+  Shapes<Z2i::Domain>::shaper( set,
+			       ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 1));
   board << set;
   board.saveSVG("implicitrounded-1.svg");
   
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::implicitShaper( set,
-				       ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 2.5));
+  Shapes<Z2i::Domain>::shaper( set,
+			       ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 2.5));
   board << set;
   board.saveSVG("implicitrounded-2.5.svg");
   
@@ -129,8 +129,8 @@ bool testImplicitShape3D()
   Image image(a,b);
   Z3i::DigitalSet set(domain);
 
-  Shapes<Z3i::Domain>::implicitShaper( set,
-				       ImplicitRoundedHyperCube<Z3i::Space>( c, 10, 2.5));
+  Shapes<Z3i::Domain>::shaper( set,
+			       ImplicitRoundedHyperCube<Z3i::Space>( c, 10, 2.5));
 
   for(Z3i::DigitalSet::ConstIterator it=set.begin(), itend=set.end();
       it != itend;

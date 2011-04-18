@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/helpers/implicitShapes/CImplicitShape.h"
+#include "DGtal/helpers/CShape.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -82,15 +82,15 @@ namespace DGtal
 
     /** 
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
-     * an instance of ImplicitShapeFunctor.
+     * an instance of ShapeFunctor.
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
      */
-    template <typename TDigitalSet, typename TImplicitShapeFunctor>
-    static void implicitShaper( TDigitalSet & aSet,
-				const TImplicitShapeFunctor & aFunctor);
-
+    template <typename TDigitalSet, typename TShapeFunctor>
+    static void shaper( TDigitalSet & aSet,
+			const TShapeFunctor & aFunctor);
+    
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
