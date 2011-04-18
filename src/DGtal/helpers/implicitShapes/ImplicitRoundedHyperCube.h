@@ -111,7 +111,19 @@ namespace DGtal
 				  myPower);
       
       return std::pow(IntegerTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
-	partialpower;      
+	      partialpower;      
+    }
+
+    /** 
+     * Return true if the given point belongs to the shape.
+     * 
+     * @param aPoint the point to evalute the function at.
+     * @return true if aPoint belongs to the shape.
+     */
+    inline
+    bool isInside(const Point &aPoint) const
+    {
+      return this->operator()(aPoint) >0.0;
     }
 
     /** 

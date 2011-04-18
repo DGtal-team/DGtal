@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -69,6 +70,12 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     
     /**
+     * Constructor.
+     */
+    StarShaped2D()
+    {}
+
+    /**
      * Destructor.
      */
     ~StarShaped2D();
@@ -82,8 +89,6 @@ namespace DGtal
     {
       return center();
     }
- 
-  
 
     // ------------------------- Abstract services ----------------------------
   public:
@@ -92,13 +97,13 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    virtual Point getLowerBound() const;
+    virtual Point getLowerBound() const = 0;
     
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    virtual Point getUpperBound() const;
+    virtual Point getUpperBound() const = 0;
     
 
     /**
@@ -148,7 +153,15 @@ namespace DGtal
      * @return 'true' if the point is inside the shape, 'false' if it
      * is strictly outside.
      */
-    virtual bool operator()( const RealPoint & p ) const;
+    bool isInside( const RealPoint & p ) const;
+
+    /**
+     * @param p any point in the digital plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
+    bool isInside( const Point & p ) const;
 
     
     /**
@@ -212,7 +225,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    StarShaped2D();
+    //StarShaped2D();
 
   private:
 

@@ -214,7 +214,7 @@ DGtal::Shapes<TDomain>::implicitShaper( TDigitalSet & aSet,
 	it != implicitDomain.end(); 
 	++it )
     {
-      if ( aFunctor( *it ) > 0.0)
+      if ( aFunctor.isInside( *it ) )
 	aSet.insert( *it );
     }
 }
