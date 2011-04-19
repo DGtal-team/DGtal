@@ -20,6 +20,9 @@
 #include <vector>
 #include <iostream>
 
+// cairo
+#include <cairo.h>
+
 namespace LibBoard {
 
 
@@ -199,6 +202,9 @@ struct Path {
 
   void flushSVGCommands( std::ostream & stream,
 			 const TransformSVG & transform ) const;
+			 
+  void flushCairoPoints( cairo_t *cr,
+		 const TransformCairo & transform ) const;
 
   Rect boundingBox() const;
 

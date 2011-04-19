@@ -10,7 +10,7 @@ set(Boost_USE_MULTITHREADED ON)
 
 FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS program_options)
 if ( Boost_FOUND )
-  message(STATUS "Boost and boost_program_options found. include=${Boost_INCLUDE_DIR} libs=${Boost_LIBRARIES}" )
+  message(STATUS "Boost and boost_program_options found.")
   include_directories( ${Boost_INCLUDE_DIR} )
   SET(DGtalLibDependencies ${DGtalLibDependencies} ${Boost_LIBRAIRIES}  ${Boost_PROGRAM_OPTIONS_LIBRARY})
 endif( Boost_FOUND )
@@ -63,20 +63,16 @@ ENDIF(ITK_FOUND)
 # Look for Cairo (2D graphics library)
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-# IF(NOT WIN32)
-#   INCLUDE(FindPkgConfig)
-#   PKG_CHECK_MODULES(CAIRO REQUIRED cairo)
-# ELSE(NOT WIN32)
-#   FIND_PACKAGE(Cairo)
-# ENDIF(NOT WIN32)
-# IF(CAIRO_FOUND)
-#   INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
-#   SET(DGtalLibDependencies ${DGtalLibDependencies} cairo)
-#   message(STATUS "(optional) cairo found." )
-#   ADD_DEFINITIONS("-DWITH_CAIRO ")
-# ELSE(CAIRO_FOUND)
-#    message(STATUS "(optional) cairo not found." )
-# ENDIF(CAIRO_FOUND)
+FIND_PACKAGE(Cairo)
+IF(CAIRO_FOUND)
+  INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
+  SET(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRAIRIES})
+  message(STATUS "(optional) cairo found")
+  ADD_DEFINITIONS("-DWITH_CAIRO ")
+ELSE(CAIRO_FOUND)
+   message(STATUS "(optional) cairo not found." )
+ENDIF(CAIRO_FOUND)
+
 
 # -----------------------------------------------------------------------------
 # Look for Coin3D, Qt, SoQt for 3D display.
@@ -84,7 +80,7 @@ ENDIF(ITK_FOUND)
 # -----------------------------------------------------------------------------
 find_package(COIN3D)
 if ( COIN3D_FOUND )
-   message(STATUS "(optional) Coin3d found. include=${COIN3D_INCLUDE_DIR} libs=${COIN3D_LIBRARY}." )
+   message(STATUS "(optional) Coin3d found.")
    ADD_DEFINITIONS(-DWITH_COIN3D)
    include_directories( ${COIN3D_INCLUDE_DIR} )
    SET(DGtalLibDependencies ${DGtalLibDependencies} ${COIN3D_LIBRARY})
@@ -94,7 +90,7 @@ endif ( COIN3D_FOUND )
 
 find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL)
 if ( QT4_FOUND )
-   message(STATUS  "(optional) Qt4 found. include=${QT_INCLUDE_DIR} libs=${QT_LIBRARIES}." )
+   message(STATUS  "(optional) Qt4 found.")
    set(QT_USE_QTXML 1)
    ADD_DEFINITIONS("-DWITH_QT4 ")
    include( ${QT_USE_FILE})
@@ -105,14 +101,13 @@ endif ( QT4_FOUND )
 
 find_package(SOQT)
 if ( SOQT_FOUND )
-   message(STATUS  "(optional) SoQt found. include=${SOQT_INCLUDE_DIR} libs=${SOQT_LIBRARY}." )
+   message(STATUS  "(optional) SoQt found. ")
    ADD_DEFINITIONS("-DWITH_SOQT ")
    include_directories( ${SOQT_INCLUDE_DIR} )
    SET(DGtalLibDependencies ${DGtalLibDependencies} ${SOQT_LIBRARY})
 else ( SOQT_FOUND )
   message(STATUS  "(optional) SoQt not found." )
 endif ( SOQT_FOUND )
-
 
 
 
@@ -123,10 +118,14 @@ endif( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
 
 
 
+# -----------------------------------------------------------------------------
+# Look for QGLViewer for 3D display.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
 find_package(QGLVIEWER)
 if(QGLVIEWER_FOUND AND QT4_FOUND AND QT_QTOPENGL_FOUND)
   find_package(OpenGL REQUIRED)
-  message(STATUS  "(optional) libQGLViewer found. include=${QGLVIEWER_INCLUDE_DIR} Libs=${QGLVIEWER_LIBRARIES}." )
+  message(STATUS  "(optional) libQGLViewer found.")
   include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
   set ( WITH_VISU3D_QGLVIEWER TRUE )
   ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")

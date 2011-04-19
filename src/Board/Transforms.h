@@ -103,6 +103,22 @@ public:
 		       const double margin );
 };
 
+/**
+ * The TransformCairo structure.
+ * @brief Structure representing a scaling and translation
+ * suitable for an Cairo output.
+ */
+struct TransformCairo : public Transform {
+public:
+  double rounded( double x ) const;
+  double mapY( double y ) const;
+  double mapWidth( double width ) const; 
+  void setBoundingBox( const Rect & rect,
+		       const double pageWidth,
+		       const double pageHeight,
+		       const double margin );
+};
+
 #include "Transforms.ih"
 
 } // namespace LibBoard

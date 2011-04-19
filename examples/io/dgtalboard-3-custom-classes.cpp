@@ -69,6 +69,11 @@ int main()
   board.saveSVG("dgtalboard-3-custom-classes.svg");
   board.saveEPS("dgtalboard-3-custom-classes.eps");
   
+  board.saveCairo("dgtalboard-3-custom-classes-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-3-custom-classes-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-3-custom-classes-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-3-custom-classes-cairo.svg", DGtalBoard::CairoSVG);
+  
   trace.endBlock();
   return 0;
 }

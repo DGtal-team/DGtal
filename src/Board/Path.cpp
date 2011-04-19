@@ -230,6 +230,25 @@ Path::flushSVGPoints( std::ostream & stream,
   }
 }
 
+void
+Path::flushCairoPoints( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+  if ( _points.empty() )
+    return;
+  std::vector<Point>::const_iterator i = _points.begin();
+  std::vector<Point>::const_iterator end = _points.end();
+  int count = 0;
+  cairo_move_to (cr, transform.mapX( i->x ), transform.mapY( i->y ));
+  ++i;
+  while ( i != end ) {
+    cairo_line_to (cr, transform.mapX( i->x ), transform.mapY( i->y ));
+    ++i;
+    count = ( count + 1 ) % 6;
+    //if ( !count ) stream << "\n                  ";
+  }
+}
+
 Rect
 Path::boundingBox() const
 {
