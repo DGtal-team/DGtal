@@ -39,20 +39,6 @@
 
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
-
-
-
-
-    
-
-
-
-
-
-
-      
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -66,8 +52,9 @@
 
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
-  : chain( s ), x0( x ), y0( y )
+  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
 {
+	DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
 
 
@@ -78,6 +65,8 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
   DGtal::FreemanChain<TInteger>::read(in, *this);
+	xn = x0; yn = y0;
+	DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
 
 /**
@@ -168,7 +157,7 @@ template <typename TInteger>
 typename DGtal::FreemanChain<TInteger>::ConstIterator 
 DGtal::FreemanChain<TInteger>::end() const
 {
-  return ConstIterator( *this, chain.size() );
+  return ConstIterator( *this, chain.size()+1 );
 }
 
 

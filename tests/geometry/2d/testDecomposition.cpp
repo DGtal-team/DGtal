@@ -565,7 +565,6 @@ bool testDec8Reverse()
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
   typedef ArithmeticalDSS<ContourType::reverse_iterator,Coordinate,8> PrimitiveType;
-  
 	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
 	std::vector<Point> curve;

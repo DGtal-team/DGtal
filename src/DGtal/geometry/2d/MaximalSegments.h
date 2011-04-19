@@ -66,14 +66,14 @@ namespace DGtal
    * performed and FALSE otherwise.
    *    
    * In the short example below, the parameters of the maximal 8-connected DSSs
-   * of a digital curve stored in a STL vector are sent to the standard output.
-   * The set of maximal DSSs of a digital curve is also called tangential cover. 
+   * of a sequence stored in a STL vector are sent to the standard output.
+   * The set of maximal DSSs of a sequence is also called tangential cover. 
    * @code 
   //types definition
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Sequence;
   typedef Sequence::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,8> DSS;
+  typedef ArithmeticalDSS<Iterator,int,8> DSSComputer;
 	typedef MaximalSegments<DSS> Cover;
 
 	//sequence of input points
@@ -89,10 +89,10 @@ namespace DGtal
 	curve.push_back(Point(9,1));
 
   //Segmentation
-	DSS dssRecognition;
-  Cover theCover(curve.begin(), curve.end(), dssRecognition, false);
+	DSSComputer algo;
+  Cover theCover(curve.begin(), curve.end(), algo, false);
 				 
-  Cover::ConstIterator i = theCover.begin();
+  Cover::SegmentIterator i = theCover.begin();
   for ( ; i != theCover.end(); ++i) {
 		DSS currentSegment(*i);
 		trace.info() << currentSegment << std::endl;	//standard output
@@ -107,8 +107,9 @@ namespace DGtal
 	public: 
 
 		typedef TSegment Segment;
-		typedef typename TSegment::Iterator Iterator;
-
+		typedef typename TSegment::Iterator Iterator;		
+		typedef typename TSegment::ReverseIterator ReverseIterator;
+		typedef	typename TSegment::ReverseSegmentComputer ReverseSegment;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -116,10 +117,10 @@ namespace DGtal
 
 
     /**
-     * This class is an iterator on a digital curve 
+     * This class is an iterator on a sequence
      * storing the current segment.
      */
-    class ConstIterator
+    class SegmentIterator
     {
 
 
@@ -133,13 +134,13 @@ namespace DGtal
 			MaximalSegments<TSegment> *myCov;
 
       /**
-       * An iterator of the digital curve  
+       * An iterator of the sequence
        * at the front of the current segment
        */
       Iterator myFront;
 
       /**
-       * An iterator of the contour 
+       * An iterator of the sequence 
        * at the back of the current segment
        */
       Iterator myBack;
@@ -148,12 +149,27 @@ namespace DGtal
        * The current segment
        */
       Segment  mySegment;
-      
+
+    
+      /**
+       * A flag equal to TRUE if the current segment
+       * intersects the next one, FALSE otherwise 
+       * (and FALSE if the current segment is the last one) 
+       */
+      bool  myFlagIntersectNext;
+
+      /**
+       * A flag equal to TRUE if the current segment
+       * intersects the previous one, FALSE otherwise 
+       * (and FALSE if the current segment is the first one) 
+       */
+      bool  myFlagIntersectPrevious;
+
       /**
        * A flag equal to FALSE if the current segment
        * lies between the begin and the end iterator 
-       * of the digital curve, TRUE otherwise. 
-       * Nb: always FALSE if the digital curve is 
+       * of the sequence, TRUE otherwise. 
+       * Nb: always FALSE if the sequence is 
        * processed as open. 
        */
       bool  myFlag;
@@ -166,10 +182,10 @@ namespace DGtal
        * Constructor.
        * Nb: complexity in O(n).
        *
-       * @param aCov a greedy decomposition of a digital curve
+       * @param aCov the set of maximal segments
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( MaximalSegments<TSegment> *aCov,
+      SegmentIterator( MaximalSegments<TSegment> *aCov,
 										 const typename TSegment::Iterator& aBack,
 										 const TSegment& aSegment);
 
@@ -178,19 +194,19 @@ namespace DGtal
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      ConstIterator( const ConstIterator & aOther );
+      SegmentIterator( const SegmentIterator & aOther );
     
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      ConstIterator& operator=( const ConstIterator & aOther );
+      SegmentIterator& operator=( const SegmentIterator & aOther );
     
       /**
        * Destructor. Does nothing.
        */
-      ~ConstIterator();
+      ~SegmentIterator();
     
       // ------------------------- iteration services -------------------------
     public:
@@ -207,32 +223,31 @@ namespace DGtal
 
       /**
        * Pre-increment.
-       * Goes to the next maximal segment on the digital curve (if possible).
+       * Goes to the next maximal segment on the sequence (if possible).
        * Nb: complexity in O(n).
        */
-      ConstIterator& operator++();
+      SegmentIterator& operator++();
       
       /**
-       * Retrieves the first maximal segment found on the digital curve.
-       * Nb: complexity in O(n).
+       * @return TRUE if the current segment intersects
+			 * the next one, FALSE otherwise.
        */
-      void firstMaximalSegment();
+      const bool intersectNext() const;
 
       /**
-       * Goes to the next maximal segment on the digital curve (if possible).
-       * Nb: complexity in O(n).
+       * @return TRUE if the current segment intersects
+			 * the previous one, FALSE otherwise.
        */
-      void nextMaximalSegment();
-
+      const bool intersectPrevious() const;
 
       /**
-       * @return an iterator of a digital curve
+       * @return an iterator of a sequence
        * at the front of the segment.
        */
       const Iterator getFront() const;
 
       /**
-       * @return an iterator of a digital curve
+       * @return an iterator of a sequence
        * at the back of the segment.
        */
       const Iterator getBack() const;
@@ -247,7 +262,7 @@ namespace DGtal
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
        */
-      bool operator==( const ConstIterator & aOther ) const;
+      bool operator==( const SegmentIterator & aOther ) const;
 
       /**
        * Inequality operator.
@@ -257,30 +272,62 @@ namespace DGtal
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
        */
-      bool operator!=( const ConstIterator & aOther ) const;
+      bool operator!=( const SegmentIterator & aOther ) const;
 
       // ------------------------- hidden services -------------------------
  
 			private: 
 
       /**
-       * @param anIt a reference of a given iterator
-       * @param aBegin begin iterator
-       * @param aEnd end iterator
-       * @return anIt incremented (but equal to begin instead of end)
-
+       * Extension of the segment along the sequence while it is possible.
+       * @param aSeg a segment computer
+       * @param it an iterator on a sequence
+       * @param end an iterator after the end of the sequence
+       * Nb: complexity in O(n).
        */
-      Iterator incrementInLoop(Iterator& anIt, const Iterator& aBegin, const Iterator& aEnd);
+			template <typename TypeSegment, typename TypeIterator>
+      void extension(TypeSegment& aSeg, TypeIterator& it, const TypeIterator& end);
 
       /**
-       * @param anIt a reference of a given iterator
-       * @param aFirst an iterator pointing at the first point
-       * @param aLast an iterator pointing at the last point
-       * @return anIt decremented (but equal to aLast if anIt equal to aFirst)
-
+       * Extension of the segment along the sequence while it is possible.
+       * @param aSeg a segment computer
+       * @param it an iterator on a sequence
+       * Nb: complexity in O(n).
        */
-      Iterator decrementInLoop(Iterator& anIt, const Iterator& aFirst, const Iterator& aLast);
+			template <typename TypeSegment, typename TypeIterator>
+      void extension(TypeSegment& aSeg, TypeIterator& it);
 
+      /**
+       * Extension of the segment along the (circular) sequence while it is possible.
+       * @param aSeg a segment computer
+       * @param it an iterator on a sequence
+       * @param begin an iterator at the beginning of the sequence
+       * @param end an iterator after the end of the sequence
+       * Nb: complexity in O(n).
+       */
+			template <typename TypeSegment, typename TypeIterator>
+      void extensionInLoop(TypeSegment& aSeg, TypeIterator& it, 
+                           const TypeIterator& begin, const TypeIterator& end);
+
+
+
+      /**
+       * Retrieves the first maximal segment found on the sequence.
+       * Nb: complexity in O(n).
+       */
+      void firstMaximalSegment();
+
+      /**
+       * Goes to the next maximal segment on the sequence (if possible).
+       * Nb: complexity in O(n).
+       */
+      void nextMaximalSegment();
+
+      /**
+       * Checks if the current segment intersects the next one (if exists).
+       * @param it a given iterator
+       */
+      bool doesIntersectNext(const Iterator& it);
       
     };
 
@@ -291,15 +338,15 @@ namespace DGtal
 
     /**
      * Constructor.
-		 * Nb: The digital curve is decompose as a closed one by default.
-     * @param aBegin, begin iterator on a digital curve
-     * @param aEnd, end iterator on a digital curve
+		 * Nb: The sequence is processed as a closed one by default.
+     * @param begin, begin iterator on a sequence
+     * @param end, end iterator on a sequence
      * @param aSegment, a segment computer
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
-    MaximalSegments(const Iterator& aBegin, 
-                    const Iterator& aEnd, 
+    MaximalSegments(const Iterator& beginIt, 
+                    const Iterator& endIt, 
                     const Segment& aSegment, 
                     const bool& aFlag);
 
@@ -310,15 +357,15 @@ namespace DGtal
 
     /**
      * Iterator service.
-     * @return an iterator pointing on the first segment of a digital curve.
+     * @return an iterator pointing on the first segment of a sequence.
      */
-    typename MaximalSegments::ConstIterator begin();
+    typename MaximalSegments::SegmentIterator begin();
 
     /**
      * Iterator service.
-     * @return an iterator pointing after the last segment of a digital curve.
+     * @return an iterator pointing after the last segment of a sequence.
      */
-    typename MaximalSegments::ConstIterator end();
+    typename MaximalSegments::SegmentIterator end();
 
 
     /**
@@ -339,27 +386,23 @@ namespace DGtal
   private:
 
     /**
-     * begin iterator (pointing at the first point)
+     * begin iterator (pointing at the first element)
      */
 		Iterator myBegin;
-    /**
-     * iterator pointing at the last point
-     */
-		Iterator myLast;
 
     /**
-     * end iterator (pointing after the last point)
+     * end iterator (pointing after the last element)
      */
 		Iterator myEnd;
 
     /**
-     * back iterator (first point) 
+     * back iterator (first element) 
      * of the first maximal segment
      */
 		Iterator myFirstMaximalSegmentBack;
 
     /**
-     * boolean equal to TRUE if the digital curve
+     * boolean equal to TRUE if the sequence
      * has to be processed as closed, FALSE otherwise
      */
 		bool isClosed;

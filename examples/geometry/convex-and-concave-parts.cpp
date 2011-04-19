@@ -51,16 +51,17 @@ int main()
 {
   trace.beginBlock ( "Example convex-and-concave-parts" );
 
-  typedef FreemanChain<int> Contour4; 
-  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
-  typedef MaximalSegments<DSS4> MDSSs4;
+  typedef FreemanChain<int> Sequence; 
+	typedef Sequence::ConstIterator Iterator;
+  typedef ArithmeticalDSS<Iterator,int,4> DSS4Computer;
+  typedef MaximalSegments<DSS4Computer> Cover;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, 
   //and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
   // Construct the Freeman chain
-  Contour4 theContour( ss );
+  Sequence theContour( ss );
   
   // std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
   // fstream fst;
@@ -72,8 +73,8 @@ int main()
   
 
   //Maximal Segments
-  DSS4 computer;
-  MDSSs4 theCover( theContour.begin(),theContour.end(),computer,false );
+  DSS4Computer computer;
+  Cover theCover( theContour.begin(),theContour.end(),computer,false );
   Point p1( 0, 0 );
   Point p2( 48, 12 );
   Domain domain( p1, p2 );
@@ -86,16 +87,16 @@ int main()
   //For each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string aStyleName = "ArithmeticalDSS/BoundingBox";
-  for ( MDSSs4::ConstIterator i = theCover.begin();
+  for ( Cover::SegmentIterator i = theCover.begin();
 	i != theCover.end(); ++i ) 
     {
       //begin and end iterators
       //(back points on the first point)
       //(front points after the last point)
-      Contour4::ConstIterator front = i.getFront();
-      Contour4::ConstIterator back = i.getBack();	
+      Iterator front = i.getFront();
+      Iterator back = i.getBack();	
       //parameters
-      DSS4 segment(*i);
+      DSS4Computer segment(*i);
       int mu = segment.getMu();
       int omega = segment.getOmega();
 

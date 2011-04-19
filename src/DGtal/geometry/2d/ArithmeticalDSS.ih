@@ -223,7 +223,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 							       Point & Lf,	Point & Ll )
 {
 
-	Point lastPoint = *it;
+	Point lastPoint(*it);
 
 	//if the two last points 
   //are confounded or not connected
@@ -380,7 +380,9 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const Iterator& it)
 {
 
-	return extend(it, myL, (*it - *myL), myUf, myUl, myLf, myLl); 
+
+//	std::cout << Point(*it) << " - " << Point(*myL) << " == " << (Point(*it) - Point(*myL)) << std::endl;
+	return extend(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
 
 }
 
@@ -402,7 +404,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const Iterator& it)
 {
 
-	return extend(it, myF, (*myF - *it), myUl, myUf, myLl, myLf); 
+	return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
 
 }
 
@@ -433,7 +435,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 {
 
 
-	Vector v = (*myL)-(*myF);
+	Vector v = Point(*myL)-Point(*myF);
 	if (Tools<TInteger,connectivity>
 								::norm(v[0],v[1]) <= 1) {//if there are only two points
 
@@ -468,12 +470,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 				myB = newMainVector[0];
 				//leaning points
 				Integer k; //repetitions of the newMainVector
-				Vector toUl = (Ul - *firstIt)*s;
+				Vector toUl = (Ul - Point(*firstIt))*s;
 				k = Tools<TInteger,connectivity>::norm(toUl[0],toUl[1])
 						/Tools<TInteger,connectivity>::norm(myA,myB);
 				Uf = Ul - newMainVector*k*s;
 				myNbUpPat = k;
-				Vector toLastIt = *lastIt - Lf;
+				Vector toLastIt = Point(*lastIt) - Lf;
 				k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
 						/Tools<TInteger,connectivity>::norm(myA,myB);
 				Ll = Lf + newMainVector*k*s;
@@ -498,12 +500,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 				myB = newMainVector[0];
 				//leaning points
 				Integer k; //repetitions of the newMainVector
-				Vector toLl = Ll - *firstIt;
+				Vector toLl = Ll - Point(*firstIt);
 				k = Tools<TInteger,connectivity>::norm(toLl[0],toLl[1])
 						/Tools<TInteger,connectivity>::norm(myA,myB);
 				Lf = Ll - newMainVector*k*s;
 				myNbLowPat = k;
-				Vector toLastIt = *lastIt - Uf;
+				Vector toLastIt = Point(*lastIt) - Uf;
 				k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
 						/Tools<TInteger,connectivity>::norm(myA,myB);
 				Ul = Uf + newMainVector*k*s;
@@ -547,7 +549,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
 {
 
-	Vector v = (*myL)-(*myF);
+	Vector v = Point(*myL)-Point(*myF);
 	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
 		return false;
 	} else {                           //otherwise
@@ -569,7 +571,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
 {
 
-	Vector v = (*myL)-(*myF);
+	Vector v = Point(*myL)-Point(*myF);
 	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
 		return false;
 	} else {                           //otherwise
@@ -592,8 +594,8 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Iterator& it)
 {
 
-	Point lastPoint = *it;
-	Vector lastMove = lastPoint-(*myL);
+	Point lastPoint(*it);
+	Vector lastMove = lastPoint-Point(*myL);
 	//if the two last points 
   //are confounded or not connected
 	//return false
@@ -806,14 +808,14 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::PointVector<2,TInteger>
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBackPoint() const {
-	return *myF;
+	return (*myF);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::PointVector<2,TInteger>
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFrontPoint() const {
-	return *myL;
+	return (*myL);
 }
 
 //-----------------------------------------------------------------
@@ -828,7 +830,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
 {
 
-	if (*myF == *myL) { 
+	if (Point(*myF) == Point(*myL)) { 
 
 		//init case with one point
 		if ( (myA==0)
@@ -1092,7 +1094,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
   out << myMu << ", " << myOmega << ")" <<  endl;
 	out << "Number of upper patterns: " << myNbUpPat << endl;
 	out << "Number of lower patterns: " << myNbLowPat << endl;
-  out << "First point " << (*myF) << " Last point " << (*myL) <<  endl;
+  out << "First point " << Point(*myF) << " Last point " << Point(*myL) <<  endl;
   out << "Leaning points:" <<  endl;
   out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
   out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;

@@ -42,6 +42,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <list>
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
@@ -132,6 +133,8 @@ namespace DGtal
 
 
     typedef TIterator Iterator;
+		typedef std::reverse_iterator<Iterator> ReverseIterator;
+		typedef ArithmeticalDSS<ReverseIterator,TInteger,connectivity> ReverseSegmentComputer; 
 
     //entier
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
