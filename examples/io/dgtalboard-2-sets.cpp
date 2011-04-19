@@ -72,11 +72,14 @@ int main( )
 	<< shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
   board.saveEPS( "dgtalboard-2-sets-2.eps");
-  
+ 
+#ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-2-sets-2-cairo.pdf", DGtalBoard::CairoPDF);
   board.saveCairo("dgtalboard-2-sets-2-cairo.png", DGtalBoard::CairoPNG);
   board.saveCairo("dgtalboard-2-sets-2-cairo.ps", DGtalBoard::CairoPS);
   board.saveCairo("dgtalboard-2-sets-2-cairo.svg", DGtalBoard::CairoSVG);
+#endif
+
   board.clear();
 
   // Object with couple (8,4) of adjacency.
