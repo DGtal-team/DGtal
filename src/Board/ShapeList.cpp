@@ -342,6 +342,7 @@ ShapeList::flushSVG( std::ostream & stream,
     //stream << "</g>\n";
 }
 
+#ifdef WITH_CAIRO
 void
 ShapeList::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -356,6 +357,7 @@ ShapeList::flushCairo( cairo_t *cr,
         ++i;
     }
 }
+#endif
 
 Rect
 ShapeList::boundingBox() const
@@ -629,6 +631,7 @@ Group::flushSVG( std::ostream & stream,
     }
 }
 
+#ifdef WITH_CAIRO
 void
 Group::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -636,6 +639,7 @@ Group::flushCairo( cairo_t *cr,
     //todo
     //ShapeList::flushCairo( cr, transform );
 }
+#endif
 
 Rect
 Group::boundingBox() const

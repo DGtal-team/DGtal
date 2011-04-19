@@ -741,7 +741,8 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveSVG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
-  
+
+#ifdef WITH_CAIRO
   // cairo
   /** 
    * Save the drawing with cairo. When a size is given (not BoundingBox), the drawing is
@@ -765,6 +766,7 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+#endif
 
  protected:
 

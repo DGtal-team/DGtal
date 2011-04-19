@@ -54,11 +54,13 @@ int main()
   board << domain << p1 << p2 << p3;
   board.saveSVG("dgtalboard-1-points.svg");
   board.saveEPS("dgtalboard-1-points.eps");
-  
+
+#ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-1-points-cairo.pdf", DGtalBoard::CairoPDF);
   board.saveCairo("dgtalboard-1-points-cairo.png", DGtalBoard::CairoPNG);
   board.saveCairo("dgtalboard-1-points-cairo.ps", DGtalBoard::CairoPS);
   board.saveCairo("dgtalboard-1-points-cairo.svg", DGtalBoard::CairoSVG);
+#endif
   
   trace.endBlock();
   return 0;

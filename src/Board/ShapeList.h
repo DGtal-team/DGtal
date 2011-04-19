@@ -80,9 +80,11 @@ struct ShapeList : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rect boundingBox() const;
   
@@ -247,9 +249,11 @@ struct Group : public ShapeList {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Group & operator=( const Group & other );
 

@@ -86,11 +86,13 @@ int main( )
 	<< shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
   board.saveEPS( "dgtalboard-2-sets-3.eps");
-  
+
+#ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-2-sets-3-cairo.pdf", DGtalBoard::CairoPDF);
   board.saveCairo("dgtalboard-2-sets-3-cairo.png", DGtalBoard::CairoPNG);
   board.saveCairo("dgtalboard-2-sets-3-cairo.ps", DGtalBoard::CairoPS);
   board.saveCairo("dgtalboard-2-sets-3-cairo.svg", DGtalBoard::CairoSVG);
+#endif
 
   trace.endBlock();
   return 0;
