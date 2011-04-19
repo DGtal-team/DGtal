@@ -30,12 +30,14 @@
 #include <cstdio>
 #include <algorithm>
 
+#ifdef WITH_CAIRO
 // cairo
 #include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
 // cairo
+#endif
 
 #if defined( max )
 #undef max
@@ -1012,6 +1014,7 @@ Board::save( const char * filename, PageSize size, double margin ) const
   save( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
+#ifdef WITH_CAIRO
 void
 Board::saveCairo( const char * filename, CairoType type, PageSize size, double margin ) const
 {
@@ -1088,6 +1091,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
 }
+#endif
 
 } // namespace LibBoard;
 

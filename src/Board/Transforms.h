@@ -103,6 +103,7 @@ public:
 		       const double margin );
 };
 
+#ifdef WITH_CAIRO
 /**
  * The TransformCairo structure.
  * @brief Structure representing a scaling and translation
@@ -118,6 +119,7 @@ public:
 		       const double pageHeight,
 		       const double margin );
 };
+#endif
 
 #include "Transforms.ih"
 

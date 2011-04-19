@@ -81,11 +81,13 @@ int main()
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
   board.saveEPS("dgtalboard-3-custom-points.eps");
-  
+
+#ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", DGtalBoard::CairoPDF);
   board.saveCairo("dgtalboard-3-custom-points-cairo.png", DGtalBoard::CairoPNG);
   board.saveCairo("dgtalboard-3-custom-points-cairo.ps", DGtalBoard::CairoPS);
   board.saveCairo("dgtalboard-3-custom-points-cairo.svg", DGtalBoard::CairoSVG);
+#endif
   
   trace.endBlock();
   return 0;

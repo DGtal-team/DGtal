@@ -219,6 +219,7 @@ TransformSVG::setBoundingBox( const Rect & rect,
   }
 }
 
+#ifdef WITH_CAIRO
 //
 // TransformCairo
 // 
@@ -269,5 +270,6 @@ TransformCairo::setBoundingBox( const Rect & rect,
     _height = pageHeight * ppmm;
   }
 }
+#endif
 
 } // namespace LibBoard

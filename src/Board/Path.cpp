@@ -230,6 +230,7 @@ Path::flushSVGPoints( std::ostream & stream,
   }
 }
 
+#ifdef WITH_CAIRO
 void
 Path::flushCairoPoints( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -248,6 +249,7 @@ Path::flushCairoPoints( cairo_t *cr,
     //if ( !count ) stream << "\n                  ";
   }
 }
+#endif
 
 Rect
 Path::boundingBox() const

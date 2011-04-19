@@ -27,8 +27,10 @@
 #include <map>
 #include <cmath>
 
+#ifdef WITH_CAIRO
 // cairo
 #include <cairo.h>
+#endif
 
 #ifndef M_PI
 #define M_PI           3.14159265358979323846
@@ -241,6 +243,7 @@ struct Shape {
   virtual void flushSVG( std::ostream & stream,
 			 const TransformSVG & transform ) const = 0;
 
+#ifdef WITH_CAIRO
   /** 
    * Writes the cairo code of the shape in a cairo drawing context according
    * to a transform.
@@ -250,6 +253,7 @@ struct Shape {
    */
   virtual void flushCairo( cairo_t *cr,
 			 const TransformCairo & transform ) const = 0;
+#endif
 
   inline int depth() const;
 
@@ -289,7 +293,8 @@ protected:
    * @return A string of the Postscript commands.
    */
   std::string postscriptProperties() const;
-  
+
+#ifdef WITH_CAIRO
   // cairo
   /** 
    * Set a cairo dash style.
@@ -297,6 +302,7 @@ protected:
    * @param type LineStyle: SolidStyle, DashStyle, DotStyle, DashDotStyle, DashDotDotStyle, DashDotDotDotStyle.
    */
   void setCairoDashStyle(cairo_t *cr, LineStyle type) const;
+#endif
 };
 
   
@@ -469,9 +475,11 @@ struct Dot : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+	
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
   
   Rect boundingBox() const;
 
@@ -587,9 +595,11 @@ struct Line : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rect boundingBox() const;
 
@@ -690,9 +700,11 @@ struct Arrow : public Line {
 		 std::map<Color,int> & colormap ) const;
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Arrow * clone() const;
 
@@ -827,9 +839,11 @@ struct Polyline : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rect boundingBox() const;
 
@@ -936,9 +950,11 @@ struct Rectangle : public Polyline {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rectangle * clone() const;
 
@@ -986,8 +1002,10 @@ struct Image : public Rectangle {
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 		 
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
 
 private:
@@ -1175,9 +1193,11 @@ struct GouraudTriangle : public Polyline {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   GouraudTriangle * clone() const;
 
@@ -1289,9 +1309,11 @@ struct Ellipse : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rect boundingBox() const;
 
@@ -1361,9 +1383,11 @@ struct Circle : public Ellipse {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Circle * clone() const;
 
@@ -1476,9 +1500,11 @@ struct Text : public Shape {
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
-		 
+
+#ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const;
+#endif
 
   Rect boundingBox() const;
 

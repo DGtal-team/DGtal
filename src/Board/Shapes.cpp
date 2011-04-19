@@ -43,6 +43,7 @@ const char * xFigDashStylesSVG[] = {
     "stroke-dasharray:4.5,1.8,1.5,1.4,1.5,1.4,1.5,1.8;stroke-dashoffset:0" // DashDotDotDotStyle
 };
 
+#ifdef WITH_CAIRO
 // cairo
 cairo_line_cap_t cairoLineCap[] = {
     CAIRO_LINE_CAP_BUTT,
@@ -65,6 +66,7 @@ const double cairoDashDotStyle[] = {4.5, 2.3, 1.5, 2.3}; const double cairoDashD
 const double cairoDashDotDotStyle[] = {4.5, 2.0, 1.5, 1.5, 1.5, 2.0}; const double cairoDashDotDotStyle_offset = 0;
 const double cairoDashDotDotDotStyle[] = {4.5, 1.8, 1.5, 1.4, 1.5, 1.4, 1.5, 1.8}; const double cairoDashDotDotDotStyle_offset = 0;
 // cairo
+#endif
 }
 
 //todo cairo: gouraudtriangle, text (?)
@@ -131,6 +133,7 @@ Shape::postscriptProperties() const
     return str.str();
 }
 
+#ifdef WITH_CAIRO
 void
 Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
 {
@@ -153,6 +156,7 @@ Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
 	cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset);
     }
 }
+#endif
 
 void
 Shape::depth( int d )
@@ -307,6 +311,7 @@ Dot::flushSVG( std::ostream & stream,
     << " />" << std::endl;
 }
 
+#ifdef WITH_CAIRO
 void
 Dot::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -327,6 +332,7 @@ Dot::flushCairo( cairo_t *cr,
     
     cairo_restore (cr);
 }
+#endif
 
 Rect
 Dot::boundingBox() const
@@ -519,6 +525,7 @@ Line::flushSVG( std::ostream & stream,
     << " />" << std::endl;
 }
 
+#ifdef WITH_CAIRO
 void
 Line::flushCairo( cairo_t *cr,
                 const TransformCairo & transform ) const
@@ -539,6 +546,7 @@ Line::flushCairo( cairo_t *cr,
     
     cairo_restore (cr);
 }
+#endif
 
 Rect
 Line::boundingBox() const
@@ -621,6 +629,7 @@ Image::flushSVG( std::ostream & stream,
 
 }
 
+#ifdef WITH_CAIRO
 void
 Image::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -647,6 +656,7 @@ Image::flushCairo( cairo_t *cr,
     
   cairo_restore (cr);
 }
+#endif
 
 /*
  * Arrow
@@ -853,6 +863,7 @@ Arrow::flushSVG( std::ostream & stream,
     stream << "</g>" << std::endl;
 }
 
+#ifdef WITH_CAIRO
 void
 Arrow::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -912,6 +923,7 @@ Arrow::flushCairo( cairo_t *cr,
     
     cairo_restore (cr);
 }
+#endif
 
 /*
  * Ellipse
@@ -1130,6 +1142,7 @@ Ellipse::flushSVG( std::ostream & stream,
     stream << " />" << std::endl;
 }
 
+#ifdef WITH_CAIRO
 void
 Ellipse::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -1166,6 +1179,7 @@ Ellipse::flushCairo( cairo_t *cr,
   
   cairo_restore (cr);
 }
+#endif
 
 Rect
 Ellipse::boundingBox() const
@@ -1306,6 +1320,7 @@ Circle::flushSVG( std::ostream & stream,
     }
 }
 
+#ifdef WITH_CAIRO
 void
 Circle::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -1340,6 +1355,7 @@ Circle::flushCairo( cairo_t *cr,
       cairo_restore (cr);
     }
 }
+#endif
 
 /*
  * Polyline
@@ -1513,6 +1529,7 @@ Polyline::flushSVG( std::ostream & stream,
     stream << "\" />" << std::endl;
 }
 
+#ifdef WITH_CAIRO
 void
 Polyline::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -1547,6 +1564,7 @@ Polyline::flushCairo( cairo_t *cr,
     
     cairo_restore (cr);
 }
+#endif
 
 Rect
 Polyline::boundingBox() const
@@ -1691,6 +1709,7 @@ Rectangle::flushSVG( std::ostream & stream,
     }
 }
 
+#ifdef WITH_CAIRO
 void
 Rectangle::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
@@ -1745,6 +1764,7 @@ Rectangle::flushCairo( cairo_t *cr,
     
     cairo_restore (cr);
 }
+#endif
 
 /*
  * GouraudTriangle
@@ -1961,11 +1981,13 @@ GouraudTriangle::flushSVG( std::ostream & stream,
                      _subdivisions - 1, _depth ).flushSVG( stream, transform );
 }
 
+#ifdef WITH_CAIRO
 void
 GouraudTriangle::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
 {
 }
+#endif
 
 /*
  * Triangle
@@ -2178,11 +2200,13 @@ Text::flushSVG( std::ostream & stream,
     }
 }
 
+#ifdef WITH_CAIRO
 void
 Text::flushCairo( cairo_t *cr,
 		 const TransformCairo & transform ) const
 {
 }
+#endif
 
 Rect
 Text::boundingBox() const
