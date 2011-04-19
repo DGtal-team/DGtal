@@ -58,6 +58,11 @@ int main( )
   board << domain << shape_set; // display domain and set
   board.saveSVG( "dgtalboard-2-sets-1.svg");
   board.saveEPS( "dgtalboard-2-sets-1.eps");
+  
+  board.saveCairo("dgtalboard-2-sets-1-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.svg", DGtalBoard::CairoSVG);
   board.clear();
 
   // Object with couple (4,8) of adjacency.
@@ -67,6 +72,11 @@ int main( )
 	<< shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
   board.saveEPS( "dgtalboard-2-sets-2.eps");
+  
+  board.saveCairo("dgtalboard-2-sets-2-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.svg", DGtalBoard::CairoSVG);
   board.clear();
 
   // Object with couple (8,4) of adjacency.
@@ -76,6 +86,11 @@ int main( )
 	<< shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
   board.saveEPS( "dgtalboard-2-sets-3.eps");
+  
+  board.saveCairo("dgtalboard-2-sets-3-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.svg", DGtalBoard::CairoSVG);
 
   trace.endBlock();
   return 0;

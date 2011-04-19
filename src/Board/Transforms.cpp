@@ -219,4 +219,55 @@ TransformSVG::setBoundingBox( const Rect & rect,
   }
 }
 
+//
+// TransformCairo
+// 
+
+double
+TransformCairo::rounded( double x ) const
+{
+  return Transform::round( 100*x ) / 100.0f;
+} 
+
+double
+TransformCairo::mapY( double y ) const
+{
+  return rounded( _height - ( y * _scale + _deltaY ) );
+}
+
+double
+TransformCairo::mapWidth( double width ) const
+{
+  // return Transform::round( 1000 * width / ppmm ) / 1000.0;
+  return Transform::round( 1000 * width  / ppmm  ) / 1000.0;
+}
+
+void
+TransformCairo::setBoundingBox( const Rect & rect,
+			      const double pageWidth,
+			      const double pageHeight,
+			      const double margin )  
+{
+  if ( pageWidth <= 0 || pageHeight <= 0 ) {
+    _scale = 1.0f;
+    // _deltaX = 0.5 * 210 * ppmm - ( rect.left + 0.5 * rect.width );
+    _deltaX = - rect.left;
+    // _deltaY = 0.5 * 297 * ppmm - ( rect.top - 0.5 * rect.height );
+    _deltaY = - ( rect.top - rect.height );
+    // _height = 297 * fig_ppmm;
+    _height = rect.height;
+  } else {
+    const double w = pageWidth - 2 * margin;
+    const double h = pageHeight - 2 * margin;
+    if ( rect.height / rect.width > ( h / w ) ) {
+      _scale = h * ppmm / rect.height;
+    } else {
+      _scale = w * ppmm / rect.width;
+    }
+    _deltaX = 0.5 * pageWidth * ppmm - _scale * ( rect.left + 0.5 * rect.width );
+    _deltaY = 0.5 * pageHeight * ppmm - _scale * ( rect.top - 0.5 * rect.height );
+    _height = pageHeight * ppmm;
+  }
+}
+
 } // namespace LibBoard

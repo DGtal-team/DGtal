@@ -342,6 +342,21 @@ ShapeList::flushSVG( std::ostream & stream,
     //stream << "</g>\n";
 }
 
+void
+ShapeList::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    std::vector< Shape* > shapes = _shapes;
+    stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
+    std::vector< Shape* >::const_iterator i = shapes.begin();
+    std::vector< Shape* >::const_iterator end = shapes.end();
+
+    while ( i != end ) {
+        (*i)->flushCairo( cr, transform );
+        ++i;
+    }
+}
+
 Rect
 ShapeList::boundingBox() const
 {
@@ -612,6 +627,14 @@ Group::flushSVG( std::ostream & stream,
         ShapeList::flushSVG( stream, transform );
         stream << "</g>\n";
     }
+}
+
+void
+Group::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    //todo
+    //ShapeList::flushCairo( cr, transform );
 }
 
 Rect

@@ -82,6 +82,11 @@ int main()
   board.saveSVG("dgtalboard-3-custom-points.svg");
   board.saveEPS("dgtalboard-3-custom-points.eps");
   
+  board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.svg", DGtalBoard::CairoSVG);
+  
   trace.endBlock();
   return 0;
 }

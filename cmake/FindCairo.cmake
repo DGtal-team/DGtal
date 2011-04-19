@@ -1,7 +1,7 @@
 # Locate cairo
 # This module defines
-# CAIRO_LIBRARY_DIRS
 # CAIRO_INCLUDE_DIRS, where to find the headers
+# CAIRO_LIBRAIRIES cairo libraires
 #
 
 
@@ -12,33 +12,28 @@ FIND_PATH(CAIRO_INCLUDE_DIRS cairo.h
     /Library/Frameworks
     /usr/local/include
     /usr/include
+    /usr/include/cairo # MT
+    /usr/local/include/cairo #brew, manual
     /sw/include # Fink
     /opt/local/include # DarwinPorts
+    /opt/local/include/cairo # DarwinPorts # MT
     /opt/csw/include # Blastwave
-    /opt/include
+    /opt/include/cairo
+    /usr/X11R6/include/cairo
 )
 
-IF (WIN32)
-  SET(LIBCAIRO "cairo.lib")
-ELSE (WIN32)
-  SET(LIBCAIRO "libcairo.so")
-ENDIF (WIN32)
 
-FIND_PATH(CAIRO_LIBRARY_DIRS ${LIBCAIRO}
-    $ENV{CAIRODIR}/lib
-    $ENV{CAIRODIR}
-    ~/Library/Frameworks
-    /Library/Frameworks
-    /usr/local/lib
-    /usr/lib
-    /sw/lib
-    /opt/local/lib
-    /opt/csw/lib
-    /opt/lib
-    /usr/freeware/lib64
-)
+find_library(CAIRO_LIBRAIRIES
+             NAMES cairo
+             PATHS /usr/lib
+                  /usr/local/lib
+                 ENV CAIRO_ROOT
+                 ENV LD_LIBRARY_PATH
+                 ENV LIBRARY_PATH
+             PATH_SUFFIXES cairo
+            )
 
 SET(CAIRO_FOUND "NO")
-IF(CAIRO_LIBRARY_DIRS AND CAIRO_INCLUDE_DIRS)
-    SET(CAIRO_FOUND "YES")
-ENDIF(CAIRO_LIBRARY_DIRS AND CAIRO_INCLUDE_DIRS)
+IF(CAIRO_LIBRAIRIES AND CAIRO_INCLUDE_DIRS)
+  SET(CAIRO_FOUND "YES")
+ENDIF(CAIRO_LIBRAIRIES AND CAIRO_INCLUDE_DIRS)

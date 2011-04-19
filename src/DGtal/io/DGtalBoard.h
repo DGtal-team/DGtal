@@ -44,9 +44,6 @@
 #include "Board/Board.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-//#include "DGtal/kernel/domains/HyperRectDomain.h"
-//#include "DGtal/topology/Object.h"
-//#include "DGtal/io/CDrawableWithDGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

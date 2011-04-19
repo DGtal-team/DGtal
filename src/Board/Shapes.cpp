@@ -27,24 +27,48 @@
 namespace {
 const char * xFigDashStylesPS[] = {
     " [] 0 sd ", // SolidStyle
-    " [1 1] 0 sd ", //DashStyle,
+    " [1 1] 0 sd ", // DashStyle
     " [1.5 4.5] 45 sd ", // DotStyle
-    " [4.5 2.3 1.5 2.3] 0 sd ", // DashDotStyle:
-    " [4.5 2.0 1.5 1.5 1.5 2.0] 0 sd ", // DashDotDotStyle:
+    " [4.5 2.3 1.5 2.3] 0 sd ", // DashDotStyle
+    " [4.5 2.0 1.5 1.5 1.5 2.0] 0 sd ", // DashDotDotStyle
     " [4.5 1.8 1.5 1.4 1.5 1.4 1.5 1.8 ] 0 sd " // DashDotDotDotStyle
 };
 
 const char * xFigDashStylesSVG[] = {
     "", // SolidStyle
-    "stroke-dasharray:1,1;stroke-dashoffset:0", //DashStyle,
+    "stroke-dasharray:1,1;stroke-dashoffset:0", // DashStyle
     "stroke-dasharray:1.5,4.5;stroke-dashoffset:45", // DotStyle
-    "stroke-dasharray:4.5,2.3,1.5,2.3;stroke-dashoffset:0", // DashDotStyle:
-    "stroke-dasharray:4.5,2.0,1.5,1.5,1.5,2.0;stroke-dashoffset;0", // DashDotDotStyle:
+    "stroke-dasharray:4.5,2.3,1.5,2.3;stroke-dashoffset:0", // DashDotStyle
+    "stroke-dasharray:4.5,2.0,1.5,1.5,1.5,2.0;stroke-dashoffset;0", // DashDotDotStyle
     "stroke-dasharray:4.5,1.8,1.5,1.4,1.5,1.4,1.5,1.8;stroke-dashoffset:0" // DashDotDotDotStyle
 };
+
+// cairo
+cairo_line_cap_t cairoLineCap[] = {
+    CAIRO_LINE_CAP_BUTT,
+    CAIRO_LINE_CAP_ROUND,
+    CAIRO_LINE_CAP_SQUARE
+};
+
+cairo_line_join_t cairoLineJoin[] = {
+    CAIRO_LINE_JOIN_MITER,
+    CAIRO_LINE_JOIN_ROUND,
+    CAIRO_LINE_JOIN_BEVEL
+};
+
+#define ARRAY_SIZE(A) (sizeof(A)/sizeof(A[0]))
+
+const double cairoSolidStyle[] = {}; const double cairoSolidStyle_offset = 0;
+const double cairoDashStyle[] = {1, 1}; const double cairoDashStyle_offset = 0;
+const double cairoDotStyle[] = {1.5, 4.5}; const double cairoDotStyle_offset = 45;
+const double cairoDashDotStyle[] = {4.5, 2.3, 1.5, 2.3}; const double cairoDashDotStyle_offset = 0;
+const double cairoDashDotDotStyle[] = {4.5, 2.0, 1.5, 1.5, 1.5, 2.0}; const double cairoDashDotDotStyle_offset = 0;
+const double cairoDashDotDotDotStyle[] = {4.5, 1.8, 1.5, 1.4, 1.5, 1.4, 1.5, 1.8}; const double cairoDashDotDotDotStyle_offset = 0;
+// cairo
 }
 
-
+//todo cairo: gouraudtriangle, text (?)
+//todo cairo: group (?)
 
 namespace LibBoard {
 
@@ -105,6 +129,29 @@ Shape::postscriptProperties() const
     str << xFigDashStylesPS[ _lineStyle ];
 
     return str.str();
+}
+
+void
+Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
+{
+    switch (type)
+    {
+      case SolidStyle:
+	cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset); break;
+      case DashStyle:
+	cairo_set_dash (cr, cairoDashStyle, ARRAY_SIZE(cairoDashStyle), cairoDashStyle_offset); break;
+      case DotStyle:
+	cairo_set_dash (cr, cairoDotStyle, ARRAY_SIZE(cairoDotStyle), cairoDotStyle_offset); break;
+      case DashDotStyle:
+	cairo_set_dash (cr, cairoDashDotStyle, ARRAY_SIZE(cairoDashDotStyle), cairoDashDotStyle_offset); break;
+      case DashDotDotStyle:
+	cairo_set_dash (cr, cairoDashDotDotStyle, ARRAY_SIZE(cairoDashDotDotStyle), cairoDashDotDotStyle_offset); break;
+      case DashDotDotDotStyle:
+	cairo_set_dash (cr, cairoDashDotDotDotStyle, ARRAY_SIZE(cairoDashDotDotDotStyle), cairoDashDotDotDotStyle_offset); break;
+	
+      default: // SolidStyle
+	cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset);
+    }
 }
 
 void
@@ -258,6 +305,27 @@ Dot::flushSVG( std::ostream & stream,
     << " y2=\"" << transform.mapY( _y ) << "\""
     << svgProperties( transform )
     << " />" << std::endl;
+}
+
+void
+Dot::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    cairo_save (cr);
+    
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+      
+      cairo_move_to (cr, transform.mapX( _x ), transform.mapY( _y ));
+      cairo_line_to (cr, transform.mapX( _x ), transform.mapY( _y ));
+      
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+      cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+      setCairoDashStyle (cr, _lineStyle);
+
+      cairo_stroke (cr);
+    
+    cairo_restore (cr);
 }
 
 Rect
@@ -451,6 +519,27 @@ Line::flushSVG( std::ostream & stream,
     << " />" << std::endl;
 }
 
+void
+Line::flushCairo( cairo_t *cr,
+                const TransformCairo & transform ) const
+{
+    cairo_save (cr);
+    
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+      
+      cairo_move_to (cr, transform.mapX( _x1 ), transform.mapY( _y1 ));
+      cairo_line_to (cr, transform.mapX( _x2 ), transform.mapY( _y2 ));
+      
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+      cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+      setCairoDashStyle (cr, _lineStyle);
+
+      cairo_stroke (cr);
+    
+    cairo_restore (cr);
+}
+
 Rect
 Line::boundingBox() const
 {
@@ -532,8 +621,32 @@ Image::flushSVG( std::ostream & stream,
 
 }
 
+void
+Image::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+  int w, h;
+  cairo_surface_t *image;
+  
+  cairo_save (cr);
 
+    image = cairo_image_surface_create_from_png (_filename.c_str());
+    w = cairo_image_surface_get_width (image);
+    h = cairo_image_surface_get_height (image);
 
+    // tr
+    cairo_translate (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ));
+    //cairo_scale (cr, transform.scale( _path[1].x - _path[0].x )/w, transform.scale( _path[0].y - _path[3].y )/h);
+	cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
+    // tr
+
+    cairo_set_source_surface (cr, image, 0, 0);
+    cairo_paint (cr);
+
+    cairo_surface_destroy (image);
+    
+  cairo_restore (cr);
+}
 
 /*
  * Arrow
@@ -738,6 +851,66 @@ Arrow::flushSVG( std::ostream & stream,
     << transform.mapX( _x2 ) + transform.scale( ndx1 ) << ","
     << transform.mapY( _y2 ) - transform.scale( ndy1 ) << "\" />" << std::endl;
     stream << "</g>" << std::endl;
+}
+
+void
+Arrow::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    double dx = _x1 - _x2;
+    double dy = _y1 - _y2;
+    double norm = sqrt( dx*dx + dy*dy );
+    dx /= norm;
+    dy /= norm;
+    dx *= 10 * _lineWidth;
+    dy *= 10 * _lineWidth;
+
+    //   double back_x = 0.8 * dx + _x2;
+    //   double back_y = 0.8 * dy + _y2;
+
+    double ndx1 = dx*cos(0.3)-dy*sin(0.3);
+    double ndy1 = dx*sin(0.3)+dy*cos(0.3);
+    double ndx2 = dx*cos(-0.3)-dy*sin(-0.3);
+    double ndy2 = dx*sin(-0.3)+dy*cos(-0.3);
+    
+    cairo_save (cr);
+    
+      // The line
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+      
+      cairo_move_to (cr, transform.mapX( _x1 ), transform.mapY( _y1 ));
+      cairo_line_to (cr, transform.mapX( _x2 + ( dx * cos(0.3) ) ), transform.mapY( _y2 + ( dy * cos(0.3) ) ));
+      
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+      cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+      setCairoDashStyle (cr, _lineStyle);
+      
+      cairo_stroke (cr);
+      
+      // The arrow
+      cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+      
+      cairo_move_to (cr, transform.mapX( _x2 ) + transform.scale( ndx1 ), transform.mapY( _y2 ) - transform.scale( ndy1 ));
+      cairo_line_to (cr, transform.mapX( _x2 ), transform.mapY( _y2 ));
+      cairo_line_to (cr, transform.mapX( _x2 ) + transform.scale( ndx2 ), transform.mapY( _y2 ) - transform.scale( ndy2 ));
+      cairo_close_path (cr);
+
+      if ( filled() )
+	cairo_fill_preserve (cr);
+      
+      //
+      
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+      
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
+      cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
+      setCairoDashStyle (cr, SolidStyle);
+
+      cairo_stroke (cr);
+    
+    cairo_restore (cr);
 }
 
 /*
@@ -957,6 +1130,43 @@ Ellipse::flushSVG( std::ostream & stream,
     stream << " />" << std::endl;
 }
 
+void
+Ellipse::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+  cairo_save (cr);
+
+    cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+    
+    // tr
+    cairo_translate (cr, transform.mapX( _center.x ), transform.mapY( _center.y ));
+    if ( _angle != 0.0 )
+      cairo_rotate (cr, _angle);
+    cairo_scale (cr, transform.scale( _xRadius ), transform.scale( _yRadius ));
+    // tr
+    
+    cairo_arc (cr, 0, 0, 1, 0, 2*M_PI);
+    
+    if ( filled() )
+      cairo_fill_preserve (cr);
+    
+    //
+    
+    //if ( _penColor != Color::None )
+    {
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+      cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+      setCairoDashStyle (cr, _lineStyle);
+
+      cairo_stroke (cr);
+    }
+  
+  cairo_restore (cr);
+}
+
 Rect
 Ellipse::boundingBox() const
 {
@@ -1093,6 +1303,41 @@ Circle::flushSVG( std::ostream & stream,
         << " r=\"" << transform.scale( _xRadius ) << '"'
         << svgProperties( transform )
         << " />" << std::endl;
+    }
+}
+
+void
+Circle::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    if ( ! _circle )
+        Ellipse::flushCairo( cr, transform );
+    else
+    {
+      cairo_save (cr);
+
+	cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+	  
+	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
+	
+	if ( filled() )
+	  cairo_fill_preserve (cr);
+	
+	//
+	
+	//if ( _penColor != Color::None )
+	{
+	  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+      
+	  cairo_set_line_width (cr, _lineWidth);
+	  cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+	  cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+	  setCairoDashStyle (cr, _lineStyle);
+
+	  cairo_stroke (cr);
+	}
+      
+      cairo_restore (cr);
     }
 }
 
@@ -1268,6 +1513,41 @@ Polyline::flushSVG( std::ostream & stream,
     stream << "\" />" << std::endl;
 }
 
+void
+Polyline::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    if ( _path.empty() )
+        return;
+    
+    cairo_save (cr);
+    
+      cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+	
+      _path.flushCairoPoints( cr, transform );
+      if ( _path.closed() )
+	cairo_close_path (cr);
+      
+      if ( filled() )
+	cairo_fill_preserve (cr);
+      
+      //
+      
+      //if ( _penColor != Color::None )
+      {
+	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+	
+	cairo_set_line_width (cr, _lineWidth);
+	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+	setCairoDashStyle (cr, _lineStyle);
+
+	cairo_stroke (cr);
+      }
+    
+    cairo_restore (cr);
+}
+
 Rect
 Polyline::boundingBox() const
 {
@@ -1409,6 +1689,61 @@ Rectangle::flushSVG( std::ostream & stream,
         << transform.mapX( _path[0].x ) << ", " << transform.mapY( _path[0].y ) << ") \" "
         << " />" << std::endl;
     }
+}
+
+void
+Rectangle::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    {
+        double x1 = _path[1].x - _path[0].x;
+        double y1 = _path[1].y - _path[0].y;
+        double x2 = _path[3].x - _path[0].x;
+        double y2 = _path[3].y - _path[0].y;
+        if ( fabs(x1*x2 + y1*y2) > 0.01  ) {
+            Polyline::flushCairo( cr, transform );
+            return;
+        }
+    }
+    
+    cairo_save (cr);
+    
+      cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+	
+      if ( _path[0].y == _path[1].y )
+	cairo_rectangle (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ), transform.scale( _path[1].x - _path[0].x ), transform.scale( _path[0].y - _path[3].y ));
+      else
+      {
+	Point v = _path[1] - _path[0];
+        v /= v.norm();
+        double angle = ( _path[1].y > _path[0].y ) ? acos( v * Point(1,0) ) : -acos( v * Point( 1, 0 ) );
+	
+	// tr
+	cairo_translate (cr, transform.mapX( _path[0].x )+transform.scale( _path[1].x - _path[0].x )/2., transform.mapY( _path[0].y )+transform.scale( _path[0].y - _path[3].y )/2.);
+	cairo_rotate (cr, angle);
+	// tr
+	
+	cairo_rectangle (cr, -transform.scale( _path[1].x - _path[0].x )/2., -transform.scale( _path[0].y - _path[3].y )/2., transform.scale( (_path[1] - _path[0]).norm() ), transform.scale( (_path[0] - _path[3]).norm() ));
+      }
+      
+      if ( filled() )
+	cairo_fill_preserve (cr);
+      
+      //
+      
+      //if ( _penColor != Color::None )
+      {
+	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+	
+	cairo_set_line_width (cr, _lineWidth);
+	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+	setCairoDashStyle (cr, _lineStyle);
+
+	cairo_stroke (cr);
+      }
+    
+    cairo_restore (cr);
 }
 
 /*
@@ -1626,6 +1961,12 @@ GouraudTriangle::flushSVG( std::ostream & stream,
                      _subdivisions - 1, _depth ).flushSVG( stream, transform );
 }
 
+void
+GouraudTriangle::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+}
+
 /*
  * Triangle
  */
@@ -1835,6 +2176,12 @@ Text::flushSVG( std::ostream & stream,
         << _text
         << "</text>" << std::endl;
     }
+}
+
+void
+Text::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
 }
 
 Rect

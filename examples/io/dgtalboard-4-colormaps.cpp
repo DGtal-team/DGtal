@@ -84,6 +84,11 @@ int main()
     }
   board.saveSVG( "dgtalboard-4-colormaps.svg");
   board.saveEPS( "dgtalboard-4-colormaps.eps");
+  
+  board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", DGtalBoard::CairoPDF);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.png", DGtalBoard::CairoPNG);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.svg", DGtalBoard::CairoSVG);
 
   trace.endBlock();
   return 0;
