@@ -45,6 +45,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <iterator>
+#include <cstddef>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/base/BasicTypes.h"
@@ -125,8 +127,12 @@ namespace DGtal
 
 
     
-    class ConstIterator
+    class ConstIterator : 
+						public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
     {
+
+	 public:
+
       // ------------------------- data -----------------------
     private:
       /**
@@ -168,26 +174,29 @@ namespace DGtal
        * Nb: complexity in O(n).
        *
        * @param chain a Freeman chain,
-       * @param n the position in [chain] (within 0 and chain.size()-1).
+       * @param n the position in [chain] (within 0 and chain.size()).
        */
 	
       ConstIterator( const FreemanChain & aChain, unsigned int n =0)
 	: myFc( &aChain ), myPos( 0 )
-      {
-	myXY.at(0)=aChain.x0;
-	myXY.at(1)=aChain.y0;
+ {
 	  
-	if ( n < myFc->chain.size() )
-	  while ( myPos < n )
-	    {
-	      this->next();
-	      // JOL !!!
-	      // ERROR: myPos is already incremented in next().
-	      // ++myPos;
-	    }
-	else // iterator end() 
-	  myPos = myFc->chain.size();
-      }
+		if ( n < myFc->chain.size() ) {
+
+			myXY.at(0)=aChain.x0;
+			myXY.at(1)=aChain.y0;
+
+			while ( myPos < n ) this->next();
+
+		} else {// iterator end() 
+			myXY.at(0)=aChain.xn;
+			myXY.at(1)=aChain.yn;
+
+		  myPos = myFc->chain.size()+1;
+
+    }
+
+	}
 	
 	
      
@@ -213,7 +222,7 @@ namespace DGtal
        */
 	
       ConstIterator& operator= ( const ConstIterator & other )
-      {
+      {	
 	if ( this != &other )
 	  {
 	    myFc = other.myFc;
@@ -271,7 +280,18 @@ namespace DGtal
 	return *this;
       }
 	
+      /**
+       * Post-increment.
+       * Goes to the next point on the chain.
+       */
+	
+      ConstIterator  operator++(int)
+      {
 
+	ConstIterator tmp(*this);
+	this->next();
+	return tmp;
+      }
 
 	
       /**
@@ -281,23 +301,25 @@ namespace DGtal
       void 
       next()
       {
+
 	if ( myPos < myFc->chain.size() )
 	  {
 	    switch ( myFc->code( myPos ) )
 	      {
-	      case 0: myXY.at(0)++; break;
-	      case 1: myXY.at(1)++; break;
-	      case 2: myXY.at(0)--; break;
-	      case 3: myXY.at(1)--; break;
+	      case 0: (myXY.at(0))++; break;
+	      case 1: (myXY.at(1))++; break;
+	      case 2: (myXY.at(0))--; break;
+	      case 3: (myXY.at(1))--; break;
 	      }
 	    ++myPos;
-	  }
+	  } else ++myPos;
+
       }
 		
 
 
       /**
-       * Goes to the previous point on the chain as if on a loop.
+       * Goes to the next point on the chain as if on a loop.
        */
 	
       void
@@ -307,10 +329,10 @@ namespace DGtal
 	  {
 	    switch ( myFc->code( myPos ) )
 	      {
-	      case 0: myXY.at(0)++; break;
-	      case 1: myXY.at(1)++; break;
-	      case 2: myXY.at(0)--; break;
-	      case 3: myXY.at(1)--; break;
+	      case 0: (myXY.at(0))++; break;
+	      case 1: (myXY.at(1))++; break;
+	      case 2: (myXY.at(0))--; break;
+	      case 3: (myXY.at(1))--; break;
 	      }
 	    myPos = ( myPos + 1 ) % myFc->chain.size();
 	  }
@@ -367,6 +389,18 @@ namespace DGtal
 	return *this;
       }
 
+      /**
+       * Post-decrement.
+       * Goes to the previous point on the chain.
+       */
+	
+      ConstIterator  operator--(int)
+      {
+
+	ConstIterator tmp(*this);
+	this->previous();
+	return tmp;
+      }
 
 	
       /**
@@ -376,18 +410,21 @@ namespace DGtal
       void
       previous()
       {
-	if ( myPos > 0 )
-	  {
-	    --myPos;
-	    switch ( myFc->code( myPos ) )
-	      {
-	      case 0: myXY.at(0)--; break;
-	      case 1: myXY.at(1)--; break;
-	      case 2: myXY.at(0)++; break;
-	      case 3: myXY.at(1)++; break;
-	      }
-	  }
-      }
+
+	if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
+    --myPos;
+		if (myPos < myFc->chain.size()) {
+		  switch ( myFc->code( myPos ) ) {
+		    case 0: (myXY.at(0))--; break;
+		    case 1: (myXY.at(1))--; break;
+		    case 2: (myXY.at(0))++; break;
+		    case 3: (myXY.at(1))++; break;
+		  }
+		}
+	}
+
+
+     }
 	
 
 
@@ -402,10 +439,10 @@ namespace DGtal
 	else --myPos;
 	switch ( myFc->code( myPos ) )
 	  {
-	  case 0: myXY.at(0)--; break;
-	  case 1: myXY.at(1)--; break;
-	  case 2: myXY.at(0)++; break;
-	  case 3: myXY.at(1)++; break;
+	      case 0: (myXY.at(0))--; break;
+	      case 1: (myXY.at(1))--; break;
+	      case 2: (myXY.at(0))++; break;
+	      case 3: (myXY.at(1))++; break;
 	  }
       }
 
@@ -1223,6 +1260,7 @@ namespace DGtal
     FreemanChain(std::istream & in );
 
 
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -1557,14 +1595,22 @@ namespace DGtal
     /**
      * the x-coordinate of the first point.
      */
-    int x0;
+    Integer x0;
 
     /**
      * the y-coordinate of the first point.
      */
-    int y0;
+    Integer y0;
 
+    /**
+     * the x-coordinate of the last point.
+     */
+    Integer xn;
 
+    /**
+     * the y-coordinate of the last point.
+     */
+    Integer yn;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -1574,16 +1620,27 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    //    FreemanChain();
 
-  private:
 
 
     // ------------------------- Internals ------------------------------------
+
+    /**
+     * Computes the coordinates of the last point
+		 * nb: in O(n)
+     */
+	void computeLastPoint() {
+      for ( typename FreemanChain<TInteger>::ConstIterator it = this->begin();
+            it != this->end();
+            ++it )
+        {
+					PointI2 tmp = *it;
+					std::cout << it.get() << " " << it.getPosition() << std::endl;
+          xn = tmp.at(0);
+					yn = tmp.at(1);
+        }
+	}
+
   private:
 
     /**

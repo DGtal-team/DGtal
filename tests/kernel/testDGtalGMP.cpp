@@ -101,7 +101,7 @@ bool testGMPSpace()
   a = 1234;
   b = "-5678";
   Point p(a,b);
- 
+
   typedef FreemanChain<Coordinate> Contour; 
   typedef ArithmeticalDSS<Contour::ConstIterator,Coordinate,4> DSS4;  
   typedef GreedyDecomposition<DSS4> Decomposition;
@@ -128,7 +128,7 @@ bool testGMPSpace()
    << segment;
 
   aBoard.saveSVG("testgmpcontour.svg");
-  
+
 
   nbok += true ? 1 : 0; 
   nb++;

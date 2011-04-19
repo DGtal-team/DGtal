@@ -86,7 +86,7 @@ bool testCover4()
   //Segmentation
   trace.beginBlock("Tangential cover of 4-connected digital curves");
 	PrimitiveType primitive;
-  DecompositionType theDecomposition(theContour.begin(), theContour.end(), primitive, true);
+  DecompositionType theDecomposition(theContour.begin(), theContour.end(), primitive, false);
   
 	// Draw the grid
   DGtalBoard aBoard;
@@ -97,7 +97,7 @@ bool testCover4()
   
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 		
 		compteur++;
@@ -143,7 +143,7 @@ bool testDisconnectedCurve()
   //Segmentation
   trace.beginBlock("Tangential cover of disconnected digital curves");
 	PrimitiveType primitive;
-  DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, true);
+  DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
   
 	// Draw the pixels
   DGtalBoard aBoard;
@@ -156,7 +156,7 @@ bool testDisconnectedCurve()
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;
@@ -207,7 +207,7 @@ bool testClosedCurves(const bool& aFlag)
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -219,8 +219,8 @@ bool testClosedCurves(const bool& aFlag)
 
     } 
 	std::string filename = "testClosedCurves";
-	if (aFlag) filename += "ProcessedAsOpen"; 
-	else filename += "ProcessedAsClosed";
+	if (aFlag) filename += "ProcessedAsClosed"; 
+	else filename += "ProcessedAsOpen";
 	filename += ".svg";
   aBoard.saveSVG(filename.c_str());
 
@@ -249,7 +249,7 @@ bool testNoPoint()
 		PrimitiveType primitive;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 		trace.endBlock();
@@ -285,7 +285,7 @@ bool testOnePoint()
 		aBoard << curve.at(0);
 		//for each segment
 		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				i != theDecomposition.end(); ++i ) 
 			{
 				PrimitiveType primitive2(*i);
@@ -311,7 +311,6 @@ bool testTwoEndIterators()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef FreemanChain<Coordinate> ContourType; 
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
 	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
@@ -324,7 +323,7 @@ bool testTwoEndIterators()
 		PrimitiveType primitive;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 
@@ -348,7 +347,6 @@ bool testOneDSS()
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef FreemanChain<Coordinate> ContourType; 
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
 	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
@@ -377,7 +375,7 @@ bool testOneDSS()
 				 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		++compteur;
@@ -407,10 +405,10 @@ int main(int argc, char **argv)
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testCover4() 
+  bool res = 	testCover4() 
 					&& testDisconnectedCurve()
 					&& testClosedCurves(true)
-					&& testClosedCurves(false)
+				&& testClosedCurves(false)
 					&& testNoPoint()
 					&& testOnePoint()
 					&& testTwoEndIterators()
