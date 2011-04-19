@@ -59,10 +59,13 @@ int main( )
   board.saveSVG( "dgtalboard-2-sets-1.svg");
   board.saveEPS( "dgtalboard-2-sets-1.eps");
   
+#ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-2-sets-1-cairo.pdf", DGtalBoard::CairoPDF);
   board.saveCairo("dgtalboard-2-sets-1-cairo.png", DGtalBoard::CairoPNG);
   board.saveCairo("dgtalboard-2-sets-1-cairo.ps", DGtalBoard::CairoPS);
   board.saveCairo("dgtalboard-2-sets-1-cairo.svg", DGtalBoard::CairoSVG);
+#endif
+
   board.clear();
 
   // Object with couple (4,8) of adjacency.
