@@ -74,7 +74,7 @@ int main()
 
   //Maximal Segments
   DSS4Computer computer;
-  Cover theCover( theContour.begin(),theContour.end(),computer,false );
+  Cover theCover( theContour.begin(),theContour.end(),computer,true);
   Point p1( 0, 0 );
   Point p2( 48, 12 );
   Domain domain( p1, p2 );
@@ -88,52 +88,55 @@ int main()
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string aStyleName = "ArithmeticalDSS/BoundingBox";
   for ( Cover::SegmentIterator i = theCover.begin();
-	i != theCover.end(); ++i ) 
-    {
-      //begin and end iterators
-      //(back points on the first point)
-      //(front points after the last point)
-      Iterator front = i.getFront();
-      Iterator back = i.getBack();	
-      //parameters
-      DSS4Computer segment(*i);
-      int mu = segment.getMu();
-      int omega = segment.getOmega();
+	i != theCover.end(); ++i ) {
 
-      //choose pen color
-      CustomPenColor* aPenColor;
-      if (back == theContour.begin()) {
-	aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
-      } else {
-	--back;
-	//the front of the last segment points at the end
-	if (front == theContour.end()) {
-	  aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
-	} else {
-	  if ( (segment.getRemainder(*back)<mu-1)&&
-	       (segment.getRemainder(*front)<mu-1) ) {                //concave
-	    aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
-	  } else if ( (segment.getRemainder(*back)>mu+omega)&&
-		      (segment.getRemainder(*front)>mu+omega) ) {     //convex
-	    aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
-	  } else if ( (segment.getRemainder(*back)>mu+omega)&&
-		      (segment.getRemainder(*front)<mu-1) ) {         //convex to concave
-	    aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
-	  } else if ( (segment.getRemainder(*back)<mu-1)&&
-		      (segment.getRemainder(*front)>mu+omega) ) {     //concave to convex
-	    aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
-	  } else {                                                    //pb
-	    aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
-	  }
-	}
-      }
+		//segment
+	  DSS4Computer segment(*i);
 
-			 
-      // draw each segment
-      aBoard << CustomStyle( aStyleName, aPenColor )
-	     << segment; 
+    //choose pen color
+    CustomPenColor* aPenColor;
 
-    } 
+		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
+
+			aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
+
+		} else {
+	    //begin and end iterators
+	    //(back points on the first point)
+	    //(front points after the last point)
+	    Iterator front = i.getFront();
+	    Iterator back = i.getBack();	
+			--back;
+
+	    //parameters
+	    int mu = segment.getMu();
+	    int omega = segment.getOmega();
+
+			//configurations
+			if ( (segment.getRemainder(*back)<mu-1)&&
+				   (segment.getRemainder(*front)<mu-1) ) {                //concave
+				aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
+			} else if ( (segment.getRemainder(*back)>mu+omega)&&
+					  (segment.getRemainder(*front)>mu+omega) ) {           //convex
+				aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
+			} else if ( (segment.getRemainder(*back)>mu+omega)&&
+					  (segment.getRemainder(*front)<mu-1) ) {               //convex to concave
+				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+			} else if ( (segment.getRemainder(*back)<mu-1)&&
+					  (segment.getRemainder(*front)>mu+omega) ) {           //concave to convex
+				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+			} else {                                                    //pb
+				aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
+			}
+
+		}
+
+    // draw each segment
+    aBoard << CustomStyle( aStyleName, aPenColor )
+			     << segment; 
+
+  }
+
   aBoard.saveSVG("convex-and-concave-parts.svg");
 
   trace.endBlock();
