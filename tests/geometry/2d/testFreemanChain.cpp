@@ -52,12 +52,51 @@ typedef SpaceND<2> Space2Type;
 typedef HyperRectDomain<Space2Type> Domain2D;
 typedef Space2Type::Point Point;
 
+/**
+ * test reverse iterator
+ *
+ */
+bool testFreemanChainIterator(const std::string& code)
+{
+
+
+  typedef int Coordinate;
+	typedef FreemanChain<Coordinate> Sequence;
+  typedef Sequence::ConstIterator SequenceIterator;
+	typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
+  
+  trace.beginBlock ( "Testing FreemanChain Iterator" );
+  
+  std::stringstream ss;
+  ss << code << std::endl;
+  Sequence seq(ss);
+
+  trace.info()<< "Freeman chain set to " << code << endl;   
+ 
+trace.info()<< "<" << endl;  
+  for (SequenceIterator i = seq.begin(); i != seq.end(); ++i) {
+		trace.info()<< *i << " "  << i.getPosition() << " "; 
+	}
+		trace.info()<< endl; 
+
+trace.info()<< ">" << endl;  
+  
+
+  for (ReverseIterator ri(seq.end()); ri != ReverseIterator(seq.begin()); ++ri) {
+		trace.info()<< *ri << " "; 
+	}
+		trace.info()<< endl; 
+
+  trace.endBlock();
+	return true;
+}
+
 
 /**
  * Example of a test. To be completed.
  *
  */
-bool testFreemanChain(stringstream & ss)
+bool testFreemanChain(const string& code)
 {
   unsigned int nbok = 0;
   unsigned int nb = 4;
@@ -65,10 +104,12 @@ bool testFreemanChain(stringstream & ss)
   
   trace.beginBlock ( "Testing FreemanChain " );
   
-  FreemanChain<int> fc(ss);
+  std::stringstream ss;
+  ss << code << std::endl;
+  FreemanChain<int> fc(ss);  
 
   nbok += 1;   
-  trace.info()<< "Freeman chain set to " << ss.str() << endl; 
+  trace.info()<< "Freeman chain set to " << code << endl; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Reading FreemanChain" << std::endl;
   
@@ -99,6 +140,8 @@ bool testFreemanChain(stringstream & ss)
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Test extracting list of contour point" << std::endl;
       
+  trace.endBlock();
+
   return nbok == nb;
 }
 
@@ -156,12 +199,13 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  std::stringstream ss (stringstream::in | stringstream::out);
-  ss << "0 0 00001111222233" << endl;
+  std::string chain = "0 0 0000111122223333";
   
 
-  bool res = testFreemanChain(ss); // && ... other tests
+  bool res = testFreemanChainIterator(chain)
+							&& testFreemanChain(chain);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+
 
   std::string filename = testPath + "samples/contourS.fc";
   std::cout << filename << std::endl;

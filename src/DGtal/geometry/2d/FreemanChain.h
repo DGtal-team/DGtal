@@ -1491,6 +1491,8 @@ namespace DGtal
 
     }
 
+
+
     /**
      * This method takes O(n) operations and works only for Freeman
      * chains whose successive codes are between +1/-1. It determines
@@ -1500,13 +1502,14 @@ namespace DGtal
      * clockwise loops, then the given number is accordingly
      * negative.
      *
-     * @return the number of counterclockwise loops, or '0' is the contour
+     * @return the number of counterclockwise loops, or '0' if the contour
      * is open or invalid.
      */
     int isClosed() const
     {
       typename FreemanChain<TInteger>::ConstIterator it = this->begin();
       typename FreemanChain<TInteger>::ConstIterator it_end = this->end();
+			--it_end;
       typename FreemanChain<TInteger>::ConstIterator it_suiv = it;
       PointI2 spos = *it;
       int nb_ccw_turns = 0;
