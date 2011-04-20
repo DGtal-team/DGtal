@@ -69,11 +69,15 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::firstMaximalSegment()
 	if (myFront != myCov->myEnd) {
 		
 		if (myCov->isClosed) { //if processed as closed 
-			//maximal segment computation
+
+			myFlagIntersectNext = doesIntersectNext(myFront);
 			nextMaximalSegment();
 			myCov->myFirstMaximalSegmentBack = myBack;
+
 		} else {               //if processed as open
+
 			myFlagIntersectNext = doesIntersectNext(myFront);
+
 		}
 
 	}
