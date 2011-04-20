@@ -122,7 +122,14 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegment()
 					while (mySegment.extend(myFront)) {
 						++myFront;
 					}
-					myFlagIntersectNext = doesIntersectNext(myFront);
+					//overlap
+					if (myFront == myCov->myBegin) { 
+						Iterator tmpIt = myCov->myEnd; --tmpIt;
+						Segment tmpSegment; tmpSegment.init(tmpIt);
+						myFlagIntersectNext = tmpSegment.extend(myFront);
+					} else {
+						myFlagIntersectNext = doesIntersectNext(myFront);
+					}
 					myFlag = true;
 				} else {              //if processed as open
 					//the current segment is the last one and 
@@ -154,6 +161,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegment()
 										rseg,ri,
 										ReverseIterator(myCov->myEnd),ReverseIterator(myCov->myBegin) );
 		myBack = ri.base();
+		if (myBack == myCov->myEnd) myBack = myCov->myBegin;
 
 		if (myBack != myCov->myFirstMaximalSegmentBack) { //if not the end
 
