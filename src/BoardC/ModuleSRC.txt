@@ -1,0 +1,8 @@
+
+SET(BOARD_SRC ${BOARD_SRC}
+  Board/Board
+  Board/ShapeList
+  Board/Shapes
+  Board/Color
+  Board/Point
+  Board/Rect)

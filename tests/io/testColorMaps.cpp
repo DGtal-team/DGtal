@@ -35,7 +35,9 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
 #include "Board/PSFonts.h"
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -57,8 +59,10 @@ void addColorMapSample( const char * name,
   board.translate( 0, 15 );
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setPenColor(Color::Black);
+#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
     board.setFont( LibBoard::Fonts::Courier, 12 );
     board.drawText( -150, 0, name );
+#endif
     board.setPenColor(Color::None);
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
