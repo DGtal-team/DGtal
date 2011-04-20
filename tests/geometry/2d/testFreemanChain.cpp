@@ -170,17 +170,25 @@ bool testDisplayFreemanChain(const string &file)
   aBoard << fc;
   fst.close();
   
-  
+#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
   std::string filenameImage = testPath + "samples/contourS.gif";
   LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
   image.shiftDepth(1);
   LibBoard::Board & board = aBoard;
   board << image;
+#endif
   
   
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
+  
+#ifdef WITH_CAIRO
+  aBoard.saveCairo("testDisplayFC-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.png", DGtalBoard::CairoPNG, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.ps", DGtalBoard::CairoPS, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.svg", DGtalBoard::CairoSVG, Board::BoundingBox, 5000);
+#endif
   
   return true;
 }
