@@ -47,40 +47,39 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main()
+typedef FreemanChain<int> Sequence; 
+typedef Sequence::ConstIterator Iterator;
+typedef ArithmeticalDSS<Iterator,int,4> DSS4Computer;
+typedef MaximalSegments<DSS4Computer> Cover;
+
+
+int main( int argc, char** argv )
 {
+
   trace.beginBlock ( "Example convex-and-concave-parts" );
 
-  typedef FreemanChain<int> Sequence; 
-	typedef Sequence::ConstIterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,4> DSS4Computer;
-  typedef MaximalSegments<DSS4Computer> Cover;
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
 
-  // A Freeman chain code is a string composed by the coordinates of the first pixel, 
-  //and the list of elementary displacements. 
-  std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "1 11 0300303303033030303000010101011010110100000303303033030303000010101101010110100000333" << endl;
-  // Construct the Freeman chain
+
+	string codes; 
+	if (argc >= 2) codes = argv[1];
+	else codes = "0300303303033030303000010101011010110100000303303033030303000010101101010110100000333"; 
+
+  stringstream ss(stringstream::in | stringstream::out);
+  ss << "0 0 " << codes << endl;
   Sequence theContour( ss );
   
-  // std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
-  // fstream fst;
-  // fst.open (freemanChainFilename.c_str(), ios::in);
-  // // Construct the Freeman chain
-  // Contour4 theContour( fst );
-  // fst.close();
-
-  
+  trace.info() << "FreemanChain: " << ss.str() << endl;
 
   //Maximal Segments
   DSS4Computer computer;
   Cover theCover( theContour.begin(),theContour.end(),computer,true);
-  Point p1( 0, 0 );
-  Point p2( 48, 12 );
-  Domain domain( p1, p2 );
+
   DGtalBoard aBoard;
-  aBoard << SetMode( domain.styleName(), "Grid" )
-	 << domain
+  aBoard
 	 << SetMode( "PointVector", "Grid" )
 	 << theContour;
 
@@ -102,10 +101,13 @@ int main()
 
 		} else {
 	    //begin and end iterators
-	    //(back points on the first point)
-	    //(front points after the last point)
+	    //(back point on the first point)
+	    //(front point after the last point)
 	    Iterator front = i.getFront();
 	    Iterator back = i.getBack();	
+			if (back == theContour.begin()) {
+				back = theContour.end();
+			} 
 			--back;
 
 	    //parameters
@@ -113,17 +115,17 @@ int main()
 	    int omega = segment.getOmega();
 
 			//configurations
-			if ( (segment.getRemainder(*back)<mu-1)&&
-				   (segment.getRemainder(*front)<mu-1) ) {                //concave
+			if ( (segment.getRemainder(*back)<=mu-1)&&
+				   (segment.getRemainder(*front)<=mu-1) ) {                //concave
 				aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
-			} else if ( (segment.getRemainder(*back)>mu+omega)&&
-					  (segment.getRemainder(*front)>mu+omega) ) {           //convex
+			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
+					  (segment.getRemainder(*front)>=mu+omega) ) {           //convex
 				aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
-			} else if ( (segment.getRemainder(*back)>mu+omega)&&
-					  (segment.getRemainder(*front)<mu-1) ) {               //convex to concave
+			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
+					  (segment.getRemainder(*front)<=mu-1) ) {               //convex to concave
 				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
-			} else if ( (segment.getRemainder(*back)<mu-1)&&
-					  (segment.getRemainder(*front)>mu+omega) ) {           //concave to convex
+			} else if ( (segment.getRemainder(*back)<=mu-1)&&
+					  (segment.getRemainder(*front)>=mu+omega) ) {           //concave to convex
 				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
 			} else {                                                    //pb
 				aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
