@@ -171,7 +171,7 @@ bool testDisplayFreemanChain(const string &file)
   fst.close();
   
   
-  std::string filenameImage = testPath + "samples/contourS.gif";
+  std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
   LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
   image.shiftDepth(1);
   LibBoard::Board & board = aBoard;
@@ -181,6 +181,13 @@ bool testDisplayFreemanChain(const string &file)
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
+  
+#ifdef WITH_CAIRO
+  aBoard.saveCairo("testDisplayFC-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.png", DGtalBoard::CairoPNG, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.ps", DGtalBoard::CairoPS, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.svg", DGtalBoard::CairoSVG, Board::BoundingBox, 5000);
+#endif
   
   return true;
 }

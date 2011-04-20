@@ -20,6 +20,8 @@
 #include <vector>
 #include <sstream>
 
+#include <assert.h>
+
 #ifndef M_PI
 #define M_PI		3.14159265358979323846	/* pi */
 #endif
@@ -640,13 +642,14 @@ Image::flushCairo( cairo_t *cr,
   cairo_save (cr);
 
     image = cairo_image_surface_create_from_png (_filename.c_str());
+    assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
     w = cairo_image_surface_get_width (image);
     h = cairo_image_surface_get_height (image);
 
     // tr
     cairo_translate (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ));
     //cairo_scale (cr, transform.scale( _path[1].x - _path[0].x )/w, transform.scale( _path[0].y - _path[3].y )/h);
-	cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
+    cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
     // tr
 
     cairo_set_source_surface (cr, image, 0, 0);
@@ -908,18 +911,24 @@ Arrow::flushCairo( cairo_t *cr,
       cairo_close_path (cr);
 
       if ( filled() )
-	cairo_fill_preserve (cr);
+	if ( _penColor != Color::None )
+	  cairo_fill_preserve (cr);
+	else
+	  cairo_fill (cr);
       
       //
       
-      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-      
-      cairo_set_line_width (cr, _lineWidth);
-      cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
-      cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
-      setCairoDashStyle (cr, SolidStyle);
+      if ( _penColor != Color::None )
+      {
+	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+	
+	cairo_set_line_width (cr, _lineWidth);
+	cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
+	cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
+	setCairoDashStyle (cr, SolidStyle);
 
-      cairo_stroke (cr);
+	cairo_stroke (cr);
+      }
     
     cairo_restore (cr);
 }
@@ -1161,11 +1170,14 @@ Ellipse::flushCairo( cairo_t *cr,
     cairo_arc (cr, 0, 0, 1, 0, 2*M_PI);
     
     if ( filled() )
-      cairo_fill_preserve (cr);
+      if ( _penColor != Color::None )
+	cairo_fill_preserve (cr);
+      else
+	cairo_fill (cr);
     
     //
     
-    //if ( _penColor != Color::None )
+    if ( _penColor != Color::None )
     {
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
   
@@ -1336,11 +1348,14 @@ Circle::flushCairo( cairo_t *cr,
 	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
 	
 	if ( filled() )
-	  cairo_fill_preserve (cr);
+	  if ( _penColor != Color::None )
+	    cairo_fill_preserve (cr);
+	  else
+	    cairo_fill (cr);
 	
 	//
 	
-	//if ( _penColor != Color::None )
+	if ( _penColor != Color::None )
 	{
 	  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
       
@@ -1546,11 +1561,14 @@ Polyline::flushCairo( cairo_t *cr,
 	cairo_close_path (cr);
       
       if ( filled() )
-	cairo_fill_preserve (cr);
+	if ( _penColor != Color::None )
+	  cairo_fill_preserve (cr);
+	else
+	  cairo_fill (cr);
       
       //
       
-      //if ( _penColor != Color::None )
+      if ( _penColor != Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 	
@@ -1746,11 +1764,14 @@ Rectangle::flushCairo( cairo_t *cr,
       }
       
       if ( filled() )
-	cairo_fill_preserve (cr);
+	if ( _penColor != Color::None )
+	  cairo_fill_preserve (cr);
+	else
+	  cairo_fill (cr);
       
       //
       
-      //if ( _penColor != Color::None )
+      if ( _penColor != Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 	
