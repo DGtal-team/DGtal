@@ -71,21 +71,21 @@ void createList()
   shapesParam4.push_back("");
  
   shapes2D.push_back("cube");
-  shapesDesc.push_back("Hypercube in nD.");
+  shapesDesc.push_back("Hypercube.");
   shapesParam1.push_back("--width");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("lpball");
-  shapesDesc.push_back("Ball for the l_power metric in nD.");
+  shapesDesc.push_back("Ball for the l_power metric.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("--power");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("flower");
-  shapesDesc.push_back("Flower in dimension 2 only.");
+  shapesDesc.push_back("Flower with k petals.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("--smallradius");
   shapesParam3.push_back("--k");
@@ -100,7 +100,7 @@ void displayList()
   for(unsigned int i=0; i<shapes2D.size(); ++i)
     trace.info()<<"\t"<<shapes2D[i]<<"\t"
 		<<shapesDesc[i]<<std::endl
-		<<"\t\tparameter(s): "
+		<<"\t\tRequired parameter(s): "
 		<< shapesParam1[i]<<" "
       		<< shapesParam2[i]<<" "
       		<< shapesParam3[i]<<" "
@@ -188,8 +188,8 @@ int main( int argc, char** argv )
     ("help,h", "display this message")
     ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
-    ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
-    ("smallradius",  po::value<unsigned int>()->default_value(5), "Small radius of the shape" )
+    ("radius,R",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
+    ("smallradius,r",  po::value<unsigned int>()->default_value(5), "Small radius of the shape" )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
@@ -204,7 +204,7 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
-		  << "\tshapeGenerator [-hdlrwpf] --shape <shapeName> --output <outputBasename>"<<std::endl
+		  << "\tshapeGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
 		  << general_opt << "\n";
       return 0;
     }
