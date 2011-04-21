@@ -127,13 +127,22 @@ struct Exporter
     
     Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255);
     
-    if (outputFormat == "pgm")
-      PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
-    else
-      {
-	trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-	exit(1);
-      }
+    if (Set::Domain::dimension == 2)
+      if  (outputFormat == "pgm")
+	PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
+      else
+	{
+	  trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
+	  exit(1);
+	}
+    /*  else
+      if  (outputFormat == "pgm3d")
+		PNMWriter<Image,Gray>::exportPGM3D(outputName+"."+outputFormat,image,0,255);
+      else
+	{
+	  trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
+	  exit(1);
+	  }*/
   }
 };
 
@@ -154,13 +163,13 @@ int main( int argc, char** argv )
   general_opt.add_options()
     ("help,h", "display this message")
     ("dimension,d", po::value<unsigned int>()->default_value(2), "Dimension of the shape {2,3}") 
-    ("shape,s", po::value<std::string>(), "Shape type")
+    ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
     ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
     ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
-    ("power,p",   po::value<double>()->default_value(2.0), "Power of the shape" )
+    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
-    ("format,f",   po::value<string>(), "Output format {pgm, pgm3d, raw, vol, svg}" );
+    ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, pgm3d, raw, vol, svg}" );
   
   
   po::variables_map vm;
@@ -168,7 +177,8 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate shapes using DGtal library" << "Usage: " <<  " \n"
+      trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
+		  << "\tshapeGenerator [-hdlrwpf] --shape <shapeName> --output <outputBasename>"<<std::endl
 		  << general_opt << "\n";
       return 0;
     }
