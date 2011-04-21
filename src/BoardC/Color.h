@@ -20,7 +20,7 @@ class Color {
   
 public:
   
-  Color( unsigned char redValue, unsigned char  greenValue, unsigned char  blueValue,
+  Color( unsigned char redValue, unsigned char greenValue, unsigned char blueValue,
 	 unsigned char alphaValue = 255 )
     : _red(redValue),_green(greenValue),_blue(blueValue),_alpha(alphaValue) { }
     
@@ -79,7 +79,7 @@ private:
 };
 
 inline void
-Color::red( const unsigned char redValue )
+Color::red( unsigned char redValue )
 {
   _red = redValue;
 }

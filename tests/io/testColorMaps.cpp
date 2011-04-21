@@ -35,9 +35,8 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
+#include "DGtal/io/DGtalBoard.h"
 #include "Board/PSFonts.h"
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -59,10 +58,8 @@ void addColorMapSample( const char * name,
   board.translate( 0, 15 );
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setPenColor(Color::Black);
-#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
-    board.setFont( LibBoard::Fonts::Courier, 12 );
-    board.drawText( -150, 0, name );
-#endif
+    board.setFont( LibBoard::Fonts::Courier, 12 );	// todo with Cairo
+    board.drawText( -150, 0, name );			// todo with Cairo
     board.setPenColor(Color::None);
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
@@ -209,6 +206,10 @@ int main()
 		     board );
   
   board.saveEPS( "colormaps.eps" );
+  
+#ifdef WITH_CAIRO
+  board.saveCairo("colormaps-cairo.ps", DGtalBoard::CairoPS);
+#endif
 
   return ( res1 ) ? 0 : 1;
 }

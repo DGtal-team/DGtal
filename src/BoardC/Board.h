@@ -16,6 +16,7 @@
 #include "ShapeList.h"
 #include "Color.h"
 #include "Point.h"
+#include "PSFonts.h"
 
 namespace LibBoard {
 
@@ -209,6 +210,26 @@ public:
 		     int depthValue = -1 );
   
   /** 
+   * Changes the current font and font size.
+   *
+   * @param font The name of the font.
+   * @param fontSize The new font size. (The unit is 1pt = 1/72 in).
+   * @return The board itself.
+   */
+  Board & setFont( const Fonts::Font font, double fontSize );
+  
+  /** 
+   * Draws a string of text.
+   * 
+   * @param x The first coordinates of the lower left corner.
+   * @param y The second coordinates of the lower left corner.
+   * @param text The text. 
+   * @param depthValue The depth of the text.
+   */
+  void drawText( double x, double y, const std::string & str, 
+		 int depthValue = -1 );
+  
+  /** 
    * Save the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
@@ -277,12 +298,12 @@ protected:
     Shape::LineStyle lineStyle;		/**< The line style. */
     Shape::LineCap lineCap;	    	/**< The type of line extremities. */
     Shape::LineJoin lineJoin; 		/**< The type of line junction. */
-    //Fonts::Font font;           	/**< The font. */
-    //double fontSize;	   	        /**< The font size. */
+    Fonts::Font font;           	/**< The font. */
+    double fontSize;	   	        /**< The font size. */
     double unitFactor;		    	/**< The factor to be applied to arguments of the drawSomething() family. */
     State();
     // TODO * 3
-    //double unit( const double & x ) { return x * unitFactor; }
+    double unit( const double & x ) { return x * unitFactor; }
     //Point unit( const Point & p ) { return Point( p.x * unitFactor, p.y * unitFactor); }
     //void unit( Shape & shape ) {  shape.scaleAll( unitFactor ); }
   };

@@ -171,7 +171,7 @@ bool testDisplayFreemanChain(const string &file)
   fst.close();
   
 #ifndef _BOARDCAIRO_BOARD_H_ // temp MT
-  std::string filenameImage = testPath + "samples/contourS.gif";
+  std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
   LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
   image.shiftDepth(1);
   LibBoard::Board & board = aBoard;
