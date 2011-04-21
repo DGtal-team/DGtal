@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Circle2D.h
+ * @file Ball2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/04/12
  *
- * Header file for module Circle2D.cpp
+ * Header file for module Ball2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Circle2D_RECURSES)
-#error Recursive header files inclusion detected in Circle2D.h
-#else // defined(Circle2D_RECURSES)
+#if defined(Ball2D_RECURSES)
+#error Recursive header files inclusion detected in Ball2D.h
+#else // defined(Ball2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Circle2D_RECURSES
+#define Ball2D_RECURSES
 
-#if !defined Circle2D_h
+#if !defined Ball2D_h
 /** Prevents repeated inclusion of headers. */
-#define Circle2D_h
+#define Ball2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,15 +50,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Circle2D
+  // template class Ball2D
   /**
-   * Description of template class 'Circle2D' <p>
+   * Description of template class 'Ball2D' <p>
    * \brief Aim: Model of the concept StarShaped
    * represents any circle in the plane.
    *
    */
   template <typename TSpace>
-  class Circle2D:  public StarShaped2D<TSpace>
+  class Ball2D:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -71,7 +71,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Circle2D();
+    ~Ball2D();
     
     /**
      * Constructor. 
@@ -79,21 +79,21 @@ namespace DGtal
      * @param y0 the y-coordinate of the circle center.
      * @param r the radius of the circle.
      */
-    Circle2D( const double x0, const double y0, const double r );
+    Ball2D( const double x0, const double y0, const double r );
 
     /**
      * Constructor. 
      * @param aPoint the circle center.
      * @param r the radius of the circle.
      */
-    Circle2D(const RealPoint2D &aPoint, const double r);
+    Ball2D(const RealPoint2D &aPoint, const double r);
 
     /**
      * Constructor. 
      * @param aPoint the circle center.
      * @param r the radius of the circle.
      */
-    Circle2D(const Point &aPoint, const double r);
+    Ball2D(const Point &aPoint, const double r);
 
     
   // ------------- Implementation of 'StarShaped' services ------------------
@@ -194,7 +194,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    Circle2D();
+    Ball2D();
 
   private:
 
@@ -203,7 +203,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  Circle2D ( const Circle2D & other );
+    //  Ball2D ( const Ball2D & other );
 
     /**
      * Assignment.
@@ -211,35 +211,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Circle2D & operator= ( const Circle2D & other );
+    Ball2D & operator= ( const Ball2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Circle2D
+  }; // end of class Ball2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Circle2D'.
+   * Overloads 'operator<<' for displaying objects of class 'Ball2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Circle2D' to write.
+   * @param object the object of class 'Ball2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Circle2D<T> & object );
+  operator<< ( std::ostream & out, const Ball2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/Circle2D.ih"
+#include "DGtal/helpers/parametricShapes/Ball2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Circle2D_h
+#endif // !defined Ball2D_h
 
-#undef Circle2D_RECURSES
-#endif // else defined(Circle2D_RECURSES)
+#undef Ball2D_RECURSES
+#endif // else defined(Ball2D_RECURSES)

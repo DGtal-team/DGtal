@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/parametricShapes/Circle2D.h"
+#include "DGtal/helpers/parametricShapes/Ball2D.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
@@ -64,7 +64,7 @@ bool testParametricShape()
   Z2i::DigitalSet set(domain);
   
   Shapes<Z2i::Domain>::shaper( set,
-			       Circle2D<Z2i::Space>( c, 10));
+			       Ball2D<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("parametricball.svg");
   

@@ -46,6 +46,9 @@
 #include "DGtal/helpers/implicitShapes/ImplicitNorm1Ball.h"
 #include "DGtal/helpers/implicitShapes/ImplicitHyperCube.h"
 #include "DGtal/helpers/implicitShapes/ImplicitRoundedHyperCube.h"
+#include "DGtal/helpers/parametricShapes/Ball2D.h"
+#include "DGtal/helpers/parametricShapes/Flower2D.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

@@ -58,6 +58,7 @@ std::vector<std::string> shapesDesc;
 std::vector<std::string> shapesParam1;
 std::vector<std::string> shapesParam2;
 std::vector<std::string> shapesParam3;
+std::vector<std::string> shapesParam4;
 
 void createList()
 {
@@ -66,18 +67,29 @@ void createList()
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
+  shapesParam4.push_back("");
  
   shapesND.push_back("cube");
   shapesDesc.push_back("Hypercube in nD.");
   shapesParam1.push_back("--width");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
-
+  shapesParam4.push_back("");
+  
   shapesND.push_back("lpball");
   shapesDesc.push_back("Ball for the l_power metric in nD.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("--power");
   shapesParam3.push_back("");
+  shapesParam4.push_back("");
+  
+  shapesND.push_back("flower");
+  shapesDesc.push_back("Flower in dimension 2 only.");
+  shapesParam1.push_back("--radius");
+  shapesParam2.push_back("--smallradius");
+  shapesParam3.push_back("--k");
+  shapesParam4.push_back("--phi");
+
 
 }
 
@@ -90,7 +102,8 @@ void displayList()
 		<<"\t\tparameter(s): "
 		<< shapesParam1[i]<<" "
       		<< shapesParam2[i]<<" "
-      		<< shapesParam3[i]<<std::endl;
+      		<< shapesParam3[i]<<" "
+      		<< shapesParam4[i]<<std::endl;
   
 }
 
@@ -166,6 +179,9 @@ int main( int argc, char** argv )
     ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
     ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
+    ("smallradius",  po::value<unsigned int>()->default_value(5), "Small radius of the shape" )
+    ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
+    ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
@@ -253,6 +269,28 @@ int main( int argc, char** argv )
 	  Z2i::DigitalSet aSet(domain);
 	  
 	  Shapes<Z2i::Domain>::shaper(aSet, ball);
+	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	  return 0;
+	}
+      if (id ==3)
+	{
+	  if (not(vm.count("smallradius"))) missingParam("--smallradius");
+	  if (not(vm.count("radius"))) missingParam("--radius");
+	  if (not(vm.count("k"))) missingParam("--k");
+	  if (not(vm.count("phi"))) missingParam("--phi");
+
+	  double radius = vm["radius"].as<unsigned int>();
+	  double smallradius = vm["smallradius"].as<unsigned int>();
+	  unsigned int k = vm["k"].as<unsigned int>();
+	  double phi = vm["power"].as<double>();
+	 
+	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+  
+	  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+	  Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+	  Z2i::DigitalSet aSet(domain);
+	  
+	  Shapes<Z2i::Domain>::shaper(aSet, flower);
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	  return 0;
 	}
