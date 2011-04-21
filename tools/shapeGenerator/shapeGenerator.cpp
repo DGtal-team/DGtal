@@ -36,6 +36,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 
 #include "DGtal/io/writers/PNMWriter.h"
@@ -118,11 +119,13 @@ struct Exporter
   typedef GrayscaleColorMap<unsigned char> Gray;
 
   
-  static void save(const Set &aSet, 
-		   const std::string outputName, 
-		   const std::string outputFormat)
+  static
+  void save(const Set &aSet, 
+	    const std::string outputName, 
+	    const std::string outputFormat)
   {
-    Image  image = ImageFromSet<Image>::create<Set>(aSet, 255);
+    
+    Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255);
     
     if (outputFormat == "PGM")
       PNMWriter<Image,Gray>::exportPGM(outputName,image,0,255);
