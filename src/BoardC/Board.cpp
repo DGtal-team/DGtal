@@ -7,7 +7,18 @@
  * @brief  
  */
 
+#include <algorithm>
+
 #include "Board.h"
+
+#ifdef WITH_CAIRO
+// cairo
+#include <cairo.h>
+#include <cairo-pdf.h>
+#include <cairo-ps.h>
+#include <cairo-svg.h>
+// cairo
+#endif
 
 namespace {
   const float pageSizes[3][2] = { { 0.0f, 0.0f }, // BoundingBox
@@ -26,8 +37,8 @@ Board::State::State()
   lineStyle = Shape::SolidStyle;
   lineCap = Shape::ButtCap;
   lineJoin = Shape::MiterJoin;
-  //font = Fonts::TimesRoman;
-  //fontSize = 11.0;
+  font = Fonts::TimesRoman;
+  fontSize = 11.0;
   unitFactor = 1.0;
 }
 
@@ -39,7 +50,7 @@ Board::Board( const Color & bgColor )
 void
 Board::clear( const Color & color )
 {
-  // TODO: ShapeList::clear();
+  ShapeList::clear();
   _backgroundColor = color;
 }
 
@@ -129,8 +140,7 @@ void
 Board::drawLine( double x1, double y1, double x2, double y2, 
 		 int depthValue /* = -1 */  )
 {
-  // TODO
-  /*if ( depthValue != -1 ) 
+  if ( depthValue != -1 ) 
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
 				 _state.penColor, _state.lineWidth,
@@ -139,7 +149,7 @@ Board::drawLine( double x1, double y1, double x2, double y2,
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
 				 _state.unit(x2), _state.unit(y2),
 				 _state.penColor, _state.lineWidth,
-				 _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );*/
+				 _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
 void
@@ -150,7 +160,7 @@ Board::fillCircle( double x, double y,
   // TODO
   /*int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
-				 Color::None, _state.penColor,
+				 Color::None, _state.penColor, // MT: _state.fillColor ???
 				 0.0f, _state.lineStyle, d ) );*/
 }
 
@@ -175,12 +185,12 @@ Board::drawArrow( double x1, double y1, double x2, double y2,
   /*if ( depthValue != -1 )
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filledArrow ? _state.penColor : Color::None,
+				  _state.penColor, filledArrow ? _state.penColor : Color::None, // MT: _state.fillColor ???
 				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, depthValue ) );
   else
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filledArrow ? _state.penColor : Color::None,
+				  _state.penColor, filledArrow ? _state.penColor : Color::None, // MT: _state.fillColor ???
 				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );*/
 }
 
@@ -226,6 +236,23 @@ Board::drawPolyline( const std::vector<Point> & points,
 				   d ) );*/
 }
 
+Board &
+Board::setFont( const Fonts::Font font, double fontSize )
+{
+  _state.font = font;
+  _state.fontSize = fontSize;
+  return *this;
+}
+
+void
+Board::drawText( double x, double y, const std::string & str, int depthValue /* = -1 */ )
+{
+  // TODO
+  /*int d = (depthValue != -1) ? depthValue : _nextDepth--;
+  _shapes.push_back( new Text( _state.unit(x), _state.unit(y), str,
+			       _state.font, _state.fontSize, _state.penColor, d ) );*/
+}
+
 void
 Board::saveSVG( const char * filename, PageSize size, double margin ) const
 {
@@ -248,26 +275,25 @@ Board::saveFIG( const char * filename, PageSize size, double margin ) const
 void
 Board::saveCairo( const char * filename, CairoType type, PageSize size, double margin ) const
 {
-  // TODO: saveCairo( filename, type, pageSizes[size][0], pageSizes[size][1], margin );
+  saveCairo( filename, type, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
 void
 Board::saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin ) const
 {
-  // TODO: 
-#if(0)
   cairo_surface_t *surface;
   cairo_t *cr;
   
   double cairoWidth, cairoHeight;
   
-  TransformCairo transform;
+  // TODO: TransformCairo transform;
   Rect box = boundingBox();
 
-  bool clipping = _clippingPath.size() > 2;
+  // TODO:
+  /*bool clipping = _clippingPath.size() > 2;
   if ( clipping )
-    box = box && _clippingPath.boundingBox();
-  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
+    box = box && _clippingPath.boundingBox();*/
+  // TODO: transform.setBoundingBox( box, pageWidth, pageHeight, margin );
   
   if ( pageWidth > 0 && pageHeight > 0 )
   {
@@ -302,10 +328,11 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   //temp: http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
       
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
+  // TODO:
+  /*if ( _backgroundColor != Color::None ) { 
     Rectangle r( box, Color::None, _backgroundColor, 0.0 );
     r.flushCairo( cr, transform );
-  }
+  }*/
   
   // Draw the shapes.
   std::vector< Shape* > shapes = _shapes;
@@ -313,7 +340,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   std::vector< Shape* >::const_iterator i = shapes.begin();
   std::vector< Shape* >::const_iterator end = shapes.end();
   while ( i != end ) {
-    (*i)->flushCairo( cr, transform );
+    (*i)->flushCairo( cr/*, transform*/ ); // TODO
     ++i;
   }
   
@@ -322,7 +349,6 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
       
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
-#endif
 }
 #endif
 

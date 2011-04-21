@@ -5,4 +5,5 @@ SET(BOARD_SRC ${BOARD_SRC}
   Board/Shapes
   Board/Color
   Board/Point
-  Board/Rect)
+  Board/Rect
+  Board/PSFonts)
