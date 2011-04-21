@@ -39,9 +39,44 @@
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 
+#include <vector>
+#include <string>
+
 using namespace DGtal;
 
+std::vector<string> shapesND;
+std::vector<string> shapesDesc;
+std::vector<string> shapesParam1;
+std::vector<string> shapesParam2;
+std::vector<string> shapesParam3;
 
+void createList()
+{
+  shapesND.push_back("ball");
+  shapesDesc.push_back("Ball for the Euclidean metric.");
+  shapesParam1("-radius");
+  shapesParam2("");
+  shapesParam3("");
+ 
+  shapesND.push_back("cube");
+  shapesDesc.push_back("hypercube in nD.");
+  shapesParam1("-width");
+  shapesParam2("");
+  shapesParam3("");
+
+}
+
+void displayList()
+{
+  trace.emphase()<<"nD Shapes:"<<std::endl;
+  for(unsigned int i=0; i<shapesND.size(); ++i)
+    trace.info()<<"\t"<<shapesND[i]<<"\t parameter(s): "
+		<< shapesParam1[i]<<" "
+      		<< shapesParam2[i]<<" "
+      		<< shapesParam3[i]<<" "
+		<< " Description: "<<shapesDesc[i]<<endl;
+  
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
@@ -53,9 +88,10 @@ int main( int argc, char** argv )
   general_opt.add_options()
     ("help,h", "display this message")
     ("dimension,d", po::value<unsigned int>()->default_value(2), "Dimension of the shape") 
-    ("shape,i", po::value<std::string>(), "Shape type")
+    ("shape,s", po::value<std::string>(), "Shape type")
     ("list,l",  "List all available shapes")
-    ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius or Halfwidth of the shape" )
+    ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
+    ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the shape" );
  
   po::variables_map vm;
@@ -68,6 +104,7 @@ int main( int argc, char** argv )
       return 0;
     }
 
+  
 
 
   
