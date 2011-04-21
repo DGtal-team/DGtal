@@ -63,20 +63,20 @@ void createList()
 {
   shapesND.push_back("ball");
   shapesDesc.push_back("Ball for the Euclidean metric.");
-  shapesParam1.push_back("-radius");
+  shapesParam1.push_back("--radius");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
  
   shapesND.push_back("cube");
   shapesDesc.push_back("Hypercube in nD.");
-  shapesParam1.push_back("-width");
+  shapesParam1.push_back("--width");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
 
   shapesND.push_back("lpball");
   shapesDesc.push_back("Ball for the l_power metric in nD.");
-  shapesParam1.push_back("-radius");
-  shapesParam2.push_back("-power");
+  shapesParam1.push_back("--radius");
+  shapesParam2.push_back("--power");
   shapesParam3.push_back("");
 
 }
@@ -127,8 +127,8 @@ struct Exporter
     
     Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255);
     
-    if (outputFormat == "PGM")
-      PNMWriter<Image,Gray>::exportPGM(outputName,image,0,255);
+    if (outputFormat == "pgm")
+      PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
     else
       {
 	trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
@@ -136,6 +136,13 @@ struct Exporter
       }
   }
 };
+
+void missingParam(std::string param)
+{
+  trace.error() <<" Parameter: "<<param<<" is required..";
+  trace.info()<<std::endl;
+  exit(1);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
@@ -153,7 +160,7 @@ int main( int argc, char** argv )
     ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the shape" )
     ("output,o", po::value<string>(), "Basename of the output file")
-    ("format,f",   po::value<string>(), "Output format {PGM, PGM3D, RAW, VOL, SVG}" );
+    ("format,f",   po::value<string>(), "Output format {pgm, pgm3d, raw, vol, svg}" );
   
   
   po::variables_map vm;
@@ -177,8 +184,13 @@ int main( int argc, char** argv )
 
   
   std::string shapeName = vm["shape"].as<std::string>();
+  
+  if (not(vm.count("output"))) missingParam("--output");
   std::string outputName = vm["output"].as<std::string>();
+ 
+  if (not(vm.count("format"))) missingParam("--format");
   std::string outputFormat = vm["format"].as<std::string>();
+  
   unsigned int dimension = vm["dimension"].as<unsigned int>();
   //unsigned int power = vm["power"].as<unsigned int>();
   //unsigned int width = vm["width"].as<unsigned int>();
@@ -189,6 +201,8 @@ int main( int argc, char** argv )
     {
       if (id ==0)
 	{
+	  if (not(vm.count("radius"))) missingParam("--radius");
+
 	  unsigned int radius = vm["radius"].as<unsigned int>();
 	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
   
@@ -197,8 +211,40 @@ int main( int argc, char** argv )
 	  Z2i::DigitalSet aSet(domain);
 	  
 	  Shapes<Z2i::Domain>::shaper(aSet, ball);
-	  trace.info() <<aSet<<std::endl;
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	  return 0;
+	}
+      if (id ==1)
+	{
+	  if (not(vm.count("width"))) missingParam("--width");
+
+	  unsigned int width = vm["width"].as<unsigned int>();
+	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+  
+	  ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
+	  Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
+	  Z2i::DigitalSet aSet(domain);
+	  
+	  Shapes<Z2i::Domain>::shaper(aSet, object);
+	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	  return 0;
+	}
+      if (id ==2)
+	{
+	  if (not(vm.count("power"))) missingParam("--power");
+	  if (not(vm.count("radius"))) missingParam("--radius");
+
+	  unsigned int radius = vm["radius"].as<unsigned int>();
+	  unsigned int power = vm["power"].as<double>();
+	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+  
+	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
+	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
+	  Z2i::DigitalSet aSet(domain);
+	  
+	  Shapes<Z2i::Domain>::shaper(aSet, ball);
+	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	  return 0;
 	}
     }
 }
