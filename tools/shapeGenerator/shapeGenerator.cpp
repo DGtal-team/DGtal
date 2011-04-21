@@ -42,6 +42,7 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/writers/VolWriter.h"
+#include "DGtal/io/DGtalBoard.h"
 
 
 #include <boost/program_options/options_description.hpp>
@@ -53,7 +54,7 @@
 
 using namespace DGtal;
 
-std::vector<std::string> shapesND;
+std::vector<std::string> shapes2D;
 std::vector<std::string> shapesDesc;
 std::vector<std::string> shapesParam1;
 std::vector<std::string> shapesParam2;
@@ -62,28 +63,28 @@ std::vector<std::string> shapesParam4;
 
 void createList()
 {
-  shapesND.push_back("ball");
+  shapes2D.push_back("ball");
   shapesDesc.push_back("Ball for the Euclidean metric.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
  
-  shapesND.push_back("cube");
+  shapes2D.push_back("cube");
   shapesDesc.push_back("Hypercube in nD.");
   shapesParam1.push_back("--width");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
-  shapesND.push_back("lpball");
+  shapes2D.push_back("lpball");
   shapesDesc.push_back("Ball for the l_power metric in nD.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("--power");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
-  shapesND.push_back("flower");
+  shapes2D.push_back("flower");
   shapesDesc.push_back("Flower in dimension 2 only.");
   shapesParam1.push_back("--radius");
   shapesParam2.push_back("--smallradius");
@@ -95,9 +96,9 @@ void createList()
 
 void displayList()
 {
-  trace.emphase()<<"nD Shapes:"<<std::endl;
-  for(unsigned int i=0; i<shapesND.size(); ++i)
-    trace.info()<<"\t"<<shapesND[i]<<"\t"
+  trace.emphase()<<"2D Shapes:"<<std::endl;
+  for(unsigned int i=0; i<shapes2D.size(); ++i)
+    trace.info()<<"\t"<<shapes2D[i]<<"\t"
 		<<shapesDesc[i]<<std::endl
 		<<"\t\tparameter(s): "
 		<< shapesParam1[i]<<" "
@@ -113,10 +114,10 @@ unsigned int checkAndRetrunIndex(const std::string &shapeName)
 {
   unsigned int pos=0;
   
-  while ((pos < shapesND.size()) && (shapesND[pos] != shapeName))
+  while ((pos < shapes2D.size()) && (shapes2D[pos] != shapeName))
     pos++;
   
-  if (pos == shapesND.size())
+  if (pos == shapes2D.size())
     {
       trace.error() << "The specified shape has not found.";
       trace.info()<<std::endl;
@@ -144,18 +145,28 @@ struct Exporter
       if  (outputFormat == "pgm")
 	PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
       else
-	{
-	  trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-	  exit(1);
-	}
-    /*  else
-      if  (outputFormat == "pgm3d")
-		PNMWriter<Image,Gray>::exportPGM3D(outputName+"."+outputFormat,image,0,255);
-      else
-	{
-	  trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-	  exit(1);
-	  }*/
+	if (outputFormat == "raw")
+	  RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
+	else
+	  if (outputFormat == "svg")
+	    {
+	      DGtalBoard board;
+	      board << aSet;
+	      board.saveSVG((outputName+"."+outputFormat).c_str());
+	    }
+	  else
+	    if (outputFormat == "pdf")
+	      {
+		DGtalBoard board;
+		board << aSet;
+		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
+		
+	      }
+	    else
+	      {
+		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
+		exit(1);
+	      }
   }
 };
 
@@ -175,7 +186,6 @@ int main( int argc, char** argv )
   po::options_description general_opt("Allowed options are: ");
   general_opt.add_options()
     ("help,h", "display this message")
-    ("dimension,d", po::value<unsigned int>()->default_value(2), "Dimension of the shape {2,3}") 
     ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
     ("radius,r",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
@@ -185,7 +195,7 @@ int main( int argc, char** argv )
     ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
-    ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, pgm3d, raw, vol, svg}" );
+    ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, raw, svg, pdf}" );
   
   
   po::variables_map vm;
@@ -216,54 +226,50 @@ int main( int argc, char** argv )
  
   if (not(vm.count("format"))) missingParam("--format");
   std::string outputFormat = vm["format"].as<std::string>();
-  
-  unsigned int dimension = vm["dimension"].as<unsigned int>();
-  //unsigned int power = vm["power"].as<unsigned int>();
-  //unsigned int width = vm["width"].as<unsigned int>();
-  
+    
   unsigned int id = checkAndRetrunIndex(shapeName);
   
-  if (dimension == 2)
+  if (id ==0)
     {
-      if (id ==0)
-	{
-	  if (not(vm.count("radius"))) missingParam("--radius");
-
-	  unsigned int radius = vm["radius"].as<unsigned int>();
-	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
-  
-	  ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
-	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
-	  Z2i::DigitalSet aSet(domain);
-	  
-	  Shapes<Z2i::Domain>::shaper(aSet, ball);
-	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
-	  return 0;
+      if (not(vm.count("radius"))) missingParam("--radius");
+      
+      unsigned int radius = vm["radius"].as<unsigned int>();
+      typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+      
+      ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
+      Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
+      Z2i::DigitalSet aSet(domain);
+      
+      Shapes<Z2i::Domain>::shaper(aSet, ball);
+      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+      return 0;
+    }
+  else
+    if (id ==1)
+      {
+	if (not(vm.count("width"))) missingParam("--width");
+	
+	unsigned int width = vm["width"].as<unsigned int>();
+	typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+	
+	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
+	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
+	Z2i::DigitalSet aSet(domain);
+	
+	Shapes<Z2i::Domain>::shaper(aSet, object);
+	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	return 0;
 	}
-      if (id ==1)
-	{
-	  if (not(vm.count("width"))) missingParam("--width");
-
-	  unsigned int width = vm["width"].as<unsigned int>();
-	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
-  
-	  ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
-	  Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
-	  Z2i::DigitalSet aSet(domain);
-	  
-	  Shapes<Z2i::Domain>::shaper(aSet, object);
-	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
-	  return 0;
-	}
+    else
       if (id ==2)
 	{
 	  if (not(vm.count("power"))) missingParam("--power");
 	  if (not(vm.count("radius"))) missingParam("--radius");
-
+	  
 	  unsigned int radius = vm["radius"].as<unsigned int>();
 	  unsigned int power = vm["power"].as<double>();
 	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
-  
+	  
 	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
 	  Z2i::DigitalSet aSet(domain);
@@ -272,20 +278,21 @@ int main( int argc, char** argv )
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	  return 0;
 	}
-      if (id ==3)
+      else
+	//if (id ==3)
 	{
 	  if (not(vm.count("smallradius"))) missingParam("--smallradius");
 	  if (not(vm.count("radius"))) missingParam("--radius");
 	  if (not(vm.count("k"))) missingParam("--k");
 	  if (not(vm.count("phi"))) missingParam("--phi");
-
+	  
 	  double radius = vm["radius"].as<unsigned int>();
 	  double smallradius = vm["smallradius"].as<unsigned int>();
 	  unsigned int k = vm["k"].as<unsigned int>();
 	  double phi = vm["power"].as<double>();
-	 
+	  
 	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
-  
+	  
 	  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
 	  Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 	  Z2i::DigitalSet aSet(domain);
@@ -294,5 +301,4 @@ int main( int argc, char** argv )
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	  return 0;
 	}
-    }
 }
