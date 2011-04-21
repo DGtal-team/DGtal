@@ -41,15 +41,21 @@ template <typename Set>
 inline
 Image 
 DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
+				   const bool addBorder,
 				   typename Set::ConstIterator itBegin, 
 				   typename Set::ConstIterator itEnd)
 {
   // BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
  
   typename Set::Point lower,upper;
+  typename Set::Point dec;
+  
+  if (addBorder)
+      dec = Set::Point::diagonal(1);
  
   aSet.computeBoundingBox(lower,upper);
-  Image image(lower,upper);
+
+  Image image(lower - dec ,upper + dec);
   append(image,aSet,defaultValue, itBegin, itEnd);
   
   return image;

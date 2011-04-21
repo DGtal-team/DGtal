@@ -125,7 +125,7 @@ struct Exporter
 	    const std::string outputFormat)
   {
     
-    Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255);
+    Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255, true);
     
     if (Set::Domain::dimension == 2)
       if  (outputFormat == "pgm")
