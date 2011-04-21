@@ -30,17 +30,13 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/writers/RawWriter.h"
-#include "DGtal/io/writers/PNMWriter.h"
 
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
@@ -116,25 +112,27 @@ unsigned int checkAndRetrunIndex(const std::string &shapeName)
   return pos;
 }
 
-template<typename Set, typename Image>
-void export(const Set &aSet, const std::string &outputName, 
-	    const std::string &outputFormat)
-{
-  typename Set::Point a,b;
+template <typename Set, typename Image>
+struct Exporter
+{ 
+  typedef GrayscaleColorMap<unsigned char> Gray;
+
   
-  aSet.computeBoundingBox(a,b);
-  Image image(a,b);
-  
-  ImageFromSet<Image>::append<Set>(image, aSet, 255);
-  
-  if (outputFormat == "PGM")
-    PNMWriter<Image,Hue>::exportPGM(outputName,image,0,255);
-  else
-    {
-      trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-      exit(1);
-    }
-}
+  static void save(const Set &aSet, 
+		   const std::string outputName, 
+		   const std::string outputFormat)
+  {
+    Image  image = ImageFromSet<Image>::create<Set>(aSet, 255);
+    
+    if (outputFormat == "PGM")
+      PNMWriter<Image,Gray>::exportPGM(outputName,image,0,255);
+    else
+      {
+	trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
+	exit(1);
+      }
+  }
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
@@ -189,14 +187,15 @@ int main( int argc, char** argv )
       if (id ==0)
 	{
 	  unsigned int radius = vm["radius"].as<unsigned int>();
-	  
+	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
+  
 	  ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
 	  Z2i::DigitalSet aSet(domain);
 	  
 	  Shapes<Z2i::Domain>::shaper(aSet, ball);
 	  trace.info() <<aSet<<std::endl;
-	  export(aSet,outputName,outputFormat);
+	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	}
     }
 }
