@@ -96,6 +96,13 @@ void createList()
   shapesParam3.push_back("--k");
   shapesParam4.push_back("--phi");
 
+  shapes2D.push_back("ngon");
+  shapesDesc.push_back("Regular k-gon.");
+  shapesParam1.push_back("--radius");
+  shapesParam2.push_back("--k");
+  shapesParam3.push_back("--phi");
+  shapesParam4.push_back("");
+
 
 }
 
@@ -209,7 +216,7 @@ int main( int argc, char** argv )
     ("help,h", "display this message")
     ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
-    ("radius,R",  po::value<unsigned int>()->default_value(10), "Radius of the shape" )
+    ("radius,R",  po::value<unsigned int>(), "Radius of the shape" )
     ("smallradius,r",  po::value<unsigned int>()->default_value(5), "Small radius of the shape" )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
@@ -297,23 +304,41 @@ int main( int argc, char** argv )
 	  return 0;
 	}
       else
-	//if (id ==3)
-	{
-	  if (not(vm.count("smallradius"))) missingParam("--smallradius");
-	  if (not(vm.count("radius"))) missingParam("--radius");
-	  if (not(vm.count("k"))) missingParam("--k");
-	  if (not(vm.count("phi"))) missingParam("--phi");
-	  double radius = vm["radius"].as<unsigned int>();
-	  double smallradius = vm["smallradius"].as<unsigned int>();
-	  unsigned int k = vm["k"].as<unsigned int>();
-	  double phi = vm["power"].as<double>();
-	  
-	  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
-	  Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
-	  Z2i::DigitalSet aSet(domain);
-	  
+	if (id ==3)
+	  {
+	    if (not(vm.count("smallradius"))) missingParam("--smallradius");
+	    if (not(vm.count("radius"))) missingParam("--radius");
+	    if (not(vm.count("k"))) missingParam("--k");
+	    if (not(vm.count("phi"))) missingParam("--phi");
+	    double radius = vm["radius"].as<unsigned int>();
+	    double smallradius = vm["smallradius"].as<unsigned int>();
+	    unsigned int k = vm["k"].as<unsigned int>();
+	    double phi = vm["power"].as<double>();
+	    
+	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+	    Z2i::DigitalSet aSet(domain);
+	    
 	  Shapes<Z2i::Domain>::shaper(aSet, flower);
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	  return 0;
-	}
+	  }
+	else
+	  //if (id ==4)
+	  {
+	    if (not(vm.count("radius"))) missingParam("--radius");
+	    if (not(vm.count("k"))) missingParam("--k");
+	    if (not(vm.count("phi"))) missingParam("--phi");
+	    double radius = vm["radius"].as<unsigned int>();
+	    unsigned int k = vm["k"].as<unsigned int>();
+	    double phi = vm["power"].as<double>();
+	    
+	    NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
+	    Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
+	    Z2i::DigitalSet aSet(domain);
+	    
+	    Shapes<Z2i::Domain>::shaper(aSet, object);
+	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	    return 0;
+	  }
 }
