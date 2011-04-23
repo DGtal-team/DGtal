@@ -61,6 +61,11 @@ std::vector<std::string> shapesParam2;
 std::vector<std::string> shapesParam3;
 std::vector<std::string> shapesParam4;
 
+
+/** 
+ * Create the static list of shapes.
+ * 
+ */
 void createList()
 {
   shapes2D.push_back("ball");
@@ -94,6 +99,10 @@ void createList()
 
 }
 
+/** 
+ * Display the shape list with parameters.
+ * 
+ */
 void displayList()
 {
   trace.emphase()<<"2D Shapes:"<<std::endl;
@@ -109,7 +118,14 @@ void displayList()
 }
 
 
-
+/** 
+ * Check if a given shape is available. If not, we exist with an error.
+ * If it is, we return the corresponding index in the global vectors.
+ * 
+ * @param shapeName name of the shape to search.
+ * 
+ * @return index of the shape in the shape vectors.
+ */
 unsigned int checkAndRetrunIndex(const std::string &shapeName)
 {
   unsigned int pos=0;
@@ -170,6 +186,11 @@ struct Exporter
   }
 };
 
+/** 
+ * Missing parameter error message.
+ * 
+ * @param param 
+ */
 void missingParam(std::string param)
 {
   trace.error() <<" Parameter: "<<param<<" is required..";
@@ -218,7 +239,8 @@ int main( int argc, char** argv )
       return 0;
     }
 
-  
+
+  //Parse options
   std::string shapeName = vm["shape"].as<std::string>();
   
   if (not(vm.count("output"))) missingParam("--output");
@@ -227,14 +249,14 @@ int main( int argc, char** argv )
   if (not(vm.count("format"))) missingParam("--format");
   std::string outputFormat = vm["format"].as<std::string>();
     
+  //We check that the shape is known
   unsigned int id = checkAndRetrunIndex(shapeName);
+  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
   
   if (id ==0)
     {
       if (not(vm.count("radius"))) missingParam("--radius");
-      
       unsigned int radius = vm["radius"].as<unsigned int>();
-      typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
       
       ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
       Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
@@ -248,9 +270,7 @@ int main( int argc, char** argv )
     if (id ==1)
       {
 	if (not(vm.count("width"))) missingParam("--width");
-	
 	unsigned int width = vm["width"].as<unsigned int>();
-	typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
 	
 	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
 	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
@@ -265,10 +285,8 @@ int main( int argc, char** argv )
 	{
 	  if (not(vm.count("power"))) missingParam("--power");
 	  if (not(vm.count("radius"))) missingParam("--radius");
-	  
 	  unsigned int radius = vm["radius"].as<unsigned int>();
 	  unsigned int power = vm["power"].as<double>();
-	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
 	  
 	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
@@ -285,13 +303,10 @@ int main( int argc, char** argv )
 	  if (not(vm.count("radius"))) missingParam("--radius");
 	  if (not(vm.count("k"))) missingParam("--k");
 	  if (not(vm.count("phi"))) missingParam("--phi");
-	  
 	  double radius = vm["radius"].as<unsigned int>();
 	  double smallradius = vm["smallradius"].as<unsigned int>();
 	  unsigned int k = vm["k"].as<unsigned int>();
 	  double phi = vm["power"].as<double>();
-	  
-	  typedef ImageContainerBySTLVector<Z2i::Domain,unsigned char> Image;
 	  
 	  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
 	  Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
