@@ -48,6 +48,7 @@
 #include "DGtal/helpers/implicitShapes/ImplicitRoundedHyperCube.h"
 #include "DGtal/helpers/parametricShapes/Ball2D.h"
 #include "DGtal/helpers/parametricShapes/Flower2D.h"
+#include "DGtal/helpers/parametricShapes/NGon2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
