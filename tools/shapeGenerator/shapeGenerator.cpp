@@ -110,6 +110,12 @@ void createList()
   shapesParam3.push_back("--k");
   shapesParam4.push_back("--phi");
 
+  shapes2D.push_back("ellipse");
+  shapesDesc.push_back("Ellipse.");
+  shapesParam1.push_back("--axis1");
+  shapesParam2.push_back("--axis2");
+  shapesParam3.push_back("--phi");
+  shapesParam4.push_back("");
  
 
 }
@@ -224,11 +230,13 @@ int main( int argc, char** argv )
     ("help,h", "display this message")
     ("shape,s", po::value<std::string>(), "Shape name")
     ("list,l",  "List all available shapes")
-    ("radius,R",  po::value<unsigned int>(), "Radius of the shape" )
-    ("smallradius,r",  po::value<unsigned int>()->default_value(5), "Small radius of the shape" )
+    ("radius,R",  po::value<double>(), "Radius of the shape" )
+    ("axis1,A",  po::value<double>(), "Half big axis of the shape (ellipse)" )
+    ("axis2,a",  po::value<double>(), "Half small axis of the shape (ellipse)" )
+    ("smallradius,r",  po::value<double>()->default_value(5), "Small radius of the shape" )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
-    ("width,w",  po::value<unsigned int>()->default_value(10), "Width of the shape" )
+    ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
     ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, raw, svg, pdf}" );
@@ -271,7 +279,7 @@ int main( int argc, char** argv )
   if (id ==0)
     {
       if (not(vm.count("radius"))) missingParam("--radius");
-      unsigned int radius = vm["radius"].as<unsigned int>();
+      double radius = vm["radius"].as<double>();
       
       ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
       Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
@@ -285,7 +293,7 @@ int main( int argc, char** argv )
     if (id ==1)
       {
 	if (not(vm.count("width"))) missingParam("--width");
-	unsigned int width = vm["width"].as<unsigned int>();
+	double width = vm["width"].as<double>();
 	
 	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
 	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
@@ -300,7 +308,7 @@ int main( int argc, char** argv )
 	{
 	  if (not(vm.count("power"))) missingParam("--power");
 	  if (not(vm.count("radius"))) missingParam("--radius");
-	  unsigned int radius = vm["radius"].as<unsigned int>();
+	  double radius = vm["radius"].as<double>();
 	  unsigned int power = vm["power"].as<double>();
 	  
 	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
@@ -318,10 +326,10 @@ int main( int argc, char** argv )
 	    if (not(vm.count("radius"))) missingParam("--radius");
 	    if (not(vm.count("k"))) missingParam("--k");
 	    if (not(vm.count("phi"))) missingParam("--phi");
-	    double radius = vm["radius"].as<unsigned int>();
-	    double smallradius = vm["smallradius"].as<unsigned int>();
+	    double radius = vm["radius"].as<double>();
+	    double smallradius = vm["smallradius"].as<double>();
 	    unsigned int k = vm["k"].as<unsigned int>();
-	    double phi = vm["power"].as<double>();
+	    double phi = vm["phi"].as<double>();
 	    
 	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
 	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
@@ -337,9 +345,9 @@ int main( int argc, char** argv )
 	      if (not(vm.count("radius"))) missingParam("--radius");
 	      if (not(vm.count("k"))) missingParam("--k");
 	      if (not(vm.count("phi"))) missingParam("--phi");
-	      double radius = vm["radius"].as<unsigned int>();
+	      double radius = vm["radius"].as<double>();
 	      unsigned int k = vm["k"].as<unsigned int>();
-	      double phi = vm["power"].as<double>();
+	      double phi = vm["phi"].as<double>();
 	      
 	      NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
 	      Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
@@ -350,23 +358,41 @@ int main( int argc, char** argv )
 	      return 0;
 	    }
 	  else
-	    //	if (id ==3)
-	    {
-	      if (not(vm.count("smallradius"))) missingParam("--smallradius");
-	      if (not(vm.count("radius"))) missingParam("--radius");
-	      if (not(vm.count("k"))) missingParam("--k");
-	      if (not(vm.count("phi"))) missingParam("--phi");
-	      double radius = vm["radius"].as<unsigned int>();
-	      double smallradius = vm["smallradius"].as<unsigned int>();
-	      unsigned int k = vm["k"].as<unsigned int>();
-	      double phi = vm["power"].as<double>();
+	    if (id ==5)
+	      {
+		if (not(vm.count("smallradius"))) missingParam("--smallradius");
+		if (not(vm.count("radius"))) missingParam("--radius");
+		if (not(vm.count("k"))) missingParam("--k");
+		if (not(vm.count("phi"))) missingParam("--phi");
+		double radius = vm["radius"].as<double>();
+		double smallradius = vm["smallradius"].as<double>();
+		unsigned int k = vm["k"].as<unsigned int>();
+		double phi = vm["phi"].as<double>();
 	      
-	      Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
-	      Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
-	      Z2i::DigitalSet aSet(domain);
+		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+		Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+		Z2i::DigitalSet aSet(domain);
 	      
-	      Shapes<Z2i::Domain>::shaper(aSet, flower);
-	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
-	      return 0;
-	    } 
+		Shapes<Z2i::Domain>::shaper(aSet, flower);
+		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+		return 0;
+	      } 
+	    else
+	      //if (id ==6)
+	      {
+		if (not(vm.count("axis1"))) missingParam("--axis1");
+		if (not(vm.count("axis2"))) missingParam("--axis2");
+		if (not(vm.count("phi"))) missingParam("--phi");
+		double a1 = vm["axis1"].as<double>();
+		double a2 = vm["axis2"].as<double>();
+		double phi = vm["phi"].as<double>();
+	      
+		Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
+		Z2i::Domain domain(ell.getLowerBound(), ell.getUpperBound());
+		Z2i::DigitalSet aSet(domain);
+	      
+		Shapes<Z2i::Domain>::shaper(aSet, ell);
+		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+		return 0;
+	      } 
 }
