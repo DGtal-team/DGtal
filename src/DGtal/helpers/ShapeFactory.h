@@ -50,6 +50,7 @@
 #include "DGtal/helpers/parametricShapes/Flower2D.h"
 #include "DGtal/helpers/parametricShapes/NGon2D.h"
 #include "DGtal/helpers/parametricShapes/AccFlower2D.h"
+#include "DGtal/helpers/parametricShapes/Ellipse2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
