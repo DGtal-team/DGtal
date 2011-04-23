@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Flower2D.h
+ * @file AccFlower2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/04/12
  *
- * Header file for module Flower2D.cpp
+ * Header file for module AccFlower2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Flower2D_RECURSES)
-#error Recursive header files inclusion detected in Flower2D.h
-#else // defined(Flower2D_RECURSES)
+#if defined(AccFlower2D_RECURSES)
+#error Recursive header files inclusion detected in AccFlower2D.h
+#else // defined(AccFlower2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Flower2D_RECURSES
+#define AccFlower2D_RECURSES
 
-#if !defined Flower2D_h
+#if !defined AccFlower2D_h
 /** Prevents repeated inclusion of headers. */
-#define Flower2D_h
+#define AccFlower2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,15 +50,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Flower2D
+  // template class AccFlower2D
   /**
-   * Description of template class 'Flower2D' <p>
+   * Description of template class 'AccFlower2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any flower with k-petals in the plane.
+   * represents any accelerated flower in the plane.
    *
    */
   template <typename TSpace>
-  class Flower2D:  public StarShaped2D<TSpace>
+  class AccFlower2D:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -71,7 +71,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Flower2D();
+    ~AccFlower2D();
     
     /**
      * Constructor. 
@@ -82,7 +82,7 @@ namespace DGtal
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    Flower2D( const double x0, const double y0, 
+    AccFlower2D( const double x0, const double y0, 
 	      const double r,
 	      const double smallr,
 	      const unsigned int k,
@@ -96,7 +96,7 @@ namespace DGtal
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    Flower2D(const RealPoint2D &aPoint, 
+    AccFlower2D(const RealPoint2D &aPoint, 
 	     const double r,
 	     const double smallr,
 	     const unsigned int k,
@@ -110,7 +110,7 @@ namespace DGtal
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    Flower2D(const Point &aPoint, 
+    AccFlower2D(const Point &aPoint, 
 	     const double r,
 	     const double smallr,
 	     const unsigned int k,
@@ -203,6 +203,11 @@ namespace DGtal
     unsigned int myK;
     
     /**
+     * The value 2*myK*Pi/(Pi^3)
+     */
+    double myKp;
+    
+    /**
      * the phase of the flower (in radian).
      */
     double myPhi;
@@ -230,7 +235,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    Flower2D();
+    AccFlower2D();
 
   private:
 
@@ -239,7 +244,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  Flower2D ( const Flower2D & other );
+    //  AccFlower2D ( const AccFlower2D & other );
 
     /**
      * Assignment.
@@ -247,35 +252,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Flower2D & operator= ( const Flower2D & other );
+    AccFlower2D & operator= ( const AccFlower2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Flower2D
+  }; // end of class AccFlower2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Flower2D'.
+   * Overloads 'operator<<' for displaying objects of class 'AccFlower2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Flower2D' to write.
+   * @param object the object of class 'AccFlower2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Flower2D<T> & object );
+  operator<< ( std::ostream & out, const AccFlower2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/Flower2D.ih"
+#include "DGtal/helpers/parametricShapes/AccFlower2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Flower2D_h
+#endif // !defined AccFlower2D_h
 
-#undef Flower2D_RECURSES
-#endif // else defined(Flower2D_RECURSES)
+#undef AccFlower2D_RECURSES
+#endif // else defined(AccFlower2D_RECURSES)
