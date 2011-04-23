@@ -54,7 +54,7 @@ namespace DGtal
   /**
    * Description of template class 'NGon2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any circle in the plane.
+   * represents any regular k-gon in the plane.
    *
    */
   template <typename TSpace>
