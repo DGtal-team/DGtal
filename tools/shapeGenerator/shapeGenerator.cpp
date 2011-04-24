@@ -70,50 +70,50 @@ void createList()
 {
   shapes2D.push_back("ball");
   shapesDesc.push_back("Ball for the Euclidean metric.");
-  shapesParam1.push_back("--radius");
+  shapesParam1.push_back("--radius/-R");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
  
   shapes2D.push_back("cube");
   shapesDesc.push_back("Hypercube.");
-  shapesParam1.push_back("--width");
+  shapesParam1.push_back("--width/-w");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("lpball");
   shapesDesc.push_back("Ball for the l_power metric.");
-  shapesParam1.push_back("--radius");
-  shapesParam2.push_back("--power");
+  shapesParam1.push_back("--radius/-R");
+  shapesParam2.push_back("--power/-p");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("flower");
   shapesDesc.push_back("Flower with k petals.");
-  shapesParam1.push_back("--radius");
-  shapesParam2.push_back("--smallradius");
-  shapesParam3.push_back("--k");
+  shapesParam1.push_back("--radius/-R");
+  shapesParam2.push_back("--smallradius/-r");
+  shapesParam3.push_back("--k/-k");
   shapesParam4.push_back("--phi");
 
   shapes2D.push_back("ngon");
   shapesDesc.push_back("Regular k-gon.");
-  shapesParam1.push_back("--radius");
-  shapesParam2.push_back("--k");
+  shapesParam1.push_back("--radius/-R");
+  shapesParam2.push_back("--k/-k");
   shapesParam3.push_back("--phi");
   shapesParam4.push_back("");
  
   shapes2D.push_back("accflower");
   shapesDesc.push_back("Accelerated Flower with k petals.");
-  shapesParam1.push_back("--radius");
-  shapesParam2.push_back("--smallradius");
-  shapesParam3.push_back("--k");
+  shapesParam1.push_back("--radius/-R");
+  shapesParam2.push_back("--smallradius/-r");
+  shapesParam3.push_back("--k/-k");
   shapesParam4.push_back("--phi");
 
   shapes2D.push_back("ellipse");
   shapesDesc.push_back("Ellipse.");
-  shapesParam1.push_back("--axis1");
-  shapesParam2.push_back("--axis2");
+  shapesParam1.push_back("--axis1/-A");
+  shapesParam2.push_back("--axis2/-a");
   shapesParam3.push_back("--phi");
   shapesParam4.push_back("");
  
