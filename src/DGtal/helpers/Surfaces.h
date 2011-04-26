@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,6 +57,9 @@ namespace DGtal
      
      @tparam TKSpace the type of cellular grid space (e.g. a
      KhalimskySpaceND).
+
+     Essentially a backport from <a
+     href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TKSpace>
   class Surfaces
@@ -63,6 +67,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
     typedef TKSpace KSpace;
+    typedef typename KSpace::Integer Integer;
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
@@ -70,6 +75,24 @@ namespace DGtal
 
     // ----------------------- Static services ------------------------------
   public:
+
+    /**
+       Find a bel in some digital set by random tries then dichotomy.
+
+       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+       @param K any cellular grid space.
+       @param dset any digital set which should be at least partially included in the bounds of space [K].
+       @param nbries the maximum number of random tries (default 1000).
+
+       @return a signed surfel separating a digital point in [dset]
+       from a face adjacent digital point outside [dset] or throws an
+       InputException if none was found after [nbtries] iterations.
+    */
+    template <typename DigitalSet>
+    static
+    SCell findABel( const KSpace & K,
+		    const DigitalSet & dset,
+		    unsigned int nbtries = 1000 ) throw (DGtal::InputException);
 
     /**
        Creates a set of signed surfels whose elements represents a
@@ -91,10 +114,10 @@ namespace DGtal
     template <typename SCellSet, typename DigitalSet >
     static 
     void trackBoundary( SCellSet & surface,
-			 const KSpace & K,
-			 const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			 const DigitalSet & shape,
-			 const SCell & start_surfel );
+			const KSpace & K,
+			const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			const DigitalSet & shape,
+			const SCell & start_surfel );
 
     /**
        Creates a set of signed surfels whose elements represents a

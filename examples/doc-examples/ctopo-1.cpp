@@ -43,7 +43,6 @@ int main()
   KSpace K;
   Point plow(-3,-2);
   Point pup(5,3);
-  Point p2(0,0);
   Domain domain( plow, pup );
   DGtalBoard board; // for 2D display
   K.init( plow, pup, true );

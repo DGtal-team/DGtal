@@ -371,6 +371,8 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   * NB: Essentially a backport from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
