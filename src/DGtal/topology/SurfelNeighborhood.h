@@ -61,6 +61,9 @@ namespace DGtal
    *
    * @tparam TKSpace the type of celluler grid space (for instance, a
    * KhalimskySpaceND).
+   *
+   * Essentially a backport from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TKSpace>
   class SurfelNeighborhood
