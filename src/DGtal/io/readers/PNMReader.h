@@ -51,7 +51,36 @@ namespace DGtal
 // class PNMReader
 /**
  * Description of class 'PNMReader' <p>
- * \brief Aim:
+ * \brief Aim: Import a 2D or 3D using the Netpbm formats (ASCII mode).
+ * - PPM: RGB 
+ *  - PGM: grayscale
+ *  - PPM3D: 3D variant of PPM
+ *  - PGM3D: 3D variant of PGM
+ * 
+ *
+ *  Simple example: (extract from test file testPNMReader.cpp)
+ * 
+ *  @code
+ *  #include "DGtal/helpers/StdDefs.h"
+ *  #include "DGtal/io/readers/PNMReader.h"
+ *  #include "DGtal/kernel/images/ImageSelector.h"
+ *  ...
+ *  string filename = "test.pgm";
+ *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
+ *  Image image = PNMReader<Image>::importPGMImage( filename ); 
+ *   @endcode
+ *  You can then for instance display a threshold part of the image:
+ *  @code 
+ *  #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"  
+ *  ...
+ *  Z2i::DigitalSet set2d (image.domain());
+ *  // Threshold all pixel in ]0, 255] in a DigitalSet   
+ *  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
+ *  DGtalBoard board;
+ *  board << image.domain() << set2d; // display domain and set   
+ *  @endcode
+ *
+ *
  */
  template <typename TImageContainer>
   struct PNMReader
