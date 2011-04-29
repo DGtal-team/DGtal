@@ -84,7 +84,7 @@ typedef ImageSelector < Z3i::Domain, int>::Type Image;
 Then the initial image is imported:
 @code
  typedef ImageSelector < Z3i::Domain, int>::Type Image;
- Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
+ Image image = VolReader<Image>::importVol(inputFilename);
 @endcode
 
 Afterwards the set is thresholded in ]0,255[: 
