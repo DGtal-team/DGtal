@@ -262,10 +262,11 @@ int main( int argc, char** argv )
       return 0;
     }
 
-
   //Parse options
+  if (not(vm.count("shape"))) missingParam("--shape");
   std::string shapeName = vm["shape"].as<std::string>();
-  
+    
+ 
   if (not(vm.count("output"))) missingParam("--output");
   std::string outputName = vm["output"].as<std::string>();
  
