@@ -30,9 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "ConfigTest.h"
 
