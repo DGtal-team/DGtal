@@ -3,6 +3,7 @@ SET(DGTAL_DOC_EX_SRC
   kernelDomain
   range
   ctopo-1
+  ctopo-2
   )
 
 FOREACH(FILE ${DGTAL_DOC_EX_SRC})
