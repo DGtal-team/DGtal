@@ -361,6 +361,28 @@ namespace DGtal {
        while ( K.uNext( p, first, last ) ); 
        \endcode
 
+     For instance (see.  <a
+     href="khalimskySpaceScanner_8cpp-example.html">
+     khalimskySpaceScanner.cpp </a> ) you will obtain the default following scan:
+          
+      @image html khalimskySpaceScanner1.png
+   
+   - The scan can also be done by explicitly controll the order:
+   @code
+   KSpace::Cell q;
+
+   ...
+   for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
+  	for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1)){
+   	 // ... whatever [q] is the current cell
+		
+	}		
+   @endcode
+   You will obtain the following scan:
+    @image html khalimskySpaceScanner2.png
+  
+
+
    - Translating arbitrarily a cell in the space with
      KhalimskySpaceND::uTranslation and
      KhalimskySpaceND::sTranslation.
@@ -571,24 +593,34 @@ namespace DGtal {
 
 */
 
+
+
+
 /**
 \example ctopo-1.cpp
-
-A simple example of cellular grid space with several cells
-instantiated and visualized. This program outputs this image.
-
-   @image html ctopo-1.png
-
+*A simple example of cellular grid space with several cells
+*instantiated and visualized. This program outputs this image.
+*   @image html ctopo-1.png
 *
+*/
 
-//**
+/**
 \example ctopo-2.cpp
+* A simple example illustrating the extraction of the sequence of surfels boudary. This program outputs this image.
+*
+*   @image html ctopo2c.png 
+*/
 
-A simple example of illustrating the extraction of the sequence of surfels boudary. This program outputs this image.
-  
-   @image html ctopo2c.png
-  
-
+/**
+\example khalimskySpaceScanner.cpp
+*
+* A simple example illustrating different way to scan a Khalimsky space. This program outputs these images:
+ *<table> 
+*<TR>
+*<td> @image html khalimskySpaceScanner1.png </td>
+*<td> @image html khalimskySpaceScanner2.png </td>
+*</TR>
+*</TABLE>
 */
 
 }

@@ -1016,11 +1016,30 @@ uIsMax( const Cell & p, Dimension k ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
+bool 
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uIsInside( const Cell & p, Dimension k ) const
+{
+  return (p.myCoordinates[ k ] <= uLast(p).myCoordinates[ k ]) &&
+    (p.myCoordinates[ k ] >= uFirst(p).myCoordinates[ k ]);
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMax( const Cell & p, Dimension k ) const
 {
   return uProjection( p, myCellUpper, k );
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uGetMaxT( const Cell & p, Dimension k ) const
+{
+  return uProjection( p, uLast(p), k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1050,6 +1069,15 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMin( const Cell & p, Dimension k ) const
 {
   return uProjection( p, myCellLower, k );
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uGetMinT( const Cell & p, Dimension k ) const
+{
+  return uProjection( p, uFirst(p), k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
