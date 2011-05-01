@@ -177,6 +177,34 @@ namespace DGtal
 			      const DigitalSet & shape,
 			      const SCell & start_surfel );
 
+  /**
+       Creates a set of signed surfels whose elements represents a
+       boundary component of the digital set [shape]. The algorithms
+       tracks surfels along the boundary of the shape.
+       
+       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+       
+       @param surface (modified) a set of cells (which are all surfels),
+       the boundary component of [spelset] which touches [start_surfel].
+       
+       @param K any space.
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+       @param shape any digital set.
+       @param start_surfel a signed surfel which should be between an
+       element of [shape] and an element not in [shape].
+    */
+    template <typename SCellSet, typename DigitalSet >
+    static 
+    void uMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & K,
+	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  );
+    
+
+    
+
     // ----------------------- Standard services ------------------------------
   public:
 

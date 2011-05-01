@@ -60,6 +60,9 @@ int main( int argc, char** argv )
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
   DGtalBoard board;
   board << image.domain() << set2d; // display domain and set
+  
+  DGtalBoard board2;
+  board2 << image.domain() << set2d; // display domain and set
 
 
   // Construct the Khalimsky space from the image domain
@@ -93,11 +96,32 @@ int main( int argc, char** argv )
     d++;
   }
 
-    board << CustomStyle( aCell.styleName(), new CustomColors(  DGtalBoard::Color( 255, 0, 0 ),
+
+  // Extract all boundaries:
+  std::set<Z2i::Cell> bdry;
+  Z2i::Cell low = ks.uFirst(ks.uSpel(ks.lowerBound()));
+  Z2i::Cell upp = ks.uLast(ks.uSpel(ks.upperBound()));
+  Surfaces<Z2i::KSpace>::uMakeBoundary( bdry,
+					ks, SAdj, set2d, low, upp  );
+  
+  std::set<Z2i::Cell>::iterator itB;
+  for ( itB=bdry.begin() ; itB != bdry.end(); itB++ ){
+    board2<< CustomStyle((*itB).styleName() ,
+			 new CustomColors( DGtalBoard::Color::Black,
+					   cmap_grad( d )))<< *itB;
+    d++;
+  }
+
+  
+  
+  board << CustomStyle( aCell.styleName(), new CustomColors(  DGtalBoard::Color( 255, 0, 0 ),
 								DGtalBoard::Color( 192, 0, 0 ) ));
     board << aCell;  
     board.saveEPS( "ctopo-2.eps");
     board.saveFIG( "ctopo-2.fig");
+
+    board2.saveEPS( "ctopo-2d.eps");
+    board2.saveFIG( "ctopo-2d.fig");
     
     return 0;
 }
