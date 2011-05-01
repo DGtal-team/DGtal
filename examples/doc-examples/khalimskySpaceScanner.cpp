@@ -1,0 +1,129 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file KhalimskySpaceScanner.cpp
+ * @ingroup Examples
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/04/30
+ *
+ * An example file named KhalimskySpaceScanner.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include "DGtal/base/Common.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/helpers/StdDefs.h"
+
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+using namespace DGtal;
+
+///////////////////////////////////////////////////////////////////////////////
+
+int main( int argc, char** argv )
+{
+  trace.beginBlock ( "Example KhalimskySpaceScanner" );
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
+  
+  
+  DGtalBoard boardScan1; // for 2D display
+  DGtalBoard boardScan2; // for 2D display
+  
+
+  Z2i::KSpace K;
+  Z2i::Point plow(0,0);
+  Z2i::Point pup(3,2);
+  
+  Z2i::Domain dom (plow, pup);
+  boardScan1 << SetMode( dom.styleName(), "Paving" )
+        << dom;
+  boardScan2 << SetMode( dom.styleName(), "Paving" )
+        << dom;
+  
+  K.init( dom.lowerBound(),dom.upperBound(), true );
+  
+
+  
+ Z2i::KSpace::Cell q = K.uSpel(plow);
+ Z2i::KSpace::Cell p = K.uSpel(plow);
+ 
+  
+ Z2i::Vector shift;
+ Z2i::KSpace::Cell prec=p;
+ bool first=true;
+ // Simple way to scan Khalimsky space 
+ do 
+   {
+     boardScan1 << p;
+     if(first){
+       first=false;
+       prec=p;
+       continue;
+     }
+     // Drawing the scan arrows
+     boardScan1.setPenColor( DGtalBoard::Color( 30, 30, 200 ));
+     shift =   K.uCoords(p)-K.uCoords(prec);	
+     shift.selfDraw(boardScan1, K.uCoords(prec) );
+     prec=p;     
+   }
+ while ( K.uNext( p, K.uFirst(p), K.uLast(p) ) ); 
+ 
+ 
+ 
+
+ // Other way to scan Khalimsky space by controlling axis order
+ Z2i::Vector shiftq;
+ Z2i::KSpace::Cell precq=q;
+ bool firstq=true;
+ for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
+   for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
+        { 
+	  boardScan2 << q;
+	  if(firstq){
+	    firstq=false;
+	    precq=q;
+	 continue;
+	  }
+	  // Drawing the scan arrows
+	  shiftq =   K.uCoords(q)-K.uCoords(precq);	
+	  boardScan2.setPenColor( DGtalBoard::Color( 30, 30, 200 ));
+	  shiftq.selfDraw(boardScan2, K.uCoords(precq) );
+	  precq=q;       
+	}
+  
+ 
+ boardScan1.saveSVG("khalimskySpaceScanner1.svg");
+ boardScan1.saveFIG("khalimskySpaceScanner1.fig");
+ 
+ boardScan2.saveSVG("khalimskySpaceScanner2.svg");
+ boardScan2.saveFIG("khalimskySpaceScanner2.fig");
+  
+  return 0;
+
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
