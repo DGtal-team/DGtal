@@ -309,6 +309,43 @@ trackClosedBoundary( SCellSet & surface,
     } // while ( ! qbels.empty() )
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void 
+DGtal::Surfaces<TKSpace>::
+uMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & K,
+	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  )
+{
+  // this is the surfel set that we intend to create.
+  //KnRCellSet s = KnRCellSet::create( ks, ks.dim() - 1, false, 0 );
+
+  // Filling it by scanning the bounding cube.
+  uint k;
+  bool in_here, in_further;
+  for ( k = 0; k < K.dimension; ++k )
+    {
+      Cell dir_low_uid = aLowerBound;
+      Cell dir_up_uid = K.uGetDecr(aUpperBound, k);
+      
+      
+      Cell p = dir_low_uid;
+      do 
+	{
+	  in_here = (aSpelSet.find(K.uCoords(p))!=aSpelSet.end());
+	  in_further = (aSpelSet.find(K.uCoords(K.uGetIncr( p, k )) )!=aSpelSet.end());
+	  if ( in_here != in_further ) // boundary element
+	    { // add it to the set.
+	      aBoundary.insert( K.uIncident( p, k, true ));
+	    }
+	}
+      while ( K.uNext( p, dir_low_uid, dir_up_uid ) );
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
