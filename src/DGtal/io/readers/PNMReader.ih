@@ -1,0 +1,139 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file PNMReader.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/04/29
+ *
+ * Implementation of inline methods defined in PNMReader.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+template <typename TImageContainer>
+inline
+TImageContainer 
+DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename ) throw(DGtal::IOException)
+{
+  ifstream infile;
+  DGtal::IOException dgtalio;
+  try 
+    {
+      infile.open (filename.c_str(), ifstream::in);
+    }
+  catch( ... )
+    {
+      std::cout << "PNMReader : can't open " << filename << endl;
+      throw dgtalio;
+    }
+  
+  string str;
+  getline( infile, str );
+  if ( ! infile.good() ) {
+    std::cout << "PNMReader : can't read " << filename << endl;
+    throw dgtalio;
+  }
+  if ( str != "P5" ){
+    std::cout << "PNMReader : No P5 format in " << filename << endl;
+    throw dgtalio;
+  }
+  
+  do
+    {
+      getline( infile, str );
+      if ( ! infile.good() ){
+	std::cout << "PNMReader : Invalid format in " << filename << endl;
+	throw dgtalio;
+      } 
+    }
+  while ( str[ 0 ] == '#' || str=="");
+  istringstream str_in( str );
+  uint w, h;
+  str_in >> w >> h;
+   
+  typename TImageContainer::Point firstPoint;
+  typename TImageContainer::Point lastPoint;
+      
+  firstPoint = TImageContainer::Point::zero;
+  lastPoint[0] = w-1;
+  lastPoint[1] = h-1;
+
+  typename TImageContainer::Domain domain(firstPoint,lastPoint);
+  TImageContainer image(firstPoint,lastPoint);
+
+  getline( infile, str );
+  istringstream str2_in( str );
+  int max_value;
+  str2_in >> max_value;  
+
+  if ( ! infile.good() ){
+    std::cout << "PNMReader : Invalid format in " << filename << endl;
+    throw dgtalio;
+  } 
+  cerr << "# PGM " << w << " " << h 
+       << " " << max_value << " from <" << str << ">" << endl;
+  
+  uint nb_read = 0;
+  
+  infile >> noskipws;
+
+  for(uint y=0; y <h; y++){
+    for(uint x=0; x <w; x++){
+      typename TImageContainer::Point pt;
+      pt[0]=x; pt[1]=h-1-y;
+      unsigned char c; 
+      infile >> c;
+      if ( infile.good() ){ 
+	++nb_read;
+	image.setValue( pt, c);
+      }
+    }
+  }
+  if ( infile.fail() || infile.bad() )
+    {
+      cerr << "# nbread=" << nb_read << endl;
+      throw dgtalio;
+    }
+  infile >> skipws;
+  return  image;
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

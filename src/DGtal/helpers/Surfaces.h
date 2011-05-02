@@ -42,6 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/SurfelNeighborhood.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,6 +60,9 @@ namespace DGtal
      
      @tparam TKSpace the type of cellular grid space (e.g. a
      KhalimskySpaceND).
+
+     Essentially a backport from <a
+     href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TKSpace>
   class Surfaces
@@ -63,6 +70,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
     typedef TKSpace KSpace;
+    typedef typename KSpace::Integer Integer;
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
@@ -70,6 +78,24 @@ namespace DGtal
 
     // ----------------------- Static services ------------------------------
   public:
+
+    /**
+       Find a bel in some digital set by random tries then dichotomy.
+
+       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+       @param K any cellular grid space.
+       @param dset any digital set which should be at least partially included in the bounds of space [K].
+       @param nbries the maximum number of random tries (default 1000).
+
+       @return a signed surfel separating a digital point in [dset]
+       from a face adjacent digital point outside [dset] or throws an
+       InputException if none was found after [nbtries] iterations.
+    */
+    template <typename DigitalSet>
+    static
+    SCell findABel( const KSpace & K,
+		    const DigitalSet & dset,
+		    unsigned int nbtries = 1000 ) throw (DGtal::InputException);
 
     /**
        Creates a set of signed surfels whose elements represents a
@@ -91,11 +117,37 @@ namespace DGtal
     template <typename SCellSet, typename DigitalSet >
     static 
     void trackBoundary( SCellSet & surface,
-			 const KSpace & K,
-			 const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			 const DigitalSet & shape,
-			 const SCell & start_surfel );
+			const KSpace & K,
+			const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			const DigitalSet & shape,
+			const SCell & start_surfel );
 
+
+  /**
+       Creates a vector of signed surfels whose elements represents a
+       boundary component of the digital set [shape]. The algorithms
+       tracks surfels along the boundary of the shape by starting from
+       the given start_surfel.
+       
+       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+       
+       @param aSCellContour2D (modified) a vector  of cells (which are all surfels),
+       containing the ordered list of the boundary component of [spelset] which touches [start_surfel].
+       
+       @param K any space.
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+       @param shape any digital set.
+       @param start_surfel a signed surfel which should be between an
+       element of [shape] and an element not in [shape].
+  */
+    template <typename DigitalSet >
+    static 
+    void track2DBoundary( std::vector<SCell> & aSCellContour2D,
+			  const KSpace & K,
+			  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			  const DigitalSet & shape,
+			  const SCell & start_surfel );
+    
     /**
        Creates a set of signed surfels whose elements represents a
        boundary component of the digital set [shape]. The algorithms
@@ -124,6 +176,34 @@ namespace DGtal
 			      const SurfelAdjacency<KSpace::dimension> & surfel_adj,
 			      const DigitalSet & shape,
 			      const SCell & start_surfel );
+
+  /**
+       Creates a set of signed surfels whose elements represents a
+       boundary component of the digital set [shape]. The algorithms
+       tracks surfels along the boundary of the shape.
+       
+       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+       
+       @param surface (modified) a set of cells (which are all surfels),
+       the boundary component of [spelset] which touches [start_surfel].
+       
+       @param K any space.
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+       @param shape any digital set.
+       @param start_surfel a signed surfel which should be between an
+       element of [shape] and an element not in [shape].
+    */
+    template <typename SCellSet, typename DigitalSet >
+    static 
+    void uMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & K,
+	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  );
+    
+
+    
 
     // ----------------------- Standard services ------------------------------
   public:

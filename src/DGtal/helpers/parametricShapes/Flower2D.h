@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Circle2D.h
+ * @file Flower2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/04/12
  *
- * Header file for module Circle2D.cpp
+ * Header file for module Flower2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Circle2D_RECURSES)
-#error Recursive header files inclusion detected in Circle2D.h
-#else // defined(Circle2D_RECURSES)
+#if defined(Flower2D_RECURSES)
+#error Recursive header files inclusion detected in Flower2D.h
+#else // defined(Flower2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Circle2D_RECURSES
+#define Flower2D_RECURSES
 
-#if !defined Circle2D_h
+#if !defined Flower2D_h
 /** Prevents repeated inclusion of headers. */
-#define Circle2D_h
+#define Flower2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,15 +50,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Circle2D
+  // template class Flower2D
   /**
-   * Description of template class 'Circle2D' <p>
+   * Description of template class 'Flower2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any circle in the plane.
+   * represents any flower with k-petals in the plane.
    *
    */
   template <typename TSpace>
-  class Circle2D:  public StarShaped2D<TSpace>
+  class Flower2D:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -71,32 +71,53 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Circle2D();
+    ~Flower2D();
     
     /**
      * Constructor. 
-     * @param x0 the x-coordinate of the circle center.
-     * @param y0 the y-coordinate of the circle center.
-     * @param r the radius of the circle.
+     * @param x0 the x-coordinate of the flower center.
+     * @param y0 the y-coordinate of the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Circle2D( const double x0, const double y0, const double r );
+    Flower2D( const double x0, const double y0, 
+	      const double r,
+	      const double smallr,
+	      const unsigned int k,
+	      const double phi);
 
     /**
      * Constructor. 
-     * @param aPoint the circle center.
-     * @param r the radius of the circle.
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Circle2D(const RealPoint2D &aPoint, const double r);
+    Flower2D(const RealPoint2D &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
 
     /**
      * Constructor. 
-     * @param aPoint the circle center.
-     * @param r the radius of the circle.
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Circle2D(const Point &aPoint, const double r);
+    Flower2D(const Point &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
 
     
-  // ------------- Implementation of 'StarShaped' services ------------------
+    // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
     /**
@@ -105,7 +126,7 @@ namespace DGtal
      */
     Point getLowerBound() const
     {
-      return Point(myCenter[0] - myRadius, myCenter[1] - myRadius);
+      return Point(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
     }
 
     /**
@@ -114,7 +135,7 @@ namespace DGtal
      */
     Point getUpperBound() const
     {
-      return Point(myCenter[0] + myRadius, myCenter[1] + myRadius);
+      return Point(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
     }
 
     /**
@@ -162,14 +183,29 @@ namespace DGtal
   private:
 
     /**
-     * Center of the circle.
+     * Center of the flower.
      */
     RealPoint2D myCenter;
     
     /**
-     * Radius of the circle.
+     * Radius of the flower.
      */
     double myRadius;
+    
+    /**
+     * the variable small radius of the flower.
+     */
+    double myVarRadius;
+    
+    /**
+     * the number of flower extremeties.
+     */
+    unsigned int myK;
+    
+    /**
+     * the phase of the flower (in radian).
+     */
+    double myPhi;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -194,7 +230,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    Circle2D();
+    Flower2D();
 
   private:
 
@@ -203,7 +239,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  Circle2D ( const Circle2D & other );
+    //  Flower2D ( const Flower2D & other );
 
     /**
      * Assignment.
@@ -211,35 +247,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Circle2D & operator= ( const Circle2D & other );
+    Flower2D & operator= ( const Flower2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Circle2D
+  }; // end of class Flower2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Circle2D'.
+   * Overloads 'operator<<' for displaying objects of class 'Flower2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Circle2D' to write.
+   * @param object the object of class 'Flower2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Circle2D<T> & object );
+  operator<< ( std::ostream & out, const Flower2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/Circle2D.ih"
+#include "DGtal/helpers/parametricShapes/Flower2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Circle2D_h
+#endif // !defined Flower2D_h
 
-#undef Circle2D_RECURSES
-#endif // else defined(Circle2D_RECURSES)
+#undef Flower2D_RECURSES
+#endif // else defined(Flower2D_RECURSES)

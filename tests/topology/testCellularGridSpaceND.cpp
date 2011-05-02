@@ -281,6 +281,9 @@ bool testSurfelAdjacency()
   trace.info() << "directNext  = " << other1 << endl;
   trace.info() << "indirectNext= " << other2 << endl;
   std::set<SCell> bdry;
+
+  // surfel = Surfaces<KSpace>::findABel( K, shape_set );
+
   Surfaces<KSpace>::trackBoundary( bdry,
 				   K, SAdj, shape_set, surfel );
   trace.info() << "tracking finished, size=" << bdry.size() 

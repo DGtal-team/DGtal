@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testImplicitShape.cpp
+ * @file testPNMReader.cpp
  * @ingroup Tests
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2011/03/22
+ * @date 2011/04/29
  *
- * Functions for testing class ImplicitShape.
+ * Functions for testing class PNMReader.
  *
  * This file is part of the DGtal library.
  */
@@ -31,49 +31,44 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/parametricShapes/Ball2D.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ParametricShape.
+// Functions for testing class PNMReader.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testParametricShape()
+bool testPNMReader()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing parametric shaper ..." );
-  Z2i::Point a(0,0);
-  Z2i::Point b(64,64);
-  Z2i::Space::RealPoint c(32.0,32.0);
-  
-  DGtalBoard board;
-  
-  Z2i::Domain domain(a,b);
-  Z2i::DigitalSet set(domain);
-  
-  Shapes<Z2i::Domain>::shaper( set,
-			       Ball2D<Z2i::Space>( c, 10));
-  board << set;
-  board.saveSVG("parametricball.svg");
-  
+  unsigned int nb = 0;  
+  trace.beginBlock ( "Testing block ..." );
   nbok += true ? 1 : 0; 
   nb++;
+  std::string filename = testPath + "samples/circleR10.pgm";
+  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
+  Image image = PNMReader<Image>::importPGMImage( filename ); 
+  
+  Z2i::DigitalSet set2d (image.domain());
+  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
+   
+  DGtalBoard board;
+  board << image.domain() << set2d; // display domain and set
+  
+  board.saveEPS( "testPNMReader.eps");
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  trace.endBlock();
-  
+  trace.endBlock();  
   return nbok == nb;
 }
 
@@ -82,13 +77,13 @@ bool testParametricShape()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class ImplicitShape" );
+  trace.beginBlock ( "Testing class PNMReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testParametricShape(); // && ... other tests
+  bool res = testPNMReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
