@@ -72,6 +72,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
 {
   typename Image::Point p, low = image.lowerBound();
   typename Image::Vector ext;
+  srand ( time(NULL) );
 
   ext = image.extent();
 
@@ -116,8 +117,9 @@ int main( int argc, char** argv )
  Image imageSeeds (image.lowerBound(), image.upperBound());
  for ( Image::Iterator it = imageSeeds.begin(), itend = imageSeeds.end();it != itend; ++it)
    (*it)=1;
- 
- randomSeeds(imageSeeds, 50, 0);
+ Z3i::Point p0(10,10,10);
+ //imageSeeds.setValue(p0, 0 );
+ randomSeeds(imageSeeds, 70, 0);
 
 
  //Distance transformation computation
@@ -151,38 +153,37 @@ int main( int argc, char** argv )
    }
      
      
-  GradientColorMap<long> gradient( min,max);
-  gradient.addColor(LibBoard::Color::Blue);
-  gradient.addColor(LibBoard::Color::Green);
-  gradient.addColor(LibBoard::Color::Yellow);
+  GradientColorMap<long> gradient( 0,30);
   gradient.addColor(LibBoard::Color::Red);
-  gradient.addColor(LibBoard::Color::Blue);
-  gradient.addColor(LibBoard::Color::Green);
   gradient.addColor(LibBoard::Color::Yellow);
-  gradient.addColor(LibBoard::Color::Red);
-  
-
+  gradient.addColor(LibBoard::Color::Green);
+  gradient.addColor(LibBoard::Color::Cyan);
+  gradient.addColor(LibBoard::Color::Blue);
+  gradient.addColor(LibBoard::Color::Magenta);
+  gradient.addColor(LibBoard::Color::Red);  
+ 
 
   viewer << SetMode3D( (*(domain.begin())).styleName(), "Paving" );
-    
- for(TDomain::ConstIterator it = domain.begin(), itend=domain.end();
+  
+  for(TDomain::ConstIterator it = domain.begin(), itend=domain.end();
      it!=itend;
      ++it){
    
    unsigned int valDist= resultL1( (*it) );     
    LibBoard::Color c= gradient(valDist);
-
-   if(image(*it)<=thresholdMax && image(*it) >=thresholdMin){
+   
+   if(resultL1(*it)<=30 ){
      viewer << CustomColors3D(QColor((float)(c.red()), 
 				     (float)(c.green()),
-				     (float)(c.blue())), 
+				     (float)(c.blue(),205)), 
 			      QColor((float)(c.red()), 
 				     (float)(c.green()),
-				     (float)(c.blue())));
+				     (float)(c.blue()),205));
      viewer << *it ;
    }     
  }
  
+  //viewer << ClippingPlane(1,0,0,-60);
  viewer<< DGtalQGLViewer::updateDisplay;
  
  return application.exec();

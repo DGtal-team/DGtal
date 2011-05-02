@@ -371,6 +371,8 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   * NB: Essentially a backport from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
@@ -923,6 +925,28 @@ namespace DGtal
     */
     bool uIsMax( const Cell & p, Dimension k ) const;
 
+     /**
+       Useful to check if you are going out of the space.(test to fix bug on keeping same cell type)
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate augmented
+       without leaving the space.
+    */
+    bool uIsMaxT( const Cell & p, Dimension k ) const;
+
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate augmented
+       without leaving the space.
+    */
+    bool uIsInside( const Cell & p, Dimension k ) const;
+ 
+
     /**
        Useful to check if you are going out of the space.
        @param p any cell.
@@ -933,6 +957,16 @@ namespace DGtal
     */
     Cell uGetMax( const Cell & p, Dimension k ) const;
 
+    /**
+       Useful to check if you are going out of the space. (test to fix bug on keeping same cell type)
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the maximum allowed
+       [k]-coordinate.
+    */
+    Cell uGetMaxT( const Cell & p, Dimension k ) const;
+    
     /**
        NB: you can go out of the space.
        @param p any cell.
@@ -954,6 +988,16 @@ namespace DGtal
     bool uIsMin( const Cell & p, Dimension k ) const;
 
     /**
+       Useful to check if you are going out of the space. (test to fix bug on keeping same cell type)
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] cannot have its [k]-coordinate decreased
+       without leaving the space.
+    */
+    bool uIsMinT( const Cell & p, Dimension k ) const;
+
+    /**
        Useful to check if you are going out of the space.
        @param p any cell.
        @param k the concerned coordinate.
@@ -963,6 +1007,17 @@ namespace DGtal
     */
     Cell uGetMin( const Cell & p, Dimension k ) const;
 
+
+    /**
+       Useful to check if you are going out of the space. (test to fix bug on keeping same cell type)
+       @param p any cell.
+       @param k the concerned coordinate.
+       
+       @return the cell similar to [p] but with the minimum allowed
+       [k]-coordinate.
+    */
+    Cell uGetMinT( const Cell & p, Dimension k ) const;
+    
     /**
        NB: you can go out of the space.
        @param p any cell.

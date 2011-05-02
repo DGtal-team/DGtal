@@ -31,7 +31,8 @@ namespace DGtal {
       -# \ref dgtal_ctopo_sec1_10
       -# \ref dgtal_ctopo_sec1_11
    -# \ref dgtal_ctopo_sec2
-
+      -# \ref dgtal_ctopo_sec2_1
+      -# \ref dgtal_ctopo_sec2_2
 
    @section dgtal_ctopo_sec1 The digital space is a cubic grid
 
@@ -360,6 +361,28 @@ namespace DGtal {
        while ( K.uNext( p, first, last ) ); 
        \endcode
 
+     For instance (see.  <a
+     href="khalimskySpaceScanner_8cpp-example.html">
+     khalimskySpaceScanner.cpp </a> ) you will obtain the default following scan:
+          
+      @image html khalimskySpaceScanner1.png
+   
+   - The scan can also be done by explicitly controll the order:
+   @code
+   KSpace::Cell q;
+
+   ...
+   for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
+  	for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1)){
+   	 // ... whatever [q] is the current cell
+		
+	}		
+   @endcode
+   You will obtain the following scan:
+    @image html khalimskySpaceScanner2.png
+  
+
+
    - Translating arbitrarily a cell in the space with
      KhalimskySpaceND::uTranslation and
      KhalimskySpaceND::sTranslation.
@@ -502,16 +525,102 @@ namespace DGtal {
    help us to define consistently what is a digital surface and how to
    move over it.
 
+   
+
+   @subsection dgtal_ctopo_sec2_1 Tracking Boundary
+
+
+
+   @subsection dgtal_ctopo_sec2_2 Tracking 2D Boundary
+
+   The surfaces classes offers the possibility to extract an open or
+   closed contour as a sequence of surfels obtained from a DigitalSet
+   and a starting surfel. The full code of this example is available in file <a href="ctopo-2_8cpp-example.html">ctopo-2.cpp </a>. 
+   
+
+   The first step to extract the surfel boudary of a 2D digital set is
+   to obtain an initial boundary surfel:
+   @code 
+      aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);	
+   @endcode
+
+   The first surfel can also be displayed in red with DGtalBoard:      
+   @code  
+       DGtalBoard board;
+       board << image.domain() << set2d; // display domain and set
+       board << CustomStyle( aCell.styleName(), new CustomColors(  DGtalBoard::Color( 255, 0, 0 ),
+       							           DGtalBoard::Color( 192, 0, 0 ) ));
+       board << aCell;
+    @endcode  
+
+   @image html ctopo2a.png
+
+    
+    Then you can extract the sequence of consecutive surfels:
+    @code 
+     std::vector<Z2i::SCell> vectBdrySCell;
+     SurfelAdjacency<2> SAdj( true );
+     Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
+	   				     ks, SAdj, set2d, aCell );
+    @endcode
+    and display it:
+    @code
+     GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
+     cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
+     cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
+     cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+   
+     uint d=0;
+     std::vector<Z2i::SCell>::iterator it;
+     for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
+     	  board<< CustomStyle((*it).styleName() ,
+	           	      new CustomColors( DGtalBoard::Color::Black,
+				                cmap_grad( d )))<< *it;
+          d++;
+    }
+   @endcode	
+   You will obtain the following ordered sequence of surfels: 
+   @image html ctopo2b.png
+
+
+   The resulting sequence of surfels does not necessary present an
+   open contour (try for instance image "samples/circleR10modif.pgm"):
+      @image html ctopo2c.png
+   
+
+
+
+
 */
+
+
+
 
 /**
 \example ctopo-1.cpp
+*A simple example of cellular grid space with several cells
+*instantiated and visualized. This program outputs this image.
+*   @image html ctopo-1.png
+*
+*/
 
-A simple example of cellular grid space with several cells
-instantiated and visualized. This program outputs this image.
+/**
+\example ctopo-2.cpp
+* A simple example illustrating the extraction of the sequence of surfels boudary. This program outputs this image.
+*
+*   @image html ctopo2c.png 
+*/
 
-   @image html ctopo-1.png
-
+/**
+\example khalimskySpaceScanner.cpp
+*
+* A simple example illustrating different way to scan a Khalimsky space. This program outputs these images:
+ *<table> 
+*<TR>
+*<td> @image html khalimskySpaceScanner1.png </td>
+*<td> @image html khalimskySpaceScanner2.png </td>
+*</TR>
+*</TABLE>
 */
 
 }

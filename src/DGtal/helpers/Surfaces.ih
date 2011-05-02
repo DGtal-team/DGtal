@@ -30,6 +30,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <queue>
+#include <algorithm>
+
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,6 +48,111 @@ template <typename TKSpace>
 inline
 DGtal::Surfaces<TKSpace>::~Surfaces()
 {
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet>
+typename DGtal::Surfaces<TKSpace>::SCell
+DGtal::Surfaces<TKSpace>::
+findABel
+( const KSpace & K,
+  const DigitalSet & dset,
+  unsigned int nbtries) throw (DGtal::InputException)
+{
+  DGtal::InputException dgtalerror;
+  Point sizes = K.upperBound() - K.lowerBound();
+  Point x1 = K.lowerBound();
+  Point x2;
+  // (1) Find two candidates in the space.
+  bool val_v1 = dset.find( x1 ) != dset.end();
+  bool found = false;
+  Integer r;
+  for ( unsigned int j = 0; j < nbtries; ++j )
+    {
+      for ( Dimension i = 0; i < K.dimension; ++i )
+	{
+	  r = random();
+	  x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
+	}
+      bool val_v2 = dset.find( x2 ) != dset.end();
+      if ( val_v2 != val_v1 )
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if ( ! found ) throw dgtalerror;
+  // (2) Find two candidates on the same axis.
+  Dimension d = 0;
+  for ( Dimension i = 0; i < K.dimension; ++i )
+    {
+      if ( x1[ i ] != x2[ i ] )
+	{
+	  for ( Dimension j = i + 1; j < K.dimension; ++j )
+	    {
+	      if ( x1[ j ] != x2[ j ] )
+		{
+		  Integer c = x2[ j ];
+		  x2[ j ] = x1[ j ];
+		  bool val_v2 = dset.find( x2 ) != dset.end();
+		  if ( val_v2 != val_v1 )
+		    { // v2 is updated.
+		      d = i;
+		    }
+		  else
+		    { // v1 is updated.
+		      x1 = x2;
+		      x2[ j ] = c;
+		      d = j;
+		    }
+		} // if ( x1[ j ] != x2[ j ] )
+	    } // for ( Dimension j = i + 1; j < K.dimension; ++j )
+	} // if ( x1[ i ] != x2[ i ] )
+    } // for ( Dimension i = 0; i < K.dimension; ++i )
+
+  // (3) Check result.
+  for ( Dimension i = 0; i < K.dimension; ++i )
+    {
+      if ( ( i == d ) && ( x1[ i ] == x2[ i ] ) )
+	std::cerr << "[DGtal::Surfaces::findABel] Error 1a along " 
+		  << i << std::endl;
+      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
+	std::cerr << "[DGtal::Surfaces::findABel] Error 1b along "
+		  << i << std::endl;
+    }
+  
+  // (4) Dichotomy
+  Point xmid = x1;
+  while ( true )
+    {
+      xmid[ d ] = ( x1[ d ] + x2[ d ] ) / 2;
+      if ( ( xmid[ d ] == x1[ d ] ) || ( xmid[ d ] == x2[ d ] ) )
+	break;
+      bool val_mid = dset.find( xmid ) != dset.end();
+      if ( val_mid != val_v1 )
+	x2[ d ] = xmid[ d ];
+      else
+	x1[ d ] = xmid[ d ];
+    }
+  
+  // (5) Check result.
+  for ( Dimension i = 0; i < K.dimension; ++i )
+    {
+      // std::cerr << "i=" << i << " x1=" << x1[ i ] << " x2=" << x2[ i ]
+      // 		<< std::endl;
+      if ( ( i == d ) && ( x1[ i ] != x2[ i ] - 1 ) )
+	std::cerr << "[DGtal::Surfaces::findABel] Error 2a along " 
+		  << i << std::endl;
+      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
+	std::cerr << "[DGtal::Surfaces::findABel] Error 2a along "
+		  << i << std::endl;
+    }
+
+  // (6) Computes bel.
+  if ( val_v1 )
+    return K.sIncident( K.sSpel( x1, K.POS ), d, true );
+  else
+    return K.sIncident( K.sSpel( x1, K.NEG ), d, true );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -98,6 +205,66 @@ trackBoundary( SCellSet & surface,
 	} // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
     } // while ( ! qbels.empty() )
 }
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
+					   const KSpace & K,
+					   const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+					   const DigitalSet & shape,
+					   const SCell & start_surfel ){
+  SCell b= start_surfel;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  std::set<SCell> setSurface;
+  setSurface.insert(start_surfel);
+  aSCellContour2D.clear(); // boundary being extracted.
+  aSCellContour2D.push_back(start_surfel);
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  SN.setSurfel( b );
+  bool hasPrevNeighbor =  true;
+  while ( hasPrevNeighbor  ){
+    hasPrevNeighbor=false;
+    Dimension track_dir = *(K.sDirs( b ));
+    SN.setSurfel( b );
+    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir,  !K.sDirect( b, track_dir ) ) )
+      {
+	if ( setSurface.find( bn ) == setSurface.end() )
+	  {
+	    hasPrevNeighbor=true;
+	    aSCellContour2D.push_back( bn );
+	    setSurface.insert(bn);
+	  }
+      }
+    b = bn;
+  }
+  // since the contour is not necessary closed we search in the other direction.
+  reverse(aSCellContour2D.begin(), aSCellContour2D.end());
+  b= start_surfel; 
+  bool hasNextNeighbor =  true;
+  while (hasNextNeighbor ){
+    hasNextNeighbor=false;
+    Dimension track_dir = *(K.sDirs( b ));
+    SN.setSurfel( b );
+    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, K.sDirect( b, track_dir ) ) )
+      {
+	if ( setSurface.find( bn ) == setSurface.end() )
+	  {
+	    aSCellContour2D.push_back( bn );
+	    setSurface.insert(bn);
+	    hasNextNeighbor=true;
+	  }
+      }
+    b=bn;
+  }
+}
+
+
+
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SCellSet, typename DigitalSet >
@@ -140,6 +307,43 @@ trackClosedBoundary( SCellSet & surface,
 	    }
 	} // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
     } // while ( ! qbels.empty() )
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void 
+DGtal::Surfaces<TKSpace>::
+uMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & K,
+	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  )
+{
+  // this is the surfel set that we intend to create.
+  //KnRCellSet s = KnRCellSet::create( ks, ks.dim() - 1, false, 0 );
+
+  // Filling it by scanning the bounding cube.
+  uint k;
+  bool in_here, in_further;
+  for ( k = 0; k < K.dimension; ++k )
+    {
+      Cell dir_low_uid = aLowerBound;
+      Cell dir_up_uid = K.uGetDecr(aUpperBound, k);
+      
+      
+      Cell p = dir_low_uid;
+      do 
+	{
+	  in_here = (aSpelSet.find(K.uCoords(p))!=aSpelSet.end());
+	  in_further = (aSpelSet.find(K.uCoords(K.uGetIncr( p, k )) )!=aSpelSet.end());
+	  if ( in_here != in_further ) // boundary element
+	    { // add it to the set.
+	      aBoundary.insert( K.uIncident( p, k, true ));
+	    }
+	}
+      while ( K.uNext( p, dir_low_uid, dir_up_uid ) );
+    }
 }
 
 

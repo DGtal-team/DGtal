@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_IO
        testSimpleBoard
        testPNMRawWriter
+       testPNMReader
        testVolReader
        testColorMaps
        testRawReader
