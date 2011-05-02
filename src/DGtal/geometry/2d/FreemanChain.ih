@@ -35,6 +35,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -51,8 +53,8 @@
  */
 
 template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
-  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
+DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y , bool isInterPixel)
+  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y ), myIsInterPixel (isInterPixel)
 {
 	DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
@@ -63,10 +65,10 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y
  * @param in any input stream,
  */
 template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
+DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in, bool isInterPixel ){
   DGtal::FreemanChain<TInteger>::read(in, *this);
-	xn = x0; yn = y0;
-	DGtal::FreemanChain<TInteger>::computeLastPoint();
+  xn = x0; yn = y0; myIsInterPixel= isInterPixel;
+  DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
 
 /**
@@ -75,9 +77,40 @@ DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
-  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 )
+  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), myIsInterPixel(aOther.myIsInterPixel)
 {
 }
+
+
+
+
+/**
+ * Constructor.
+ *
+ *
+ */
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::
+FreemanChain( const std::vector<Z2i::Point> vectPoints, bool isInterPixel ){
+  ostringstream oss;
+  x0=vectPoints.at(0)[0];
+  y0=vectPoints.at(0)[1];
+  myIsInterPixel=isInterPixel;
+  Z2i::Point pt;
+  Z2i::Point ptSuiv;
+  for(int i=0; i< vectPoints.size()-1; i++){
+    pt = vectPoints.at(i);
+    ptSuiv = vectPoints.at(i+1);
+    int dx = ptSuiv[0] - pt[0]; 
+    int dy = ptSuiv[1] - pt[1]; 
+    char code = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
+    oss << code;
+  }
+  chain = oss.str();
+
+}
+
+
 
 /**
  * Assignment.
@@ -128,11 +161,10 @@ DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
   
   vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0]),
-				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])));
-    aBoard << aVContour[i];
+    contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0])-(myIsInterPixel? 0.5 :0),
+				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])+(myIsInterPixel? 0.5 :0)));
+    //aBoard << aVContour[i];
   }
-  aBoard.setFillColor(LibBoard::Color::None);
   aBoard.drawPolyline(contour);
 }
 //------------------------------------------------------------------------------

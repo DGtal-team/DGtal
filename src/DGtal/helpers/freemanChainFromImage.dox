@@ -1,0 +1,154 @@
+/**
+ * @file freemanChainFromImage.dox
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/05/02
+ *
+ * Documentation file for Extracting level set boudary from Image
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page freemanChainFromImage Extracting level set boudary from Image
+@author Bertrand Kerautret
+
+This part of the manual describes a simple way to extract a level set
+boundary as a FreemanChain contour from an gray level image. The first
+step is to extract the thresholed Digital set from the image (see. <a
+href="structDGtal_1_1SetFromImage.html"> DGtal::SetFromImage </a>) and
+then to track its boudary (see. <a href="classDGtal_1_1Surfaces.html">
+DGtal::Surfaces</a>). An example can also be found in the example <a
+href="freemanChainFromImage_8cpp-example.html" >freemanChainFromImage.cpp</a> .
+
+
+Table of contents:
+ -# \ref step1 
+ -# \ref step2 
+ -# \ref step3 
+
+
+
+\section step1 DigitalSet from thresholded image 
+
+The digitalSet can be obtained after thresholding a given image. As
+described in the section \ref image_io a image can simply be imported
+with readers as for instance in PNMReader: 
+
+
+@code
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/io/readers/PNMReader.h"
+...
+ typedef ImageSelector < Z2i::Domain, int>::Type Image;
+ Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/circleR10modif.pgm" ); 
+@endcode
+
+
+From the imported image you can extract a DigitalSet by using thresholds:
+@code 
+Z2i::DigitalSet set2d (image.domain());
+SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
+@endcode
+ 
+You can display the thresholded set:
+@code 
+DGtalBoard aBoard;
+aBoard << set2d;
+aBoard << image.domain();  
+@endcode
+
+  @image html fcExtraction0.png  
+
+A KhalimskySpaceND is also needed to extract the region boundary, you can
+simply use the domain of the imported image to initialise a KhalimskySpaceND:
+
+@code 
+Z2i::KSpace ks;
+bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+@endcode
+
+
+Another important element is to define the SurfelAdjacency used to
+track the DigitalSet boundary:
+
+@code
+SurfelAdjacency<2> sAdj( true );
+@endcode
+
+
+
+\section step2 Contour extraction
+
+Afterwards the set of all 4-connected contours can be extracted by
+using the function extractAllPointContours4C from DGtal::Surfaces:
+
+
+@code
+std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
+Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
+                                                  ks, set2d, sAdj );  
+@endcode
+
+
+
+\section step3 Freemanchain construction and display
+
+From the previous vector containing the contour points, we can
+construct and display its associated FreemanChain. Since the
+interpixel boundary are composed of not integer points we have to
+specify in the construction:
+
+@code
+for(int i=0; i<vectContoursBdryPointels.size(); i++)
+   FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);
+@endcode
+
+
+By using the display defining in the example <a
+href="freemanChainFromImage_8cpp-example.html"
+>freemanChainFromImage.cpp</a> you may obtain the following result
+where each contour are represented with a specific color:
+
+
+  @image html fcExtraction.png 
+
+
+Note that if you change the SurfelAdjacency used in the contour extraction:
+
+@code
+SurfelAdjacency<2> sAdj( false );
+@endcode
+
+
+you will obtain the followings contours:
+
+
+ @image html fcExtraction2.png 
+
+
+*/
+
+
+
+
+/**
+\example freemanChainFromImage.cpp
+* A simple example to show how to extract the set of boundary contours obtained from the image level set.
+* This programm outputs this image: 
+*   @image html fcExtraction.png 
+*
+*/
+}
+
+
+
+
+

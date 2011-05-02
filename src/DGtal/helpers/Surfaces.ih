@@ -264,6 +264,82 @@ DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
 }
 
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
+			   const KSpace & aKSpace,
+			   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			   const DigitalSet & aShape ){
+
+  std::set<SCell> bdry;
+  Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
+  Cell upp = aKSpace.uLast(aKSpace.uSpel(aKSpace.upperBound()));
+  sMakeBoundary( bdry, aKSpace, aShape, low, upp  );
+  aVectSCellContour2D.clear();
+  while(!bdry.empty()){
+    std::vector<SCell> aContour;
+    SCell aCell = *(bdry.begin()); 
+    track2DBoundary(aContour, aKSpace, aSurfelAdj,aShape, aCell );
+    aVectSCellContour2D.push_back(aContour);
+    // removing cells from boundary;
+    for(int i=0;i <aContour.size(); i++){
+      SCell sc = aContour.at(i);
+      bdry.erase(sc);
+    }
+  }
+    
+  
+}
+
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointContour2D,
+			   const KSpace & aKSpace,
+			   const DigitalSet & aShape,
+			   SurfelAdjacency<2> aSAdj){
+  aVectPointContour2D.clear();
+  
+  std::vector< std::vector<SCell> > vectContoursBdrySCell;
+  extractAll2DSCellContours( vectContoursBdrySCell,
+			     aKSpace, aSAdj, aShape );
+  
+  for(int i=0; i< vectContoursBdrySCell.size(); i++){
+    std::vector< Point > aContour;
+    for(int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
+      SCell sc = vectContoursBdrySCell.at(i).at(j);
+      float x = (float) 
+	( IntegerTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[0] ) >> 1 );
+      float y = (float) 
+	( IntegerTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[1] ) >> 1 );
+      bool xodd = ( sc.myCoordinates[ 0 ] & 1 );
+      bool yodd = ( sc.myCoordinates[ 1 ] & 1 );
+      double x0 = !xodd ? x  - 0.5 : (!aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
+      double y0 = !yodd ? y  - 0.5 : (!aKSpace.sSign(sc)? y  - 0.5: y + 0.5);
+      double x1 = !xodd ? x  - 0.5 : (aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
+      double y1 = !yodd ? y  - 0.5 : (aKSpace.sSign(sc)? y  - 0.5: y  + 0.5);      
+      
+      Point ptA(x0+0.5, y0-0.5);
+      Point ptB(x1+0.5, y1-0.5) ;
+      aContour.push_back(ptA);
+      if(sc== vectContoursBdrySCell.at(i).at(vectContoursBdrySCell.at(i).size()-1)){
+	aContour.push_back(ptB);
+      }
+    }
+    aVectPointContour2D.push_back(aContour);
+  }
+}
+
+
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -308,44 +384,71 @@ trackClosedBoundary( SCellSet & surface,
 	} // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
     } // while ( ! qbels.empty() )
 }
-
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SCellSet, typename DigitalSet >
 void 
 DGtal::Surfaces<TKSpace>::
 uMakeBoundary( SCellSet & aBoundary,
-	       const KSpace & K,
-	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+	       const KSpace & aKSpace,
 	       const DigitalSet & aSpelSet,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
-  // this is the surfel set that we intend to create.
-  //KnRCellSet s = KnRCellSet::create( ks, ks.dim() - 1, false, 0 );
-
-  // Filling it by scanning the bounding cube.
   uint k;
   bool in_here, in_further;
-  for ( k = 0; k < K.dimension; ++k )
+  for ( k = 0; k < aKSpace.dimension; ++k )
     {
       Cell dir_low_uid = aLowerBound;
-      Cell dir_up_uid = K.uGetDecr(aUpperBound, k);
+      Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
       
       
       Cell p = dir_low_uid;
       do 
 	{
-	  in_here = (aSpelSet.find(K.uCoords(p))!=aSpelSet.end());
-	  in_further = (aSpelSet.find(K.uCoords(K.uGetIncr( p, k )) )!=aSpelSet.end());
+	  in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
+	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
 	  if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
-	      aBoundary.insert( K.uIncident( p, k, true ));
+	      
+	      aBoundary.insert( aKSpace.uIncident( p, k, true ));
 	    }
 	}
-      while ( K.uNext( p, dir_low_uid, dir_up_uid ) );
+      while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
     }
 }
 
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void 
+DGtal::Surfaces<TKSpace>::
+sMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & aKSpace,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  )
+{
+  uint k;
+  bool in_here, in_further;
+  for ( k = 0; k < aKSpace.dimension; ++k )
+    {
+      Cell dir_low_uid = aLowerBound;
+      Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
+      
+      
+      Cell p = dir_low_uid;
+      do 
+	{
+	  in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
+	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
+	  if ( in_here != in_further ) // boundary element
+	    { // add it to the set.
+	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
+	    }
+	}
+      while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
