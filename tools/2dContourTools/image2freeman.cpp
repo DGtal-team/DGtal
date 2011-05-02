@@ -32,16 +32,14 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
-//#include "DGtal/topology/SurfelAdjacency.h"
-//#include "DGtal/topology/SurfelNeighborhood.h"
-
-
-
 
 
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/ContourHelper.h"
+
+
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
@@ -77,7 +75,9 @@ int main( int argc, char** argv )
     ("image,i", po::value<std::string>(), "image file name")
     ("min,m", po::value<int>(), "min image threshold value (default 128)")
     ("max,M", po::value<int>(), "max image threshold value (default 255)")
-    ("minSize,s", po::value<int>(), "minSize of the extracted freeman chain (default 0)");
+    ("minSize,s", po::value<int>(), "minSize of the extracted freeman chain (default 0)")
+    ("contourSelect,s", po::value<vector <int> >()->multitoken(), 
+     "Select contour according reference point and maximal distance:  ex. --contourSelect X Y distanceMax");
   
   
   po::variables_map vm;
@@ -95,6 +95,10 @@ int main( int argc, char** argv )
   double minThreshold = 128;
   double maxThreshold = 255;
   int minSize =0;
+  bool select=false;
+  Z2i::Point selectCenter;
+  int selectDistanceMax; 
+  
   //Parse options
   if (not(vm.count("image"))){
     trace.info() << "Image file name needed"<< endl;
@@ -110,7 +114,17 @@ int main( int argc, char** argv )
   if(vm.count("minSize")){
     minSize = vm["minSize"].as<int>();
   } 
-  
+  if(vm.count("contourSelect")){
+    select=true;
+    vector<int> cntConstraints= vm["contourSelect"].as<vector <int> >();
+    if(cntConstraints.size()!=3){
+      trace.info() << "Incomplete option \"--contourSelect\""<< endl;
+      return 0;
+    }
+    selectCenter[0]= cntConstraints.at(0);
+    selectCenter[1]= cntConstraints.at(1);
+    selectDistanceMax= cntConstraints.at(2);
+  }
   
 
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
@@ -127,10 +141,22 @@ int main( int argc, char** argv )
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 						    ks, set2d, sAdj );  
-  for(int i=0; i<vectContoursBdryPointels.size(); i++){
+  for(uint i=0; i<vectContoursBdryPointels.size(); i++){
+    Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
+
     if(vectContoursBdryPointels.at(i).size()>minSize){
-      FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);    
-      cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+      if(select){
+	int distance = (int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
+				  (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
+	if(distance<=selectDistanceMax){
+	  FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);    
+	  cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+	}
+      }else{
+	FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);    
+	cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+      }
+
     }
 
   }
