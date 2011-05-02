@@ -54,6 +54,9 @@
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/IntegerTraits.h"
+
+#include "DGtal/helpers/StdDefs.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -128,10 +131,10 @@ namespace DGtal
 
     
     class ConstIterator : 
-						public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
+      public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
     {
 
-	 public:
+    public:
 
       // ------------------------- data -----------------------
     private:
@@ -179,24 +182,24 @@ namespace DGtal
 	
       ConstIterator( const FreemanChain & aChain, unsigned int n =0)
 	: myFc( &aChain ), myPos( 0 )
- {
+      {
 	  
-		if ( n < myFc->chain.size() ) {
+	if ( n < myFc->chain.size() ) {
 
-			myXY.at(0)=aChain.x0;
-			myXY.at(1)=aChain.y0;
+	  myXY.at(0)=aChain.x0;
+	  myXY.at(1)=aChain.y0;
 
-			while ( myPos < n ) this->next();
+	  while ( myPos < n ) this->next();
 
-		} else {// iterator end() 
-			myXY.at(0)=aChain.xn;
-			myXY.at(1)=aChain.yn;
+	} else {// iterator end() 
+	  myXY.at(0)=aChain.xn;
+	  myXY.at(1)=aChain.yn;
 
-		  myPos = myFc->chain.size()+1;
-
-    }
+	  myPos = myFc->chain.size()+1;
 
 	}
+
+      }
 	
 	
      
@@ -412,19 +415,19 @@ namespace DGtal
       {
 
 	if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
-    --myPos;
-		if (myPos < myFc->chain.size()) {
-		  switch ( myFc->code( myPos ) ) {
-		    case 0: (myXY.at(0))--; break;
-		    case 1: (myXY.at(1))--; break;
-		    case 2: (myXY.at(0))++; break;
-		    case 3: (myXY.at(1))++; break;
-		  }
-		}
+	  --myPos;
+	  if (myPos < myFc->chain.size()) {
+	    switch ( myFc->code( myPos ) ) {
+	    case 0: (myXY.at(0))--; break;
+	    case 1: (myXY.at(1))--; break;
+	    case 2: (myXY.at(0))++; break;
+	    case 3: (myXY.at(1))++; break;
+	    }
+	  }
 	}
 
 
-     }
+      }
 	
 
 
@@ -439,10 +442,10 @@ namespace DGtal
 	else --myPos;
 	switch ( myFc->code( myPos ) )
 	  {
-	      case 0: (myXY.at(0))--; break;
-	      case 1: (myXY.at(1))--; break;
-	      case 2: (myXY.at(0))++; break;
-	      case 3: (myXY.at(1))++; break;
+	  case 0: (myXY.at(0))--; break;
+	  case 1: (myXY.at(1))--; break;
+	  case 2: (myXY.at(0))++; break;
+	  case 3: (myXY.at(1))++; break;
 	  }
       }
 
@@ -1250,14 +1253,22 @@ namespace DGtal
      * @param x the x-coordinate of the first point.
      * @param y the y-coordinate of the first point.
      */
-    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
+    FreemanChain( const std::string & s = "", int x = 0, int y = 0, bool isInterPixel=false );
 
 
     /**
      * Constructor.
+     * @param vectorPoints the vector containing all the points. 
+     */
+    FreemanChain( const std::vector<Z2i::Point> vectPoints, bool isInterPixel=false);
+    
+    
+    
+    /**
+     * Constructor.
      * @param in any input stream,
      */
-    FreemanChain(std::istream & in );
+    FreemanChain(std::istream & in,  bool isInterPixel=false );
 
 
 
@@ -1509,7 +1520,7 @@ namespace DGtal
     {
       typename FreemanChain<TInteger>::ConstIterator it = this->begin();
       typename FreemanChain<TInteger>::ConstIterator it_end = this->end();
-			--it_end;
+      --it_end;
       typename FreemanChain<TInteger>::ConstIterator it_suiv = it;
       PointI2 spos = *it;
       int nb_ccw_turns = 0;
@@ -1615,6 +1626,9 @@ namespace DGtal
      */
     Integer yn;
 
+    
+    bool myIsInterPixel;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -1630,19 +1644,19 @@ namespace DGtal
 
     /**
      * Computes the coordinates of the last point
-		 * nb: in O(n)
+     * nb: in O(n)
      */
-	void computeLastPoint() {
+    void computeLastPoint() {
       for ( typename FreemanChain<TInteger>::ConstIterator it = this->begin();
             it != this->end();
             ++it )
         {
-					PointI2 tmp = *it;
-					std::cout << it.get() << " " << it.getPosition() << std::endl;
+	  PointI2 tmp = *it;
+	  std::cout << it.get() << " " << it.getPosition() << std::endl;
           xn = tmp.at(0);
-					yn = tmp.at(1);
+	  yn = tmp.at(1);
         }
-	}
+    }
 
   private:
 
@@ -1665,8 +1679,10 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
+	aBoard.setPenColor(DGtalBoard::Color::Red);
+	aBoard.setLineWidth(3);
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
-	aBoard.setPenColor(DGtalBoard::Color::Black);
       }
     };
 

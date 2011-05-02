@@ -64,6 +64,9 @@ int main( int argc, char** argv )
   DGtalBoard board2;
   board2 << image.domain() << set2d; // display domain and set
 
+  DGtalBoard board3;
+  board3 << image.domain() << set2d; // display domain and set
+
 
   // Construct the Khalimsky space from the image domain
   Z2i::KSpace ks;
@@ -77,7 +80,7 @@ int main( int argc, char** argv )
   SurfelAdjacency<2> SAdj( true );
   Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
 					  ks, SAdj, set2d, aCell );
-
+  
   board << CustomStyle( (*(vectBdrySCell.begin())).styleName(), 
 			new CustomColors(  DGtalBoard::Color( 255, 255, 0 ),
 					   DGtalBoard::Color( 192, 192, 0 ) ));
@@ -98,30 +101,55 @@ int main( int argc, char** argv )
 
 
   // Extract all boundaries:
-  std::set<Z2i::Cell> bdry;
+  std::set<Z2i::SCell> bdry;
   Z2i::Cell low = ks.uFirst(ks.uSpel(ks.lowerBound()));
   Z2i::Cell upp = ks.uLast(ks.uSpel(ks.upperBound()));
-  Surfaces<Z2i::KSpace>::uMakeBoundary( bdry,
-					ks, SAdj, set2d, low, upp  );
+  Surfaces<Z2i::KSpace>::sMakeBoundary( bdry,
+					ks, set2d, low, upp  );
+
   
-  std::set<Z2i::Cell>::iterator itB;
+  std::set<Z2i::SCell>::iterator itB;
   for ( itB=bdry.begin() ; itB != bdry.end(); itB++ ){
     board2<< CustomStyle((*itB).styleName() ,
 			 new CustomColors( DGtalBoard::Color::Black,
 					   cmap_grad( d )))<< *itB;
     d++;
   }
+  
+  std::vector< std::vector<Z2i::SCell> > vectContoursBdrySCell;
+  Surfaces<Z2i::KSpace>::extractAll2DSCellContours( vectContoursBdrySCell,
+					       ks, SAdj, set2d );
+  GradientColorMap<int> cmap_grad3( 0, vectContoursBdrySCell.size() );
+  cmap_grad3.addColor( DGtalBoard::Color( 50, 50, 255 ) );
+  cmap_grad3.addColor( DGtalBoard::Color( 255, 0, 0 ) );
+  cmap_grad3.addColor( DGtalBoard::Color( 20, 200, 0 ) );
+  cmap_grad3.addColor( DGtalBoard::Color( 200, 200, 200 ) );
+  cmap_grad3.addColor( DGtalBoard::Color( 20, 200, 200 ) );
+  cmap_grad3.addColor( DGtalBoard::Color( 200, 20, 200 ) );
+  
+  d=0;
+  for(int i=0; i< vectContoursBdrySCell.size(); i++){
+    d++;
+    for(int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
+      board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).styleName() ,
+			   new CustomColors( DGtalBoard::Color::Black,
+					     cmap_grad3( d )))<<vectContoursBdrySCell.at(i).at(j) ;
+      
+    }
+  }
 
-  
-  
-  board << CustomStyle( aCell.styleName(), new CustomColors(  DGtalBoard::Color( 255, 0, 0 ),
-								DGtalBoard::Color( 192, 0, 0 ) ));
+
+
+ 
     board << aCell;  
     board.saveEPS( "ctopo-2.eps");
     board.saveFIG( "ctopo-2.fig");
 
     board2.saveEPS( "ctopo-2d.eps");
     board2.saveFIG( "ctopo-2d.fig");
+    
+    board3.saveEPS( "ctopo-2e.eps");
+    board3.saveFIG( "ctopo-2e.fig");
     
     return 0;
 }
