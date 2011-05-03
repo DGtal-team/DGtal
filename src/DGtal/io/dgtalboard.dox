@@ -168,6 +168,7 @@ namespace DGtal {
      - class Object, modes: "", "DrawAdjacencies"
      - class HyperRectDomain, modes: "" / "Grid", "Paving"
      - class ArithmeticalDSS, modes: "" / "BoundingBox", "Points"
+     - class FreemanChain, modes: "" / "Grid", "InterGrid"
     
      For instance, to change the drawing mode for the next object \c dss of type
      ArithmeticalDSS, you may use the line
