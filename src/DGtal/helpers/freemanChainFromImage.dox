@@ -102,9 +102,7 @@ Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 \section step3 Freemanchain construction and display
 
 From the previous vector containing the contour points, we can
-construct and display its associated FreemanChain. Since the
-interpixel boundary are composed of not integer points we have to
-specify in the construction:
+construct and display its associated FreemanChain.
 
 @code
 for(int i=0; i<vectContoursBdryPointels.size(); i++)
@@ -114,8 +112,9 @@ for(int i=0; i<vectContoursBdryPointels.size(); i++)
 Since the reconstructed freemanchain represents the inter pixels
 boundary of the digital set we can specify it by using the mode "InterGrid" as follows:
 @code
-    aBoard << SetMode( fc.styleName(), "InterGrid" );
-    aBoard<< CustomStyle( fc.styleName(),  
+aBoard << SetMode( fc.styleName(), "InterGrid" );
+aBoard<< CustomStyle( fc.styleName(), 
+    			  new CustomColors(  cmap_grad(i),  DGtalBoard::Color::None ) );    
 @endcode
 
 By using the display color defining in the example <a
@@ -146,8 +145,37 @@ you will obtain the followings contours:
 \section  FCfromImageTools Extracting and displaying contours 
 
 
-The tools ... 
+The directory Tools/2dContourTools contains command line program "pgm2freeman" 
+allowing to simply extract level set contours from an pgm image:
 
+@code
+./tools/2dContourTools/pgm2freeman --image ../examples/samples/church.pgm 
+--minSize 300 --contourSelect 129 526 300 --thresholdRange 100 5 220 > contours.fc ;
+@endcode
+ 
+
+This example will load the pgm source file "church.pgm" and apply
+successive thresholds [100,105], [105, 110]....  [215, 220] and select
+all the boundary contours with a minimal size equals to 300 and with
+distance between its barycenter and point (129 526) less than 300.
+
+
+The resulting file contours.fc contains a freemanchain on each line and
+can then be displayed with the command line program "displayContours" as follows:
+
+
+@code 
+./tools/2dContourTools/displayContours --FreemanChain contours.fc 
+ --imageName ../examples/samples/church.png --outputPDF levelSetImage.pdf
+ --outputEPS levelSetImage.eps
+@endcode
+
+
+You then will obtain the following result in eps or pdf (if cairo is installed on your system)  format :
+
+
+
+@image html churchLevelSets.png 
 
 
 

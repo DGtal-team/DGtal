@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   
  
   DGtalBoard aBoard;
-  aBoard.setUnit (0.5, LibBoard::Board::UCentimeter);
+  aBoard.setUnit (3, LibBoard::Board::UCentimeter);
   
 
 #ifdef WITH_MAGICK
@@ -123,15 +123,15 @@ int main( int argc, char** argv )
     Z2i::Point ptSup = img.upperBound(); 
     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
-    aBoard.drawImage(imageName, 0,height-1, width, height );
+    aBoard.drawImage(imageName, 0-0.5,height-0.5, width, height );
   }
 #endif
-  
+  aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
   aBoard << CustomStyle( vectFc.at(0).styleName(), 
-			 new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+  			 new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+
   
-  
-  for(int i=0; i<vectFc.size(); i++){
+  for(uint i=0; i<vectFc.size(); i++){
     aBoard <<  vectFc.at(i) ;
   }
 
