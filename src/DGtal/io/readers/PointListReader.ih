@@ -114,7 +114,11 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
       string fcChain;
       bool isOK = (in_str >> x0) && (in_str >> y0) && (in_str >> fcChain);
       FreemanChain< TInteger> fc(fcChain, x0, y0);
-      vectResult.push_back(fc);
+      if(isOK){
+	vectResult.push_back(fc);
+      }else{
+	cerr << "Ignoring entry invalid FreemanChain" << endl;
+      }
     }
     getline(infile, str );
   }  

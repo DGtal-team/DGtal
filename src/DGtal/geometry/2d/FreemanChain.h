@@ -1663,7 +1663,7 @@ namespace DGtal
             ++it )
         {
 	  PointI2 tmp = *it;
-	  std::cout << it.get() << " " << it.getPosition() << std::endl;
+	  //std::cout << it.get() << " " << it.getPosition() << std::endl;
           xn = tmp.at(0);
 	  yn = tmp.at(1);
         }
