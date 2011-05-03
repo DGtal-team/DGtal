@@ -31,26 +31,25 @@
 
 #include "DGtal/base/Common.h"
 
-#include "DGtal/topology/KhalimskySpaceND.h"
-
-
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/ContourHelper.h"
 
-
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/MagickReader.h"
 #include "DGtal/io/readers/PointListReader.h"
+#include "DGtal/io/DGtalBoard.h"
+
+#ifdef WITH_MAGICK
+#include "DGtal/io/readers/MagickReader.h"
+#endif
 
 #include "DGtal/geometry/2d/FreemanChain.h"
 
-#include "DGtal/io/DGtalBoard.h"
+
 #include "DGtal/helpers/Surfaces.h"
 
 #include <boost/program_options/options_description.hpp>
@@ -75,8 +74,14 @@ int main( int argc, char** argv )
   general_opt.add_options()
     ("help,h", "display this message")
     ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
-    ("imageName,i", po::value<std::string>(), "image file name");
-
+    ("outputEPS", po::value<std::string>(), "outputEPS <filename> specify eps format (default format output.eps)")
+    ("outputSVG", po::value<std::string>(), "outputSVG <filename> specify eps format (default format output.svg)")
+    ("outputFIG", po::value<std::string>(), "outputFIG <filename> specify eps format (default format output.fig)")
+    #ifdef WITH_MAGICK
+    ("imageName,i", po::value<std::string>(), "image file name to be drawn in background (not implemented with EPS format)")
+    #endif
+    ;
+  
   
   
   po::variables_map vm;
@@ -98,49 +103,49 @@ int main( int argc, char** argv )
   } 
   string fileName = vm["FreemanChain"].as<string>();
   vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
-
-  // Constructing Domain according FC bounding boxes  
-  int aXMin, aYMin, aXMax, aYMax;
-  vectFc.at(0).computeBoundingBox(aXMin, aYMin, aXMax, aYMax);
-  for(int i=1; i< vectFc.size(); i++){
-    int aXMinI, aYMinI, aXMaxI, aYMaxI;
-    vectFc.at(i).computeBoundingBox(aXMinI, aYMinI, aXMaxI, aYMaxI);
-    if(aXMinI < aXMin) aXMin= aXMinI;
-    if(aYMinI < aYMin) aYMin= aYMinI;
-    if(aXMaxI > aXMax) aXMax= aXMaxI;
-    if(aYMaxI > aYMax) aYMax= aYMaxI;
-  }
-  Z2i::Point ptMin; 
-  Z2i::Point ptMax; 
-  ptMin[0]=aXMin;
-  ptMin[1]=aYMin;
-
-  ptMax[0]=aXMax;
-  ptMax[1]=aYMax;
-  Z2i::Domain domain(ptMin, ptMax); 
+;
+ 
   DGtalBoard aBoard;
+  aBoard.setUnit (0.5, LibBoard::Board::UCentimeter);
   
+
+#ifdef WITH_MAGICK
   if(vm.count("imageName")){
     string imageName = vm["imageName"].as<string>();
-     typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
-     DGtal::MagickReader<Image> reader;
-     Image img = reader.importImage( imageName );
-     domain=img.domain();
-    
-     Z2i::Point ptInf = img.lowerBound(); 
-     Z2i::Point ptSup = img.upperBound(); 
-     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
-     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
-     aBoard.drawImage(imageName, 0,height-1, width, height );
+    typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
+    DGtal::MagickReader<Image> reader;
+    Image img = reader.importImage( imageName );
+    Z2i::Point ptInf = img.lowerBound(); 
+    Z2i::Point ptSup = img.upperBound(); 
+    unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
+    unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
+    aBoard.drawImage(imageName, 0,height-1, width, height );
   }
+#endif
   
-
-  aBoard << domain;
   for(int i=0; i<vectFc.size(); i++){
     aBoard <<  vectFc.at(i);
   }
-  aBoard.saveEPS("resu.eps");
-  aBoard.saveFIG("resu.fig");
+
+  string outputFileName= "output.eps";
+  if (vm.count("output")){
+    
+  }  
+  
+  if (vm.count("outputSVG")){
+    string outputFileName= vm["outputSVG"].as<string>();
+    aBoard.saveSVG(outputFileName.c_str());
+  }
+  if (vm.count("outputEPS")){
+    string outputFileName= vm["outputEPS"].as<string>();
+    aBoard.saveEPS(outputFileName.c_str());
+  }
+  if (vm.count("outputFIG")){
+    string outputFileName= vm["outputFIG"].as<string>();
+    aBoard.saveFIG(outputFileName.c_str());
+  }
+
+  
     
 	
 }

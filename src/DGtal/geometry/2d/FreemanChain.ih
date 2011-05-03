@@ -77,7 +77,8 @@ DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in, bool isInterPixel
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
-  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), myIsInterPixel(aOther.myIsInterPixel)
+  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), 
+    xn( aOther.xn), yn( aOther.yn), myIsInterPixel(aOther.myIsInterPixel)
 {
 }
 
@@ -95,6 +96,9 @@ FreemanChain( const std::vector<Z2i::Point> vectPoints, bool isInterPixel ){
   ostringstream oss;
   x0=vectPoints.at(0)[0];
   y0=vectPoints.at(0)[1];
+  xn=vectPoints.at(vectPoints.size()-1)[0];
+  yn=vectPoints.at(vectPoints.size()-1)[1];
+    
   myIsInterPixel=isInterPixel;
   Z2i::Point pt;
   Z2i::Point ptSuiv;
