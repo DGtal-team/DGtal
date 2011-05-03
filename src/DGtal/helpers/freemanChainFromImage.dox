@@ -33,7 +33,7 @@ Table of contents:
  -# \ref step1 
  -# \ref step2 
  -# \ref step3 
-
+ -# \ref FCfromImageTools
 
 
 \section step1 DigitalSet from thresholded image 
@@ -111,8 +111,14 @@ for(int i=0; i<vectContoursBdryPointels.size(); i++)
    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);
 @endcode
 
+Since the reconstructed freemanchain represents the inter pixels
+boundary of the digital set we can specify it by using the mode "InterGrid" as follows:
+@code
+    aBoard << SetMode( fc.styleName(), "InterGrid" );
+    aBoard<< CustomStyle( fc.styleName(),  
+@endcode
 
-By using the display defining in the example <a
+By using the display color defining in the example <a
 href="freemanChainFromImage_8cpp-example.html"
 >freemanChainFromImage.cpp</a> you may obtain the following result
 where each contour are represented with a specific color:
@@ -132,6 +138,18 @@ you will obtain the followings contours:
 
 
  @image html fcExtraction2.png 
+
+
+
+
+
+\section  FCfromImageTools Extracting and displaying contours 
+
+
+The tools ... 
+
+
+
 
 
 */
