@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/2d/FreemanChain.h" 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -119,6 +120,19 @@ public:
 						  std::vector<uint>  aVectPosition=std::vector<uint>());
   
 
+
+  /** 
+   * Main method to FreemanChain contours.  Each line of the file
+   * should represent a FreemanChain
+   * 
+   * @param filename  
+   
+   * @return the vector containing the set of FreemanChain.
+   **/
+  template < typename TInteger > 
+  static std::vector< FreemanChain< TInteger > > getFreemanChainsFromFile (const std::string &filename);
+  
+  
   
 
 }; // end of class PointListReader

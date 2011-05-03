@@ -2,6 +2,7 @@ IF(MAGICK++_FOUND)
 
 SET(DGTAL_TOOLS_SRC
   image2freeman
+  displayContours
 )
 
 FOREACH(FILE ${DGTAL_TOOLS_SRC})

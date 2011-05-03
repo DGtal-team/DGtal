@@ -1,0 +1,147 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+/**
+ * @file image2freeman.cpp
+ * @ingroup Tools
+ * @author Bertrand Kerautret (\c kerautre@loria.fr)
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/27/04
+ *
+ * DGtal convert grey scales image to fremann contour. 
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+
+#include "DGtal/base/Common.h"
+
+#include "DGtal/topology/KhalimskySpaceND.h"
+
+
+#include "DGtal/helpers/ShapeFactory.h"
+#include "DGtal/helpers/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/ContourHelper.h"
+
+
+#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/io/readers/MagickReader.h"
+#include "DGtal/io/readers/PointListReader.h"
+
+#include "DGtal/geometry/2d/FreemanChain.h"
+
+#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/helpers/Surfaces.h"
+
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
+
+#include <vector>
+#include <string>
+
+using namespace DGtal;
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+namespace po = boost::program_options;
+
+int main( int argc, char** argv )
+{
+  // parse command line ----------------------------------------------
+  po::options_description general_opt("Allowed options are: ");
+  general_opt.add_options()
+    ("help,h", "display this message")
+    ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
+    ("imageName,i", po::value<std::string>(), "image file name");
+
+  
+  
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, general_opt), vm);  
+  po::notify(vm);    
+  if(vm.count("help")||argc<=1)
+    {
+      trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
+		  << "\t displayContours [options] --FreemanChain  <fileName>  contours.fc --imageName image.png "<<std::endl
+		  << general_opt << "\n";
+      return 0;
+    }
+  
+  
+  //Parse options
+  if (not(vm.count("FreemanChain"))){
+    trace.info() << "Contour file name needed"<< endl;
+    return 0;
+  } 
+  string fileName = vm["FreemanChain"].as<string>();
+  vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
+
+  // Constructing Domain according FC bounding boxes  
+  int aXMin, aYMin, aXMax, aYMax;
+  vectFc.at(0).computeBoundingBox(aXMin, aYMin, aXMax, aYMax);
+  for(int i=1; i< vectFc.size(); i++){
+    int aXMinI, aYMinI, aXMaxI, aYMaxI;
+    vectFc.at(i).computeBoundingBox(aXMinI, aYMinI, aXMaxI, aYMaxI);
+    if(aXMinI < aXMin) aXMin= aXMinI;
+    if(aYMinI < aYMin) aYMin= aYMinI;
+    if(aXMaxI > aXMax) aXMax= aXMaxI;
+    if(aYMaxI > aYMax) aYMax= aYMaxI;
+  }
+  Z2i::Point ptMin; 
+  Z2i::Point ptMax; 
+  ptMin[0]=aXMin;
+  ptMin[1]=aYMin;
+
+  ptMax[0]=aXMax;
+  ptMax[1]=aYMax;
+  Z2i::Domain domain(ptMin, ptMax); 
+  DGtalBoard aBoard;
+  
+  if(vm.count("imageName")){
+    string imageName = vm["imageName"].as<string>();
+     typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
+     DGtal::MagickReader<Image> reader;
+     Image img = reader.importImage( imageName );
+     domain=img.domain();
+    
+     Z2i::Point ptInf = img.lowerBound(); 
+     Z2i::Point ptSup = img.upperBound(); 
+     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
+     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
+     aBoard.drawImage(imageName, 0,height-1, width, height );
+  }
+  
+
+  aBoard << domain;
+  for(int i=0; i<vectFc.size(); i++){
+    aBoard <<  vectFc.at(i);
+  }
+  aBoard.saveEPS("resu.eps");
+  aBoard.saveFIG("resu.fig");
+    
+	
+}
+

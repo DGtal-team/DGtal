@@ -97,7 +97,31 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
 }
 
 
-
+template<typename TPoint>
+template<typename TInteger>
+inline
+std::vector<  FreemanChain< TInteger>  >
+DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &filename){
+  std::vector< FreemanChain<  TInteger> >   vectResult;
+  ifstream infile;
+  infile.open (filename.c_str(), ifstream::in);
+  string str;
+  getline(infile, str );
+  while ( infile.good() ){
+    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
+      istringstream in_str( str );
+      int x0, y0;
+      string fcChain;
+      bool isOK = (in_str >> x0) && (in_str >> y0) && (in_str >> fcChain);
+      FreemanChain< TInteger> fc(fcChain, x0, y0);
+      vectResult.push_back(fc);
+    }
+    getline(infile, str );
+  }  
+  return vectResult;
+}
+  
+  
 
 
 //                                                                           //
