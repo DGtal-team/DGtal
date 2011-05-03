@@ -75,8 +75,12 @@ int main( int argc, char** argv )
     ("help,h", "display this message")
     ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
     ("outputEPS", po::value<std::string>(), "outputEPS <filename> specify eps format (default format output.eps)")
-    ("outputSVG", po::value<std::string>(), "outputSVG <filename> specify eps format (default format output.svg)")
-    ("outputFIG", po::value<std::string>(), "outputFIG <filename> specify eps format (default format output.fig)")
+    ("outputSVG", po::value<std::string>(), "outputSVG <filename> specify svg format.")
+    ("outputFIG", po::value<std::string>(), "outputFIG <filename> specify fig format.")
+#ifdef WITH_CAIRO
+    ("outputPDF", po::value<std::string>(), "outputPDF <filename> specify pdf format. ")
+    ("outputPNG", po::value<std::string>(), "outputPNG <filename> specify png format.")
+#endif
     #ifdef WITH_MAGICK
     ("imageName,i", po::value<std::string>(), "image file name to be drawn in background (not implemented with EPS format)")
     #endif
@@ -103,7 +107,7 @@ int main( int argc, char** argv )
   } 
   string fileName = vm["FreemanChain"].as<string>();
   vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
-;
+  
  
   DGtalBoard aBoard;
   aBoard.setUnit (0.5, LibBoard::Board::UCentimeter);
@@ -123,8 +127,12 @@ int main( int argc, char** argv )
   }
 #endif
   
+  aBoard << CustomStyle( vectFc.at(0).styleName(), 
+			 new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+  
+  
   for(int i=0; i<vectFc.size(); i++){
-    aBoard <<  vectFc.at(i);
+    aBoard <<  vectFc.at(i) ;
   }
 
   string outputFileName= "output.eps";
@@ -145,8 +153,18 @@ int main( int argc, char** argv )
     aBoard.saveFIG(outputFileName.c_str());
   }
 
+#ifdef WITH_CAIRO
+  if (vm.count("outputPDF")){
+    string outputFileName= vm["outputPDF"].as<string>();
+    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPDF );
+  }
+  if (vm.count("outputPNG")){
+    string outputFileName= vm["outputPNG"].as<string>();
+    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPNG );
+  }
+#endif
   
-    
+
 	
 }
 
