@@ -290,8 +290,6 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
       bdry.erase(sc);
     }
   }
-    
-  
 }
 
 
