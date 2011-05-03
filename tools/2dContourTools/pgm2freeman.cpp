@@ -45,7 +45,7 @@
 #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/kernel/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/MagickReader.h"
+#include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
 #include "DGtal/io/DGtalBoard.h"
@@ -129,7 +129,8 @@ int main( int argc, char** argv )
 
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
   string imageFileName = vm["image"].as<std::string>();
-  Image image = MagickReader<Image>::importImage( imageFileName ); 
+  
+  Image image = PNMReader<Image>::importPGMImage( imageFileName ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, minThreshold, maxThreshold);
@@ -142,10 +143,9 @@ int main( int argc, char** argv )
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 						    ks, set2d, sAdj );  
   for(uint i=0; i<vectContoursBdryPointels.size(); i++){
-    Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
-
     if(vectContoursBdryPointels.at(i).size()>minSize){
       if(select){
+	Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
 	int distance = (int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
 				  (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
 	if(distance<=selectDistanceMax){
