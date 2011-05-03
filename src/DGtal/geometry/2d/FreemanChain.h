@@ -1253,14 +1253,14 @@ namespace DGtal
      * @param x the x-coordinate of the first point.
      * @param y the y-coordinate of the first point.
      */
-    FreemanChain( const std::string & s = "", int x = 0, int y = 0, bool isInterPixel=false );
+    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
 
 
     /**
      * Constructor.
      * @param vectorPoints the vector containing all the points. 
      */
-    FreemanChain( const std::vector<Z2i::Point> vectPoints, bool isInterPixel=false);
+    FreemanChain( const std::vector<Z2i::Point> vectPoints);
     
     
     
@@ -1268,7 +1268,7 @@ namespace DGtal
      * Constructor.
      * @param in any input stream,
      */
-    FreemanChain(std::istream & in,  bool isInterPixel=false );
+    FreemanChain(std::istream & in );
 
 
 
@@ -1596,8 +1596,19 @@ namespace DGtal
        Draw the object on a DGtalBoard board
        @param board the output board where the object is drawn.
     */
-    void selfDraw(DGtalBoard & board ) const;
+    void selfDraw(DGtalBoard & board ) const; 
+    /**
+       Draw the object on a DGtalBoard board
+       @param board the output board where the object is drawn.
+    */
+    void selfDrawAsGrid(DGtalBoard & board ) const;
 
+     
+    /**
+       Draw the object on a DGtalBoard board
+       @param board the output board where the object is drawn.
+    */
+    void selfDrawAsInterGrid(DGtalBoard & board ) const;
     // ------------------------- Public Datas ------------------------------
 
   public:
@@ -1627,7 +1638,7 @@ namespace DGtal
     Integer yn;
 
     
-    bool myIsInterPixel;
+
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -1679,12 +1690,33 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-	aBoard.setPenColor(DGtalBoard::Color::Red);
+       	aBoard.setPenColor(DGtalBoard::Color::Red);
 	aBoard.setLineWidth(3);
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
       }
     };
+
+    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setLineWidth(3);
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+	aBoard.setFillColor(DGtalBoard::Color::None);
+      }
+    };
+
+  struct DefaultDrawStyleInterGrid : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setLineWidth(3);
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+	aBoard.setFillColor(DGtalBoard::Color::None);
+      }
+    };
+
 
 
 

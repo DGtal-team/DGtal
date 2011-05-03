@@ -75,9 +75,13 @@ int main( int argc, char** argv )
     ("image,i", po::value<std::string>(), "image file name")
     ("min,m", po::value<int>(), "min image threshold value (default 128)")
     ("max,M", po::value<int>(), "max image threshold value (default 255)")
+    
     ("minSize,s", po::value<int>(), "minSize of the extracted freeman chain (default 0)")
     ("contourSelect,s", po::value<vector <int> >()->multitoken(), 
-     "Select contour according reference point and maximal distance:  ex. --contourSelect X Y distanceMax");
+     "Select contour according reference point and maximal distance:  ex. --contourSelect X Y distanceMax")
+    ("thresholdRange,R", po::value<vector <int> >()->multitoken(), 
+     "use a range interval as threshold : --thresholdRange min increment max : for each possible i, it define a digital sets [min+(i*increment),min+((i+1)*increment)] and extract their boundary. ");
+  
   
   
   po::variables_map vm;
@@ -96,6 +100,7 @@ int main( int argc, char** argv )
   double maxThreshold = 255;
   int minSize =0;
   bool select=false;
+  bool thresholdRange=vm.count("thresholdRange");
   Z2i::Point selectCenter;
   int selectDistanceMax; 
   
@@ -126,41 +131,66 @@ int main( int argc, char** argv )
     selectDistanceMax= cntConstraints.at(2);
   }
   
+  int min, max, increment;
+  if(! thresholdRange){
+    min=minThreshold;
+    max= minThreshold+increment;
+    increment =  maxThreshold- minThreshold;
+  }else{
+    vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
+    if(vectRange.size()!=3){
+      trace.info() << "Incomplete option \"--thresholdRange\""<< endl;
+      return 0;
+    }
+    min=vectRange.at(0);
+    increment=vectRange.at(1);
+    max = vectRange.at(2);
+  }
+
+
 
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
   string imageFileName = vm["image"].as<std::string>();
-  
   Image image = PNMReader<Image>::importPGMImage( imageFileName ); 
-  
   Z2i::DigitalSet set2d (image.domain());
-  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, minThreshold, maxThreshold);
-  trace.info() << "DGtal set imported from thresholds ["<<  minThreshold << "," << maxThreshold << "]" << endl;
-  Z2i::KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
-  SurfelAdjacency<2> sAdj( true );
+    
+
+  for(int i=0; minThreshold+i*increment< maxThreshold; i++){
+    min = minThreshold+i*increment;
+    max = minThreshold+(i+1)*increment;
+    
+    
+    SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, min, max);
+    trace.info() << "DGtal set imported from thresholds ["<<  min << "," << max << "]" << endl;
+    Z2i::KSpace ks;
+    bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+    SurfelAdjacency<2> sAdj( true );
   
-  std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
-  Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						    ks, set2d, sAdj );  
-  for(uint i=0; i<vectContoursBdryPointels.size(); i++){
-    if(vectContoursBdryPointels.at(i).size()>minSize){
-      if(select){
-	Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
-	int distance = (int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
-				  (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
-	if(distance<=selectDistanceMax){
-	  FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);    
+    std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
+    Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
+						      ks, set2d, sAdj );  
+    for(uint i=0; i<vectContoursBdryPointels.size(); i++){
+      if(vectContoursBdryPointels.at(i).size()>minSize){
+	if(select){
+	  Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
+	  int distance = (int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
+				    (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
+	  if(distance<=selectDistanceMax){
+	    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
+	    cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+	  }
+	}else{
+	  FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
 	  cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
 	}
-      }else{
-	FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);    
-	cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+
       }
 
     }
+  
 
   }
-  
+
     
 	
 }

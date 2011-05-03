@@ -53,8 +53,8 @@
  */
 
 template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y , bool isInterPixel)
-  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y ), myIsInterPixel (isInterPixel)
+DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
+  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
 {
 	DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
@@ -65,9 +65,9 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y
  * @param in any input stream,
  */
 template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in, bool isInterPixel ){
+DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
   DGtal::FreemanChain<TInteger>::read(in, *this);
-  xn = x0; yn = y0; myIsInterPixel= isInterPixel;
+  xn = x0; yn = y0; 
   DGtal::FreemanChain<TInteger>::computeLastPoint();
 }
 
@@ -78,7 +78,7 @@ DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in, bool isInterPixel
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
   : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), 
-    xn( aOther.xn), yn( aOther.yn), myIsInterPixel(aOther.myIsInterPixel)
+    xn( aOther.xn), yn( aOther.yn)
 {
 }
 
@@ -92,14 +92,14 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOth
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::
-FreemanChain( const std::vector<Z2i::Point> vectPoints, bool isInterPixel ){
+FreemanChain( const std::vector<Z2i::Point> vectPoints ){
   ostringstream oss;
   x0=vectPoints.at(0)[0];
   y0=vectPoints.at(0)[1];
   xn=vectPoints.at(vectPoints.size()-1)[0];
   yn=vectPoints.at(vectPoints.size()-1)[1];
-    
-  myIsInterPixel=isInterPixel;
+  
+ 
   Z2i::Point pt;
   Z2i::Point ptSuiv;
   for(int i=0; i< vectPoints.size()-1; i++){
@@ -140,9 +140,12 @@ DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther 
 template <typename TInteger>
 inline
 DGtal::DrawableWithDGtalBoard*
-DGtal::FreemanChain<TInteger>::defaultStyle( std::string ) const
+DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode ) const
 {
-  return new DefaultDrawStyle;
+  if ( ( mode == "" ) || ( mode == "Grid" ) ) 
+    return new DefaultDrawStyleGrid;
+  else 
+    return new DefaultDrawStyleInterGrid;  
 }
 //------------------------------------------------------------------------------
 template <typename TInteger>
@@ -158,6 +161,22 @@ inline
 void 
 DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
 {
+  std::string mode = aBoard.getMode( this->styleName() );
+  ASSERT( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
+	  ("DGtal::FreemanChain<Integer>::selfDraw: Unknown mode "+mode)==""  );
+  
+  if ( mode == "Grid"  || ( mode == "" )  )
+    selfDrawAsGrid( aBoard );
+  else if ( mode == "InterGrid" )
+    selfDrawAsInterGrid( aBoard );
+  
+}
+//------------------------------------------------------------------------------
+template <typename TInteger>
+inline
+void 
+DGtal::FreemanChain<TInteger>::selfDrawAsGrid(DGtalBoard & aBoard) const
+{
   vector<typename FreemanChain<TInteger>::PointI2> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   TInteger minX, minY, maxX, maxY;
@@ -165,13 +184,34 @@ DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
   
   vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0])-(myIsInterPixel? 0.5 :0),
-				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])+(myIsInterPixel? 0.5 :0)));
-    //aBoard << aVContour[i];
+    contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0]),
+				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])));
+    //    aBoard << aVContour[i];
   }
   aBoard.drawPolyline(contour);
 }
 //------------------------------------------------------------------------------
+template <typename TInteger>
+inline
+void 
+DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(DGtalBoard & aBoard) const
+{
+  vector<typename FreemanChain<TInteger>::PointI2> aVContour;
+  FreemanChain<TInteger>::getContourPoints(*this, aVContour);
+  TInteger minX, minY, maxX, maxY;
+  this->computeBoundingBox(minX, minY, maxX, maxY);
+  
+  vector<LibBoard::Point> contour;
+  for(unsigned int i=0; i< aVContour.size(); i++){
+    contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0])-0.5,
+				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])+0.5));
+  }
+  aBoard.drawPolyline(contour);
+}
+
+
+
+
 
 
 /**
