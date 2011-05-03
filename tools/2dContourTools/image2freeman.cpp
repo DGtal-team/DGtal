@@ -127,7 +127,7 @@ int main( int argc, char** argv )
   }
   
 
-  typedef ImageSelector < Z2i::Domain, int>::Type Image;
+  typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
   string imageFileName = vm["image"].as<std::string>();
   Image image = MagickReader<Image>::importImage( imageFileName ); 
   
