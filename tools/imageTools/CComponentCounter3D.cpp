@@ -61,7 +61,6 @@ void CCCounter(Rank& r, Parent& p, const Image& elements, const unsigned int con
     dsets.make_set(*e);
   trace.endBlock();
 
-
   trace.beginBlock("Merging neighboring sets");
   typename Image::Point decx(1,0,0);
   typename Image::Point decy(0,1,0);
