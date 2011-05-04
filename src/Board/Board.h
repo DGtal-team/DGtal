@@ -341,10 +341,11 @@ public:
    * @param width Width of the rectangle.
    * @param height Height of the rectangle.
    * @param depthValue Depth of the rectangle.
+   * @param alpha Transparency used in the image display.
    */
   void drawImage( std::string filename, double x, double y, 
 		      double width, double height,
-		      int depthValue = -1 );
+		  int depthValue = -1, double alpha=1.0 );
 
   /** 
    * Draws a rectangle filled with the current pen color.
