@@ -154,14 +154,14 @@ allowing to simply extract level set contours from an pgm image:
 @endcode
  
 
-This example will load the pgm source file "church.pgm" and apply
-successive thresholds [100,105], [105, 110]....  [215, 220] and select
+This example will load the pgm source file "church.pgm" and applies
+successive thresholds [100,105], [105, 110]....  [215, 220] and selects
 all the boundary contours with a minimal size equals to 300 and with
-distance between its barycenter and point (129 526) less than 300.
+a distance between its barycenter and point (129 526) less than 300.
 
 
-The resulting file contours.fc contains a freemanchain on each line and
-can then be displayed with the command line program "displayContours" as follows:
+The resulting file "contours.fc" contains a freemanchain on each line
+and can be displayed with the command line program "displayContours":
 
 
 @code 
@@ -171,8 +171,7 @@ can then be displayed with the command line program "displayContours" as follows
 @endcode
 
 
-You then will obtain the following result in eps or pdf (if cairo is installed on your system)  format :
-
+You will obtain the following result in eps or pdf (if cairo is installed on your system) format :
 
 
 @image html churchLevelSets.png 
