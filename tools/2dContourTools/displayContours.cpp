@@ -80,6 +80,7 @@ int main( int argc, char** argv )
 #ifdef WITH_CAIRO
     ("outputPDF", po::value<std::string>(), "outputPDF <filename> specify pdf format. ")
     ("outputPNG", po::value<std::string>(), "outputPNG <filename> specify png format.")
+    ("alpha", po::value<double>(), "alpha <value> 0-1.0 to display the background image in transparency (default 1.0)")
 #endif
     #ifdef WITH_MAGICK
     ("imageName,i", po::value<std::string>(), "image file name to be drawn in background (not implemented with EPS format)")
@@ -110,11 +111,16 @@ int main( int argc, char** argv )
   
  
   DGtalBoard aBoard;
-  aBoard.setUnit (3, LibBoard::Board::UCentimeter);
+  aBoard.setUnit (1, LibBoard::Board::UCentimeter);
   
 
 #ifdef WITH_MAGICK
-  if(vm.count("imageName")){
+  double alpha=1.0;
+  if(vm.count("alpha")){
+   alpha = vm["alpha"].as<double>(); 
+  }
+  
+if(vm.count("imageName")){
     string imageName = vm["imageName"].as<string>();
     typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
     DGtal::MagickReader<Image> reader;
@@ -123,7 +129,8 @@ int main( int argc, char** argv )
     Z2i::Point ptSup = img.upperBound(); 
     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
-    aBoard.drawImage(imageName, 0-0.5,height-0.5, width, height );
+    cerr << "alpha=" << alpha; 
+    aBoard.drawImage(imageName, 0-0.5,height-0.5, width, height, -1, alpha );
   }
 #endif
   aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );

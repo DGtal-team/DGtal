@@ -982,10 +982,11 @@ struct Image : public Rectangle {
    * @param height Second coordinate of the end point.
    * @param filename the image filename.
    * @param depth The depth of the image.
+   * @param alpha The image transparency used for display (works only is cairo is installed).
    */
   
   inline Image( double x0, double y0, double width, double height, 
-		std::string fileName, int depthValue );
+		std::string fileName, int depthValue, double alpha=1.0 );
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
@@ -1017,7 +1018,7 @@ protected:
   double _width;
   double _height;
   std::string _filename;
-  
+  double _alpha;
 };
 
 

@@ -169,7 +169,7 @@ namespace DGtal
     static 
     void extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointContour2D,
 				    const KSpace & aKSpace,
-				    const DigitalSet & aShape, SurfelAdjacency<2> aSAdj );
+				    const DigitalSet & aShape, const SurfelAdjacency<2> &aSAdj );
 
     
 
