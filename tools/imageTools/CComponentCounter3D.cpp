@@ -31,7 +31,6 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
 
 #include "Board/Color.h"
 #include "DGtal/kernel/images/ImageSelector.h"
