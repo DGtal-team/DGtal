@@ -165,18 +165,24 @@ and can be displayed with the command line program "displayContours":
 
 
 @code 
-./tools/2dContourTools/displayContours --FreemanChain contours.fc 
- --backgroundImage ../examples/samples/church.png --outputPDF levelSetImage.pdf
- 
+./tools/2dContourTools/displayContours --FreemanChain contours.fc --backgroundImage ../examples/samples/church.png
+ --outputEPS levelSetImage.eps --outputPDF levelSetImage.pdf 
 @endcode
 
 
-You will obtain the following result in eps or pdf (if cairo is installed on your system) format :
 
-
-@image html churchLevelSets.png 
-
-
+You will obtain the following result in eps and pdf format (if cairo
+is installed on your system) (left image). By adding the obption @code
+--alphaBG 0.5 @endcode the backgroundImage will be rendered with
+transparency (right image).
+<center>
+<table>
+<TR align=CENTER>
+<TD> @image html churchLevelSets.png </TD>
+<TD> @image html churchLevelSetsTransp.png </TD>
+</TR>
+</table>
+</center>
 
 
 */
