@@ -56,7 +56,7 @@ void CCCounter(Rank& r, Parent& p, const Image& elements, const unsigned int con
   boost::disjoint_sets<Rank,Parent> dsets(r, p);
   trace.beginBlock("Initial disjoint sets construction");
   for(typename Image::Domain::ConstIterator e = elements.domain().begin();
-      e != elements.domain().end(); e++)
+      e != elements.domain().end(); ++e)
     dsets.make_set(*e);
   trace.endBlock();
 
@@ -67,7 +67,7 @@ void CCCounter(Rank& r, Parent& p, const Image& elements, const unsigned int con
   
   //Merging process
   for(typename Image::Domain::ConstIterator e = elements.domain().begin();
-      e != elements.domain().end(); e++)
+      e !=elements.domain().end(); ++e)
     {
       if ( elements.domain().isInside(*e+decx) &&  
 	   (elements(*e) == elements(*e+decx)))
@@ -104,7 +104,7 @@ void CCCounter(Rank& r, Parent& p, const Image& elements, const unsigned int con
       
     }
   trace.endBlock();
-  trace.info() << "Number of disjoint "<<connectivity<<"-components = "
+  std::cout << "Number of disjoint "<<connectivity<<"-components = "
 	       <<dsets.count_sets(elements.domain().begin(),
 				  elements.domain().end())
 	       << std::endl;
