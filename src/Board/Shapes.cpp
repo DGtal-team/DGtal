@@ -653,9 +653,7 @@ Image::flushCairo( cairo_t *cr,
     // tr
 
     cairo_set_source_surface (cr, image, 0, 0);
-    std::cerr << "alpha=" <<_alpha<< std::endl;
     cairo_paint_with_alpha(cr, _alpha);
-
     cairo_surface_destroy (image);
     
   cairo_restore (cr);
