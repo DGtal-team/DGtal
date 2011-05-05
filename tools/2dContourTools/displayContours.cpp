@@ -80,10 +80,10 @@ int main( int argc, char** argv )
 #ifdef WITH_CAIRO
     ("outputPDF", po::value<std::string>(), "outputPDF <filename> specify pdf format. ")
     ("outputPNG", po::value<std::string>(), "outputPNG <filename> specify png format.")
-    ("alpha", po::value<double>(), "alpha <value> 0-1.0 to display the background image in transparency (default 1.0)")
 #endif
     #ifdef WITH_MAGICK
-    ("imageName,i", po::value<std::string>(), "image file name to be drawn in background (not implemented with EPS format)")
+    ("backgroundImage", po::value<std::string>(), "backgroundImage <filename> <alpha> : display image as background with transparency alpha (defaut 1) (transparency works only if cairo is available)")
+    ("alphaBG", po::value<double>(), "alphaBG <value> 0-1.0 to display the background image in transparency (default 1.0)")
     #endif
     ;
   
@@ -111,25 +111,25 @@ int main( int argc, char** argv )
   
  
   DGtalBoard aBoard;
-  aBoard.setUnit (1, LibBoard::Board::UCentimeter);
+  aBoard.setUnit (3, LibBoard::Board::UCentimeter);
   
 
 #ifdef WITH_MAGICK
   double alpha=1.0;
-  if(vm.count("alpha")){
-   alpha = vm["alpha"].as<double>(); 
+  if(vm.count("alphaBG")){
+   alpha = vm["alphaBG"].as<double>(); 
   }
   
-if(vm.count("imageName")){
-    string imageName = vm["imageName"].as<string>();
-    typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
+if(vm.count("backgroundImage")){
+  string imageName = vm["backgroundImage"].as<string>();
+  typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
     DGtal::MagickReader<Image> reader;
     Image img = reader.importImage( imageName );
     Z2i::Point ptInf = img.lowerBound(); 
     Z2i::Point ptSup = img.upperBound(); 
     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
-    cerr << "alpha=" << alpha; 
+    
     aBoard.drawImage(imageName, 0-0.5,height-0.5, width, height, -1, alpha );
   }
 #endif
