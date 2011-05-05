@@ -166,8 +166,8 @@ and can be displayed with the command line program "displayContours":
 
 @code 
 ./tools/2dContourTools/displayContours --FreemanChain contours.fc 
- --imageName ../examples/samples/church.png --outputPDF levelSetImage.pdf
- --outputEPS levelSetImage.eps
+ --backgroundImage ../examples/samples/church.png --outputPDF levelSetImage.pdf
+ 
 @endcode
 
 

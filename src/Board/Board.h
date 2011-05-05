@@ -35,7 +35,7 @@ class Board : public ShapeList {
 public:
   
   // cairo
-  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoSVG };
+  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
 
   enum PageSize { BoundingBox, A4, Letter };
   enum Unit { UPoint, UInche, UCentimeter, UMillimeter };
