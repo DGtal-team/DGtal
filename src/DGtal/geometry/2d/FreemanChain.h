@@ -1690,8 +1690,7 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-       	aBoard.setPenColor(DGtalBoard::Color::Red);
-	aBoard.setLineWidth(3);
+       	
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
       }
@@ -1701,7 +1700,6 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-	aBoard.setLineWidth(3);
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
       }
@@ -1711,7 +1709,6 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-	aBoard.setLineWidth(3);
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
       }

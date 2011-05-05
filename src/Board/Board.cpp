@@ -1054,7 +1054,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
       surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPS:
       surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
-    case CairoSVG:
+  case CairoSVG:
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPNG:
     default:
