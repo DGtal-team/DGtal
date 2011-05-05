@@ -152,10 +152,6 @@ if(vm.count("backgroundImage")){
   
 
   
-  if (vm.count("outputEPS")){
-    string outputFileName= vm["outputEPS"].as<string>();
-    aBoard.saveEPS(outputFileName.c_str());
-  }  
   if (vm.count("outputSVG")){
     string outputFileName= vm["outputSVG"].as<string>();
     aBoard.saveSVG(outputFileName.c_str());
@@ -165,10 +161,17 @@ if(vm.count("backgroundImage")){
     string outputFileName= vm["outputFIG"].as<string>();
     aBoard.saveFIG(outputFileName.c_str());
   }
+#ifndef WITH_CAIRO
+  if (vm.count("outputEPS")){
+    string outputFileName= vm["outputEPS"].as<string>();
+    aBoard.saveEPS(outputFileName.c_str());
+  }  
+#endif
+
 #ifdef WITH_CAIRO
   if (vm.count("outputEPS")){
     string outputFileName= vm["outputEPS"].as<string>();
-    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPS );
+    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoEPS );
   }
   if (vm.count("outputPDF")){
     string outputFileName= vm["outputPDF"].as<string>();
