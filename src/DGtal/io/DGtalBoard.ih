@@ -94,7 +94,10 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
   ModeMapping::const_iterator itm = myModes.find( object.styleName() );
   if ( itm != myModes.end() )
     {
-      std::cerr << " [mode]";
+      #ifdef DEBUG_VERBOSE
+      trace.info() << "  [mode]";
+      #endif
+
       // Apply default style for specific mode.
       CountedPtr<DrawableWithDGtalBoard> style_mode
 	( object.defaultStyle( itm->second ) );

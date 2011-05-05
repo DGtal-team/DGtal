@@ -85,7 +85,7 @@ int main( int argc, char** argv )
     ("backgroundImage", po::value<std::string>(), "backgroundImage <filename> <alpha> : display image as background with transparency alpha (defaut 1) (transparency works only if cairo is available)")
     ("alphaBG", po::value<double>(), "alphaBG <value> 0-1.0 to display the background image in transparency (default 1.0)")
     #endif
-    ;
+    ("scale", po::value<double>(), "scale <value> 1: normal; >1 : larger ; <1 lower resolutions  )");
   
   
   
@@ -109,9 +109,13 @@ int main( int argc, char** argv )
   string fileName = vm["FreemanChain"].as<string>();
   vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
   
- 
+  double scale=1.0;
+  if(vm.count("scale")){
+    scale = vm["scale"].as<double>();
+  }
+  
   DGtalBoard aBoard;
-  aBoard.setUnit (3, LibBoard::Board::UCentimeter);
+  aBoard.setUnit (0.05*scale, LibBoard::Board::UCentimeter);
   
 
 #ifdef WITH_MAGICK
@@ -133,8 +137,9 @@ if(vm.count("backgroundImage")){
     aBoard.drawImage(imageName, 0-0.5,height-0.5, width, height, -1, alpha );
   }
 #endif
-  aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
-  aBoard << CustomStyle( vectFc.at(0).styleName(), 
+ 
+ aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
+ aBoard << CustomStyle( vectFc.at(0).styleName(), 
   			 new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
 
   
@@ -143,24 +148,28 @@ if(vm.count("backgroundImage")){
   }
 
   string outputFileName= "output.eps";
-  if (vm.count("output")){
-    
-  }  
+
   
+
+  
+  if (vm.count("outputEPS")){
+    string outputFileName= vm["outputEPS"].as<string>();
+    aBoard.saveEPS(outputFileName.c_str());
+  }  
   if (vm.count("outputSVG")){
     string outputFileName= vm["outputSVG"].as<string>();
     aBoard.saveSVG(outputFileName.c_str());
   }
-  if (vm.count("outputEPS")){
-    string outputFileName= vm["outputEPS"].as<string>();
-    aBoard.saveEPS(outputFileName.c_str());
-  }
+  
   if (vm.count("outputFIG")){
     string outputFileName= vm["outputFIG"].as<string>();
     aBoard.saveFIG(outputFileName.c_str());
   }
-
 #ifdef WITH_CAIRO
+  if (vm.count("outputEPS")){
+    string outputFileName= vm["outputEPS"].as<string>();
+    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPS );
+  }
   if (vm.count("outputPDF")){
     string outputFileName= vm["outputPDF"].as<string>();
     aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPDF );
@@ -170,6 +179,8 @@ if(vm.count("backgroundImage")){
     aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPNG );
   }
 #endif
+
+
   
 
 	

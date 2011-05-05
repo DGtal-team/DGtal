@@ -1647,7 +1647,6 @@ Rectangle::flushFIG( std::ostream & stream,
                      const TransformFIG & transform,
                      std::map<Color,int> & colormap ) const
 {
-  std::cerr << "in flush rectangle" << std::endl;
   if ( _path[0].y != _path[1].y ) {
         Polyline::flushFIG( stream, transform, colormap );
         return;
