@@ -71,6 +71,8 @@
 #include "DGtal/utils/Assert.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/GlobalFunctions.h"
 #include "DGtal/base/Exceptions.h"
 
 
