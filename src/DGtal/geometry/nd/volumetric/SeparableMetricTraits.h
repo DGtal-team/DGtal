@@ -44,8 +44,8 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
-#include <boost/concept_check.hpp>
 
 namespace DGtal
 {
@@ -108,7 +108,7 @@ namespace DGtal
      */
     InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
-      return std::pow( fabs(IntegerTraits<Abscissa>::castToDouble(pos - ci)),
+      return std::pow( abs(IntegerTraits<Abscissa>::castToDouble(pos - ci)),
 		       (double)p) + hi;
     }
 
@@ -124,7 +124,7 @@ namespace DGtal
      */
     InternalValue reversedF ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
-      return hi - std::pow( fabs((double )pos - ci) , (double)p);
+      return hi - std::pow( abs((double )pos - ci) , (double)p);
     }
 
 
@@ -270,6 +270,7 @@ namespace DGtal
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
 			  const Abscissa j, const InternalValue hj ) const
     {
+      ///@warning GMP compliant problem here /
       if (hj >= hi + j - i)
         return IntegerTraits<Abscissa>::max();
       if (hi > hj + j - i)
@@ -278,13 +279,15 @@ namespace DGtal
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
-			  const Abscissa j, const InternalValue hj ) const
+				  const Abscissa j, const InternalValue hj ) const
     {
-      ASSERT(false && "Not-Yet-Implemented");
+      ///@warning GMP compliant problem here /
+      if (hj <= hi - j + i)
+	return IntegerTraits<Abscissa>::max();
+      if (hi < hj - j + i)
+        return IntegerTraits<Abscissa>::min();
+      return (hi + i - hj + j ) / 2;
     }
-
-
-    
     
 
     inline InternalValue power ( const Abscissa i ) const
@@ -304,7 +307,8 @@ namespace DGtal
     typedef TAbscissa Abscissa;
     typedef TInternalValue InternalValue;
     static const DGtal::uint32_t p = 0;
- 
+        
+
     inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
       return ( double ) aInternalValue;
@@ -314,14 +318,16 @@ namespace DGtal
 			     const InternalValue hi ) const
     {
       return ( InternalValue ) 
-	std::max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) : -((long int)pos - ci)), (Abscissa) hi);
+	max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
+			 -((long int)pos - ci)), (Abscissa) hi);
     }
-
+    
     inline InternalValue reversedF ( const Abscissa pos, 
 				     const Abscissa ci, 
 				     const InternalValue hi ) const
     {
-     return ( InternalValue ) std::min( 2*hi - (Abscissa)abs ( pos - ci ) , (Abscissa) hi);
+     return ( InternalValue ) 
+       min(  2*hi - (Abscissa)abs ( pos - ci ) , hi);
     }
 
 
@@ -329,15 +335,18 @@ namespace DGtal
 			  const Abscissa j, const InternalValue hj ) const
     {
       if (hi <= hj)
-        return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
+        return max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
       else
-        return std::min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
+        return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
 			  const Abscissa j, const InternalValue hj ) const
     {
-      ASSERT(false && "not yet implemented");
+      if (hi > hj)
+        return min ((Abscissa)(2*hi+i + 2*hj-j) /2, hj);
+      else
+        return min ((Abscissa)(2*hi+i + 2*hj-j) /2, hi);
     }
 
     
@@ -345,7 +354,7 @@ namespace DGtal
     inline InternalValue power ( const Abscissa i ) const
     {
       ///@todo define Abs somewhere
-      return (InternalValue) std::abs((long int)i);
+      return (InternalValue) abs(i);
     }
 
   }; // end of class SeparableMetricTraits

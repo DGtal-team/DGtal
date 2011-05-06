@@ -188,7 +188,7 @@ bool testDistanceTransformationBorder()
 
   ImageLong result = dt.compute ( image );
 
-  long int maxv = 0;
+  DGtal::uint64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -352,7 +352,7 @@ bool testChessboard()
   DT::OutputImage result = dt.compute ( image );
   DT1::OutputImage result1 = dt1.compute ( image );
 
-  long int maxv = 0;
+  DGtal::uint64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
