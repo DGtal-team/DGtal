@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -168,6 +169,7 @@ namespace DGtal
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
      * The method associates to each point with value satisfying the
      * foreground predicate, its distance to the closest background point.
+     * This algorithm is  O(d.|inputImage|).
      *
      * @param inputImage the input image
      * @param foregroundPredicate a predicate to detect foreground
@@ -176,11 +178,13 @@ namespace DGtal
      */
     template <typename ForegroundPredicate>
     OutputImage compute(const Image & inputImage, const ForegroundPredicate & predicate  );
-
+    
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
      * The method associates to each point with value satisfying the
-     * foreground predicate, its distance to the closest background point.
+     * foreground predicate, its distance to the closest background
+     * point.
+     * This algorithm is  O(d.|inputImage|).
      *
      * @param inputImage the input image
      * @return the distance transformation image with the Internal format.
@@ -190,6 +194,26 @@ namespace DGtal
       return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
     };
 
+    /**
+     * Compute the Distance Transformation of a Set with the SeparableMetric metric.
+     * This method first converts the digital set of an image and
+     * compute the DT in O(d.N) where N is the number of grid points
+     * of the bounding box of the set (and d the dimension). The
+     * bounding box is enlarged by 1 point in each direction if the
+     * addBoundary parameter is true (default value). 
+     *
+     * @param inputSet  the input set of grid points.
+     * @param addBoundary if true (default value), we add a boundary
+     * of thickness one to the bounding box (to make sure that all
+     * grid points of aSet belonging to the boundary  have a DT of
+     * value 1 (for the L2 and L1 case).
+     *
+     * @return the distance transformation image with the Internal format.
+     */
+    template<typename DigitalSet>
+    OutputImage compute(const DigitalSet & inputSet, const bool addBoundary=true );
+
+   
 
     // ------------------- Private functions ------------------------
   private:

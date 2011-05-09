@@ -86,6 +86,19 @@ DGtal::DistanceTransformation<I, p, IntLong>::checkTypesValidity ( const I & aIm
 }
 
 template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename DigitalSet>
+inline
+typename DGtal::DistanceTransformation<I, p, IntLong>::OutputImage
+DGtal::DistanceTransformation<I, p, IntLong>::compute ( const DigitalSet &aSet, const bool addBoundary)
+{
+  //We convert the set to an image and run the image-based algorithm
+  I image = ImageFromSet<I>::template create<DigitalSet>(aSet, 128, addBoundary);
+  return compute( image  );
+}
+
+
+
+template <typename I, DGtal::uint32_t p, typename IntLong>
 template <typename Functor>
 inline
 typename DGtal::DistanceTransformation<I, p, IntLong>::OutputImage
