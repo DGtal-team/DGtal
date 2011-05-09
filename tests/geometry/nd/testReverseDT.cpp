@@ -298,70 +298,6 @@ bool testReverseDTL1simple()
   
   return nbok == nb;
 }
-bool testReverseDTLinfsimple()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
-  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
-
-  trace.beginBlock ( "Testing Reverse DT in 2D with L1 metric ..." );
-  
-  Z2i::Point a (2, 2 );
-  Z2i::Point b ( 15, 15 );
-
-  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
- 
-
- 
-  DistanceTransformation<Image, 0 > dt;
-  typedef DistanceTransformation<Image,0>::OutputImage ImageDT;
-
-
-  ImageDT result ( a, b );
-  result.setValue(Z2i::Point(5,7), 3);
-  result.setValue(Z2i::Point(9,7), 4);
-
-  //ReverseDT  
-  trace.warning()<<"DT:"<<endl;
-  ImageDT::ConstIterator it = result.begin();
-  for (unsigned int y = 2; y < 16; y++)
-    {
-    for (unsigned int x = 2; x < 16; x++)
-    {
-      std::cout << (int)result(it) << " ";
-      ++it;
-    }
-    std::cout << std::endl;
-  }
-
-
-  ReverseDistanceTransformation< ImageDT, 0 > reverseDT;
-  typedef ReverseDistanceTransformation< ImageDT, 0 >::OutputImage ImageRDT;
-
-  ImageRDT reconstruction = reverseDT.reconstruction( result );
- 
-  trace.warning()<<"REDT:"<<endl;
-  ImageRDT::ConstIterator it2 = reconstruction.begin();
-  for (unsigned int y = 2; y < 16; y++)
-    {
-    for (unsigned int x = 2; x < 16; x++)
-    {
-      std::cout << (int)reconstruction(it2) << " ";
-      ++it2;
-    }
-    std::cout << std::endl;
-  }
-
- 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
-}
 
 /**
  * Example of a test. To be completed.
@@ -458,8 +394,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testReverseDT() && testReverseDTSet() 
-    && testReverseDTL1() && testReverseDTL1simple()
-    && testReverseDTLinfsimple(); // && ... other tests
+    && testReverseDTL1() && testReverseDTL1simple(); // && ... other tests
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
