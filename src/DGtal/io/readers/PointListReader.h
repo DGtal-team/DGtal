@@ -121,6 +121,34 @@ public:
   
 
 
+
+
+  /** 
+   * Import a vector containing all polygons defined on each line of
+   * a given file.
+   * 
+   * 
+   * @param filename  
+   * @return a vector containing the vector of polygons.
+   **/
+  
+  static std::vector<std::vector< TPoint> >  getPolygonsFromFile (const std::string &filename);
+  
+  
+  /** 
+   * Import a vector containing all polygons defined on each line of
+   * a given istream.
+   * 
+   * 
+   * @param in the input stream.  
+   * @return a vector containing the vector of polygons.
+   **/
+  
+  static std::vector<std::vector< TPoint> >  getPolygonsFromInputStream ( std::istream &in );
+  
+  
+
+
   /** 
    * Main method to FreemanChain contours.  Each line of the file
    * should represent a FreemanChain

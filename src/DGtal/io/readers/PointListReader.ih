@@ -97,6 +97,54 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
 }
 
 
+
+
+template<typename TPoint>
+inline
+std::vector< std::vector<TPoint> > 
+DGtal::PointListReader<TPoint>::getPolygonsFromFile(const std::string &filename){
+  ifstream infile;
+  infile.open (filename.c_str(), ifstream::in);
+  return PointListReader<TPoint>::getPolygonsFromInputStream(infile);
+}
+
+
+template<typename TPoint>
+inline
+std::vector< std::vector<TPoint> > 
+DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
+  vector< vector< TPoint > > vectResult;
+  string str;
+  getline(in, str );
+  while ( in.good() ){
+    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
+      vector <TPoint> aContour;
+      istringstream in_str( str );
+      double x=0.0, y=0.0;
+      while ( in_str.good()){
+	bool isOK = (in_str >> x);
+	isOK = isOK &&  (in_str >>y);
+	if(isOK){
+	  TPoint p;
+	  p[0]=x;
+	  p[1]=y;
+	  aContour.push_back(p);
+	}
+      }
+      vectResult.push_back(aContour);
+    }
+    getline(in, str );
+  }
+  return vectResult;
+
+}
+
+
+  
+  
+
+
+
 template<typename TPoint>
 template<typename TInteger>
 inline
