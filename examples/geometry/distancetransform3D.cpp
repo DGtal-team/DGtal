@@ -90,9 +90,6 @@ int main( int argc, char** argv )
   
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   
-  int thresholdMin = 1;
-  int thresholdMax = 255;
-
  //------------
 
  typedef SpaceND<3> Space4Type;
