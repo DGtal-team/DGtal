@@ -412,16 +412,18 @@ bool testReverseDTSet()
     std::cout << std::endl;
   }
 
-  /*
-
+  
   ReverseDistanceTransformation< ImageDT, 2 > reverseDT;
 
   typedef DigitalSetBySTLSet<Z2i::Domain> Set;
-  Set reconstruction = reverseDT.reconstructionAsSet<Set>( result );
+
   
-  // board.clear();
-  // result.selfDraw<Hue> ( board, 0, 10); //maxval 
-  // board.saveSVG ( "image-REDTtest.svg" );
+  Set reconstruction(result.domain());
+  reverseDT.reconstructionAsSet<Set>( reconstruction, result );
+  
+  DGtalBoard board;
+  board << reconstruction;
+  board.saveSVG ( "image-REDTtestSet.svg" );
 
   trace.warning()<<"REDT:"<<endl;
   for(Set::ConstIterator it2 = reconstruction.begin(), 
@@ -438,7 +440,7 @@ bool testReverseDTSet()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  */
+  
   
   return nbok == nb;
 

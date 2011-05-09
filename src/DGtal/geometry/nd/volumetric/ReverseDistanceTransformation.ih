@@ -87,8 +87,8 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstruction(const I & a
 template <typename I, DGtal::uint32_t p, typename IntShort>
 template <typename Set>
 inline
-Set
-DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const I & aImage)
+void
+DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(Set &aSet,const I & aImage)
 {
     
   BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
@@ -104,9 +104,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const 
   I swap ( myLowerBoundCopy, myUpperBoundCopy );
 
   bool isSwap = reconstructionInternal(aImage,output,swap);
-
-  Set result(domain);
-
+  
   for(typename I::Domain::ConstIterator it=domain.begin(),
 	itend = domain.end();
       it != itend;
@@ -114,15 +112,15 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(const 
     if (isSwap)
       {
 	if ( output(*it)  > 0)
-	  result.insertNew(*it);
+	  aSet.insertNew(*it);
       }
     else
       {
 	if ( swap(*it)  > 0)
-	  result.insertNew(*it);
+	  aSet.insertNew(*it);
       }
   
-  return result;  
+  return aSet;  
 }
 
 

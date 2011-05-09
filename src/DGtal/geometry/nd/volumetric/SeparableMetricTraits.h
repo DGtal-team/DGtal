@@ -44,6 +44,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/CBoundedInteger.h"
 #include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -57,11 +58,11 @@ namespace DGtal
    * \brief Aim: Implements basic functions associated to metrics used
    * by separable volumetric algorithms.
    *
-   * @tparam TAbscissa Type used to store the coordinaites of the Domain.
+   * @tparam TAbscissa Type used to store the coordinaites of the Domain (model of CBoundedInteger).
    * @tparam TInternalValue the type used to store the internal
    * numbers for exact computations. More precisely,
    * TInternalValueType must be able to represent numbers of type
-   * TAbscissa to the power tp
+   * TAbscissa to the power tp (model of CBoundedInteger).
    * @tparam tp the order p of the L_p metric.
    *
    * @warning this  code is node GMP compliant
@@ -74,6 +75,10 @@ namespace DGtal
 
     typedef TInternalValue InternalValue;
     typedef TAbscissa Abscissa;
+    
+    
+    BOOST_CONCEPT_ASSERT(( CBoundedInteger<TAbscissa> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedInteger<TInternalValue> ));
 
     /**
      * Static constants containing the power p of the Lp-metric.
@@ -216,14 +221,12 @@ namespace DGtal
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
 			  const Abscissa j, const InternalValue hj ) const
     {
-      ///@warning GMP compliant problem here /
       return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
 				  const Abscissa j, const InternalValue hj ) const
     {
-      ///@warning GMP compliant problem here /
       return ( ( i*i -j*j ) + hj - hi )  / ( 2* ( i - j ) );
     }
 
@@ -270,7 +273,6 @@ namespace DGtal
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
 			  const Abscissa j, const InternalValue hj ) const
     {
-      ///@warning GMP compliant problem here /
       if (hj >= hi + j - i)
         return IntegerTraits<Abscissa>::max();
       if (hi > hj + j - i)
@@ -281,7 +283,6 @@ namespace DGtal
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
 				  const Abscissa j, const InternalValue hj ) const
     {
-      ///@warning GMP compliant problem here /
       if (hj <= hi - j + i)
 	return IntegerTraits<Abscissa>::max();
       if (hi < hj - j + i)
@@ -292,7 +293,7 @@ namespace DGtal
 
     inline InternalValue power ( const Abscissa i ) const
     {
-      return (InternalValue) std::abs((long int)i);
+      return (InternalValue) abs(i);
     }
 
   }; // end of class SeparableMetricTraits
@@ -326,8 +327,7 @@ namespace DGtal
 				     const Abscissa ci, 
 				     const InternalValue hi ) const
     {
-     return ( InternalValue ) 
-       min(  2*hi - (Abscissa)abs ( pos - ci ) , hi);
+      ASSERT(false && "Not-Implemented");
     }
 
 
@@ -343,17 +343,13 @@ namespace DGtal
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
 			  const Abscissa j, const InternalValue hj ) const
     {
-      if (hi > hj)
-        return min ((Abscissa)(2*hi+i + 2*hj-j) /2, hj);
-      else
-        return min ((Abscissa)(2*hi+i + 2*hj-j) /2, hi);
-    }
+      ASSERT(false && "Not-Implemented");
+     }
 
     
 
     inline InternalValue power ( const Abscissa i ) const
     {
-      ///@todo define Abs somewhere
       return (InternalValue) abs(i);
     }
 

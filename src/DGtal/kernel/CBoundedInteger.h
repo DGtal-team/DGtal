@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CInteger.h
+ * @file CBoundedInteger.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/01
  *
- * Header file for concept CInteger.cpp
+ * Header file for concept CBoundedInteger.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CInteger_RECURSES)
-#error Recursive header files inclusion detected in CInteger.h
-#else // defined(CInteger_RECURSES)
+#if defined(CBoundedInteger_RECURSES)
+#error Recursive header files inclusion detected in CBoundedInteger.h
+#else // defined(CBoundedInteger_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CInteger_RECURSES
+#define CBoundedInteger_RECURSES
 
-#if !defined CInteger_h
+#if !defined CBoundedInteger_h
 /** Prevents repeated inclusion of headers. */
-#define CInteger_h
+#define CBoundedInteger_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,26 +51,21 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CInteger
+  // class CBoundedInteger
   /**
-   * Description of \b concept '\b CInteger' <p>     
+   * Description of \b concept '\b CBoundedInteger' <p>     
    * @ingroup Concepts
    *
-   * \brief Aim: The concept CInteger specifies what are the usual
-   * integer numbers, more precisely the ones that are representable
-   * on a computer.
-   *
-   * Generally, all the basic computer integer types are models of
-   * this concept. More elaborate integer types with variable sizes,
-   * for instance the big integers of GMP, are also models of this
-   * concept.
+   * \brief Aim: The concept CBoundedInteger specifies what are the bounded 
+   * integer numbers. Hence, it is a refinement of CInteger Concept
+   * ensuring that the numbers are bounded.
    * 
-   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
+   * <p> Refinement of CInteger<T>
    *
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CInteger
+   * - \t X : A type that is a model of CBoundedInteger
    * - \t x, \t y	: Object of type X
    * - \t i, \t j	: basic integer type.
    *
@@ -107,53 +102,34 @@ namespace DGtal
    * @todo Complete integer checking.
    */
   template <typename T>
-  struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
+  struct CBoundedInteger : CInteger<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE(CInteger)
+    BOOST_CONCEPT_USAGE(CBoundedInteger)
     {
-      T x( 0 ); // require constructor from built-in integer.
-      T y( 1 ); // require constructor from built-in integer.
-      x = x + y;
-      x = x - y;
-      ConceptUtils::sameType( myX, ++x );
-      ConceptUtils::sameType( myX, --x );
-      ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
-      ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
       
-      // @todo x+y with short is promoted to int. We should use some
-      // verification with possible promoting.
-      //
-      // @note T(x+y) is required (instead of 'x+y') because of
-      // gmpxx. Indeed, x+y returns an expression template in GMP and
-      // thus cannot be of type T.
-      ConceptUtils::sameType( myX, T(x-y) );
-      ConceptUtils::sameType( myX, T(x+y) );
-      
+      // Bounded Integer should have a TagTrue tag to IsBounded type.
+      ConceptUtils::checkTrue( myIsBounded );
+  
     }
       
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
-    typename IntegerTraits<T>::IsUnsigned myIsSigned;
     typename IntegerTraits<T>::IsBounded myIsBounded;
-    typename IntegerTraits<T>::SignedVersion mySignedVersion;
-    typename IntegerTraits<T>::UnsignedVersion myUnsignedVersion;
-    typename IntegerTraits<T>::ReturnType myReturnType;
-
+   
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CInteger
+  }; // end of concept CBoundedInteger
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CInteger_h
+#endif // !defined CBoundedInteger_h
 
-#undef CInteger_RECURSES
-#endif // else defined(CInteger_RECURSES)
+#undef CBoundedInteger_RECURSES
+#endif // else defined(CBoundedInteger_RECURSES)

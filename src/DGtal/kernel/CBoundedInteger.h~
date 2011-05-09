@@ -65,7 +65,7 @@ namespace DGtal
    * for instance the big integers of GMP, are also models of this
    * concept.
    * 
-   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
+   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>
    *
    * <p> Associated types :
    *
