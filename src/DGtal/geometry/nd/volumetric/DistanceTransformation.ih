@@ -93,6 +93,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const DigitalSet &aSet, 
 {
   //We convert the set to an image and run the image-based algorithm
   I image = ImageFromSet<I>::template create<DigitalSet>(aSet, 128, addBoundary);
+  trace.info() <<"Temp image="<<image<<std::endl;
   return compute( image  );
 }
 
