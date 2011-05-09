@@ -74,12 +74,14 @@ int main( int argc, char** argv )
   general_opt.add_options()
     ("help,h", "display this message")
     ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
+    ("SDP", po::value<std::string>(), "Import contours as a Sequence of Discrete Points (SDP format)")
     ("outputEPS", po::value<std::string>(), "outputEPS <filename> specify eps format (default format output.eps)")
     ("outputSVG", po::value<std::string>(), "outputSVG <filename> specify svg format.")
     ("outputFIG", po::value<std::string>(), "outputFIG <filename> specify fig format.")
 #ifdef WITH_CAIRO
     ("outputPDF", po::value<std::string>(), "outputPDF <filename> specify pdf format. ")
     ("outputPNG", po::value<std::string>(), "outputPNG <filename> specify png format.")
+    ("invertYaxis", " invertYaxis invert the Y axis for display contours (used only with --SDP)")
 #endif
     #ifdef WITH_MAGICK
     ("backgroundImage", po::value<std::string>(), "backgroundImage <filename> <alpha> : display image as background with transparency alpha (defaut 1) (transparency works only if cairo is available)")
@@ -102,13 +104,12 @@ int main( int argc, char** argv )
   
   
   //Parse options
-  if (not(vm.count("FreemanChain"))){
-    trace.info() << "Contour file name needed"<< endl;
+  if (not(vm.count("FreemanChain")) && not(vm.count("SDP"))){
+    trace.info() << "Contour file not specified"<< endl;
     return 0;
   } 
-  string fileName = vm["FreemanChain"].as<string>();
-  vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
   
+
   double scale=1.0;
   if(vm.count("scale")){
     scale = vm["scale"].as<double>();
@@ -138,14 +139,36 @@ if(vm.count("backgroundImage")){
   }
 #endif
  
- aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
- aBoard << CustomStyle( vectFc.at(0).styleName(), 
-  			 new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
 
-  
-  for(uint i=0; i<vectFc.size(); i++){
-    aBoard <<  vectFc.at(i) ;
+ 
+ if(vm.count("FreemanChain")){
+   string fileName = vm["FreemanChain"].as<string>();
+   vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
+   aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
+   aBoard << CustomStyle( vectFc.at(0).styleName(), 
+			  new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+   for(uint i=0; i<vectFc.size(); i++){
+     aBoard <<  vectFc.at(i) ;
+   }
+ }
+ 
+ 
+
+if(vm.count("SDP")){
+  string fileName = vm["SDP"].as<string>();
+  vector< vector< Z2i::Point > > vectContours = PointListReader< Z2i::Point >::getPolygonsFromFile(fileName); 
+  for(uint i=0; i<vectContours.size(); i++){
+    vector<LibBoard::Point> contour;
+    for(uint j=0; j<vectContours.at(i).size(); j++){
+      contour.push_back(LibBoard::Point((double)(vectContours.at(i).at(j)[0]),(double)(vectContours.at(i).at(j)[1])));
+    }
+    aBoard.setPenColor(DGtalBoard::Color::Red);
+    aBoard.drawPolyline(contour);
   }
+ }
+
+ 
+
 
   string outputFileName= "output.eps";
 
