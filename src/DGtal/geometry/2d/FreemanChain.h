@@ -202,6 +202,24 @@ namespace DGtal
       }
 	
 	
+      /**
+       * Constructor.
+       * It is the user's responsability to make sure that the data's are
+       * consistent. No verification is performed.
+       *
+       * Nb: complexity in O(1).
+       *
+       * @param chain a Freeman chain,
+       * @param n the position in [chain] (within 0 and chain.size()).
+       * @param XY the point corresponding to the 'n'-th position of 'chain'.
+       */
+	
+      ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
+	: myFc( &aChain ), myPos( n ), myXY ( XY ) 
+      { 
+      }
+     
+
      
 
       /**
@@ -358,7 +376,7 @@ namespace DGtal
        * @return the associated Freeman chain.
        */
 
-      FreemanChain * 
+      const FreemanChain * 
       getChain() const
       {
 	return myFc;

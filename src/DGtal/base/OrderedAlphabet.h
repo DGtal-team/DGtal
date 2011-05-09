@@ -203,7 +203,7 @@ namespace DGtal
 			       index_t s, index_t e ) const;
 
 
-    /**
+      /**
      * Adaptation of Duval's algorithm to extract the first Lyndon factor
      * (FLF). Whilst scanning the Lyndon factor, it also checks whether it
      * is a Christoffel word or not. It returns 'true' if the FLF is
@@ -226,7 +226,8 @@ namespace DGtal
      */
     bool duvalPP( size_t & len, size_t & nb,
 		  const std::string & w, 
-		  index_t s, index_t e ) const;
+		  index_t s, index_t e
+		  ) const;
 
     /**
      * Adaptation of Duval's algorithm to extract the first Lyndon factor
@@ -250,8 +251,41 @@ namespace DGtal
      * @param e the index after the end in [w] (s and e arbitrary).
      */
     bool duvalPPMod( size_t & len, size_t & nb,
-		     const std::string & w, 
-		     index_t s, index_t e ) const;
+		    const std::string & w, 
+		    index_t s, index_t e ) const;
+    /**
+     * Second version of the algorithm Duval++ (see OrderedAlphabet::duvalPP),
+     * this one dynamically returns extra informations in order to compute
+     * leanning points.
+     * 
+     * @param len (returns) the length of the primitive Lyndon factor
+     * (which starts at position s).
+     *
+     * @param nb (returns) the number of times the Lyndon factor appears.
+     *
+     * @param n1 (returns) the number of occurrences of the letter a1
+     * in the Lyndon factor
+     *
+     * @param n2 (returns) the number of occurrences of the letter a2
+     * in the Lyndon factor
+     *
+     * @param Lf1 (returns) the number of occurrences of the letter a1
+     * from 's' to the first lower leaning point.
+     *
+     * @param Lf2 (returns) the number of occurrences of the letter a2
+     * from 's' to the first lower leaning point.
+     * 
+     * @param w a word which starts with a1 or a2 at position s.
+     * @param s the starting index in [w].
+     * @param e the index after the end in [w] (s<e).
+     */
+    bool duvalPPtoDSS( size_t & len, size_t & nb,
+		  unsigned int & n1,  unsigned int & n2,
+		  unsigned int & Lf1, unsigned int & Lf2,
+		  const std::string & w, 
+		  index_t s, index_t e
+		  ) const;
+
 
 
     // ----------------------- MLP services -----------------------------------
