@@ -211,17 +211,6 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
 
 
 /**
- * Adaptation of Duval's algorithm to extract the first Lyndon factor
- * (FLF). Whilst scanning the Lyndon factor, it also checks whether it
- * is a Christoffel word or not. It returns 'true' if the FLF is
- * indeed a Christoffel word, otherwise returns false. It starts the
- * extraction at position [s] in the word [w].
- *
- * The alphabet takes the form a0 < a1 < a2 < ... < an-1. [w] starts
- * with a1 or a2 at position s.
- *
- * See [Provencal, Lachaud 2009].
- *
  * @param len (returns) the length of the primitive Lyndon factor
  * (which starts at position s).
  *
@@ -231,44 +220,138 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
  * @param s the starting index in [w].
  * @param e the index after the end in [w] (s<e).
  */
-bool
-DGtal::OrderedAlphabet::duvalPP
-( size_t & len, size_t & nb,
-  const std::string & w, 
-  index_t s, index_t e ) const
+bool DGtal::OrderedAlphabet::duvalPP( size_t & len, size_t & nb, 
+		const std::string & w, index_t s, index_t e) const
 {
-  ASSERT( ( order( w[ s ] ) == 1 )
-          || ( order( w[ s ] ) == 2 ) );
+  ASSERT( ( order( w[ s ] ) == 1 ) || ( order( w[ s ] ) == 2 ) );
   index_t i = s;
   index_t j = s+1;
-  unsigned int p = 1;
-  unsigned int q = 2;
+  index_t p = s;
+  index_t q = s+1;
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
-    {
-      // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
-      if ( equal( w[ i ], w[ j ] ) )
-	{
-	  if ( j + 1 == s + q )
-	    q += p;
-	  ++i;
-	}
-      else
-	{
-	  if ( ( j + 1 != s + q ) || ( order ( w[ j ] ) != 2 ) )
-	    {
-	      len = j; nb = 0;
-	      return false;
-	    }
-	  unsigned int tmp = p; 
-	  p = q;
-	  q += q - tmp;
-	  i = s;
-	}
-      ++j;
-    }
+  {
+	  if ( equal( w[ i ], w[ j ] ) )
+	  {
+		  if ( j == q ) 
+			  q += (p-s+1);
+		  ++i;
+	  }
+	  else
+	  {
+		  if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) )
+		  {
+			  len = j-s; nb = 0;
+			  return false;
+		  }
+		  index_t tmp = p; 
+		  p = q;
+		  q += q - tmp;
+		  i = s;
+	  }
+	  ++j;
+  }
   len = (size_t) j - i;
-  nb = ( (size_t) ( j - s ) ) / len;
+  nb = ( (size_t) (j-s) ) / len;
   return true;
+}
+
+/**
+ * @param len (returns) the length of the primitive Lyndon factor
+ * (which starts at position s).
+ *
+ * @param nb (returns) the number of times the Lyndon factor appears.
+ *
+ * @param n1 (returns) the number of occurrences of the letter a1
+ * in the Lyndon factor
+ *
+ * @param n2 (returns) the number of occurrences of the letter a2
+ * in the Lyndon factor
+ *
+ * @param Lf1 (returns) the number of occurrences of the letter a1
+ * from 's' to the first lower leaning point.
+ *
+ * @param Lf2 (returns) the number of occurrences of the letter a2
+ * from 's' to the first lower leaning point.
+ * 
+ * @param w a word which starts with a1 or a2 at position s.
+ * @param s the starting index in [w].
+ * @param e the index after the end in [w] (s<e).
+ */
+bool
+DGtal::OrderedAlphabet::duvalPPtoDSS
+( size_t & len, size_t & nb,
+  unsigned int & n1,  unsigned int & n2, 
+  unsigned int & lf1, unsigned int & lf2,
+  const std::string & w, 
+  index_t s, index_t e
+  ) const
+{
+	ASSERT( ( order( w[ s ] ) == 1 ) || ( order( w[ s ] ) == 2 ) );
+	index_t i = s;
+	index_t j = s+1;
+	index_t p = s;
+	index_t q = s+1;
+	unsigned int slope1 = (order( w[ i ] ) == 1) ? 1 : 0;
+	unsigned int slope2 = (order( w[ i ] ) == 2) ? 1 : 0;
+	lf1 = n1 = slope1;
+	lf2 = n2 = slope2;
+	nb = 1;
+	//cerr << "input : " << w << endl;
+	bool convex = true;
+	while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
+
+		//cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
+		//	<< q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
+		//	<< " lf1=" << lf1 << " lf2=" << lf2 << endl;
+
+		//This 'if/else if' is added to compute the vector defined by
+		//the Christoffel word, this is usefull in order to compute the
+		//leaning points.
+		if (order( w[ j ] ) == 1)
+			++slope1;
+		else if (order( w[ j ] ) == 2)
+			++slope2;
+
+		if ( equal( w[ i ], w[ j ] ) ) {
+			if ( j == q ) {
+				q += (p-s+1);
+
+			//A repetition is read when j==s+(nb+1)*(p-s+1)-1
+			} 
+			if ( j == nb * (p-s+1) + p ) {
+				++nb;
+			}
+			++i;
+		} else {
+			if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) ) {
+				convex = false;
+				break;
+			}
+			index_t tmp = p; 
+			p = q;
+			q += q - tmp;
+			i = s;
+
+			// Extra information to compute the leaning points
+			lf1 = lf1 + (nb-1)*n1;
+			lf2 = lf2 + (nb-1)*n2;
+			n1 = slope1;
+			n2 = slope2;
+			nb = 1;
+		}
+		++j;
+	}
+	len = (size_t) j - i;
+	//cerr << "Termine" << endl;
+	//cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
+	//	<< q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
+	//	<< " lf1=" << lf1 << " lf2=" << lf2 << endl;
+
+	if ( nb != (size_t) (j-s) / len)
+		cout << "ASSERT(" << nb << " == (" << j << "-" << s << ") / "<<len << ")" << endl;
+	ASSERT( nb == (size_t) (j-s) / len);
+	//nb = (size_t) (j-s) / len;
+	return true;
 }
 
 
