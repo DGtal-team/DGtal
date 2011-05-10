@@ -31,9 +31,8 @@
 #include <cstdlib>
 #include <queue>
 #include <algorithm>
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 
 

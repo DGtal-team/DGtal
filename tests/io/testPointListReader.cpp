@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/PointListReader.h"
+#include "DGtal/io-viewers/readers/PointListReader.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/FreemanChain.h" 
 

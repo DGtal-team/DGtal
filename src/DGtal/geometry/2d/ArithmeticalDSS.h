@@ -47,7 +47,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 

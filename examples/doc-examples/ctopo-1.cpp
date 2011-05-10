@@ -30,7 +30,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

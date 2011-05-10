@@ -44,8 +44,8 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/kernel/images/CImageContainer.h"
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////

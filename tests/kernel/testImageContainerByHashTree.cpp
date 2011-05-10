@@ -33,7 +33,7 @@
 #include <cmath>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageContainerByHashTree.h"
+#include "DGtal/images/ImageContainerByHashTree.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
