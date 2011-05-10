@@ -24,7 +24,7 @@ namespace DGtal {
  * First to use the DGtalQGLViewer stream,  you need to include the following hearders:
  *
  * @code
- #include "DGtal/3dViewer/DGtalQGLViewer.h"
+ #include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 *  @endcode
 *
  *  LibQGLViewer  ( http://www.libqglviewer.com ) is a C++ library based on QT allowing to access 
