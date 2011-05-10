@@ -74,8 +74,8 @@ few code lines. (see. file <a href="digitalSetFromVol_8cpp-example.html"> digita
 First we select the Image type with \c int:
 
 @code
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 ...
 typedef ImageSelector < Z3i::Domain, int>::Type Image;
