@@ -221,8 +221,8 @@ namespace DGtal
      */
     Self & operator*= ( Component coeff )
     {
-      for ( Dimension i = 0; i < myArray.size(); ++i )
-	myArray[ i ] /= coeff;
+      for ( Dimension i = 0; i < dimension; ++i )
+	this->myArray[ i ] /= coeff;
       return *this;
     }
   
@@ -343,7 +343,7 @@ namespace DGtal
   private:
     
     ///Internal data-structure: boost/array with constant size.
-    boost::array<Component, dimension> myArray;
+    //  boost::array<Component, dimension> myArray;
     
   }; // end of class RealPointVector
 
@@ -407,11 +407,7 @@ namespace DGtal
 
 
 #endif
-
-
-
-
-
+  
   /// Operator <<
   template<DGtal::Dimension dim>
   std::ostream&
