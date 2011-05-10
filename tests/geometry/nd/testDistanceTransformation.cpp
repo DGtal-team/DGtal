@@ -171,7 +171,7 @@ unsigned int nbok = 0;
   
   DGtalBoard board;
 
-  Ball2D<Z2i::Space> flower(Z2i::Point(100,100), 10);
+  Ball2D<Z2i::Space> flower(Z2i::Point(0,0), 10);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
   
