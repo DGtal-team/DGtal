@@ -47,7 +47,7 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

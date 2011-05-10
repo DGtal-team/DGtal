@@ -33,8 +33,8 @@
 #include <iostream>
 #include <sstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"

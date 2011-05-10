@@ -43,7 +43,7 @@
 // Inclusions
 #include <iostream>
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
 #include "DGtal/base/Common.h"
@@ -52,7 +52,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
 
 

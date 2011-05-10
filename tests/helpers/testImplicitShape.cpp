@@ -33,10 +33,10 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io-viewers/writers/VolWriter.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

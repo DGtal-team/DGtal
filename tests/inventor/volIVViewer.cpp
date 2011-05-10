@@ -31,13 +31,13 @@
 #include <iostream>
 #include <Qt/qapplication.h>
 #include <Inventor/nodes/SoCube.h>
-#include "DGtal/inventor/DGtalInventor.h"
-#include "DGtal/inventor/IVViewer.h"
+#include "DGtal/io-viewers/3dViewers/DGtalInventor.h"
+#include "DGtal/io-viewers/3dViewers/IVViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
