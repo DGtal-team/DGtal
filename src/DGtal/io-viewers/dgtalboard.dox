@@ -43,7 +43,7 @@ namespace DGtal {
     
      To use the DGtalBoard stream, you must include the header
    \code
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
    \endcode
     
      The class DGtalBoard is designed so as to make easy the
