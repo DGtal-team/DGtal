@@ -94,7 +94,8 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1)
+  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP"))&&
+				   not(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
 		  << "\t displayContours [options] --FreemanChain  <fileName>  contours.fc --imageName image.png "<<std::endl
@@ -103,11 +104,7 @@ int main( int argc, char** argv )
     }
   
   
-  //Parse options
-  if (not(vm.count("FreemanChain")) && not(vm.count("SDP"))){
-    trace.info() << "Contour file not specified"<< endl;
-    return 0;
-  } 
+  
   
 
   double scale=1.0;
@@ -118,6 +115,8 @@ int main( int argc, char** argv )
   DGtalBoard aBoard;
   aBoard.setUnit (0.05*scale, LibBoard::Board::UCentimeter);
   
+
+
 
 #ifdef WITH_MAGICK
   double alpha=1.0;
