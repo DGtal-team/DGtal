@@ -212,7 +212,7 @@ operator<< ( std::ostream & out, const IVViewer & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/inventor/IVViewer.ih"
+#include "DGtal/io-viewers/3dViewers/IVViewer.ih"
 #endif
 
 //                                                                           //
