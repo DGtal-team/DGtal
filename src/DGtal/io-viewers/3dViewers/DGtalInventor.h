@@ -57,8 +57,8 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTranslation.h>
-#include "DGtal/inventor/IVViewer.h"
-#include "DGtal/inventor/Lattice.h"
+#include "DGtal/io-viewers/3dViewers/IVViewer.h"
+#include "DGtal/io-viewers/3dViewers/Lattice.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -264,7 +264,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/inventor/DGtalInventor.ih"
+#include "DGtal/io-viewers/3dViewers/DGtalInventor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

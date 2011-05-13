@@ -28,10 +28,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <Inventor/nodes/SoCube.h>
-#include "DGtal/inventor/IVViewer.h"
+#include "DGtal/io-viewers/3dViewers/IVViewer.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/inventor/IVViewer.ih"
+#include "DGtal/io-viewers/3dViewers/IVViewer.ih"
 #endif
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
