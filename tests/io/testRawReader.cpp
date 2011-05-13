@@ -33,14 +33,14 @@
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/colormaps/ColorBrightnessColorMap.h"
 
-#include "DGtal/io/writers/PNMWriter.h"
-#include "DGtal/io/readers/RawReader.h"
+#include "DGtal/io-viewers/writers/PNMWriter.h"
+#include "DGtal/io-viewers/readers/RawReader.h"
 
 #include "ConfigTest.h"
 

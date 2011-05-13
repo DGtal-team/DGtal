@@ -31,13 +31,13 @@
 #include "DGtal/helpers/StdDefs.h"
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
-#include "DGtal/kernel/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
 #ifdef WITH_ITK
-#include "DGtal/kernel/images/ImageContainerByITKImage.h"
+#include "DGtal/images/ImageContainerByITKImage.h"
 #endif
-#include "DGtal/kernel/images/ImageContainerByHashTree.h"
-#include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/images/ImageContainerByHashTree.h"
+#include "DGtal/images/CImageContainer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

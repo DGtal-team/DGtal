@@ -42,7 +42,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
 //#include "Board/Board.h"
 ///////////////////////////////////////////////////////////////////////////////
