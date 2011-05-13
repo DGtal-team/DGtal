@@ -34,15 +34,15 @@
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 
-#include "DGtal/io/writers/PNMWriter.h"
-#include "DGtal/io/writers/RawWriter.h"
-#include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/writers/PNMWriter.h"
+#include "DGtal/io-viewers/writers/RawWriter.h"
+#include "DGtal/io-viewers/writers/VolWriter.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
 
 #include <boost/program_options/options_description.hpp>

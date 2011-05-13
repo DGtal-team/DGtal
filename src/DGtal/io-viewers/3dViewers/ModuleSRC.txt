@@ -1,0 +1,14 @@
+## Sources associated to the module io
+##
+
+
+if( WITH_VISU3D_IV )
+  SET(DGTALIV_SRC ${DGTALIV_SRC} 
+		DGtal/io-viewers/3dViewers/IVViewer	)
+endif( WITH_VISU3D_IV )
+
+if( WITH_VISU3D_QGLVIEWER )
+SET(DGTALQGLV_SRC ${DGTALQGVL_SRC} 
+		DGtal/io-viewers/3dViewers/DGtalQGLViewer)
+endif( WITH_VISU3D_QGLVIEWER )
+

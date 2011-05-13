@@ -32,7 +32,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>

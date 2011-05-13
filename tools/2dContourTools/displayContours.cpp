@@ -36,15 +36,15 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/ContourHelper.h"
 
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
-#include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/PointListReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/io-viewers/readers/PointListReader.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
 #ifdef WITH_MAGICK
-#include "DGtal/io/readers/MagickReader.h"
+#include "DGtal/io-viewers/readers/MagickReader.h"
 #endif
 
 #include "DGtal/geometry/2d/FreemanChain.h"
