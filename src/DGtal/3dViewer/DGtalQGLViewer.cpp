@@ -186,14 +186,15 @@ DGtal::DGtalQGLViewer::init(){
   
   myDefaultColor= QColor(255, 255, 255);
   camera()->showEntireScene();
-    
+  
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
+  setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
 
-  restoreStateFromFile();
+  
 }
 
 
@@ -394,6 +395,13 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
     }
     updateGL();
   }
+  if( (e->key()==Qt::Key_L)){
+    restoreStateFromFile();
+    updateGL();
+  }
+
+  
+
   if (!handled)
     QGLViewer::keyPressEvent(e);
 
