@@ -237,6 +237,7 @@ struct Exporter
     for(uint i=0; i<vectContoursBdryPointels.size(); i++)
       for(uint j=0 ; j< vectContoursBdryPointels.at(i).size(); j++)
 	std::cout<< vectContoursBdryPointels.at(i).at(j)<<std::endl;
+    
     //<<","
     //		 << vectContoursBdryPointels.at(i).at(j)[0]<<","<<std::endl;
 	  
