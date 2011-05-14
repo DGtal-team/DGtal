@@ -331,14 +331,20 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
       glEndList();
   }
   glNewList(myListToAff+myVoxelSetList.size(), GL_COMPILE);
-    glPushName(myNbListe);  
-    glBegin(GL_QUADS);
+  myNbListe++;
+  glPushName(myNbListe);  
+  glEnable(GL_BLEND);   
+  glEnable( GL_MULTISAMPLE_ARB );
+  glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+  glBegin(GL_QUADS);
     for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){
     
     glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-
+    cerr << "col="  << (*s_it).R << " "<< (*s_it).G << " " << (*s_it).B << " " << (*s_it).T << endl;
     double dx, dy, dz;
     if((*s_it).x1==(*s_it).x2 && (*s_it).x2==(*s_it).x3 && (*s_it).x1==(*s_it).x4){
       dx=0.03;
@@ -349,18 +355,20 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     if((*s_it).z1==(*s_it).z2 && (*s_it).z2==(*s_it).z3 && (*s_it).z1==(*s_it).z4){
       dz=0.03;
     }else dz=0;
-
-    glNormal3f( dx, dy, dz);
+    
+    glNormal3f( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
     glVertex3f((*s_it).x1+dx,  (*s_it).y1+dy, (*s_it).z1+dz);
     glVertex3f((*s_it).x2+dx,  (*s_it).y2+dy, (*s_it).z2+dz);
     glVertex3f((*s_it).x3+dx,  (*s_it).y3+dy, (*s_it).z3+dz);
     glVertex3f((*s_it).x4+dx,  (*s_it).y4+dy, (*s_it).z4+dz);
 
-    glNormal3f( -dx, -dy, -dz);
+    glNormal3f( dx!=0? -1.0:0.0, dy!=0 ? -1.0:0.0, dz!=0.0? -1.0:0.0);
     glVertex3f((*s_it).x1-dx,  (*s_it).y1-dy, (*s_it).z1-dz);
     glVertex3f((*s_it).x2-dx,  (*s_it).y2-dy, (*s_it).z2-dz);
     glVertex3f((*s_it).x3-dx,  (*s_it).y3-dy, (*s_it).z3-dz);
     glVertex3f((*s_it).x4-dx,  (*s_it).y4-dy, (*s_it).z4-dz);
+    
+    
     
     }
   glEnd();
@@ -419,84 +427,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   if( updateBoundingBox){
     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
     showEntireScene();
-  }//   uint nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size()+1;
-//   glDeleteLists(myListToAff, myNbListe);
-//   myListToAff = glGenLists( nbList  );   
-//   myNbListe=0;
   
-//   uint listeID=0;
-//   glEnable(GL_BLEND);   
-//   glEnable( GL_MULTISAMPLE_ARB );
-//   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
-//   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-
-//   for (uint i=0; i<myVoxelSetList.size(); i++){  
-
-//     glNewList(myListToAff+i, GL_COMPILE);
-//     if(myListVoxelDepthTest.at(i)){
-//       glEnable( GL_DEPTH_TEST );
-//     }else{
-//       glDisable( GL_DEPTH_TEST );
-//     }
-//     myNbListe++;
-//     glPushName(myNbListe);  
-    
-//     
-
-
-//   for (uint i=0; i<myLineSetList.size(); i++){  
-//     listeID++;
-//     glNewList(myListToAff+myVoxelSetList.size()+i+1, GL_COMPILE);
-//     myNbListe++;
-//     glDisable(GL_LIGHTING);
-//     glPushName(myNbListe);  
-//     glBegin(GL_LINES);      
-//     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
-// 	 s_it != myLineSetList.at(i).end();
-// 	 ++s_it){
-
-// 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-// 	glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);
-// 	glVertex3f((*s_it).x2,  (*s_it).y2, (*s_it).z2);
-	
-//       }
-//       glEnd();
-//       glEnable(GL_LIGHTING);
-//       glEndList();
-  
-//   }    
-
-
-//   for (uint i=0; i<myPointSetList.size(); i++){  
-//     glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
-//     myNbListe++;
-//     glDepthMask(GL_TRUE);
-//     glDisable(GL_TEXTURE_2D);
-//     glDisable(GL_POINT_SMOOTH);
-//     glDisable(GL_LIGHTING);
-//     if(myPointSetList.at(i).size()!=0){
-//       glPointSize((*myPointSetList.at(i).begin()).size);
-//     }
-//     glPushName(myNbListe);  
-//     glBegin(GL_POINTS);      
-//     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
-// 	 s_it != myPointSetList.at(i).end();
-// 	 ++s_it){
-//       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-//       glVertex3f((*s_it).x,  (*s_it).y, (*s_it).z);
-//     }
-//     glEnd();
-//     glEnable(GL_LIGHTING);
-//     glEndList();
-    
-//   }    
-
-
-//   if( updateBoundingBox){
-//     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
-//     showEntireScene();
-//   }
-
 }
 
 

@@ -200,13 +200,12 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   float dx = xodd ? 1.0f  : 0.0f;
   float dy = yodd ? 1.0f  : 0.0f;
   float dz = zodd ? 1.0f  : 0.0f;
-  float retract=0.1;
+  float retract=0.05;
   
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   
   // pointel
   switch (spaceDim) {
-
   case 0:
     cerr << "drawing Cell" << endl;
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
@@ -219,7 +218,7 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
       viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
 			 x-0.5+retract, y+0.5-retract, z-0.5,
 			 x+0.5-retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y-0.5+retract, z-0.5 );
+			 x+0.5-retract, y-0.5+retract, z-0.5 );    
     else if(dy==0)
       viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
 			 x-0.5+retract, y-0.5, z+0.5-retract,
@@ -229,10 +228,12 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
       viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
 			 x-0.5, y+0.5-retract, z-0.5+retract,
 			 x-0.5, y+0.5-retract, z+0.5-retract,
-			 x-0.5, y-0.5+retract, z+0.5-retract);
-    
-    
+			 x-0.5, y-0.5+retract, z+0.5-retract);    
     break;
+  case 3:
+    
+    
+    
   }  
 }
 
