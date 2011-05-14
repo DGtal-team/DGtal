@@ -341,13 +341,13 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
     double dx, dy, dz;
     if((*s_it).x1==(*s_it).x2 && (*s_it).x2==(*s_it).x3 && (*s_it).x1==(*s_it).x4){
-      dx=0.01;
+      dx=0.03;
     }else dx=0;
     if((*s_it).y1==(*s_it).y2 && (*s_it).y2==(*s_it).y3 && (*s_it).y1==(*s_it).y4){
-      dy=0.01;
+      dy=0.03;
     }else dy=0;
     if((*s_it).z1==(*s_it).z2 && (*s_it).z2==(*s_it).z3 && (*s_it).z1==(*s_it).z4){
-      dz=0.01;
+      dz=0.03;
     }else dz=0;
 
     glNormal3f( dx, dy, dz);
