@@ -114,16 +114,20 @@ DGtal::DGtalQGLViewer::draw()
   glPopMatrix();   
   
   for(uint i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }   
+ 
   for(uint i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+i);
+    glCallList(myListToAff+myVoxelSetList.size()+1+i);
   }
+  
+  glCallList(myListToAff+myVoxelSetList.size());
   for(uint i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
-
-
+  
+  
+     
   for(uint i=0; i<myQuadList.size(); i++){
     double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
     double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
@@ -158,6 +162,19 @@ DGtal::DGtalQGLViewer::draw()
     glEnd();
     glEnable(GL_LIGHTING);
   }
+
+  
+  // Drawing all Khalimsky Space Cells 
+  
+  for(uint i=0; i< myKSPointelList.size();i++){
+    glDrawGLPointel(myKSPointelList.at(i));
+  }
+  for(uint i=0; i< myKSLinelList.size();i++){
+    glDrawGLLinel(myKSLinelList.at(i));
+  }
+
+
+
 }
 
 
@@ -313,11 +330,46 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
       glEnd();
       glEndList();
   }
+  glNewList(myListToAff+myVoxelSetList.size(), GL_COMPILE);
+    glPushName(myNbListe);  
+    glBegin(GL_QUADS);
+    for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+       s_it != myKSSurfelList.end();
+       ++s_it){
+    
+    glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+
+    double dx, dy, dz;
+    if((*s_it).x1==(*s_it).x2 && (*s_it).x2==(*s_it).x3 && (*s_it).x1==(*s_it).x4){
+      dx=0.01;
+    }else dx=0;
+    if((*s_it).y1==(*s_it).y2 && (*s_it).y2==(*s_it).y3 && (*s_it).y1==(*s_it).y4){
+      dy=0.01;
+    }else dy=0;
+    if((*s_it).z1==(*s_it).z2 && (*s_it).z2==(*s_it).z3 && (*s_it).z1==(*s_it).z4){
+      dz=0.01;
+    }else dz=0;
+
+    glNormal3f( dx, dy, dz);
+    glVertex3f((*s_it).x1+dx,  (*s_it).y1+dy, (*s_it).z1+dz);
+    glVertex3f((*s_it).x2+dx,  (*s_it).y2+dy, (*s_it).z2+dz);
+    glVertex3f((*s_it).x3+dx,  (*s_it).y3+dy, (*s_it).z3+dz);
+    glVertex3f((*s_it).x4+dx,  (*s_it).y4+dy, (*s_it).z4+dz);
+
+    glNormal3f( -dx, -dy, -dz);
+    glVertex3f((*s_it).x1-dx,  (*s_it).y1-dy, (*s_it).z1-dz);
+    glVertex3f((*s_it).x2-dx,  (*s_it).y2-dy, (*s_it).z2-dz);
+    glVertex3f((*s_it).x3-dx,  (*s_it).y3-dy, (*s_it).z3-dz);
+    glVertex3f((*s_it).x4-dx,  (*s_it).y4-dy, (*s_it).z4-dz);
+    
+    }
+  glEnd();
+  glEndList();
   
 
   for (uint i=0; i<myLineSetList.size(); i++){  
     listeID++;
-    glNewList(myListToAff+myVoxelSetList.size()+i, GL_COMPILE);
+    glNewList(myListToAff+myVoxelSetList.size()+i+1, GL_COMPILE);
     myNbListe++;
     glDisable(GL_LIGHTING);
     glPushName(myNbListe);  
@@ -339,7 +391,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
   for (uint i=0; i<myPointSetList.size(); i++){  
-    glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i, GL_COMPILE);
+    glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
     myNbListe++;
     glDepthMask(GL_TRUE);
     glDisable(GL_TEXTURE_2D);
@@ -363,13 +415,120 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   }    
 
 
+
   if( updateBoundingBox){
     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
     showEntireScene();
-  }
+  }//   uint nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size()+1;
+//   glDeleteLists(myListToAff, myNbListe);
+//   myListToAff = glGenLists( nbList  );   
+//   myNbListe=0;
+  
+//   uint listeID=0;
+//   glEnable(GL_BLEND);   
+//   glEnable( GL_MULTISAMPLE_ARB );
+//   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
+//   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+//   for (uint i=0; i<myVoxelSetList.size(); i++){  
+
+//     glNewList(myListToAff+i, GL_COMPILE);
+//     if(myListVoxelDepthTest.at(i)){
+//       glEnable( GL_DEPTH_TEST );
+//     }else{
+//       glDisable( GL_DEPTH_TEST );
+//     }
+//     myNbListe++;
+//     glPushName(myNbListe);  
+    
+//     
+
+
+//   for (uint i=0; i<myLineSetList.size(); i++){  
+//     listeID++;
+//     glNewList(myListToAff+myVoxelSetList.size()+i+1, GL_COMPILE);
+//     myNbListe++;
+//     glDisable(GL_LIGHTING);
+//     glPushName(myNbListe);  
+//     glBegin(GL_LINES);      
+//     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
+// 	 s_it != myLineSetList.at(i).end();
+// 	 ++s_it){
+
+// 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+// 	glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);
+// 	glVertex3f((*s_it).x2,  (*s_it).y2, (*s_it).z2);
+	
+//       }
+//       glEnd();
+//       glEnable(GL_LIGHTING);
+//       glEndList();
+  
+//   }    
+
+
+//   for (uint i=0; i<myPointSetList.size(); i++){  
+//     glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
+//     myNbListe++;
+//     glDepthMask(GL_TRUE);
+//     glDisable(GL_TEXTURE_2D);
+//     glDisable(GL_POINT_SMOOTH);
+//     glDisable(GL_LIGHTING);
+//     if(myPointSetList.at(i).size()!=0){
+//       glPointSize((*myPointSetList.at(i).begin()).size);
+//     }
+//     glPushName(myNbListe);  
+//     glBegin(GL_POINTS);      
+//     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
+// 	 s_it != myPointSetList.at(i).end();
+// 	 ++s_it){
+//       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+//       glVertex3f((*s_it).x,  (*s_it).y, (*s_it).z);
+//     }
+//     glEnd();
+//     glEnable(GL_LIGHTING);
+//     glEndList();
+    
+//   }    
+
+
+//   if( updateBoundingBox){
+//     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
+//     showEntireScene();
+//   }
+
 }
 
 
+
+
+void
+DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL linel){
+  glPushMatrix();
+  glTranslatef(linel.x1, linel.y1, linel.z1);
+  Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
+  glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
+  GLUquadric* quadric = gluNewQuadric();
+  glColor4ub(linel.R, linel.G, linel.B, linel.T);
+  gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
+  glPopMatrix();  
+}
+
+
+
+
+void 
+DGtal::DGtalQGLViewer::glDrawGLPointel(pointGL pointel){
+ glPushMatrix();
+ glTranslatef(pointel.x, pointel.y, pointel.z);
+ GLUquadric* quadric = gluNewQuadric();
+ glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+ gluSphere(quadric, pointel.size, 10, 10);
+ glPopMatrix();  
+  
+}
+  
+ 
 
 
 

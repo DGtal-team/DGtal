@@ -209,9 +209,18 @@ public:
  
   void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
   	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
-  
-  
 
+  
+  void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
+		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(20,200,200,255));
+  
+  void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
+  void addKSLinel(double x1, double y1, double z1,
+		  double x2, double y2, double z2,
+		  double width=0.02, const QColor &color=QColor(20,20,200,255));
+  
+  
+  
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
    * A maximal of five clipping plane can be added.
@@ -289,8 +298,6 @@ private:
 
 public:
   
-  
-  
   ModeMapping myModes;  
       /**
      * For instance, may associate a new style object T1 to the class
@@ -307,8 +314,6 @@ public:
   
     // ------------------------- Private Datas --------------------------------
 private:
-
-  
   
   struct lineGL{
     double x1, y1, z1;
@@ -328,9 +333,11 @@ private:
     uint R,G,B,T;
     double size;
   };
+  
   struct clippingPlaneGL{
     double a,b,c,d;
   };
+
   struct  quadGL{
     double x1,y1,z1;
     double x2,y2,z2;
@@ -350,7 +357,21 @@ private:
 
   // Represent all the clipping planes added to the scene (of maxSize=5).
   std::vector< clippingPlaneGL > myClippingPlaneList;
+
+  // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< quadGL > myKSSurfelList;
+
+  // For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< pointGL > myKSPointelList;
+
+  // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< lineGL > myKSLinelList;
+
   
+ 
+  
+  
+
   // Represent all the drawed planes
   std::vector< quadGL > myQuadList;
   
@@ -377,6 +398,26 @@ protected:
    **/
   void updateList(bool updateBoundingBox=true);
   
+  
+  /**
+   * Draw a linel by using the 	[gluCylinder] primitive.
+   * 
+   *
+   **/
+  void glDrawGLLinel(lineGL line);
+  
+  
+
+  
+  /**
+   * Draw a linel by using the 	[gluCylinder] primitive.
+   * 
+   *
+   **/
+  void glDrawGLPointel(pointGL pointel);
+  
+  
+
 
   
   virtual void keyPressEvent(QKeyEvent *e);
@@ -404,6 +445,11 @@ protected :
 
     // ------------------------- Internals ------------------------------------
 private:
+
+
+
+
+  
 
   }; // end of class DGtalQGLViewer
 

@@ -4,12 +4,14 @@ SET(DGTAL_DOC_EX_SRC
   range
   ctopo-1
   ctopo-2
+  khalimskySpaceScanner
 )
 
 if( WITH_VISU3D_QGLVIEWER  )
 SET(DGTAL_DOC_EX_SRC_QGL
-   khalimskySpaceScanner
+   ctopo-1-3d
 )
+
 FOREACH(FILE ${DGTAL_DOC_EX_SRC_QGL})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME})
