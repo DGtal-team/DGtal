@@ -200,7 +200,7 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   float dx = xodd ? 1.0f  : 0.0f;
   float dy = yodd ? 1.0f  : 0.0f;
   float dz = zodd ? 1.0f  : 0.0f;
-
+  float retract=0.1;
   
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   
@@ -216,20 +216,20 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
     break;
   case 2:
     if(dz==0)
-      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5, 
-			 x-0.5, y+0.5, z-0.5,
-			 x+0.5, y+0.5, z-0.5,
-			 x+0.5, y-0.5, z-0.5 );
+      viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
+			 x-0.5+retract, y+0.5-retract, z-0.5,
+			 x+0.5-retract, y+0.5-retract, z-0.5,
+			 x+0.5-retract, y-0.5+retract, z-0.5 );
     else if(dy==0)
-      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
-			 x-0.5, y-0.5, z+0.5,
-			 x+0.5, y-0.5, z+0.5,
-			 x+0.5, y-0.5, z-0.5);
+      viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
+			 x-0.5+retract, y-0.5, z+0.5-retract,
+			 x+0.5-retract, y-0.5, z+0.5-retract,
+			 x+0.5-retract, y-0.5, z-0.5+retract);
     else if(dx==0)
-      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
-			 x-0.5, y+0.5, z-0.5,
-			 x-0.5, y+0.5, z+0.5,
-			 x-0.5, y-0.5, z+0.5);
+      viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
+			 x-0.5, y+0.5-retract, z-0.5+retract,
+			 x-0.5, y+0.5-retract, z+0.5-retract,
+			 x-0.5, y-0.5+retract, z+0.5-retract);
     
     
     break;
