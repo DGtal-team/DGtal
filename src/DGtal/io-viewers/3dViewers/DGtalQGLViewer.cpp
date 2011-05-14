@@ -342,37 +342,89 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){
-    
-    glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-    cerr << "col="  << (*s_it).R << " "<< (*s_it).G << " " << (*s_it).B << " " << (*s_it).T << endl;
-    double dx, dy, dz;
-    if((*s_it).x1==(*s_it).x2 && (*s_it).x2==(*s_it).x3 && (*s_it).x1==(*s_it).x4){
-      dx=0.03;
+      
+      glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+      double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+      x1=(*s_it).x1; x2=(*s_it).x2; x3=(*s_it).x3; x4=(*s_it).x4;
+      y1=(*s_it).y1; y2=(*s_it).y2; y3=(*s_it).y3; y4=(*s_it).y4;
+      z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
+      
+      double dx, dy, dz;
+      if(x1==x2 && x2==x3 && x1==x4){
+	dx=0.03;
     }else dx=0;
-    if((*s_it).y1==(*s_it).y2 && (*s_it).y2==(*s_it).y3 && (*s_it).y1==(*s_it).y4){
+    if(y1==y2 && y2==y3 && y1==y4){
       dy=0.03;
     }else dy=0;
-    if((*s_it).z1==(*s_it).z2 && (*s_it).z2==(*s_it).z3 && (*s_it).z1==(*s_it).z4){
+    if(z1==z2 && z2==z3 && z1==z4){
       dz=0.03;
     }else dz=0;
     
-    glNormal3f( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
-    glVertex3f((*s_it).x1+dx,  (*s_it).y1+dy, (*s_it).z1+dz);
-    glVertex3f((*s_it).x2+dx,  (*s_it).y2+dy, (*s_it).z2+dz);
-    glVertex3f((*s_it).x3+dx,  (*s_it).y3+dy, (*s_it).z3+dz);
-    glVertex3f((*s_it).x4+dx,  (*s_it).y4+dy, (*s_it).z4+dz);
+    //main up face
+    Vec normaleUp( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
+    glNormal3f( normaleUp[0], normaleUp[1], normaleUp[2]);
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
 
-    glNormal3f( dx!=0? -1.0:0.0, dy!=0 ? -1.0:0.0, dz!=0.0? -1.0:0.0);
-    glVertex3f((*s_it).x1-dx,  (*s_it).y1-dy, (*s_it).z1-dz);
-    glVertex3f((*s_it).x2-dx,  (*s_it).y2-dy, (*s_it).z2-dz);
-    glVertex3f((*s_it).x3-dx,  (*s_it).y3-dy, (*s_it).z3-dz);
-    glVertex3f((*s_it).x4-dx,  (*s_it).y4-dy, (*s_it).z4-dz);
     
+    //small face 1
+    Vec vF1 (x2-x1, y2-y1, z2-z1);
+    Vec n1 = cross(vF1, normaleUp);
+    n1.normalize();
+    glNormal3f( n1[0], n1[1], n1[2]);
     
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+
+    //small face 2
+    Vec vF2 (x3-x2, y3-y2, z3-z2);
+    Vec n2 = cross(vF2, normaleUp);
+    n2.normalize();
+    glNormal3f( n2[0], n2[1], n2[2]);
+    
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+
+    //small face 3
+    Vec vF3 (x4-x3, y4-y3, z4-z3);
+    Vec n3 = cross(vF3, normaleUp);
+    n3.normalize();
+    glNormal3f( n3[0], n3[1], n3[2]);
+    
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+
+    //small face 4
+    Vec vF4 (x1-x4, y1-y4, z1-z4);
+    Vec n4 = cross(vF4, normaleUp);
+    n4.normalize();
+    glNormal3f( n4[0], n4[1], n4[2]);
+    
+     glVertex3f(x4+dx,  y4+dy, z4+dz);
+     glVertex3f(x1+dx,  y1+dy, z1+dz);
+     glVertex3f(x1-dx,  y1-dy, z1-dz);
+     glVertex3f(x4-dx,  y4-dy, z4-dz);
+
+    
+     glNormal3f( -normaleUp[0], -normaleUp[1], -normaleUp[2]);
+     glVertex3f(x1-dx,  y1-dy, z1-dz);
+     glVertex3f(x2-dx,  y2-dy, z2-dz);
+     glVertex3f(x3-dx,  y3-dy, z3-dz);
+     glVertex3f(x4-dx,  y4-dy, z4-dz);
+     
+     
     
     }
-  glEnd();
-  glEndList();
+    glEnd();
+    glEndList();
   
 
   for (uint i=0; i<myLineSetList.size(); i++){  
@@ -420,14 +472,14 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     glEnable(GL_LIGHTING);
     glEndList();
     
-  }    
+  }   
 
 
 
   if( updateBoundingBox){
     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
     showEntireScene();
-  
+  }  
 }
 
 

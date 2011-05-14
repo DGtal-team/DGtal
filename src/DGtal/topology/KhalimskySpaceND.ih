@@ -233,7 +233,7 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   case 3:
     
     
-    
+    break; 
   }  
 }
 
