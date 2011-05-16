@@ -30,12 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/colormaps/CColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/CColorMap.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/colormaps/ColorBrightnessColorMap.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 #include "Board/PSFonts.h"
 ///////////////////////////////////////////////////////////////////////////////
 

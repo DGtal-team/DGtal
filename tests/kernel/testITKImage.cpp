@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageContainerByITKImage.h"
+#include "DGtal/images/ImageContainerByITKImage.h"
 #include <boost/foreach.hpp>
 
 //specific itk method

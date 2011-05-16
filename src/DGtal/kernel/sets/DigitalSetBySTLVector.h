@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
 

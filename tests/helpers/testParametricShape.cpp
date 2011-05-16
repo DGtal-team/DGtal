@@ -33,9 +33,9 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/parametricShapes/Ball2D.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
