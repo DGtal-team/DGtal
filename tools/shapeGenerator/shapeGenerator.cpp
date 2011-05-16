@@ -34,6 +34,9 @@
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/Surfaces.h"
+
+
 #include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
