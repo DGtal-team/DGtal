@@ -146,7 +146,7 @@ if(vm.count("backgroundImage")){
    aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
    aBoard << CustomStyle( vectFc.at(0).styleName(), 
 			  new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
-   for(uint i=0; i<vectFc.size(); i++){
+   for(unsigned int i=0; i<vectFc.size(); i++){
      aBoard <<  vectFc.at(i) ;
    }
  }
@@ -156,9 +156,9 @@ if(vm.count("backgroundImage")){
 if(vm.count("SDP")){
   string fileName = vm["SDP"].as<string>();
   vector< vector< Z2i::Point > > vectContours = PointListReader< Z2i::Point >::getPolygonsFromFile(fileName); 
-  for(uint i=0; i<vectContours.size(); i++){
+  for(unsigned int i=0; i<vectContours.size(); i++){
     vector<LibBoard::Point> contour;
-    for(uint j=0; j<vectContours.at(i).size(); j++){
+    for(unsigned int j=0; j<vectContours.at(i).size(); j++){
       contour.push_back(LibBoard::Point((double)(vectContours.at(i).at(j)[0]),(double)(vectContours.at(i).at(j)[1])));
     }
     aBoard.setPenColor(DGtalBoard::Color::Red);

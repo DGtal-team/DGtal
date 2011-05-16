@@ -219,12 +219,12 @@ namespace DGtal
     /**
      * Dimension of lattice space;
      */
-    uint myN;
+    unsigned int myN;
 
     /**
      * Dimension of target space;
      */
-    uint myM;
+    unsigned int myM;
 
     /**
      * Origin. Array of size m_m;

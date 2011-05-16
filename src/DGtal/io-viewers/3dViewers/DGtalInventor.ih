@@ -272,7 +272,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
       SbVec3f n;
       while ( ip != ip_end )
 	{
-	  uint d = 0;
+	  unsigned int d = 0;
 	  Point c = ip->first;
 	  bool orient = ip->second;
 	  Point e;

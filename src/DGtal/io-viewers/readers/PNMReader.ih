@@ -84,7 +84,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename )
     }
   while ( str[ 0 ] == '#' || str=="");
   istringstream str_in( str );
-  uint w, h;
+  unsigned int w, h;
   str_in >> w >> h;
    
   typename TImageContainer::Point firstPoint;
@@ -109,12 +109,12 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename )
   cerr << "# PGM " << w << " " << h 
        << " " << max_value << " from <" << str << ">" << endl;
   
-  uint nb_read = 0;
+  unsigned int nb_read = 0;
   
   infile >> noskipws;
 
-  for(uint y=0; y <h; y++){
-    for(uint x=0; x <w; x++){
+  for(unsigned int y=0; y <h; y++){
+    for(unsigned int x=0; x <w; x++){
       typename TImageContainer::Point pt;
       pt[0]=x; pt[1]=h-1-y;
       unsigned char c; 

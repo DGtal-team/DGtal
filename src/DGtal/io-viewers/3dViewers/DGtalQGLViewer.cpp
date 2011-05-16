@@ -81,14 +81,14 @@ DGtal::DGtalQGLViewer::isValid() const
 void
 DGtal::DGtalQGLViewer::drawWithNames(){   
   
-  for(uint i=0; i<myVoxelSetList.size(); i++){
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
-  for(uint i=0; i<myLineSetList.size(); i++){
+  for(unsigned int i=0; i<myLineSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+i);
   }
   
-  for(uint i=0; i<myPointSetList.size(); i++){
+  for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
   }   
 
@@ -101,7 +101,7 @@ DGtal::DGtalQGLViewer::draw()
 {
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
-  for(uint i =0; i< myClippingPlaneList.size(); i++){
+  for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
     clippingPlaneGL cp = myClippingPlaneList.at(i);
     double eq [4];
     eq[0]=cp.a;
@@ -113,18 +113,18 @@ DGtal::DGtalQGLViewer::draw()
   }  
   glPopMatrix();   
   
-  for(uint i=0; i<myPointSetList.size(); i++){
+  for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
   }   
-  for(uint i=0; i<myLineSetList.size(); i++){
+  for(unsigned int i=0; i<myLineSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+i);
   }
-  for(uint i=0; i<myVoxelSetList.size(); i++){
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
 
 
-  for(uint i=0; i<myQuadList.size(); i++){
+  for(unsigned int i=0; i<myQuadList.size(); i++){
     double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
     double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
     double  uz=myQuadList.at(i).z2-myQuadList.at(i).z1; 
@@ -203,7 +203,7 @@ void
 DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
   compFarthestFromCamera comp;
   comp.posCam= camera()->position();
-  for(uint i=0; i<myVoxelSetList.size(); i++){
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }  
 }
@@ -220,7 +220,7 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
   if(found){
     cerr << "Element of liste= " << selectedName() << "selected" << endl; 
     if(selectedName() !=-1){
-      uint id = abs(selectedName()-1);
+      unsigned int id = abs(selectedName()-1);
       if(id< myVoxelSetList.size()){
 	cerr << "deleting list="<< id<<endl;
 	myVoxelSetList.erase(myVoxelSetList.begin()+id);
@@ -244,18 +244,18 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
 void
 DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 {
-  uint nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
+  unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
   
-  uint listeID=0;
+  unsigned int listeID=0;
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
-  for (uint i=0; i<myVoxelSetList.size(); i++){  
+  for (unsigned int i=0; i<myVoxelSetList.size(); i++){  
 
     glNewList(myListToAff+i, GL_COMPILE);
     if(myListVoxelDepthTest.at(i)){
@@ -315,7 +315,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   }
   
 
-  for (uint i=0; i<myLineSetList.size(); i++){  
+  for (unsigned int i=0; i<myLineSetList.size(); i++){  
     listeID++;
     glNewList(myListToAff+myVoxelSetList.size()+i, GL_COMPILE);
     myNbListe++;
@@ -338,7 +338,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   }    
 
 
-  for (uint i=0; i<myPointSetList.size(); i++){  
+  for (unsigned int i=0; i<myPointSetList.size(); i++){  
     glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i, GL_COMPILE);
     myNbListe++;
     glDepthMask(GL_TRUE);

@@ -111,20 +111,20 @@ The example <a href="digitalSetFromPointList_8cpp-example.html" >  digitalSetFro
 
 @code
 vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
-  for(uint i=0; i<vectPoints.size();i++){
+  for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
 @endcode
 We can change the way to select the coordinate field:
 
 @code
- vector<uint> vPos;
+ vector<unsigned int> vPos;
   vPos.push_back(0);
   vPos.push_back(2);
   vPos.push_back(1);
   vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
   viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
-  for(uint i=0; i<vectPoints.size();i++){
+  for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
  viewer   << DGtalQGLViewer::updateDisplay;

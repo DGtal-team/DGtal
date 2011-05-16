@@ -169,7 +169,7 @@ int main( int argc, char** argv )
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 						      ks, set2d, sAdj );  
-    for(uint i=0; i<vectContoursBdryPointels.size(); i++){
+    for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
       if(vectContoursBdryPointels.at(i).size()>minSize){
 	if(select){
 	  Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
