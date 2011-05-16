@@ -277,6 +277,7 @@ int main( int argc, char** argv )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
+    ("signature", "Display to the standard output the signature (normal, curvature) at each point of the specified shape contour (middle point of each contour linel)")
     ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, raw, svg, pdf}" );
   
   
@@ -326,6 +327,10 @@ int main( int argc, char** argv )
       
       Shapes<Z2i::Domain>::shaper(aSet, ball);
       Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+      
+      if (vm.count("signature"))
+	Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+      
       return 0;
     }
   else
@@ -340,8 +345,12 @@ int main( int argc, char** argv )
 	
 	Shapes<Z2i::Domain>::shaper(aSet, object);
 	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+	if (vm.count("signature"))
+	  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
 	return 0;
-	}
+      }
     else
       if (id ==2)
 	{
@@ -356,6 +365,10 @@ int main( int argc, char** argv )
 	  
 	  Shapes<Z2i::Domain>::shaper(aSet, ball);
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+	  if (vm.count("signature"))
+	    Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
 	  return 0;
 	}
       else
@@ -374,9 +387,13 @@ int main( int argc, char** argv )
 	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 	    Z2i::DigitalSet aSet(domain);
 	    
-	  Shapes<Z2i::Domain>::shaper(aSet, flower);
-	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
-	  return 0;
+	    Shapes<Z2i::Domain>::shaper(aSet, flower);
+	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+	    if (vm.count("signature"))
+	      Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
+	    return 0;
 	  }
 	else
 	  if (id ==4)
@@ -394,6 +411,10 @@ int main( int argc, char** argv )
 	      
 	      Shapes<Z2i::Domain>::shaper(aSet, object);
 	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+	      if (vm.count("signature"))
+		Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
 	      return 0;
 	    }
 	  else
@@ -414,6 +435,10 @@ int main( int argc, char** argv )
 	      
 		Shapes<Z2i::Domain>::shaper(aSet, flower);
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+		if (vm.count("signature"))
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
 		return 0;
 	      } 
 	    else
@@ -432,6 +457,10 @@ int main( int argc, char** argv )
 	      
 		Shapes<Z2i::Domain>::shaper(aSet, ell);
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	
+		if (vm.count("signature"))
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+   
 		return 0;
 	      } 
 }
