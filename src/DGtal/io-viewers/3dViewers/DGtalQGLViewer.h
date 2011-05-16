@@ -213,8 +213,11 @@ public:
   
   void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
 		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(180,180,250,255));
+
+  void addKSVoxel(int x, int y, int z, const QColor &aColor=QColor(255,180,250,255));
   
   void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
+  
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
 		  double width=0.02, const QColor &color=QColor(20,20,200,255));
@@ -357,7 +360,11 @@ private:
 
   // Represent all the clipping planes added to the scene (of maxSize=5).
   std::vector< clippingPlaneGL > myClippingPlaneList;
-
+  
+  // For saving all voxels of Khalimsky space (used to display Khalimsky Space Cell)
+  // see. myVoxelSetList (first vector)
+  
+  
   // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
   std::vector< quadGL > myKSSurfelList;
 
