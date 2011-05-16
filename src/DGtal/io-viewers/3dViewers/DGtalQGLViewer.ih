@@ -386,7 +386,7 @@ DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z,
   v.G=aColor.green();
   v.B=aColor.blue();
   v.T=aColor.alpha();
-  v.width=0.4;
+  v.width=0.47;
   
   (myVoxelSetList.at(0)).push_back(v);  
 }
