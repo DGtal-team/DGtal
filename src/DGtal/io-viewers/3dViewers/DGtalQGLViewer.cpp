@@ -198,8 +198,9 @@ DGtal::DGtalQGLViewer::init(){
   myBoundingPtUp[0]=numeric_limits<double>::min( );
   myBoundingPtUp[1]=numeric_limits<double>::min( );
   myBoundingPtUp[2]=numeric_limits<double>::min( );
+  createNewVoxelList(true);
+  std::vector<voxelGL>  aKSVoxelList;
   
-
   
   myDefaultColor= QColor(255, 255, 255);
   camera()->showEntireScene();
@@ -408,17 +409,17 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     n4.normalize();
     glNormal3f( n4[0], n4[1], n4[2]);
     
-     glVertex3f(x4+dx,  y4+dy, z4+dz);
-     glVertex3f(x1+dx,  y1+dy, z1+dz);
-     glVertex3f(x1-dx,  y1-dy, z1-dz);
-     glVertex3f(x4-dx,  y4-dy, z4-dz);
-
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
     
-     glNormal3f( -normaleUp[0], -normaleUp[1], -normaleUp[2]);
-     glVertex3f(x1-dx,  y1-dy, z1-dz);
-     glVertex3f(x2-dx,  y2-dy, z2-dz);
-     glVertex3f(x3-dx,  y3-dy, z3-dz);
-     glVertex3f(x4-dx,  y4-dy, z4-dz);
+    //main down face
+    glNormal3f( -normaleUp[0], -normaleUp[1], -normaleUp[2]);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
      
      
     

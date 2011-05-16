@@ -366,6 +366,30 @@ DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size,
   myKSPointelList.push_back(pt);
 }
 
+INLINE
+void 
+DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z,  
+				  const QColor &aColor){
+  voxelGL v;
+  if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
+  if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
+  if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
+  
+  if(x >myBoundingPtUp[0])   myBoundingPtUp[0]= x;
+  if(y >myBoundingPtUp[1])   myBoundingPtUp[1]= y;
+  if(z >myBoundingPtUp[2])   myBoundingPtUp[2]= z;
+  
+  v.x=x;
+  v.y=y;
+  v.z=z;
+  v.R=aColor.red();
+  v.G=aColor.green();
+  v.B=aColor.blue();
+  v.T=aColor.alpha();
+  v.width=0.4;
+  
+  (myVoxelSetList.at(0)).push_back(v);  
+}
 
 
 
