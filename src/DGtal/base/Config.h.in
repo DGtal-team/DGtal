@@ -109,6 +109,7 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake
+ * - \ref FAQGit
  * - \ref FAQDGtalSVN
  *
  * @section examples_sec_dgtal Code examples
