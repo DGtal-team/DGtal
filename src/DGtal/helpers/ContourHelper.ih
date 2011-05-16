@@ -45,7 +45,7 @@ Z2i::Point
 inline
 ContourHelper::getMeanPoint(vector<Z2i::Point> contour){
   Z2i::Point ptMean;
-  for(uint i =0; i<contour.size(); i++){
+  for(unsigned int i =0; i<contour.size(); i++){
     ptMean[0]+=contour.at(i)[0];
     ptMean[1]+=contour.at(i)[1];
   }

@@ -129,8 +129,8 @@ DGtal::NGon2D<T>::x( double t ) const
   
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
   
-  uint intervale_lower = static_cast<uint>( floor( ( angle )* myK / (2.0 * M_PI ) ) );
-  uint intervale_upper = intervale_lower == ( myK -1 ) ? 0 : intervale_lower+1;
+  unsigned int intervale_lower = static_cast<unsigned int>( floor( ( angle )* myK / (2.0 * M_PI ) ) );
+  unsigned int intervale_upper = intervale_lower == ( myK -1 ) ? 0 : intervale_lower+1;
   double dist = myRadius*cos ( M_PI / myK );
   RealPoint2D s1 ( myRadius*cos(myPhi + intervale_lower*2.0*M_PI/myK),
 		   myRadius*sin(myPhi + intervale_lower*2.0*M_PI/myK) );
@@ -164,8 +164,8 @@ DGtal::NGon2D<T>::xp( const double t ) const
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
   // TODO check if angle equals that of a vertex ?
   
-  uint intervalle_lower = static_cast<uint>( floor( ( t - myPhi )* myK / (2.0 * M_PI ) ) );
-  uint intervalle_upper = intervalle_lower == ( myK -1 ) ? 0 : intervalle_lower+1;
+  unsigned int intervalle_lower = static_cast<unsigned int>( floor( ( t - myPhi )* myK / (2.0 * M_PI ) ) );
+  unsigned int intervalle_upper = intervalle_lower == ( myK -1 ) ? 0 : intervalle_lower+1;
   //float dist = myRadius*sin ( M_PI / myK );
   RealPoint2D s1 ( myRadius*cos(myPhi + intervalle_lower*2.0*M_PI/myK),
 		   myRadius*sin(myPhi + intervalle_lower*2.0*M_PI/myK) );

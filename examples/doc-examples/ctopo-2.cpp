@@ -31,13 +31,13 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/readers/PNMReader.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
 
 
@@ -90,7 +90,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
   cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
 
-  uint d=0;
+  unsigned int d=0;
   std::vector<Z2i::SCell>::iterator it;
   for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
     board<< CustomStyle((*it).styleName() ,
@@ -128,9 +128,9 @@ int main( int argc, char** argv )
   cmap_grad3.addColor( DGtalBoard::Color( 200, 20, 200 ) );
   
   d=0;
-  for(int i=0; i< vectContoursBdrySCell.size(); i++){
+  for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     d++;
-    for(int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
+    for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
       board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).styleName() ,
 			   new CustomColors( DGtalBoard::Color::Black,
 					     cmap_grad3( d )))<<vectContoursBdrySCell.at(i).at(j) ;
@@ -151,7 +151,7 @@ int main( int argc, char** argv )
     board3.saveEPS( "ctopo-2e.eps");
     board3.saveFIG( "ctopo-2e.fig");
     
-    return 0;
+    return (space_ok);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -30,10 +30,10 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io-viewers/readers/VolReader.h"
 
 #include "Board/Color.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 
 #include <boost/pending/disjoint_sets.hpp>
 #include <boost/program_options/options_description.hpp>

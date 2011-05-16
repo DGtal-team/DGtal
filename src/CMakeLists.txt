@@ -13,7 +13,7 @@ include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/geometry/ModuleSRC.txt)
 include(DGtal/topology/ModuleSRC.txt)
-include(DGtal/io/ModuleSRC.txt)
+include(DGtal/io-viewers/ModuleSRC.txt)
 include(DGtal/helpers/ModuleSRC.txt)
 
 include(Board/ModuleSRC.txt)
@@ -29,29 +29,14 @@ install(TARGETS ${LIBDGTAL_NAME}
         ARCHIVE DESTINATION lib)
 
 
-	
-
-if ( WITH_VISU3D_IV  AND WITH_VISU3D_QGLVIEWER )
-    include(DGtal/inventor/ModuleSRC.txt)
-    include(DGtal/3dViewer/ModuleSRC.txt)		
+if ( WITH_VISU3D )
+    include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)
     add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
-elseif ( WITH_VISU3D_IV  )
-    include(DGtal/inventor/ModuleSRC.txt)
-    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALIV_SRC} )
-elseif ( WITH_VISU3D_QGLVIEWER  )
-    include(DGtal/3dViewer/ModuleSRC.txt)			
-    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALQGLV_SRC} )
-endif( WITH_VISU3D_IV  AND WITH_VISU3D_QGLVIEWER )
-
-
-
-
-if( WITH_VISU3D )
-target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
-install(TARGETS ${LIBDGTALVISU3D_NAME} 
-           RUNTIME DESTINATION bin
-           LIBRARY DESTINATION lib
-           ARCHIVE DESTINATION lib)
+    target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
+    install(TARGETS ${LIBDGTALVISU3D_NAME} 
+      RUNTIME DESTINATION bin
+      LIBRARY DESTINATION lib
+      ARCHIVE DESTINATION lib)
 endif( WITH_VISU3D )
 
 

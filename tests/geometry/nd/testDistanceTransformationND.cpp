@@ -33,12 +33,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

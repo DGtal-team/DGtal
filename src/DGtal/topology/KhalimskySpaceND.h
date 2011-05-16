@@ -47,7 +47,12 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#endif
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -132,6 +137,29 @@ namespace DGtal
 	aBoard.setLineWidth( 1 );
       }
     };
+
+
+    
+#ifdef WITH_VISU3D_QGLVIEWER
+
+     /**
+      * Default drawing style object.
+      * @return the dyn. alloc. default style for this object.
+      */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    
+    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+    
+    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
+      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+      {
+	//aBoard.setPenColor(DGtalBoard::Color::Black);
+	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+      }
+    };
+  
+
+#endif
 
     // --------------- CDrawableWithDGtalBoard realization -------------------
   public:
@@ -240,6 +268,31 @@ namespace DGtal
 	aBoard.setLineWidth( 1 );
       }
     };
+
+
+
+    
+#ifdef WITH_VISU3D_QGLVIEWER
+
+     /**
+      * Default drawing style object.
+      * @return the dyn. alloc. default style for this object.
+      */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+
+    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+
+    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
+      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+      {
+	//aBoard.setPenColor(DGtalBoard::Color::Black);
+	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+      }
+    };
+  
+
+#endif
+
 
     // --------------- CDrawableWithDGtalBoard realization -------------------
   public:

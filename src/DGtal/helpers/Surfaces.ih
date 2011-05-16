@@ -31,9 +31,8 @@
 #include <cstdlib>
 #include <queue>
 #include <algorithm>
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 
 
@@ -397,7 +396,7 @@ uMakeBoundary( SCellSet & aBoundary,
 	       const DigitalSet & aSpelSet,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
-  uint k;
+  unsigned int k;
   bool in_here, in_further;
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
@@ -432,7 +431,7 @@ sMakeBoundary( SCellSet & aBoundary,
 	       const DigitalSet & aSpelSet,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
-  uint k;
+  unsigned int k;
   bool in_here, in_further;
   //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
   typedef ImageSelector<Z2i::Domain, bool>::Type Image;
@@ -473,7 +472,7 @@ sMakeBoundary( SCellSet & aBoundary,
 // 	       const DigitalSet & aSpelSet,
 // 	       const Cell aLowerBound, const Cell aUpperBound  )
 // {
-//   uint k;
+//   unsigned int k;
 //   bool in_here, in_further;
 //   for ( k = 0; k < aKSpace.dimension; ++k )
 //     {

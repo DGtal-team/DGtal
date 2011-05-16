@@ -40,15 +40,15 @@
 #include "DGtal/helpers/ContourHelper.h"
 
 
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/kernel/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
-#include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/io-viewers/readers/PNMReader.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 #include "DGtal/helpers/Surfaces.h"
 
 #include <boost/program_options/options_description.hpp>
@@ -169,7 +169,7 @@ int main( int argc, char** argv )
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 						      ks, set2d, sAdj );  
-    for(uint i=0; i<vectContoursBdryPointels.size(); i++){
+    for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
       if(vectContoursBdryPointels.at(i).size()>minSize){
 	if(select){
 	  Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
