@@ -5,7 +5,7 @@
  *
  * @date 2011/05/02
  *
- * Documentation file for Extracting level set boudary from Image
+ * Documentation file for Extracting level set boundary from Image
  *
  * This file is part of the DGtal library.
  */
@@ -17,14 +17,14 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page freemanChainFromImage Extracting level set boudary from Image
+@page freemanChainFromImage Extracting level set boundary from Image
 @author Bertrand Kerautret
 
 This part of the manual describes a simple way to extract a level set
 boundary as a FreemanChain contour from an gray level image. The first
 step is to extract the thresholed Digital set from the image (see. <a
 href="structDGtal_1_1SetFromImage.html"> DGtal::SetFromImage </a>) and
-then to track its boudary (see. <a href="classDGtal_1_1Surfaces.html">
+then to track its boundary (see. <a href="classDGtal_1_1Surfaces.html">
 DGtal::Surfaces</a>). An example can also be found in the example <a
 href="freemanChainFromImage_8cpp-example.html" >freemanChainFromImage.cpp</a> .
 
