@@ -450,11 +450,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
   for (unsigned int i=0; i<myPointSetList.size(); i++){  
-<<<<<<< HEAD
-    glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i, GL_COMPILE);
-=======
     glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
->>>>>>> KsPull6
     myNbListe++;
     glDepthMask(GL_TRUE);
     glDisable(GL_TEXTURE_2D);
