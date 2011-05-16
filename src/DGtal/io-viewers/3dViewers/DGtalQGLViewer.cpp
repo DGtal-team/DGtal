@@ -114,16 +114,18 @@ DGtal::DGtalQGLViewer::draw()
   glPopMatrix();   
   
   for(unsigned int i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }   
+ 
   for(unsigned int i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+i);
+    glCallList(myListToAff+myVoxelSetList.size()+1+i);
   }
+  
+  glCallList(myListToAff+myVoxelSetList.size());
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
-
-
+  
   for(unsigned int i=0; i<myQuadList.size(); i++){
     double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
     double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
@@ -158,6 +160,19 @@ DGtal::DGtalQGLViewer::draw()
     glEnd();
     glEnable(GL_LIGHTING);
   }
+
+  
+  // Drawing all Khalimsky Space Cells 
+  
+  for(unsigned int i=0; i< myKSPointelList.size();i++){
+    glDrawGLPointel(myKSPointelList.at(i));
+  }
+  for(unsigned int i=0; i< myKSLinelList.size();i++){
+    glDrawGLLinel(myKSLinelList.at(i));
+  }
+
+
+
 }
 
 
@@ -181,8 +196,9 @@ DGtal::DGtalQGLViewer::init(){
   myBoundingPtUp[0]=numeric_limits<double>::min( );
   myBoundingPtUp[1]=numeric_limits<double>::min( );
   myBoundingPtUp[2]=numeric_limits<double>::min( );
+  createNewVoxelList(true);
+  std::vector<voxelGL>  aKSVoxelList;
   
-
   
   myDefaultColor= QColor(255, 255, 255);
   camera()->showEntireScene();
@@ -313,11 +329,106 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
       glEnd();
       glEndList();
   }
+  glNewList(myListToAff+myVoxelSetList.size(), GL_COMPILE);
+  myNbListe++;
+  glPushName(myNbListe);  
+  glEnable(GL_BLEND);   
+  glEnable( GL_MULTISAMPLE_ARB );
+  glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+  glBegin(GL_QUADS);
+    for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+       s_it != myKSSurfelList.end();
+       ++s_it){
+      
+      glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+      double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+      x1=(*s_it).x1; x2=(*s_it).x2; x3=(*s_it).x3; x4=(*s_it).x4;
+      y1=(*s_it).y1; y2=(*s_it).y2; y3=(*s_it).y3; y4=(*s_it).y4;
+      z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
+      
+      double dx, dy, dz;
+      if(x1==x2 && x2==x3 && x1==x4){
+	dx=0.03;
+    }else dx=0;
+    if(y1==y2 && y2==y3 && y1==y4){
+      dy=0.03;
+    }else dy=0;
+    if(z1==z2 && z2==z3 && z1==z4){
+      dz=0.03;
+    }else dz=0;
+    
+    //main up face
+    Vec normaleUp( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
+    glNormal3f( normaleUp[0], normaleUp[1], normaleUp[2]);
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
+
+    
+    //small face 1
+    Vec vF1 (x2-x1, y2-y1, z2-z1);
+    Vec n1 = cross(vF1, normaleUp);
+    n1.normalize();
+    glNormal3f( n1[0], n1[1], n1[2]);
+    
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+
+    //small face 2
+    Vec vF2 (x3-x2, y3-y2, z3-z2);
+    Vec n2 = cross(vF2, normaleUp);
+    n2.normalize();
+    glNormal3f( n2[0], n2[1], n2[2]);
+    
+    glVertex3f(x2+dx,  y2+dy, z2+dz);
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+
+    //small face 3
+    Vec vF3 (x4-x3, y4-y3, z4-z3);
+    Vec n3 = cross(vF3, normaleUp);
+    n3.normalize();
+    glNormal3f( n3[0], n3[1], n3[2]);
+    
+    glVertex3f(x3+dx,  y3+dy, z3+dz);
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+
+    //small face 4
+    Vec vF4 (x1-x4, y1-y4, z1-z4);
+    Vec n4 = cross(vF4, normaleUp);
+    n4.normalize();
+    glNormal3f( n4[0], n4[1], n4[2]);
+    
+    glVertex3f(x4+dx,  y4+dy, z4+dz);
+    glVertex3f(x1+dx,  y1+dy, z1+dz);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
+    
+    //main down face
+    glNormal3f( -normaleUp[0], -normaleUp[1], -normaleUp[2]);
+    glVertex3f(x1-dx,  y1-dy, z1-dz);
+    glVertex3f(x2-dx,  y2-dy, z2-dz);
+    glVertex3f(x3-dx,  y3-dy, z3-dz);
+    glVertex3f(x4-dx,  y4-dy, z4-dz);
+     
+     
+    
+    }
+    glEnd();
+    glEndList();
   
 
   for (unsigned int i=0; i<myLineSetList.size(); i++){  
     listeID++;
-    glNewList(myListToAff+myVoxelSetList.size()+i, GL_COMPILE);
+    glNewList(myListToAff+myVoxelSetList.size()+i+1, GL_COMPILE);
     myNbListe++;
     glDisable(GL_LIGHTING);
     glPushName(myNbListe);  
@@ -339,7 +450,11 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
   for (unsigned int i=0; i<myPointSetList.size(); i++){  
+<<<<<<< HEAD
     glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i, GL_COMPILE);
+=======
+    glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
+>>>>>>> KsPull6
     myNbListe++;
     glDepthMask(GL_TRUE);
     glDisable(GL_TEXTURE_2D);
@@ -360,16 +475,46 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     glEnable(GL_LIGHTING);
     glEndList();
     
-  }    
+  }   
+
 
 
   if( updateBoundingBox){
     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
     showEntireScene();
-  }
+  }  
 }
 
 
+
+
+void
+DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL linel){
+  glPushMatrix();
+  glTranslatef(linel.x1, linel.y1, linel.z1);
+  Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
+  glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
+  GLUquadric* quadric = gluNewQuadric();
+  glColor4ub(linel.R, linel.G, linel.B, linel.T);
+  gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
+  glPopMatrix();  
+}
+
+
+
+
+void 
+DGtal::DGtalQGLViewer::glDrawGLPointel(pointGL pointel){
+ glPushMatrix();
+ glTranslatef(pointel.x, pointel.y, pointel.z);
+ GLUquadric* quadric = gluNewQuadric();
+ glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+ gluSphere(quadric, pointel.size, 10, 10);
+ glPopMatrix();  
+  
+}
+  
+ 
 
 
 
