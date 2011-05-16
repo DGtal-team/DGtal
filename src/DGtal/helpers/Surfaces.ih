@@ -396,7 +396,7 @@ uMakeBoundary( SCellSet & aBoundary,
 	       const DigitalSet & aSpelSet,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
-  uint k;
+  unsigned int k;
   bool in_here, in_further;
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
@@ -431,7 +431,7 @@ sMakeBoundary( SCellSet & aBoundary,
 	       const DigitalSet & aSpelSet,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
-  uint k;
+  unsigned int k;
   bool in_here, in_further;
   //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
   typedef ImageSelector<Z2i::Domain, bool>::Type Image;
@@ -472,7 +472,7 @@ sMakeBoundary( SCellSet & aBoundary,
 // 	       const DigitalSet & aSpelSet,
 // 	       const Cell aLowerBound, const Cell aUpperBound  )
 // {
-//   uint k;
+//   unsigned int k;
 //   bool in_here, in_further;
 //   for ( k = 0; k < aKSpace.dimension; ++k )
 //     {

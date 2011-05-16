@@ -205,6 +205,41 @@ struct Exporter
 		exit(1);
 	      }
   }
+
+  /** 
+   * Compute and export (std::cout) the boundary of the set and export the signature (normal
+   * vector, curvature) at each point of the 2D contour.
+   * 
+   * @param aSet input set.
+   * @param aDomain the domain used to construct the set.
+   */
+  static 
+  void exportSignature(const Set &aSet, const Z2i::Domain &aDomain)
+  {
+    
+    trace.beginBlock("Extracting the boundary");
+    Z2i::KSpace ks;
+    bool space_ok = ks.init( aDomain.lowerBound(),aDomain.upperBound(), true );
+    SurfelAdjacency<2> sAdj( true );
+
+    ASSERT(space_ok);
+    trace.info()<<aSet<<std::endl;
+    trace.info()<<ks<<std::endl;
+
+    std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
+    Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
+						      ks, aSet, sAdj );  
+    trace.endBlock();
+    
+    ///Export
+    for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
+      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size(); j++)
+	std::cout<< vectContoursBdryPointels.at(i).at(j)<<std::endl;
+    
+    //<<","
+    //		 << vectContoursBdryPointels.at(i).at(j)[0]<<","<<std::endl;
+	  
+  }
 };
 
 /** 

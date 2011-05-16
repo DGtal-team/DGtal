@@ -71,7 +71,7 @@ namespace DGtal
  * @endcode 
  * and you can specifying the point position:
  *  @code
- vector<uint> vIndice;
+ vector<unsigned int> vIndice;
  vIndice.push_back(1); // select for X coordinate the second position number of the line.
  vIndice.push_back(2); // select for Y coordinate the third position number of the line.
  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,vectPos);
@@ -103,7 +103,7 @@ public:
    **/
 
   static std::vector< TPoint>  getPointsFromInputStream (std::istream &in, 
-							 std::vector<uint> aVectPosition=std::vector<uint>());
+							 std::vector<unsigned int> aVectPosition=std::vector<unsigned int>());
   
 
   /** 
@@ -117,7 +117,7 @@ public:
    **/
 
   static std::vector< TPoint>  getPointsFromFile (const std::string &filename, 
-						  std::vector<uint>  aVectPosition=std::vector<uint>());
+						  std::vector<unsigned int>  aVectPosition=std::vector<unsigned int>());
   
 
 

@@ -90,7 +90,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
   cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
 
-  uint d=0;
+  unsigned int d=0;
   std::vector<Z2i::SCell>::iterator it;
   for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
     board<< CustomStyle((*it).styleName() ,

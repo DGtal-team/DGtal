@@ -56,7 +56,7 @@ bool testPNMReader()
   nbok += true ? 1 : 0; 
   nb++;
   std::string filename = testPath + "samples/circleR10.pgm";
-  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
+  typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
   Image image = PNMReader<Image>::importPGMImage( filename ); 
   
   Z2i::DigitalSet set2d (image.domain());

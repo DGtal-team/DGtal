@@ -50,18 +50,18 @@ int main( int argc, char** argv )
   viewer.show();     
   // Importing the 3d set of points  contained with the default index (0, 1, 2);
   vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
-  for(uint i=0; i<vectPoints.size();i++){
+  for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
   
   // Importing the 3d set of points with another index definition  (0, 2, 1);
-  vector<uint> vPos;
+  vector<unsigned int> vPos;
   vPos.push_back(0);
   vPos.push_back(2);
   vPos.push_back(1);
   vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
   viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
-  for(uint i=0; i<vectPoints.size();i++){
+  for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
   

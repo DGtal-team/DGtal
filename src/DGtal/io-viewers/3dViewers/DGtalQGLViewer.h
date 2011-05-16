@@ -314,18 +314,18 @@ private:
     double x1, y1, z1;
     double x2, y2, z2;
     double width;
-    uint R,G,B,T;
+    unsigned int R,G,B,T;
   };
     
   struct voxelGL{
     int x, y,z;
-    uint R,G,B,T;
+    unsigned int R,G,B,T;
     double width;
   };
   
   struct pointGL{
     double  x, y,z;
-    uint R,G,B,T;
+    unsigned int R,G,B,T;
     double size;
   };
   struct clippingPlaneGL{
@@ -336,7 +336,7 @@ private:
     double x2,y2,z2;
     double x3,y3,z3;
     double x4,y4,z4;    
-    uint R,G,B,T;
+    unsigned int R,G,B,T;
   };
     
   // Used to represent all the list used in the display.
@@ -362,7 +362,7 @@ private:
   qglviewer::Vec myBoundingPtLow;
 
   GLuint myListToAff;
-  uint myNbListe;
+  unsigned int myNbListe;
   qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
   QPoint myPosSelector;
   
