@@ -17,6 +17,7 @@
 
 #include "Rect.h"
 #include "Color.h"
+#include "Transforms.h"
 
 namespace LibBoard {
 
@@ -65,8 +66,8 @@ struct Shape {
    * @param cr The cairo drawing context.
    * @param transform A 2D transform to be applied.
    */
-  virtual void flushCairo( cairo_t *cr/*,
-			 const TransformCairo & transform*/ ) const = 0; // TODO
+  virtual void flushCairo( cairo_t *cr,
+			 const TransformCairo & transform ) const = 0;
 #endif
 
   inline int depth() const;
@@ -153,8 +154,8 @@ struct Line : public Shape {
   Rect boundingBox() const;
   
 #ifdef WITH_CAIRO
-  void flushCairo( cairo_t *cr/*,
-		 const TransformCairo & transform*/ ) const; // TODO
+  void flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const;
 #endif
 
 protected:

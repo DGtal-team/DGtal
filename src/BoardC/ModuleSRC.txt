@@ -3,6 +3,7 @@ SET(BOARD_SRC ${BOARD_SRC}
   Board/Board
   Board/ShapeList
   Board/Shapes
+  Board/Transforms
   Board/Color
   Board/Point
   Board/Rect
