@@ -305,14 +305,14 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   
   double cairoWidth, cairoHeight;
   
-  // TODO: TransformCairo transform;
+  TransformCairo transform;
   Rect box = boundingBox();
 
   // TODO:
   /*bool clipping = _clippingPath.size() > 2;
   if ( clipping )
     box = box && _clippingPath.boundingBox();*/
-  // TODO: transform.setBoundingBox( box, pageWidth, pageHeight, margin );
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
   
   if ( pageWidth > 0 && pageHeight > 0 )
   {
@@ -362,7 +362,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   std::vector< Shape* >::const_iterator i = shapes.begin();
   std::vector< Shape* >::const_iterator end = shapes.end();
   while ( i != end ) {
-    (*i)->flushCairo( cr/*, transform*/ ); // TODO
+    (*i)->flushCairo( cr, transform );
     ++i;
   }
   

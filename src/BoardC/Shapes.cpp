@@ -98,15 +98,15 @@ Line::boundingBox() const
 
 #ifdef WITH_CAIRO
 void
-Line::flushCairo( cairo_t *cr/*,
-                const TransformCairo & transform*/ ) const // TODO
+Line::flushCairo( cairo_t *cr,
+                const TransformCairo & transform ) const
 {
     cairo_save (cr);
     
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
       
-      cairo_move_to (cr, /*transform.mapX*/( _x1 ), /*transform.mapY*/( _y1 ));
-      cairo_line_to (cr, /*transform.mapX*/( _x2 ), /*transform.mapY*/( _y2 ));
+      cairo_move_to (cr, transform.mapX( _x1 ), transform.mapY( _y1 ));
+      cairo_line_to (cr, transform.mapX( _x2 ), transform.mapY( _y2 ));
       
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);

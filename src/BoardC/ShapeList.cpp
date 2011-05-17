@@ -56,8 +56,8 @@ ShapeList::boundingBox() const
 
 #ifdef WITH_CAIRO
 void
-ShapeList::flushCairo( cairo_t *cr/*,
-		 const TransformCairo & transform*/ ) const // TODO
+ShapeList::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
 {
     std::vector< Shape* > shapes = _shapes;
     stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
@@ -65,7 +65,7 @@ ShapeList::flushCairo( cairo_t *cr/*,
     std::vector< Shape* >::const_iterator end = shapes.end();
 
     while ( i != end ) {
-        (*i)->flushCairo( cr/*, transform*/ ); // TODO
+        (*i)->flushCairo( cr, transform );
         ++i;
     }
 }

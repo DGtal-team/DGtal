@@ -34,8 +34,8 @@ struct ShapeList : public Shape {
   Rect boundingBox() const;
   
 #ifdef WITH_CAIRO
-  void flushCairo( cairo_t *cr/*,
-		 const TransformCairo & transform*/ ) const; // TODO
+  void flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const;
 #endif
   
 protected:
