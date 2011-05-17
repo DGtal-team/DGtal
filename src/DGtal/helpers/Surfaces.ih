@@ -447,9 +447,8 @@ sMakeBoundary( SCellSet & aBoundary,
       Cell p = dir_low_uid;
       do 
 	{
-	  if (setImage.domain().isInside( aKSpace.uCoords(p))){
-	    
-	    
+	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
+	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
 	    in_here =(setImage(aKSpace.uCoords(p))); //
 	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
 	    if ( in_here != in_further ) // boundary element
