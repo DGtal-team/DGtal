@@ -365,8 +365,6 @@ DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z,
 				  const QColor &aColor){
   voxelGL v;
   updateBoundingBox(x, y, z);
-  
- 
     
   v.x=x;
   v.y=y;
