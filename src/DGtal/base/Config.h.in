@@ -101,6 +101,7 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  *  - \ref dgtal_dgtalboard
  *  - \ref threeD_visu
  *  - \ref image_io 
+ *  - \ref freemanChainFromImage
  *  - \ref Tools3dVolViewer
  *
  * - Miscellaneous

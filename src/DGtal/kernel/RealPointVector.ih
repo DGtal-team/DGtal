@@ -109,8 +109,10 @@ inline
 DGtal::RealPointVector<dim>&
 DGtal::RealPointVector<dim>::operator= ( const DGtal::PointVector<dim,Compo> & v )
 {
-  for ( Dimension i = 0; i < dim; ++i )
-    this->myArray[ i ] = v[ i ];
+  for ( Dimension i = 0; i < dimension; ++i )
+    {
+      this->myArray[ i ] = (double)v[ i ];
+    }
   return *this;
 }
 //------------------------------------------------------------------------------
@@ -176,9 +178,9 @@ double
 DGtal::RealPointVector<dim>::norm1() const
 {
   ASSERT ( dimension > 0 );
-  double val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  double val( ( this->myArray[ 0 ] >= 0 ) ? this->myArray[ 0 ] : -this->myArray[ 0 ] );
   for ( Dimension i = 1; i < dimension; ++i )
-    val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
+    val += ( this->myArray[ i ] >= 0 ) ? this->myArray[ i ] : -this->myArray[ i ];
   return val;
 }
 //------------------------------------------------------------------------------
@@ -188,11 +190,11 @@ double
 DGtal::RealPointVector<dim>::normInfinity() const
 {
   ASSERT ( dimension > 0 );
-  double val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  double val( ( this->myArray[ 0 ] >= 0 ) ? this->myArray[ 0 ] : -this->myArray[ 0 ] );
   for ( Dimension i = 1; i < dimension; ++i )
     {
-      double tmp( ( myArray[ i ] >= 0 )
-		  ? myArray[ i ] : -myArray[ i ] );
+      double tmp( ( this->myArray[ i ] >= 0 )
+		  ? this->myArray[ i ] : -this->myArray[ i ] );
       if ( tmp > val )
 	val = tmp;
     }
@@ -227,8 +229,8 @@ void
 DGtal::RealPointVector<dim>::selfDrawAsPaving( DGtalBoard & board ) const
 {
   ASSERT(dim == 2);
-  board.drawRectangle( (float) myArray[0] - 0.5f, 
- 		       (float) myArray[1] + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) this->myArray[0] - 0.5f, 
+ 		       (float) this->myArray[1] + 0.5f, 1, 1 );     
 }
 //------------------------------------------------------------------------------
 template<Dimension dim>
@@ -238,8 +240,8 @@ DGtal::RealPointVector<dim>::selfDrawAsGrid( DGtalBoard & board ) const
 {
   ASSERT(dim == 2);
   board.setPenColor(LibBoard::Color::Black);
-  board.fillCircle((float) myArray[0], 
-		   (float) myArray[1],0.1);
+  board.fillCircle((float) this->myArray[0], 
+		   (float) this->myArray[1],0.1);
 }
 
 //------------------------------------------------------------------------------
@@ -252,7 +254,7 @@ DGtal::RealPointVector<dim>::selfDraw(DGtalBoard & board,
   ASSERT(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-		  (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
+		  (float) apoint[0] + this->myArray[0], (float)apoint[1] + this->myArray[1],
 		  true);
 }
 
@@ -272,9 +274,9 @@ void
 DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
 {
   ASSERT(dim == 3);
-  viewer.addVoxel(myArray[0],
-		  myArray[1],
-		  myArray[2], viewer.getFillColor());
+  viewer.addVoxel(this->myArray[0],
+		  this->myArray[1],
+		  this->myArray[2], viewer.getFillColor());
 }
 //------------------------------------------------------------------------------
 template<Dimension dim>
@@ -283,9 +285,9 @@ void
 DGtal::RealPointVector<dim>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
 {
   ASSERT(dim == 3);
-  viewer.addPoint(myArray[0],
-		  myArray[1],
-		  myArray[2],viewer.getLineColor(), 10);
+  viewer.addPoint(this->myArray[0],
+		  this->myArray[1],
+		  this->myArray[2],viewer.getLineColor(), 10);
 
 }
 
@@ -324,7 +326,9 @@ DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &
   ASSERT(dim == 3);
   
   viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
+		 (float) aPoint[0] + this->myArray[0], 
+		 (float)aPoint[1] + this->myArray[1], 
+		 (float) aPoint[2] + this->myArray[2]);
   
 }
 

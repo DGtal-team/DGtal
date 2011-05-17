@@ -147,6 +147,57 @@ namespace DGtal
 			  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
 			  const DigitalSet & shape,
 			  const SCell & start_surfel );
+
+
+  /**
+     Extract all 4-connected contours as a vector containing the set of contour
+     Points.  Each contour is represented by a vector of points
+     defined by the sequence of pointels extracted from the boundary
+     surfels.
+       
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     
+     @param aSCellContour2D (modified) a vector of contour represented
+     by a vector of cells (which are all surfels), containing the
+     ordered list of the boundary component of [spelset].
+     
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aShape any digital set.
+  */
+    template <typename DigitalSet >
+    static 
+    void extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointContour2D,
+				    const KSpace & aKSpace,
+				    const DigitalSet & aShape, const SurfelAdjacency<2> &aSAdj );
+
+    
+
+    /**
+     Extract all contours as a vector containing the set of contours
+     composed of SCell.  Each contour is represented by a vector of
+     signed surfels whose elements represents a boundary component of
+     the digital set [shape]. The algorithms tracks surfels along the
+     boundary of the shape.
+       
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     
+     @param aSCellContour2D (modified) a vector of contour represented
+     by a vector of cells (which are all surfels), containing the
+     ordered list of the boundary component of [spelset].
+     
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aShape any digital set.
+  */
+    template <typename DigitalSet >
+    static 
+    void extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
+			       const KSpace & aKSpace,
+			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			       const DigitalSet & aShape );
+    
+
     
     /**
        Creates a set of signed surfels whose elements represents a
@@ -178,30 +229,50 @@ namespace DGtal
 			      const SCell & start_surfel );
 
   /**
-       Creates a set of signed surfels whose elements represents a
-       boundary component of the digital set [shape]. The algorithms
-       tracks surfels along the boundary of the shape.
-       
-       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
-       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
-       
-       @param surface (modified) a set of cells (which are all surfels),
-       the boundary component of [spelset] which touches [start_surfel].
-       
-       @param K any space.
-       @param surfel_adj the surfel adjacency chosen for the tracking.
-       @param shape any digital set.
-       @param start_surfel a signed surfel which should be between an
-       element of [shape] and an element not in [shape].
-    */
+     Creates a set of surfels whose elements represents all
+     the boundary components of the digital set [shape]. 
+     
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+     
+     @param aBoundary (modified) a set of cells (which are all surfels),
+     the boundary component of [aSpelSet].
+     
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aSpelSet any digital set.
+     @param aLowerBound and @param aUpperBound Cell giving the bounds of the extracted boundary.
+  */
     template <typename SCellSet, typename DigitalSet >
     static 
     void uMakeBoundary( SCellSet & aBoundary,
-	       const KSpace & K,
-	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-	       const DigitalSet & aSpelSet,
-	       const Cell aLowerBound, const Cell aUpperBound  );
+			const KSpace & aKSpace,
+			const DigitalSet & aSpelSet,
+			const Cell aLowerBound, const Cell aUpperBound  );
     
+ /**
+     Creates a set of signed surfels whose elements represents all
+     the boundary components of the digital set [shape]. 
+     
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+     
+     @param aBoundary (modified) a set of cells (which are all surfels),
+     the boundary component of [aSpelSet].
+     
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aSpelSet any digital set.
+     @param aLowerBound and @param aUpperBound Cell giving the bounds of the extracted boundary.
+  */
+    template <typename SCellSet, typename DigitalSet >
+    static 
+    void sMakeBoundary( SCellSet & aBoundary,
+			const KSpace & aKSpace,
+			const DigitalSet & aSpelSet,
+			const Cell aLowerBound, const Cell aUpperBound  );
+    
+
 
     
 

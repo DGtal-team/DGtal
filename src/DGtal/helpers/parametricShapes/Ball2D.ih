@@ -63,8 +63,10 @@ DGtal::Ball2D<T>::Ball2D(const RealPoint2D &aPoint, const double radius):
 template <typename T>
 inline
 DGtal::Ball2D<T>::Ball2D(const Point &aPoint, const double radius):
-  myRadius(radius), myCenter(RealPoint(aPoint[0],aPoint[1]))
-{}
+  myRadius(radius)
+{
+  myCenter = aPoint;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ------------------

@@ -386,7 +386,7 @@ bool testCellDrawOnBoard()
   board.saveEPS( "cells-3.eps" );
   board.saveSVG( "cells-3.svg" );
   
-  return nbok == nb;
+  return ((space_ok) && (nbok == nb));
 }
   
 ///////////////////////////////////////////////////////////////////////////////

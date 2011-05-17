@@ -33,9 +33,9 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/parametricShapes/Ball2D.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/kernel/images/ImageContainerBySTLVector.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -57,14 +57,22 @@ bool testParametricShape()
   Z2i::Point a(0,0);
   Z2i::Point b(64,64);
   Z2i::Space::RealPoint c(32.0,32.0);
-  
+  Z2i::Point cc(32,32);
+
   DGtalBoard board;
   
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
   
   Shapes<Z2i::Domain>::shaper( set,
-			       Ball2D<Z2i::Space>( c, 10));
+			       Ball2D<Z2i::Space>( cc, 10));
+  
+  Z2i::Point lower,upper;
+  set.computeBoundingBox(lower,upper);
+
+  trace.info()<<"Generated set: "<<set<<" lowerBound="<<lower
+	      <<" upperBound="<<upper<<std::endl;
+
   board << set;
   board.saveSVG("parametricball.svg");
   

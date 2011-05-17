@@ -36,11 +36,14 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/helpers/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/ShapeFactory.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -145,6 +148,57 @@ bool testDistanceTransformation()
   return nbok == nb;
 }
 
+
+bool testDTFromSet()
+{
+unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing the whole DT computation from a Set" );
+
+  typedef SpaceND<2> TSpace;
+  typedef TSpace::Point Point;
+  typedef HyperRectDomain<TSpace> Domain;
+  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
+  Point a ( 2, 2 );
+  Point b ( 15, 15 );
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+
+  
+
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  
+  DGtalBoard board;
+
+  Ball2D<Z2i::Space> flower(Z2i::Point(0,0), 10);
+  Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+  Z2i::DigitalSet aSet(domain);
+  
+  Shapes<Z2i::Domain>::shaper(aSet, flower);
+
+  ImageLong result = dt.compute ( aSet );
+  
+  trace.warning() << result << endl;
+  typedef GrayscaleColorMap<ImageLong::Value> Gray;
+ 
+  DGtal::uint64_t maxv = 0;
+  for ( ImageLong::Iterator it = result.begin(), itend = result.end();
+	it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+  
+  trace.error() << "MaxV="<<maxv<<std::endl;
+
+  result.selfDraw<Gray> ( board, 0, maxv);
+  board.saveSVG ( "image-postDTFromSet.svg" );
+  
+
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -188,7 +242,7 @@ bool testDistanceTransformationBorder()
 
   ImageLong result = dt.compute ( image );
 
-  long int maxv = 0;
+  DGtal::uint64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -352,7 +406,7 @@ bool testChessboard()
   DT::OutputImage result = dt.compute ( image );
   DT1::OutputImage result1 = dt1.compute ( image );
 
-  long int maxv = 0;
+  DGtal::uint64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -415,7 +469,11 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-   bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationBorder() && testDistanceTransformation3D() && testChessboard(); // && ... other tests
+   bool res =  testTypeValidity() && testDistanceTransformation() 
+     && testDistanceTransformationBorder() 
+     && testDistanceTransformation3D()
+     && testChessboard()
+     && testDTFromSet(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

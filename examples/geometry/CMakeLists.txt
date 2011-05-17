@@ -3,6 +3,7 @@ SET(DGTAL_EXAMPLES_SRC
   distancetransform2D
   ArithmeticalDSS
   convex-and-concave-parts
+  freemanChainFromImage
 )
 
 

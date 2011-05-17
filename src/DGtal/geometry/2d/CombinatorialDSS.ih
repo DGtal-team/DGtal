@@ -1,0 +1,153 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file CombinatorialDSS.ih
+ * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2011/04/29
+ *
+ * Implementation of inline methods defined in CombinatorialDSS.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::CombinatorialDSS<T>::selfDisplay ( std::ostream & out ) const
+{
+	out << "[CombinatorialDSS]" <<  endl;
+	out << "Parameters (a,b,mu,omega)=";
+	out << "("<< this->myA << ", " << this->myB << ", ";
+	out << this->myMu << ", " << this->myOmega << ")" <<  endl;
+	out << "Number of upper patterns: " << this->myNbUpPat << endl;
+	out << "Number of lower patterns: " << this->myNbLowPat << endl;
+	out << "First point " << Point(*this->myF) << " Last point " << Point(*this->myL) <<  endl;
+	out << "Leaning points:" <<  endl;
+	out << "   Uf " << this->myUf << endl << "   Ul " << this->myUl << endl;
+	out << "   Lf " << this->myLf << endl << "   Ll " << this->myLl <<  endl;
+	out << "Steps:" <<  endl;
+	for (unsigned int i = 0; i < this->step.size(); i++) {
+		out << "   " << this->step.at(i) << endl;
+	}
+	out << "[End CombinatorialDSS]" <<  endl;
+
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const CombinatorialDSS<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+/**
+ * @param aFC a FreemanChain.
+ *
+ * @param aOA the ordered alphabet.
+ *
+ * @param s the position from where the FreemanCode is
+ * read (default value = 0).
+ *
+ * @param len (returns) the number of points inserted in
+ * the DSS which is exacly the length of the Christoffel
+ * word read (with repetitions).
+ *
+ * @return 'true' if the FreemanChain is coding a path
+ * that is possibly digitally convex, 'false' if the
+ * path is not digitally convex.
+ */ 
+template <typename TInteger>
+bool 
+CombinatorialDSS<TInteger>::longestChristoffelPrefix(
+		Iterator it,
+		const OrderedAlphabet & aAlph)
+{
+	OrderedAlphabet::size_t nb;
+	OrderedAlphabet::size_t len;
+	OrderedAlphabet::index_t e = it.getChain()->end().getPosition();
+	unsigned int a,b;
+	unsigned int lf1, lf2;
+	bool cvx = aAlph.duvalPPtoDSS(len, nb, a, b, lf1, lf2, 
+			it.getChain()->chain, it.getPosition(), e);
+
+	len *= nb;
+	Vector direction1 = FreemanChainCode::displacement(aAlph.letter(1) - '0');
+	Vector direction2 = FreemanChainCode::displacement(aAlph.letter(2) - '0');
+	Vector basicMove = ( direction1 * (Integer) a ) + (direction2 * (Integer) b );
+	bool trivial = (a == 0 || b == 0);
+
+	this->myA        = basicMove[1];
+	this->myB        = basicMove[0];
+	this->myNbUpPat  = (Integer) nb;
+	this->myNbLowPat = (trivial) ? this->myNbUpPat : this->myNbUpPat - 1;
+	this->myUf       = it.get();
+	this->myUl       = this->myUf + basicMove*nb;
+	this->myLf       = (trivial) ? 
+		this->myUf : 
+		this->myUf + ( direction1*(Integer)lf1 ) + (direction2*(Integer)lf2 );
+	this->myLl       = (trivial) ? this->myLf + basicMove*nb :
+	                               this->myLf + basicMove*(nb-1);
+	this->myMu       = this->myA*this->myUf[0] - this->myB*this->myUf[1];
+	this->myOmega    = DSS::template Tools<Integer,4>::norm(this->myA,this->myB);
+	this->myF        = it;
+	this->myL        = Iterator(*it.getChain(), it.getPosition() + len, this->myUl);
+	this->step.clear();
+	if (a != 0) 
+		this->step.push_back(direction1);
+	if (b != 0) 
+		this->step.push_back(direction2);
+	return cvx;
+}
+

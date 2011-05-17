@@ -35,15 +35,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 
 #include "Board/Color.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
@@ -90,9 +90,6 @@ int main( int argc, char** argv )
   
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   
-  int thresholdMin = 1;
-  int thresholdMax = 255;
-
  //------------
 
  typedef SpaceND<3> Space4Type;

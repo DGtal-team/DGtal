@@ -31,12 +31,12 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 #include "DGtal/geometry/nd/volumetric/ReverseDistanceTransformation.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -132,7 +132,7 @@ bool testReverseDT()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << reconstruction(it2) << " ";
+      std::cout << (int)reconstruction(it2) << " ";
       ++it2;
     }
     std::cout << std::endl;
@@ -147,6 +147,150 @@ bool testReverseDT()
       ok = ok & (image(itinit) == 0);
 
   nbok += ok ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+bool testReverseDTL1()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
+
+  trace.beginBlock ( "Testing Reverse DT in 2D with L1 metric ..." );
+  
+  Z2i::Point a (2, 2 );
+  Z2i::Point b ( 15, 15 );
+
+  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
+  Image image ( a, b );
+  
+  for ( unsigned k = 0; k < 49; k++ )
+    {
+      a[0] = ( k / 7 ) + 5;
+      a[1] = ( k % 7 ) + 5;
+      image.setValue ( a, 128 );
+    }
+
+ 
+ 
+  DistanceTransformation<Image, 1 > dt;
+  typedef DistanceTransformation<Image,1>::OutputImage ImageDT;
+
+  dt.checkTypesValidity ( image );
+
+  ImageDT result = dt.compute ( image );
+
+
+  //ReverseDT  
+  trace.warning()<<"DT:"<<endl;
+  ImageDT::ConstIterator it = result.begin();
+  for (unsigned int y = 2; y < 16; y++)
+    {
+    for (unsigned int x = 2; x < 16; x++)
+    {
+      std::cout << (int)result(it) << " ";
+      ++it;
+    }
+    std::cout << std::endl;
+  }
+
+
+  ReverseDistanceTransformation< ImageDT, 1 > reverseDT;
+  typedef ReverseDistanceTransformation< ImageDT, 1 >::OutputImage ImageRDT;
+
+  ImageRDT reconstruction = reverseDT.reconstruction( result );
+ 
+  trace.warning()<<"REDT:"<<endl;
+  ImageRDT::ConstIterator it2 = reconstruction.begin();
+  for (unsigned int y = 2; y < 16; y++)
+    {
+    for (unsigned int x = 2; x < 16; x++)
+    {
+      std::cout << (int)reconstruction(it2) << " ";
+      ++it2;
+    }
+    std::cout << std::endl;
+  }
+
+  //Checking
+  bool ok=true;
+  ImageRDT::ConstIterator itrec = reconstruction.begin(), itend = reconstruction.end();
+  Image::ConstIterator  itinit = image.begin();
+  for( ; itrec != itend; ++itrec,++itinit)
+    if (reconstruction(itrec) == 0)
+      ok = ok & (image(itinit) == 0);
+
+  nbok += ok ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+bool testReverseDTL1simple()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
+
+  trace.beginBlock ( "Testing Reverse DT in 2D with L1 metric ..." );
+  
+  Z2i::Point a (2, 2 );
+  Z2i::Point b ( 15, 15 );
+
+  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
+ 
+
+ 
+  DistanceTransformation<Image, 1 > dt;
+  typedef DistanceTransformation<Image,1>::OutputImage ImageDT;
+
+
+  ImageDT result ( a, b );
+  result.setValue(Z2i::Point(5,7), 3);
+  result.setValue(Z2i::Point(9,7), 4);
+
+  //ReverseDT  
+  trace.warning()<<"DT:"<<endl;
+  ImageDT::ConstIterator it = result.begin();
+  for (unsigned int y = 2; y < 16; y++)
+    {
+    for (unsigned int x = 2; x < 16; x++)
+    {
+      std::cout << (int)result(it) << " ";
+      ++it;
+    }
+    std::cout << std::endl;
+  }
+
+
+  ReverseDistanceTransformation< ImageDT, 1 > reverseDT;
+  typedef ReverseDistanceTransformation< ImageDT, 1 >::OutputImage ImageRDT;
+
+  ImageRDT reconstruction = reverseDT.reconstruction( result );
+ 
+  trace.warning()<<"REDT:"<<endl;
+  ImageRDT::ConstIterator it2 = reconstruction.begin();
+  for (unsigned int y = 2; y < 16; y++)
+    {
+    for (unsigned int x = 2; x < 16; x++)
+    {
+      std::cout << (int)reconstruction(it2) << " ";
+      ++it2;
+    }
+    std::cout << std::endl;
+  }
+
+ 
+  nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
@@ -204,16 +348,18 @@ bool testReverseDTSet()
     std::cout << std::endl;
   }
 
-  /*
-
+  
   ReverseDistanceTransformation< ImageDT, 2 > reverseDT;
 
   typedef DigitalSetBySTLSet<Z2i::Domain> Set;
-  Set reconstruction = reverseDT.reconstructionAsSet<Set>( result );
+
   
-  // board.clear();
-  // result.selfDraw<Hue> ( board, 0, 10); //maxval 
-  // board.saveSVG ( "image-REDTtest.svg" );
+  Set reconstruction(result.domain());
+  reverseDT.reconstructionAsSet<Set>( reconstruction, result );
+  
+  DGtalBoard board;
+  board << reconstruction;
+  board.saveSVG ( "image-REDTtestSet.svg" );
 
   trace.warning()<<"REDT:"<<endl;
   for(Set::ConstIterator it2 = reconstruction.begin(), 
@@ -231,8 +377,9 @@ bool testReverseDTSet()
 	       << "true == true" << std::endl;
   trace.endBlock();
   
+  
   return nbok == nb;
-  */
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -246,7 +393,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testReverseDT() && testReverseDTSet; // && ... other tests
+  bool res = testReverseDT() && testReverseDTSet() 
+    && testReverseDTL1() && testReverseDTL1simple(); // && ... other tests
+  
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

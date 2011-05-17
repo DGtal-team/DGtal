@@ -36,10 +36,10 @@
 #include <iomanip>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
 

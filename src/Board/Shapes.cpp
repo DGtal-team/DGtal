@@ -653,8 +653,7 @@ Image::flushCairo( cairo_t *cr,
     // tr
 
     cairo_set_source_surface (cr, image, 0, 0);
-    cairo_paint (cr);
-
+    cairo_paint_with_alpha(cr, _alpha);
     cairo_surface_destroy (image);
     
   cairo_restore (cr);
@@ -1648,7 +1647,6 @@ Rectangle::flushFIG( std::ostream & stream,
                      const TransformFIG & transform,
                      std::map<Color,int> & colormap ) const
 {
-  std::cerr << "in flush rectangle" << std::endl;
   if ( _path[0].y != _path[1].y ) {
         Polyline::flushFIG( stream, transform, colormap );
         return;

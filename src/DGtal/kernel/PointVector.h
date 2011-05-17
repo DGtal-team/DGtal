@@ -51,11 +51,11 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 #include "DGtal/kernel/CInteger.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
 
@@ -686,7 +686,7 @@ namespace DGtal
     static Self zero;
     
     // ------------------------- Hidden services ------------------------------
-  private:
+  protected:
     
     ///Internal data-structure: boost/array with constant size.
     boost::array<Component, dimension> myArray;

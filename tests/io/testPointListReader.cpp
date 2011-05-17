@@ -30,9 +30,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/PointListReader.h"
-#include "ConfigTest.h"
+#include "DGtal/io-viewers/readers/PointListReader.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/geometry/2d/FreemanChain.h" 
+
+#include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,23 +54,31 @@ bool testPointListReader()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
+  trace.beginBlock ( "Testing reading point list ..." );
+  
   std::string filename = testPath + "samples/pointList1.pl";
-  std::vector<uint> vectPos;
+  std::vector<unsigned int> vectPos;
   vectPos.push_back(1);
   vectPos.push_back(2);
   vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,
 										 vectPos);
-  for(uint k=0;k < vectPoints.size(); k++){
+  for(unsigned int k=0;k < vectPoints.size(); k++){
     trace.info() << " pt: "<< vectPoints.at(k)<< endl;
   }
-  
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+  nbok += (vectPoints.size()==4) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
-  
+  trace.beginBlock ( "Testing reading point list ..." );
+  std::string filenameFC = testPath + "samples/freemanChainSample.fc";
+  std::vector< FreemanChain< int > > vectFC = PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (filenameFC); 
+  for(unsigned int i=0; i< vectFC.size(); i++){
+    FreemanChain<int> fc = vectFC.at(i);
+    trace.info() << "Freeman chain " << i << ": " << fc.x0 << " " << fc.y0 << " " << fc.chain << endl;
+  }
+  nbok += (vectFC.size()==5) ? 1 : 0; 
+  nb++;
+  trace.endBlock();
   return nbok == nb;
 }
 
