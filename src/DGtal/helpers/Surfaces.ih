@@ -289,7 +289,7 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
     track2DBoundary(aContour, aKSpace, aSurfelAdj,aShape, aCell );
     aVectSCellContour2D.push_back(aContour);
     // removing cells from boundary;
-    for(int i=0;i <aContour.size(); i++){
+    for(unsigned int i=0;i <aContour.size(); i++){
       SCell sc = aContour.at(i);
       bdry.erase(sc);
     }
@@ -315,9 +315,9 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
   extractAll2DSCellContours( vectContoursBdrySCell,
 			     aKSpace, aSAdj, aShape );
   
-  for(int i=0; i< vectContoursBdrySCell.size(); i++){
+  for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     std::vector< Point > aContour;
-    for(int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
+    for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
       SCell sc = vectContoursBdrySCell.at(i).at(j);
       float x = (float) 
 	( IntegerTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[0] ) >> 1 );

@@ -98,11 +98,12 @@ int main( int argc, char** argv )
   
   double minThreshold = 128;
   double maxThreshold = 255;
-  int minSize =0;
+  unsigned int minSize =0;
   bool select=false;
   bool thresholdRange=vm.count("thresholdRange");
   Z2i::Point selectCenter;
-  int selectDistanceMax; 
+  unsigned int selectDistanceMax; 
+  
   
   //Parse options
   if (not(vm.count("image"))){
@@ -111,7 +112,7 @@ int main( int argc, char** argv )
   } 
   
   if(vm.count("min")){
-    minThreshold= vm["min"].as<int>();
+    minThreshold= vm["min"].as<unsigned int>();
   } 
   if(vm.count("max")){
     maxThreshold= vm["max"].as<int>();
@@ -128,7 +129,7 @@ int main( int argc, char** argv )
     }
     selectCenter[0]= cntConstraints.at(0);
     selectCenter[1]= cntConstraints.at(1);
-    selectDistanceMax= cntConstraints.at(2);
+    selectDistanceMax= (unsigned int) cntConstraints.at(2);
   }
   
   int min, max, increment;
@@ -163,7 +164,10 @@ int main( int argc, char** argv )
     SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, min, max);
     trace.info() << "DGtal set imported from thresholds ["<<  min << "," << max << "]" << endl;
     Z2i::KSpace ks;
-    bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+    if(! ks.init( image.domain().lowerBound(), 
+		  image.domain().upperBound(), true )){
+      trace.error() << "Problem in KSpace initialisation"<< endl;
+    }
     SurfelAdjacency<2> sAdj( true );
   
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
@@ -173,7 +177,7 @@ int main( int argc, char** argv )
       if(vectContoursBdryPointels.at(i).size()>minSize){
 	if(select){
 	  Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
-	  int distance = (int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
+	  unsigned int distance = (unsigned int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
 				    (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
 	  if(distance<=selectDistanceMax){
 	    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
