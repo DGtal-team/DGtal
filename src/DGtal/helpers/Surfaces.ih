@@ -451,12 +451,12 @@ sMakeBoundary( SCellSet & aBoundary,
 	    
 	    
 	    in_here =(setImage(aKSpace.uCoords(p))); //
-	  in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
-	  if ( in_here != in_further ) // boundary element
+	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
+	    if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
 	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
 	    }
-	}
+	  }
 	}
       while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
     }
