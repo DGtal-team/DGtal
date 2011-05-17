@@ -296,7 +296,7 @@ public:
 
   // ------------------------- Protected Datas ------------------------------
 private:
-
+  
 
 
 public:
@@ -453,8 +453,13 @@ protected :
     // ------------------------- Internals ------------------------------------
 private:
 
-
-
+  
+  /**
+   * Used to define update the scene bounding box when objects are added 
+   *
+   **/
+  
+  void updateBoundingBox(int x, int y, int z);
 
   
 
