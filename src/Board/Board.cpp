@@ -377,11 +377,11 @@ Board::drawRectangle( double x, double y,
 void
 Board::drawImage(std::string filename, double x, double y, 
 		 double width, double height,
-		 int depthValue /* = -1 */ )
+		 int depthValue, double alpha /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Image( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
-				filename, d ) );
+				filename, d, alpha ) );
 }
 
 
@@ -1050,11 +1050,14 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   
   switch (type)
   {
-    case CairoPDF:
+  case CairoPDF:
       surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
-    case CairoPS:
+  case CairoPS:
       surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
-    case CairoSVG:
+  case CairoEPS:
+    surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
+    cairo_ps_surface_set_eps(surface, true); break;
+  case CairoSVG:
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPNG:
     default:

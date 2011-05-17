@@ -48,6 +48,7 @@
 
 namespace DGtal 
 {
+
   template<typename T>
   struct MinFunctor
   {
@@ -64,7 +65,7 @@ namespace DGtal
     { return std::max(a,b); }
   };
 
-  /**
+ /**
    * Copy of the std::minus binary operator (not implemented on MS-VS)
    */
   template <class T> 

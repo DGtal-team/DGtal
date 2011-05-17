@@ -148,14 +148,14 @@ DGtal::StarShaped2D<TSpace>::curvature( double t ) const
 template<typename TSpace>
 inline
 double
-DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, uint nb ) const
+DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) const
 {
   while ( t2 < t1 ) t2 += 2.0*M_PI;
   // double dt = ( t2 - t1 ) / nb;
   RealPoint x0( x( t1 ) );
   double l = 0.0;
   // JOL 2008/08/28
-  for ( uint i = 1; i <= nb; ++i )
+  for ( unsigned int i = 1; i <= nb; ++i )
     {
       double t = ( ( t2 - t1 ) * i ) / nb;
       RealPoint x1( x( t1 + t ) );

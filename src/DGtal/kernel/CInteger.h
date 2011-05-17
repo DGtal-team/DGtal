@@ -65,7 +65,7 @@ namespace DGtal
    * for instance the big integers of GMP, are also models of this
    * concept.
    * 
-   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>
+   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
    *
    * <p> Associated types :
    *
@@ -107,7 +107,7 @@ namespace DGtal
    * @todo Complete integer checking.
    */
   template <typename T>
-  struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>
+  struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -149,11 +149,6 @@ namespace DGtal
   }; // end of concept CInteger
   
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/CInteger.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

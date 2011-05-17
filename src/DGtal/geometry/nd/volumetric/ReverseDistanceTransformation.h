@@ -44,7 +44,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/kernel/images/CImageContainer.h"
+#include "DGtal/images/CImageContainer.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/IntegerTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -78,7 +78,7 @@ namespace DGtal
   public:
     
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
-    BOOST_CONCEPT_ASSERT(( CInteger<IntegerShort> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedInteger<IntegerShort> ));
     
 
     ///Type of resulting image
@@ -124,15 +124,16 @@ namespace DGtal
     OutputImage reconstruction(const Image & inputImage);
 
     /** 
-     * Compute the reverse distance transformation and return the
-     * result as a Digital Set.
+     * Computes the reverse distance transformation and appends the
+     * result to the given digital set.
      * 
      * @param inputImage the input image with distance values.
+     * @param aSet the set to append the result points to.
      * @tparam DigitalSet the type of set to use.
-     * @return the reconstruction as a digital set.
      */
     template<typename DigitalSet>
-    DigitalSet reconstructionAsSet(const Image &inputImage);
+    void reconstructionAsSet(DigitalSet &aSet, const Image &inputImage);
+    
     
     
 

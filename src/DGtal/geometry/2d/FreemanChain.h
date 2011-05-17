@@ -52,8 +52,11 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 #include "DGtal/kernel/IntegerTraits.h"
+
+#include "DGtal/helpers/StdDefs.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -128,10 +131,10 @@ namespace DGtal
 
     
     class ConstIterator : 
-						public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
+      public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
     {
 
-	 public:
+    public:
 
       // ------------------------- data -----------------------
     private:
@@ -179,26 +182,44 @@ namespace DGtal
 	
       ConstIterator( const FreemanChain & aChain, unsigned int n =0)
 	: myFc( &aChain ), myPos( 0 )
- {
+      {
 	  
-		if ( n < myFc->chain.size() ) {
+	if ( n < myFc->chain.size() ) {
 
-			myXY.at(0)=aChain.x0;
-			myXY.at(1)=aChain.y0;
+	  myXY.at(0)=aChain.x0;
+	  myXY.at(1)=aChain.y0;
 
-			while ( myPos < n ) this->next();
+	  while ( myPos < n ) this->next();
 
-		} else {// iterator end() 
-			myXY.at(0)=aChain.xn;
-			myXY.at(1)=aChain.yn;
+	} else {// iterator end() 
+	  myXY.at(0)=aChain.xn;
+	  myXY.at(1)=aChain.yn;
 
-		  myPos = myFc->chain.size()+1;
-
-    }
+	  myPos = myFc->chain.size()+1;
 
 	}
+
+      }
 	
 	
+      /**
+       * Constructor.
+       * It is the user's responsability to make sure that the data's are
+       * consistent. No verification is performed.
+       *
+       * Nb: complexity in O(1).
+       *
+       * @param chain a Freeman chain,
+       * @param n the position in [chain] (within 0 and chain.size()).
+       * @param XY the point corresponding to the 'n'-th position of 'chain'.
+       */
+	
+      ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
+	: myFc( &aChain ), myPos( n ), myXY ( XY ) 
+      { 
+      }
+     
+
      
 
       /**
@@ -355,7 +376,7 @@ namespace DGtal
        * @return the associated Freeman chain.
        */
 
-      FreemanChain * 
+      const FreemanChain * 
       getChain() const
       {
 	return myFc;
@@ -412,19 +433,19 @@ namespace DGtal
       {
 
 	if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
-    --myPos;
-		if (myPos < myFc->chain.size()) {
-		  switch ( myFc->code( myPos ) ) {
-		    case 0: (myXY.at(0))--; break;
-		    case 1: (myXY.at(1))--; break;
-		    case 2: (myXY.at(0))++; break;
-		    case 3: (myXY.at(1))++; break;
-		  }
-		}
+	  --myPos;
+	  if (myPos < myFc->chain.size()) {
+	    switch ( myFc->code( myPos ) ) {
+	    case 0: (myXY.at(0))--; break;
+	    case 1: (myXY.at(1))--; break;
+	    case 2: (myXY.at(0))++; break;
+	    case 3: (myXY.at(1))++; break;
+	    }
+	  }
 	}
 
 
-     }
+      }
 	
 
 
@@ -439,10 +460,10 @@ namespace DGtal
 	else --myPos;
 	switch ( myFc->code( myPos ) )
 	  {
-	      case 0: (myXY.at(0))--; break;
-	      case 1: (myXY.at(1))--; break;
-	      case 2: (myXY.at(0))++; break;
-	      case 3: (myXY.at(1))++; break;
+	  case 0: (myXY.at(0))--; break;
+	  case 1: (myXY.at(1))--; break;
+	  case 2: (myXY.at(0))++; break;
+	  case 3: (myXY.at(1))++; break;
 	  }
       }
 
@@ -1255,6 +1276,14 @@ namespace DGtal
 
     /**
      * Constructor.
+     * @param vectorPoints the vector containing all the points. 
+     */
+    FreemanChain( const std::vector<Z2i::Point> vectPoints);
+    
+    
+    
+    /**
+     * Constructor.
      * @param in any input stream,
      */
     FreemanChain(std::istream & in );
@@ -1509,7 +1538,7 @@ namespace DGtal
     {
       typename FreemanChain<TInteger>::ConstIterator it = this->begin();
       typename FreemanChain<TInteger>::ConstIterator it_end = this->end();
-			--it_end;
+      --it_end;
       typename FreemanChain<TInteger>::ConstIterator it_suiv = it;
       PointI2 spos = *it;
       int nb_ccw_turns = 0;
@@ -1585,8 +1614,19 @@ namespace DGtal
        Draw the object on a DGtalBoard board
        @param board the output board where the object is drawn.
     */
-    void selfDraw(DGtalBoard & board ) const;
+    void selfDraw(DGtalBoard & board ) const; 
+    /**
+       Draw the object on a DGtalBoard board
+       @param board the output board where the object is drawn.
+    */
+    void selfDrawAsGrid(DGtalBoard & board ) const;
 
+     
+    /**
+       Draw the object on a DGtalBoard board
+       @param board the output board where the object is drawn.
+    */
+    void selfDrawAsInterGrid(DGtalBoard & board ) const;
     // ------------------------- Public Datas ------------------------------
 
   public:
@@ -1615,6 +1655,9 @@ namespace DGtal
      */
     Integer yn;
 
+    
+
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -1630,19 +1673,19 @@ namespace DGtal
 
     /**
      * Computes the coordinates of the last point
-		 * nb: in O(n)
+     * nb: in O(n)
      */
-	void computeLastPoint() {
+    void computeLastPoint() {
       for ( typename FreemanChain<TInteger>::ConstIterator it = this->begin();
             it != this->end();
             ++it )
         {
-					PointI2 tmp = *it;
-					std::cout << it.get() << " " << it.getPosition() << std::endl;
+	  PointI2 tmp = *it;
+	  //std::cout << it.get() << " " << it.getPosition() << std::endl;
           xn = tmp.at(0);
-					yn = tmp.at(1);
+	  yn = tmp.at(1);
         }
-	}
+    }
 
   private:
 
@@ -1665,10 +1708,30 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
+       	
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(DGtalBoard::Color::None);
-	aBoard.setPenColor(DGtalBoard::Color::Black);
       }
     };
+
+    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+	aBoard.setFillColor(DGtalBoard::Color::None);
+      }
+    };
+
+  struct DefaultDrawStyleInterGrid : public DrawableWithDGtalBoard
+    {
+      virtual void selfDraw( DGtalBoard & aBoard ) const
+      {
+	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+	aBoard.setFillColor(DGtalBoard::Color::None);
+      }
+    };
+
 
 
 

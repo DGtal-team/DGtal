@@ -195,7 +195,7 @@ namespace DGtal
      * @param nb the number of points used to estimate the arclength between x(t1) and x(t2).
      * @return the estimated arclength.
      */
-    double arclength( double t1, double t2, uint nb ) const;
+    double arclength( double t1, double t2, unsigned int nb ) const;
 
 
     // ----------------------- Interface --------------------------------------

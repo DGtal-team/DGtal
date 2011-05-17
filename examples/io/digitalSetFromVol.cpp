@@ -31,10 +31,10 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/kernel/images/ImageSelector.h"
-#include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/3dViewer/DGtalQGLViewer.h"
+#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 

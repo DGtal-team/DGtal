@@ -37,6 +37,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/RealPointVector.h"
+#include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal;
 using namespace std;
@@ -112,7 +113,16 @@ bool testSimplePoint()
   trace.info() << "aPoint = "<< aPoint << endl;
   trace.endBlock();
 
-  return true;
+  trace.beginBlock ( "Assignment from PointVector" );
+  Z2i::Point a(10,10);
+  Z2i::Point aa;
+  RealPointVector<2> realA;
+  aa = a;
+  trace.info() << "aa = "<< aa <<endl;
+  realA = a;
+  trace.info() << "realA = "<< realA <<endl;
+  trace.endBlock();
+  return ((realA[1]==a[1]) && (realA[0]==a[0]));
 }
 
 bool testNorms()

@@ -30,7 +30,7 @@ class Board : public ShapeList {
 public:
   
   // cairo
-  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoSVG };
+  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
   
   enum PageSize { BoundingBox, A4, Letter };
   enum Unit { UPoint, UInche, UCentimeter, UMillimeter };
@@ -59,6 +59,14 @@ public:
    * @param unit The unit to be used in { PT, IN, CM, MM }.
    */
   void setUnit( Unit unit );
+  
+  /** 
+   * Set the unit used by the drawSomething methods.
+   * 
+   * @param factor The factor of the unit.
+   * @param unit The unit to be used in { PT, IN, CM, MM }.
+   */
+  void setUnit( double factor, Unit unit );
   
   /** 
    * Changes the current fill color.

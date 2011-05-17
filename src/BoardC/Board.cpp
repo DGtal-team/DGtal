@@ -95,6 +95,25 @@ Board::setUnit( Unit unit )
   }
 }
 
+void
+Board::setUnit( double factor, Unit unit )
+{
+  switch ( unit ) {
+  case UPoint:
+    _state.unitFactor = factor;
+    break;
+  case UInche:
+    _state.unitFactor = 720.0f * factor; // TODO: strange ??? ---> 25.4f * ppmm * factor ???
+    break;
+  case UCentimeter:
+    _state.unitFactor = 10.0f * ppmm * factor;
+    break;
+  case UMillimeter:
+    _state.unitFactor = ppmm * factor;
+    break;
+  }
+}
+
 Board &
 Board::setFillColorRGBi( unsigned char red,
 			 unsigned char green,
@@ -312,6 +331,9 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
       surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPS:
       surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
+    case CairoEPS:
+      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
+      cairo_ps_surface_set_eps(surface, true); break;
     case CairoSVG:
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPNG:

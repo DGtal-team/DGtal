@@ -35,12 +35,12 @@
 
 
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/io/readers/MagickReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io-viewers/readers/MagickReader.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 #include "DGtal/helpers/StdDefs.h"
 
 

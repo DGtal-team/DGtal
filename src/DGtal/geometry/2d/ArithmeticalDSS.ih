@@ -170,15 +170,15 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator==(
 						(myUl == other.myUl) &&  
 						(myLf == other.myLf) &&  
 						(myLl == other.myLl) && 
-						(myF == other.myF) &&  
-						(myL == other.myL) ) || 
+						(*myF == *other.myF) &&  
+						(*myL == *other.myL) ) || 
 					( (myOmega == other.myOmega) &&
 					  (myUf == other.myLl) && 
 						(myUl == other.myLf) &&  
 						(myLf == other.myUl) &&  
 						(myLl == other.myUf) && 
-						(myF == other.myL) &&  
-						(myL == other.myF) ) );
+						(*myF == *other.myL) &&  
+						(*myL == *other.myF) ) );
 }
 
 /**
@@ -1099,9 +1099,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
   out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
   out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;
   out << "Steps:" <<  endl;
-	for (unsigned int i = 0; i < step.size(); i++) {
-		out << "   " << step.at(i) << endl;
-	}
+  for (unsigned int i = 0; i < step.size(); i++) {
+	  out << "   " << step.at(i) << endl;
+  }
   out << "[End ArithmeticalDSS]" <<  endl;
   
 }
