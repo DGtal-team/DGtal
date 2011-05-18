@@ -21,9 +21,9 @@ IF (DOXYGEN_FOUND)
     MESSAGE(STATUS "dvips command DVIPS_CONVERTER not found but usually required.")
   ENDIF (NOT DVIPS_CONVERTER)
   
-  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in")
-    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in 
+  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
+    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in 
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config
       @ONLY )
     # use (configured) doxy.config from (out of place) BUILD tree:
