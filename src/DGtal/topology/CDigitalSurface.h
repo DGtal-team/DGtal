@@ -53,7 +53,7 @@ namespace DGtal
   /**
    * Description of \b concept '\b CDigitalSurface' <p>
    * @ingroup Concepts
-   * Aim:
+   * Aim: Describes what is a digital surface in cellular topology.
    * 
    * <p> Refinement of
    *
