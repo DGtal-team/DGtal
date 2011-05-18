@@ -213,7 +213,8 @@ struct Exporter
    * Compute and export (std::cout) the boundary of the set and export the signature (normal
    * vector, curvature) at each point of the 2D contour.
    * 
-   * @param aSet input set.
+   * @param aShape the shape
+   * @param aSet input set corresponding to the shape
    * @param aDomain the domain used to construct the set.
    */
   template <typename Shape>
@@ -236,6 +237,8 @@ struct Exporter
     trace.endBlock();
     
     ///Export
+    std::cout<<"## shapeGenerator signature export"<<std::endl;
+    std::cout<<"## shape: "<<aShape<<std::endl;
     std::cout<<"## x\ty\tdx\tdy\tddx\tddy"<<std::endl;
     for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
       for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size() - 1; j++)
