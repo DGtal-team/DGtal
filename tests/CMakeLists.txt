@@ -28,8 +28,13 @@ add_subdirectory(utils)
 add_subdirectory(geometry/2d)
 add_subdirectory(geometry/nd)
 add_subdirectory(topology)
-add_subdirectory(io)
+add_subdirectory(io-viewers)
+add_subdirectory(io-viewers/3dViewers)
+add_subdirectory(io-viewers/colormaps)
+add_subdirectory(io-viewers/readers)
+add_subdirectory(io-viewers/writers)
+
+add_subdirectory(images)
 add_subdirectory(helpers)
 
-add_subdirectory(inventor)
-add_subdirectory(3dViewer)
+
