@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+SET(DGTAL_TESTS_SRC_KERNEL
    testDigitalSet
    testDomainSpanIterator
    testHyperRectDomain
@@ -14,7 +14,7 @@ SET(DGTAL_TESTS_SRC
    )
 
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
+FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
