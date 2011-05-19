@@ -123,7 +123,7 @@ endif( COIN3D_FOUND AND QT4_FOUND AND SOQT_FOUND )
 # Look for QGLViewer for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-find_package(QGLVIEWER)
+#find_package(QGLVIEWER)
 if(QGLVIEWER_FOUND AND QT4_FOUND AND QT_QTOPENGL_FOUND)
   find_package(OpenGL REQUIRED)
   message(STATUS  "(optional) libQGLViewer found.")
