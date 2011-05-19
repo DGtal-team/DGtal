@@ -157,8 +157,9 @@ DGtal::DGtalCairo::getMode( const std::string & objectName ) const
 
 INLINE
 void
-DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width){
-  voxelGL v;
+DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
+{
+  /*voxelGL v;
   if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
   if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
   if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
@@ -176,8 +177,7 @@ DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width){
   v.T=aColor.alpha();
   v.width=width;
   
-  (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
-   
+  (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);*/
 }
 
 
@@ -202,8 +202,9 @@ DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, 
 INLINE
 void
 DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       const QColor & aColor, double width){
-  lineGL l;
+			       const QColor & aColor, double width)
+{
+  /*lineGL l;
   l.x1=x1;
   l.y1=y1;
   l.z1=z1;
@@ -233,8 +234,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
   l.T=aColor.alpha();
   l.width=width;
   
-  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);  
-   
+  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);*/
 }
 
 INLINE
@@ -287,8 +287,9 @@ DGtal::DGtalCairo::addKSSurfel(double x1, double y1, double z1,  double x2, doub
 
 INLINE
 void
-DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
-  if(myClippingPlaneList.size()<5){
+DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
+{
+  /*if(myClippingPlaneList.size()<5){
     clippingPlaneGL cp;
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
     myClippingPlaneList.push_back(cp);
@@ -351,7 +352,7 @@ DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool
   
   }else{
     std::cerr <<"Warning maximal clipping plane added" << endl;
-  }
+  }*/
 }
 
 
@@ -369,8 +370,9 @@ DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size,
 INLINE
 void 
 DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,  
-				  const QColor &aColor){
-  voxelGL v;
+				  const QColor &aColor)
+{
+ /* voxelGL v;
   if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
   if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
   if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
@@ -388,7 +390,7 @@ DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,
   v.T=aColor.alpha();
   v.width=0.47;
   
-  (myVoxelSetList.at(0)).push_back(v);  
+  (myVoxelSetList.at(0)).push_back(v);*/ 
 }
 
 

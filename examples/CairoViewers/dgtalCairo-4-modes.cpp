@@ -29,7 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+//#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -48,9 +48,9 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- QApplication application(argc,argv);
+ //QApplication application(argc,argv);
  DGtalCairo viewer;
- viewer.show();
+ //viewer.show();
 
  
  
@@ -69,10 +69,10 @@ int main( int argc, char** argv )
   
 
  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
- viewer << domain << DGtalCairo::updateDisplay;
+ //viewer << domain << DGtalCairo::updateDisplay;
  
 
- return application.exec();
+ //return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

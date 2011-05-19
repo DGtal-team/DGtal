@@ -44,11 +44,12 @@
 #include <vector>
 #include <algorithm>
 
+#include <map> // MT
 
-#include <QGLViewer/qglviewer.h>
+//#include <QGLViewer/qglviewer.h>
 #include <QColor>
-#include <QGLWidget>
-#include <QKeyEvent>
+//#include <QGLWidget>
+//#include <QKeyEvent>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
@@ -95,7 +96,7 @@ namespace DGtal
  * Description of class 'DGtalCairo' <p>
  * \brief Aim:
  */
-  class DGtalCairo : public QGLViewer
+  class DGtalCairo// : public QGLViewer
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -386,13 +387,13 @@ private:
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
 
-  qglviewer::Vec myBoundingPtUp;
-  qglviewer::Vec myBoundingPtLow;
+  //qglviewer::Vec myBoundingPtUp;
+  //qglviewer::Vec myBoundingPtLow;
 
-  GLuint myListToAff;
+  //GLuint myListToAff;
   unsigned int myNbListe;
-  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
-  QPoint myPosSelector;
+  //qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
+  //QPoint myPosSelector;
   
     // ------------------------- Hidden services ------------------------------
 protected:
@@ -427,16 +428,16 @@ protected:
 
 
   
-  virtual void keyPressEvent(QKeyEvent *e);
+  //virtual void keyPressEvent(QKeyEvent *e);
   
-  struct compFarthestFromCamera{
+  /*struct compFarthestFromCamera{
     qglviewer::Vec posCam;
     bool operator() ( voxelGL s1, voxelGL s2){
       float dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
       float dist2= sqrt((posCam.x-s2.x)*(posCam.x-s2.x)+ (posCam.y-s2.y)*(posCam.y-s2.y)+(posCam.z-s2.z)*(posCam.z-s2.z));
       return dist1>dist2;
-    }  
-  };
+    } 
+  };*/
   
 
 
@@ -446,7 +447,7 @@ protected :
   virtual void draw();
   virtual void init();
   virtual QString helpString() const;
-  virtual void postSelection(const QPoint& point);
+  //virtual void postSelection(const QPoint& point);
   
 
 

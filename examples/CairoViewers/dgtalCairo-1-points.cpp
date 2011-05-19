@@ -29,7 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+//#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -47,7 +47,7 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- QApplication application(argc,argv);
+ //QApplication application(argc,argv);
 
  Point p1( 0, 0, 0 );
  Point p2( 5, 5 ,5 );
@@ -55,12 +55,12 @@ int main( int argc, char** argv )
  Domain domain( p1, p2 );
 
  DGtalCairo viewer;
- viewer.show();
+ //viewer.show();
  viewer << domain;  
  viewer << p1 << p2 << p3;
  
- viewer<< DGtalCairo::updateDisplay;
- return application.exec();
+ //viewer<< DGtalCairo::updateDisplay;
+ //return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

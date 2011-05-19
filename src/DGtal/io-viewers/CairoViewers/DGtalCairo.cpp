@@ -36,7 +36,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-using namespace qglviewer;
+//using namespace qglviewer;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,9 +79,10 @@ DGtal::DGtalCairo::isValid() const
 
 
 void
-DGtal::DGtalCairo::drawWithNames(){   
+DGtal::DGtalCairo::drawWithNames()
+{   
   
-  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
+  /*for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
   for(unsigned int i=0; i<myLineSetList.size(); i++){
@@ -90,7 +91,7 @@ DGtal::DGtalCairo::drawWithNames(){
   
   for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
-  }   
+  }*/
 
 
 }
@@ -99,7 +100,7 @@ DGtal::DGtalCairo::drawWithNames(){
 void
 DGtal::DGtalCairo::draw()
 {
-  glPushMatrix();
+  /*glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
     clippingPlaneGL cp = myClippingPlaneList.at(i);
@@ -169,16 +170,14 @@ DGtal::DGtalCairo::draw()
   }
   for(unsigned int i=0; i< myKSLinelList.size();i++){
     glDrawGLLinel(myKSLinelList.at(i));
-  }
-
-
-
+  }*/
 }
 
 
 
 void
-DGtal::DGtalCairo::init(){
+DGtal::DGtalCairo::init()
+{
   myNbListe=0;
   createNewVoxelList(true);
   vector<lineGL> listeLine;
@@ -187,46 +186,45 @@ DGtal::DGtalCairo::init(){
   myPointSetList.push_back(listePoint);
   myCurrentFillColor = QColor (220, 220, 220);
   myCurrentLineColor = QColor (22, 22, 222, 50);
-  myDefaultBackgroundColor = backgroundColor ();
+  //myDefaultBackgroundColor = backgroundColor (); // TODO
   myIsBackgroundDefault=true;
-  myBoundingPtLow[0]=numeric_limits<double>::max( );
+  /*myBoundingPtLow[0]=numeric_limits<double>::max( );
   myBoundingPtLow[1]=numeric_limits<double>::max( );
   myBoundingPtLow[2]=numeric_limits<double>::max( );
 
   myBoundingPtUp[0]=numeric_limits<double>::min( );
   myBoundingPtUp[1]=numeric_limits<double>::min( );
-  myBoundingPtUp[2]=numeric_limits<double>::min( );
+  myBoundingPtUp[2]=numeric_limits<double>::min( );*/
   createNewVoxelList(true);
   std::vector<voxelGL>  aKSVoxelList;
   
   
   myDefaultColor= QColor(255, 255, 255);
-  camera()->showEntireScene();
+  //camera()->showEntireScene(); // TODO
   
-  setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
+  /*setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
-  setManipulatedFrame(new ManipulatedFrame());  
-
-  
+  setManipulatedFrame(new ManipulatedFrame());*/
 }
 
 
 
 void 
-DGtal::DGtalCairo::sortSurfelFromCamera(){
-  compFarthestFromCamera comp;
+DGtal::DGtalCairo::sortSurfelFromCamera()
+{
+  /*compFarthestFromCamera comp;
   comp.posCam= camera()->position();
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
-  }  
+  }*/
 }
 
 
 
-void 
+/*void 
 DGtal::DGtalCairo::postSelection(const QPoint& point)
 {
   camera()->convertClickToLine(point, myOrig, myDir);
@@ -251,8 +249,7 @@ DGtal::DGtalCairo::postSelection(const QPoint& point)
       
     }
   }
-  
-}
+}*/
 
 
 
@@ -260,7 +257,7 @@ DGtal::DGtalCairo::postSelection(const QPoint& point)
 void
 DGtal::DGtalCairo::updateList(bool updateBoundingBox)
 {
-  unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
+  /*unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
@@ -478,35 +475,37 @@ DGtal::DGtalCairo::updateList(bool updateBoundingBox)
   if( updateBoundingBox){
     setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
     showEntireScene();
-  }  
+  }*/
 }
 
 
 
 
 void
-DGtal::DGtalCairo::glDrawGLLinel(lineGL linel){
-  glPushMatrix();
+DGtal::DGtalCairo::glDrawGLLinel(lineGL linel)
+{
+  /*glPushMatrix();
   glTranslatef(linel.x1, linel.y1, linel.z1);
   Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
   glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
   GLUquadric* quadric = gluNewQuadric();
   glColor4ub(linel.R, linel.G, linel.B, linel.T);
   gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
-  glPopMatrix();  
+  glPopMatrix();*/
 }
 
 
 
 
 void 
-DGtal::DGtalCairo::glDrawGLPointel(pointGL pointel){
- glPushMatrix();
+DGtal::DGtalCairo::glDrawGLPointel(pointGL pointel)
+{
+ /*glPushMatrix();
  glTranslatef(pointel.x, pointel.y, pointel.z);
  GLUquadric* quadric = gluNewQuadric();
  glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
  gluSphere(quadric, pointel.size, 10, 10);
- glPopMatrix();  
+ glPopMatrix();*/
   
 }
   
@@ -514,8 +513,9 @@ DGtal::DGtalCairo::glDrawGLPointel(pointGL pointel){
 
 
 
-void 
-DGtal::DGtalCairo::keyPressEvent(QKeyEvent *e){
+/*void 
+DGtal::DGtalCairo::keyPressEvent(QKeyEvent *e)
+{
   bool handled = false;
   
   if ((e->key()==Qt::Key_T) ){
@@ -545,8 +545,7 @@ DGtal::DGtalCairo::keyPressEvent(QKeyEvent *e){
 
   if (!handled)
     QGLViewer::keyPressEvent(e);
-
-}
+}*/
 
 
 QString 
