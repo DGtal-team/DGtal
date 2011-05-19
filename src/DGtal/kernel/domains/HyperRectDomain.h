@@ -46,6 +46,10 @@
 #include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
+#ifdef WITH_CAIRO
+#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#endif
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
@@ -667,6 +671,26 @@ namespace DGtal
     void selfDrawAsBoundingBox ( DGtalQGLViewer & viewer) const;
 
 #endif
+    
+#ifdef WITH_CAIRO
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawCairo(  DGtalCairo & viewer ) const;
+    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
+    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
+    void selfDrawAsPavingPointsCairo( DGtalCairo & viewer ) const;
+    void selfDrawAsBoundingBoxCairo( DGtalCairo & viewer) const;
+
+#endif
 
 
     
@@ -719,6 +743,32 @@ namespace DGtal
   
   struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
     void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    {
+      viewer.myModes[ "HyperRectDomain" ] = "Grid";
+    }
+  };
+
+
+
+#endif
+  
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+
+#ifdef WITH_CAIRO
+
+  struct DrawPavingVoxel3DCairo : public DrawableWithDGtalCairo {
+      void selfDrawCairo( DGtalCairo & viewer ) const
+      {
+	viewer.myModes[ "HyperRectDomain" ] = "Paving";
+      }
+  };
+  
+  
+  struct DrawGridVoxel3DCairo : public DrawableWithDGtalCairo {
+    void selfDrawCairo( DGtalCairo & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }

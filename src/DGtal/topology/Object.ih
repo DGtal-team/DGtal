@@ -944,6 +944,71 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(DGtalQG
 
 #endif
 
+#ifdef WITH_CAIRO
+
+
+/**
+ * Default drawing style object.
+ * @return the dyn. alloc. default style for this object.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::DrawableWithDGtalCairo *
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleCairo( std::string ) const
+{
+  return new DefaultDrawStyleCairo;
+}
+
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawCairo( DGtalCairo & viewer ) const
+{
+  std::string mode = viewer.getMode( this->styleName() );
+  if ( mode == "" )
+    pointSet().selfDrawCairo( viewer );
+  else if ( mode == "PavingTransp" ){
+    pointSet().selfDrawAsPavingTransparentCairo(viewer);
+    
+  }
+  else if ( mode == "DrawAdjacencies" )
+    {
+      pointSet().selfDrawCairo( viewer );
+      selfDrawWithAdjacenciesCairo( viewer );
+    }
+    else
+      ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
+}
+
+
+
+template<typename TDigitalTopology, typename TDigitalSet>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesCairo(DGtalCairo & viewer) const
+{
+  Point p;
+  for (typename TDigitalSet::ConstIterator it = pointSet().begin();
+      it != pointSet().end();
+      ++it)
+  {
+    //Brute-force scan of the neighborhood.
+    SmallObject neig = this->properNeighborhood(*it);
+    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
+        it2 != neig.pointSet().end();
+        ++it2)
+    {
+      p = (*it2) - (*it);
+      p.selfDrawCairo(viewer, (*it));
+    }
+  }
+}
+
+
+
+
+#endif
 
 
 
