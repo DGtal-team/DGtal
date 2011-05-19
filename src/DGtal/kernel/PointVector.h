@@ -58,6 +58,10 @@
 #include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
+#ifdef WITH_CAIRO
+#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#endif
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -656,6 +660,25 @@ namespace DGtal
     void selfDrawQGL ( DGtalQGLViewer & viewer, const Self &startingPoint ) const;
     void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
     void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+
+#endif
+    
+#ifdef WITH_CAIRO
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawCairo ( DGtalCairo & viewer ) const;
+    void selfDrawCairo ( DGtalCairo & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
+    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
 
 #endif
 

@@ -115,6 +115,27 @@ namespace DGtal
     virtual void selfDraw( DGtalQGLViewer &  ) const {}
   };
 #endif
+  
+#ifdef WITH_CAIRO 
+  class DGtalCairo;
+#endif
+  
+
+#ifdef WITH_CAIRO
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  DGtalCairo
+   * (MT)
+   */
+  struct DrawableWithDGtalCairo {
+    /**
+     * Operation to override. Does nothing by default.
+     *
+     * @param board any object of type Board.
+     */
+    virtual void selfDraw( DGtalCairo &  ) const {}
+  };
+#endif
 
   
 

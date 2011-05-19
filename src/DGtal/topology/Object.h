@@ -53,6 +53,10 @@
 #include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
 #endif
 
+#ifdef WITH_CAIRO
+#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#endif
+
 
 
 namespace DGtal
@@ -562,6 +566,49 @@ namespace DGtal
        * @param board the output board where the object is drawn.
        */
       void selfDrawWithAdjacenciesQGL( DGtalQGLViewer & viewer ) const;
+
+
+    
+
+#endif
+      
+#ifdef WITH_CAIRO
+    
+
+  private:
+       /**
+       * Default style.
+       */
+    struct DefaultDrawStyleCairo : public  DrawableWithDGtalCairo
+    {
+        virtual void selfDrawCairo(DGtalCairo & viewer) const
+        {
+	  viewer.myModes[ "Object" ] = "";
+         }
+      };
+
+  public:
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalCairo * defaultStyleCairo( std::string mode = "" ) const;
+    
+       /**
+       * Draw the object on a DGtalBoard board.
+       * @param board the output board where the object is drawn.
+       */
+      void selfDrawCairo( DGtalCairo & viewer ) const;
+
+
+      template<typename Functor>
+      void selfDrawWithAdjacenciesCairo( DGtalCairo & viewer ) const;
+
+      /**
+       * Draw the object (with Adjacency relationships) on a LiBoard board.
+       * @param board the output board where the object is drawn.
+       */
+      void selfDrawWithAdjacenciesCairo( DGtalCairo & viewer ) const;
 
 
     
