@@ -289,13 +289,15 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
 								   Abscissa t[] ) const
 {
   Abscissa w;
-  Abscissa q = 0;
+  Abscissa q = 0;  //index for the stack "head"
   
   Point sQ = startingPoint;
   Point pU = startingPoint;
 
-  trace.beginBlock("Enter startingPoint=");
-  trace.error()<<startingPoint<<endl;
+  if (startingPoint[1]==-5)
+    trace.beginBlock("Enter startingPointPoint");
+  if (startingPoint[1]==-5)
+    trace.error()<<startingPoint<<endl;
   
   
   // We look for the first point in the 1D column with distance different from
@@ -305,7 +307,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
     pU[dim] ++;
 
 
-  // All points are set to +infinity, we just copy the +infinity value and return
+  // All points are set to +infinity, we just copy the infinity value and return
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
       for(typename OutputImage::SpanIterator it= output.spanBegin(startingPoint,dim), 
@@ -322,6 +324,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
   t[q] = myLowerBoundCopy[dim]; 
 
   //Forward Scan
+  if (startingPoint[1]==-5)
   trace.warning() << "start pU= " << pU << " input(pU)=" << input(pU) << endl;
   
   //We scan all the pixels
@@ -330,18 +333,23 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
       pU[ dim ] = u;
       if ( input( pU ) == myInfinity )
 	{
-	  trace.info() << "Ctd " << pU << endl;
+if (startingPoint[1]==-5)
+  	  trace.info() << "Ctd " << pU << endl;
 	  continue;
 	}
       
+  if (startingPoint[1]==-5)
       trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
-      trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << "q="<<q<< endl;
+  if (startingPoint[1]==-5)
+      trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) 
+		      << " t[q] = " << t[q] << "q="<<q<< endl;
       
       while ( ( q >= 0 ) &&
 	      ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
 		myMetric.F ( t[q], u, input ( pU ) ) ) )
 	{
-	  trace.info() << "Pop q=" << q << endl;
+if (startingPoint[1]==-5)
+  	  trace.info() << "Pop q=" << q << endl;
 	  q--;
 	  ///@todo optimize the test here
 	  if (q>=0)
@@ -363,12 +371,14 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
 				 u,
 				 input ( pU ) );
 	  
-	  if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
+	  if (( w <= myUpperBoundCopy[dim] ) 
+	      && (w>= myLowerBoundCopy[dim]))
 	    {
 	      q++;
 	      s[q] = u;
 	      sQ[dim] = u;
-	      trace.info() << "Push sq=" << sQ << endl;
+if (startingPoint[1]==-5)
+  	      trace.info() << "Push sq=" << sQ << endl;
 	      t[q] = w;
 	    }
 	}
@@ -378,8 +388,10 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
   
   ASSERT(q>=0);
   
+  if (startingPoint[1]==-5)
   trace.error() << "q=" << q << endl;
   sQ[dim] = s[q];
+  if (startingPoint[1]==-5)
   trace.error() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
   
   //Backward Scan
@@ -395,6 +407,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
 	}
     }
 
+  if (startingPoint[1]==-5)
   trace.endBlock();
 }
 
