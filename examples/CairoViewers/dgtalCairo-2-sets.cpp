@@ -64,7 +64,8 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- //viewer << shape_set<< DGtalCairo::updateDisplay; 
+ //viewer << shape_set<< DGtalCairo::updateDisplay;
+ viewer.draw("dgtalCairo-2-sets.png");
  
  //return application.exec();
 }

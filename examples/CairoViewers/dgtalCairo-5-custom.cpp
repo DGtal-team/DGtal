@@ -76,7 +76,7 @@ int main( int argc, char** argv )
 
   viewer << SetMode3DCairo(domain.styleName(), "Paving");
   //viewer << domain << DGtalCairo::updateDisplay;   
-
+  viewer.draw("dgtalCairo-5-custom.png");
 
  //return application.exec();
 }

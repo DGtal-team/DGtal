@@ -60,6 +60,8 @@ int main( int argc, char** argv )
  viewer << p1 << p2 << p3;
  
  //viewer<< DGtalCairo::updateDisplay;
+ viewer.draw("dgtalCairo-1-points.png");
+ 
  //return application.exec();
 }
 //                                                                           //
