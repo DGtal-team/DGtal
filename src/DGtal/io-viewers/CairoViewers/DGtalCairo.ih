@@ -90,6 +90,7 @@ void
 DGtal::DGtalCairo::createNewLineList(){
   std::vector< lineGL > v;
   myLineSetList.push_back(v);
+  //fprintf(stdout, "createNewLineList\n");
 }
 
 
@@ -204,7 +205,7 @@ void
 DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const QColor & aColor, double width)
 {
-  /*lineGL l;
+  lineGL l;
   l.x1=x1;
   l.y1=y1;
   l.z1=z1;
@@ -212,7 +213,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
   l.x2=x2;
   l.y2=y2;
   l.z2=z2;
-  if(x1 <myBoundingPtLow[0])   myBoundingPtLow[0]= x1;
+  /*if(x1 <myBoundingPtLow[0])   myBoundingPtLow[0]= x1;
   if(y1 <myBoundingPtLow[1])   myBoundingPtLow[1]= y1;
   if(z1 <myBoundingPtLow[2])   myBoundingPtLow[2]= z1;
   
@@ -226,7 +227,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
   
   if(x2 >myBoundingPtUp[0])   myBoundingPtUp[0]= x2;
   if(y2 >myBoundingPtUp[1])   myBoundingPtUp[1]= y2;
-  if(z2 >myBoundingPtUp[2])   myBoundingPtUp[2]= z2;
+  if(z2 >myBoundingPtUp[2])   myBoundingPtUp[2]= z2;*/
   
   l.R=aColor.red();
   l.G=aColor.green();
@@ -234,7 +235,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
   l.T=aColor.alpha();
   l.width=width;
   
-  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);*/
+  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);
 }
 
 INLINE

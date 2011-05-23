@@ -100,6 +100,10 @@ namespace DGtal
 {
     // ----------------------- Standard services ------------------------------
 public:
+  DGtalCairo(); // MT
+  void draw(const char * filename); // MT
+  
+  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
 
   enum StreamKey {addNewList, updateDisplay};
   
@@ -444,7 +448,7 @@ protected:
 
 protected :
   virtual void drawWithNames();
-  virtual void draw();
+  //virtual void draw(); // MT
   virtual void init();
   virtual QString helpString() const;
   //virtual void postSelection(const QPoint& point);
