@@ -70,8 +70,8 @@ int main( int argc, char** argv )
 
  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
  //viewer << domain << DGtalCairo::updateDisplay;
+ viewer.draw("dgtalCairo-4-modes.png");
  
-
  //return application.exec();
 }
 //                                                                           //

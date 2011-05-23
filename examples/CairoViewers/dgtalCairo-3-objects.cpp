@@ -73,6 +73,8 @@ int main( int argc, char** argv )
  //viewer << shape2;
  
  //viewer<< DGtalCairo::updateDisplay;
+ viewer.draw("dgtalCairo-3-objects.png");
+ 
  //return application.exec();
 }
 //                                                                           //
