@@ -56,13 +56,13 @@ int main( int argc, char** argv )
   DGtalQGLViewer viewer;  
   viewer.show();
   viewer << SetMode3D( domain.styleName(), "Paving" );
-  viewer << domain; 
+  //viewer << domain; 
 
   Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
   Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)
   Cell ptup2 = K.uTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
 
-  viewer << ptlow << ptup1 << ptup2; 
+  //  viewer << ptlow << ptup1 << ptup2; 
   
   // drawing cells of dimension 0
   Cell p1= K.uCell(Point(0,0,2));  // pointel (0,0,2)
@@ -73,7 +73,7 @@ int main( int argc, char** argv )
   Cell p6= K.uCell(Point(0,2,4));
   Cell p7= K.uCell(Point(2,2,4));
   Cell p8= K.uCell(Point(2,0,4));
-  viewer << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8;
+  //viewer << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8;
   
   // drawing Cells of dimension 1
   Cell linel0 = K.uCell( Point( 1, 0, 2 ) ); // linel (2, 0, 2)
@@ -94,9 +94,9 @@ int main( int argc, char** argv )
   
   Cell linel12 = K.uCell( Point( 3, 2, 2 ) );
   
-  viewer << linel0<< linel1<< linel2 << linel3 ;
-  viewer << linel4<< linel5<< linel6 << linel7 ;
-  viewer << linel8<< linel9<< linel10 << linel11 << linel12;
+//   viewer << linel0<< linel1<< linel2 << linel3 ;
+//   viewer << linel4<< linel5<< linel6 << linel7 ;
+//   viewer << linel8<< linel9<< linel10 << linel11 << linel12;
  
   // drawing cells of dimension 2
   Cell surfelA = K.uCell( Point( 2, 1, 3 ) ); // surfel (2,1,3)
@@ -107,7 +107,7 @@ int main( int argc, char** argv )
   // drawing cells of dimension 3  
   Cell vox1 = K.uCell( Point( 3, 3, 3 ) ); // voxel (3,3,3)
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (1,1,3) 
-  viewer << vox1 << vox2;
+  // viewer << vox1 << vox2;
   
   viewer<< DGtalQGLViewer::updateDisplay;
   return application.exec();
