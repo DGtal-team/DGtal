@@ -207,7 +207,6 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   // pointel
   switch (spaceDim) {
   case 0:
-    cerr << "drawing Cell" << endl;
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
@@ -255,20 +254,43 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
   bool zodd = ( myCoordinates[ 2 ] & 1 );
+    
+  float dx = xodd ? 1.0f  : 0.0f;
+  float dy = yodd ? 1.0f  : 0.0f;
+  float dz = zodd ? 1.0f  : 0.0f;
+  float retract=0.05;
   
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  
   // pointel
   switch (spaceDim) {
-
+    
   case 0:
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
-    //viewer.addKSLinel(x-0.5, y-0.5, z-0.5);
+    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
+    if(dz==0)
+      viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
+			 x-0.5+retract, y+0.5-retract, z-0.5,
+			 x+0.5-retract, y+0.5-retract, z-0.5,
+			 x+0.5-retract, y-0.5+retract, z-0.5 );    
+    else if(dy==0)
+      viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
+			 x-0.5+retract, y-0.5, z+0.5-retract,
+			 x+0.5-retract, y-0.5, z+0.5-retract,
+			 x+0.5-retract, y-0.5, z-0.5+retract);
+    else if(dx==0)
+      viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
+			 x-0.5, y+0.5-retract, z-0.5+retract,
+			 x-0.5, y+0.5-retract, z+0.5-retract,
+			 x-0.5, y-0.5+retract, z+0.5-retract);    
     break;
+  case 3:
+    viewer.addKSVoxel((int)x, (int) y, (int) z);
+    
+    break; 
   }  
 }
 
