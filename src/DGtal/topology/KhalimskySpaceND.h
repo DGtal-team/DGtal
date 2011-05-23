@@ -124,6 +124,10 @@ namespace DGtal
     */
     bool operator<( const KhalimskyCell & other ) const;
 
+
+    
+    
+
     /**
      * Default style.
      */
@@ -153,10 +157,30 @@ namespace DGtal
     struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
       virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
-	//aBoard.setPenColor(DGtalBoard::Color::Black);
-	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	bool xodd = ( myCoordinates[ 0 ] & 1 );
+	bool yodd = ( myCoordinates[ 1 ] & 1 );
+	bool zodd = ( myCoordinates[ 2 ] & 1 );	
+	float dx = xodd ? 1.0f  : 0.0f;
+	float dy = yodd ? 1.0f  : 0.0f;
+	float dz = zodd ? 1.0f  : 0.0f;
+	float retract=0.05;
+	uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+	switch spaceDim{
+	  case 0:
+	    viewer.setFillColor(QColor(200, 20, 20, 255));
+	    break;
+	  case 1:
+	    viewer.setFillColor(QColor(20, 20, 200, 255));
+	    break;
+	  case 2:
+	    viewer.setFillColor(QColor(180, 180, 250, 255));
+	    break;
+	  case 3:
+	    viewer.setFillColor(QColor(255, 180, 250, 255));
+	    break;
+	  
+	  }
       }
-    };
   
 
 #endif

@@ -246,7 +246,7 @@ DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, doub
 INLINE
 void
 DGtal::DGtalQGLViewer::addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
-				   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
+				   double x3, double y3, double z3,  double x4, double y4, double z4){
   quadGL aQuad;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
@@ -257,10 +257,10 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x1, double y1, double z1,  double x2, 
   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
   aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
   aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
-  aQuad.R=aColor.red();
-  aQuad.G=aColor.green();
-  aQuad.B=aColor.blue();
-  aQuad.T=aColor.alpha();
+  aQuad.R=myCurrentFillColor.red();
+  aQuad.G=myCurrentFillColor.green();
+  aQuad.B=myCurrentFillColor.blue();
+  aQuad.T=myCurrentFillColor.alpha();
   
   myKSSurfelList.push_back(aQuad);  
 }
@@ -350,29 +350,30 @@ DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, 
 
 INLINE
 void 
-DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size, 
-				    const QColor &color){
+DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size){
   pointGL pt;
   updateBoundingBox(x, y, z);
-  pt.x=x; pt.y=y; pt.z=z; pt.size=size; pt.R=color.red();
-  pt.G=color.green(); pt.B=color.blue(); pt.T=color.alpha();
+  pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
+  pt.R=myCurrentFillColor.red();
+  pt.G=myCurrentFillColor.green(); 
+  pt.B=myCurrentFillColor.blue(); 
+  pt.T= myCurrentFillColor.alpha();
   myKSPointelList.push_back(pt);
 }
 
+
 INLINE
 void 
-DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z,  
-				  const QColor &aColor){
+DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z){
   voxelGL v;
   updateBoundingBox(x, y, z);
-    
   v.x=x;
   v.y=y;
   v.z=z;
-  v.R=aColor.red();
-  v.G=aColor.green();
-  v.B=aColor.blue();
-  v.T=aColor.alpha();
+  v.R=myCurrentFillColor.red();
+  v.G=myCurrentFillColor.green();
+  v.B=myCurrentFillColor.blue();
+  v.T=myCurrentFillColor.alpha();
   v.width=0.47;
   
   (myVoxelSetList.at(0)).push_back(v);  
@@ -384,12 +385,16 @@ INLINE
 void
 DGtal::DGtalQGLViewer::addKSLinel(double x1, double y1, double z1,
 				  double x2, double y2, double z2,
-				  double width, const QColor &color){
+				  double width){
   lineGL l;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2; 
-  l.width=width; l.R= color.red(); l.G= color.green(); l.B=color.blue(); l.T=color.alpha();
+  l.width=width; 
+  l.R= myCurrentFillColor.red(); 
+  l.G= myCurrentFillColor.green(); 
+  l.B=myCurrentFillColor.blue(); 
+  l.T=myCurrentFillColor.alpha();
   myKSLinelList.push_back(l);
 }
 
@@ -420,7 +425,7 @@ DGtal::DGtalQGLViewer::updateBoundingBox(int x, int y, int z){
 INLINE
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const DGtalQGLViewer & object )
+		    const DGtalQGLViewer & object )
 {
     object.selfDisplay ( out );
     return out;
