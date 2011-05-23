@@ -33,6 +33,14 @@
 #if !defined(INLINE)
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.ih"
 #endif
+
+// cairo
+#include <cairo.h>
+#include <cairo-pdf.h>
+#include <cairo-ps.h>
+#include <cairo-svg.h>
+// cairo
+#include "Matrix.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,7 +53,10 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
-
+DGtalCairo::DGtalCairo() // MT
+{
+  init();
+}
 
 
 
@@ -96,9 +107,8 @@ DGtal::DGtalCairo::drawWithNames()
 
 }
 
-
 void
-DGtal::DGtalCairo::draw()
+DGtal::DGtalCairo::draw(const char * filename)
 {
   /*glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
@@ -116,13 +126,106 @@ DGtal::DGtalCairo::draw()
   
   for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
-  }   
+  }*/ 
  
-  for(unsigned int i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+1+i);
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  
+  int cairoWidth, cairoHeight;
+  CairoType type;
+  
+  cairoWidth = 1024;
+  cairoHeight = 768;
+  type = CairoPNG;
+  
+    // http://iphone-3d-programming.labs.oreilly.com/apa.html
+    // http://www.siteduzero.com/tutoriel-3-421560-bienvenue-dans-la-troisieme-dimension-partie-1-2.html
+    // http://www.siteduzero.com/tutoriel-3-439135-bienvenue-dans-la-troisieme-dimension-partie-2-2.html
+    float zoom=60.; // temp
+		  
+    float angle=70.;
+    float ratio=(float)cairoWidth/cairoHeight;
+    float near=1.;
+    float far=100.;
+    mat4 mp;
+    float f = 1 / tan((angle / 2) * M_PI / 180);
+    mp.x.x = f / ratio;				// pos: 0
+    mp.y.y = f;					// pos: 5
+    mp.z.z = (near + far) / (near - far);	// pos: 10
+    mp.z.w = (2 * near * far) / (near - far);	// pos: 11
+    mp.w.z = -1;				// pos: 14
+    
+    vec3 eye(10., 10., 10.);
+    vec3 target(2.5, 2.5, 2.5);
+    vec3 up(0., 1., 0.);
+    mat4 mv = mv.LookAt(eye, target, up);
+    
+    //mat4 m = mp*mv;
+    mat4 m = mv*mp;
+  
+  switch (type)
+  {
+    case CairoPDF:
+      surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
+    case CairoPS:
+      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
+    case CairoEPS:
+      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
+      cairo_ps_surface_set_eps(surface, true); break;
+    case CairoSVG:
+      surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
+    case CairoPNG:
+    default:
+      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cairoWidth, cairoHeight);
   }
   
-  glCallList(myListToAff+myVoxelSetList.size());
+  cr = cairo_create (surface);
+  
+  // Draw the shapes.
+  for(unsigned int i=0; i<myLineSetList.size(); i++)
+  {
+    //glCallList(myListToAff+myVoxelSetList.size()+1+i);
+    fprintf(stdout, " -> LineSetList\n");
+    for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
+	 s_it != myLineSetList.at(i).end();
+	 ++s_it)
+	{
+	  //fprintf(stdout, " -------> Line\n");
+	  {
+	      cairo_save (cr);
+	      
+		//cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
+		
+		vec4 p1_3d((*s_it).x1, (*s_it).y1, (*s_it).z1, 1.);
+		vec4 p2_3d((*s_it).x2, (*s_it).y2, (*s_it).z2, 1.);
+		vec4 p1_2d = m*p1_3d;
+		vec4 p2_2d = m*p2_3d;
+		
+		cairo_move_to (cr, (cairoWidth>>1)+p1_2d.x*zoom, (cairoHeight>>1)+p1_2d.y*zoom);
+		cairo_line_to (cr, (cairoWidth>>1)+p2_2d.x*zoom, (cairoHeight>>1)+p2_2d.y*zoom);
+		
+		cairo_set_line_width (cr, (*s_it).width);
+		//cairo_set_line_width (cr, _lineWidth);
+		
+		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+		//setCairoDashStyle (cr, _lineStyle);
+
+		cairo_stroke (cr);
+	      
+	      cairo_restore (cr);
+	  }
+	}
+  }
+  
+  if (type==CairoPNG)
+    cairo_surface_write_to_png (surface, filename);
+      
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+  
+  /*glCallList(myListToAff+myVoxelSetList.size());
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
