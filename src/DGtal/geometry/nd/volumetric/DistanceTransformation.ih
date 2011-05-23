@@ -294,9 +294,9 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
   Point sQ = startingPoint;
   Point pU = startingPoint;
 
-  if (startingPoint[1]==-5)
+  if (startingPoint[0] == -5)
     trace.beginBlock("Enter startingPointPoint");
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
     trace.error()<<startingPoint<<endl;
   
   
@@ -324,7 +324,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
   t[q] = myLowerBoundCopy[dim]; 
 
   //Forward Scan
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
   trace.warning() << "start pU= " << pU << " input(pU)=" << input(pU) << endl;
   
   //We scan all the pixels
@@ -333,14 +333,14 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputI
       pU[ dim ] = u;
       if ( input( pU ) == myInfinity )
 	{
-if (startingPoint[1]==-5)
+if (startingPoint[0]==-5)
   	  trace.info() << "Ctd " << pU << endl;
 	  continue;
 	}
       
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
       trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
       trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) 
 		      << " t[q] = " << t[q] << "q="<<q<< endl;
       
@@ -348,7 +348,7 @@ if (startingPoint[1]==-5)
 	      ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
 		myMetric.F ( t[q], u, input ( pU ) ) ) )
 	{
-if (startingPoint[1]==-5)
+if (startingPoint[0]==-5)
   	  trace.info() << "Pop q=" << q << endl;
 	  q--;
 	  ///@todo optimize the test here
@@ -377,7 +377,7 @@ if (startingPoint[1]==-5)
 	      q++;
 	      s[q] = u;
 	      sQ[dim] = u;
-if (startingPoint[1]==-5)
+if (startingPoint[0]==-5)
   	      trace.info() << "Push sq=" << sQ << endl;
 	      t[q] = w;
 	    }
@@ -388,10 +388,10 @@ if (startingPoint[1]==-5)
   
   ASSERT(q>=0);
   
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
   trace.error() << "q=" << q << endl;
   sQ[dim] = s[q];
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
   trace.error() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
   
   //Backward Scan
@@ -407,7 +407,7 @@ if (startingPoint[1]==-5)
 	}
     }
 
-  if (startingPoint[1]==-5)
+  if (startingPoint[0]==-5)
   trace.endBlock();
 }
 
