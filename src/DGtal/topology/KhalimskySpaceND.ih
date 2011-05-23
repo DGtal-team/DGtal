@@ -203,10 +203,10 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   float retract=0.05;
   
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  
+  QColor fillColorSave = viewer.getFillColor();
   // pointel
   switch (spaceDim) {
-  case 0:
+  case 0:  
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
@@ -214,26 +214,26 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
     break;
   case 2:
     if(dz==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
-			 x-0.5+retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y-0.5+retract, z-0.5 );    
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5, 
+			 x-0.5, y+0.5, z-0.5,
+			 x+0.5, y+0.5, z-0.5,
+			 x+0.5, y-0.5, z-0.5 );    
     else if(dy==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
-			 x-0.5+retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z-0.5+retract);
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
+			 x-0.5, y-0.5, z+0.5,
+			 x+0.5, y-0.5, z+0.5,
+			 x+0.5, y-0.5, z-0.5);
     else if(dx==0)
-      viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z+0.5-retract,
-			 x-0.5, y-0.5+retract, z+0.5-retract);    
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
+			 x-0.5, y+0.5, z-0.5,
+			 x-0.5, y+0.5, z+0.5,
+			 x-0.5, y-0.5, z+0.5);    
     break;
   case 3:
     viewer.addKSVoxel((int)x, (int) y, (int) z);
     
     break; 
-  }  
+  } 
 }
 
 
@@ -271,22 +271,22 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
     viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    if(dz==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
-			 x-0.5+retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y-0.5+retract, z-0.5 );    
+     if(dz==0)
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5, 
+			 x-0.5, y+0.5, z-0.5,
+			 x+0.5, y+0.5, z-0.5,
+			 x+0.5, y-0.5, z-0.5 );    
     else if(dy==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
-			 x-0.5+retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z-0.5+retract);
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
+			 x-0.5, y-0.5, z+0.5,
+			 x+0.5, y-0.5, z+0.5,
+			 x+0.5, y-0.5, z-0.5);
     else if(dx==0)
-      viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z+0.5-retract,
-			 x-0.5, y-0.5+retract, z+0.5-retract);    
-    break;
+      viewer.addKSSurfel(x-0.5, y-0.5, z-0.5,
+			 x-0.5, y+0.5, z-0.5,
+			 x-0.5, y+0.5, z+0.5,
+			 x-0.5, y-0.5, z+0.5);    
+     break;
   case 3:
     viewer.addKSVoxel((int)x, (int) y, (int) z);
     

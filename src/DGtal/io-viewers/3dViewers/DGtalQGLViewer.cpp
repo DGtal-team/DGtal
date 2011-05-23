@@ -222,7 +222,13 @@ DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }  
+  compFarthestSurfelFromCamera compSurf;
+  std::cerr << "sort surfel size" << myKSSurfelList.size()<< endl;
+  sort(myKSSurfelList.begin(), myKSSurfelList.end(), compSurf);
+  
 }
+
+
 
 
 
@@ -336,9 +342,9 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-
   glBegin(GL_QUADS);
-    for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+  float retract=0.05;
+  for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){
       
@@ -351,14 +357,20 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
       double dx, dy, dz;
       if(x1==x2 && x2==x3 && x1==x4){
 	dx=0.03;
-    }else dx=0;
-    if(y1==y2 && y2==y3 && y1==y4){
-      dy=0.03;
-    }else dy=0;
-    if(z1==z2 && z2==z3 && z1==z4){
-      dz=0.03;
-    }else dz=0;
-    
+	y1+=retract; y2-=retract; y3-=retract; y4+=retract;
+	z1+=retract; z2+=retract; z3-=retract; z4-=retract;
+      }else dx=0;
+      if(y1==y2 && y2==y3 && y1==y4){
+	x1+=retract; x2+=retract; x3-=retract; x4-=retract;
+	z1+=retract; z2-=retract; z3-=retract; z4+=retract;
+	dy=0.03;
+      }else dy=0;
+      if(z1==z2 && z2==z3 && z1==z4){
+	dz=0.03;
+	y1+=retract; y2-=retract; y3-=retract; y4+=retract;
+	x1+=retract; x2+=retract; x3-=retract; x4-=retract;
+      }else dz=0;
+      
     //main up face
     Vec normaleUp( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
     glNormal3f( normaleUp[0], normaleUp[1], normaleUp[2]);
@@ -520,7 +532,7 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
   
   if ((e->key()==Qt::Key_T) ){
     handled=true;
-    cerr << "sorting surfel according camera position...";
+    cerr << "sorting surfel according camera position....";
     sortSurfelFromCamera();
     cerr << " [done]"<< endl;
     updateList();    
