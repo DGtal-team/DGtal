@@ -124,10 +124,6 @@ namespace DGtal
     */
     bool operator<( const KhalimskyCell & other ) const;
 
-
-    
-    
-
     /**
      * Default style.
      */
@@ -147,6 +143,17 @@ namespace DGtal
 #ifdef WITH_VISU3D_QGLVIEWER
 
      /**
+      * Default drawing style object.
+      * @return the dyn. alloc. default style for this object.
+      */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    
+    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+    
+    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
+      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+      {
+	  /**
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
       */
@@ -181,7 +188,12 @@ namespace DGtal
 	  
 	  }
       }
-  
+      
+      //aBoard.setPenColor(DGtalBoard::Color::Black);
+      //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+    };
+      
+      
 
 #endif
 
@@ -205,19 +217,19 @@ namespace DGtal
      */
     void selfDraw( DGtalBoard & board ) const;
 
-  }; 
-
-  template < Dimension dim,
-	     typename TInteger >
-  std::ostream & 
-  operator<<( std::ostream & out, 
-	      const KhalimskyCell< dim, TInteger > & object );
-
-  /**
-     Represents a signed cell in a cellular grid space by its
-     Khalimsky coordinates and a boolean value.
-   */
-  template < Dimension dim,
+    }; 
+    
+    template < Dimension dim,
+	       typename TInteger >
+    std::ostream & 
+    operator<<( std::ostream & out, 
+		const KhalimskyCell< dim, TInteger > & object );
+    
+    /**
+       Represents a signed cell in a cellular grid space by its
+       Khalimsky coordinates and a boolean value.
+    */
+    template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
@@ -1622,3 +1634,6 @@ namespace DGtal
 
 #undef KhalimskySpaceND_RECURSES
 #endif // else defined(KhalimskySpaceND_RECURSES)
+
+
+
