@@ -22,10 +22,8 @@ include(Board/ModuleSRC.txt)
 # The extension is already found. Any number of sources could be listed here.
 
 add_library ( ${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
-set_target_properties( ${LIBDGTAL_NAME} PROPERTIES PUBLIC_HEADER FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h") 
-
-
 target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+#set_target_properties( ${LIBDGTAL_NAME} PROPERTIES PUBLIC_HEADER FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h") 
 
 #install(TARGETS ${LIBDGTAL_NAME}
 #  EXPORT DGtalLibraryDepends
@@ -39,24 +37,26 @@ install(TARGETS ${LIBDGTAL_NAME}
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-  PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
-
+###--- Headers installm
+install(DIRECTORY . DESTINATION "${INSTALL_INCLUDE_DIR}/"
+  FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h")
 
 if ( WITH_VISU3D )
-    include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)
-    add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
-    target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
-   
-install(TARGETS ${LIBDGTALVISU3D_NAME}
-  # IMPORTANT: Add the foo library to the "export-set"
-  EXPORT DGtalLibraryDepends
-  RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-  PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
-  COMPONENT dev)
-
+  include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)
+  add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
+  target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
+  
+  install(TARGETS ${LIBDGTALVISU3D_NAME}
+    # IMPORTANT: Add the foo library to the "export-set"
+    EXPORT DGtalLibraryDepends
+    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+    COMPONENT dev)
+  
 endif( WITH_VISU3D )
 
 

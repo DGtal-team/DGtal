@@ -1,20 +1,4 @@
 
-# Offer the user the choice of overriding the installation directories
-set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH
-  "Installation directory for header files")
-set(INSTALL_DATA_DIR share CACHE PATH
-  "Installation directory for data files")
- 
-# Make relative paths absolute (needed later on)
-foreach(p LIB BIN INCLUDE DATA)
-  set(var INSTALL_${p}_DIR)
-  if(NOT IS_ABSOLUTE "${${var}}")
-    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-  endif()
-endforeach()
-
 
 export(TARGETS ${LIBDGTAL_NAME} ${LIBDGTALVISU3D_NAME} FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
  
