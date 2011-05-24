@@ -249,6 +249,26 @@ struct Matrix4 {
         
         return m;
     }
+    static Matrix4<T> LookAtMt(const Vector3<T>& eye,
+                             const Vector3<T>& dir,
+                             const Vector3<T>& up)
+    {
+        Vector3<T> z = (-dir).Normalized();
+        Vector3<T> x = up.Cross(z).Normalized();
+        Vector3<T> y = z.Cross(x).Normalized();
+        
+        Matrix4<T> m;
+        m.x = Vector4<T>(x, 0);
+        m.y = Vector4<T>(y, 0);
+        m.z = Vector4<T>(z, 0);
+        m.w = Vector4<T>(0, 0, 0, 1);
+        
+        Vector4<T> eyePrime = m * Vector4<T>(-eye, 1);
+        m = m.Transposed();
+        m.w = eyePrime;
+        
+        return m;
+    }
     vec4 x;
     vec4 y;
     vec4 z;
