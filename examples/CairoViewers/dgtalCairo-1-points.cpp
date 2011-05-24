@@ -56,11 +56,16 @@ int main( int argc, char** argv )
 
  DGtalCairo viewer;
  //viewer.show();
+ 
  viewer << domain;  
  viewer << p1 << p2 << p3;
  
  //viewer<< DGtalCairo::updateDisplay;
- viewer.draw("dgtalCairo-1-points.png");
+ viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
+ viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+ viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+ //viewer.setNearFar(4.578200, 22.578199);
+ viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 1200, 800);
  
  //return application.exec();
 }
