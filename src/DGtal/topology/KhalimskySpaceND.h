@@ -150,51 +150,21 @@ namespace DGtal
     
     void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
     
+
     struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
       virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
-	  /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
-    
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    
-    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
-      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
-      {
-	bool xodd = ( myCoordinates[ 0 ] & 1 );
-	bool yodd = ( myCoordinates[ 1 ] & 1 );
-	bool zodd = ( myCoordinates[ 2 ] & 1 );	
-	float dx = xodd ? 1.0f  : 0.0f;
-	float dy = yodd ? 1.0f  : 0.0f;
-	float dz = zodd ? 1.0f  : 0.0f;
-	float retract=0.05;
-	uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-	switch spaceDim{
-	  case 0:
-	    viewer.setFillColor(QColor(200, 20, 20, 255));
-	    break;
-	  case 1:
-	    viewer.setFillColor(QColor(20, 20, 200, 255));
-	    break;
-	  case 2:
-	    viewer.setFillColor(QColor(180, 180, 250, 255));
-	    break;
-	  case 3:
-	    viewer.setFillColor(QColor(255, 180, 250, 255));
-	    break;
-	  
-	  }
+
+	//aBoard.setPenColor(DGtalBoard::Color::Black);
+      //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
       }
       
-      //aBoard.setPenColor(DGtalBoard::Color::Black);
-      //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
-    };
-      
-      
 
+    };
+
+
+
+    
 #endif
 
     // --------------- CDrawableWithDGtalBoard realization -------------------
@@ -217,19 +187,19 @@ namespace DGtal
      */
     void selfDraw( DGtalBoard & board ) const;
 
-    }; 
-    
-    template < Dimension dim,
-	       typename TInteger >
-    std::ostream & 
-    operator<<( std::ostream & out, 
-		const KhalimskyCell< dim, TInteger > & object );
-    
-    /**
-       Represents a signed cell in a cellular grid space by its
-       Khalimsky coordinates and a boolean value.
-    */
-    template < Dimension dim,
+  }; 
+
+  template < Dimension dim,
+	     typename TInteger >
+  std::ostream & 
+  operator<<( std::ostream & out, 
+	      const KhalimskyCell< dim, TInteger > & object );
+
+  /**
+     Represents a signed cell in a cellular grid space by its
+     Khalimsky coordinates and a boolean value.
+   */
+  template < Dimension dim,
 	     typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
@@ -1634,6 +1604,3 @@ namespace DGtal
 
 #undef KhalimskySpaceND_RECURSES
 #endif // else defined(KhalimskySpaceND_RECURSES)
-
-
-
