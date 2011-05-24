@@ -80,6 +80,21 @@ bool testComparison()
 }
 
 
+bool testNormalise()
+{
+  RealPointVector<3> v(4.0,4.0,4.0);
+ 
+  trace.beginBlock("Normalization test");
+  
+  trace.info() << "Before: "<<v<<std::endl;
+  v.normalize();
+  trace.info() << "After: "<<v<<std::endl; 
+  v = RealPointVector<3>(16,0,0);
+  v.normalize();
+  trace.endBlock();
+  return (v==RealPointVector<3>(1,0,0));  
+}
+
 
 /**
  * Test instanciation of Points
@@ -222,7 +237,8 @@ int main()
     && testNorms()  
     && testIterator() 
     && testComparison() 
-    && testOperators();
+    && testOperators()
+    && testNormalise();
   if (res)
     return 0;
   else
