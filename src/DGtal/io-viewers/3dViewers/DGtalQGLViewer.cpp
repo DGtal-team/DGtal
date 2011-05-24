@@ -540,6 +540,121 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
     restoreStateFromFile();
     updateGL();
   }
+  if( (e->key()==Qt::Key_M)) // MT
+  {
+	Vec point;
+	
+        GLint    Viewport[4];
+        GLdouble Projection[16], Modelview[16]; 
+        GLdouble matrix[16];
+
+        // Precomputation begin
+        glGetIntegerv(GL_VIEWPORT         , Viewport);
+        glGetDoublev (GL_MODELVIEW_MATRIX , Modelview);
+        glGetDoublev (GL_PROJECTION_MATRIX, Projection); 
+
+        for (unsigned short m=0; m<4; ++m)
+        {
+                for (unsigned short l=0; l<4; ++l)
+                {
+                        double sum = 0.0;
+                        for (unsigned short k=0; k<4; ++k)
+                                sum += Projection[l+4*k]*Modelview[k+4*m];
+                        matrix[l+4*m] = sum;
+                }
+        }
+        // Precomputation end
+        
+        // print
+        fprintf(stdout, "Viewport:\n");
+	for (unsigned short l=0; l<4; ++l)
+	{
+		fprintf(stdout, "%d, ", Viewport[l]);
+	}
+	fprintf(stdout, "\n\n");
+	
+	Vec cp = camera()->position();
+	Vec cd = camera()->viewDirection();
+	Vec cup = camera()->upVector();
+	
+	fprintf(stdout, "camera.position:\n");
+	for (unsigned short l=0; l<3; ++l)
+	{
+		fprintf(stdout, "%lf, ", cp[l]);
+	}
+	fprintf(stdout, "\n\n");
+	
+	fprintf(stdout, "camera.direction:\n");
+	for (unsigned short l=0; l<3; ++l)
+	{
+		fprintf(stdout, "%lf, ", cd[l]);
+	}
+	fprintf(stdout, "\n\n");
+	
+	fprintf(stdout, "camera.upVector:\n");
+	for (unsigned short l=0; l<3; ++l)
+	{
+		fprintf(stdout, "%lf, ", cup[l]);
+	}
+	fprintf(stdout, "\n\n");
+	
+        fprintf(stdout, "Modelview:\n");
+        for (unsigned short m=0; m<4; ++m)
+        {
+                for (unsigned short l=0; l<4; ++l)
+                {
+			fprintf(stdout, "%2.2lf, ", Modelview[l+4*m]);
+                }
+                fprintf(stdout, "\n");
+        }
+        fprintf(stdout, "\n");
+	
+	fprintf(stdout, "zNear: %lf - zFar: %lf\n\n, ", camera()->zNear(), camera()->zFar());
+	
+	fprintf(stdout, "Projection:\n");
+        for (unsigned short m=0; m<4; ++m)
+        {
+                for (unsigned short l=0; l<4; ++l)
+                {
+			fprintf(stdout, "%2.2lf, ", Projection[l+4*m]);
+                }
+                fprintf(stdout, "\n");
+        }
+        fprintf(stdout, "\n");
+	
+	fprintf(stdout, "matrix:\n");
+        for (unsigned short m=0; m<4; ++m)
+        {
+                for (unsigned short l=0; l<4; ++l)
+                {
+			fprintf(stdout, "%2.2lf, ", matrix[l+4*m]);
+                }
+                fprintf(stdout, "\n");
+        }
+        fprintf(stdout, "\n");
+        // print
+                
+        GLdouble v[4], vs[4];
+        v[0]=point[0]; v[1]=point[1]; v[2]=point[2]; v[3]=1.0;
+
+        vs[0]=matrix[0 ]*v[0] + matrix[4 ]*v[1] + matrix[8 ]*v[2] + matrix[12 ]*v[3];
+        vs[1]=matrix[1 ]*v[0] + matrix[5 ]*v[1] + matrix[9 ]*v[2] + matrix[13 ]*v[3];
+        vs[2]=matrix[2 ]*v[0] + matrix[6 ]*v[1] + matrix[10]*v[2] + matrix[14 ]*v[3];
+        vs[3]=matrix[3 ]*v[0] + matrix[7 ]*v[1] + matrix[11]*v[2] + matrix[15 ]*v[3];
+
+        vs[0] /= vs[3];
+        vs[1] /= vs[3];
+        vs[2] /= vs[3];
+
+        vs[0] = vs[0] * 0.5 + 0.5;
+        vs[1] = vs[1] * 0.5 + 0.5;
+        vs[2] = vs[2] * 0.5 + 0.5;
+
+        vs[0] = vs[0] * Viewport[2] + Viewport[0];
+        vs[1] = vs[1] * Viewport[3] + Viewport[1];
+
+        //return Vec(vs[0], Viewport[3]-vs[1], vs[2]);    
+  }
 
   
 

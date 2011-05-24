@@ -107,6 +107,117 @@ DGtal::DGtalCairo::drawWithNames()
 
 }
 
+// http://www.libqglviewer.com/refManual/classqglviewer_1_1Camera.html#ac4dc649d17bd2ae8664a7f4fdd50360f
+// http://www.songho.ca/opengl/gl_projectionmatrix.html
+void project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+{
+      //GLint    Viewport[4];
+      //GLdouble Projection[16], Modelview[16];
+
+      // Precomputation begin
+      //glGetIntegerv(GL_VIEWPORT         , Viewport);
+      //glGetDoublev (GL_MODELVIEW_MATRIX , Modelview);
+      //glGetDoublev (GL_PROJECTION_MATRIX, Projection);
+
+      double matrix[16];
+      
+      int Viewport[4] = { 0, 0, 1200, 800 };
+      
+      double camera_position[3] = { -13.862310, 16.392756, -6.580113 };
+      double camera_direction[3] = { 0.757724, -0.457662, 0.465188 };
+      double camera_upVector[3] = { 0.651848, 0.564468, -0.506430 };
+      
+      double ZNear = 0.001;
+      double ZFar = 100.0;
+      //double ZNear = 4.578200;
+      //double ZFar = 22.578199;
+      
+      // Projection: from qglviewer
+      /*const float f = 1.0/tan(fieldOfView()/2.0);
+      projectionMatrix_[0]  = f/aspectRatio();
+      projectionMatrix_[5]  = f;
+      projectionMatrix_[10] = (ZNear + ZFar) / (ZNear - ZFar);
+      projectionMatrix_[11] = -1.0;
+      projectionMatrix_[14] = 2.0 * ZNear * ZFar / (ZNear - ZFar);
+      projectionMatrix_[15] = 0.0;
+      // same as gluPerspective( 180.0*fieldOfView()/M_PI, aspectRatio(), zNear(), zFar() );*/
+      
+      double fieldOfView = M_PI/4.;
+      double f = 1.0/tan(fieldOfView/2.0);      
+      double aspectRatio = (double)Viewport[2]/Viewport[3];
+      
+      double Projection[16] = { f/aspectRatio, 0.00, 0.00, 0.00, 
+			      0.00, f, 0.00, 0.00, 
+			      0.00, 0.00, (ZNear + ZFar) / (ZNear - ZFar), -1.00, 
+			      0.00, 0.00, 2.0 * ZNear * ZFar / (ZNear - ZFar), 0.00 };
+      /*fprintf(stdout, "Projection:\n");
+      for (unsigned short m=0; m<4; ++m)
+      {
+	      for (unsigned short l=0; l<4; ++l)
+	      {
+		      fprintf(stdout, "%2.2lf, ", Projection[l+4*m]);
+	      }
+	      fprintf(stdout, "\n");
+      }
+      fprintf(stdout, "\n");*/
+      
+      vec3 eye(camera_position[0], camera_position[1], camera_position[2]);
+      vec3 dir(camera_direction[0], camera_direction[1], camera_direction[2]);
+      vec3 up(camera_upVector[0], camera_upVector[1], camera_upVector[2]);
+      mat4 mv = mv.LookAtMt(eye, dir, up);
+      
+      double Modelview[16];
+      Modelview[0] = mv.x.x; Modelview[1] = mv.x.y; Modelview[2] = mv.x.z; Modelview[3] = mv.x.w;
+      Modelview[4] = mv.y.x; Modelview[5] = mv.y.y; Modelview[6] = mv.y.z; Modelview[7] = mv.y.w;
+      Modelview[8] = mv.z.x; Modelview[9] = mv.z.y; Modelview[10] = mv.z.z; Modelview[11] = mv.z.w;
+      Modelview[12] = mv.w.x; Modelview[13] = mv.w.y; Modelview[14] = mv.w.z; Modelview[15] = mv.w.w;
+      /*fprintf(stdout, "Modelview:\n");
+      for (unsigned short m=0; m<4; ++m)
+      {
+	      for (unsigned short l=0; l<4; ++l)
+	      {
+		      fprintf(stdout, "%2.2lf, ", Modelview[l+4*m]);
+	      }
+	      fprintf(stdout, "\n");
+      }
+      fprintf(stdout, "\n");*/
+
+      for (unsigned short m=0; m<4; ++m)
+      {
+	      for (unsigned short l=0; l<4; ++l)
+	      {
+		      double sum = 0.0;
+		      for (unsigned short k=0; k<4; ++k)
+			      sum += Projection[l+4*k]*Modelview[k+4*m];
+		      matrix[l+4*m] = sum;
+	      }
+      }
+      // Precomputation end
+	      
+      double v[4], vs[4];
+      v[0]=x3d; v[1]=y3d; v[2]=z3d; v[3]=1.0;
+
+      vs[0]=matrix[0 ]*v[0] + matrix[4 ]*v[1] + matrix[8 ]*v[2] + matrix[12 ]*v[3];
+      vs[1]=matrix[1 ]*v[0] + matrix[5 ]*v[1] + matrix[9 ]*v[2] + matrix[13 ]*v[3];
+      vs[2]=matrix[2 ]*v[0] + matrix[6 ]*v[1] + matrix[10]*v[2] + matrix[14 ]*v[3];
+      vs[3]=matrix[3 ]*v[0] + matrix[7 ]*v[1] + matrix[11]*v[2] + matrix[15 ]*v[3];
+
+      vs[0] /= vs[3];
+      vs[1] /= vs[3];
+      vs[2] /= vs[3];
+
+      vs[0] = vs[0] * 0.5 + 0.5;
+      vs[1] = vs[1] * 0.5 + 0.5;
+      vs[2] = vs[2] * 0.5 + 0.5;
+
+      vs[0] = vs[0] * Viewport[2] + Viewport[0];
+      vs[1] = vs[1] * Viewport[3] + Viewport[1];
+
+      //return Vec(vs[0], Viewport[3]-vs[1], vs[2]);
+      x2d = vs[0];
+      y2d = Viewport[3]-vs[1];
+}
+  
 void
 DGtal::DGtalCairo::draw(const char * filename)
 {
@@ -134,34 +245,13 @@ DGtal::DGtalCairo::draw(const char * filename)
   int cairoWidth, cairoHeight;
   CairoType type;
   
-  cairoWidth = 1024;
-  cairoHeight = 768;
+  cairoWidth = 1200;
+  cairoHeight = 800;
   type = CairoPNG;
   
     // http://iphone-3d-programming.labs.oreilly.com/apa.html
     // http://www.siteduzero.com/tutoriel-3-421560-bienvenue-dans-la-troisieme-dimension-partie-1-2.html
     // http://www.siteduzero.com/tutoriel-3-439135-bienvenue-dans-la-troisieme-dimension-partie-2-2.html
-    float zoom=60.; // temp
-		  
-    float angle=70.;
-    float ratio=(float)cairoWidth/cairoHeight;
-    float near=1.;
-    float far=100.;
-    mat4 mp;
-    float f = 1 / tan((angle / 2) * M_PI / 180);
-    mp.x.x = f / ratio;				// pos: 0
-    mp.y.y = f;					// pos: 5
-    mp.z.z = (near + far) / (near - far);	// pos: 10
-    mp.z.w = (2 * near * far) / (near - far);	// pos: 11
-    mp.w.z = -1;				// pos: 14
-    
-    vec3 eye(10., 10., 10.);
-    vec3 target(2.5, 2.5, 2.5);
-    vec3 up(0., 1., 0.);
-    mat4 mv = mv.LookAt(eye, target, up);
-    
-    //mat4 m = mp*mv;
-    mat4 m = mv*mp;
   
   switch (type)
   {
@@ -197,16 +287,15 @@ DGtal::DGtalCairo::draw(const char * filename)
 		//cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
 		
-		vec4 p1_3d((*s_it).x1, (*s_it).y1, (*s_it).z1, 1.);
-		vec4 p2_3d((*s_it).x2, (*s_it).y2, (*s_it).z2, 1.);
-		vec4 p1_2d = m*p1_3d;
-		vec4 p2_2d = m*p2_3d;
+		double x1, y1;
+		double x2, y2;
+		project((*s_it).x1, (*s_it).y1, (*s_it).z1, x1, y1);
+		project((*s_it).x2, (*s_it).y2, (*s_it).z2, x2, y2);
+		cairo_move_to (cr, x1, y1);
+		cairo_line_to (cr, x2, y2);
 		
-		cairo_move_to (cr, (cairoWidth>>1)+p1_2d.x*zoom, (cairoHeight>>1)+p1_2d.y*zoom);
-		cairo_line_to (cr, (cairoWidth>>1)+p2_2d.x*zoom, (cairoHeight>>1)+p2_2d.y*zoom);
-		
-		cairo_set_line_width (cr, (*s_it).width);
-		//cairo_set_line_width (cr, _lineWidth);
+		//cairo_set_line_width (cr, (*s_it).width);
+		cairo_set_line_width (cr, 0.1);
 		
 		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
 		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
