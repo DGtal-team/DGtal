@@ -34,7 +34,6 @@ set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
-message(STATUS "Libs extension is '${SUFFIXLIB}'. Bins extension is '${SUFFIXBIN}'." )
 message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
@@ -83,12 +82,9 @@ ADD_CUSTOM_TARGET(uninstall
 set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
 set ( LIBDGTALVISU3D_NAME "DGtal-visu3d${SUFFIXLIB}" )
 
-
-
 # -----------------------------------------------------------------------------
 # Parsing cmake options
 # -----------------------------------------------------------------------------
-
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 OPTION(BUILD_INLINE_FUNCTIONS "Build inline functions." ON)
 OPTION(DEBUG_VERBOSE "Verbose messages in debug mode." OFF)
@@ -164,39 +160,7 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
-
-SET(CPACK_PACKAGE_VERSION_MAJOR 	 ${DGtal_VERSION_MAJOR})
-SET(CPACK_PACKAGE_VERSION_MINOR 	 ${DGtal_VERSION_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH 	 ${DGtal_VERSION_PATCH})
-# for other generator set specific backend information
-INCLUDE(InstallRequiredSystemLibraries)
-
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal Project")
-SET(CPACK_PACKAGE_VENDOR ".")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
-SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-SET(CPACK_PACKAGE_CONTACT "dgtal@liris.cnrs.fr" )
-SET(CPACK_NSIS_CONTACT "dgtal@liris.cnrs.fr")
-
-IF(WIN32 AND NOT UNIX)
-  SET(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} DGtal")
-  SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\liris.cnrs.fr/dgtal")
-  SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\liris.cnrs.fr/dgtal")
-  SET(CPACK_NSIS_MODIFY_PATH ON)
-ELSE(WIN32 AND NOT UNIX)
-  ##SET(CPACK_STRIP_FILES "bin/main") ??
-  SET(CPACK_SOURCE_STRIP_FILES "")
-ENDIF(WIN32 AND NOT UNIX)
-
-SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/latex/*;doc/html-Board/*)
-
-if(WIN32)
-  SET(CPACK_GENERATOR "NSIS;")
-else(WIN32)
-  SET(CPACK_GENERATOR "TGZ;DEB")
-endif(WIN32)
-
-INCLUDE(CPack)
+INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
 
 #------------------------------------------------------------------------------
 # Add subdirectories
