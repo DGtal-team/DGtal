@@ -7,7 +7,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.4) 
+cmake_minimum_required (VERSION 2.6) 
 
 #-- We remove the cmake warning on explicit lib paths
 #-- With ITK dependency, I don't know how to fix the warning
@@ -60,6 +60,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 3)
 SET(DGtal_VERSION_PATCH 1)
+SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
@@ -135,15 +136,16 @@ endif (BUILD_TESTING)
 #------------------------------------------------------------------------------
 # Prepare installations concerning global scope.
 #------------------------------------------------------------------------------
-if (CMAKE_MAJOR_VERSION EQUAL 2)
-  if (CMAKE_MINOR_VERSION GREATER 5)
-    install(DIRECTORY src/ DESTINATION include 
-      FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h")
-  else (CMAKE_MINOR_VERSION GREATER 5)
-    install(DIRECTORY src/ DESTINATION include 
-      PATTERN "[A-Za-z0-9]+.*h")
-  endif (CMAKE_MINOR_VERSION GREATER 5)
-endif (CMAKE_MAJOR_VERSION EQUAL 2)
+
+#if (CMAKE_MAJOR_VERSION EQUAL 2)
+#  if (CMAKE_MINOR_VERSION GREATER 5)
+#    install(DIRECTORY src/ DESTINATION include 
+#      FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h")
+#  else (CMAKE_MINOR_VERSION GREATER 5)
+#    install(DIRECTORY src/ DESTINATION include 
+#      PATTERN "[A-Za-z0-9]+.*h")
+#  endif (CMAKE_MINOR_VERSION GREATER 5)
+#endif (CMAKE_MAJOR_VERSION EQUAL 2)
 
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
@@ -160,7 +162,7 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
+INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
 
 #------------------------------------------------------------------------------
 # Add subdirectories
@@ -174,11 +176,9 @@ IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
 
-
 #------------------------------------------------------------------------------
 # DGtal Configuration file
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "DGtalConfig.cmake" IMMEDIATE)
-export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibDependencies.cmake )
+INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
 
 
