@@ -132,7 +132,8 @@ namespace DGtal
      * @param z the third value.
      * @param t the fourth value.
      */
-    RealPointVector( const Component & x, const Component & y, const Component & z, const Component & t );
+    RealPointVector( const Component & x, const Component & y, 
+		     const Component & z, const Component & t );
 
 #ifdef CPP0X_INITIALIZER_LIST
     /**
@@ -180,7 +181,18 @@ namespace DGtal
      */
     Self  operator/ ( const Self & v ) const ;
   
-  
+    /**
+     * Divides @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get divided by.
+     * @return a reference on 'this'.
+     */
+    Self & operator/= ( Component coeff )
+    {
+      for ( Dimension i = 0; i < dimension; ++i )
+	this->myArray[ i ] /= coeff;
+      return *this;
+    }
     // ------------------------- Specific methods -------------------------------
   
 
@@ -212,18 +224,15 @@ namespace DGtal
      */
     double normInfinity() const;
 
-
     /**
-     * Divides @a *this by the @a coeff scalar number.
+     * Normalize a real vector using its Euclidean norm.
      *
-     * @param coeff is the factor @a *this get divided by.
-     * @return a reference on 'this'.
      */
-    Self & operator*= ( Component coeff )
+    void normalize()
     {
+      double length=this->norm();
       for ( Dimension i = 0; i < dimension; ++i )
-	this->myArray[ i ] /= coeff;
-      return *this;
+	this->myArray[ i ] /= length;
     }
   
 
