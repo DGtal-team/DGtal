@@ -40,9 +40,6 @@ install(TARGETS ${LIBDGTAL_NAME}
   #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
-###--- Headers installm
-install(DIRECTORY . DESTINATION "${INSTALL_INCLUDE_DIR}/"
-  FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h")
 
 if ( WITH_VISU3D )
   include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)

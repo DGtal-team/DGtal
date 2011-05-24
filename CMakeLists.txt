@@ -184,4 +184,8 @@ ENDIF(BUILD_EXAMPLES)
 #------------------------------------------------------------------------------
 # DGtal Configuration file for the install target
 #------------------------------------------------------------------------------
+
+#--- Headers installation
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
+  DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
