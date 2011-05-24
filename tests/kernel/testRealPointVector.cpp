@@ -84,6 +84,8 @@ bool testNormalise()
 {
   RealPointVector<3> v(4.0,4.0,4.0);
  
+  RealPointVector<3> unit = RealPointVector<3>::diagonal(1.0);
+
   trace.beginBlock("Normalization test");
   
   trace.info() << "Before: "<<v<<std::endl;
