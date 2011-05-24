@@ -56,7 +56,7 @@ int main( int argc, char** argv )
   DGtalQGLViewer viewer;  
   viewer.show();
   viewer << SetMode3D( domain.styleName(), "Paving" );
-  viewer << domain; 
+  //  viewer << domain; 
   
   Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
   Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)
@@ -104,7 +104,7 @@ int main( int argc, char** argv )
   Cell surfelB = K.uCell( Point( 1, 0, 1 ) ); // surfel (1,0,1)
   Cell surfelC = K.uCell( Point( 2, 1, 1 ) ); // surfel (2,0,1)
   viewer << surfelA << surfelB << surfelC;
-  
+
   // drawing cells of dimension 3  
   Cell vox1 = K.uCell( Point( 3, 3, 3 ) ); // voxel (3,3,3)
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (1,1,3) 
