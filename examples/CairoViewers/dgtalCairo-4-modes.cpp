@@ -70,7 +70,10 @@ int main( int argc, char** argv )
 
  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
  //viewer << domain << DGtalCairo::updateDisplay;
- viewer.draw("dgtalCairo-4-modes.png");
+ viewer.setCameraPosition(0.500000, 0.500000, 11.274194);
+ viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+ viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+ viewer.saveCairo("dgtalCairo-4-modes.png", DGtalCairo::CairoPNG, 1200, 800);
  
  //return application.exec();
 }

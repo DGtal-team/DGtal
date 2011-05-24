@@ -100,11 +100,18 @@ namespace DGtal
 {
     // ----------------------- Standard services ------------------------------
 public:
-  DGtalCairo(); // MT
-  void draw(const char * filename); // MT
+  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG }; // MT
   
-  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
-
+  DGtalCairo(); // MT
+  
+  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
+  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+  void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
+  
+  void saveCairo(const char *filename, CairoType type, int width, int height); // MT
+  
+  
   enum StreamKey {addNewList, updateDisplay};
   
   /**
@@ -398,6 +405,18 @@ private:
   unsigned int myNbListe;
   //qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
   //QPoint myPosSelector;
+  
+  // MT
+  void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
+  
+  int Viewport[4];
+      
+  double camera_position[3];
+  double camera_direction[3];
+  double camera_upVector[3];
+  
+  double ZNear;
+  double ZFar;
   
     // ------------------------- Hidden services ------------------------------
 protected:

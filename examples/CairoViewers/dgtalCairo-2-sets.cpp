@@ -64,8 +64,12 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
+ 
  //viewer << shape_set<< DGtalCairo::updateDisplay;
- viewer.draw("dgtalCairo-2-sets.png");
+ viewer.setCameraPosition(5.000000, 5.000000, 29.893368);
+ viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+ viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+ viewer.saveCairo("dgtalCairo-2-sets.png", DGtalCairo::CairoPNG, 1200, 800);
  
  //return application.exec();
 }

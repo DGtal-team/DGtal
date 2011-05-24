@@ -109,7 +109,7 @@ DGtal::DGtalCairo::drawWithNames()
 
 // http://www.libqglviewer.com/refManual/classqglviewer_1_1Camera.html#ac4dc649d17bd2ae8664a7f4fdd50360f
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-void project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
       //GLint    Viewport[4];
       //GLdouble Projection[16], Modelview[16];
@@ -121,16 +121,9 @@ void project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 
       double matrix[16];
       
-      int Viewport[4] = { 0, 0, 1200, 800 };
-      
-      double camera_position[3] = { -13.862310, 16.392756, -6.580113 };
+      /*double camera_position[3] = { -13.862310, 16.392756, -6.580113 };
       double camera_direction[3] = { 0.757724, -0.457662, 0.465188 };
-      double camera_upVector[3] = { 0.651848, 0.564468, -0.506430 };
-      
-      double ZNear = 0.001;
-      double ZFar = 100.0;
-      //double ZNear = 4.578200;
-      //double ZFar = 22.578199;
+      double camera_upVector[3] = { 0.651848, 0.564468, -0.506430 };*/
       
       // Projection: from qglviewer
       /*const float f = 1.0/tan(fieldOfView()/2.0);
@@ -219,7 +212,7 @@ void project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 }
   
 void
-DGtal::DGtalCairo::draw(const char * filename)
+DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, int height)
 {
   /*glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
@@ -239,43 +232,74 @@ DGtal::DGtalCairo::draw(const char * filename)
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }*/ 
  
-  cairo_surface_t *surface;
-  cairo_t *cr;
-  
-  int cairoWidth, cairoHeight;
-  CairoType type;
-  
-  cairoWidth = 1200;
-  cairoHeight = 800;
-  type = CairoPNG;
-  
     // http://iphone-3d-programming.labs.oreilly.com/apa.html
     // http://www.siteduzero.com/tutoriel-3-421560-bienvenue-dans-la-troisieme-dimension-partie-1-2.html
     // http://www.siteduzero.com/tutoriel-3-439135-bienvenue-dans-la-troisieme-dimension-partie-2-2.html
+   
+  Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = width; Viewport[3] = height;
+  
+  cairo_surface_t *surface;
+  cairo_t *cr;
   
   switch (type)
   {
     case CairoPDF:
-      surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
+      surface = cairo_pdf_surface_create (filename, width, height); break;
     case CairoPS:
-      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
+      surface = cairo_ps_surface_create (filename, width, height); break;
     case CairoEPS:
-      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
+      surface = cairo_ps_surface_create (filename, width, height); 
       cairo_ps_surface_set_eps(surface, true); break;
     case CairoSVG:
-      surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
+      surface = cairo_svg_surface_create (filename, width, height); break;
     case CairoPNG:
     default:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cairoWidth, cairoHeight);
+      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
   }
   
   cr = cairo_create (surface);
   
   // Draw the shapes.
+  
+  // myPointSetList
+  for(unsigned int i=0; i<myPointSetList.size(); i++)
+  {
+    fprintf(stdout, " -> myPointSetList\n");
+    for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
+	 s_it != myPointSetList.at(i).end();
+	 ++s_it)
+	{
+	  fprintf(stdout, " -------> Point\n");
+	  {
+	      cairo_save (cr);
+	      
+		//cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
+		
+		double x, y;
+		project((*s_it).x, (*s_it).y, (*s_it).z, x, y);
+		//cairo_move_to (cr, x-((*s_it).size)/2., y-((*s_it).size)/2.);
+		//cairo_line_to (cr, x+((*s_it).size)/2., y+((*s_it).size)/2.);
+		cairo_move_to (cr, x-((*s_it).size)/4., y-((*s_it).size)/4.);
+		cairo_line_to (cr, x+((*s_it).size)/4., y+((*s_it).size)/4.);
+		
+		cairo_set_line_width (cr, (*s_it).size);
+		
+		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+		//setCairoDashStyle (cr, _lineStyle);
+
+		cairo_stroke (cr);
+	      
+	      cairo_restore (cr);
+	  }
+	}
+  }
+  
+  // myLineSetList
   for(unsigned int i=0; i<myLineSetList.size(); i++)
   {
-    //glCallList(myListToAff+myVoxelSetList.size()+1+i);
-    fprintf(stdout, " -> LineSetList\n");
+    fprintf(stdout, " -> myLineSetList\n");
     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it)
@@ -400,6 +424,16 @@ DGtal::DGtalCairo::init()
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());*/
+  
+  // MT
+  camera_position[0] = 5.000000; camera_position[1] = 5.000000; camera_position[2] = 29.893368;
+  camera_direction[0] = 0.000000; camera_direction[1] = 0.000000; camera_direction[2] = -1.000000;
+  camera_upVector[0] = 0.000000; camera_upVector[1] = 1.000000; camera_upVector[2] = 0.000000;
+  
+  ZNear = 0.001;
+  ZFar = 100.0;
+  //ZNear = 4.578200;
+  //ZFar = 22.578199;
 }
 
 

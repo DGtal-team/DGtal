@@ -73,7 +73,10 @@ int main( int argc, char** argv )
  //viewer << shape2;
  
  //viewer<< DGtalCairo::updateDisplay;
- viewer.draw("dgtalCairo-3-objects.png");
+ viewer.setCameraPosition(4.000000, 4.000000, 17.578199);
+ viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+ viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+ viewer.saveCairo("dgtalCairo-3-objects.png", DGtalCairo::CairoPNG, 1200, 800);
  
  //return application.exec();
 }
