@@ -33,6 +33,7 @@ namespace DGtal {
    -# \ref dgtal_ctopo_sec2
       -# \ref dgtal_ctopo_sec2_1
       -# \ref dgtal_ctopo_sec2_2
+      -# \ref dgtal_ctopo_sec2_3
 
    @section dgtal_ctopo_sec1 The digital space is a cubic grid
 
@@ -617,7 +618,56 @@ namespace DGtal {
    
 
 
+   @subsection dgtal_ctopo_sec2_3 Tracking 3D Boundary
 
+   With only few modifications we can apply the same extraction on 3D
+   surfel set. The file <a
+   href="ctopo-2-3d_8cpp-example.html">ctopo-2-3d.cpp </a> shows the
+   same previous example adapted in 3D.
+  
+   with the same code we can get a surfel boundary:
+   @code
+   Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
+   @endcode
+   
+   From this SCell all the surfel connected sets can be extracted:
+   @code
+   // Extracting all boundary surfels which are connected to the initial boundary Cell.
+   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
+                                         ks,SAdj, set3d, aCell );
+   @endcode
+
+   To see both initial surfel and the surfel set, we can use the transparent mode:
+
+   @code
+   viewer << SetMode3D((*(vectBdrySCellALL.begin())).styleName(), "Transparent");
+   @endcode
+   	
+   To avoid surfel superposition we need to increase with a small
+   shift the surfel size, for this purpose you can add the following key:
+   @code 
+   viewer << DGtalQGLViewer::shiftSurfelVisu; 
+   @endcode
+   or use the special mode "Highlighted" which increase automaticly the surfel size.
+
+   You can obtain for instance the following visualisation:
+   
+   @image html ctopo3dSurfel.png
+   
+   Since in 3D there are several choice for the direction used to
+   exctract surfel boundary, we can specify the constant direction
+   need to drive the surfel extraction:
+
+   @code
+   // Extract the boundary contour associated to the initial surfel in its first direction
+    Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
+ 	    				    ks, *(ks.sDirs( aCell )),SAdj, set3d, aCell );
+   @endcode  					    
+   
+   After extracting the two surfels cut you may obtain the following visualisation:
+   
+   @image html ctopo3dSurfelCut.png 
+   
 
 */
 
@@ -648,6 +698,15 @@ namespace DGtal {
 * A simple example illustrating the extraction of the sequence of surfels boudary. This program outputs this image.
 *
 *   @image html ctopo2c.png 
+*/
+
+
+
+/**
+\example ctopo-2-3d.cpp
+* A simple example illustrating the extraction of the sequence of surfels boudary. This program outputs this image.
+*
+*   @image html ctopo3dSurfelCut.png 
 */
 
 /**

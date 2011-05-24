@@ -187,6 +187,18 @@ void
 DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 {
   ASSERT(dim == 3);
+  QColor fillColorSave = viewer.getFillColor();  
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent")||
+	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
+  // used to display surfels located at a same position.
+  float factorVolSurfel=1.0;
+  if(mode=="Highlighted"){
+    factorVolSurfel = 1.1;
+    viewer.setFillColor(QColor(255, 50, 50, 255));	
+  }else if(mode=="Transparent"){
+    viewer.setFillColor(QColor(180, 180, 250, 25));	
+  }
   float x = (float) 
     ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
@@ -200,51 +212,52 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   float dx = xodd ? 1.0f  : 0.0f;
   float dy = yodd ? 1.0f  : 0.0f;
   float dz = zodd ? 1.0f  : 0.0f;
-  float retract=0.05;
   
+	 
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  
-  // pointel
+
+	 
   switch (spaceDim) {
-  case 0:
-    cerr << "drawing Cell" << endl;
+  case 0:  
+    viewer.setFillColor(QColor(200, 20, 20, 255));
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
+    viewer.setFillColor(QColor(20, 20, 200, 255));
     viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    if(dz==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5+retract, z-0.5, 
-			 x-0.5+retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y+0.5-retract, z-0.5,
-			 x+0.5-retract, y-0.5+retract, z-0.5 );    
-    else if(dy==0)
-      viewer.addKSSurfel(x-0.5+retract, y-0.5, z-0.5+retract,
-			 x-0.5+retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z+0.5-retract,
-			 x+0.5-retract, y-0.5, z-0.5+retract);
-    else if(dx==0)
-      viewer.addKSSurfel(x-0.5, y-0.5+retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z-0.5+retract,
-			 x-0.5, y+0.5-retract, z+0.5-retract,
-			 x-0.5, y-0.5+retract, z+0.5-retract);    
+    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel); 
     break;
   case 3:
+    viewer.setFillColor(QColor(255, 180, 250, 255));
     viewer.addKSVoxel((int)x, (int) y, (int) z);
-    
     break; 
-  }  
+  }
+  viewer.setFillColor(fillColorSave);
 }
-
-
-
+    
+    
+    
 template< Dimension dim, typename TInteger >
 inline
 void
 DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 {
-  ASSERT(dim == 3);
+
+   ASSERT(dim == 3);
+  QColor fillColorSave = viewer.getFillColor();  
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent")||
+	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
+  // used to display surfels located at a same position.
+  float factorVolSurfel=1.0;
+  if(mode=="Highlighted"){
+    factorVolSurfel = 1.2;
+    viewer.setFillColor(QColor(255, 50, 50, 255));	
+  }else if(mode=="Transparent"){
+    viewer.setFillColor(QColor(180, 180, 250, 25));	
+  }
   float x = (float) 
     ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
@@ -255,21 +268,26 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
   bool zodd = ( myCoordinates[ 2 ] & 1 );
+    
   
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  
   // pointel
   switch (spaceDim) {
-
+    
   case 0:
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
-    //viewer.addKSLinel(x-0.5, y-0.5, z-0.5);
+    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
+      viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel); 
     break;
-  }  
+  case 3:
+    viewer.addKSVoxel((int)x, (int) y, (int) z);
+    break; 
+  } 
+  viewer.setFillColor(fillColorSave);
 }
 
 
