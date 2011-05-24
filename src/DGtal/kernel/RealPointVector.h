@@ -152,7 +152,15 @@ namespace DGtal
 		     const Functor& f );
 
 
-
+    /**
+     * Constructor from PointVector.
+     *
+     * @param v is the PointVector used to construct the RealPointVector.
+     *
+     */
+    template<typename AnotherComponent>
+    RealPointVector( const PointVector<dim,AnotherComponent> & v );
+    
     // ------------------------- Specific operators -------------------------------
     
     /**
@@ -161,9 +169,9 @@ namespace DGtal
      * @param v is the Point that gets divided to @a *this.
      * @return a reference on 'this'.
      */
-    template<typename Compo>
-    Self & operator= ( const PointVector<dim,Compo> & v );
-
+    template<typename AnotherComponent>
+    Self & operator= ( const PointVector<dim,AnotherComponent> & v );
+   
     
     /**
      * Division operator with assignement.
