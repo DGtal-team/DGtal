@@ -1,4 +1,4 @@
-# - Config file for the FooBar package
+# - Config file for the DGtal package
 # It defines the following variables
 #  DGTAL_INCLUDE_DIRS - include directories for DGtal
 #  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
@@ -13,6 +13,6 @@ set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
  
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
-set(DGTAL_LIBRARIES foo)
-set(DGTAL_EXECUTABLE bar)
+set(DGTAL_LIBRARIES @LIBDGTAL_NAME@ @LIBDGTALVISU3D_NAME@)
+#set(DGTAL_EXECUTABLE bar)
 
