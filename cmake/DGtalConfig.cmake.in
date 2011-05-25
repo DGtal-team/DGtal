@@ -11,6 +11,15 @@ set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
  
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
+
+
+#--------------------------------------------
+#ITK bugfix (we need explicit link_directory)
+#--------------------------------------------
+IF(ITK_FOUND)
+  link_directories( ${ITK_LIBRARY_DIRS})
+ENDIF(ITK_FOUND)
+
  
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
 set(DGTAL_LIBRARIES @LIBDGTAL_NAME@ @LIBDGTALVISU3D_NAME@)

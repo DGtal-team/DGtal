@@ -66,7 +66,7 @@ endforeach()
 # Doxygen doc target
 # -----------------------------------------------------------------------------
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
-INCLUDE("${CMAKE_SOURCE_DIR}/doc/doxygen.cmake")
+INCLUDE("${CMAKE_MODULE_PATH}/doxygen.cmake")
 INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
 
 # -----------------------------------------------------------------------------
