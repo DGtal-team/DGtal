@@ -115,15 +115,12 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
       //GLdouble Projection[16], Modelview[16];
 
       // Precomputation begin
+      
       //glGetIntegerv(GL_VIEWPORT         , Viewport);
       //glGetDoublev (GL_MODELVIEW_MATRIX , Modelview);
       //glGetDoublev (GL_PROJECTION_MATRIX, Projection);
 
       double matrix[16];
-      
-      /*double camera_position[3] = { -13.862310, 16.392756, -6.580113 };
-      double camera_direction[3] = { 0.757724, -0.457662, 0.465188 };
-      double camera_upVector[3] = { 0.651848, 0.564468, -0.506430 };*/
       
       // Projection: from qglviewer
       /*const float f = 1.0/tan(fieldOfView()/2.0);
@@ -154,6 +151,7 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
       }
       fprintf(stdout, "\n");*/
       
+      // http://iphone-3d-programming.labs.oreilly.com/apa.html
       vec3 eye(camera_position[0], camera_position[1], camera_position[2]);
       vec3 dir(camera_direction[0], camera_direction[1], camera_direction[2]);
       vec3 up(camera_upVector[0], camera_upVector[1], camera_upVector[2]);
@@ -185,6 +183,7 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
 		      matrix[l+4*m] = sum;
 	      }
       }
+      
       // Precomputation end
 	      
       double v[4], vs[4];
@@ -226,15 +225,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
     glEnable(GL_CLIP_PLANE0+i); 
     glClipPlane(GL_CLIP_PLANE0+i, eq );
   }  
-  glPopMatrix();   
-  
-  for(unsigned int i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
-  }*/ 
- 
-    // http://iphone-3d-programming.labs.oreilly.com/apa.html
-    // http://www.siteduzero.com/tutoriel-3-421560-bienvenue-dans-la-troisieme-dimension-partie-1-2.html
-    // http://www.siteduzero.com/tutoriel-3-439135-bienvenue-dans-la-troisieme-dimension-partie-2-2.html
+  glPopMatrix();*/
    
   Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = width; Viewport[3] = height;
   
@@ -264,26 +255,93 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
   {
-    fprintf(stdout, " -> myPointSetList\n");
+    //fprintf(stdout, " -> myPointSetList\n");
     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it)
 	{
-	  fprintf(stdout, " -------> Point\n");
+	  //fprintf(stdout, " -------> Point\n");
 	  {
 	      cairo_save (cr);
 	      
-		//cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
 		
-		double x, y;
-		project((*s_it).x, (*s_it).y, (*s_it).z, x, y);
-		//cairo_move_to (cr, x-((*s_it).size)/2., y-((*s_it).size)/2.);
-		//cairo_line_to (cr, x+((*s_it).size)/2., y+((*s_it).size)/2.);
-		cairo_move_to (cr, x-((*s_it).size)/4., y-((*s_it).size)/4.);
-		cairo_line_to (cr, x+((*s_it).size)/4., y+((*s_it).size)/4.);
+		cairo_set_line_width (cr, 0.5); // arbitraire
 		
-		cairo_set_line_width (cr, (*s_it).size);
+		double x1, y1, x2, y2, x3, y3, x4, y4;
+		double width=(*s_it).size/150.; // arbitraire
+		
+		//z+
+		//glNormal3f( 0.0, 0.0, 1.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//z-
+		//glNormal3f( 0.0, 0.0, -1.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//x+
+		//glNormal3f( 1.0, 0.0, 0.0);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//x-
+		//glNormal3f( -1.0, 0.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//y+
+		//glNormal3f( 0.0, 1.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//y-
+		//glNormal3f( 0.0, -1.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+	      
+	      cairo_restore (cr);
+	  }
+	}
+  }
+  
+  // myLineSetList
+  for(unsigned int i=0; i<myLineSetList.size(); i++)
+  {
+    //fprintf(stdout, " -> myLineSetList\n");
+    for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
+	 s_it != myLineSetList.at(i).end();
+	 ++s_it)
+	{
+	  //fprintf(stdout, " -------> Line\n");
+	  {
+	      cairo_save (cr);
+	      
+		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
+		
+		double x1, y1;
+		double x2, y2;
+		project((*s_it).x1, (*s_it).y1, (*s_it).z1, x1, y1);
+		project((*s_it).x2, (*s_it).y2, (*s_it).z2, x2, y2);
+		cairo_move_to (cr, x1, y1);
+		cairo_line_to (cr, x2, y2);
+		
+		//cairo_set_line_width (cr, (*s_it).width);
+		cairo_set_line_width (cr, 0.1); // arbitraire car non used
 		
 		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
 		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -296,36 +354,67 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 	}
   }
   
-  // myLineSetList
-  for(unsigned int i=0; i<myLineSetList.size(); i++)
+  // myVoxelSetList
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++)
   {
-    fprintf(stdout, " -> myLineSetList\n");
-    for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
-	 s_it != myLineSetList.at(i).end();
-	 ++s_it)
+    //fprintf(stdout, " -> myVoxelSetList\n");
+    for (std::vector<voxelGL>::iterator s_it = myVoxelSetList.at(i).begin();
+	   s_it != myVoxelSetList.at(i).end();
+	   ++s_it)
 	{
-	  //fprintf(stdout, " -------> Line\n");
+	  //fprintf(stdout, " -------> Voxel\n");
 	  {
 	      cairo_save (cr);
 	      
-		//cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
 		
-		double x1, y1;
-		double x2, y2;
-		project((*s_it).x1, (*s_it).y1, (*s_it).z1, x1, y1);
-		project((*s_it).x2, (*s_it).y2, (*s_it).z2, x2, y2);
-		cairo_move_to (cr, x1, y1);
-		cairo_line_to (cr, x2, y2);
+		cairo_set_line_width (cr, 0.5); // arbitraire
 		
-		//cairo_set_line_width (cr, (*s_it).width);
-		cairo_set_line_width (cr, 0.1);
-		
-		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
-		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
-		//setCairoDashStyle (cr, _lineStyle);
-
-		cairo_stroke (cr);
+		double x1, y1, x2, y2, x3, y3, x4, y4;
+		double width=(*s_it).width;
+   
+		//z+
+		//glNormal3f( 0.0, 0.0, 1.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//z-
+		//glNormal3f( 0.0, 0.0, -1.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//x+
+		//glNormal3f( 1.0, 0.0, 0.0);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//x-
+		//glNormal3f( -1.0, 0.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//y+
+		//glNormal3f( 0.0, 1.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		//y-
+		//glNormal3f( 0.0, -1.0, 0.0);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
+		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
+		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -338,12 +427,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
   
-  /*glCallList(myListToAff+myVoxelSetList.size());
-  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
-    glCallList(myListToAff+i);
-  }
-  
-  for(unsigned int i=0; i<myQuadList.size(); i++){
+  /*for(unsigned int i=0; i<myQuadList.size(); i++){
     double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
     double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
     double  uz=myQuadList.at(i).z2-myQuadList.at(i).z1; 
@@ -376,12 +460,12 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
     glVertex3f(myQuadList.at(i).x1, myQuadList.at(i).y1, myQuadList.at(i).z1);
     glEnd();
     glEnable(GL_LIGHTING);
-  }
+  }*/
 
   
   // Drawing all Khalimsky Space Cells 
   
-  for(unsigned int i=0; i< myKSPointelList.size();i++){
+  /*for(unsigned int i=0; i< myKSPointelList.size();i++){
     glDrawGLPointel(myKSPointelList.at(i));
   }
   for(unsigned int i=0; i< myKSLinelList.size();i++){

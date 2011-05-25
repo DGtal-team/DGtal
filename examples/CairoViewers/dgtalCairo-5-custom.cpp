@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
  viewer << p1 << p2 << p3;
   
-  //viewer <<  SetMode3D( p1.styleName(), "Grid" );
+  //viewer <<  SetMode3DCairo( p1.styleName(), "Grid" );
   viewer << CustomColors3DCairo(QColor(250, 0,0),QColor(250, 0,0));
   viewer << p4 << p5 ;
   viewer <<  SetMode3DCairo( p1.styleName(), "Both" );
@@ -75,7 +75,7 @@ int main( int argc, char** argv )
 
 
   viewer << SetMode3DCairo(domain.styleName(), "Paving");
-  //viewer << domain << DGtalCairo::updateDisplay;
+  viewer << domain;// << DGtalCairo::updateDisplay;
   viewer.setCameraPosition(0.500000, 0.500000, 9.067706);
   viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
   viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);

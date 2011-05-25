@@ -15,21 +15,21 @@
  **/
 
 /**
- * @file DGtalCairo-1-points.cpp
+ * @file dgtalQGLviewer-1-points.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class DGtalCairo.
+ * Simple example of class DGtalQGLViewer.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-//#include <QtGui/qapplication.h>
+#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -47,33 +47,30 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-
  //QApplication application(argc,argv);
+ 
  DGtalCairo viewer;
  //viewer.show();
 
+ Point p1( 0, 0, 0 );
+ Point p2( 20, 20, 20 );
+ Domain domain(p1, p2);
+ DigitalSet shape_set( domain );
+ 
+ Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+ viewer << SetMode3DCairo( shape_set.styleName(), "Both" );
+ viewer << shape_set;
+ viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+ viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
  
  
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
- Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
  
- // viewer <<  SetMode3DCairo( p1.styleName(), "Grid" );
-
- viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
-  
-
- //viewer << SetMode3DCairo(domain.styleName(), "PavingGrids");
- viewer << domain;// << DGtalCairo::updateDisplay;
- viewer.setCameraPosition(0.500000, 0.500000, 11.274194);
+ 
+ //viewer << DGtalQGLViewer::updateDisplay;
+ viewer.setCameraPosition(10.000000, 10.000000, 41.682465);
  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
- viewer.saveCairo("dgtalCairo-4-modes.png", DGtalCairo::CairoPNG, 1200, 800);
+ viewer.saveCairo("dgtalCairo-6.png", DGtalCairo::CairoPNG, 1200, 800);
  
  //return application.exec();
 }

@@ -206,6 +206,7 @@ DGtal::DGtalQGLViewer::init(){
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
+  setKeyDescription(Qt::Key_C, "Show camera informations.");
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
@@ -540,11 +541,9 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
     restoreStateFromFile();
     updateGL();
   }
-  if( (e->key()==Qt::Key_M)) // MT
+  if( (e->key()==Qt::Key_C)) // MT
   {
-	Vec point;
-	
-        GLint    Viewport[4];
+	GLint    Viewport[4];
         GLdouble Projection[16], Modelview[16]; 
         GLdouble matrix[16];
 
@@ -598,7 +597,7 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
 	}
 	fprintf(stdout, "\n\n");
 	
-        fprintf(stdout, "Modelview:\n");
+        /*fprintf(stdout, "Modelview:\n");
         for (unsigned short m=0; m<4; ++m)
         {
                 for (unsigned short l=0; l<4; ++l)
@@ -607,11 +606,11 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
                 }
                 fprintf(stdout, "\n");
         }
-        fprintf(stdout, "\n");
+        fprintf(stdout, "\n");*/
 	
 	fprintf(stdout, "zNear: %lf - zFar: %lf\n\n, ", camera()->zNear(), camera()->zFar());
 	
-	fprintf(stdout, "Projection:\n");
+	/*fprintf(stdout, "Projection:\n");
         for (unsigned short m=0; m<4; ++m)
         {
                 for (unsigned short l=0; l<4; ++l)
@@ -620,9 +619,9 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
                 }
                 fprintf(stdout, "\n");
         }
-        fprintf(stdout, "\n");
+        fprintf(stdout, "\n");*/
 	
-	fprintf(stdout, "matrix:\n");
+	/*fprintf(stdout, "matrix:\n");
         for (unsigned short m=0; m<4; ++m)
         {
                 for (unsigned short l=0; l<4; ++l)
@@ -631,29 +630,8 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
                 }
                 fprintf(stdout, "\n");
         }
-        fprintf(stdout, "\n");
-        // print
-                
-        GLdouble v[4], vs[4];
-        v[0]=point[0]; v[1]=point[1]; v[2]=point[2]; v[3]=1.0;
-
-        vs[0]=matrix[0 ]*v[0] + matrix[4 ]*v[1] + matrix[8 ]*v[2] + matrix[12 ]*v[3];
-        vs[1]=matrix[1 ]*v[0] + matrix[5 ]*v[1] + matrix[9 ]*v[2] + matrix[13 ]*v[3];
-        vs[2]=matrix[2 ]*v[0] + matrix[6 ]*v[1] + matrix[10]*v[2] + matrix[14 ]*v[3];
-        vs[3]=matrix[3 ]*v[0] + matrix[7 ]*v[1] + matrix[11]*v[2] + matrix[15 ]*v[3];
-
-        vs[0] /= vs[3];
-        vs[1] /= vs[3];
-        vs[2] /= vs[3];
-
-        vs[0] = vs[0] * 0.5 + 0.5;
-        vs[1] = vs[1] * 0.5 + 0.5;
-        vs[2] = vs[2] * 0.5 + 0.5;
-
-        vs[0] = vs[0] * Viewport[2] + Viewport[0];
-        vs[1] = vs[1] * Viewport[3] + Viewport[1];
-
-        //return Vec(vs[0], Viewport[3]-vs[1], vs[2]);    
+        fprintf(stdout, "\n");*/
+        // print 
   }
 
   
