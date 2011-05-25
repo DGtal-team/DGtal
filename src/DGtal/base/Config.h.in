@@ -105,6 +105,7 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  *  - \ref Tools3dVolViewer
  *
  * - Miscellaneous
+ *  - \ref HowToUseDGtal
  *  - \ref dgtalITK
  * 
  * @section manueldev Manual pages for DGtal developers
