@@ -7,26 +7,17 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.4) 
-
-#-- We remove the cmake warning on explicit lib paths
-#-- With ITK dependency, I don't know how to fix the warning
-#-- D.C
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0003 OLD)
-endif(COMMAND cmake_policy)
+cmake_minimum_required (VERSION 2.6) 
 
 
-message( "-------------------------------------------------------------------------------" )
-message( "DGtal: see AUTHORS file" )
-message( "       You may specify the following options:" )
-message( "         - CMAKE_BUILD_TYPE = Debug|Release: choose configuration.")
-message( "         - CMAKE_INSTALL_PREFIX = <path>: the place to install DGtal (/usr/local).")
-message( "       with the syntax (for instance)")  
-message( "         cmake -DCMAKE_BUILD_TYPE:STRING=Debug")
-message( "-------------------------------------------------------------------------------" )
-
-set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
+message(STATUS "-------------------------------------------------------------------------------" )
+message(STATUS "DGtal: see AUTHORS file" )
+message(STATUS  "       You may specify the following options:" )
+message(STATUS  "         - CMAKE_BUILD_TYPE = Debug|Release: choose configuration.")
+message(STATUS  "         - CMAKE_INSTALL_PREFIX = <path>: the place to install DGtal (/usr/local).")
+message(STATUS  "       with the syntax (for instance)")  
+message(STATUS  "         cmake -DCMAKE_BUILD_TYPE:STRING=Debug")
+message(STATUS  "-------------------------------------------------------------------------------" )
 
 # -----------------------------------------------------------------------------
 # Display some information
@@ -37,6 +28,21 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
+
+# -----------------------------------------------------------------------------
+# Define variables and cmake parameters
+# -----------------------------------------------------------------------------
+# Look for modules
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+SET(DGtal_VERSION_MAJOR 0)
+SET(DGtal_VERSION_MINOR 3)
+SET(DGtal_VERSION_PATCH 1)
+SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
+SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
+SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
+
+MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 
 # -- Environement variables
 if (UNIX)
@@ -50,24 +56,30 @@ if (APPLE)
 endif (APPLE)
 
 
+# Offer the user the choice of overriding the installation directories
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+set(INSTALL_DATA_DIR share CACHE PATH "Installation directory for data files")
+
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE DATA)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
 
 # -----------------------------------------------------------------------------
-# Check and configure CMake packages
+# Doxygen doc target
 # -----------------------------------------------------------------------------
-# Look for modules
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
-SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 3)
-SET(DGtal_VERSION_PATCH 1)
-SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
-
-MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
-
-# Needed file 'doxy.config.in' for documentation
-INCLUDE(doc/doxygen.cmake)
+set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
+INCLUDE("${CMAKE_SOURCE_DIR}/doc/doxygen.cmake")
 INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
 
+# -----------------------------------------------------------------------------
+# uninstall target
+# -----------------------------------------------------------------------------
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake"
@@ -75,12 +87,11 @@ CONFIGURE_FILE(
 ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
-
 # -----------------------------------------------------------------------------
 # Defines some variables
 # -----------------------------------------------------------------------------
-set ( LIBDGTAL_NAME "DGtal${SUFFIXLIB}" )
-set ( LIBDGTALVISU3D_NAME "DGtal-visu3d${SUFFIXLIB}" )
+set ( LIBDGTAL_NAME "DGtal" )
+set ( LIBDGTALVISU3D_NAME "DGtal-visu3d" )
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options
@@ -132,24 +143,11 @@ if (BUILD_TESTING)
   add_subdirectory (tests)
 endif (BUILD_TESTING)
 
-#------------------------------------------------------------------------------
-# Prepare installations concerning global scope.
-#------------------------------------------------------------------------------
-if (CMAKE_MAJOR_VERSION EQUAL 2)
-  if (CMAKE_MINOR_VERSION GREATER 5)
-    install(DIRECTORY src/ DESTINATION include 
-      FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h")
-  else (CMAKE_MINOR_VERSION GREATER 5)
-    install(DIRECTORY src/ DESTINATION include 
-      PATTERN "[A-Za-z0-9]+.*h")
-  endif (CMAKE_MINOR_VERSION GREATER 5)
-endif (CMAKE_MAJOR_VERSION EQUAL 2)
 
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
-SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -160,7 +158,7 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
+INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
 
 #------------------------------------------------------------------------------
 # Add subdirectories
@@ -168,17 +166,19 @@ INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
 add_subdirectory (src)
 add_subdirectory (tools)
 
-
+#------------------------------------------------------------------------------
+# Examples
+#------------------------------------------------------------------------------
 OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
 
-
 #------------------------------------------------------------------------------
-# DGtal Configuration file
+# DGtal Configuration file for the install target
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in" "DGtalConfig.cmake" IMMEDIATE)
-export_library_dependencies(${PROJECT_BINARY_DIR}/DGtalLibDependencies.cmake )
 
-
+#--- Headers installation
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
+  DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
+INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
