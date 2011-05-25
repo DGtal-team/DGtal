@@ -9,19 +9,10 @@
 project (DGtal)
 cmake_minimum_required (VERSION 2.6) 
 
-
-message(STATUS "-------------------------------------------------------------------------------" )
-message(STATUS "DGtal: see AUTHORS file" )
-message(STATUS  "       You may specify the following options:" )
-message(STATUS  "         - CMAKE_BUILD_TYPE = Debug|Release: choose configuration.")
-message(STATUS  "         - CMAKE_INSTALL_PREFIX = <path>: the place to install DGtal (/usr/local).")
-message(STATUS  "       with the syntax (for instance)")  
-message(STATUS  "         cmake -DCMAKE_BUILD_TYPE:STRING=Debug")
-message(STATUS  "-------------------------------------------------------------------------------" )
-
 # -----------------------------------------------------------------------------
 # Display some information
 # -----------------------------------------------------------------------------
+message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
@@ -43,6 +34,7 @@ SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSI
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
+message(STATUS "-------------------------------------------------------------------------------" )
 
 # -- Environement variables
 if (UNIX)
