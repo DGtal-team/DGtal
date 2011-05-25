@@ -1,0 +1,359 @@
+/**
+ * @file 2dgeometry.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/03/28
+ * 
+ * Documentation file for 2d geometry kernel
+ *
+ * This file is part of the DGtal library.
+ */
+namespace DGtal {
+
+//----------------------------------------
+/*!
+
+@page geometry2d Decomposition of 2D digital curves
+@author Tristan Roussillon
+
+
+ This part of the manual describes how to extract primitives from a given sequence of elements 
+(basically a 2D digital curve).
+
+ -# \ref geometryIntro
+ -# \ref geometrySegments
+ -# \ref geometrySegmentsExtraction
+		-# \ref geometryGreedyDecomposition
+		-# \ref geometryUniqueDecomposition
+ -# \ref geometryDecompositionProblems
+		-# \ref geometryDecompositionProblems1
+ -# \ref geometryImplementation
+
+
+ \section geometryIntro Bacis concepts : sequences and segments.
+
+DGtal contains several tools for analysing any nD digital curves
+in a very generic framework. Actually, the more abstract concept of 
+<em>sequence of elements</em> replaces the one of digital curve. 
+Note that we use the terme sequence because the order matters. 
+Elements are abstract objects.  They can be points of course, 
+but also more sophisticated geometric objects such as straight line segments, 
+squares, etc. They can also be letters (as in the Freeman representation 
+of a 2D connected digital curve) or any other user-defined object.  
+What is requiered is that the sequence provides 
+an <em>iterator</em> that can be used to access to the elements in order.
+This iterator has to be a model of the bidirectionnal iterator concept 
+of the STL.  
+
+In a geometric framework, the sequence may be defined as 
+a STL vector of 2D points as follow:
+
+ @code
+ typedef PointVector<2,int> Point;               //element type
+ typedef std::vector<Point> DigitalCurve;        //sequence type
+ typedef DigitalCurve::iterator Iterator;        //iterator type
+ @endcode
+
+In a word combinatorics framework, the sequence may be defined as
+a STL string  as follow:
+
+ @code
+ typedef std::string Word;                   //sequence type
+ typedef Word::iterator Iterator;            //iterator type
+ @endcode
+
+
+ In digital geometry, a primitive is usually defined as a specific 
+digital object (a simply 8-connected digital curve or the Gauss 
+digitization of a disk are examples of primitives). In order 
+to recall that we only focus on parts of sequences, the term 
+<em>segment</em> is used instead of primitive.
+ 
+More precisely, a segment is a subsequence having a given property P, which
+can be built from conjunctions and disjunctions of extra properties. However, 
+the resulting property P has to be true for any subsequence of any segment. 
+For instance, the properties "to be a 4-connected DSS" or "to be a balanced word"
+can define a segment, but "to contain at least k elements (k > 1)" cannot define a 
+segment because it does not hold for subsequences of strictly less than k elements.  
+
+
+ \section geometrySegments Detection of segments. 
+
+
+Since the goal is to decompose a sequence into segments, we focus on their detection
+along the sequence. Detection algorithms should verify the concept CSegmentComputer. 
+A CSegmentComputer model should define the following inner types:
+
+ - Iterator: the sequence iterator.
+ - ReverseIterator, defined as std::reverse_iterator<Iterator>.
+ - ReverseSegmentComputer: same model, but defined from ReverseIterator instead of Iterator.
+ 
+In addition to the default and copy constructors, 
+ it should also define the following methods :
+
+ - void init ( const Iterator& it ) : initialise the algorithm from one element.
+ - bool extend ( const Iterator& it ) : extend the current segment to the next element and return TRUE if it is possible, FALSE otherwise. 
+
+The detection is incremental. A segment is initialised at a starting element  
+and then can be extended to the next element if the property P still holds. 
+
+Note that the input parameters are iterators (and not elements) to be 
+able to deal with any element types. Moreover, when passed as input 
+parameters, iterators are assumed to have been incremented and their
+ validity is assumed to have been checked. 
+
+A model of CSegmentComputer is the class \ref ArithmeticalDSS, 
+devoted to the dynamic recognition of DSSs, 
+ defined as a sequence of connected points (x,y)
+ such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
+ (see Debled and Reveilles, 1995).
+
+ Here is a short example of how to use this class in the 8-connected case:
+ @code 
+
+ typedef PointVector<2,int> Point;               //element type
+ typedef std::vector<Point> DigitalCurve;        //sequence type
+ typedef DigitalCurve::iterator Iterator;        //iterator type
+ typedef ArithmeticalDSS<Iterator, int, 8> DSS8; //segment computer type
+
+ DigitalCurve contour;                           //instance of sequence 
+ contour.push_back(Point(0,0));                  //input elements
+ contour.push_back(Point(1,1));
+ contour.push_back(Point(2,1));
+ contour.push_back(Point(3,2));
+ contour.push_back(Point(4,2));
+ contour.push_back(Point(5,2));
+ contour.push_back(Point(6,3));
+
+ // Add points while it is possible
+ Iterator i = contour.begin();
+ DSS8 theDSS8;                                   //instance of the segment computer
+ theDSS8.init(i);                                //initialisation
+ do { i++; } while ( (i!=contour.end())  
+                   &&(theDSS8.extend(i)) );      //extension of the segment
+ @endcode
+
+ Here is a short example of how to use this class in the 4-connected case:
+ @code 
+
+ typedef PointVector<2,int> Point;               //element type
+ typedef std::vector<Point> DigitalCurve;        //sequence type
+ typedef DigitalCurve::iterator Iterator;        //iterator type
+ typedef ArithmeticalDSS<Iterator, int, 4> DSS4; //segment computer type
+
+ DigitalCurve contour;                           //instance of sequence 
+ contour.push_back(Point(0,0));                  //input elements
+ contour.push_back(Point(1,0));
+ contour.push_back(Point(1,1));
+ contour.push_back(Point(2,1));
+ contour.push_back(Point(3,1));
+ contour.push_back(Point(3,2));
+ contour.push_back(Point(4,2));
+ contour.push_back(Point(5,2));
+ contour.push_back(Point(6,2));
+ contour.push_back(Point(6,3));
+
+ // Add points while it is possible
+ Iterator i = contour.begin();
+ DSS4 theDSS4;                                   //instance of the segment computer
+ theDSS4.init(i);                                //initialisation
+ do { i++; } while ( (i!=contour.end())  
+                   &&(theDSS4.extend(i)) );      //extension of the segment
+ @endcode
+
+ The resulting DSSs of the two previous pieces of code are drawing below:
+
+ <table>
+ <tr>
+ <td>
+ @image html DSS8.png  "8-connected DSS drawn with the paving mode" 
+ @image latex DSS8.png  "8-connected DSS drawn with the paving mode" width=5cm
+ </td>
+ <td>
+ @image html DSS4.png  "4-connected DSS drawn with the grid mode"
+ @image latex DSS4.png  "4-connected DSS in the grid drawing mode" width=5cm
+ </td>
+ </tr>
+ </table>
+
+ See file examples/geometry/ArithmeticalDSS.cpp for the whole code and 
+see \ref dgtalboard.dox for the drawing mechanism. 
+
+ \section geometrySegmentsExtraction Segments Extraction.
+
+A given sequence contains a finite set of segments verifying a given 
+property P.  
+A <em>decomposition</em> is a subset of the whole set of segments, 
+such that (i) each element of the sequence belongs to a segment
+of the subset and (ii) no segment contains another segment of 
+the subset. Due to (ii), the segments 
+of a decomposition can be ordered without ambiguity
+(according to the position of their first element
+for instance). 
+
+Decomposition algorithms should verify the concept CDecomposition. 
+A CDecomposition model should define the following inner type:
+
+ - SegmentIterator: a model of the concept CSegmentIterator
+ 
+It should also define a constructor taking as input parameters: 
+
+ - begin/end iterators of the sequence. 
+ - an instance of a model of CSegmentComputer.
+ - a boolean equal to TRUE if the sequence has to be processed as a circular one, FALSE otherwise. 
+
+Note that a model of CSegmentIterator should define the following methods :
+
+ - default and copy constructors
+ - dereference operator: return an instance of a model of CSegmentComputer.
+ - getBack(), getFirst(): return iterators on the sequence, respectively, 
+at the first element of the sequence and after the last element of the sequence. 
+ - intersectPrevious(), intersectNext(): return TRUE if the current segment intersects, respectively, the previous and the next one  (when they exist), FALSE otherwise. 
+
+
+	\subsection geometryGreedyDecomposition Greedy decomposition
+
+The first and simplest decomposition is the greedy one: 
+from a starting point, extend a segment while it is possible, 
+get the last point of the resulting segment (or the next point)
+and iterate.
+This decomposition is implemented in the class GreedyDecomposition.   
+
+In the short example below, a digital curve stored in a STL vector
+is segmented into 8-connected DSSs whose parameters are sent to 
+the standard output.
+@code 
+ 
+typedef PointVector<2,int> Point;               //element type
+typedef std::vector<Point> DigitalCurve;        //sequence type
+typedef DigitalCurve::iterator Iterator;        //iterator type
+typedef ArithmeticalDSS<Iterator, int, 8> DSS;  //segment computer type
+typedef GreedyDecomposition<DSS> Decomposition; //decomposition type
+
+DigitalCurve curve;                             //instance of a sequence
+curve.push_back(Point(1,1));                    //input elements
+curve.push_back(Point(2,1));
+curve.push_back(Point(3,2));
+curve.push_back(Point(4,2));
+curve.push_back(Point(5,2));
+curve.push_back(Point(6,2));
+curve.push_back(Point(7,2));
+curve.push_back(Point(8,1));
+curve.push_back(Point(9,1));
+
+DSS dssRecognition;                             //instance of segment computer
+Decomposition theDecomposition(
+        curve.begin(), curve.end(), 
+        dssRecognition, false);                 //instance of decomposition
+				 
+Decomposition::ConstIterator i = theDecomposition.begin();
+for ( ; i != theDecomposition.end(); ++i) {     //iterate on the segments
+	DSS currentSegment(*i);
+	trace.info() << currentSegment << std::endl;	//standard output
+} 
+
+@endcode
+
+If you want to get the segmentation of the digital curve
+when it is scanned in the reverse way, you can use the reverse
+iterator of the STL vector:   
+@code 
+...
+typedef Sequence::reverse_iterator Iterator;  //iterator type
+...
+Decomposition theDecomposition(
+        curve.rbegin(), curve.rend(), 
+        dssRecognition, false);               //instance of decomposition
+...
+@endcode
+
+The resulting segmentations are shown in the figures below:
+
+ <table>
+ <tr>
+ <td>
+ @image html left_right.png  "segmented from left to right" 
+ @image latex left_right.png  "segmented from left to right" width=5cm
+ </td>
+ <td>
+ @image html right_left.png  "segmented from right to left"
+ @image latex right_left.png  "segmented from right to left" width=5cm
+ </td>
+ </tr>
+ </table>
+
+ See file examples/geometry/greedy-dss-decomposition.cpp for another example
+using the class FreemanChain. 
+
+\subsection geometryUniqueDecomposition Unique decomposition into maximal segments.
+
+
+A unique and richer decomposition is the set of <em>maximal segments</em>
+(a maximal segment is a segment that cannot be contained in a greater segment). 
+This decomposition is implemented in the class MaximalSegments.   
+
+In the previous decomposition code, instead of the line: 
+@code 
+typedef GreedyDecomposition<DSS> Decomposition; //decomposition type
+@endcode
+it is enough to write the following line:
+@code 
+typedef MaximalSegments<DSS> Decomposition; //decomposition type
+@endcode
+to get the following figure:
+ @image html maxseg.png  "maximal segments"
+ @image latex maxseg.png  "maximal segments" width=2.5cm
+
+
+See file examples/geometry/convex-and-concave-parts.cpp
+for an example of how to use maximal DSSs to decompose a digital curve
+ into convex and concave parts. 
+
+\section geometryDecompositionProblems Common questions.
+
+	\subsection geometryDecompositionProblems1 Open or closed sequence ?
+
+In digital geometry, we often have to process open and closed digital curves
+in two different ways. For this, we need to know whether a given digital curve
+is open or closed. However, any digital curve may be viewed both as an open 
+digital curve or as a closed one (possibly disconnected!). The same applies 
+for sequences of elements. Any sequence may be viewed as circular or not. 
+In DGtal, the user can choose to process the same sequence as circular or 
+not.  
+
+Let us take as example the computation of the set of maximal digital 
+straight segments. The same digital curve can be processed as open or closed
+as illustrated below: 
+
+ <table>
+ <tr>
+ <td>
+ @image html ClosedCurveProcessedAsOpen.png  "processed as open" width=5cm
+ @image latex ClosedCurveProcessedAsOpen.png  "processed as open" width=5cm
+ </td>
+ <td>
+ @image html ClosedCurveProcessedAsClosed.png  "processed as closed" width=5cm
+ @image latex ClosedCurveProcessedAsClosed.png  "processed as closed" width=5cm
+ </td>
+ </tr>
+ </table>
+
+When an open digital curve (the first and last points are not connected)
+is processed as a closed one, it is merely processed as a closed but disconnected
+curve just as any other disconnected curve. As shown below, two consecutive
+maximal segments may not intersect in this case.  
+
+ @image html DisconnectedCurveDecomposition.png  "Decomposition of a disconnected curve into maximal 4-connected DSSs" width=5cm
+ @image latex DisconnectedCurveDecomposition.png  "Decomposition of a disconnected curve into maximal 4-connected DSSs" width=5cm
+
+\section geometryImplementation
+
+TODO  brief description of the implementation
+
+*/
+
+}
+
+
+
