@@ -15,71 +15,60 @@
  **/
 
 /**
- * @file DGtalCairo-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @file kernelDomain.cpp
+ * @ingroup Examples
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @date 2011/03/05
  *
- * @date 2011/19/03
- *
- * Simple example of class DGtalCairo.
+ * An example file named demo-kernel-domain.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-//#include <QtGui/qapplication.h>
+#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/io-viewers/DGtalBoard.h"
 
+#ifdef WITH_GMP
+#include <gmpxx.h>
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
-
 
 ///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
 
 int main( int argc, char** argv )
 {
-
- //QApplication application(argc,argv);
- DGtalCairo viewer;
- //viewer.show();
-
- 
- 
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
- Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
- 
- // viewer <<  SetMode3DCairo( p1.styleName(), "Grid" );
-
- viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+  //QApplication application(argc,argv);
   
-
- //viewer << SetMode3DCairo(domain.styleName(), "PavingGrids");
- viewer << domain;// << DGtalCairo::updateDisplay;
- viewer.setCameraPosition(0.500000, 0.500000, 11.274194);
- viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
- viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
- viewer.saveCairo("dgtalCairo-4-modes.png", DGtalCairo::CairoPNG, 1200, 800);
+  typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
+  typedef MySpace::Point MyPoint;
+  typedef HyperRectDomain<MySpace> MyDomain;
+  MyPoint p1( 0, 0, 0 );
+  MyPoint p2( 5, 5 ,5 );
+  MyPoint p3( 2, 3, 4 );
+  MyDomain domain( p1, p2 );
+  DGtalCairo viewer; // for 3D visualization
+  //viewer.show();
+  viewer << domain;  
+  viewer << p1 << p2 << p3;
+  
+  //viewer<< DGtalQGLViewer::updateDisplay;
+  viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
+  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer.saveCairo("demo-kernel-2.png", DGtalCairo::CairoPNG, 1200, 800);
  
- //return application.exec();
+  //return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
