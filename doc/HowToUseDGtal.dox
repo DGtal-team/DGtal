@@ -84,7 +84,6 @@ FIND_PACKAGE(DGtal 0.3.1 REQUIRED)
 @endcode
 that will produce an error if your DGtal installed library is an
 older version than 0.3.1.
-
 */
 
 }
