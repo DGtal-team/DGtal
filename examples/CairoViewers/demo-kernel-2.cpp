@@ -15,11 +15,11 @@
  **/
 
 /**
- * @file kernelDomain.cpp
- * @ingroup Examples
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * @date 2011/03/05
+ * @file   demo-kernel-2.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * An example file named demo-kernel-domain.
  *
@@ -28,13 +28,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -48,27 +46,25 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  //QApplication application(argc,argv);
-  
   typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
   typedef MySpace::Point MyPoint;
   typedef HyperRectDomain<MySpace> MyDomain;
+
   MyPoint p1( 0, 0, 0 );
   MyPoint p2( 5, 5 ,5 );
   MyPoint p3( 2, 3, 4 );
   MyDomain domain( p1, p2 );
-  DGtalCairo viewer; // for 3D visualization
-  //viewer.show();
+
+  DGtalCairo viewer;
+
   viewer << domain;  
   viewer << p1 << p2 << p3;
-  
-  //viewer<< DGtalQGLViewer::updateDisplay;
+
   viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
   viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
   viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
-  viewer.saveCairo("demo-kernel-2.png", DGtalCairo::CairoPNG, 1200, 800);
- 
-  //return application.exec();
+  
+  viewer.saveCairo("demo-kernel-2.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -17,11 +17,11 @@
 #pragma once
 
 /**
- * @file DGtalCairo.h
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/01/03
+ * @file   dgtalCairo.h
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Header file for module DGtalCairo.cpp
  *
@@ -46,10 +46,7 @@
 
 #include <map> // MT
 
-//#include <QGLViewer/qglviewer.h>
 #include <QColor>
-//#include <QGLWidget>
-//#include <QKeyEvent>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
@@ -96,7 +93,7 @@ namespace DGtal
  * Description of class 'DGtalCairo' <p>
  * \brief Aim:
  */
-  class DGtalCairo// : public QGLViewer
+  class DGtalCairo
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -104,10 +101,10 @@ public:
   
   DGtalCairo(); // MT
   
-  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
-  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
-  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
-  void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
+  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; } // MT
+  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; } // MT
+  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; } // MT
+  void setNearFar(double near, double far) { ZNear = near; ZFar = far; } // MT
   
   void saveCairo(const char *filename, CairoType type, int width, int height); // MT
   
@@ -397,14 +394,8 @@ private:
   
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
-
-  //qglviewer::Vec myBoundingPtUp;
-  //qglviewer::Vec myBoundingPtLow;
-
-  //GLuint myListToAff;
+  
   unsigned int myNbListe;
-  //qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
-  //QPoint myPosSelector;
   
   // MT
   void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
@@ -417,6 +408,7 @@ private:
   
   double ZNear;
   double ZFar;
+  // MT
   
     // ------------------------- Hidden services ------------------------------
 protected:
@@ -446,31 +438,14 @@ protected:
    *
    **/
   void glDrawGLPointel(pointGL pointel);
-  
-  
 
-
-  
-  //virtual void keyPressEvent(QKeyEvent *e);
-  
-  /*struct compFarthestFromCamera{
-    qglviewer::Vec posCam;
-    bool operator() ( voxelGL s1, voxelGL s2){
-      float dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
-      float dist2= sqrt((posCam.x-s2.x)*(posCam.x-s2.x)+ (posCam.y-s2.y)*(posCam.y-s2.y)+(posCam.z-s2.z)*(posCam.z-s2.z));
-      return dist1>dist2;
-    } 
-  };*/
   
 
 
 
 protected :
   virtual void drawWithNames();
-  //virtual void draw(); // MT
   virtual void init();
-  virtual QString helpString() const;
-  //virtual void postSelection(const QPoint& point);
   
 
 
@@ -557,12 +532,6 @@ private:
    * transparency value but you nedd to take into account the z-buffer
    * during the Open-GL based rendering.
    *
-   \code
-   DGtalQGLviewer viewer;
-   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
-   ...
-   \endcode
-   * @see DGtalQGLviewer
    */
   struct CustomColors3DCairo : public DrawWithCairoModifier
   {

@@ -15,12 +15,11 @@
  **/
 
 /**
- * @file DGtalCairo-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/19/03
+ * @file   dgtalCairo-5-custom.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Simple example of class DGtalCairo.
  *
@@ -29,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-//#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -47,24 +45,22 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  DGtalCairo viewer;
 
- //QApplication application(argc,argv);
- DGtalCairo viewer;
- //viewer.show();
+  Point p1( -1, -1, -2 );
+  Point p2( 2, 2, 3 );
+  Domain domain( p1, p2 );
 
-  
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
- Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
- viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
- viewer << p1 << p2 << p3;
-  
-  //viewer <<  SetMode3DCairo( p1.styleName(), "Grid" );
+  Point p3( 1, 1, 1 );
+  Point p4( 2, -1, 3 );
+  Point p5( -1, 2, 3 );
+  Point p6( 0, 0, 0 );
+  Point p0( 0, 2, 1 );
+
+  viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
+  viewer << p1 << p2 << p3;
+
+  //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
   viewer << CustomColors3DCairo(QColor(250, 0,0),QColor(250, 0,0));
   viewer << p4 << p5 ;
   viewer <<  SetMode3DCairo( p1.styleName(), "Both" );
@@ -73,15 +69,14 @@ int main( int argc, char** argv )
   viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
   viewer << p0;
 
-
   viewer << SetMode3DCairo(domain.styleName(), "Paving");
-  viewer << domain;// << DGtalCairo::updateDisplay;
+  viewer << domain;
+
   viewer.setCameraPosition(0.500000, 0.500000, 9.067706);
   viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
   viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
-  viewer.saveCairo("dgtalCairo-5-custom.png", DGtalCairo::CairoPNG, 1200, 800);
-
- //return application.exec();
+  
+  viewer.saveCairo("dgtalCairo-5-custom.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -15,11 +15,11 @@
  **/
 
 /**
- * @file DGtalCairo.ih
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/01/03
+ * @file   dgtalCairo.ih
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Implementation of inline methods defined in DGtalCairo.h
  *
@@ -90,7 +90,6 @@ void
 DGtal::DGtalCairo::createNewLineList(){
   std::vector< lineGL > v;
   myLineSetList.push_back(v);
-  //fprintf(stdout, "createNewLineList\n");
 }
 
 
@@ -185,7 +184,8 @@ DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
 
 INLINE
 void
-DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, double size)
+{
   pointGL p;
   p.x=x;
   p.y=y;
@@ -241,7 +241,8 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
 INLINE
 void
 DGtal::DGtalCairo::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
+			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor)
+{
   quadGL aQuad;
   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
@@ -361,7 +362,8 @@ DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool
 INLINE
 void 
 DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size, 
-				    const QColor &color){
+				    const QColor &color)
+{
   pointGL pt;
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; pt.R=color.red();
   pt.G=color.green(); pt.B=color.blue(); pt.T=color.alpha();

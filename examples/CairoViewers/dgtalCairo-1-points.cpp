@@ -15,12 +15,11 @@
  **/
 
 /**
- * @file dgtalQGLviewer-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/19/03
+ * @file   dgtalCairo-1-points.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Simple example of class DGtalCairo.
  *
@@ -29,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-//#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -46,28 +44,22 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  Point p1( 0, 0, 0 );
+  Point p2( 5, 5 ,5 );
+  Point p3( 2, 3, 4 );
+  Domain domain( p1, p2 );
 
- //QApplication application(argc,argv);
+  DGtalCairo viewer;
 
- Point p1( 0, 0, 0 );
- Point p2( 5, 5 ,5 );
- Point p3( 2, 3, 4 );
- Domain domain( p1, p2 );
+  viewer << domain;  
+  viewer << p1 << p2 << p3;
 
- DGtalCairo viewer;
- //viewer.show();
- 
- viewer << domain;  
- viewer << p1 << p2 << p3;
- 
- //viewer<< DGtalCairo::updateDisplay;
- viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
- viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
- viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
- //viewer.setNearFar(4.578200, 22.578199);
- viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 1200, 800);
- 
- //return application.exec();
+  viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
+  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+  //viewer.setNearFar(4.578200, 22.578199);
+
+  viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

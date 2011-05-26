@@ -15,11 +15,11 @@
  **/
 
 /**
- * @file DGtalCairo.cpp
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/01/03
+ * @file   dgtalCairo.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Implementation of methods defined in DGtalCairo.h
  *
@@ -91,8 +91,7 @@ DGtal::DGtalCairo::isValid() const
 
 void
 DGtal::DGtalCairo::drawWithNames()
-{   
-  
+{    
   /*for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
   }
@@ -103,8 +102,6 @@ DGtal::DGtalCairo::drawWithNames()
   for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
   }*/
-
-
 }
 
 // http://www.libqglviewer.com/refManual/classqglviewer_1_1Camera.html#ac4dc649d17bd2ae8664a7f4fdd50360f
@@ -235,22 +232,27 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   switch (type)
   {
     case CairoPDF:
-      surface = cairo_pdf_surface_create (filename, width, height); break;
+      surface = cairo_pdf_surface_create (filename, Viewport[2], Viewport[3]); break;
     case CairoPS:
-      surface = cairo_ps_surface_create (filename, width, height); break;
+      surface = cairo_ps_surface_create (filename, Viewport[2], Viewport[3]); break;
     case CairoEPS:
-      surface = cairo_ps_surface_create (filename, width, height); 
+      surface = cairo_ps_surface_create (filename, Viewport[2], Viewport[3]); 
       cairo_ps_surface_set_eps(surface, true); break;
     case CairoSVG:
-      surface = cairo_svg_surface_create (filename, width, height); break;
+      surface = cairo_svg_surface_create (filename, Viewport[2], Viewport[3]); break;
     case CairoPNG:
     default:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, Viewport[2], Viewport[3]);
   }
   
   cr = cairo_create (surface);
   
-  // Draw the shapes.
+  // Fill the background with gray
+  cairo_set_source_rgba (cr, .3, .3, .3, 1.);
+  cairo_rectangle (cr, 0, 0, Viewport[2], Viewport[3]);
+  cairo_fill (cr);
+  
+  // Draw the shapes
   
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
@@ -266,10 +268,8 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 	      
 		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
 		
-		cairo_set_line_width (cr, 0.5); // arbitraire
-		
 		double x1, y1, x2, y2, x3, y3, x4, y4;
-		double width=(*s_it).size/150.; // arbitraire
+		double width=(*s_it).size/120.; // arbitraire
 		
 		//z+
 		//glNormal3f( 0.0, 0.0, 1.0);
@@ -277,42 +277,42 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//z-
 		//glNormal3f( 0.0, 0.0, -1.0);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//x+
 		//glNormal3f( 1.0, 0.0, 0.0);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//x-
 		//glNormal3f( -1.0, 0.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//y+
 		//glNormal3f( 0.0, 1.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//y-
 		//glNormal3f( 0.0, -1.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -341,7 +341,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		cairo_line_to (cr, x2, y2);
 		
 		//cairo_set_line_width (cr, (*s_it).width);
-		cairo_set_line_width (cr, 0.1); // arbitraire car non used
+		cairo_set_line_width (cr, 1.); // arbitraire car non set
 		
 		//cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
 		//cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -366,9 +366,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 	  {
 	      cairo_save (cr);
 	      
-		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
-		
-		cairo_set_line_width (cr, 0.5); // arbitraire
+		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
 		
 		double x1, y1, x2, y2, x3, y3, x4, y4;
 		double width=(*s_it).width;
@@ -379,42 +377,42 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//z-
 		//glNormal3f( 0.0, 0.0, -1.0);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//x+
 		//glNormal3f( 1.0, 0.0, 0.0);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//x-
 		//glNormal3f( -1.0, 0.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//y+
 		//glNormal3f( 0.0, 1.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 		//y-
 		//glNormal3f( 0.0, -1.0, 0.0);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); cairo_fill (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -486,28 +484,12 @@ DGtal::DGtalCairo::init()
   myPointSetList.push_back(listePoint);
   myCurrentFillColor = QColor (220, 220, 220);
   myCurrentLineColor = QColor (22, 22, 222, 50);
-  //myDefaultBackgroundColor = backgroundColor (); // TODO
-  myIsBackgroundDefault=true;
-  /*myBoundingPtLow[0]=numeric_limits<double>::max( );
-  myBoundingPtLow[1]=numeric_limits<double>::max( );
-  myBoundingPtLow[2]=numeric_limits<double>::max( );
 
-  myBoundingPtUp[0]=numeric_limits<double>::min( );
-  myBoundingPtUp[1]=numeric_limits<double>::min( );
-  myBoundingPtUp[2]=numeric_limits<double>::min( );*/
+  myIsBackgroundDefault=true;
   createNewVoxelList(true);
   std::vector<voxelGL>  aKSVoxelList;
   
-  
   myDefaultColor= QColor(255, 255, 255);
-  //camera()->showEntireScene(); // TODO
-  
-  /*setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
-  setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
-  setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
-
-  setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
-  setManipulatedFrame(new ManipulatedFrame());*/
   
   // MT
   camera_position[0] = 5.000000; camera_position[1] = 5.000000; camera_position[2] = 29.893368;
@@ -531,35 +513,6 @@ DGtal::DGtalCairo::sortSurfelFromCamera()
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }*/
 }
-
-
-
-/*void 
-DGtal::DGtalCairo::postSelection(const QPoint& point)
-{
-  camera()->convertClickToLine(point, myOrig, myDir);
-  bool found;
-  this->myPosSelector= point;
-  mySelectedPoint = camera()->pointUnderPixel(point, found);
-  if(found){
-    cerr << "Element of liste= " << selectedName() << "selected" << endl; 
-    if(selectedName() !=-1){
-      unsigned int id = abs(selectedName()-1);
-      if(id< myVoxelSetList.size()){
-	cerr << "deleting list="<< id<<endl;
-	myVoxelSetList.erase(myVoxelSetList.begin()+id);
-	updateList(false);
-      }else if (id< myVoxelSetList.size()+myLineSetList.size()){
-	myLineSetList.erase(myLineSetList.begin()+(id-myVoxelSetList.size()));
-	updateList(false);
-      }else if (id< myPointSetList.size()+myLineSetList.size()+myVoxelSetList.size()){
-	myPointSetList.erase(myPointSetList.begin()+(id-myVoxelSetList.size()-myLineSetList.size()));
-	updateList(false);
-      } 
-      
-    }
-  }
-}*/
 
 
 
@@ -817,66 +770,6 @@ DGtal::DGtalCairo::glDrawGLPointel(pointGL pointel)
  gluSphere(quadric, pointel.size, 10, 10);
  glPopMatrix();*/
   
-}
-  
- 
-
-
-
-/*void 
-DGtal::DGtalCairo::keyPressEvent(QKeyEvent *e)
-{
-  bool handled = false;
-  
-  if ((e->key()==Qt::Key_T) ){
-    handled=true;
-    cerr << "sorting surfel according camera position...";
-    sortSurfelFromCamera();
-    cerr << " [done]"<< endl;
-    updateList();    
-    updateGL();
-  }
-  if( (e->key()==Qt::Key_B)){
-    handled=true;
-    myIsBackgroundDefault=!myIsBackgroundDefault;
-    if(!myIsBackgroundDefault){
-      setBackgroundColor(QColor(255, 255,255));
-    }else{
-      setBackgroundColor(QColor(51, 51, 51));
-    }
-    updateGL();
-  }
-  if( (e->key()==Qt::Key_L)){
-    restoreStateFromFile();
-    updateGL();
-  }
-
-  
-
-  if (!handled)
-    QGLViewer::keyPressEvent(e);
-}*/
-
-
-QString 
-DGtal::DGtalCairo::helpString() const
-{
-  QString text("<h2> DGtalCairo</h2>");
-  text += "Use the mouse to move the camera around the object. ";
-  text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
-  text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";
-  text += "Pressing <b>Alt</b> and one of the function keys (<b>F1</b>..<b>F12</b>) defines a camera keyFrame. ";
-  text += "Simply press the function key again to restore it. Several keyFrames define a ";
-  text += "camera path. Paths are saved when you quit the application and restored at next start.<br><br>";
-  text += "Press <b>F</b> to display the frame rate, <b>A</b> for the world axis, ";
-  text += "<b>Alt+Return</b> for full screen mode and <b>Control+S</b> to save a snapshot. ";
-  text += "See the <b>Keyboard</b> tab in this window for a complete shortcut list.<br><br>";
-  text += "Double clicks automates single click actions: A left button double click aligns the closer axis with the camera (if close enough). ";
-  text += "A middle button double click fits the zoom of the camera and the right button re-centers the scene.<br><br>";
-  text += "A left button double click while holding right button pressed defines the camera <i>Revolve Around Point</i>. ";
-  text += "See the <b>Mouse</b> tab and the documentation web pages for details.<br><br>";
-  text += "Press <b>Escape</b> to exit the viewer.";
-  return text;
 }
 
 

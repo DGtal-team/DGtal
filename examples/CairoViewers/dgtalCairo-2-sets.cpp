@@ -15,12 +15,11 @@
  **/
 
 /**
- * @file DGtalCairo-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @date 2011/19/03
+ * @file   dgtalCairo-2-sets.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
  *
  * Simple example of class DGtalCairo.
  *
@@ -29,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-//#include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -47,30 +45,27 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  DGtalCairo viewer;
 
- //QApplication application(argc,argv);
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
 
- DGtalCairo viewer;
- //viewer.show();
+  viewer << domain;
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
- viewer << domain;
- 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- 
- shape_set.erase(Point(3,3,3));
- shape_set.erase(Point(6,6,6));
- viewer << shape_set;// << DGtalCairo::updateDisplay;
- viewer.setCameraPosition(5.000000, 5.000000, 29.893368);
- viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
- viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
- viewer.saveCairo("dgtalCairo-2-sets.png", DGtalCairo::CairoPNG, 1200, 800);
- 
- //return application.exec();
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+
+  shape_set.erase(Point(3,3,3));
+  shape_set.erase(Point(6,6,6));
+  viewer << shape_set;
+
+  viewer.setCameraPosition(5.000000, 5.000000, 29.893368);
+  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
+  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+  
+  viewer.saveCairo("dgtalCairo-2-sets.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
