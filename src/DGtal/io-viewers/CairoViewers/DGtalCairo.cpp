@@ -44,7 +44,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-//using namespace qglviewer;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,19 +105,8 @@ DGtal::DGtalCairo::drawWithNames()
 
 // http://www.libqglviewer.com/refManual/classqglviewer_1_1Camera.html#ac4dc649d17bd2ae8664a7f4fdd50360f
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+void DGtal::DGtalCairo::precompute_projection_matrix()
 {
-      //GLint    Viewport[4];
-      //GLdouble Projection[16], Modelview[16];
-
-      // Precomputation begin
-      
-      //glGetIntegerv(GL_VIEWPORT         , Viewport);
-      //glGetDoublev (GL_MODELVIEW_MATRIX , Modelview);
-      //glGetDoublev (GL_PROJECTION_MATRIX, Projection);
-
-      double matrix[16];
-      
       // Projection: from qglviewer
       /*const float f = 1.0/tan(fieldOfView()/2.0);
       projectionMatrix_[0]  = f/aspectRatio();
@@ -180,9 +168,10 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
 		      matrix[l+4*m] = sum;
 	      }
       }
-      
-      // Precomputation end
-	      
+}
+
+void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+{
       double v[4], vs[4];
       v[0]=x3d; v[1]=y3d; v[2]=z3d; v[3]=1.0;
 
@@ -201,8 +190,7 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
 
       vs[0] = vs[0] * Viewport[2] + Viewport[0];
       vs[1] = vs[1] * Viewport[3] + Viewport[1];
-
-      //return Vec(vs[0], Viewport[3]-vs[1], vs[2]);
+      
       x2d = vs[0];
       y2d = Viewport[3]-vs[1];
 }
@@ -223,8 +211,11 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
     glClipPlane(GL_CLIP_PLANE0+i, eq );
   }  
   glPopMatrix();*/
+  for(unsigned int i =0; i< myClippingPlaneList.size(); i++)
+    fprintf(stdout, "-> ClippingPlane not implemented in DGtalCairo\n");
    
   Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = width; Viewport[3] = height;
+  precompute_projection_matrix();
   
   cairo_surface_t *surface;
   cairo_t *cr;
@@ -459,16 +450,24 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
     glEnd();
     glEnable(GL_LIGHTING);
   }*/
-
+  for(unsigned int i=0; i<myQuadList.size(); i++)
+    fprintf(stdout, "-> Quad not YET implemented in DGtalCairo\n");
   
   // Drawing all Khalimsky Space Cells 
-  
-  /*for(unsigned int i=0; i< myKSPointelList.size();i++){
-    glDrawGLPointel(myKSPointelList.at(i));
+  for(unsigned int i=0; i< myKSPointelList.size();i++){
+    //glDrawGLPointel(myKSPointelList.at(i));
+    fprintf(stdout, "-> Khalimsky Pointel not YET implemented in DGtalCairo\n");
   }
   for(unsigned int i=0; i< myKSLinelList.size();i++){
-    glDrawGLLinel(myKSLinelList.at(i));
-  }*/
+    //glDrawGLLinel(myKSLinelList.at(i));
+    fprintf(stdout, "-> Khalimsky Linel not YET implemented in DGtalCairo\n");
+  }
+  
+  // from updateList
+  for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+       s_it != myKSSurfelList.end();
+       ++s_it)
+	  fprintf(stdout, "-> Khalimsky Surfel not YET implemented in DGtalCairo\n");
 }
 
 
