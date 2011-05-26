@@ -52,24 +52,25 @@ PROJECT(Helloworld)
 ADD_EXECUTABLE(helloworld helloworld)
 
 @endcode
+yes
 
-When you have installed DGtal, cmake has created all the configuration
-files that you need to import DGtal setting in your project in the  "${CMAKE_INSTALL_PREFIX}/share/DGtal/CMake/"
-folder. On linux, standard installation will create configuration
+When you installed DGtal, cmake created all the configuration
+files that you would need to import DGtal settings in your project in the  "${CMAKE_INSTALL_PREFIX}/share/DGtal/CMake/"
+folder. For example on linux/unix systems, standard installation creates configuration
 files in /usr/local/share/DGtal/CMake/".
 
 The most important file in this folder is @em DGtalConfig.cmake which
-contains everything you need. Just copy (or better link) this file in
-your project source directory. Then, to link helloworld to DGtal, you have to update the
+contains everything you need. Just copy (or better, link) this file in
+your project source directory. Then, to link helloworld to DGtal, you just have to update the
 CMakeLists.txt such that: 
 
 @code
 PROJECT(Helloworld)
 
+#Required in DGtal
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 FIND_PACKAGE(DGtal REQUIRED)
-
 INCLUDE_DIRECTORIES(${DGTAL_INCLUDE_DIRS})
 LINK_DIRECTORIES(${DGTAL_LIBRARY_DIRS})
 
@@ -82,8 +83,10 @@ for example :
 @code
 FIND_PACKAGE(DGtal 0.3.1 REQUIRED)
 @endcode
-that will produce an error if your DGtal installed library is an
+that will produce an error if your DGtal installed library has an
 older version than 0.3.1.
+
+
 */
 
 }
