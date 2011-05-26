@@ -398,9 +398,11 @@ private:
   unsigned int myNbListe;
   
   // MT
+  void precompute_projection_matrix();
   void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
   
   int Viewport[4];
+  double matrix[16];
       
   double camera_position[3];
   double camera_direction[3];
