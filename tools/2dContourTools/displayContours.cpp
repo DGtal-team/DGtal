@@ -74,7 +74,9 @@ int main( int argc, char** argv )
   general_opt.add_options()
     ("help,h", "display this message")
     ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
-    ("SDP", po::value<std::string>(), "Import contours as a Sequence of Discrete Points (SDP format)")
+    ("SDP", po::value<std::string>(), "Import a contour as a Sequence of Discrete Points (SDP format)")
+    ("drawContourPoint", po::value<double>(), "Used to display contour points")    
+    ("lineWidth", po::value<double>()->default_value(1.0), "Define the linewidth of the contour (SDP format)")    
     ("outputEPS", po::value<std::string>(), "outputEPS <filename> specify eps format (default format output.eps)")
     ("outputSVG", po::value<std::string>(), "outputSVG <filename> specify svg format.")
     ("outputFIG", po::value<std::string>(), "outputFIG <filename> specify fig format.")
@@ -105,8 +107,8 @@ int main( int argc, char** argv )
   
   
   
+  double lineWidth=  vm["lineWidth"].as<double>();
   
-
   double scale=1.0;
   if(vm.count("scale")){
     scale = vm["scale"].as<double>();
@@ -154,16 +156,30 @@ if(vm.count("backgroundImage")){
  
 
 if(vm.count("SDP")){
-  string fileName = vm["SDP"].as<string>();
-  vector< vector< Z2i::Point > > vectContours = PointListReader< Z2i::Point >::getPolygonsFromFile(fileName); 
-  for(unsigned int i=0; i<vectContours.size(); i++){
-    vector<LibBoard::Point> contour;
-    for(unsigned int j=0; j<vectContours.at(i).size(); j++){
-      contour.push_back(LibBoard::Point((double)(vectContours.at(i).at(j)[0]),(double)(vectContours.at(i).at(j)[1])));
-    }
-    aBoard.setPenColor(DGtalBoard::Color::Red);
-    aBoard.drawPolyline(contour);
+  bool drawPoints= vm.count("drawContourPoint");
+  bool invertYaxis = vm.count("invertYaxis");
+  double pointSize=1.0;
+  if(drawPoints){
+    pointSize = vm["drawContourPoint"].as<double>();
   }
+  string fileName = vm["SDP"].as<string>();
+  vector< Z2i::Point >  contour = PointListReader< Z2i::Point >::getPointsFromFile(fileName); 
+  vector<LibBoard::Point> contourPt;
+  for(unsigned int j=0; j<contour.size(); j++){
+    LibBoard::Point pt((double)(contour.at(j)[0]),
+		       (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
+    contourPt.push_back(pt);
+    if(drawPoints){
+      aBoard.fillCircle(pt.x, pt.y, pointSize);
+    }
+  }
+  
+  aBoard.setPenColor(DGtalBoard::Color::Red);
+  aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+  aBoard.setLineWidth (lineWidth);
+  aBoard.drawPolyline(contourPt);
+  
+  
  }
 
  
