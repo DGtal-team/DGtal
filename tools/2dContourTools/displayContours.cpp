@@ -43,6 +43,8 @@
 #include "DGtal/io-viewers/readers/PointListReader.h"
 #include "DGtal/io-viewers/DGtalBoard.h"
 
+#include "DGtal/kernel/RealPointVector.h"
+
 #ifdef WITH_MAGICK
 #include "DGtal/io-viewers/readers/MagickReader.h"
 #endif
@@ -75,6 +77,7 @@ int main( int argc, char** argv )
     ("help,h", "display this message")
     ("FreemanChain,f", po::value<std::string>(), "FreemanChain file name")
     ("SDP", po::value<std::string>(), "Import a contour as a Sequence of Discrete Points (SDP format)")
+    ("SFP", po::value<std::string>(), "Import a contour as a Sequence of Floating Points (SFP format)")
     ("drawContourPoint", po::value<double>(), "Used to display contour points")    
     ("lineWidth", po::value<double>()->default_value(1.0), "Define the linewidth of the contour (SDP format)")    
     ("outputEPS", po::value<std::string>(), "outputEPS <filename> specify eps format (default format output.eps)")
@@ -96,7 +99,7 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP"))&&
+  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP")) && not(vm.count("SFP"))&&
 				   not(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
@@ -155,24 +158,42 @@ if(vm.count("backgroundImage")){
  
  
 
-if(vm.count("SDP")){
+if(vm.count("SDP") || vm.count("SFP")){
   bool drawPoints= vm.count("drawContourPoint");
   bool invertYaxis = vm.count("invertYaxis");
   double pointSize=1.0;
   if(drawPoints){
     pointSize = vm["drawContourPoint"].as<double>();
   }
-  string fileName = vm["SDP"].as<string>();
-  vector< Z2i::Point >  contour = PointListReader< Z2i::Point >::getPointsFromFile(fileName); 
   vector<LibBoard::Point> contourPt;
-  for(unsigned int j=0; j<contour.size(); j++){
-    LibBoard::Point pt((double)(contour.at(j)[0]),
-		       (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
-    contourPt.push_back(pt);
-    if(drawPoints){
-      aBoard.fillCircle(pt.x, pt.y, pointSize);
+  if(vm.count("SDP")){
+    string fileName = vm["SDP"].as<string>();
+    vector< Z2i::Point >  contour = 
+      PointListReader< Z2i::Point >::getPointsFromFile(fileName); 
+    for(unsigned int j=0; j<contour.size(); j++){
+      LibBoard::Point pt((double)(contour.at(j)[0]),
+			 (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
+      contourPt.push_back(pt);
+      if(drawPoints){
+	aBoard.fillCircle(pt.x, pt.y, pointSize);
+      }
     }
   }
+ 
+  if(vm.count("SFP")){
+    string fileName = vm["SFP"].as<string>();
+    vector<  RealPointVector<2>  >  contour = 
+      PointListReader<  RealPointVector<2>  >::getPointsFromFile(fileName); 
+    for(unsigned int j=0; j<contour.size(); j++){
+      LibBoard::Point pt((double)(contour.at(j)[0]),
+			 (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
+      contourPt.push_back(pt);
+      if(drawPoints){
+	aBoard.fillCircle(pt.x, pt.y, pointSize);
+      }
+    }
+  }
+  
   
   aBoard.setPenColor(DGtalBoard::Color::Red);
   aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
