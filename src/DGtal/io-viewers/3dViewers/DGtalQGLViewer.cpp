@@ -99,6 +99,7 @@ DGtal::DGtalQGLViewer::drawWithNames(){
 void
 DGtal::DGtalQGLViewer::draw()
 {
+
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
@@ -113,7 +114,17 @@ DGtal::DGtalQGLViewer::draw()
   }  
   glPopMatrix();   
   
+  Vec centerS = sceneCenter(); 
+  Vec posCam = camera()->position();
+  double distCam =sqrt((posCam.x-centerS.x)*(posCam.x-centerS.x)+
+		       (posCam.y-centerS.y)*(posCam.y-centerS.y)+
+		       (posCam.z-centerS.z)*(posCam.z-centerS.z));
+  
+  
   for(unsigned int i=0; i<myPointSetList.size(); i++){
+    if(myPointSetList.at(i).size()!=0){
+      glPointSize((myPointSetList.at(i).at(0).size)/distCam);
+    }
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }   
  
@@ -261,7 +272,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
-  
   unsigned int listeID=0;
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
@@ -387,14 +397,13 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_POINT_SMOOTH);
     glDisable(GL_LIGHTING);
-    if(myPointSetList.at(i).size()!=0){
-      glPointSize((*myPointSetList.at(i).begin()).size);
-    }
+    
     glPushName(myNbListe);  
     glBegin(GL_POINTS);      
     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it){
+
       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
       glVertex3f((*s_it).x,  (*s_it).y, (*s_it).z);
     }
