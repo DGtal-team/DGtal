@@ -296,7 +296,7 @@ DGtal::RealPointVector<dim>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
   ASSERT(dim == 3);
   viewer.addPoint(this->myArray[0],
 		  this->myArray[1],
-		  this->myArray[2],viewer.getLineColor(), 10);
+		  this->myArray[2],viewer.getLineColor());
 
 }
 

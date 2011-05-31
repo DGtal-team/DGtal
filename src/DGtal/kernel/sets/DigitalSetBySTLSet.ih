@@ -529,7 +529,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
 	it != this->end();
         ++it )
     {
-      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor(),3);
+      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor());
     }
 
 }

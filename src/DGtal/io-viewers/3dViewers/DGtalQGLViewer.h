@@ -213,7 +213,8 @@ public:
 
   
   void addKSSurfel(double x, double y, double z, 
-		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor);
+		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+		   bool isOriented= false, bool isOrientedPositively=true);
   
   void addKSVoxel(int x, int y, int z);
   
@@ -221,7 +222,7 @@ public:
   
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
-		  double width=0.02);
+		  double width=0.02, bool isSigned=false, bool signPos=true);
   
   
   
@@ -324,6 +325,8 @@ private:
     double x2, y2, z2;
     double width;
     unsigned int R,G,B,T;
+    bool isSigned;
+    bool signPos;
   };
     
   struct voxelGL{
@@ -413,7 +416,7 @@ protected:
    * 
    *
    **/
-  void glDrawGLLinel(lineGL line);
+  void glDrawGLLinel(lineGL aLinel);
   
   
 
