@@ -99,11 +99,11 @@ int main( int argc, char** argv )
  viewer << voxelB<< voxelA;//
  
  // drawing cells of dimension 2
- SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); // surfel (2,1,3)
- SCell surfelB = K.sCell( Point( 1, 0, 1 ), false ); // surfel (1,0,1)
- Cell surfelC = K.uCell( Point( 1, 2, 1 ) ); // surfel (2,0,1)
- SCell surfelD = K.sCell( Point( 1, 1, 0 ) ); // surfel (2,0,1)
- Cell surfelE = K.uCell( Point( 1, 1, 2 ) ); // surfel (2,0,1)
+ SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); 
+ SCell surfelB = K.sCell( Point( 1, 0, 1 ), false ); 
+ Cell surfelC = K.uCell( Point( 1, 2, 1 ) ); 
+ SCell surfelD = K.sCell( Point( 1, 1, 0 ) );
+ Cell surfelE = K.uCell( Point( 1, 1, 2 ) ); 
  viewer << surfelA << surfelB << surfelC << surfelD << surfelE;
  
  Cell linelA = K.uCell(Point(2,1 ,2));
