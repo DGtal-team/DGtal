@@ -558,13 +558,13 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationNeg();// && testDTFromSet()  ;
-  /*
-     && testDistanceTransformationBorder() 
-     && testDistanceTransformation3D()
-     && testChessboard()
-     && testDTFromSet();*/
- // && ... other tests
+  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationNeg() 
+    && testDTFromSet()  
+    && testDistanceTransformationBorder() 
+    && testDistanceTransformation3D()
+    && testChessboard()
+    && testDTFromSet();
+  //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
