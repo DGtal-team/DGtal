@@ -99,6 +99,7 @@ DGtal::DGtalQGLViewer::drawWithNames(){
 void
 DGtal::DGtalQGLViewer::draw()
 {
+
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
@@ -113,7 +114,17 @@ DGtal::DGtalQGLViewer::draw()
   }  
   glPopMatrix();   
   
+  Vec centerS = sceneCenter(); 
+  Vec posCam = camera()->position();
+  double distCam =sqrt((posCam.x-centerS.x)*(posCam.x-centerS.x)+
+		       (posCam.y-centerS.y)*(posCam.y-centerS.y)+
+		       (posCam.z-centerS.z)*(posCam.z-centerS.z));
+  
+  
   for(unsigned int i=0; i<myPointSetList.size(); i++){
+    if(myPointSetList.at(i).size()!=0){
+      glPointSize((myPointSetList.at(i).at(0).size)/distCam);
+    }
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }   
  
@@ -261,7 +272,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
-  
   unsigned int listeID=0;
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
@@ -346,7 +356,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
     
     glNormal3f( (*s_it).nx, (*s_it).ny, (*s_it).nz);
-    
     glVertex3f((*s_it).x1, (*s_it).y1 , (*s_it).z1);
     glVertex3f((*s_it).x2, (*s_it).y2 , (*s_it).z2);
     glVertex3f((*s_it).x3, (*s_it).y3 , (*s_it).z3);
@@ -387,14 +396,13 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_POINT_SMOOTH);
     glDisable(GL_LIGHTING);
-    if(myPointSetList.at(i).size()!=0){
-      glPointSize((*myPointSetList.at(i).begin()).size);
-    }
+    
     glPushName(myNbListe);  
     glBegin(GL_POINTS);      
     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it){
+
       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
       glVertex3f((*s_it).x,  (*s_it).y, (*s_it).z);
     }
@@ -416,14 +424,17 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
 void
-DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL linel){
+DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
   glPushMatrix();
-  glTranslatef(linel.x1, linel.y1, linel.z1);
-  Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
+  glTranslatef(aLinel.x1, aLinel.y1, aLinel.z1);
+  Vec dir (aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
   glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
   GLUquadric* quadric = gluNewQuadric();
-  glColor4ub(linel.R, linel.G, linel.B, linel.T);
-  gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
+  glColor4ub(aLinel.R, aLinel.G, aLinel.B, aLinel.T);
+  
+  gluCylinder(quadric, (aLinel.signPos || !aLinel.isSigned) ? aLinel.width :0 , 
+	      (aLinel.signPos && aLinel.isSigned) ? 0 :aLinel.width  , 
+	      dir.norm(),10, 4);
   glPopMatrix();  
 }
 

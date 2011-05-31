@@ -275,15 +275,27 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
   switch (spaceDim) {
     
   case 0:
+    if( myPositive)
+      viewer.setFillColor(QColor(20, 20, 250, 255));
+    else
+      viewer.setFillColor(QColor(20, 20, 150, 255));
+    
     viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
     break;
   case 1:
-    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
+    viewer.setFillColor(QColor(20, 200, 200, 255));
+    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
+		      0.02, true, myPositive);
     break;
   case 2:
-      viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel); 
+    
+    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive ); 
     break;
   case 3:
+    if( myPositive)
+      viewer.setFillColor(QColor(20, 20, 250, 255));
+    else
+      viewer.setFillColor(QColor(20, 20, 150, 255));
     viewer.addKSVoxel((int)x, (int) y, (int) z);
     break; 
   } 
