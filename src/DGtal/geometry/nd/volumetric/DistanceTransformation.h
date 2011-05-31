@@ -97,6 +97,7 @@ namespace DGtal
     typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerLong > OutputImage;
   
     typedef typename Image::Value Value;
+    typedef typename Image::Vector Vector;
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
@@ -279,6 +280,9 @@ b     * @param aImage the input image
 
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
+
+    ///Displacement vector to translate temporary images.
+    Vector myDisplacementVector;
 
     ///Copy of the image extent
     Point myExtent;

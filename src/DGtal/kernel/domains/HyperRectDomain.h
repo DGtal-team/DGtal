@@ -577,6 +577,17 @@ namespace DGtal
      */
     const Predicate & predicate() const;
 
+    /** 
+     * Translate a domain by a given displacement vector.
+     * 
+     * @param vec the displacement vector to use.
+     */
+    void translate(const Vector &vec)
+    {
+      myLowerBound += vec;
+      myUpperBound += vec;
+    }
+
 
     // ------------------------- Private Datas --------------------------------
   private:
