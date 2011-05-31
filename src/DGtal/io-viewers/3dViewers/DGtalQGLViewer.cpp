@@ -208,7 +208,7 @@ DGtal::DGtalQGLViewer::init(){
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
-
+l
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
 
@@ -356,7 +356,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
     
     glNormal3f( (*s_it).nx, (*s_it).ny, (*s_it).nz);
-    
+    cerr << "normal:" << (*s_it).nx << " " << (*s_it).ny << " " << (*s_it).nz<< endl;
     glVertex3f((*s_it).x1, (*s_it).y1 , (*s_it).z1);
     glVertex3f((*s_it).x2, (*s_it).y2 , (*s_it).z2);
     glVertex3f((*s_it).x3, (*s_it).y3 , (*s_it).z3);
@@ -425,14 +425,17 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
 void
-DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL linel){
+DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
   glPushMatrix();
-  glTranslatef(linel.x1, linel.y1, linel.z1);
-  Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
+  glTranslatef(aLinel.x1, aLinel.y1, aLinel.z1);
+  Vec dir (aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
   glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
   GLUquadric* quadric = gluNewQuadric();
-  glColor4ub(linel.R, linel.G, linel.B, linel.T);
-  gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
+  glColor4ub(aLinel.R, aLinel.G, aLinel.B, aLinel.T);
+  
+  gluCylinder(quadric, (aLinel.signPos || !aLinel.isSigned) ? aLinel.width :0 , 
+	      (aLinel.signPos && aLinel.isSigned) ? 0 :aLinel.width  , 
+	      dir.norm(),10, 4);
   glPopMatrix();  
 }
 
