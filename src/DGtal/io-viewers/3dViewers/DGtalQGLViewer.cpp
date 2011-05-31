@@ -208,7 +208,7 @@ DGtal::DGtalQGLViewer::init(){
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
-l
+
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
 
@@ -356,7 +356,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
     
     glNormal3f( (*s_it).nx, (*s_it).ny, (*s_it).nz);
-    cerr << "normal:" << (*s_it).nx << " " << (*s_it).ny << " " << (*s_it).nz<< endl;
     glVertex3f((*s_it).x1, (*s_it).y1 , (*s_it).z1);
     glVertex3f((*s_it).x2, (*s_it).y2 , (*s_it).z2);
     glVertex3f((*s_it).x3, (*s_it).y3 , (*s_it).z3);
