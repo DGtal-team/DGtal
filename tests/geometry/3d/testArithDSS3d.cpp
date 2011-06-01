@@ -46,6 +46,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/2d/GreedyDecomposition.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -59,7 +60,7 @@ using namespace std;
 // Functions for testing class ArithmeticalDSS.
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Test
+ * simple test
  *
  */
 bool testDSSreco()
@@ -110,6 +111,55 @@ bool testDSSreco()
 }
 
 
+/**
+
+ * segmentation test
+ *
+ */
+bool testSegmentation()
+{
+
+	typedef PointVector<3,int> Point;
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
+	typedef GreedyDecomposition<SegmentComputer> Decomposition;
+
+	std::vector<Point> sequence;
+	sequence.push_back(Point(0,0,0));
+	sequence.push_back(Point(1,0,0));
+	sequence.push_back(Point(2,0,0));
+	sequence.push_back(Point(2,1,0));
+	sequence.push_back(Point(2,1,1));
+	sequence.push_back(Point(3,1,1));
+	sequence.push_back(Point(4,1,1));
+	sequence.push_back(Point(4,2,1));
+	sequence.push_back(Point(4,2,2));
+	sequence.push_back(Point(5,2,2));
+	sequence.push_back(Point(6,2,2));
+	sequence.push_back(Point(6,3,2));
+	sequence.push_back(Point(6,3,3));
+	sequence.push_back(Point(6,4,3));
+	sequence.push_back(Point(6,4,4));
+	sequence.push_back(Point(6,5,4));
+  
+  //Segmentation
+  trace.beginBlock("Segmentation test");
+
+		SegmentComputer algo;
+		Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
+					 
+		unsigned int c = 0;
+		Decomposition::ConstIterator i = theDecomposition.begin();
+		for ( ; i != theDecomposition.end(); ++i) {
+			SegmentComputer currentSegmentComputer(*i);
+			trace.info() << currentSegmentComputer << std::endl;	//standard output
+			c++;
+		} 
+
+  trace.endBlock();
+	return (c==2);
+}
+
 int main(int argc, char **argv)
 {
 
@@ -119,7 +169,8 @@ int main(int argc, char **argv)
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDSSreco();
+  bool res = testDSSreco() && 
+						 testSegmentation();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
