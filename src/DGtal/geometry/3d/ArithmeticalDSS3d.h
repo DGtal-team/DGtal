@@ -237,6 +237,10 @@ namespace DGtal
 
   public:
     
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -245,8 +249,24 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) ;
 
     
-//selfdraw via QGLViewer    
-    
+ 
+	#ifdef WITH_VISU3D_QGLVIEWER
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+
+    /**
+     * Draw the object with QGLViewer
+     * @param viewer the output where the object is drawn.
+     */
+    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+ 
+ #endif
+
 
 
 
@@ -271,6 +291,23 @@ namespace DGtal
 
 
   }; // end of class ArithmeticalDSS3d
+
+#ifdef WITH_VISU3D_QGLVIEWER
+/*
+  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    {
+			viewer.myModes[ "ArithmeticalDSS3d" ] = "Paving";
+    }
+  };
+  
+
+  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
+
+    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const {}
+  };
+*/
+#endif
 
 
   /**
