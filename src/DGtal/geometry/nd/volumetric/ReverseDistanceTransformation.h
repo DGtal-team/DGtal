@@ -207,6 +207,9 @@ namespace DGtal
     ///Copy of the image extent
     Point myExtent;
 
+    ///Displacement vector to translate temporary images.
+    Vector myDisplacementVector;
+
     ///Value for foreground grid points.
     IntegerShort myForegroundValue;
   

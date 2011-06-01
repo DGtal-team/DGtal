@@ -110,12 +110,14 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage,
   //We trace type validdity check result;
   checkTypesValidity ( aImage );
 
-  //We copy the image extent.
-  myLowerBoundCopy = aImage.lowerBound();
-  myUpperBoundCopy = aImage.upperBound();
-  myExtent = myUpperBoundCopy - myLowerBoundCopy;
+  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
+  myLowerBoundCopy = Point(); //(O,O,...O)
+  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
+  myDisplacementVector = aImage.lowerBound();
 
+  myExtent = myUpperBoundCopy - myLowerBoundCopy;
   myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * myExtent.normInfinity() + 1);
+
   
   OutputImage output ( myLowerBoundCopy, myUpperBoundCopy );
   OutputImage swap ( myLowerBoundCopy, myUpperBoundCopy );
@@ -126,21 +128,28 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage,
 
   //We process the dimensions swaping the temporary buffers
   for ( Dimension dim = 1; dim < I::dimension ; dim++ )
-  {
-    if ( isSwap )
-      computeOtherSteps ( output, swap, dim );
-    else
-      computeOtherSteps ( swap, output, dim );
+    {
+      if ( isSwap )
+	computeOtherSteps ( output, swap, dim );
+      else
+	computeOtherSteps ( swap, output, dim );
 
-    isSwap = !isSwap;
-  }
+      isSwap = !isSwap;
+    }
 
+  //We translate the output image to the correct position and return.
   if ( !isSwap )
-    return swap;
-  else
-    return output;
-}
+    {
+      swap.translateDomain(myDisplacementVector);
+      return swap;
+    }
 
+  else
+    {
+      output.translateDomain(myDisplacementVector);
+      return output;
+    }
+}
 
 
 template <typename I, DGtal::uint32_t p, typename IntLong>
@@ -169,10 +178,10 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( const I & aImag
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
-  {
-    // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
-    computeFirstStep1D ( aImage, output, (*it), predicate );
-  }
+    {
+      // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
+      computeFirstStep1D ( aImage, output, (*it), predicate );
+    }
 
   trace.endBlock();
 }
@@ -204,21 +213,22 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputIm
   Size maxSize = myExtent.normInfinity();
 
   //Stacks used in the envelope computation
-  Integer *s = new Integer[maxSize+1];
-  Integer *t = new Integer[maxSize+1];
+  Abscissa *s = new Abscissa[maxSize+1];
+  Abscissa *t = new Abscissa[maxSize+1];
   
   ASSERT( s != NULL);
   ASSERT( t != NULL);
   
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
-	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
-  {
-    computeOtherStep1D ( input, output, (*it), dim, s, t );
-  }
-
-  free(s);
-  free(t);
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    {
+      computeOtherStep1D ( input, output, (*it), dim, s, t );
+    }
+  
+  delete[] s;
+  delete[] t;
   trace.endBlock();
 
 }
@@ -229,47 +239,47 @@ template <typename I, DGtal::uint32_t p, typename IntLong>
 template <typename ForegroundPredicate>
 void
 DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( const I & aImage,
-    OutputImage & output,
-    const Point &startingPoint,
-    const ForegroundPredicate &isForeground ) const
+								   OutputImage & output,
+								   const Point &startingPoint,
+								   const ForegroundPredicate &isForeground ) const
 {
   Point prec = startingPoint;
   Point point = startingPoint;
 
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
-  if ( isForeground ( aImage, point ) )
+  if ( isForeground ( aImage, point + myDisplacementVector ) )
     output.setValue ( point, myInfinity );
   else
     output.setValue ( point, 0 );
 
-  //Forward scan
-  for ( point[0] = myLowerBoundCopy[0] + 1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-  {
-    // trace.warning() << point << " ";
-    if ( isForeground ( aImage, point ) )
-      output.setValue ( point, 1 + output ( prec ) );
-    else
-      output.setValue ( point, 0 );
+  //Forward scan 
+  for ( point[0] = 1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
+    {
+      // trace.warning() << point << " ";
+      if ( isForeground ( aImage, point  + myDisplacementVector ))
+	output.setValue ( point, 1 + output ( prec ) );
+      else
+	output.setValue ( point, 0 );
 
-    prec[0] = point[0];
-  }
+      prec[0] = point[0];
+    }
 
 
   //prec is the the rightmost point of "point'
   prec[0] =  myUpperBoundCopy[0];
 
   //Backward scan
-  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >=  myLowerBoundCopy[0]; point[0]-- )
-  {
-    if ( output ( prec ) < output ( point ) )
-      output.setValue ( point, 1 + output ( prec ) );
-    prec[0] = point[0];
-  }
+  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >= 0 ; point[0]-- )
+    {
+      if ( output ( prec ) < output ( point ) )
+	output.setValue ( point, 1 + output ( prec ) );
+      prec[0] = point[0];
+    }
 
   //final computation
-  for ( point[0] = myLowerBoundCopy[0]; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-    if (output( point) < static_cast< typename OutputImage::Value >(myInfinity))
+  for ( point[0] = 0; point[0] <= myUpperBoundCopy[0]; point[0]++ )
+    if (output( point ) < myInfinity)
       output.setValue ( point, myMetric.power( output ( point ) ));
     else
       output.setValue ( point, myInfinity);
@@ -281,116 +291,105 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( const I & aIm
 template <typename I, DGtal::uint32_t p, typename IntLong>
 void
 DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputImage & input,
-    OutputImage & output,
-    const Point &startingPoint,
-    const Size dim,
-    Integer s[],
-    Integer t[] ) const
+								   OutputImage & output,
+								   const Point &startingPoint,
+								   const Size dim,
+								   Abscissa s[],
+								   Abscissa t[] ) const
 {
-  Coordinate w;
-  Coordinate q = 0;
-
+  Abscissa w;
+  Abscissa q = 0;  //index for the stack "head"
+  
   Point sQ = startingPoint;
   Point pU = startingPoint;
 
-  //trace.info()<<"Enter startingPoint="<<startingPoint<<endl;
-
-  //init of the stack structure
+  // We look for the first point in the 1D column with distance different from
+  // myInfinity
   pU[dim] = myLowerBoundCopy[dim];
-  while ((pU[dim] <= myUpperBoundCopy[dim]) 
-	 && (input ( pU ) == static_cast<typename OutputImage::Value>(myInfinity)))
+  while ((pU[dim] <= myUpperBoundCopy[dim]) && (input ( pU ) == myInfinity))
     pU[dim] ++;
 
-  // trace.info()<<"Shift"<<endl;
 
-  //the 1D slice  has no object point
-  //ASSERT( pU[dim] <= myUpperBoundCopy[dim] );
+  // All points are set to +infinity, we just copy the infinity value and return
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
-      for(typename OutputImage::SpanIterator it= output.spanBegin(startingPoint,dim), itend=output.spanEnd(startingPoint,dim); 
+      for(typename OutputImage::SpanIterator it= output.spanBegin(startingPoint,dim), 
+	    itend=output.spanEnd(startingPoint,dim); 
 	  it != itend; ++it)
-	  output.setValue(it, myInfinity);
+	output.setValue(it, myInfinity);
       return;
     }
   
+  //Stack structure
   q = 0;
-  s[q] = pU[dim]; //myLowerBoundCopy[dim];
-  sQ[dim] = s[q];
-  t[q] = myLowerBoundCopy[dim];
+  s[q] = pU[dim]; // first point with DT!=infinity
+  sQ[dim] = s[q]; // nD Point corresponding to the head of the stack
+  t[q] = myLowerBoundCopy[dim]; 
 
-  //Forward Scan
- // trace.warning() << "start pU= " << pU << " input(pU)=" << input(pU) << endl;
-
-  for ( int u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
-  {
-    pU[ dim ] = u;
-    if ( input( pU ) == static_cast<typename OutputImage::Value>(myInfinity) )
+  //Forward Scan 
+  //We scan all the pixels
+  for ( Abscissa u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
     {
-      //    trace.info() << "Ctd " << pU << endl;
-      continue;
+      pU[ dim ] = u;
+      if ( input( pU ) == myInfinity )
+	{
+	  continue;
+	}
+      
+      while ( ( q >= 0 ) &&
+	      ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
+		myMetric.F ( t[q], u, input ( pU ) ) ) )
+	{
+	  q--;
+	  ///@todo optimize the test here
+	  if (q>=0)
+	    sQ[dim] = s[q];
+	}
+      
+      if ( q < 0 )
+	{
+	  q = 0;
+	  s[0] = u;
+	  sQ[dim] = u;
+	  t[0] = myLowerBoundCopy[dim];
+	}
+      else
+	{
+	  sQ[dim] = s[q];
+	  w = 1 + myMetric.Sep ( s[q],
+				 input ( sQ ),
+				 u,
+				 input ( pU ) );
+	  
+	  if (( w <= myUpperBoundCopy[dim] ) 
+	      && (w>= myLowerBoundCopy[dim]))
+	    {
+	      q++;
+	      s[q] = u;
+	      sQ[dim] = u;
+	      t[q] = w;
+	    }
+	}
     }
-
-   //  trace.warning() << "pU= " << pU << " input(pU)=" << input(pU) << endl;
-   //  trace.warning() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << "q="<<q<< endl;
-
-    while ( ( q >= 0 ) &&
-        ( myMetric.F ( t[q], s[q], input ( sQ ) ) >
-	  myMetric.F ( t[q], u, input ( pU ) ) ) )
-    {
-      //trace.info() << "Pop q=" << q << endl;
-      q--;
-      ///@todo optimize the test here
-      if (q>=0)
-	sQ[dim] = s[q];
-    }
-
-    if ( q < 0 )
-    {
-      q = 0;
-      s[0] = u;
-      sQ[dim] = u;
-      t[0] = myLowerBoundCopy[dim];
   
-    }
-    else
-    {
-      sQ[dim] = s[q];
-      w = 1 + myMetric.Sep ( s[q],
-          input ( sQ ),
-          u,
-          input ( pU ) );
-
-      if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
-      {
-        q++;
-        s[q] = u;
-        sQ[dim] = u;
-     //  			trace.info() << "Push sq=" << sQ << endl;
-        t[q] = w;
-      }
-    }
-  }
-
   Point last = startingPoint;
-
+  
   ASSERT(q>=0);
-
- //trace.error() << "q=" << q << endl;
+  
   sQ[dim] = s[q];
-  //trace.error() << "sQ= " << sQ << " input(sQ)=" << input(sQ) << " t[q] = " << t[q] << endl;
- 
+  
   //Backward Scan
   for (last[dim] = myUpperBoundCopy[dim];
-      last[dim] >= myLowerBoundCopy[dim] ;
-      last[dim]-- )
-  {
-    output.setValue ( last, myMetric.F ( last[dim] , s[q], input ( sQ ) ) );
-    if (( last[dim] == t[q] ) && (q > 0))
+       last[dim] >= myLowerBoundCopy[dim] ;
+       last[dim]-- )
     {
-      q--;
-      sQ[dim] = s[q];
+      output.setValue ( last, myMetric.F ( last[dim] , s[q], input ( sQ ) ) );
+      if (( last[dim] == t[q] ) && (q > 0))
+	{
+	  q--;
+	  sQ[dim] = s[q];
+	}
     }
-  }
 }
 
 
