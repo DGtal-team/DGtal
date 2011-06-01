@@ -82,54 +82,56 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
 
-	private:
+
 
     //points and vectors
     typedef DGtal::PointVector<2,Integer> Point2d;
     typedef DGtal::PointVector<3,Integer> Point3d;
   
-  
 
 
     //////////////////////////////////////////////////////////////////////////////
     // adapter for iterator
-		template <typename TIterator>
-		class XYAdapterIterator 
+		template <typename TIt>
+		class XYIteratorAdapter 
 		{
 			protected:
-				TIterator myIt;
+				TIt myIt;
 			public:
-				//constructor
-				XYAdapterIterator(const TIterator& it):myIt(it) {}
-				//deference operator
+				//constructors
+				XYIteratorAdapter() {}
+				XYIteratorAdapter(const TIt& it):myIt(it) {}
+				//dereference operator
 		    Point2d operator*() const {
 					Point3d tmp = *myIt;
 					return Point2d(tmp.at(0),tmp.at(1));
 		    }
 		};
-		template <typename TIterator>
-		class XZAdapterIterator 
+		template <typename TIt>
+		class XZIteratorAdapter
 		{
 			protected:
-				TIterator myIt;
+				TIt myIt;
 			public:
-				//constructor
-				XZAdapterIterator(const TIterator& it):myIt(it) {}
-				//deference operator
+				//constructors
+				XZIteratorAdapter() {}
+				XZIteratorAdapter(const TIt& it):myIt(it) {}
+				//dereference operator
 		    Point2d operator*() const {
 					Point3d tmp = *myIt;
 					return Point2d(tmp.at(0),tmp.at(2));
 		    }
 		};
-		template <typename TIterator>
-		class YZAdapterIterator 
+		template <typename TIt>
+		class YZIteratorAdapter 
 		{
 			protected:
-				TIterator myIt;
+				TIt myIt;
 			public:
-				//constructor
-				YZAdapterIterator(const TIterator& it):myIt(it) {}
-				//deference operator
+				//constructors
+				YZIteratorAdapter() {}
+				YZIteratorAdapter(const TIt& it):myIt(it) {}
+				//dereference operator
 		    Point2d operator*() const {
 					Point3d tmp = *myIt;
 					return Point2d(tmp.at(1),tmp.at(2));
@@ -137,9 +139,15 @@ namespace DGtal
 		};
 
 		//2d-arithmeticalDSS recognition algorithms
-		typedef DGtal::ArithmeticalDSS<XYIteratorAdapter,TInteger,connectivity> XYArithmeticalDSS;
-		typedef DGtal::ArithmeticalDSS<XZIteratorAdapter,TInteger,connectivity> XZArithmeticalDSS;
-		typedef DGtal::ArithmeticalDSS<YZIteratorAdapter,TInteger,connectivity> YZArithmeticalDSS;
+		typedef DGtal::ArithmeticalDSS<XYIteratorAdapter<TIterator>,
+																		TInteger,
+																		connectivity> XYArithmeticalDSS;
+		typedef DGtal::ArithmeticalDSS<XZIteratorAdapter<TIterator>,
+																		TInteger,
+																		connectivity> XZArithmeticalDSS;
+		typedef DGtal::ArithmeticalDSS<YZIteratorAdapter<TIterator>,
+																		TInteger,
+																		connectivity> YZArithmeticalDSS;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -287,7 +295,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/geometry/2d/ArithmeticalDSS3d.ih"
+#include "DGtal/geometry/3d/ArithmeticalDSS3d.ih"
 #endif
 
 //                                                                           //

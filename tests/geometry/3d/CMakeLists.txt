@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC
-	testArithDSS
+	testArithDSS3d
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

@@ -74,11 +74,11 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Itera
 	myF = it;
 	myL = it;
 
-	XYAdapterIterator<TIterator> XYit(it); 
+	XYIteratorAdapter<TIterator> XYit(it); 
 	myXYalgo.init(XYit);
-	XZAdapterIterator<TIterator> XZit(it); 
+	XZIteratorAdapter<TIterator> XZit(it); 
 	myXZalgo.init(XZit);
-	YZAdapterIterator<TIterator> YZit(it); 
+	YZIteratorAdapter<TIterator> YZit(it); 
 	myYZalgo.init(YZit);
 }
 
@@ -127,11 +127,11 @@ inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
 	const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
-	return ( ( 	myXYalgo == other.myXYalgo ) &&
+	return (  (	myXYalgo == other.myXYalgo ) &&
 						(	myXZalgo == other.myXZalgo ) &&
 						(	myYZalgo == other.myYZalgo ) &&
 						(*myF == *other.myF) &&  
-						(*myL == *other.myL) )   );
+						(*myL == *other.myL) );
 }
 
 /**

@@ -67,7 +67,7 @@ bool testDSSreco()
 
 	typedef PointVector<3,int> Point;
 	typedef std::vector<Point>::iterator Iterator;
-	typedef ArithmeticalDSS<Iterator,int,4> SegmentComputer;  
+	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
 
 	std::vector<Point> sequence;
 	sequence.push_back(Point(0,0,0));
@@ -87,12 +87,12 @@ bool testDSSreco()
 		SegmentComputer algo;	
 		Iterator i = sequence.begin();	
 		algo.init(i);
-		i++;
+		++i;
 		trace.info() << algo << " " << algo.isValid() << std::endl;
 
 		while ( (i!=sequence.end())
 					&&(algo.extend(i)) ) {
-			i++;
+			++i;
 		}
 	  trace.info() << algo << " " << algo.isValid() << std::endl;
 
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDSSreco;
+  bool res = testDSSreco();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
