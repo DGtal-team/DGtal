@@ -97,15 +97,15 @@ namespace DGtal
     typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerLong > OutputImage;
   
     typedef typename Image::Value Value;
+    typedef typename Image::Vector Vector;
     typedef typename Image::Point Point;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
-    typedef typename Image::Integer Integer;
     typedef typename Image::Domain Domain;
-    typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
+    typedef typename Image::Domain::Space::Point::Coordinate Abscissa;
  
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricTraits<  Integer ,  IntegerLong , p > SeparableMetric;
+    typedef SeparableMetricTraits<  Abscissa ,  IntegerLong , p > SeparableMetric;
   
 
     /**
@@ -221,7 +221,7 @@ namespace DGtal
     /** 
      * Compute the first step of the separable distance transformation.
      * 
-     * @param aImage the input image
+b     * @param aImage the input image
      * @param output the output image with the first step DT values
      * @param predicate the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
@@ -264,7 +264,9 @@ namespace DGtal
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    void computeOtherStep1D (const OutputImage & input, OutputImage & output, const Point &row, const Size dim, Integer s[], Integer t[]) const;
+    void computeOtherStep1D (const OutputImage & input, OutputImage & output, 
+			     const Point &row, const Size dim, 
+			     Abscissa s[], Abscissa t[]) const;
 
 
     // ------------------- Private members ------------------------
@@ -278,6 +280,9 @@ namespace DGtal
 
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
+
+    ///Displacement vector to translate temporary images.
+    Vector myDisplacementVector;
 
     ///Copy of the image extent
     Point myExtent;
