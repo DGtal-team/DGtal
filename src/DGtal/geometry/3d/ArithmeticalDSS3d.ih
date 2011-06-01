@@ -191,6 +191,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const Iterator
 		myXYalgo.extend(XYit);
 		myXZalgo.extend(XZit);
 		myYZalgo.extend(YZit);
+		myL = it;
 		return true;
 	} else return false;
 }
@@ -214,6 +215,20 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 
 
 /**
+ * @return the style name used for drawing this object.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+std::string
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::styleName() const
+{
+  return "ArithmeticalDSS3d";
+}
+
+//------------------------------------------------------------------------------
+//   TEXT DISPLAY 
+
+/**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
@@ -234,4 +249,40 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::os
   
 }
 
+
+//------------------------------------------------------------------------------
+//   3D DRAWING 
+
+
+
+    
+#ifdef WITH_VISU3D_QGLVIEWER
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+{
+
+  // Draw voxels
+	Iterator end = myL; ++end;
+	for (Iterator i = myF; i != end; ++i) {
+		Point3d p = *i;
+		viewer << p;
+	}
+
+}
+
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::selfDrawQGL( DGtalQGLViewer & viewer ) const
+{
+  selfDrawAsPavingQGL(viewer);
+}
+
+
+#endif
 

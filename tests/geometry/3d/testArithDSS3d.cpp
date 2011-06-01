@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testArithDSS.cpp
+ * @file testArithDSS3d.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -27,7 +27,7 @@
  */
 
 /**
- * Description of testArithDSS <p>
+ * Description of testArithDSS3d <p>
  * Aim: simple test of \ref ArithmeticalDSS3d
  */
 
