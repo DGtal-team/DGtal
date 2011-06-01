@@ -8,7 +8,8 @@ endif( WITH_VISU3D )
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
-export(PACKAGE DGtal)
+# export(PACKAGE DGtal)
+# Not working on cmake 2.6, I remove this option but keep the codeline (DC)
 
 # Create a DGtalConfig.cmake file for the use from the build tree
 set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")

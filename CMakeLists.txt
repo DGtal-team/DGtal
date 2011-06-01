@@ -7,7 +7,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.8) 
+cmake_minimum_required (VERSION 2.6) 
 
 # -----------------------------------------------------------------------------
 # Display some information
