@@ -80,6 +80,12 @@ bool testDSSreco()
 	sequence.push_back(Point(4,2,1));
 	sequence.push_back(Point(4,2,2));
 	sequence.push_back(Point(5,2,2));
+	sequence.push_back(Point(6,2,2));
+	sequence.push_back(Point(6,3,2));
+	sequence.push_back(Point(6,3,3));
+	sequence.push_back(Point(6,4,3));
+	sequence.push_back(Point(6,4,4));
+	sequence.push_back(Point(6,5,4));
   
   // Adding step
   trace.beginBlock("Add points while it is possible and display the result");
@@ -87,11 +93,13 @@ bool testDSSreco()
 		SegmentComputer algo;	
 		Iterator i = sequence.begin();	
 		algo.init(i);
+		trace.info() << "init with " << (*i) << std::endl;
 		++i;
-		trace.info() << algo << " " << algo.isValid() << std::endl;
+
 
 		while ( (i!=sequence.end())
 					&&(algo.extend(i)) ) {
+			trace.info() << "extended with " << (*i) << std::endl;
 			++i;
 		}
 	  trace.info() << algo << " " << algo.isValid() << std::endl;

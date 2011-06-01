@@ -222,7 +222,7 @@ namespace DGtal
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const Iterator & itf);
+    bool extend(const Iterator & it);
 
 
     // ------------------------- Accessors ------------------------------

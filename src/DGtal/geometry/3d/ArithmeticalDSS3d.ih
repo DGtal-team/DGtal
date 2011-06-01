@@ -167,9 +167,32 @@ bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const Iterator& it)
 {
 
-//todo
+//projection on xy-plane
+	XYIteratorAdapter<TIterator> XYit(it); 
+	bool XYflag = true;
+	if (myXYalgo.getFrontPoint() != *XYit) {
+		XYflag = myXYalgo.isExtendable(XYit);
+	}
+//projection on xz-plane
+	XZIteratorAdapter<TIterator> XZit(it); 
+	bool XZflag = true;
+	if (myXZalgo.getFrontPoint() != *XZit) {
+		XZflag = myXZalgo.isExtendable(XZit);
+	}
+//projection on yz-plane
+	YZIteratorAdapter<TIterator> YZit(it); 
+	bool YZflag = true;
+	if (myYZalgo.getFrontPoint() != *YZit) {
+		YZflag = myYZalgo.isExtendable(YZit);
+	}
 
-	return true;
+
+	if ( (XYflag)&&(XZflag)&&(YZflag) ) {
+		myXYalgo.extend(XYit);
+		myXZalgo.extend(XZit);
+		myYZalgo.extend(YZit);
+		return true;
+	} else return false;
 }
 
 
