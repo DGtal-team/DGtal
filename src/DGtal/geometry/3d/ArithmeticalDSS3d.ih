@@ -1,0 +1,288 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSS3d.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/06/01
+ *
+ * Implementation of inline methods defined in ArithmeticalDSS3d.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/math/common_factor_rt.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+/**
+ * Default constructor.
+ * not valid
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d()
+{
+}
+
+/**
+ * Constructor with initialisation
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(const Iterator& it)
+{
+	init(it);
+}
+
+/**
+ * Initialisation.
+ * @param it an iterator on a sequence of points
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Iterator& it)
+{
+
+	myF = it;
+	myL = it;
+
+	XYIteratorAdapter<TIterator> XYit(it); 
+	myXYalgo.init(XYit);
+	XZIteratorAdapter<TIterator> XZit(it); 
+	myXZalgo.init(XZit);
+	YZIteratorAdapter<TIterator> YZit(it); 
+	myYZalgo.init(YZit);
+}
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ * Forbidden by default.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
+			const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
+					myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
+					myF(other.myF), myL(other.myL) {}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ * Forbidden by default.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
+			const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) {
+	myXYalgo = other.myXYalgo;
+	myXZalgo = other.myXZalgo; 
+	myYZalgo = other.myYZalgo;
+	myF = other.myF;
+	myL = other.myL;
+
+	return *this;
+}
+
+/**
+ * Equality operator.
+ * @param other the object to compare with.
+ * @return 'true' either if the points perfectly match
+ * or if the first points match to the last ones
+ * (same DSS scanned in the conversed way) 
+ * and 'false' otherwise
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
+	const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
+	return (  (	myXYalgo == other.myXYalgo ) &&
+						(	myXZalgo == other.myXZalgo ) &&
+						(	myYZalgo == other.myYZalgo ) &&
+						(*myF == *other.myF) &&  
+						(*myL == *other.myL) );
+}
+
+/**
+ * Difference operator.
+ * @param other the object to compare with.
+ * @return 'false' if equal
+ * 'true' otherwise
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
+				const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const {
+	return (!(*this == other));
+}
+
+
+
+
+/**
+ * Tests whether the union between a point 
+ * (adding to the front of the DSS 
+ * with respect to the scan orientaion) 
+ * and a DSS is a DSS. 
+ * Computes the parameters of the new DSS 
+ * with the adding point if true.
+ * @param it an iterator on a sequence of points
+ * @return 'true' if the union is a DSS, 'false' otherwise.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const Iterator& it)
+{
+
+//projection on xy-plane
+	XYIteratorAdapter<TIterator> XYit(it); 
+	bool XYflag = true;
+	if (myXYalgo.getFrontPoint() != *XYit) {
+		XYflag = myXYalgo.isExtendable(XYit);
+	}
+//projection on xz-plane
+	XZIteratorAdapter<TIterator> XZit(it); 
+	bool XZflag = true;
+	if (myXZalgo.getFrontPoint() != *XZit) {
+		XZflag = myXZalgo.isExtendable(XZit);
+	}
+//projection on yz-plane
+	YZIteratorAdapter<TIterator> YZit(it); 
+	bool YZflag = true;
+	if (myYZalgo.getFrontPoint() != *YZit) {
+		YZflag = myYZalgo.isExtendable(YZit);
+	}
+
+
+	if ( (XYflag)&&(XZflag)&&(YZflag) ) {
+		myXYalgo.extend(XYit);
+		myXZalgo.extend(XZit);
+		myYZalgo.extend(YZit);
+		myL = it;
+		return true;
+	} else return false;
+}
+
+
+//-----------------------------------------------------------------
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
+{
+	return ( (myXYalgo.isValid())&&
+					 (myXZalgo.isValid())&&
+			 	   (myYZalgo.isValid()) );
+}
+
+
+/**
+ * @return the style name used for drawing this object.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+std::string
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::styleName() const
+{
+  return "ArithmeticalDSS3d";
+}
+
+//------------------------------------------------------------------------------
+//   TEXT DISPLAY 
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
+{
+  
+  out << "[ArithmeticalDSS3d]" <<  endl;
+  out << "[XYprojection]" <<  endl;
+	out << myXYalgo <<  endl;
+  out << "[XZprojection]" <<  endl;
+	out << myXZalgo <<  endl;
+  out << "[YZprojection]" <<  endl;
+	out << myYZalgo <<  endl;
+  out << "[End ArithmeticalDSS3d]" <<  endl;
+  
+}
+
+
+//------------------------------------------------------------------------------
+//   3D DRAWING 
+
+
+
+    
+#ifdef WITH_VISU3D_QGLVIEWER
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+{
+
+  // Draw voxels
+	Iterator end = myL; ++end;
+	for (Iterator i = myF; i != end; ++i) {
+		Point3d p = *i;
+		viewer << p;
+	}
+
+}
+
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::selfDrawQGL( DGtalQGLViewer & viewer ) const
+{
+  selfDrawAsPavingQGL(viewer);
+}
+
+
+#endif
+
