@@ -158,7 +158,8 @@ namespace DGtal
      *
      * @return
      */
-    Abscissa reversedSep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
+			   const Abscissa j, const InternalValue hj ) const
     {
       ASSERT(false && "Not-Yet-Implemented");
     }
@@ -174,7 +175,8 @@ namespace DGtal
      *
      * @return
      */
-    Abscissa Sep ( const Abscissa i, const InternalValue hi, const Abscissa j, const InternalValue hj ) const
+    Abscissa Sep ( const Abscissa i, const InternalValue hi, 
+		   const Abscissa j, const InternalValue hj ) const
     {
       ASSERT(false && "Not-Yet-Implemented");
     }
@@ -221,7 +223,11 @@ namespace DGtal
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
 			  const Abscissa j, const InternalValue hj ) const
     {
-      return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
+      if (   ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) )  >= 0)
+	return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
+      else
+	return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) ) -1;
+	
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
