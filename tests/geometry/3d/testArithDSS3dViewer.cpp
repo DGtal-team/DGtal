@@ -63,10 +63,10 @@ int main( int argc, char** argv )
 
 	typedef PointVector<3,int> Point;
 	typedef std::vector<Point>::iterator Iterator;
-	typedef ArithmeticalDSS3d<Iterator,int,8> SegmentComputer;  
+	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
 	typedef GreedyDecomposition<SegmentComputer> Decomposition;
 
-  string inputFilename = examplesPath + "samples/spheric1.dat"; 
+  string inputFilename = examplesPath + "samples/sinus.dat"; 
 	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
 
 
