@@ -213,7 +213,38 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 			 	   (myYZalgo.isValid()) );
 }
 
+/**
+ * @return the main direction of the DSS.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::PointVector<3,TInteger>
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getDirection() const
+{
+	Integer a1 = myXYalgo.getB();
+	Integer b1 = myXYalgo.getA();
+	Integer a2 = myXZalgo.getB();
+	Integer b2 = myXZalgo.getA();
+  return Point3d(a1*a2,a2*b1,a1*b2);
+}
 
+/**
+ * @return the intercept of the DSS.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,double>
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getIntercept() const
+{
+	Integer b1 = myXYalgo.getB();
+	Integer mu1 = myXYalgo.getMu();
+	Integer b2 = myXZalgo.getB();
+	Integer mu2 = myXZalgo.getMu();
+
+	double x = (double) -IntegerTraits<TInteger>::castToInt64_t(mu1) / b1;
+	double y = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / b2;
+  return PointD2d(x,y);
+}
 /**
  * @return the style name used for drawing this object.
  */
@@ -257,22 +288,188 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::os
 
     
 #ifdef WITH_VISU3D_QGLVIEWER
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+		 ::selfDrawAsPointsQGL( DGtalQGLViewer & viewer ) const
 {
 
-  // Draw voxels
+
+  // Draw first voxel in black
+	viewer << CustomColors3D(QColor(0,0,0),QColor(0,0,0));
 	Iterator end = myL; ++end;
-	for (Iterator i = myF; i != end; ++i) {
+	Iterator i = myF;
+	Point3d pfirst = *i;
+	viewer << pfirst;
+  // Draw next voxels in white
+	++i;
+	viewer << CustomColors3D(QColor(250,250,250),QColor(250,250,250));
+	for (; i != end; ++i) {
 		Point3d p = *i;
 		viewer << p;
 	}
 
+  // Draw a linking polygonal line if the voxels are drawn as points. 
+  if(viewer.getMode("PointVector")=="Grid" || viewer.getMode("PointVector")=="")
+    {
+			Iterator k = myF;
+			Point3d prevp = *k;
+			double xprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[0]);
+			double yprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[1]);
+			double zprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[2]);
+			++k;
+			for ( ; k != end; ++k) {
+				Point3d p = *k;
+				double xp = (double) IntegerTraits<TInteger>::castToInt64_t(p[0]);
+				double yp = (double) IntegerTraits<TInteger>::castToInt64_t(p[1]);
+				double zp = (double) IntegerTraits<TInteger>::castToInt64_t(p[2]);
+				viewer.addLine(xprevp,yprevp,zprevp,
+											 xp,yp,zp,
+											 QColor(0,250,0));
+				xprevp = xp;
+				yprevp = yp;
+				zprevp = zp;
+			}
+    }
+
 }
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const
+{
+/*
+	PointD2d fuXY = myXYalgo.project(myXYalgo.getBackPoint(),myXYalgo.getUf());
+	PointD2d flXY = myXYalgo.project(myXYalgo.getBackPoint(),myXYalgo.getLf());
+	PointD2d luXY = myXYalgo.project(myXYalgo.getFrontPoint(),myXYalgo.getUf());
+	PointD2d llXY = myXYalgo.project(myXYalgo.getFrontPoint(),myXYalgo.getLf());
+
+	PointD2d fuXZ = myXZalgo.project(myXZalgo.getBackPoint(),myXZalgo.getUf());
+	PointD2d flXZ = myXZalgo.project(myXZalgo.getBackPoint(),myXZalgo.getLf());
+	PointD2d luXZ = myXZalgo.project(myXZalgo.getFrontPoint(),myXZalgo.getUf());
+	PointD2d llXZ = myXZalgo.project(myXZalgo.getFrontPoint(),myXZalgo.getLf());
+
+	PointD3d f1 = PointD3d(fuXY.at(0),fuXY.at(1),fuXZ.at(1));
+	PointD3d f2 = PointD3d(flXY.at(0),flXY.at(1),flXZ.at(1));
+	PointD3d f3 = PointD3d(fuXZ.at(0),fuXY.at(1),fuXZ.at(1));
+	PointD3d f4 = PointD3d(flXZ.at(0),flXY.at(1),flXZ.at(1));
+
+	PointD3d l1 = PointD3d(luXY.at(0),luXY.at(1),luXZ.at(1));
+	PointD3d l2 = PointD3d(llXY.at(0),llXY.at(1),llXZ.at(1));
+	PointD3d l3 = PointD3d(luXZ.at(0),luXY.at(1),luXZ.at(1));
+	PointD3d l4 = PointD3d(llXZ.at(0),llXY.at(1),llXZ.at(1));
+
+	//main facets
+	viewer.addLine(f1[0],f1[1],f1[2],
+								 l1[0],l1[1],l1[2],
+								 QColor(250,0,0));
+	viewer.addLine(f2[0],f2[1],f2[2],
+								 l2[0],l2[1],l2[2],
+								 QColor(250,0,0));
+	viewer.addLine(f3[0],f3[1],f3[2],
+								 l3[0],l3[1],l3[2],
+								 QColor(250,0,0));
+	viewer.addLine(f4[0],f4[1],f4[2],
+								 l4[0],l4[1],l4[2],
+								 QColor(250,0,0));
+
+	//facet of the first point
+	viewer.addLine(f1[0],f1[1],f1[2],
+								 f4[0],f4[1],f4[2],
+								 QColor(250,0,0));
+	viewer.addLine(f3[0],f3[1],f3[2],
+								 f2[0],f2[1],f2[2],
+								 QColor(250,0,0));
+	viewer.addLine(f1[0],f1[1],f1[2],
+								 f3[0],f3[1],f3[2],
+								 QColor(250,0,0));
+	viewer.addLine(f2[0],f2[1],f2[2],
+								 f4[0],f4[1],f4[2],
+								 QColor(250,0,0));
+
+	//facet of the last point
+	viewer.addLine(l1[0],l1[1],l1[2],
+								 l4[0],l4[1],l4[2],
+								 QColor(250,0,0));
+	viewer.addLine(l3[0],l3[1],l3[2],
+								 l2[0],l2[1],l2[2],
+								 QColor(250,0,0));
+	viewer.addLine(l1[0],l1[1],l1[2],
+								 l3[0],l3[1],l3[2],
+								 QColor(250,0,0));
+	viewer.addLine(l2[0],l2[1],l2[2],
+								 l4[0],l4[1],l4[2],
+								 QColor(250,0,0));
+*/
+
+
+
+/*
+	Point3d P = *myF;
+	Point3d Q = *myL;
+
+	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(P[0]),
+								 IntegerTraits<Integer>::castToInt64_t(P[1]),
+								 IntegerTraits<Integer>::castToInt64_t(P[2]),
+								 IntegerTraits<Integer>::castToInt64_t(Q[0]),
+								 IntegerTraits<Integer>::castToInt64_t(Q[1]),
+								 IntegerTraits<Integer>::castToInt64_t(Q[2]),
+								 QColor(250,0,0));
+*/
+
+
+Vector3d u = getDirection(); //choisir plans de projection | u[0] != 0
+PointD2d mu = getIntercept(); 
+/*Point3d F = *myF;
+Vector3d u = (*myL) - F;
+Point2d mu = Point2d( F[1] -(double) (F[0]*u[1])/u[0] ,  F[2] -(double) (F[0]*u[2])/u[0] );
+*/
+Integer n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+
+if ( (n != 0)&&(u[0]!=0) ) {
+	std::cerr << u << "(" << n << "), " << mu << endl;
+
+	Point3d f = *myF;
+	Point3d l = *myL;
+
+	std::cerr << f << ", " << l << endl;
+
+	Integer df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
+	Integer dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
+
+	std::cerr << df << ", " << dl << endl;
+
+  //////////////////////////////////////////
+	//a faire en 4 exemplaires pour df, puis dl
+	Integer mf = u[1]*mu[0] + u[2]*mu[1] + df;
+	Integer ml = u[1]*mu[0] + u[2]*mu[1] + dl;
+
+	std::cerr << mf << ", " << ml << endl;
+
+
+	PointD3d pf = PointD3d( (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[0] )/n, 
+												 (double) IntegerTraits<Integer>::castToInt64_t( mu[0] ) 
+		+ (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[1] )/n, 
+												 (double) IntegerTraits<Integer>::castToInt64_t( mu[1] )
+		+ (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[2] )/n ); 
+
+	PointD3d pl = PointD3d( (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[0] )/n, 
+												 (double) IntegerTraits<Integer>::castToInt64_t( mu[0] )
+		+ (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[1] )/n, 
+												 (double) IntegerTraits<Integer>::castToInt64_t( mu[1] ) 
+		+ (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[2] )/n ); 
+
+	std::cerr << pf << ", " << pl << endl;
+	std::cerr << "display" << endl;
+
+		viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
+									 QColor(250,0,0));
+}
+}
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -280,9 +477,17 @@ void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 		 ::selfDrawQGL( DGtalQGLViewer & viewer ) const
 {
-  selfDrawAsPavingQGL(viewer);
-}
+  std::string mode = viewer.getMode( styleName() );
+  if ( mode == "BoundingBox" )
+    selfDrawAsBoundingBoxQGL( viewer );
+  else if ( mode == "Points" )
+	  selfDrawAsPointsQGL(viewer);
+  else if ( ( mode == "" ) )
+    {
+	  	selfDrawAsPointsQGL(viewer);
+    }
 
+}
 
 #endif
 

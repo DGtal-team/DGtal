@@ -84,10 +84,13 @@ namespace DGtal
 
 
 
-    //points and vectors
+    //points
     typedef DGtal::PointVector<2,Integer> Point2d;
+    typedef DGtal::PointVector<2,Integer> Vector2d;
     typedef DGtal::PointVector<3,Integer> Point3d;
-  
+    typedef DGtal::PointVector<3,Integer> Vector3d;
+    typedef DGtal::PointVector<2,double> PointD2d;
+    typedef DGtal::PointVector<3,double> PointD3d;  
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -228,6 +231,16 @@ namespace DGtal
     // ------------------------- Accessors ------------------------------
 
     /**
+     * @return the main direction of the DSS.
+     */
+		Vector3d getDirection() const; 
+
+    /**
+     * @return the intercept of the DSS.
+     */
+		PointD2d getIntercept() const; 
+
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -263,7 +276,8 @@ namespace DGtal
      * @param viewer the output where the object is drawn.
      */
     void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsPointsQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const;
  
  #endif
 
@@ -292,22 +306,6 @@ namespace DGtal
 
   }; // end of class ArithmeticalDSS3d
 
-#ifdef WITH_VISU3D_QGLVIEWER
-/*
-  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
-    {
-			viewer.myModes[ "ArithmeticalDSS3d" ] = "Paving";
-    }
-  };
-  
-
-  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
-
-    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const {}
-  };
-*/
-#endif
 
 
   /**
