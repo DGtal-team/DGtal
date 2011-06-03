@@ -47,7 +47,7 @@
 
 #include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
-
+#include "DGtal/geometry/2d/MaximalSegments.h"
 
 
 using namespace std;
@@ -65,6 +65,7 @@ int main( int argc, char** argv )
 	typedef std::vector<Point>::iterator Iterator;
 	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
 	typedef GreedyDecomposition<SegmentComputer> Decomposition;
+//	typedef MaximalSegments<SegmentComputer> Decomposition;
 
   string inputFilename = examplesPath + "samples/sinus.dat"; 
 	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
@@ -74,25 +75,34 @@ int main( int argc, char** argv )
 	Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
 	
 	///////////////////////////////////
-	//display			
+	//display	
+	bool flag = true;		
+	#ifdef WITH_VISU3D_QGLVIEWER
+
 	QApplication application(argc,argv);
 	DGtalQGLViewer viewer;
 	viewer.show();
- 
+
+	Point p;
+	viewer << SetMode3D(p.styleName(), "Grid");
+
 		unsigned int c = 0;
 		Decomposition::ConstIterator i = theDecomposition.begin();
 		for ( ; i != theDecomposition.end(); ++i) {
 			SegmentComputer currentSegmentComputer(*i);
-			if (c%2==0) {
-				viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
-			} else {
-				viewer << CustomColors3D(QColor(0, 250,0),QColor(0, 250,0));
-			}
-			viewer << currentSegmentComputer;	//view voxels
+
+		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "Points"); 
+			viewer << currentSegmentComputer;	
+		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "BoundingBox"); 
+			viewer << currentSegmentComputer;	
+			//cerr << currentSegmentComputer << endl;
+
 			c++;
 		} 
  
 	viewer << DGtalQGLViewer::updateDisplay;
-	return application.exec();
+	flag = application.exec();
+ 	#endif
+	return flag;
 }
 
