@@ -70,21 +70,24 @@ namespace DGtal
   {
 
 
+/* \TODO 6 and 26-connectivity */
+
     // ----------------------- Types ------------------------------
   public:
 
 
+		//iterator
     typedef TIterator Iterator;
 		typedef std::reverse_iterator<Iterator> ReverseIterator;
 		typedef ArithmeticalDSS3d<ReverseIterator,TInteger,connectivity> ReverseSegmentComputer; 
 
-    //entier
+
+    //integer
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
 
 
-
-    //points
+    //points and vectors
     typedef DGtal::PointVector<2,Integer> Point2d;
     typedef DGtal::PointVector<2,Integer> Vector2d;
     typedef DGtal::PointVector<3,Integer> Point3d;
@@ -95,7 +98,7 @@ namespace DGtal
 
 
     //////////////////////////////////////////////////////////////////////////////
-    // adapter for iterator
+    // adapters for iterator
 		template <typename TIt>
 		class XYIteratorAdapter 
 		{
@@ -141,6 +144,7 @@ namespace DGtal
 					return Point2d(tmp.at(1),tmp.at(2));
 		    }
 		};
+
 
 		//2d-arithmeticalDSS recognition algorithms
 		typedef DGtal::ArithmeticalDSS<XYIteratorAdapter<TIterator>,
@@ -230,16 +234,6 @@ namespace DGtal
 
 
     // ------------------------- Accessors ------------------------------
-
-    /**
-     * @return the main direction of the DSS.
-     */
-		Vector3d getDirection() const; 
-
-    /**
-     * @return the intercept of the DSS.
-     */
-		PointD2d getIntercept() const; 
 
     /**
 		 * Computes the parameters 
