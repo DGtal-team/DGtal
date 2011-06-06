@@ -213,38 +213,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 			 	   (myYZalgo.isValid()) );
 }
 
-/**
- * @return the main direction of the DSS.
- */
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-DGtal::PointVector<3,TInteger>
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getDirection() const
-{
-	Integer a1 = myXYalgo.getB();
-	Integer b1 = myXYalgo.getA();
-	Integer a2 = myXZalgo.getB();
-	Integer b2 = myXZalgo.getA();
-  return Point3d(a1*a2,a2*b1,a1*b2);
-}
 
-/**
- * @return the intercept of the DSS.
- */
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-DGtal::PointVector<2,double>
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getIntercept() const
-{
-	Integer b1 = myXYalgo.getB();
-	Integer mu1 = myXYalgo.getMu();
-	Integer b2 = myXZalgo.getB();
-	Integer mu2 = myXZalgo.getMu();
-
-	double x = (double) -IntegerTraits<TInteger>::castToInt64_t(mu1) / b1;
-	double y = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / b2;
-  return PointD2d(x,y);
-}
 /**
  * Computes the parameters 
  * (direction, intercept, thickness)
@@ -394,22 +363,16 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 {
 
 
-  // Draw first voxel in black
-	viewer << CustomColors3D(QColor(0,0,0),QColor(0,0,0));
+  // Draw points
+	viewer << CustomColors3D(QColor(250,250,250,100),QColor(250,250,250,100));
 	Iterator end = myL; ++end;
-	Iterator i = myF;
-	Point3d pfirst = *i;
-	viewer << pfirst;
-  // Draw next voxels in white
-	++i;
-	viewer << CustomColors3D(QColor(250,250,250),QColor(250,250,250));
-	for (; i != end; ++i) {
+	for (Iterator i = myF; i != end; ++i) {
 		Point3d p = *i;
 		viewer << p;
 	}
 
   // Draw a linking polygonal line if the voxels are drawn as points. 
-  if(viewer.getMode("PointVector")=="Grid" || viewer.getMode("PointVector")=="")
+  if(viewer.getMode("PointVector")=="Grid")
     {
 			Iterator k = myF;
 			Point3d prevp = *k;
@@ -440,137 +403,122 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 		 ::selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const
 {
 
+	//get DSS parameters
+	Vector3d v; //direction vector
+	PointD3d mu; //intercept
+	PointD3d omega; //thickness
+	getParameters(v,mu,omega);
 
+	//casting coordinates of v in double
+	VectorD3d u = VectorD3d(
+	(double) IntegerTraits<Integer>::castToInt64_t(v[0]), 
+	(double) IntegerTraits<Integer>::castToInt64_t(v[1]), 
+	(double) IntegerTraits<Integer>::castToInt64_t(v[2]) ); 
+	//L2 norm of u
+	double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
 
-/*
-	Point3d P = *myF;
-	Point3d Q = *myL;
+	//first and last points
+	PointD3d f = PointD3d(
+	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[0]), 
+	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[1]), 
+	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[2]) ); 
+	PointD3d l = PointD3d(
+	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[0]), 
+	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[1]), 
+	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[2]) ); 
 
-	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(P[0]),
-								 IntegerTraits<Integer>::castToInt64_t(P[1]),
-								 IntegerTraits<Integer>::castToInt64_t(P[2]),
-								 IntegerTraits<Integer>::castToInt64_t(Q[0]),
-								 IntegerTraits<Integer>::castToInt64_t(Q[1]),
-								 IntegerTraits<Integer>::castToInt64_t(Q[2]),
-								 QColor(250,0,0));
-*/
+	if (n != 0) {
 
+		//last coefficient of the normal plane to the DSS direction
+		//passing trough f and l
+		double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
+		double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
 
-
-//get DSS parameters
-Vector3d v; //direction vector
-PointD3d mu; //intercept
-PointD3d omega; //thickness
-getParameters(v,mu,omega);
-
-//casting coordinates of v in double
-VectorD3d u = VectorD3d(
-(double) IntegerTraits<Integer>::castToInt64_t(v[0]), 
-(double) IntegerTraits<Integer>::castToInt64_t(v[1]), 
-(double) IntegerTraits<Integer>::castToInt64_t(v[2]) ); 
-//L2 norm of u
-double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
-
-//first and last points
-PointD3d f = PointD3d(
-(double) IntegerTraits<Integer>::castToInt64_t((*myF)[0]), 
-(double) IntegerTraits<Integer>::castToInt64_t((*myF)[1]), 
-(double) IntegerTraits<Integer>::castToInt64_t((*myF)[2]) ); 
-PointD3d l = PointD3d(
-(double) IntegerTraits<Integer>::castToInt64_t((*myL)[0]), 
-(double) IntegerTraits<Integer>::castToInt64_t((*myL)[1]), 
-(double) IntegerTraits<Integer>::castToInt64_t((*myL)[2]) ); 
-
-if (n != 0) {
-
-	//last coefficient of the normal plane to the DSS direction
-	//passing trough f and l
-	double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
-	double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
-
-	//omega masks
-	PointD3d omega1, omega2;
-	if (omega[0] == 0) {
-		omega1 = PointD3d(0,omega[1],0);
-		omega2 = PointD3d(0,0,omega[2]);
-	} else {
-		if (omega[1] == 0) {
-			omega1 = PointD3d(omega[0],0,0);
+		//omega masks
+		PointD3d omega1, omega2;
+		if (omega[0] == 0) {
+			omega1 = PointD3d(0,omega[1],0);
 			omega2 = PointD3d(0,0,omega[2]);
-		} else {//omega[2] == 0
-			omega1 = PointD3d(omega[0],0,0);
-			omega2 = PointD3d(0,omega[1],0);
+		} else {
+			if (omega[1] == 0) {
+				omega1 = PointD3d(omega[0],0,0);
+				omega2 = PointD3d(0,0,omega[2]);
+			} else {//omega[2] == 0
+				omega1 = PointD3d(omega[0],0,0);
+				omega2 = PointD3d(0,omega[1],0);
+			}
 		}
+
+		double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
+		double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
+		double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
+		double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
+
+		//4 lines
+		PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
+														mu[1] - ( (m1+df)*u[1] )/n, 
+														mu[2] - ( (m1+df)*u[2] )/n ); 
+
+		PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n, 
+														mu[1] - ( (m1+dl)*u[1] )/n, 
+														mu[2] - ( (m1+dl)*u[2] )/n ); 
+
+			viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
+										 QColor(250,0,0));
+
+		PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
+														(mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
+														(mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
+
+		PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
+														(mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
+														(mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
+
+			viewer.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
+										 QColor(250,0,0));
+
+		PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
+														(mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
+														(mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n ); 
+
+		PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n, 
+														(mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
+														(mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
+
+			viewer.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
+										 QColor(250,0,0));
+
+		PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
+														(mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
+														(mu[2]+omega[2]) - ( (m4+df)*u[2] )/n ); 
+
+		PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n, 
+														(mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
+														(mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
+
+			viewer.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
+										 QColor(250,0,0));
+
+		//two end facets
+		viewer.addQuad(pf[0],pf[1],pf[2],
+									 pf2[0],pf2[1],pf2[2],
+									 pf4[0],pf4[1],pf4[2],
+									 pf3[0],pf3[1],pf3[2],
+									 QColor(250,0,0));
+		viewer.addQuad(pl[0],pl[1],pl[2],
+									 pl2[0],pl2[1],pl2[2],
+									 pl4[0],pl4[1],pl4[2],
+									 pl3[0],pl3[1],pl3[2],
+									 QColor(250,0,0));
+
 	}
 
-	double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
-	double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
-	double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
-	double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
+/* else { //n == 0
 
-	//4 lines
-	PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
-												  mu[1] - ( (m1+df)*u[1] )/n, 
-												  mu[2] - ( (m1+df)*u[2] )/n ); 
+			viewer.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
+										 QColor(250,0,0));
 
-	PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n, 
-												  mu[1] - ( (m1+dl)*u[1] )/n, 
-												  mu[2] - ( (m1+dl)*u[2] )/n ); 
-
-		viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
-									 QColor(250,0,0));
-
-	PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
-												  (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
-												  (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
-
-	PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
-												  (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
-												  (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
-
-		viewer.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
-									 QColor(250,0,0));
-
-	PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
-												  (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
-												  (mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n ); 
-
-	PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n, 
-												  (mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
-												  (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
-
-		viewer.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
-									 QColor(250,0,0));
-
-	PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
-												  (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
-												  (mu[2]+omega[2]) - ( (m4+df)*u[2] )/n ); 
-
-	PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n, 
-												  (mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
-												  (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
-
-		viewer.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
-									 QColor(250,0,0));
-
-	//two end facets
-	viewer.addQuad(pf[0],pf[1],pf[2],
-								 pf2[0],pf2[1],pf2[2],
-								 pf4[0],pf4[1],pf4[2],
-								 pf3[0],pf3[1],pf3[2],
-								 QColor(250,0,0));
-	viewer.addQuad(pl[0],pl[1],pl[2],
-								 pl2[0],pl2[1],pl2[2],
-								 pl4[0],pl4[1],pl4[2],
-								 pl3[0],pl3[1],pl3[2],
-								 QColor(250,0,0));
-
-} else { //n == 0
-
-		viewer.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
-									 QColor(250,0,0));
-
-}
+	}*/
 
 
 }
