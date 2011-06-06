@@ -1,38 +1,23 @@
-SET(DGTAL_TESTS_SRC
+SET(DGTAL_TESTS_SRC_KERNEL
    testDigitalSet
    testDomainSpanIterator
    testHyperRectDomain
    testHyperRectDomain-snippet
-   testImage
-   testImageSpanIterators
    testInteger
    testPointVector
    testRealPointVector
    testSpaceND
    testMorton
    testHashTree
-   testCheckImageConcept
    testLinearAlgebra
    testImagesSetsUtilities
    )
 
-SET(DGTAL_BENCH_SRC
-  testImageContainerBenchmark
-  testImageContainerByHashTree
-  )
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
+FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
-
-#Benchmark target
-FOREACH(FILE ${DGTAL_BENCH_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME})
-  add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-  ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
 ENDFOREACH(FILE)
 
 
@@ -46,21 +31,6 @@ ELSE(GMP_FOUND)
 ENDIF(GMP_FOUND)
 
 FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
-
-#-----------------------
-#ITK based tests
-#----------------------
-IF(ITK_FOUND)
-  SET(DGTAL_TESTS_ITK_SRC testITKImage)
-ELSE(ITK_FOUND)
-  SET(DGTAL_TESTS_ITK_SRC "")
-ENDIF(ITK_FOUND)
-
-FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})

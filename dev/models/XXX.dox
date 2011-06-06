@@ -21,21 +21,21 @@ namespace DGtal {
 @author AUTHOR
 
 Table of contents:
- -# \ref sect1
-   -# \ref subsect11
- -# \ref sect2  
-   -# \ref subsect21
-   -# \ref subsect22
+ -# \ref sectXXX1
+   -# \ref subsectXXX11
+ -# \ref sectXXX2  
+   -# \ref subsectXXX21
+   -# \ref subsectXXX22
 
-\section sect1 First Section
+\section sectXXX1 First Section
 
-\subsection subsect11 Subsection 1.1
+\subsection subsectXXX11 Subsection 1.1
 
-\section sect2 Section Two
+\section sectXXX2 Section Two
 
-\subsection subsect21  Subsection 2.1
+\subsection subsectXXX21  Subsection 2.1
 
-\subsection subsect22  Subsection 2.2
+\subsection subsectXXX22  Subsection 2.2
 
 */
 

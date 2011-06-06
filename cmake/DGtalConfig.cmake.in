@@ -1,12 +1,23 @@
-#---------------------------------------
-#------- DGtal Configuration file ------
-#---------------------------------------
+# - Config file for the DGtal package
+# It defines the following variables
+#  DGTAL_INCLUDE_DIRS - include directories for DGtal
+#  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
+#  DGTAL_LIBRARIES    - libraries to link against
+ 
+# Tell the user project where to find our headers and libraries
+set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@")
+set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
+ 
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
 
 
-SET(DGtal_VERSION_MAJOR @DGtal_VERSION_MAJOR@)
-SET(DGtal_VERSION_MINOR @DGtal_VERSION_MINOR@)
-SET(DGtal_VERSION_PATCH @DGtal_VERSION_PATCH@)
+#--------------------------------------------
+#ITK bugfix (we need explicit link_directory)
+#--------------------------------------------
+link_directories( @ITK_LIBRARY_DIRS@)
 
-#-----DEPENDENCIES
-SET(ITK_FOUND @ITK_FOUND@)
-SET(ITK_LIBRARIES @ITK_LIBRARIES@)
+ 
+# These are IMPORTED targets created by DGtalLibraryDepends.cmake
+set(DGTAL_LIBRARIES @LIBDGTAL_NAME@ @LIBDGTALVISU3D_NAME@)
+

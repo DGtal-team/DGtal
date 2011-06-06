@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  viewer <<  SetMode3D( p1.styleName(), "Paving" );
  
  //viewer << ClippingPlane(1,0,0,-4.9);
- //viewer << ClippingPlane(0,1,0.3,-10); 
+ viewer << ClippingPlane(0,1,0.3,-10); 
  
  
  
