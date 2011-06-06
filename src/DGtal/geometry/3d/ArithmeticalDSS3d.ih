@@ -246,6 +246,96 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getIntercept() const
   return PointD2d(x,y);
 }
 /**
+ * Computes the parameters 
+ * (direction, intercept, thickness)
+ * of the DSS
+ * @param direction
+ * @param intercept
+ * @param thickness
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+		 ::getParameters(DGtal::PointVector<3,TInteger>& direction,
+									   DGtal::PointVector<3,double>& intercept,
+										 DGtal::PointVector<3,double>& thickness) const
+{
+
+	//let us take the pair of projection planes for which
+	//the common coordinate of the main vector cannot be 0
+
+	if (myXYalgo.getB() != 0) { //XY-plane, XZ-plane
+
+		Integer a1 = myXYalgo.getB();
+		Integer b1 = myXYalgo.getA();
+		Integer a2 = myXZalgo.getB();
+		Integer c1 = myXZalgo.getA();
+
+		direction = Point3d(a1*a2,a2*b1,a1*c1);	
+
+		Integer mu1 = myXYalgo.getMu();
+		Integer mu2 = myXZalgo.getMu();
+		double y = (double) -IntegerTraits<TInteger>::castToInt64_t(mu1) / a1;
+		double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / a2;
+		intercept = PointD3d(0,y,z);
+
+		Integer omega1 = myXYalgo.getOmega();
+		Integer omega2 = myXZalgo.getOmega();
+		double ty = (double) -IntegerTraits<TInteger>::castToInt64_t(omega1) / a1;
+		double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / a2;
+		thickness = PointD3d(0,ty,tz);
+
+	} else {                     
+
+		if (myXYalgo.getA() != 0) {//XY-plane, YZ-plane
+
+			Integer a1 = myXYalgo.getB();
+			Integer b1 = myXYalgo.getA();
+			Integer b2 = myYZalgo.getB();
+			Integer c2 = myYZalgo.getA();
+
+			direction = Point3d(b1*a1,b1*b2,b2*c2);
+
+			Integer mu1 = myXYalgo.getMu();
+			Integer mu2 = myYZalgo.getMu();
+			double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / b1;
+			double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / b2;
+			intercept = PointD3d(x,0,z);
+
+			Integer omega1 = myXYalgo.getOmega();
+			Integer omega2 = myYZalgo.getOmega();
+			double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / b1;
+			double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / b2;
+			thickness = PointD3d(tx,0,tz);
+
+
+		} else {                  //YZ-plane, XZ-plane
+
+			Integer b2 = myYZalgo.getB();
+			Integer c2 = myYZalgo.getA();
+			Integer a2 = myXZalgo.getB();
+			Integer c1 = myXZalgo.getA();
+
+			direction = Point3d(c2*a2,c1*b2,c1*c2);	
+
+			Integer mu1 = myYZalgo.getMu();
+			Integer mu2 = myXZalgo.getMu();
+			double y = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / c2;
+			double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu2) / c1;
+			intercept = PointD3d(x,y,0);
+
+			Integer omega1 = myYZalgo.getOmega();
+			Integer omega2 = myXZalgo.getOmega();
+			double ty = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / c2;
+			double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega2) / c1;
+			thickness = PointD3d(tx,ty,0);
+
+		} 
+	}
+
+}
+/**
  * @return the style name used for drawing this object.
  */
 template <typename TIterator, typename TInteger, int connectivity>
@@ -342,69 +432,6 @@ void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 		 ::selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const
 {
-/*
-	PointD2d fuXY = myXYalgo.project(myXYalgo.getBackPoint(),myXYalgo.getUf());
-	PointD2d flXY = myXYalgo.project(myXYalgo.getBackPoint(),myXYalgo.getLf());
-	PointD2d luXY = myXYalgo.project(myXYalgo.getFrontPoint(),myXYalgo.getUf());
-	PointD2d llXY = myXYalgo.project(myXYalgo.getFrontPoint(),myXYalgo.getLf());
-
-	PointD2d fuXZ = myXZalgo.project(myXZalgo.getBackPoint(),myXZalgo.getUf());
-	PointD2d flXZ = myXZalgo.project(myXZalgo.getBackPoint(),myXZalgo.getLf());
-	PointD2d luXZ = myXZalgo.project(myXZalgo.getFrontPoint(),myXZalgo.getUf());
-	PointD2d llXZ = myXZalgo.project(myXZalgo.getFrontPoint(),myXZalgo.getLf());
-
-	PointD3d f1 = PointD3d(fuXY.at(0),fuXY.at(1),fuXZ.at(1));
-	PointD3d f2 = PointD3d(flXY.at(0),flXY.at(1),flXZ.at(1));
-	PointD3d f3 = PointD3d(fuXZ.at(0),fuXY.at(1),fuXZ.at(1));
-	PointD3d f4 = PointD3d(flXZ.at(0),flXY.at(1),flXZ.at(1));
-
-	PointD3d l1 = PointD3d(luXY.at(0),luXY.at(1),luXZ.at(1));
-	PointD3d l2 = PointD3d(llXY.at(0),llXY.at(1),llXZ.at(1));
-	PointD3d l3 = PointD3d(luXZ.at(0),luXY.at(1),luXZ.at(1));
-	PointD3d l4 = PointD3d(llXZ.at(0),llXY.at(1),llXZ.at(1));
-
-	//main facets
-	viewer.addLine(f1[0],f1[1],f1[2],
-								 l1[0],l1[1],l1[2],
-								 QColor(250,0,0));
-	viewer.addLine(f2[0],f2[1],f2[2],
-								 l2[0],l2[1],l2[2],
-								 QColor(250,0,0));
-	viewer.addLine(f3[0],f3[1],f3[2],
-								 l3[0],l3[1],l3[2],
-								 QColor(250,0,0));
-	viewer.addLine(f4[0],f4[1],f4[2],
-								 l4[0],l4[1],l4[2],
-								 QColor(250,0,0));
-
-	//facet of the first point
-	viewer.addLine(f1[0],f1[1],f1[2],
-								 f4[0],f4[1],f4[2],
-								 QColor(250,0,0));
-	viewer.addLine(f3[0],f3[1],f3[2],
-								 f2[0],f2[1],f2[2],
-								 QColor(250,0,0));
-	viewer.addLine(f1[0],f1[1],f1[2],
-								 f3[0],f3[1],f3[2],
-								 QColor(250,0,0));
-	viewer.addLine(f2[0],f2[1],f2[2],
-								 f4[0],f4[1],f4[2],
-								 QColor(250,0,0));
-
-	//facet of the last point
-	viewer.addLine(l1[0],l1[1],l1[2],
-								 l4[0],l4[1],l4[2],
-								 QColor(250,0,0));
-	viewer.addLine(l3[0],l3[1],l3[2],
-								 l2[0],l2[1],l2[2],
-								 QColor(250,0,0));
-	viewer.addLine(l1[0],l1[1],l1[2],
-								 l3[0],l3[1],l3[2],
-								 QColor(250,0,0));
-	viewer.addLine(l2[0],l2[1],l2[2],
-								 l4[0],l4[1],l4[2],
-								 QColor(250,0,0));
-*/
 
 
 
@@ -422,53 +449,129 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 */
 
 
-Vector3d u = getDirection(); //choisir plans de projection | u[0] != 0
-PointD2d mu = getIntercept(); 
-/*Point3d F = *myF;
-Vector3d u = (*myL) - F;
-Point2d mu = Point2d( F[1] -(double) (F[0]*u[1])/u[0] ,  F[2] -(double) (F[0]*u[2])/u[0] );
-*/
-Integer n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
 
-if ( (n != 0)&&(u[0]!=0) ) {
-	std::cerr << u << "(" << n << "), " << mu << endl;
+//get DSS parameters
+Vector3d v; //direction vector
+PointD3d mu; //intercept
+PointD3d omega; //thickness
+getParameters(v,mu,omega);
 
-	Point3d f = *myF;
-	Point3d l = *myL;
+//casting coordinates of v in double
+VectorD3d u = VectorD3d(
+(double) IntegerTraits<Integer>::castToInt64_t(v[0]), 
+(double) IntegerTraits<Integer>::castToInt64_t(v[1]), 
+(double) IntegerTraits<Integer>::castToInt64_t(v[2]) ); 
+//L2 norm of u
+double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+
+//first and last points
+PointD3d f = PointD3d(
+(double) IntegerTraits<Integer>::castToInt64_t((*myF)[0]), 
+(double) IntegerTraits<Integer>::castToInt64_t((*myF)[1]), 
+(double) IntegerTraits<Integer>::castToInt64_t((*myF)[2]) ); 
+PointD3d l = PointD3d(
+(double) IntegerTraits<Integer>::castToInt64_t((*myL)[0]), 
+(double) IntegerTraits<Integer>::castToInt64_t((*myL)[1]), 
+(double) IntegerTraits<Integer>::castToInt64_t((*myL)[2]) ); 
 
 	std::cerr << f << ", " << l << endl;
 
+if (n != 0) {
+	std::cerr << v<< u << "(" << n << "), " << mu << ", " << omega << endl;
+
+	//last coefficient of the normal plane to the DSS direction
+	//passing trough f and l
 	Integer df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
 	Integer dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
 
-	std::cerr << df << ", " << dl << endl;
 
   //////////////////////////////////////////
-	//a faire en 4 exemplaires pour df, puis dl
-	Integer mf = u[1]*mu[0] + u[2]*mu[1] + df;
-	Integer ml = u[1]*mu[0] + u[2]*mu[1] + dl;
+	//omega masks
+	PointD3d omega1, omega2;
+	if (omega[0] == 0) {
+		omega1 = PointD3d(0,omega[1],0);
+		omega2 = PointD3d(0,0,omega[2]);
+	} else {
+		if (omega[1] == 0) {
+			omega1 = PointD3d(omega[0],0,0);
+			omega2 = PointD3d(0,0,omega[2]);
+		} else {//omega[2] == 0
+			omega1 = PointD3d(omega[0],0,0);
+			omega2 = PointD3d(0,omega[1],0);
+		}
+	}
 
-	std::cerr << mf << ", " << ml << endl;
+	Integer m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
+	Integer m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
+	Integer m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
+	Integer m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
 
 
-	PointD3d pf = PointD3d( (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[0] )/n, 
-												 (double) IntegerTraits<Integer>::castToInt64_t( mu[0] ) 
-		+ (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[1] )/n, 
-												 (double) IntegerTraits<Integer>::castToInt64_t( mu[1] )
-		+ (double) IntegerTraits<Integer>::castToInt64_t( -mf*u[2] )/n ); 
+	//4 lines
+	PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
+												  mu[1] - ( (m1+df)*u[1] )/n, 
+												  mu[2] - ( (m1+df)*u[2] )/n ); 
 
-	PointD3d pl = PointD3d( (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[0] )/n, 
-												 (double) IntegerTraits<Integer>::castToInt64_t( mu[0] )
-		+ (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[1] )/n, 
-												 (double) IntegerTraits<Integer>::castToInt64_t( mu[1] ) 
-		+ (double) IntegerTraits<Integer>::castToInt64_t( -ml*u[2] )/n ); 
-
-	std::cerr << pf << ", " << pl << endl;
-	std::cerr << "display" << endl;
+	PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n, 
+												  mu[1] - ( (m1+dl)*u[1] )/n, 
+												  mu[2] - ( (m1+dl)*u[2] )/n ); 
 
 		viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
+									 QColor(0,0,250));
+
+	PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
+												  (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
+												  (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
+
+	PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
+												  (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
+												  (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
+
+		viewer.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
 									 QColor(250,0,0));
+
+	PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
+												  (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
+												  (mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n ); 
+
+	PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n, 
+												  (mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
+												  (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
+
+		viewer.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
+									 QColor(250,0,0));
+
+	PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
+												  (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
+												  (mu[2]+omega[2]) - ( (m4+df)*u[2] )/n ); 
+
+	PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n, 
+												  (mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
+												  (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
+
+		viewer.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
+									 QColor(250,0,0));
+
+	//two end facets
+	viewer.addQuad(pf[0],pf[1],pf[2],
+								 pf2[0],pf2[1],pf2[2],
+								 pf4[0],pf4[1],pf4[2],
+								 pf3[0],pf3[1],pf3[2],
+								 QColor(250,0,0));
+	viewer.addQuad(pl[0],pl[1],pl[2],
+								 pl2[0],pl2[1],pl2[2],
+								 pl4[0],pl4[1],pl4[2],
+								 pl3[0],pl3[1],pl3[2],
+								 QColor(250,0,0));
+
+} else { //n == 0
+
+		viewer.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
+									 QColor(250,0,0));
+
 }
+
+
 }
 
 template <typename TIterator, typename TInteger, int connectivity>

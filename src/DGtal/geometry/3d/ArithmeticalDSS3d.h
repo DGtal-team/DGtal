@@ -90,7 +90,8 @@ namespace DGtal
     typedef DGtal::PointVector<3,Integer> Point3d;
     typedef DGtal::PointVector<3,Integer> Vector3d;
     typedef DGtal::PointVector<2,double> PointD2d;
-    typedef DGtal::PointVector<3,double> PointD3d;  
+    typedef DGtal::PointVector<3,double> PointD3d;
+    typedef DGtal::PointVector<3,double> VectorD3d;  
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -240,6 +241,16 @@ namespace DGtal
      */
 		PointD2d getIntercept() const; 
 
+    /**
+		 * Computes the parameters 
+  	 * (direction, intercept, thickness)
+		 * of the DSS
+     * @param direction
+		 * @param intercept
+		 * @param thickness
+     */
+		void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
+	
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
