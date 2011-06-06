@@ -389,7 +389,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsQGL( DGtalQGLViewer & view
       
 	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  viewer.addPoint(x, y , z, QColor(255, 0 ,0), 3);
+	  viewer.addPoint(x, y , z, QColor(255, 0 ,0));
 
 	}
       }

@@ -100,7 +100,8 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
 public:
 
-  enum StreamKey {addNewList, updateDisplay};
+
+  enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
   
   /**
    * The associated map type for storing possible modes used for
@@ -211,16 +212,17 @@ public:
   	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
 
   
-  void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
-		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(180,180,250,255));
-
-  void addKSVoxel(int x, int y, int z, const QColor &aColor=QColor(255,180,250,255));
+  void addKSSurfel(double x, double y, double z, 
+		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+		   bool isOriented= false, bool isOrientedPositively=true);
   
-  void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
+  void addKSVoxel(int x, int y, int z);
+  
+  void addKSPointel(double x, double y, double z, double size=0.1);
   
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
-		  double width=0.02, const QColor &color=QColor(20,20,200,255));
+		  double width=0.02, bool isSigned=false, bool signPos=true);
   
   
   
@@ -323,6 +325,8 @@ private:
     double x2, y2, z2;
     double width;
     unsigned int R,G,B,T;
+    bool isSigned;
+    bool signPos;
   };
     
   struct voxelGL{
@@ -346,6 +350,7 @@ private:
     double x2,y2,z2;
     double x3,y3,z3;
     double x4,y4,z4;    
+    double nx, ny, nz;
     unsigned int R,G,B,T;
   };
     
@@ -411,7 +416,7 @@ protected:
    * 
    *
    **/
-  void glDrawGLLinel(lineGL line);
+  void glDrawGLLinel(lineGL aLinel);
   
   
 
@@ -432,12 +437,26 @@ protected:
   struct compFarthestFromCamera{
     qglviewer::Vec posCam;
     bool operator() ( voxelGL s1, voxelGL s2){
-      float dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
-      float dist2= sqrt((posCam.x-s2.x)*(posCam.x-s2.x)+ (posCam.y-s2.y)*(posCam.y-s2.y)+(posCam.z-s2.z)*(posCam.z-s2.z));
+      double dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
+      double dist2= sqrt((posCam.x-s2.x)*(posCam.x-s2.x)+ (posCam.y-s2.y)*(posCam.y-s2.y)+(posCam.z-s2.z)*(posCam.z-s2.z));
       return dist1>dist2;
     }  
-  };
+  }
+;
   
+struct compFarthestSurfelFromCamera{
+  qglviewer::Vec posCam;
+  bool operator() ( quadGL q1, quadGL q2){
+    qglviewer::Vec center1((q1.x1+q1.x2+q1.x3+q1.x4)/4.0, (q1.y1+q1.y2+q1.y3+q1.y4)/4.0, (q1.z1+q1.z2+q1.z3+q1.z4)/4.0 );
+    qglviewer::Vec center2((q2.x1+q2.x2+q2.x3+q2.x4)/4.0, (q2.y1+q2.y2+q2.y3+q2.y4)/4.0, (q2.z1+q2.z2+q2.z3+q2.z4)/4.0 );
+    
+    
+    double dist1= sqrt((posCam.x-center1.x)*(posCam.x-center1.x)+ (posCam.y-center1.y)*(posCam.y-center1.y)+(posCam.z-center1.z)*(posCam.z-center1.z));
+    double dist2= sqrt((posCam.x-center2.x)*(posCam.x-center2.x)+ (posCam.y-center2.y)*(posCam.y-center2.y)+(posCam.z-center2.z)*(posCam.z-center2.z));
+    return dist1>dist2;
+  }  
+};
+
 
 
 
@@ -461,6 +480,7 @@ private:
   
   void updateBoundingBox(int x, int y, int z);
 
+  double myCurrentfShiftVisuKSSurfels;
   
 
   }; // end of class DGtalQGLViewer

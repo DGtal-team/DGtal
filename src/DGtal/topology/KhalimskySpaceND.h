@@ -150,15 +150,21 @@ namespace DGtal
     
     void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
     
+
     struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
       virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
-	//aBoard.setPenColor(DGtalBoard::Color::Black);
-	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
-      }
-    };
-  
 
+	//aBoard.setPenColor(DGtalBoard::Color::Black);
+      //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+      }
+      
+
+    };
+
+
+
+    
 #endif
 
     // --------------- CDrawableWithDGtalBoard realization -------------------

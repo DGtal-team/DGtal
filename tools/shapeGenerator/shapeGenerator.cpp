@@ -79,14 +79,14 @@ void createList()
   shapesParam4.push_back("");
  
   shapes2D.push_back("cube");
-  shapesDesc.push_back("Hypercube.");
+  shapesDesc.push_back("Hypercube (no signature).");
   shapesParam1.push_back("--width [-w]");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("lpball");
-  shapesDesc.push_back("Ball for the l_power metric.");
+  shapesDesc.push_back("Ball for the l_power metric (no signature).");
   shapesParam1.push_back("--radius [-R],");
   shapesParam2.push_back("--power [-p]");
   shapesParam3.push_back("");
@@ -213,11 +213,13 @@ struct Exporter
    * Compute and export (std::cout) the boundary of the set and export the signature (normal
    * vector, curvature) at each point of the 2D contour.
    * 
-   * @param aSet input set.
+   * @param aShape the shape
+   * @param aSet input set corresponding to the shape
    * @param aDomain the domain used to construct the set.
    */
+  template <typename Shape>
   static 
-  void exportSignature(const Set &aSet, const Z2i::Domain &aDomain)
+  void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
   {
     
     trace.beginBlock("Extracting the boundary");
@@ -235,13 +237,27 @@ struct Exporter
     trace.endBlock();
     
     ///Export
+    std::cout<<"## shapeGenerator signature export"<<std::endl;
+    std::cout<<"## shape: "<<aShape<<std::endl;
+    std::cout<<"## x\ty\tdx\tdy\tddx\tddy"<<std::endl;
     for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
-      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size(); j++)
-	std::cout<< vectContoursBdryPointels.at(i).at(j)<<std::endl;
-    
-    //<<","
-    //		 << vectContoursBdryPointels.at(i).at(j)[0]<<","<<std::endl;
+      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size() - 1; j++)
+	{
+	  Z2i::Space::Point point = (vectContoursBdryPointels.at(i).at(j) 
+				     + vectContoursBdryPointels.at(i).at(j+1));
+	  Z2i::Space::RealPoint midpoint (point[0]/2.0,point[1]/2.0);
+
+	  Z2i::Space::RealPoint xp,xpp;
+	  double t = aShape.parameter(midpoint);
+	  xp = aShape.xp( t );
+	  xpp = aShape.xpp( t );
 	  
+	  std::cout<< midpoint[0]<<"\t"<<midpoint[1]<<"\t"
+		   << xp[0]<<"\t"<<xp[1]<<"\t"
+	    	   << xpp[0]<<"\t"<<xpp[1]<<std::endl;
+	    
+	}
+    	  
   }
 };
 
@@ -321,7 +337,7 @@ int main( int argc, char** argv )
       if (not(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       
-      ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
+      Ball2D<Z2i::Space> ball(Z2i::Point(0,0), radius);
       Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
       Z2i::DigitalSet aSet(domain);
       
@@ -329,7 +345,7 @@ int main( int argc, char** argv )
       Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
       
       if (vm.count("signature"))
-	Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	Exporter<Z2i::DigitalSet,Image>::exportSignature(ball,aSet,domain);
       
       return 0;
     }
@@ -347,7 +363,10 @@ int main( int argc, char** argv )
 	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	if (vm.count("signature"))
-	  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	  {
+	    trace.error()<< "No signature export for this shape.";
+	    trace.info()<<std::endl;
+	  }
    
 	return 0;
       }
@@ -367,7 +386,10 @@ int main( int argc, char** argv )
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	  if (vm.count("signature"))
-	    Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	    {
+	      trace.error()<< "No signature export for this shape.";
+	      trace.info()<<std::endl;
+	    }
    
 	  return 0;
 	}
@@ -391,7 +413,7 @@ int main( int argc, char** argv )
 	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	    if (vm.count("signature"))
-	      Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	      Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
 	    return 0;
 	  }
@@ -413,7 +435,7 @@ int main( int argc, char** argv )
 	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	      if (vm.count("signature"))
-		Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		Exporter<Z2i::DigitalSet,Image>::exportSignature(object,aSet,domain);
    
 	      return 0;
 	    }
@@ -437,7 +459,7 @@ int main( int argc, char** argv )
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 		if (vm.count("signature"))
-		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
 		return 0;
 	      } 
@@ -459,7 +481,7 @@ int main( int argc, char** argv )
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 		if (vm.count("signature"))
-		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(ell,aSet,domain);
    
 		return 0;
 	      } 
