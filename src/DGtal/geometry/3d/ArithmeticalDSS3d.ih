@@ -280,8 +280,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 		double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / a2;
 		intercept = PointD3d(0,y,z);
 
-		Integer omega1 = myXYalgo.getOmega();
-		Integer omega2 = myXZalgo.getOmega();
+		Integer omega1 = myXYalgo.getOmega()-1;
+		Integer omega2 = myXZalgo.getOmega()-1;
 		double ty = (double) -IntegerTraits<TInteger>::castToInt64_t(omega1) / a1;
 		double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / a2;
 		thickness = PointD3d(0,ty,tz);
@@ -303,34 +303,41 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 			double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / b2;
 			intercept = PointD3d(x,0,z);
 
-			Integer omega1 = myXYalgo.getOmega();
-			Integer omega2 = myYZalgo.getOmega();
+			Integer omega1 = myXYalgo.getOmega()-1;
+			Integer omega2 = myYZalgo.getOmega()-1;
 			double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / b1;
 			double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / b2;
 			thickness = PointD3d(tx,0,tz);
 
 
-		} else {                  //YZ-plane, XZ-plane
+		} else {                  
 
-			Integer b2 = myYZalgo.getB();
-			Integer c2 = myYZalgo.getA();
-			Integer a2 = myXZalgo.getB();
-			Integer c1 = myXZalgo.getA();
+			if (myYZalgo.getA() != 0) {//YZ-plane, XZ-plane
 
-			direction = Point3d(c2*a2,c1*b2,c1*c2);	
+				Integer b2 = myYZalgo.getB();
+				Integer c2 = myYZalgo.getA();
+				Integer a2 = myXZalgo.getB();
+				Integer c1 = myXZalgo.getA();
 
-			Integer mu1 = myYZalgo.getMu();
-			Integer mu2 = myXZalgo.getMu();
-			double y = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / c2;
-			double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu2) / c1;
-			intercept = PointD3d(x,y,0);
+				direction = Point3d(c2*a2,c1*b2,c1*c2);	
 
-			Integer omega1 = myYZalgo.getOmega();
-			Integer omega2 = myXZalgo.getOmega();
-			double ty = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / c2;
-			double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega2) / c1;
-			thickness = PointD3d(tx,ty,0);
+				Integer mu1 = myYZalgo.getMu();
+				Integer mu2 = myXZalgo.getMu();
+				double y = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / c2;
+				double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu2) / c1;
+				intercept = PointD3d(x,y,0);
 
+				Integer omega1 = myYZalgo.getOmega()-1;
+				Integer omega2 = myXZalgo.getOmega()-1;
+				double ty = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / c2;
+				double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega2) / c1;
+				thickness = PointD3d(tx,ty,0);
+
+			} else {//degenerated case
+				direction = Point3d(0,0,0);		
+				intercept = PointD3d(0,0,0);
+				thickness = PointD3d(0,0,0);		
+			}
 		} 
 	}
 
@@ -474,18 +481,13 @@ PointD3d l = PointD3d(
 (double) IntegerTraits<Integer>::castToInt64_t((*myL)[1]), 
 (double) IntegerTraits<Integer>::castToInt64_t((*myL)[2]) ); 
 
-	std::cerr << f << ", " << l << endl;
-
 if (n != 0) {
-	std::cerr << v<< u << "(" << n << "), " << mu << ", " << omega << endl;
 
 	//last coefficient of the normal plane to the DSS direction
 	//passing trough f and l
-	Integer df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
-	Integer dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
+	double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
+	double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
 
-
-  //////////////////////////////////////////
 	//omega masks
 	PointD3d omega1, omega2;
 	if (omega[0] == 0) {
@@ -501,11 +503,10 @@ if (n != 0) {
 		}
 	}
 
-	Integer m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
-	Integer m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
-	Integer m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
-	Integer m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
-
+	double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
+	double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
+	double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
+	double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
 
 	//4 lines
 	PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
@@ -517,7 +518,7 @@ if (n != 0) {
 												  mu[2] - ( (m1+dl)*u[2] )/n ); 
 
 		viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
-									 QColor(0,0,250));
+									 QColor(250,0,0));
 
 	PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
 												  (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
