@@ -64,8 +64,8 @@ int main( int argc, char** argv )
 	typedef PointVector<3,int> Point;
 	typedef std::vector<Point>::iterator Iterator;
 	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
-	typedef GreedyDecomposition<SegmentComputer> Decomposition;
-//	typedef MaximalSegments<SegmentComputer> Decomposition;
+//	typedef GreedyDecomposition<SegmentComputer> Decomposition;
+	typedef MaximalSegments<SegmentComputer> Decomposition;
 
   string inputFilename = examplesPath + "samples/sinus.dat"; 
 	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
@@ -87,7 +87,7 @@ int main( int argc, char** argv )
 	viewer << SetMode3D(p.styleName(), "Grid");
 
 		unsigned int c = 0;
-		Decomposition::ConstIterator i = theDecomposition.begin();
+		Decomposition::SegmentIterator i = theDecomposition.begin();
 		for ( ; i != theDecomposition.end(); ++i) {
 			SegmentComputer currentSegmentComputer(*i);
 
