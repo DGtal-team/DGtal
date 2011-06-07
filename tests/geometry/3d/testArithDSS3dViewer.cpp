@@ -38,14 +38,16 @@
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io-viewers/readers/PointListReader.h"
 
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "../examples/ConfigExamples.h"
 
 #include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/MaximalSegments.h"
 
 
 using namespace std;
@@ -63,52 +65,44 @@ int main( int argc, char** argv )
 	typedef std::vector<Point>::iterator Iterator;
 	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
 	typedef GreedyDecomposition<SegmentComputer> Decomposition;
+//	typedef MaximalSegments<SegmentComputer> Decomposition;
 
-	std::vector<Point> sequence;
-	sequence.push_back(Point(0,0,0));
-	sequence.push_back(Point(1,0,0));
-	sequence.push_back(Point(2,0,0));
-	sequence.push_back(Point(2,1,0));
-	sequence.push_back(Point(2,1,1));
-	sequence.push_back(Point(3,1,1));
-	sequence.push_back(Point(4,1,1));
-	sequence.push_back(Point(4,2,1));
-	sequence.push_back(Point(4,2,2));
-	sequence.push_back(Point(5,2,2));
-	sequence.push_back(Point(6,2,2));
-	sequence.push_back(Point(6,3,2));
-	sequence.push_back(Point(6,3,3));
-	sequence.push_back(Point(6,4,3));
-	sequence.push_back(Point(6,4,4));
-	sequence.push_back(Point(6,5,4));
-	sequence.push_back(Point(6,5,5));
-	sequence.push_back(Point(6,5,6));
-	sequence.push_back(Point(6,5,7));
-	sequence.push_back(Point(6,5,8));
-  
+  string inputFilename = examplesPath + "samples/sinus.dat"; 
+	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
+
+
 	SegmentComputer algo;
 	Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
 	
 	///////////////////////////////////
-	//display			
+	//display	
+	bool flag = true;		
+	#ifdef WITH_VISU3D_QGLVIEWER
+
 	QApplication application(argc,argv);
 	DGtalQGLViewer viewer;
 	viewer.show();
- 
+
+	Point p;
+	viewer << SetMode3D(p.styleName(), "Grid");
+
 		unsigned int c = 0;
 		Decomposition::ConstIterator i = theDecomposition.begin();
 		for ( ; i != theDecomposition.end(); ++i) {
 			SegmentComputer currentSegmentComputer(*i);
-			if (c%2==0) {
-				viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
-			} else {
-				viewer << CustomColors3D(QColor(0, 250,0),QColor(0, 250,0));
-			}
-			viewer << currentSegmentComputer;	//view voxels
+
+		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "Points"); 
+			viewer << currentSegmentComputer;	
+		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "BoundingBox"); 
+			viewer << currentSegmentComputer;	
+			//cerr << currentSegmentComputer << endl;
+
 			c++;
 		} 
  
 	viewer << DGtalQGLViewer::updateDisplay;
-	return application.exec();
+	flag = application.exec();
+ 	#endif
+	return flag;
 }
 
