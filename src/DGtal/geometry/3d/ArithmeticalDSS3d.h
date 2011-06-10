@@ -70,28 +70,35 @@ namespace DGtal
   {
 
 
+/* \TODO 6 and 26-connectivity */
+
     // ----------------------- Types ------------------------------
   public:
 
 
+		//iterator
     typedef TIterator Iterator;
 		typedef std::reverse_iterator<Iterator> ReverseIterator;
 		typedef ArithmeticalDSS3d<ReverseIterator,TInteger,connectivity> ReverseSegmentComputer; 
 
-    //entier
+
+    //integer
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
 
 
-
     //points and vectors
     typedef DGtal::PointVector<2,Integer> Point2d;
+    typedef DGtal::PointVector<2,Integer> Vector2d;
     typedef DGtal::PointVector<3,Integer> Point3d;
-  
+    typedef DGtal::PointVector<3,Integer> Vector3d;
+    typedef DGtal::PointVector<2,double> PointD2d;
+    typedef DGtal::PointVector<3,double> PointD3d;
+    typedef DGtal::PointVector<3,double> VectorD3d;  
 
 
     //////////////////////////////////////////////////////////////////////////////
-    // adapter for iterator
+    // adapters for iterator
 		template <typename TIt>
 		class XYIteratorAdapter 
 		{
@@ -137,6 +144,7 @@ namespace DGtal
 					return Point2d(tmp.at(1),tmp.at(2));
 		    }
 		};
+
 
 		//2d-arithmeticalDSS recognition algorithms
 		typedef DGtal::ArithmeticalDSS<XYIteratorAdapter<TIterator>,
@@ -228,6 +236,16 @@ namespace DGtal
     // ------------------------- Accessors ------------------------------
 
     /**
+		 * Computes the parameters 
+  	 * (direction, intercept, thickness)
+		 * of the DSS
+     * @param direction
+		 * @param intercept
+		 * @param thickness
+     */
+		void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
+	
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -263,7 +281,8 @@ namespace DGtal
      * @param viewer the output where the object is drawn.
      */
     void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsPointsQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const;
  
  #endif
 
@@ -292,22 +311,6 @@ namespace DGtal
 
   }; // end of class ArithmeticalDSS3d
 
-#ifdef WITH_VISU3D_QGLVIEWER
-/*
-  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
-    {
-			viewer.myModes[ "ArithmeticalDSS3d" ] = "Paving";
-    }
-  };
-  
-
-  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
-
-    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const {}
-  };
-*/
-#endif
 
 
   /**
