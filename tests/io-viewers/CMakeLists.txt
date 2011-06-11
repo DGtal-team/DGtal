@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_IOVIEWERS
        testSimpleBoard
-       testDGtalBoardCustomStyle )
+       testDGtalBoardCustomStyle
+       testLongvol )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IOVIEWERS})
