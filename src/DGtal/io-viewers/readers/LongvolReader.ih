@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file VolReader.ih
+ * @file LongvolReader.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/25
+ * @date 2011/06/11
  *
- * Implementation of inline methods defined in VolReader.h
+ * Implementation of inline methods defined in LongvolReader.h
  *
  * This file is part of the DGtal library.
  */
@@ -34,14 +34,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
-
-
-
-
 template <typename T>
 inline
 T
-DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::IOException )
+DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( DGtal::IOException )
 {
   FILE * fin;
   DGtal::IOException dgtalexception;
@@ -57,7 +53,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   if ( fin == NULL )
   {
-    trace.error() << "VolReader : can't open " << filename << endl;
+    trace.error() << "LongvolReader : can't open " << filename << endl;
     throw dgtalexception;
   }
 
@@ -77,7 +73,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     if ( line[strlen( line ) - 1] != '\n' )
     {
-      trace.error() << "VolReader: Line " << linecount << " too long" << std::endl;
+      trace.error() << "LongvolReader: Line " << linecount << " too long" << std::endl;
       throw dgtalexception;
     }
 
@@ -87,7 +83,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     if ( i == 0 || i >= 126 || line[i] != ':' )
     {
-      trace.error() << "VolReader: Invalid header read at line " << linecount << std::endl;
+      trace.error() << "LongvolReader: Invalid header read at line " << linecount << std::endl;
       throw dgtalexception;
     }
     else
@@ -95,7 +91,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
       if ( fieldcount == MAX_HEADERNUMLINES )
       {
-        trace.warning() << "VolReader: Too many lines in HEADER, ignoring\n";
+        trace.warning() << "LongvolReader: Too many lines in HEADER, ignoring\n";
         continue;
       }
       if ( fieldcount > MAX_HEADERNUMLINES )
@@ -118,13 +114,13 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   {
     if ( getHeaderValue( "Version" , header ) != NULL &&
          ( strcmp( requiredHeaders[i], "Int-Endian" ) == 0 ||
-           strcmp( requiredHeaders[i], "Voxel-Endian" ) == 0 ) )
+           strcmp( requiredHeaders[i], "Lvoxel-Endian" ) == 0 ) )
     {
       continue;
     }
     if ( getHeaderField( requiredHeaders[i]  , header ) == -1 )
     {
-      trace.error() << "VolReader: Required Header Field missing: "
+      trace.error() << "LongvolReader: Required Header Field missing: "
       << requiredHeaders[i] << std::endl;
       throw dgtalexception;
 
@@ -141,27 +137,27 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   {
     int rawsx, rawsy, rawsz;
     long int count = 0;
-    // Size of the volume
+    // Size of the longvolume
     count += fread( &rawsx, sizeof( int ), 1, fin );
     count += fread( &rawsy, sizeof( int ), 1, fin );
     count += fread( &rawsz, sizeof( int ), 1, fin );
 
     if ( count != 3 )
     {
-      trace.error() << "VolReader: can't read file (raw header)\n";
+      trace.error() << "LongvolReader: can't read file (raw header)\n";
       throw dgtalexception;
     }
 
 
     if ( sx != rawsx || sy != rawsy || sz != rawsz )
     {
-      trace.warning() << "VolReader: Warning : Incoherent vol header with raw header !\n";
+      trace.warning() << "LongvolReader: Warning : Incoherent longvol header with raw header !\n";
     }
 
     int voxsize;
     if ( getHeaderValueAsInt( "Voxel-Size", &voxsize, header ) == 0 && voxsize != sizeof( voxel ) )
     {
-      trace.error() << "VolReader: This file was generated with a voxel-size that we do not support.\n";
+      trace.error() << "LongvolReader: This file was generated with a voxel-size that we do not support.\n";
       throw dgtalexception;
     }
 
@@ -171,7 +167,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     if ( count != 1 || tmp != '\n' )
     {
-      trace.error() << "VolReader: I thouhgt I would have read a \\n !\n";
+      trace.error() << "LongvolReader: I thouhgt I would have read a \\n !\n";
       throw dgtalexception;
     }
   }
@@ -204,7 +200,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     if ( count != total )
     {
-      trace.error() << "VolReader: can't read file (raw data) !\n";
+      trace.error() << "LongvolReader: can't read file (raw data) !\n";
       throw dgtalexception;
     }
 
@@ -213,7 +209,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   }
   catch ( ... )
   {
-    trace.error() << "VolReader: not enough memory\n" ;
+    trace.error() << "LongvolReader: not enough memory\n" ;
     throw dgtalexception;
   }
 
@@ -222,9 +218,9 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
 
 template <typename T>
-const char *DGtal::VolReader<T>::requiredHeaders[] =
+const char *DGtal::LongvolReader<T>::requiredHeaders[] =
 {
-  "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color", NULL
+  "X", "Y", "Z", "Lvoxel-Size", "Int-Endian", "Lvoxel-Endian", "Alpha-Color", NULL
 };
 
 
@@ -233,7 +229,7 @@ const char *DGtal::VolReader<T>::requiredHeaders[] =
 template<typename T>
 inline
 int
-DGtal::VolReader<T>::getHeaderField( const char *type, const HeaderField * header )
+DGtal::LongvolReader<T>::getHeaderField( const char *type, const HeaderField * header )
 {
 
 
@@ -251,7 +247,7 @@ DGtal::VolReader<T>::getHeaderField( const char *type, const HeaderField * heade
 template<typename T>
 inline
 const char *
-DGtal::VolReader<T>::getHeaderValue( const char *type, const HeaderField * header )
+DGtal::LongvolReader<T>::getHeaderValue( const char *type, const HeaderField * header )
 {
 
   int i = getHeaderField( type, header );
@@ -265,7 +261,7 @@ DGtal::VolReader<T>::getHeaderValue( const char *type, const HeaderField * heade
 template<typename T>
 inline
 int
-DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
+DGtal::LongvolReader<T>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
 {
   int i = getHeaderField( type, header );
   if ( i == -1 )
