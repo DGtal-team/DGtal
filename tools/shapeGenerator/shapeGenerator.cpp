@@ -14,7 +14,7 @@
  *
  **/
 /**
- * @file visuDistanceTransform.cpp
+ * @file shapeGenerator.cpp
  * @ingroup Tools
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr)
  * LIRIS (CNRS, UMR 5205), 
@@ -57,6 +57,11 @@
 
 using namespace DGtal;
 
+
+/**
+ * Global vectors to describe the available shapes and their
+ * parameters.
+ */
 std::vector<std::string> shapes2D;
 std::vector<std::string> shapesDesc;
 std::vector<std::string> shapesParam1;
@@ -167,12 +172,28 @@ unsigned int checkAndRetrunIndex(const std::string &shapeName)
   return pos;
 }
 
+
+/** 
+ * Functor to export a given shape into an image file
+ * (pgm,raw,pdf,svg,...) and to extract its signature.
+ * 
+ * @tparam Set type of the input Set
+ * @tparam Image type of the input Image.
+ */
 template <typename Set, typename Image>
 struct Exporter
 { 
   typedef GrayscaleColorMap<unsigned char> Gray;
 
   
+  /** 
+   * Export a given Set into an image file.
+   * 
+   * @param aSet input set.
+   * @param outputName output file name.
+   * @param outputFormat output file format.
+   *
+   */
   static
   void save(const Set &aSet, 
 	    const std::string outputName, 
@@ -195,6 +216,7 @@ struct Exporter
 	      board.saveSVG((outputName+"."+outputFormat).c_str());
 	    }
 	  else
+#ifdef WITH_CAIRO
 	    if (outputFormat == "pdf")
 	      {
 		DGtalBoard board;
@@ -203,11 +225,20 @@ struct Exporter
 		
 	      }
 	    else
-	      {
+	      if (outputFormat == "png")
+		{
+		  DGtalBoard board;
+		  board << aSet;
+		  board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
+		}
+	      else
+#endif
+		{
 		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
 		exit(1);
 	      }
   }
+
 
   /** 
    * Compute and export (std::cout) the boundary of the set and export the signature (normal
@@ -294,7 +325,7 @@ int main( int argc, char** argv )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
     ("signature", "Display to the standard output the signature (normal, curvature) at each point of the specified shape contour (middle point of each contour linel)")
-    ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, raw, svg, pdf}" );
+    ("format,f",   po::value<string>()->default_value("pgm"), "Output format:\n\t  Bitmap {pgm, raw}\n\t  Vector {svg} (+ {png,pdf} if libCairo installed)" );
   
   
   po::variables_map vm;
