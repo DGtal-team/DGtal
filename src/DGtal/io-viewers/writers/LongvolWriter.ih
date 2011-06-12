@@ -70,7 +70,7 @@ LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage
       
       out.close(); 
     
-      out.open(filename.c_str(),ios_base::binary);
+      out.open(filename.c_str(),ios_base::binary | ios_base::app);
  
       DGtal::uint64_t longval;
       
@@ -84,7 +84,7 @@ LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage
 	  col = colormap( val );
 	  longval = (DGtal::uint64_t) (((int)col.red()+(int)col.green() + (int)col.blue())/3);
 	  
-	  out <<longval;
+	  write_word(out,longval);
 	}
       
       out.close();
