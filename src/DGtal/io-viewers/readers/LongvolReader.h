@@ -106,6 +106,23 @@ namespace DGtal
     
   private:
 
+    /** 
+     * Generic read word (binary mode) in little-endian mode.
+     * 
+     * @param fin input FILE.
+     * @param value value to write.
+     * 
+     * @return modified stream.
+     */
+    template <typename Word>
+    static
+    FILE* read_word( FILE* fin, Word& value )
+    {
+      for (unsigned size = 0, value = 0; size < sizeof( Word ); ++size)
+	value |= getc(fin) << (8 * size);
+      return fin;
+    }
+
     typedef unsigned char voxel;
     // This class help us to associate a field type and his value.
     // An object is a pair (type, value). You can copy and assign

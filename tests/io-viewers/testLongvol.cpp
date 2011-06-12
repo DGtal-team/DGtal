@@ -35,6 +35,7 @@
 #include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/io-viewers/writers/LongvolWriter.h"
+#include "DGtal/io-viewers/readers/LongvolReader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,10 +66,16 @@ bool testLongvol()
   
   image.setValue(c,45693);
   
-  LongvolWriter<Image,Gray>::exportLongvol("export-longvol.longvol",image,0,4000);
+  LongvolWriter<Image,Gray>::exportLongvol("export-longvol.longvol",image,0,50000);
  
+  Image image2 =  LongvolReader<Image>::importLongvol("export-longvol.longvol");
+  
+  bool allFine= true;
+  for(Image::ConstIterator it = image2.begin(), itend=image2.end();
+      it != itend; ++it)
+    allFine &= (image(it) == image2(it));
 
-  nbok += true ? 1 : 0; 
+  nbok += allFine ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;

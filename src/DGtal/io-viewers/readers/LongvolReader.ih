@@ -19,7 +19,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/06/11
+ * @date 2011/06/11b
  *
  * Implementation of inline methods defined in LongvolReader.h
  *
@@ -186,13 +186,14 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
     T image( firstPoint, lastPoint );
 
     count = 0;
-    unsigned char val;
+    DGtal::uint64_t val;
+    
     typename T::Domain::ConstIterator it = domain.range().begin();
     long int total = sx * sy * sz;
 
     while (( count < total ) && ( fin ) )
     {
-      val = getc( fin );
+      read_word(fin , val);
       image.setValue(( *it ), val );
       it++;
       count++;

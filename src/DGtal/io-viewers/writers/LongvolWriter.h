@@ -56,6 +56,9 @@ namespace DGtal
    * \brief Aim: Export a 3D Image using the Longvol formats
    * (volumetric image with DGtal::uint64_t value type).
    *
+   * The file format contains an ASCII header and a raw binary array
+   * (little-endian uint64t).
+   *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
    */
@@ -87,6 +90,26 @@ namespace DGtal
     static bool exportLongvol(const std::string & filename, const Image &aImage, 
 			      const Value & minV, const Value & maxV) 
       throw(DGtal::IOException);
+  
+
+  private: 
+    
+    /** 
+     * Generic write word (binary mode) in little-endian.
+     * 
+     * @param outs output stream.
+     * @param value value to write.
+     * 
+     * @return modified stream.
+     */
+    template <typename Word>
+    static
+    ostream& write_word( ostream& outs, Word value )
+    {
+      for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
+	outs.put( static_cast <char> (value & 0xFF) );
+      return outs;
+    }
     
   };
 }//namespace
