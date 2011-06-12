@@ -78,8 +78,8 @@ void createList()
   shapesParam3.push_back("");
   shapesParam4.push_back("");
  
-  shapes2D.push_back("cube");
-  shapesDesc.push_back("Hypercube (no signature).");
+  shapes2D.push_back("square");
+  shapesDesc.push_back("square (no signature).");
   shapesParam1.push_back("--width [-w]");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
@@ -376,7 +376,7 @@ int main( int argc, char** argv )
 	  if (not(vm.count("power"))) missingParam("--power");
 	  if (not(vm.count("radius"))) missingParam("--radius");
 	  double radius = vm["radius"].as<double>();
-	  unsigned int power = vm["power"].as<double>();
+	  double power = vm["power"].as<double>();
 	  
 	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
