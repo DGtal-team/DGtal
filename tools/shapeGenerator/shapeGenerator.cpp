@@ -202,43 +202,42 @@ struct Exporter
     
     Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255, true);
     
-    if (Set::Domain::dimension == 2)
-      if  (outputFormat == "pgm")
-	PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
+    if  (outputFormat == "pgm")
+      PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
+    else
+      if (outputFormat == "raw")
+	RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
       else
-	if (outputFormat == "raw")
-	  RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
+	if (outputFormat == "svg")
+	  {
+	    DGtalBoard board;
+	    board << aSet;
+	    board.saveSVG((outputName+"."+outputFormat).c_str());
+	  }
 	else
-	  if (outputFormat == "svg")
+#ifdef WITH_CAIRO
+	  if (outputFormat == "pdf")
 	    {
 	      DGtalBoard board;
 	      board << aSet;
-	      board.saveSVG((outputName+"."+outputFormat).c_str());
+	      board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
+	      
 	    }
 	  else
-#ifdef WITH_CAIRO
-	    if (outputFormat == "pdf")
+	    if (outputFormat == "png")
 	      {
 		DGtalBoard board;
 		board << aSet;
-		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
-		
+		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
 	      }
 	    else
-	      if (outputFormat == "png")
-		{
-		  DGtalBoard board;
-		  board << aSet;
-		  board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
-		}
-	      else
 #endif
-		{
+	      {
 		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
 		exit(1);
 	      }
   }
-
+  
 
   /** 
    * Compute and export (std::cout) the boundary of the set and export the signature (normal
