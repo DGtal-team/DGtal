@@ -58,8 +58,13 @@ int main( int argc, char** argv )
   viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
   viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   //viewer.setNearFar(4.578200, 22.578199);
+  
+  /*viewer.setCameraPosition(-2.095072, 4.630749, 10.856266);
+  viewer.setCameraDirection(0.470253, -0.218058, -0.855168);
+  viewer.setCameraUpVector(-0.066810, 0.957418, -0.280869);*/
 
-  viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600, 400);
+  //viewer.setWireFrame(true);
+  viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

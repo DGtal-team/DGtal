@@ -106,6 +106,7 @@ public:
   void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; } // MT
   void setNearFar(double near, double far) { ZNear = near; ZFar = far; } // MT
   
+  void setWireFrame(bool wf) { wireframe = wf; } // MT
   void saveCairo(const char *filename, CairoType type, int width, int height); // MT
   
   
@@ -410,6 +411,8 @@ private:
   
   double ZNear;
   double ZFar;
+  
+  bool wireframe;
   // MT
   
     // ------------------------- Hidden services ------------------------------
