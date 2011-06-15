@@ -64,7 +64,11 @@ int main()
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
   Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/circleR10modif.pgm" ); 
   Z2i::KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+  if(! ks.init( image.domain().lowerBound(), 
+		image.domain().upperBound(), true )){
+    cerr << "Problem in initialisation of KSpace" << endl;
+    exit(1);
+  }
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
@@ -85,7 +89,7 @@ int main()
   cmap_grad.addColor( DGtalBoard::Color( 25, 25, 25 ) );
   
   
-  for(int i=0; i<vectContoursBdryPointels.size(); i++){
+  for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
     //  Constructing and displaying FreemanChains from contours. 
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
     aBoard << SetMode( fc.styleName(), "InterGrid" );

@@ -83,7 +83,8 @@ the digital geometry community.
 Main participants: D. Coeurjolly (LIRIS, Lyon), G. Damiand (LIRIS,
 Lyon), S. Fourey (GREYC, Caen), B. Kerautret (LORIA, Nancy),
 J.-O. Lachaud (LAMA, Chambéry), L. Provot (LORIA, Nancy),
-T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
+T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, Lyon).
+
 
  * @section manuals_dgtal DGtal user-guides
  *
@@ -105,10 +106,12 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble).
  *  - \ref Tools3dVolViewer
  *
  * - Miscellaneous
+ *  - \ref HowToUseDGtal
  *  - \ref dgtalITK
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake
+ * - \ref FAQGit
  * - \ref FAQDGtalSVN
  *
  * @section examples_sec_dgtal Code examples

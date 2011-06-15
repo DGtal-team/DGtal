@@ -76,6 +76,7 @@ First we select the Image type with \c int:
 @code
 #include "DGtal/io-viewers/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/helpers/StdDefs.h"
 ...
 typedef ImageSelector < Z3i::Domain, int>::Type Image;

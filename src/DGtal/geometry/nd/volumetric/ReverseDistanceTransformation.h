@@ -86,6 +86,7 @@ namespace DGtal
   
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
+    typedef typename Image::Vector Vector;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
     typedef typename Image::Integer Integer;
@@ -206,6 +207,9 @@ namespace DGtal
 
     ///Copy of the image extent
     Point myExtent;
+
+    ///Displacement vector to translate temporary images.
+    Vector myDisplacementVector;
 
     ///Value for foreground grid points.
     IntegerShort myForegroundValue;
