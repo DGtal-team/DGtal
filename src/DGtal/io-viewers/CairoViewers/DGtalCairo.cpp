@@ -453,7 +453,10 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 	  {
 	      cairo_save (cr);
 	      
-		cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
+		if (wireframe)
+		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
+		else
+		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
 		cairo_set_line_width (cr, 1.); // arbitraire car non set
 		
 		double x1, y1, x2, y2, x3, y3, x4, y4;
