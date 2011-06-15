@@ -149,6 +149,35 @@ namespace DGtal
 			  const SCell & start_surfel );
 
 
+
+    
+  /**
+       Creates a vector of signed surfels whose elements represents a
+       boundary component of the digital set [shape]. The algorithms
+       tracks surfels along the boundary of the shape by starting from
+       the given start_surfel.
+       
+       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+       
+       @param aSCellContour2D (modified) a vector  of cells (which are all surfels),
+       containing the ordered list of the boundary component of [spelset] which touches [start_surfel].
+       
+       @param K any space.
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+       @param shape any digital set.
+       @param start_surfel a signed surfel which should be between an
+       element of [shape] and an element not in [shape].
+  */
+    template <typename DigitalSet >
+    static 
+    void track2DBoundary( std::vector<SCell> & aSCellContour2D,
+			  const KSpace & K, const Dimension & dimDir,
+			  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			  const DigitalSet & shape,
+			  const SCell & start_surfel );
+
+
+
   /**
      Extract all 4-connected contours as a vector containing the set of contour
      Points.  Each contour is represented by a vector of points

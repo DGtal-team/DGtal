@@ -31,14 +31,6 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Standard services ------------------------------
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -96,7 +88,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     if ( i == 0 || i >= 126 || line[i] != ':' )
     {
       trace.error() << "VolReader: Invalid header read at line " << linecount << std::endl;
-      ///@todo FIXME
       throw dgtalexception;
     }
     else
@@ -135,7 +126,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     {
       trace.error() << "VolReader: Required Header Field missing: "
       << requiredHeaders[i] << std::endl;
-      ///@todo FIXME
       throw dgtalexception;
 
     }
@@ -159,7 +149,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     if ( count != 3 )
     {
       trace.error() << "VolReader: can't read file (raw header)\n";
-      ///@todo FIXME
       throw dgtalexception;
     }
 
@@ -173,7 +162,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     if ( getHeaderValueAsInt( "Voxel-Size", &voxsize, header ) == 0 && voxsize != sizeof( voxel ) )
     {
       trace.error() << "VolReader: This file was generated with a voxel-size that we do not support.\n";
-      ///@todo FIXME
       throw dgtalexception;
     }
 
@@ -184,15 +172,12 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     if ( count != 1 || tmp != '\n' )
     {
       trace.error() << "VolReader: I thouhgt I would have read a \\n !\n";
-      ///@todo FIXME
       throw dgtalexception;
     }
   }
 
   //Raw Data
   long count = 0;
-
-
 
   firstPoint = T::Point::zero;
   lastPoint[0] = sx - 1;
@@ -220,7 +205,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     if ( count != total )
     {
       trace.error() << "VolReader: can't read file (raw data) !\n";
-      ///@todo FIXME
       throw dgtalexception;
     }
 
@@ -230,7 +214,6 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   catch ( ... )
   {
     trace.error() << "VolReader: not enough memory\n" ;
-    ///@todo FIXME
     throw dgtalexception;
   }
 

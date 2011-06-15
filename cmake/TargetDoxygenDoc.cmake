@@ -21,62 +21,62 @@ IF (DOXYGEN_FOUND)
     MESSAGE(STATUS "dvips command DVIPS_CONVERTER not found but usually required.")
   ENDIF (NOT DVIPS_CONVERTER)
   
-  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in")
-    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in 
+  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
+    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in 
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config
       @ONLY )
     # use (configured) doxy.config from (out of place) BUILD tree:
     SET(DOXY_CONFIG "${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-  ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in")
+  ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
     # use static hand-edited doxy.config from SOURCE tree:
-    SET(DOXY_CONFIG "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config")
-    IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config")
-      MESSAGE(STATUS "WARNING: using existing ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config instead of configuring from doxy.config.in file.")
-    ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config")
-      IF   (EXISTS "${CMAKE_MODULE_PATH}/doxy.config.in")
+    SET(DOXY_CONFIG "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config")
+    IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config")
+      MESSAGE(STATUS "WARNING: using existing ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config instead of configuring from doxy.config.in file.")
+    ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config")
+      IF   (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.in")
         # using template doxy.config.in
-        MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doxy.config.in 
+        MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doc/doxy.config")
+        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.in 
           ${CMAKE_CURRENT_BINARY_DIR}/doxy.config
           @ONLY )
         SET(DOXY_CONFIG "${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-      ELSE (EXISTS "${CMAKE_MODULE_PATH}/doxy.config.in")
+      ELSE (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.in")
         # failed completely...
-        MESSAGE(SEND_ERROR "Please create ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in (or doxy.config as fallback)")
-      ENDIF(EXISTS "${CMAKE_MODULE_PATH}/doxy.config.in")
+        MESSAGE(SEND_ERROR "Please create ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in (or doxy.config as fallback)")
+      ENDIF(EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.in")
 
-    ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config")
-  ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in")
+    ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config")
+  ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
 
   
-  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in")
-    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in 
+  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in")
+    MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in 
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board
       @ONLY )
     # use (configured) doxy.config.Board from (out of place) BUILD tree:
     SET(DOXY_CONFIG_BOARD "${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-  ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in")
+  ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in")
     # use static hand-edited doxy.config.Board from SOURCE tree:
-    SET(DOXY_CONFIG_BOARD "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board")
-    IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board")
-      MESSAGE(STATUS "WARNING: using existing ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board instead of configuring from doxy.config.Board.in file.")
-    ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board")
-      IF   (EXISTS "${CMAKE_MODULE_PATH}/doxy.config.Board.in")
+    SET(DOXY_CONFIG_BOARD "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board")
+    IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board")
+      MESSAGE(STATUS "WARNING: using existing ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board instead of configuring from doxy.config.Board.in file.")
+    ELSE (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board")
+      IF   (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in")
         # using template doxy.config.Board.in
-        MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doxy.config.Board.in 
+        MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doc/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
+        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in 
           ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board
           @ONLY )
         SET(DOXY_CONFIG_BOARD "${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-      ELSE (EXISTS "${CMAKE_MODULE_PATH}/doxy.config.Board.in")
+      ELSE (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in")
         # failed completely...
-        MESSAGE(SEND_ERROR "Please create ${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in (or doxy.config.Board as fallback)")
-      ENDIF(EXISTS "${CMAKE_MODULE_PATH}/doxy.config.Board.in")
+        MESSAGE(SEND_ERROR "Please create ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in (or doxy.config.Board as fallback)")
+      ENDIF(EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in")
 
-    ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board")
-  ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.Board.in")
+    ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board")
+  ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in")
 
   
   ADD_CUSTOM_TARGET(doc ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})

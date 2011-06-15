@@ -192,6 +192,21 @@ namespace DGtal
       return Domain(myLowerBound, myUpperBound);
     }
     
+
+    /** 
+     * Translate the underlying image domain by a given displacement
+     * vector. In other words, given a point p in the image domain, image(p)
+     * before the translation is equal to image(p+vec) after the
+     * translateDomain call.
+     * 
+     * @param vec a displacement vector.
+     */
+    void translateDomain(const Vector &vec)
+    {
+      myLowerBound += vec;
+      myUpperBound += vec;
+    }
+
     /////////////////////////// Custom Iterators ////////////////////:
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.

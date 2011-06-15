@@ -99,6 +99,7 @@ DGtal::DGtalQGLViewer::drawWithNames(){
 void
 DGtal::DGtalQGLViewer::draw()
 {
+
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
@@ -113,7 +114,17 @@ DGtal::DGtalQGLViewer::draw()
   }  
   glPopMatrix();   
   
+  Vec centerS = sceneCenter(); 
+  Vec posCam = camera()->position();
+  double distCam =sqrt((posCam.x-centerS.x)*(posCam.x-centerS.x)+
+		       (posCam.y-centerS.y)*(posCam.y-centerS.y)+
+		       (posCam.z-centerS.z)*(posCam.z-centerS.z));
+  
+  
   for(unsigned int i=0; i<myPointSetList.size(); i++){
+    if(myPointSetList.at(i).size()!=0){
+      glPointSize((myPointSetList.at(i).at(0).size)/distCam);
+    }
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
   }   
  
@@ -127,20 +138,11 @@ DGtal::DGtalQGLViewer::draw()
   }
   
   for(unsigned int i=0; i<myQuadList.size(); i++){
-    double  ux=myQuadList.at(i).x2-myQuadList.at(i).x1; 
-    double  uy=myQuadList.at(i).y2-myQuadList.at(i).y1; 
-    double  uz=myQuadList.at(i).z2-myQuadList.at(i).z1; 
-    
-    double  vx=myQuadList.at(i).x3-myQuadList.at(i).x2; 
-    double  vy=myQuadList.at(i).y3-myQuadList.at(i).y2; 
-    double  vz=myQuadList.at(i).z3-myQuadList.at(i).z2; 
-
-    Vec n( uy*vz-uz*vy, uz*vx-ux*vz,  ux*vy-uy*vx );
-    double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+   
     
     glBegin(GL_QUADS);
     glColor4ub(myQuadList.at(i).R, myQuadList.at(i).G, myQuadList.at(i).B, myQuadList.at(i).T);    
-    glNormal3f(-n[0]/normeN,-n[1]/normeN,-n[2]/normeN);
+    glNormal3f(-myQuadList.at(i).nx, -myQuadList.at(i).ny ,-myQuadList.at(i).nz);
     glVertex3f(myQuadList.at(i).x1, myQuadList.at(i).y1, myQuadList.at(i).z1);
     glVertex3f(myQuadList.at(i).x2, myQuadList.at(i).y2, myQuadList.at(i).z2);
     glVertex3f(myQuadList.at(i).x3, myQuadList.at(i).y3, myQuadList.at(i).z3);
@@ -199,7 +201,7 @@ DGtal::DGtalQGLViewer::init(){
   createNewVoxelList(true);
   std::vector<voxelGL>  aKSVoxelList;
   
-  
+  myCurrentfShiftVisuKSSurfels=0.0;
   myDefaultColor= QColor(255, 255, 255);
   camera()->showEntireScene();
   
@@ -223,7 +225,13 @@ DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }  
+  compFarthestSurfelFromCamera compSurf;
+  std::cerr << "sort surfel size" << myKSSurfelList.size()<< endl;
+  sort(myKSSurfelList.begin(), myKSSurfelList.end(), compSurf);
+  
 }
+
+
 
 
 
@@ -265,7 +273,6 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
-  
   unsigned int listeID=0;
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
@@ -337,94 +344,27 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-
   glBegin(GL_QUADS);
-    for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+  
+  for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){
-      
-      glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-      double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
-      x1=(*s_it).x1; x2=(*s_it).x2; x3=(*s_it).x3; x4=(*s_it).x4;
-      y1=(*s_it).y1; y2=(*s_it).y2; y3=(*s_it).y3; y4=(*s_it).y4;
-      z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
-      
-      double dx, dy, dz;
-      if(x1==x2 && x2==x3 && x1==x4){
-	dx=0.03;
-    }else dx=0;
-    if(y1==y2 && y2==y3 && y1==y4){
-      dy=0.03;
-    }else dy=0;
-    if(z1==z2 && z2==z3 && z1==z4){
-      dz=0.03;
-    }else dz=0;
     
-    //main up face
-    Vec normaleUp( dx!=0? 1.0:0.0, dy!=0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
-    glNormal3f( normaleUp[0], normaleUp[1], normaleUp[2]);
-    glVertex3f(x1+dx,  y1+dy, z1+dz);
-    glVertex3f(x2+dx,  y2+dy, z2+dz);
-    glVertex3f(x3+dx,  y3+dy, z3+dz);
-    glVertex3f(x4+dx,  y4+dy, z4+dz);
-
+    glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
+    double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+    x1=(*s_it).x1; x2=(*s_it).x2; x3=(*s_it).x3; x4=(*s_it).x4;
+    y1=(*s_it).y1; y2=(*s_it).y2; y3=(*s_it).y3; y4=(*s_it).y4;
+    z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
     
-    //small face 1
-    Vec vF1 (x2-x1, y2-y1, z2-z1);
-    Vec n1 = cross(vF1, normaleUp);
-    n1.normalize();
-    glNormal3f( n1[0], n1[1], n1[2]);
+    glNormal3f( (*s_it).nx, (*s_it).ny, (*s_it).nz);
+    glVertex3f((*s_it).x1, (*s_it).y1 , (*s_it).z1);
+    glVertex3f((*s_it).x2, (*s_it).y2 , (*s_it).z2);
+    glVertex3f((*s_it).x3, (*s_it).y3 , (*s_it).z3);
+    glVertex3f((*s_it).x4, (*s_it).y4 , (*s_it).z4);
     
-    glVertex3f(x1+dx,  y1+dy, z1+dz);
-    glVertex3f(x2+dx,  y2+dy, z2+dz);
-    glVertex3f(x2-dx,  y2-dy, z2-dz);
-    glVertex3f(x1-dx,  y1-dy, z1-dz);
-
-    //small face 2
-    Vec vF2 (x3-x2, y3-y2, z3-z2);
-    Vec n2 = cross(vF2, normaleUp);
-    n2.normalize();
-    glNormal3f( n2[0], n2[1], n2[2]);
-    
-    glVertex3f(x2+dx,  y2+dy, z2+dz);
-    glVertex3f(x3+dx,  y3+dy, z3+dz);
-    glVertex3f(x3-dx,  y3-dy, z3-dz);
-    glVertex3f(x2-dx,  y2-dy, z2-dz);
-
-    //small face 3
-    Vec vF3 (x4-x3, y4-y3, z4-z3);
-    Vec n3 = cross(vF3, normaleUp);
-    n3.normalize();
-    glNormal3f( n3[0], n3[1], n3[2]);
-    
-    glVertex3f(x3+dx,  y3+dy, z3+dz);
-    glVertex3f(x4+dx,  y4+dy, z4+dz);
-    glVertex3f(x4-dx,  y4-dy, z4-dz);
-    glVertex3f(x3-dx,  y3-dy, z3-dz);
-
-    //small face 4
-    Vec vF4 (x1-x4, y1-y4, z1-z4);
-    Vec n4 = cross(vF4, normaleUp);
-    n4.normalize();
-    glNormal3f( n4[0], n4[1], n4[2]);
-    
-    glVertex3f(x4+dx,  y4+dy, z4+dz);
-    glVertex3f(x1+dx,  y1+dy, z1+dz);
-    glVertex3f(x1-dx,  y1-dy, z1-dz);
-    glVertex3f(x4-dx,  y4-dy, z4-dz);
-    
-    //main down face
-    glNormal3f( -normaleUp[0], -normaleUp[1], -normaleUp[2]);
-    glVertex3f(x1-dx,  y1-dy, z1-dz);
-    glVertex3f(x2-dx,  y2-dy, z2-dz);
-    glVertex3f(x3-dx,  y3-dy, z3-dz);
-    glVertex3f(x4-dx,  y4-dy, z4-dz);
-     
-     
-    
-    }
-    glEnd();
-    glEndList();
+  }
+  glEnd();
+  glEndList();
   
 
   for (unsigned int i=0; i<myLineSetList.size(); i++){  
@@ -457,14 +397,13 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_POINT_SMOOTH);
     glDisable(GL_LIGHTING);
-    if(myPointSetList.at(i).size()!=0){
-      glPointSize((*myPointSetList.at(i).begin()).size);
-    }
+    
     glPushName(myNbListe);  
     glBegin(GL_POINTS);      
     for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it){
+
       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
       glVertex3f((*s_it).x,  (*s_it).y, (*s_it).z);
     }
@@ -486,14 +425,17 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
 void
-DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL linel){
+DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
   glPushMatrix();
-  glTranslatef(linel.x1, linel.y1, linel.z1);
-  Vec dir (linel.x2-linel.x1, linel.y2-linel.y1, linel.z2-linel.z1 );
+  glTranslatef(aLinel.x1, aLinel.y1, aLinel.z1);
+  Vec dir (aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
   glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
   GLUquadric* quadric = gluNewQuadric();
-  glColor4ub(linel.R, linel.G, linel.B, linel.T);
-  gluCylinder(quadric, linel.width, linel.width, dir.norm(), 10, 4);
+  glColor4ub(aLinel.R, aLinel.G, aLinel.B, aLinel.T);
+  
+  gluCylinder(quadric, (aLinel.signPos || !aLinel.isSigned) ? aLinel.width :0 , 
+	      (aLinel.signPos && aLinel.isSigned) ? 0 :aLinel.width  , 
+	      dir.norm(),10, 4);
   glPopMatrix();  
 }
 
@@ -521,7 +463,7 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
   
   if ((e->key()==Qt::Key_T) ){
     handled=true;
-    cerr << "sorting surfel according camera position...";
+    cerr << "sorting surfel according camera position....";
     sortSurfelFromCamera();
     cerr << " [done]"<< endl;
     updateList();    

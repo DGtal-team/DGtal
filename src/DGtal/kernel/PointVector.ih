@@ -672,7 +672,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
   ASSERT(dim == 3);
   viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor(), 10);
+  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor());
 
 }
 
