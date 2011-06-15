@@ -64,6 +64,7 @@ int main( int argc, char** argv )
   viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
   viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   
+  viewer.setWireFrame(true);
   viewer.saveCairo("demo-kernel-2.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
