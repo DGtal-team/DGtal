@@ -44,19 +44,14 @@
 #include <vector>
 #include <algorithm>
 
-#include <map> // MT
+#include <map>
 
 #include <QColor>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////
-
-
 
 namespace DGtal
 {
@@ -81,12 +76,6 @@ namespace DGtal
     
 };
 
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////
 // class DGtalCairo
 /**
@@ -97,19 +86,18 @@ namespace DGtal
 {
     // ----------------------- Standard services ------------------------------
 public:
-  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG }; // MT
+  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
   
-  DGtalCairo(); // MT
+  DGtalCairo();
   
-  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; } // MT
-  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; } // MT
-  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; } // MT
-  void setNearFar(double near, double far) { ZNear = near; ZFar = far; } // MT
+  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
+  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+  void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
   
-  void setWireFrame(bool wf) { wireframe = wf; } // MT
-  void saveCairo(const char *filename, CairoType type, int width, int height); // MT
-  
-  
+  void setWireFrame(bool wf) { wireframe = wf; }
+  void saveCairo(const char *filename, CairoType type, int width, int height);
+   
   enum StreamKey {addNewList, updateDisplay};
   
   /**
@@ -117,9 +105,7 @@ public:
    * displaying for digital objects.
    */
   typedef std::map< std::string, std::string > ModeMapping;
-  
 
-  
   /**
    * The associated map type for storing the default styles of
    * digital objects.
@@ -132,22 +118,18 @@ public:
   QColor myCurrentLineColor;
   bool myIsBackgroundDefault;
 
-
   /**
    * Used to create a new list containing new 3D objects
    * (useful to use transparency between different objects).
    * 
    **/  
-
   void createNewVoxelList(bool depthTest=true);
   
-  
   /**
    * Used to create a new list containing new 3D objects
    * (useful to use transparency between different objects).
    * 
    **/  
-
   void createNewLineList();
 
   /**
@@ -155,11 +137,7 @@ public:
    * (useful to use transparency between different objects).
    * 
    **/  
-
   void createNewPointList();
-
-  
-
 
     /**
      * @param objectName the name of the object (generally obtained
@@ -170,44 +148,29 @@ public:
      */
     std::string getMode( const std::string & objectName ) const;
 
-
-  
-
-  
-  
   /**
    * Set the default color for future drawing.
    *
    * @param aColor: a QColor (allow to set a trasnparency value).
    *
    **/  
-  
   DGtalCairo & operator<<(const QColor & aColor);
   
-  
-
   /**
    * Set the default color for future drawing.
    *
    * @param aColor: a QColor (allow to set a trasnparency value).
    *
    **/
-  
   DGtalCairo & operator<<(const DGtalCairo::StreamKey  & key);
-  
-  
-  
-
 
   /**
-   *  Add a point as a 3d voxel using default color in the current openGL list.
+   *  Add a point as a 3d voxel using default color in the current list.
    *  A voxel can be added in a new list by calling: @createNewList().
    *  @param aPoint: the center of the voxel.
    *  @param width: the width of the voxel (default 0.5)
    *
    **/
-  
-  
   void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5);
   
   void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
@@ -231,20 +194,14 @@ public:
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
 		  double width=0.02, const QColor &color=QColor(20,20,200,255));
-  
-  
-  
+
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
    * A maximal of five clipping plane can be added.
    *
    * @param a, b, c, d : plane equation.
    **/
-  
   void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
-  
-
-  
 
   void setLineColor(QColor aColor) ;
   QColor getLineColor() ;
@@ -252,24 +209,6 @@ public:
   void setFillColor(QColor aColor) ;
   QColor getFillColor() ;
 
-
-
-
-
-
-  
-
-  /**
-   *  Sort all surfels from the camera.
-   *  
-   *
-   **/
-  
-  void sortSurfelFromCamera();
-  
-
-
-  
   /**
    * Draws the drawable [object] in this board. It should satisfy
    * the concept CDrawableWithDGtalCairo, which requires for instance a
@@ -280,8 +219,6 @@ public:
    */
   template <typename TDrawableWithDGtalCairo>
   DGtalCairo & operator<<( const  TDrawableWithDGtalCairo & object );
-  
-
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -298,16 +235,8 @@ public:
      */
     bool isValid() const;
 
-  
-  
-  
-
-
-
   // ------------------------- Protected Datas ------------------------------
 private:
-
-
 
 public:
   
@@ -324,7 +253,6 @@ public:
      */
     StyleMapping myStyles;
 
-  
     // ------------------------- Private Datas --------------------------------
 private:
   
@@ -374,7 +302,6 @@ private:
   // For saving all voxels of Khalimsky space (used to display Khalimsky Space Cell)
   // see. myVoxelSetList (first vector)
   
-  
   // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
   std::vector< quadGL > myKSSurfelList;
 
@@ -384,21 +311,14 @@ private:
   // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
   std::vector< lineGL > myKSLinelList;
 
-  
- 
-  
-  
-
   // Represent all the drawed planes
   std::vector< quadGL > myQuadList;
-  
   
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
   
   unsigned int myNbListe;
   
-  // MT
   void precompute_projection_matrix();
   void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
   
@@ -413,60 +333,15 @@ private:
   double ZFar;
   
   bool wireframe;
-  // MT
   
     // ------------------------- Hidden services ------------------------------
-protected:
-  
-  
-  /**
-   *  Permit to update the OpenGL list to be displayed. 
-   *  Need to called after a number of addVoxel or after a sortSurfelFromCamera().
-   *
-   **/
-  void updateList(bool updateBoundingBox=true);
-  
-  
-  /**
-   * Draw a linel by using the 	[gluCylinder] primitive.
-   * 
-   *
-   **/
-  void glDrawGLLinel(lineGL line);
-  
-  
-
-  
-  /**
-   * Draw a linel by using the 	[gluCylinder] primitive.
-   * 
-   *
-   **/
-  void glDrawGLPointel(pointGL pointel);
-
-  
-
-
-
 protected :
-  virtual void drawWithNames();
   virtual void init();
-  
-
 
     // ------------------------- Internals ------------------------------------
 private:
 
-
-
-
-  
-
   }; // end of class DGtalCairo
-
-
-
- 
 
  /**
    * Modifier class in a DGtalCairo stream. Useful to choose your
@@ -491,12 +366,6 @@ private:
     std::string myClassname;
     std::string myMode;
   };
-
-
-
-
-
-
 
   /**
    * Modifier class in a DGtalCairo stream. Useful to choose your own
@@ -527,9 +396,6 @@ private:
     std::string myClassname;
     CountedPtr<DrawableWithDGtalCairo> myStyle;
   };
-
-
-
 
   /**
    * Custom style class redefining the fill color and the
@@ -565,8 +431,6 @@ private:
    * Class for adding a Clipping plane through the DGtalCairo
    * stream. Realizes the concept CDrawableWithDGtalCairo.
    */
-
-
   struct ClippingPlaneCairo : public DrawWithCairoModifier {
     /**
      * @param classname the name of the class to which the style is associated.
@@ -600,7 +464,6 @@ private:
     
   };
 
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'DGtalCairo'.
  * @param out the output stream where the object is written.
@@ -610,9 +473,7 @@ private:
 std::ostream&
 operator<< ( std::ostream & out, const DGtalCairo & object );
 
-
 } // namespace DGtal
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.

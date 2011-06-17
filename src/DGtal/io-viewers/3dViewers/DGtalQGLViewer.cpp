@@ -507,72 +507,31 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
         // Precomputation end
         
         // print
-        fprintf(stdout, "Viewport:\n");
+	trace.info() << "Viewport: ";
 	for (unsigned short l=0; l<4; ++l)
-	{
-		fprintf(stdout, "%d, ", Viewport[l]);
-	}
-	fprintf(stdout, "\n\n");
+	  trace.info() << Viewport[l] << ", ";
+	trace.info() << std::endl;
 	
 	Vec cp = camera()->position();
 	Vec cd = camera()->viewDirection();
 	Vec cup = camera()->upVector();
 	
-	fprintf(stdout, "camera.position:\n");
+	trace.info() << "camera.position: " ;
 	for (unsigned short l=0; l<3; ++l)
-	{
-		fprintf(stdout, "%lf, ", cp[l]);
-	}
-	fprintf(stdout, "\n\n");
+	  trace.info() << cp[l] << ", ";
+	trace.info() << std::endl;
 	
-	fprintf(stdout, "camera.direction:\n");
+	trace.info() << "camera.direction: ";
 	for (unsigned short l=0; l<3; ++l)
-	{
-		fprintf(stdout, "%lf, ", cd[l]);
-	}
-	fprintf(stdout, "\n\n");
+	  trace.info() << cd[l] << ", ";
+	trace.info() << std::endl;
 	
-	fprintf(stdout, "camera.upVector:\n");
+	trace.info() << "camera.upVector: ";
 	for (unsigned short l=0; l<3; ++l)
-	{
-		fprintf(stdout, "%lf, ", cup[l]);
-	}
-	fprintf(stdout, "\n\n");
+	  trace.info() << cup[l] << ", ";
+	trace.info() << std::endl;
 	
-        /*fprintf(stdout, "Modelview:\n");
-        for (unsigned short m=0; m<4; ++m)
-        {
-                for (unsigned short l=0; l<4; ++l)
-                {
-			fprintf(stdout, "%2.2lf, ", Modelview[l+4*m]);
-                }
-                fprintf(stdout, "\n");
-        }
-        fprintf(stdout, "\n");*/
-	
-	fprintf(stdout, "zNear: %lf - zFar: %lf\n\n, ", camera()->zNear(), camera()->zFar());
-	
-	/*fprintf(stdout, "Projection:\n");
-        for (unsigned short m=0; m<4; ++m)
-        {
-                for (unsigned short l=0; l<4; ++l)
-                {
-			fprintf(stdout, "%2.2lf, ", Projection[l+4*m]);
-                }
-                fprintf(stdout, "\n");
-        }
-        fprintf(stdout, "\n");*/
-	
-	/*fprintf(stdout, "matrix:\n");
-        for (unsigned short m=0; m<4; ++m)
-        {
-                for (unsigned short l=0; l<4; ++l)
-                {
-			fprintf(stdout, "%2.2lf, ", matrix[l+4*m]);
-                }
-                fprintf(stdout, "\n");
-        }
-        fprintf(stdout, "\n");*/
+	trace.info() << "zNear: " << camera()->zNear() << " - zFar: " << camera()->zFar() << std::endl;
         // print 
   }
 
