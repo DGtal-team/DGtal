@@ -17,33 +17,31 @@
 #pragma once
 
 /**
- * @file VolWriter.h
+ * @file LongvolWriter.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/22
+ * @date 2011/06/11
  *
- * Header file for module VolWriter.cpp
+ * Header file for module LongvolWriter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(VolWriter_RECURSES)
-#error Recursive header files inclusion detected in VolWriter.h
-#else // defined(VolWriter_RECURSES)
+#if defined(LongvolWriter_RECURSES)
+#error Recursive header files inclusion detected in LongvolWriter.h
+#else // defined(LongvolWriter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define VolWriter_RECURSES
+#define LongvolWriter_RECURSES
 
-#if !defined VolWriter_h
+#if !defined LongvolWriter_h
 /** Prevents repeated inclusion of headers. */
-#define VolWriter_h
+#define LongvolWriter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <string>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/io-viewers/colormaps/CColorMap.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -52,23 +50,25 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class VolWriter
+  // template class LongvolWriter
   /**
-   * Description of template struct 'VolWriter' <p>
-   * \brief Aim: Export a 3D Image using the Vol formats.
+   * Description of template struct 'LongvolWriter' <p>
+   * \brief Aim: Export a 3D Image using the Longvol formats
+   * (volumetric image with DGtal::uint64_t value type).
+   *
+   * The file format contains an ASCII header and a raw binary array
+   * (little-endian uint64t).
    *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
    */
   template <typename TImage, typename TColormap>
-  struct VolWriter
+  struct LongvolWriter
   {
     // ----------------------- Standard services ------------------------------
 
     BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
-    
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
-
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
 			 typename TImage::Value>::value));
     
@@ -77,7 +77,8 @@ namespace DGtal
     typedef TColormap Colormap;
 
     /** 
-     * Export an Image with the Vol format.
+     * Export an Image with the Longvol format. A DGtal::IOException
+     * is thrown in case of io problems.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
@@ -86,20 +87,41 @@ namespace DGtal
      * 
      * @return true if no errors occur.
      */
-    static bool exportVol(const std::string & filename, const Image &aImage, 
-			  const Value & minV, const Value & maxV) throw(DGtal::IOException);
+    static bool exportLongvol(const std::string & filename, const Image &aImage, 
+			      const Value & minV, const Value & maxV) 
+      throw(DGtal::IOException);
+  
+
+  private: 
+    
+    /** 
+     * Generic write word (binary mode) in little-endian.
+     * 
+     * @param outs output stream.
+     * @param value value to write.
+     * 
+     * @return modified stream.
+     */
+    template <typename Word>
+    static
+    ostream& write_word( ostream& outs, Word value )
+    {
+      for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
+	outs.put( static_cast <char> (value & 0xFF) );
+      return outs;
+    }
     
   };
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io-viewers/writers//VolWriter.ih"
+#include "DGtal/io-viewers/writers//LongvolWriter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined VolWriter_h
+#endif // !defined LongvolWriter_h
 
-#undef VolWriter_RECURSES
-#endif // else defined(VolWriter_RECURSES)
+#undef LongvolWriter_RECURSES
+#endif // else defined(LongvolWriter_RECURSES)
