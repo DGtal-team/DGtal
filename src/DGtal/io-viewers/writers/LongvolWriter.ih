@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file VolWriter.ih
+ * @file LongvolWriter.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/22
+ * @date 2011/06/11
  *
- * Implementation of inline methods defined in VolWriter.h
+ * Implementation of inline methods defined in LongvolWriter.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,12 +41,11 @@
 namespace DGtal {
 template<typename I,typename C>
 bool
-VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV) throw(DGtal::IOException)
+LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage,
+				  const Value & minV, const Value & maxV) throw(DGtal::IOException)
 {
- DGtal::IOException dgtalio;
+  DGtal::IOException dgtalio;
   
- 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
@@ -58,17 +57,23 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
     {
       out.open(filename.c_str());
 
-      //Vol format
+      //Longvol format
       out << "X: "<< ext[0]<<endl;
       out << "Y: "<< ext[1]<<endl;
       out << "Z: "<< ext[2]<<endl;
-      out << "Voxel-Size: 1"<<endl;
+      out << "Lvoxel-Size: 4"<<endl; //not used in liblongvol but required
       out << "Alpha-Color: 0"<<endl;
-      out << "Voxel-Endian: 0"<<endl;
+      out << "Lvoxel-Endian: 0"<<endl;//not used in liblongvol but required
       out << "Int-Endian: 0123"<<endl;
       out << "Version: 2"<<endl;
       out << "."<<endl;
-
+      
+      out.close(); 
+    
+      out.open(filename.c_str(),ios_base::binary | ios_base::app);
+ 
+      DGtal::uint64_t longval;
+      
       //We scan the domain instead of the image because we cannot
       //trust the image container Iterator
       for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
@@ -77,17 +82,22 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
 	{
 	  val = aImage( (*it) );
 	  col = colormap( val );
-	  out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
+	  longval = (DGtal::uint64_t) (((int)col.red()+(int)col.green() + (int)col.blue())/3);
+	  
+	  write_word(out,longval);
 	}
-  
-      out.close(); 
+      
+      out.close();
 
     }
   catch( ... )
     {
-      std::cout << "Vol writer IO error on export " << filename << endl;
+      std::cout << "LongVol writer IO error on export " << filename << endl;
       throw dgtalio;
     }
+  
+
+  ///@todo catch IOerror excpetion
   return true;
 }
 
