@@ -36,11 +36,11 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
-#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 
 #include "ConfigExamples.h"
 

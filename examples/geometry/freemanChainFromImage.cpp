@@ -41,12 +41,12 @@
 
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io-viewers/readers/PNMReader.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
 
 
