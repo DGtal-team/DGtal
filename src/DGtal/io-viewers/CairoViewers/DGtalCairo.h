@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file   dgtalCairo.h
+ * @file   DGtalCairo.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -43,14 +43,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
 #include <map>
 
 #include <QColor>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,7 +71,6 @@ namespace DGtal
 
     virtual void selfDrawCairo( DGtalCairo &  ) const 
     {}
-    
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -86,19 +83,61 @@ namespace DGtal
 {
     // ----------------------- Standard services ------------------------------
 public:
+  /**
+   * Cairo type for save files.
+   */
   enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
   
+  /*!
+   * \brief Constructor.
+   */
   DGtalCairo();
   
+  /**
+  * Set camera position.
+  * @param x x position.
+  * @param y y position.
+  * @param z z position.
+  */
   void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+  
+  /**
+  * Set camera direction.
+  * @param x x direction.
+  * @param y y direction.
+  * @param z z direction.
+  */
   void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
+  
+  /**
+  * Set camera up-vector.
+  * @param x x coordinate of up-vector.
+  * @param y y coordinate of up-vector.
+  * @param z z coordinate of up-vector.
+  */
   void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+  
+  /**
+  * Set near and far distance.
+  * @param near near distance.
+  * @param far far distance.
+  */
   void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
   
+  /**
+  * Set wireframe mode (or not).
+  * @param wf true for wireframe.
+  */
   void setWireFrame(bool wf) { wireframe = wf; }
+  
+  /**
+  * Save a Cairo image.
+  * @param filename filename of the image to save.
+  * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
+  * @param width width of the image to save.
+  * @param height height of the image to save.
+  */
   void saveCairo(const char *filename, CairoType type, int width, int height);
-   
-  enum StreamKey {addNewList, updateDisplay};
   
   /**
    * The associated map type for storing possible modes used for
@@ -112,41 +151,39 @@ public:
    */
   typedef std::map< std::string,CountedPtr<DrawableWithDGtalCairo> > StyleMapping;
   
-  QColor myDefaultBackgroundColor;
-  QColor myDefaultColor;
-  QColor myCurrentFillColor;
-  QColor myCurrentLineColor;
-  bool myIsBackgroundDefault;
+  QColor myDefaultColor;	//!< default color
+  QColor myCurrentFillColor;	//!< current fill color
+  QColor myCurrentLineColor;	//!< current line color
 
   /**
-   * Used to create a new list containing new 3D objects
+   * Used to create a new list containing new Voxel objects
    * (useful to use transparency between different objects).
    * 
    **/  
   void createNewVoxelList(bool depthTest=true);
   
   /**
-   * Used to create a new list containing new 3D objects
+   * Used to create a new list containing new Line objects
    * (useful to use transparency between different objects).
    * 
    **/  
   void createNewLineList();
 
   /**
-   * Used to create a new list containing new 3D objects
+   * Used to create a new list containing new Point objects
    * (useful to use transparency between different objects).
    * 
    **/  
   void createNewPointList();
 
-    /**
-     * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
-     *
-     * @return the current mode for the given object name or "" if no
-     * specific mode has been set.
-     */
-    std::string getMode( const std::string & objectName ) const;
+  /**
+   * @param objectName the name of the object (generally obtained
+   * with a 'object.styleName()').
+   *
+   * @return the current mode for the given object name or "" if no
+   * specific mode has been set.
+   */
+  std::string getMode( const std::string & objectName ) const;
 
   /**
    * Set the default color for future drawing.
@@ -155,42 +192,126 @@ public:
    *
    **/  
   DGtalCairo & operator<<(const QColor & aColor);
-  
-  /**
-   * Set the default color for future drawing.
-   *
-   * @param aColor: a QColor (allow to set a trasnparency value).
-   *
-   **/
-  DGtalCairo & operator<<(const DGtalCairo::StreamKey  & key);
 
   /**
-   *  Add a point as a 3d voxel using default color in the current list.
-   *  A voxel can be added in a new list by calling: @createNewList().
-   *  @param aPoint: the center of the voxel.
-   *  @param width: the width of the voxel (default 0.5)
+   * Add a point as a 3d voxel using default color in the current list.
+   * A voxel can be added in a new list by calling: @createNewList().
+   * @param x x position.
+   * @param y y position.
+   * @param z z position.
+   * @param color: the color of the voxel (default: 220, 220, 220).
+   * @param width: the width of the voxel (default: 0.5).
    *
    **/
-  void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5);
+  void addVoxel(int x, int y, int z, QColor color=QColor(220, 220, 220), double width=0.5);
   
+  /**
+   * Add a point using default color in the current list.
+   * A point can be added in a new list by calling: @createNewList().
+   * @param x x position.
+   * @param y y position.
+   * @param z z position.
+   * @param color: the color of the point (default: 200,20,20).
+   * @param size: the size of the point (default: 40).
+   *
+   **/
   void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
 
-  
+  /**
+   * Add a line using default color in the current list.
+   * A line can be added in a new list by calling: @createNewList().
+   * @param x1 x position of first point.
+   * @param y1 y position of first point.
+   * @param z1 z position of first point.
+   * @param x2 x position of second point.
+   * @param y2 y position of second point.
+   * @param z2 z position of second point.
+   * @param color: the color of the line (default: 20,20,20,200).
+   * @param width: the width of the line (default: 1.5).
+   *
+   **/
   void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
 	       const QColor &color=QColor(20,20,20,200), double width=1.5);
   
- 
+  /**
+   * Add a quad using default color in the current list.
+   * A quad can be added in a new list by calling: @createNewList().
+   * @param x1 x position of first point.
+   * @param y1 y position of first point.
+   * @param z1 z position of first point.
+   * @param x2 x position of second point.
+   * @param y2 y position of second point.
+   * @param z2 z position of second point.
+   * @param x3 x position of third point.
+   * @param y3 y position of third point.
+   * @param z3 z position of third point.
+   * @param x4 x position of fourth point.
+   * @param y4 y position of fourth point.
+   * @param z4 z position of fourth point.
+   * @param color: the color of the quad.
+   *
+   **/
   void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
   	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
 
   
+  /**
+   * Add a KSSurfel using default color in the current list.
+   * A KSSurfel can be added in a new list by calling: @createNewList().
+   * @param x1 x position of first point.
+   * @param y1 y position of first point.
+   * @param z1 z position of first point.
+   * @param x2 x position of second point.
+   * @param y2 y position of second point.
+   * @param z2 z position of second point.
+   * @param x3 x position of third point.
+   * @param y3 y position of third point.
+   * @param z3 z position of third point.
+   * @param x4 x position of fourth point.
+   * @param y4 y position of fourth point.
+   * @param z4 z position of fourth point.
+   * @param color: the color of the KSSurfel (default: 180,180,250,255).
+   *
+   **/
   void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
 		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(180,180,250,255));
 
+  /**
+   * Add KSVoxel using default color in the current list.
+   * A KSVoxel can be added in a new list by calling: @createNewList().
+   * @param x x position.
+   * @param y y position.
+   * @param z z position.
+   * @param color: the color of the KSVoxel (default: 255,180,250,255).
+   *
+   **/
   void addKSVoxel(int x, int y, int z, const QColor &aColor=QColor(255,180,250,255));
   
+  /**
+   * Add a KSPointel using default color in the current list.
+   * A KSPointel can be added in a new list by calling: @createNewList().
+   * @param x x position.
+   * @param y y position.
+   * @param z z position.
+   * @param size: the size of the KSPointel (default: 0.1).
+   * @param color: the color of the KSPointel (default: 200,20,20,255).
+   *
+   **/
   void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
   
+  /**
+   * Add a KSLinel using default color in the current list.
+   * A KSLinel can be added in a new list by calling: @createNewList().
+   * @param x1 x position of first point.
+   * @param y1 y position of first point.
+   * @param z1 z position of first point.
+   * @param x2 x position of second point.
+   * @param y2 y position of second point.
+   * @param z2 z position of second point.
+   * @param width: the width of the KSLinel (default: 0.02).
+   * @param color: the color of the KSLinel (default: 20,20,200,255).
+   *
+   **/
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
 		  double width=0.02, const QColor &color=QColor(20,20,200,255));
@@ -203,10 +324,32 @@ public:
    **/
   void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
 
+  /**
+   * Set line color.
+   * @param aColor: the color of the line.
+   *
+   **/
   void setLineColor(QColor aColor) ;
+  
+  /**
+   * Get line color.
+   * @return the color of the line.
+   *
+   **/
   QColor getLineColor() ;
 
+  /**
+   * Set fill color.
+   * @param aColor: the fill color.
+   *
+   **/
   void setFillColor(QColor aColor) ;
+  
+  /**
+   * Get fill color.
+   * @return the fill color.
+   *
+   **/
   QColor getFillColor() ;
 
   /**
@@ -240,46 +383,52 @@ private:
 
 public:
   
-  ModeMapping myModes;  
-      /**
-     * For instance, may associate a new style object T1 to the class
-     * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
-     *
-     * One can also store a new style T2 for a specific mode used for
-     * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
-     *
-     * Modes may only be used in objects implementing the concept
-     * CDrawableWithDGtalBoard.
-     */
-    StyleMapping myStyles;
+  ModeMapping myModes;
+  
+  /**
+    * For instance, may associate a new style object T1 to the class
+    * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
+    *
+    * One can also store a new style T2 for a specific mode used for
+    * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
+    *
+    * Modes may only be used in objects implementing the concept
+    * CDrawableWithDGtalBoard.
+    */
+  StyleMapping myStyles;
 
     // ------------------------- Private Datas --------------------------------
 private:
   
-  struct lineGL{
+  //!< struct used to store a line
+  struct line{
     double x1, y1, z1;
     double x2, y2, z2;
     double width;
     unsigned int R,G,B,T;
   };
-    
-  struct voxelGL{
+  
+  //!< struct used to store a voxel
+  struct voxel{
     int x, y,z;
     unsigned int R,G,B,T;
     double width;
   };
   
-  struct pointGL{
+  //!< struct used to store a point
+  struct point{
     double  x, y,z;
     unsigned int R,G,B,T;
     double size;
   };
   
-  struct clippingPlaneGL{
+  //!< struct used to store a clipping plane
+  struct clippingPlane{
     double a,b,c,d;
   };
 
-  struct  quadGL{
+  //!< struct used to store a quad
+  struct quad{
     double x1,y1,z1;
     double x2,y2,z2;
     double x3,y3,z3;
@@ -287,55 +436,65 @@ private:
     unsigned int R,G,B,T;
   };
     
-  // Used to represent all the list used in the display.
-  std::vector< std::vector<voxelGL> > myVoxelSetList;
+  //!< Used to represent all the list of voxel primitive
+  std::vector< std::vector<voxel> > myVoxelSetList;
   
-  // Used to represent all the list of line primitive
-  std::vector< std::vector<lineGL> > myLineSetList;
+  //!< Used to represent all the list of line primitive
+  std::vector< std::vector<line> > myLineSetList;
   
-  // Used to represent all the list of line primitive
-  std::vector< std::vector<pointGL> > myPointSetList;
+  //!< Used to represent all the list of point primitive
+  std::vector< std::vector<point> > myPointSetList;
 
-  // Represent all the clipping planes added to the scene (of maxSize=5).
-  std::vector< clippingPlaneGL > myClippingPlaneList;
+  //!< Represent all the clipping planes added to the scene (of maxSize=5)
+  std::vector< clippingPlane > myClippingPlaneList;
   
-  // For saving all voxels of Khalimsky space (used to display Khalimsky Space Cell)
-  // see. myVoxelSetList (first vector)
+  //!< For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< quad > myKSSurfelList;
+
+  //!< For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< point > myKSPointelList;
+
+  //!< For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< line > myKSLinelList;
+
+  //!< Represent all the drawed planes
+  std::vector< quad > myQuadList;
   
-  // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< quadGL > myKSSurfelList;
-
-  // For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< pointGL > myKSPointelList;
-
-  // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< lineGL > myKSLinelList;
-
-  // Represent all the drawed planes
-  std::vector< quadGL > myQuadList;
-  
-  //Used to define if GL_TEST_DEPTH is used. 
+  //!< Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
   
-  unsigned int myNbListe;
-  
+  /**
+   * Precompute 4x4 projection matrix for 3D->2D projection.
+   */
   void precompute_projection_matrix();
+  
+  /**
+  * Project a 3d point (3D->2D).
+  * @param x3d x position of the 3d point.
+  * @param y3d y position of the 3d point.
+  * @param z3d z position of the 3d point.
+  * @param x2d x destination projection position of the 2d point.
+  * @param y2d y destination projection position of the 2d point.
+  */
   void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
   
-  int Viewport[4];
-  double matrix[16];
+  int Viewport[4];		//!< 2D viewport
+  double matrix[16]; 		//!< projection matrix
       
-  double camera_position[3];
-  double camera_direction[3];
-  double camera_upVector[3];
+  double camera_position[3];	//!< camera position
+  double camera_direction[3];	//!< camera direction
+  double camera_upVector[3];	//!< camera up-vector
   
-  double ZNear;
-  double ZFar;
+  double ZNear;			//!< znear distance
+  double ZFar;			//!< zfar distance
   
-  bool wireframe;
+  bool wireframe;		//!< wireframe mode (or not)
   
     // ------------------------- Hidden services ------------------------------
 protected :
+  /*!
+  * \brief init function (should be in Constructor).
+  */
   virtual void init();
 
     // ------------------------- Internals ------------------------------------

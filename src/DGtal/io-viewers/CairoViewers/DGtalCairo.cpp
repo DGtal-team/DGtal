@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo.cpp
+ * @file   DGtalCairo.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -29,17 +29,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
 #include <limits>
+
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
 #include "DGtal/io-viewers/CairoViewers/DGtalCairo.ih"
 #endif
 
-// cairo
+// Cairo includes
 #include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
-// cairo
+// Cairo includes
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -51,6 +52,9 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
+/*!
+ * \brief Constructor.
+ */
 DGtalCairo::DGtalCairo()
 {
   init();
@@ -79,7 +83,12 @@ DGtal::DGtalCairo::isValid() const
     return true;
 }
 
-// Calculate the cross product and return it
+/**
+ * Calculate the cross product of two 3d vectors and return it.
+ * @param dst destination vector.
+ * @param srcA source vector A.
+ * @param srcB source vector B.
+ */
 static void cross (float dst[3], float srcA[3], float srcB[3])
 {
     dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
@@ -87,7 +96,10 @@ static void cross (float dst[3], float srcA[3], float srcB[3])
     dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
 }
 
-// Normalize the input vector
+/**
+ * Normalize the input 3d vector.
+ * @param vec source & destination vector.
+ */
 static void normalize (float vec[3])
 {
     const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
@@ -98,7 +110,11 @@ static void normalize (float vec[3])
     vec[2] *= invLen;
 }
 
-// Scale the given vector
+/**
+ * Scale the 3d vector by a given vector.
+ * @param v source & destination vector.
+ * @param s scale parameter.
+ */
 static void scale (float v[3], float s)
 {
     v[0] *= s;
@@ -106,6 +122,11 @@ static void scale (float v[3], float s)
     v[2] *= s;
 }
 
+/**
+ * Transpose a 4x4 matrix.
+ * @param tmat destination matrix.
+ * @param mat source matrix.
+ */
 static void TransposeMt(float tmat[16], float mat[16])
 {
     tmat[0] = mat[0]; tmat[1] = mat[4]; tmat[2] = mat[8]; tmat[3] = mat[12];
@@ -114,6 +135,12 @@ static void TransposeMt(float tmat[16], float mat[16])
     tmat[12] = mat[3]; tmat[13] = mat[7]; tmat[14] = mat[11]; tmat[15] = mat[15];
 }
 
+/**
+ * Multiply a 3d vector by a 4x4 matrix.
+ * @param v destination vector.
+ * @param mat source matrix.
+ * @param b source vector.
+ */
 static void MulMt(float v[4], float mat[16], float b[4])
 {
     v[0] = mat[0] * b[0] + mat[1] * b[1] + mat[2] * b[2] + mat[3] * b[3];
@@ -122,6 +149,19 @@ static void MulMt(float v[4], float mat[16], float b[4])
     v[3] = mat[12] * b[0] + mat[13] * b[1] + mat[14] * b[2] + mat[15] * b[3];
 }
 
+/**
+ * Compute 4x4 LookAt matrix.
+ * @param mat destination matrix.
+ * @param eyex x position of eye.
+ * @param eyey y position of eye.
+ * @param eyez z position of eye.
+ * @param dirx x direction of eye.
+ * @param diry y direction of eye.
+ * @param dirz z director of eye.
+ * @param upx x coordinate of up-vector.
+ * @param upy y coordinate of up-vector.
+ * @param upz z coordinate of up-vector.
+ */
 static void LookAtMt(float mat[16],
 		     float eyex, float eyey, float eyez,
 		      float dirx, float diry, float dirz,
@@ -146,6 +186,9 @@ static void LookAtMt(float mat[16],
     mat[12] = eyePrime[0]; mat[13] = eyePrime[1]; mat[14] = eyePrime[2];
 }
 
+/**
+ * Precompute 4x4 projection matrix for 3D->2D projection.
+ */
 void DGtal::DGtalCairo::precompute_projection_matrix()
 {
       // Projection: from qglviewer
@@ -185,6 +228,14 @@ void DGtal::DGtalCairo::precompute_projection_matrix()
       }
 }
 
+/**
+ * Project a 3d point (3D->2D).
+ * @param x3d x position of the 3d point.
+ * @param y3d y position of the 3d point.
+ * @param z3d z position of the 3d point.
+ * @param x2d x destination projection position of the 2d point.
+ * @param y2d y destination projection position of the 2d point.
+ */
 void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
       double v[4], vs[4];
@@ -209,7 +260,14 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
       x2d = vs[0];
       y2d = Viewport[3]-vs[1];
 }
-  
+
+/**
+ * Save a Cairo image.
+ * @param filename filename of the image to save.
+ * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
+ * @param width width of the image to save.
+ * @param height height of the image to save.
+ */
 void
 DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, int height)
 {
@@ -250,7 +308,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
   {
-    for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
+    for (std::vector<point>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it)
 	{
@@ -313,7 +371,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myLineSetList
   for(unsigned int i=0; i<myLineSetList.size(); i++)
   {
-    for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
+    for (std::vector<line>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it)
 	{
@@ -342,7 +400,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myVoxelSetList
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
   {
-    for (std::vector<voxelGL>::iterator s_it = myVoxelSetList.at(i).begin();
+    for (std::vector<voxel>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it)
 	{
@@ -418,29 +476,35 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   }
   
   // from updateList
-  for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+  for (std::vector<quad>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it)
 	  trace.info() << "-> Khalimsky Surfel not YET implemented in DGtalCairo" << std::endl;
 }
 
+/*!
+ * \brief init function (should be in Constructor).
+ */
 void
 DGtal::DGtalCairo::init()
 {
-  myNbListe=0;
   createNewVoxelList(true);
-  vector<lineGL> listeLine;
+  
+  vector<line> listeLine;
   myLineSetList.push_back(listeLine);
-  vector<pointGL> listePoint;
+  
+  vector<point> listePoint;
   myPointSetList.push_back(listePoint);
+  
   myCurrentFillColor = QColor (220, 220, 220);
   myCurrentLineColor = QColor (22, 22, 222, 50);
-
-  myIsBackgroundDefault=true;
-  createNewVoxelList(true);
-  std::vector<voxelGL>  aKSVoxelList;
+  
+  /*createNewVoxelList(true);
+  std::vector<voxel> aKSVoxelList;*/
   
   myDefaultColor= QColor(255, 255, 255);
+  
+  //
   
   camera_position[0] = 5.000000; camera_position[1] = 5.000000; camera_position[2] = 29.893368;
   camera_direction[0] = 0.000000; camera_direction[1] = 0.000000; camera_direction[2] = -1.000000;
