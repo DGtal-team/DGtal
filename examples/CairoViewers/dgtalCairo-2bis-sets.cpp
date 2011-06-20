@@ -58,6 +58,8 @@ int main( int argc, char** argv )
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
   
+
+  //Example with wireframe mode
   viewer.setWireFrame(true);
 
   viewer << shape_set;
