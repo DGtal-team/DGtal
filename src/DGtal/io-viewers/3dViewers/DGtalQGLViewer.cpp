@@ -226,7 +226,7 @@ DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }  
   compFarthestSurfelFromCamera compSurf;
-  std::cerr << "sort surfel size" << myKSSurfelList.size()<< endl;
+  DGtal::trace.info() << "sort surfel size" << myKSSurfelList.size()<< std::endl;
   sort(myKSSurfelList.begin(), myKSSurfelList.end(), compSurf);
   
 }
@@ -243,11 +243,11 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
   this->myPosSelector= point;
   mySelectedPoint = camera()->pointUnderPixel(point, found);
   if(found){
-    cerr << "Element of liste= " << selectedName() << "selected" << endl; 
+    DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl; 
     if(selectedName() !=-1){
       unsigned int id = abs(selectedName()-1);
       if(id< myVoxelSetList.size()){
-	cerr << "deleting list="<< id<<endl;
+	DGtal::trace.info() << "deleting list="<< id<<endl;
 	myVoxelSetList.erase(myVoxelSetList.begin()+id);
 	updateList(false);
       }else if (id< myVoxelSetList.size()+myLineSetList.size()){
@@ -463,9 +463,9 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
   
   if ((e->key()==Qt::Key_T) ){
     handled=true;
-    cerr << "sorting surfel according camera position....";
+    DGtal::trace.info() << "sorting surfel according camera position....";
     sortSurfelFromCamera();
-    cerr << " [done]"<< endl;
+    DGtal::trace.info() << " [done]"<< std::endl;
     updateList();    
     updateGL();
   }
@@ -507,31 +507,31 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
         // Precomputation end
         
         // print
-	trace.info() << "Viewport: ";
+	DGtal::trace.info() << "Viewport: ";
 	for (unsigned short l=0; l<4; ++l)
-	  trace.info() << Viewport[l] << ", ";
-	trace.info() << std::endl;
+	  DGtal::trace.info() << Viewport[l] << ", ";
+	DGtal::trace.info() << std::endl;
 	
 	Vec cp = camera()->position();
 	Vec cd = camera()->viewDirection();
 	Vec cup = camera()->upVector();
 	
-	trace.info() << "camera.position: " ;
+	DGtal::trace.info() << "camera.position: " ;
 	for (unsigned short l=0; l<3; ++l)
-	  trace.info() << cp[l] << ", ";
-	trace.info() << std::endl;
+	  DGtal::trace.info() << cp[l] << ", ";
+	DGtal::trace.info() << std::endl;
 	
-	trace.info() << "camera.direction: ";
+	DGtal::trace.info() << "camera.direction: ";
 	for (unsigned short l=0; l<3; ++l)
-	  trace.info() << cd[l] << ", ";
-	trace.info() << std::endl;
+	  DGtal::trace.info() << cd[l] << ", ";
+	DGtal::trace.info() << std::endl;
 	
-	trace.info() << "camera.upVector: ";
+	DGtal::trace.info() << "camera.upVector: ";
 	for (unsigned short l=0; l<3; ++l)
-	  trace.info() << cup[l] << ", ";
-	trace.info() << std::endl;
+	  DGtal::trace.info() << cup[l] << ", ";
+	DGtal::trace.info() << std::endl;
 	
-	trace.info() << "zNear: " << camera()->zNear() << " - zFar: " << camera()->zFar() << std::endl;
+	DGtal::trace.info() << "zNear: " << camera()->zNear() << " - zFar: " << camera()->zFar() << std::endl;
         // print 
   }
 
