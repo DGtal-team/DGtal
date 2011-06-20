@@ -40,13 +40,13 @@
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io-viewers/readers/PointListReader.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/readers/PointListReader.h"
+#include "DGtal/io/DGtalBoard.h"
 
 #include "DGtal/kernel/RealPointVector.h"
 
 #ifdef WITH_MAGICK
-#include "DGtal/io-viewers/readers/MagickReader.h"
+#include "DGtal/io/readers/MagickReader.h"
 #endif
 
 #include "DGtal/geometry/2d/FreemanChain.h"

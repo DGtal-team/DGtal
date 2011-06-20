@@ -51,7 +51,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #endif
 
 namespace DGtal
