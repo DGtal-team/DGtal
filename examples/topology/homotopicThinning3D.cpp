@@ -32,7 +32,7 @@
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
