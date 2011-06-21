@@ -37,8 +37,8 @@
 #include <iostream>
 
 #include <QtGui/qapplication.h>
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
-#include "DGtal/io-viewers/readers/PointListReader.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/readers/PointListReader.h"
 
 
 #include "DGtal/base/Common.h"
