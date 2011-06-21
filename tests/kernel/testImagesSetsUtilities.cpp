@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/io-viewers/readers/PNMReader.h"
+#include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"

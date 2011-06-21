@@ -13,7 +13,7 @@ include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/geometry/ModuleSRC.txt)
 include(DGtal/topology/ModuleSRC.txt)
-include(DGtal/io-viewers/ModuleSRC.txt)
+include(DGtal/io/ModuleSRC.txt)
 include(DGtal/helpers/ModuleSRC.txt)
 
 include(Board/ModuleSRC.txt)
@@ -42,7 +42,7 @@ install(TARGETS ${LIBDGTAL_NAME}
 
 
 if ( WITH_VISU3D )
-  include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)
+  include(DGtal/io/3dViewers/ModuleSRC.txt)
   add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
   target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
   

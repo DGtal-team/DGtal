@@ -32,10 +32,10 @@
 #include "DGtal/base/Common.h"
 
 #include "Board/Board.h"
-#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
-#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
-#include "DGtal/io-viewers/colormaps/ColorBrightnessColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
