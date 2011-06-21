@@ -53,17 +53,14 @@ int main( int argc, char** argv )
 
   viewer << domain;  
   viewer << p1 << p2 << p3;
-
-  viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
-  //viewer.setNearFar(4.578200, 22.578199);
   
-  /*viewer.setCameraPosition(-2.095072, 4.630749, 10.856266);
-  viewer.setCameraDirection(0.470253, -0.218058, -0.855168);
-  viewer.setCameraUpVector(-0.066810, 0.957418, -0.280869);*/
+  viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
 
-  //viewer.setWireFrame(true);
+  //viewer << Cairo3dCameraZNearFar(4.578200, 22.578199);
+
+  //viewer << DGtalCairo::Cairo3dWireFrame::yes;
   viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //

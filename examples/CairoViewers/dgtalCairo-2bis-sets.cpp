@@ -58,17 +58,15 @@ int main( int argc, char** argv )
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
   
-
-  //Example with wireframe mode
-  viewer.setWireFrame(true);
+  // example with wireframe mode
+  viewer << DGtalCairo::Cairo3dWireFrame::yes;
 
   viewer << shape_set;
-
-  viewer.setCameraPosition(5.000000, 5.000000, 15);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer.setWireFrame(true);
+  viewer << Cairo3dCameraPosition(5.000000, 5.000000, 15)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  
   viewer.saveCairo("dgtalCairo-2bis-sets-wireframe.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
