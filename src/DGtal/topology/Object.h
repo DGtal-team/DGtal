@@ -54,7 +54,7 @@
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #endif
 
 

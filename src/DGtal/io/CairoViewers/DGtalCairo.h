@@ -134,7 +134,11 @@ public:
   * @param wf Cairo3dWireFrame::yes for wireframe.
   * @return a reference on 'this'.
   */
-  DGtalCairo & operator<<(const Cairo3dWireFrame & wf)  { if (wf==yes) wireframe = true; else wireframe = false; }
+  DGtalCairo & operator<<(const Cairo3dWireFrame & wf)  
+  { 
+    if (wf==yes) wireframe = true; else wireframe = false; 
+    return *this;
+  }
   
   /**
   * Save a Cairo image.
@@ -746,7 +750,7 @@ operator<< ( std::ostream & out, const DGtalCairo & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
 #if defined(INLINE)
-#include "DGtal/io-viewers/CairoViewers/DGtalCairo.ih"
+#include "DGtal/io/CairoViewers/DGtalCairo.ih"
 #endif
 
 //                                                                           //
