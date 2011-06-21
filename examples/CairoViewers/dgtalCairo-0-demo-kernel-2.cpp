@@ -59,12 +59,12 @@ int main( int argc, char** argv )
 
   viewer << domain;  
   viewer << p1 << p2 << p3;
-
-  viewer.setCameraPosition(2.500000, 2.500000, 16.078199);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  viewer.setWireFrame(true);
+  viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  
+  viewer << DGtalCairo::Cairo3dWireFrame::yes;
   viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //

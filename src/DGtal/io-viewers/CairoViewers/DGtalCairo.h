@@ -77,7 +77,7 @@ namespace DGtal
 // class DGtalCairo
 /**
  * Description of class 'DGtalCairo' <p>
- * \brief Aim:
+ * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
  */
   class DGtalCairo
 {
@@ -87,6 +87,11 @@ public:
    * Cairo type for save files.
    */
   enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
+  
+  /**
+   * Cairo3dWireFrame: yes or no.
+   */
+  enum Cairo3dWireFrame { yes, no };
   
   /*!
    * \brief Constructor.
@@ -126,9 +131,10 @@ public:
   
   /**
   * Set wireframe mode (or not).
-  * @param wf true for wireframe.
+  * @param wf Cairo3dWireFrame::yes for wireframe.
+  * @return a reference on 'this'.
   */
-  void setWireFrame(bool wf) { wireframe = wf; }
+  DGtalCairo & operator<<(const Cairo3dWireFrame & wf)  { if (wf==yes) wireframe = true; else wireframe = false; }
   
   /**
   * Save a Cairo image.
@@ -501,6 +507,109 @@ protected :
 private:
 
   }; // end of class DGtalCairo
+  
+  /**
+   * Cairo3dCameraPosition class to set camera position.
+   */
+  struct Cairo3dCameraPosition : public DrawWithCairoModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x position.
+     * @param y y position.
+     * @param z z position.
+     */
+    Cairo3dCameraPosition( const double x, const double y, const double z )
+    {
+      eyex=x; eyey=y; eyez=z;
+    }
+    
+    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    {
+      viewer.setCameraPosition(eyex, eyey, eyez);
+    }
+    
+    private:
+      double eyex, eyey, eyez;
+  };
+  
+  /**
+   * Cairo3dCameraDirection class to set camera direction.
+   */
+  struct Cairo3dCameraDirection : public DrawWithCairoModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x direction.
+     * @param y y direction.
+     * @param z z direction.
+     */
+    Cairo3dCameraDirection( const double x, const double y, const double z )
+    {
+      dirx=x; diry=y; dirz=z;
+    }
+    
+    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    {
+      viewer.setCameraDirection(dirx, diry, dirz);
+    }
+    
+    private:
+      double dirx, diry, dirz;
+  };
+  
+  /**
+   * Cairo3dCameraUpVector class to set camera up-vector.
+   */
+  struct Cairo3dCameraUpVector : public DrawWithCairoModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x coordinate of up-vector.
+     * @param y y coordinate of up-vector.
+     * @param z z coordinate of up-vector.
+     */
+    Cairo3dCameraUpVector( const double x, const double y, const double z )
+    {
+      upx=x; upy=y; upz=z;
+    }
+    
+    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    {
+      viewer.setCameraUpVector(upx, upy, upz);
+    }
+    
+    private:
+      double upx, upy, upz;
+  };
+  
+  /**
+   * Cairo3dCameraZNearFar class to set near and far distance.
+   */
+  struct Cairo3dCameraZNearFar : public DrawWithCairoModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param near near distance.
+     * @param far far distance.
+     */
+    Cairo3dCameraZNearFar( const double near, const double far )
+    {
+      ZNear=near; ZFar=far;
+    }
+    
+    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    {
+      viewer.setNearFar(ZNear, ZFar);
+    }
+    
+    private:
+      double ZNear, ZFar;
+  };
 
  /**
    * Modifier class in a DGtalCairo stream. Useful to choose your

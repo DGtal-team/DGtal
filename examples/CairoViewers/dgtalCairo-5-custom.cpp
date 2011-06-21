@@ -72,18 +72,15 @@ int main( int argc, char** argv )
   viewer << SetMode3DCairo(domain.styleName(), "Paving");
   viewer << domain;
 
-  /*viewer.setCameraPosition(0.500000, 0.500000, 9.067706);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);*/
+  viewer << Cairo3dCameraPosition(-6.017646, -0.218156, -0.801076)
+	<< Cairo3dCameraDirection(0.974976, 0.107429, 0.194628)
+	<< Cairo3dCameraUpVector(-0.018884, 0.912344, -0.408990);
   
-  viewer.setCameraPosition(-6.017646, -0.218156, -0.801076);
-  viewer.setCameraDirection(0.974976, 0.107429, 0.194628);
-  viewer.setCameraUpVector(-0.018884, 0.912344, -0.408990);
+  viewer << DGtalCairo::Cairo3dWireFrame::yes;
+  viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", DGtalCairo::CairoPNG, 600*2, 400*2);
   
+  viewer << DGtalCairo::Cairo3dWireFrame::no;
   viewer.saveCairo("dgtalCairo-5-custom.png", DGtalCairo::CairoPNG, 600*2, 400*2);
-  
-  /*viewer.setWireFrame(true);
-  viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", DGtalCairo::CairoPNG, 600*2, 400*2);*/
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

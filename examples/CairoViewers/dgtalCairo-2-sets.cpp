@@ -60,12 +60,12 @@ int main( int argc, char** argv )
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
   viewer << shape_set;
-
-  viewer.setCameraPosition(5.000000, 5.000000, 29.893368);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer.setWireFrame(true);
+  viewer << Cairo3dCameraPosition(5.000000, 5.000000, 29.893368)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  
+  //viewer << DGtalCairo::Cairo3dWireFrame::yes;
   viewer.saveCairo("dgtalCairo-2-sets.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //

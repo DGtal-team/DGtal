@@ -64,12 +64,12 @@ int main( int argc, char** argv )
   Object18_6 shape2( dt18_6, shape_set );
   viewer << SetMode3DCairo( shape2.styleName(), "DrawAdjacencies" );
   //viewer << shape2;
-
-  viewer.setCameraPosition(4.000000, 4.000000, 17.578199);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer.setWireFrame(true);
+  viewer << Cairo3dCameraPosition(4.000000, 4.000000, 17.578199)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  
+  //viewer << DGtalCairo::Cairo3dWireFrame::yes;
   viewer.saveCairo("dgtalCairo-3-objects.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //

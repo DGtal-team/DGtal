@@ -57,13 +57,13 @@ int main( int argc, char** argv )
   viewer << SetMode3DCairo( shape_set.styleName(), "Both" );
   viewer << shape_set;
   viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
-  viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
-
-  viewer.setCameraPosition(10.000000, 10.000000, 41.682465);
-  viewer.setCameraDirection(0.000000, 0.000000, -1.000000);
-  viewer.setCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << SetMode3DCairo( p1.styleName(), "Paving" );
   
-  //viewer.setWireFrame(true);
+  viewer << Cairo3dCameraPosition(10.000000, 10.000000, 41.682465)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  
+  //viewer << DGtalCairo::Cairo3dWireFrame::yes;
   viewer.saveCairo("dgtalCairo-6.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //
