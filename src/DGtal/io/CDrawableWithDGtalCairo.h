@@ -46,28 +46,13 @@
 
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
-
-
-
-
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithDGtalCairo
   /**

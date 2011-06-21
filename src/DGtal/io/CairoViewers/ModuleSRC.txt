@@ -3,6 +3,6 @@
 
 if( WITH_CAIRO )
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/io-viewers/CairoViewers/DGtalCairo)
+		DGtal/io/CairoViewers/DGtalCairo)
 endif( WITH_CAIRO )
 

@@ -27,12 +27,12 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io-viewers/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #include <limits>
 
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/io-viewers/CairoViewers/DGtalCairo.ih"
+#include "DGtal/io/CairoViewers/DGtalCairo.ih"
 #endif
 
 // Cairo includes
