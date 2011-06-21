@@ -52,7 +52,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/IntegerTraits.h"
 
 #include "DGtal/helpers/StdDefs.h"

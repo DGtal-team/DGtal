@@ -50,10 +50,10 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #endif
 
 
