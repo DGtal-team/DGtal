@@ -63,16 +63,25 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator (
     myFlagIntersectNext(false),
 		myFlagIntersectPrevious(false)
 {
-	if (myBack != myDec->myEnd) {
+	if (myBack != myDec->myEnd) {   //if at least one element
 
 		++myFront;
-		if (myFront != myDec->myEnd) {
-
-			this->longestSegment();
-
-		} else {
+		if (myFront == myDec->myEnd) {//if only one element
 			
-			mySegment.init(myBack);		
+			mySegment.init(myBack);	
+
+		} else {                      //if strictly more than one element
+
+			if (myDec->isClosed) { //if processed as closed
+        //check is the first and last element form a valid segment
+				Iterator tmpIt = myDec->myEnd; --tmpIt;
+				Segment tmpSegment; tmpSegment.init(tmpIt);
+				myFlagIntersectPrevious = tmpSegment.extend(myDec->myBegin);
+			} else {              //if processed as open
+				myFlagIntersectPrevious = false;
+      }
+      //computation of the longest segment from myBack
+			this->longestSegment();	
 	
 		}
 
@@ -195,6 +204,20 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::intersectPrevious() const
 }
 
 /**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegment>
+inline
+bool
+DGtal::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
+{
+		Segment tmpSegment;
+		Iterator previousIt = it; --previousIt;
+		tmpSegment.init(previousIt);
+		return tmpSegment.extend(it);
+}
+
+/**
  * Computes the longest possible segment from 
  * two consecutive points.
  */
@@ -204,29 +227,27 @@ void
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::longestSegment()
 {
 
-		mySegment.init(myBack);
-
-		//special case where the two first
-    //points do not form a valid segment
-		if (!mySegment.extend(myFront)) {
-			++myBack;
-			mySegment.init(myBack);
-		} 
+	  mySegment.init(myBack);
 
 		//while my segment can be extended at the front
-		++myFront;
 		while ( (myFront != myDec->myEnd) && 
 						(mySegment.extend(myFront)) ) {
 			++myFront;
 		}
-		//
+
+		//if the end of the sequence is reached
 		if (myFront == myDec->myEnd) {
-			//if the digital curve is processed as a closed one
-			//the first point of the digital curve is added if possible
+			//if the sequence is processed as a closed one
+			//the first element of the sequence is added if possible
 			if (myDec->isClosed) {
-				mySegment.extend(myDec->myBegin);
-			} 
-		}
+				myFlagIntersectNext = mySegment.extend(myDec->myBegin);
+			} else {
+				myFlagIntersectNext = false;
+      } 
+		} else {
+    //otherwise
+			myFlagIntersectNext = doesIntersectNext(myFront);
+    }
 
 }
 
@@ -243,11 +264,18 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
 	if (myFront != myDec->myEnd) { //if not the end
 
 		myBack = myFront;
-		--myBack;//always valid
 
-		this->longestSegment();
+	  myFlagIntersectPrevious = myFlagIntersectNext;
 
-	} else { //if the front of the segment is at the end of the contour
+    if (myFlagIntersectPrevious) {
+      --myBack; 
+    } else {
+      ++myFront;
+    }
+
+  	this->longestSegment();
+
+	} else { //if the front of the segment is at the end of the sequence
 		myBack = myDec->myEnd;
 	}
 }

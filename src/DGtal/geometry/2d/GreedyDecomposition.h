@@ -296,6 +296,11 @@ namespace DGtal
        */
       void longestSegment();
       
+      /**
+       * Checks if the current segment intersects the next one (if exists).
+       * @param it a given iterator
+       */
+      bool doesIntersectNext(const Iterator& it);
     };
 
 
