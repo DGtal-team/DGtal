@@ -19,7 +19,7 @@
 /**
  * @file   DGtalCairo.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
- * @date   mercredi 25 mai 2011
+ * @date   mercredi 22 juin 2011
  * 
  * @brief
  *
@@ -81,22 +81,24 @@ namespace DGtal
  */
   class DGtalCairo
 {
-    // ----------------------- Standard services ------------------------------
 public:
   /**
    * Cairo type for save files.
    */
   enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
   
-  /**
-   * Cairo3dWireFrame: yes or no.
-   */
-  enum Cairo3dWireFrame { yes, no };
-  
   /*!
    * \brief Constructor.
    */
   DGtalCairo();
+  
+  /**
+    * @return the style name used for drawing this object.
+    */
+  std::string styleName() const
+  {
+    return "DGtalCairo";
+  }
   
   /**
   * Set camera position.
@@ -128,17 +130,6 @@ public:
   * @param far far distance.
   */
   void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
-  
-  /**
-  * Set wireframe mode (or not).
-  * @param wf Cairo3dWireFrame::yes for wireframe.
-  * @return a reference on 'this'.
-  */
-  DGtalCairo & operator<<(const Cairo3dWireFrame & wf)  
-  { 
-    if (wf==yes) wireframe = true; else wireframe = false; 
-    return *this;
-  }
   
   /**
   * Save a Cairo image.
@@ -373,7 +364,6 @@ public:
   template <typename TDrawableWithDGtalCairo>
   DGtalCairo & operator<<( const  TDrawableWithDGtalCairo & object );
 
-    // ----------------------- Interface --------------------------------------
 public:
   
     /**
@@ -387,9 +377,6 @@ public:
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-  // ------------------------- Protected Datas ------------------------------
-private:
 
 public:
   
@@ -498,16 +485,12 @@ private:
   double ZNear;			//!< znear distance
   double ZFar;			//!< zfar distance
   
-  bool wireframe;		//!< wireframe mode (or not)
-  
-    // ------------------------- Hidden services ------------------------------
 protected :
   /*!
   * \brief init function (should be in Constructor).
   */
   virtual void init();
 
-    // ------------------------- Internals ------------------------------------
 private:
 
   }; // end of class DGtalCairo

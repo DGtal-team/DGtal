@@ -17,7 +17,7 @@
 /**
  * @file   DGtalCairo.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
- * @date   mercredi 25 mai 2011
+ * @date   mercredi 22 juin 2011
  * 
  * @brief
  *
@@ -331,37 +331,37 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//z-
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x+
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y+
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -407,10 +407,11 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 	  {
 	      cairo_save (cr);
 	      
-		if (wireframe)
-		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
-		else
+		if (myModes["DGtalCairo"]=="SolidMode")
 		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
+		else
+		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
+		  
 		cairo_set_line_width (cr, 1.); // arbitraire car non set
 		
 		double x1, y1, x2, y2, x3, y3, x4, y4;
@@ -421,37 +422,37 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//z-
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x+
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y+
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); wireframe==false?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -515,7 +516,7 @@ DGtal::DGtalCairo::init()
   //ZNear = 4.578200;
   //ZFar = 22.578199;
   
-  wireframe = false;
+  myModes["DGtalCairo"]="SolidMode";
 }
 
 ///////////////////////////////////////////////////////////////////////////////

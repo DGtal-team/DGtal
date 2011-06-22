@@ -57,13 +57,13 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  viewer <<  SetMode3DCairo( p1.styleName(), "Paving" );
+  viewer << SetMode3DCairo( p1.styleName(), "Paving" );
   viewer << p1 << p2 << p3;
 
   //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
   viewer << CustomColors3DCairo(QColor(250, 0,0),QColor(250, 0,0));
   viewer << p4 << p5 ;
-  viewer <<  SetMode3DCairo( p1.styleName(), "Both" );
+  viewer << SetMode3DCairo( p1.styleName(), "Both" );
   viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
   viewer << p6;
   viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
@@ -76,10 +76,10 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraDirection(0.974976, 0.107429, 0.194628)
 	<< Cairo3dCameraUpVector(-0.018884, 0.912344, -0.408990);
   
-  viewer << DGtalCairo::Cairo3dWireFrame::yes;
+  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", DGtalCairo::CairoPNG, 600*2, 400*2);
   
-  viewer << DGtalCairo::Cairo3dWireFrame::no;
+  viewer << SetMode3DCairo(viewer.styleName(), "SolidMode");
   viewer.saveCairo("dgtalCairo-5-custom.png", DGtalCairo::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
