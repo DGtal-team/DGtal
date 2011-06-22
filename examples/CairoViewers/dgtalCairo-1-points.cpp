@@ -60,7 +60,7 @@ int main( int argc, char** argv )
 
   //viewer << Cairo3dCameraZNearFar(4.578200, 22.578199);
 
-  //viewer << DGtalCairo::Cairo3dWireFrame::yes;
+  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //

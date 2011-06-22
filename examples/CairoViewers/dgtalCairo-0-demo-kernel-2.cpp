@@ -64,7 +64,7 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
 	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  viewer << DGtalCairo::Cairo3dWireFrame::yes;
+  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", DGtalCairo::CairoPNG, 600, 400);
 }
 //                                                                           //

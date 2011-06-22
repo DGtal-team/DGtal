@@ -59,7 +59,7 @@ int main( int argc, char** argv )
   shape_set.erase(Point(6,6,6));
   
   // example with wireframe mode
-  viewer << DGtalCairo::Cairo3dWireFrame::yes;
+  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
 
   viewer << shape_set;
   
