@@ -208,6 +208,7 @@ DGtal::DGtalQGLViewer::init(){
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
   setKeyDescription(Qt::Key_L, "Load last visualisation settings.");
   setKeyDescription(Qt::Key_B, "Switch background color with White/Black colors.");
+  setKeyDescription(Qt::Key_C, "Show camera informations.");
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
@@ -225,7 +226,7 @@ DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
     sort(myVoxelSetList.at(i).begin(), myVoxelSetList.at(i).end(), comp);
   }  
   compFarthestSurfelFromCamera compSurf;
-  std::cerr << "sort surfel size" << myKSSurfelList.size()<< endl;
+  DGtal::trace.info() << "sort surfel size" << myKSSurfelList.size()<< std::endl;
   sort(myKSSurfelList.begin(), myKSSurfelList.end(), compSurf);
   
 }
@@ -242,11 +243,11 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
   this->myPosSelector= point;
   mySelectedPoint = camera()->pointUnderPixel(point, found);
   if(found){
-    cerr << "Element of liste= " << selectedName() << "selected" << endl; 
+    DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl; 
     if(selectedName() !=-1){
       unsigned int id = abs(selectedName()-1);
       if(id< myVoxelSetList.size()){
-	cerr << "deleting list="<< id<<endl;
+	DGtal::trace.info() << "deleting list="<< id<<endl;
 	myVoxelSetList.erase(myVoxelSetList.begin()+id);
 	updateList(false);
       }else if (id< myVoxelSetList.size()+myLineSetList.size()){
@@ -462,9 +463,9 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
   
   if ((e->key()==Qt::Key_T) ){
     handled=true;
-    cerr << "sorting surfel according camera position....";
+    DGtal::trace.info() << "sorting surfel according camera position....";
     sortSurfelFromCamera();
-    cerr << " [done]"<< endl;
+    DGtal::trace.info() << " [done]"<< std::endl;
     updateList();    
     updateGL();
   }
@@ -481,6 +482,57 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
   if( (e->key()==Qt::Key_L)){
     restoreStateFromFile();
     updateGL();
+  }
+  if( (e->key()==Qt::Key_C)) // MT
+  {
+	GLint    Viewport[4];
+        GLdouble Projection[16], Modelview[16]; 
+        GLdouble matrix[16];
+
+        // Precomputation begin
+        glGetIntegerv(GL_VIEWPORT         , Viewport);
+        glGetDoublev (GL_MODELVIEW_MATRIX , Modelview);
+        glGetDoublev (GL_PROJECTION_MATRIX, Projection); 
+
+        for (unsigned short m=0; m<4; ++m)
+        {
+                for (unsigned short l=0; l<4; ++l)
+                {
+                        double sum = 0.0;
+                        for (unsigned short k=0; k<4; ++k)
+                                sum += Projection[l+4*k]*Modelview[k+4*m];
+                        matrix[l+4*m] = sum;
+                }
+        }
+        // Precomputation end
+        
+        // print
+	DGtal::trace.info() << "Viewport: ";
+	for (unsigned short l=0; l<4; ++l)
+	  DGtal::trace.info() << Viewport[l] << ", ";
+	DGtal::trace.info() << std::endl;
+	
+	Vec cp = camera()->position();
+	Vec cd = camera()->viewDirection();
+	Vec cup = camera()->upVector();
+	
+	DGtal::trace.info() << "camera.position: " ;
+	for (unsigned short l=0; l<3; ++l)
+	  DGtal::trace.info() << cp[l] << ", ";
+	DGtal::trace.info() << std::endl;
+	
+	DGtal::trace.info() << "camera.direction: ";
+	for (unsigned short l=0; l<3; ++l)
+	  DGtal::trace.info() << cd[l] << ", ";
+	DGtal::trace.info() << std::endl;
+	
+	DGtal::trace.info() << "camera.upVector: ";
+	for (unsigned short l=0; l<3; ++l)
+	  DGtal::trace.info() << cup[l] << ", ";
+	DGtal::trace.info() << std::endl;
+	
+	DGtal::trace.info() << "zNear: " << camera()->zNear() << " - zFar: " << camera()->zFar() << std::endl;
+        // print 
   }
 
   

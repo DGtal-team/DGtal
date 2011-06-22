@@ -1,0 +1,71 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   dgtalCairo-1-points.cpp
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 25 mai 2011
+ * 
+ * @brief
+ *
+ * Simple example of class DGtalCairo.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include "DGtal/io/CairoViewers/DGtalCairo.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+using namespace DGtal;
+using namespace Z3i;
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+int main( int argc, char** argv )
+{
+  Point p1( 0, 0, 0 );
+  Point p2( 5, 5 ,5 );
+  Point p3( 2, 3, 4 );
+  Domain domain( p1, p2 );
+
+  DGtalCairo viewer;
+
+  viewer << domain;  
+  viewer << p1 << p2 << p3;
+  
+  viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
+	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
+	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+
+  //viewer << Cairo3dCameraZNearFar(4.578200, 22.578199);
+
+  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600*2, 400*2);
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
