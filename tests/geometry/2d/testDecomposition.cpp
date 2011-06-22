@@ -98,7 +98,7 @@ bool testDec4()
   
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 		
 		compteur++;
@@ -161,7 +161,7 @@ bool testDec8()
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;
@@ -229,7 +229,7 @@ bool testDisconnectedCurve()
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;
@@ -279,7 +279,7 @@ bool testClosedCurvesProcessedAsClosed()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -326,7 +326,7 @@ bool testClosedCurvesProcessedAsOpen()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -373,7 +373,7 @@ bool testOpenCurvesProcessedAsClosed()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -408,7 +408,7 @@ bool testNoPoint()
 		PrimitiveType computer;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 		trace.endBlock();
@@ -445,7 +445,7 @@ bool testOnePoint()
 		aBoard << curve.at(0);
 		//for each segment
 		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				i != theDecomposition.end(); ++i ) 
 			{
 				PrimitiveType primitive(*i);
@@ -484,7 +484,7 @@ bool testTwoEndIterators()
 		PrimitiveType computer;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 
@@ -536,7 +536,7 @@ bool testOneDSS()
 				 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		++compteur;
@@ -594,7 +594,7 @@ curve.push_back(Point(9,1));
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;

@@ -76,7 +76,7 @@ int main( )
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
       DSS4 segment(*i);
