@@ -433,6 +433,220 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer) co
 
 #endif
 
+#ifdef WITH_CAIRO
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawCairo( DGtalCairo& viewer ) const
+{
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+	  mode=="BoundingBox")||
+	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
+  
+  
+  if (  mode == "BoundingBox"  ){
+    viewer.createNewLineList();
+    selfDrawAsBoundingBoxCairo( viewer );
+  }else if( ( mode == "" ) ||  (mode == "Grid")){
+     viewer.createNewLineList();
+    selfDrawAsGridCairo( viewer );
+  }
+  else if ( mode == "Paving" ){
+    viewer.createNewVoxelList(false);
+    selfDrawAsPavingCairo( viewer );
+
+  } else if ( mode == "PavingPoints" ){
+    viewer.createNewPointList();
+    selfDrawAsPavingPointsCairo( viewer );
+
+  }else if ( mode == "PavingGrids" ){
+    viewer.createNewLineList();
+    viewer.createNewVoxelList(false);
+    selfDrawAsGridCairo( viewer );
+    selfDrawAsPavingCairo( viewer );
+  }
+  // selfDrawAsGrid( board );
+}
+
+
+
+
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxCairo( DGtalCairo & viewer) const
+{
+  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+  QColor colDef(250,250,250,10);
+  if (TSpace::dimension == 3)
+    {
+      //Z upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+		     colDef);
+      //Z lower face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+		     colDef);
+      
+      //Y upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     colDef);
+      //Y lower face
+      viewer.addQuad(myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     colDef);
+      
+      // X upper face
+      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+		     colDef);
+      
+      //  X lower face
+      viewer.addQuad(myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+		     colDef);
+      
+    }  
+}
+
+
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGridCairo( DGtalCairo & viewer) const
+{
+  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+
+  if (TSpace::dimension == 3)
+  {
+    // Face XY
+    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
+		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,viewer.getLineColor() );
+      }
+      for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  viewer.getLineColor());
+      }
+    }
+    
+    // Faces XZ
+    for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,viewer.getLineColor());
+      }
+      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
+	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, viewer.getLineColor());
+      }
+    }
+    
+
+    // Faces YZ
+    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+      
+      for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,IntegerTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, viewer.getLineColor());
+      }
+      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
+	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
+		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, viewer.getLineColor());
+      }
+    }
+    
+  }
+
+}
+
+
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsCairo( DGtalCairo & viewer) const
+{
+  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+
+  if (TSpace::dimension == 3)
+  {
+    // Face XY
+    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+      
+	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	  viewer.addPoint(x, y , z, QColor(255, 0 ,0), 3);
+
+	}
+      }
+    }
+    
+    
+    
+  }
+}
+
+
+
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( DGtalCairo & viewer) const
+{
+  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
+  
+
+  if (TSpace::dimension == 3)
+    {
+    // Face XY
+    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+      
+	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	  viewer.addVoxel(x, y , z, QColor(255, 255 ,255, 15),0.51);
+
+	}
+      }
+    }
+    
+
+    
+    }
+}
+
+#endif
+
 
 
 
