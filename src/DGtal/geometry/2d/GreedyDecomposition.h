@@ -94,7 +94,7 @@ namespace DGtal
 	DSS dssRecognition;
   Decomposition theDecomposition(curve.begin(), curve.end(), dssRecognition, false);
 				 
-  Decomposition::ConstIterator i = theDecomposition.begin();
+  Decomposition::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 		DSS currentSegment(*i);
 		trace.info() << currentSegment << std::endl;	//standard output
@@ -132,7 +132,7 @@ namespace DGtal
      * This class is an iterator on a digital curve 
      * storing the current segment.
      */
-    class ConstIterator
+    class SegmentIterator
     {
       	   
 			   // ------------------------- data -----------------------
@@ -163,6 +163,21 @@ namespace DGtal
       Segment  mySegment;
       
 
+      /**
+       * A flag equal to TRUE if the current segment
+       * intersects the next one, FALSE otherwise 
+       * (and FALSE if the current segment is the last one) 
+       */
+      bool  myFlagIntersectNext;
+
+      /**
+       * A flag equal to TRUE if the current segment
+       * intersects the previous one, FALSE otherwise 
+       * (and FALSE if the current segment is the first one) 
+       */
+      bool  myFlagIntersectPrevious;
+
+
 
       // ------------------------- Standard services -----------------------
     public:
@@ -177,7 +192,7 @@ namespace DGtal
        * @param aDec a greedy decomposition of a digital curve
        * @param aBack an iterator at the back of the first segment
        */
-      ConstIterator( const GreedyDecomposition<TSegment> *aDec,
+      SegmentIterator( const GreedyDecomposition<TSegment> *aDec,
 		     const typename TSegment::Iterator& aBack,
 				 const TSegment& aSegment);
 
@@ -186,19 +201,19 @@ namespace DGtal
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      ConstIterator( const ConstIterator & aOther );
+      SegmentIterator( const SegmentIterator & aOther );
     
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
-      ConstIterator& operator=( const ConstIterator & aOther );
+      SegmentIterator& operator=( const SegmentIterator & aOther );
     
       /**
        * Destructor. Does nothing.
        */
-      ~ConstIterator();
+      ~SegmentIterator();
     
       // ------------------------- iteration services -------------------------
     public:
@@ -218,7 +233,7 @@ namespace DGtal
        * Goes to the next segment on the contour (if possible).
        * Nb: complexity in O(n).
        */
-      ConstIterator& operator++();
+      SegmentIterator& operator++();
       
       /**
        * Goes to the next segment on the contour (if possible).
@@ -226,6 +241,17 @@ namespace DGtal
        */
       void next();
 
+      /**
+       * @return TRUE if the current segment intersects
+			 * the next one, FALSE otherwise.
+       */
+      const bool intersectNext() const;
+
+      /**
+       * @return TRUE if the current segment intersects
+			 * the previous one, FALSE otherwise.
+       */
+      const bool intersectPrevious() const;
 
       /**
        * @return an iterator of a digital curve
@@ -247,7 +273,7 @@ namespace DGtal
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
        */
-      bool operator==( const ConstIterator & aOther ) const;
+      bool operator==( const SegmentIterator & aOther ) const;
 
       /**
        * Inequality operator.
@@ -257,7 +283,7 @@ namespace DGtal
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
        */
-      bool operator!=( const ConstIterator & aOther ) const;
+      bool operator!=( const SegmentIterator & aOther ) const;
 
     // ----------------------- hidden services --------------------------------------
 
@@ -300,13 +326,13 @@ namespace DGtal
      * Iterator service.
      * @return an iterator pointing on the first segment of a digital curve.
      */
-    typename GreedyDecomposition::ConstIterator begin() const;
+    typename GreedyDecomposition::SegmentIterator begin() const;
 
     /**
      * Iterator service.
      * @return an iterator pointing after the last segment of a digital curve.
      */
-    typename GreedyDecomposition::ConstIterator end() const;
+    typename GreedyDecomposition::SegmentIterator end() const;
 
 
     /**

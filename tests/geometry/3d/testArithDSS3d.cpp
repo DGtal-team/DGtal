@@ -149,7 +149,7 @@ bool testSegmentation()
 		Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
 					 
 		unsigned int c = 0;
-		Decomposition::ConstIterator i = theDecomposition.begin();
+		Decomposition::SegmentIterator i = theDecomposition.begin();
 		for ( ; i != theDecomposition.end(); ++i) {
 			SegmentComputer currentSegmentComputer(*i);
 			trace.info() << currentSegmentComputer << std::endl;	//standard output

@@ -87,7 +87,7 @@ int main( int argc, char** argv )
 	viewer << SetMode3D(p.styleName(), "Grid");
 
 		unsigned int c = 0;
-		Decomposition::ConstIterator i = theDecomposition.begin();
+		Decomposition::SegmentIterator i = theDecomposition.begin();
 		for ( ; i != theDecomposition.end(); ++i) {
 			SegmentComputer currentSegmentComputer(*i);
 
