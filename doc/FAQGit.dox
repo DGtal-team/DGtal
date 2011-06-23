@@ -122,8 +122,8 @@ The merge between the two repositories is done by another developper
 after a pull request. 
 To make a pull request, go to http://github.com/yourlogin/DGtal, 
 click on "Pull Request". Then, choose the two branches you would like 
-to merge (master in upstream and yourbranch in origin)
-and click on "Update Commit Range". 
+to merge (master in upstream and yourbranch in origin), write your 
+comments and click on "Send Pull Request". 
 
 
 \subsection subsectGIT32 Edit files and commit in branches
