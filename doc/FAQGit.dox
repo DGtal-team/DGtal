@@ -32,6 +32,8 @@ Table of contents:
  -# \ref sectGIT3
    -# \ref subsectGIT31
    -# \ref subsectGIT32
+ -# \ref sectGITCommands
+   -# \ref ssCom1
  -# \ref sectGIT2  
    -# \ref ss21
    -# \ref ss22
@@ -156,6 +158,8 @@ current local branch. At this point you should see:
  - * master
  - cool-feature
 
+(the '*' indicates your current active branch).
+
 2- Jump onto your new local branch:
 
 @code
@@ -204,11 +208,42 @@ git branch -d cool-feature
 @endcode
 
 And you can also remove the associated remote branch 
-(because you have pushed your local branch to your fork in 4-): 
+(because everything should be merged into the "master" of either your fork, or the main DGtal master):
 
 @code
 git push origin :cool-feature
 @endcode
+
+\section sectGITCommands Useful git commands
+
+In this section, we detail couple of useful  git commands.
+
+\subsection ssCom1 git stash
+
+Let suppose you have  edited some files and that you figure out that these modifications should be in another branch (or you figure out that your are working on the wrong branch). The command
+@code
+git stash
+@endcode
+will put all your edits (uncommited edits) into a patch stack (and remove them from your working copy). Then, you can create your new local branch and "pop" your edit from the stack to reapply the changes. E.g.:
+@code
+git pull //up-to-date branch "master"
+//...
+//edits
+//...
+//well... these edits should be in a separate branch!
+git stash
+git branch newLocalBranch
+git checkout newLocalBranch
+git stash pop
+//...
+//edits
+git commit -a -m "...." //commit to new branch
+@endcode
+To cleanup your stack: "git stash clear"
+@note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommited edits.
+ 
+
+
 
 
 \section sectGIT2 Basic comparison SVN/GIT
