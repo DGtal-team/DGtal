@@ -214,7 +214,7 @@ And you can also remove the associated remote branch
 git push origin :cool-feature
 @endcode
 
-\section setGITCommands Useful git commands
+\section sectGITCommands Useful git commands
 
 In this section, we detail couple of useful  git commands.
 
