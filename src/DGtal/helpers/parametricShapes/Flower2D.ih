@@ -50,26 +50,26 @@ DGtal::Flower2D<T>::~Flower2D()
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const double x0, const double y0,
-			     const double radius, const double smallRadius,
+			     const double radius, const double varRadius,
 			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(x0,y0) , myVarRadius(smallRadius), myK(k),myPhi(phi)
+  myRadius(radius), myCenter(x0,y0) , myVarRadius(varRadius), myK(k),myPhi(phi)
 {}
 
 
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const RealPoint2D &aPoint, const double radius,
-			     const double smallRadius,
+			     const double varRadius,
 			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(aPoint)  , myVarRadius(smallRadius), myK(k), myPhi(phi)
+  myRadius(radius), myCenter(aPoint)  , myVarRadius(varRadius), myK(k), myPhi(phi)
 {}
 
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const Point &aPoint, const double radius,
-			     const double smallRadius,
+			     const double varRadius,
 			     const unsigned int k, const double phi):
-  myRadius(radius),myVarRadius(smallRadius),myK(k),myPhi(phi)
+  myRadius(radius),myVarRadius(varRadius),myK(k),myPhi(phi)
 {
   myCenter = aPoint;
 }
@@ -179,7 +179,7 @@ inline
 void
 DGtal::Flower2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Flower2D] center= "<<myCenter<<" radius="<<myRadius<<" smallradius="<<myVarRadius
+  out << "[Flower2D] center= "<<myCenter<<" radius="<<myRadius<<" varRadius="<<myVarRadius
       <<" myK="<<myK<<" phase-shift="<<myPhi;
 }
 

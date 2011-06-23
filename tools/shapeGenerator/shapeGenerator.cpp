@@ -100,7 +100,7 @@ void createList()
   shapes2D.push_back("flower");
   shapesDesc.push_back("Flower with k petals.");
   shapesParam1.push_back("--radius [-R],");
-  shapesParam2.push_back("--smallradius [-r],");
+  shapesParam2.push_back("--varsmallradius [-v],");
   shapesParam3.push_back("--k [-k],");
   shapesParam4.push_back("--phi");
 
@@ -114,7 +114,7 @@ void createList()
   shapes2D.push_back("accflower");
   shapesDesc.push_back("Accelerated Flower with k petals.");
   shapesParam1.push_back("--radius [-R],");
-  shapesParam2.push_back("--smallradius [-r],");
+  shapesParam2.push_back("--varsmallradius [-v],");
   shapesParam3.push_back("--k [-k],");
   shapesParam4.push_back("--phi");
 
@@ -318,6 +318,7 @@ int main( int argc, char** argv )
     ("axis1,A",  po::value<double>(), "Half big axis of the shape (ellipse)" )
     ("axis2,a",  po::value<double>(), "Half small axis of the shape (ellipse)" )
     ("smallradius,r",  po::value<double>()->default_value(5), "Small radius of the shape" )
+    ("varsmallradius,v",  po::value<double>()->default_value(5), "Variable small radius of the shape" )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
@@ -426,16 +427,16 @@ int main( int argc, char** argv )
       else
 	if (id ==3)
 	  {
-	    if (not(vm.count("smallradius"))) missingParam("--smallradius");
+	    if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
 	    if (not(vm.count("radius"))) missingParam("--radius");
 	    if (not(vm.count("k"))) missingParam("--k");
 	    if (not(vm.count("phi"))) missingParam("--phi");
 	    double radius = vm["radius"].as<double>();
-	    double smallradius = vm["smallradius"].as<double>();
+	    double varsmallradius = vm["varsmallradius"].as<double>();
 	    unsigned int k = vm["k"].as<unsigned int>();
 	    double phi = vm["phi"].as<double>();
 	    
-	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
 	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 	    Z2i::DigitalSet aSet(domain);
 	    
@@ -472,16 +473,16 @@ int main( int argc, char** argv )
 	  else
 	    if (id ==5)
 	      {
-		if (not(vm.count("smallradius"))) missingParam("--smallradius");
+		if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
 		if (not(vm.count("radius"))) missingParam("--radius");
 		if (not(vm.count("k"))) missingParam("--k");
 		if (not(vm.count("phi"))) missingParam("--phi");
 		double radius = vm["radius"].as<double>();
-		double smallradius = vm["smallradius"].as<double>();
+		double varsmallradius = vm["varsmallradius"].as<double>();
 		unsigned int k = vm["k"].as<unsigned int>();
 		double phi = vm["phi"].as<double>();
 	      
-		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
 		Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 		Z2i::DigitalSet aSet(domain);
 	      
