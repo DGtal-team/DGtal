@@ -29,6 +29,9 @@ Table of contents:
    -# \ref subsectGIT11
    -# \ref subsectGIT12
    -# \ref subsectGIT13
+ -# \ref sectGIT3
+   -# \ref subsectGIT31
+   -# \ref subsectGIT32
  -# \ref sectGIT2  
    -# \ref ss21
    -# \ref ss22
@@ -61,9 +64,151 @@ So, once you're logged in on github
   - go to  https://github.com/dcoeurjo/DGtal
   - click on the "Fork" button.
   - once the fork is finished, you'll have your own copy of DGtal
-(trunk) with the following path: https://github.com/yourlogin/DGtal
+with the following path: https://github.com/yourlogin/DGtal
   - At this URL, you're able to browse the sources, see the commit log,
 report issues, view/edit wiki pages,..
+
+\section sectGIT3 Normal workflow
+
+\subsection subsectGIT31 Set remote repositories and get a local copy 
+
+Once you have fork the initial DGtal repository, 
+you can clone your fork to have a local copy of your own (remote) copy of DGtal:
+
+@code
+git clone git@github.com:yourlogin/DGtal.git
+@endcode
+
+In order to easily access to the initial DGtal repository, 
+you can set it as a remote repository, called "upstream": 
+@code
+git remote add upstream git@github.com:dcoeurjo/DGtal.git
+@endcode
+
+Git remotes are great because they allows to have multiple pull/push
+repositories. You can see the list of your remote repositories: 
+
+@code
+git remote
+git remote -v
+@endcode
+
+At this point, you should have two remote repositories: 
+ - origin, your own copy of the initial DGtal repository.
+ - upstream, the remote repository you have just added containing the initial DGtal repository.
+
+You can see the state of a remote repository called "remotename" with the command 
+"git remote show": 
+
+@code
+git remote show remotename
+@endcode
+
+In the normal workflow, you can pull from the main DGtal
+repository (upstream)... 
+
+@code
+git pull upstream master
+@endcode
+
+...but only push to your own copy of DGtal (origin). 
+
+@code
+git push origin yourbranch
+@endcode
+
+
+The merge between the two repositories is done by another developper 
+after a pull request. 
+To make a pull request, go to http://github.com/yourlogin/DGtal, 
+click on "Pull Request". Then, choose the two branches you would like 
+to merge (master in upstream and yourbranch in origin), write your 
+comments and click on "Send Pull Request". 
+
+
+\subsection subsectGIT32 Edit files and commit in branches
+
+
+0- Before starting to work, pull the upstream (you have to be online). 
+
+@code
+git pull upstream master
+@endcode
+
+
+
+
+1- By default, you have a main local branch called master. 
+Create a local branch "cool-feature". 
+
+@code
+git branch cool-feature
+@endcode
+
+Note that you can see the list of your local branches: 
+
+@code
+git branch
+@endcode
+
+Note also that the branch marked with a star is your 
+current local branch. At this point you should see: 
+ - * master
+ - cool-feature
+
+2- Jump onto your new local branch:
+
+@code
+git checkout cool-feature
+@endcode
+
+After taping the command "git branch" you should see now: 
+ - master
+ - * cool-feature
+
+3- Add files, edit files, commit local branch
+
+@code
+git commit -a -m "This commit concerns the cool-feature....."
+@endcode
+
+4- Push to your fork (you have to be online)
+
+@code
+git push origin cool-feature
+@endcode
+
+
+5- If you have to work on another issue (e.g. bug #42), 
+you can create a new local branch "bug42" from your master,
+jump onto it, commit edits, and push: 
+
+@code
+git checkout master
+git branch bug42
+git checkout bug42
+git commit -a -m "Bug #42 fixed....."
+git push origin bug42
+@endcode
+  
+
+6- Once you have finished to work on an issue, 
+go to http://github.com/yourlogin/DGtal and ask for a "Pull Request"
+
+7- Once the "Pull Request" has been validate and the merge done, 
+you can remove your local branch: 
+
+@code
+git checkout master
+git branch -d cool-feature
+@endcode
+
+And you can also remove the associated remote branch 
+(because you have pushed your local branch to your fork in 4-): 
+
+@code
+git push origin :cool-feature
+@endcode
 
 
 \section sectGIT2 Basic comparison SVN/GIT
