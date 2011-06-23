@@ -240,7 +240,7 @@ git stash pop
 git commit -a -m "...." //commit to new branch
 @endcode
 To cleanup your stack: "git stash clear"
-@note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contains uncommited edits.
+@note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommited edits.
  
 
 
