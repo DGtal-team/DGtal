@@ -111,18 +111,6 @@ static void normalize (float vec[3])
 }
 
 /**
- * Scale the 3d vector by a given vector.
- * @param v source & destination vector.
- * @param s scale parameter.
- */
-static void scale (float v[3], float s)
-{
-    v[0] *= s;
-    v[1] *= s;
-    v[2] *= s;
-}
-
-/**
  * Transpose a 4x4 matrix.
  * @param tmat destination matrix.
  * @param mat source matrix.
