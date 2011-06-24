@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC
        testClock
+       testStatistics
        testTrace)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
