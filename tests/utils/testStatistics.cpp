@@ -47,7 +47,7 @@ using namespace DGtal;
 bool testStatistics()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
+  unsigned int nb = 3;
   
   trace.beginBlock ( "Testing Statistics ..." );
 
@@ -60,11 +60,13 @@ bool testStatistics()
   stat.terminate();
   
   trace.info() << "Mean value = "<<stat.mean()  << std::endl;
+  nbok += (stat.mean()==499.5) ? 1 : 0; 
   trace.info() << "Variance value = "<<stat.variance()<<std::endl;
-  
-
-  nbok += true ? 1 : 0; 
-  nb++;
+  trace.info() << "Max value = "<<stat.max()<<std::endl;
+  nbok += (stat.max()==999) ? 1 : 0; 
+  trace.info() << "Min value = "<<stat.min()<<std::endl;
+  nbok += (stat.min()==0)  ? 1 : 0; 
+ 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
