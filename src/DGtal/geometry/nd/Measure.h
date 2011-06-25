@@ -86,7 +86,12 @@ namespace DGtal
      */
     ~Measure();
 
-
+    /** 
+     * Initialize the measure computation.
+     * 
+     * @param h grid size.
+     * @param aSet a pointer to an input set.
+     */
     void init(const double h, Set *aSet);
    
     
