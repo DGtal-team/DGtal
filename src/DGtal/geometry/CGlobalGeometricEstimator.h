@@ -60,8 +60,8 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CGlobalGeometricEstimator
-   * - \t x, \t y	: Object of type X
+   * - \t T : A type that is a model of CGlobalGeometricEstimator
+   * - \t x, \t y	: Object of type T
    *
    * <p> Definitions
    *
@@ -72,13 +72,13 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> init</td> <td> T.init(h,aSet)</td><td> aSet of type T::Set, h of
+   * <td> init</td> <td> x.init(h,aSet)</td><td> aSet of type T::Set, h of
    * type double </td><td>void</td>
    * <td> </td> <td>Only called once, init the proces with a grid step
    * h and a given set</td> <td> </td> <td> O(1) </td>
    * </tr>
     * <tr> 
-   * <td> eval</td> <td> T.eval()</td><td></td><td>a value of type T::Quantity</td>
+   * <td> eval</td> <td> x.eval()</td><td></td><td>a value of type T::Quantity</td>
    * <td>T.init(h,aSet) should have been called before </td> <td>Evaluate the  global estimator specified during
    * the init()</td> <td> </td> <td> Algorithm dependent </td>
    * </tr>
@@ -104,7 +104,7 @@ namespace DGtal
     BOOST_CONCEPT_USAGE(CBoundedInteger)
     {
       T.init(aH,aSet);
-      ConceptUtils::sameType( aQuantity, T.eval());
+      ConceptUtils::sameType( aQuantity, aGlobalEstimator.eval());
     }
     
     // ------------------------- Private Datas --------------------------------
