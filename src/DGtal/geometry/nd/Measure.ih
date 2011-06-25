@@ -95,8 +95,10 @@ void
 DGtal::Measure<TSet>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Measure] ";
-  if (isValid)
-    out << " myH="<< myH<<", mySet="<< mySetPointer;
+  if (this->isValid())
+    out << " myH="<< myH<<", mySet="<< (*mySetPointer);
+  else
+    out <<" (not initialized)";
 }
 
 /**
@@ -108,7 +110,7 @@ inline
 bool
 DGtal::Measure<TSet>::isValid() const
 {
-  return myIsInitBefore;
+  return myIsInitBefore && mySetPointer;
 }
 
 
