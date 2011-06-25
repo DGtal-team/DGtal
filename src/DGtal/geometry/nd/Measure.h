@@ -146,7 +146,7 @@ namespace DGtal
     double myH;
 
     ///Copy of the set (copy-on-write pointer).
-    CowPtr<Set> mySetPointer;
+    Set *mySetPointer;
 
     ///Boolean to assert that the init() was called before the eval().
     double myIsInitBefore;

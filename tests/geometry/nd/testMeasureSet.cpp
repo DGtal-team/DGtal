@@ -49,7 +49,9 @@ using namespace DGtal;
 
 bool testConcept()
 {
-  // BOOST_CONCEPT_ASSERT(( CGLobalGeometricEstimator< Measure< Z3i::DigitalSet> > ));
+  typedef  Measure< Z3i::DigitalSet> Measure3D;
+  
+  // BOOST_CONCEPT_ASSERT(( CGLobalGeometricEstimator< Measure3D > ));
   return true;
 }
 
@@ -83,8 +85,6 @@ bool testMeasure()
   measure.init(0.5, &set);
   trace.info() << "Volume (h=0.5) "<<measure.eval()<<std::endl;
   
-
-
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
