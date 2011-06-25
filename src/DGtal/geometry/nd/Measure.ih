@@ -55,6 +55,8 @@ typename DGtal::Measure<TSet>::Quantity
 DGtal::Measure<TSet>::eval() const
 {
   ASSERT(myIsInitBefore);
+  ASSERT(mySetPointer);
+  ASSERT(h > 0);
 
   double hd = std::pow(myH, (double)TSet::Domain::dimension);
 

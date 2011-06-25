@@ -91,10 +91,10 @@ namespace DGtal
     /** 
      * Initialize the measure computation.
      * 
-     * @param h grid size.
-     * @param aSet a pointer to an input set.
+     * @param h grid size (must be >0).
+     * @param aSetPointerx a pointer to an input set.
      */
-    void init(const double h, Set *aSet);
+    void init(const double h, Set *aSetPointer);
    
     
     /** 
