@@ -76,14 +76,16 @@ bool testMeasure()
   Z3i::DigitalSet set(domain);
   
   Shapes<Z3i::Domain>::shaper( set,
-			       ImplicitRoundedHyperCube<Z3i::Space>( c, 10, 2.5));
+			       ImplicitBall<Z3i::Space>( c, 10));
   
   Measure< Z3i::DigitalSet> measure;
 
   trace.info() << "Input set= "<<set<<std::endl;
   
-  measure.init(0.5, &set);
-  trace.info() << "Volume (h=0.5) "<<measure.eval()<<std::endl;
+  measure.init(10, &set);
+  trace.info() << "Volume (h=10) "<<measure.eval()<<std::endl;
+  measure.init(100, &set);
+  trace.info() << "Volume (h=100) "<<measure.eval()<<std::endl;
   
   nbok += true ? 1 : 0; 
   nb++;
