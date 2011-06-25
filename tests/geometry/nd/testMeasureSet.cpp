@@ -81,12 +81,17 @@ bool testMeasure()
   Measure< Z3i::DigitalSet> measure;
 
   trace.info() << "Input set= "<<set<<std::endl;
+
+  trace.info()<<measure<<std::endl;
+
   
   measure.init(10, &set);
   trace.info() << "Volume (h=10) "<<measure.eval()<<std::endl;
   measure.init(100, &set);
   trace.info() << "Volume (h=100) "<<measure.eval()<<std::endl;
   
+  trace.info()<<measure<<std::endl;
+
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
