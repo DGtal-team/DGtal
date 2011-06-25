@@ -44,7 +44,7 @@ void
 DGtal::Measure<TSet>::init(const double h, TSet *aSet)
 {
   myH = h;
-  mySetPointer = CowPtr<TSet>( aSet );
+  mySetPointer = aSet ;
   myIsInitBefore = true;
 }
 

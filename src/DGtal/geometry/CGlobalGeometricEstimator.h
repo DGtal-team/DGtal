@@ -113,7 +113,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     T aGlobalEstimator;
-    Set aSet;
+    Set *aSet;
     double aH;
     Quantity aQuantity;
     
