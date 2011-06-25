@@ -97,13 +97,13 @@ namespace DGtal
   public:
     
     ///Models must define a Quantity type
-    typedef typename T::Quantity Quantity
+    typedef typename T::Quantity Quantity;
     ///Models must define a Set type
-    typedef typename T::Set Set
+    typedef typename T::Set Set;
     
-    BOOST_CONCEPT_USAGE(CBoundedInteger)
+    BOOST_CONCEPT_USAGE(CGlobalGeometricEstimator)
     {
-      T.init(aH,aSet);
+      aGlobalEstimator.init(aH,aSet);
       ConceptUtils::sameType( aQuantity, aGlobalEstimator.eval());
     }
     
