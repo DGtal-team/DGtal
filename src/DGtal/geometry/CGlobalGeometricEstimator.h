@@ -72,7 +72,7 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> init</td> <td> x.init(h,aSet)</td><td> aSet of type (T::Set *), h of
+   * <td> init</td> <td> x.init(h,aSetPointer)</td><td> aSetPointer of type (T::Set *), h of
    * type double </td><td>void</td>
    * <td> </td> <td>Only called once, init the proces with a grid step
    * h and a given set</td> <td> </td> <td> O(1) </td>
@@ -103,7 +103,7 @@ namespace DGtal
     
     BOOST_CONCEPT_USAGE(CGlobalGeometricEstimator)
     {
-      aGlobalEstimator.init(aH,aSet);
+      aGlobalEstimator.init(aH,aSetPointer);
       ConceptUtils::sameType( aQuantity, aGlobalEstimator.eval());
     }
     
@@ -113,7 +113,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     T aGlobalEstimator;
-    Set *aSet;
+    Set *aSetPointer;
     double aH;
     Quantity aQuantity;
     

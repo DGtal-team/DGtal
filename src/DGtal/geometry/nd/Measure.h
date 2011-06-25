@@ -59,6 +59,8 @@ namespace DGtal
    * In dimension 2, it corresponds to the area of the set, to the
    * volume in dimension 3,...
    * 
+   * Model of @href CGlobalGeometricEstimator 
+   *
    * @tparam Set type of set on which the geometrical moments is
    * computed.
    */
