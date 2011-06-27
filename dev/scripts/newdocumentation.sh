@@ -8,22 +8,20 @@ fi
 SCRIPTS_DIR=${DGtal}/dev/scripts
 source ${SCRIPTS_DIR}/common.sh
 
-if test  \( "$#" != "2" \);
+if test  \( "$#" != "1" \);
 then 
     echo "usage: $0 documenatation_name subdir" ;
-    echo "       - creates a doxygen documentation skeleton file (.dox)."
-    echo "         Documentation are expected to be in a"
-    echo "         directory of the form: ${INCLUDE_DIR}/subdir/[documentation_name]."
+    echo "       - creates a doxygen documentation skeleton file (.dox) in the doc folder."
     exit 1
 fi
 
-if test -w "${INCLUDE_DIR}/$2/$1.dox" ;
+if test -w "${DGtal}/doc/$1.dox" ;
 then
-    echo "File ${INCLUDE_DIR}/$2/$1.dox exists and is writable. Please remove it before." ;
+    echo "File ${DGtal}/doc/$1.dox exists and is writable. Please remove it before." ;
     exit 2;
 fi
 
-echo "--- Creating files ${INCLUDE_DIR}/$2/$1.dox"
+echo "--- Creating files ${DGtal}/doc/$1.dox"
 
 ename="s@XXX@$1@g"
 #etoday='s/2000\/??\/??/'`date '+20%y\/%m\/%d'`'/g'
@@ -51,6 +49,6 @@ if test ! -r "${MODELS_DIR}/XXX.dox"; then
     exit 2
 fi
 
-cat "${MODELS_DIR}/XXX.dox" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.dox"
+cat "${MODELS_DIR}/XXX.dox" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${DGtal}/doc/$1.dox"
 
 echo "--> done."

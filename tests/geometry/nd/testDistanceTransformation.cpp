@@ -38,12 +38,12 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
-#include "DGtal/io-viewers/colormaps/HueShadeColorMap.h"
-#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -147,6 +147,89 @@ bool testDistanceTransformation()
 
   return nbok == nb;
 }
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testDistanceTransformationNeg()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing the whole DT computation" );
+
+  typedef SpaceND<2> TSpace;
+  typedef TSpace::Point Point;
+  typedef HyperRectDomain<TSpace> Domain;
+  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
+  typedef GrayscaleColorMap<unsigned char> Gray;
+  Point a ( -10, -10 );
+  Point b ( 10, 10 );
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  Image image ( a, b );
+
+  for(int y=-10; y<=10;y++) 
+    for(int x=-10; x<=10;x++)
+      {
+	if ((abs(x)<7) && (abs(y)<5))
+	  image.setValue(Point(x,y),1);
+	else
+	  image.setValue(Point(x,y),0);
+      }
+  
+  DistanceTransformation<Image, 2> dt;
+  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+
+  dt.checkTypesValidity ( image );
+
+  DGtalBoard board;
+  board.setUnit ( LibBoard::Board::UCentimeter );
+  image.selfDraw<Gray> ( board, 0, 1 );
+  board.saveSVG ( "image-preDT-neg.svg" );
+
+
+  for(int y=-10; y<=10;y++) 
+    {
+      for(int x=-10; x<=10;x++)
+	{
+	  std::cout<<image(Point(x,y))<<"  ";
+	}
+      std::cout<<std::endl;
+    }
+  
+
+  ImageLong result = dt.compute ( image );
+  
+  DGtal::uint64_t maxv=0;
+  for(ImageLong::Iterator it = result.begin(), itend = result.end();
+      it != itend ; ++it)
+    if (result(it) > maxv)
+      maxv = result(it);
+
+  for(int y=-10; y<=10;y++) 
+    {
+      for(int x=-10; x<=10;x++)
+	{
+	  std::cout<<result(Point(x,y))<<"  ";
+	}
+      std::cout<<std::endl;
+    }
+  
+
+
+  trace.warning() << result << endl;
+
+  board.clear();
+  result.selfDraw<Gray> ( board, 0, maxv );
+  board.saveSVG ( "image-postDT-neg.svg" );
+
+
+  trace.info() << result << endl;
+
+  trace.endBlock();
+
+  return nbok == nb;
+}
 
 
 bool testDTFromSet()
@@ -160,18 +243,14 @@ unsigned int nbok = 0;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<unsigned char, 2> HueTwice;
-  Point a ( 2, 2 );
-  Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-
-  
 
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
   
   DGtalBoard board;
 
-  Ball2D<Z2i::Space> flower(Z2i::Point(100,100), 10);
+  Ball2D<Z2i::Space> flower(Z2i::Point(0,0), 10);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
   
@@ -188,6 +267,16 @@ unsigned int nbok = 0;
     if ( (*it) > maxv)
       maxv = (*it);
   
+  for(int y=-11; y<11; y++)
+    {
+      for(int x=-11; x<11; x++)
+	{
+	  Point a(x,y);
+	  std::cout<<result(a)<<" ";
+	}
+      std::cout<<std::endl;
+    }
+
   trace.error() << "MaxV="<<maxv<<std::endl;
 
   result.selfDraw<Gray> ( board, 0, maxv);
@@ -469,11 +558,13 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-   bool res =  testTypeValidity() && testDistanceTransformation() 
-     && testDistanceTransformationBorder() 
-     && testDistanceTransformation3D()
-     && testChessboard()
-     && testDTFromSet(); // && ... other tests
+  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationNeg() 
+    && testDTFromSet()  
+    && testDistanceTransformationBorder() 
+    && testDistanceTransformation3D()
+    && testChessboard()
+    && testDTFromSet();
+  //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

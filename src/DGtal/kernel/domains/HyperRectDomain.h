@@ -43,7 +43,11 @@
 // Inclusions
 #include <iostream>
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#endif
+
+#ifdef WITH_CAIRO
+#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #endif
 
 #include "DGtal/base/Common.h"
@@ -52,7 +56,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 
 
 
@@ -205,7 +209,7 @@ namespace DGtal
       ConstIterator begin(const Point& aPoint) const
       { ASSERT(myDomain.isInside(aPoint));
 	return ConstIterator(aPoint, 
-			      myDomain.myLowerBound, myDomain.myUpperBound); }
+			     myDomain.myLowerBound, myDomain.myUpperBound); }
 
       /*
        * end method.
@@ -290,7 +294,7 @@ namespace DGtal
       {
 	myPermutation.reserve( permutation.size() );
 	std::copy(permutation.begin(),permutation.end(),
-		 std::back_inserter(myPermutation));
+		  std::back_inserter(myPermutation));
 	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
@@ -313,7 +317,7 @@ namespace DGtal
       {
 	myPermutation.reserve( permutation.size() );
 	for ( const unsigned int *c = permutation.begin();
-            c != permutation.end(); ++c )
+	      c != permutation.end(); ++c )
 	  {
 	    myPermutation.push_back( *c );
 	  }
@@ -329,7 +333,7 @@ namespace DGtal
        * @param startingPoint the initial point.
        * @pre startingPoint must belong to the range.     
        */
-       ConstSubRange(const HyperRectDomain<TSpace>& domain,
+      ConstSubRange(const HyperRectDomain<TSpace>& domain,
 		    Dimension adim,
 		    const Point & startingPoint)
 	: myLowerBound(domain.myLowerBound),
@@ -391,7 +395,7 @@ namespace DGtal
        */
       ConstIterator begin() const
       {	return ConstIterator(myLowerBound, myLowerBound,
-			      myUpperBound, myPermutation); }
+			     myUpperBound, myPermutation); }
       
       /*
        * begin method from a given point.
@@ -404,7 +408,7 @@ namespace DGtal
 	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
 	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
 	return ConstIterator(aPoint, myLowerBound,
-			      myUpperBound, myPermutation);
+			     myUpperBound, myPermutation);
       }
 
       /*
@@ -414,7 +418,7 @@ namespace DGtal
       ConstIterator end() const
       {
 	ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
-					   myUpperBound, myPermutation);
+					 myUpperBound, myPermutation);
 	++it;
 	return it;
       }
@@ -452,7 +456,7 @@ namespace DGtal
       Point                  myStartingPoint;
       /// Permutation on dimensions used in the subrange.
       std::vector<Dimension> myPermutation;
-   };
+    };
 
     /**
      * get a subRange.
@@ -544,7 +548,7 @@ namespace DGtal
     {
       Point p;
       for(typename Point::Iterator it=p.begin(), itend=p.end();
-      it != itend; ++it)
+	  it != itend; ++it)
         (*it) = 1;
 
       return (myUpperBound - myLowerBound) + p;
@@ -576,7 +580,6 @@ namespace DGtal
      * which fits perfectly.
      */
     const Predicate & predicate() const;
-
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -667,6 +670,26 @@ namespace DGtal
     void selfDrawAsBoundingBox ( DGtalQGLViewer & viewer) const;
 
 #endif
+    
+#ifdef WITH_CAIRO
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+
+    /**
+     * Draw the object on a DGtalBoard board.
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawCairo(  DGtalCairo & viewer ) const;
+    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
+    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
+    void selfDrawAsPavingPointsCairo( DGtalCairo & viewer ) const;
+    void selfDrawAsBoundingBoxCairo( DGtalCairo & viewer) const;
+
+#endif
 
 
     
@@ -710,15 +733,41 @@ namespace DGtal
 #ifdef WITH_VISU3D_QGLVIEWER
 
   struct DrawPavingVoxel3D : public DrawableWithDGtalQGLViewer {
-      void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    {
+      viewer.myModes[ "HyperRectDomain" ] = "Paving";
+    }
+  };
+  
+  
+  struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
+    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    {
+      viewer.myModes[ "HyperRectDomain" ] = "Grid";
+    }
+  };
+
+
+
+#endif
+  
+  /**
+   * Modifier class in a DGtalBoard stream. Realizes the concept
+   * CDrawableWithDGtalBoard.
+   */
+
+#ifdef WITH_CAIRO
+
+  struct DrawPavingVoxel3DCairo : public DrawableWithDGtalCairo {
+      void selfDrawCairo( DGtalCairo & viewer ) const
       {
 	viewer.myModes[ "HyperRectDomain" ] = "Paving";
       }
   };
   
   
-  struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawGridVoxel3DCairo : public DrawableWithDGtalCairo {
+    void selfDrawCairo( DGtalCairo & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }
@@ -737,7 +786,7 @@ namespace DGtal
    */
   template<typename TSpace>
   std::ostream&
-      operator<< ( std::ostream& out, const HyperRectDomain<TSpace> & object );
+  operator<< ( std::ostream& out, const HyperRectDomain<TSpace> & object );
 
 
   /**

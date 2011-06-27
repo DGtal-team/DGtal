@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  viewer <<  SetMode3D( p1.styleName(), "Paving" );
  
  //viewer << ClippingPlane(1,0,0,-4.9);
- //viewer << ClippingPlane(0,1,0.3,-10); 
+ viewer << ClippingPlane(0,1,0.3,-10); 
  
  
  

@@ -529,7 +529,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
 	it != this->end();
         ++it )
     {
-      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor(),3);
+      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor());
     }
 
 }
@@ -555,6 +555,85 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
       selfDrawAsPavingQGL(viewer);
       selfDrawAsGridQGL( viewer );
+    }
+  
+}
+
+
+
+#endif
+
+#ifdef WITH_CAIRO
+
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentCairo( DGtalCairo & viewer ) const
+{  
+  ASSERT(Domain::Space::dimension == 3);
+  viewer.createNewVoxelList(false);
+  for (  ConstIterator it = this->begin(); 
+	 it != this->end();
+	 ++it )
+    {
+      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+    }
+
+}
+
+
+template <typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingCairo( DGtalCairo & viewer ) const
+{   
+  ASSERT(Domain::Space::dimension == 3);
+  viewer.createNewVoxelList(true);
+  for (  ConstIterator it = this->begin(); 
+	 it != this->end();
+	 ++it )
+    {
+      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+    }
+
+}
+//------------------------------------------------------------------------------
+template<typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridCairo( DGtalCairo & viewer ) const
+{
+  ASSERT(Domain::Space::dimension == 3);
+  for ( ConstIterator it = this->begin(); 
+	it != this->end();
+        ++it )
+    {
+      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor(),3);
+    }
+
+}
+
+
+template<typename Domain>
+inline
+void
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawCairo( DGtalCairo & viewer ) const
+{
+  ASSERT(Domain::Space::dimension == 3);
+  
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    selfDrawAsPavingCairo( viewer );
+  else if ( mode == "PavingTransp" )
+    selfDrawAsPavingTransparentCairo( viewer );
+  else if ( mode == "Grid" )
+    selfDrawAsGridCairo( viewer );
+  else if ( ( mode == "Both" ) )
+    {
+      selfDrawAsPavingCairo(viewer);
+      selfDrawAsGridCairo( viewer );
     }
   
 }

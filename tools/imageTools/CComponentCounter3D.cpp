@@ -30,7 +30,7 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io-viewers/readers/VolReader.h"
+#include "DGtal/io/readers/VolReader.h"
 
 #include "Board/Color.h"
 #include "DGtal/images/ImageSelector.h"

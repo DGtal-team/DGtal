@@ -131,7 +131,7 @@ namespace DGtal
       /**
        * Pointer to the cover of maximal segments
        */
-			MaximalSegments<TSegment> *myCov;
+	MaximalSegments<TSegment> *myCov;
 
       /**
        * An iterator of the sequence
