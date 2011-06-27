@@ -46,12 +46,10 @@ using namespace DGtal;
 // Functions for testing class Measure.
 ///////////////////////////////////////////////////////////////////////////////
 
-
 bool testConcept()
 {
-  typedef  Measure< Z3i::DigitalSet> Measure3D;
   
-  // BOOST_CONCEPT_ASSERT(( CGLobalGeometricEstimator< Measure3D > ));
+  BOOST_CONCEPT_ASSERT((CGlobalGeometricEstimator< Measure< Z3i::DigitalSet> >));
   return true;
 }
 
