@@ -85,9 +85,9 @@ bool testMeasure()
   trace.info()<<measure<<std::endl;
 
   
-  measure.init(10, &set);
+  measure.init(10, set);
   trace.info() << "Volume (h=10) "<<measure.eval()<<std::endl;
-  measure.init(100, &set);
+  measure.init(100, set);
   trace.info() << "Volume (h=100) "<<measure.eval()<<std::endl;
   
   trace.info()<<measure<<std::endl;
