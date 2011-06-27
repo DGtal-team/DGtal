@@ -53,7 +53,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
+#include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
@@ -83,10 +83,13 @@ of the grid points (or pointels) of the grid curve.
    * @endcode
    */
 
-  template <typename Kspace>
+  template <typename KSpace>
   class GridCurve
   {
 
+  public: 
+  typedef typename KSpace::Space::Point Point;
+  typedef typename std::vector<Point> Storage;
 
     // ------------------------- static services ------------------------------
   public:
@@ -98,9 +101,10 @@ of the grid points (or pointels) of the grid curve.
      */
     static void write( std::ostream & out, const GridCurve & c )
     {
-      c.myData::iterator i;
+      typename Storage::const_iterator i;
       for (i =  c.myData.begin(); i != c.myData.end(); ++i) {
-        out << (*i) << endl;
+        Point p = *i;
+        out << p[0] << " " << p[1] << endl;
       }
     }
 
@@ -112,20 +116,9 @@ of the grid points (or pointels) of the grid curve.
      */
     static void read( std::istream & in, GridCurve & c )
     {
-      std::string str;
-      while ( std::getline( in, str ) )
-        {
-          if ( ! in.good() )
-            return;
-          if ( ( str.size() > 0 ) && ( str[ 0 ] != '#' ) )
-            {
-	            std::istringstream str_in( str );
-              KSpace::Integer x,y;
-	            str_in >> x >> y;
-              c.myData.push_back(KSpace::Space::Point(x,y));
-	          }
-        }
 
+      c.myData = PointListReader<Point>
+                ::getPointsFromInputStream(in);
     };
 
 
@@ -136,13 +129,13 @@ of the grid points (or pointels) of the grid curve.
      * @param c the grid curve
      * @param aVContour (returns) the vector containing all the (grid) points.
      */
-    static void getContourPoints(const GridCurve& c, 
-           std::vector<KSpace::Space::Point>& aVectorOfPoints)
+    static void getData(const GridCurve& c, 
+           std::vector<Point>& aVectorOfPoints)
     {
       aVectorOfPoints.clear();
-      myData::iterator i;
-      for (i =  myData.begin(); i != myData.end(); ++i) {
-        aVectorOfPoints.push_back(*it);
+      typename Storage::const_iterator i;
+      for (i = c.myData.begin(); i != c.myData.end(); ++i) {
+        aVectorOfPoints.push_back(*i);
       }
     }
 
@@ -162,7 +155,7 @@ of the grid points (or pointels) of the grid curve.
      * Constructor.
      * @param aVectorOfPoints the vector containing the sequence of grid points. 
      */
-    GridCurve( const std::vector<KSpace::Space::Point> aVectorOfPoints) {
+    GridCurve( const std::vector<Point> aVectorOfPoints) {
       myData = aVectorOfPoints;
     };
 
@@ -201,9 +194,9 @@ of the grid points (or pointels) of the grid curve.
     void selfDisplay ( std::ostream & out ) const
     {
       out << "[GridCurve]" << std::endl;
-      myData::iterator i;
+      typename Storage::const_iterator i;
       for (i =  myData.begin(); i != myData.end(); ++i) {
-        out << *it << std::endl;
+        out << *i << std::endl;
       }
       
     };
@@ -234,9 +227,7 @@ of the grid points (or pointels) of the grid curve.
     /**
        Draw the object on a DGtalBoard board
        @param board the output board where the object is drawn.
-       @tparam Functor a Functor to specialize the Board style
     */
-    template<typename Functor>
     void selfDraw(DGtalBoard & board ) const;
     
     /**
@@ -254,7 +245,7 @@ of the grid points (or pointels) of the grid curve.
 
     // ------------------------- Public Datas --------------------------------
   public:
-    std::vector<KSpace::Space::Point> myData; 
+    Storage myData; 
 
 
     // ------------------------- Internal --------------------------------
@@ -312,7 +303,7 @@ of the grid points (or pointels) of the grid curve.
    * @param object the object of class 'GridCurve' to write.
    * @return the output stream after the writing.
    */
-  template<typename Kspace>
+  template<typename KSpace>
   std::ostream&
   operator<< ( std::ostream & out, const GridCurve<KSpace> & object );
 

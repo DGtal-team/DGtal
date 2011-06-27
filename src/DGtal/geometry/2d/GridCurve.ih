@@ -51,7 +51,7 @@
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Kspace>
+template <typename KSpace>
 DGtal::GridCurve<KSpace>::GridCurve( const GridCurve<KSpace> & aOther )
   : myData( aOther.myData )
 {
@@ -62,7 +62,7 @@ DGtal::GridCurve<KSpace>::GridCurve( const GridCurve<KSpace> & aOther )
  * @param aOther the object to copy.
  * @return a reference on 'this'.
  */
-template <typename Kspace>
+template <typename KSpace>
 typename DGtal::GridCurve<KSpace> & 
 DGtal::GridCurve<KSpace>::operator=( const GridCurve<KSpace> & aOther )
 {
@@ -76,7 +76,7 @@ DGtal::GridCurve<KSpace>::operator=( const GridCurve<KSpace> & aOther )
 
 
 //------------------------------------------------------------------------------
-template <typename Kspace>
+template <typename KSpace>
 inline
 DGtal::DrawableWithDGtalBoard*
 DGtal::GridCurve<KSpace>::defaultStyle( std::string mode ) const
@@ -87,7 +87,7 @@ DGtal::GridCurve<KSpace>::defaultStyle( std::string mode ) const
     return new DefaultDrawStyleEdges;  
 }
 //------------------------------------------------------------------------------
-template <typename Kspace>
+template <typename KSpace>
 inline
 std::string
 DGtal::GridCurve<KSpace>::styleName() const
@@ -95,23 +95,23 @@ DGtal::GridCurve<KSpace>::styleName() const
   return "GridCurve";
 }
 //------------------------------------------------------------------------------
-template <typename Kspace>
+template <typename KSpace>
 inline
 void 
 DGtal::GridCurve<KSpace>::selfDraw(DGtalBoard & aBoard) const
 {
   std::string mode = aBoard.getMode( this->styleName() );
-  ASSERT( (mode=="Points" || mode=="" || mode=="PointsEdges") ||
+  ASSERT( (mode=="Points" || mode=="" || mode=="Edges") ||
 	  ("DGtal::GridCurve<KSpace>::selfDraw: Unknown mode "+mode)==""  );
   
   if ( mode == "Points"  || ( mode == "" )  )
-    DefaultDrawStylePoints( aBoard );
+    selfDrawPoints( aBoard );
   else if ( mode == "Edges" )
-    DefaultDrawStyleEdges( aBoard );
+    selfDrawEdges( aBoard );
   
 }
 //------------------------------------------------------------------------------
-template <typename Kspace>
+template <typename KSpace>
 inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
@@ -121,7 +121,7 @@ DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
   }
 }
 //------------------------------------------------------------------------------
-template <typename Kspace>
+template <typename KSpace>
 inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
@@ -130,8 +130,8 @@ DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
   std::vector<LibBoard::Point> points;//output points
   for(unsigned int i=0; i< myData.size(); i++){
     points.push_back(
-      LibBoard::Point(IntegerTraits<KSpace::Integer>::castToInt64_t(myData[i][0]),
-				              IntegerTraits<KSpace::Integer>::castToInt64_t(myData[i][1])));
+      LibBoard::Point(IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][0]),
+				              IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][1])));
   }
   aBoard.drawPolyline(points);
 }
@@ -152,7 +152,7 @@ DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
  * @param object the object of class 'GridCurve' to write.
  * @return the output stream after the writing.
  */
-template <typename Kspace>
+template <typename KSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
