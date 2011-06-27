@@ -287,8 +287,117 @@ of the grid points (or pointels) of the grid curve.
       }
     };
 
+  // ------------------------- inner classes --------------------------------
+
+  public: 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class PointsRange
+    ///////////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     * This class is a model of CRange and thus provides a ConstIterator to scan 
+     * the grid points (pointels) 
+     */
+
+   
+    class PointsRange
+    {
+
+      // ------------------------- inner type --------------------------------
+        public: 
+          typedef typename GridCurve::Storage Storage; 
+          typedef typename GridCurve::Storage::const_iterator ConstIterator;
+
+       /**
+         * Default Constructor.
+         */
+	
+        PointsRange()
+        {
+        }
+
+       /**
+         * Constructor.
+         */
+	
+        PointsRange( const Storage& aStorage ): myData(&aStorage)
+        {
+        }
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+	
+        PointsRange( const PointsRange & aOther )
+	      : myData( aOther.myData )
+        {
+        }
+      
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+	
+        PointsRange& operator= ( const PointsRange & other )
+        {	
+	        if ( this != &other )
+	          {
+              myData = other.myData;
+	          }
+	        return *this;
+        }
+
+
+	
+        /**
+         * Destructor. Does nothing.
+         */
+	
+        ~PointsRange()
+        {
+        }
+
+      // ------------------------- private data --------------------------------
+        private: 
+          const typename GridCurve::Storage* myData;
+
+      // ------------------------- iterator services --------------------------------
+        public:
+
+      /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const {
+        return myData->begin();
+      }
+
+      /**
+       * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end() const {
+        return myData->end();
+      }
+
+    };
+
+	
+    ///////////////////////////////////////////////////////////////////////////////
+    // end of class PointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+	
+  /**
+   * Accessor of a range of grid points
+   * @return PointsRange
+   */
+   typename GridCurve::PointsRange getPointsRange() const {
+    return PointsRange(myData);
+   } 
 
 
 

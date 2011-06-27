@@ -140,8 +140,33 @@ bool testDisplay(const string &filename)
 }
 
 
+/**
+ * PointsRange
+ *
+ */
+bool testPointsRange(const string &filename)
+{
 
+  trace.info() << "Testing PointsRange " << endl;
+  
+  typedef GridCurve<KhalimskySpaceND<2> > GridCurve;
 
+  //reading grid curve
+  fstream inputStream;
+  inputStream.open (filename.c_str(), ios::in);
+  GridCurve c(inputStream); 
+  inputStream.close();
+
+  //points range
+  GridCurve::PointsRange aRange = c.getPointsRange();
+  GridCurve::PointsRange::ConstIterator i = aRange.begin();
+  GridCurve::PointsRange::ConstIterator end = aRange.end();
+  for ( ; i != end; ++i) {
+    cout << "pouet" << endl;
+  }
+  
+  return true;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -164,7 +189,8 @@ int main( int argc, char** argv )
   bool res = testReadGridCurve<K2>(sinus2D4)
     && testReadGridCurve<K3>(sinus3D)
     && testWriteGridCurve<K2>(sinus2D4)
-    && testDisplay(sinus2D4);
+    && testDisplay(sinus2D4)
+    && testPointsRange(sinus2D4);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
