@@ -497,51 +497,7 @@ uMakeBoundary( SCellSet & aBoundary,
 
 
 
-//-----------------------------------------------------------------------------
-template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
-void 
-DGtal::Surfaces<TKSpace>::
-sMakeBoundary( SCellSet & aBoundary,
-	       const KSpace & aKSpace,
-	       const DigitalSet & aSpelSet,
-	       const Cell aLowerBound, const Cell aUpperBound  )
-{
-  unsigned int k;
-  bool in_here, in_further;
-  //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
-  typedef ImageSelector<Z2i::Domain, bool>::Type Image;
-  Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
-					       true, 
-					       aSpelSet.begin(), 
-					       aSpelSet.end());
-  
-  for ( k = 0; k < aKSpace.dimension; ++k )
-    {
-      Cell dir_low_uid = aLowerBound;
-      Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
-      Cell p = dir_low_uid;
-      do 
-	{
-	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
-	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
-	    in_here =(setImage(aKSpace.uCoords(p))); //
-	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
-	    if ( in_here != in_further ) // boundary element
-	    { // add it to the set.
-	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
-	    }
-	  }
-	}
-      while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
-    }
-}
-
-
 // //-----------------------------------------------------------------------------
-
-// // Initial version with "find" on DigitalSet (replaced by faster version using image)
-
 // template <typename TKSpace>
 // template <typename SCellSet, typename DigitalSet >
 // void 
@@ -553,25 +509,70 @@ sMakeBoundary( SCellSet & aBoundary,
 // {
 //   unsigned int k;
 //   bool in_here, in_further;
+//   typedef ImageContainerBySTLVector<typename DigitalSet::Domain, int > Image;
+//   typedef ImageSelector<typename DigitalSet::Domain, bool>::Type Image;
+//   Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
+// 					       true, 
+// 					       aSpelSet.begin(), 
+// 					       aSpelSet.end());
+  
 //   for ( k = 0; k < aKSpace.dimension; ++k )
 //     {
 //       Cell dir_low_uid = aLowerBound;
 //       Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
-      
-      
 //       Cell p = dir_low_uid;
 //       do 
 // 	{
-// 	  in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
-// 	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
-// 	  if ( in_here != in_further ) // boundary element
+// 	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
+// 	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
+// 	    in_here =(setImage(aKSpace.uCoords(p))); //
+// 	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
+// 	    if ( in_here != in_further ) // boundary element
 // 	    { // add it to the set.
 // 	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
 // 	    }
+// 	  }
 // 	}
 //       while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
 //     }
 // }
+
+
+// //-----------------------------------------------------------------------------
+
+// // Initial version with "find" on DigitalSet (replaced by faster version using image)
+
+template <typename TKSpace>
+template <typename SCellSet, typename DigitalSet >
+void 
+DGtal::Surfaces<TKSpace>::
+sMakeBoundary( SCellSet & aBoundary,
+	       const KSpace & aKSpace,
+	       const DigitalSet & aSpelSet,
+	       const Cell aLowerBound, const Cell aUpperBound  )
+{
+  unsigned int k;
+  bool in_here, in_further;
+  for ( k = 0; k < aKSpace.dimension; ++k )
+    {
+
+      
+      Cell dir_low_uid = aLowerBound;
+      Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
+      Cell p = dir_low_uid;
+      do 
+	{
+	  in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
+	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
+	  if ( in_here != in_further ) // boundary element
+	    { // add it to the set.
+	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, true ) , k, true ));
+	    }
+	}
+      while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
+    }
+}
+
 
 
 
