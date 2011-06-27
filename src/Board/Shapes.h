@@ -1397,6 +1397,41 @@ private:
 };
 
 /**
+ * The arc structure.
+ * @brief An arc.
+ */
+struct Arc : public Circle {
+
+  Arc( double x, double y, double radius, double angle1, double angle2, bool negative,
+	  Color pen, Color fill,
+	  double lineWidth,
+	  const LineStyle style = SolidStyle,
+	  int depthValue = -1 )
+    : Circle( x, y, radius, pen, fill, lineWidth, style, depthValue )
+  { _angle1 = angle1; _angle2 = angle2; _negative = negative; }
+
+  /** 
+   * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
+   * 
+   * @return 
+   */
+  const std::string & name() const;
+
+#ifdef WITH_CAIRO
+  void flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const;
+#endif
+
+private:
+  static const std::string _name; /**< The generic name of the shape. */
+  
+protected:
+  double _angle1;
+  double _angle2;
+  bool _negative;
+};
+
+/**
  * The text structure.
  * @brief A piece of text.
  */

@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
@@ -112,7 +112,7 @@ bool testGMPSpace()
   Contour theContour( ss );
   //Segmentation
   Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
-  Decomposition::ConstIterator i = theDecomposition.begin();
+  Decomposition::SegmentIterator i = theDecomposition.begin();
   DSS4 segment(*i); 
 
   Point p1( 0, 0 );

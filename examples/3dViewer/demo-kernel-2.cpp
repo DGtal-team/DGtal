@@ -29,12 +29,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>

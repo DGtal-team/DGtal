@@ -43,7 +43,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
@@ -98,7 +98,7 @@ bool testDec4()
   
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 		
 		compteur++;
@@ -161,7 +161,7 @@ bool testDec8()
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;
@@ -214,7 +214,7 @@ bool testDisconnectedCurve()
 	curve.push_back(Point(11,2));
 
   //Segmentation
-  trace.beginBlock("Segmentation of a 8-connected digital curve into 4-connected DSS");
+  trace.beginBlock("Segmentation of disconnected digital curve");
 	PrimitiveType computer;
   DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
   
@@ -229,14 +229,15 @@ bool testDisconnectedCurve()
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;
     trace.info() << "Segment " << compteur << std::endl;
+    trace.info() << i.intersectPrevious() << " - " << i.intersectNext() << std::endl;
     PrimitiveType segment(*i); 		
 		trace.info() << segment << std::endl;	//standard output
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+    aBoard << SetMode( segment.styleName(), "BoundingBox" )
 					 << segment; // draw each segment    
   } 
 
@@ -244,7 +245,7 @@ bool testDisconnectedCurve()
 
   trace.endBlock();
 
-	return (compteur==4);
+	return (compteur==5);
 
 }
 
@@ -264,7 +265,7 @@ bool testClosedCurvesProcessedAsClosed()
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  ss << "31 16 1112121212121221212121221212212222232232323332333333332333332330333033003030000010001001001000100010101010111" << endl;
   
   // Construct the Freeman chain
   Contour4 theContour( ss );
@@ -279,7 +280,7 @@ bool testClosedCurvesProcessedAsClosed()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -311,7 +312,7 @@ bool testClosedCurvesProcessedAsOpen()
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  ss << "31 16 1112121212121221212121221212212222232232323332333333332333332330333033003030000010001001001000100010101010111" << endl;
   
   // Construct the Freeman chain
   Contour4 theContour( ss );
@@ -326,7 +327,7 @@ bool testClosedCurvesProcessedAsOpen()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -358,7 +359,7 @@ bool testOpenCurvesProcessedAsClosed()
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
-  ss << "31 16 11121212121212212121212212122122222322323233323333333323333" << endl;
+  ss << "31 16 1112121212121221212121221212212222232232323332333333332333" << endl;
   
   // Construct the Freeman chain
   Contour4 theContour( ss );
@@ -373,7 +374,7 @@ bool testOpenCurvesProcessedAsClosed()
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
 
@@ -408,7 +409,7 @@ bool testNoPoint()
 		PrimitiveType computer;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 		trace.endBlock();
@@ -445,7 +446,7 @@ bool testOnePoint()
 		aBoard << curve.at(0);
 		//for each segment
 		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				i != theDecomposition.end(); ++i ) 
 			{
 				PrimitiveType primitive(*i);
@@ -484,7 +485,7 @@ bool testTwoEndIterators()
 		PrimitiveType computer;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::ConstIterator i = theDecomposition.begin();
+		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
 																				   i != theDecomposition.end(); ++i ) 
 			{				} 
 
@@ -536,7 +537,7 @@ bool testOneDSS()
 				 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		++compteur;
@@ -594,7 +595,7 @@ curve.push_back(Point(9,1));
 
   //for each segment
 	unsigned int compteur = 0;
-  DecompositionType::ConstIterator i = theDecomposition.begin();
+  DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
 		compteur++;

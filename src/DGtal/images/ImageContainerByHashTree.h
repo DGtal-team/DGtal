@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 #include "DGtal/base/Bits.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "DGtal/images/Morton.h"
 //////////////////////////////////////////////////////////////////////////////
 
