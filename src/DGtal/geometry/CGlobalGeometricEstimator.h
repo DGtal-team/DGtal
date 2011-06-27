@@ -103,7 +103,7 @@ namespace DGtal
     
     BOOST_CONCEPT_USAGE(CGlobalGeometricEstimator)
     {
-      aGlobalEstimator.init(aH,aSet);
+      //  aGlobalEstimator.init(aH,aSet);
       ConceptUtils::sameType( aQuantity, aGlobalEstimator.eval());
     }
     
@@ -113,7 +113,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     T aGlobalEstimator;
-    Set aSet;
+    //   Set aSet;
     double aH;
     Quantity aQuantity;
     

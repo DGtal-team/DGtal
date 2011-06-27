@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImageContainer.h"
-#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -109,9 +109,9 @@ namespace DGtal
     }
     
   private:
+    CountedPtr<Image> myImage;
     Value myMaxVal;
     Value myMinVal;
-    CountedPtr<Image> myImage;
     
   protected:
     SimpleForegroundPredicate();
