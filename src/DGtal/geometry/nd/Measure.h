@@ -94,7 +94,7 @@ namespace DGtal
      * @param h grid size (must be >0).
      * @param aSetPointerx a pointer to an input set.
      */
-    void init(const double h, Set *aSetPointer);
+    void init(const double h, const Set &aSetPointer);
    
     
     /** 
@@ -152,8 +152,8 @@ namespace DGtal
     ///grid resolution parameter.
     double myH;
 
-    ///Copy of the set (copy-on-write pointer).
-    Set *mySetPointer;
+    ///Copy of the set size.
+    typename Set::Size mySetSize;
 
     ///Boolean to assert that the init() was called before the eval().
     double myIsInitBefore;

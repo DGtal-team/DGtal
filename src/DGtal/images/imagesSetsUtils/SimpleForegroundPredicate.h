@@ -109,7 +109,8 @@ namespace DGtal
     }
     
   private:
-    Value myMaxVal, myMinVal;
+    Value myMaxVal;
+    Value myMinVal;
     CountedPtr<Image> myImage;
     
   protected:

@@ -41,10 +41,10 @@
 template< typename TSet>
 inline
 void 
-DGtal::Measure<TSet>::init(const double h, TSet *aSet)
+DGtal::Measure<TSet>::init(const double h, const TSet &aSet)
 {
   myH = h;
-  mySetPointer =  aSet ;
+  mySetSize =  aSet.size() ;
   myIsInitBefore = true;
 }
 
@@ -55,12 +55,11 @@ typename DGtal::Measure<TSet>::Quantity
 DGtal::Measure<TSet>::eval() const
 {
   ASSERT(myIsInitBefore);
-  ASSERT(mySetPointer);
   ASSERT(myH > 0);
 
   double hd = std::pow(myH, (double)TSet::Domain::dimension);
 
-  return mySetPointer->size()/(double)hd;
+  return mySetSize/(double)hd;
 }
 
 
@@ -98,7 +97,7 @@ DGtal::Measure<TSet>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Measure] ";
   if (this->isValid())
-    out << " myH="<< myH<<", mySet="<< (*mySetPointer);
+    out << " myH="<< myH<<", mySetSize="<< mySetSize;
   else
     out <<" (not initialized)";
 }
@@ -112,7 +111,7 @@ inline
 bool
 DGtal::Measure<TSet>::isValid() const
 {
-  return myIsInitBefore && mySetPointer;
+  return myIsInitBefore;
 }
 
 
