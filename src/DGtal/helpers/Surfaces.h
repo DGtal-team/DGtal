@@ -222,12 +222,39 @@ namespace DGtal
     template <typename DigitalSet >
     static 
     void extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-			       const KSpace & aKSpace,
-			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			       const DigitalSet & aShape );
+				    const KSpace & aKSpace,
+				    const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+				    const DigitalSet & aShape );
+    
     
 
+    /**
+     * Extract all surfel elements associated to each connected
+     * components of the given DigitalSet. The connected surfel set
+     * are given as result in a vector containing all components.
+     *
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     
+     @param aVectConnectedSCell (modified) a vector containing for
+     each connected components a vector of the set of connected SCells.
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aShape any digital set.
+     
+     *
+     */
     
+    template <typename DigitalSet >
+    static 
+    void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+				   const KSpace & aKSpace,
+				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+				   const DigitalSet & aShape );
+    
+    
+
+
+
     /**
        Creates a set of signed surfels whose elements represents a
        boundary component of the digital set [shape]. The algorithms

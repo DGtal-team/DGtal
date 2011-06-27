@@ -351,9 +351,9 @@ template <typename DigitalSet >
 void
 DGtal::Surfaces<TKSpace>::
 extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-			       const KSpace & aKSpace,
-			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			       const DigitalSet & aShape ){
+			   const KSpace & aKSpace,
+			   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			   const DigitalSet & aShape ){
   
   std::set<SCell> bdry;
   Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
@@ -374,6 +374,40 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
 }
 
 
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+			  const KSpace & aKSpace,
+			  const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			  const DigitalSet & aShape ){
+  
+  set<SCell> bdry;
+  Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
+  Cell upp = aKSpace.uLast(aKSpace.uSpel(aKSpace.upperBound()));
+  sMakeBoundary( bdry, aKSpace, aShape, low, upp  );
+  aVectConnectedSCell.clear();
+  while(!bdry.empty()){
+    set<SCell>  aConnectedSCellSet;
+    SCell aCell = *(bdry.begin()); 
+    trackBoundary(aConnectedSCellSet, aKSpace, aSurfelAdj,aShape, aCell );
+    //transform into vector<SCell>
+    vector<SCell> vCS;
+    for(typename set<SCell>::iterator it = aConnectedSCellSet.begin(); it!= aConnectedSCellSet.end(); ++it){
+     vCS.push_back(*it);
+     // removing cells from boundary;      
+     bdry.erase(*it);
+    }
+
+    aVectConnectedSCell.push_back(vCS);
+  }
+  
+}
+    
+    
 
 
 //-----------------------------------------------------------------------------
@@ -510,7 +544,7 @@ sMakeBoundary( SCellSet & aBoundary,
   unsigned int k;
   bool in_here, in_further;
   typedef ImageContainerBySTLVector<typename DigitalSet::Domain, bool > Image;
-  // BK : @todo check why it is not accepted in compil?
+  // BK : @todo check why it is not accepted in compillation ?
   //typedef  ImageSelector< typename DigitalSet::Domain, bool >::Type Image;
 
   Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
@@ -528,11 +562,11 @@ sMakeBoundary( SCellSet & aBoundary,
 	{
 	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
 	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
-	    in_here =(setImage(aKSpace.uCoords(p))); //
-	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
+	    in_here =(setImage(aKSpace.uCoords(p))); 
+	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); 
 	    if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
-	      aBoundary.insert( aKSpace.signs(aKSpace.uIncident(  p , k, true  ),(in_here == true) ));
+	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
 	    }
 	  }
 	}
