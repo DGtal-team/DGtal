@@ -79,13 +79,20 @@ inline
 typename DGtal::L1LengthEstimator<T>::Quantity
 DGtal::L1LengthEstimator<T>::eval() const
 {
+  ASSERT(myH > 0);
+  ASSERT(myIsInitBefore);
+
   Quantity val = 0;
   
   typename Range::ConstIterator i = myRange.begin();
   typename Range::ConstIterator end = myRange.end();
   for ( ; i != end; ++i) 
-    val++;
+    val += 1.0;
   
+  //One step back for the last point if not closed
+  if (not(myIsClosed))
+    val -= 1.0;
+
   return val/(double)myH;
 }
 
@@ -104,7 +111,7 @@ DGtal::L1LengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[L1LengthEstimator]";
   if (myIsInitBefore) 
-    out <<" myH="<<myH;
+    out <<" myH="<<myH<< " myRange="<<myRange<<" myIsClosed="<<(unsigned int)myIsClosed;
   else
     out<< " not initialized";
 }

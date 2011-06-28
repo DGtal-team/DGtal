@@ -52,8 +52,10 @@ namespace DGtal
   /**
    * Description of template class 'L1LengthEstimator' <p>
    * \brief Aim: a simple model of CGlobalCurveEstimator that compute
-   * the length of a curve using the l_1 metric.
-   *
+   * the length of a curve using the l_1 metric (just add 1/h for
+   * every step).
+   * 
+   * 
    */
   template <typename TRange>
   class L1LengthEstimator
@@ -80,8 +82,23 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     
-    void init( const double h, const Range & s, bool closed );
+    /** 
+     * Initialize the measure computation.
+     * 
+     * @param h grid size (must be >0).
+     * @param aRange a grid point range.
+     * @param closed true if the input range is closed.
+     */
+    void init( const double h, const Range & aRange, bool closed );
     
+
+    /** 
+     * Computation of the l1 length of the curve.
+     * Complexity: O(|Range|)
+     * @pre init() method must be called before.
+     * 
+     * @return the curve length.
+     */
     Quantity eval( ) const;
 
  
@@ -99,13 +116,17 @@ namespace DGtal
 
       // ------------------------- Private Datas --------------------------------
   private:
-
+    
+    ///Grid size.
     double myH;
 
+    ///Copy of the range.
     Range myRange;
 
+    ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
+    ///True if the underlying curve is closed.
     bool myIsClosed;
     
   private:
