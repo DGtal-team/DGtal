@@ -141,7 +141,6 @@ DGtal::DGtalQGLViewer::draw()
    
     
     glBegin(GL_QUADS);
-    glEnable( GL_DEPTH_TEST );
     glColor4ub(myQuadList.at(i).R, myQuadList.at(i).G, myQuadList.at(i).B, myQuadList.at(i).T);    
     glNormal3f(-myQuadList.at(i).nx, -myQuadList.at(i).ny ,-myQuadList.at(i).nz);
     glVertex3f(myQuadList.at(i).x1, myQuadList.at(i).y1, myQuadList.at(i).z1);
@@ -345,8 +344,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-  glDisable( GL_DEPTH_TEST );
-	
+  
   glBegin(GL_QUADS);
   
   for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
@@ -447,13 +445,54 @@ DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
 
 void 
 DGtal::DGtalQGLViewer::glDrawGLPointel(pointGL pointel){
- glPushMatrix();
- glTranslatef(pointel.x, pointel.y, pointel.z);
- GLUquadric* quadric = gluNewQuadric();
- glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
- gluSphere(quadric, pointel.size, 10, 10);
- glPopMatrix();  
-  
+ 
+ if(!pointel.isSigned){
+   glPushMatrix();
+   glTranslatef(pointel.x, pointel.y, pointel.z);
+   GLUquadric* quadric = gluNewQuadric();
+   glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+   gluSphere(quadric, pointel.size, 10, 10); 
+   glPopMatrix();  
+ }else{
+   // a small "+" is drawn with cylinder
+   if(pointel.signPos){
+     glPushMatrix();
+     glTranslatef(pointel.x-0.07, pointel.y-0.07, pointel.z);
+     Vec dir(0.14, 0.14, 0);
+     glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
+     GLUquadric* quadric = gluNewQuadric();
+     glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+     gluCylinder(quadric, pointel.size/3.0 , pointel.size/3.0, 
+		 dir.norm(),10, 4);
+     glPopMatrix();  
+     glPushMatrix();
+     glTranslatef(pointel.x-0.07, pointel.y+0.07, pointel.z);
+     dir=Vec(0.14, -0.14, 0);
+     glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
+     quadric = gluNewQuadric();
+     glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+     gluCylinder(quadric, pointel.size/3.0 , pointel.size/3.0, 
+		 dir.norm(),10, 4);
+     glPopMatrix();  
+   }else{
+     glPushMatrix();
+     glTranslatef(pointel.x, pointel.y+0.07, pointel.z-0.07);
+     Vec dir(0.0, -0.14, 0.14);
+     glMultMatrixd(Quaternion(Vec(0,0,1), dir).matrix());
+     GLUquadric* quadric = gluNewQuadric();
+     glColor4ub(pointel.R, pointel.G, pointel.B, pointel.T);
+     gluCylinder(quadric, pointel.size/4.0 , pointel.size/4.0, 
+		 dir.norm(),10, 4);
+     glPopMatrix();  
+
+
+     
+   }
+
+
+ }
+
+ 
 }
   
  
