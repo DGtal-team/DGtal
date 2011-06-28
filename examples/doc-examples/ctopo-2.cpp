@@ -75,7 +75,8 @@ int main( int argc, char** argv )
 
 
   //Extract a boundary cell
-  Z2i::SCell aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);
+  SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
+  Z2i::SCell aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2dPredicate );
 
   // Getting the consecutive surfels of the 2D boundary
   std::vector<Z2i::SCell> vectBdrySCell;
