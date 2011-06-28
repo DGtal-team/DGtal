@@ -242,7 +242,8 @@ namespace DGtal
      @param aKSpace any space.
      @param aSurfelAdj the surfel adjacency chosen for the tracking.
      @param aShape any digital set.
-     
+     @param forceOrientCellExterior used to change the default Cell orientation in 
+            order to get the direction of shape exterior (default =false).
      *
      */
     
@@ -251,12 +252,33 @@ namespace DGtal
     void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
 				   const KSpace & aKSpace,
 				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-				   const DigitalSet & aShape );
+				   const DigitalSet & aShape, bool forceOrientCellExterior=false );
     
     
 
+    
+
+    /**
+     * Orient the SCell positively in the direction of the exterior of
+     * the DigitalSet @ref aShape. It simply check if the direct
+     * incident Cell in the first upper dimension (obtain with
+     * @ref sDirectIncident) belongs to the DigitalSet or not.
+     *
+     * @param aVectOfSCell (modified) a vector containing the SCell to
+     * be oriented positively in the direction of the exterior.
+     * @param aKSpace any space.
+     * @param aShape any digital set.
+     */
+      
+    template <typename DigitalSet >
+    static 
+    void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  const KSpace & aKSpace,  const DigitalSet & aShape  );
+
+    
 
 
+
+    
     /**
        Creates a set of signed surfels whose elements represents a
        boundary component of the digital set [shape]. The algorithms

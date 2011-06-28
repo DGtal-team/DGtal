@@ -240,9 +240,9 @@ DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, doub
   double  uy=y2-y1; 
   double  uz=z2-z1; 
   
-  double  vx=x3-x2; 
-  double  vy=y3-y2; 
-  double  vz=z3-z2; 
+  double  vx=x4-x1; 
+  double  vy=y4-y1; 
+  double  vz=z4-z1; 
   
   qglviewer::Vec n( uy*vz-uz*vy, uz*vx-ux*vz,  ux*vy-uy*vx );
   double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
@@ -274,7 +274,7 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   if(basicMode){
-    width=0.1;
+    width=0.0;
     retract=0.0;
   }
   updateBoundingBox(x, y, z);
@@ -298,7 +298,7 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
     x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
     x2= x-0.5;  y2= y-0.5;  z2= z+0.5;
     x3= x+0.5;  y3= y-0.5;  z3= z+0.5;
-    x4= x+0.5;  y4= y-0.5;  z4= z-0.5;
+    x4= x+0.5;  y4= y-0.5;  z4= z-0.5;    
     x1+=retract; x2+=retract; x3-=retract; x4-=retract;
     z1+=retract; z2-=retract; z3-=retract; z4+=retract;
     dx=0.0; dy=width; dz=0.0;
@@ -339,36 +339,42 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   }
   
   
-  //main up face
-  quadGL qFaceUp;
-  qglviewer::Vec normaleUp( dx!=0.0? 1.0:0.0, dy!=0.0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
-  qFaceUp.nx=  normaleUp[0];
-  qFaceUp.ny=  normaleUp[1];
-  qFaceUp.nz=  normaleUp[2];
 
-  qFaceUp.x1=x1; qFaceUp.y1=y1; qFaceUp.z1= z1;
-  qFaceUp.x2=x2; qFaceUp.y2=y2; qFaceUp.z2= z2;
-  qFaceUp.x3=x3; qFaceUp.y3=y3; qFaceUp.z3= z3;
-  qFaceUp.x4=x4; qFaceUp.y4=y4; qFaceUp.z4= z4;
+  if(basicMode){
+    if(!isOrientedPositively)
+      this->addQuad(x1,y1,z1,x2,y2,z2, x3,y3,z3, x4,y4,z4,myCurrentFillColor );    
+    else
+      this->addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1,myCurrentFillColor );    
+    
+  }else{
+
+    //main up face
+    quadGL qFaceUp;
+    qglviewer::Vec normaleUp( dx!=0.0? 1.0:0.0, dy!=0.0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
+    qFaceUp.nx=  normaleUp[0];
+    qFaceUp.ny=  normaleUp[1];
+    qFaceUp.nz=  normaleUp[2];
+
+    qFaceUp.x1=x1; qFaceUp.y1=y1; qFaceUp.z1= z1;
+    qFaceUp.x2=x2; qFaceUp.y2=y2; qFaceUp.z2= z2;
+    qFaceUp.x3=x3; qFaceUp.y3=y3; qFaceUp.z3= z3;
+    qFaceUp.x4=x4; qFaceUp.y4=y4; qFaceUp.z4= z4;
   
-  qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
-  qFaceUp.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFaceUp);  
- 
- //main down face
-  quadGL qFaceDown;
-  qFaceDown.nx=  -normaleUp[0];
-  qFaceDown.ny=  -normaleUp[1];
-  qFaceDown.nz=  -normaleUp[2];
-  qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
-  qFaceDown.x2=x6; qFaceDown.y2=y6; qFaceDown.z2= z6;
-  qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
-  qFaceDown.x4=x8; qFaceDown.y4=y8; qFaceDown.z4= z8;
-  qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
-  qFaceDown.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFaceDown);  
-  
-  if(!basicMode){
+    qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
+    qFaceUp.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFaceUp);  
+    //main down face
+    quadGL qFaceDown;
+    qFaceDown.nx=  -normaleUp[0];
+    qFaceDown.ny=  -normaleUp[1];
+    qFaceDown.nz=  -normaleUp[2];
+    qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
+    qFaceDown.x2=x6; qFaceDown.y2=y6; qFaceDown.z2= z6;
+    qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
+    qFaceDown.x4=x8; qFaceDown.y4=y8; qFaceDown.z4= z8;
+    qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
+    qFaceDown.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFaceDown);  
     
     //small face 1
     quadGL qFace1;
