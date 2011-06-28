@@ -366,6 +366,7 @@ namespace DGtal
         private: 
           const typename GridCurve::Storage* myData;
 
+
       // ------------------------- iterator services --------------------------------
         public:
 

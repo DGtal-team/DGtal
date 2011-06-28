@@ -7,7 +7,8 @@ SET(DGTAL_TESTS_SRC
 	testMaximalSegments
 	testFP
 	testCombinDSS
-  testGridCurve
+	testGridCurve
+	testL1LengthEstimator
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
