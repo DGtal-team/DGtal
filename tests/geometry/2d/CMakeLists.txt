@@ -9,6 +9,7 @@ SET(DGTAL_TESTS_SRC
 	testCombinDSS
 	testGridCurve
 	testL1LengthEstimator
+	testSegmentComputerFunctor
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
