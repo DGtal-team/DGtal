@@ -141,6 +141,7 @@ DGtal::DGtalQGLViewer::draw()
    
     
     glBegin(GL_QUADS);
+    glEnable( GL_DEPTH_TEST );
     glColor4ub(myQuadList.at(i).R, myQuadList.at(i).G, myQuadList.at(i).B, myQuadList.at(i).T);    
     glNormal3f(-myQuadList.at(i).nx, -myQuadList.at(i).ny ,-myQuadList.at(i).nz);
     glVertex3f(myQuadList.at(i).x1, myQuadList.at(i).y1, myQuadList.at(i).z1);
