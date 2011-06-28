@@ -55,7 +55,9 @@ namespace DGtal
    * the length of a curve using the l_1 metric (just add 1/h for
    * every step).
    * 
-   * 
+   * Model of @href CGlobalCurveGeometricEstimator.
+   *
+   * @tparam TRange a model of CRange. 
    */
   template <typename TRange>
   class L1LengthEstimator
