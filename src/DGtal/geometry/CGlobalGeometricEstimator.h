@@ -87,6 +87,7 @@ namespace DGtal
    * <p> Invariants <br>
    *
    * <p> Models <br>
+   *  - Measure
    *
    * <p> Notes <br>
    */
