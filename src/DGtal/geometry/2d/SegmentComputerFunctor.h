@@ -63,12 +63,9 @@ namespace DGtal
   // class TangentFromArithmeticalDSSFunctor
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'TangentFromArithmeticalDSSFunctor' <p> Aim: describes a 4-connected
-   * oriented interpixel curve, closed or open. For instance, the
-   * topological boundary of a  simply connected digital set is a
-   * closed grid curve. This object provides several ranges, such as
-   * PointsRange used to get the (integer) coordinates of the grid
-   * points (or pointels) of the grid curve. 
+   * Description of class 'TangentFromArithmeticalDSSFunctor' <p> Aim: 
+   * computes the tangent orientation (in radians) from the parameters
+   *  of a class of type ArithmeticalDSS 
    *
    * Example :
    * @code 
