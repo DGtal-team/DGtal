@@ -52,6 +52,13 @@
 
 namespace DGtal
 {
+/** \TODO
+* ajouter un myFlagIsInit (aussi dans les decompositions)
+* ajouter un getLength() dans les SegmentIterator des decompositions
+* mettre au propre les noms de type dans les decompositions (ConstIterator, Self, Reverse, etc.)
+* ajouter un size() dans les ranges de GridCurve
+* mettre le Functor seulement comme parametre template des methodes eval ?
+*/
 
   /////////////////////////////////////////////////////////////////////////////
   // template class MostCenteredMaximalSegmentEstimator
@@ -118,7 +125,7 @@ namespace DGtal
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it) const;
+    Quantity eval(const ConstIterator& it);
 
     /**
      * @return the estimated quantity
@@ -126,7 +133,7 @@ namespace DGtal
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-                        OutputIterator result) const; 
+                        OutputIterator result); 
 
 
     /**
