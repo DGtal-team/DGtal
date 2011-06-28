@@ -63,7 +63,10 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+
+    ///@todo CONCEPT CHECK sur RANGE
     typedef TRange Range;
+
     typedef double Quantity;
   
 
