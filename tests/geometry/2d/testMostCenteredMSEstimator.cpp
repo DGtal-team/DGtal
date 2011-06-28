@@ -92,13 +92,13 @@ bool testDec4(string filename)
 
   Estimator e(1,r.begin(),r.end(),sc,f,false);
 
-//eval at one element
+  trace.info() << "Eval at one element (do not work) " << endl;
   for (ConstIterator i = r.begin(); i != r.end(); ++i) {
     cout << e.eval(i) << " "; 
   }
   cout << endl;
 
-//eval for each element
+  trace.info() << "Eval for each element (process as open) " << endl;
   vector<double> v(c.myData.size()); 
   e.eval(r.begin(),r.end(),v.begin());
 
@@ -107,7 +107,7 @@ bool testDec4(string filename)
   }
   cout << endl;
 
-	return false;
+	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////
