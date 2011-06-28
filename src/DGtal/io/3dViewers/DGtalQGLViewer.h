@@ -214,7 +214,7 @@ public:
   
   void addKSSurfel(double x, double y, double z, 
 		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-		   bool isOriented= false, bool isOrientedPositively=true);
+		   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
   
   void addKSVoxel(int x, int y, int z);
   

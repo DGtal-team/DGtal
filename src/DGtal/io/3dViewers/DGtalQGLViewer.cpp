@@ -344,6 +344,8 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+  glDisable( GL_DEPTH_TEST );
+	
   glBegin(GL_QUADS);
   
   for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();

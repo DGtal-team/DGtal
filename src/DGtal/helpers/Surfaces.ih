@@ -397,7 +397,18 @@ extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCel
     //transform into vector<SCell>
     vector<SCell> vCS;
     for(typename set<SCell>::iterator it = aConnectedSCellSet.begin(); it!= aConnectedSCellSet.end(); ++it){
-     vCS.push_back(*it);
+      SCell incidPos = *((aKSpace.sUpperIncident (*it)).begin()); 
+      if(aShape.find(aKSpace.sCoords(incidPos))!=aShape.end()){
+	SCell s= *it;
+	aKSpace.sSetSign (s, true ); 
+	vCS.push_back(s);
+      }else{
+	SCell s= *it;
+	aKSpace.sSetSign (s,  false ); 
+	vCS.push_back(s);
+	//vCS.push_back(*it);
+      }      
+      
      // removing cells from boundary;      
      bdry.erase(*it);
     }
@@ -543,16 +554,11 @@ sMakeBoundary( SCellSet & aBoundary,
 {
   unsigned int k;
   bool in_here, in_further;
-  typedef ImageContainerBySTLVector<typename DigitalSet::Domain, bool > Image;
-  // BK : @todo check why it is not accepted in compillation ?
-  //typedef  ImageSelector< typename DigitalSet::Domain, bool >::Type Image;
-
+  typedef typename  ImageSelector< typename DigitalSet::Domain, bool >::Type Image;  
   Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
 					       true, 
 					       aSpelSet.begin(), 
 					       aSpelSet.end());
-  
-  
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
       Cell dir_low_uid = aLowerBound;
