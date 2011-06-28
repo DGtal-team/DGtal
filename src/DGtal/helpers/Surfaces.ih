@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <queue>
 #include <algorithm>
+#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -55,20 +56,22 @@ DGtal::Surfaces<TKSpace>::~Surfaces()
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet>
+template <typename PointPredicate>
 typename DGtal::Surfaces<TKSpace>::SCell
 DGtal::Surfaces<TKSpace>::
 findABel
 ( const KSpace & K,
-  const DigitalSet & dset,
+  const PointPredicate & pp,
   unsigned int nbtries) throw (DGtal::InputException)
 {
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+
   DGtal::InputException dgtalerror;
   Point sizes = K.upperBound() - K.lowerBound();
   Point x1 = K.lowerBound();
   Point x2;
   // (1) Find two candidates in the space.
-  bool val_v1 = dset.find( x1 ) != dset.end();
+  bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
   bool found = false;
   Integer r;
   for ( unsigned int j = 0; j < nbtries; ++j )
@@ -78,7 +81,7 @@ findABel
 	  r = random();
 	  x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
 	}
-      bool val_v2 = dset.find( x2 ) != dset.end();
+      bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
       if ( val_v2 != val_v1 )
 	{
 	  found = true;
@@ -98,7 +101,7 @@ findABel
 		{
 		  Integer c = x2[ j ];
 		  x2[ j ] = x1[ j ];
-		  bool val_v2 = dset.find( x2 ) != dset.end();
+		  bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
 		  if ( val_v2 != val_v1 )
 		    { // v2 is updated.
 		      d = i;
@@ -132,7 +135,7 @@ findABel
       xmid[ d ] = ( x1[ d ] + x2[ d ] ) / 2;
       if ( ( xmid[ d ] == x1[ d ] ) || ( xmid[ d ] == x2[ d ] ) )
 	break;
-      bool val_mid = dset.find( xmid ) != dset.end();
+      bool val_mid = pp( xmid ); // dset.find( xmid ) != dset.end();
       if ( val_mid != val_v1 )
 	x2[ d ] = xmid[ d ];
       else
@@ -160,15 +163,17 @@ findABel
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename SCellSet, typename PointPredicate >
 void
 DGtal::Surfaces<TKSpace>::
 trackBoundary( SCellSet & surface,
 	       const KSpace & K,
 	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-	       const DigitalSet & shape,
+	       const PointPredicate & pp,
 	       const SCell & start_surfel )
 {
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -189,7 +194,7 @@ trackBoundary( SCellSet & surface,
 	{
 	  Dimension track_dir = *q;
 	  // ----- 1st pass with positive orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, true ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, true ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{
@@ -198,7 +203,7 @@ trackBoundary( SCellSet & surface,
 		}
 	    }
 	  // ----- 2nd pass with negative orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, false ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, false ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{
@@ -421,13 +426,13 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename SCellSet, typename PointPredicate >
 void
 DGtal::Surfaces<TKSpace>::
 trackClosedBoundary( SCellSet & surface,
 		     const KSpace & K,
 		     const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-		     const DigitalSet & shape,
+		     const PointPredicate & pp,
 		     const SCell & start_surfel )
 {
   SCell b;  // current surfel
@@ -450,8 +455,8 @@ trackClosedBoundary( SCellSet & surface,
 	{
 	  Dimension track_dir = *q;
 	  // ----- One pass, look for direct orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{

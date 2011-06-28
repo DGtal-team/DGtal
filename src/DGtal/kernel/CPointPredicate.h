@@ -88,7 +88,7 @@ namespace DGtal
    *
    * - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
    * - complex predicate constructor: BinaryPointPredicate
-   * - others: DomainPredicate
+   * - others: DomainPredicate,SetPredicate
    *
    * <p> Notes <br>
    */

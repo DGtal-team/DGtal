@@ -82,44 +82,61 @@ namespace DGtal
     /**
        Find a bel in some digital set by random tries then dichotomy.
 
-       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+
        @param K any cellular grid space.
-       @param dset any digital set which should be at least partially included in the bounds of space [K].
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape,
+       which should be at least partially included in the bounds of
+       space [K].
+
        @param nbries the maximum number of random tries (default 1000).
 
        @return a signed surfel separating a digital point in [dset]
        from a face adjacent digital point outside [dset] or throws an
        InputException if none was found after [nbtries] iterations.
     */
-    template <typename DigitalSet>
+    template <typename PointPredicate>
     static
     SCell findABel( const KSpace & K,
-		    const DigitalSet & dset,
+		    const PointPredicate & pp,
 		    unsigned int nbtries = 1000 ) throw (DGtal::InputException);
 
     /**
        Creates a set of signed surfels whose elements represents a
-       boundary component of the digital set [shape]. The algorithms
-       tracks surfels along the boundary of the shape.
+       boundary component of a digital shape described by a
+       PointPredicate. The algorithms tracks surfels along the
+       boundary of the shape.
        
        @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
-       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
        
        @param surface (modified) a set of cells (which are all surfels),
        the boundary component of [spelset] which touches [start_surfel].
        
        @param K any space.
        @param surfel_adj the surfel adjacency chosen for the tracking.
-       @param shape any digital set.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape,
+       which should be at least partially included in the bounds of
+       space [K].
+
        @param start_surfel a signed surfel which should be between an
        element of [shape] and an element not in [shape].
     */
-    template <typename SCellSet, typename DigitalSet >
+    template <typename SCellSet, typename PointPredicate >
     static 
     void trackBoundary( SCellSet & surface,
 			const KSpace & K,
 			const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			const DigitalSet & shape,
+			const PointPredicate & pp,
 			const SCell & start_surfel );
 
 
@@ -230,31 +247,39 @@ namespace DGtal
     
     /**
        Creates a set of signed surfels whose elements represents a
-       boundary component of the digital set [shape]. The algorithms
-       tracks surfels along the boundary of the shape. It follows only
-       direct orientations, so that it is faster than trackBoundary
-       but requires the object to be fully inside the space. Follows
-       the idea of Artzy, Frieder and Herman algorithm
-       [Artzy:1981-cgip], but in nD.
+       boundary component of a digital shape described by a
+       PointPredicate. The algorithms tracks surfels along the
+       boundary of the shape. It follows only direct orientations, so
+       that it is faster than trackBoundary but requires the object to
+       be fully inside the space. Follows the idea of Artzy, Frieder
+       and Herman algorithm [Artzy:1981-cgip], but in nD.
        
        @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
-       @tparam DigitalSet a model of a digital set (e.g., std::set<Point>)..
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
        
        @param surface (modified) a set of cells (which are all surfels),
        the boundary component of [spelset] which touches [start_surfel].
        
        @param K any space.
        @param surfel_adj the surfel adjacency chosen for the tracking.
-       @param shape any digital set.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape,
+       which should be at least partially included in the bounds of
+       space [K].
+
        @param start_surfel a signed surfel which should be between an
        element of [shape] and an element not in [shape].
     */
-    template <typename SCellSet, typename DigitalSet >
+    template <typename SCellSet, typename PointPredicate >
     static 
     void trackClosedBoundary( SCellSet & surface,
 			      const KSpace & K,
 			      const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			      const DigitalSet & shape,
+			      const PointPredicate & pp,
 			      const SCell & start_surfel );
 
   /**
