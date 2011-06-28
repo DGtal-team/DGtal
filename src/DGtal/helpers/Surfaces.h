@@ -231,7 +231,9 @@ namespace DGtal
     /**
      * Extract all surfel elements associated to each connected
      * components of the given DigitalSet. The connected surfel set
-     * are given as result in a vector containing all components.
+     * are given as result in a vector containing all components. The
+     * orientation of the resulting SCell indicates the exterior
+     * orientation according the positive axis.
      *
      @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
      

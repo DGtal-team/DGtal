@@ -269,11 +269,14 @@ INLINE
 void
 DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z, 
 				   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-				   bool isOriented, bool isOrientedPositively ){
+				   bool isOriented, bool isOrientedPositively, bool basicMode ){
   
   float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
-  
+  if(basicMode){
+    width=0.1;
+    retract=0.0;
+  }
   updateBoundingBox(x, y, z);
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
   double x5, y5, z5, x6, y6, z6, x7, y7, z7, x8, y8, z8;
@@ -282,14 +285,11 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   
   ASSERT( xSurfel || ySurfel || zSurfel  );
   
- 
   if(zSurfel){
     x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
     x2= x+0.5;  y2= y-0.5;  z2= z-0.5;
     x3= x+0.5;  y3= y+0.5;  z3= z-0.5;
     x4= x-0.5;  y4= y+0.5;  z4= z-0.5;
-    
-    
     y1+=retract; y2+=retract; y3-=retract; y4-=retract;
     x1+=retract; x2-=retract; x3-=retract; x4+=retract;
     dx=0.0; dy=0.0; dz=width;
@@ -316,24 +316,23 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   double xcenter= (x1+x2+x3+x4)/4.0;
   double ycenter= (y1+y2+y3+y4)/4.0;
   double zcenter= (z1+z2+z3+z4)/4.0;
-
+  
   x5=x1-dx; y5=y1-dy; z5= z1-dz;
   x6=x2-dx; y6=y2-dy; z6= z2-dz;
   x7=x3-dx; y7=y3-dy; z7= z3-dz;
   x8=x4-dx; y8=y4-dy; z8= z4-dz;  
 
-  
   x1=x1+dx; y1=y1+dy; z1= z1+dz;
   x2=x2+dx; y2=y2+dy; z2= z2+dz;
   x3=x3+dx; y3=y3+dy; z3= z3+dz;
   x4=x4+dx; y4=y4+dy; z4= z4+dz;  
 
   //if cell is oriented positively we retrac the upper face:
-  if(isOriented && isOrientedPositively){
+  if(isOriented && isOrientedPositively && !basicMode){
     x1= 0.6*x1+0.4*xcenter; x2= 0.6*x2+0.4*xcenter; x3= 0.6*x3+0.4*xcenter; x4= 0.6*x4+0.4*xcenter;
     y1= 0.6*y1+0.4*ycenter; y2= 0.6*y2+0.4*ycenter; y3= 0.6*y3+0.4*ycenter; y4= 0.6*y4+0.4*ycenter;
     z1= 0.6*z1+0.4*zcenter; z2= 0.6*z2+0.4*zcenter; z3= 0.6*z3+0.4*zcenter; z4= 0.6*z4+0.4*zcenter;
-  }else if (isOriented) {
+  }else if (isOriented && !basicMode) {
     x5= 0.6*x5+0.4*xcenter; x6= 0.6*x6+0.4*xcenter; x7= 0.6*x7+0.4*xcenter; x8= 0.6*x8+0.4*xcenter;
     y5= 0.6*y5+0.4*ycenter; y6= 0.6*y6+0.4*ycenter; y7= 0.6*y7+0.4*ycenter; y8= 0.6*y8+0.4*ycenter;
     z5= 0.6*z5+0.4*zcenter; z6= 0.6*z6+0.4*zcenter; z7= 0.6*z7+0.4*zcenter; z8= 0.6*z8+0.4*zcenter;
@@ -355,70 +354,8 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
   qFaceUp.T=myCurrentFillColor.alpha();
   myKSSurfelList.push_back(qFaceUp);  
-  
-  //small face 1
-  quadGL qFace1;
-  qglviewer::Vec vF1 (x2-x1, y2-y1, z2-z1);
-  qglviewer::Vec v1 (x5-x1, y5-y1, z5-z1);// 
-  qglviewer::Vec n1 =cross(v1,vF1);
-  n1.normalize();
-  qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
-  qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
-  qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
-  qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
-  qFace1.x4= x5; qFace1.y4 =y5; qFace1.z4=z5;
-  qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
-  qFace1.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFace1);  
-  
-  
-  //small face 2
-  quadGL qFace2;
-  qglviewer::Vec vF2 (x3-x2, y3-y2, z3-z2);
-  qglviewer::Vec v2 (x6-x2, y6-y2, z6-z2);
-  qglviewer::Vec n2 = cross(v2,vF2);
-  n2.normalize();
-  qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
-  qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
-  qFace2.x2= x3; qFace2.y2 =y3; qFace2.z2=z3;
-  qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
-  qFace2.x4= x6; qFace2.y4 =y6; qFace2.z4=z6;
-  qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
-  qFace2.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFace2);  
-  
-  
-  //small face 3
-  quadGL qFace3;
-  qglviewer::Vec vF3 (x4-x3, y4-y3, z4-z3);
-  qglviewer::Vec v3 (x7-x3, y7-y3, z7-z3);
-  qglviewer::Vec n3 = cross(v3,vF3);
-  n3.normalize();
-  qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
-  qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
-  qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
-  qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
-  qFace3.x4= x7; qFace3.y4 =y7; qFace3.z4=z7;
-  qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
-  qFace3.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFace3);  
-   
-  //small face 4
-  quadGL qFace4;
-  qglviewer::Vec vF4 (x1-x4, y1-y4, z1-z4);
-  qglviewer::Vec v4 (x5-x4, y5-y4, z5-z4);
-  qglviewer::Vec n4 = cross(v4,vF4);
-  n4.normalize();
-  qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
-  qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
-  qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
-  qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
-  qFace4.x4= x8; qFace4.y4 =y8; qFace4.z4=z8;
-  qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
-  qFace4.T=myCurrentFillColor.alpha();
-  myKSSurfelList.push_back(qFace4);  
-  
-  //main up face
+ 
+ //main down face
   quadGL qFaceDown;
   qFaceDown.nx=  -normaleUp[0];
   qFaceDown.ny=  -normaleUp[1];
@@ -431,6 +368,70 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
   qFaceDown.T=myCurrentFillColor.alpha();
   myKSSurfelList.push_back(qFaceDown);  
   
+  if(!basicMode){
+    
+    //small face 1
+    quadGL qFace1;
+    qglviewer::Vec vF1 (x2-x1, y2-y1, z2-z1);
+    qglviewer::Vec v1 (x5-x1, y5-y1, z5-z1);// 
+    qglviewer::Vec n1 =cross(v1,vF1);
+    n1.normalize();
+    qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
+    qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
+    qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
+    qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
+    qFace1.x4= x5; qFace1.y4 =y5; qFace1.z4=z5;
+    qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
+    qFace1.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFace1);    
+  
+    //small face 2
+    quadGL qFace2;
+    qglviewer::Vec vF2 (x3-x2, y3-y2, z3-z2);
+    qglviewer::Vec v2 (x6-x2, y6-y2, z6-z2);
+    qglviewer::Vec n2 = cross(v2,vF2);
+    n2.normalize();
+    qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
+    qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
+    qFace2.x2= x3; qFace2.y2 =y3; qFace2.z2=z3;
+    qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
+    qFace2.x4= x6; qFace2.y4 =y6; qFace2.z4=z6;
+    qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
+    qFace2.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFace2);  
+  
+  
+    //small face 3
+    quadGL qFace3;
+    qglviewer::Vec vF3 (x4-x3, y4-y3, z4-z3);
+    qglviewer::Vec v3 (x7-x3, y7-y3, z7-z3);
+    qglviewer::Vec n3 = cross(v3,vF3);
+    n3.normalize();
+    qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
+    qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
+    qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
+    qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
+    qFace3.x4= x7; qFace3.y4 =y7; qFace3.z4=z7;
+    qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
+    qFace3.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFace3);  
+   
+    //small face 4
+    quadGL qFace4;
+    qglviewer::Vec vF4 (x1-x4, y1-y4, z1-z4);
+    qglviewer::Vec v4 (x5-x4, y5-y4, z5-z4);
+    qglviewer::Vec n4 = cross(v4,vF4);
+    n4.normalize();
+    qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
+    qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
+    qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
+    qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
+    qFace4.x4= x8; qFace4.y4 =y8; qFace4.z4=z8;
+    qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
+    qFace4.T=myCurrentFillColor.alpha();
+    myKSSurfelList.push_back(qFace4);  
+  }
+ 
 }
   
 
