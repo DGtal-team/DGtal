@@ -75,7 +75,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
   myFlagIsClosed = isClosed;
 
   //maximal segments computation
- // myMS(myBegin,myEnd,aSegmentComputer,myFlagIsClosed);
+  myMSRange.init(myBegin,myEnd,aSegmentComputer,myFlagIsClosed);
 
 }
 
