@@ -72,6 +72,7 @@ DGtal::L1LengthEstimator<T>::init(const double h, const Range &aRange, bool iscl
   myH = h;
   myRange = aRange;
   myIsClosed = isclosed;
+  myIsInitBefore = true;
 }
 
 template <typename T>
