@@ -525,7 +525,7 @@ DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, 
 
 INLINE
 void 
-DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size){
+DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size, bool isSigned, bool signPos){
   pointGL pt;
   updateBoundingBox(x, y, z);
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
@@ -533,6 +533,8 @@ DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size){
   pt.G=myCurrentFillColor.green(); 
   pt.B=myCurrentFillColor.blue(); 
   pt.T= myCurrentFillColor.alpha();
+  pt.isSigned=isSigned;
+  pt.signPos=signPos;
   myKSPointelList.push_back(pt);
 }
 

@@ -218,7 +218,8 @@ public:
   
   void addKSVoxel(int x, int y, int z);
   
-  void addKSPointel(double x, double y, double z, double size=0.1);
+  void addKSPointel(double x, double y, double z, double size=0.1,
+		    bool isSigned=false, bool signPos=true);
   
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
@@ -338,6 +339,8 @@ private:
   struct pointGL{
     double  x, y,z;
     unsigned int R,G,B,T;
+    bool isSigned;
+    bool signPos;
     double size;
   };
   
@@ -419,14 +422,17 @@ protected:
   void glDrawGLLinel(lineGL aLinel);
   
   
-
-  
+ 
+ 
   /**
-   * Draw a linel by using the 	[gluCylinder] primitive.
+   * Draw a linel by using the 	[gluCSphere] primitive.
    * 
    *
    **/
   void glDrawGLPointel(pointGL pointel);
+
+
+
   
   
 
