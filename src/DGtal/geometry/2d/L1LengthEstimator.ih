@@ -92,7 +92,7 @@ DGtal::L1LengthEstimator<T>::eval() const
   
   //One step back for the last point if not closed
   if (not(myIsClosed))
-    val -= 1.0;
+    val += 1.0;
 
   return val/(double)myH;
 }
