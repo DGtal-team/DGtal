@@ -10,6 +10,7 @@ SET(DGTAL_TESTS_SRC
 	testGridCurve
 	testL1LengthEstimator
 	testSegmentComputerFunctor
+  testMostCenteredMSEstimator
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
