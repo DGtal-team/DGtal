@@ -149,7 +149,7 @@ namespace DGtal
 		ConstIterator myBegin;
 		ConstIterator myEnd;
 
-    //MaximalSegments<SegmentComputer> myMS; 
+    MaximalSegments<SegmentComputer> myMSRange; 
 
     // ------------------------- Hidden services ------------------------------
   protected:
