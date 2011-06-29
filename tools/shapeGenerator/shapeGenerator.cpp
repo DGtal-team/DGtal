@@ -251,7 +251,7 @@ struct Exporter
   static 
   void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
   {
-    
+    SetPredicate<Set> aSetPredicate( aSet );
     trace.beginBlock("Extracting the boundary");
     Z2i::KSpace ks;
     bool space_ok = ks.init( aDomain.lowerBound(),aDomain.upperBound(), true );
@@ -263,7 +263,7 @@ struct Exporter
 
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						      ks, aSet, sAdj );  
+						      ks, aSetPredicate, sAdj );  
     trace.endBlock();
     
     ///Export
