@@ -38,6 +38,8 @@ Table of contents:
    -# \ref ss21
    -# \ref ss22
 
+ -# \ref sectGIT5
+
 \section sectGIT1 Setting up your account and working copy
 
 \subsection subsectGIT11 Create an account on github.com
@@ -311,6 +313,47 @@ all your local commits)
 	git merge toto (merger toto->trunk)	
 	git commit -a ...
 @endcode
+
+
+
+
+\section sectGIT5 Resolving GIT conflict (uncommon)
+
+Even it is very rare, conflit can appear when you try to apply a pull:
+
+@code 
+>git pull mainRemote master
+
+remote: Counting objects: 1, done.
+remote: Total 1 (delta 0), reused 1 (delta 0)
+Unpacking objects: 100% (1/1), done.
+From github.com:dcoeurjo/DGtal
+ * branch            master     -> FETCH_HEAD
+Auto-merging doc/cellular-topology.dox
+CONFLICT (content): Merge conflict in doc/cellular-topology.dox
+Auto-merging src/DGtal/topology/KhalimskySpaceND.ih
+Automatic merge failed; fix conflicts and then commit the result.
+@endcode
+
+
+
+To resolve the conflict you just have to apply the command:
+
+@code
+> git mergetool
+@endcode
+
+It will lunch simple tools like opendiff on MacOSX allowing to select the main file. After saving the merged file, you simply have to commit the new change:
+
+@code
+> git checkout -m "Merging GIT conflict! " -a
+> git pull mainRemote master
+@endcode
+
+
+
+
+
 
 For further details, there exist plenty of git tutorials on the web. I
 strongly encourage you to have a look to the progit.org one
