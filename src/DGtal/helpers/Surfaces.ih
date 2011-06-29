@@ -233,8 +233,8 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
-  std::set<SCell> setSurface;
-  setSurface.insert(start_surfel);
+  // std::set<SCell> setSurface;
+  // setSurface.insert(start_surfel);
   aSCellContour2D.clear(); // boundary being extracted.
   aSCellContour2D.push_back(start_surfel);
   SurfelNeighborhood<KSpace> SN;
@@ -250,35 +250,39 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
       if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,  
 					   ! K.sDirect( b, track_dir ) ) )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  if ( bn != start_surfel )
+	    // if ( setSurface.find( bn ) == setSurface.end() )
 	    {
 	      hasPrevNeighbor=true;
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	    }
 	}
       b = bn;
     }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b = start_surfel; 
-  bool hasNextNeighbor =  true;
-  while ( hasNextNeighbor )
-    {
-      hasNextNeighbor=false;
-      Dimension track_dir = *(K.sDirs( b ));
-      SN.setSurfel( b );
-      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  hasNextNeighbor=false;
+	  Dimension track_dir = *(K.sDirs( b ));
+	  SN.setSurfel( b );
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
+	      // if ( setSurface.find( bn ) == setSurface.end() )
+	      // {
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
 	      hasNextNeighbor=true;
+	      // setSurface.insert(bn);
+	      // }
 	    }
+	  b=bn;
 	}
-      b=bn;
     }
 }
 
@@ -300,8 +304,8 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
-  std::set<SCell> setSurface;
-  setSurface.insert(start_surfel);
+  // std::set<SCell> setSurface;
+  // setSurface.insert(start_surfel);
   aSCellContour2D.clear(); // boundary being extracted.
   aSCellContour2D.push_back(start_surfel);
   SurfelNeighborhood<KSpace> SN;
@@ -318,36 +322,40 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
       if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,
 					   !K.sDirect( b, track_dir ) ) )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  if ( bn != start_surfel )
+	    //	  if ( setSurface.find( bn ) == setSurface.end() )
 	    {
 	      hasPrevNeighbor=true;
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	    }
 	}
       b = bn;
     }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b = start_surfel; 
-  bool hasNextNeighbor =  true;
-  while ( hasNextNeighbor )
-    {
-      hasNextNeighbor=false;
-      // search a tracking direction compatible with constant direction
-      Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
-      SN.setSurfel( b );
-      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  hasNextNeighbor=false;
+	  // search a tracking direction compatible with constant direction
+	  Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+	  SN.setSurfel( b );
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
+	      // if ( setSurface.find( bn ) == setSurface.end() )
+	      // {
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	      hasNextNeighbor=true;
+	      // }
 	    }
+	  b=bn;
 	}
-      b=bn;
     }
 }
 
