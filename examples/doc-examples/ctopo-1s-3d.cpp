@@ -57,41 +57,41 @@ int main( int argc, char** argv )
   viewer.show();
   viewer << SetMode3D( domain.styleName(), "Paving" );
   
-  Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
-  Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)
-  Cell ptup2 = K.uTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
+  SCell ptlow = K.sPointel( plow ); // pointel (0*2,0*2, 0*2)
+  SCell ptup1 = K.sPointel( pup );  // pointel (3*2,3*2, 2*2)
+  SCell ptup2 = K.sTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
 
   viewer << ptlow << ptup1 << ptup2; 
   
   // drawing cells of dimension 0
-  Cell p1= K.uCell(Point(0,0,2));  // pointel (0*2,0*2,2*2)
-  Cell p2= K.uCell(Point(0,2,2));  // ...
-  Cell p3= K.uCell(Point(2,2,2));
-  Cell p4= K.uCell(Point(2,0,2));
-  Cell p5= K.uCell(Point(0,0,4));
-  Cell p6= K.uCell(Point(0,2,4));
-  Cell p7= K.uCell(Point(2,2,4));
-  Cell p8= K.uCell(Point(2,0,4));
+  SCell p1= K.sCell(Point(0,0,2),false);  // pointel (0*2,0*2,2*2)  
+  SCell p2= K.sCell(Point(0,2,2));  // ...
+  SCell p3= K.sCell(Point(2,2,2),false);
+  SCell p4= K.sCell(Point(2,0,2));
+  SCell p5= K.sCell(Point(0,0,4),false);
+  SCell p6= K.sCell(Point(0,2,4));
+  SCell p7= K.sCell(Point(2,2,4), false);
+  SCell p8= K.sCell(Point(2,0,4));
   viewer << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8;
   
   // drawing Cells of dimension 1
-  Cell linel0 = K.uCell( Point( 1, 0, 2 ) ); // linel (2*1+1, 0, 2*2)
-  Cell linel1 = K.uCell( Point( 1, 2, 2 ) ); // ...
-  Cell linel2 = K.uCell( Point( 0, 1, 2 ) ); 
-  Cell linel3 = K.uCell( Point( 2, 1, 2 ) ); 
+  SCell linel0 = K.sCell( Point( 1, 0, 2 ) );  // linel (2*1+1, 0, 2*2)
+  SCell linel1 = K.sCell( Point( 1, 2, 2 ) );  // ...
+  SCell linel2 = K.sCell( Point( 0, 1, 2 ) ); 
+  SCell linel3 = K.sCell( Point( 2, 1, 2 ) ); 
   
-  Cell linel4 = K.uCell( Point( 1, 0, 4 ) );
-  Cell linel5 = K.uCell( Point( 1, 2, 4 ) );
-  Cell linel6 = K.uCell( Point( 0, 1, 4 ) );
-  Cell linel7 = K.uCell( Point( 2, 1, 4 ) );
+  SCell linel4 = K.sCell( Point( 1, 0, 4 ) );
+  SCell linel5 = K.sCell( Point( 1, 2, 4 ) );
+  SCell linel6 = K.sCell( Point( 0, 1, 4 ) );
+  SCell linel7 = K.sCell( Point( 2, 1, 4 ) );
 
-  Cell linel8 = K.uCell( Point( 0, 0, 3 ) );
-  Cell linel9 = K.uCell( Point( 0, 2, 3 ) );
-  Cell linel10 = K.uCell( Point( 2, 0, 3 ) );
-  Cell linel11 = K.uCell( Point( 2, 2, 3 ) );
+  SCell linel8 = K.sCell( Point( 0, 0, 3 ) );
+  SCell linel9 = K.sCell( Point( 0, 2, 3 ) );
+  SCell linel10 = K.sCell( Point( 2, 0, 3 ) );
+  SCell linel11 = K.sCell( Point( 2, 2, 3 ) );
 
   
-  Cell linel12 = K.uCell( Point( 3, 2, 2 ) );
+  SCell linel12 = K.sCell( Point( 3, 2, 2 ) );
   
   viewer << linel0<< linel1<< linel2 << linel3 ;
   viewer << linel4<< linel5<< linel6 << linel7 ;
@@ -99,14 +99,14 @@ int main( int argc, char** argv )
  
   // drawing cells of dimension 2
   
-  Cell surfelA = K.uCell( Point( 2, 1, 3 ) ); // surfel (2*2,2*1+1,2*3+1)
-  Cell surfelB = K.uCell( Point( 1, 0, 1 ) ); // surfel (2*1,2*0,2*1+1)
-  Cell surfelC = K.uCell( Point( 2, 1, 1 ) ); // surfel (2*2,2*1+1,2*1+1)
+  SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); // surfel (2*2,2*1+1,2*3+1)
+  SCell surfelB = K.sCell( Point( 1, 0, 1 ) ); // surfel (2*1,2*0,2*1+1) 
+  SCell surfelC = K.sCell( Point( 2, 1, 1 ),false ); // surfel (2*2,2*1+1,2*1+1) 
   viewer << surfelA << surfelB << surfelC;
 
   // drawing cells of dimension 3  
-  Cell vox1 = K.uCell( Point( 3, 3, 3 ) ); // voxel (2*3+1,2*3+1,2*3+1)
-  Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (2*1+1,2*1+1,2*3+1) 
+  SCell vox1 = K.sCell( Point( 3, 3, 3 ) ); // voxel (2*3+1,2*3+1,2*3+1)
+  SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
   viewer << vox1 << vox2;
   
   viewer<< DGtalQGLViewer::updateDisplay;

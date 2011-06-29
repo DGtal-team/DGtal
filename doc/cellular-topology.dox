@@ -34,6 +34,7 @@ namespace DGtal {
       -# \ref dgtal_ctopo_sec2_1
       -# \ref dgtal_ctopo_sec2_2
       -# \ref dgtal_ctopo_sec2_3
+      -# \ref dgtal_ctopo_sec2_4
 
    @section dgtal_ctopo_sec1 The digital space is a cubic grid
 
@@ -311,6 +312,24 @@ namespace DGtal {
    All methods concerning unsigned cells are prefixed by \c u, all
    methods concerning signed cells are prefixed by \c s.
  
+ 
+ Note that the sign of the signed and unsigned are well taked into
+  account in the display with \Ref DGtalQGLViewer .
+
+
+  <CENTER>
+   <table> 
+   <TR>
+   <td> @image html   ctopo-1b-3d.png "Visualisation of unsigned Cell"</td>
+   <td> @image html ctopo-1s-3d.png "Visualisation of signed Cell" </td>
+      
+  </TR>
+  </TABLE>
+  </CENTER>
+
+
+
+
    @subsection dgtal_ctopo_sec1_7 Accessing and modifying cell coordinates.
 
    Since one does not necessarily know which model of
@@ -557,7 +576,7 @@ namespace DGtal {
    
 
    @subsection dgtal_ctopo_sec2_1 Tracking Boundary
-
+   
 
 
    @subsection dgtal_ctopo_sec2_2 Tracking 2D Boundary
@@ -670,6 +689,81 @@ namespace DGtal {
    
 
 
+
+
+
+   @subsection dgtal_ctopo_sec2_4 Extracting SCell connected boundary surfels
+
+   The class \ref Surfaces shows other usefull function to extract
+   connected boundary surfels from a digital set and given a surfel
+   adjacency definition. The example <a
+   href="3dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> shows an example of such an extraction.
+
+   From a domain we construct a DigitalSet inserting points under given conditions (see.  <a
+   href="3dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> for more details)
+
+@code
+#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+...
+Domain domain( p1, p2);
+DigitalSet diamond_set( domain );
+...
+  diamond_set.insertNew( *it );
+....
+@endcode 
+   
+With this domain bounding points (p1, p2), a KhalimskySpace is
+  constructed and a SurfelAdjacency definition is introduced.
+
+@code 
+ KSpace K;
+ K.init(p1, p2, true);
+ SurfelAdjacency<3> SAdj( true );
+@endcode 
+
+
+
+Then we can extract all connected surfels from the digitalSet surface :
+
+@code 
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, true);
+@endcode
+
+
+After processing a simple display of each resulting connecting component you can obtain such a visualisation:
+
+
+<center>
+@image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND"
+</center>
+
+
+Here since the last argument is set to true, the resulting
+SignedKhalimskySpaceND are signed in order to indicate the direction
+of exterior. You can also get the SignefKhalimskySpaceND with default
+sign:
+
+
+@code 
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, false);
+@endcode
+
+
+and you will get the resulting cell display:
+
+
+
+<center>
+@image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of SignefKhalimskySpaceND"
+</center>
+
+
+
+
+
 */
 
 
@@ -688,7 +782,16 @@ namespace DGtal {
 \example ctopo-1-3d.cpp
 *A simple example of cellular grid space with several cells
 *instantiated and visualized in 3D. This program outputs this image.
-*   @image html ctopo-1-3d.png
+*   @image html ctopo-1b-3d.png
+*
+*/
+
+
+/**
+\example ctopo-1s-3d.cpp
+*A simple example of cellular grid space with several cells
+*instantiated and visualized in 3D. This program outputs this image.
+*   @image html ctopo-1s-3d.png
 *
 */
 
@@ -723,3 +826,13 @@ namespace DGtal {
 */
 
 }
+
+
+
+
+
+/**
+* A simple example illustrating the extraction of 3d connected set of KhalimskyCell. This program outputs these images: 
+*   @image html KSurfelsConnectedOrientExt.png 
+* \example  3dKSSurfaceExtraction.cpp
+*/

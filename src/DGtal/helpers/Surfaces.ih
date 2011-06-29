@@ -351,9 +351,9 @@ template <typename DigitalSet >
 void
 DGtal::Surfaces<TKSpace>::
 extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-			       const KSpace & aKSpace,
-			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			       const DigitalSet & aShape ){
+			   const KSpace & aKSpace,
+			   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			   const DigitalSet & aShape ){
   
   std::set<SCell> bdry;
   Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
@@ -374,6 +374,61 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
 }
 
 
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void 
+DGtal::Surfaces<TKSpace>::orientSCellExterior(std::vector<SCell> & aVectOfSCell,
+					      const KSpace & aKSpace,  const DigitalSet & aShape  ){
+  for( typename vector<SCell>::iterator it = aVectOfSCell.begin();
+       it!=aVectOfSCell.end(); it++){
+    SCell incidUpperDim = aKSpace.sDirectIncident(*it, aKSpace.sOrthDir(*it)); 
+    if(aShape.find(aKSpace.sCoords(incidUpperDim))!=aShape.end()){
+      aKSpace.sSetSign (*it, !aKSpace.sDirect(*it, aKSpace.sOrthDir(*it)) ); 
+    }else{
+      aKSpace.sSetSign (*it, aKSpace.sDirect(*it, !aKSpace.sOrthDir(*it)) ); 
+    }  
+  }
+}
+
+    
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename DigitalSet >
+void
+DGtal::Surfaces<TKSpace>::
+extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+			  const KSpace & aKSpace,
+			  const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+			  const DigitalSet & aShape , bool forceOrientCellExterior){
+  
+  set<SCell> bdry;
+  Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
+  Cell upp = aKSpace.uLast(aKSpace.uSpel(aKSpace.upperBound()));
+  sMakeBoundary( bdry, aKSpace, aShape, low, upp  );
+  aVectConnectedSCell.clear();
+  while(!bdry.empty()){
+    set<SCell>  aConnectedSCellSet;
+    SCell aCell = *(bdry.begin()); 
+    trackBoundary(aConnectedSCellSet, aKSpace, aSurfelAdj,aShape, aCell );
+    //transform into vector<SCell>
+    vector<SCell> vCS;
+    for(typename set<SCell>::iterator it = aConnectedSCellSet.begin(); it!= aConnectedSCellSet.end(); ++it){
+      vCS.push_back(*it); 
+      // removing cells from boundary;      
+      bdry.erase(*it);
+    }
+    if(forceOrientCellExterior){
+      orientSCellExterior(vCS, aKSpace, aShape);
+    }
+    aVectConnectedSCell.push_back(vCS);
+  }
+}
+    
+    
 
 
 //-----------------------------------------------------------------------------
@@ -509,13 +564,11 @@ sMakeBoundary( SCellSet & aBoundary,
 {
   unsigned int k;
   bool in_here, in_further;
-  //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
-  typedef ImageSelector<Z2i::Domain, bool>::Type Image;
+  typedef typename  ImageSelector< typename DigitalSet::Domain, bool >::Type Image;  
   Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
 					       true, 
 					       aSpelSet.begin(), 
 					       aSpelSet.end());
-  
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
       Cell dir_low_uid = aLowerBound;
@@ -525,8 +578,8 @@ sMakeBoundary( SCellSet & aBoundary,
 	{
 	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
 	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
-	    in_here =(setImage(aKSpace.uCoords(p))); //
-	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
+	    in_here =(setImage(aKSpace.uCoords(p))); 
+	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); 
 	    if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
 	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
@@ -555,10 +608,10 @@ sMakeBoundary( SCellSet & aBoundary,
 //   bool in_here, in_further;
 //   for ( k = 0; k < aKSpace.dimension; ++k )
 //     {
+
+      
 //       Cell dir_low_uid = aLowerBound;
 //       Cell dir_up_uid = aKSpace.uGetDecr(aUpperBound, k);
-      
-      
 //       Cell p = dir_low_uid;
 //       do 
 // 	{
@@ -566,12 +619,13 @@ sMakeBoundary( SCellSet & aBoundary,
 // 	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
 // 	  if ( in_here != in_further ) // boundary element
 // 	    { // add it to the set.
-// 	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
+// 	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, true ) , k, true ));
 // 	    }
 // 	}
 //       while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
 //     }
 // }
+
 
 
 

@@ -222,10 +222,61 @@ namespace DGtal
     template <typename DigitalSet >
     static 
     void extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-			       const KSpace & aKSpace,
-			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			       const DigitalSet & aShape );
+				    const KSpace & aKSpace,
+				    const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+				    const DigitalSet & aShape );
     
+    
+
+    /**
+     * Extract all surfel elements associated to each connected
+     * components of the given DigitalSet. The connected surfel set
+     * are given as result in a vector containing all components. The
+     * orientation of the resulting SCell indicates the exterior
+     * orientation according the positive axis.
+     *
+     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+     
+     @param aVectConnectedSCell (modified) a vector containing for
+     each connected components a vector of the set of connected SCells.
+     @param aKSpace any space.
+     @param aSurfelAdj the surfel adjacency chosen for the tracking.
+     @param aShape any digital set.
+     @param forceOrientCellExterior used to change the default Cell orientation in 
+            order to get the direction of shape exterior (default =false).
+     *
+     */
+    
+    template <typename DigitalSet >
+    static 
+    void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+				   const KSpace & aKSpace,
+				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+				   const DigitalSet & aShape, bool forceOrientCellExterior=false );
+    
+    
+
+    
+
+    /**
+     * Orient the SCell positively in the direction of the exterior of
+     * the DigitalSet @ref aShape. It simply check if the direct
+     * incident Cell in the first upper dimension (obtain with
+     * @ref sDirectIncident) belongs to the DigitalSet or not.
+     *
+     * @param aVectOfSCell (modified) a vector containing the SCell to
+     * be oriented positively in the direction of the exterior.
+     * @param aKSpace any space.
+     * @param aShape any digital set.
+     */
+      
+    template <typename DigitalSet >
+    static 
+    void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  const KSpace & aKSpace,  const DigitalSet & aShape  );
+
+    
+
+
 
     
     /**
@@ -300,6 +351,8 @@ namespace DGtal
 			const KSpace & aKSpace,
 			const DigitalSet & aSpelSet,
 			const Cell aLowerBound, const Cell aUpperBound  );
+    
+
     
 
 

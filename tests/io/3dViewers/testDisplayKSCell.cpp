@@ -110,6 +110,28 @@ int main( int argc, char** argv )
  SCell linelB = K.sCell(Point(2,2 ,1));
  SCell linelC = K.sCell(Point(1,2 ,2), false);
  viewer << linelA << linelB << linelC;
+
+ 
+ Cell center(Point(5,5,5));
+// Testing display of oriented surfels:
+ SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 
+ SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false ); 
+ SCell ssurfelZY = K.sCell( Point( 6, 5, 5 ), false ); 
+ viewer<< center;
+ 
+ SCell ssurfelXZo = K.sCell( Point( 5, 4, 5 ), false ); 
+ SCell ssurfelXYo = K.sCell( Point( 5, 5, 4 ), false ); 
+ SCell ssurfelZYo = K.sCell( Point( 4, 5, 5 ), false );  
+
+ viewer << ssurfelXZ << ssurfelXY << ssurfelZY;
+ viewer << ssurfelXZo << ssurfelXYo << ssurfelZYo;
+ 
+ // Testing display oriented pointels
+ Cell pointelA = K.uCell(Point(2, 2, 2));
+ SCell pointelB = K.sCell(Point(4, 4, 4), true);
+ SCell pointelC = K.sCell(Point(6, 4, 4), false);
+ SCell linelAC = K.sCell(Point(5, 4, 4), false);
+ viewer << pointelA << pointelB << pointelC << linelAC;
  
  viewer <<  DGtalQGLViewer::updateDisplay;
  application.exec();
