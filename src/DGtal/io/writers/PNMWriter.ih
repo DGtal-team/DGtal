@@ -84,7 +84,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV)
+			  const Value & minV, const Value & maxV,  bool saveASCII)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -100,7 +100,12 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   out.open(filename.c_str());
 
   //PPM format
-  out << "P2"<<endl;
+  if(saveASCII){
+    out << "P2"<<endl;
+  }else{
+    out << "P5"<<endl;
+  }
+
   out << "#DGtal PNM Writer"<<endl<<endl;
   out << ext[0]<<" "<< ext[1]<<endl;
   out << "255" <<endl;
@@ -114,9 +119,13 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 
       val = aImage( (*it) );
       col = colormap( val );
-      out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
+      if(saveASCII){
+	out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
+
+      }else{
+	out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
+      }
     }
-  
   out.close(); 
 
   ///@todo catch IOerror excpetion
