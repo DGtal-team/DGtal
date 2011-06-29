@@ -112,7 +112,7 @@ int main( int argc, char** argv )
   } 
   
   if(vm.count("min")){
-    minThreshold= vm["min"].as<unsigned int>();
+    minThreshold= vm["min"].as<int>();
   } 
   if(vm.count("max")){
     maxThreshold= vm["max"].as<int>();
@@ -135,7 +135,7 @@ int main( int argc, char** argv )
   int min, max, increment;
   if(! thresholdRange){
     min=minThreshold;
-    max= minThreshold+increment;
+    max= maxThreshold;
     increment =  maxThreshold- minThreshold;
   }else{
     vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
@@ -187,11 +187,11 @@ int main( int argc, char** argv )
 	  FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
 	  cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
 	}
-
       }
 
     }
   
+    
 
   }
 
