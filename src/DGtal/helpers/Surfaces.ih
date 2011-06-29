@@ -89,6 +89,23 @@ findABel
 	}
     }
   if ( ! found ) throw dgtalerror;
+  return findABel( K, pp, x1, x2 );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointPredicate>
+typename DGtal::Surfaces<TKSpace>::SCell
+DGtal::Surfaces<TKSpace>::
+findABel
+( const KSpace & K,
+  const PointPredicate & pp,
+  Point x1, Point x2 )
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  // (1) Checks the two candidates in the space.
+  bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
+  bool val_v2 = pp( x2 );
+  ASSERT( val_v1 != val_v2 );
   // (2) Find two candidates on the same axis.
   Dimension d = 0;
   for ( Dimension i = 0; i < K.dimension; ++i )
