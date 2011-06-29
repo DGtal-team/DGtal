@@ -113,22 +113,25 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
        << " " << max_value << " from <" << str << ">" << endl;
   
   unsigned int nb_read = 0;
-  
-  infile >> noskipws;
+  if(!isASCIImode){
+    infile >> noskipws;
+  }else{
+    infile >> skipws;
+  }
 
   for(unsigned int y=0; y <h; y++){
     for(unsigned int x=0; x <w; x++){
       typename TImageContainer::Point pt;
       pt[0]=x; pt[1]=h-1-y;
       if(!isASCIImode){
-	unsigned int c; 
+	unsigned char c; 
 	infile >> c;
 	if ( infile.good() ){ 
 	++nb_read;
 	image.setValue( pt, c);
 	}
       }else{
-	unsigned char c; 
+	 int c; 
 	infile >> c;
 	if ( infile.good() ){ 
 	++nb_read;
