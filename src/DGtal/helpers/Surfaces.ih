@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <queue>
 #include <algorithm>
+#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -55,20 +56,22 @@ DGtal::Surfaces<TKSpace>::~Surfaces()
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet>
+template <typename PointPredicate>
 typename DGtal::Surfaces<TKSpace>::SCell
 DGtal::Surfaces<TKSpace>::
 findABel
 ( const KSpace & K,
-  const DigitalSet & dset,
+  const PointPredicate & pp,
   unsigned int nbtries) throw (DGtal::InputException)
 {
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+
   DGtal::InputException dgtalerror;
   Point sizes = K.upperBound() - K.lowerBound();
   Point x1 = K.lowerBound();
   Point x2;
   // (1) Find two candidates in the space.
-  bool val_v1 = dset.find( x1 ) != dset.end();
+  bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
   bool found = false;
   Integer r;
   for ( unsigned int j = 0; j < nbtries; ++j )
@@ -78,7 +81,7 @@ findABel
 	  r = random();
 	  x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
 	}
-      bool val_v2 = dset.find( x2 ) != dset.end();
+      bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
       if ( val_v2 != val_v1 )
 	{
 	  found = true;
@@ -98,7 +101,7 @@ findABel
 		{
 		  Integer c = x2[ j ];
 		  x2[ j ] = x1[ j ];
-		  bool val_v2 = dset.find( x2 ) != dset.end();
+		  bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
 		  if ( val_v2 != val_v1 )
 		    { // v2 is updated.
 		      d = i;
@@ -132,7 +135,7 @@ findABel
       xmid[ d ] = ( x1[ d ] + x2[ d ] ) / 2;
       if ( ( xmid[ d ] == x1[ d ] ) || ( xmid[ d ] == x2[ d ] ) )
 	break;
-      bool val_mid = dset.find( xmid ) != dset.end();
+      bool val_mid = pp( xmid ); // dset.find( xmid ) != dset.end();
       if ( val_mid != val_v1 )
 	x2[ d ] = xmid[ d ];
       else
@@ -160,15 +163,17 @@ findABel
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename SCellSet, typename PointPredicate >
 void
 DGtal::Surfaces<TKSpace>::
 trackBoundary( SCellSet & surface,
 	       const KSpace & K,
 	       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-	       const DigitalSet & shape,
+	       const PointPredicate & pp,
 	       const SCell & start_surfel )
 {
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -189,7 +194,7 @@ trackBoundary( SCellSet & surface,
 	{
 	  Dimension track_dir = *q;
 	  // ----- 1st pass with positive orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, true ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, true ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{
@@ -198,7 +203,7 @@ trackBoundary( SCellSet & surface,
 		}
 	    }
 	  // ----- 2nd pass with negative orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, false ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, false ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{
@@ -213,13 +218,18 @@ trackBoundary( SCellSet & surface,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet >
+template <typename PointPredicate>
 void
-DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
-					   const KSpace & K,
-					   const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-					   const DigitalSet & shape,
-					   const SCell & start_surfel ){
+DGtal::Surfaces<TKSpace>::track2DBoundary
+( std::vector<SCell> & aSCellContour2D,
+  const KSpace & K,
+  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+  const PointPredicate & pp,
+  const SCell & start_surfel )
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  ASSERT( K.dimension == 2 );
+
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -230,54 +240,63 @@ DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
   SurfelNeighborhood<KSpace> SN;
   SN.init( &K, &surfel_adj, start_surfel );
   SN.setSurfel( b );
+  // search along indirect orientation.
   bool hasPrevNeighbor =  true;
-  while ( hasPrevNeighbor  ){
-    hasPrevNeighbor=false;
-    Dimension track_dir = *(K.sDirs( b ));
-    SN.setSurfel( b );
-    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir,  !K.sDirect( b, track_dir ) ) )
-      {
-	if ( setSurface.find( bn ) == setSurface.end() )
-	  {
-	    hasPrevNeighbor=true;
-	    aSCellContour2D.push_back( bn );
-	    setSurface.insert(bn);
-	  }
-      }
-    b = bn;
-  }
+  while ( hasPrevNeighbor )
+    {
+      hasPrevNeighbor=false;
+      Dimension track_dir = *(K.sDirs( b ));
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,  
+					   ! K.sDirect( b, track_dir ) ) )
+	{
+	  if ( setSurface.find( bn ) == setSurface.end() )
+	    {
+	      hasPrevNeighbor=true;
+	      aSCellContour2D.push_back( bn );
+	      setSurface.insert(bn);
+	    }
+	}
+      b = bn;
+    }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b= start_surfel; 
+  b = start_surfel; 
   bool hasNextNeighbor =  true;
-  while (hasNextNeighbor ){
-    hasNextNeighbor=false;
-    Dimension track_dir = *(K.sDirs( b ));
-    SN.setSurfel( b );
-    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, K.sDirect( b, track_dir ) ) )
-      {
-	if ( setSurface.find( bn ) == setSurface.end() )
-	  {
-	    aSCellContour2D.push_back( bn );
-	    setSurface.insert(bn);
-	    hasNextNeighbor=true;
-	  }
-      }
-    b=bn;
-  }
+  while ( hasNextNeighbor )
+    {
+      hasNextNeighbor=false;
+      Dimension track_dir = *(K.sDirs( b ));
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					   K.sDirect( b, track_dir ) ) )
+	{
+	  if ( setSurface.find( bn ) == setSurface.end() )
+	    {
+	      aSCellContour2D.push_back( bn );
+	      setSurface.insert(bn);
+	      hasNextNeighbor=true;
+	    }
+	}
+      b=bn;
+    }
 }
 
 
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet >
+template <typename PointPredicate>
 void
-DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
-					   const KSpace & K, const Dimension & cstDir,
-					   const SurfelAdjacency<TKSpace::dimension> & surfel_adj,
-					   const DigitalSet & shape,
-					   const SCell & start_surfel ){
+DGtal::Surfaces<TKSpace>::track2DBoundary
+( std::vector<SCell> & aSCellContour2D,
+  const KSpace & K,
+  const Dimension & trackDir,
+  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+  const PointPredicate & pp,
+  const SCell & start_surfel )
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -288,57 +307,48 @@ DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
   SurfelNeighborhood<KSpace> SN;
   SN.init( &K, &surfel_adj, start_surfel );
   SN.setSurfel( b );
+  Dimension orthDir = K.sOrthDir( start_surfel );
   bool hasPrevNeighbor =  true;
-  while ( hasPrevNeighbor  ){
-    hasPrevNeighbor=false;
-    
-    // search a tracking direction compatible with constant direction
-    DirIterator q = K.sDirs( b );
-       Dimension track_dir=*q;
-    while(q!=0 && track_dir==cstDir ){
-      ++q;
-      track_dir = *q;
+  while ( hasPrevNeighbor )
+    {
+      hasPrevNeighbor=false;
+      // search a tracking direction compatible with track/orth direction
+      Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,
+					   !K.sDirect( b, track_dir ) ) )
+	{
+	  if ( setSurface.find( bn ) == setSurface.end() )
+	    {
+	      hasPrevNeighbor=true;
+	      aSCellContour2D.push_back( bn );
+	      setSurface.insert(bn);
+	    }
+	}
+      b = bn;
     }
-    ASSERT( q!=0 );
-    SN.setSurfel( b );
-    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir,  !K.sDirect( b, track_dir ) ) )
-      {
-	if ( setSurface.find( bn ) == setSurface.end() )
-	  {
-	    hasPrevNeighbor=true;
-	    aSCellContour2D.push_back( bn );
-	    setSurface.insert(bn);
-	  }
-      }
-    b = bn;
-  }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b= start_surfel; 
+  b = start_surfel; 
   bool hasNextNeighbor =  true;
-  while (hasNextNeighbor ){
-    hasNextNeighbor=false;
-    // search a tracking direction compatible with constant direction
-    DirIterator q = K.sDirs( b );
-    Dimension track_dir=*q;
-    while(q!= 0 && track_dir==cstDir ){
-      ++q;
-      track_dir = *q;
+  while ( hasNextNeighbor )
+    {
+      hasNextNeighbor=false;
+      // search a tracking direction compatible with constant direction
+      Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					   K.sDirect( b, track_dir ) ) )
+	{
+	  if ( setSurface.find( bn ) == setSurface.end() )
+	    {
+	      aSCellContour2D.push_back( bn );
+	      setSurface.insert(bn);
+	      hasNextNeighbor=true;
+	    }
+	}
+      b=bn;
     }
-    ASSERT( q!=0 );
-
-    SN.setSurfel( b );
-    if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, K.sDirect( b, track_dir ) ) )
-      {
-	if ( setSurface.find( bn ) == setSurface.end() )
-	  {
-	    aSCellContour2D.push_back( bn );
-	    setSurface.insert(bn);
-	    hasNextNeighbor=true;
-	  }
-      }
-    b=bn;
-  }
 }
 
 
@@ -347,30 +357,33 @@ DGtal::Surfaces<TKSpace>::track2DBoundary( std::vector<SCell> & aSCellContour2D,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet >
+template <typename PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::
-extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-			       const KSpace & aKSpace,
-			       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			       const DigitalSet & aShape ){
-  
+extractAll2DSCellContours
+( std::vector< std::vector<SCell> > & aVectSCellContour2D,
+  const KSpace & aKSpace,
+  const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+  const PointPredicate & pp )
+{
   std::set<SCell> bdry;
   Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));
   Cell upp = aKSpace.uLast(aKSpace.uSpel(aKSpace.upperBound()));
-  sMakeBoundary( bdry, aKSpace, aShape, low, upp  );
+  sMakeBoundary( bdry, aKSpace, pp, low, upp  );
   aVectSCellContour2D.clear();
-  while(!bdry.empty()){
-    std::vector<SCell> aContour;
-    SCell aCell = *(bdry.begin()); 
-    track2DBoundary(aContour, aKSpace, aSurfelAdj,aShape, aCell );
-    aVectSCellContour2D.push_back(aContour);
-    // removing cells from boundary;
-    for(unsigned int i=0;i <aContour.size(); i++){
-      SCell sc = aContour.at(i);
-      bdry.erase(sc);
+  while( ! bdry.empty() )
+    {
+      std::vector<SCell> aContour;
+      SCell aCell = *(bdry.begin()); 
+      track2DBoundary( aContour, aKSpace, aSurfelAdj, pp, aCell );
+      aVectSCellContour2D.push_back( aContour );
+      // removing cells from boundary;
+      for( unsigned int i = 0; i < aContour.size(); i++ )
+	{
+	  SCell sc = aContour.at(i);
+	  bdry.erase(sc);
+	}
     }
-  }
 }
 
 
@@ -378,18 +391,19 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename DigitalSet >
+template <typename PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::
 extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointContour2D,
 			   const KSpace & aKSpace,
-			   const DigitalSet & aShape,
-			   const SurfelAdjacency<2> & aSAdj){
+			   const PointPredicate & pp,
+			   const SurfelAdjacency<2> & aSAdj)
+{
   aVectPointContour2D.clear();
   
   std::vector< std::vector<SCell> > vectContoursBdrySCell;
   extractAll2DSCellContours( vectContoursBdrySCell,
-			     aKSpace, aSAdj, aShape );
+			     aKSpace, aSAdj, pp );
   
   for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     std::vector< Point > aContour;
@@ -421,13 +435,13 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename SCellSet, typename PointPredicate >
 void
 DGtal::Surfaces<TKSpace>::
 trackClosedBoundary( SCellSet & surface,
 		     const KSpace & K,
 		     const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-		     const DigitalSet & shape,
+		     const PointPredicate & pp,
 		     const SCell & start_surfel )
 {
   SCell b;  // current surfel
@@ -450,8 +464,8 @@ trackClosedBoundary( SCellSet & surface,
 	{
 	  Dimension track_dir = *q;
 	  // ----- One pass, look for direct orientation ------
-	  if ( SN.getAdjacentOnDigitalSet( bn, shape, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
 	      if ( surface.find( bn ) == surface.end() )
 		{
@@ -464,12 +478,12 @@ trackClosedBoundary( SCellSet & surface,
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename CellSet, typename PointPredicate >
 void 
 DGtal::Surfaces<TKSpace>::
-uMakeBoundary( SCellSet & aBoundary,
+uMakeBoundary( CellSet & aBoundary,
 	       const KSpace & aKSpace,
-	       const DigitalSet & aSpelSet,
+	       const PointPredicate & pp,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
   unsigned int k;
@@ -483,8 +497,10 @@ uMakeBoundary( SCellSet & aBoundary,
       Cell p = dir_low_uid;
       do 
 	{
-	  in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
-	  in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
+	  in_here = pp( aKSpace.uCoords(p) );
+	  in_further = pp( aKSpace.uCoords(aKSpace.uGetIncr( p, k )) );
+	  // in_here = (aSpelSet.find(aKSpace.uCoords(p))!=aSpelSet.end());
+	  // in_further = (aSpelSet.find(aKSpace.uCoords(aKSpace.uGetIncr( p, k )) )!=aSpelSet.end());
 	  if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
 	      
@@ -499,22 +515,22 @@ uMakeBoundary( SCellSet & aBoundary,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-template <typename SCellSet, typename DigitalSet >
+template <typename SCellSet, typename PointPredicate >
 void 
 DGtal::Surfaces<TKSpace>::
 sMakeBoundary( SCellSet & aBoundary,
 	       const KSpace & aKSpace,
-	       const DigitalSet & aSpelSet,
+	       const PointPredicate & pp,
 	       const Cell aLowerBound, const Cell aUpperBound  )
 {
   unsigned int k;
   bool in_here, in_further;
-  //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
-  typedef ImageSelector<Z2i::Domain, bool>::Type Image;
-  Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
-					       true, 
-					       aSpelSet.begin(), 
-					       aSpelSet.end());
+  // //typedef ImageContainerBySTLVector<Z2i::Domain, int > Image;
+  // typedef ImageSelector<Z2i::Domain, bool>::Type Image;
+  // Image setImage = ImageFromSet<Image>::create(aSpelSet, 1,
+  // 					       true, 
+  // 					       aSpelSet.begin(), 
+  // 					       aSpelSet.end());
   
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
@@ -523,15 +539,23 @@ sMakeBoundary( SCellSet & aBoundary,
       Cell p = dir_low_uid;
       do 
 	{
-	  if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
-	      setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
-	    in_here =(setImage(aKSpace.uCoords(p))); //
-	    in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
-	    if ( in_here != in_further ) // boundary element
+	  in_here = pp( aKSpace.uCoords(p) );
+	  in_further = pp( aKSpace.uCoords(aKSpace.uGetIncr( p, k )) );
+	  if ( in_here != in_further ) // boundary element
 	    { // add it to the set.
-	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
+	      aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, in_here ),
+						   k, true ));
 	    }
-	  }
+
+	  // if (setImage.domain().isInside( aKSpace.uCoords(p)) && 
+	  //     setImage.domain().isInside( aKSpace.uCoords(aKSpace.uGetIncr( p, k )))){
+	  //   in_here =(setImage(aKSpace.uCoords(p))); //
+	  //   in_further = (setImage(aKSpace.uCoords(aKSpace.uGetIncr( p, k )))); //
+	  //   if ( in_here != in_further ) // boundary element
+	  //   { // add it to the set.
+	  //     aBoundary.insert( aKSpace.sIncident( aKSpace.signs( p, (in_here == true) ) , k, true ));
+	  //   }
+	  // }
 	}
       while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
     }

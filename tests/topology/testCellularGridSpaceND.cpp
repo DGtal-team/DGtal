@@ -271,6 +271,7 @@ bool testSurfelAdjacency()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   Domain domain( low, high );
   DigitalSet shape_set( domain );
+  SetPredicate<DigitalSet> shape_set_predicate( shape_set );
   int center[ 4 ] = { 1, 0, 0, 0 }; // pixel
   Point pcenter( center );
   Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
@@ -285,7 +286,7 @@ bool testSurfelAdjacency()
   // surfel = Surfaces<KSpace>::findABel( K, shape_set );
 
   Surfaces<KSpace>::trackBoundary( bdry,
-				   K, SAdj, shape_set, surfel );
+				   K, SAdj, shape_set_predicate, surfel );
   trace.info() << "tracking finished, size=" << bdry.size() 
 	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
@@ -295,7 +296,7 @@ bool testSurfelAdjacency()
 	       << std::endl;
   std::set<SCell> bdry_direct;
   Surfaces<KSpace>::trackClosedBoundary( bdry_direct,
-					 K, SAdj, shape_set, surfel );
+					 K, SAdj, shape_set_predicate, surfel );
   trace.info() << "fast direct tracking finished, size=" << bdry_direct.size() 
 	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
