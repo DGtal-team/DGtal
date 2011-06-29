@@ -140,12 +140,14 @@ namespace DGtal
      * @param aImage the image to export
      * @param minV the minimum value of aImage (for colormap)
      * @param maxV the maximum value of aImage (for colormap) 
+     * @param saveASCII used to save image with ASCII pixel value and with white space. 
+     *        (default= false since ASCII mode is not efficient).     
      * 
      * 
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
-			  const Value & minV, const Value & maxV);
+			  const Value & minV, const Value & maxV,  bool saveASCII=false);
   
 
     /** 
