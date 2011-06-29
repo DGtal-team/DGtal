@@ -279,6 +279,8 @@ T. Saito and J I Toriwaki. New algorithms for Euclidean distance transformations
 
 
 /**
+* A simple example applying the 3D transform. This program outputs these images: 
+*   @image html resuExDistanceTransform3D.png 
 * \example distancetransform3D.cpp 
 */
 }

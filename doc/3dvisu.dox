@@ -16,6 +16,9 @@ namespace DGtal {
  *  -# \ref DGtalGLV_VisualizationDigitalSet
  *  -# \ref DGtalGLV_ModeEx 
  *  -# \ref DGtalGLV_Mode  
+        -# \ref DGtalGLV_ModeListing
+	-# \ref DGtalGLV_ModeExamplesDomain
+	-# \ref DGtalGLV_ModeOtherExamples
  *  -# \ref DGtalGLV_Custom
  *  -# \ref DGtalGLV_CLipping 
  *
@@ -145,14 +148,21 @@ using namespace Z3i;
 
 * \section  DGtalGLV_Mode Useful modes for several 3D drawable elements 
 
+
+\subsection DGtalGLV_ModeListing Listing of different modes
+
 As for \c DGtalBoard the object can be displayed with different possible mode:
 
    * - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
-   * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid"
+   * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
    * - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
    * - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+   * - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+   * - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
 
 
+
+\subsection DGtalGLV_ModeExamplesDomain Examples with \ref Objet modes
 
 The file <a href="dgtalQGLviewer-4-modes_8cpp-example.html" >  dgtalQGLviewer-4-modes.cxx </a> illustrates several  possible modes to display these objects:
 
@@ -215,6 +225,16 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 *</CENTER>
 
 
+
+
+\subsection DGtalGLV_ModeOtherExamples Others Examples
+
+
+Others mode examples are illustrated for class KhalimskyCell and class SignedKhalimskyCell in respectively the subsection \ref dgtal_ctopo_sec2_3 and subsection \ref dgtal_ctopo_sec1_6 of the section related to cellular topology ( \ref dgtal_cellular_topology). 
+
+
+
+
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
 As for DGtalBoard, it is possible to custom the way to display 3D elements by using an instance of the following classes:
@@ -236,7 +256,8 @@ The custom color can be applied by an instance of the CustomColors3D as follow:
 The example <a  href="dgtalQGLviewer-5-custom_8cpp-example.html"> dgtalQGLviewer-5-custom </a> illustrates some possible customs :
 
 
-\image html visuModeCustom.png "Example of several custom display ." 
+
+
 \image html visuModeCustom.png "Example of several custom display ." width=5cm
 
 

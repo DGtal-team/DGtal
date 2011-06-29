@@ -189,15 +189,18 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   ASSERT(dim == 3);
   QColor fillColorSave = viewer.getFillColor();  
   std::string mode = viewer.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent")||
-	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
+	 ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   float factorVolSurfel=1.0;
+  bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
     viewer.setFillColor(QColor(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
     viewer.setFillColor(QColor(180, 180, 250, 25));	
+  }else if(mode=="Basic"){
+    basicMode=true;
   }
   float x = (float) 
     ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
@@ -220,14 +223,14 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   switch (spaceDim) {
   case 0:  
     viewer.setFillColor(QColor(200, 20, 20, 255));
-    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
+    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
     break;
   case 1:
     viewer.setFillColor(QColor(20, 20, 200, 255));
     viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel); 
+    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
     break;
   case 3:
     viewer.setFillColor(QColor(255, 180, 250, 255));
@@ -248,15 +251,18 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
    ASSERT(dim == 3);
   QColor fillColorSave = viewer.getFillColor();  
   std::string mode = viewer.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent")||
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
 	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   float factorVolSurfel=1.0;
+  bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;
     viewer.setFillColor(QColor(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
     viewer.setFillColor(QColor(180, 180, 250, 25));	
+  }else if(mode=="Basic"){
+    basicMode=true;
   }
   float x = (float) 
     ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
@@ -280,7 +286,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
     else
       viewer.setFillColor(QColor(20, 20, 150, 255));
     
-    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05);
+    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, myPositive);
     break;
   case 1:
     viewer.setFillColor(QColor(20, 200, 200, 255));
@@ -289,7 +295,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer 
     break;
   case 2:
     
-    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive ); 
+    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive,basicMode ); 
     break;
   case 3:
     if( myPositive)
