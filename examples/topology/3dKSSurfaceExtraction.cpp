@@ -39,8 +39,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Surfaces.h"
-
 #include "DGtal/topology/KhalimskySpaceND.h"
 
 
@@ -55,58 +55,79 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
   
-  Point p1( -10, -10, -10 );
-  Point p2( 10, 10, 10 );
-  Point c( 0, 0, 0 );
-  Domain domain( p1, p2 );
-  
-  DigitalSet diamond_set( domain );
-  
-  for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it ){
-    if ( (*it - c  ).norm1() <= 6 && (*it - c  ).norm1() >= 4 ) 
-      diamond_set.insertNew( *it );
-    if ( (*it - c +Point(7,7,7) ).norm1() <= 2 ) 
-      diamond_set.insertNew( *it );
-    if ( (*it - c +Point(-5,-5,-5) ).norm1() <= 7 ) 
-      diamond_set.insertNew( *it );
+  Point p1( 0, 0,  0 );
+  Point p2( 20, 20, 20 );
+  Point c( 10, 10, 10 );
+  Domain domain( p1, p2);
 
+  // Generate the digital set from randam seeds and distance threshold.
+  DigitalSet diamond_set( domain );
+  //srand ( time(NULL) );
+  uint nbSeeds = 35;
+  vector<Point> vCenters;
+  vector<uint> vRad;
+  for(uint i=0;i<nbSeeds; i++){
+    vCenters.push_back(Point(rand()%p2[0], rand()%p2[1], 
+			    rand()%p2[2]));
+    vRad.push_back(rand()%7);
+  }
+  for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it ){
+    for(int i=0;i<nbSeeds; i++){
+      if ( (*it - vCenters.at(i)  ).norm1() <= vRad.at(i) && domain.isInside(*it) &&
+	   domain.isInside(*it+Point(1,1,1)) && domain.isInside(*it-Point(1,1,1)) ){ 
+	diamond_set.insertNew( *it );
+	break;
+      }
+    }
   }
   
+  
+  //A KhalimskySpace is constructed from the domain boundary points.
   KSpace K;
   K.init(p1, p2, true);
   
-    
   SurfelAdjacency<3> SAdj( true );
   vector<vector<SCell> > vectConnectedSCell;
+  
+  //Here since the last argument is set to true, the resulting
+  //SignedKhalimskySpaceND are signed in order to indicate the direction
+  //of exterior. You can also get the SignefKhalimskySpaceND with default
+  //sign:
+
   Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, true);
+  
   
   QApplication application(argc,argv);
   DGtalQGLViewer viewer;
   viewer.show(); 
    
   //viewer << SetMode3D( vectConnectedSCell.at(0).at(0).styleName(), "Basic" );
+
+
+  // Each connected compoments are simply displayed with a specific color.
+  GradientColorMap<long> gradient( 0,vectConnectedSCell.size());
+  gradient.addColor(LibBoard::Color::Red);
+  gradient.addColor(LibBoard::Color::Yellow);
+  gradient.addColor(LibBoard::Color::Green);
+  gradient.addColor(LibBoard::Color::Cyan);
+  gradient.addColor(LibBoard::Color::Blue);
+  gradient.addColor(LibBoard::Color::Magenta);
+  gradient.addColor(LibBoard::Color::Red);  
+ 
+  
   for(uint i=0; i< vectConnectedSCell.size();i++){
-    switch (i){
-    case 0:
-      viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,100));
-      break;
-    case 1:
-      viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 20,100));
-      break;
-    case 2:
-      viewer << CustomColors3D(QColor(250, 0,0),QColor(20, 200,100));
-      break;
-    case 3:
-      viewer << CustomColors3D(QColor(250, 0,0),QColor(20, 20,200));
-      break;
-    }
+    LibBoard::Color c= gradient(i);
+    viewer << CustomColors3D(QColor(250, 0,0), QColor(c.red(), 
+						      c.green(),
+						      c.blue()));
+    
     for(uint j=0; j< vectConnectedSCell.at(i).size();j++){
       viewer << vectConnectedSCell.at(i).at(j);
     }    
   }
 
   
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,200, 250));
+  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,200, 200));
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
   viewer << DGtalQGLViewer::updateDisplay;
