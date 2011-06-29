@@ -1170,16 +1170,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMax( const Cell & p, Dimension k ) const
 {
-  return uProjection( p, myCellUpper, k );
-}
-//-----------------------------------------------------------------------------
-template < Dimension dim, typename TInteger>
-inline
-typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
-DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetMaxT( const Cell & p, Dimension k ) const
-{
   return uProjection( p, uLast(p), k );
+  // return uProjection( p, myCellUpper, k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1208,16 +1200,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMin( const Cell & p, Dimension k ) const
 {
-  return uProjection( p, myCellLower, k );
-}
-//-----------------------------------------------------------------------------
-template < Dimension dim, typename TInteger>
-inline
-typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
-DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetMinT( const Cell & p, Dimension k ) const
-{
   return uProjection( p, uFirst(p), k );
+  //return uProjection( p, myCellLower, k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1367,7 +1351,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMax( const SCell & p, Dimension k ) const
 {
-  return sProjection( p, myCellUpper, k );
+  return sProjection( p, sLast(p), k );
+  //  return sProjection( p, myCellUpper, k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1396,7 +1381,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMin( const SCell & p, Dimension k ) const
 {
-  return sProjection( p, myCellLower, k );
+  return sProjection( p, sFirst(p), k );
+  //  return sProjection( p, myCellLower, k );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
