@@ -49,36 +49,39 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename ) throw(DGtal::IOException)
+DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename ) throw(DGtal::IOException)
 {
   ifstream infile;
   DGtal::IOException dgtalio;
   try 
     {
-      infile.open (filename.c_str(), ifstream::in);
+      infile.open (aFilename.c_str(), ifstream::in);
     }
   catch( ... )
     {
-      std::cout << "PNMReader : can't open " << filename << endl;
+      std::cout << "PNMReader : can't open " << aFilename << endl;
       throw dgtalio;
     }
-  
+  bool isASCIImode = false;
   string str;
   getline( infile, str );
   if ( ! infile.good() ) {
-    std::cout << "PNMReader : can't read " << filename << endl;
+    std::cout << "PNMReader : can't read " << aFilename << endl;
     throw dgtalio;
   }
-  if ( str != "P5" ){
-    std::cout << "PNMReader : No P5 format in " << filename << endl;
+  if ( str != "P5" &&  str != "P2"){
+    std::cout << "PNMReader : No P5 or P2 format in " << aFilename << endl;
     throw dgtalio;
   }
-  
+  if(str== "P2"){
+    isASCIImode=true;
+    std::cerr << "P2 mode detected" << endl;
+  }
   do
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	std::cout << "PNMReader : Invalid format in " << filename << endl;
+	std::cout << "PNMReader : Invalid format in " << aFilename << endl;
 	throw dgtalio;
       } 
     }
@@ -86,6 +89,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename )
   istringstream str_in( str );
   unsigned int w, h;
   str_in >> w >> h;
+
    
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
@@ -103,7 +107,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename )
   str2_in >> max_value;  
 
   if ( ! infile.good() ){
-    std::cout << "PNMReader : Invalid format in " << filename << endl;
+    std::cout << "PNMReader : Invalid format in " << aFilename << endl;
     throw dgtalio;
   } 
   cerr << "# PGM " << w << " " << h 
@@ -117,12 +121,22 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & filename )
     for(unsigned int x=0; x <w; x++){
       typename TImageContainer::Point pt;
       pt[0]=x; pt[1]=h-1-y;
-      unsigned char c; 
-      infile >> c;
-      if ( infile.good() ){ 
+      if(!isASCIImode){
+	unsigned int c; 
+	infile >> c;
+	if ( infile.good() ){ 
 	++nb_read;
 	image.setValue( pt, c);
+	}
+      }else{
+	unsigned char c; 
+	infile >> c;
+	if ( infile.good() ){ 
+	++nb_read;
+	image.setValue( pt, c);
+	}
       }
+      
     }
   }
   if ( infile.fail() || infile.bad() )
