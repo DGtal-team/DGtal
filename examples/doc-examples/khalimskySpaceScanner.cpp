@@ -99,8 +99,8 @@ int main( int argc, char** argv )
  Z2i::Vector shiftq;
  Z2i::KSpace::Cell precq=q;
  bool firstq=true;
- for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
-   for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
+ for (q = K.uGetMax(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
+   for ( q = K.uGetMin(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
         { 
 	  boardScan2 << q;
 	  if(firstq){
