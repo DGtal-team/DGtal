@@ -36,8 +36,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io-viewers/readers/PNMReader.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
 
 
@@ -71,6 +71,8 @@ int main( int argc, char** argv )
   // Construct the Khalimsky space from the image domain
   Z2i::KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+  
+
 
   //Extract a boundary cell
   Z2i::SCell aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);

@@ -13,30 +13,51 @@ include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/geometry/ModuleSRC.txt)
 include(DGtal/topology/ModuleSRC.txt)
-include(DGtal/io-viewers/ModuleSRC.txt)
+include(DGtal/io/ModuleSRC.txt)
+if ( WITH_CAIRO )
+    include(DGtal/io/CairoViewers/ModuleSRC.txt)
+endif( WITH_CAIRO )
+
 include(DGtal/helpers/ModuleSRC.txt)
 
 include(Board/ModuleSRC.txt)
 
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
-add_library ( ${LIBDGTAL_NAME}  ${DGTAL_SRC} ${BOARD_SRC})
-target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
 
-install(TARGETS ${LIBDGTAL_NAME} 
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+add_library ( ${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
+target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+#set_target_properties( ${LIBDGTAL_NAME} PROPERTIES PUBLIC_HEADER FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h") 
+
+#install(TARGETS ${LIBDGTAL_NAME}
+#  EXPORT DGtalLibraryDepends
+#  RUNTIME DESTINATION bin
+#  LIBRARY DESTINATION lib
+#  ARCHIVE DESTINATION lib)
+
+
+install(TARGETS ${LIBDGTAL_NAME}
+  # IMPORTANT: Add the foo library to the "export-set"
+  EXPORT DGtalLibraryDepends
+  RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
+  LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+  COMPONENT dev)
 
 
 if ( WITH_VISU3D )
-    include(DGtal/io-viewers/3dViewers/ModuleSRC.txt)
-    add_library ( ${LIBDGTALVISU3D_NAME}  ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
-    target_link_libraries( ${LIBDGTALVISU3D_NAME}  ${DGtalLibDependencies} )
-    install(TARGETS ${LIBDGTALVISU3D_NAME} 
-      RUNTIME DESTINATION bin
-      LIBRARY DESTINATION lib
-      ARCHIVE DESTINATION lib)
+  include(DGtal/io/3dViewers/ModuleSRC.txt)
+  add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
+  target_link_libraries( ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+  
+  install(TARGETS ${LIBDGTALVISU3D_NAME}
+    # IMPORTANT: Add the foo library to the "export-set"
+    EXPORT DGtalLibraryDepends
+    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+    COMPONENT dev)
+  
 endif( WITH_VISU3D )
 
 

@@ -672,7 +672,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
   ASSERT(dim == 3);
   viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor(), 10);
+  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor());
 
 }
 
@@ -707,6 +707,71 @@ template<Dimension dim, typename Component>
 inline
 void
 DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &aPoint ) const
+{
+  ASSERT(dim == 3);
+  
+  viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
+		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
+  
+}
+
+#endif
+
+#ifdef WITH_CAIRO
+template<Dimension dim, typename Component>
+inline
+void
+DGtal::PointVector<dim,Component>::selfDrawAsPavingCairo( DGtalCairo & viewer ) const
+{
+  ASSERT(dim == 3);
+  viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
+		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
+void
+DGtal::PointVector<dim,Component>::selfDrawAsGridCairo( DGtalCairo & viewer ) const
+{
+  ASSERT(dim == 3);
+  viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
+  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor(), 10);
+
+}
+
+
+template<Dimension dim, typename Component>
+inline
+void
+DGtal::PointVector<dim,Component>::selfDrawCairo( DGtalCairo & viewer ) const
+{
+  ASSERT(dim == 3);
+ 
+  std::string mode = viewer.getMode( this->styleName() );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    selfDrawAsPavingCairo( viewer );
+  else if ( mode == "Grid" )
+    selfDrawAsGridCairo( viewer );
+  else if ( ( mode == "Both" ) )
+    {
+      selfDrawAsPavingCairo(viewer);
+      selfDrawAsGridCairo( viewer );
+    }
+  
+}
+
+
+
+
+
+template<Dimension dim, typename Component>
+inline
+void
+DGtal::PointVector<dim,Component>::selfDrawCairo( DGtalCairo & viewer,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   

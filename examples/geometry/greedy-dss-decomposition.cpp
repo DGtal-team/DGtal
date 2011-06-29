@@ -33,8 +33,8 @@
 #include <iostream>
 #include <sstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
@@ -76,7 +76,7 @@ int main( )
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::ConstIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
       DSS4 segment(*i);
