@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -332,6 +333,72 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
       return 1;
     }
 }
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointPredicate>
+unsigned int 
+DGtal::SurfelNeighborhood<TKSpace>::
+getAdjacentOnPointPredicate( SCell & adj_surfel,
+			     const PointPredicate & pp, 
+			     Dimension track_dir,
+			     bool pos ) const
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+
+    // Check that [m_surfel] is a bel.
+  ASSERT( mySpace != 0 );
+  ASSERT( mySurfelAdj != 0 );
+  Point inner_spel_pt = mySpace->sCoords( innerSpel() );
+  ASSERT( pp( inner_spel_pt ) && "Should be inside." );
+  ASSERT( ! pp( mySpace->sCoords( outerSpel() ) ) && "Should be outside" );
+  
+  // Check if it goes outside the space.
+  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
+       || 
+       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
+       )
+    return 0;
+  // Check type of surfel adjacency.
+  if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+    { // interior to exterior
+      // Check first next bel.
+      if ( ! pp( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) ) )
+	{
+	  adj_surfel = follower1( track_dir, pos );
+	  return 1;
+	}
+      // Check second next bel.
+      if ( ! pp( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) ) )
+	{
+	  adj_surfel = follower2( track_dir, pos ); 
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower3( track_dir, pos ); 
+      return 3;
+    }
+  else // if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+    { // exterior to interior
+      // Check first next bel.
+      if ( pp( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) ) )
+	{
+	  adj_surfel = follower3( track_dir, pos );
+	  return 3;
+	}
+      // Check second next bel.
+      if ( pp( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) ) )
+	{
+	  adj_surfel = follower2( track_dir, pos );
+	  return 2;
+	}
+      // The third one is then the right one.
+      adj_surfel = follower1( track_dir, pos );
+      return 1;
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
