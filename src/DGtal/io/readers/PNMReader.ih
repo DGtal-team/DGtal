@@ -75,7 +75,6 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   }
   if(str== "P2"){
     isASCIImode=true;
-    std::cerr << "P2 mode detected" << endl;
   }
   do
     {
