@@ -337,6 +337,11 @@ namespace DGtal
 
 
     /**
+     * Default constructor.
+     */
+    MaximalSegments(){};
+
+    /**
      * Constructor.
 		 * Nb: The sequence is processed as a closed one by default.
      * @param begin, begin iterator on a sequence
@@ -349,6 +354,21 @@ namespace DGtal
                     const Iterator& endIt, 
                     const Segment& aSegment, 
                     const bool& aFlag);
+
+    /**
+     * Init.
+		 * Nb: The sequence is processed as a closed one by default.
+     * @param begin, begin iterator on a sequence
+     * @param end, end iterator on a sequence
+     * @param aSegment, a segment computer
+     * @param aFlag a boolean equal to TRUE to decompose the digital
+     * curve as a closed one, FALSE otherwise
+     */
+    void init(const Iterator& beginIt, 
+              const Iterator& endIt, 
+              const Segment& aSegment, 
+              const bool& aFlag);
+
 
     /**
      * Destructor.

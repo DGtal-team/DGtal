@@ -481,6 +481,26 @@ DGtal::MaximalSegments<TSegment>::MaximalSegments(
 }
 
 /**
+ * Init.
+ */
+  template <typename TSegment>
+inline
+void
+DGtal::MaximalSegments<TSegment>::init(
+  const typename TSegment::Iterator& begin, 
+  const typename TSegment::Iterator& end, 
+	const TSegment& aSegment, 
+	const bool& aFlag) {
+
+ myBegin = begin;
+ myEnd = end;
+ myFirstMaximalSegmentBack = begin;
+ mySegment = aSegment;
+ isClosed = aFlag;
+
+}
+
+/**
  * Destructor.
  */
   template <typename TSegment>

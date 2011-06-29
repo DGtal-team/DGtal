@@ -1,0 +1,168 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file GridCurve.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ *
+ * @date 2011/06/27
+ *
+ * Implementation of inline methods defined in GridCurve.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template <typename KSpace>
+DGtal::GridCurve<KSpace>::GridCurve( const GridCurve<KSpace> & aOther )
+  : myData( aOther.myData )
+{
+}
+
+/**
+ * Assignment.
+ * @param aOther the object to copy.
+ * @return a reference on 'this'.
+ */
+template <typename KSpace>
+typename DGtal::GridCurve<KSpace> & 
+DGtal::GridCurve<KSpace>::operator=( const GridCurve<KSpace> & aOther )
+{
+  if ( this != &aOther )
+    {
+      myData = aOther.myData;
+    }
+  return *this;
+}
+
+
+
+//------------------------------------------------------------------------------
+template <typename KSpace>
+inline
+DGtal::DrawableWithDGtalBoard*
+DGtal::GridCurve<KSpace>::defaultStyle( std::string mode ) const
+{
+  if ( ( mode == "" ) || ( mode == "Points" ) ) 
+    return new DefaultDrawStylePoints;
+  else 
+    return new DefaultDrawStyleEdges;  
+}
+//------------------------------------------------------------------------------
+template <typename KSpace>
+inline
+std::string
+DGtal::GridCurve<KSpace>::styleName() const
+{
+  return "GridCurve";
+}
+//------------------------------------------------------------------------------
+template <typename KSpace>
+inline
+void 
+DGtal::GridCurve<KSpace>::selfDraw(DGtalBoard & aBoard) const
+{
+  std::string mode = aBoard.getMode( this->styleName() );
+  ASSERT( (mode=="Points" || mode=="" || mode=="Edges") ||
+	  ("DGtal::GridCurve<KSpace>::selfDraw: Unknown mode "+mode)==""  );
+  
+  if ( mode == "Points"  || ( mode == "" )  )
+    selfDrawPoints( aBoard );
+  else if ( mode == "Edges" )
+    selfDrawEdges( aBoard );
+  
+}
+//------------------------------------------------------------------------------
+template <typename KSpace>
+inline
+void 
+DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
+{
+  for(unsigned int i=0; i< myData.size(); i++){
+    aBoard << myData.at(i);
+  }
+}
+//------------------------------------------------------------------------------
+template <typename KSpace>
+inline
+void 
+DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
+{
+
+  std::vector<LibBoard::Point> points;//output points
+  for(unsigned int i=0; i< myData.size(); i++){
+    points.push_back(
+      LibBoard::Point(IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][0]),
+				              IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][1])));
+  }
+  aBoard.drawPolyline(points);
+}
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'GridCurve'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'GridCurve' to write.
+ * @return the output stream after the writing.
+ */
+template <typename KSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const GridCurve<KSpace> & aObject )
+{
+    aObject.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
