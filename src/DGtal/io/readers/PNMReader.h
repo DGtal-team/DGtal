@@ -90,7 +90,9 @@ namespace DGtal
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
-
+    
+    enum MagicNumber {P1,P2,P3,P4,P5,P6};
+    
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
 
 
@@ -102,7 +104,7 @@ namespace DGtal
      * @param extent the size of the raw data set.
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importPGMImage(const std::string & filename) throw(DGtal::IOException);
+    static ImageContainer importPGMImage(const std::string & aFilename) throw(DGtal::IOException);
     
     
     
