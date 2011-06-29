@@ -90,6 +90,7 @@ namespace DGtal
 
   public: 
   typedef typename KSpace::Space::Point Point;
+  typedef typename KSpace::Space::Vector Vector;
   typedef typename std::vector<Point> Storage;
 
     // ------------------------- static services ------------------------------
