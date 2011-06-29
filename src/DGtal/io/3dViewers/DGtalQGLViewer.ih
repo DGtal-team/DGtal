@@ -1,0 +1,607 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DGtalQGLViewer.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/01/03
+ *
+ * Implementation of inline methods defined in DGtalQGLViewer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/io/CDrawableWithDGtalQGLViewer.h"
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+using namespace qglviewer;
+
+
+INLINE
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<(const QColor & aColor){
+  myDefaultColor=aColor;
+  return *this;
+}
+
+
+
+
+  /**
+   * Set the default color for future drawing.
+   *
+   * @param aColor: a QColor (allow to set a transparency value).
+   *
+   **/
+
+INLINE
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<(const DGtalQGLViewer::StreamKey  & key){
+  switch (key){
+  case updateDisplay:
+    updateList();
+    break;
+    
+  case addNewList:
+    createNewVoxelList();
+    break;
+    
+  case shiftSurfelVisu:
+    myCurrentfShiftVisuKSSurfels+=0.3;
+    break;
+    
+  }
+  
+  return *this;
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::createNewVoxelList(bool depthTest){
+  std::vector< voxelGL > v;
+  myVoxelSetList.push_back(v);
+  myListVoxelDepthTest.push_back(depthTest);
+  
+}
+
+INLINE
+void
+DGtal::DGtalQGLViewer::createNewLineList(){
+  std::vector< lineGL > v;
+  myLineSetList.push_back(v);
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::createNewPointList(){
+  std::vector< pointGL > v;
+  myPointSetList.push_back(v);
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::setFillColor(QColor aColor){
+  myCurrentFillColor=aColor;  
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::setLineColor(QColor aColor){
+  myCurrentLineColor=aColor;  
+}
+
+
+INLINE
+QColor
+DGtal::DGtalQGLViewer::getFillColor(){
+  return myCurrentFillColor;  
+}
+
+INLINE
+QColor
+DGtal::DGtalQGLViewer::getLineColor(){
+  return myCurrentLineColor;  
+}
+
+
+
+
+template <typename TDrawableWithDGtalQGLViewer>
+INLINE
+DGtal::DGtalQGLViewer & 
+DGtal::DGtalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
+{
+  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalQGLViewer< TDrawableWithDGtalQGLViewer >));
+  
+  object.selfDrawQGL( *this );
+  return *this;
+}
+
+
+
+
+
+
+INLINE
+std::string
+DGtal::DGtalQGLViewer::getMode( const std::string & objectName ) const
+{
+  ModeMapping::const_iterator itm = myModes.find( objectName );
+  return itm == myModes.end() ? "" : itm->second;
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
+  voxelGL v;
+  updateBoundingBox(x, y, z);  
+  v.x=x;
+  v.y=y;
+  v.z=z;
+  v.R=aColor.red();
+  v.G=aColor.green();
+  v.B=aColor.blue();
+  v.T=aColor.alpha();
+  v.width=width;
+  
+  (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
+   
+}
+
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+  pointGL p;
+  updateBoundingBox(x, y, z);
+  
+  p.x=x;
+  p.y=y;
+  p.z=z;
+  p.R=aColor.red();
+  p.G=aColor.green();
+  p.B=aColor.blue();
+  p.T=aColor.alpha();
+  p.size=size;
+  
+  (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
+   
+}
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+			       const QColor & aColor, double width){
+  lineGL l;
+  l.x1=x1;
+  l.y1=y1;
+  l.z1=z1;
+
+  l.x2=x2;
+  l.y2=y2;
+  l.z2=z2;
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+    
+  l.R=aColor.red();
+  l.G=aColor.green();
+  l.B=aColor.blue();
+  l.T=aColor.alpha();
+  l.width=width;
+  
+  (myLineSetList.at(myLineSetList.size()-1)).push_back(l);  
+   
+}
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
+  quadGL aQuad;
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+  updateBoundingBox(x3, y3, z3);
+  updateBoundingBox(x4, y4, z4);
+  
+  double  ux=x2-x1; 
+  double  uy=y2-y1; 
+  double  uz=z2-z1; 
+  
+  double  vx=x3-x2; 
+  double  vy=y3-y2; 
+  double  vz=z3-z2; 
+  
+  qglviewer::Vec n( uy*vz-uz*vy, uz*vx-ux*vz,  ux*vy-uy*vx );
+  double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+  
+  aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
+  aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
+  aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
+  aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
+  aQuad.nx= n[0]/normeN;
+  aQuad.ny= n[1]/normeN;
+  aQuad.nz= n[2]/normeN;
+  
+  aQuad.R=aColor.red();
+  aQuad.G=aColor.green();
+  aQuad.B=aColor.blue();
+  aQuad.T=aColor.alpha();
+  
+  myQuadList.push_back(aQuad);  
+}
+
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z, 
+				   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+				   bool isOriented, bool isOrientedPositively ){
+  
+  float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
+  float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
+  
+  updateBoundingBox(x, y, z);
+  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+  double x5, y5, z5, x6, y6, z6, x7, y7, z7, x8, y8, z8;
+  double dx, dy, dz;
+  
+  
+  ASSERT( xSurfel || ySurfel || zSurfel  );
+  
+ 
+  if(zSurfel){
+    x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
+    x2= x+0.5;  y2= y-0.5;  z2= z-0.5;
+    x3= x+0.5;  y3= y+0.5;  z3= z-0.5;
+    x4= x-0.5;  y4= y+0.5;  z4= z-0.5;
+    
+    
+    y1+=retract; y2+=retract; y3-=retract; y4-=retract;
+    x1+=retract; x2-=retract; x3-=retract; x4+=retract;
+    dx=0.0; dy=0.0; dz=width;
+  }
+  else if(ySurfel){
+    x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
+    x2= x-0.5;  y2= y-0.5;  z2= z+0.5;
+    x3= x+0.5;  y3= y-0.5;  z3= z+0.5;
+    x4= x+0.5;  y4= y-0.5;  z4= z-0.5;
+    x1+=retract; x2+=retract; x3-=retract; x4-=retract;
+    z1+=retract; z2-=retract; z3-=retract; z4+=retract;
+    dx=0.0; dy=width; dz=0.0;
+  }
+ else if(xSurfel){
+    x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
+    x2= x-0.5;  y2= y+0.5;  z2= z-0.5;
+    x3= x-0.5;  y3= y+0.5;  z3= z+0.5;
+    x4= x-0.5;  y4= y-0.5;  z4= z+0.5;
+    y1+=retract; y2-=retract; y3-=retract; y4+=retract;
+    z1+=retract; z2+=retract; z3-=retract; z4-=retract;
+    dx=width; dy=0.0; dz=0.0;
+ }
+  
+  double xcenter= (x1+x2+x3+x4)/4.0;
+  double ycenter= (y1+y2+y3+y4)/4.0;
+  double zcenter= (z1+z2+z3+z4)/4.0;
+
+  x5=x1-dx; y5=y1-dy; z5= z1-dz;
+  x6=x2-dx; y6=y2-dy; z6= z2-dz;
+  x7=x3-dx; y7=y3-dy; z7= z3-dz;
+  x8=x4-dx; y8=y4-dy; z8= z4-dz;  
+
+  
+  x1=x1+dx; y1=y1+dy; z1= z1+dz;
+  x2=x2+dx; y2=y2+dy; z2= z2+dz;
+  x3=x3+dx; y3=y3+dy; z3= z3+dz;
+  x4=x4+dx; y4=y4+dy; z4= z4+dz;  
+
+  //if cell is oriented positively we retrac the upper face:
+  if(isOriented && isOrientedPositively){
+    x1= 0.6*x1+0.4*xcenter; x2= 0.6*x2+0.4*xcenter; x3= 0.6*x3+0.4*xcenter; x4= 0.6*x4+0.4*xcenter;
+    y1= 0.6*y1+0.4*ycenter; y2= 0.6*y2+0.4*ycenter; y3= 0.6*y3+0.4*ycenter; y4= 0.6*y4+0.4*ycenter;
+    z1= 0.6*z1+0.4*zcenter; z2= 0.6*z2+0.4*zcenter; z3= 0.6*z3+0.4*zcenter; z4= 0.6*z4+0.4*zcenter;
+  }else if (isOriented) {
+    x5= 0.6*x5+0.4*xcenter; x6= 0.6*x6+0.4*xcenter; x7= 0.6*x7+0.4*xcenter; x8= 0.6*x8+0.4*xcenter;
+    y5= 0.6*y5+0.4*ycenter; y6= 0.6*y6+0.4*ycenter; y7= 0.6*y7+0.4*ycenter; y8= 0.6*y8+0.4*ycenter;
+    z5= 0.6*z5+0.4*zcenter; z6= 0.6*z6+0.4*zcenter; z7= 0.6*z7+0.4*zcenter; z8= 0.6*z8+0.4*zcenter;
+  }
+  
+  
+  //main up face
+  quadGL qFaceUp;
+  qglviewer::Vec normaleUp( dx!=0.0? 1.0:0.0, dy!=0.0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
+  qFaceUp.nx=  normaleUp[0];
+  qFaceUp.ny=  normaleUp[1];
+  qFaceUp.nz=  normaleUp[2];
+
+  qFaceUp.x1=x1; qFaceUp.y1=y1; qFaceUp.z1= z1;
+  qFaceUp.x2=x2; qFaceUp.y2=y2; qFaceUp.z2= z2;
+  qFaceUp.x3=x3; qFaceUp.y3=y3; qFaceUp.z3= z3;
+  qFaceUp.x4=x4; qFaceUp.y4=y4; qFaceUp.z4= z4;
+  
+  qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
+  qFaceUp.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFaceUp);  
+  
+  //small face 1
+  quadGL qFace1;
+  qglviewer::Vec vF1 (x2-x1, y2-y1, z2-z1);
+  qglviewer::Vec v1 (x5-x1, y5-y1, z5-z1);// 
+  qglviewer::Vec n1 =cross(v1,vF1);
+  n1.normalize();
+  qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
+  qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
+  qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
+  qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
+  qFace1.x4= x5; qFace1.y4 =y5; qFace1.z4=z5;
+  qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
+  qFace1.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFace1);  
+  
+  
+  //small face 2
+  quadGL qFace2;
+  qglviewer::Vec vF2 (x3-x2, y3-y2, z3-z2);
+  qglviewer::Vec v2 (x6-x2, y6-y2, z6-z2);
+  qglviewer::Vec n2 = cross(v2,vF2);
+  n2.normalize();
+  qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
+  qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
+  qFace2.x2= x3; qFace2.y2 =y3; qFace2.z2=z3;
+  qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
+  qFace2.x4= x6; qFace2.y4 =y6; qFace2.z4=z6;
+  qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
+  qFace2.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFace2);  
+  
+  
+  //small face 3
+  quadGL qFace3;
+  qglviewer::Vec vF3 (x4-x3, y4-y3, z4-z3);
+  qglviewer::Vec v3 (x7-x3, y7-y3, z7-z3);
+  qglviewer::Vec n3 = cross(v3,vF3);
+  n3.normalize();
+  qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
+  qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
+  qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
+  qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
+  qFace3.x4= x7; qFace3.y4 =y7; qFace3.z4=z7;
+  qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
+  qFace3.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFace3);  
+   
+  //small face 4
+  quadGL qFace4;
+  qglviewer::Vec vF4 (x1-x4, y1-y4, z1-z4);
+  qglviewer::Vec v4 (x5-x4, y5-y4, z5-z4);
+  qglviewer::Vec n4 = cross(v4,vF4);
+  n4.normalize();
+  qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
+  qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
+  qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
+  qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
+  qFace4.x4= x8; qFace4.y4 =y8; qFace4.z4=z8;
+  qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
+  qFace4.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFace4);  
+  
+  //main up face
+  quadGL qFaceDown;
+  qFaceDown.nx=  -normaleUp[0];
+  qFaceDown.ny=  -normaleUp[1];
+  qFaceDown.nz=  -normaleUp[2];
+  qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
+  qFaceDown.x2=x6; qFaceDown.y2=y6; qFaceDown.z2= z6;
+  qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
+  qFaceDown.x4=x8; qFaceDown.y4=y8; qFaceDown.z4= z8;
+  qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
+  qFaceDown.T=myCurrentFillColor.alpha();
+  myKSSurfelList.push_back(qFaceDown);  
+  
+}
+  
+
+
+
+
+  
+  /**
+   * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
+   * 
+   *
+   * @param a, b, c, d : plane equation.
+   **/
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
+  if(myClippingPlaneList.size()<5){
+    clippingPlaneGL cp;
+    cp.a=a; cp.b=b; cp.c=c; cp.d=d;
+    myClippingPlaneList.push_back(cp);
+    if(drawPlane){
+      double x1,x2,x3,x4;	
+      double y1,y2,y3,y4;
+      double z1,z2,z3,z4;
+      double norm = sqrt(a*a+b*b+c*c);
+      double dec=0.1;
+      // Z dominant projection of the upper face
+      if(abs(c)>=abs(b) && abs(c) >= abs(a)){
+	x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
+	z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
+	x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
+	z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
+	x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
+	z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
+	x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
+	z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;     
+	if(c>0){
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	}else{
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	}
+	
+      }// Y dominant projection of the upper face
+      else   if(abs(b)>=abs(c) && abs(b) >= abs(a)){
+	x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	y1=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
+	x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
+	y2=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
+	x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	y3=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
+	x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
+	y4=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
+	if(b>0){
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	}else{
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	}
+      }// X dominant projection of the upper face
+      else   if(abs(a)>=abs(c) && abs(a) >= abs(b)){
+	y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	x1=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
+	y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
+	x2=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
+	y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	x3=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
+	y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
+	x4=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
+	
+	if(a>0){
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	}else{
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	}
+      }
+      
+    }
+  
+  }else{
+    std::cerr <<"Warning maximal clipping plane added" << endl;
+  }
+}
+
+
+
+INLINE
+void 
+DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size){
+  pointGL pt;
+  updateBoundingBox(x, y, z);
+  pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
+  pt.R=myCurrentFillColor.red();
+  pt.G=myCurrentFillColor.green(); 
+  pt.B=myCurrentFillColor.blue(); 
+  pt.T= myCurrentFillColor.alpha();
+  myKSPointelList.push_back(pt);
+}
+
+
+INLINE
+void 
+DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z){
+  voxelGL v;
+  updateBoundingBox(x, y, z);
+  v.x=x;
+  v.y=y;
+  v.z=z;
+  v.R=myCurrentFillColor.red();
+  v.G=myCurrentFillColor.green();
+  v.B=myCurrentFillColor.blue();
+  v.T=myCurrentFillColor.alpha();
+  v.width=0.47;
+  
+  (myVoxelSetList.at(0)).push_back(v);  
+}
+
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::addKSLinel(double x1, double y1, double z1,
+				  double x2, double y2, double z2,
+				  double width,  bool isSigned, bool signPos){
+  lineGL l;
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2; 
+  l.width=width; 
+  l.R= myCurrentFillColor.red(); 
+  l.G= myCurrentFillColor.green(); 
+  l.B=myCurrentFillColor.blue(); 
+  l.T=myCurrentFillColor.alpha();
+  l.isSigned=isSigned;
+  l.signPos=signPos; 
+  myKSLinelList.push_back(l);
+}
+
+
+INLINE
+void
+DGtal::DGtalQGLViewer::updateBoundingBox(int x, int y, int z){
+  if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
+  if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
+  if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
+  
+  if(x >myBoundingPtUp[0])   myBoundingPtUp[0]= x;
+  if(y >myBoundingPtUp[1])   myBoundingPtUp[1]= y;
+  if(z >myBoundingPtUp[2])   myBoundingPtUp[2]= z;
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'DGtalQGLViewer'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'DGtalQGLViewer' to write.
+ * @return the output stream after the writing.
+ */
+INLINE
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+		    const DGtalQGLViewer & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

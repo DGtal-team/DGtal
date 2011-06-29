@@ -36,7 +36,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/DGtalBoard.h"
 #include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -170,12 +170,13 @@ bool testDisplayFreemanChain(const string &file)
   aBoard << fc;
   fst.close();
   
-  
+#ifndef _BOARDCAIRO_BOARD_H_ // temp MT
   std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
   LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
   image.shiftDepth(1);
   LibBoard::Board & board = aBoard;
   board << image;
+#endif
   
   
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);

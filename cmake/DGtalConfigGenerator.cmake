@@ -1,0 +1,44 @@
+
+
+export(TARGETS  ${LIBDGTAL_NAME} FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
+
+if ( WITH_VISU3D )
+  export(TARGETS  ${LIBDGTALVISU3D_NAME} APPEND FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
+endif( WITH_VISU3D )
+
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+# export(PACKAGE DGtal)
+# Not working on cmake 2.6, I remove this option but keep the codeline (DC)
+
+# Create a DGtalConfig.cmake file for the use from the build tree
+set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+set(DGTAL_LIB_DIR "${PROJECT_BINARY_DIR}/DGtal")
+set(DGTAL_CMAKE_DIR "${PROJECT_BINARY_DIR}")
+
+configure_file(${CMAKE_MODULE_PATH}/DGtalConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/DGtalConfig.cmake" @ONLY)
+
+configure_file(${CMAKE_MODULE_PATH}/DGtalConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/DGtalConfigVersion.cmake" @ONLY)
+ 
+# Install the export set for use with the install-tree
+install(EXPORT DGtalLibraryDepends DESTINATION
+  "${INSTALL_DATA_DIR}/DGtal/CMake"
+  COMPONENT dev)
+ 
+# Create a DGtalConfig.cmake file for the use from the install tree
+# and install it
+set(DGTAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+set(DGTAL_LIB_DIR "${INSTALL_LIB_DIR}")
+set(DGTAL_CMAKE_DIR "${INSTALL_DATA_DIR}/DGtal/CMake")
+configure_file(${CMAKE_MODULE_PATH}/DGtalConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake" @ONLY)
+
+configure_file(${CMAKE_MODULE_PATH}/DGtalConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake" @ONLY)
+install(FILES
+  "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
+  "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
+  DESTINATION "${DGTAL_CMAKE_DIR}" COMPONENT dev)
+ 

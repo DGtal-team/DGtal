@@ -68,21 +68,27 @@ typename DGtal::ReverseDistanceTransformation<I, p, IntShort>::OutputImage
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstruction(const I & aImage)
 {
   //We copy the image extent.
-  myLowerBoundCopy = aImage.lowerBound();
-  myUpperBoundCopy = aImage.upperBound();
+  myLowerBoundCopy = Point(); //(O,O,...O)
+  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
+  myDisplacementVector = aImage.lowerBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
-
+  
   I output ( myLowerBoundCopy, myUpperBoundCopy );
   I swap ( myLowerBoundCopy, myUpperBoundCopy );
 
   bool isSwap = reconstructionInternal(aImage,output,swap);
 
   if ( !isSwap )
-    return castValues(swap);
+    {
+      swap.translateDomain(myDisplacementVector);
+      return castValues(swap);
+    }
   else
-    return castValues(output);
+    {
+      output.translateDomain(myDisplacementVector);
+      return castValues(output);
+    }
 }
-
 
 template <typename I, DGtal::uint32_t p, typename IntShort>
 template <typename Set>
@@ -93,11 +99,12 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(Set &a
   ///@todo bug in the CDigitalSet concept
   //BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
   
-  //We copy the image extent.
-  myLowerBoundCopy = aImage.lowerBound();
-  myUpperBoundCopy = aImage.upperBound();
+  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
+  myLowerBoundCopy = Point(); //(O,O,...O)
+  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
+  myDisplacementVector = aImage.lowerBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
-
+  
   typename I::Domain domain(myLowerBoundCopy,myUpperBoundCopy);
 
   I output ( myLowerBoundCopy, myUpperBoundCopy );
@@ -112,16 +119,14 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(Set &a
     if (isSwap)
       {
 	if ( output(*it)  > 0)
-	  aSet.insertNew(*it);
+	  aSet.insertNew((*it) + myDisplacementVector);
       }
     else
       {
 	if ( swap(*it)  > 0)
-	  aSet.insertNew(*it);
+	  aSet.insertNew((*it)  + myDisplacementVector);
       }
 }
-
-
 
 
 template <typename I, DGtal::uint32_t p, typename IntShort>
@@ -130,7 +135,7 @@ bool
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(const I & aImage, I &output, I &swap)
 {
  
-  //We copy input image
+  //We copy input image (implicit translation of values)
   typename I::Iterator ito=output.begin();
   
   for(typename I::ConstIterator it=aImage.begin(), itend = aImage.end();
@@ -142,14 +147,14 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(con
 
   //We process the dimensions swaping the temporary buffers
   for ( Dimension dim = 0; dim < I::dimension ; dim++ )
-  {
-    if ( isSwap )
-      computeSteps ( output, swap, dim );
-    else
-      computeSteps ( swap, output, dim );
+    {
+      if ( isSwap )
+	computeSteps ( output, swap, dim );
+      else
+	computeSteps ( swap, output, dim );
 
-    isSwap = !isSwap;
-  }
+      isSwap = !isSwap;
+    }
 
   return isSwap;
 }
@@ -188,21 +193,6 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
   std::string title = "RDT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
 
-  /*
-  trace.error()<<"In"<<endl;
-
- typename I::ConstIterator it2 = input.begin();
-  for (unsigned int y = 2; y < 16; y++)
-    {
-    for (unsigned int x = 2; x < 16; x++)
-    {
-      std::cerr << (*it2) << " ";
-      ++it2;
-    }
-    std::cerr << std::endl;
-  }
-  */
-
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
   
   //We setup the subdomain iterator
@@ -228,26 +218,13 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
-  {
-    computeSteps1D ( input, output, (*it), dim, s, t );
-  }
-
-  delete []s;
-  delete []t;
-
-  /*trace.info()<<"out"<<endl;
-   
-  typename I::ConstIterator it = output.begin();
-  for (unsigned int y = 2; y < 16; y++)
     {
-      for (unsigned int x = 2; x < 16; x++)
-	{
-	  std::cerr << (*it) << " ";
-	  ++it;
-	}
-      std::cerr << std::endl;
+      computeSteps1D ( input, output, (*it), dim, s, t );
     }
-  */
+
+  delete[] s;
+  delete[] t;
+
   trace.endBlock();
 
 }
@@ -294,48 +271,48 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
   //Forward Scan
 
   for ( int u = pU[dim] + 1; u <= myUpperBoundCopy[dim] ; u++ )
-  {
-    pU[ dim ] = u;
-    if ( input( pU ) == 0 )
     {
-      //trace.info() << "Ctd " << pU ;
-      continue;
-    }
+      pU[ dim ] = u;
+      if ( input( pU ) == 0 )
+	{
+	  //trace.info() << "Ctd " << pU ;
+	  continue;
+	}
     
-    while ( ( q >= 0 ) &&
-        ( myMetric.reversedF ( t[q], s[q], input ( sQ ) ) <
-	  myMetric.reversedF ( t[q], u, input ( pU ) ) ) )
-    {
-      q--;
-      ///@todo optimize the test here
-      if (q>=0)
-	sQ[dim] = s[q];
-    }
+      while ( ( q >= 0 ) &&
+	      ( myMetric.reversedF ( t[q], s[q], input ( sQ ) ) <
+		myMetric.reversedF ( t[q], u, input ( pU ) ) ) )
+	{
+	  q--;
+	  ///@todo optimize the test here
+	  if (q>=0)
+	    sQ[dim] = s[q];
+	}
 
-    if ( q < 0 )
-    {
-      q = 0;
-      s[0] = u;
-      t[0] = myLowerBoundCopy[dim];
-      sQ[dim] = u;
-    }
-    else
-    {
-      sQ[dim] = s[q];
-      w = 1 + myMetric.reversedSep ( s[q],
-          input ( sQ ),
-          u,
-          input ( pU ) );
+      if ( q < 0 )
+	{
+	  q = 0;
+	  s[0] = u;
+	  t[0] = myLowerBoundCopy[dim];
+	  sQ[dim] = u;
+	}
+      else
+	{
+	  sQ[dim] = s[q];
+	  w = 1 + myMetric.reversedSep ( s[q],
+					 input ( sQ ),
+					 u,
+					 input ( pU ) );
 
-      if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
-      {
-        q++;
-        s[q] = u;
-        sQ[dim] = u;
-        t[q] = w;
-      }
+	  if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
+	    {
+	      q++;
+	      s[q] = u;
+	      sQ[dim] = u;
+	      t[q] = w;
+	    }
+	}
     }
-  }
 
   Point last = startingPoint;
 
@@ -343,20 +320,20 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
 
   //Backward Scan
   for (last[dim] = myUpperBoundCopy[dim];
-      last[dim] >= myLowerBoundCopy[dim] ;
-      last[dim]-- )
-  {    
-    if (myMetric.reversedF ( last[dim] , s[q], input ( sQ )) > 0 )
+       last[dim] >= myLowerBoundCopy[dim] ;
+       last[dim]-- )
+    {    
+      if (myMetric.reversedF ( last[dim] , s[q], input ( sQ )) > 0 )
     	output.setValue ( last, myMetric.reversedF ( last[dim] , s[q], input ( sQ ) ) );
-    else
-      output.setValue ( last, 0 );
+      else
+	output.setValue ( last, 0 );
     
-    if (( last[dim] == t[q] ) && (q > 0))
-    {
-      q--;
-      sQ[dim] = s[q];
+      if (( last[dim] == t[q] ) && (q > 0))
+	{
+	  q--;
+	  sQ[dim] = s[q];
+	}
     }
-  }
 }
 
 

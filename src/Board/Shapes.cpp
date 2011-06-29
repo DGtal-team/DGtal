@@ -1372,6 +1372,56 @@ Circle::flushCairo( cairo_t *cr,
 #endif
 
 /*
+ * Arc
+ */
+
+const std::string Arc::_name("Arc");
+
+const std::string &
+Arc::name() const
+{
+    return _name;
+}
+
+#ifdef WITH_CAIRO
+void
+Arc::flushCairo( cairo_t *cr,
+		 const TransformCairo & transform ) const
+{
+    cairo_save (cr);
+
+      cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+
+      if (_negative)
+	cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+      else
+	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+      
+      if ( filled() )
+	if ( _penColor != Color::None )
+	  cairo_fill_preserve (cr);
+	else
+	  cairo_fill (cr);
+      
+      //
+      
+      if ( _penColor != Color::None )
+      {
+	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+    
+	cairo_set_line_width (cr, _lineWidth);
+	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+	setCairoDashStyle (cr, _lineStyle);
+
+	cairo_stroke (cr);
+      }
+    
+    cairo_restore (cr);
+}
+#endif
+
+/*
  * Polyline
  */
 

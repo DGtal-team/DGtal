@@ -31,10 +31,16 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
+#include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageSelector.h"
+
 #include "DGtal/helpers/StdDefs.h"
+
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -115,7 +121,26 @@ bool testSetFromImage()
 
 
 
+  trace.beginBlock ( "Testing SetFromImage using pgm test file ..." );
   
+  std::string filename = testPath + "samples/circleR10modif.pgm";
+  Image image2 = PNMReader<Image>::importPGMImage( filename ); 
+  Z2i::DigitalSet setFromImg (image2.domain());
+  SetFromImage<Z2i::DigitalSet>::append<Image>(setFromImg, image2, 0, 255);
+
+  
+  for( Z2i::DigitalSet::Iterator it= setFromImg.begin(); 
+       it!=setFromImg.end(); it++){
+    trace.info()<< *it << endl;
+  }
+  trace.info()<< "Size=" << setFromImg.size();
+  
+  Image setImage = ImageFromSet<Image>::create(setFromImg, 1,
+					       false, 
+ 					       setFromImg.begin(), 
+ 					       setFromImg.end());
+  
+  trace.info() << "Image at 0,12:" << setImage(Point(0,12))<< endl;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();

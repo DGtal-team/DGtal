@@ -14,7 +14,7 @@
  *
  **/
 /**
- * @file visuDistanceTransform.cpp
+ * @file shapeGenerator.cpp
  * @ingroup Tools
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr)
  * LIRIS (CNRS, UMR 5205), 
@@ -37,15 +37,15 @@
 #include "DGtal/helpers/Surfaces.h"
 
 
-#include "DGtal/io-viewers/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
-#include "DGtal/io-viewers/writers/PNMWriter.h"
-#include "DGtal/io-viewers/writers/RawWriter.h"
-#include "DGtal/io-viewers/writers/VolWriter.h"
-#include "DGtal/io-viewers/DGtalBoard.h"
+#include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/writers/RawWriter.h"
+#include "DGtal/io/writers/VolWriter.h"
+#include "DGtal/io/DGtalBoard.h"
 
 
 #include <boost/program_options/options_description.hpp>
@@ -57,6 +57,11 @@
 
 using namespace DGtal;
 
+
+/**
+ * Global vectors to describe the available shapes and their
+ * parameters.
+ */
 std::vector<std::string> shapes2D;
 std::vector<std::string> shapesDesc;
 std::vector<std::string> shapesParam1;
@@ -78,15 +83,15 @@ void createList()
   shapesParam3.push_back("");
   shapesParam4.push_back("");
  
-  shapes2D.push_back("cube");
-  shapesDesc.push_back("Hypercube.");
+  shapes2D.push_back("square");
+  shapesDesc.push_back("square (no signature).");
   shapesParam1.push_back("--width [-w]");
   shapesParam2.push_back("");
   shapesParam3.push_back("");
   shapesParam4.push_back("");
   
   shapes2D.push_back("lpball");
-  shapesDesc.push_back("Ball for the l_power metric.");
+  shapesDesc.push_back("Ball for the l_power metric (no signature).");
   shapesParam1.push_back("--radius [-R],");
   shapesParam2.push_back("--power [-p]");
   shapesParam3.push_back("");
@@ -95,7 +100,7 @@ void createList()
   shapes2D.push_back("flower");
   shapesDesc.push_back("Flower with k petals.");
   shapesParam1.push_back("--radius [-R],");
-  shapesParam2.push_back("--smallradius [-r],");
+  shapesParam2.push_back("--varsmallradius [-v],");
   shapesParam3.push_back("--k [-k],");
   shapesParam4.push_back("--phi");
 
@@ -109,7 +114,7 @@ void createList()
   shapes2D.push_back("accflower");
   shapesDesc.push_back("Accelerated Flower with k petals.");
   shapesParam1.push_back("--radius [-R],");
-  shapesParam2.push_back("--smallradius [-r],");
+  shapesParam2.push_back("--varsmallradius [-v],");
   shapesParam3.push_back("--k [-k],");
   shapesParam4.push_back("--phi");
 
@@ -167,12 +172,28 @@ unsigned int checkAndRetrunIndex(const std::string &shapeName)
   return pos;
 }
 
+
+/** 
+ * Functor to export a given shape into an image file
+ * (pgm,raw,pdf,svg,...) and to extract its signature.
+ * 
+ * @tparam Set type of the input Set
+ * @tparam Image type of the input Image.
+ */
 template <typename Set, typename Image>
 struct Exporter
 { 
   typedef GrayscaleColorMap<unsigned char> Gray;
 
   
+  /** 
+   * Export a given Set into an image file.
+   * 
+   * @param aSet input set.
+   * @param outputName output file name.
+   * @param outputFormat output file format.
+   *
+   */
   static
   void save(const Set &aSet, 
 	    const std::string outputName, 
@@ -181,43 +202,54 @@ struct Exporter
     
     Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255, true);
     
-    if (Set::Domain::dimension == 2)
-      if  (outputFormat == "pgm")
-	PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
+    if  (outputFormat == "pgm")
+      PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
+    else
+      if (outputFormat == "raw")
+	RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
       else
-	if (outputFormat == "raw")
-	  RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
+	if (outputFormat == "svg")
+	  {
+	    DGtalBoard board;
+	    board << aSet;
+	    board.saveSVG((outputName+"."+outputFormat).c_str());
+	  }
 	else
-	  if (outputFormat == "svg")
+#ifdef WITH_CAIRO
+	  if (outputFormat == "pdf")
 	    {
 	      DGtalBoard board;
 	      board << aSet;
-	      board.saveSVG((outputName+"."+outputFormat).c_str());
+	      board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
+	      
 	    }
 	  else
-	    if (outputFormat == "pdf")
+	    if (outputFormat == "png")
 	      {
 		DGtalBoard board;
 		board << aSet;
-		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
-		
+		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
 	      }
 	    else
+#endif
 	      {
 		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
 		exit(1);
 	      }
   }
+  
 
   /** 
    * Compute and export (std::cout) the boundary of the set and export the signature (normal
    * vector, curvature) at each point of the 2D contour.
    * 
-   * @param aSet input set.
+   * @param aShape the shape
+   * @param aSet input set corresponding to the shape
    * @param aDomain the domain used to construct the set.
    */
+  template <typename Shape>
   static 
-  void exportSignature(const Set &aSet, const Z2i::Domain &aDomain)
+  void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
   {
     
     trace.beginBlock("Extracting the boundary");
@@ -235,13 +267,27 @@ struct Exporter
     trace.endBlock();
     
     ///Export
+    std::cout<<"## shapeGenerator signature export"<<std::endl;
+    std::cout<<"## shape: "<<aShape<<std::endl;
+    std::cout<<"## x\ty\tdx\tdy\tddx\tddy"<<std::endl;
     for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
-      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size(); j++)
-	std::cout<< vectContoursBdryPointels.at(i).at(j)<<std::endl;
-    
-    //<<","
-    //		 << vectContoursBdryPointels.at(i).at(j)[0]<<","<<std::endl;
+      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size() - 1; j++)
+	{
+	  Z2i::Space::Point point = (vectContoursBdryPointels.at(i).at(j) 
+				     + vectContoursBdryPointels.at(i).at(j+1));
+	  Z2i::Space::RealPoint midpoint (point[0]/2.0,point[1]/2.0);
+
+	  Z2i::Space::RealPoint xp,xpp;
+	  double t = aShape.parameter(midpoint);
+	  xp = aShape.xp( t );
+	  xpp = aShape.xpp( t );
 	  
+	  std::cout<< midpoint[0]<<"\t"<<midpoint[1]<<"\t"
+		   << xp[0]<<"\t"<<xp[1]<<"\t"
+	    	   << xpp[0]<<"\t"<<xpp[1]<<std::endl;
+	    
+	}
+    	  
   }
 };
 
@@ -272,13 +318,14 @@ int main( int argc, char** argv )
     ("axis1,A",  po::value<double>(), "Half big axis of the shape (ellipse)" )
     ("axis2,a",  po::value<double>(), "Half small axis of the shape (ellipse)" )
     ("smallradius,r",  po::value<double>()->default_value(5), "Small radius of the shape" )
+    ("varsmallradius,v",  po::value<double>()->default_value(5), "Variable small radius of the shape" )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("output,o", po::value<string>(), "Basename of the output file")
     ("signature", "Display to the standard output the signature (normal, curvature) at each point of the specified shape contour (middle point of each contour linel)")
-    ("format,f",   po::value<string>()->default_value("pgm"), "Output format {pgm, raw, svg, pdf}" );
+    ("format,f",   po::value<string>()->default_value("pgm"), "Output format:\n\t  Bitmap {pgm, raw}\n\t  Vector {svg} (+ {png,pdf} if libCairo installed)" );
   
   
   po::variables_map vm;
@@ -321,7 +368,7 @@ int main( int argc, char** argv )
       if (not(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       
-      ImplicitBall<Z2i::Space> ball(Z2i::Point(0,0), radius);
+      Ball2D<Z2i::Space> ball(Z2i::Point(0,0), radius);
       Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
       Z2i::DigitalSet aSet(domain);
       
@@ -329,7 +376,7 @@ int main( int argc, char** argv )
       Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
       
       if (vm.count("signature"))
-	Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	Exporter<Z2i::DigitalSet,Image>::exportSignature(ball,aSet,domain);
       
       return 0;
     }
@@ -347,7 +394,10 @@ int main( int argc, char** argv )
 	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	if (vm.count("signature"))
-	  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	  {
+	    trace.error()<< "No signature export for this shape.";
+	    trace.info()<<std::endl;
+	  }
    
 	return 0;
       }
@@ -357,7 +407,7 @@ int main( int argc, char** argv )
 	  if (not(vm.count("power"))) missingParam("--power");
 	  if (not(vm.count("radius"))) missingParam("--radius");
 	  double radius = vm["radius"].as<double>();
-	  unsigned int power = vm["power"].as<double>();
+	  double power = vm["power"].as<double>();
 	  
 	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
@@ -367,23 +417,26 @@ int main( int argc, char** argv )
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	  if (vm.count("signature"))
-	    Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	    {
+	      trace.error()<< "No signature export for this shape.";
+	      trace.info()<<std::endl;
+	    }
    
 	  return 0;
 	}
       else
 	if (id ==3)
 	  {
-	    if (not(vm.count("smallradius"))) missingParam("--smallradius");
+	    if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
 	    if (not(vm.count("radius"))) missingParam("--radius");
 	    if (not(vm.count("k"))) missingParam("--k");
 	    if (not(vm.count("phi"))) missingParam("--phi");
 	    double radius = vm["radius"].as<double>();
-	    double smallradius = vm["smallradius"].as<double>();
+	    double varsmallradius = vm["varsmallradius"].as<double>();
 	    unsigned int k = vm["k"].as<unsigned int>();
 	    double phi = vm["phi"].as<double>();
 	    
-	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
 	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 	    Z2i::DigitalSet aSet(domain);
 	    
@@ -391,7 +444,7 @@ int main( int argc, char** argv )
 	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	    if (vm.count("signature"))
-	      Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+	      Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
 	    return 0;
 	  }
@@ -413,23 +466,23 @@ int main( int argc, char** argv )
 	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 	      if (vm.count("signature"))
-		Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		Exporter<Z2i::DigitalSet,Image>::exportSignature(object,aSet,domain);
    
 	      return 0;
 	    }
 	  else
 	    if (id ==5)
 	      {
-		if (not(vm.count("smallradius"))) missingParam("--smallradius");
+		if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
 		if (not(vm.count("radius"))) missingParam("--radius");
 		if (not(vm.count("k"))) missingParam("--k");
 		if (not(vm.count("phi"))) missingParam("--phi");
 		double radius = vm["radius"].as<double>();
-		double smallradius = vm["smallradius"].as<double>();
+		double varsmallradius = vm["varsmallradius"].as<double>();
 		unsigned int k = vm["k"].as<unsigned int>();
 		double phi = vm["phi"].as<double>();
 	      
-		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, smallradius,k,phi);
+		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
 		Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 		Z2i::DigitalSet aSet(domain);
 	      
@@ -437,7 +490,7 @@ int main( int argc, char** argv )
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 		if (vm.count("signature"))
-		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
 		return 0;
 	      } 
@@ -459,7 +512,7 @@ int main( int argc, char** argv )
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
 	
 		if (vm.count("signature"))
-		  Exporter<Z2i::DigitalSet,Image>::exportSignature(aSet,domain);
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(ell,aSet,domain);
    
 		return 0;
 	      } 

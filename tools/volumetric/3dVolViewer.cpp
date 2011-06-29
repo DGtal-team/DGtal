@@ -31,11 +31,11 @@
 #include <QtGui/qapplication.h>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io-viewers/readers/VolReader.h"
-#include "DGtal/io-viewers/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 
 #include "Board/Color.h"
-#include "DGtal/io-viewers/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/images/ImageSelector.h"
 
 
