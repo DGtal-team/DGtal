@@ -82,7 +82,7 @@ int main( int argc, char** argv )
   std::vector<Z2i::SCell> vectBdrySCell;
   SurfelAdjacency<2> SAdj( true );
   Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
-					  ks, SAdj, set2d, aCell );
+					  ks, SAdj, set2dPredicate, aCell );
   
   board << CustomStyle( (*(vectBdrySCell.begin())).styleName(), 
 			new CustomColors(  DGtalBoard::Color( 255, 255, 0 ),
@@ -108,7 +108,7 @@ int main( int argc, char** argv )
   Z2i::Cell low = ks.uFirst(ks.uSpel(ks.lowerBound()));
   Z2i::Cell upp = ks.uLast(ks.uSpel(ks.upperBound()));
   Surfaces<Z2i::KSpace>::sMakeBoundary( bdry,
-					ks, set2d, low, upp  );
+					ks, set2dPredicate, low, upp  );
 
   
   std::set<Z2i::SCell>::iterator itB;
@@ -121,7 +121,7 @@ int main( int argc, char** argv )
   
   std::vector< std::vector<Z2i::SCell> > vectContoursBdrySCell;
   Surfaces<Z2i::KSpace>::extractAll2DSCellContours( vectContoursBdrySCell,
-					       ks, SAdj, set2d );
+						    ks, SAdj, set2dPredicate );
   GradientColorMap<int> cmap_grad3( 0, vectContoursBdrySCell.size() );
   cmap_grad3.addColor( DGtalBoard::Color( 50, 50, 255 ) );
   cmap_grad3.addColor( DGtalBoard::Color( 255, 0, 0 ) );
