@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -340,13 +341,14 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
   glNewList(myListToAff+myVoxelSetList.size(), GL_COMPILE);
   myNbListe++;
   glPushName(myNbListe);  
+  glEnable( GL_DEPTH_TEST );
   glEnable(GL_BLEND);   
   glEnable( GL_MULTISAMPLE_ARB );
   glEnable( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
   
   glBegin(GL_QUADS);
-  
+  glEnable( GL_DEPTH_TEST );
   for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){

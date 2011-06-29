@@ -10,6 +10,7 @@ SET(DGTAL_DOC_EX_SRC
 if( WITH_VISU3D_QGLVIEWER  )
 SET(DGTAL_DOC_EX_SRC_QGL
    ctopo-1-3d
+   ctopo-1s-3d
    ctopo-2-3d
 )
 

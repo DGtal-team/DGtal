@@ -311,6 +311,24 @@ namespace DGtal {
    All methods concerning unsigned cells are prefixed by \c u, all
    methods concerning signed cells are prefixed by \c s.
  
+ 
+ Note that the sign of the signed and unsigned are well taked into
+  account in the display with \Ref DGtalQGLViewer .
+
+
+  <CENTER>
+   <table> 
+   <TR>
+   <td> @image html   ctopo-1b-3d.png "Visualisation of unsigned Cell"</td>
+   <td> @image html ctopo-1s-3d.png "Visualisation of signed Cell" </td>
+      
+  </TR>
+  </TABLE>
+  </CENTER>
+
+
+
+
    @subsection dgtal_ctopo_sec1_7 Accessing and modifying cell coordinates.
 
    Since one does not necessarily know which model of
@@ -687,7 +705,16 @@ namespace DGtal {
 \example ctopo-1-3d.cpp
 *A simple example of cellular grid space with several cells
 *instantiated and visualized in 3D. This program outputs this image.
-*   @image html ctopo-1-3d.png
+*   @image html ctopo-1b-3d.png
+*
+*/
+
+
+/**
+\example ctopo-1s-3d.cpp
+*A simple example of cellular grid space with several cells
+*instantiated and visualized in 3D. This program outputs this image.
+*   @image html ctopo-1s-3d.png
 *
 */
 
