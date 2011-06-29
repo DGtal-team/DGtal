@@ -17,101 +17,96 @@
 #pragma once
 
 /**
- * @file Measure.h
+ * @file L1LengthEstimator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/06/25
+ * @date 2011/06/27
  *
- * Header file for module Measure.cpp
+ * Header file for module L1LengthEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Measure_RECURSES)
-#error Recursive header files inclusion detected in Measure.h
-#else // defined(Measure_RECURSES)
+#if defined(L1LengthEstimator_RECURSES)
+#error Recursive header files inclusion detected in L1LengthEstimator.h
+#else // defined(L1LengthEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Measure_RECURSES
+#define L1LengthEstimator_RECURSES
 
-#if !defined Measure_h
+#if !defined L1LengthEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define Measure_h
+#define L1LengthEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/base/CowPtr.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Measure
+  // template class L1LengthEstimator
   /**
-   * Description of template class 'Measure' <p>
-   * \brief Aim: Implements a simple measure computation (in the
-   * Lesbegue sens) of a set.
-   * In dimension 2, it corresponds to the area of the set, to the
-   * volume in dimension 3,...
+   * Description of template class 'L1LengthEstimator' <p>
+   * \brief Aim: a simple model of CGlobalCurveEstimator that compute
+   * the length of a curve using the l_1 metric (just add 1/h for
+   * every step).
    * 
-   * Model of @href CGlobalGeometricEstimator 
+   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam Set type of set on which the geometrical moments is
-   * computed.
+   * @tparam TRange a model of CRange. 
    */
-  template< typename TSet >
-  class Measure
+  template <typename TRange>
+  class L1LengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
-    typedef TSet Set;
-    typedef typename TSet::Domain Domain;
 
-    // Does not work
-    //BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
- 
-    typedef double Quantity; 
-    
-    /**
-     * Constructor.
-     */
-    Measure();
+
+    ///@todo CONCEPT CHECK sur RANGE
+    typedef TRange Range;
+
+    typedef double Quantity;
   
+
+    /**
+     * Default Constructor.
+     */
+    L1LengthEstimator();
+    
+    
     /**
      * Destructor.
      */
-    ~Measure();
-
-    /** 
-     * Initialize the measure computation.
-     * 
-     * @param h grid size (must be >0).
-     * @param aSetPointerx a pointer to an input set.
-     */
-    void init(const double h, const Set &aSetPointer);
-   
-    
-    /** 
-     * Compute the measure (area, volume) of the set. Since we rely on
-     * the Set::size() method which is O(1). The current method is
-     * O(1) too.
-     *
-     * @pre init method must have been called before.
-     * 
-     * @return the measure of the set. 
-     */
-    Quantity eval() const;
+    ~L1LengthEstimator();
 
   
     // ----------------------- Interface --------------------------------------
   public:
+    
+    /** 
+     * Initialize the measure computation.
+     * 
+     * @param h grid size (must be >0).
+     * @param aRange a grid point range.
+     * @param closed true if the input range is closed.
+     */
+    void init( const double h, const Range & aRange, bool closed );
+    
 
+    /** 
+     * Computation of the l1 length of the curve.
+     * Complexity: O(|Range|)
+     * @pre init() method must be called before.
+     * 
+     * @return the curve length.
+     */
+    Quantity eval( ) const;
+
+ 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -124,11 +119,21 @@ namespace DGtal
      */
     bool isValid() const;
 
+      // ------------------------- Private Datas --------------------------------
+  private:
+    
+    ///Grid size.
+    double myH;
 
+    ///Copy of the range.
+    Range myRange;
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
+    ///Boolean to make sure that init() has been called before eval().
+    bool myIsInitBefore;
 
+    ///True if the underlying curve is closed.
+    bool myIsClosed;
+    
   private:
 
     /**
@@ -136,7 +141,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    Measure ( const Measure & other );
+    L1LengthEstimator ( const L1LengthEstimator & other );
 
     /**
      * Assignment.
@@ -144,45 +149,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Measure & operator= ( const Measure & other );
+    L1LengthEstimator & operator= ( const L1LengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-    ///grid resolution parameter.
-    double myH;
-
-    ///Copy of the set size.
-    typename Set::Size mySetSize;
-
-    ///Boolean to assert that the init() was called before the eval().
-    double myIsInitBefore;
-    
-
-  }; // end of class Measure
+  }; // end of class L1LengthEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Measure'.
+   * Overloads 'operator<<' for displaying objects of class 'L1LengthEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Measure' to write.
+   * @param object the object of class 'L1LengthEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Measure<T> & object );
+  operator<< ( std::ostream & out, const L1LengthEstimator<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/Measure.ih"
+#include "DGtal/geometry/2d//L1LengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Measure_h
+#endif // !defined L1LengthEstimator_h
 
-#undef Measure_RECURSES
-#endif // else defined(Measure_RECURSES)
+#undef L1LengthEstimator_RECURSES
+#endif // else defined(L1LengthEstimator_RECURSES)

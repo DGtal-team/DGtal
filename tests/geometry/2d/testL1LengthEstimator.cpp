@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testMeasure.cpp
+ * @file testL1LengthEstimator.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/06/25
+ * @date 2011/06/27
  *
- * Functions for testing class Measure.
+ * Functions for testing class L1LengthEstimator.
  *
  * This file is part of the DGtal library.
  */
@@ -30,12 +30,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/ShapeFactory.h"
 
-#include "DGtal/geometry/nd/Measure.h"
-#include "DGtal/geometry/CGlobalGeometricEstimator.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/SurfelNeighborhood.h"
+
+
+#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/2d/L1LengthEstimator.h"
+
+
+#include "ConfigTest.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -43,58 +52,33 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Measure.
+// Functions for testing class L1LengthEstimator.
 ///////////////////////////////////////////////////////////////////////////////
-
-bool testConcept()
-{
-  
-  BOOST_CONCEPT_ASSERT((CGlobalGeometricEstimator< Measure< Z3i::DigitalSet> >));
-  return true;
-}
-
-
-
 /**
  * Example of a test. To be completed.
  *
  */
-bool testMeasure()
+bool testL1LengthEstimator(std::string &filename)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing Measure ..." );
-
-
-  Z3i::Point a(0,0);
-  Z3i::Point b(64,64,64);
-  Z3i::Point c(32,32,32);
-  Z3i::Domain domain(a,b);
-  Z3i::DigitalSet set(domain);
+  trace.info() << "Reading GridCurve " << endl;
   
-  Shapes<Z3i::Domain>::shaper( set,
-			       ImplicitBall<Z3i::Space>( c, 10));
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+
+  GridCurve<KhalimskySpaceND<2> > c(instream); //grid curve
+
+  L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange > l1length;
+    
+  l1length.init(1, c.getPointsRange(),false);
+  trace.info() << "L1 length (h=1) = "<< l1length.eval()<<std::endl;
+
+  l1length.init(10, c.getPointsRange(),false);
+  trace.info() << "L1 length (h=10) = "<< l1length.eval()<<std::endl;
   
-  Measure< Z3i::DigitalSet> measure;
-
-  trace.info() << "Input set= "<<set<<std::endl;
-
-  trace.info()<<measure<<std::endl;
-
   
-  measure.init(10, set);
-  trace.info() << "Volume (h=10) "<<measure.eval()<<std::endl;
-  measure.init(100, set);
-  trace.info() << "Volume (h=100) "<<measure.eval()<<std::endl;
-  
-  trace.info()<<measure<<std::endl;
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
   
   return nbok == nb;
 }
@@ -104,13 +88,17 @@ bool testMeasure()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class Measure" );
+  trace.beginBlock ( "Testing class L1LengthEstimator" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testConcept() && testMeasure(); // && ... other tests
+  std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
+
+
+
+  bool res = testL1LengthEstimator(sinus2D4); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
