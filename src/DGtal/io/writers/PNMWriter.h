@@ -141,11 +141,13 @@ namespace DGtal
      * @param minV the minimum value of aImage (for colormap)
      * @param maxV the maximum value of aImage (for colormap) 
      * 
+     * 
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
 			  const Value & minV, const Value & maxV);
   
+
     /** 
      * Export an Image with PGM3D format. The colormap specified
      * in the template arguments is used to convert Value 
