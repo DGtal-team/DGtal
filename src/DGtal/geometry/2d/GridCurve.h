@@ -53,6 +53,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/Exceptions.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -71,12 +72,13 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'GridCurve' <p> Aim: describes a 4-connected
-   * oriented interpixel curve, closed or open. For instance, the
+   * Description of class 'GridCurve' <p> Aim: describes an
+   * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
+   * in any dimension, closed or open. For instance, the
    * topological boundary of a  simply connected digital set is a
    * closed grid curve. This object provides several ranges, such as
-   * PointsRange used to get the (integer) coordinates of the grid
-   * points (or pointels) of the grid curve. 
+   * PointsRange used to get the (integer) coordinates of the pointels
+   * of the grid curve. 
    *
    * Example :
    * @code 
@@ -112,14 +114,14 @@ namespace DGtal
     /**
      * Constructor.
      */
-    GridCurve() {};
+    GridCurve(){};
 
 
     /**
      * Init.
      * @param aVectorOfPoints the vector containing the sequence of grid points. 
      */
-    void initFromVector( const std::vector<Point> aVectorOfPoints );
+    void initFromVector( const std::vector<Point> aVectorOfPoints ) throw(ConnectivityException);
 
     /**
      * Init.
@@ -131,7 +133,13 @@ namespace DGtal
      * Init.
      * @param in any input stream,
      */
-    void initFromChainCodeStream(std::istream & in );
+    void initFromFreemanChainStream(std::istream & in ) throw(InputException);
+
+    /**
+     * Outputs the grid curve to the stream [out].
+     * @param out any output stream,
+     */
+    void writeVectorToStream( std::ostream & out );
 
     /**
      * Copy constructor.

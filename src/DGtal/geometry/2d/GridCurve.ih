@@ -59,10 +59,10 @@ inline
 typename DGtal::GridCurve<KSpace>::Cell
 DGtal::GridCurve<KSpace>::PointVectorTo1Cell(const Point& aPoint, const Vector& aVector) {
 
+    ASSERT( (aVector.norm(Vector::L_1) == 1) );
     Point p(aPoint);
     Point kp(p*2 + aVector); 
     return Cell(kp,myK.POS);
-    //ASSERT sur la norme du vector 
 }
 
 /**
@@ -72,7 +72,7 @@ DGtal::GridCurve<KSpace>::PointVectorTo1Cell(const Point& aPoint, const Vector& 
 template <typename KSpace>
 inline
 void
-DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoints ) {
+DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoints )  throw(ConnectivityException) {
 
   typename std::vector<Point>::const_iterator i, j; 
 
@@ -84,13 +84,17 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
     Point p = *i; 
     Vector v = *j - p;
 
+    if (v.norm(Vector::L_1) != 1) { //disconnected !
+	    throw ConnectivityException(); 
+    }
+
     my0Cells.push_back( PointTo0Cell(p) );
     my1Cells.push_back( PointVectorTo1Cell(p,v) );
   }
 
   //viewed as open
   my0Cells.push_back( PointTo0Cell(*i) );
-  //if closed first and last point == ou si distant de 1?
+  //if closed first and last point distant de 1?
 
 }
 
@@ -106,18 +110,44 @@ DGtal::GridCurve<KSpace>::initFromVectorStream(std::istream & in ) {
   std::vector<Point> v = PointListReader<Point>
                         ::getPointsFromInputStream(in);
 
-//exception si lecture ratée
-  DGtal::GridCurve<KSpace>::initFromVector(v);
+  if (v.size() == 0) throw IOException(); 
+
+  try {
+    DGtal::GridCurve<KSpace>::initFromVector(v);
+  } catch (DGtal::ConnectivityException& e) {
+    throw ConnectivityException(); 
+  }
 }
 
 /**
 * Init.
 * @param in any input stream,
 */
-void initFromChainCodeStream(std::istream & in ) {
-//ASSERT sur la dim
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromFreemanChainStream(std::istream & in ) throw(InputException) {
+    ASSERT( (Point::dimension == 2) );
 }
 
+/**
+ * Outputs the grid curve to the stream [out].
+ * @param out any output stream,
+ */
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::writeVectorToStream( std::ostream & out ) {
+  typename Storage::const_iterator i = my0Cells.begin();
+  while (i != my0Cells.end()) {
+    Point p = myK.sCoords(*i); 
+    for (unsigned int k = 0; k < Point::dimension; ++k) {
+      out << p[k] << " ";
+    }
+    out << std::endl;
+    ++i;
+  }  
+}
 
 /**
  * Copy constructor.

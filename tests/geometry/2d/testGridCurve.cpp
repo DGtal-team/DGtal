@@ -33,7 +33,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <exception>
 #include <boost/program_options.hpp>
+
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/SpaceND.h"
@@ -61,16 +63,19 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * I Test
+ * IO Tests
  *
  */
 template <typename KSpace>
-bool testReadGridCurve(const string& filename)
+bool testIOGridCurve(const string& filename)
 {
 
+  unsigned int d = KSpace::Point::dimension;
   GridCurve<KSpace> c; //grid curve
 
-  trace.info() << "Reading GridCurve d=" << KSpace::Point::dimension << endl;
+//////////////////////////////////////////
+  trace.info() << endl;
+  trace.info() << "Reading GridCurve d=" << d << endl;
   
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
@@ -79,38 +84,52 @@ bool testReadGridCurve(const string& filename)
 
   cout << c << endl;
 
-  return true;
-}
+///////////////////////////////////////////
+  std::stringstream s; 
+  s << "gridcurve" << d << ".dat"; 
 
-/**
- * O Test
- *
- */
+  trace.info() << "Writing GridCurve d=" << d << " in " << s.str() << endl;
 
-/*
-template <typename KSpace>
-bool testWriteGridCurve(const string& filename)
-{
-  trace.info() << "Writing GridCurve " << endl;
-  
-  ifstream instream; // input stream
-  instream.open (filename.c_str(), ifstream::in);
-
-  GridCurve<KSpace> c(instream); //grid curve
-
-  ofstream outstream("gridcurve.dat"); //output stream
+  ofstream outstream(s.str()); //output stream
   if (!outstream.is_open()) return false;
   else {
-    GridCurve<KSpace>::write(outstream,c);
+    c.writeVectorToStream(outstream);
   }
   outstream.close();
 
   return true;
 }
-*/
 
+/**
+ * Exceptions
+ *
+ */
+bool testExceptions(const string &filename)
+{
 
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
 
+  trace.info() << endl;
+  trace.info() << "Trying to read bad file: " << filename << endl;
+  
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+
+  try {
+    c.initFromVectorStream(instream);
+    trace.info() << "no exception catched!?" << endl;
+    return false;
+  }  catch (DGtal::ConnectivityException& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } catch (DGtal::InputException& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } catch (exception& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } 
+}
 
 /**
  * Display
@@ -119,9 +138,9 @@ bool testWriteGridCurve(const string& filename)
 bool testDisplay(const string &filename)
 {
 
-//  KhalimskySpaceND<2> K; 
   GridCurve<KhalimskySpaceND<2> > c; //grid curve
 
+  trace.info() << endl;
   trace.info() << "Displaying GridCurve " << endl;
   
   //reading grid curve
@@ -192,14 +211,18 @@ int main( int argc, char** argv )
 
 
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
+  std::string polyg2D = testPath + "samples/polyg2D.dat";
   std::string sinus3D = testPath + "samples/sinus3D.dat";
+  std::string emptyFile = testPath + "samples/emptyFile.dat";
 
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
 
-  bool res = testReadGridCurve<K2>(sinus2D4)
-    && testReadGridCurve<K3>(sinus3D)
-//    && testWriteGridCurve<K2>(sinus2D4)
+  bool res = testIOGridCurve<K2>(sinus2D4)
+    && testIOGridCurve<K3>(sinus3D)
+    && testExceptions(sinus3D)
+    && testExceptions(polyg2D)
+    && testExceptions(emptyFile)
     && testDisplay(sinus2D4)
 //    && testPointsRange(sinus2D4)
 ;
