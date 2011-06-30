@@ -68,7 +68,8 @@ bool testL1LengthEstimator(std::string &filename)
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
-  GridCurve<KhalimskySpaceND<2> > c(instream); //grid curve
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
+  c.initFromVectorStream(instream);
 
   L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange > l1length;
     

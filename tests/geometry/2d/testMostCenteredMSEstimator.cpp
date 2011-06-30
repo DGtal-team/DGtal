@@ -76,7 +76,8 @@ bool testDec4(string filename)
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   typedef KhalimskySpaceND<2> Kspace; //space
-  GridCurve<Kspace> c(instream); //building grid curve
+  GridCurve<Kspace> c; //building grid curve
+  c.initFromVectorStream(instream);
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
@@ -99,7 +100,7 @@ bool testDec4(string filename)
   cout << endl;
 
   trace.info() << "Eval for each element (process as open) " << endl;
-  vector<double> v(c.myData.size()); 
+  vector<double> v(r.size()); 
   e.eval(r.begin(),r.end(),v.begin());
 
   for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
