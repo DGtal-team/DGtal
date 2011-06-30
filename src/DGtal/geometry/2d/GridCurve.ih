@@ -95,7 +95,7 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
 
   Point first = *aVectorOfPoints.begin();
   Point last = *i;
-  Vector v(last - first); 
+  Vector v(first - last); 
   if (v.norm(Vector::L_1) == 1) {               
     my1Cells.push_back( PointVectorTo1Cell(last,v) );
   }

@@ -428,10 +428,6 @@ namespace DGtal
 
           typedef typename GridCurve::Storage::const_iterator ConstIteratorOnPointels; 
 
-//          typedef typename std::reverse<ConstIterator> ConstReverseIterator;
-
-          typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
-
         ///////////////////////////////////////////////////////////////////////////////
         // class ConstIterator
         ///////////////////////////////////////////////////////////////////////////////
@@ -443,7 +439,6 @@ namespace DGtal
         class ConstIterator : 
           public std::iterator<std::bidirectional_iterator_tag, 
                                 Point, unsigned int, Point*, Point >
-//types à vérifier
         {
 
           // ------------------------- data -----------------------
@@ -575,6 +570,8 @@ namespace DGtal
         // end class ConstIterator
         ///////////////////////////////////////////////////////////////////////////////
 
+          typedef typename std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
       // ------------------------- standard services --------------------------------
 
        /**
@@ -630,7 +627,6 @@ namespace DGtal
         private: 
           const GridCurve* myC;
 
-
       // ------------------------- iterator services --------------------------------
         public:
 
@@ -655,7 +651,7 @@ namespace DGtal
        * @return rbegin iterator
        */
       ConstReverseIterator rbegin() const {
-//TODO
+        return ConstReverseIterator(this->end());
       }
 
       /**
@@ -663,7 +659,7 @@ namespace DGtal
        * @return rend iterator
        */
       ConstReverseIterator rend() const {
-//TODO
+        return ConstReverseIterator(this->begin());
       }
 
     };
@@ -678,6 +674,279 @@ namespace DGtal
    */
    typename GridCurve::PointsRange getPointsRange() const {
     return PointsRange(this);
+   } 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class MidPointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * This class is a model of CRange and provides a ConstIterator to scan 
+     * the real coordinates of the midpoints of each 1-cells 
+     */
+
+   
+    class MidPointsRange
+    {
+
+      // ------------------------- inner types --------------------------------
+        public: 
+
+          typedef typename GridCurve::Point KhalimskyPoint;
+          typedef typename DGtal::RealPointVector<GridCurve::Point::dimension> Point; 
+
+          typedef typename GridCurve::Storage Storage; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOn1Cells; 
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * This class is a model of CConstIteratorOnMidPoints  
+         */
+        
+        class ConstIterator : 
+          public std::iterator<std::bidirectional_iterator_tag, 
+                                Point, unsigned int, Point*, Point >
+        {
+
+          // ------------------------- data -----------------------
+        private:
+    
+          const GridCurve* myC;
+          ConstIteratorOn1Cells myIt; 
+
+          // ------------------------- Standard services -----------------------
+        public:
+
+          /**
+           * Default Constructor.
+           */
+	
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOn1Cells it)
+            : myC(aGridCurve),myIt(it) {}
+
+          /**
+           * Copy constructor.
+           * @param other the iterator to clone.
+           */
+	
+          ConstIterator( const ConstIterator & aOther )
+            : myC(aOther.myC),myIt(aOther.myIt) {}
+	        
+          /**
+           * Assignment.
+           * @param other the iterator to copy.
+           * @return a reference on 'this'.
+           */
+	
+          ConstIterator& operator= ( const ConstIterator & other )
+          {	
+	          if ( this != &other )
+	            {
+	              myIt = other.myIt;
+	            }
+	          return *this;
+          }
+
+          /**
+           * Destructor. Does nothing.
+           */
+	
+          ~ConstIterator(){}
+
+          // ------------------------- iteration services -------------------------
+        public:
+
+          /**
+           * @return the current coordinates.
+           */
+	
+          Point operator*() const
+          {
+            Point p( myC->myK.sKCoords(*myIt) );
+            p /= 2;
+	          return p;
+          }
+
+          /**
+           * Pre-increment.
+           */
+
+          ConstIterator& operator++()
+          {
+	          ++myIt;
+	          return *this;
+          }
+	
+          /**
+           * Post-increment.
+           */
+	
+          ConstIterator  operator++(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt++;
+	          return tmp;
+          }
+
+          /**
+           * Pre-decrement.
+           */
+	
+          ConstIterator&  operator--()
+          {
+	          --myIt;
+	          return *this;
+          }
+
+          /**
+           * Post-decrement.
+           */
+	
+          ConstIterator  operator--(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt--;
+	          return tmp;
+          }
+
+          /**
+           * Equality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators coincide
+           */
+
+          bool operator == ( const ConstIterator & aOther ) const
+          {
+	          ASSERT( myC->my1Cells == aOther.myC->my1Cells );
+	          return myIt == aOther.myIt;
+          }
+
+          /**
+           * Inequality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators differs.
+           */
+
+          bool operator!= ( const ConstIterator & aOther ) const
+          {
+	          ASSERT( myC->my1Cells == aOther.myC->my1Cells );
+	          return myIt != aOther.myIt;
+          }
+
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // end class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+          typedef typename std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+      // ------------------------- standard services --------------------------------
+
+       /**
+         * Default Constructor.
+         */
+	
+        MidPointsRange(){}
+
+       /**
+         * Constructor.
+         */
+	
+        MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+	
+        MidPointsRange( const MidPointsRange & aOther )
+	      : myC( aOther.myC ){}
+      
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+	
+        MidPointsRange& operator= ( const MidPointsRange & other )
+        {	
+	        if ( this != &other )
+	          {
+              myC = other.myC;
+	          }
+	        return *this;
+        }
+
+        /**
+         * Destructor. Does nothing.
+         */
+	
+        ~MidPointsRange() {}
+
+        /**
+         * @return the size of the range
+         */
+	
+        typename Storage::size_type size() const {
+          return myC->my1Cells.size();
+        }
+
+      // ------------------------- private data --------------------------------
+        private: 
+          const GridCurve* myC;
+
+      // ------------------------- iterator services --------------------------------
+        public:
+
+      /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const {
+        return ConstIterator( myC, myC->my1Cells.begin() );
+      }
+
+      /**
+       * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end() const {
+        return ConstIterator( myC, myC->my1Cells.end() );
+      }
+
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const {
+        return ConstReverseIterator(this->end());
+      }
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const {
+        return ConstReverseIterator(this->begin());
+      }
+
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // end of class MidPointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Accessor of the range of the (real coordinates of the) midpoints of each 1-cell
+   * @return MidPointsRange
+   */
+   typename GridCurve::MidPointsRange getMidPointsRange() const {
+    return MidPointsRange(this);
    } 
 
 
