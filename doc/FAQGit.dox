@@ -35,6 +35,7 @@ Table of contents:
  -# \ref sectGITCommands
    -# \ref ssCom1
    -# \ref ssCom2
+   -# \ref ssCom3
  -# \ref sectGIT2  
    -# \ref ss21
    -# \ref ss22
@@ -249,7 +250,34 @@ To cleanup your stack: "git stash clear"
 
 \subsection ssCom2 git Tracking Branches
 
-@todo...
+Tracking branches are directely associated to a remote branch. On
+tracked branch you can directely apply push and pull with no other
+argument. After a clone the resulting origin branch is a tracking branch.
+
+@code
+git checkout --track aRemote/aBranch
+@endcode
+
+Then you will work on the new tracked branch aBranch
+
+@note
+the option --track work only from git version 1.6.2 and later. But you can perform equivalent with the following command:
+@code 
+checkout -b [myBranchName] [aRemoteName]/[aBranch]
+@endcode 
+@endnote
+
+
+
+\subsection ssCom3 git Deleting a remote Branch
+
+After working on your remote branch you can remove it from your server
+by using this particular syntax:
+
+@code 
+ git push aRemoteName :theBranchToDelete
+@endcode
+
 
 
 
