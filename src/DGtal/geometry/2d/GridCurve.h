@@ -89,56 +89,13 @@ namespace DGtal
   {
 
   public: 
+
   typedef typename KSpace::Space::Point Point;
-  typedef typename std::vector<Point> Storage;
+  typedef typename KSpace::Space::Point Vector;
 
-    // ------------------------- static services ------------------------------
-  public:
+  typedef typename KSpace::SCell Cell;
+  typedef typename std::vector<Cell> Storage;
 
-    /**
-     * Outputs the chain [c] to the stream [out].
-     * @param out any output stream,
-     * @param c a grid curve.
-     */
-    static void write( std::ostream & out, const GridCurve & c )
-    {
-      typename Storage::const_iterator i;
-      for (i =  c.myData.begin(); i != c.myData.end(); ++i) {
-        Point p = *i;
-        out << p[0] << " " << p[1] << endl;
-      }
-    }
-
-
-    /**
-     * Reads a chain from the stream [in] and updates [c].
-     * @param in any input stream,
-     * @param c (returns) the grid curve.
-     */
-    static void read( std::istream & in, GridCurve & c )
-    {
-
-      c.myData = PointListReader<Point>
-                ::getPointsFromInputStream(in);
-    };
-
-
-
-    /**
-     * Return a vector containing all the interger points of the GridCurve.
-     *
-     * @param c the grid curve
-     * @param aVContour (returns) the vector containing all the (grid) points.
-     */
-    static void getData(const GridCurve& c, 
-           std::vector<Point>& aVectorOfPoints)
-    {
-      aVectorOfPoints.clear();
-      typename Storage::const_iterator i;
-      for (i = c.myData.begin(); i != c.myData.end(); ++i) {
-        aVectorOfPoints.push_back(*i);
-      }
-    }
 
 
 
@@ -154,20 +111,27 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aVectorOfPoints the vector containing the sequence of grid points. 
      */
-    GridCurve( const std::vector<Point> aVectorOfPoints) {
-      myData = aVectorOfPoints;
-    };
+    GridCurve() {};
+
 
     /**
-     * Constructor.
+     * Init.
+     * @param aVectorOfPoints the vector containing the sequence of grid points. 
+     */
+    void initFromVector( const std::vector<Point> aVectorOfPoints );
+
+    /**
+     * Init.
      * @param in any input stream,
      */
-    GridCurve(std::istream & in ) {
-      DGtal::GridCurve<KSpace>::read(in, *this);
-    };
+    void initFromVectorStream(std::istream & in );
 
+    /**
+     * Init.
+     * @param in any input stream,
+     */
+    void initFromChainCodeStream(std::istream & in );
 
     /**
      * Copy constructor.
@@ -182,36 +146,45 @@ namespace DGtal
      */
     GridCurve & operator=( const GridCurve & other );
 
-
-
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const
-    {
-      out << "[GridCurve]" << std::endl;
-      typename Storage::const_iterator i;
-      for (i =  myData.begin(); i != myData.end(); ++i) {
-        out << *i << std::endl;
-      }
-      
-    };
+    void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const
-    {
-      return true;
-    };
+    bool isValid() const;
 
+
+
+     
+    // ------------------------- private Datas --------------------------------
+  private:
+
+
+    // ------------------------- Public Datas --------------------------------
   public:
+    KSpace myK;
+
+    Storage my0Cells; 
+    Storage my1Cells; 
+
+
+    // ------------------------- Internal --------------------------------
+  private:
+
+    //conversion methods
+    Cell PointTo0Cell(const Point& aPoint);
+    Cell PointVectorTo1Cell(const Point& aPoint, const Vector& aVector);
+ /*   Point 0CellToPoint(const Cell& aCell);
+    Vector 1CellToVector(const Cell& aCell);*/
+    
+
+    // ------------------------- Drawing services --------------------------------
+  public: 
 
 
     /**
@@ -242,15 +215,7 @@ namespace DGtal
     */
     void selfDrawEdges(DGtalBoard & board ) const;
 
-     
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-    Storage myData; 
-
-
-    // ------------------------- Internal --------------------------------
-  private:
+  private: 
 
     /**
      * Default Style Functor for selfDraw methods
@@ -291,115 +256,6 @@ namespace DGtal
   // ------------------------- inner classes --------------------------------
 
   public: 
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // class PointsRange
-    ///////////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * This class is a model of CRange and thus provides a ConstIterator to scan 
-     * the grid points (pointels) 
-     */
-
-   
-    class PointsRange
-    {
-
-      // ------------------------- inner type --------------------------------
-        public: 
-          typedef typename GridCurve::Storage Storage; 
-          typedef typename GridCurve::Storage::const_iterator ConstIterator;
-
-       /**
-         * Default Constructor.
-         */
-	
-        PointsRange()
-        {
-        }
-
-       /**
-         * Constructor.
-         */
-	
-        PointsRange( const Storage& aStorage ): myData(&aStorage)
-        {
-        }
-
-        /**
-         * Copy constructor.
-         * @param other the iterator to clone.
-         */
-	
-        PointsRange( const PointsRange & aOther )
-	      : myData( aOther.myData )
-        {
-        }
-      
-        /**
-         * Assignment.
-         * @param other the iterator to copy.
-         * @return a reference on 'this'.
-         */
-	
-        PointsRange& operator= ( const PointsRange & other )
-        {	
-	        if ( this != &other )
-	          {
-              myData = other.myData;
-	          }
-	        return *this;
-        }
-
-
-	
-        /**
-         * Destructor. Does nothing.
-         */
-	
-        ~PointsRange()
-        {
-        }
-
-      // ------------------------- private data --------------------------------
-        private: 
-          const typename GridCurve::Storage* myData;
-
-
-      // ------------------------- iterator services --------------------------------
-        public:
-
-      /**
-       * Iterator service.
-       * @return begin iterator
-       */
-      ConstIterator begin() const {
-        return myData->begin();
-      }
-
-      /**
-       * Iterator service.
-       * @return end iterator
-       */
-      ConstIterator end() const {
-        return myData->end();
-      }
-
-    };
-
-	
-    ///////////////////////////////////////////////////////////////////////////////
-    // end of class PointsRange
-    ///////////////////////////////////////////////////////////////////////////////
-	
-  /**
-   * Accessor of a range of grid points
-   * @return PointsRange
-   */
-   typename GridCurve::PointsRange getPointsRange() const {
-    return PointsRange(myData);
-   } 
 
 
 

@@ -47,13 +47,85 @@
 // Implementation of inline methods                                          //
 
 
+template <typename KSpace>
+inline
+typename DGtal::GridCurve<KSpace>::Cell
+DGtal::GridCurve<KSpace>::PointTo0Cell(const Point& aPoint) {
+    return myK.sPointel(aPoint,myK.POS);
+}
+
+template <typename KSpace>
+inline
+typename DGtal::GridCurve<KSpace>::Cell
+DGtal::GridCurve<KSpace>::PointVectorTo1Cell(const Point& aPoint, const Vector& aVector) {
+
+    Point p(aPoint);
+    Point kp(p*2 + aVector); 
+    return Cell(kp,myK.POS);
+    //ASSERT sur la norme du vector 
+}
+
+/**
+* Init.
+* @param aVectorOfPoints the vector containing the sequence of grid points. 
+*/
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoints ) {
+
+  typename std::vector<Point>::const_iterator i, j; 
+
+  i = aVectorOfPoints.begin();
+  j = i; ++j;
+
+  for ( ; j != aVectorOfPoints.end(); ++i, ++j) {
+
+    Point p = *i; 
+    Vector v = *j - p;
+
+    my0Cells.push_back( PointTo0Cell(p) );
+    my1Cells.push_back( PointVectorTo1Cell(p,v) );
+  }
+
+  //viewed as open
+  my0Cells.push_back( PointTo0Cell(*i) );
+  //if closed first and last point == ou si distant de 1?
+
+}
+
+/**
+ * Init.
+ * @param in any input stream,
+ */
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromVectorStream(std::istream & in ) {
+
+  std::vector<Point> v = PointListReader<Point>
+                        ::getPointsFromInputStream(in);
+
+//exception si lecture ratée
+  DGtal::GridCurve<KSpace>::initFromVector(v);
+}
+
+/**
+* Init.
+* @param in any input stream,
+*/
+void initFromChainCodeStream(std::istream & in ) {
+//ASSERT sur la dim
+}
+
+
 /**
  * Copy constructor.
  * @param other the object to clone.
  */
 template <typename KSpace>
 DGtal::GridCurve<KSpace>::GridCurve( const GridCurve<KSpace> & aOther )
-  : myData( aOther.myData )
+  : myK( aOther.myK ), my0Cells( aOther.my0Cells ), my1Cells( aOther.my1Cells )
 {
 }
 
@@ -68,14 +140,44 @@ DGtal::GridCurve<KSpace>::operator=( const GridCurve<KSpace> & aOther )
 {
   if ( this != &aOther )
     {
-      myData = aOther.myData;
+      myK = aOther.myK;
+      my0Cells = aOther.my0Cells;
+      my1Cells = aOther.my1Cells;
     }
   return *this;
 }
 
-
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isValid() const
+{
+  return true;
+}
 
 //------------------------------------------------------------------------------
+// ---------------- DISPLAY ----------------------------------------------------
+//------------------------------------------------------------------------------
+
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GridCurve]" << std::endl;
+  out << "#0-cell 1-cell" << std::endl;
+  typename Storage::const_iterator i0 = my0Cells.begin();
+  typename Storage::const_iterator i1 = my1Cells.begin();
+  while (i1 != my1Cells.end()) {
+    Point p = myK.sKCoords(*i0); 
+    Point l = myK.sKCoords(*i1); 
+    out << p << " " << l << std::endl;
+    ++i1;
+    ++i0;
+  }
+}
+//------------------------------------------------------------------------------
+
 template <typename KSpace>
 inline
 DGtal::DrawableWithDGtalBoard*
@@ -116,8 +218,8 @@ inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
 {
-  for(unsigned int i=0; i< myData.size(); i++){
-    aBoard << myData.at(i);
+  for(unsigned int i=0; i< my0Cells.size(); i++){
+    aBoard << my0Cells.at(i);
   }
 }
 //------------------------------------------------------------------------------
@@ -126,14 +228,9 @@ inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
 {
-
-  std::vector<LibBoard::Point> points;//output points
-  for(unsigned int i=0; i< myData.size(); i++){
-    points.push_back(
-      LibBoard::Point(IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][0]),
-				              IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][1])));
+  for(unsigned int i=0; i< my1Cells.size(); i++){
+    aBoard << my1Cells.at(i);
   }
-  aBoard.drawPolyline(points);
 }
 
 
