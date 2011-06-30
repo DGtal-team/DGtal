@@ -53,6 +53,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/Exceptions.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -71,12 +72,13 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'GridCurve' <p> Aim: describes a 4-connected
-   * oriented interpixel curve, closed or open. For instance, the
+   * Description of class 'GridCurve' <p> Aim: describes an
+   * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
+   * in any dimension, closed or open. For instance, the
    * topological boundary of a  simply connected digital set is a
    * closed grid curve. This object provides several ranges, such as
-   * PointsRange used to get the (integer) coordinates of the grid
-   * points (or pointels) of the grid curve. 
+   * PointsRange used to get the (integer) coordinates of the pointels
+   * of the grid curve. 
    *
    * Example :
    * @code 
@@ -90,56 +92,11 @@ namespace DGtal
 
   public: 
   typedef typename KSpace::Space::Point Point;
-  typedef typename KSpace::Space::Vector Vector;
-  typedef typename std::vector<Point> Storage;
+  typedef typename KSpace::Space::Point Vector;
 
-    // ------------------------- static services ------------------------------
-  public:
+  typedef typename KSpace::SCell Cell;
+  typedef typename std::vector<Cell> Storage;
 
-    /**
-     * Outputs the chain [c] to the stream [out].
-     * @param out any output stream,
-     * @param c a grid curve.
-     */
-    static void write( std::ostream & out, const GridCurve & c )
-    {
-      typename Storage::const_iterator i;
-      for (i =  c.myData.begin(); i != c.myData.end(); ++i) {
-        Point p = *i;
-        out << p[0] << " " << p[1] << endl;
-      }
-    }
-
-
-    /**
-     * Reads a chain from the stream [in] and updates [c].
-     * @param in any input stream,
-     * @param c (returns) the grid curve.
-     */
-    static void read( std::istream & in, GridCurve & c )
-    {
-
-      c.myData = PointListReader<Point>
-                ::getPointsFromInputStream(in);
-    };
-
-
-
-    /**
-     * Return a vector containing all the interger points of the GridCurve.
-     *
-     * @param c the grid curve
-     * @param aVContour (returns) the vector containing all the (grid) points.
-     */
-    static void getData(const GridCurve& c, 
-           std::vector<Point>& aVectorOfPoints)
-    {
-      aVectorOfPoints.clear();
-      typename Storage::const_iterator i;
-      for (i = c.myData.begin(); i != c.myData.end(); ++i) {
-        aVectorOfPoints.push_back(*i);
-      }
-    }
 
 
 
@@ -155,20 +112,33 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aVectorOfPoints the vector containing the sequence of grid points. 
      */
-    GridCurve( const std::vector<Point> aVectorOfPoints) {
-      myData = aVectorOfPoints;
-    };
+    GridCurve(){};
+
 
     /**
-     * Constructor.
+     * Init.
+     * @param aVectorOfPoints the vector containing the sequence of grid points. 
+     */
+    void initFromVector( const std::vector<Point> aVectorOfPoints ) throw(ConnectivityException);
+
+    /**
+     * Init.
      * @param in any input stream,
      */
-    GridCurve(std::istream & in ) {
-      DGtal::GridCurve<KSpace>::read(in, *this);
-    };
+    void initFromVectorStream(std::istream & in );
 
+    /**
+     * Init.
+     * @param in any input stream,
+     */
+    void initFromFreemanChainStream(std::istream & in ) throw(InputException);
+
+    /**
+     * Outputs the grid curve to the stream [out].
+     * @param out any output stream,
+     */
+    void writeVectorToStream( std::ostream & out );
 
     /**
      * Copy constructor.
@@ -183,36 +153,54 @@ namespace DGtal
      */
     GridCurve & operator=( const GridCurve & other );
 
-
-
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const
-    {
-      out << "[GridCurve]" << std::endl;
-      typename Storage::const_iterator i;
-      for (i =  myData.begin(); i != myData.end(); ++i) {
-        out << *i << std::endl;
-      }
-      
-    };
+    void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const
-    {
-      return true;
-    };
+    bool isValid() const;
 
+
+    /**
+     * @return 'true' if grid curve is open, 'false' otherwise
+     */
+    bool isOpen() const;
+
+    /**
+     * @return 'true' if grid curve is closed, 'false' otherwise
+     */
+    bool isClosed() const;
+
+     
+    // ------------------------- private Datas --------------------------------
+  private:
+
+
+    // ------------------------- Public Datas --------------------------------
   public:
+    KSpace myK;
+
+    Storage my0Cells; 
+    Storage my1Cells; 
+
+
+    // ------------------------- Internal --------------------------------
+  private:
+
+    //conversion methods
+    Cell PointTo0Cell(const Point& aPoint);
+    Cell PointVectorTo1Cell(const Point& aPoint, const Vector& aVector);
+ /*   Point 0CellToPoint(const Cell& aCell);
+    Vector 1CellToVector(const Cell& aCell);*/
+    
+
+    // ------------------------- Drawing services --------------------------------
+  public: 
 
 
     /**
@@ -243,15 +231,7 @@ namespace DGtal
     */
     void selfDrawEdges(DGtalBoard & board ) const;
 
-     
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-    Storage myData; 
-
-
-    // ------------------------- Internal --------------------------------
-  private:
+  private: 
 
     /**
      * Default Style Functor for selfDraw methods
@@ -294,49 +274,44 @@ namespace DGtal
   public: 
 
     ///////////////////////////////////////////////////////////////////////////////
-    // class PointsRange
+    // class sCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 
 
     /**
      * This class is a model of CRange and thus provides a ConstIterator to scan 
-     * the grid points (pointels) 
+     * the Khalimsky coordinates of the d-cells of a grid curve 
      */
 
    
-    class PointsRange
+    class sCellsRange
     {
 
-      // ------------------------- inner type --------------------------------
+      // ------------------------- inner types --------------------------------
         public: 
           typedef typename GridCurve::Storage Storage; 
           typedef typename GridCurve::Storage::const_iterator ConstIterator;
+          typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
 
        /**
          * Default Constructor.
          */
 	
-        PointsRange()
-        {
-        }
+        sCellsRange(){}
 
        /**
          * Constructor.
          */
 	
-        PointsRange( const Storage& aStorage ): myData(&aStorage)
-        {
-        }
+        sCellsRange( const Storage& aStorage ): myData(&aStorage){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
 	
-        PointsRange( const PointsRange & aOther )
-	      : myData( aOther.myData )
-        {
-        }
+        sCellsRange( const sCellsRange & aOther )
+	      : myData( aOther.myData ){}
       
         /**
          * Assignment.
@@ -344,7 +319,7 @@ namespace DGtal
          * @return a reference on 'this'.
          */
 	
-        PointsRange& operator= ( const PointsRange & other )
+        sCellsRange& operator= ( const sCellsRange & other )
         {	
 	        if ( this != &other )
 	          {
@@ -353,14 +328,18 @@ namespace DGtal
 	        return *this;
         }
 
-
-	
         /**
          * Destructor. Does nothing.
          */
 	
-        ~PointsRange()
-        {
+        ~sCellsRange() {}
+
+        /**
+         * @return the size of the range
+         */
+	
+        typename Storage::size_type size() const {
+          return myData->size();
         }
 
       // ------------------------- private data --------------------------------
@@ -387,22 +366,604 @@ namespace DGtal
         return myData->end();
       }
 
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const {
+        return myData->rbegin();
+      }
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const {
+        return myData->rend();
+      }
+
     };
 
 	
     ///////////////////////////////////////////////////////////////////////////////
-    // end of class PointsRange
+    // end of class sCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 	
   /**
-   * Accessor of a range of grid points
+   * Accessor of a range of 0-cells
+   * @return sCellsRange
+   */
+   typename GridCurve::sCellsRange get0CellsRange() const {
+    return sCellsRange(my0Cells);
+   } 
+
+  /**
+   * Accessor of a range of 1-cells
+   * @return sCellsRange
+   */
+   typename GridCurve::sCellsRange get1CellsRange() const {
+    return sCellsRange(my1Cells);
+   } 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class PointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * This class is a model of CRange and provides a ConstIterator to scan 
+     * the integer coordinates of the pointels of a grid curve 
+     */
+
+   
+    class PointsRange
+    {
+
+      // ------------------------- inner types --------------------------------
+        public: 
+
+          typedef typename GridCurve::Storage Storage; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOnPointels; 
+
+          typedef typename GridCurve::Point Point; 
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * This class is a model of CConstIteratorOnPoints  
+         */
+        
+        class ConstIterator : 
+          public std::iterator<std::bidirectional_iterator_tag, 
+                                Point, unsigned int, Point*, Point >
+        {
+
+          // ------------------------- data -----------------------
+        private:
+    
+          const GridCurve* myC;
+          ConstIteratorOnPointels myIt; 
+
+          // ------------------------- Standard services -----------------------
+        public:
+
+          /**
+           * Default Constructor.
+           */
+	        ConstIterator() {}
+
+          /**
+           * Constructor.
+           */
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnPointels it)
+            : myC(aGridCurve),myIt(it) {}
+
+          /**
+           * Copy constructor.
+           * @param other the iterator to clone.
+           */
+	
+          ConstIterator( const ConstIterator & aOther )
+            : myC(aOther.myC),myIt(aOther.myIt) {}
+	        
+          /**
+           * Assignment.
+           * @param other the iterator to copy.
+           * @return a reference on 'this'.
+           */
+	
+          ConstIterator& operator= ( const ConstIterator & other )
+          {	
+	          if ( this != &other )
+	            {
+	              myIt = other.myIt;
+	            }
+	          return *this;
+          }
+
+          /**
+           * Destructor. Does nothing.
+           */
+	
+          ~ConstIterator(){}
+
+          // ------------------------- iteration services -------------------------
+        public:
+
+          /**
+           * @return the current coordinates.
+           */
+	
+          Point operator*() const
+          {
+	          return Point( myC->myK.sCoords(*myIt) );
+          }
+
+          /**
+           * Pre-increment.
+           */
+
+          ConstIterator& operator++()
+          {
+	          ++myIt;
+	          return *this;
+          }
+	
+          /**
+           * Post-increment.
+           */
+	
+          ConstIterator  operator++(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt++;
+	          return tmp;
+          }
+
+          /**
+           * Pre-decrement.
+           */
+	
+          ConstIterator&  operator--()
+          {
+	          --myIt;
+	          return *this;
+          }
+
+          /**
+           * Post-decrement.
+           */
+	
+          ConstIterator  operator--(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt--;
+	          return tmp;
+          }
+
+          /**
+           * Equality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators coincide
+           */
+
+          bool operator == ( const ConstIterator & aOther ) const
+          {
+	          return myIt == aOther.myIt;
+          }
+
+          /**
+           * Inequality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators differs.
+           */
+
+          bool operator!= ( const ConstIterator & aOther ) const
+          {
+	          return myIt != aOther.myIt;
+          }
+
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // end class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+          typedef typename std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+      // ------------------------- standard services --------------------------------
+
+       /**
+         * Default Constructor.
+         */
+	
+        PointsRange(){}
+
+       /**
+         * Constructor.
+         */
+	
+        PointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+	
+        PointsRange( const PointsRange & aOther )
+	      : myC( aOther.myC ){}
+      
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+	
+        PointsRange& operator= ( const PointsRange & other )
+        {	
+	        if ( this != &other )
+	          {
+              myC = other.myC;
+	          }
+	        return *this;
+        }
+
+        /**
+         * Destructor. Does nothing.
+         */
+	
+        ~PointsRange() {}
+
+        /**
+         * @return the size of the range
+         */
+	
+        typename Storage::size_type size() const {
+          return myC->my0Cells.size();
+        }
+
+      // ------------------------- private data --------------------------------
+        private: 
+          const GridCurve* myC;
+
+      // ------------------------- iterator services --------------------------------
+        public:
+
+      /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const {
+        return ConstIterator( myC, myC->my0Cells.begin() );
+      }
+
+      /**
+       * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end() const {
+        return ConstIterator( myC, myC->my0Cells.end() );
+      }
+
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const {
+        return ConstReverseIterator(this->end());
+      }
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const {
+        return ConstReverseIterator(this->begin());
+      }
+
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // end of class PointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Accessor of the range of the integer coordinates of the pointels
    * @return PointsRange
    */
    typename GridCurve::PointsRange getPointsRange() const {
-    return PointsRange(myData);
+    return PointsRange(this);
    } 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // class MidPointsRange
+    ///////////////////////////////////////////////////////////////////////////////
 
+
+    /**
+     * This class is a model of CRange and provides a ConstIterator to scan 
+     * the real coordinates of the midpoints of each 1-cells 
+     */
+
+   
+    class MidPointsRange
+    {
+
+      // ------------------------- inner types --------------------------------
+        public: 
+
+          typedef typename GridCurve::Point KhalimskyPoint;
+          typedef typename DGtal::RealPointVector<GridCurve::Point::dimension> Point; 
+
+          typedef typename GridCurve::Storage Storage; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOn1Cells; 
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * This class is a model of CConstIteratorOnMidPoints  
+         */
+        
+        class ConstIterator : 
+          public std::iterator<std::bidirectional_iterator_tag, 
+                                Point, unsigned int, Point*, Point >
+        {
+
+          // ------------------------- data -----------------------
+        private:
+    
+          const GridCurve* myC;
+          ConstIteratorOn1Cells myIt; 
+
+          // ------------------------- Standard services -----------------------
+        public:
+
+          /**
+           * Default Constructor.
+           */
+	        ConstIterator() {}
+
+          /**
+           * Constructor.
+           */
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOn1Cells it)
+            : myC(aGridCurve),myIt(it) {}
+
+          /**
+           * Copy constructor.
+           * @param other the iterator to clone.
+           */
+	
+          ConstIterator( const ConstIterator & aOther )
+            : myC(aOther.myC),myIt(aOther.myIt) {}
+	        
+          /**
+           * Assignment.
+           * @param other the iterator to copy.
+           * @return a reference on 'this'.
+           */
+	
+          ConstIterator& operator= ( const ConstIterator & other )
+          {	
+	          if ( this != &other )
+	            {
+	              myIt = other.myIt;
+	            }
+	          return *this;
+          }
+
+          /**
+           * Destructor. Does nothing.
+           */
+	
+          ~ConstIterator(){}
+
+          // ------------------------- iteration services -------------------------
+        public:
+
+          /**
+           * @return the current coordinates.
+           */
+	
+          Point operator*() const
+          {
+            Point p( myC->myK.sKCoords(*myIt) );
+            p /= 2;
+	          return p;
+          }
+
+          /**
+           * Pre-increment.
+           */
+
+          ConstIterator& operator++()
+          {
+	          ++myIt;
+	          return *this;
+          }
+	
+          /**
+           * Post-increment.
+           */
+	
+          ConstIterator  operator++(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt++;
+	          return tmp;
+          }
+
+          /**
+           * Pre-decrement.
+           */
+	
+          ConstIterator&  operator--()
+          {
+	          --myIt;
+	          return *this;
+          }
+
+          /**
+           * Post-decrement.
+           */
+	
+          ConstIterator  operator--(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt--;
+	          return tmp;
+          }
+
+          /**
+           * Equality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators coincide
+           */
+
+          bool operator == ( const ConstIterator & aOther ) const
+          {
+	          return myIt == aOther.myIt;
+          }
+
+          /**
+           * Inequality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators differs.
+           */
+
+          bool operator!= ( const ConstIterator & aOther ) const
+          {
+	          return myIt != aOther.myIt;
+          }
+
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // end class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+          typedef typename std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+      // ------------------------- standard services --------------------------------
+
+       /**
+         * Default Constructor.
+         */
+	
+        MidPointsRange(){}
+
+       /**
+         * Constructor.
+         */
+	
+        MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+	
+        MidPointsRange( const MidPointsRange & aOther )
+	      : myC( aOther.myC ){}
+      
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+	
+        MidPointsRange& operator= ( const MidPointsRange & other )
+        {	
+	        if ( this != &other )
+	          {
+              myC = other.myC;
+	          }
+	        return *this;
+        }
+
+        /**
+         * Destructor. Does nothing.
+         */
+	
+        ~MidPointsRange() {}
+
+        /**
+         * @return the size of the range
+         */
+	
+        typename Storage::size_type size() const {
+          return myC->my1Cells.size();
+        }
+
+      // ------------------------- private data --------------------------------
+        private: 
+          const GridCurve* myC;
+
+      // ------------------------- iterator services --------------------------------
+        public:
+
+      /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const {
+        return ConstIterator( myC, myC->my1Cells.begin() );
+      }
+
+      /**
+       * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end() const {
+        return ConstIterator( myC, myC->my1Cells.end() );
+      }
+
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const {
+        return ConstReverseIterator(this->end());
+      }
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const {
+        return ConstReverseIterator(this->begin());
+      }
+
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // end of class MidPointsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Accessor of the range of the (real coordinates of the) midpoints of each 1-cell
+   * @return MidPointsRange
+   */
+   typename GridCurve::MidPointsRange getMidPointsRange() const {
+    return MidPointsRange(this);
+   } 
+
+//TODO
+/**
+other ranges
+- ArrowsRange operator*(): std::pair<Point,Vector> (integer coordinates of the pointel and the displacement vector associated to the following 1-cell)
+- IncidentSpelsRange operator*(): std::vector<Point> (integer coordinates of the spels incident to a given 1-cell)
+- CodesRange operator*(): {0,1,2,3} (only in 2D)
+
+reader and writer for chaincode
+
+set my0Cells,my1Cells private 
+and put GridCurve as a friend class in the ConstIterator classes
+*/
 
   }; // end of class GridCurve
 

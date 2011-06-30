@@ -33,7 +33,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <exception>
 #include <boost/program_options.hpp>
+
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/SpaceND.h"
@@ -61,44 +63,37 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * I Test
+ * IO Tests
  *
  */
 template <typename KSpace>
-bool testReadGridCurve(const string& filename)
+bool testIOGridCurve(const string& filename)
 {
-  trace.info() << "Reading GridCurve " << endl;
+
+  unsigned int d = KSpace::Point::dimension;
+  GridCurve<KSpace> c; //grid curve
+
+//////////////////////////////////////////
+  trace.info() << endl;
+  trace.info() << "Reading GridCurve d=" << d << endl;
   
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
-  GridCurve<KSpace> c(instream); //grid curve
+  c.initFromVectorStream(instream);
 
-  vector<typename KSpace::Space::Point> aVectorOfPoints; 
-  c.getData(c, aVectorOfPoints);
+  cout << c << endl;
 
+///////////////////////////////////////////
+  std::stringstream s; 
+  s << "gridcurve" << d << ".dat"; 
 
-  return (aVectorOfPoints == c.myData);
-}
+  trace.info() << "Writing GridCurve d=" << d << " in " << s.str() << endl;
 
-/**
- * O Test
- *
- */
-template <typename KSpace>
-bool testWriteGridCurve(const string& filename)
-{
-  trace.info() << "Writing GridCurve " << endl;
-  
-  ifstream instream; // input stream
-  instream.open (filename.c_str(), ifstream::in);
-
-  GridCurve<KSpace> c(instream); //grid curve
-
-  ofstream outstream("gridcurve.dat"); //output stream
+  ofstream outstream(s.str()); //output stream
   if (!outstream.is_open()) return false;
   else {
-    GridCurve<KSpace>::write(outstream,c);
+    c.writeVectorToStream(outstream);
   }
   outstream.close();
 
@@ -106,8 +101,55 @@ bool testWriteGridCurve(const string& filename)
 }
 
 
+/**
+ * Open/Closed
+ *
+ */
+bool testIsOpen(const string &filename, const bool& aFlag)
+{
 
+  trace.info() << endl;
+  trace.info() << "Open/Closed test" << endl;
 
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
+
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+  c.initFromVectorStream(instream);
+
+  return (c.isOpen() == aFlag);
+}
+
+/**
+ * Exceptions
+ *
+ */
+bool testExceptions(const string &filename)
+{
+
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
+
+  trace.info() << endl;
+  trace.info() << "Trying to read bad file: " << filename << endl;
+  
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+
+  try {
+    c.initFromVectorStream(instream);
+    trace.info() << "no exception catched!?" << endl;
+    return false;
+  }  catch (DGtal::ConnectivityException& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } catch (DGtal::InputException& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } catch (exception& e) {
+    trace.info() << e.what() << endl;
+    return true;
+  } 
+}
 
 /**
  * Display
@@ -116,12 +158,15 @@ bool testWriteGridCurve(const string& filename)
 bool testDisplay(const string &filename)
 {
 
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
+
+  trace.info() << endl;
   trace.info() << "Displaying GridCurve " << endl;
   
   //reading grid curve
   fstream inputStream;
   inputStream.open (filename.c_str(), ios::in);
-  GridCurve<KhalimskySpaceND<2> > c(inputStream); 
+  c.initFromVectorStream(inputStream); 
   inputStream.close();
 
   //displaying it
@@ -129,10 +174,14 @@ bool testDisplay(const string &filename)
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode(c.styleName(), "Edges") << c;
   
-  aBoard.saveEPS( "GridCurve.eps", Board::BoundingBox, 5000 );
+  aBoard.saveEPS( "GridCurveEdges.eps", Board::BoundingBox, 5000 );
+
+  aBoard << SetMode(c.styleName(), "Points") << c;
+
+  aBoard.saveEPS( "GridCurveBoth.eps", Board::BoundingBox, 5000 );
 
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("GridCurve-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("GridCurveBoth-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
 #endif
   
 
@@ -144,27 +193,30 @@ bool testDisplay(const string &filename)
  * PointsRange
  *
  */
-bool testPointsRange(const string &filename)
+template <typename Range>
+bool testRange(const Range &aRange)
 {
 
-  trace.info() << "Testing PointsRange " << endl;
+  trace.info() << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
-  typedef GridCurve<KhalimskySpaceND<2> > GridCurve;
-
-  //reading grid curve
-  fstream inputStream;
-  inputStream.open (filename.c_str(), ios::in);
-  GridCurve c(inputStream); 
-  inputStream.close();
-
-  //points range
-  GridCurve::PointsRange aRange = c.getPointsRange();
-  GridCurve::PointsRange::ConstIterator i = aRange.begin();
-  GridCurve::PointsRange::ConstIterator end = aRange.end();
+{
+  trace.info() << "Forward" << endl;
+  typename Range::ConstIterator i = aRange.begin();
+  typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
-    cout << "pouet" << endl;
+    cout << *i << endl;
   }
-  
+}
+{
+  trace.info() << "Backward" << endl;
+  typename Range::ConstReverseIterator i = aRange.rbegin();
+  typename Range::ConstReverseIterator end = aRange.rend();
+  for ( ; i != end; ++i) {
+    cout << *i << endl;
+  }
+}
+ 
   return true;
 }
 
@@ -181,16 +233,43 @@ int main( int argc, char** argv )
 
 
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
-  std::string sinus3D = testPath + "samples/sinus2D4.dat";
+  std::string polyg2D = testPath + "samples/polyg2D.dat";
+  std::string sinus3D = testPath + "samples/sinus3D.dat";
+  std::string emptyFile = testPath + "samples/emptyFile.dat";
+  std::string square = testPath + "samples/smallSquare.dat";
 
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
 
-  bool res = testReadGridCurve<K2>(sinus2D4)
-    && testReadGridCurve<K3>(sinus3D)
-    && testWriteGridCurve<K2>(sinus2D4)
+///////// general tests
+  bool res = testIOGridCurve<K2>(sinus2D4)
+    && testIOGridCurve<K3>(sinus3D)
+    && testExceptions(sinus3D)
+    && testExceptions(polyg2D)
+    && testExceptions(emptyFile)
     && testDisplay(sinus2D4)
-    && testPointsRange(sinus2D4);
+    && testIsOpen(sinus2D4,true)
+    && testIsOpen(square,false); 
+
+/////////// ranges test
+  typedef GridCurve<K2> GridCurve;
+
+  //reading grid curve
+  GridCurve c; 
+  fstream inputStream;
+  inputStream.open (square, ios::in);
+  c.initFromVectorStream(inputStream);
+  inputStream.close();
+
+  res = res 
+    && testRange<GridCurve::sCellsRange>(c.get0CellsRange())
+    && testRange<GridCurve::sCellsRange>(c.get1CellsRange())
+    && testRange<GridCurve::PointsRange>(c.getPointsRange())
+    && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
+;
+
+//////////////////////
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
