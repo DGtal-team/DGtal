@@ -275,7 +275,7 @@ namespace DGtal
   public: 
 
     ///////////////////////////////////////////////////////////////////////////////
-    // class DCellsRange
+    // class sCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -285,7 +285,7 @@ namespace DGtal
      */
 
    
-    class DCellsRange
+    class sCellsRange
     {
 
       // ------------------------- inner types --------------------------------
@@ -298,20 +298,20 @@ namespace DGtal
          * Default Constructor.
          */
 	
-        DCellsRange(){}
+        sCellsRange(){}
 
        /**
          * Constructor.
          */
 	
-        DCellsRange( const Storage& aStorage ): myData(&aStorage){}
+        sCellsRange( const Storage& aStorage ): myData(&aStorage){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
 	
-        DCellsRange( const DCellsRange & aOther )
+        sCellsRange( const sCellsRange & aOther )
 	      : myData( aOther.myData ){}
       
         /**
@@ -320,7 +320,7 @@ namespace DGtal
          * @return a reference on 'this'.
          */
 	
-        DCellsRange& operator= ( const DCellsRange & other )
+        sCellsRange& operator= ( const sCellsRange & other )
         {	
 	        if ( this != &other )
 	          {
@@ -333,7 +333,7 @@ namespace DGtal
          * Destructor. Does nothing.
          */
 	
-        ~DCellsRange() {}
+        ~sCellsRange() {}
 
         /**
          * @return the size of the range
@@ -387,23 +387,23 @@ namespace DGtal
 
 	
     ///////////////////////////////////////////////////////////////////////////////
-    // end of class DCellsRange
+    // end of class sCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 	
   /**
    * Accessor of a range of 0-cells
-   * @return DCellsRange
+   * @return sCellsRange
    */
-   typename GridCurve::DCellsRange getPointelsRange() const {
-    return DCellsRange(my0Cells);
+   typename GridCurve::sCellsRange get0CellsRange() const {
+    return sCellsRange(my0Cells);
    } 
 
   /**
    * Accessor of a range of 1-cells
-   * @return DCellsRange
+   * @return sCellsRange
    */
-   typename GridCurve::DCellsRange getLinelsRange() const {
-    return DCellsRange(my1Cells);
+   typename GridCurve::sCellsRange get1CellsRange() const {
+    return sCellsRange(my1Cells);
    } 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -424,9 +424,9 @@ namespace DGtal
         public: 
 
           typedef typename GridCurve::Storage Storage; 
-          typedef typename GridCurve::Point Point; 
-
           typedef typename GridCurve::Storage::const_iterator ConstIteratorOnPointels; 
+
+          typedef typename GridCurve::Point Point; 
 
         ///////////////////////////////////////////////////////////////////////////////
         // class ConstIterator
@@ -453,7 +453,11 @@ namespace DGtal
           /**
            * Default Constructor.
            */
-	
+	        ConstIterator() {}
+
+          /**
+           * Constructor.
+           */
           ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnPointels it)
             : myC(aGridCurve),myIt(it) {}
 
@@ -548,7 +552,6 @@ namespace DGtal
 
           bool operator == ( const ConstIterator & aOther ) const
           {
-	          ASSERT( myC->my0Cells == aOther.myC->my0Cells );
 	          return myIt == aOther.myIt;
           }
 
@@ -560,7 +563,6 @@ namespace DGtal
 
           bool operator!= ( const ConstIterator & aOther ) const
           {
-	          ASSERT( myC->my0Cells == aOther.myC->my0Cells );
 	          return myIt != aOther.myIt;
           }
 
@@ -724,7 +726,11 @@ namespace DGtal
           /**
            * Default Constructor.
            */
-	
+	        ConstIterator() {}
+
+          /**
+           * Constructor.
+           */
           ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOn1Cells it)
             : myC(aGridCurve),myIt(it) {}
 
@@ -821,7 +827,6 @@ namespace DGtal
 
           bool operator == ( const ConstIterator & aOther ) const
           {
-	          ASSERT( myC->my1Cells == aOther.myC->my1Cells );
 	          return myIt == aOther.myIt;
           }
 
@@ -833,7 +838,6 @@ namespace DGtal
 
           bool operator!= ( const ConstIterator & aOther ) const
           {
-	          ASSERT( myC->my1Cells == aOther.myC->my1Cells );
 	          return myIt != aOther.myIt;
           }
 
@@ -949,6 +953,18 @@ namespace DGtal
     return MidPointsRange(this);
    } 
 
+//TODO
+/**
+other ranges
+- ArrowsRange operator*(): std::pair<Point,Vector> (integer coordinates of the pointel and the displacement vector associated to the following 1-cell)
+- IncidentSpelsRange operator*(): std::vector<Point> (integer coordinates of the spels incident to a given 1-cell)
+- CodesRange operator*(): {0,1,2,3} (only in 2D)
+
+reader and writer for chaincode
+
+set my0Cells,my1Cells private 
+and put GridCurve as a friend class in the ConstIterator classes
+*/
 
   }; // end of class GridCurve
 
