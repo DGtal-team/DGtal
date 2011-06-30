@@ -11,7 +11,7 @@ SET(DGTAL_TESTS_SRC
 	testL1LengthEstimator
 	testTrueLocalEstimator
 	testSegmentComputerFunctor
-  testMostCenteredMSEstimator
+	testMostCenteredMSEstimator
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

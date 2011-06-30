@@ -56,8 +56,6 @@ namespace DGtal
 * ajouter un myFlagIsInit (aussi dans les decompositions)
 * ajouter un getLength() dans les SegmentIterator des decompositions
 * mettre au propre les noms de type dans les decompositions (ConstIterator, Self, Reverse, etc.)
-* ajouter un size() dans les ranges de GridCurve
-* mettre le Functor seulement comme parametre template des methodes eval ?
 */
 
   /////////////////////////////////////////////////////////////////////////////

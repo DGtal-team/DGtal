@@ -59,17 +59,6 @@ namespace DGtal
   };
 
   /**
-   * MemoryException derived class.
-   */ 
-  class MemoryException: public exception
-  {
-    virtual const char* what() const throw()
-    {
-      return "DGtal memory error";
-    }
-  };
-
-  /**
    * InputException derived class.
    */ 
   class InputException: public exception
@@ -80,6 +69,31 @@ namespace DGtal
       return "DGtal bad input error";
     }
   };
+
+  /**
+   * InputException derived class.
+   */ 
+  class ConnectivityException: public exception
+  {
+		public:
+    virtual const char* what() const throw()
+    {
+      return "DGtal bad connectivity error";
+    }
+  };
+
+  /**
+   * MemoryException derived class.
+   */ 
+  class MemoryException: public exception
+  {
+    virtual const char* what() const throw()
+    {
+      return "DGtal memory error";
+    }
+  };
+
+
 
 
 } // namespace DGtal

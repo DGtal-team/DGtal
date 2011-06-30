@@ -47,13 +47,119 @@
 // Implementation of inline methods                                          //
 
 
+template <typename KSpace>
+inline
+typename DGtal::GridCurve<KSpace>::Cell
+DGtal::GridCurve<KSpace>::PointTo0Cell(const Point& aPoint) {
+    return myK.sPointel(aPoint,myK.POS);
+}
+
+template <typename KSpace>
+inline
+typename DGtal::GridCurve<KSpace>::Cell
+DGtal::GridCurve<KSpace>::PointVectorTo1Cell(const Point& aPoint, const Vector& aVector) {
+
+    ASSERT( (aVector.norm(Vector::L_1) == 1) );
+    Point p(aPoint);
+    Point kp(p*2 + aVector); 
+    return Cell(kp,myK.POS);
+}
+
+/**
+* Init.
+* @param aVectorOfPoints the vector containing the sequence of grid points. 
+*/
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoints )  throw(ConnectivityException) {
+
+  typename std::vector<Point>::const_iterator i, j; 
+
+  i = aVectorOfPoints.begin();
+  j = i; ++j;
+
+  for ( ; j != aVectorOfPoints.end(); ++i, ++j) {
+
+    Point p = *i; 
+    Vector v = *j - p;
+
+    if (v.norm(Vector::L_1) != 1) { //disconnected !
+	    throw ConnectivityException(); 
+    }
+
+    my0Cells.push_back( PointTo0Cell(p) );
+    my1Cells.push_back( PointVectorTo1Cell(p,v) );
+  }
+
+
+  Point first = *aVectorOfPoints.begin();
+  Point last = *i;
+  Vector v(first - last); 
+  if (v.norm(Vector::L_1) == 1) {               
+    my1Cells.push_back( PointVectorTo1Cell(last,v) );
+  }
+  my0Cells.push_back( PointTo0Cell(last) );
+}
+
+/**
+ * Init.
+ * @param in any input stream,
+ */
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromVectorStream(std::istream & in ) {
+
+  std::vector<Point> v = PointListReader<Point>
+                        ::getPointsFromInputStream(in);
+
+  if (v.size() == 0) throw IOException(); 
+
+  try {
+    DGtal::GridCurve<KSpace>::initFromVector(v);
+  } catch (DGtal::ConnectivityException& e) {
+    throw ConnectivityException(); 
+  }
+}
+
+/**
+* Init.
+* @param in any input stream,
+*/
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::initFromFreemanChainStream(std::istream & in ) throw(InputException) {
+    ASSERT( (Point::dimension == 2) );
+}
+
+/**
+ * Outputs the grid curve to the stream [out].
+ * @param out any output stream,
+ */
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::writeVectorToStream( std::ostream & out ) {
+  typename Storage::const_iterator i = my0Cells.begin();
+  while (i != my0Cells.end()) {
+    Point p = myK.sCoords(*i); 
+    for (unsigned int k = 0; k < Point::dimension; ++k) {
+      out << p[k] << " ";
+    }
+    out << std::endl;
+    ++i;
+  }  
+}
+
 /**
  * Copy constructor.
  * @param other the object to clone.
  */
 template <typename KSpace>
 DGtal::GridCurve<KSpace>::GridCurve( const GridCurve<KSpace> & aOther )
-  : myData( aOther.myData )
+  : myK( aOther.myK ), my0Cells( aOther.my0Cells ), my1Cells( aOther.my1Cells )
 {
 }
 
@@ -68,14 +174,67 @@ DGtal::GridCurve<KSpace>::operator=( const GridCurve<KSpace> & aOther )
 {
   if ( this != &aOther )
     {
-      myData = aOther.myData;
+      myK = aOther.myK;
+      my0Cells = aOther.my0Cells;
+      my1Cells = aOther.my1Cells;
     }
   return *this;
 }
 
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isValid() const
+{
+  return ( my0Cells.size() > 0 ) 
+&& ( my1Cells.size() > 0 )
+&& ( (my0Cells.size() - my1Cells.size()) >= 1 )
+&& ( (my0Cells.size() - my1Cells.size()) <= 0 );
+}
+
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isClosed() const
+{
+  //closed grid curves have as many 0-cells as 1-cells
+  return ( my0Cells.size() == my1Cells.size() );
+}
+
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isOpen() const
+{
+  //open grid curves have one 0-cell more
+  //than their 1-cells
+  return ( my0Cells.size() != my1Cells.size() );
+}
 
 
 //------------------------------------------------------------------------------
+// ---------------- DISPLAY ----------------------------------------------------
+//------------------------------------------------------------------------------
+
+template <typename KSpace>
+inline
+void
+DGtal::GridCurve<KSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GridCurve]" << std::endl;
+  out << "#0-cell 1-cell" << std::endl;
+  typename Storage::const_iterator i0 = my0Cells.begin();
+  typename Storage::const_iterator i1 = my1Cells.begin();
+  while (i1 != my1Cells.end()) {
+    Point p = myK.sKCoords(*i0); 
+    Point l = myK.sKCoords(*i1); 
+    out << p << " " << l << std::endl;
+    ++i1;
+    ++i0;
+  }
+}
+//------------------------------------------------------------------------------
+
 template <typename KSpace>
 inline
 DGtal::DrawableWithDGtalBoard*
@@ -116,8 +275,8 @@ inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
 {
-  for(unsigned int i=0; i< myData.size(); i++){
-    aBoard << myData.at(i);
+  for(unsigned int i=0; i< my0Cells.size(); i++){
+    aBoard << my0Cells.at(i);
   }
 }
 //------------------------------------------------------------------------------
@@ -126,14 +285,9 @@ inline
 void 
 DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
 {
-
-  std::vector<LibBoard::Point> points;//output points
-  for(unsigned int i=0; i< myData.size(); i++){
-    points.push_back(
-      LibBoard::Point(IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][0]),
-				              IntegerTraits<typename KSpace::Integer>::castToInt64_t(myData[i][1])));
+  for(unsigned int i=0; i< my1Cells.size(); i++){
+    aBoard << my1Cells.at(i);
   }
-  aBoard.drawPolyline(points);
 }
 
 
