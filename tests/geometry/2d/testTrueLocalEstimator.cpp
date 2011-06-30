@@ -35,9 +35,11 @@
 #include "DGtal/helpers/ShapeFactory.h"
 
 #include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
 
 #include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
 
 
 #include "DGtal/kernel/SpaceND.h"
@@ -81,21 +83,27 @@ bool testTrueLocalEstimator(const std::string &filename)
   typedef Range::ConstIterator ConstIteratorOnPoints;
   typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
   typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
+  typedef ParametricShapeArcLengthFunctor< Shape, ConstIteratorOnPoints > Length;
 
   Shape ball(Z2i::Point(0,0), 30);
 
    
   TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
-
   TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  tangentEstimator;
+  TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  lengthEstimator;
 
   curvatureEstimator.init( 1, r.begin(), r.end(), &ball, true);
   tangentEstimator.init( 1, r.begin(), r.end(), &ball, true);
+  lengthEstimator.init( 1, r.begin(), r.begin()+15, &ball, true);
  
   ConstIteratorOnPoints it = r.begin();
+  ConstIteratorOnPoints it2 = r.begin()+15;
+  
   trace.info() << "Current point = "<<*it<<std::endl;
+  trace.info() << "Current point+15 = "<<*it2<<std::endl;
   trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it)<<std::endl;
   trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it)<<std::endl;
+  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval()<<std::endl;
   
   return true;
 
