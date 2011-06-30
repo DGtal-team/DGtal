@@ -96,10 +96,10 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
   Point first = *aVectorOfPoints.begin();
   Point last = *i;
   Vector v(last - first); 
-  if (v.norm(Vector::L_1) != 1) {   //viewed as open
-    my0Cells.push_back( PointTo0Cell(*i) );
-  } // else                           viewed as closed
-
+  if (v.norm(Vector::L_1) == 1) {               
+    my1Cells.push_back( PointVectorTo1Cell(last,v) );
+  }
+  my0Cells.push_back( PointTo0Cell(last) );
 }
 
 /**

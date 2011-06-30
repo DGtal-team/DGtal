@@ -193,31 +193,31 @@ bool testDisplay(const string &filename)
  * PointsRange
  *
  */
-/*
-bool testPointsRange(const string &filename)
+template <typename Range>
+bool testRange(const Range &aRange)
 {
 
-  trace.info() << "Testing PointsRange " << endl;
+  trace.info() << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
-  typedef GridCurve<KhalimskySpaceND<2> > GridCurve;
-
-  //reading grid curve
-  fstream inputStream;
-  inputStream.open (filename.c_str(), ios::in);
-  GridCurve c(inputStream); 
-  inputStream.close();
-
-  //points range
-  GridCurve::PointsRange aRange = c.getPointsRange();
-  GridCurve::PointsRange::ConstIterator i = aRange.begin();
-  GridCurve::PointsRange::ConstIterator end = aRange.end();
+{
+  typename Range::ConstIterator i = aRange.begin();
+  typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
-    cout << "pouet" << endl;
+    cout << *i << endl;
   }
-  
+}
+/*{
+  typename Range::ConstReverseIterator i = aRange.rbegin();
+  typename Range::ConstReverseIterator end = aRange.rend();
+  for ( ; i != end; ++i) {
+    cout << *i << endl;
+  }
+}*/
+ 
   return true;
 }
-*/
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -239,6 +239,7 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
 
+///////// general tests
   bool res = testIOGridCurve<K2>(sinus2D4)
     && testIOGridCurve<K3>(sinus3D)
     && testExceptions(sinus3D)
@@ -246,9 +247,26 @@ int main( int argc, char** argv )
     && testExceptions(emptyFile)
     && testDisplay(sinus2D4)
     && testIsOpen(sinus2D4,true)
-    && testIsOpen(square,false)
-//    && testPointsRange(sinus2D4)
+    && testIsOpen(square,false); 
+
+/////////// ranges test
+  typedef GridCurve<K2> GridCurve;
+
+  //reading grid curve
+  GridCurve c; 
+  fstream inputStream;
+  inputStream.open (square, ios::in);
+  c.initFromVectorStream(inputStream);
+  inputStream.close();
+
+  res = res 
+    && testRange<GridCurve::DCellsRange>(c.getPointelsRange())
+    && testRange<GridCurve::DCellsRange>(c.getLinelsRange())
+    && testRange<GridCurve::PointsRange>(c.getPointsRange())
 ;
+
+//////////////////////
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
