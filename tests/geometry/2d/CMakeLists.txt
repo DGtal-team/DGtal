@@ -9,6 +9,7 @@ SET(DGTAL_TESTS_SRC
 	testCombinDSS
 	testGridCurve
 	testL1LengthEstimator
+	testTrueLocalEstimator
 	testSegmentComputerFunctor
   testMostCenteredMSEstimator
 	)

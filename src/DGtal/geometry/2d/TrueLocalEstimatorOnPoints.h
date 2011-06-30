@@ -1,0 +1,196 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file TrueLocalEstimatorOnPoints.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/06/27
+ *
+ * Header file for module TrueLocalEstimatorOnPoints.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(TrueLocalEstimatorOnPoints_RECURSES)
+#error Recursive header files inclusion detected in TrueLocalEstimatorOnPoints.h
+#else // defined(TrueLocalEstimatorOnPoints_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define TrueLocalEstimatorOnPoints_RECURSES
+
+#if !defined TrueLocalEstimatorOnPoints_h
+/** Prevents repeated inclusion of headers. */
+#define TrueLocalEstimatorOnPoints_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
+#include <iostream>
+#include <list>
+
+#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
+#include "DGtal/geometry/2d/MaximalSegments.h"
+
+#include "DGtal/base/Exceptions.h"
+#include "DGtal/base/Common.h"
+//////////////////////////////////////////////////////////////////////////////
+
+namespace DGtal
+{
+  /////////////////////////////////////////////////////////////////////////////
+  // template class TrueLocalEstimatorOnPoints
+  /**
+   * Description of template class 'TrueLocalEstimatorOnPoints' <p>
+   * \brief Aim:Computes a quantity to each element of a range associated to 
+   * the most centered maximal segment  
+   */
+  template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
+  class TrueLocalEstimatorOnPoints
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TParametricShapeFunctor ParametricShapeFunctor;
+    typedef TParametricShape ParametricShape;
+    
+    typedef typename ParametricShapeFunctor::Quantity Quantity;
+
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Default constructor.
+     */
+    TrueLocalEstimatorOnPoints() 
+    {
+      myFlagIsInit = false;
+    }
+   
+    /**
+     * Constructor.
+     * @param h grid size (must be >0).
+     * @param itb, begin iterator
+     * @param ite, end iterator
+     * @param aSegmentComputer
+     * @param isClosed true if the input range is closed.
+     */
+    TrueLocalEstimatorOnPoints(const double h, 
+			       const ConstIteratorOnPoints& itb, 
+			       const ConstIteratorOnPoints& ite,
+			       ParametricShape* aShape,
+			       const bool& isClosed);
+    
+    /**
+     * Destructor.
+     */
+    ~TrueLocalEstimatorOnPoints() {};
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Initialisation.
+     * @param h grid size (must be >0).
+     * @param itb, begin iterator
+     * @param ite, end iterator
+     * @param aSegmentComputer
+     * @param isClosed true if the input range is viewed as closed.
+     */
+    void init(const double h, 
+	      const ConstIteratorOnPoints& itb, 
+	      const ConstIteratorOnPoints& ite,
+	      ParametricShape* aShape,
+	      const bool& isClosed);
+    
+    /**
+     * @return the estimated quantity at *it
+     */
+    Quantity eval(const ConstIteratorOnPoints& it);
+    
+    /**
+     * @return the estimated quantity
+     * from itb till ite (exculded)
+     */
+    template <typename OutputIterator>
+    OutputIterator eval(const ConstIteratorOnPoints& itb, 
+			const ConstIteratorOnPoints& ite, 
+                        OutputIterator result); 
+
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+    // ------------------------- Protected Datas ------------------------------
+  protected:
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+
+    double myH; 
+    
+    bool myFlagIsClosed;
+    
+    bool myFlagIsInit;
+    
+    ParametricShapeFunctor myFunctor;
+    
+    ConstIteratorOnPoints myBegin;
+    
+    ConstIteratorOnPoints myEnd;
+
+    // ------------------------- Hidden services ------------------------------
+  private:
+    
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & other );
+
+
+  }; // end of class TrueLocalEstimatorOnPoints
+
+} // namespace DGtal
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.ih"
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined TrueLocalEstimatorOnPoints_h
+
+#undef TrueLocalEstimatorOnPoints_RECURSES
+#endif // else defined(TrueLocalEstimatorOnPoints_RECURSES)
