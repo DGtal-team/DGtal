@@ -201,19 +201,21 @@ bool testRange(const Range &aRange)
   trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
 {
+  trace.info() << "Forward" << endl;
   typename Range::ConstIterator i = aRange.begin();
   typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
     cout << *i << endl;
   }
 }
-/*{
+{
+  trace.info() << "Backward" << endl;
   typename Range::ConstReverseIterator i = aRange.rbegin();
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
     cout << *i << endl;
   }
-}*/
+}
  
   return true;
 }
@@ -263,6 +265,7 @@ int main( int argc, char** argv )
     && testRange<GridCurve::DCellsRange>(c.getPointelsRange())
     && testRange<GridCurve::DCellsRange>(c.getLinelsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
+    && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
 ;
 
 //////////////////////
