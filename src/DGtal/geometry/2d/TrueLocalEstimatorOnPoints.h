@@ -56,8 +56,14 @@ namespace DGtal
   // template class TrueLocalEstimatorOnPoints
   /**
    * Description of template class 'TrueLocalEstimatorOnPoints' <p>
-   * \brief Aim:Computes a quantity to each element of a range associated to 
-   * the most centered maximal segment  
+   * \brief Aim: Computes the true quantity to each element of a range associated to 
+   * a parametric shape.
+   *
+   * @tparam TConstIteratorOnPoints type of iterator on points used as
+   * query points.
+   * @tparam TParametricShape type of the parametric shape.
+   * @tparam TParametricShapeFunctor type of Functor used to evaluate
+   * the quantity.
    */
   template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
   class TrueLocalEstimatorOnPoints
@@ -147,16 +153,22 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    ///Grid size
     double myH; 
     
+    ///Bool if the curve is closed
     bool myFlagIsClosed;
     
+    ///True if the init() has been called.
     bool myFlagIsInit;
     
+    ///Parametric quantity functor
     ParametricShapeFunctor myFunctor;
     
+    ///Copy of the begin iterator
     ConstIteratorOnPoints myBegin;
     
+    ///Copy of the end iterator
     ConstIteratorOnPoints myEnd;
 
     // ------------------------- Hidden services ------------------------------
