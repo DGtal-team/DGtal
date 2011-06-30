@@ -34,6 +34,7 @@ Table of contents:
    -# \ref subsectGIT32
  -# \ref sectGITCommands
    -# \ref ssCom1
+   -# \ref ssCom2
  -# \ref sectGIT2  
    -# \ref ss21
    -# \ref ss22
@@ -243,6 +244,10 @@ To cleanup your stack: "git stash clear"
 @note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommited edits.
  
 
+
+\subsection ssCom1 git Tracking Branches
+
+@todo...
 
 
 
