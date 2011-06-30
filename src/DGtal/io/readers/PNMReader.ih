@@ -59,18 +59,18 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
     }
   catch( ... )
     {
-      std::cout << "PNMReader : can't open " << aFilename << endl;
+      trace.error() << "PNMReader : can't open " << aFilename << endl;
       throw dgtalio;
     }
   bool isASCIImode = false;
   string str;
   getline( infile, str );
   if ( ! infile.good() ) {
-    std::cout << "PNMReader : can't read " << aFilename << endl;
+    trace.error() << "PNMReader : can't read " << aFilename << endl;
     throw dgtalio;
   }
   if ( str != "P5" &&  str != "P2"){
-    std::cout << "PNMReader : No P5 or P2 format in " << aFilename << endl;
+    trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << endl;
     throw dgtalio;
   }
   if(str== "P2"){
@@ -80,7 +80,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	std::cout << "PNMReader : Invalid format in " << aFilename << endl;
+	trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
 	throw dgtalio;
       } 
     }
@@ -106,7 +106,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   str2_in >> max_value;  
 
   if ( ! infile.good() ){
-    std::cout << "PNMReader : Invalid format in " << aFilename << endl;
+    trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
     throw dgtalio;
   } 
   cerr << "# PGM " << w << " " << h 
