@@ -100,6 +100,26 @@ bool testIOGridCurve(const string& filename)
   return true;
 }
 
+
+/**
+ * Open/Closed
+ *
+ */
+bool testIsOpen(const string &filename, const bool& aFlag)
+{
+
+  trace.info() << endl;
+  trace.info() << "Open/Closed test" << endl;
+
+  GridCurve<KhalimskySpaceND<2> > c; //grid curve
+
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+  c.initFromVectorStream(instream);
+
+  return (c.isOpen() == aFlag);
+}
+
 /**
  * Exceptions
  *
@@ -214,6 +234,7 @@ int main( int argc, char** argv )
   std::string polyg2D = testPath + "samples/polyg2D.dat";
   std::string sinus3D = testPath + "samples/sinus3D.dat";
   std::string emptyFile = testPath + "samples/emptyFile.dat";
+  std::string square = testPath + "samples/smallSquare.dat";
 
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
@@ -224,6 +245,8 @@ int main( int argc, char** argv )
     && testExceptions(polyg2D)
     && testExceptions(emptyFile)
     && testDisplay(sinus2D4)
+    && testIsOpen(sinus2D4,true)
+    && testIsOpen(square,false)
 //    && testPointsRange(sinus2D4)
 ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
