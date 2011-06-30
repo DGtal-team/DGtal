@@ -167,6 +167,15 @@ namespace DGtal
     bool isValid() const;
 
 
+    /**
+     * @return 'true' if grid curve is open, 'false' otherwise
+     */
+    bool isOpen() const;
+
+    /**
+     * @return 'true' if grid curve is closed, 'false' otherwise
+     */
+    bool isClosed() const;
 
      
     // ------------------------- private Datas --------------------------------

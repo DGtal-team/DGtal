@@ -92,9 +92,13 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
     my1Cells.push_back( PointVectorTo1Cell(p,v) );
   }
 
-  //viewed as open
-  my0Cells.push_back( PointTo0Cell(*i) );
-  //if closed first and last point distant de 1?
+
+  Point first = *aVectorOfPoints.begin();
+  Point last = *i;
+  Vector v(last - first); 
+  if (v.norm(Vector::L_1) != 1) {   //viewed as open
+    my0Cells.push_back( PointTo0Cell(*i) );
+  } // else                           viewed as closed
 
 }
 
@@ -182,8 +186,31 @@ inline
 bool
 DGtal::GridCurve<KSpace>::isValid() const
 {
-  return true;
+  return ( my0Cells.size() > 0 ) 
+&& ( my1Cells.size() > 0 )
+&& ( (my0Cells.size() - my1Cells.size()) >= 1 )
+&& ( (my0Cells.size() - my1Cells.size()) <= 0 );
 }
+
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isClosed() const
+{
+  //closed grid curves have as many 0-cells as 1-cells
+  return ( my0Cells.size() == my1Cells.size() );
+}
+
+template <typename KSpace>
+inline
+bool
+DGtal::GridCurve<KSpace>::isOpen() const
+{
+  //open grid curves have one 0-cell more
+  //than their 1-cells
+  return ( my0Cells.size() != my1Cells.size() );
+}
+
 
 //------------------------------------------------------------------------------
 // ---------------- DISPLAY ----------------------------------------------------
