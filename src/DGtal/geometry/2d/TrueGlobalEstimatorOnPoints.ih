@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file TrueLocalEstimatorOnPoints.ih
+ * @file TrueGlobalEstimatorOnPoints.h.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/06/27
  *
- * Implementation of inline methods defined in TrueLocalEstimatorOnPoints.h
+ * Implementation of inline methods defined in TrueGlobalEstimatorOnPoints.h.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,16 +38,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
+
 /**
  * Constructor.
  */
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueLocalEstimatorOnPoints(const double h, 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints(const double h, 
 											const ConstIteratorOnPoints& itb, 
 											const ConstIteratorOnPoints& ite,
 											PShape* aShape,
-											const bool isClosed) 
+											const bool& isClosed) 
 {
   init(h,itb,ite,aShape,isClosed);
 }
@@ -58,22 +59,22 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueLocalEstimatorO
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 void
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
 								  const ConstIteratorOnPoints& itb, 
 								  const ConstIteratorOnPoints& ite,
 								  PShape* aShape,
-								  const bool isClosed) 
+								  const bool& isClosed) 
 {
   myH = h;
 
   myBegin = itb;
   myEnd = ite;
-
+  
   myFlagIsClosed = isClosed;
   myFlagIsInit = true;
-
+  
   myFunctor =  ParametricShapeFunctor(aShape);
-
+  
 }
 
 /**
@@ -81,33 +82,24 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h
  * from itb till ite
  */
 template <typename CIt, typename PShape, typename PShapeFunctor>
-template <typename OutputIterator>
 inline
-OutputIterator
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIteratorOnPoints& itb, 
-								  const ConstIteratorOnPoints& ite,
-								  OutputIterator result)
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
 {
-  Quantity q;
-  for(ConstIteratorOnPoints it = itb; it != ite; ++it)
-    {
-      q = myFunctor(it);
-      *result++ = q;
-    }
-  
-  return result;
+  return  myFunctor(myBegin,myEnd);
 }
-  
+
   
 /**
  * @return the estimated quantity at *it
  */
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(ConstIteratorOnPoints& it)
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIteratorOnPoints& itb,
+								   const ConstIteratorOnPoints& ite)
 {
-  return myFunctor(it);
+  return myFunctor(itb,ite);
 }
 
 
@@ -118,9 +110,9 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(ConstIteratorO
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 bool
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
 {
-    return true;
+    return myFlagIsInit;
 }
 
 
