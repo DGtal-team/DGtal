@@ -73,7 +73,8 @@ bool testTrueLocalEstimator(const std::string &filename)
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   typedef KhalimskySpaceND<2> Kspace; //space
-  GridCurve<Kspace> c(instream); //building grid curve
+  GridCurve<Kspace> c; 
+  c.initFromVectorStream(instream); //building grid curve
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
@@ -94,16 +95,23 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   curvatureEstimator.init( 1, r.begin(), r.end(), &ball, true);
   tangentEstimator.init( 1, r.begin(), r.end(), &ball, true);
-  lengthEstimator.init( 1, r.begin(), r.begin()+15, &ball, true);
+//Tris
+//  lengthEstimator.init( 1, r.begin(), r.begin()+15, &ball, true);
+// bidirectionnal iterator, not random iterator
  
+
   ConstIteratorOnPoints it = r.begin();
-  ConstIteratorOnPoints it2 = r.begin()+15;
-  
+//  ConstIteratorOnPoints it2 = r.begin()+15;
+  ConstIteratorOnPoints it2 = it;
+  for (  int compteur = 0; compteur < 15; ++compteur ) ++it2;
+  lengthEstimator.init( 1, it, it2, &ball, true);
+
+
   trace.info() << "Current point = "<<*it<<std::endl;
   trace.info() << "Current point+15 = "<<*it2<<std::endl;
-  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it)<<std::endl;
-  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it)<<std::endl;
-  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval()<<std::endl;
+  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2)<<std::endl;
+  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2)<<std::endl;
+  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval(it,it2)<<std::endl;
   
   return true;
 
