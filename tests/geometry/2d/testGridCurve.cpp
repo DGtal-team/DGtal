@@ -257,7 +257,7 @@ int main( int argc, char** argv )
   //reading grid curve
   GridCurve c; 
   fstream inputStream;
-  inputStream.open (square, ios::in);
+  inputStream.open (square.c_str(), ios::in);
   c.initFromVectorStream(inputStream);
   inputStream.close();
 
