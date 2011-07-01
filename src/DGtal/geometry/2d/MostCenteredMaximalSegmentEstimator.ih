@@ -103,7 +103,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
   unsigned int length = 0;             //longueur du seg max
   for (ConstIterator i = b; i != segIt.getFront(); ++i) ++length;
 
-  Quantity q = myFunctor(*segIt); //estimation du seg max
+  Quantity q = myFunctor(*m,*segIt); //estimation du seg max
 
   unsigned int d = 0; //ecart entre l'iterateur arriere et milieu
 
@@ -146,7 +146,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
     d = d + dm - di;
 
     //mise a jour de q, l'estimation
-    q = myFunctor(*segIt);
+    q = myFunctor(*m,*segIt);
 
     //passer a l'arc suivant
     ++segIt;
@@ -191,7 +191,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
     ::SegmentIterator segIt = myMSRange.begin();
   SegmentComputer sc(*segIt);
 
-  return myFunctor(sc);
+  return myFunctor(*it,sc);
 }
 
 

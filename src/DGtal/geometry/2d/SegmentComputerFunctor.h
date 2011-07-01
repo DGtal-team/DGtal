@@ -60,12 +60,13 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class TangentFromArithmeticalDSSFunctor
+  // class TangentFromDSSFunctor
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'TangentFromArithmeticalDSSFunctor' <p> Aim: 
-   * computes the tangent orientation (in radians) from the parameters
-   *  of a class of type ArithmeticalDSS 
+   * Description of class 'TangentFromDSSFunctor' <p> Aim: 
+   * computes the tangent orientation (in radians) from the 
+   * getA() and getB() returning the components of the main
+   * direction vector of a segment 
    *
    * Example :
    * @code 
@@ -73,13 +74,13 @@ namespace DGtal
    * @endcode
    */
 
-  template <typename ArithmeticalDSS>
-  class TangentFromArithmeticalDSSFunctor
+  template <typename DSSComputer>
+  class TangentFromDSSFunctor
   {
 
   public: 
 
-    // ----------------------- inner types ------------------------------
+    // ----------------------- inner type ------------------------------
   typedef double Value;
 
     // ----------------------- Standard services ------------------------------
@@ -88,27 +89,25 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~TangentFromArithmeticalDSSFunctor(){};
-
+    ~TangentFromDSSFunctor(){};
 
     /**
      * Default Constructor.
      */
-    TangentFromArithmeticalDSSFunctor(){};
-
+    TangentFromDSSFunctor(){};
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    TangentFromArithmeticalDSSFunctor( const TangentFromArithmeticalDSSFunctor & other ) {};
+    TangentFromDSSFunctor( const TangentFromDSSFunctor & other ) {};
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-//    TangentFromArithmeticalDSSFunctor & operator=( const TangentFromArithmeticalDSSFunctor & other ) { 
+//    TangentFromDSSFunctor & operator=( const TangentFromDSSFunctor & other ) { 
 //     return *this;
 //    };
 
@@ -120,20 +119,21 @@ namespace DGtal
 
     /**
      * Operator() 
-     * @return the tangent orientation (in radians).
-     * @param aDSS an arithmeticalDSS. 
+     * @return the tangent orientation at [aPoint]
+     * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+     * @param aDSS a DSSComputer. 
+     * @param aPoint the point at which the tangent orientation is estimated. 
      */
-    Value operator()( const ArithmeticalDSS& aDSS ) const {
+    Value operator()( const typename DSSComputer::Point& aPoint, 
+                      const DSSComputer& aDSS ) const {
 
-      Value a = (Value) IntegerTraits<typename ArithmeticalDSS::Integer>
+      Value a = (Value) IntegerTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getA());      
-      Value b = (Value) IntegerTraits<typename ArithmeticalDSS::Integer>
+      Value b = (Value) IntegerTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getB());      
 
       return std::atan2(a,b);
     };
-
-
 
     /**
      * Checks the validity/consistency of the object.
@@ -156,9 +156,7 @@ namespace DGtal
 
  
 
-
-
-  }; // end of class TangentFromArithmeticalDSSFunctor
+  }; // end of class TangentFromDSSFunctor
 
 
 
