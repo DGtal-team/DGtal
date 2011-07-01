@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
   testDistanceTransformationND
   testReverseDT
   testMeasureSet
+  testGaussDigitizer
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
