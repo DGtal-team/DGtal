@@ -79,6 +79,19 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
 }
 
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename SegmentComputer, typename Functor>
+inline
+bool
+DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::isValid() const
+{
+  return true;
+}
+
 /**
  * @return the estimated quantity at *it
  * from itb till ite
@@ -91,87 +104,52 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 ::eval(const ConstIterator& itb, const ConstIterator& ite,
        OutputIterator result) {
 
+  //segmentComputer iterators
+  SegmentIterator segIt( myMSRange.begin() );
+  SegmentIterator nextSegIt( segIt );
 
-  typename MaximalSegments<SegmentComputer>
-    ::SegmentIterator segIt = myMSRange.begin();
+  if (nextSegIt != myMSRange.end() ) { //more than one segment
+    ++nextSegIt; 
 
-  ConstIterator b = segIt.getBack(); //iterateur arriere
-  ConstIterator m = b;               //iterateur milieu
+//////////////// main loop ///////////////////////////////////
 
-  //////////////////////////////////premier seg
+    //main element iterator
+    ConstIterator eltIt = segIt.getBack();
+    //true if *eltIt has be estimated, false otherwise
+    bool hasToBeEstimated = false;
+    //step end iterator indicating that 
+    //the estimation will be performed from *nextSegIt 
+    ConstIterator stepEnd = nextStepEnd(segIt, nextSegIt); 
 
-  unsigned int length = 0;             //longueur du seg max
-  for (ConstIterator i = b; i != segIt.getFront(); ++i) ++length;
+    while (eltIt != ite) {
 
-  Quantity q = myFunctor(*m,*segIt); //estimation du seg max
+      //incrementation of segIt/nextSegIt
+      if (eltIt == stepEnd) {
+        segIt = nextSegIt;
+        ++nextSegIt; //controler la validite ?
+        stepEnd = nextStepEnd(segIt, nextSegIt); 
+      } 
 
-  unsigned int d = 0; //ecart entre l'iterateur arriere et milieu
+      //estimation and incrementation of eltIt
+      if (hasToBeEstimated) {
+         *result++ = myFunctor(*eltIt,*segIt);
+      } else if (eltIt == itb) {
+        hasToBeEstimated = true; 
+         *result++ = myFunctor(*eltIt,*segIt);
+      }
+      ++eltIt; 
 
-  //positionnement de m au milieu du premier seg max
-  while (d < (length/2)) {
-    //stockage
-    *result++ = q;
-    ++m;
-    ++d;
-  }
+    }
+/////////////////////////////////////////////////////////////
 
-  /////////////////////////////////pour tous les seg max suivants
-  int nbarcs = 1;
-  ++segIt;
-  while (segIt != myMSRange.end()) {
-    nbarcs++;
+  } else {                                 //only one segment
 
-    //mise a jour de length
-    length = 0;   
-    for (ConstIterator i = segIt.getBack(); i != segIt.getFront(); ++i) ++length;
-
-    //positionnement de b a l'arriere de l'arc courant
-    int di = 0;
-    while (b != segIt.getBack()) {
-      ++b;
-      ++di;
+    for (ConstIterator i = myBegin; i != myEnd; ++i) {
+       *result++ = myFunctor(*i,*segIt);
     }
 
-    //positionnement de m	
-    //et copie des quantites
-    int dm = 0;
-    while (dm < (length/2 - d + di)/2) {
-      //stockage
-      *result++ = q;
-      ++m;
-      ++dm;
-    }	
-
-    //mise a jour de d
-    d = d + dm - di;
-
-    //mise a jour de q, l'estimation
-    q = myFunctor(*m,*segIt);
-
-    //passer a l'arc suivant
-    ++segIt;
   }
 
-  //fin
-  do {
-    ++m;
-    //stockage
-    *result++ = q;
-  } while (m != segIt.getFront());
-
-
-
-
-  ///
-
-  /*
-  //just a test
-  ConstIterator i = itb;
-  while (i != ite) {
-  *result++ = 1;
-  ++i;
-  } 
-  */
   return result;
 }
 
@@ -195,16 +173,38 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 }
 
 
+
 /**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
+ * @return the ConstIterator that is between 
+ * the back ConstIterator of [it2] (denoted b) and 
+ * the front ConstIterator of [it1] (denoted f)
+ * if b < f and b otherwise
  */
 template <typename SegmentComputer, typename Functor>
 inline
-bool
-DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::isValid() const
-{
-  return true;
-}
+typename SegmentComputer::Iterator 
+DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::
+      nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2) {
 
+  ConstIterator b( it2.getBack() ); 
+  ConstIterator f( it1.getFront() ); 
+
+  ConstIterator tmp( f );
+  ++tmp; //always valid for range viewed as open
+  if (tmp == b) { //empty intersection between it1 and it2
+    return f;
+  } else {    //not empty intersection between it1 and it2
+    bool flag = true; 
+    while (b != f) {
+      if (flag) {
+        --f;
+        flag = false; 
+      } else {
+        ++b; 
+        flag = true; 
+      } 
+    }
+    return b;     
+  }
+}
 
