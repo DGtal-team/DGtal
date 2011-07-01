@@ -17,63 +17,62 @@
 #pragma once
 
 /**
- * @file MostCenteredMaximalSegmentEstimator.h
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * @file TrueLocalEstimatorOnPoints.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/01/26
+ * @date 2011/06/27
  *
- * Header file for module MostCenteredMaximalSegmentEstimator.cpp
+ * Header file for module TrueLocalEstimatorOnPoints.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(MostCenteredMaximalSegmentEstimator_RECURSES)
-#error Recursive header files inclusion detected in MostCenteredMaximalSegmentEstimator.h
-#else // defined(MostCenteredMaximalSegmentEstimator_RECURSES)
+#if defined(TrueLocalEstimatorOnPoints_RECURSES)
+#error Recursive header files inclusion detected in TrueLocalEstimatorOnPoints.h
+#else // defined(TrueLocalEstimatorOnPoints_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define MostCenteredMaximalSegmentEstimator_RECURSES
+#define TrueLocalEstimatorOnPoints_RECURSES
 
-#if !defined MostCenteredMaximalSegmentEstimator_h
+#if !defined TrueLocalEstimatorOnPoints_h
 /** Prevents repeated inclusion of headers. */
-#define MostCenteredMaximalSegmentEstimator_h
+#define TrueLocalEstimatorOnPoints_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <list>
-
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
-#include "DGtal/geometry/2d/MaximalSegments.h"
-
-#include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-/** \TODO
-* ajouter un myFlagIsInit (aussi dans les decompositions)
-* ajouter un getLength() dans les SegmentIterator des decompositions
-* mettre au propre les noms de type dans les decompositions (ConstIterator, Self, Reverse, etc.)
-*/
-
   /////////////////////////////////////////////////////////////////////////////
-  // template class MostCenteredMaximalSegmentEstimator
+  // template class TrueLocalEstimatorOnPoints
   /**
-   * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim:Computes a quantity to each element of a range associated to 
-   * the most centered maximal segment  
+   * Description of template class 'TrueLocalEstimatorOnPoints' <p>
+   * \brief Aim: Computes the true quantity to each element of a range associated to 
+   * a parametric shape.
+   *
+   * @tparam TConstIteratorOnPoints type of iterator on points used as
+   * query points.
+   * @tparam TParametricShape type of the parametric shape.
+   * @tparam TParametricShapeFunctor type of Functor used to evaluate
+   * the quantity.
    */
-  template <typename SegmentComputer, typename Functor>
-  class MostCenteredMaximalSegmentEstimator
+  template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
+  class TrueLocalEstimatorOnPoints
   {
 
     // ----------------------- Types ------------------------------
-	public:
+  public:
 
-    typedef typename SegmentComputer::Iterator ConstIterator;
-    typedef typename Functor::Value Quantity;
+    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TParametricShapeFunctor ParametricShapeFunctor;
+    typedef TParametricShape ParametricShape;
+    
+    typedef typename ParametricShapeFunctor::Quantity Quantity;
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -81,7 +80,11 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    MostCenteredMaximalSegmentEstimator() {};
+    TrueLocalEstimatorOnPoints() 
+    {
+      myFlagIsInit = false;
+    }
+   
     /**
      * Constructor.
      * @param h grid size (must be >0).
@@ -90,17 +93,16 @@ namespace DGtal
      * @param aSegmentComputer
      * @param isClosed true if the input range is closed.
      */
-    MostCenteredMaximalSegmentEstimator(
-      const double h, 
-      const ConstIterator& itb, const ConstIterator& ite,
-      const SegmentComputer& aSegmentComputer, 
-      const Functor& aFunctor,
-      const bool& isClosed);
-
+    TrueLocalEstimatorOnPoints(const double h, 
+			       const ConstIteratorOnPoints& itb, 
+			       const ConstIteratorOnPoints& ite,
+			       ParametricShape* aShape,
+			       const bool isClosed);
+    
     /**
      * Destructor.
      */
-    ~MostCenteredMaximalSegmentEstimator() {};
+    ~TrueLocalEstimatorOnPoints() {};
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -113,24 +115,24 @@ namespace DGtal
      * @param aSegmentComputer
      * @param isClosed true if the input range is viewed as closed.
      */
-    void init(
-      const double h, 
-      const ConstIterator& itb, const ConstIterator& ite,
-      const SegmentComputer& aSegmentComputer, 
-      const Functor& aFunctor, 
-      const bool& isClosed);
-
+    void init(const double h, 
+	      const ConstIteratorOnPoints& itb, 
+	      const ConstIteratorOnPoints& ite,
+	      ParametricShape* aShape,
+	      const bool isClosed);
+    
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it);
-
+    Quantity eval(ConstIteratorOnPoints& it);
+    
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
+    OutputIterator eval(const ConstIteratorOnPoints& itb, 
+			const ConstIteratorOnPoints& ite, 
                         OutputIterator result); 
 
 
@@ -146,29 +148,33 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-		double myH; 
-		bool myFlagIsClosed;
-
-    Functor myFunctor;
-
-		ConstIterator myBegin;
-		ConstIterator myEnd;
-
-    MaximalSegments<SegmentComputer> myMSRange; 
+    ///Grid size
+    double myH; 
+    
+    ///Bool if the curve is closed
+    bool myFlagIsClosed;
+    
+    ///True if the init() has been called.
+    bool myFlagIsInit;
+    
+    ///Parametric quantity functor
+    ParametricShapeFunctor myFunctor;
+    
+    ///Copy of the begin iterator
+    ConstIteratorOnPoints myBegin;
+    
+    ///Copy of the end iterator
+    ConstIteratorOnPoints myEnd;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-
-
   private:
-
+    
     /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    MostCenteredMaximalSegmentEstimator ( const MostCenteredMaximalSegmentEstimator & other );
+    TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & other );
 
     /**
      * Assignment.
@@ -176,22 +182,22 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    MostCenteredMaximalSegmentEstimator & operator= ( const MostCenteredMaximalSegmentEstimator & other );
+    TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & other );
 
 
-  }; // end of class MostCenteredMaximalSegmentEstimator
+  }; // end of class TrueLocalEstimatorOnPoints
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.ih"
+#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined MostCenteredMaximalSegmentEstimator_h
+#endif // !defined TrueLocalEstimatorOnPoints_h
 
-#undef MostCenteredMaximalSegmentEstimator_RECURSES
-#endif // else defined(MostCenteredMaximalSegmentEstimator_RECURSES)
+#undef TrueLocalEstimatorOnPoints_RECURSES
+#endif // else defined(TrueLocalEstimatorOnPoints_RECURSES)

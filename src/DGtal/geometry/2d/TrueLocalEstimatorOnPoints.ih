@@ -1,0 +1,126 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file TrueLocalEstimatorOnPoints.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/06/27
+ *
+ * Implementation of inline methods defined in TrueLocalEstimatorOnPoints.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueLocalEstimatorOnPoints(const double h, 
+											const ConstIteratorOnPoints& itb, 
+											const ConstIteratorOnPoints& ite,
+											PShape* aShape,
+											const bool isClosed) 
+{
+  init(h,itb,ite,aShape,isClosed);
+}
+
+/**
+ * Init.
+ */
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+void
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
+								  const ConstIteratorOnPoints& itb, 
+								  const ConstIteratorOnPoints& ite,
+								  PShape* aShape,
+								  const bool isClosed) 
+{
+  myH = h;
+
+  myBegin = itb;
+  myEnd = ite;
+
+  myFlagIsClosed = isClosed;
+  myFlagIsInit = true;
+
+  myFunctor =  ParametricShapeFunctor(aShape);
+
+}
+
+/**
+ * @return the estimated quantity at *it
+ * from itb till ite
+ */
+template <typename CIt, typename PShape, typename PShapeFunctor>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIteratorOnPoints& itb, 
+								  const ConstIteratorOnPoints& ite,
+								  OutputIterator result)
+{
+  Quantity q;
+  for(ConstIteratorOnPoints it = itb; it != ite; ++it)
+    {
+      q = myFunctor(it);
+      *result++ = q;
+    }
+  
+  return result;
+}
+  
+  
+/**
+ * @return the estimated quantity at *it
+ */
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(ConstIteratorOnPoints& it)
+{
+  return myFunctor(it);
+}
+
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+bool
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
+{
+    return true;
+}
+
+
