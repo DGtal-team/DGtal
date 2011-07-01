@@ -194,7 +194,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputIm
 								  OutputImage &output,
 								  const Dimension dim ) const
 {
-  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ); ;
+  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
