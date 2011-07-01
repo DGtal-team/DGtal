@@ -109,8 +109,10 @@ namespace DGtal
     }
 
    
-    /** 
-     * Compute the length between two iterators
+    /** .
+     * Compute the length between two iterator.
+     *
+     * @pre myH>0
      * 
      * @param itb begin point
      * @param ite end point
@@ -122,6 +124,7 @@ namespace DGtal
 			const unsigned int nbSamples = 100)
     {
       ASSERT(myShape);
+      ASSERT(myH > 0);
       typename ParametricShape::RealPoint2D p = *itb;
       typename ParametricShape::RealPoint2D p2 = *ite;
      
