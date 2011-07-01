@@ -25,7 +25,12 @@ include(Board/ModuleSRC.txt)
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
 
+if ( WITH_VISU3D )
+ include(DGtal/io/3dViewers/ModuleSRC.txt)
+ add_library ( ${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC} ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
+else ( WITH_VISU3D )
 add_library ( ${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
+endif ( WITH_VISU3D )
 target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
 #set_target_properties( ${LIBDGTAL_NAME} PROPERTIES PUBLIC_HEADER FILES_MATCHING PATTERN "[A-Za-z0-9]+.*h") 
 
@@ -43,21 +48,5 @@ install(TARGETS ${LIBDGTAL_NAME}
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
   #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
-
-
-if ( WITH_VISU3D )
-  include(DGtal/io/3dViewers/ModuleSRC.txt)
-  add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
-  target_link_libraries( ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
-  
-  install(TARGETS ${LIBDGTALVISU3D_NAME}
-    # IMPORTANT: Add the foo library to the "export-set"
-    EXPORT DGtalLibraryDepends
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
-    COMPONENT dev)
-  
-endif( WITH_VISU3D )
 
 
