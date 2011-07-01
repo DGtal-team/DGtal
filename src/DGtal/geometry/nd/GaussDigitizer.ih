@@ -85,6 +85,17 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
   myLowerPoint = floor( xLow );
   myUpperPoint = ceil( xUp );
 }
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TEuclideanShape>
+inline
+typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::Domain
+DGtal::GaussDigitizer<TSpace,TEuclideanShape>
+::getDomain() const
+{
+  return Domain( getLowerBound(), getUpperBound() );
+}
+ 
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
@@ -200,6 +211,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   return myGridSteps;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

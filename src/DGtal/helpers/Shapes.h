@@ -149,6 +149,20 @@ namespace DGtal
 			      const Point & aCenter, 
 			      UnsignedInteger aRadius );
 
+    /**
+       This method is only 2D.
+
+       This method uses random tries to find a first linel separating
+       an interior pixel from an exterior one. It then follows direct
+       orientations to extract the 4-connected set of points.
+
+       @return aVectorOfPoints (returns) the sequence of points of \b a
+       boundary of the digitized shape.
+    */
+    template <typename PointPredicate>
+    static
+    std::vector<Point> get2DBoundaryPoints( const Domain & domain, 
+					    const PointPredicate & pp );
 
     // ----------------------- Standard services ------------------------------
   public:

@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -76,6 +77,7 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealPoint RealVector;
     typedef TEuclideanShape EuclideanShape;
+    typedef HyperRectDomain<Space> Domain;
 
     /**
      * Destructor.
@@ -86,7 +88,7 @@ namespace DGtal
      * Constructor. The object is not valid.
      */
     GaussDigitizer();
-    
+
     /**
        @param shape the digitizer now references the given shape.
     */
@@ -121,6 +123,12 @@ namespace DGtal
     void init( const RealPoint & xLow, const RealPoint & xUp, 
 	       const RealVector & gridSteps );
 
+    /**
+       @return the domain chosen for the digitizer.
+       @see init
+    */
+    Domain getDomain() const;
+    
     /**
        @param p any point in the Euclidean space.
        @return the digital point floor( p / gridSteps ).
@@ -192,6 +200,7 @@ namespace DGtal
        @return the grid steps in each direction.
     */
     RealVector gridSteps() const;
+
 
     // ----------------------- Interface --------------------------------------
   public:
