@@ -72,55 +72,38 @@ testDigitization( const Shape & aShape, double h,
   MySet aSet( domain );
   // Creates a set from the digitizer.
   Shapes<Domain>::shaper( aSet, dig );
-  std::vector<Point> points = 
-    Shapes<Domain>::get2DBoundaryPoints( domain, dig );
   
-  
-  // // Create cellular space
-  // typedef Z2i::KSpace KSpace;
-  // typedef Z2i::SCell SCell;
-  // KSpace K;
-  // K.init( dig.getLowerBound(), dig.getUpperBound(), true );
-  // SurfelAdjacency<KSpace::dimension> SAdj( true );
+  // Create cellular space
+  typedef Z2i::KSpace KSpace;
+  typedef Z2i::SCell SCell;
+  KSpace K;
+  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
 
-  // // Extracts shape boundary
-  // SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-  // // Getting the consecutive surfels of the 2D boundary
-  // std::vector<SCell> vectBdrySCell;
-  // Surfaces<KSpace>::track2DBoundary( vectBdrySCell,
-  // 				     K, SAdj, dig, bel );
-  
+  // Extracts shape boundary
+  SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+  // Getting the consecutive surfels of the 2D boundary
+  std::vector<Point> points;
+  Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+  GridCurve<KSpace> gridcurve;
+  gridcurve.initFromVector( points );
 
+  // Display all
   DGtalBoard board;
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.styleName(), "Paving" )
   	<< domain << aSet;
 
-  GridCurve<KSpace> gridcurve;
-  gridcurve.initFromVector( points );
-  board << gridcurve;
-
-  // board << CustomStyle( bel.styleName(), 
-  // 			new CustomColors(  DGtalBoard::Color( 255, 255, 0 ),
-  // 					   DGtalBoard::Color( 192, 192, 0 ) ));
-  
-  // GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
-  // cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  // cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  // cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
-
-  // unsigned int d=0;
-  // typedef std::vector<SCell>::const_iterator SCellConstIterator;
-  // for ( SCellConstIterator it = vectBdrySCell.begin(),
-  // 	  it_end = vectBdrySCell.end(); 
-  // 	it != it_end; ++it )
-  //   {
-  //     board << CustomStyle( bel.styleName() ,
-  // 			    new CustomColors( DGtalBoard::Color::Black,
-  // 					      cmap_grad( d )))
-  // 	    << *it;
-  //     ++d;
-  //   }
+  board << SetMode( gridcurve.styleName(), "Edges" )
+	<< CustomStyle( bel.styleName(), 
+			new CustomColors( DGtalBoard::Color( 0, 0, 0 ),
+					  DGtalBoard::Color( 0, 192, 0 ) ) )
+	<< gridcurve;
+  board << SetMode( gridcurve.styleName(), "Points" )
+	<< CustomStyle( bel.styleName(), 
+			new CustomColors( DGtalBoard::Color( 255, 0, 0 ),
+					  DGtalBoard::Color( 200, 0, 0 ) ) )
+	<< gridcurve;
 
   board.saveEPS( ( fileName + ".eps" ).c_str() );
   board.saveSVG( ( fileName + ".svg" ).c_str() );
