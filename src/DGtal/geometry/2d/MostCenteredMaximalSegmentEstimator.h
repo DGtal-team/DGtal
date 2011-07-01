@@ -96,7 +96,6 @@ namespace DGtal
       const SegmentComputer& aSegmentComputer, 
       const Functor& aFunctor,
       const bool& isClosed);
-
     /**
      * Destructor.
      */
@@ -146,14 +145,15 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    /** grid step */
 		double myH; 
+    /** 'true' if the range is viewed as closed, 'false' otherwise */ 
 		bool myFlagIsClosed;
-
+    /** functor estimating the quantity from a point and a segmentComputer */ 
     Functor myFunctor;
-
-		ConstIterator myBegin;
-		ConstIterator myEnd;
-
+    /** begin and end iterators */ 
+		ConstIterator myBegin,myEnd;
+    /** range of maximal segments */ 
     MaximalSegments<SegmentComputer> myMSRange; 
 
     // ------------------------- Hidden services ------------------------------

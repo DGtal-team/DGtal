@@ -85,7 +85,7 @@ bool testDec4(string filename)
 
   typedef Range::ConstIterator ConstIterator;//constIterator
   typedef ArithmeticalDSS<ConstIterator,Kspace::Integer,4> SegmentComputer;//segmentComputer
-  typedef TangentFromArithmeticalDSSFunctor<SegmentComputer> Functor; //functor
+  typedef TangentFromDSSFunctor<SegmentComputer> Functor; //functor
 	typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> Estimator;//estimator
 
   SegmentComputer sc;
