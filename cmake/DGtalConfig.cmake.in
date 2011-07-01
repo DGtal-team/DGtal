@@ -19,5 +19,5 @@ link_directories( @ITK_LIBRARY_DIRS@)
 
  
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
-set(DGTAL_LIBRARIES @LIBDGTAL_NAME@ @LIBDGTALVISU3D_NAME@)
+set(DGTAL_LIBRARIES @LIBDGTAL_NAME@ )
 
