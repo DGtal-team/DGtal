@@ -123,12 +123,14 @@ namespace DGtal
 
     /**
      * @return the estimated quantity at *it
+     * NB: O(n)
      */
     Quantity eval(const ConstIterator& it);
 
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
+     * NB: O(n)
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
@@ -169,7 +171,10 @@ namespace DGtal
      * if b < f and b otherwise
      */
     ConstIterator nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2);
-    //same in loop ?
+    /**
+     * Same as nextStepEnd but if the range is processed as closed
+     */
+    ConstIterator nextStepEndInLoop(const SegmentIterator& it1, const SegmentIterator& it2);
 
 
     // ------------------------- Hidden services ------------------------------

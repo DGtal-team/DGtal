@@ -66,12 +66,12 @@ using namespace LibBoard;
  * Test 
  *
  */
-bool testDec4(string filename)
+bool testEval(string filename)
 {
 
 
-
-  trace.info() << "Reading GridCurve " << endl;
+  trace.info() << endl;
+  trace.info() << "Reading GridCurve from " << filename << endl;
   
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
@@ -81,7 +81,8 @@ bool testDec4(string filename)
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
-  trace.info() << "Building Estimator " << endl;
+  trace.info() << "Building Estimator (process range as"; 
+  trace.info() << ( (c.isClosed())?"closed":"open" ) << ")" << endl;
 
   typedef Range::ConstIterator ConstIterator;//constIterator
   typedef ArithmeticalDSS<ConstIterator,Kspace::Integer,4> SegmentComputer;//segmentComputer
@@ -91,10 +92,10 @@ bool testDec4(string filename)
   SegmentComputer sc;
   Functor f; 
 
-  Estimator e(1,r.begin(),r.end(),sc,f,false);
+  Estimator e(1,r.begin(),r.end(),sc,f,c.isClosed());
 
 {
-  trace.info() << "Eval at one element (do not work) " << endl;
+  trace.info() << "Eval at one element" << endl;
   for (ConstIterator i = r.begin(); i != r.end(); ++i) {
     cout << e.eval(i) << " "; 
   }
@@ -102,7 +103,7 @@ bool testDec4(string filename)
 }
 
 {
-  trace.info() << "Eval for each element between begin and end (process as open) " << endl;
+  trace.info() << "Eval for each element between begin and end " << endl;
   vector<double> v(r.size()); 
   e.eval(r.begin(),r.end(),v.begin());
 
@@ -113,19 +114,21 @@ bool testDec4(string filename)
 }
 
 {
-  trace.info() << "Eval for each element between begin+15 and begin+30 (process as open) " << endl;
-  ConstIterator it1 = r.begin();
-  for (  int compteur = 0; compteur < 15; ++compteur ) ++it1;
-  ConstIterator it2 = it1;
-  for (  int compteur = 0; compteur < 15; ++compteur ) ++it2;
+  if (r.size() >= 10) {
+    trace.info() << "Eval for each element between begin+4 and begin+9 " << endl;
+    ConstIterator it1 = r.begin();
+    for (  int compteur = 0; compteur < 4; ++compteur ) ++it1;
+    ConstIterator it2 = it1;
+    for (  int compteur = 0; compteur < 5; ++compteur ) ++it2;
 
-  vector<double> v(15); 
-  e.eval(it1,it2,v.begin());
+    vector<double> v(5); 
+    e.eval(it1,it2,v.begin());
 
-  for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
-    cout << *i << " "; 
+    for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
+      cout << *i << " "; 
+    }
+    cout << endl;
   }
-  cout << endl;
 }
 
 	return true;
@@ -145,8 +148,10 @@ int main(int argc, char **argv)
   trace.info() << endl;
 
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
+  std::string square = testPath + "samples/smallSquare.dat";
 
-  bool res = testDec4(sinus2D4)
+  bool res = testEval(sinus2D4)
+            && testEval(square)
 //other tests
 ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
