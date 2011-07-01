@@ -105,7 +105,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   Point aPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) std::floor( p[ i ] / myGridSteps[ i ] );
+    aPoint[ i ] = (Integer) ::floor( p[ i ] / myGridSteps[ i ] );
   return aPoint;
 }
 //-----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   Point aPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) std::ceil( p[ i ] / myGridSteps[ i ] );
+    aPoint[ i ] = (Integer) ::ceil( p[ i ] / myGridSteps[ i ] );
   return aPoint;
 }
 //-----------------------------------------------------------------------------
@@ -129,7 +129,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   Point aPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) std::round( p[ i ] / myGridSteps[ i ] );
+    aPoint[ i ] = (Integer) ::round( p[ i ] / myGridSteps[ i ] );
   return aPoint;
 }
 //-----------------------------------------------------------------------------

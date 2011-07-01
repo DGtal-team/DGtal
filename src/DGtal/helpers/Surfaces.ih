@@ -375,6 +375,34 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
     }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointPredicate>
+inline
+void
+DGtal::Surfaces<TKSpace>::track2DBoundaryPoints
+( std::vector<Point> & aVectorOfPoints,
+  const KSpace & K, 
+  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+  const PointPredicate & pp,
+  const SCell & start_surfel )
+{
+  aVectorOfPoints.clear();
+  
+  // Getting the consecutive surfels of the 2D boundary
+  std::vector<SCell> vectBdrySCell;
+  Surfaces<KSpace>::track2DBoundary( vectBdrySCell,
+				     K, surfel_adj, pp, start_surfel );
+  typedef typename std::vector<SCell>::const_iterator SCellConstIterator;
+  for ( SCellConstIterator it = vectBdrySCell.begin(),
+	  it_end = vectBdrySCell.end(); 
+	it != it_end; ++it )
+    {
+      Dimension track = *( K.sDirs( *it ) );
+      SCell pointel = K.sIndirectIncident( *it, track );
+      aVectorOfPoints.push_back( K.sCoords( pointel ) );
+    }
+}
 
 
 
