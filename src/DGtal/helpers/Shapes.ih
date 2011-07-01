@@ -31,6 +31,9 @@
 #include <cstdlib>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +62,7 @@ DGtal::Shapes<TDomain>::~Shapes()
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
- template <typename TDomain>
+template <typename TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -217,6 +220,44 @@ DGtal::Shapes<TDomain>::shaper( TDigitalSet & aSet,
       if ( aFunctor.isInside( *it ) )
 	aSet.insert( *it );
     }
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TDomain>
+template <typename PointPredicate>
+inline
+std::vector<typename TDomain::Point>
+DGtal::Shapes<TDomain>::get2DBoundaryPoints
+( const Domain & domain, 
+  const PointPredicate & pp )
+{
+  std::vector<Point> aVectorOfPoints;
+  // Create cellular space
+  typedef typename Space::Integer Integer;
+  typedef KhalimskySpaceND<2,Integer> KSpace;
+  typedef typename KSpace::SCell SCell;
+  
+  KSpace K;
+  K.init( domain.lowerBound(), domain.upperBound(), true );
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
+
+  // Extracts shape boundary
+  SCell bel = Surfaces<KSpace>::findABel( K, pp, 100000 );
+  // Getting the consecutive surfels of the 2D boundary
+  std::vector<SCell> vectBdrySCell;
+  Surfaces<KSpace>::track2DBoundary( vectBdrySCell,
+				     K, SAdj, pp, bel );
+  typedef typename std::vector<SCell>::const_iterator SCellConstIterator;
+  for ( SCellConstIterator it = vectBdrySCell.begin(),
+	  it_end = vectBdrySCell.end(); 
+	it != it_end; ++it )
+    {
+      Dimension track = *( K.sDirs( *it ) );
+      SCell pointel = K.sIndirectIncident( *it, track );
+      aVectorOfPoints.push_back( K.sCoords( pointel ) );
+    }
+  return aVectorOfPoints;
 }
 
 
