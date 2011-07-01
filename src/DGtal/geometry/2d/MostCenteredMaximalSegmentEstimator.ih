@@ -100,8 +100,8 @@ template <typename OutputIterator>
 inline
 OutputIterator
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
-::eval(const ConstIterator& itb, const ConstIterator& ite,
-       OutputIterator result) {
+     ::eval(const ConstIterator& itb, const ConstIterator& ite,
+            OutputIterator result) {
 
   //segmentComputer iterators
   SegmentIterator segItBegin( myMSRange.begin() );
@@ -114,7 +114,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
     if (nextSegIt == segItEnd ) {    //only one maximal segment                         
 
-      for (ConstIterator i = myBegin; i != myEnd; ++i) {
+      for (ConstIterator i = itb; i != ite; ++i) {
          *result++ = myFunctor(*i,*segIt);
       }
 
