@@ -51,28 +51,22 @@ using namespace LibBoard;
 // Functions for testing classes in SegmentComputerFunctor.h.
 ///////////////////////////////////////////////////////////////////////////////
 
-struct compare_class {
-  bool operator()(int A, int B) const {
-    return A < B;
-  }
-};
-
 
 /**
- * TangentFromArithmeticalDSSFunctor
+ * TangentFromDSSFunctor
  *
  */
-template<typename ArithmeticalDSS>
-bool testTangentFromArithmeticalDSS(
-     const typename ArithmeticalDSS::Iterator& begin,
-     const typename ArithmeticalDSS::Iterator& end  )
+template<typename DSSComputer>
+bool testTangentFromDSS(
+     const typename DSSComputer::Iterator& begin,
+     const typename DSSComputer::Iterator& end  )
 {
 
 
   trace.info() << "feeding segment computer " << endl;
 
-  typename ArithmeticalDSS::Iterator i = begin;
-	ArithmeticalDSS dss;	
+  typename DSSComputer::Iterator i = begin;
+	DSSComputer dss;	
 
   if (i != end) {
 	  dss.init(i);
@@ -89,10 +83,9 @@ bool testTangentFromArithmeticalDSS(
   trace.info() << "building and using the functor " << endl;
 
   //default constructor
-  TangentFromArithmeticalDSSFunctor<ArithmeticalDSS> f; //(without parentheses ?)
-
+  TangentFromDSSFunctor<DSSComputer> f; 
   //call
-  double v1 = f(dss); 
+  double v1 = f(*begin,dss); 
   double v2 = std::atan2(dss.getA(),dss.getB());
   trace.info() << "Tangent orientation : " << v1 << " == " << v2 << endl;
 
@@ -147,8 +140,8 @@ int main( int argc, char** argv )
 	curve8.push_back(Point(10,5));
 
   //tests
-  bool res = testTangentFromArithmeticalDSS<DSS4>(curve4.begin(), curve4.end())
-          && testTangentFromArithmeticalDSS<DSS8>(curve8.begin(), curve8.end())
+  bool res = testTangentFromDSS<DSS4>(curve4.begin(), curve4.end())
+          && testTangentFromDSS<DSS8>(curve8.begin(), curve8.end())
 //add test for other functors
 ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

@@ -75,6 +75,8 @@ namespace DGtal
     typedef typename SegmentComputer::Iterator ConstIterator;
     typedef typename Functor::Value Quantity;
 
+    typedef typename MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -96,7 +98,6 @@ namespace DGtal
       const SegmentComputer& aSegmentComputer, 
       const Functor& aFunctor,
       const bool& isClosed);
-
     /**
      * Destructor.
      */
@@ -122,12 +123,14 @@ namespace DGtal
 
     /**
      * @return the estimated quantity at *it
+     * NB: O(n)
      */
     Quantity eval(const ConstIterator& it);
 
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
+     * NB: O(n)
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
@@ -146,20 +149,35 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    /** grid step */
 		double myH; 
+    /** 'true' if the range is viewed as closed, 'false' otherwise */ 
 		bool myFlagIsClosed;
-
+    /** functor estimating the quantity from a point and a segmentComputer */ 
     Functor myFunctor;
-
-		ConstIterator myBegin;
-		ConstIterator myEnd;
-
+    /** begin and end iterators */ 
+		ConstIterator myBegin,myEnd;
+    /** range of maximal segments */ 
     MaximalSegments<SegmentComputer> myMSRange; 
 
+    // ------------------------- Internal services ------------------------------
+
+  private:
+
+    /**
+     * @return the ConstIterator that is between 
+     * the back ConstIterator of [it2] b and 
+     * the front ConstIterator of [it1] f
+     * if b < f and b otherwise
+     */
+    ConstIterator nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2);
+    /**
+     * Same as nextStepEnd but if the range is processed as closed
+     */
+    ConstIterator nextStepEndInLoop(const SegmentIterator& it1, const SegmentIterator& it2);
+
+
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-
 
   private:
 
