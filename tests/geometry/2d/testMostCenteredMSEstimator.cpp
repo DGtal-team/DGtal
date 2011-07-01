@@ -93,13 +93,16 @@ bool testDec4(string filename)
 
   Estimator e(1,r.begin(),r.end(),sc,f,false);
 
+{
   trace.info() << "Eval at one element (do not work) " << endl;
   for (ConstIterator i = r.begin(); i != r.end(); ++i) {
     cout << e.eval(i) << " "; 
   }
   cout << endl;
+}
 
-  trace.info() << "Eval for each element (process as open) " << endl;
+{
+  trace.info() << "Eval for each element between begin and end (process as open) " << endl;
   vector<double> v(r.size()); 
   e.eval(r.begin(),r.end(),v.begin());
 
@@ -107,6 +110,23 @@ bool testDec4(string filename)
     cout << *i << " "; 
   }
   cout << endl;
+}
+
+{
+  trace.info() << "Eval for each element between begin+15 and begin+30 (process as open) " << endl;
+  ConstIterator it1 = r.begin();
+  for (  int compteur = 0; compteur < 15; ++compteur ) ++it1;
+  ConstIterator it2 = it1;
+  for (  int compteur = 0; compteur < 15; ++compteur ) ++it2;
+
+  vector<double> v(15); 
+  e.eval(it1,it2,v.begin());
+
+  for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
+    cout << *i << " "; 
+  }
+  cout << endl;
+}
 
 	return true;
 }

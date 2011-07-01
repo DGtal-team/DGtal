@@ -75,6 +75,8 @@ namespace DGtal
     typedef typename SegmentComputer::Iterator ConstIterator;
     typedef typename Functor::Value Quantity;
 
+    typedef typename MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -156,10 +158,21 @@ namespace DGtal
     /** range of maximal segments */ 
     MaximalSegments<SegmentComputer> myMSRange; 
 
+    // ------------------------- Internal services ------------------------------
+
+  private:
+
+    /**
+     * @return the ConstIterator that is between 
+     * the back ConstIterator of [it2] b and 
+     * the front ConstIterator of [it1] f
+     * if b < f and b otherwise
+     */
+    ConstIterator nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2);
+    //same in loop ?
+
+
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-
 
   private:
 
