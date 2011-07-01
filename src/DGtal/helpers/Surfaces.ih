@@ -104,8 +104,7 @@ findABel
   BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
   // (1) Checks the two candidates in the space.
   bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
-  bool val_v2 = pp( x2 );
-  ASSERT( val_v1 != val_v2 );
+  ASSERT( val_v1 != pp( x2 ) );
   // (2) Find two candidates on the same axis.
   Dimension d = 0;
   for ( Dimension i = 0; i < K.dimension; ++i )

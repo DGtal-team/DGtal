@@ -70,10 +70,11 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     typedef TSpace Space;
-    typedef Space::Integer Integer;
-    typedef Space::Point Point;
-    typedef Space::RealPoint RealPoint;
-    typedef Space::RealPoint RealVector;
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Point Point;
+    typedef typename Space::Vector Vector;
+    typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealPoint RealVector;
     typedef TEuclideanShape EuclideanShape;
 
     /**
@@ -104,7 +105,7 @@ namespace DGtal
        adjacent digital points) identical in every direction.
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
-	       RealVector::Component gridStep );
+	       typename RealVector::Component gridStep );
 
     /**
        Initializes the digital bounds of the digitizer so as to cover
@@ -215,18 +216,15 @@ namespace DGtal
     /// The grid steps.
     RealVector myGridSteps;
 
+    /// Digital lowest point 
+    Point myLowerPoint;
+
+    /// Digital uppest point 
+    Point myUpperPoint;
     // ------------------------- Private Datas --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    GaussDigitizer();
-
   private:
 
     /**
@@ -256,9 +254,10 @@ namespace DGtal
    * @param object the object of class 'GaussDigitizer' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TSpace, typename TEuclideanShape>
   std::ostream&
-  operator<< ( std::ostream & out, const GaussDigitizer<T> & object );
+  operator<< ( std::ostream & out, 
+	       const GaussDigitizer<TSpace,TEuclideanShape> & object );
 
 } // namespace DGtal
 

@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ inline
 void 
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
-	RealVector::Component gridStep )
+	typename RealVector::Component gridStep )
 {
   myGridSteps = RealVector::diagonal( gridStep );
   myLowerPoint = floor( xLow );
@@ -93,7 +94,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   Point aPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Space::Integer) std::floor( p[ i ] / myGridSteps[ i ] );
+    aPoint[ i ] = (Integer) std::floor( p[ i ] / myGridSteps[ i ] );
   return aPoint;
 }
 //-----------------------------------------------------------------------------
@@ -105,7 +106,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   Point aPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Space::Integer) std::ceil( p[ i ] / myGridSteps[ i ] );
+    aPoint[ i ] = (Integer) std::ceil( p[ i ] / myGridSteps[ i ] );
   return aPoint;
 }
 //-----------------------------------------------------------------------------
