@@ -149,9 +149,11 @@ int main(int argc, char **argv)
 
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
   std::string square = testPath + "samples/smallSquare.dat";
+  std::string dss = testPath + "samples/DSS.dat";
 
   bool res = testEval(sinus2D4)
             && testEval(square)
+            && testEval(dss)
 //other tests
 ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
