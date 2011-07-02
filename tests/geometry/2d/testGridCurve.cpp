@@ -90,7 +90,7 @@ bool testIOGridCurve(const string& filename)
 
   trace.info() << "Writing GridCurve d=" << d << " in " << s.str() << endl;
 
-  ofstream outstream(s.str()); //output stream
+  ofstream outstream(s.str().c_str()); //output stream
   if (!outstream.is_open()) return false;
   else {
     c.writeVectorToStream(outstream);
