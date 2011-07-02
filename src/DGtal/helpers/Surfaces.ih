@@ -89,6 +89,22 @@ findABel
 	}
     }
   if ( ! found ) throw dgtalerror;
+  return findABel( K, pp, x1, x2 );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointPredicate>
+typename DGtal::Surfaces<TKSpace>::SCell
+DGtal::Surfaces<TKSpace>::
+findABel
+( const KSpace & K,
+  const PointPredicate & pp,
+  Point x1, Point x2 )
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  // (1) Checks the two candidates in the space.
+  bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
+  ASSERT( val_v1 != pp( x2 ) );
   // (2) Find two candidates on the same axis.
   Dimension d = 0;
   for ( Dimension i = 0; i < K.dimension; ++i )
@@ -233,8 +249,8 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
-  std::set<SCell> setSurface;
-  setSurface.insert(start_surfel);
+  // std::set<SCell> setSurface;
+  // setSurface.insert(start_surfel);
   aSCellContour2D.clear(); // boundary being extracted.
   aSCellContour2D.push_back(start_surfel);
   SurfelNeighborhood<KSpace> SN;
@@ -250,35 +266,39 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
       if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,  
 					   ! K.sDirect( b, track_dir ) ) )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  if ( bn != start_surfel )
+	    // if ( setSurface.find( bn ) == setSurface.end() )
 	    {
 	      hasPrevNeighbor=true;
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	    }
 	}
       b = bn;
     }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b = start_surfel; 
-  bool hasNextNeighbor =  true;
-  while ( hasNextNeighbor )
-    {
-      hasNextNeighbor=false;
-      Dimension track_dir = *(K.sDirs( b ));
-      SN.setSurfel( b );
-      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  hasNextNeighbor=false;
+	  Dimension track_dir = *(K.sDirs( b ));
+	  SN.setSurfel( b );
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
+	      // if ( setSurface.find( bn ) == setSurface.end() )
+	      // {
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
 	      hasNextNeighbor=true;
+	      // setSurface.insert(bn);
+	      // }
 	    }
+	  b=bn;
 	}
-      b=bn;
     }
 }
 
@@ -300,8 +320,8 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
-  std::set<SCell> setSurface;
-  setSurface.insert(start_surfel);
+  // std::set<SCell> setSurface;
+  // setSurface.insert(start_surfel);
   aSCellContour2D.clear(); // boundary being extracted.
   aSCellContour2D.push_back(start_surfel);
   SurfelNeighborhood<KSpace> SN;
@@ -318,39 +338,71 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
       if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir,
 					   !K.sDirect( b, track_dir ) ) )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  if ( bn != start_surfel )
+	    //	  if ( setSurface.find( bn ) == setSurface.end() )
 	    {
 	      hasPrevNeighbor=true;
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	    }
 	}
       b = bn;
     }
   // since the contour is not necessary closed we search in the other direction.
   reverse(aSCellContour2D.begin(), aSCellContour2D.end());
-  b = start_surfel; 
-  bool hasNextNeighbor =  true;
-  while ( hasNextNeighbor )
-    {
-      hasNextNeighbor=false;
-      // search a tracking direction compatible with constant direction
-      Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
-      SN.setSurfel( b );
-      if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
-					   K.sDirect( b, track_dir ) ) )
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
 	{
-	  if ( setSurface.find( bn ) == setSurface.end() )
+	  hasNextNeighbor=false;
+	  // search a tracking direction compatible with constant direction
+	  Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+	  SN.setSurfel( b );
+	  if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, 
+					       K.sDirect( b, track_dir ) ) )
 	    {
+	      // if ( setSurface.find( bn ) == setSurface.end() )
+	      // {
 	      aSCellContour2D.push_back( bn );
-	      setSurface.insert(bn);
+	      // setSurface.insert(bn);
 	      hasNextNeighbor=true;
+	      // }
 	    }
+	  b=bn;
 	}
-      b=bn;
     }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointPredicate>
+inline
+void
+DGtal::Surfaces<TKSpace>::track2DBoundaryPoints
+( std::vector<Point> & aVectorOfPoints,
+  const KSpace & K, 
+  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+  const PointPredicate & pp,
+  const SCell & start_surfel )
+{
+  aVectorOfPoints.clear();
+  
+  // Getting the consecutive surfels of the 2D boundary
+  std::vector<SCell> vectBdrySCell;
+  Surfaces<KSpace>::track2DBoundary( vectBdrySCell,
+				     K, surfel_adj, pp, start_surfel );
+  typedef typename std::vector<SCell>::const_iterator SCellConstIterator;
+  for ( SCellConstIterator it = vectBdrySCell.begin(),
+	  it_end = vectBdrySCell.end(); 
+	it != it_end; ++it )
+    {
+      Dimension track = *( K.sDirs( *it ) );
+      SCell pointel = K.sIndirectIncident( *it, track );
+      aVectorOfPoints.push_back( K.sCoords( pointel ) );
+    }
+}
 
 
 
