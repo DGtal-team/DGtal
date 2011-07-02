@@ -185,7 +185,7 @@ namespace DGtal
      * Division operator.
      *
      * @param v is the Point that gets divided to @a *this.
-     * @return a reference on 'this'.
+     * @return the component division of *this by v.
      */
     Self  operator/ ( const Self & v ) const ;
   
