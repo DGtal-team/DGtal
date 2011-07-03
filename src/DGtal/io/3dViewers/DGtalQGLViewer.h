@@ -647,11 +647,11 @@ operator<< ( std::ostream & out, const DGtalQGLViewer & object );
 } // namespace DGtal
 
 
+
+
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/io/3dViewers/DGtalQGLViewer.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
