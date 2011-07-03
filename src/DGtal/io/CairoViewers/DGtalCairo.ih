@@ -44,7 +44,7 @@
    * @param aColor: a QColor (allow to set a trasnparency value).
    *
    **/ 
-INLINE
+inline
 DGtal::DGtalCairo & 
 DGtal::DGtalCairo::operator<<(const QColor & aColor){
   myDefaultColor=aColor;
@@ -56,7 +56,7 @@ DGtal::DGtalCairo::operator<<(const QColor & aColor){
    * (useful to use transparency between different objects).
    * 
    **/  
-INLINE
+inline
 void
 DGtal::DGtalCairo::createNewVoxelList(bool depthTest){
   std::vector< voxel > v;
@@ -70,7 +70,7 @@ DGtal::DGtalCairo::createNewVoxelList(bool depthTest){
    * (useful to use transparency between different objects).
    * 
    **/ 
-INLINE
+inline
 void
 DGtal::DGtalCairo::createNewLineList(){
   std::vector< line > v;
@@ -82,7 +82,7 @@ DGtal::DGtalCairo::createNewLineList(){
    * (useful to use transparency between different objects).
    * 
    **/ 
-INLINE
+inline
 void
 DGtal::DGtalCairo::createNewPointList(){
   std::vector< point > v;
@@ -94,7 +94,7 @@ DGtal::DGtalCairo::createNewPointList(){
    * @param aColor: the fill color.
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::setFillColor(QColor aColor){
   myCurrentFillColor=aColor;  
@@ -105,7 +105,7 @@ DGtal::DGtalCairo::setFillColor(QColor aColor){
    * @param aColor: the color of the line.
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::setLineColor(QColor aColor){
   myCurrentLineColor=aColor;  
@@ -116,7 +116,7 @@ DGtal::DGtalCairo::setLineColor(QColor aColor){
    * @return the fill color.
    *
    **/
-INLINE
+inline
 QColor
 DGtal::DGtalCairo::getFillColor(){
   return myCurrentFillColor;  
@@ -127,7 +127,7 @@ DGtal::DGtalCairo::getFillColor(){
    * @return the color of the line.
    *
    **/
-INLINE
+inline
 QColor
 DGtal::DGtalCairo::getLineColor(){
   return myCurrentLineColor;  
@@ -142,7 +142,7 @@ DGtal::DGtalCairo::getLineColor(){
    * @return a reference on 'this'.
    */
 template <typename TDrawableWithDGtalCairo>
-INLINE
+inline
 DGtal::DGtalCairo & 
 DGtal::DGtalCairo::operator<<( const TDrawableWithDGtalCairo & object )
 {
@@ -159,7 +159,7 @@ DGtal::DGtalCairo::operator<<( const TDrawableWithDGtalCairo & object )
    * @return the current mode for the given object name or "" if no
    * specific mode has been set.
    */
-INLINE
+inline
 std::string
 DGtal::DGtalCairo::getMode( const std::string & objectName ) const
 {
@@ -177,7 +177,7 @@ DGtal::DGtalCairo::getMode( const std::string & objectName ) const
    * @param width: the width of the voxel (default: 0.5).
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
 {
@@ -205,7 +205,7 @@ DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
    * @param size: the size of the point (default: 40).
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, double size)
 {
@@ -237,7 +237,7 @@ DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, 
    * @param width: the width of the line (default: 1.5).
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const QColor & aColor, double width)
@@ -279,7 +279,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
    * @param color: the color of the quad.
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor)
@@ -316,7 +316,7 @@ DGtal::DGtalCairo::addQuad(double x1, double y1, double z1,  double x2, double y
    * @param color: the color of the KSSurfel (default: 180,180,250,255).
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
 				   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
@@ -344,7 +344,7 @@ DGtal::DGtalCairo::addKSSurfel(double x1, double y1, double z1,  double x2, doub
    * @param color: the color of the KSPointel (default: 200,20,20,255).
    *
    **/
-INLINE
+inline
 void 
 DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size, 
 				    const QColor &color)
@@ -366,7 +366,7 @@ DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size,
    * @param color: the color of the KSVoxel (default: 255,180,250,255).
    *
    **/
-INLINE
+inline
 void 
 DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,  
 				  const QColor &aColor)
@@ -398,7 +398,7 @@ DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,
    * @param color: the color of the KSLinel (default: 20,20,200,255).
    *
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addKSLinel(double x1, double y1, double z1,
 				  double x2, double y2, double z2,
@@ -417,7 +417,7 @@ DGtal::DGtalCairo::addKSLinel(double x1, double y1, double z1,
    *
    * @param a, b, c, d : plane equation.
    **/
-INLINE
+inline
 void
 DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
 {
@@ -432,7 +432,7 @@ DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool
  * @param object the object of class 'DGtalCairo' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const DGtalCairo & object )
