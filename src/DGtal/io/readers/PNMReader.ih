@@ -53,6 +53,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
 {
   ifstream infile;
   DGtal::IOException dgtalio;
+  BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
   try 
     {
       infile.open (aFilename.c_str(), ifstream::in);
@@ -149,6 +150,103 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   infile >> skipws;
   return  image;
 }
+
+
+
+template <typename TImageContainer>
+inline
+TImageContainer 
+DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) throw(DGtal::IOException)
+{
+  ifstream infile;
+  DGtal::IOException dgtalio;
+  BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
+  try 
+    {
+      infile.open (aFilename.c_str(), ifstream::in);
+    }
+  catch( ... )
+    {
+      trace.error() << "PNMReader : can't open " << aFilename << endl;
+      throw dgtalio;
+    }
+ 
+  string str;
+  getline( infile, str );
+  if ( ! infile.good() ) {
+    trace.error() << "PNMReader : can't read " << aFilename << endl;
+    throw dgtalio;
+  }
+  if ( str != "P3d" &&  str != "P3D"){
+    trace.error() << "PNMReader : No P3d format in " << aFilename << endl;
+    throw dgtalio;
+  }
+  
+  do
+    {
+      getline( infile, str );
+      if ( ! infile.good() ){
+	trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+	throw dgtalio;
+      } 
+    }
+  while ( str[ 0 ] == '#' || str=="");
+  istringstream str_in( str );
+  unsigned int w, h, e;
+  str_in >> w >> h >> e ;
+
+   
+  typename TImageContainer::Point firstPoint;
+  typename TImageContainer::Point lastPoint;
+      
+  firstPoint = TImageContainer::Point::zero;
+  lastPoint[0] = w-1;
+  lastPoint[1] = h-1;
+  lastPoint[2] = e-1;
+
+  typename TImageContainer::Domain domain(firstPoint,lastPoint);
+  TImageContainer image(firstPoint,lastPoint);
+
+  getline( infile, str );
+  istringstream str2_in( str );
+  int max_value;
+  str2_in >> max_value;  
+
+  if ( ! infile.good() ){
+    trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+    throw dgtalio;
+  } 
+  cerr << "# P3d " << w << " " << h << " " << e
+       << " " << max_value << " from <" << str << ">" << endl;
+  
+  unsigned int nb_read = 0;
+
+  infile >> noskipws;
+  for(unsigned int z=0; z <e; z++){
+    for(unsigned int y=0; y <h; y++){
+      for(unsigned int x=0; x <w; x++){
+	typename TImageContainer::Point pt;
+	pt[0]=x; pt[1]=h-1-y; pt[2]=z;
+	char c; 
+	infile >> c;
+	if ( infile.good() ){ 
+	++nb_read;
+	image.setValue( pt, c);
+	}
+      }
+    }
+  }
+  if ( infile.fail() || infile.bad() )
+    {
+      cerr << "# nbread=" << nb_read << endl;
+      throw dgtalio;
+    }
+  infile >> skipws;
+  return  image;
+}
+
+
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
