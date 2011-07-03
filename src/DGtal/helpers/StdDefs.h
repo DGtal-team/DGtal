@@ -249,10 +249,9 @@ operator<< ( std::ostream & out, const StdDefs & object );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/helpers/StdDefs.ih"
-#endif
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
