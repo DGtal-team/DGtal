@@ -49,7 +49,7 @@
  * @param object the object of class 'StdDefs' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const StdDefs & object )

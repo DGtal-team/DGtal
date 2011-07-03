@@ -21,9 +21,14 @@ namespace DGtal {
 @author David Coeurjolly
 
 
+
 Once you have installed the DGtal library, this documentation
 describes the ways to link your project and the installed DGtal libs
-and making sure that the dependencies are correct.
+and making sure that the dependencies are correct. Two main tools will be described:
+
+-# \ref HowToUseDGtal_CMAKE
+-# \ref HowToUseDGtal_QMAKE
+
 
 Let us consider the following helloworld project with the C++ file
 \em helloworld.cpp :
@@ -44,6 +49,8 @@ int main(int argc, char** argv)
 This simple example just use the "trace" mechanism in DGtal but it
 requires @em helloworld.cpp to be linked to DGtal.
 
+\section HowToUseDGtal_CMAKE Using cmake tools:
+
 To compile this file with cmake, you have a CMakeLists.txt file that
 looks like:
 @code
@@ -52,7 +59,7 @@ PROJECT(Helloworld)
 ADD_EXECUTABLE(helloworld helloworld)
 
 @endcode
-yes
+
 
 When you installed DGtal, cmake created all the configuration
 files that you would need to import DGtal settings in your project in the  "${CMAKE_INSTALL_PREFIX}/share/DGtal/CMake/"
@@ -85,6 +92,42 @@ FIND_PACKAGE(DGtal 0.3.1 REQUIRED)
 @endcode
 that will produce an error if your DGtal installed library has an
 older version than 0.3.1.
+
+
+
+\section HowToUseDGtal_QMAKE Using qmake tools
+
+
+To use the qmake tools provided by QT you have to edit the
+configuration file \em helloworld.pro to specify the use of the DGtal lib:
+
+@code
+TEMPLATE = app
+
+LIBS += -lDGtal 
+SOURCES += helloworld.cpp
+@endcode
+ 
+
+
+
+If you plane to use 3d-viewer features you have to specify it by
+adding a definition transmitted to the compiler:
+
+@code
+DEFINES += WITH_VISU3D_QGLVIEWER
+@endcode
+
+Moreover you also have to specify that you need to link the part of
+DGtal containing the 3D features (and add if needed the link with \em
+qglviewer ):
+
+@code
+LIBS += -lDGtal  -lDGtal-visu3d  -framework qglviewer 
+@endcode
+
+
+
 
 
 */
