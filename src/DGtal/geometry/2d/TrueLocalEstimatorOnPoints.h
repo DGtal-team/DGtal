@@ -123,7 +123,7 @@ namespace DGtal
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(ConstIterator& it);
+    Quantity eval(const ConstIterator& it);
     
     /**
      * @return the estimated quantity

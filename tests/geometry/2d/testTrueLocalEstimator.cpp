@@ -187,6 +187,90 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   return ok;
 }
 
+template <typename Shape>
+bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
+{
+  using namespace Z2i;
+
+  trace.beginBlock ( ( "Testing CompareEstimator on digitization of "
+		       + name ). c_str() );
+  
+  // Creates a digitizer on the window (xLow, xUp).
+  typedef Space::RealPoint RealPoint;
+  RealPoint xLow( -10.0, -10.0 );
+  RealPoint xUp( 10.0, 10.0 );
+  GaussDigitizer<Space,Shape> dig;  
+  dig.attach( aShape ); // attaches the shape.
+  dig.init( xLow, xUp, h ); 
+  
+  // The domain size is given by the digitizer according to the window
+  // and the step.
+  Domain domain = dig.getDomain();
+
+  // Create cellular space
+  KSpace K;
+  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+  if ( ! ok )
+    {
+      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+		<< " error in creating KSpace." << std::endl;
+    }
+  else
+    try {
+      // Extracts shape boundary
+      SurfelAdjacency<KSpace::dimension> SAdj( true );
+      SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+      // Getting the consecutive surfels of the 2D boundary
+      std::vector<Point> points;
+      Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+      // Create GridCurve
+      GridCurve<KSpace> gridcurve;
+      gridcurve.initFromVector( points );
+      typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
+      typedef Range::ConstIterator ConstIteratorOnPoints;
+      typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
+      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
+      TrueCurvature curvatureEstimator;
+      TrueCurvature curvatureEstimatorBis;
+     
+
+      Range r = gridcurve.getPointsRange();//building range
+      curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
+      curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
+      typename TrueCurvature::ConstIterator it = r.begin();
+      typename TrueCurvature::ConstIterator itend = r.end();
+      
+      typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
+
+     
+      trace.info()<< "Comparison at "<< *it <<" = "
+		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
+		  <<std::endl;
+      
+      typename Comparator::OutputStatistic result=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
+								       r.begin(),
+								       r.end());
+      
+      trace.info()<< "Nb samples= "<< result.samples()<<std::endl;
+      trace.info()<< "Error mean= "<< result.mean()<<std::endl;
+      trace.info()<< "Error max= "<< result.max()<<std::endl;
+
+     }    
+    catch ( InputException e )
+      {
+	std::cerr << "[testCompareEstimator]"
+		  << " error in finding a bel." << std::endl;
+	ok = false;
+      }
+  trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return ok;
+  
+
+  trace.endBlock();
+  return true;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -224,6 +308,9 @@ int main( int argc, char** argv )
   res = res && 
     testTrueLocalEstimatorOnShapeDigitization<MyFlower>
     ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
+
+  res = res &&
+    testCompareEstimator<MyFlower>("Flower-5-0.3-6-0.3-s0.25", flower, 0.25);
   return res ? 0 : 1;
 
 }

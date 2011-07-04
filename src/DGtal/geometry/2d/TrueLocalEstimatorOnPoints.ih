@@ -105,7 +105,7 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIte
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(ConstIterator& it)
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIterator& it)
 {
   return myFunctor(it);
 }
