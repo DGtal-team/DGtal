@@ -54,6 +54,8 @@
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
+#include "DGtal/geometry/2d/CompareLocalEstimators.h"
+
 
 #include "ConfigTest.h"
 
