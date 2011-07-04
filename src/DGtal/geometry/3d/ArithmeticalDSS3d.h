@@ -76,15 +76,15 @@ namespace DGtal
   public:
 
 
-		//iterator
-    typedef TIterator Iterator;
-		typedef std::reverse_iterator<Iterator> ReverseIterator;
-		typedef ArithmeticalDSS3d<ReverseIterator,TInteger,connectivity> ReverseSegmentComputer; 
-
-
-    //integer
+    //entier
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
+
+
+    //requiered types
+    typedef TIterator ConstIterator;
+		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
+		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
 
 
     //points and vectors
@@ -171,13 +171,13 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on a sequence of points
      */
-    ArithmeticalDSS3d(const Iterator& it);
+    ArithmeticalDSS3d(const ConstIterator& it);
 
     /**
      * Initialisation.
      * @param it an iterator on a sequence of points
      */
-    void init(const Iterator& it);
+    void init(const ConstIterator& it);
 
 
     /**
@@ -230,7 +230,7 @@ namespace DGtal
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const Iterator & it);
+    bool extend(const ConstIterator & it);
 
 
     // ------------------------- Accessors ------------------------------
@@ -299,7 +299,7 @@ namespace DGtal
 		YZArithmeticalDSS myYZalgo;	
 
     //first (at the front) and last (at the back) points of the DSS
-    Iterator myF, myL;	
+    ConstIterator myF, myL;	
 
     // ------------------------- Private Datas --------------------------------
 	

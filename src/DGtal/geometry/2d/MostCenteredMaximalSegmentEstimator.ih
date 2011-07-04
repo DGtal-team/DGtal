@@ -240,7 +240,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
  */
 template <typename SegmentComputer, typename Functor>
 inline
-typename SegmentComputer::Iterator 
+typename SegmentComputer::ConstIterator 
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::
       nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2) {
 
@@ -273,7 +273,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::
 
 template <typename SegmentComputer, typename Functor>
 inline
-typename SegmentComputer::Iterator 
+typename SegmentComputer::ConstIterator 
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::
       nextStepEndInLoop(const SegmentIterator& it1, const SegmentIterator& it2) {
 

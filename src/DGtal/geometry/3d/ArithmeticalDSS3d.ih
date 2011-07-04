@@ -57,7 +57,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d()
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(const Iterator& it)
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(const ConstIterator& it)
 {
 	init(it);
 }
@@ -68,7 +68,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(con
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Iterator& it)
+void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
 
 	myF = it;
@@ -164,7 +164,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const Iterator& it)
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const ConstIterator& it)
 {
 
 //projection on xy-plane
@@ -365,8 +365,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
   // Draw points
 	viewer << CustomColors3D(QColor(250,250,250,100),QColor(250,250,250,100));
-	Iterator end = myL; ++end;
-	for (Iterator i = myF; i != end; ++i) {
+	ConstIterator end = myL; ++end;
+	for (ConstIterator i = myF; i != end; ++i) {
 		Point3d p = *i;
 		viewer << p;
 	}
@@ -374,7 +374,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
   // Draw a linking polygonal line if the voxels are drawn as points. 
   if(viewer.getMode("PointVector")=="Grid")
     {
-			Iterator k = myF;
+			ConstIterator k = myF;
 			Point3d prevp = *k;
 			double xprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[0]);
 			double yprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[1]);

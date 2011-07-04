@@ -58,14 +58,14 @@ using namespace LibBoard;
  */
 template<typename DSSComputer>
 bool testTangentFromDSS(
-     const typename DSSComputer::Iterator& begin,
-     const typename DSSComputer::Iterator& end  )
+     const typename DSSComputer::ConstIterator& begin,
+     const typename DSSComputer::ConstIterator& end  )
 {
 
 
   trace.info() << "feeding segment computer " << endl;
 
-  typename DSSComputer::Iterator i = begin;
+  typename DSSComputer::ConstIterator i = begin;
 	DSSComputer dss;	
 
   if (i != end) {

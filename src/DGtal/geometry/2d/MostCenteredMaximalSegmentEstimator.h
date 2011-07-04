@@ -71,7 +71,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
 	public:
 
-    typedef typename SegmentComputer::Iterator ConstIterator;
+    typedef typename SegmentComputer::ConstIterator ConstIterator;
     typedef typename Functor::Value Quantity;
 
     typedef typename MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 

@@ -54,7 +54,7 @@
 inline
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator ( 
 	const GreedyDecomposition<TSegment> *aDec,
-	const typename TSegment::Iterator& aBack, 
+	const typename TSegment::ConstIterator& aBack, 
 	const TSegment& aSegment)
   : myDec( aDec ), 
 		myFront( aBack ), 
@@ -287,7 +287,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
@@ -299,7 +299,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
