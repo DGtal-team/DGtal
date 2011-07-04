@@ -53,7 +53,6 @@
 namespace DGtal
 {
 /** \TODO
-* ajouter un myFlagIsInit (aussi dans les decompositions)
 * ajouter un getLength() dans les SegmentIterator des decompositions
 * mettre au propre les noms de type dans les decompositions (ConstIterator, Self, Reverse, etc.)
 */
@@ -83,7 +82,7 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    MostCenteredMaximalSegmentEstimator() {};
+    MostCenteredMaximalSegmentEstimator() : myFlagIsInit(false) {};
     /**
      * Constructor.
      * @param h grid size (must be >0).
@@ -151,6 +150,8 @@ namespace DGtal
 
     /** grid step */
 		double myH; 
+    /** 'true' is the initialization has been done, 'false' otherwise */
+    bool myFlagIsInit;
     /** 'true' if the range is viewed as closed, 'false' otherwise */ 
 		bool myFlagIsClosed;
     /** functor estimating the quantity from a point and a segmentComputer */ 
