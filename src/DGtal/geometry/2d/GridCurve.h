@@ -1050,7 +1050,7 @@ namespace DGtal
 	
           Arrow operator*() const
           {
-
+//mettre sIndirect (laisser l'espace donner le signe)
             //starting point of the arrow
             Cell pointel( myC->myK.sDirectIncident( *myIt, *myC->myK.sDirs( *myIt ) ) );
             Point p( myC->myK.sCoords( pointel ) );   //integer coordinates
