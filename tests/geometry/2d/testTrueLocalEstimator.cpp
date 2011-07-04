@@ -95,18 +95,15 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   curvatureEstimator.init( 1, r.begin(), r.end(), &ball, true);
   tangentEstimator.init( 1, r.begin(), r.end(), &ball, true);
-//Tris
-//  lengthEstimator.init( 1, r.begin(), r.begin()+15, &ball, true);
-// bidirectionnal iterator, not random iterator
  
 
   ConstIteratorOnPoints it = r.begin();
-//  ConstIteratorOnPoints it2 = r.begin()+15;
+  //  ConstIteratorOnPoints it2 = r.begin()+15;
   ConstIteratorOnPoints it2 = it;
   for (  int compteur = 0; compteur < 15; ++compteur ) ++it2;
   lengthEstimator.init( 1, it, it2, &ball, true);
-
-
+  
+  
   trace.info() << "Current point = "<<*it<<std::endl;
   trace.info() << "Current point+15 = "<<*it2<<std::endl;
   trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2)<<std::endl;

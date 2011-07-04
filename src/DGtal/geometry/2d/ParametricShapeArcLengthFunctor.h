@@ -109,8 +109,8 @@ namespace DGtal
     }
 
    
-    /** 
-     * Compute the length between two iterators
+    /** .
+     * Compute the length between two iterator.
      * 
      * @param itb begin point
      * @param ite end point

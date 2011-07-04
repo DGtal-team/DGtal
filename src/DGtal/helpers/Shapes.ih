@@ -31,6 +31,9 @@
 #include <cstdlib>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +62,7 @@ DGtal::Shapes<TDomain>::~Shapes()
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
- template <typename TDomain>
+template <typename TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -218,6 +221,8 @@ DGtal::Shapes<TDomain>::shaper( TDigitalSet & aSet,
 	aSet.insert( *it );
     }
 }
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

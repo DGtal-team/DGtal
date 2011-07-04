@@ -51,8 +51,8 @@ template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const double x0, const double y0,
 			     const double radius, const double varRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(x0,y0) , myVarRadius(varRadius), myK(k),myPhi(phi)
+			     const unsigned int k, const double phi)
+  : myCenter(x0,y0), myRadius(radius), myVarRadius(varRadius), myK(k),myPhi(phi)
 {}
 
 
@@ -60,16 +60,17 @@ template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const RealPoint2D &aPoint, const double radius,
 			     const double varRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(aPoint)  , myVarRadius(varRadius), myK(k), myPhi(phi)
+			     const unsigned int k, const double phi)
+  : myCenter(aPoint), myRadius(radius), myVarRadius(varRadius), 
+    myK(k), myPhi(phi)
 {}
 
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const Point &aPoint, const double radius,
 			     const double varRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius),myVarRadius(varRadius),myK(k),myPhi(phi)
+			     const unsigned int k, const double phi)
+  : myRadius(radius),myVarRadius(varRadius),myK(k),myPhi(phi)
 {
   myCenter = aPoint;
 }

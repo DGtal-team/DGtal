@@ -50,23 +50,23 @@ DGtal::Ellipse2D<T>::~Ellipse2D()
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const double x0, const double y0,
-			       const double a0, const double a1, const double theta):
-  myAxis1(a0),myAxis2(a1),myTheta(theta), myCenter(x0,y0) 
+			       const double a0, const double a1, const double theta)
+  : myCenter(x0,y0), myAxis1(a0),myAxis2(a1),myTheta(theta)
 {}
 
 
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const RealPoint2D &aPoint,
-			       const double a0, const double a1, const double theta):
- myAxis1(a0),myAxis2(a1),myTheta(theta), myCenter(aPoint)   
+			       const double a0, const double a1, const double theta)
+  : myCenter(aPoint), myAxis1(a0),myAxis2(a1),myTheta(theta)
 {}
 
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const Point &aPoint,
-			       const double a0, const double a1, const double theta):
-  myAxis1(a0),myAxis2(a1),myTheta(theta)
+			       const double a0, const double a1, const double theta) 
+  : myAxis1(a0),myAxis2(a1),myTheta(theta)
 {
   myCenter = aPoint;
 }

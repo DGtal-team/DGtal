@@ -150,6 +150,7 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
 
 #------------------------------------------------------------------------------

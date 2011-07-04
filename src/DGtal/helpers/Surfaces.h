@@ -111,6 +111,36 @@ namespace DGtal
     SCell findABel( const KSpace & K,
 		    const PointPredicate & pp,
 		    unsigned int nbtries = 1000 ) throw (DGtal::InputException);
+    /**
+       Find a bel in some digital set given two hints (one point
+       inside, one point outside).
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+
+       @param K any cellular grid space.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape,
+       which should be at least partially included in the bounds of
+       space [K].
+
+       @param x1 a point within the bounds of K and such that pp( x1 )
+       != pp( x2 ).
+
+       @param x2 a point within the bounds of K and such that pp( x1 )
+       != pp( x2 ).
+
+       @return a signed surfel separating a digital point in [dset]
+       from a face adjacent digital point outside [dset] or throws an
+       InputException if none was found after [nbtries] iterations.
+    */
+    template <typename PointPredicate>
+    static
+    SCell findABel( const KSpace & K,
+		    const PointPredicate & pp,
+		    Point x1, Point x2 );
 
     /**
        Creates a set of signed surfels whose elements represents a
@@ -227,6 +257,36 @@ namespace DGtal
 			  const PointPredicate & pp,
 			  const SCell & start_surfel );
 
+    /**
+       This method is only 2D.
+       
+       This method uses random tries to find a first linel separating
+       an interior pixel from an exterior one. It then follows direct
+       orientations to extract the 4-connected set of points.
+
+       @param aVectorOfPoints (returns) the sequence of points of the
+       boundary component of the digitized shape containing [start_surfel].
+
+       @param K any space of dimension 2.
+
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape,
+       which should be at least partially included in the bounds of
+       space [K].
+
+       @param start_surfel a signed surfel which should be between an
+       element of [shape] and an element not in [shape].
+    */
+    template <typename PointPredicate>
+    static
+    void 
+    track2DBoundaryPoints( std::vector<Point> & aVectorOfPoints,
+			   const KSpace & K, 
+			   const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			   const PointPredicate & pp,
+			   const SCell & start_surfel );
 
 
     /**
