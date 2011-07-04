@@ -89,6 +89,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator (
 }
 
 
+
 /**
  * Copy constructor.
  * @param other the iterator to clone.
@@ -360,6 +361,23 @@ DGtal::GreedyDecomposition<TSegment>::GreedyDecomposition
 	 mySegment(aSegment),
 	 isClosed(aFlag)
 {
+}
+
+/**
+ * Init.
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
+ */
+  template <typename TSegment>
+inline
+void
+DGtal::GreedyDecomposition<TSegment>::init
+(const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
+{
+  myBegin = aBegin;
+	myEnd = aEnd;
+	mySegment = aSegment;
+	isClosed = aFlag;
 }
 
 /**
