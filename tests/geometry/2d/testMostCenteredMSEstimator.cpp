@@ -92,7 +92,8 @@ bool testEval(string filename)
   SegmentComputer sc;
   Functor f; 
 
-  Estimator e(1,r.begin(),r.end(),sc,f,c.isClosed());
+  Estimator e; 
+  e.init(1,r.begin(),r.end(),sc,f,c.isClosed());
 
 {
   trace.info() << "Eval at one element" << endl;
