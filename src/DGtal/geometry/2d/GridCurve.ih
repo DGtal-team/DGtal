@@ -60,9 +60,22 @@ typename DGtal::GridCurve<KSpace>::Cell
 DGtal::GridCurve<KSpace>::PointVectorTo1Cell(const Point& aPoint, const Vector& aVector) {
 
     ASSERT( (aVector.norm(Vector::L_1) == 1) );
+
+    //khalimsky coordinates
     Point p(aPoint);
     Point kp(p*2 + aVector); 
-    return Cell(kp,myK.POS);
+
+    //sign of the cell
+    typename Vector::Component sum = 0;
+    for (typename Vector::ConstIterator i = aVector.begin(); 
+          i != aVector.end(); ++i) {
+      sum += *i;
+    } 
+    bool sign; 
+    if (sum > 0) sign = myK.POS;
+    else sign = myK.NEG;
+
+    return Cell(kp,sign);
 }
 
 /**
@@ -98,8 +111,10 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
   Vector v(first - last); 
   if (v.norm(Vector::L_1) == 1) {               
     my1Cells.push_back( PointVectorTo1Cell(last,v) );
+    my0Cells.push_back( PointTo0Cell(last) );
+  } else if (first != last) {
+    my0Cells.push_back( PointTo0Cell(last) );
   }
-  my0Cells.push_back( PointTo0Cell(last) );
 }
 
 /**

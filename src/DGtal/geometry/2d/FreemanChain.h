@@ -127,8 +127,6 @@ namespace DGtal
      * This class represents an iterator on the freeman chain, storing
      * the current coordinate.
      */
-
-
     
     class ConstIterator : 
       public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
@@ -537,7 +535,7 @@ namespace DGtal
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////
     // ------------------------- static services ------------------------------
   public:
 
@@ -575,35 +573,29 @@ namespace DGtal
 
     };
 
-    /**
-     * Creates a Freeman chaincode [chain] and a chain coding the
-     * quadrant of each step [qchain], given an iterator on a
-     * 4-connected path [it], a number of step [nb], the first step
-     * [freeman_code] and the first quadrant [quadrant].
-     *
-     * @param chain (returns) a string of '0', '1', '2', or '3'
-     * (Freeman chaincode)
-     *
-     * @param qchain (returns) a string of '0', '1', '2', or '3'
-     * giving the quadrants.
-     *
-     * @param it any iterator
-     *
-     * @param nb the number of 'next' performed on a copy of [it].
-     *
-     * @param freeman the first code or step.
-     *
-     * @param quadrant the first quadrant (equal to freeman_code or one below).
-     *
-     * @param start_index the starting index in [chain] and [qchain],
-     * default is 0.
-     */
 
-    //static void create( std::string & chain,
-    //			std::string & qchain,
-    //			const C4CIterator & it,
-    //			unsigned int nb, unsigned int freeman, unsigned int quadrant,
-    //			unsigned int start_index = 0 );
+    /**
+     * Return a vector containing all the interger points of the freemanchain.
+     *
+     * @param fc the FreemanChain
+     * @param aVContour (returns) the vector containing all the integer contour points.
+     */
+    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2> & aVContour)
+    {
+      aVContour.clear();
+      for ( typename FreemanChain<TInteger>::ConstIterator it = fc.begin();
+            it != fc.end();
+            ++it )
+        {
+          aVContour.push_back(*it);
+        }
+    }
+
+
+
+
+
+    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
 
 
     /**
@@ -615,22 +607,22 @@ namespace DGtal
     {
       switch ( aQuadrant )
         {
-	case '0':
-	  aZero = '0';
-	  aOne = '1';
-	  break;
-	case '1':
-	  aZero = '1';
-	  aOne = '2';
-	  break;
-	case '2':
-	  aZero = '2';
-	  aOne = '3';
-	  break;
-	case '3':
-	  aZero = '3';
-	  aOne = '0';
-	  break;
+	        case '0':
+	          aZero = '0';
+	          aOne = '1';
+	          break;
+	        case '1':
+	          aZero = '1';
+	          aOne = '2';
+	          break;
+	        case '2':
+	          aZero = '2';
+	          aOne = '3';
+	          break;
+	        case '3':
+	          aZero = '3';
+	          aOne = '0';
+	          break;
         }
 
     };
@@ -1225,38 +1217,12 @@ namespace DGtal
 
 
 
-    /**
-     * Return a vector containing all the interger points of the freemanchain.
-     *
-     * @param fc the FreemanChain
-     * @param aVContour (returns) the vector containing all the integer contour points.
-     */
-    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2> & aVContour)
-    {
-      aVContour.clear();
-      for ( typename FreemanChain<TInteger>::ConstIterator it = fc.begin();
-            it != fc.end();
-            ++it )
-        {
-          aVContour.push_back(*it);
-        }
-    }
 
 
 
-
-
-    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
-
-
-
+///////////////////////////////////////////////////////////////////////////////
     // ----------------------- Standard services ------------------------------
   public:
-
-
-
-
-
 
     /**
      * Destructor.
@@ -1338,6 +1304,8 @@ namespace DGtal
      * @return the length of the Freeman chain code.
      */
     unsigned int size() const;
+
+
 
     /**
      * Computes a bounding box for the Freeman chain code.
