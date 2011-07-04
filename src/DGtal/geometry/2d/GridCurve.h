@@ -94,8 +94,8 @@ namespace DGtal
   typedef typename KSpace::Space::Point Point;
   typedef typename KSpace::Space::Point Vector;
 
-  typedef typename KSpace::SCell Cell;
-  typedef typename std::vector<Cell> Storage;
+  typedef typename KSpace::SCell SCell;
+  typedef typename std::vector<SCell> Storage;
 
 
 
@@ -185,18 +185,16 @@ namespace DGtal
   public:
     KSpace myK;
 
-    Storage my0Cells; 
-    Storage my1Cells; 
+    Storage my0SCells; 
+    Storage my1SCells; 
 
 
     // ------------------------- Internal --------------------------------
   private:
 
     //conversion methods
-    Cell PointTo0Cell(const Point& aPoint);
-    Cell PointVectorTo1Cell(const Point& aPoint, const Vector& aVector);
- /*   Point 0CellToPoint(const Cell& aCell);
-    Vector 1CellToVector(const Cell& aCell);*/
+    SCell PointTo0SCell(const Point& aPoint);
+    SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
     
 
     // ------------------------- Drawing services --------------------------------
@@ -274,7 +272,7 @@ namespace DGtal
   public: 
 
     ///////////////////////////////////////////////////////////////////////////////
-    // class sCellsRange
+    // class SCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -284,7 +282,7 @@ namespace DGtal
      */
 
    
-    class sCellsRange
+    class SCellsRange
     {
 
       // ------------------------- inner types --------------------------------
@@ -297,20 +295,20 @@ namespace DGtal
          * Default Constructor.
          */
 	
-        sCellsRange(){}
+        SCellsRange(){}
 
        /**
          * Constructor.
          */
 	
-        sCellsRange( const Storage& aStorage ): myData(&aStorage){}
+        SCellsRange( const Storage& aStorage ): myData(&aStorage){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
 	
-        sCellsRange( const sCellsRange & aOther )
+        SCellsRange( const SCellsRange & aOther )
 	      : myData( aOther.myData ){}
       
         /**
@@ -319,7 +317,7 @@ namespace DGtal
          * @return a reference on 'this'.
          */
 	
-        sCellsRange& operator= ( const sCellsRange & other )
+        SCellsRange& operator= ( const SCellsRange & other )
         {	
 	        if ( this != &other )
 	          {
@@ -332,7 +330,7 @@ namespace DGtal
          * Destructor. Does nothing.
          */
 	
-        ~sCellsRange() {}
+        ~SCellsRange() {}
 
         /**
          * @return the size of the range
@@ -386,23 +384,23 @@ namespace DGtal
 
 	
     ///////////////////////////////////////////////////////////////////////////////
-    // end of class sCellsRange
+    // end of class SCellsRange
     ///////////////////////////////////////////////////////////////////////////////
 	
   /**
    * Accessor of a range of 0-cells
-   * @return sCellsRange
+   * @return SCellsRange
    */
-   typename GridCurve::sCellsRange get0CellsRange() const {
-    return sCellsRange(my0Cells);
+   typename GridCurve::SCellsRange get0SCellsRange() const {
+    return SCellsRange(my0SCells);
    } 
 
   /**
    * Accessor of a range of 1-cells
-   * @return sCellsRange
+   * @return SCellsRange
    */
-   typename GridCurve::sCellsRange get1CellsRange() const {
-    return sCellsRange(my1Cells);
+   typename GridCurve::SCellsRange get1SCellsRange() const {
+    return SCellsRange(my1SCells);
    } 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -621,7 +619,7 @@ namespace DGtal
          */
 	
         typename Storage::size_type size() const {
-          return myC->my0Cells.size();
+          return myC->my0SCells.size();
         }
 
       // ------------------------- private data --------------------------------
@@ -636,7 +634,7 @@ namespace DGtal
        * @return begin iterator
        */
       ConstIterator begin() const {
-        return ConstIterator( myC, myC->my0Cells.begin() );
+        return ConstIterator( myC, myC->my0SCells.begin() );
       }
 
       /**
@@ -644,7 +642,7 @@ namespace DGtal
        * @return end iterator
        */
       ConstIterator end() const {
-        return ConstIterator( myC, myC->my0Cells.end() );
+        return ConstIterator( myC, myC->my0SCells.end() );
       }
 
       /**
@@ -697,7 +695,7 @@ namespace DGtal
           typedef typename DGtal::RealPointVector<GridCurve::Point::dimension> Point; 
 
           typedef typename GridCurve::Storage Storage; 
-          typedef typename GridCurve::Storage::const_iterator ConstIteratorOn1Cells; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOn1SCells; 
 
         ///////////////////////////////////////////////////////////////////////////////
         // class ConstIterator
@@ -716,7 +714,7 @@ namespace DGtal
         private:
     
           const GridCurve* myC;
-          ConstIteratorOn1Cells myIt; 
+          ConstIteratorOn1SCells myIt; 
 
           // ------------------------- Standard services -----------------------
         public:
@@ -729,7 +727,7 @@ namespace DGtal
           /**
            * Constructor.
            */
-          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOn1Cells it)
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOn1SCells it)
             : myC(aGridCurve),myIt(it) {}
 
           /**
@@ -895,7 +893,7 @@ namespace DGtal
          */
 	
         typename Storage::size_type size() const {
-          return myC->my1Cells.size();
+          return myC->my1SCells.size();
         }
 
       // ------------------------- private data --------------------------------
@@ -910,7 +908,7 @@ namespace DGtal
        * @return begin iterator
        */
       ConstIterator begin() const {
-        return ConstIterator( myC, myC->my1Cells.begin() );
+        return ConstIterator( myC, myC->my1SCells.begin() );
       }
 
       /**
@@ -918,7 +916,7 @@ namespace DGtal
        * @return end iterator
        */
       ConstIterator end() const {
-        return ConstIterator( myC, myC->my1Cells.end() );
+        return ConstIterator( myC, myC->my1SCells.end() );
       }
 
       /**
@@ -971,13 +969,13 @@ namespace DGtal
       // ------------------------- inner types --------------------------------
         public: 
 
-          typedef typename GridCurve::Cell Cell;
+          typedef typename GridCurve::SCell SCell;
           typedef typename GridCurve::Point Point;
           typedef typename GridCurve::Point Vector;
           typedef typename std::pair<Point,Vector> Arrow; 
 
           typedef typename GridCurve::Storage Storage; 
-          typedef typename GridCurve::Storage::const_iterator ConstIteratorOnCells; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOnSCells; 
 
         ///////////////////////////////////////////////////////////////////////////////
         // class ConstIterator
@@ -996,7 +994,7 @@ namespace DGtal
         private:
     
           const GridCurve* myC;
-          ConstIteratorOnCells myIt;
+          ConstIteratorOnSCells myIt;
 
           // ------------------------- Standard services -----------------------
         public:
@@ -1009,7 +1007,7 @@ namespace DGtal
           /**
            * Constructor.
            */
-          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnCells it)
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnSCells it)
             : myC(aGridCurve),myIt(it) {}
 
           /**
@@ -1050,9 +1048,8 @@ namespace DGtal
 	
           Arrow operator*() const
           {
-//mettre sIndirect (laisser l'espace donner le signe)
             //starting point of the arrow
-            Cell pointel( myC->myK.sDirectIncident( *myIt, *myC->myK.sDirs( *myIt ) ) );
+            SCell pointel( myC->myK.sIndirectIncident( *myIt, *myC->myK.sDirs( *myIt ) ) );
             Point p( myC->myK.sCoords( pointel ) );   //integer coordinates
 
             //displacement vector
@@ -1181,7 +1178,7 @@ namespace DGtal
          */
 	
         typename Storage::size_type size() const {
-          return myC->my1Cells.size();
+          return myC->my1SCells.size();
         }
 
       // ------------------------- private data --------------------------------
@@ -1196,7 +1193,7 @@ namespace DGtal
        * @return begin iterator
        */
       ConstIterator begin() const {
-        return ConstIterator( myC, myC->my1Cells.begin() );
+        return ConstIterator( myC, myC->my1SCells.begin() );
       }
 
       /**
@@ -1204,7 +1201,7 @@ namespace DGtal
        * @return end iterator
        */
       ConstIterator end() const {
-        return ConstIterator( myC, myC->my1Cells.end() );
+        return ConstIterator( myC, myC->my1SCells.end() );
       }
 
       /**
@@ -1246,7 +1243,7 @@ other ranges
 - IncidentSpelsRange operator*(): std::vector<Point> (integer coordinates of the spels incident to a given 1-cell)
 - CodesRange operator*(): {0,1,2,3} (only in 2D)
 
-set my0Cells,my1Cells private 
+set my0SCells,my1SCells private 
 and put GridCurve as a friend class in the ConstIterator classes
 */
 
