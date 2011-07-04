@@ -50,6 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
+   * \TODO update doc
    * Description of template class 'GreedyDecomposition' <p>
    * \brief Aim: Computes the greedy decomposition of a sequence 
    * into segments (the last element of a given segment is the first one
@@ -59,7 +60,7 @@ namespace DGtal
    * This class is templated by 'TSegment', a model of CSegmentComputer
    * that is able to manage the on-line recognition of a given class of 
    * segments (4-connected DSS, 8-connected DSS, thick segment, etc.)
-   * 'TSegment' must have an internal type 'Iterator' that is a means of 
+   * 'TSegment' must have an internal type 'ConstIterator' that is a means of 
    * of accessing the sequence elements. 
    * 'TSegment' must have the methods init() and extend() taking as input
    * a parameter of type 'Iterator'. The extend method must return a boolean
@@ -74,8 +75,8 @@ namespace DGtal
   //types definition
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Sequence;
-  typedef Sequence::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,8> DSS;
+  typedef Sequence::const_iterator ConstIterator;
+  typedef ArithmeticalDSS<ConstIterator,int,8> DSS;
 	typedef GreedyDecomposition<DSS> Decomposition;
 
 	//sequence of input points
@@ -107,7 +108,7 @@ namespace DGtal
    * iterator of the STL vector:   
    * @code 
 ...
-	typedef Sequence::reverse_iterator Iterator;
+	typedef Sequence::const_reverse_iterator ConstReverseIterator;
 ...
   Decomposition theDecomposition(curve.rbegin(), curve.rend(), dssRecognition, false);
 ...
@@ -121,7 +122,7 @@ namespace DGtal
 	public: 
 
 		typedef TSegment Segment;
-		typedef typename Segment::Iterator Iterator;
+		typedef typename Segment::ConstIterator Iterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -193,7 +194,7 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       SegmentIterator( const GreedyDecomposition<TSegment> *aDec,
-		     const typename TSegment::Iterator& aBack,
+		     const typename TSegment::ConstIterator& aBack,
 				 const TSegment& aSegment);
 
 

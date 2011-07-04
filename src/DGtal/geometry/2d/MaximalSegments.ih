@@ -265,7 +265,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::
 inline
 DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator ( 
 	MaximalSegments<TSegment> *aCov,
-	const typename TSegment::Iterator& aBack,
+	const typename TSegment::ConstIterator& aBack,
 	const TSegment& aSegment)
   : myCov( aCov ), 
 		myFront( aBack ), 
@@ -380,7 +380,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator++()
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
@@ -392,7 +392,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::MaximalSegments<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
@@ -468,8 +468,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator!=
  */
   template <typename TSegment>
 DGtal::MaximalSegments<TSegment>::MaximalSegments(
-  const typename TSegment::Iterator& begin, 
-  const typename TSegment::Iterator& end, 
+  const typename TSegment::ConstIterator& begin, 
+  const typename TSegment::ConstIterator& end, 
 	const TSegment& aSegment, 
 	const bool& aFlag)
  : myBegin(begin),
@@ -487,8 +487,8 @@ DGtal::MaximalSegments<TSegment>::MaximalSegments(
 inline
 void
 DGtal::MaximalSegments<TSegment>::init(
-  const typename TSegment::Iterator& begin, 
-  const typename TSegment::Iterator& end, 
+  const typename TSegment::ConstIterator& begin, 
+  const typename TSegment::ConstIterator& end, 
 	const TSegment& aSegment, 
 	const bool& aFlag) {
 

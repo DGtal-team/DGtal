@@ -50,6 +50,8 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class MaximalSegments
   /**
+   * \TODO update doc
+   *
    * Description of template class 'MaximalSegments' <p>
    * \brief Aim: Computes the set of maximal segments of a sequence.
    * Maximal segments are segments that cannot be included in other segments. 
@@ -107,9 +109,10 @@ namespace DGtal
 	public: 
 
 		typedef TSegment Segment;
-		typedef typename TSegment::Iterator Iterator;		
-		typedef typename TSegment::ReverseIterator ReverseIterator;
-		typedef	typename TSegment::ReverseSegmentComputer ReverseSegment;
+		typedef	typename TSegment::Reverse ReverseSegment;
+		typedef typename TSegment::ConstIterator Iterator;		
+		typedef typename ReverseSegment::ConstIterator ReverseIterator;
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -186,7 +189,7 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       SegmentIterator( MaximalSegments<TSegment> *aCov,
-										 const typename TSegment::Iterator& aBack,
+										 const typename TSegment::ConstIterator& aBack,
 										 const TSegment& aSegment);
 
 
