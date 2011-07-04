@@ -19,6 +19,8 @@
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/06/30
  *
@@ -49,7 +51,7 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 
-
+#include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
 
@@ -114,6 +116,76 @@ bool testTrueLocalEstimator(const std::string &filename)
 
 }
 
+template <typename Shape>
+bool 
+testTrueLocalEstimatorOnShapeDigitization( const string & name,
+					   Shape & aShape, double h )
+{
+  using namespace Z2i;
+
+  trace.beginBlock ( ( "Testing TrueLocalEstimator on digitization of "
+		       + name ). c_str() );
+  
+  // Creates a digitizer on the window (xLow, xUp).
+  typedef Space::RealPoint RealPoint;
+  RealPoint xLow( -10.0, -10.0 );
+  RealPoint xUp( 10.0, 10.0 );
+  GaussDigitizer<Space,Shape> dig;  
+  dig.attach( aShape ); // attaches the shape.
+  dig.init( xLow, xUp, h ); 
+  
+  // The domain size is given by the digitizer according to the window
+  // and the step.
+  Domain domain = dig.getDomain();
+
+  // Create cellular space
+  KSpace K;
+  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+  if ( ! ok )
+    {
+      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+		<< " error in creating KSpace." << std::endl;
+    }
+  else
+    try {
+      // Extracts shape boundary
+      SurfelAdjacency<KSpace::dimension> SAdj( true );
+      SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+      // Getting the consecutive surfels of the 2D boundary
+      std::vector<Point> points;
+      Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+      // Create GridCurve
+      GridCurve<KSpace> gridcurve;
+      gridcurve.initFromVector( points );
+      typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
+      typedef Range::ConstIterator ConstIteratorOnPoints;
+      typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
+      TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
+      Range r = gridcurve.getPointsRange();//building range
+      curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
+      std::cout << "# idx x y kappa" << endl;
+      unsigned int i = 0;
+      for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
+	    it != ite; ++it, ++i )
+	{
+	  RealPoint x = *it;
+	  double kappa = curvatureEstimator.eval( it );
+	  std::cout << i << " " << x.at( 0 ) << " " << x.at( 1 ) 
+		    << " " << kappa << std::endl;
+	}
+    }    
+    catch ( InputException e )
+      {
+	std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+		  << " error in finding a bel." << std::endl;
+	ok = false;
+      }
+  trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return ok;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -132,7 +204,26 @@ int main( int argc, char** argv )
   bool res = testTrueLocalEstimator(sinus2D4); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+  
+  typedef Ellipse2D< Z2i::Space > MyEllipse;
+  MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
+  res = res && 
+    testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
+    ( "Ellipse-4-3-0.3-s1", ellipse, 1 );
+  res = res && 
+    testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
+    ( "Ellipse-4-3-0.3-s0.5", ellipse, 0.5 );
+
+  typedef Flower2D< Z2i::Space > MyFlower;
+  MyFlower flower( 0.5, -2.3, 5.0, 0.7, 6, 0.3 );
+  res = res && 
+    testTrueLocalEstimatorOnShapeDigitization<MyFlower>
+    ( "Flower-5-0.3-6-0.3-s1", flower, 1 );
+  res = res && 
+    testTrueLocalEstimatorOnShapeDigitization<MyFlower>
+    ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
   return res ? 0 : 1;
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
