@@ -90,7 +90,7 @@ bool testIOGridCurve(const string& filename)
 
   trace.info() << "Writing GridCurve d=" << d << " in " << s.str() << endl;
 
-  ofstream outstream(s.str()); //output stream
+  ofstream outstream(s.str().c_str()); //output stream
   if (!outstream.is_open()) return false;
   else {
     c.writeVectorToStream(outstream);
@@ -116,6 +116,8 @@ bool testIsOpen(const string &filename, const bool& aFlag)
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   c.initFromVectorStream(instream);
+
+  trace.info() << c.isOpen() << " == " << aFlag << endl;
 
   return (c.isOpen() == aFlag);
 }
@@ -190,7 +192,7 @@ bool testDisplay(const string &filename)
 
 
 /**
- * PointsRange
+ * Ranges
  *
  */
 template <typename Range>
@@ -219,6 +221,34 @@ bool testRange(const Range &aRange)
  
   return true;
 }
+
+template <typename Range>
+bool testArrowsRange(const Range &aRange)
+{
+
+  trace.info() << endl;
+  trace.info() << "Testing ArrowsRange (" << aRange.size() << " elts)" << endl;
+  
+{
+  trace.info() << "Forward" << endl;
+  typename Range::ConstIterator i = aRange.begin();
+  typename Range::ConstIterator end = aRange.end();
+  for ( ; i != end; ++i) {
+    cout << (*i).first << " " << (*i).second << endl;
+  }
+}
+{
+  trace.info() << "Backward" << endl;
+  typename Range::ConstReverseIterator i = aRange.rbegin();
+  typename Range::ConstReverseIterator end = aRange.rend();
+  for ( ; i != end; ++i) {
+    cout << (*i).first << " " << (*i).second << endl;
+  }
+}
+ 
+  return true;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -266,6 +296,7 @@ int main( int argc, char** argv )
     && testRange<GridCurve::sCellsRange>(c.get1CellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
+    && testArrowsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
 ;
 
 //////////////////////

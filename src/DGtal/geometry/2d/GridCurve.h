@@ -694,7 +694,6 @@ namespace DGtal
       // ------------------------- inner types --------------------------------
         public: 
 
-          typedef typename GridCurve::Point KhalimskyPoint;
           typedef typename DGtal::RealPointVector<GridCurve::Point::dimension> Point; 
 
           typedef typename GridCurve::Storage Storage; 
@@ -952,14 +951,300 @@ namespace DGtal
     return MidPointsRange(this);
    } 
 
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class ArrowsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * This class is a model of CRange and provides a ConstIterator to scan 
+     * the 1-cells and return the integer coordinates of the associated 
+     * point and displacement vector
+     */
+
+   
+    class ArrowsRange
+    {
+
+      // ------------------------- inner types --------------------------------
+        public: 
+
+          typedef typename GridCurve::Cell Cell;
+          typedef typename GridCurve::Point Point;
+          typedef typename GridCurve::Point Vector;
+          typedef typename std::pair<Point,Vector> Arrow; 
+
+          typedef typename GridCurve::Storage Storage; 
+          typedef typename GridCurve::Storage::const_iterator ConstIteratorOnCells; 
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * This class is a model of CConstIteratorOnArrows 
+         */
+        
+        class ConstIterator : 
+          public std::iterator<std::bidirectional_iterator_tag, 
+                               Arrow, unsigned int, Arrow*, Arrow >
+        {
+
+          // ------------------------- data -----------------------
+        private:
+    
+          const GridCurve* myC;
+          ConstIteratorOnCells myIt;
+
+          // ------------------------- Standard services -----------------------
+        public:
+
+          /**
+           * Default Constructor.
+           */
+	        ConstIterator() {}
+
+          /**
+           * Constructor.
+           */
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnCells it)
+            : myC(aGridCurve),myIt(it) {}
+
+          /**
+           * Copy constructor.
+           * @param other the iterator to clone.
+           */
+	
+          ConstIterator( const ConstIterator & aOther )
+            : myC(aOther.myC),myIt(aOther.myIt) {}
+	        
+          /**
+           * Assignment.
+           * @param other the iterator to copy.
+           * @return a reference on 'this'.
+           */
+	
+          ConstIterator& operator= ( const ConstIterator & other )
+          {	
+	          if ( this != &other )
+	            {
+	              myIt = other.myIt;
+	            }
+	          return *this;
+          }
+
+          /**
+           * Destructor. Does nothing.
+           */
+	
+          ~ConstIterator(){}
+
+          // ------------------------- iteration services -------------------------
+        public:
+
+          /**
+           * @return the current coordinates.
+           */
+	
+          Arrow operator*() const
+          {
+
+            //starting point of the arrow
+            Cell pointel( myC->myK.sDirectIncident( *myIt, *myC->myK.sDirs( *myIt ) ) );
+            Point p( myC->myK.sCoords( pointel ) );   //integer coordinates
+
+            //displacement vector
+            Vector v( myC->myK.sKCoords( *myIt ) - myC->myK.sKCoords( pointel ) );
+
+           return std::make_pair<Point,Vector>(p,v);
+          }
+
+          /**
+           * Pre-increment.
+           */
+
+          ConstIterator& operator++()
+          {
+	          ++myIt;
+	          return *this;
+          }
+	
+          /**
+           * Post-increment.
+           */
+	
+          ConstIterator  operator++(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt++;
+	          return tmp;
+          }
+
+          /**
+           * Pre-decrement.
+           */
+	
+          ConstIterator&  operator--()
+          {
+	          --myIt;
+	          return *this;
+          }
+
+          /**
+           * Post-decrement.
+           */
+	
+          ConstIterator  operator--(int)
+          {
+	          ConstIterator tmp(*this);
+	          myIt--;
+	          return tmp;
+          }
+
+          /**
+           * Equality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators coincide
+           */
+
+          bool operator == ( const ConstIterator & aOther ) const
+          {
+	          return myIt == aOther.myIt;
+          }
+
+          /**
+           * Inequality operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators differs.
+           */
+
+          bool operator!= ( const ConstIterator & aOther ) const
+          {
+	          return myIt != aOther.myIt;
+          }
+
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // end class ConstIterator
+        ///////////////////////////////////////////////////////////////////////////////
+
+          typedef typename std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+      // ------------------------- standard services --------------------------------
+
+       /**
+         * Default Constructor.
+         */
+	
+        ArrowsRange(){}
+
+       /**
+         * Constructor.
+         */
+	
+        ArrowsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+	
+        ArrowsRange( const ArrowsRange & aOther )
+	      : myC( aOther.myC ){}
+      
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+	
+        ArrowsRange& operator= ( const ArrowsRange & other )
+        {	
+	        if ( this != &other )
+	          {
+              myC = other.myC;
+	          }
+	        return *this;
+        }
+
+        /**
+         * Destructor. Does nothing.
+         */
+	
+        ~ArrowsRange() {}
+
+        /**
+         * @return the size of the range
+         */
+	
+        typename Storage::size_type size() const {
+          return myC->my1Cells.size();
+        }
+
+      // ------------------------- private data --------------------------------
+        private: 
+          const GridCurve* myC;
+
+      // ------------------------- iterator services --------------------------------
+        public:
+
+      /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const {
+        return ConstIterator( myC, myC->my1Cells.begin() );
+      }
+
+      /**
+       * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end() const {
+        return ConstIterator( myC, myC->my1Cells.end() );
+      }
+
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const {
+        return ConstReverseIterator(this->end());
+      }
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const {
+        return ConstReverseIterator(this->begin());
+      }
+
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // end of class ArrowsRange
+    ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Range of the pair of point and displacement vector
+   * (integer coordinates) associated to the 1-cells 
+   * @return ArrowsRange
+   */
+   typename GridCurve::ArrowsRange getArrowsRange() const {
+    return ArrowsRange(this);
+   } 
+
+
 //TODO
 /**
 other ranges
 - ArrowsRange operator*(): std::pair<Point,Vector> (integer coordinates of the pointel and the displacement vector associated to the following 1-cell)
 - IncidentSpelsRange operator*(): std::vector<Point> (integer coordinates of the spels incident to a given 1-cell)
 - CodesRange operator*(): {0,1,2,3} (only in 2D)
-
-reader and writer for chaincode
 
 set my0Cells,my1Cells private 
 and put GridCurve as a friend class in the ConstIterator classes
