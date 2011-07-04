@@ -50,8 +50,10 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 				      const SegmentComputer& aSegmentComputer, 
 				      const Functor& aFunctor, 
 				      const bool& isClosed) 
+ : myH(h), myBegin(itb), myEnd(ite), myFunctor(aFunctor), myFlagIsClosed(isClosed),
+  myMSRange(itb,ite,aSegmentComputer,isClosed)
 {
-  init(h,itb,ite,aSegmentComputer,aFunctor,isClosed);
+//  init(h,itb,ite,aSegmentComputer,aFunctor,isClosed);
 }
 
 /**
@@ -68,6 +70,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
        const Functor& aFunctor, 
        const bool& isClosed) 
 {
+
   myFlagIsInit = true; 
 
   myH = h;
@@ -78,6 +81,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
   //maximal segments computation
   myMSRange.init(myBegin,myEnd,aSegmentComputer,myFlagIsClosed);
+
 }
 
 

@@ -308,6 +308,11 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     * Default constructor.
+		 * Nb: not valid
+     */
+    GreedyDecomposition() {};
 
     /**
      * Constructor.
@@ -322,6 +327,21 @@ namespace DGtal
 												const Iterator& aEnd, 
 												const Segment& aSegment, 
 												const bool& aFlag);
+
+    /**
+     * Init.
+		 * Nb: The digital curve is decompose as a closed one by default.
+     * @param aBegin, begin iterator on a digital curve
+     * @param aEnd, end iterator on a digital curve
+     * @param aSegment, a segment computer
+     * @param aFlag a boolean equal to TRUE to decompose the digital
+     * curve as a closed one, FALSE otherwise
+     */
+    void init(const Iterator& aBegin, 
+							const Iterator& aEnd, 
+							const Segment& aSegment, 
+							const bool& aFlag);
+
 
     /**
      * Destructor.
