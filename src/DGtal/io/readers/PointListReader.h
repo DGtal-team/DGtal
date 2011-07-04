@@ -171,10 +171,9 @@ public:
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/io/readers/PointListReader.ih"
-#endif
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

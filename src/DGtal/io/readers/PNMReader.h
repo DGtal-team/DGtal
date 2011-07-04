@@ -93,22 +93,30 @@ namespace DGtal
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
     
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || (ImageContainer::Domain::dimension == 3));
 
     /** 
      * Main method to import a Pgm (8bits) into an instance of the 
      * template parameter ImageContainer.
      * 
      * @param filename the file name to import.
-     * @param extent the size of the raw data set.
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importPGMImage(const std::string & aFilename) throw(DGtal::IOException);
+    static  ImageContainer importPGMImage(const std::string & aFilename) throw(DGtal::IOException);
+
+
+    /** 
+     * Main method to import a Pgm3D (8bits) into an instance of the 
+     * template parameter ImageContainer.
+     * 
+     * @param filename the file name to import.
+     * @return an instance of the ImageContainer.
+     */
+    static ImageContainer importPGM3D(const std::string & aFilename) throw(DGtal::IOException);
     
     
     
- }; // end of class RawReader
+ }; // end of class  PNMReader
 
 
 
@@ -116,10 +124,9 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions.
 #include "DGtal/io/readers/PNMReader.ih"
-#endif
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
