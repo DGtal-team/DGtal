@@ -11,6 +11,43 @@ set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
 
+#------------------------------------------------
+#---- We propagate definitions for #define marco 
+#---- according to dependencies detected during 
+#---- the build.
+#------------------------------------------------
+IF(@GMP_FOUND@)
+  ADD_DEFINITIONS("-DWITH_GMP ")
+ENDIF(@GMP_FOUND@)
+
+IF(@MAGICK++_FOUND@)
+  ADD_DEFINITIONS("-DWITH_MAGICK ")
+ENDIF(@MAGICK++_FOUND@)
+
+IF(@ITK_FOUND@)
+  ADD_DEFINITIONS("-DWITH_ITK ")
+ENDIF(@ITK_FOUND@)
+
+IF(@CAIRO_FOUND@)
+  ADD_DEFINITIONS("-DWITH_CAIRO ")
+ENDIF(@CAIRO_FOUND@)
+
+IF(@QT4_FOUND@)
+  ADD_DEFINITIONS("-DWITH_QT4 ")
+ENDIF(@QT4_FOUND@)
+
+IF(@SOQT_FOUND@)
+  ADD_DEFINITIONS("-DWITH_SOQT ")
+ENDIF(@SOQT_FOUND@)
+
+IF ( @COIN3D_FOUND@ AND @QT4_FOUND@ AND @SOQT_FOUND@ )
+  ADD_DEFINITIONS("-DWITH_VISU3D_IV")
+ENDIF( @COIN3D_FOUND@ AND @QT4_FOUND@ AND @SOQT_FOUND@ )
+
+IF(@QGLVIEWER_FOUND@ AND @QT4_FOUND@ AND @QT_QTOPENGL_FOUND@)
+  ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
+ENDIF( @QGLVIEWER_FOUND@  AND @QT4_FOUND@ AND @QT_QTOPENGL_FOUND@)
+
 
 #--------------------------------------------
 #ITK bugfix (we need explicit link_directory)
