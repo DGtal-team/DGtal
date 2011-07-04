@@ -52,7 +52,7 @@ inline
 DGtal::NGon2D<T>::NGon2D(const double x0, const double y0, 
 			 const double radius, const unsigned int k,
 			 const double phi):
-  myRadius(radius), myCenter(x0,y0), myK(k), myPhi(phi)
+  myCenter(x0,y0), myRadius(radius), myK(k), myPhi(phi)
 {}
 
 
@@ -61,7 +61,7 @@ inline
 DGtal::NGon2D<T>::NGon2D(const RealPoint2D &aPoint,
 			 const double radius, const unsigned int k,
 			 const double phi):
-  myRadius(radius), myCenter(aPoint) , myK(k), myPhi(phi)
+  myCenter(aPoint), myRadius(radius) , myK(k), myPhi(phi)
 {}
 
 template <typename T>

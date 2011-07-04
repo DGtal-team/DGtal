@@ -51,8 +51,9 @@ template <typename T>
 inline
 DGtal::AccFlower2D<T>::AccFlower2D(const double x0, const double y0,
 			     const double radius, const double smallRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(x0,y0) , myVarRadius(smallRadius), myK(k),myPhi(phi)
+			     const unsigned int k, const double phi)
+  :  myCenter(x0,y0), myRadius(radius), myVarRadius(smallRadius), 
+     myK(k), myPhi(phi)
 {
   myKp = 2 * myK/ ( M_PI * M_PI );
 }
@@ -62,8 +63,9 @@ template <typename T>
 inline
 DGtal::AccFlower2D<T>::AccFlower2D(const RealPoint2D &aPoint, const double radius,
 			     const double smallRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius), myCenter(aPoint)  , myVarRadius(smallRadius), myK(k), myPhi(phi)
+			     const unsigned int k, const double phi)
+  : myCenter(aPoint), myRadius(radius), myVarRadius(smallRadius), 
+    myK(k), myPhi(phi)
 {
   myKp = 2 * myK/ ( M_PI * M_PI );
 }
@@ -72,8 +74,8 @@ template <typename T>
 inline
 DGtal::AccFlower2D<T>::AccFlower2D(const Point &aPoint, const double radius,
 			     const double smallRadius,
-			     const unsigned int k, const double phi):
-  myRadius(radius),myVarRadius(smallRadius),myK(k),myPhi(phi)
+			     const unsigned int k, const double phi)
+  : myRadius(radius), myVarRadius(smallRadius), myK(k), myPhi(phi)
 {
   myCenter = aPoint;
   myKp = 2 * myK/ ( M_PI * M_PI );
