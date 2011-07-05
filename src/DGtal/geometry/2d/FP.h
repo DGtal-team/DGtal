@@ -45,6 +45,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/base/Circulator.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -55,51 +56,51 @@ namespace DGtal
 	/////////////////////////////////////////////////////////////////////////////
 	// template class adapterDSS,
 	// which is a tool class for FP
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS 
+	template <typename ArithmeticalDSS>
+	class Adapter 
 	{
 		protected:
-			DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>* myDSS;
+			ArithmeticalDSS* myDSS;
 		public:
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const = 0;
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const = 0;
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
 	};
 
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS4ConvexPart : public AdapterDSS<TIterator,TInteger,connectivity> 
+	template <typename ArithmeticalDSS>
+	class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConvexPart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
+			Adapter4ConvexPart(ArithmeticalDSS& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
 			//accessors
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
 			{
 				return this->myDSS->getUf();
 			}
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
 			{
 				return this->myDSS->getUl();
 			}
 	};
 
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS4ConcavePart : public AdapterDSS<TIterator,TInteger,connectivity> 
+	template <typename ArithmeticalDSS>
+	class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConcavePart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
+			Adapter4ConcavePart(ArithmeticalDSS& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
 			//accessors
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
 			{
 				return this->myDSS->getLf();
 			}
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
 			{
 				return this->myDSS->getLl();
 			}
@@ -129,10 +130,8 @@ namespace DGtal
   typedef DGtal::PointVector<2,TInteger> Vector;
   typedef DGtal::RealPointVector<2> RealVector;
 
-  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSS;
-  typedef DGtal::AdapterDSS<TIterator,TInteger,connectivity> AdapterDSS;
-  typedef DGtal::AdapterDSS4ConvexPart<TIterator,TInteger,connectivity> AdapterDSS4ConvexPart;
-  typedef DGtal::AdapterDSS4ConcavePart<TIterator,TInteger,connectivity> AdapterDSS4ConcavePart;
+  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
+  typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
 
 	typedef std::list<Point> Polygon;
 
@@ -195,7 +194,7 @@ namespace DGtal
 		//each vertex of the FP is stored in this list
 		Polygon myPolygon; 
 
-		//boolean at TRUE is the list has to be consider as circular
+		//TRUE if the list has to be consider as circular
     //FALSE otherwise
 		bool myFlagIsClosed;
 
@@ -205,6 +204,32 @@ namespace DGtal
 
 
   private:
+
+    /**
+     * @param [aDSS] a DSS lying on a range
+     * @param [anAdapter] an Adapter to [aDSS] for convex part
+     * if 'true' is returned, for concave part otherwise
+     * @param [i] an iterator pointing after the front of [aDSS] 
+     * @return 'true' if [aDSS] begins a convex part, 'false' otherwise
+     */
+    template<typename DSS, typename Adapter>
+    bool initConvexityConcavity( DSS &aDSS,  
+                                 Adapter* &anAdapter,
+                                 const typename DSS::ConstIterator& i );
+
+    /**
+     * @param [currentDSS] a DSS lying on a range
+     * @param [adapter] an Adapter to [currentDSS]
+     * @param [isConvex], 'true' if [currentDSS] is in a convex part, 'false' otherwise
+     * @param [i] an iterator pointing after the front of [currentDSS] 
+     * @param the algorithm stops when [i] == [end]
+     */
+    template<typename DSS, typename Adapter>
+    void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
+                        bool isConvex, 
+                        typename DSS::ConstIterator i, 
+                        const typename DSS::ConstIterator& end )  throw( InputException ) ;
+
 
     /**
      * gets a MLP vertex from three consecutive vertices of the FP.
@@ -222,7 +247,7 @@ namespace DGtal
      * @return 'true' if [v] lies in quadrant number [q], 'false' otherwise
      */
 
-      bool quadrant (const Vector& v, const int& q) const;
+    bool quadrant (const Vector& v, const int& q) const;
 
     /**
      * Copy constructor.

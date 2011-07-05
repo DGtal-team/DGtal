@@ -90,7 +90,7 @@ bool testDrawingFP()
 
   trace.beginBlock ( "FP of a 4-connected digital curve..." );
 
-	FP theFP( theContour.begin(),theContour.end(),false );
+	FP theFP( theContour.begin(),theContour.end(),true );
   //trace.info() << theFP << std::endl;
 
 	// Draw the FP
