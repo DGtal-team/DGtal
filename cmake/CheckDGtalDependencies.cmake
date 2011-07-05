@@ -90,6 +90,7 @@ endif ( COIN3D_FOUND )
 
 find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL)
 if ( QT4_FOUND )
+   set(QT4_FOUND_DGTAL TRUE)
    message(STATUS  "(optional) Qt4 found.")
    set(QT_USE_QTXML 1)
    ADD_DEFINITIONS("-DWITH_QT4 ")
