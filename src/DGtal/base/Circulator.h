@@ -137,20 +137,7 @@ namespace DGtal
     */
     template<typename other_iterator_type>
     Circulator ( const Circulator<other_iterator_type>& other )
-    : myCurrentIt(other.myCurrentIt), myBeginIt(other.myBeginIt), myEndIt(other.myEndIt) {}
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
- /*   Circulator & operator= ( const Circulator & other )
-    {
-
-    }
-*/
-
-
+    : myCurrentIt(other.base()), myBeginIt(other.begin()), myEndIt(other.end()) {}
 
     /**
      * Checks the validity/consistency of the object.
@@ -168,6 +155,18 @@ namespace DGtal
     */
     iterator_type base() const
     { return myCurrentIt; }
+
+    /**
+     *  @return  member [myBeginIt], begin iterator of the underlying range.
+    */
+    iterator_type begin() const
+    { return myBeginIt; }
+
+    /**
+     *  @return  member [myEndIt], end iterator of the underlying range.
+    */
+    iterator_type end() const
+    { return myEndIt; }
 
     /**
      *  @return  *myCurrentIt.
@@ -234,61 +233,25 @@ namespace DGtal
    *  on their underlying iterators returned by the base() method. 
    *  Note however that their begin and end iterators are expected
    *  to be the same for a valid comparison. 
-   *  @param  x  any Circulator.
-   *  @param  y  any Circulator.
-   *  @return  a bool.
+   *  @param  other  any Circulator to compare
+   *  @return  a bool
   */
 
     template<typename any_iterator_type>
     inline bool
-    operator==(const Circulator<any_iterator_type>& other)
+    operator==(const Circulator<any_iterator_type>& other) const
     { 
-      ASSERT( (myBeginIt == other.myBeginIt)&&(myEndIt == other.myEndIt) ); 
+      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
       return myCurrentIt == other.base(); 
     }
 
     template<typename any_iterator_type>
     inline bool
-    operator!=(const Circulator<any_iterator_type>& other)
+    operator!=(const Circulator<any_iterator_type>& other) const
     { 
       return !(*this == other); 
     }
-/*
-    template<typename any_iterator_type>
-    inline bool
-    operator==(const Circulator<any_iterator_type>& x,
-	             const Circulator<any_iterator_type>& y)
-    { 
-      ASSERT( (x.myBeginIt == y.myBeginIt)&&(x.myEndIt == y.myEndIt) ); 
-      return x.base() == y.base(); 
-    }
 
-    template<typename any_iterator_type>
-    inline bool
-    operator!=(const Circulator<any_iterator_type>& x,
-	             const Circulator<any_iterator_type>& y)
-    { 
-      return !(x == y); 
-    }
-
-    //Comparison of circulator to const circulator.
-    template<typename iteratorL, typename iteratorR>
-    inline bool
-    operator==(const Circulator<iteratorL>& x,
-               const Circulator<iteratorR>& y)
-    { 
-      ASSERT( (x.myBeginIt == y.myBeginIt)&&(x.myEndIt == y.myEndIt) ); 
-      return x.base() == y.base(); 
-    }
-
-    template<typename iteratorL, typename iteratorR>
-    inline bool
-    operator!=(const Circulator<iteratorL>& x,
-               const Circulator<iteratorR>& y)
-    { 
-      return !(x == y); 
-    }
-*/
     // ------------------------- Protected Datas --------------------------------
   protected:
 
