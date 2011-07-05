@@ -73,6 +73,7 @@ namespace DGtal
     typedef typename FirstEstimator::ConstIterator ConstIterator;
     typedef typename FirstEstimator::Quantity Quantity;
 
+    ///Output statistic type.
     typedef Statistic<Quantity> OutputStatistic;
     typedef Statistic<double> OutputVectorStatistic;
     
@@ -169,7 +170,7 @@ namespace DGtal
     
     
    /**
-     * Return a statistic on the error (difference) between the two
+     * Return a statistic on the error (angular error) between the two
      * estimators for points ranging from itb to ite.
      *
      * @pre both estimators must have been initialised with the same
