@@ -43,11 +43,11 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Example of a test. To be completed.
+ * Iteration accross the end of a range
  *
  */
 template<typename Iterator>
-bool testCirculator(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
+bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
 {
 
   //list
@@ -73,6 +73,16 @@ bool testCirculator(const Iterator& itb, const Iterator& ite, const vector<int>&
   cout << ")" << endl;
 
   return equal( v.begin(),v.end(),groundTruth.begin() );
+}
+
+/**
+ * Comparison tests
+ *
+ */
+template<typename Type1, typename Type2>
+bool 
+testComparison(const Type1& a, const Type2& b) {
+  return (a == b);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -107,12 +117,31 @@ int main( int argc, char** argv )
   v3.push_back(1);
   v3.push_back(5);
 
-  bool res = testCirculator<vector<int>::iterator>(v.begin(),v.end(), v2)
-  && testCirculator<vector<int>::reverse_iterator>(v.rbegin(),v.rend(), v3)
-  && testCirculator<vector<int>::const_iterator>(v.begin(),v.end(), v2)
-  && testCirculator<vector<int>::const_reverse_iterator>(v.rbegin(),v.rend(), v3)
- // && ... other tests
-;
+//incrementation / decrementation
+  trace.info() << endl;
+  trace.info() << "Iterate" << endl;
+  bool res = testOffset<vector<int>::iterator>(v.begin(),v.end(), v2)
+  && testOffset<vector<int>::reverse_iterator>(v.rbegin(),v.rend(), v3)
+  && testOffset<vector<int>::const_iterator>(v.begin(),v.end(), v2)
+  && testOffset<vector<int>::const_reverse_iterator>(v.rbegin(),v.rend(), v3);
+
+//comparisons
+  trace.info() << endl;
+  trace.info() << "Compare" << endl;
+  trace.info() << "(const / not const)" << endl;
+  Circulator<vector<int>::iterator> c1( v.begin(), v.begin(), v.end() );
+  Circulator<vector<int>::iterator> c2( c1 );
+  Circulator<vector<int>::const_iterator> c3( c2 );
+  res = res && testComparison<Circulator<vector<int>::iterator>,Circulator<vector<int>::iterator> >(c1,c2)
+  && testComparison<Circulator<vector<int>::iterator>,Circulator<vector<int>::const_iterator> >(c1,c3);
+
+  trace.info() << "(reverse_iterator<Circulator> / Circulator<reverse_iterator>)" << endl;
+  std::reverse_iterator<Circulator<vector<int>::iterator> > rc1( c1 );
+  Circulator <vector<int>::reverse_iterator> c4(  v.rend(), v.rbegin(), v.rend() );
+  res = res && testComparison<vector<int>::iterator,vector<int>::iterator>(rc1.base().base(), c4.base().base());
+  trace.info() << "first element: (" << *--rc1 << " == " << *--c4 << ")" << endl;
+  res = res && testComparison<int,int>(*rc1, *c4);
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
