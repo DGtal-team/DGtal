@@ -333,6 +333,7 @@ compareShapeEstimators( const string & name,
   typedef typename KSpace::SCell SCell;
   typedef typename GridCurve<KSpace>::PointsRange Range;
   typedef typename Range::ConstIterator ConstIteratorOnPoints;
+  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
   typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
 
   // Window for the estimation
@@ -368,14 +369,23 @@ compareShapeEstimators( const string & name,
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature >  
       trueCurvatureEstimator;
     trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
-    std::vector<double> curvatures = estimateQuantity( trueCurvatureEstimator,
-						       r.begin(), r.end() );
+    std::vector<double> curvatures = 
+      estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
+    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent >  
+      trueTangentEstimator;
+    trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, true);
+    std::vector<RealPoint> tangents = 
+      estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
 
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
 	  it != it_end; ++it, ++i )
       {
-	std::cout << *it << " " << curvatures[ i ] << std::endl;
+	Point p = *it;
+	std::cout << p[ 0 ] << " " << p[ 1 ] 
+		  << " " << tangents[ i ][ 0 ]
+		  << " " << tangents[ i ][ 1 ]
+		  << " " << curvatures[ i ] << std::endl;
       }
     return true;
   }    
