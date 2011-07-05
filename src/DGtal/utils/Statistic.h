@@ -48,11 +48,8 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class Statistics
   /**
-    * Description of class 'Statistic' <p> \brief Aim: This class processes a
+   * Description of class 'Statistic' <p> \brief Aim: This class processes a
    * set of sample values for one variable and can then compute
    * different statistics, like sample mean, sample variance, sample
    * unbiased variance, etc. It is minimalistic for space
@@ -274,14 +271,6 @@ namespace DGtal
      *
      */
     bool myIsTerminated;
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
- 
-    // ------------------------- Internals ------------------------------------
-  private:
   
   };
 
@@ -295,9 +284,9 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & thatStream, 
 	      const Statistic<RealNumberType> & that_object_to_display );
-
   
-} // namespace ImaGene
+  
+} // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////

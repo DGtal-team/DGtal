@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <list>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +66,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TConstIteratorOnPoints ConstIterator;
     typedef TParametricShapeFunctor ParametricShapeFunctor;
     typedef TParametricShape ParametricShape;
     
@@ -94,8 +93,8 @@ namespace DGtal
      * @param isClosed true if the input range is closed.
      */
     TrueLocalEstimatorOnPoints(const double h, 
-			       const ConstIteratorOnPoints& itb, 
-			       const ConstIteratorOnPoints& ite,
+			       const ConstIterator& itb, 
+			       const ConstIterator& ite,
 			       ParametricShape* aShape,
 			       const bool isClosed);
     
@@ -116,23 +115,23 @@ namespace DGtal
      * @param isClosed true if the input range is viewed as closed.
      */
     void init(const double h, 
-	      const ConstIteratorOnPoints& itb, 
-	      const ConstIteratorOnPoints& ite,
+	      const ConstIterator& itb, 
+	      const ConstIterator& ite,
 	      ParametricShape* aShape,
 	      const bool isClosed);
     
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(ConstIteratorOnPoints& it);
+    Quantity eval(const ConstIterator& it);
     
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIteratorOnPoints& itb, 
-			const ConstIteratorOnPoints& ite, 
+    OutputIterator eval(const ConstIterator& itb, 
+			const ConstIterator& ite, 
                         OutputIterator result); 
 
 
@@ -161,10 +160,10 @@ namespace DGtal
     ParametricShapeFunctor myFunctor;
     
     ///Copy of the begin iterator
-    ConstIteratorOnPoints myBegin;
+    ConstIterator myBegin;
     
     ///Copy of the end iterator
-    ConstIteratorOnPoints myEnd;
+    ConstIterator myEnd;
 
     // ------------------------- Hidden services ------------------------------
   private:
