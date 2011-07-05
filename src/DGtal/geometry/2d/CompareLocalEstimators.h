@@ -74,7 +74,7 @@ namespace DGtal
     typedef typename FirstEstimator::Quantity Quantity;
 
     typedef Statistic<Quantity> OutputStatistic;
-
+    typedef Statistic<double> OutputVectorStatistic;
     
     ///@todo Assert firstestimator::Quantity==secondestimator::Quantity
     
@@ -133,6 +133,68 @@ namespace DGtal
       
       for(ConstIterator it = itb; it!= ite; ++it)
 	stats.addValue( compare(aFirstEstimator,aSecondEstimator,it));
+      
+      stats.terminate();
+      return stats;
+    }
+    
+
+    /**
+     * Return the angular error between the two estimations (if
+     * Quantity values are vectors) at a
+     * given point.
+     *
+     * @pre both estimators must have been initialised with the same
+     * parameters (geometry, resolution h, ...).
+     *
+     * @param aFirstEstimator the first estimator.
+     * @param aSecondEstimator the second estimator.
+     * @param it the point to evaluate the difference.
+     * @return the difference between the two estiamtor values at
+     * *it. (firstEstimator value - secondEstimator value). 
+     */
+    static 
+    double 
+    compareVectors(FirstEstimator & aFirstEstimator,
+		   SecondEstimator & aSecondEstimator,
+		   const ConstIterator &it)
+    {
+      ASSERT( aFirstEstimator.isValid());
+      ASSERT( aSecondEstimator.isValid());
+      Quantity v1 = aFirstEstimator.eval(it), v2 = aSecondEstimator.eval(it);
+      
+      return acos( v1.dot(v2)/(double)v1.norm()*v2.norm());
+      
+    }
+    
+    
+   /**
+     * Return a statistic on the error (difference) between the two
+     * estimators for points ranging from itb to ite.
+     *
+     * @pre both estimators must have been initialised with the same
+     * parameters (geometry, resolution h, ...).
+     *
+     * @param aFirstEstimator the first estimator.
+     * @param aSecondEstimator the second estimator.
+     * @param itb starting point of the comparison.
+     * @param ite ending point of the comparison.
+     * @param storeSamples if true, the instance of Statistic will
+     * store all the values.
+     * @return the statistic of differences between the two estiamtor values 
+     */
+    static
+    OutputVectorStatistic
+    compareVectors(FirstEstimator & aFirstEstimator,
+		   SecondEstimator & aSecondEstimator,
+		   const ConstIterator & itb, 
+		   const ConstIterator & ite,
+		   const bool storeSamples = false)
+    {
+      OutputVectorStatistic stats(storeSamples);
+      
+      for(ConstIterator it = itb; it!= ite; ++it)
+	stats.addValue( compareVectors(aFirstEstimator,aSecondEstimator,it));
       
       stats.terminate();
       return stats;

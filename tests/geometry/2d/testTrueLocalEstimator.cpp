@@ -212,7 +212,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
     {
-      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+      std::cerr << "[testCompareEstimators]"
 		<< " error in creating KSpace." << std::endl;
     }
   else
@@ -230,30 +230,48 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       typedef Range::ConstIterator ConstIteratorOnPoints;
       typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
+      typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
+      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
       TrueCurvature curvatureEstimator;
       TrueCurvature curvatureEstimatorBis;
      
+      TrueTangent tang1;
+      TrueTangent tang2;
 
       Range r = gridcurve.getPointsRange();//building range
       curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
       curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
+    
+      tang1.init( h, r.begin(), r.end(), &aShape, true);
+      tang2.init( h, r.begin(), r.end(), &aShape, true);
+      
       typename TrueCurvature::ConstIterator it = r.begin();
       typename TrueCurvature::ConstIterator itend = r.end();
       
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
+      typedef CompareLocalEstimators< TrueTangent, TrueTangent> ComparatorTan;
 
      
       trace.info()<< "Comparison at "<< *it <<" = "
 		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
 		  <<std::endl;
       
-      typename Comparator::OutputStatistic result=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
+      typename Comparator::OutputStatistic error=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
 								       r.begin(),
 								       r.end());
       
-      trace.info()<< "Nb samples= "<< result.samples()<<std::endl;
-      trace.info()<< "Error mean= "<< result.mean()<<std::endl;
-      trace.info()<< "Error max= "<< result.max()<<std::endl;
+      trace.info()<< "Nb samples= "<< error.samples()<<std::endl;
+      trace.info()<< "Error mean= "<< error.mean()<<std::endl;
+      trace.info()<< "Error max= "<< error.max()<<std::endl;
+      
+      typename ComparatorTan::OutputVectorStatistic error2=ComparatorTan::compareVectors(tang1, tang2, 
+											 r.begin(),
+											 r.end());
+      
+      trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
+      trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
+      trace.info()<< "Error max= "<< error2.max()<<std::endl;
+
 
      }    
     catch ( InputException e )
