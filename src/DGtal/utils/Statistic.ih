@@ -50,7 +50,7 @@ DGtal::Statistic<RealNumberType>::~Statistic()
 template <typename RealNumberType>
 inline
 DGtal::Statistic<RealNumberType>::Statistic(bool storeSample)
-  : mySamples( 0 ), myExp( 0 ), myExp2( 0 ), myMin( 0 ), myMax( 0 ), myMedian(0),  myStoreSamples (storeSample),
+  : mySamples( 0 ), myExp( 0 ), myExp2( 0 ),  myMax( 0 ),myMin( 0 ), myMedian(0),  myStoreSamples (storeSample),
     myIsTerminated(false)
 {
   myValues=  std::vector<RealNumberType> ();
@@ -67,8 +67,8 @@ DGtal::Statistic<RealNumberType>::Statistic
   : mySamples( other.mySamples ), 
     myExp( other.myExp ), 
     myExp2( other.myExp2 ), 
-    myMin( other.myMin ), 
     myMax( other.myMax ),
+    myMin( other.myMin ), 
     myMedian( other.myMedian), 
     myStoreSamples (other.myStoreSamples),
     myIsTerminated(other.myIsTerminated)
