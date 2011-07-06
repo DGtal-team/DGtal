@@ -83,7 +83,7 @@ bool testTangentFromDSS(
   trace.info() << "building and using the functor " << endl;
 
   //default constructor
-  TangentFromDSSFunctor<DSSComputer> f; 
+  TangentAngleFromDSSFunctor<DSSComputer> f; 
   //call
   double v1 = f(*begin,dss); 
   double v2 = std::atan2(dss.getA(),dss.getB());

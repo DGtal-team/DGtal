@@ -200,6 +200,9 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
     return result;
 
   } //nothing is done without initialization
+  cerr << "[DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::eval(const ConstIterator& itb, const ConstIterator& ite,OutputIterator result)]"
+       << " ERROR. Object is not initialized." << endl;
+  return result;
 }
 
 
@@ -215,7 +218,12 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
   if (myFlagIsInit) {
 
-    if (it == myEnd) return 0; //raise an exception 
+    if (it == myEnd) 
+      {
+	cerr << "[DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::eval(const ConstIterator& it)]"
+	     << " ERROR. Iterator is invalid (==myEnd)." << endl;
+	return typename Functor::Value();
+      }
     else {
       std::vector<Quantity> v(1); 
       
@@ -232,6 +240,9 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
     }
 
   }
+  cerr << "[DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::eval(const ConstIterator& it)]"
+       << " ERROR. Object is not initialized." << endl;
+  return typename Functor::Value();
 }
 
 

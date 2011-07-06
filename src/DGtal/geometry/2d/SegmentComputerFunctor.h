@@ -74,14 +74,15 @@ namespace DGtal
    * @endcode
    */
 
-  template <typename DSSComputer>
+  template <typename DSSComputer, typename TRealVector>
   class TangentFromDSSFunctor
   {
 
   public: 
 
     // ----------------------- inner type ------------------------------
-  typedef double Value;
+    typedef TRealVector Value;
+    typedef TRealVector RealVector;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -108,6 +109,105 @@ namespace DGtal
      * @return a reference on 'this'.
      */
 //    TangentFromDSSFunctor & operator=( const TangentFromDSSFunctor & other ) { 
+//     return *this;
+//    };
+
+
+
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Operator() 
+     * @return the tangent orientation at [aPoint]
+     * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+     * @param aDSS a DSSComputer. 
+     * @param aPoint the point at which the tangent orientation is estimated. 
+     */
+    Value operator()( const typename DSSComputer::Point& aPoint, 
+                      const DSSComputer& aDSS ) const {
+
+      Value v;
+      v.at( 1 ) = IntegerTraits<typename DSSComputer::Integer>
+	::castToDouble( aDSS.getA() );      
+      v.at( 0 ) = IntegerTraits<typename DSSComputer::Integer>
+	::castToDouble( aDSS.getB() );      
+      return v;
+    };
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const
+    {
+      return true;
+    };
+
+
+
+    // ------------------------- Public Datas --------------------------------
+  public:
+
+
+
+    // ------------------------- Internal --------------------------------
+  private:
+
+ 
+
+  }; // end of class TangentFromDSSFunctor
+
+  /////////////////////////////////////////////////////////////////////////////
+  // class TangentAngleFromDSSFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'TangentAngleFromDSSFunctor' <p> Aim: 
+   * computes the tangent orientation (in radians) from the 
+   * getA() and getB() returning the components of the main
+   * direction vector of a segment 
+   *
+   * Example :
+   * @code 
+
+   * @endcode
+   */
+
+  template <typename DSSComputer>
+  class TangentAngleFromDSSFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+  typedef double Value;
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Destructor.
+     */
+    ~TangentAngleFromDSSFunctor(){};
+
+    /**
+     * Default Constructor.
+     */
+    TangentAngleFromDSSFunctor(){};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    TangentAngleFromDSSFunctor( const TangentAngleFromDSSFunctor & other ) {};
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+//    TangentAngleFromDSSFunctor & operator=( const TangentAngleFromDSSFunctor & other ) { 
 //     return *this;
 //    };
 
@@ -156,7 +256,7 @@ namespace DGtal
 
  
 
-  }; // end of class TangentFromDSSFunctor
+  }; // end of class TangentAngleFromDSSFunctor
 
 
 

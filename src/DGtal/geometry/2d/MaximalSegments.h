@@ -425,15 +425,16 @@ namespace DGtal
 		Iterator myFirstMaximalSegmentBack;
 
     /**
+     * a segment Computer
+     */
+		Segment mySegment;
+
+    /**
      * boolean equal to TRUE if the sequence
      * has to be processed as closed, FALSE otherwise
      */
 		bool isClosed;
 
-    /**
-     * a segment Computer
-     */
-		Segment mySegment;
 
     // ------------------------- Hidden services ------------------------------
 

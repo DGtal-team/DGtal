@@ -42,6 +42,9 @@
 #include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
 
 #include "DGtal/kernel/SpaceND.h"
@@ -234,26 +237,40 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
       TrueCurvature curvatureEstimator;
       TrueCurvature curvatureEstimatorBis;
+
+      typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
+	SegmentComputer;
+      typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> Functor;
+      typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
+	MSTangentEstimator;
+
+      SegmentComputer sc;
+      Functor f; 
+      
+      MSTangentEstimator tang2; 
      
       TrueTangent tang1;
-      TrueTangent tang2;
+      // TrueTangent tang2;
 
       Range r = gridcurve.getPointsRange();//building range
       curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
       curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
     
       tang1.init( h, r.begin(), r.end(), &aShape, true);
-      tang2.init( h, r.begin(), r.end(), &aShape, true);
+      tang2.init( h, r.begin(), r.end(), sc, f, true );
+      // tang2.init( h, r.begin(), r.end(), &aShape, true);
       
       typename TrueCurvature::ConstIterator it = r.begin();
       typename TrueCurvature::ConstIterator itend = r.end();
       
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
-      typedef CompareLocalEstimators< TrueTangent, TrueTangent> ComparatorTan;
+      typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
 
      
       trace.info()<< "Comparison at "<< *it <<" = "
 		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
+		  << " : tan "
+		  << ComparatorTan::compareVectors( tang1, tang2, r.begin())
 		  <<std::endl;
       
       typename Comparator::OutputStatistic error=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
