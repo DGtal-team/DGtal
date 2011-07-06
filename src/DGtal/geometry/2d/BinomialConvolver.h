@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/Signal.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -93,6 +94,12 @@ namespace DGtal
     void setSize( unsigned int n );
 
     /**
+       @return the parameter for the size of the binomial kernel
+       (which is then 2^n).
+    */
+    unsigned int size() const;
+
+    /**
        @return the suggested size for the binomial convolver as ceil(
        0.5 / pow( h / d, 4.0/3.0 ) ), with d the diameter of the
        contour.
@@ -111,10 +118,22 @@ namespace DGtal
 
        The object is then valid.
     */
-    void init(const double h, 
-	      const ConstIteratorOnPoints& itb, 
-	      const ConstIteratorOnPoints& ite,
-	      const bool isClosed);
+    void init( const double h, 
+	       const ConstIteratorOnPoints& itb, 
+	       const ConstIteratorOnPoints& ite,
+	       const bool isClosed );
+
+    /**
+       Given a valid iterator [it], return the corresponding index
+       position in the binomial convolver in logarithmic time. The
+       method init should have been called before.
+
+       @see init
+       
+       @param it any valid iterator
+       @return its index for accessing geometric data.
+    */
+    int index( const ConstIteratorOnPoints& it ) const;
 
     /**
      * @param i any index.
@@ -122,6 +141,22 @@ namespace DGtal
      * @return the position vector (x[ i ],y[ i ]) (0 is the first point).
      */
     std::pair<Value,Value> x( int i ) const;
+
+    /**
+     * @param i any index.
+     *
+     * @return the derivative of the position (x'[ i ],y'[ i ]) (0 is
+     * the first point).
+     */
+    std::pair<Value,Value> dx( int i ) const;
+
+    /**
+     * @param i any index.
+     *
+     * @return the second derivative of the position (x''[ i ],y''[ i
+     * ]) (0 is the first point).
+     */
+    std::pair<Value,Value> d2x( int i ) const;
 
     /**
      * @param i any index.
@@ -134,8 +169,9 @@ namespace DGtal
     /**
      * @param i any index.
      *
-     * @return the curvature of the
-     * signal (0 is the first point).
+     * @return the curvature of the signal (0 is the first point).
+
+     * NB: depends on the gridstep.
      */
     Value curvature( int i ) const;
 
@@ -172,6 +208,9 @@ namespace DGtal
     ///Copy of the end iterator
     ConstIteratorOnPoints myEnd;
 
+    // Stores the mapping Iterator => Index.
+    std::map<ConstIteratorOnPoints,int> myMapIt2Idx;
+
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -200,6 +239,126 @@ namespace DGtal
 
   }; // end of class BinomialConvolver
 
+  /**
+     Description of template class
+     'TangentFromBinomialConvolverFunctor' <p> \brief Aim: This class
+     is a functor for getting the tangent vector of a binomial convolver.
+     
+     @tparam TBinomialConvolver any BinomialConvolver.
+
+     @tparam TRealPoint the type for representing the tangent vector.
+  */
+  template <typename TBinomialConvolver, typename TRealPoint>
+  struct TangentFromBinomialConvolverFunctor
+  {
+  public: 
+    // ----------------------- inner type ------------------------------
+    typedef TRealPoint Value;
+    typedef TRealPoint RealPoint;
+    typedef TBinomialConvolver BinomialConvolver;
+    typedef typename TBinomialConvolver::Value SignalValue;
+    typedef typename TBinomialConvolver::ConstIteratorOnPoints ConstIteratorOnPoints;
+    
+    /**
+       Operator() 
+       
+       @param it any valid iterator in the current BinomialConvolver.
+       @return the tangent vector at position [it].
+     */
+    Value operator()( const BinomialConvolver & bc,
+		      const ConstIteratorOnPoints & it ) const;
+
+  };
+
+  /**
+     Description of template class
+     'CurvatureFromBinomialConvolverFunctor' <p> \brief Aim: This class
+     is a functor for getting the tangent vector of a binomial convolver.
+     
+     @tparam TBinomialConvolver any BinomialConvolver.
+
+     @tparam TReal the type for representing the curvature scalar.
+  */
+  template <typename TBinomialConvolver, typename TReal>
+  struct CurvatureFromBinomialConvolverFunctor
+  {
+  public: 
+    // ----------------------- inner type ------------------------------
+    typedef TReal Value;
+    typedef TReal Real;
+    typedef TBinomialConvolver BinomialConvolver;
+    typedef typename TBinomialConvolver::Value SignalValue;
+    typedef typename TBinomialConvolver::ConstIteratorOnPoints ConstIteratorOnPoints;
+    
+    /**
+       Operator() 
+       
+       @param it any valid iterator in the current BinomialConvolver.
+       @return the tangent vector at position [it].
+     */
+    Value operator()( const BinomialConvolver & bc,
+		      const ConstIteratorOnPoints & it ) const;
+
+  };
+
+  /**
+     Description of template class 'BinomialConvolverEstimator' <p>
+     \brief Aim: This class encapsulates a BinomialConvolver and a
+     functor on BinomialConvolver so as to be a model of
+     CLocalGeometricEstimator.
+     
+     @tparam TBinomialConvolver any BinomialConvolver.
+
+     @tparam TRealPoint the type for representing the tangent vector.
+  */
+  template <typename TBinomialConvolver, typename TBinomialConvolverFunctor>
+  class BinomialConvolverEstimator
+  {
+  public:
+    typedef TBinomialConvolver BinomialConvolver;
+    typedef TBinomialConvolverFunctor BinomialConvolverFunctor;
+    typedef typename BinomialConvolver::ConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef ConstIteratorOnPoints ConstIterator;
+    typedef typename BinomialConvolverFunctor::Value Value;
+    typedef Value Quantity;
+
+    BinomialConvolverEstimator( unsigned int n = 0,
+				const BinomialConvolverFunctor & f
+				= BinomialConvolverFunctor() );
+
+    /**
+     * Initialisation.
+     * @param h grid size (must be >0).
+     * @param itb, begin iterator
+     * @param ite, end iterator
+     * @param isClosed true if the input range is viewed as closed.
+     */
+    void init( const double h, 
+	       const ConstIterator & itb, 
+	       const ConstIterator & ite,
+	       const bool isClosed);
+    
+    /**
+     * @return the estimated quantity at *it
+     */
+    Quantity eval( const ConstIterator& it );
+    
+    /**
+     * @return the estimated quantity
+     * from itb till ite (exculded)
+     */
+    template <typename OutputIterator>
+    OutputIterator eval( const ConstIterator& itb, 
+			 const ConstIterator& ite, 
+			 OutputIterator result ); 
+
+
+
+  private:
+    BinomialConvolver myBC;
+    BinomialConvolverFunctor myFunctor;
+
+  };
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'BinomialConvolver'.

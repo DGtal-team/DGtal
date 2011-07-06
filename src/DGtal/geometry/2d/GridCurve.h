@@ -553,6 +553,17 @@ namespace DGtal
           }
 
           /**
+           * Less than operator.
+           * @param aOther the iterator to compare with 
+           * @return 'true' if their intern iterators follow this relation.
+           */
+
+          bool operator < ( const ConstIterator & aOther ) const
+          {
+	          return myIt < aOther.myIt;
+          }
+
+          /**
            * Inequality operator.
            * @param aOther the iterator to compare with 
            * @return 'true' if their intern iterators differs.
