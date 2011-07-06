@@ -292,8 +292,8 @@ int main( int argc, char** argv )
   inputStream.close();
 
   res = res 
-    && testRange<GridCurve::sCellsRange>(c.get0CellsRange())
-    && testRange<GridCurve::sCellsRange>(c.get1CellsRange())
+    && testRange<GridCurve::SCellsRange>(c.get0SCellsRange())
+    && testRange<GridCurve::SCellsRange>(c.get1SCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
     && testArrowsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
