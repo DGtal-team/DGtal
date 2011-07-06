@@ -167,8 +167,6 @@ namespace DGtal
       
       ASSERT( v1.norm() != 0.0 );
       ASSERT( v2.norm() != 0.0 );
-      // return acos( v1.dot(v2)/(double)v1.norm()*v2.norm());
-      // JOL : / has same priority as *
       double ndot = (double) v1.dot(v2)
 	/ ( (double) ( v1.norm() * v2.norm() ) );
       return ( ndot > 1.0 ) ? 0.0
