@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC_MATH
-       testMeasure)
+       testMeasure
+       testSignal )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   add_executable(${FILE} ${FILE})
