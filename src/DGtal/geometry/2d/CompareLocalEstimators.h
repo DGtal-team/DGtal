@@ -40,6 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/Statistic.h"
@@ -139,7 +140,7 @@ namespace DGtal
       return stats;
     }
     
-
+    
     /**
      * Return the angular error between the two estimations (if
      * Quantity values are vectors) at a
@@ -164,7 +165,14 @@ namespace DGtal
       ASSERT( aSecondEstimator.isValid());
       Quantity v1 = aFirstEstimator.eval(it), v2 = aSecondEstimator.eval(it);
       
-      return acos( v1.dot(v2)/(double)v1.norm()*v2.norm());
+      ASSERT( v1.norm() != 0.0 );
+      ASSERT( v2.norm() != 0.0 );
+      // return acos( v1.dot(v2)/(double)v1.norm()*v2.norm());
+      // JOL : / has same priority as *
+      double ndot = (double) v1.dot(v2)
+	/ ( (double) ( v1.norm() * v2.norm() ) );
+      return ( ndot > 1.0 ) ? 0.0
+	: ( ndot < -1.0 ) ? M_PI : acos( ndot );
       
     }
     
