@@ -327,34 +327,46 @@ inline
 OutputIterator
 DGtal::FP<TIterator,TInteger,connectivity>::copyMLP(OutputIterator result) const {
 
-  typename Polygon::const_iterator i, j, k;
-  i = myPolygon.begin();
-  j = i; ++j; 
-  k = j; ++k; 
+  unsigned int n = (unsigned int) myPolygon.size();
+  if (n < 3) { //special case < 3 points
 
-  if (myFlagIsClosed) { ///////// closed
-
-    //first point
-    *result++ = getRealPoint(myPolygon.back(),*i,*j);
-    //middle points
-    while ( k != myPolygon.end() ) {
-      *result++ = getRealPoint(*i,*j,*k);
-      ++i; ++j; ++k; 
+    typename Polygon::const_iterator i = myPolygon.begin();
+    for ( ; i!= myPolygon.end() ; ++i) {
+      *result++ = RealPoint( *i );
     }
-    //last point
-    *result++ = getRealPoint(*i,*j,myPolygon.front());
 
-  } else { ////////////////////// open 
+  } else {    //standard case
 
-    //first point
-    *result++ = RealPoint( myPolygon.front() );
-    //middle points
-    while ( k != myPolygon.end() ) {
-      *result++ = getRealPoint(*i,*j,*k);
-      ++i; ++j; ++k; 
+    typename Polygon::const_iterator i, j, k;
+    i = myPolygon.begin();
+    j = i; ++j; 
+    k = j; ++k; 
+
+    if (myFlagIsClosed) { ///////// closed
+
+      //first point
+      *result++ = getRealPoint(myPolygon.back(),*i,*j);
+      //middle points
+      while ( k != myPolygon.end() ) {
+        *result++ = getRealPoint(*i,*j,*k);
+        ++i; ++j; ++k; 
+      }
+      //last point
+      *result++ = getRealPoint(*i,*j,myPolygon.front());
+
+    } else { ////////////////////// open 
+
+      //first point
+      *result++ = RealPoint( myPolygon.front() );
+      //middle points
+      while ( k != myPolygon.end() ) {
+        *result++ = getRealPoint(*i,*j,*k);
+        ++i; ++j; ++k; 
+      }
+      //last point
+      *result++ = RealPoint( myPolygon.back() );
+
     }
-    //last point
-    *result++ = RealPoint( myPolygon.back() );
 
   }
   return result;
