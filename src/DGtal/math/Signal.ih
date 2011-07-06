@@ -223,6 +223,15 @@ DGtal::SignalData<TValue>::defaut() const
 /////////////////////////////////////////////////////////////////////////////
 // class Signal
 /////////////////////////////////////////////////////////////////////////////
+/**
+ * Destructor. 
+ */
+template <typename TValue>
+inline
+DGtal::Signal<TValue>::Signal()
+  : m_data( 0 )
+{
+}
 
 /**
  * Constructor.
@@ -232,6 +241,7 @@ DGtal::SignalData<TValue>::defaut() const
  * @param def the default value.
  */
 template <typename TValue>
+inline
 DGtal::Signal<TValue>::Signal
 ( unsigned int size, int z, bool periodic, const TValue & def )
   : m_data( new SignalData<TValue>() )
@@ -249,6 +259,7 @@ DGtal::Signal<TValue>::Signal
  * @param def the default value.
  */
 template <typename TValue>
+inline
 DGtal::Signal<TValue>::Signal
 ( const TValue* t, unsigned int size, int z, bool periodic, 
   const TValue & def )
@@ -274,6 +285,7 @@ DGtal::Signal<TValue>::~Signal()
  * Forbidden by default.
  */
 template <typename TValue>
+inline
 DGtal::Signal<TValue>::Signal( const Signal & other )
   : m_data( other.m_data )
 {
@@ -286,6 +298,7 @@ DGtal::Signal<TValue>::Signal( const Signal & other )
  * Forbidden by default.
  */
 template <typename TValue>
+inline
 DGtal::Signal<TValue> & 
 DGtal::Signal<TValue>::operator=( const Signal & other )
 {
@@ -294,6 +307,46 @@ DGtal::Signal<TValue>::operator=( const Signal & other )
   return *this;
 
 }
+
+
+/**
+ * Initializer.
+ * @param size the size of the signal.
+ * @param z the index of the zero-th element.
+ * @param periodic 'true' if the signal is periodic.
+ * @param def the default value.
+ */
+template <typename TValue>
+inline
+void
+DGtal::Signal<TValue>::init
+( unsigned int size, int z, bool periodic, const TValue & def )
+{
+  m_data = CowPtr< SignalData<TValue> >(  new SignalData<TValue>() );
+  m_data->init( size, z, periodic, def );
+}
+
+
+/**
+ * Constructor.
+ * @param t the array containing initial data.
+ * @param size the size of the signal.
+ * @param z the index of the zero-th element.
+ * @param periodic 'true' if the signal is periodic.
+ * @param def the default value.
+ */
+template <typename TValue>
+inline
+void
+DGtal::Signal<TValue>::init
+( const TValue* t, unsigned int size, int z, bool periodic, 
+  const TValue & def )
+{
+  m_data = CowPtr< SignalData<TValue> >( new SignalData<TValue>() );
+  m_data->init( t, size, z, periodic, def );
+}
+
+
 
 /**
    @return the number of elements in the signal.

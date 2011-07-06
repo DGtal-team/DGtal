@@ -30,7 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/math/Signal.h"
+#include "DGtal/geometry/2d/BinomialConvolver.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -78,6 +80,54 @@ bool testSignal()
   return nbok == nb;
 }
 
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testBinomialConvolver()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing block ..." );
+  typedef RealPointVector<2> RealPoint;
+  std::vector< RealPoint > points;
+  points.push_back( RealPoint( { 0.0, 0.0 } ) ); 
+  points.push_back( RealPoint( { 1.0, 0.0 } ) ); 
+  points.push_back( RealPoint( { 2.0, 0.0 } ) ); 
+  points.push_back( RealPoint( { 2.0, 1.0 } ) ); 
+  points.push_back( RealPoint( { 2.0, 2.0 } ) ); 
+  points.push_back( RealPoint( { 1.0, 2.0 } ) ); 
+  points.push_back( RealPoint( { 0.0, 2.0 } ) ); 
+  points.push_back( RealPoint( { 0.0, 1.0 } ) ); 
+  typedef std::vector< RealPoint >::const_iterator ConstIteratorOnPoints;
+  for ( unsigned int n = 1; n < 10; ++n )
+    {
+      trace.info() << "Binomial convolver n=" << n << std::endl;
+      BinomialConvolver< ConstIteratorOnPoints, double > bcc( n );
+      bcc.init( 1.0, points.begin(), points.end(), true );
+      for ( unsigned int i = 0; i < 8; ++i )
+      	std::cout << i
+      		  << " " << bcc.x( i ).first
+      		  << " " << bcc.x( i ).second
+      		  << " " << bcc.tangent( i ).first
+      		  << " " << bcc.tangent( i ).second
+      		  << " " << bcc.curvature( i )
+      		  << std::endl;
+    }
+  trace.info() << "Binomial convolver suggested n=" 
+	       << BinomialConvolver< ConstIteratorOnPoints, double >::suggestedSize( 1.0, points.begin(), points.end() )
+	       << std::endl;
+
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -89,7 +139,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSignal(); // && ... other tests
+  bool res = testSignal() && testBinomialConvolver(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -151,6 +151,7 @@ namespace DGtal
   {
     
   public:
+    typedef TValue Value;
     /** 
 	@return the gaussian signal of order 2 (binomial signal of
 	order 2 / 4).
@@ -192,6 +193,12 @@ namespace DGtal
        Destructor. 
     */
     ~Signal();
+
+    /**
+       Constructor.
+    */
+    Signal();
+      
     
     /**
        Constructor.
@@ -226,6 +233,31 @@ namespace DGtal
        @return a reference on 'this'.
     */
     Signal<TValue> & operator=( const Signal<TValue> & other );
+
+
+    /** 
+     * Initializer.
+     *
+     * @param s the number of data in the signal.
+     * @param z the index of the zero-th element.
+     * @param p 'true' if the signal is periodic.
+     * @param def the default value.
+     */
+    void init( unsigned int s, int z = 0, bool p = false, 
+	       const TValue & def = TValue( 0 ) );
+
+    /**
+     * Initializer.
+     *
+     * @param t the array containing initial data.
+     * @param size the size of the signal.
+     * @param z the index of the zero-th element.
+     * @param p 'true' if the signal is periodic.
+     * @param def the default value.
+     */
+    void init( const TValue* t, unsigned int size, int z = 0, bool p = false, 
+	       const TValue & def = TValue( 0 )  );
+ 
 
     /**
        @return the number of elements in the signal.
@@ -310,12 +342,6 @@ namespace DGtal
     // ------------------------- Hidden services ----------------------------
   protected:
     
-    /**
-       Constructor.
-       Forbidden by default (protected to avoid g++ warnings).
-    */
-    Signal();
-      
 
   }; // end of class Signal
 
