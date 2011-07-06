@@ -174,16 +174,10 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
 	TIterator i = itb;
 	if (i != ite) {
 
-		bool isConvex; //TRUE in convex parts, FALSE otherwise
-
     if (myFlagIsClosed) { /////////////////////////// closed
-
-std::cerr << "closed" << std::endl;
-
       //first maximal DSS
       Circulator<TIterator> citb(i,itb,ite);
   		DSSComputerInLoop firstMS(citb); //init
-  	  Adapter<DSSComputerInLoop>* adapter; //adapter for the DSS      
 
       //backward extension
       Circulator<TIterator> back( citb );
@@ -196,25 +190,42 @@ std::cerr << "closed" << std::endl;
   		  ++front; 
 		  } while (firstMS.extend(front));
 
-      isConvex = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
-                                                                (firstMS,adapter,front);
+      //local convexity
+  		bool isConvexAtFront; 
+  	  Adapter<DSSComputerInLoop>* adapterAtFront;   
 
-      //set end iterator at first leaning point
+      isConvexAtFront = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
+                                                                (firstMS,adapterAtFront,front);
+
+  		bool isConvexAtBack; 
+  	  Adapter<DSSComputerInLoop>* adapterAtBack;  
+
+      isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
+                                                                (firstMS,adapterAtBack,back);
+
+      //set end iterator
+      typename DSSComputerInLoop::Point leaningPoint; 
+      if ( ( (isConvexAtFront)&&(isConvexAtBack) ) 
+        || ( (!isConvexAtFront)&&(!isConvexAtBack) ) ) {
+        leaningPoint = adapterAtFront->lastLeaningPoint();
+      } else {
+        leaningPoint = adapterAtBack->firstLeaningPoint(); 
+      }
       do {
         ++back;
-      } while (*back != adapter->lastLeaningPoint());
+      } while (*back != leaningPoint);
       ++back;
 
+      //call main algo
       mainAlgorithm<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
-                                (firstMS,adapter,isConvex,front,back);
-      delete (adapter);
+                                (firstMS,adapterAtFront,isConvexAtFront,front,back);
+      delete (adapterAtFront);
+      delete (adapterAtBack);
+
+      //repeat the last point
+      myPolygon.push_back(myPolygon.front());
     
     } else { /////////////////////////////////////// open 
-
-
-
-std::cerr << "open" << std::endl;
-
 		  //list of successive upper (U) and lower (L)
       // leaning points. 
 		  std::list<Point> vTmpU, vTmpL;
@@ -223,7 +234,6 @@ std::cerr << "open" << std::endl;
 
 		  //longest DSS
 		  DSSComputer longestDSS(i); //longest DSS
-    	Adapter<DSSComputer>* adapter; //adapter for the current DSS
 		  ++i; //move forward
 		  while ( (i != ite)&&(longestDSS.extend(i)) ) {
 			  //store the first upper leaning point
@@ -237,6 +247,9 @@ std::cerr << "open" << std::endl;
 			  ++i; //move forward
 		  }
 
+  		bool isConvex; //TRUE if longestDSS begins a convex part, FALSE otherwise
+  	  Adapter<DSSComputer>* adapter; //adapter for the current DSS
+
 		  if (i != ite) {
 
         isConvex = initConvexityConcavity<DSSComputer,Adapter<DSSComputer> >
@@ -244,7 +257,8 @@ std::cerr << "open" << std::endl;
   
         if (isConvex) myPolygon = vTmpU;
 				else myPolygon = vTmpL;
-std::cerr << myPolygon.back() << std::endl;
+
+        //call main algo
         mainAlgorithm<DSSComputer,Adapter<DSSComputer> >
                            (longestDSS,adapter,isConvex,i,ite);
       	delete (adapter);
