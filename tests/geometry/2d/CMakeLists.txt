@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
 	testTrueLocalEstimator
 	testSegmentComputerFunctor
 	testMostCenteredMSEstimator
+	testBinomialConvolver
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
