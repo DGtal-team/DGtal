@@ -43,7 +43,9 @@
 #include <iostream>
 #include <list>
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/base/Circulator.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -54,51 +56,51 @@ namespace DGtal
 	/////////////////////////////////////////////////////////////////////////////
 	// template class adapterDSS,
 	// which is a tool class for FP
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS 
+	template <typename ArithmeticalDSS>
+	class Adapter 
 	{
 		protected:
-			DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>* myDSS;
+			ArithmeticalDSS* myDSS;
 		public:
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const = 0;
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const = 0;
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
 	};
 
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS4ConvexPart : public AdapterDSS<TIterator,TInteger,connectivity> 
+	template <typename ArithmeticalDSS>
+	class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConvexPart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
+			Adapter4ConvexPart(ArithmeticalDSS& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
 			//accessors
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
 			{
 				return this->myDSS->getUf();
 			}
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
 			{
 				return this->myDSS->getUl();
 			}
 	};
 
-	template <typename TIterator, typename TInteger, int connectivity>
-	class AdapterDSS4ConcavePart : public AdapterDSS<TIterator,TInteger,connectivity> 
+	template <typename ArithmeticalDSS>
+	class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
 	{
 		public:
 			//constructor
-			AdapterDSS4ConcavePart(DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>& aDSS)
+			Adapter4ConcavePart(ArithmeticalDSS& aDSS)
 			{
 				this->myDSS = &aDSS;
 			}
 			//accessors
-			virtual DGtal::PointVector<2,TInteger> firstLeaningPoint() const 
+			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
 			{
 				return this->myDSS->getLf();
 			}
-			virtual DGtal::PointVector<2,TInteger> lastLeaningPoint() const
+			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
 			{
 				return this->myDSS->getLl();
 			}
@@ -111,7 +113,7 @@ namespace DGtal
   /**
    * Description of template class 'FP' <p>
    * \brief Aim:Computes the faithful polygon (FP)
-   * of a digital curve. 
+   * of a range of 4/8-connected 2D Points. 
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class FP
@@ -124,11 +126,13 @@ namespace DGtal
   BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
 
   typedef DGtal::PointVector<2,TInteger> Point;
+  typedef DGtal::RealPointVector<2> RealPoint;
   typedef DGtal::PointVector<2,TInteger> Vector;
-  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSS;
-  typedef DGtal::AdapterDSS<TIterator,TInteger,connectivity> AdapterDSS;
-  typedef DGtal::AdapterDSS4ConvexPart<TIterator,TInteger,connectivity> AdapterDSS4ConvexPart;
-  typedef DGtal::AdapterDSS4ConcavePart<TIterator,TInteger,connectivity> AdapterDSS4ConcavePart;
+  typedef DGtal::RealPointVector<2> RealVector;
+
+  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
+  typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
+
 	typedef std::list<Point> Polygon;
 
 
@@ -138,10 +142,12 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aBegin pointer to the first point of the digital curve
-     * @param aEnd pointer after the last point of the digital curve
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param isClosed 'true' if the range has to be considered as circular, 
+     * 'false' otherwise. 
      */
-    FP(const TIterator& aBegin, const TIterator& aEnd) throw();
+    FP(const TIterator& itb, const TIterator& ite, const bool& isClosed) throw( InputException ) ;
 
     /**
      * Destructor.
@@ -151,23 +157,34 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
 
-    /**
-     * Draw the FP on a LiBoard board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsPolygon( DGtalBoard & board ) const;
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+    /**
+     * @return number of FP vertices
+     */
+    typename Polygon::size_type size() const;
+
+
+    /**
+     * @return the vertices of the FP
+     * NB: O(n)
+     */
+    template <typename OutputIterator>
+    OutputIterator copyFP(OutputIterator result) const; 
+
+    /**
+     * @return the vertices of the MLP
+     * NB: O(n)
+     */
+    template <typename OutputIterator>
+    OutputIterator copyMLP(OutputIterator result) const; 
+
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -177,9 +194,9 @@ namespace DGtal
 		//each vertex of the FP is stored in this list
 		Polygon myPolygon; 
 
-		//boolean at TRUE is the list has to be consider as circular
+		//TRUE if the list has to be consider as circular
     //FALSE otherwise
-		bool isClosed;
+		bool myFlagIsClosed;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -187,6 +204,50 @@ namespace DGtal
 
 
   private:
+
+    /**
+     * @param [aDSS] a DSS lying on a range
+     * @param [anAdapter] an Adapter to [aDSS] for convex part
+     * if 'true' is returned, for concave part otherwise
+     * @param [i] an iterator pointing after the front of [aDSS] 
+     * @return 'true' if [aDSS] begins a convex part, 'false' otherwise
+     */
+    template<typename DSS, typename Adapter>
+    bool initConvexityConcavity( DSS &aDSS,  
+                                 Adapter* &anAdapter,
+                                 const typename DSS::ConstIterator& i );
+
+    /**
+     * @param [currentDSS] a DSS lying on a range
+     * @param [adapter] an Adapter to [currentDSS]
+     * @param [isConvex], 'true' if [currentDSS] is in a convex part, 'false' otherwise
+     * @param [i] an iterator pointing after the front of [currentDSS] 
+     * @param the algorithm stops when [i] == [end]
+     */
+    template<typename DSS, typename Adapter>
+    void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
+                        bool isConvex, 
+                        typename DSS::ConstIterator i, 
+                        const typename DSS::ConstIterator& end )  throw( InputException ) ;
+
+
+    /**
+     * gets a MLP vertex from three consecutive vertices of the FP.
+     * @param a previous vertex of the FP
+     * @param b current vertex of the FP
+     * @param c next vertex of the FP
+     * @return vertex of the MLP, which is 
+     * the tranlated of b by (+- 0.5, +- 0.5)
+     */
+    RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
+
+    /**
+     * @param v any Vector
+     * @param q a quandrant number (0,1,2 or 3)
+     * @return 'true' if [v] lies in quadrant number [q], 'false' otherwise
+     */
+
+    bool quadrant (const Vector& v, const int& q) const;
 
     /**
      * Copy constructor.
@@ -203,23 +264,17 @@ namespace DGtal
      */
     FP & operator= ( const FP & other );
 
-    // ------------------------- Internals ------------------------------------
-  private:
+    // ------------------------- Display ------------------------------------
+  public: 
+
 
     /**
-       * Default style.
-       */
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
-    {
-        virtual void selfDraw(DGtalBoard & aBoard) const
-        {
-				// Set board style
-				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
-				aBoard.setPenColor(DGtalBoard::Color::Red);
-				aBoard.setLineWidth(2);
-				aBoard.setFillColor(DGtalBoard::Color::None);
-			  }
-    };
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+
     // --------------- CDrawableWithDGtalBoard realization --------------------
   public:
     
@@ -240,6 +295,31 @@ namespace DGtal
      *
      */
     void selfDraw(DGtalBoard & board ) const;
+
+
+    /**
+     * Draw the FP on a LiBoard board
+     * @param board the output board where the object is drawn.
+     */
+    void selfDrawAsPolygon( DGtalBoard & board ) const;
+
+  private:
+
+    /**
+       * Default style.
+       */
+    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    {
+        virtual void selfDraw(DGtalBoard & aBoard) const
+        {
+				// Set board style
+				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+				aBoard.setPenColor(DGtalBoard::Color::Red);
+				aBoard.setLineWidth(2);
+				aBoard.setFillColor(DGtalBoard::Color::None);
+			  }
+    };
+
 
   }; // end of class FP
 

@@ -223,6 +223,7 @@ bool testOperators()
   trace.info() << "p1-p2: "<<p1-p2 <<std::endl;
   trace.info() << "inf(p1,p2): "<<p1.inf(p2) <<std::endl;
   trace.info() << "sup(p1,p2): "<<p1.sup(p2) <<std::endl;
+  trace.info() << "p1 dot p2: "<<p1.dot(p2) <<std::endl;
   trace.endBlock();
 
   return true; 
