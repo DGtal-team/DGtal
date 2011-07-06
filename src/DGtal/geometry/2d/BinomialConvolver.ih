@@ -1,0 +1,208 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file BinomialConvolver.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2011/07/06
+ *
+ * Implementation of inline methods defined in BinomialConvolver.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>::~BinomialConvolver()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::BinomialConvolver( unsigned int n )
+{
+  setSize( n );
+}
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+void 
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::setSize( unsigned int n )
+{
+  myN = n;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+void 
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::init( const double h, 
+	const ConstIteratorOnPoints& itb, 
+	const ConstIteratorOnPoints& ite,
+	const bool isClosed )
+{
+  myH = h;
+  myBegin = itb;
+  myEnd = ite;
+  unsigned int size = 0;
+  for ( ConstIteratorOnPoints it = itb; it != ite; ++it )
+    ++size;
+  myX.init( size, 0, isClosed, 0.0 );
+  myY.init( size, 0, isClosed, 0.0 );
+  size = 0;
+  for ( ConstIteratorOnPoints it = itb; it != ite; ++it, ++size )
+    {
+      myX[ size ] = it->operator[]( 0 );
+      myY[ size ] = it->operator[]( 1 );
+    }
+  Signal<double> G = Signal<double>::G2n( myN );
+  myX = myX * G;
+  myY = myY * G;
+  myDX = myX * Signal<double>::Delta();
+  myDY = myY * Signal<double>::Delta();
+  myDDX = myDX * Signal<double>::Delta();
+  myDDY = myDY * Signal<double>::Delta();
+}
+     
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+std::pair<TValue,TValue> 
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::x( int i ) const
+{
+  return std::make_pair( myX[ i ], myY[ i ] );
+}
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+std::pair<TValue,TValue> 
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::tangent( int i ) const
+{
+  Value n = sqrt( myDX[ i ] * myDX[ i ] +
+		  myDY[ i ] * myDY[ i ] );
+  return std::make_pair( myDX[ i ] / n, myDY[ i ] / n );
+}
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+TValue
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::curvature( int i ) const
+{
+  Value denom = pow( myDX[ i ] * myDX[ i ] + myDY[ i ] * myDY[ i ], 1.5 );
+  return ( denom != TValue( 0.0 ) )
+    ? ( myDDX[ i ] * myDY[ i ] - myDDY[ i ] * myDX[ i ] ) / denom
+    : TValue( 0.0 );
+}
+
+    /**
+       @return the suggested size for the binomial convolver as ceil(
+       0.5 / pow( h / d, 4.0/3.0 ) ), with d the diameter of the
+       contour.
+    */
+//-----------------------------------------------------------------------------
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+unsigned int
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
+::suggestedSize( const double h, 
+		 const ConstIteratorOnPoints& itb, 
+		 const ConstIteratorOnPoints& ite )
+{
+  TValue xmin, ymin, xmax, ymax;
+  for ( ConstIteratorOnPoints it = itb; it != ite; ++it )
+    {
+      TValue x = it->operator[]( 0 );
+      TValue y = it->operator[]( 1 );
+      if ( x < xmin ) xmin = x;
+      if ( x > xmax ) xmax = x;
+      if ( y < ymin ) ymin = y;
+      if ( y > ymax ) ymax = y;
+    }
+  TValue diameter = ( xmax - xmin ) > ( ymax - ymin ) 
+    ? ( xmax - xmin )
+    : ( ymax - ymin );
+  return (unsigned int) ceil( 0.5 / pow( h / diameter, 4.0/3.0 ) ); 
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+void
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[BinomialConvolver]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+bool
+DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TConstIteratorOnPoints, typename TValue>
+inline
+std::ostream&
+DGtal::operator<< 
+( std::ostream & out, 
+  const BinomialConvolver<TConstIteratorOnPoints,TValue> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
