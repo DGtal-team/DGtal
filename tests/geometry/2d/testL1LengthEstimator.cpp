@@ -71,16 +71,15 @@ bool testL1LengthEstimator(std::string &filename)
   GridCurve<KhalimskySpaceND<2> > c; //grid curve
   c.initFromVectorStream(instream);
 
-  L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange > l1length;
+  GridCurve<KhalimskySpaceND<2> >::PointsRange r = c.getPointsRange(); 
+  L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > l1length;
     
-  l1length.init(1, c.getPointsRange(),false);
+  l1length.init(1, r.begin(), r.end(), false);
   trace.info() << "L1 length (h=1) = "<< l1length.eval()<<std::endl;
 
-  l1length.init(10, c.getPointsRange(),false);
+  l1length.init(10, r.begin(), r.end(), false);
   trace.info() << "L1 length (h=10) = "<< l1length.eval()<<std::endl;
-  
-  
-  
+    
   return nbok == nb;
 }
 
