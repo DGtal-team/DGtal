@@ -41,7 +41,9 @@
 
 #include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
-
+#include "DGtal/geometry/2d/MLPLengthEstimator.h"
+#include "DGtal/geometry/2d/FPLengthEstimator.h"
+#include "DGtal/geometry/2d/DSSLengthEstimator.h"
 
 #include "ConfigTest.h"
 
@@ -52,17 +54,15 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class L1LengthEstimator.
+// Functions for testing Length Estimator classes.
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Example of a test. To be completed.
+ * L1 test
  *
  */
 bool testL1LengthEstimator(std::string &filename)
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
+
   trace.info() << "Reading GridCurve " << endl;
   
   ifstream instream; // input stream
@@ -71,24 +71,55 @@ bool testL1LengthEstimator(std::string &filename)
   GridCurve<KhalimskySpaceND<2> > c; //grid curve
   c.initFromVectorStream(instream);
 
-  GridCurve<KhalimskySpaceND<2> >::PointsRange r = c.getPointsRange(); 
-  L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > l1length;
+  //////////////////////// L1
+  GridCurve<KhalimskySpaceND<2> >::ArrowsRange ra = c.getArrowsRange(); //range
+  L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > l1length;
     
-  l1length.init(1, r.begin(), r.end(), false);
+  l1length.init(1, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "L1 length (h=1) = "<< l1length.eval()<<std::endl;
 
-  l1length.init(10, r.begin(), r.end(), false);
+  l1length.init(10, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "L1 length (h=10) = "<< l1length.eval()<<std::endl;
     
-  return nbok == nb;
+  //////////////////////// MLP
+  GridCurve<KhalimskySpaceND<2> >::PointsRange rp = c.getPointsRange(); //range
+  MLPLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > MLPlength;
+    
+  MLPlength.init(1, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "MLP Length (h=1) = "<< MLPlength.eval()<<std::endl;
+
+  MLPlength.init(10, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "MLP Length (h=10) = "<< MLPlength.eval()<<std::endl;
+
+  //////////////////////// FP
+  FPLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > FPlength;
+    
+  FPlength.init(1, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "FP Length (h=1) = "<< FPlength.eval()<<std::endl;
+
+  FPlength.init(10, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "FP Length (h=10) = "<< FPlength.eval()<<std::endl;
+
+  //////////////////////// DSS
+  DSSLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > DSSlength;
+    
+  DSSlength.init(1, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "DSS Length (h=1) = "<< DSSlength.eval()<<std::endl;
+
+  DSSlength.init(10, rp.begin(), rp.end(), c.isClosed());
+  trace.info() << "DSS Length (h=10) = "<< DSSlength.eval()<<std::endl;
+
+  return true;
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class L1LengthEstimator" );
+  trace.beginBlock ( "Testing class LengthEstimators" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
