@@ -87,7 +87,7 @@ typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
 {
   ASSERT(myH>0);
-  return  myFunctor(myBegin,myEnd) / myH;
+  return  myFunctor(myBegin,myEnd);
 }
 
   
@@ -101,7 +101,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIt
 								   const ConstIteratorOnPoints& ite)
 {
   ASSERT(myH>0);
-  return myFunctor(itb,ite) / myH;
+  return myFunctor(itb,ite);
 }
 
 

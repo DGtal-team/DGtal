@@ -1,6 +1,7 @@
 SET(DGTAL_TOOLS_SRC
   shapeGenerator
   estimatorComparator
+  lengthEstimators
 )
 
 FOREACH(FILE ${DGTAL_TOOLS_SRC})
