@@ -113,7 +113,7 @@ DGtal::DSSLengthEstimator<T>::eval() const
 
   }
   
-  return val/myH;
+  return val*myH;
 }
 
 

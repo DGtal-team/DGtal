@@ -222,8 +222,8 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
       delete (adapterAtFront);
       delete (adapterAtBack);
 
-      //repeat the last point
-      myPolygon.push_back(myPolygon.front());
+      //remove the last point
+      myPolygon.pop_back();
     
     } else { /////////////////////////////////////// open 
 		  //list of successive upper (U) and lower (L)

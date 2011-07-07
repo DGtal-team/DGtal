@@ -90,7 +90,7 @@ DGtal::L1LengthEstimator<T>::eval() const
   for ( ; i != myEndIt; ++i) 
     val += 1.0;
   
-  return val/(double)myH;
+  return val*myH;
 }
 
 

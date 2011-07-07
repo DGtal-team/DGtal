@@ -80,6 +80,9 @@ DGtal::MLPLengthEstimator<T>::init(const double h,
   FaithfulPolygon fp( itb, ite, isClosed ); 
   myRep.resize( fp.size() );
   fp.copyMLP( myRep.begin() );
+
+  if ( (isClosed)&&(myRep.size()!=0) )
+    myRep.push_back(myRep.front());
 }
 
 template <typename T>
@@ -104,7 +107,7 @@ DGtal::MLPLengthEstimator<T>::eval() const
 
   }
   
-  return val/myH;
+  return val*myH;
 }
 
 
