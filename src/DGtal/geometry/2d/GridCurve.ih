@@ -65,7 +65,6 @@ DGtal::GridCurve<KSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector&
 
     typename KSpace::Space::Dimension d = 0;
     while ( aVector[d] == 0 ) ++d;
-    std::cerr << d << " " << aVector[d] << std::endl;
     return myK.sIncident( pointel,d,(aVector[d]>0)?myK.POS:myK.NEG );
 }
 

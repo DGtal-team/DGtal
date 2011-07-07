@@ -57,17 +57,17 @@ namespace DGtal
    * 
    * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TRange a model of CRange. 
+   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
    */
-  template <typename TRange>
+  template <typename TConstIterator>
   class L1LengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
 
 
-    ///@todo CONCEPT CHECK sur RANGE
-    typedef TRange Range;
+    ///@todo CONCEPT CHECK sur ConstIterator
+    typedef TConstIterator ConstIterator;
 
     typedef double Quantity;
   
@@ -94,7 +94,7 @@ namespace DGtal
      * @param aRange a grid point range.
      * @param closed true if the input range is closed.
      */
-    void init( const double h, const Range & aRange, bool closed );
+    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
     
 
     /** 
@@ -126,13 +126,12 @@ namespace DGtal
     double myH;
 
     ///Copy of the range.
-    Range myRange;
+    ConstIterator myBeginIt;
+    ConstIterator myEndIt;
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
-    ///True if the underlying curve is closed.
-    bool myIsClosed;
     
   private:
 

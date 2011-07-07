@@ -67,11 +67,12 @@ DGtal::L1LengthEstimator<T>::~L1LengthEstimator()
 template <typename T>
 inline
 void
-DGtal::L1LengthEstimator<T>::init(const double h, const Range &aRange, bool isclosed)
+DGtal::L1LengthEstimator<T>::init(const double h, 
+     const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed)
 {
   myH = h;
-  myRange = aRange;
-  myIsClosed = isclosed;
+  myBeginIt = itb;
+  myEndIt = ite;
   myIsInitBefore = true;
 }
 
@@ -85,15 +86,10 @@ DGtal::L1LengthEstimator<T>::eval() const
 
   Quantity val = 0;
   
-  typename Range::ConstIterator i = myRange.begin();
-  typename Range::ConstIterator end = myRange.end();
-  for ( ; i != end; ++i) 
+  ConstIterator i = myBeginIt;
+  for ( ; i != myEndIt; ++i) 
     val += 1.0;
   
-  //One step back for the last point if not closed
-  if (myIsClosed)
-    val += 1.0;
-
   return val/(double)myH;
 }
 
@@ -112,7 +108,7 @@ DGtal::L1LengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[L1LengthEstimator]";
   if (myIsInitBefore) 
-    out <<" myH="<<myH<< " myRange="<<myRange<<" myIsClosed="<<(unsigned int)myIsClosed;
+    out <<" myH="<<myH;
   else
     out<< " not initialized";
 }
