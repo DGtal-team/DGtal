@@ -17,50 +17,53 @@
 #pragma once
 
 /**
- * @file L1LengthEstimator.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @file MLPLengthEstimator.h
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
  *
- * @date 2011/06/27
  *
- * Header file for module L1LengthEstimator.cpp
+ * @date 2011/07/07
+ *
+ * Header file for module MLPLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(L1LengthEstimator_RECURSES)
-#error Recursive header files inclusion detected in L1LengthEstimator.h
-#else // defined(L1LengthEstimator_RECURSES)
+#if defined(MLPLengthEstimator_RECURSES)
+#error Recursive header files inclusion detected in MLPLengthEstimator.h
+#else // defined(MLPLengthEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define L1LengthEstimator_RECURSES
+#define MLPLengthEstimator_RECURSES
 
-#if !defined L1LengthEstimator_h
+#if !defined MLPLengthEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define L1LengthEstimator_h
+#define MLPLengthEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/2d/FP.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class L1LengthEstimator
+  // template class MLPLengthEstimator
   /**
-   * Description of template class 'L1LengthEstimator' <p>
-   * \brief Aim: a simple model of CGlobalCurveEstimator that compute
-   * the length of a curve using the l_1 metric (just add 1/h for
-   * every step).
+   * Description of template class 'MLPLengthEstimator' <p>
+   * \brief Aim: a model of CGlobalCurveEstimator that computes
+   * the length of a digital curve using its MLP (given by the FP)
    * 
    * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
+   * @tparam TConstIterator a model of CConstIteratorOnPoints. 
    */
   template <typename TConstIterator>
-  class L1LengthEstimator
+  class MLPLengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -70,18 +73,21 @@ namespace DGtal
     typedef TConstIterator ConstIterator;
 
     typedef double Quantity;
-  
+
+    typedef FP<ConstIterator,int,4> FaithfulPolygon;
+    typedef typename FaithfulPolygon::RealPoint Point;  
+    typedef typename FaithfulPolygon::RealVector Vector;  
 
     /**
      * Default Constructor.
      */
-    L1LengthEstimator();
+    MLPLengthEstimator();
     
     
     /**
      * Destructor.
      */
-    ~L1LengthEstimator();
+    ~MLPLengthEstimator();
 
   
     // ----------------------- Interface --------------------------------------
@@ -126,14 +132,12 @@ namespace DGtal
     ///Grid size.
     double myH;
 
-    ///Copy of the range.
-    ConstIterator myBeginIt;
-    ConstIterator myEndIt;
+    ///polygonal representation of the input
+    std::vector<Point> myRep;
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
-    
   private:
 
     /**
@@ -141,7 +145,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    L1LengthEstimator ( const L1LengthEstimator & other );
+    MLPLengthEstimator ( const MLPLengthEstimator & other );
 
     /**
      * Assignment.
@@ -149,35 +153,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    L1LengthEstimator & operator= ( const L1LengthEstimator & other );
+    MLPLengthEstimator & operator= ( const MLPLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class L1LengthEstimator
+  }; // end of class MLPLengthEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'L1LengthEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'MLPLengthEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'L1LengthEstimator' to write.
+   * @param object the object of class 'MLPLengthEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const L1LengthEstimator<T> & object );
+  operator<< ( std::ostream & out, const MLPLengthEstimator<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d//L1LengthEstimator.ih"
+#include "DGtal/geometry/2d//MLPLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined L1LengthEstimator_h
+#endif // !defined MLPLengthEstimator_h
 
-#undef L1LengthEstimator_RECURSES
-#endif // else defined(L1LengthEstimator_RECURSES)
+#undef MLPLengthEstimator_RECURSES
+#endif // else defined(MLPLengthEstimator_RECURSES)
