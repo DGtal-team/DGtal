@@ -203,6 +203,11 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
       isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
                                                                 (firstMS,adapterAtBack,back);
 
+      //first point 
+		  if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
+			  myPolygon.push_back(adapterAtFront->lastLeaningPoint());
+		  }
+
       //set end iterator
       typename DSSComputerInLoop::Point leaningPoint; 
       if ( ( (isConvexAtFront)&&(isConvexAtBack) ) 
