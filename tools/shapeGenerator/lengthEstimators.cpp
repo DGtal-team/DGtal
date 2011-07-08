@@ -225,7 +225,7 @@ lengthEstimators( const string & name,
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
     {
-      std::cerr << "[compareShapeEstimators]"
+      std::cerr << "[lengthEstimators]"
 		<< " error in creating KSpace." << std::endl;
       return false;
     }
@@ -259,14 +259,14 @@ lengthEstimators( const string & name,
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
 
     // Output
-    cout << h << " " << trueLengthEstimator.eval()  
+    cout << h << " " << rp.size() << " " << trueLengthEstimator.eval()  
     << " " << l1length.eval() <<  " " << DSSlength.eval() 
     << " " << MLPlength.eval() <<  " " << FPlength.eval() << std::endl;
     return true;
   }    
   catch ( InputException e )
     {
-      std::cerr << "[compareShapeEstimators]"
+      std::cerr << "[lengthEstimators]"
 		<< " error in finding a bel." << std::endl;
       return false;
     }
@@ -323,7 +323,7 @@ int main( int argc, char** argv )
 
 
 ///////////////////////////////////
-  cout << "#h true naive DSS MLP FP " <<std::endl;
+  cout << "#h nbp true naive DSS MLP FP " <<std::endl;
   double h = 1; 
   double step = 0.75;
   while (h > 0.001) {

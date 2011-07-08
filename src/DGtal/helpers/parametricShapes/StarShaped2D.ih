@@ -151,7 +151,7 @@ double
 DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) const
 {
   while ( t2 < t1 ) t2 += 2.0*M_PI;
-  // double dt = ( t2 - t1 ) / nb;
+
   RealPoint x0( x( t1 ) );
   double l = 0.0;
   // JOL 2008/08/28
