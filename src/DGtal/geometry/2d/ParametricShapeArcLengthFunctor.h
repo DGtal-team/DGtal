@@ -119,23 +119,24 @@ namespace DGtal
      * @return the estimated arc length.c
      */
     Quantity operator()(const ConstIteratorOnPoints &itb,const ConstIteratorOnPoints &ite, 
-			const unsigned int nbSamples = 1000)
+			const bool& isClosed = false, const unsigned int nbSamples = 1000)
     {
-      ASSERT(myShape);
-      typename ParametricShape::RealPoint2D p = *itb;
-      ConstIteratorOnPoints i = itb;
-      ConstIteratorOnPoints j(i); ++j; 
-      for ( ; j != ite; ++i, ++j);
-      typename ParametricShape::RealPoint2D p2 = *i;  
-     
-      double t = myShape->parameter( p );
-      double t2 = myShape->parameter( p2 );
-/*      if (t < t2)
-	return myShape->arclength( t,t2 , nbSamples );
-      else
-	return myShape->arclength( t2,t , nbSamples );*/
 //TODO determining nbSamples from the bounding box size of the shape
-      return myShape->arclength (t,t2,nbSamples); 
+      ASSERT(myShape);
+      if (isClosed) {
+        return myShape->arclength (0,2*M_PI,nbSamples); 
+      } else {
+        typename ParametricShape::RealPoint2D p = *itb;
+        ConstIteratorOnPoints i = itb;
+        ConstIteratorOnPoints j(i); ++j; 
+        for ( ; j != ite; ++i, ++j);
+        typename ParametricShape::RealPoint2D p2 = *i;  
+       
+        double t = myShape->parameter( p );
+        double t2 = myShape->parameter( p2 );
+        return myShape->arclength (t,t2,nbSamples); 
+      }
+
     }
     
 
