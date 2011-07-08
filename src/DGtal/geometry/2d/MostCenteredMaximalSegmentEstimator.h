@@ -52,10 +52,6 @@
 
 namespace DGtal
 {
-/** \TODO
-* ajouter un getLength() dans les SegmentIterator des decompositions
-* mettre au propre les noms de type dans les decompositions (ConstIterator, Self, Reverse, etc.)
-*/
 
   /////////////////////////////////////////////////////////////////////////////
   // template class MostCenteredMaximalSegmentEstimator
@@ -80,23 +76,18 @@ namespace DGtal
   public:
 
     /**
-     * Default constructor.
+     * Default constructor. Not valid.
      */
-    MostCenteredMaximalSegmentEstimator() : myFlagIsInit(false) {};
+    MostCenteredMaximalSegmentEstimator();
+
     /**
      * Constructor.
-     * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
      * @param aSegmentComputer
-     * @param isClosed true if the input range is closed.
+     * @param aFunctor
      */
-    MostCenteredMaximalSegmentEstimator(
-      const double h, 
-      const ConstIterator& itb, const ConstIterator& ite,
-      const SegmentComputer& aSegmentComputer, 
-      const Functor& aFunctor,
-      const bool& isClosed);
+    MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
+                                        const Functor& aFunctor);
+
     /**
      * Destructor.
      */
@@ -116,8 +107,6 @@ namespace DGtal
     void init(
       const double h, 
       const ConstIterator& itb, const ConstIterator& ite,
-      const SegmentComputer& aSegmentComputer, 
-      const Functor& aFunctor, 
       const bool& isClosed);
 
     /**
@@ -154,6 +143,8 @@ namespace DGtal
     bool myFlagIsInit;
     /** 'true' if the range is viewed as closed, 'false' otherwise */ 
 		bool myFlagIsClosed;
+    /** segmentComputer used to decompose the range */ 
+    SegmentComputer mySC; 
     /** functor estimating the quantity from a point and a segmentComputer */ 
     Functor myFunctor;
     /** begin and end iterators */ 

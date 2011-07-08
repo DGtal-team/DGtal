@@ -247,7 +247,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       SegmentComputer sc;
       Functor f; 
       
-      MSTangentEstimator tang2; 
+      MSTangentEstimator tang2(sc, f); 
      
       TrueTangent tang1;
       // TrueTangent tang2;
@@ -257,7 +257,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
     
       tang1.init( h, r.begin(), r.end(), &aShape, true);
-      tang2.init( h, r.begin(), r.end(), sc, f, true );
+      tang2.init( h, r.begin(), r.end(), true );
       // tang2.init( h, r.begin(), r.end(), &aShape, true);
       
       typename TrueCurvature::ConstIterator it = r.begin();
