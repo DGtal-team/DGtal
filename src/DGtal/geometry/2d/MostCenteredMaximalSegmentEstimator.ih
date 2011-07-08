@@ -37,6 +37,13 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
+/**
+ * Default constructor.
+ */
+template <typename SegmentComputer, typename Functor>
+inline
+DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
+::MostCenteredMaximalSegmentEstimator() {}
 
 /**
  * Constructor.
@@ -44,17 +51,10 @@
 template <typename SegmentComputer, typename Functor>
 inline
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
-::MostCenteredMaximalSegmentEstimator(
-				      const double h, 
-				      const ConstIterator& itb, const ConstIterator& ite,
-				      const SegmentComputer& aSegmentComputer, 
-				      const Functor& aFunctor, 
-				      const bool& isClosed) 
- : myH(h), myBegin(itb), myEnd(ite), myFunctor(aFunctor), myFlagIsClosed(isClosed),
-  myMSRange(itb,ite,aSegmentComputer,isClosed)
-{
-//  init(h,itb,ite,aSegmentComputer,aFunctor,isClosed);
-}
+::MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
+                                      const Functor& aFunctor)
+ : myFlagIsInit(false), mySC(aSegmentComputer), myFunctor(aFunctor)
+{}
 
 /**
  * Init.
@@ -66,8 +66,6 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 ::init(
        const double h, 
        const ConstIterator& itb, const ConstIterator& ite,
-       const SegmentComputer& aSegmentComputer, 
-       const Functor& aFunctor, 
        const bool& isClosed) 
 {
 
@@ -76,11 +74,10 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
   myH = h;
   myBegin = itb;
   myEnd = ite;
-  myFunctor = aFunctor;
   myFlagIsClosed = isClosed;
 
   //maximal segments computation
-  myMSRange.init(myBegin,myEnd,aSegmentComputer,myFlagIsClosed);
+  myMSRange.init(myBegin,myEnd,mySC,myFlagIsClosed);
 
 }
 
