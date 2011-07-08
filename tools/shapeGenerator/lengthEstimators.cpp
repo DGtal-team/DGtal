@@ -30,6 +30,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <string>
 
@@ -243,25 +244,30 @@ lengthEstimators( const string & name,
     ArrowsRange ra = gridcurve.getArrowsRange(); 
     PointsRange rp = gridcurve.getPointsRange(); 
 
+
     // Estimations
-    typedef typename GridCurve<KSpace>::PointsRange::ConstIterator ConstIteratorOnPoints; 
+    typedef typename PointsRange::ConstIterator ConstIteratorOnPoints; 
     typedef ParametricShapeArcLengthFunctor< Shape, ConstIteratorOnPoints > Length;
     TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  trueLengthEstimator;
     trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
 
-    L1LengthEstimator< typename GridCurve<KSpace>::ArrowsRange::ConstIterator > l1length;
+    L1LengthEstimator< typename ArrowsRange::ConstIterator > l1length;
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
-    DSSLengthEstimator< typename GridCurve<KSpace>::PointsRange::ConstIterator > DSSlength;
+    DSSLengthEstimator< typename PointsRange::ConstIterator > DSSlength;
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    MLPLengthEstimator< typename GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
+    MLPLengthEstimator< typename PointsRange::ConstIterator > MLPlength;
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    FPLengthEstimator< typename GridCurve<KSpace>::PointsRange::ConstIterator > FPlength;
+    FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
 
     // Output
-    cout << h << " " << rp.size() << " " << trueLengthEstimator.eval()  
-    << " " << l1length.eval() <<  " " << DSSlength.eval() 
-    << " " << MLPlength.eval() <<  " " << FPlength.eval() << std::endl;
+    double trueValue = trueLengthEstimator.eval();
+    cout << h << " " << rp.size() << " " << trueValue 
+    << " " << l1length.eval() 
+    <<  " " << DSSlength.eval()
+    << " " << MLPlength.eval() 
+    <<  " " << FPlength.eval()
+    << endl;
     return true;
   }    
   catch ( InputException e )
