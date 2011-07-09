@@ -49,6 +49,9 @@ IF(@QGLVIEWER_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
 ENDIF( @QGLVIEWER_FOUND_DGTAL@  AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
 
 
+#Includes propagated.
+include_directories(@DGtalLibInc@)
+
 #--------------------------------------------
 #ITK bugfix (we need explicit link_directory)
 #--------------------------------------------
