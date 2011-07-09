@@ -5,7 +5,7 @@
 #  DGTAL_LIBRARIES    - libraries to link against
  
 # Tell the user project where to find our headers and libraries
-set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@")
+set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@ @DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
  
 # Our library dependencies (contains definitions for IMPORTED targets)
@@ -47,10 +47,6 @@ ENDIF( @COIN3D_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @SOQT_FOUND_DGTAL@ )
 IF(@QGLVIEWER_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
   ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
 ENDIF( @QGLVIEWER_FOUND_DGTAL@  AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
-
-
-#Includes propagated.
-include_directories(@DGtalLibInc@)
 
 #--------------------------------------------
 #ITK bugfix (we need explicit link_directory)
