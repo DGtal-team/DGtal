@@ -14,24 +14,22 @@
  *
  **/
 /**
- * @file LengthEstimator.cpp
+ * @file contourGenerator.cpp
  * @ingroup Tools
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
- * France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr)
+ * LIRIS (CNRS, UMR 5205), 
  *
+ * @date 2011/07/04
  *
- * @date 2011/07/07
- *
- * DGtal tool for length estimations on implicit shapes
+ * DGtal shape generator
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <cmath>
 #include <iostream>
-#include <iomanip>
 #include <vector>
 #include <string>
 
@@ -40,32 +38,33 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
-
-//space / domain
-#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/topology/KhalimskySpaceND.h"
 
-//shape and digitizer
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
+
+#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+
+#include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/writers/RawWriter.h"
+#include "DGtal/io/writers/VolWriter.h"
+#include "DGtal/io/DGtalBoard.h"
+
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
-
-//estimators
 #include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/geometry/2d/L1LengthEstimator.h"
-#include "DGtal/geometry/2d/MLPLengthEstimator.h"
-#include "DGtal/geometry/2d/FPLengthEstimator.h"
-#include "DGtal/geometry/2d/DSSLengthEstimator.h"
+#include "DGtal/helpers/Surfaces.h"
 
 
 using namespace DGtal;
@@ -111,7 +110,7 @@ void createList()
   shapesParam4.push_back("");
   
   shapes2D.push_back("flower");
-  shapesDesc.push_back("Flower with k petals.");
+  shapesDesc.push_back("Flower with k petals with radius ranging from R+/-v.");
   shapesParam1.push_back("--radius [-R],");
   shapesParam2.push_back("--varsmallradius [-v],");
   shapesParam3.push_back("--k [-k],");
@@ -168,7 +167,7 @@ void displayList()
  * 
  * @return index of the shape in the shape vectors.
  */
-unsigned int checkAndRetrunIndex(const std::string &shapeName)
+unsigned int checkAndReturnIndex(const std::string &shapeName)
 {
   unsigned int pos=0;
   
@@ -185,24 +184,27 @@ unsigned int checkAndRetrunIndex(const std::string &shapeName)
   return pos;
 }
 
-/** 
- * Missing parameter error message.
- * 
- * @param param 
- */
-void missingParam(std::string param)
-{
-  trace.error() <<" Parameter: "<<param<<" is required..";
-  trace.info()<<std::endl;
-  exit(1);
-}
-///////////////////////////////////////////////////////////////////////////////
 
-template <typename Shape, typename Space>
+
+template <typename Estimator, typename ConstIterator>
+std::vector<typename Estimator::Quantity>
+estimateQuantity( Estimator & estimator, 
+		  ConstIterator it, ConstIterator it_end )
+{
+  std::vector<typename Estimator::Quantity> values;
+  for ( ; it != it_end; ++it )
+    {
+      values.push_back( estimator.eval( it ) );
+    }
+  return values;
+}
+
+template <typename Space, typename Shape>
 bool
-lengthEstimators( const string & name,
-			Shape & aShape, 
-			double h )
+generateContour( const string & name,
+		 Shape & aShape, 
+		 double h,
+		 const std::string & outputFormat )
 {
   // Types
   typedef typename Space::Point Point;
@@ -212,22 +214,27 @@ lengthEstimators( const string & name,
   typedef HyperRectDomain<Space> Domain;
   typedef KhalimskySpaceND<Space::dimension,Integer> KSpace;
   typedef typename KSpace::SCell SCell;
-  typedef typename GridCurve<KSpace>::PointsRange PointsRange;
-  typedef typename GridCurve<KSpace>::ArrowsRange ArrowsRange;
+  typedef typename GridCurve<KSpace>::PointsRange Range;
+  typedef typename Range::ConstIterator ConstIteratorOnPoints;
+  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
+  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
 
-  // Digitizer
+  // Window for the estimation
+  RealPoint xLow ( -10.0, -10.0 );
+  RealPoint xUp( 10.0, 10.0 );
   GaussDigitizer<Space,Shape> dig;  
   dig.attach( aShape ); // attaches the shape.
   Vector vlow(-1,-1); Vector vup(1,1);
   dig.init( aShape.getLowerBound()+vlow, aShape.getUpperBound()+vup, h ); 
+  // The domain size is given by the digitizer according to the window
+  // and the step.
   Domain domain = dig.getDomain();
-
   // Create cellular space
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
     {
-      std::cerr << "[lengthEstimators]"
+      std::cerr << "[compareShapeEstimators]"
 		<< " error in creating KSpace." << std::endl;
       return false;
     }
@@ -241,43 +248,67 @@ lengthEstimators( const string & name,
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
-    // Ranges
-    ArrowsRange ra = gridcurve.getArrowsRange(); 
-    PointsRange rp = gridcurve.getPointsRange(); 
-
-
-    // Estimations
-    typedef typename PointsRange::ConstIterator ConstIteratorOnPoints; 
-    typedef ParametricShapeArcLengthFunctor< Shape, ConstIteratorOnPoints > Length;
-    TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  trueLengthEstimator;
-    trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
-
-    L1LengthEstimator< typename ArrowsRange::ConstIterator > l1length;
-    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
-    DSSLengthEstimator< typename PointsRange::ConstIterator > DSSlength;
-    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    MLPLengthEstimator< typename PointsRange::ConstIterator > MLPlength;
-    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
-    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-
-    // Output
-    double trueValue = trueLengthEstimator.eval();
-    cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
-    << " " << l1length.eval() 
-    <<  " " << DSSlength.eval()
-    << " " << MLPlength.eval() 
-    <<  " " << FPlength.eval()
-    << endl;
-    return true;
+    // gridcurve contains the digital boundary to analyze.
+    if ( outputFormat == "pts" )
+      {
+	Range r = gridcurve.getPointsRange(); //building range
+	for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
+	      it != it_end; ++it )
+	  {
+	    Point p = *it;
+	    std::cout << p[ 0 ] << " " << p[ 1 ] << std::endl;
+	  }
+	return true;
+      }
+    else if ( outputFormat == "fc" )
+      {
+	Range r = gridcurve.getPointsRange(); //building range
+	ConstIteratorOnPoints it = r.begin();
+	Point p = *it++;
+	std::cout << p[ 0 ] << " " << p[ 1 ] << " ";
+	for ( ConstIteratorOnPoints it_end = r.end(); it != it_end; ++it )
+	  {
+	    Point p2 = *it;
+	    Vector v = p2 - p;
+	    if ( v.at( 0 ) == 1 ) std::cout << '0';
+	    if ( v.at( 1 ) == 1 ) std::cout << '1';
+	    if ( v.at( 0 ) == -1 ) std::cout << '2';
+	    if ( v.at( 1 ) == -1 ) std::cout << '3';
+	    p = p2;
+	  }
+	// close freemanchain if necessary.
+	Point p2= *(r.begin());
+	Vector v = p2 - p;
+	if ( v.norm1() == 1 )
+	  {
+	    if ( v.at( 0 ) == 1 ) std::cout << '0';
+	    if ( v.at( 1 ) == 1 ) std::cout << '1';
+	    if ( v.at( 0 ) == -1 ) std::cout << '2';
+	    if ( v.at( 1 ) == -1 ) std::cout << '3';
+	  }
+	std::cout << std::endl;
+      }
   }    
   catch ( InputException e )
     {
-      std::cerr << "[lengthEstimators]"
+      std::cerr << "[generateContour]"
 		<< " error in finding a bel." << std::endl;
       return false;
     }
 }
+
+/** 
+ * Missing parameter error message.
+ * 
+ * @param param 
+ */
+void missingParam(std::string param)
+{
+  trace.error() <<" Parameter: "<<param<<" is required..";
+  trace.info()<<std::endl;
+  exit(1);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
 
@@ -297,16 +328,20 @@ int main( int argc, char** argv )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
-    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" );
-  
+    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
+    ("center_x,x",   po::value<double>()->default_value(0.0), "x-coordinate of the shape center (double)" )
+    ("center_y,y",   po::value<double>()->default_value(0.0), "y-coordinate of the shape center (double)" )
+    ("gridstep,d",  po::value<double>()->default_value(1.0), "Gridstep for the digitization" )
+    ("format,f",   po::value<string>()->default_value("pts"), "Output format:\n\t  List of pointel coordinates {pts}\n\t  Freman chaincode Vector {fc}" );
+
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate length estimations of implicite shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
-		  << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
+      trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
+		  << "\tcontourGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
 		  << general_opt << "\n";
       return 0;
     }
@@ -324,114 +359,86 @@ int main( int argc, char** argv )
   if (not(vm.count("shape"))) missingParam("--shape");
   std::string shapeName = vm["shape"].as<std::string>();
     
-    
+  if (not(vm.count("format"))) missingParam("--format");
+  std::string outputFormat = vm["format"].as<std::string>();
+
   //We check that the shape is known
-  unsigned int id = checkAndRetrunIndex(shapeName);
+  unsigned int id = checkAndReturnIndex(shapeName);
 
+  // standard types
+  typedef Z2i::Space Space;
+  typedef Space::Point Point;
+  typedef Space::RealPoint RealPoint;
 
-///////////////////////////////////
-  cout << "#h nbp true naive DSS MLP FP " <<std::endl;
-  double h = 1; 
-  double step = 0.75;
-  while (h > 0.00001) {
-
-    if (id ==0) ///ball
-      {
-        if (not(vm.count("radius"))) missingParam("--radius");
-        double radius = vm["radius"].as<double>();
-        
-        Ball2D<Z2i::Space> ball(Z2i::Point(0,0), radius);
-        
-        lengthEstimators<Ball2D<Z2i::Space>,Z2i::Space>("ball",ball,h); 
-      }
-    else
-      if (id ==1)
-        {
-	  if (not(vm.count("width"))) missingParam("--width");
-	  double width = vm["width"].as<double>();
-	
-	  ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
-	
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
-        }
-      else
-        if (id ==2)
-	  {
-	    if (not(vm.count("power"))) missingParam("--power");
-	    if (not(vm.count("radius"))) missingParam("--radius");
-	    double radius = vm["radius"].as<double>();
-	    double power = vm["power"].as<double>();
-	    
-	    ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
-
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
-	  }
-        else
-	  if (id ==3)
-	    {
-	      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-	      if (not(vm.count("radius"))) missingParam("--radius");
-	      if (not(vm.count("k"))) missingParam("--k");
-	      if (not(vm.count("phi"))) missingParam("--phi");
-	      double radius = vm["radius"].as<double>();
-	      double varsmallradius = vm["varsmallradius"].as<double>();
-	      unsigned int k = vm["k"].as<unsigned int>();
-	      double phi = vm["phi"].as<double>();
-	      
-	      Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
-
-        lengthEstimators<Flower2D<Z2i::Space>,Z2i::Space>("flower",flower,h); 
-	    }
-	  else
-	    if (id ==4)
-	      {
-	        if (not(vm.count("radius"))) missingParam("--radius");
-	        if (not(vm.count("k"))) missingParam("--k");
-	        if (not(vm.count("phi"))) missingParam("--phi");
-	        double radius = vm["radius"].as<double>();
-	        unsigned int k = vm["k"].as<unsigned int>();
-	        double phi = vm["phi"].as<double>();
-	        
-	        NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
-
-          lengthEstimators<NGon2D<Z2i::Space>,Z2i::Space>("NGon",object,h); 
-
-	      }
-	    else
-	      if (id ==5)
-	        {
-		  if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-		  if (not(vm.count("radius"))) missingParam("--radius");
-		  if (not(vm.count("k"))) missingParam("--k");
-		  if (not(vm.count("phi"))) missingParam("--phi");
-		  double radius = vm["radius"].as<double>();
-		  double varsmallradius = vm["varsmallradius"].as<double>();
-		  unsigned int k = vm["k"].as<unsigned int>();
-		  double phi = vm["phi"].as<double>();
-	        
-		  AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
-          lengthEstimators<AccFlower2D<Z2i::Space>,Z2i::Space>("accFlower",flower,h); 
-
-	        } 
-	      else
-	        //if (id ==6)
-	        {
-		  if (not(vm.count("axis1"))) missingParam("--axis1");
-		  if (not(vm.count("axis2"))) missingParam("--axis2");
-		  if (not(vm.count("phi"))) missingParam("--phi");
-		  double a1 = vm["axis1"].as<double>();
-		  double a2 = vm["axis2"].as<double>();
-		  double phi = vm["phi"].as<double>();
-	        
-		  Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
-
-          lengthEstimators<Ellipse2D<Z2i::Space>,Z2i::Space>("Ellipse",ell,h); 
-
-	        } 
-
-    h = h * step;
-  }
-  return 0;
+  RealPoint center( vm["center_x"].as<double>(),
+		    vm["center_y"].as<double>() );
+  double h = vm["gridstep"].as<double>();
+  if (id ==0)
+    {
+      if (not(vm.count("radius"))) missingParam("--radius");
+      double radius = vm["radius"].as<double>();
+      Ball2D<Space> ball(Z2i::Point(0,0), radius);
+    }
+  else if (id ==1)
+    {
+      if (not(vm.count("width"))) missingParam("--width");
+      double width = vm["width"].as<double>();
+      ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
+    }
+  else if (id ==2)
+    {
+      if (not(vm.count("power"))) missingParam("--power");
+      if (not(vm.count("radius"))) missingParam("--radius");
+      double radius = vm["radius"].as<double>();
+      double power = vm["power"].as<double>();
+      ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
+    }
+  else if (id ==3)
+    {
+      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+      if (not(vm.count("radius"))) missingParam("--radius");
+      if (not(vm.count("k"))) missingParam("--k");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double radius = vm["radius"].as<double>();
+      double varsmallradius = vm["varsmallradius"].as<double>();
+      unsigned int k = vm["k"].as<unsigned int>();
+      double phi = vm["phi"].as<double>();
+      Flower2D<Space> flower( center, radius, varsmallradius, k, phi );
+      generateContour<Space>( "Flower", flower, h, outputFormat ); 
+    }
+  else if (id ==4)
+    {
+      if (not(vm.count("radius"))) missingParam("--radius");
+      if (not(vm.count("k"))) missingParam("--k");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double radius = vm["radius"].as<double>();
+      unsigned int k = vm["k"].as<unsigned int>();
+      double phi = vm["phi"].as<double>();
+      NGon2D<Space> object( center, radius, k, phi );
+      generateContour<Space>( "NGon", object, h, outputFormat ); 
+    }
+  else if (id ==5)
+    {
+      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+      if (not(vm.count("radius"))) missingParam("--radius");
+      if (not(vm.count("k"))) missingParam("--k");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double radius = vm["radius"].as<double>();
+      double varsmallradius = vm["varsmallradius"].as<double>();
+      unsigned int k = vm["k"].as<unsigned int>();
+      double phi = vm["phi"].as<double>();
+      AccFlower2D<Space> accflower( center, radius, varsmallradius, k, phi );
+      generateContour<Space>( "AccFlower", accflower, h, outputFormat ); 
+    } 
+  else if (id ==6)
+    {
+      if (not(vm.count("axis1"))) missingParam("--axis1");
+      if (not(vm.count("axis2"))) missingParam("--axis2");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double a1 = vm["axis1"].as<double>();
+      double a2 = vm["axis2"].as<double>();
+      double phi = vm["phi"].as<double>();
+      Ellipse2D<Space> ellipse( center, a1, a2, phi );
+      generateContour<Space>( "Ellipse", ellipse, h, outputFormat ); 
+    } 
 }

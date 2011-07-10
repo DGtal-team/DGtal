@@ -119,7 +119,7 @@ namespace DGtal
      * @return the estimated arc length.c
      */
     Quantity operator()(const ConstIteratorOnPoints &itb,const ConstIteratorOnPoints &ite, 
-			const bool& isClosed = false, const unsigned int nbSamples = 1000)
+			const bool& isClosed = false, const unsigned int nbSamples = 10000)
     {
 //TODO determining nbSamples from the bounding box size of the shape
       ASSERT(myShape);
