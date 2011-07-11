@@ -110,8 +110,12 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   size = 0;
   for ( ConstIteratorOnPoints it = itb; it != ite; ++it, ++size )
     {
-      myX[ size ] = it->operator[]( 0 );
-      myY[ size ] = it->operator[]( 1 );
+/*      myX[ size ] = it->operator[]( 0 );
+      myY[ size ] = it->operator[]( 1 );*/
+// TRIS ConstIterator may have no -> operator
+      Point p(*it); 
+      myX[ size ] = p[0];
+      myY[ size ] = p[1];
     }
   Signal<double> G = Signal<double>::G2n( myN );
   myX = myX * G;
@@ -190,8 +194,12 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   TValue xmin, ymin, xmax, ymax;
   for ( ConstIteratorOnPoints it = itb; it != ite; ++it )
     {
-      TValue x = it->operator[]( 0 );
-      TValue y = it->operator[]( 1 );
+/*      TValue x = it->operator[]( 0 );
+      TValue y = it->operator[]( 1 );*/
+// TRIS ConstIterator may have no -> operator
+      Point p(*it); 
+      TValue x = p[0];
+      TValue y = p[1];
       if ( x < xmin ) xmin = x;
       if ( x > xmax ) xmax = x;
       if ( y < ymin ) ymin = y;

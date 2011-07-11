@@ -70,6 +70,7 @@ namespace DGtal
   public:
     typedef TValue Value;
     typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef typename ConstIteratorOnPoints::value_type Point;
 
    /**
       Constructor. The object is not valid.

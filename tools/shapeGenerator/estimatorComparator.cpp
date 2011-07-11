@@ -245,6 +245,7 @@ compareShapeEstimators( const string & name,
 
     // Estimations
     // True values
+	std::cout << "#True values computation" << std::endl;  
   typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
   typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
@@ -258,8 +259,19 @@ compareShapeEstimators( const string & name,
     std::vector<double> trueCurvatures = 
       estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
 
+    // Maximal Segments
+  	std::cout << "#Maximal DSS tangent estimation" << std::endl;  
+    typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
+    typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> SCFunctor;
+    SegmentComputer sc;
+    SCFunctor f; 
+    MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
+    MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
+    std::vector<RealPoint> MSTangents = 
+      estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
+
     // Binomial
-/*
+  	std::cout << "#Tangent and curvature estimation from binomial convolution" << std::endl;
     typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
     typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
       TangentBCFct;
@@ -273,21 +285,12 @@ compareShapeEstimators( const string & name,
     BCCurvatureEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<double> BCCurvatures =
       estimateQuantity( BCCurvatureEstimator, r.begin(), r.end() );
-*/
-    // Maximal Segments
-    typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
-    typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> SCFunctor;
-    SegmentComputer sc;
-    SCFunctor f; 
-    MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
-    MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
-    std::vector<RealPoint> MSTangents = 
-      estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
 
     // Output
 	std::cout << "#id x y tangentx tangenty curvature"
   << " BCtangentx BCtangenty BCcurvature"
-  << " MStangentx MStangenty MScurvature";  
+  << " MStangentx MStangenty MScurvature"
+  << std::endl;  
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
 	  it != it_end; ++it, ++i )
@@ -297,9 +300,9 @@ compareShapeEstimators( const string & name,
 		  << " " << trueTangents[ i ][ 0 ]
 		  << " " << trueTangents[ i ][ 1 ]
 		  << " " << trueCurvatures[ i ]
-/*		  << " " << BCTangents[ i ][ 0 ]
+		  << " " << BCTangents[ i ][ 0 ]
 		  << " " << BCTangents[ i ][ 1 ]
-		  << " " << BCCurvatures[ i ]*/
+		  << " " << BCCurvatures[ i ]
 		  << " " << MSTangents[ i ][ 0 ]
 		  << " " << MSTangents[ i ][ 1 ]
 /*		  << " " << MSCurvatures[ i ]*/
