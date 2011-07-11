@@ -241,7 +241,7 @@ compareShapeEstimators( const string & name,
     gridcurve.initFromVector( points );
     // Ranges
     PointsRange r = gridcurve.getPointsRange(); 
-
+	  std::cout << "#range size = " << r.size() << std::endl;  
 
     // Estimations
     // True values
@@ -273,6 +273,8 @@ compareShapeEstimators( const string & name,
     // Binomial
   	std::cout << "#Tangent and curvature estimation from binomial convolution" << std::endl;
     typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
+  	std::cout << "#mask size = " << 
+    MyBinomialConvolver::suggestedSize( h, r.begin(), r.end() ) << std::endl;
     typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
       TangentBCFct;
     typedef CurvatureFromBinomialConvolverFunctor< MyBinomialConvolver, double >
@@ -289,7 +291,7 @@ compareShapeEstimators( const string & name,
     // Output
 	std::cout << "#id x y tangentx tangenty curvature"
   << " BCtangentx BCtangenty BCcurvature"
-  << " MStangentx MStangenty MScurvature"
+  << " MStangentx MStangenty"
   << std::endl;  
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
