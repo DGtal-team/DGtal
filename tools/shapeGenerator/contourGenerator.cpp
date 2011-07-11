@@ -219,15 +219,11 @@ generateContour( const string & name,
   typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
   typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
 
-  // Window for the estimation
-  RealPoint xLow ( -10.0, -10.0 );
-  RealPoint xUp( 10.0, 10.0 );
+  // Digitizer
   GaussDigitizer<Space,Shape> dig;  
   dig.attach( aShape ); // attaches the shape.
   Vector vlow(-1,-1); Vector vup(1,1);
   dig.init( aShape.getLowerBound()+vlow, aShape.getUpperBound()+vup, h ); 
-  // The domain size is given by the digitizer according to the window
-  // and the step.
   Domain domain = dig.getDomain();
   // Create cellular space
   KSpace K;
@@ -249,9 +245,11 @@ generateContour( const string & name,
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
     // gridcurve contains the digital boundary to analyze.
+	Range r = gridcurve.getPointsRange(); //building range
+
     if ( outputFormat == "pts" )
       {
-	Range r = gridcurve.getPointsRange(); //building range
+
 	for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
 	      it != it_end; ++it )
 	  {
@@ -262,7 +260,6 @@ generateContour( const string & name,
       }
     else if ( outputFormat == "fc" )
       {
-	Range r = gridcurve.getPointsRange(); //building range
 	ConstIteratorOnPoints it = r.begin();
 	Point p = *it++;
 	std::cout << p[ 0 ] << " " << p[ 1 ] << " ";
@@ -287,7 +284,39 @@ generateContour( const string & name,
 	    if ( v.at( 1 ) == -1 ) std::cout << '3';
 	  }
 	std::cout << std::endl;
+      } else if ( outputFormat == "signature" ) {
+
+    // Estimations
+    // True values
+	std::cout << "# " << name << std::endl;  
+	std::cout << "# idx x y tangentx tangenty curvature" << std::endl; 
+  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
+  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
+    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
+      trueTangentEstimator;
+    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, CurvatureFunctor >  
+      trueCurvatureEstimator;
+    trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+    std::vector<RealPoint> trueTangents = 
+      estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
+    trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+    std::vector<double> trueCurvatures = 
+      estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
+
+    unsigned int i = 0;
+    for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
+	  it != it_end; ++it, ++i )
+      {
+	Point p = *it;
+	std::cout << i << " " << p[ 0 ] << " " << p[ 1 ] 
+		  << " " << trueTangents[ i ][ 0 ]
+		  << " " << trueTangents[ i ][ 1 ]
+		  << " " << trueCurvatures[ i ]
+ << std::endl;
       }
+
+
+    }
   }    
   catch ( InputException e )
     {
@@ -378,12 +407,15 @@ int main( int argc, char** argv )
       if (not(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       Ball2D<Space> ball(Z2i::Point(0,0), radius);
+      generateContour<Space>( "Circle", ball, h, outputFormat ); 
     }
   else if (id ==1)
     {
       if (not(vm.count("width"))) missingParam("--width");
       double width = vm["width"].as<double>();
       ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
+	        trace.error()<< "Not available.";
+	        trace.info()<<std::endl; 
     }
   else if (id ==2)
     {
@@ -392,6 +424,8 @@ int main( int argc, char** argv )
       double radius = vm["radius"].as<double>();
       double power = vm["power"].as<double>();
       ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
+	        trace.error()<< "Not available.";
+	        trace.info()<<std::endl;
     }
   else if (id ==3)
     {
