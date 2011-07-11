@@ -162,7 +162,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 {
   Value n = sqrt( myDX[ i ] * myDX[ i ] +
 		  myDY[ i ] * myDY[ i ] );
-  return std::make_pair( myDX[ i ] / n, myDY[ i ] / n );
+  return std::make_pair( -myDX[ i ] / n, -myDY[ i ] / n );
 }
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
@@ -178,8 +178,8 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 }
 
     /**
-       @return the suggested size for the binomial convolver as ceil(
-       0.5 / pow( h / d, 4.0/3.0 ) ), with d the diameter of the
+       @return the suggested size for the binomial convolver as
+        ceil( d / pow( h, 1.0/3.0 ) ), with d the diameter of the
        contour.
     */
 //-----------------------------------------------------------------------------
@@ -208,8 +208,9 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   TValue diameter = ( xmax - xmin ) > ( ymax - ymin ) 
     ? ( xmax - xmin )
     : ( ymax - ymin );
-  return (unsigned int) ceil( 0.5 / pow( h / diameter, 4.0/3.0 ) ); 
-
+//  return (unsigned int) ceil( 0.5 / pow( h / diameter, 4.0/3.0 ) ); 
+//TRIS  (diameter*h is the diameter of the shape) 
+    return (unsigned int) ceil( diameter / pow( h, 1.0/3.0 ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

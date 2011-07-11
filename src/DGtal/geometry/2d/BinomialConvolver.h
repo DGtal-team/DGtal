@@ -101,8 +101,8 @@ namespace DGtal
     unsigned int size() const;
 
     /**
-       @return the suggested size for the binomial convolver as ceil(
-       0.5 / pow( h / d, 4.0/3.0 ) ), with d the diameter of the
+       @return the suggested size for the binomial convolver as 
+       ceil( d / pow( h, 1.0/3.0 ) ), with d the diameter of the
        contour.
     */
     static
