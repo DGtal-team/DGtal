@@ -38,33 +38,28 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 
+//shapes
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
-
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
-#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
-
-#include "DGtal/io/writers/PNMWriter.h"
-#include "DGtal/io/writers/RawWriter.h"
-#include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/DGtalBoard.h"
-
+//Digitizer
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
+
+
+//Estimators
 #include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/geometry/2d/BinomialConvolver.h"
+#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
 
 using namespace DGtal;
@@ -185,125 +180,6 @@ unsigned int checkAndReturnIndex(const std::string &shapeName)
 }
 
 
-/** 
- * Functor to export a given shape into an image file
- * (pgm,raw,pdf,svg,...) and to extract its signature.
- * 
- * @tparam Set type of the input Set
- * @tparam Image type of the input Image.
- */
-template <typename Set, typename Image>
-struct Exporter
-{ 
-  typedef GrayscaleColorMap<unsigned char> Gray;
-
-  
-  /** 
-   * Export a given Set into an image file.
-   * 
-   * @param aSet input set.
-   * @param outputName output file name.
-   * @param outputFormat output file format.
-   *
-   */
-  static
-  void save(const Set &aSet, 
-	    const std::string outputName, 
-	    const std::string outputFormat)
-  {
-    
-    Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255, true);
-    
-    if  (outputFormat == "pgm")
-      PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
-    else
-      if (outputFormat == "raw")
-	RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
-      else
-	if (outputFormat == "svg")
-	  {
-	    DGtalBoard board;
-	    board << aSet;
-	    board.saveSVG((outputName+"."+outputFormat).c_str());
-	  }
-	else
-#ifdef WITH_CAIRO
-	  if (outputFormat == "pdf")
-	    {
-	      DGtalBoard board;
-	      board << aSet;
-	      board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
-	      
-	    }
-	  else
-	    if (outputFormat == "png")
-	      {
-		DGtalBoard board;
-		board << aSet;
-		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
-	      }
-	    else
-#endif
-	      {
-		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-		exit(1);
-	      }
-  }
-  
-
-  /** 
-   * Compute and export (std::cout) the boundary of the set and export the signature (normal
-   * vector, curvature) at each point of the 2D contour.
-   * 
-   * @param aShape the shape
-   * @param aSet input set corresponding to the shape
-   * @param aDomain the domain used to construct the set.
-   */
-  template <typename Shape>
-  static 
-  void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
-  {
-    SetPredicate<Set> aSetPredicate( aSet );
-    trace.beginBlock("Extracting the boundary");
-    Z2i::KSpace ks;
-    bool space_ok = ks.init( aDomain.lowerBound(),aDomain.upperBound(), true );
-    SurfelAdjacency<2> sAdj( true );
-
-    ASSERT(space_ok);
-    trace.info() << aSet << std::endl;
-    trace.info() << ks 
-		 << ( space_ok ? " Successfully instantiated" : " Error" )
-		 << std::endl;
-
-    std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
-    Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						      ks, aSetPredicate, sAdj );  
-    trace.endBlock();
-    
-    ///Export
-    std::cout<<"## estimatorComparator signature export"<<std::endl;
-    std::cout<<"## shape: "<<aShape<<std::endl;
-    std::cout<<"## x\ty\tdx\tdy\tddx\tddy"<<std::endl;
-    for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
-      for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size() - 1; j++)
-	{
-	  Z2i::Space::Point point = (vectContoursBdryPointels.at(i).at(j) 
-				     + vectContoursBdryPointels.at(i).at(j+1));
-	  Z2i::Space::RealPoint midpoint (point[0]/2.0,point[1]/2.0);
-
-	  Z2i::Space::RealPoint xp,xpp;
-	  double t = aShape.parameter(midpoint);
-	  xp = aShape.xp( t );
-	  xpp = aShape.xpp( t );
-	  
-	  std::cout<< midpoint[0]<<"\t"<<midpoint[1]<<"\t"
-		   << xp[0]<<"\t"<<xp[1]<<"\t"
-	    	   << xpp[0]<<"\t"<<xpp[1]<<std::endl;
-	    
-	}
-    	  
-  }
-};
 
 template <typename Estimator, typename ConstIterator>
 std::vector<typename Estimator::Quantity>
@@ -326,25 +202,24 @@ compareShapeEstimators( const string & name,
 {
   // Types
   typedef typename Space::Point Point;
+  typedef typename Space::Vector Vector;
   typedef typename Space::RealPoint RealPoint;
   typedef typename Space::Integer Integer;
   typedef HyperRectDomain<Space> Domain;
   typedef KhalimskySpaceND<Space::dimension,Integer> KSpace;
   typedef typename KSpace::SCell SCell;
-  typedef typename GridCurve<KSpace>::PointsRange Range;
-  typedef typename Range::ConstIterator ConstIteratorOnPoints;
-  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
+  typedef typename GridCurve<KSpace>::PointsRange PointsRange;
+  typedef typename GridCurve<KSpace>::ArrowsRange ArrowsRange;
+  typedef typename PointsRange::ConstIterator ConstIteratorOnPoints;
 
-  // Window for the estimation
-  RealPoint xLow ( -10.0, -10.0 );
-  RealPoint xUp( 10.0, 10.0 );
+
+  // Digitizer
   GaussDigitizer<Space,Shape> dig;  
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
-  // The domain size is given by the digitizer according to the window
-  // and the step.
+  Vector vlow(-1,-1); Vector vup(1,1);
+  dig.init( aShape.getLowerBound()+vlow, aShape.getUpperBound()+vup, h ); 
   Domain domain = dig.getDomain();
+
   // Create cellular space
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
@@ -364,28 +239,71 @@ compareShapeEstimators( const string & name,
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
-    // gridcurve contains the digital boundary to analyze.
-    Range r = gridcurve.getPointsRange(); //building range
-    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature >  
-      trueCurvatureEstimator;
-    trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
-    std::vector<double> curvatures = 
-      estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
-    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent >  
-      trueTangentEstimator;
-    trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, true);
-    std::vector<RealPoint> tangents = 
-      estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
+    // Ranges
+    PointsRange r = gridcurve.getPointsRange(); 
 
+
+    // Estimations
+    // True values
+  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
+  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
+    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
+      trueTangentEstimator;
+    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, CurvatureFunctor >  
+      trueCurvatureEstimator;
+    trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+    std::vector<RealPoint> trueTangents = 
+      estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
+    trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+    std::vector<double> trueCurvatures = 
+      estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
+
+    // Binomial
+/*
+    typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
+    typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
+      TangentBCFct;
+    typedef CurvatureFromBinomialConvolverFunctor< MyBinomialConvolver, double >
+      CurvatureBCFct;
+    BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
+    BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
+    BCTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
+    std::vector<RealPoint> BCTangents = 
+      estimateQuantity( BCTangentEstimator, r.begin(), r.end() );
+    BCCurvatureEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
+    std::vector<double> BCCurvatures =
+      estimateQuantity( BCCurvatureEstimator, r.begin(), r.end() );
+*/
+    // Maximal Segments
+    typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
+    typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> SCFunctor;
+    SegmentComputer sc;
+    SCFunctor f; 
+    MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
+    MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
+    std::vector<RealPoint> MSTangents = 
+      estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
+
+    // Output
+	std::cout << "#id x y tangentx tangenty curvature"
+  << " BCtangentx BCtangenty BCcurvature"
+  << " MStangentx MStangenty MScurvature";  
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
 	  it != it_end; ++it, ++i )
       {
 	Point p = *it;
-	std::cout << p[ 0 ] << " " << p[ 1 ] 
-		  << " " << tangents[ i ][ 0 ]
-		  << " " << tangents[ i ][ 1 ]
-		  << " " << curvatures[ i ] << std::endl;
+	std::cout << i << " " << p[ 0 ] << " " << p[ 1 ] 
+		  << " " << trueTangents[ i ][ 0 ]
+		  << " " << trueTangents[ i ][ 1 ]
+		  << " " << trueCurvatures[ i ]
+/*		  << " " << BCTangents[ i ][ 0 ]
+		  << " " << BCTangents[ i ][ 1 ]
+		  << " " << BCCurvatures[ i ]*/
+		  << " " << MSTangents[ i ][ 0 ]
+		  << " " << MSTangents[ i ][ 1 ]
+/*		  << " " << MSCurvatures[ i ]*/
+ << std::endl;
       }
     return true;
   }    
@@ -431,10 +349,8 @@ int main( int argc, char** argv )
     ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
     ("center_x,x",   po::value<double>()->default_value(0.0), "x-coordinate of the shape center (double)" )
     ("center_y,y",   po::value<double>()->default_value(0.0), "y-coordinate of the shape center (double)" )
-    ("gridstep,d",  po::value<double>()->default_value(1.0), "Gridstep for the digitization" )
-    ("output,o", po::value<string>(), "Basename of the output file")
-    ("signature", "Display to the standard output the signature (normal, curvature) at each point of the specified shape contour (middle point of each contour linel)")
-    ("format,f",   po::value<string>()->default_value("pgm"), "Output format:\n\t  Bitmap {pgm, raw}\n\t  Vector {svg} (+ {png,pdf} if libCairo installed)" );
+    ("gridstep,g",  po::value<double>()->default_value(1.0), "Gridstep for the digitization" );
+
   
   
   po::variables_map vm;
@@ -442,7 +358,7 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
+      trace.info()<< "Compare local estimators on implicit shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
 		  << "\testimatorComparator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
 		  << general_opt << "\n";
       return 0;
@@ -462,11 +378,6 @@ int main( int argc, char** argv )
   std::string shapeName = vm["shape"].as<std::string>();
     
  
-  // if (not(vm.count("output"))) missingParam("--output");
-  // std::string outputName = vm["output"].as<std::string>();
- 
-  // if (not(vm.count("format"))) missingParam("--format");
-  // std::string outputFormat = vm["format"].as<std::string>();
     
   //We check that the shape is known
   unsigned int id = checkAndReturnIndex(shapeName);
@@ -477,19 +388,22 @@ int main( int argc, char** argv )
   typedef Space::RealPoint RealPoint;
 
   RealPoint center( vm["center_x"].as<double>(),
-		    vm["center_y"].as<double>() );
+		                vm["center_y"].as<double>() );
   double h = vm["gridstep"].as<double>();
   if (id ==0)
     {
       if (not(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       Ball2D<Space> ball(Z2i::Point(0,0), radius);
+      compareShapeEstimators<Space>( "Ball", ball, h ); 
     }
   else if (id ==1)
     {
       if (not(vm.count("width"))) missingParam("--width");
       double width = vm["width"].as<double>();
       ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
+	        trace.error()<< "Not available.";
+	        trace.info()<<std::endl;
     }
   else if (id ==2)
     {
@@ -498,6 +412,8 @@ int main( int argc, char** argv )
       double radius = vm["radius"].as<double>();
       double power = vm["power"].as<double>();
       ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
+	        trace.error()<< "Not available.";
+	        trace.info()<<std::endl;
     }
   else if (id ==3)
     {

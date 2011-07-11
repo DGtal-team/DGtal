@@ -333,7 +333,7 @@ int main( int argc, char** argv )
   cout << "#h nbp true naive DSS MLP FP " <<std::endl;
   double h = 1; 
   double step = 0.75;
-  while (h > 0.00001) {
+  while (h > 0.001) {
 
     if (id ==0) ///ball
       {

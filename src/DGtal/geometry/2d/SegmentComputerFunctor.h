@@ -120,19 +120,20 @@ namespace DGtal
 
     /**
      * Operator() 
-     * @return the tangent orientation at [aPoint]
-     * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+     * @return the tangent at [aPoint]
      * @param aDSS a DSSComputer. 
-     * @param aPoint the point at which the tangent orientation is estimated. 
+     * @param aPoint the point at which the tangent is estimated. 
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
                       const DSSComputer& aDSS ) const {
 
-      Value v;
-      v.at( 1 ) = IntegerTraits<typename DSSComputer::Integer>
-	::castToDouble( aDSS.getA() );      
-      v.at( 0 ) = IntegerTraits<typename DSSComputer::Integer>
-	::castToDouble( aDSS.getB() );      
+      double x = IntegerTraits<typename DSSComputer::Integer>
+      ::castToDouble( aDSS.getB() ); 
+      double y = IntegerTraits<typename DSSComputer::Integer>
+      ::castToDouble( aDSS.getA() );
+      RealVector v(x,y); 
+      double norm = v.norm(RealVector::L_2);
+      v /= norm; 
       return v;
     };
 
