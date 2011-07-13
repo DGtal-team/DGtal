@@ -13,7 +13,7 @@ if ( Boost_FOUND )
   message(STATUS "Boost and boost_program_options found.")
   include_directories( ${Boost_INCLUDE_DIR} )
    SET(DGtalLibDependencies ${DGtalLibDependencies} ${Boost_LIBRAIRIES}  ${Boost_PROGRAM_OPTIONS_LIBRARY})
-   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIR})
+   SET(DGtalLibInc ${Boost_INCLUDE_DIR})
 endif( Boost_FOUND )
 
 
