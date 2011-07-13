@@ -41,6 +41,7 @@
 
 #include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
+#include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
 #include "DGtal/geometry/2d/MLPLengthEstimator.h"
 #include "DGtal/geometry/2d/FPLengthEstimator.h"
 #include "DGtal/geometry/2d/DSSLengthEstimator.h"
@@ -74,12 +75,20 @@ bool testL1LengthEstimator(std::string &filename)
   //////////////////////// L1
   GridCurve<KhalimskySpaceND<2> >::ArrowsRange ra = c.getArrowsRange(); //range
   L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > l1length;
+  TwoStepLocalLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
     
   l1length.init(1, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "L1 length (h=1) = "<< l1length.eval()<<std::endl;
 
   l1length.init(10, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "L1 length (h=10) = "<< l1length.eval()<<std::endl;
+
+  ////////////////////// Local 2steps
+  TwoStepLocalLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
+ 
+  localength.init(1, ra.begin(), ra.end(), c.isClosed());
+  trace.info() << "Local length (h=1) = "<< localength.eval()<<std::endl;
+
     
   //////////////////////// MLP
   GridCurve<KhalimskySpaceND<2> >::PointsRange rp = c.getPointsRange(); //range
