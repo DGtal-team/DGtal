@@ -367,7 +367,7 @@ namespace DGtal
    * @param object the object of class 'BinomialConvolver' to write.
    * @return the output stream after the writing.
    */
-  template <typename TConstIteratorOnPoints, typename TValue = double>
+  template <typename TConstIteratorOnPoints, typename TValue >
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const BinomialConvolver<TConstIteratorOnPoints,TValue> & object );
