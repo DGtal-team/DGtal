@@ -209,9 +209,6 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
   bool zodd = ( myCoordinates[ 2 ] & 1 );
-  float dx = xodd ? 1.0f  : 0.0f;
-  float dy = yodd ? 1.0f  : 0.0f;
-  float dz = zodd ? 1.0f  : 0.0f;
   
 	 
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
