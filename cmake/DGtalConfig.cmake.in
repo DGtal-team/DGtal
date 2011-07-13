@@ -26,6 +26,10 @@ ENDIF(@MAGICK++_FOUND@)
 
 IF(@ITK_FOUND@)
   ADD_DEFINITIONS("-DWITH_ITK ")
+  #--------------------------------------------
+  #ITK bugfix (we need explicit link_directory)
+  #--------------------------------------------
+  link_directories( @ITK_LIBRARY_DIRS@)
 ENDIF(@ITK_FOUND@)
 
 IF(@CAIRO_FOUND@)
@@ -53,10 +57,6 @@ IF(@QGLVIEWER_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
   ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
 ENDIF( @QGLVIEWER_FOUND_DGTAL@  AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
 
-#--------------------------------------------
-#ITK bugfix (we need explicit link_directory)
-#--------------------------------------------
-link_directories( @ITK_LIBRARY_DIRS@)
 
  
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
