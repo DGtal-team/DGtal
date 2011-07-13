@@ -20,7 +20,10 @@
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr)
  * LIRIS (CNRS, UMR 5205), 
- *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+
  * @date 2011/07/04
  *
  * DGtal shape generator
@@ -30,6 +33,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <string>
 
@@ -241,11 +245,11 @@ compareShapeEstimators( const string & name,
     gridcurve.initFromVector( points );
     // Ranges
     PointsRange r = gridcurve.getPointsRange(); 
-	  std::cout << "#range size = " << r.size() << std::endl;  
+	  std::cout << "# range size = " << r.size() << std::endl;  
 
     // Estimations
     // True values
-	std::cout << "#True values computation" << std::endl;  
+	std::cout << "# True values computation" << std::endl;  
   typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
   typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
@@ -260,7 +264,7 @@ compareShapeEstimators( const string & name,
       estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
 
     // Maximal Segments
-  	std::cout << "#Maximal DSS tangent estimation" << std::endl;  
+  	std::cout << "# Maximal DSS tangent estimation" << std::endl;  
     typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
     typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> SCFunctor;
     SegmentComputer sc;
@@ -271,9 +275,9 @@ compareShapeEstimators( const string & name,
       estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
 
     // Binomial
-  	std::cout << "#Tangent and curvature estimation from binomial convolution" << std::endl;
+  	std::cout << "# Tangent and curvature estimation from binomial convolution" << std::endl;
     typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
-  	std::cout << "#mask size = " << 
+  	std::cout << "# mask size = " << 
     MyBinomialConvolver::suggestedSize( h, r.begin(), r.end() ) << std::endl;
     typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
       TangentBCFct;
@@ -289,7 +293,7 @@ compareShapeEstimators( const string & name,
       estimateQuantity( BCCurvatureEstimator, r.begin(), r.end() );
 
     // Output
-	std::cout << "#id x y tangentx tangenty curvature"
+	std::cout << "# id x y tangentx tangenty curvature"
   << " BCtangentx BCtangenty BCcurvature"
   << " MStangentx MStangenty"
   << std::endl;  
@@ -298,7 +302,8 @@ compareShapeEstimators( const string & name,
 	  it != it_end; ++it, ++i )
       {
 	Point p = *it;
-	std::cout << i << " " << p[ 0 ] << " " << p[ 1 ] 
+	std::cout << i << setprecision( 15 )
+      << " " << p[ 0 ] << " " << p[ 1 ] 
 		  << " " << trueTangents[ i ][ 0 ]
 		  << " " << trueTangents[ i ][ 1 ]
 		  << " " << trueCurvatures[ i ]
@@ -307,7 +312,6 @@ compareShapeEstimators( const string & name,
 		  << " " << BCCurvatures[ i ]
 		  << " " << MSTangents[ i ][ 0 ]
 		  << " " << MSTangents[ i ][ 1 ]
-/*		  << " " << MSCurvatures[ i ]*/
  << std::endl;
       }
     return true;
