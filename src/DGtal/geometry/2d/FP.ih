@@ -424,7 +424,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 		} else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
 			shift = RealVector(0.5,0.5);
 		} else {
-      ASSERT(false && ("DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon")==""  );
+      ASSERT(false && "DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon" );
 		}
 
 	} else {
@@ -439,7 +439,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 		} else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
 			shift = RealVector(-0.5,-0.5);
 		} else {
-      ASSERT(false && ("DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon")==""  );
+      ASSERT(false && "DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon" );
 		}
 
 	} 
@@ -462,9 +462,9 @@ DGtal::FP<TIterator,TInteger,connectivity>
 	} else if (q == 4) {
 		return ( (v[0]<=0)&&(v[1]>=0) );
 	} else {
-    ASSERT(false && 
-("DGtal::FP<TIterator,TInteger,connectivity>::quadrant: quadrant number should be 0,1,2 or 3")==""  );
-		return false;
+	  ASSERT(false && 
+		 "DGtal::FP<TIterator,TInteger,connectivity>::quadrant: quadrant number should be 0,1,2 or 3"  );
+	  return false;
 	}
 }
 
@@ -535,9 +535,12 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( DGtalBoard & board ) const
       selfDrawAsPolygon( board );
     }
   else
-    ASSERT(false && ("DGtal::FP<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode)==""  );
-
+    {
+      mode = "DGtal::FP<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode;
+      ASSERT2(false,  mode  );
+    }
 }
+  
 
 
 /**
