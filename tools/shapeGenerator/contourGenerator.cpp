@@ -29,7 +29,9 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cmath>
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <string>
 
@@ -284,39 +286,50 @@ generateContour( const string & name,
 	    if ( v.at( 1 ) == -1 ) std::cout << '3';
 	  }
 	std::cout << std::endl;
-      } else if ( outputFormat == "signature" ) {
-
+      } 
+//////////////////
     // Estimations
     // True values
-	std::cout << "# " << name << std::endl;  
-	std::cout << "# idx x y tangentx tangenty curvature" << std::endl; 
-  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
-    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
+
+  typedef typename GridCurve<KSpace>::MidPointsRange MidPointsRange;
+  typedef typename MidPointsRange::ConstIterator ConstIteratorOnMidPoints;
+MidPointsRange rm = gridcurve.getMidPointsRange(); 
+
+  ofstream outstream(name.c_str()); //output stream
+  if (!outstream.is_open()) return false;
+  else {
+	outstream << "# " << name << std::endl;  
+	outstream << "# idx x y tangentx tangenty curvature" << std::endl; 
+  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnMidPoints > TangentFunctor;
+  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnMidPoints > CurvatureFunctor;
+    TrueLocalEstimatorOnPoints< ConstIteratorOnMidPoints, Shape, TangentFunctor >  
       trueTangentEstimator;
-    TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, CurvatureFunctor >  
+    TrueLocalEstimatorOnPoints< ConstIteratorOnMidPoints, Shape, CurvatureFunctor >  
       trueCurvatureEstimator;
-    trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+    trueTangentEstimator.init( h, rm.begin(), rm.end(), &aShape, gridcurve.isClosed());
     std::vector<RealPoint> trueTangents = 
-      estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
-    trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
+      estimateQuantity( trueTangentEstimator, rm.begin(), rm.end() );
+    trueCurvatureEstimator.init( h, rm.begin(), rm.end(), &aShape, gridcurve.isClosed());
     std::vector<double> trueCurvatures = 
-      estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
+      estimateQuantity( trueCurvatureEstimator, rm.begin(), rm.end() );
 
     unsigned int i = 0;
-    for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
+    for ( ConstIteratorOnMidPoints it = rm.begin(), it_end = rm.end();
 	  it != it_end; ++it, ++i )
       {
-	Point p = *it;
-	std::cout << i << " " << p[ 0 ] << " " << p[ 1 ] 
+	outstream << setprecision( 15 ) << i 
+      << " " << (*it)[ 0 ] << " " << (*it)[ 1 ] 
 		  << " " << trueTangents[ i ][ 0 ]
 		  << " " << trueTangents[ i ][ 1 ]
 		  << " " << trueCurvatures[ i ]
  << std::endl;
       }
 
+  }
+  outstream.close();
 
-    }
+/////////////////
+
   }    
   catch ( InputException e )
     {
