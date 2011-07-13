@@ -89,9 +89,9 @@ bool testTrueLocalEstimator(const std::string &filename)
   typedef Ball2D<Z2i::Space> Shape;
   typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
   typedef Range::ConstIterator ConstIteratorOnPoints;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
-  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
-  typedef ParametricShapeArcLengthFunctor< Shape, ConstIteratorOnPoints > Length;
+  typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
+  typedef ParametricShapeTangentFunctor< Shape > Tangent;
+  typedef ParametricShapeArcLengthFunctor< Shape > Length;
 
   Shape ball(Z2i::Point(0,0), 30);
 
@@ -164,7 +164,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       gridcurve.initFromVector( points );
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;
-      typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
+      typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
       TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
       curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
@@ -231,9 +231,9 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       gridcurve.initFromVector( points );
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;
-      typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
+      typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
-      typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
+      typedef ParametricShapeTangentFunctor< Shape > Tangent;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
       TrueCurvature curvatureEstimator;
       TrueCurvature curvatureEstimatorBis;

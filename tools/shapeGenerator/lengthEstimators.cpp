@@ -58,8 +58,6 @@
 //estimators
 #include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
 
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
@@ -248,7 +246,7 @@ lengthEstimators( const string & name,
 
     // Estimations
     typedef typename PointsRange::ConstIterator ConstIteratorOnPoints; 
-    typedef ParametricShapeArcLengthFunctor< Shape, ConstIteratorOnPoints > Length;
+    typedef ParametricShapeArcLengthFunctor< Shape > Length;
     TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  trueLengthEstimator;
     trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
 

@@ -87,7 +87,20 @@ typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
 {
   ASSERT(myH>0);
-  return  myFunctor(myBegin,myEnd,myFlagIsClosed);
+  if (myFlagIsClosed) {
+    return myFunctor();
+  } else {
+    //get the first and last points
+    ConstIteratorOnPoints i = myBegin;
+    ConstIteratorOnPoints j(i); ++j; 
+    for ( ; j != myEnd; ++i, ++j);
+    //myH is the coordinates unit
+    RealPoint p( *myBegin );
+    p *= myH;
+    RealPoint p2( *i );
+    p2 *= myH;
+    return myFunctor(p,p2);
+  }
 }
 
   
@@ -101,7 +114,20 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIt
 								   const ConstIteratorOnPoints& ite)
 {
   ASSERT(myH>0);
-  return myFunctor(itb,ite);
+  if (myFlagIsClosed) {
+    return myFunctor();
+  } else {
+    //get the first and last points
+    ConstIteratorOnPoints i = itb;
+    ConstIteratorOnPoints j(i); ++j; 
+    for ( ; j != ite; ++i, ++j);
+    //myH is the coordinates unit
+    RealPoint p( *itb );
+    p *= myH;
+    RealPoint p2( *i );
+    p2 *= myH;
+    return myFunctor(p,p2);
+  }
 }
 
 

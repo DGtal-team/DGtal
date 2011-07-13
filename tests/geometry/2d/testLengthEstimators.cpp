@@ -84,8 +84,6 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
   typedef PointsRange::ConstIterator ConstIteratorOnPoints;
-  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > Tangent;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > Curvature;
 
 
   //Forme

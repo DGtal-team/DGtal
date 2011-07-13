@@ -56,9 +56,8 @@ namespace DGtal
    *
    *
    * @tparam TParametricShape a model of parametric shape.
-   * @tparam TConstIteratorOnPoints a model of CConstIteratorOnPoints.
    */
-  template <typename TParametricShape, typename TConstIteratorOnPoints>
+  template <typename TParametricShape>
   class ParametricShapeArcLengthFunctor
   {
     
@@ -69,7 +68,10 @@ namespace DGtal
     typedef TParametricShape ParametricShape;
 
     ///Type of const iterator on points.
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef typename TParametricShape::RealPoint RealPoint;
+    typedef typename TParametricShape::Point Point;
+    typedef typename TParametricShape::Point Vector;
+    typedef typename Point::Coordinate Integer;
 
     ///Type of the functor output.
     typedef double Quantity;
@@ -109,36 +111,49 @@ namespace DGtal
     }
 
    
-    /** .
-     * Compute the length between two iterator.
+    /** 
+     * Compute the arc length between two points.
      * 
-     * @param itb begin point
-     * @param ite end point
+     * @param aFirstPoint
+     * @param aSecondPoint
      * @param nbSamples number of samples used to approximate the
      * length (default= 1000 )
-     * @return the estimated arc length.c
+     * @return the estimated arc length
      */
-    Quantity operator()(const ConstIteratorOnPoints &itb,const ConstIteratorOnPoints &ite, 
-			const bool& isClosed = false, const unsigned int nbSamples = 10000)
+    Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint)
     {
-//TODO determining nbSamples from the bounding box size of the shape
+
       ASSERT(myShape);
-      if (isClosed) {
-        return myShape->arclength (0,2*M_PI,nbSamples); 
-      } else {
-        typename ParametricShape::RealPoint2D p = *itb;
-        ConstIteratorOnPoints i = itb;
-        ConstIteratorOnPoints j(i); ++j; 
-        for ( ; j != ite; ++i, ++j);
-        typename ParametricShape::RealPoint2D p2 = *i;  
-       
-        double t = myShape->parameter( p );
-        double t2 = myShape->parameter( p2 );
-        return myShape->arclength (t,t2,nbSamples); 
-      }
+
+      //determining nbSamples from the bounding box size of the shape
+      Vector v = myShape->getUpperBound() - myShape->getLowerBound();
+      double n = (double) IntegerTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
+      unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
+
+      //computes the angles
+      double t = myShape->parameter( aFirstPoint );  
+      double t2 = myShape->parameter( aSecondPoint );    
+      return myShape->arclength (t,t2,nbSamples); 
 
     }
     
+    /** 
+     * Compute the total length
+     * 
+     * @return the estimated length
+     */
+    Quantity operator()()
+    {
+
+      ASSERT(myShape);
+
+      //determining nbSamples from the bounding box size of the shape
+      Vector v = myShape->getUpperBound() - myShape->getLowerBound();
+      double n = (double) IntegerTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
+      unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
+
+      return myShape->arclength (0,2*M_PI,nbSamples); 
+    }
 
     // ------------------------- Private Datas --------------------------------
   private:

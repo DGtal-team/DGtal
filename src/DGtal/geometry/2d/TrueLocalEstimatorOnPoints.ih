@@ -91,7 +91,9 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIte
   Quantity q;
   for(ConstIterator it = itb; it != ite; ++it)
     {
-      q = myFunctor(it);
+      RealPoint p( *it );
+      p *= myH;
+      q = myFunctor(p);
       *result++ = q;
     }
   
@@ -107,7 +109,9 @@ inline
 typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIterator& it)
 {
-  return myFunctor(it);
+  RealPoint p( *it );
+  p *= myH;
+  return myFunctor(p);
 }
 
 
