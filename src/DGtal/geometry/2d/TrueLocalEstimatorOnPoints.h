@@ -67,9 +67,11 @@ namespace DGtal
   public:
 
     typedef TConstIteratorOnPoints ConstIterator;
-    typedef TParametricShapeFunctor ParametricShapeFunctor;
+
     typedef TParametricShape ParametricShape;
+    typedef typename TParametricShape::RealPoint RealPoint;
     
+    typedef TParametricShapeFunctor ParametricShapeFunctor;
     typedef typename ParametricShapeFunctor::Quantity Quantity;
 
 

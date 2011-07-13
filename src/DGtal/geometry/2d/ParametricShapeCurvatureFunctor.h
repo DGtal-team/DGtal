@@ -58,9 +58,8 @@ namespace DGtal
    *
    *
    * @tparam TParametricShape a model of parametric shape.
-   * @tparam TConstIteratorOnPoints a model of CConstIteratorOnPoints.
    */
-  template <typename TParametricShape, typename TConstIteratorOnPoints>
+  template <typename TParametricShape>
   class ParametricShapeCurvatureFunctor
   {
     
@@ -70,8 +69,8 @@ namespace DGtal
     ///Type of parametric shape.
     typedef TParametricShape ParametricShape;
 
-    ///Type of const iterator on points.
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    ///Type of points.
+    typedef typename TParametricShape::RealPoint RealPoint;
 
     ///Type of the functor output.
     typedef double Quantity;
@@ -112,19 +111,16 @@ namespace DGtal
 
    
     /** 
-     * Compute the curvature at a point specified by the
-     * ConstIteratorOnPoints.
-     *
+     * Computes the curvature at [aPoint]
      * 
-     * @param it the point at which the curvature is computed. 
-     * @return the tangent at (*it).
+     * @param aPoint the point at which the curvature is computed. 
+     * @return the curvature at [aPoint].
      */
-    Quantity operator()(const ConstIteratorOnPoints &it)
+    Quantity operator()(const RealPoint &aPoint)
     {
       ASSERT(myShape);
-      typename ParametricShape::RealPoint2D p = *it,  tangent, second;
-      double t = myShape->parameter( p );
-     
+
+      double t = myShape->parameter( aPoint );     
       return myShape->curvature( t );
     }
     

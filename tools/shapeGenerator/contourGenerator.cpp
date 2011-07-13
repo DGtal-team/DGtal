@@ -210,8 +210,8 @@ estimateGeometry(Shape& s,
                  vector<Quantity>& curvatures) {
 
   typedef typename Range::ConstIterator ConstIterator; 
-  typedef ParametricShapeTangentFunctor< Shape, ConstIterator > TangentFunctor;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIterator > CurvatureFunctor;
+  typedef ParametricShapeTangentFunctor< Shape > TangentFunctor;
+  typedef ParametricShapeCurvatureFunctor< Shape > CurvatureFunctor;
 
   for (ConstIterator i = r.begin(); i != r.end(); ++i) {
     Point p( *i ); 

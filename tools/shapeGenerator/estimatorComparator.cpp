@@ -250,8 +250,8 @@ compareShapeEstimators( const string & name,
     // Estimations
     // True values
 	std::cout << "# True values computation" << std::endl;  
-  typedef ParametricShapeTangentFunctor< Shape, ConstIteratorOnPoints > TangentFunctor;
-  typedef ParametricShapeCurvatureFunctor< Shape, ConstIteratorOnPoints > CurvatureFunctor;
+  typedef ParametricShapeTangentFunctor< Shape > TangentFunctor;
+  typedef ParametricShapeCurvatureFunctor< Shape > CurvatureFunctor;
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
       trueTangentEstimator;
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, CurvatureFunctor >  
