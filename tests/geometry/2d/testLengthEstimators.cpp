@@ -53,6 +53,7 @@
 #include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
 
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
+#include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
 #include "DGtal/geometry/2d/MLPLengthEstimator.h"
 #include "DGtal/geometry/2d/FPLengthEstimator.h"
 #include "DGtal/geometry/2d/DSSLengthEstimator.h"
@@ -131,6 +132,8 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     double trueValue = M_PI*2*radius;
     L1LengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > l1length;
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    TwoStepLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
+    locallength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     DSSLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > DSSlength;
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
@@ -141,8 +144,11 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     trace.info() << "#Estimations" <<std::endl;
     trace.info() << "#h true naive DSS MLP FP " <<std::endl;
     trace.info() << h << " " << trueValue  
-    << " " << l1length.eval() <<  " " << DSSlength.eval() 
-    << " " << MLPlength.eval() <<  " " << FPlength.eval() << std::endl;
+		 << " " << l1length.eval() 
+      		 << " " << locallength.eval() 
+		 <<  " " << DSSlength.eval() 
+		 << " " << MLPlength.eval() 
+		 <<  " " << FPlength.eval() << std::endl;
 
   }    
   catch ( InputException e )

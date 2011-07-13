@@ -68,7 +68,9 @@ template <typename T>
 inline
 void
 DGtal::L1LengthEstimator<T>::init(const double h, 
-     const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed)
+				  const ConstIterator& itb, 
+				  const ConstIterator& ite, 
+				  const bool& isClosed)
 {
   myH = h;
   myBeginIt = itb;
