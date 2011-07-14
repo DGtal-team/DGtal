@@ -1788,8 +1788,9 @@ sDirectIncident( const SCell & p, Dimension k ) const
   d.myPositive = POS;
   ASSERT( ( ! up ) || ( sKCoord( d, k ) < uKCoord( myCellUpper, k ) ) ); 
   ASSERT( (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( d, k ) ) ); 
-  if ( up ) ++d.myCoordinates[ k ];
-  else      --d.myCoordinates[ k ];
+  if ( up )  ++d.myCoordinates[ k ];
+  else  --d.myCoordinates[ k ];
+  
   return d;
 }
 //-----------------------------------------------------------------------------
@@ -1810,8 +1811,10 @@ sIndirectIncident( const SCell & p, Dimension k ) const
   d.myPositive = NEG;
   ASSERT( ( ! up ) || ( sKCoord( d, k ) < uKCoord( myCellUpper, k ) ) ); 
   ASSERT( (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( d, k ) ) ); 
+
   if ( up ) ++d.myCoordinates[ k ];
-  else      --d.myCoordinates[ k ];
+  else --d.myCoordinates[ k ];
+  
   return d;
 }
 
