@@ -16,56 +16,45 @@
 /**
  * @file curvatureBC.cpp
  * @ingroup Tools
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
- * France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2011/07/13
+ * @date 2011/07/14
  *
- * Output the curvature of the Freeman code of a grid curve
+ * Output the tangent of the Freeman code of a grid curve
  * using the Binomial convolver
  * 
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cmath>
 #include <iostream>
+#include <vector>
+#include <string>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
+
 
 #include "DGtal/base/Common.h"
 
-#include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/kernel/RealPointVector.h"
+
+// #include "DGtal/helpers/ShapeFactory.h"
+// #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/ContourHelper.h"
-#include "DGtal/helpers/Surfaces.h"
+// #include "DGtal/helpers/Surfaces.h"
 
 //Grid curve
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //Estimators
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
-
 #include "DGtal/geometry/2d/BinomialConvolver.h"
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
-
-
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
-
-#include <vector>
-#include <string>
 
 using namespace DGtal;
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;
@@ -86,9 +75,10 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
     {
-      trace.info()<< "Curvature using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
-		  << "\t curvatureBC [options] --FreemanChain  <fileName> "<<std::endl
-		  << general_opt << "\n";
+      trace.info()<< "Tangent using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
+		  << "\t tangentBC [options] --FreemanChain  <fileName> "<<std::endl
+		  << general_opt << "\n"
+		  << "NB: the file may contain several freeman chains." << "\n";
       return 0;
     }
   
@@ -102,13 +92,14 @@ int main( int argc, char** argv )
 
     typedef Z2i::Space Space; 
     typedef Space::Point Point; 
+    typedef RealPointVector<2> RealPoint; 
     typedef Space::Integer Integer;  
     typedef FreemanChain<Integer> FreemanChain; 
     typedef vector< Point > Storage;
     typedef Storage::const_iterator ConstIteratorOnPoints; 
 
-    vector< FreemanChain > vectFcs =  PointListReader< Point >:: getFreemanChainsFromFile<Integer> (fileName); 
-   
+    vector< FreemanChain > vectFcs =  
+      PointListReader< Point >:: getFreemanChainsFromFile<Integer> (fileName); 
 
     for(unsigned int i=0; i<vectFcs.size(); i++){
 
@@ -124,28 +115,36 @@ int main( int argc, char** argv )
       typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
       std::cout << "# mask size = " << 
       MyBinomialConvolver::suggestedSize( h, vectPts.begin(), vectPts.end() ) << std::endl;
-      typedef CurvatureFromBinomialConvolverFunctor< MyBinomialConvolver, double >
-      CurvatureBCFct;
-      BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
+      typedef 
+	TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
+	TangentBCFct;
+      BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> 
+	BCTangentEstimator;
 
-      BCCurvatureEstimator.init( h, vectPts.begin(), vectPts.end(), isClosed );
+      BCTangentEstimator.init( h, vectPts.begin(), vectPts.end(), isClosed );
 
-      vector <double> curvatures( vectPts.size() ); 
-      BCCurvatureEstimator.eval( vectPts.begin(), vectPts.end(), curvatures.begin() ); 
+      vector<RealPoint> tangents( vectPts.size() ); 
+      BCTangentEstimator.eval( vectPts.begin(), vectPts.end(), 
+			       tangents.begin() ); 
 
       // Output
-      cout << "# id curvature" << endl;  
+      cout << "# id tangent.x tangent.y angle(atan2(y,x))" << endl;  
       unsigned int j = 0;
-      for ( ConstIteratorOnPoints it = vectPts.begin(), it_end = vectPts.end();
-	    it != it_end; ++it, ++j ) {
-	cout << j << setprecision( 15 )
-	     << " " << curvatures[ j ] << endl;
-      }
+      for ( ConstIteratorOnPoints 
+	      it = vectPts.begin(), it_end = vectPts.end();
+	    it != it_end; ++it, ++j ) 
+	{
+	  double x = tangents[ j ][ 0 ];
+	  double y = tangents[ j ][ 1 ];
+	  cout << j << setprecision( 15 )
+	       << " " << x << " " << y 
+	       << " " << atan2( y, x )
+	       << endl;
+	}
 
-   }
+    }
 
- }
- 
+  }
   return 0;
 }
 
