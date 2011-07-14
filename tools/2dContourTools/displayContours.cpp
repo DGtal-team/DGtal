@@ -161,7 +161,7 @@ if(vm.count("backgroundImage")){
    vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
    //aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
    aBoard << CustomStyle( vectFc.at(0).styleName(), 
-			  new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+			  new CustomColors( DGtalBoard::Color::Black  ,  DGtalBoard::Color::None ) );    
    for(unsigned int i=0; i<vectFc.size(); i++){
      aBoard <<  vectFc.at(i) ;
 
@@ -183,7 +183,7 @@ if(vm.count("backgroundImage")){
 
           //Segmentation
 	        DSS4 computer;
-          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,true );
+          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
@@ -192,7 +192,7 @@ if(vm.count("backgroundImage")){
             {
 			        DSS4 segment(*i);
 			        aBoard << CustomStyle( styleName, 
-												             new CustomPenColor( DGtalBoard::Color::Black ) ); 
+												             new CustomPenColor( DGtalBoard::Color::Gray ) ); 
 						  aBoard << segment; // draw each segment
             } 
 
@@ -203,7 +203,7 @@ if(vm.count("backgroundImage")){
 
           //Segmentation
 	        DSS4 computer;
-          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,true );
+          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
 
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
@@ -221,7 +221,7 @@ if(vm.count("backgroundImage")){
        } else if (processingName == "FP") {
 
 	        typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
-	        FP theFP( vPts.begin(),vPts.end(),true );
+	        FP theFP( vPts.begin(),vPts.end(),isClosed );
           aBoard << CustomStyle( theFP.styleName(), 
 												             new CustomPenColor( DGtalBoard::Color::Black ) ); 
           aBoard << theFP;
@@ -230,7 +230,7 @@ if(vm.count("backgroundImage")){
        } else if (processingName == "MLP") {
 
 	        typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
-	        FP theFP( vPts.begin(),vPts.end(),true );
+	        FP theFP( vPts.begin(),vPts.end(),isClosed );
 
           vector<FP::RealPoint> v( theFP.size() );
           theFP.copyMLP( v.begin() );
@@ -242,7 +242,7 @@ if(vm.count("backgroundImage")){
 			        FP::RealPoint p = (*i);
 			        polyline.push_back(LibBoard::Point(p[0],p[1]));
 	        }
-          if (true) {
+          if (isClosed) {
 	          FP::RealPoint p = (*v.begin());
 	          polyline.push_back(LibBoard::Point(p[0],p[1]));
           }
