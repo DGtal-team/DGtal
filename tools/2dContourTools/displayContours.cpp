@@ -31,11 +31,14 @@
 
 #include "DGtal/base/Common.h"
 
+#include "DGtal/helpers/StdDefs.h"
+
 #include "DGtal/helpers/ShapeFactory.h"
 #include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/Surfaces.h"
 #include "DGtal/helpers/ContourHelper.h"
 
+//image
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -43,21 +46,28 @@
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/DGtalBoard.h"
 
-#include "DGtal/kernel/RealPointVector.h"
 
 #ifdef WITH_MAGICK
 #include "DGtal/io/readers/MagickReader.h"
 #endif
 
+
+//contour
+#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
+//processing
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/MaximalSegments.h"
+#include "DGtal/geometry/2d/FP.h"
 
-#include "DGtal/helpers/Surfaces.h"
-
+//boost
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 
+//STL
 #include <vector>
 #include <string>
 
@@ -79,7 +89,8 @@ int main( int argc, char** argv )
     ("SDP", po::value<std::string>(), "Import a contour as a Sequence of Discrete Points (SDP format)")
     ("SFP", po::value<std::string>(), "Import a contour as a Sequence of Floating Points (SFP format)")
     ("drawContourPoint", po::value<double>(), "<size> display contour points as disk of radius <size>")    
-    ("lineWidth", po::value<double>()->default_value(1.0), "Define the linewidth of the contour (SDP format)")    
+    ("lineWidth", po::value<double>()->default_value(1.0), "Define the linewidth of the contour (SDP format)") 
+    ("withProcessing", po::value<std::string>(), "Processing (used only with --FreemanChain):\n\t DSS segmentation {DSS}\n\t  Maximal segments {MS}\n\t Faithful Polygon {FP}\n\t Minimum Length Polygon {MLP}")   
     ("outputEPS", po::value<std::string>(), " <filename> specify eps format (default format output.eps)")
     ("outputSVG", po::value<std::string>(), " <filename> specify svg format.")
     ("outputFIG", po::value<std::string>(), " <filename> specify fig format.")
@@ -103,7 +114,7 @@ int main( int argc, char** argv )
 				   not(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
-		  << "\t displayContours [options] --FreemanChain  <fileName>  contours.fc --imageName image.png "<<std::endl
+		  << "\t displayContours [options] --FreemanChain  <fileName>  --imageName image.png "<<std::endl
 		  << general_opt << "\n";
       return 0;
     }
@@ -148,12 +159,104 @@ if(vm.count("backgroundImage")){
  if(vm.count("FreemanChain")){
    string fileName = vm["FreemanChain"].as<string>();
    vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
-   aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
+   //aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
    aBoard << CustomStyle( vectFc.at(0).styleName(), 
 			  new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
    for(unsigned int i=0; i<vectFc.size(); i++){
      aBoard <<  vectFc.at(i) ;
+
+     if(vm.count("withProcessing")){
+       std::string processingName = vm["withProcessing"].as<std::string>();
+
+       vector<Z2i::Point> vPts(vectFc.at(i).size()+1); 
+       copy ( vectFc.at(i).begin(), vectFc.at(i).end(), vPts.begin() ); 
+       bool isClosed;
+       if ( vPts.at(0) == vPts.at(vPts.size()-1) ) { 
+          isClosed = true;
+          vPts.pop_back(); 
+       } else isClosed = false;
+
+       if (processingName == "DSS") {
+
+          typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
+          typedef GreedyDecomposition<DSS4> Decomposition4;
+
+          //Segmentation
+	        DSS4 computer;
+          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,true );
+          //for each segment
+          aBoard << SetMode( computer.styleName(), "BoundingBox" );
+          string styleName = computer.styleName() + "/BoundingBox";
+          for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
+	                                              i != theDecomposition.end(); ++i ) 
+            {
+			        DSS4 segment(*i);
+			        aBoard << CustomStyle( styleName, 
+												             new CustomPenColor( DGtalBoard::Color::Black ) ); 
+						  aBoard << segment; // draw each segment
+            } 
+
+       } else if (processingName == "MS") {
+
+          typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
+          typedef MaximalSegments<DSS4> Decomposition4;
+
+          //Segmentation
+	        DSS4 computer;
+          Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,true );
+
+          //for each segment
+          aBoard << SetMode( computer.styleName(), "BoundingBox" );
+          string styleName = computer.styleName() + "/BoundingBox";
+          for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
+	                                              i != theDecomposition.end(); ++i ) 
+            {
+			        DSS4 segment(*i);
+			        aBoard << CustomStyle( styleName, 
+												             new CustomPenColor( DGtalBoard::Color::Black ) ); 
+						  aBoard << segment; // draw each segment
+            } 
+
+
+       } else if (processingName == "FP") {
+
+	        typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
+	        FP theFP( vPts.begin(),vPts.end(),true );
+          aBoard << CustomStyle( theFP.styleName(), 
+												             new CustomPenColor( DGtalBoard::Color::Black ) ); 
+          aBoard << theFP;
+
+
+       } else if (processingName == "MLP") {
+
+	        typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
+	        FP theFP( vPts.begin(),vPts.end(),true );
+
+          vector<FP::RealPoint> v( theFP.size() );
+          theFP.copyMLP( v.begin() );
+
+          //polyline to draw
+	        vector<LibBoard::Point> polyline;
+	        vector<FP::RealPoint>::const_iterator i = v.begin();
+	        for ( ;i != v.end();++i) {
+			        FP::RealPoint p = (*i);
+			        polyline.push_back(LibBoard::Point(p[0],p[1]));
+	        }
+          if (true) {
+	          FP::RealPoint p = (*v.begin());
+	          polyline.push_back(LibBoard::Point(p[0],p[1]));
+          }
+          aBoard.setPenColor(DGtalBoard::Color::Black);
+          aBoard.drawPolyline(polyline);
+
+       }
+
+     }
+
    }
+
+
+
  }
  
  
@@ -206,7 +309,6 @@ if(vm.count("SDP") || vm.count("SFP")){
  
 
 
-  string outputFileName= "output.eps";
 
   
 
@@ -214,37 +316,34 @@ if(vm.count("SDP") || vm.count("SFP")){
   if (vm.count("outputSVG")){
     string outputFileName= vm["outputSVG"].as<string>();
     aBoard.saveSVG(outputFileName.c_str());
-  }
-  
+  } else   
   if (vm.count("outputFIG")){
     string outputFileName= vm["outputFIG"].as<string>();
     aBoard.saveFIG(outputFileName.c_str());
-  }
-#ifndef WITH_CAIRO
+  } else
   if (vm.count("outputEPS")){
     string outputFileName= vm["outputEPS"].as<string>();
     aBoard.saveEPS(outputFileName.c_str());
   }  
-#endif
-
 #ifdef WITH_CAIRO
+  else
   if (vm.count("outputEPS")){
     string outputFileName= vm["outputEPS"].as<string>();
     aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoEPS );
-  }
+  } else 
   if (vm.count("outputPDF")){
     string outputFileName= vm["outputPDF"].as<string>();
     aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPDF );
-  }
+  } else 
   if (vm.count("outputPNG")){
     string outputFileName= vm["outputPNG"].as<string>();
     aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPNG );
   }
 #endif
-
-
-  
-
+  else { //default output
+    string outputFileName= "output.eps";
+    aBoard.saveEPS(outputFileName.c_str());
+  }
 	
 }
 

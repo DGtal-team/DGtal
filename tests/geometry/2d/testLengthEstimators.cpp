@@ -118,10 +118,10 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     // Getting the consecutive surfels of the 2D boundary
     std::vector<Point> points;
     Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+    trace.info() << "# tracking..." << endl;
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
-
     trace.info() << "#grid curve created, h=" << h << endl;
 
     //ranges
@@ -142,10 +142,10 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
 
     trace.info() << "#Estimations" <<std::endl;
-    trace.info() << "#h true naive DSS MLP FP " <<std::endl;
+    trace.info() << "#h true naive weigthed DSS MLP FP " <<std::endl;
     trace.info() << h << " " << trueValue  
 		 << " " << l1length.eval() 
-      		 << " " << locallength.eval() 
+     << " " << locallength.eval() 
 		 <<  " " << DSSlength.eval() 
 		 << " " << MLPlength.eval() 
 		 <<  " " << FPlength.eval() << std::endl;
