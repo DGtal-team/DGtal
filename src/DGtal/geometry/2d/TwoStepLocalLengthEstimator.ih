@@ -82,10 +82,11 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval() const
   unsigned int nbDiag=0;
 
   Quantity val = 0;
-   
+
+
   for ( ConstIterator i = myBeginIt;  i != myEndIt; ++i) 
     trace.info()<< (*i).first <<std::endl;//i->first<<" "<<i->second <<std::endl;
-  
+
    
   return val*myH;
 }

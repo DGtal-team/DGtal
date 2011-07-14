@@ -74,37 +74,65 @@ DGtal::GridCurve<KSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector&
 */
 template <typename KSpace>
 inline
-void
-DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoints )  throw(ConnectivityException) {
+bool
+DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) {
 
-  typename std::vector<Point>::const_iterator i, j; 
+/*
+  //TODO in nd
+  //bounding box computation (2d) to init KSpace
+  typename std::vector<Point>::const_iterator it = aVectorOfPoints.begin();
+  typename Point::Coordinate xmin, xmax, ymin, ymax;
+  xmin = xmax = (*it)[0]; ymin = ymax = (*it)[0];
+  for (; it != aVectorOfPoints.end(); ++it ) {
+      Point p(*it); 
+      typename Point::Coordinate x = p[0];
+      typename Point::Coordinate y = p[1];
+      if ( x < xmin ) xmin = x;
+      if ( x > xmax ) xmax = x;
+      if ( y < ymin ) ymin = y;
+      if ( y > ymax ) ymax = y;
+  }
+  Point up(xmax+1,ymax+1);
+  Point low(xmin-2,ymin-2);
+  std::cout << low << up << std::endl;
+  if ( myK.init(low,up,true) ) {
+*/
+    //create sequence of grid points and grid edges
+    typename std::vector<Point>::const_iterator i, j; 
 
-  i = aVectorOfPoints.begin();
-  j = i; ++j;
+    i = aVectorOfPoints.begin();
+    j = i; ++j;
 
-  for ( ; j != aVectorOfPoints.end(); ++i, ++j) {
+    for ( ; j != aVectorOfPoints.end(); ++i, ++j) {
 
-    Point p = *i; 
-    Vector v = *j - p;
+      Point p = *i; 
+      Vector v = *j - p;
 
-    if (v.norm(Vector::L_1) != 1) { //disconnected !
-	    throw ConnectivityException(); 
+      if (v.norm(Vector::L_1) != 1) { //disconnected !
+	      throw ConnectivityException(); 
+      }
+
+      my0SCells.push_back( PointTo0SCell(p) );
+      my1SCells.push_back( PointVectorTo1SCell(p,v) );
     }
 
-    my0SCells.push_back( PointTo0SCell(p) );
-    my1SCells.push_back( PointVectorTo1SCell(p,v) );
-  }
 
+    Point first = *aVectorOfPoints.begin();
+    Point last = *i;
+    Vector v(first - last); 
+    if (v.norm(Vector::L_1) == 1) {               
+      my1SCells.push_back( PointVectorTo1SCell(last,v) );
+      my0SCells.push_back( PointTo0SCell(last) );
+    } else if (first != last) {
+      my0SCells.push_back( PointTo0SCell(last) );
+    }
 
-  Point first = *aVectorOfPoints.begin();
-  Point last = *i;
-  Vector v(first - last); 
-  if (v.norm(Vector::L_1) == 1) {               
-    my1SCells.push_back( PointVectorTo1SCell(last,v) );
-    my0SCells.push_back( PointTo0SCell(last) );
-  } else if (first != last) {
-    my0SCells.push_back( PointTo0SCell(last) );
+    return true;
+/*
+  } else {
+    return false;
   }
+*/
 }
 
 /**
@@ -113,7 +141,7 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point> aVectorOfPoin
  */
 template <typename KSpace>
 inline
-void
+bool
 DGtal::GridCurve<KSpace>::initFromVectorStream(std::istream & in ) {
 
   std::vector<Point> v = PointListReader<Point>
@@ -122,21 +150,11 @@ DGtal::GridCurve<KSpace>::initFromVectorStream(std::istream & in ) {
   if (v.size() == 0) throw IOException(); 
 
   try {
-    DGtal::GridCurve<KSpace>::initFromVector(v);
+    return DGtal::GridCurve<KSpace>::initFromVector(v);
   } catch (DGtal::ConnectivityException& e) {
-    throw ConnectivityException(); 
+    throw ConnectivityException();
+    return false; 
   }
-}
-
-/**
-* Init.
-* @param in any input stream,
-*/
-template <typename KSpace>
-inline
-void
-DGtal::GridCurve<KSpace>::initFromFreemanChainStream(std::istream & in ) throw(InputException) {
-    ASSERT( (Point::dimension == 2) );
 }
 
 /**
