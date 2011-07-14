@@ -109,9 +109,13 @@ namespace DGtal
      */
     ~GridCurve(){};
 
-
     /**
      * Constructor.
+     */
+    GridCurve(const KSpace& aKSpace) : myK(aKSpace) {};
+
+    /**
+     * Default Constructor.
      */
     GridCurve(){};
 
@@ -120,19 +124,14 @@ namespace DGtal
      * Init.
      * @param aVectorOfPoints the vector containing the sequence of grid points. 
      */
-    void initFromVector( const std::vector<Point> aVectorOfPoints ) throw(ConnectivityException);
+    bool initFromVector( const std::vector<Point>& aVectorOfPoints ) throw(ConnectivityException);
 
     /**
      * Init.
      * @param in any input stream,
      */
-    void initFromVectorStream(std::istream & in );
+    bool initFromVectorStream(std::istream & in );
 
-    /**
-     * Init.
-     * @param in any input stream,
-     */
-    void initFromFreemanChainStream(std::istream & in ) throw(InputException);
 
     /**
      * Outputs the grid curve to the stream [out].
@@ -477,6 +476,7 @@ namespace DGtal
 	          if ( this != &other )
 	            {
 	              myIt = other.myIt;
+                myC = other.myC;
 	            }
 	          return *this;
           }
@@ -760,6 +760,7 @@ namespace DGtal
 	          if ( this != &other )
 	            {
 	              myIt = other.myIt;
+                myC = other.myC;
 	            }
 	          return *this;
           }
@@ -1018,7 +1019,7 @@ namespace DGtal
           /**
            * Constructor.
            */
-          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnSCells it)
+          ConstIterator(const GridCurve* aGridCurve, const ConstIteratorOnSCells& it)
             : myC(aGridCurve),myIt(it) {}
 
           /**
@@ -1040,6 +1041,7 @@ namespace DGtal
 	          if ( this != &other )
 	            {
 	              myIt = other.myIt;
+                myC = other.myC; 
 	            }
 	          return *this;
           }
@@ -1059,6 +1061,8 @@ namespace DGtal
 	
           Arrow operator*() const
           {
+            ASSERT(myC);
+
             //starting point of the arrow
             SCell pointel( myC->myK.sIndirectIncident( *myIt, *myC->myK.sDirs( *myIt ) ) );
             Point p( myC->myK.sCoords( pointel ) );   //integer coordinates
@@ -1249,13 +1253,22 @@ namespace DGtal
 
 //TODO
 /**
-other ranges
+* other ranges
 - ArrowsRange operator*(): std::pair<Point,Vector> (integer coordinates of the pointel and the displacement vector associated to the following 1-cell)
 - IncidentSpelsRange operator*(): std::vector<Point> (integer coordinates of the spels incident to a given 1-cell)
-- CodesRange operator*(): {0,1,2,3} (only in 2D)
+- CodesRange operator*(): {0,1,2,3} (only in 2D using SFINAE)
+- InnerPointsRange, OuterPointsRange (only in 2D using SFINAE)
 
-set my0SCells,my1SCells private 
+* check the iterator + add operator-> and methods for random access iterator
+
+* set my0SCells,my1SCells private 
 and put GridCurve as a friend class in the ConstIterator classes
+
+* bounding box init for myK (in nd) ?
+and/or passing myK in the constructor
+
+* drawing: shift pb with dgtalboard in 2d / QGLviewer in 3d
+
 */
 
   }; // end of class GridCurve

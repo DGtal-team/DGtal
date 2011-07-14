@@ -491,6 +491,12 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( DGtalBoard & aBoa
 			polyline.push_back(LibBoard::Point(xp,yp));
 	}
 
+  if (myFlagIsClosed) {
+			Point p = (*myPolygon.begin());
+			double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
+			double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+			polyline.push_back(LibBoard::Point(xp,yp));
+  }
   aBoard.drawPolyline(polyline);
 
 }
