@@ -5,17 +5,58 @@
 #  DGTAL_LIBRARIES    - libraries to link against
  
 # Tell the user project where to find our headers and libraries
-set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@")
+set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@ @DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
  
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
 
+#------------------------------------------------
+#---- We propagate definitions for #define marco 
+#---- according to dependencies detected during 
+#---- the build.
+#------------------------------------------------
+IF(@GMP_FOUND_DGTAL@)
+  ADD_DEFINITIONS("-DWITH_GMP ")
+ENDIF(@GMP_FOUND_DGTAL@)
 
-#--------------------------------------------
-#ITK bugfix (we need explicit link_directory)
-#--------------------------------------------
-link_directories( @ITK_LIBRARY_DIRS@)
+IF(@MAGICK++_FOUND@)
+  ADD_DEFINITIONS("-DWITH_MAGICK ")
+ENDIF(@MAGICK++_FOUND@)
+
+IF(@ITK_FOUND@)
+  ADD_DEFINITIONS("-DWITH_ITK ")
+  #--------------------------------------------
+  #ITK bugfix (we need explicit link_directory)
+  #--------------------------------------------
+  link_directories( @ITK_LIBRARY_DIRS@)
+ENDIF(@ITK_FOUND@)
+
+IF(@CAIRO_FOUND@)
+  ADD_DEFINITIONS("-DWITH_CAIRO ")
+ENDIF(@CAIRO_FOUND@)
+
+#-- We force the Qt rediscovering
+IF(@QT4_FOUND_DGTAL@)
+  find_package(Qt4 REQUIRED COMPONENTS QtCore QtGUI QtXml QtOpenGL)
+  set(QT_USE_QTXML 1)
+  ADD_DEFINITIONS("-DWITH_QT4 ")
+  include( ${QT_USE_FILE})
+  SET(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} ${QT_INCLUDE_DIR} )
+ENDIF(@QT4_FOUND_DGTAL@)
+
+IF(@SOQT_FOUND_DGTAL@)
+  ADD_DEFINITIONS("-DWITH_SOQT ")
+ENDIF(@SOQT_FOUND_DGTAL@)
+
+IF ( @COIN3D_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @SOQT_FOUND_DGTAL@ )
+  ADD_DEFINITIONS("-DWITH_VISU3D_IV")
+ENDIF( @COIN3D_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @SOQT_FOUND_DGTAL@ )
+
+IF(@QGLVIEWER_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
+  ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
+ENDIF( @QGLVIEWER_FOUND_DGTAL@  AND @QT4_FOUND_DGTAL@ AND @QT_QTOPENGL_FOUND@)
+
 
  
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
