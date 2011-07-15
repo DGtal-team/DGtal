@@ -48,12 +48,10 @@
 #include <vector>
 #include <iterator>
 #include <cstddef>
+#include <utility>
 
-
-#include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/base/Exceptions.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -1070,7 +1068,7 @@ namespace DGtal
             //displacement vector
             Vector v( myC->myK.sKCoords( *myIt ) - myC->myK.sKCoords( pointel ) );
 
-           return std::make_pair<Point,Vector>(p,v);
+           return std::pair<Point,Vector>(p,v);
           }
 
           /**
