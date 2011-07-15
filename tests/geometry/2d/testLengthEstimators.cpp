@@ -54,6 +54,7 @@
 
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
 #include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
+#include "DGtal/geometry/2d/BLUELocalLengthEstimator.h"
 #include "DGtal/geometry/2d/MLPLengthEstimator.h"
 #include "DGtal/geometry/2d/FPLengthEstimator.h"
 #include "DGtal/geometry/2d/DSSLengthEstimator.h"
@@ -134,6 +135,8 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     TwoStepLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
     locallength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    BLUELocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > BLUElength;
+    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     DSSLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > DSSlength;
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
@@ -142,10 +145,11 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
 
     trace.info() << "#Estimations" <<std::endl;
-    trace.info() << "#h true naive weigthed DSS MLP FP " <<std::endl;
+    trace.info() << "#h true naive 1-sqrt(2) BLUE DSS MLP FP " <<std::endl;
     trace.info() << h << " " << trueValue  
 		 << " " << l1length.eval() 
-     << " " << locallength.eval() 
+		 << " " << locallength.eval() 
+		 << " " << BLUElength.eval() 
 		 <<  " " << DSSlength.eval() 
 		 << " " << MLPlength.eval() 
 		 <<  " " << FPlength.eval() << std::endl;

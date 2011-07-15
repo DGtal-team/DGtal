@@ -85,6 +85,7 @@ DGtal::L1LengthEstimator<T>::eval() const
 {
   ASSERT(myH > 0);
   ASSERT(myIsInitBefore);
+  ASSERT(myBeginIt != myEndIt);
 
   Quantity val = 0;
   
