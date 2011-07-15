@@ -38,7 +38,7 @@ ENDIF(@CAIRO_FOUND@)
 
 #-- We force the Qt rediscovering
 IF(@QT4_FOUND_DGTAL@)
-  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL)
+  find_package(Qt4 REQUIRED COMPONENTS QtCore QtGUI QtXml QtOpenGL)
   set(QT_USE_QTXML 1)
   ADD_DEFINITIONS("-DWITH_QT4 ")
   include( ${QT_USE_FILE})
