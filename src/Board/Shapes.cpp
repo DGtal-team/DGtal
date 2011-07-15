@@ -910,10 +910,12 @@ Arrow::flushCairo( cairo_t *cr,
       cairo_close_path (cr);
 
       if ( filled() )
+      {
 	if ( _penColor != Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
+      }
       
       //
       
@@ -1169,10 +1171,12 @@ Ellipse::flushCairo( cairo_t *cr,
     cairo_arc (cr, 0, 0, 1, 0, 2*M_PI);
     
     if ( filled() )
+    {
       if ( _penColor != Color::None )
 	cairo_fill_preserve (cr);
       else
 	cairo_fill (cr);
+    }
     
     //
     
@@ -1347,10 +1351,12 @@ Circle::flushCairo( cairo_t *cr,
 	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
 	
 	if ( filled() )
+	{
 	  if ( _penColor != Color::None )
 	    cairo_fill_preserve (cr);
 	  else
 	    cairo_fill (cr);
+	}
 	
 	//
 	
@@ -1398,10 +1404,12 @@ Arc::flushCairo( cairo_t *cr,
 	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
       
       if ( filled() )
+      {
 	if ( _penColor != Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
+      }
       
       //
       
@@ -1610,10 +1618,12 @@ Polyline::flushCairo( cairo_t *cr,
 	cairo_close_path (cr);
       
       if ( filled() )
+      {
 	if ( _penColor != Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
+      }
       
       //
       
@@ -1812,10 +1822,12 @@ Rectangle::flushCairo( cairo_t *cr,
       }
       
       if ( filled() )
+      {
 	if ( _penColor != Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
+      }
       
       //
       
