@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/OpInSTLContainers.h"
 #include "DGtal/geometry/2d/Point2ShapePredicate.h"
-#include "DGtal/io/color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
