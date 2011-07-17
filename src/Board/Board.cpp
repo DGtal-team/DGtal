@@ -13,6 +13,7 @@
  * See the LICENCE file for further details.
  */
 
+
 #include "Board.h"
 #include "Board/Point.h"
 #include "Board/Rect.h"

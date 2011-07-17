@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/CColorMap.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"

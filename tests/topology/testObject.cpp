@@ -45,6 +45,7 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -513,7 +514,7 @@ struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {
-    aboard.setFillColor( LibBoard::Color::Red);
+    aboard.setFillColor( Color::Red);
     aboard.setPenColorRGBi(200,0,0);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 2 );

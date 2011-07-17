@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "Board/Board.h"
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,20 +58,20 @@ namespace DGtal
    * 
    * The GrayscaleColorMap can be used either as a functor object
    * (the value range is given at the object's construction) which converts a value 
-   * into a LibBoard::Color structure, or it can be used through a static method
+   * into a Color structure, or it can be used through a static method
    * taking both the range and the value as parameters.
    *
    * The code below shows a possible use of this class.
    * @code
-   * #include "Board/Color.h"
+   * #include "DGtal/io/Color.h"
    * #include "GrayscaleColorMap.h"
    * // ...
    * {
    *   GrayscaleColorMap<float> grayShade(0.0f,1.0f);
-   *   LibBoard::Color white = grayShade(1.0f);
-   *   LibBoard::Color gray1 = grayShade(0.5f);
+   *   Color white = grayShade(1.0f);
+   *   Color gray1 = grayShade(0.5f);
    *   // Or, equivalently:
-   *   LibBoard::Color gray2 = GrayscaleColorMap<float>::getColor(0.0f,1.0f,0.5f);
+   *   Color gray2 = GrayscaleColorMap<float>::getColor(0.0f,1.0f,0.5f);
    * }
    * @endcode
    *
@@ -105,7 +105,7 @@ namespace DGtal
      * @return A gray level (as a Color) which linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValue & value ) const;
+    Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -166,7 +166,7 @@ namespace DGtal
      * @return A gray level (as a Color) which linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const PValue & min,
+    static Color getColor( const PValue & min,
 				     const PValue & max,
 				     const PValue & value );
     

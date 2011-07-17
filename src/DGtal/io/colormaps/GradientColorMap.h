@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "Board/Board.h"
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef DGTAL_RGB2INT
@@ -78,13 +78,13 @@ namespace DGtal
    * 
    * The GradientColorMap can be used either as a functor object
    * (the value range is given at the object's construction, together with the
-   * reference color) which converts a value into a LibBoard::Color structure,
+   * reference color) which converts a value into a Color structure,
    * or it can be used through a static method taking both the range and the
    * value as parameters.
    *
    * The code below shows a possible use of this class.
    * @code
-   * #include "Board/Color.h"
+   * #include "Color.h"
    * #include "GradientColorMap.h"
    * // ...
    * {
@@ -138,18 +138,18 @@ namespace DGtal
 		      const PValue & max,
 		      const ColorGradientPreset preset
 		      = static_cast<ColorGradientPreset>( PDefaultPreset ),
-		      const LibBoard::Color firstColor
+		      const Color firstColor
 		      = 
-		      ( PDefaultFirstColor == -1 ) ? LibBoard::Color::None :
-		      LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
-				       DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
-				       DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
-		      const LibBoard::Color lastColor
+		      ( PDefaultFirstColor == -1 ) ? Color::None :
+		      Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
+				    DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
+				    DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
+		      const Color lastColor
 		      = 
-		      ( PDefaultFirstColor == -1 ) ? LibBoard::Color::None :
-		      LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
-				       DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
-				       DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
+		      ( PDefaultFirstColor == -1 ) ? Color::None :
+		      Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
+				    DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
+				    DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
 		      );
     
     /** 
@@ -159,7 +159,7 @@ namespace DGtal
      * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValue & value ) const;
+    Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -193,7 +193,7 @@ namespace DGtal
      * 
      * @param color A color.
      */
-    void addColor( const LibBoard::Color & color );
+    void addColor( const Color & color );
 
     /**
      * Writes/Displays the object on an output stream.
@@ -233,7 +233,7 @@ namespace DGtal
      * @return A color whose color linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const std::vector<LibBoard::Color> & colors,
+    static Color getColor( const std::vector<Color> & colors,
 				     const PValue & min,
 				     const PValue & max,
 				     const PValue & value );
@@ -249,7 +249,7 @@ namespace DGtal
 
     PValue myMin;		/**< The lower bound of the value range.  */
     PValue myMax;           /**< The lower bound of the value range.  */
-    std::vector<LibBoard::Color> myColors;	/**< The gradients boundary colors. */
+    std::vector<Color> myColors;	/**< The gradients boundary colors. */
     
     /**
      * Constructor.

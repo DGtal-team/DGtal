@@ -45,7 +45,7 @@
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/images/CValue.h"
 #include "DGtal/base/Common.h"
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -114,7 +114,7 @@ namespace DGtal
     
     // ------------------------- Internals ------------------------------------
   private:
-    LibBoard::Color myColor;
+    Color myColor;
     Value myMin, myMax, myValue;    
   }; // end of concept CColorMap
   

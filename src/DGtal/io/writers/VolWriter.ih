@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <fstream>
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
   typename I::Value val;
   C colormap(minV,maxV);
-  LibBoard::Color col;
+  Color col;
   
   try
     {

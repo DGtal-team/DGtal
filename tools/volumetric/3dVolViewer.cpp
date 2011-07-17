@@ -34,7 +34,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/images/ImageSelector.h"
 
@@ -88,14 +88,14 @@ int main( int argc, char** argv )
 
  Domain domain(image.lowerBound(), image.upperBound());
  GradientColorMap<long> gradient( thresholdMin, thresholdMax);
- gradient.addColor(LibBoard::Color::Blue);
- gradient.addColor(LibBoard::Color::Green);
- gradient.addColor(LibBoard::Color::Yellow);
- gradient.addColor(LibBoard::Color::Red);
+ gradient.addColor(Color::Blue);
+ gradient.addColor(Color::Green);
+ gradient.addColor(Color::Yellow);
+ gradient.addColor(Color::Red);
  for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
    unsigned char  val= image( (*it) );     
    
-   LibBoard::Color c= gradient(val);
+   Color c= gradient(val);
    if(val<=thresholdMax && val >=thresholdMin){
      viewer <<  CustomColors3D(QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
 			       QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     

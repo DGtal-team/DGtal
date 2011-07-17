@@ -31,8 +31,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/images/ImageSelector.h"
 
 #include <boost/pending/disjoint_sets.hpp>
