@@ -93,7 +93,7 @@ DGtal::GrayscaleColorMap<Value>::max() const
 
 template<typename Value>
 inline
-LibBoard::Color
+Color
 DGtal::GrayscaleColorMap<Value>::operator()( const Value & value ) const
 {
   return GrayscaleColorMap<Value>::getColor( myMin, myMax, value );
@@ -129,7 +129,7 @@ DGtal::GrayscaleColorMap<Value>::isValid() const
 
 template <typename Value>
 inline
-LibBoard::Color
+Color
 DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
 					       const Value & max,
 					       const Value & value )
@@ -137,7 +137,7 @@ DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
   double range = static_cast<double>( max - min );
   double scale = static_cast<double>( value - min );
   unsigned char gray = static_cast<unsigned char>( 255.0 * ( scale / range  ) );
-  return LibBoard::Color( gray );
+  return Color( gray );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

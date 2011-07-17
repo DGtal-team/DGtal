@@ -67,6 +67,11 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     * Constructor.
+     * 
+     */
+
   
     Color( const unsigned int rgb, unsigned char alpha = 255 );
   
@@ -107,6 +112,7 @@ namespace DGtal
 
    unsigned char alpha() const ;
 
+    bool valid() const;
 
 
     /**
@@ -169,6 +175,22 @@ namespace DGtal
 
 
 
+   /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    //Color ( const Color & aColor );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    //   Color & operator= ( const Color & aColor );
+
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -180,29 +202,10 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Color();
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Color ( const Color & aColor );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Color & operator= ( const Color & aColor );
-
+ 
 
 
 

@@ -47,57 +47,57 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 ( const PValue & minV,
   const PValue & maxV,
   const ColorGradientPreset preset,
-  const LibBoard::Color firstColor,
-  const LibBoard::Color lastColor )
+  const Color firstColor,
+  const Color lastColor )
   : myMin( minV ), myMax( maxV )
 { 
   switch ( preset ) {
   case CMAP_GRAYSCALE:
-    myColors.push_back( LibBoard::Color::Black );
-    myColors.push_back( LibBoard::Color::White );
+    myColors.push_back( Color::Black );
+    myColors.push_back( Color::White );
     break;
   case CMAP_SPRING:
-    myColors.push_back( LibBoard::Color( 255, 0, 255 ));
-    myColors.push_back( LibBoard::Color( 255, 255, 0 ));
+    myColors.push_back( Color( 255, 0, 255 ));
+    myColors.push_back( Color( 255, 255, 0 ));
     break;
   case CMAP_SUMMER:
-    myColors.push_back( LibBoard::Color( 0, 132, 100 ));
-    myColors.push_back( LibBoard::Color( 255, 255, 100 ));
+    myColors.push_back( Color( 0, 132, 100 ));
+    myColors.push_back( Color( 255, 255, 100 ));
     break;
   case CMAP_AUTUMN:
-    myColors.push_back( LibBoard::Color( 255, 0, 0 ));
-    myColors.push_back( LibBoard::Color( 255, 255, 0));
+    myColors.push_back( Color( 255, 0, 0 ));
+    myColors.push_back( Color( 255, 255, 0));
     break;
   case CMAP_WINTER:
-    myColors.push_back( LibBoard::Color( 0, 0, 255 ));
-    myColors.push_back( LibBoard::Color( 0, 255, 132 ));
+    myColors.push_back( Color( 0, 0, 255 ));
+    myColors.push_back( Color( 0, 255, 132 ));
     break;
   case CMAP_COOL:
-    myColors.push_back( LibBoard::Color( 0, 255, 255 ));
-    myColors.push_back( LibBoard::Color( 255, 0, 255 ));
+    myColors.push_back( Color( 0, 255, 255 ));
+    myColors.push_back( Color( 255, 0, 255 ));
     break;
   case CMAP_COPPER:
-    myColors.push_back( LibBoard::Color( 0, 0, 0 ));
-    myColors.push_back( LibBoard::Color( 255, 198, 123 ));
+    myColors.push_back( Color( 0, 0, 0 ));
+    myColors.push_back( Color( 255, 198, 123 ));
     break;
   case CMAP_HOT:
-    myColors.push_back( LibBoard::Color::Black );
-    myColors.push_back( LibBoard::Color::Red );
-    myColors.push_back( LibBoard::Color( 255, 140, 0 ) );
-    myColors.push_back( LibBoard::Color::Yellow );
-    myColors.push_back( LibBoard::Color::White );
+    myColors.push_back( Color::Black );
+    myColors.push_back( Color::Red );
+    myColors.push_back( Color( 255, 140, 0 ) );
+    myColors.push_back( Color::Yellow );
+    myColors.push_back( Color::White );
     break;
   case CMAP_JET:
-    myColors.push_back( LibBoard::Color::Blue );
-    myColors.push_back( LibBoard::Color::Cyan );
-    myColors.push_back( LibBoard::Color::Yellow );
-    myColors.push_back( LibBoard::Color( 255, 140, 0 ) );
-    myColors.push_back( LibBoard::Color::Red );
-    myColors.push_back( LibBoard::Color( 132, 0, 0 ) );
+    myColors.push_back( Color::Blue );
+    myColors.push_back( Color::Cyan );
+    myColors.push_back( Color::Yellow );
+    myColors.push_back( Color( 255, 140, 0 ) );
+    myColors.push_back( Color::Red );
+    myColors.push_back( Color( 132, 0, 0 ) );
     break;
   case CMAP_CUSTOM:
-    if ( firstColor != LibBoard::Color::None
-	 && lastColor != LibBoard::Color::None ) {
+    if ( firstColor != Color::None
+	 && lastColor != Color::None ) {
       myColors.push_back( firstColor );
       myColors.push_back( lastColor );   
     }
@@ -152,7 +152,7 @@ template<typename PValue,
 inline
 void
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::addColor
-( const LibBoard::Color & color )
+( const Color & color )
 {
   myColors.push_back( color );
 }
@@ -195,7 +195,7 @@ template<typename PValue,
 	  int PDefaultFirstColor,
 	  int PDefaultLastColor >
 inline
-LibBoard::Color
+Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator()
   ( const Value & value ) const
 {
@@ -221,7 +221,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   out << "[GradientColorMap " 
       << " min=" << myMin
       << " max=" << myMax;
-  std::vector<LibBoard::Color>::iterator it = myColors.begin();
+  std::vector<Color>::iterator it = myColors.begin();
   while ( it != myColors.end() ) {
     out << " RGB(" 
 	<< it->red() << ","
@@ -252,22 +252,22 @@ template <typename PValue,
 	  int PDefaultFirstColor,
 	  int PDefaultLastColor >
 inline
-LibBoard::Color
+Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::getColor
-( const std::vector<LibBoard::Color> & colors,
+( const std::vector<Color> & colors,
   const Value & min,
   const Value & max,
   const Value & value )
 {
   if ( colors.size() < 2 )
-    return LibBoard::Color::None;
+    return Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
   const int intervals = colors.size() - 1;
   int upper_index = static_cast<int>( ceil( intervals * scale ) );
   if ( !upper_index ) // Special case when value == min.
     upper_index = 1;
-  const LibBoard::Color & firstColor = colors[ upper_index - 1 ];
-  const LibBoard::Color & lastColor = colors[ upper_index ];
+  const Color & firstColor = colors[ upper_index - 1 ];
+  const Color & lastColor = colors[ upper_index ];
   scale = ( scale * intervals ) - (upper_index - 1);
 
   const unsigned char red = static_cast<unsigned char>( firstColor.red() +
@@ -279,7 +279,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
 							 scale * ( lastColor.blue() - 
 								   firstColor.blue() ));
-  return LibBoard::Color( red, green, blue );
+  return Color( red, green, blue );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

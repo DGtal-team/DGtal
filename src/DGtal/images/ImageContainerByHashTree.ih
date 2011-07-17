@@ -819,7 +819,7 @@ namespace DGtal
     double np[2], nlen;
     if ( n )
     {
-      LibBoard::Color c;
+      Color c;
       c = cmap ( n->getObject() );
       board.setFillColorRGBi ( c.red(), c.green(), c.blue() );
 

@@ -37,6 +37,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
@@ -61,8 +62,8 @@ void addAxis( DGtalInventor<Space> & inventor,
 	      const Point & low,
 	      const Point & up,
 	      Dimension k, 
-	      const LibBoard::Color & c1,
-	      const LibBoard::Color & c2 )
+	      const DGtal::Color & c1,
+	      const DGtal::Color & c2 )
 {
   typedef DGtalInventor<Space>::Color Color;
   // @todo GradientColorMap seems to have a bug
@@ -74,7 +75,7 @@ void addAxis( DGtalInventor<Space> & inventor,
   for ( Point::Component x = low[ k ]; x <= up[ k ]; ++x )
     {
       p[ k ] = x;
-      LibBoard::Color c( cmap_grad( x - low[ k ] ) );
+      DGtal::Color c( cmap_grad( x - low[ k ] ) );
       inventor.setDiffuseColor( Color( c.red(), c.green(), c.blue() ) );
       inventor.drawPoint( p );
     }

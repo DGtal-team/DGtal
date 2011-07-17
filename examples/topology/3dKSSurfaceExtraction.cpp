@@ -38,7 +38,7 @@
 #include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Surfaces.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -106,17 +106,17 @@ int main( int argc, char** argv )
 
   // Each connected compoments are simply displayed with a specific color.
   GradientColorMap<long> gradient( 0,vectConnectedSCell.size());
-  gradient.addColor(LibBoard::Color::Red);
-  gradient.addColor(LibBoard::Color::Yellow);
-  gradient.addColor(LibBoard::Color::Green);
-  gradient.addColor(LibBoard::Color::Cyan);
-  gradient.addColor(LibBoard::Color::Blue);
-  gradient.addColor(LibBoard::Color::Magenta);
-  gradient.addColor(LibBoard::Color::Red);  
+  gradient.addColor(DGtal::Color::Red);
+  gradient.addColor(DGtal::Color::Yellow);
+  gradient.addColor(DGtal::Color::Green);
+  gradient.addColor(DGtal::Color::Cyan);
+  gradient.addColor(DGtal::Color::Blue);
+  gradient.addColor(DGtal::Color::Magenta);
+  gradient.addColor(DGtal::Color::Red);  
  
   
   for(uint i=0; i< vectConnectedSCell.size();i++){
-    LibBoard::Color c= gradient(i);
+    DGtal::Color c= gradient(i);
     viewer << CustomColors3D(QColor(250, 0,0), QColor(c.red(), 
 						      c.green(),
 						      c.blue()));

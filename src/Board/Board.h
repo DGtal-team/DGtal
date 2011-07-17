@@ -23,8 +23,10 @@
 #include "Board/Shapes.h"
 #include "Board/ShapeList.h"
 
-namespace LibBoard {
+#include "DGtal/io/Color.h"
 
+namespace LibBoard {
+  
 /** 
  * The Board class.
  * @brief Class for EPS, FIG or SVG drawings.
@@ -46,7 +48,7 @@ public:
    * 
    * @param backgroundColor A color for the drawing's background.
    */
-  Board( const Color & backgroundColor = Color::None );
+  Board( const DGtal::Color & backgroundColor = DGtal::Color::None );
 
   /** 
    * Copy constructor.
@@ -90,7 +92,7 @@ public:
    * 
    * @param color The board background color (may be Color::None).
    */
-  void clear( const Color & color = Color::None );
+  void clear( const DGtal::Color & color = DGtal::Color::None );
 
   /** 
    * Clears the board and set the background color from an RGB triple.
@@ -229,11 +231,11 @@ public:
    * @param depthValue The depth of the triangle.
    */
   void fillGouraudTriangle( const Point & p1,
-			    const Color & color1,
+			    const DGtal::Color & color1,
 			    const Point & p2,
-			    const Color & color2,
+			    const DGtal::Color & color2,
 			    const Point & p3,
-			    const Color & color3,
+			    const DGtal::Color & color3,
 			    unsigned char divisions = 3,
 			    int depthValue = -1 );
 
@@ -253,11 +255,11 @@ public:
    * @param depthValue 
    */
   void fillGouraudTriangle( const double x1, const double y1,
-			    const Color & color1,
+			    const DGtal::Color & color1,
 			    const double x2, const double y2, 
-			    const Color & color2,
+			    const DGtal::Color & color2,
 			    const double x3, const double y3,
-			    const Color & color3,
+			    const DGtal::Color & color3,
 			    unsigned char divisions = 3,
 			    int depthValue = -1 );
   
@@ -507,7 +509,7 @@ public:
    * @param color The pen color.
    * @return The board itself.
    */
-  Board & setPenColor( const Color & color );
+  Board & setPenColor( const DGtal::Color & color );
   
 
   /** 
@@ -542,7 +544,7 @@ public:
    * @param color The fill color.
    * @return The board itself.
    */
-  Board & setFillColor( const Color & color );
+  Board & setFillColor( const DGtal::Color & color );
   
   /** 
    * Changes the current line thickness (1/72 inche unit).
@@ -585,7 +587,7 @@ public:
    * 
    * @param color A color (may be Color::None).
    */
-  void backgroundColor( const Color & color );
+  void backgroundColor( const DGtal::Color & color );
 
   /** 
    * Draws the current drawing's bounding box as a rectangle.
@@ -776,8 +778,8 @@ public:
    * 
    */
   struct State {
-    Color penColor;		        /**< The pen color. */
-    Color fillColor;	   	    /**< The fill color. */
+    DGtal::Color penColor;		        /**< The pen color. */
+    DGtal::Color fillColor;	   	    /**< The fill color. */
     double lineWidth;		    /**< The line thickness. */
     Shape::LineStyle lineStyle;	/**< The line style. */
     Shape::LineCap lineCap;	    /**< The type of line extremities. */
@@ -791,7 +793,7 @@ public:
     void unit( Shape & shape ) {  shape.scaleAll( unitFactor ); }
   };
   State _state;			 /**< The current state. */
-  Color _backgroundColor;	 /**< The color of the background. */
+  DGtal::Color _backgroundColor;	 /**< The color of the background. */
   Path _clippingPath;
 };
 

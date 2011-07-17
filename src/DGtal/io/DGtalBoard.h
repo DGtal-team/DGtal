@@ -44,6 +44,8 @@
 #include "Board/Board.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/io/Color.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -80,7 +82,6 @@ namespace DGtal
      */
     typedef std::map< std::string, std::string > ModeMapping;
 
-    typedef LibBoard::Color Color;
     typedef LibBoard::Shape Shape;
 
     // ----------------------- Standard services ------------------------------
@@ -96,8 +97,8 @@ namespace DGtal
      * 
      * @param backgroundColor A color for the drawing's background.
      */
-    DGtalBoard( const DGtalBoard::Color & backgroundColor 
-		= DGtalBoard::Color::None );
+    DGtalBoard( const Color & backgroundColor 
+		= Color::None );
 
     /** 
      * Copy constructor.
@@ -296,8 +297,8 @@ namespace DGtal
    */
   struct CustomColors : public DrawableWithDGtalBoard
   {
-    DGtalBoard::Color myPenColor;
-    DGtalBoard::Color myFillColor;
+    Color myPenColor;
+    Color myFillColor;
 
     /**
      * Constructor.
@@ -305,8 +306,8 @@ namespace DGtal
      * @param penColor specifies the pen color.
      * @param fillColor specifies the fill color.
      */
-    CustomColors( const DGtalBoard::Color & penColor,
-		  const DGtalBoard::Color & fillColor )
+    CustomColors( const Color & penColor,
+		  const Color & fillColor )
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
@@ -330,14 +331,14 @@ namespace DGtal
    */
   struct CustomPenColor : public DrawableWithDGtalBoard
   {
-    DGtalBoard::Color myPenColor;
+    Color myPenColor;
 
     /**
      * Constructor.
      *
      * @param penColor specifies the pen color.
      */
-    CustomPenColor( const DGtalBoard::Color & penColor )
+    CustomPenColor( const Color & penColor )
       : myPenColor( penColor )
     {}
     
@@ -360,14 +361,14 @@ namespace DGtal
    */
   struct CustomFillColor : public DrawableWithDGtalBoard
   {
-    DGtalBoard::Color myFillColor;
+    Color myFillColor;
 
     /**
      * Constructor.
      *
      * @param fillColor specifies the fill color.
      */
-    CustomFillColor( const DGtalBoard::Color & fillColor )
+    CustomFillColor( const Color & fillColor )
       : myFillColor( fillColor )
     {}
     
@@ -391,8 +392,8 @@ namespace DGtal
    */
   struct CustomPen : public DrawableWithDGtalBoard
   {
-    DGtalBoard::Color myPenColor;
-    DGtalBoard::Color myFillColor;
+    Color myPenColor;
+    Color myFillColor;
     double myLineWidth;
     DGtalBoard::Shape::LineStyle myLineStyle; /**< The line style (solid, dashed, etc.). */
     DGtalBoard::Shape::LineCap myLineCap; /**< The linecap attribute. (The way line terminates.) */
@@ -416,8 +417,8 @@ namespace DGtal
      * @param lineJoin specifies the drawing line join (MiterJoin, RoundJoin, BevelJoin )
      *
      */
-    CustomPen( const DGtalBoard::Color & penColor,
-	       const DGtalBoard::Color & fillColor,
+    CustomPen( const Color & penColor,
+	       const Color & fillColor,
 	       double lineWidth = 1.0,
 	       DGtalBoard::Shape::LineStyle lineStyle = DGtalBoard::Shape::SolidStyle,
 	       DGtalBoard::Shape::LineCap lineCap = DGtalBoard::Shape::ButtCap,

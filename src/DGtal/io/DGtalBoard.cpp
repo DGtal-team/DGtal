@@ -55,7 +55,7 @@ DGtal::DGtalBoard::~DGtalBoard()
  * 
  * @param backgroundColor A color for the drawing's background.
  */
-DGtal::DGtalBoard::DGtalBoard( const LibBoard::Color & aBackgroundColor )
+DGtal::DGtalBoard::DGtalBoard( const Color & aBackgroundColor )
   : LibBoard::Board( aBackgroundColor ),
     myDomainDrawMode( GRID ),
     myDrawObjectAdjacencies( false ),

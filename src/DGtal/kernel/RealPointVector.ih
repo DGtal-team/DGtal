@@ -35,7 +35,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <DGtal/base/BasicFunctors.h>
-
+#include "DGtal/io/Color.h"
 //------------------------------------------------------------------------------
 
 
@@ -248,7 +248,7 @@ void
 DGtal::RealPointVector<dim>::selfDrawAsGrid( DGtalBoard & board ) const
 {
   ASSERT(dim == 2);
-  board.setPenColor(LibBoard::Color::Black);
+  board.setPenColor(Color::Black);
   board.fillCircle((float) this->myArray[0], 
 		   (float) this->myArray[1],0.1);
 }

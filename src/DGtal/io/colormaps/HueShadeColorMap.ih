@@ -106,7 +106,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::setCycles( int cycles )
 
 template<typename Value, int DefaultCycles>
 inline
-LibBoard::Color
+Color
 DGtal::HueShadeColorMap<Value,DefaultCycles>::operator()
   ( const Value & value ) const
 {
@@ -143,7 +143,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::isValid() const
 
 template <typename Value, int DefaultCycles>
 inline
-LibBoard::Color
+Color
 DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
 ( const unsigned int cycles,
   const Value & min,
@@ -154,9 +154,9 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
   const double hue = 360 * ( scale * cycles - floor(scale * cycles));
   double red, green, blue;
   HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
-  return LibBoard::Color( static_cast<int>( red * 255), 
-			  static_cast<int>( green * 255),
-			  static_cast<int>( blue * 255) );
+  return Color( static_cast<int>( red * 255), 
+		static_cast<int>( green * 255),
+		static_cast<int>( blue * 255) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

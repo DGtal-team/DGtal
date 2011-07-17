@@ -45,6 +45,7 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -513,7 +514,7 @@ struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 {
   virtual void selfDraw(DGtalBoard & aboard) const
   {
-    aboard.setFillColor( LibBoard::Color::Red);
+    aboard.setFillColor( Color::Red);
     aboard.setPenColorRGBi(200,0,0);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 2 );
@@ -522,8 +523,8 @@ struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 
 struct MyDrawStyleCustomFillColor : public DrawableWithDGtalBoard
 {
-  LibBoard::Color myColor;
-  MyDrawStyleCustomFillColor( const LibBoard::Color & c )
+  Color myColor;
+  MyDrawStyleCustomFillColor( const Color & c )
     : myColor( c )
   {}
   virtual void selfDraw(DGtalBoard & aboard) const
@@ -567,8 +568,8 @@ bool testSimplePoints2D()
   Object8_4 shape2( dt8_4, shape_set );
 
   GradientColorMap<int> cmap_grad( 0, 6 );
-  cmap_grad.addColor( LibBoard::Color( 128, 128, 255 ) );
-  cmap_grad.addColor( LibBoard::Color( 255, 255, 128 ) );
+  cmap_grad.addColor( Color( 128, 128, 255 ) );
+  cmap_grad.addColor( Color( 255, 255, 128 ) );
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);

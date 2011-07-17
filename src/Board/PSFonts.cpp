@@ -13,8 +13,7 @@
  */
 
 namespace LibBoard {
-
-const char * PSFontNames[] = {
+  const char * PSFontNames[] = {
   "Times-Roman",
   "Times-Italic",
   "Times-Bold",
