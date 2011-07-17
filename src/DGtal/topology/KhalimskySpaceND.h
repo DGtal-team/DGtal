@@ -155,7 +155,7 @@ namespace DGtal
       virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
 
-	//aBoard.setPenColor(DGtalBoard::Color::Black);
+	//aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
       }
       
@@ -291,7 +291,7 @@ namespace DGtal
     struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
       virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
       {
-	//aBoard.setPenColor(DGtalBoard::Color::Black);
+	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
       }
     };

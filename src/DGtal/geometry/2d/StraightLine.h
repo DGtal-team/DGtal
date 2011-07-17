@@ -159,7 +159,7 @@ private:
     {
       selfDrawStyle(LibBoard::Board & aBoard) 
       {
-				aBoard.setPenColor(DGtal::Color::Red);
+	aBoard.setPenColor(Color::Red);
       }
     };
 
