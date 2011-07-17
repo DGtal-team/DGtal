@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/io/color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
