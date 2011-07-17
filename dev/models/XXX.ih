@@ -49,7 +49,7 @@
  * @param object the object of class 'XXX' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 YYY::operator<< ( std::ostream & out,
                   const XXX & object )
