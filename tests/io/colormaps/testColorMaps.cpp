@@ -57,10 +57,10 @@ void addColorMapSample( const char * name,
   typedef typename TColorMap::Value Value;
   board.translate( 0, 15 );
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
-    board.setPenColor(Color::Black);
+    board.setPenColor(LibBoard::Color::Black);
     board.setFont( LibBoard::Fonts::Courier, 12 );	// todo with Cairo
     board.drawText( -150, 0, name );			// todo with Cairo
-    board.setPenColor(Color::None);
+    board.setPenColor(LibBoard::Color::None);
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
 			 10,
@@ -78,50 +78,50 @@ bool testGrayscaleColorMap()
   { 
     GrayscaleColorMap<unsigned char> cmap(0,255);
     
-    Color c0 = cmap(0);
+    LibBoard::Color c0 = cmap(0);
     trace.info(); 
     cerr << int(c0.red())
 	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
-    nbok += ( c0 == Color::Black );
+    nbok += ( c0 == LibBoard::Color::Black );
     
-    Color c128 = cmap(128);
+    LibBoard::Color c128 = cmap(128);
     trace.info(); 
     cerr << int(c128.red())
 	 << "," << int(c128.green()) << "," << int(c128.blue()) << std::endl;
-    nbok += ( c128 == Color(128,128,128) );
+    nbok += ( c128 == LibBoard::Color(128,128,128) );
     
-    Color c255 = cmap(255);
+    LibBoard::Color c255 = cmap(255);
     trace.info();
     cerr << int(c255.red())
 	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
-    nbok += ( c255 == Color::White );
+    nbok += ( c255 == LibBoard::Color::White );
   }
   trace.endBlock();
   
   trace.beginBlock("Colormap 64..128");
   {
     GrayscaleColorMap<unsigned char> cmap(64,128);
-    Color c0 = cmap(64);
+    LibBoard::Color c0 = cmap(64);
     trace.info();
     cerr << int(c0.red())
 	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
-    nbok += ( c0 == Color::Black );
+    nbok += ( c0 == LibBoard::Color::Black );
 
-    Color c255 = cmap(128);
+    LibBoard::Color c255 = cmap(128);
     trace.info(); 
     cerr << int(c255.red())
 	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
-    nbok += ( c255 == Color::White );    
+    nbok += ( c255 == LibBoard::Color::White );    
   }
   trace.endBlock();
 
   trace.beginBlock("Static method");
   {
-    Color c = GrayscaleColorMap<unsigned char>::getColor(0,128,128);
+    LibBoard::Color c = GrayscaleColorMap<unsigned char>::getColor(0,128,128);
     trace.info() << "Should be white: ";
     cerr << int(c.red())
 	 << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
-    nbok += (c == Color::White);
+    nbok += (c == LibBoard::Color::White);
 
     c = GrayscaleColorMap<unsigned char>::getColor(0,128,64);
     trace.info() << "Should be around 127,127,127: ";
@@ -144,7 +144,7 @@ int main()
   GrayscaleColorMap<int> cmap_gray( 0, 500);
   addColorMapSample( "Grayscale", cmap_gray, 1, board );
 
-  ColorBrightnessColorMap<int> cmap_red( 0, 500, Color::Red );
+  ColorBrightnessColorMap<int> cmap_red( 0, 500, LibBoard::Color::Red );
   addColorMapSample( "Brightness", cmap_red, 1, board );
 
   ColorBrightnessColorMap<int, DGTAL_RGB2INT(0,0,255) > cmap_blue( 0, 500 );
@@ -165,15 +165,15 @@ int main()
   addColorMapSample( "Gradient (Y->R)", cmap_gradient, 1, board );
 
   GradientColorMap<int> cmap_grad3( 0, 500 );
-  cmap_grad3.addColor( Color::Green );
-  cmap_grad3.addColor( Color::Yellow );
-  cmap_grad3.addColor( Color::Red );
+  cmap_grad3.addColor( LibBoard::Color::Green );
+  cmap_grad3.addColor( LibBoard::Color::Yellow );
+  cmap_grad3.addColor( LibBoard::Color::Red );
   addColorMapSample( "Gradient (G->Y->R)", cmap_grad3, 1, board );
 
   cmap_grad3.clearColors();
-  cmap_grad3.addColor( Color::Blue );
-  cmap_grad3.addColor( Color::White );
-  cmap_grad3.addColor( Color::Red );
+  cmap_grad3.addColor( LibBoard::Color::Blue );
+  cmap_grad3.addColor( LibBoard::Color::White );
+  cmap_grad3.addColor( LibBoard::Color::Red );
   addColorMapSample( "Gradient (B->W->R)", cmap_grad3, 1, board );
 
   GradientColorMap<int> cool_gradient( 0, 500, CMAP_COOL );
