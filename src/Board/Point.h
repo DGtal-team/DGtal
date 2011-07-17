@@ -15,14 +15,17 @@
 #define _BOARD_POINT_H_
 
 #include <cmath>
+#include "DGtal/io/Color.h"
 
 namespace LibBoard {
+
 
 /**
  * The Point structure.
  * @brief Struct representing a 2D point. 
  */
 struct Point {
+  typedef DGtal::Color Color;
   double x;			/**< The point's first coordinate */
   double y;			/**< The point's second coordinate */
 

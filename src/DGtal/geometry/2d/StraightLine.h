@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/io/color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -158,7 +159,7 @@ private:
     {
       selfDrawStyle(LibBoard::Board & aBoard) 
       {
-				aBoard.setPenColor(LibBoard::Color::Red);
+				aBoard.setPenColor(DGtal::Color::Red);
       }
     };
 

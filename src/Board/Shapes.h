@@ -17,7 +17,6 @@
 #include "Board/Point.h"
 #include "Board/Rect.h"
 #include "Board/Path.h"
-#include "Board/Color.h"
 #include "Board/Transforms.h"
 #include "Board/PSFonts.h"
 #include "Board/Tools.h"
@@ -26,6 +25,8 @@
 #include <iostream>
 #include <map>
 #include <cmath>
+
+#include "DGtal/io/Color.h"
 
 #ifdef WITH_CAIRO
 // cairo
@@ -41,13 +42,14 @@
 #endif
 
 namespace LibBoard {
+  
 
 /**
  * Shape structure.
  * @brief Abstract structure for a 2D shape.
  */
 struct Shape {
-
+  typedef DGtal::Color Color;
   enum LineCap { ButtCap = 0, RoundCap, SquareCap };
   enum LineJoin { MiterJoin = 0, RoundJoin, BevelJoin };
   enum LineStyle { SolidStyle = 0,

@@ -42,7 +42,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "Board/Board.h"
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef DGTAL_RGB2INT
@@ -74,11 +74,11 @@ namespace DGtal
    * #include "ColorBrightnessColorMap.h"
    * // ...
    * {
-   *   ColorBrightnessColorMap<float> blueShade(0.0f,1.0f,LibBoard::Color::Blue);
-   *   LibBoard::Color red = blueShade(1.0f);
-   *   LibBoard::Color blue1 = blueShade(0.5f);
+   *   ColorBrightnessColorMap<float> blueShade(0.0f,1.0f,Color::Blue);
+   *   Color red = blueShade(1.0f);
+   *   Color blue1 = blueShade(0.5f);
    *   // Or, equivalently:
-   *   LibBoard::Color blue2 = ColorBrightnessColorMap<float>::getColor(LibBoard::Color::Blue,0.0f,1.0f,0.5f);
+   *   Color blue2 = ColorBrightnessColorMap<float>::getColor(Color::Blue,0.0f,1.0f,0.5f);
    * }
    * @endcode
    *
@@ -103,8 +103,8 @@ namespace DGtal
      */
     ColorBrightnessColorMap( const PValue & min,
 			     const PValue & max,
-			     const LibBoard::Color color
-			     = LibBoard::Color( DGTAL_RED_COMPONENT( PDefaultColor ),
+			     const Color color
+			     = Color( DGTAL_RED_COMPONENT( PDefaultColor ),
 						DGTAL_GREEN_COMPONENT( PDefaultColor ),
 						DGTAL_BLUE_COMPONENT( PDefaultColor ) ) );
     
@@ -115,7 +115,7 @@ namespace DGtal
      * @return A color whose brightness linearly depends on the 
      * position of [value] within the current range.
      */
-    LibBoard::Color operator()( const PValue & value ) const;
+    Color operator()( const PValue & value ) const;
       
     /**
      * Destructor.
@@ -177,7 +177,7 @@ namespace DGtal
      * @return A color whose brightness linearly depends on the 
      * position of [value] within the range [min]..[max]. 
      */
-    static LibBoard::Color getColor( const LibBoard::Color color,
+    static Color getColor( const Color color,
 				     const PValue & min,
 				     const PValue & max,
 				     const PValue & value );
@@ -193,7 +193,7 @@ namespace DGtal
 
     PValue myMin;		/**< The lower bound of the value range.  */
     PValue myMax;            /**< The lower bound of the value range.  */
-    LibBoard::Color myColor;	/**< The color of the upper bound value. */
+    Color myColor;	/**< The color of the upper bound value. */
     
     /**
      * Constructor.

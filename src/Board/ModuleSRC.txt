@@ -1,7 +1,6 @@
 
 SET(BOARD_SRC ${BOARD_SRC}
   Board/Board
-  Board/Color
   Board/Path
   Board/PSFonts
   Board/Rect

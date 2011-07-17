@@ -39,7 +39,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 
-#include "Board/Color.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -151,13 +151,13 @@ int main( int argc, char** argv )
      
      
   GradientColorMap<long> gradient( 0,30);
-  gradient.addColor(LibBoard::Color::Red);
-  gradient.addColor(LibBoard::Color::Yellow);
-  gradient.addColor(LibBoard::Color::Green);
-  gradient.addColor(LibBoard::Color::Cyan);
-  gradient.addColor(LibBoard::Color::Blue);
-  gradient.addColor(LibBoard::Color::Magenta);
-  gradient.addColor(LibBoard::Color::Red);  
+  gradient.addColor(Color::Red);
+  gradient.addColor(Color::Yellow);
+  gradient.addColor(Color::Green);
+  gradient.addColor(Color::Cyan);
+  gradient.addColor(Color::Blue);
+  gradient.addColor(Color::Magenta);
+  gradient.addColor(Color::Red);  
  
 
   viewer << SetMode3D( (*(domain.begin())).styleName(), "Paving" );
@@ -167,7 +167,7 @@ int main( int argc, char** argv )
      ++it){
    
    unsigned int valDist= resultL1( (*it) );     
-   LibBoard::Color c= gradient(valDist);
+   Color c= gradient(valDist);
    
    if(resultL1(*it)<=30 ){
      viewer << CustomColors3D(QColor((float)(c.red()), 

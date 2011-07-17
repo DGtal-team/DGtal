@@ -99,7 +99,7 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board,
   ASSERT(D::dimension == 2);
 
   Colormap colormap(minV, maxV);
-  LibBoard::Color c;
+  Color c;
   V val;
   D domain(myLowerBound, myUpperBound);
 

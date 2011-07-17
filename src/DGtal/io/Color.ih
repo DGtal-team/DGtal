@@ -126,6 +126,12 @@ DGtal::Color::alpha() const
 } 
 
 
+inline 
+bool 
+DGtal::Color::valid() const 
+{ 
+  return (*this) != Color::None;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

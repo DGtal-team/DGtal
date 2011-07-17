@@ -35,6 +35,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <DGtal/base/BasicFunctors.h>
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 template<Dimension dim, typename Container>
 inline
@@ -605,7 +606,7 @@ void
 DGtal::PointVector<dim,Component>::selfDrawAsGrid( DGtalBoard & board ) const
 {
   ASSERT(dim == 2);
-  board.setPenColor(LibBoard::Color::Black);
+  board.setPenColor(Color::Black);
   board.fillCircle((float) IntegerTraits<Component>::castToInt64_t(myArray[0]), 
 		   (float) IntegerTraits<Component>::castToInt64_t(myArray[1]),0.1);
 }

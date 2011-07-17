@@ -20,11 +20,13 @@
 
 namespace LibBoard {
 
+   
 /**
  * The ShapeList structure.
  * @brief A group of shapes
  */
 struct ShapeList : public Shape {
+  typedef DGtal::Color Color;
   
   inline ShapeList( int depth = -1 );
 
