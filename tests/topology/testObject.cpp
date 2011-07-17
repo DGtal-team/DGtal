@@ -522,8 +522,8 @@ struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
 
 struct MyDrawStyleCustomFillColor : public DrawableWithDGtalBoard
 {
-  Color myColor;
-  MyDrawStyleCustomFillColor( const Color & c )
+  LibBoard::Color myColor;
+  MyDrawStyleCustomFillColor( const LibBoard::Color & c )
     : myColor( c )
   {}
   virtual void selfDraw(DGtalBoard & aboard) const
@@ -567,8 +567,8 @@ bool testSimplePoints2D()
   Object8_4 shape2( dt8_4, shape_set );
 
   GradientColorMap<int> cmap_grad( 0, 6 );
-  cmap_grad.addColor( Color( 128, 128, 255 ) );
-  cmap_grad.addColor( Color( 255, 255, 128 ) );
+  cmap_grad.addColor( LibBoard::Color( 128, 128, 255 ) );
+  cmap_grad.addColor( LibBoard::Color( 255, 255, 128 ) );
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
   DGtalBoard board;
   board.setUnit(Board::UCentimeter);
