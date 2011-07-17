@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
-
+#include "DGtal/io/Color.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +85,7 @@ int main( int argc, char** argv )
        continue;
      }
      // Drawing the scan arrows
-     boardScan1.setPenColor( DGtalBoard::Color( 30, 30, 200 ));
+     boardScan1.setPenColor( Color( 30, 30, 200 ));
      shift =   K.uCoords(p)-K.uCoords(prec);	
      shift.selfDraw(boardScan1, K.uCoords(prec) );
      prec=p;     
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
 	  }
 	  // Drawing the scan arrows
 	  shiftq =   K.uCoords(q)-K.uCoords(precq);	
-	  boardScan2.setPenColor( DGtalBoard::Color( 30, 30, 200 ));
+	  boardScan2.setPenColor( Color( 30, 30, 200 ));
 	  shiftq.selfDraw(boardScan2, K.uCoords(precq) );
 	  precq=q;       
 	}

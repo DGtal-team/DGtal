@@ -40,6 +40,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
 #include "ConfigExamples.h"
@@ -100,9 +101,9 @@ int main( int argc, char** argv )
   
   // Displaying First surfels cut with gradient colors.;
   GradientColorMap<int> cmap_grad( 0, vectBdrySCell2.size() );
-  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
   
   // Need to avoid surfel superposition (the surfel size in increased)
   viewer << DGtalQGLViewer::shiftSurfelVisu; 
@@ -112,21 +113,21 @@ int main( int argc, char** argv )
   int d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell2.begin(); 
        it!= vectBdrySCell2.end(); it++){
-    DGtalBoard::Color col= cmap_grad(d);
+    Color col= cmap_grad(d);
     viewer.setFillColor(QColor(col.red(),col.green() ,col.blue(), 255));
     viewer<< *it;
     d++;
   }
   
   GradientColorMap<int> cmap_grad2( 0, vectBdrySCell.size() );
-  cmap_grad2.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad2.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad2.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+  cmap_grad2.addColor( Color( 50, 50, 255 ) );
+  cmap_grad2.addColor( Color( 255, 0, 0 ) );
+  cmap_grad2.addColor( Color( 255, 255, 10 ) );
   
   d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell.begin(); 
        it!= vectBdrySCell.end(); it++){
-     DGtalBoard::Color col= cmap_grad2(d);
+     Color col= cmap_grad2(d);
      viewer.setFillColor(QColor(col.red(),col.green() ,col.blue(), 255));
      viewer<< *it;
     d++;
