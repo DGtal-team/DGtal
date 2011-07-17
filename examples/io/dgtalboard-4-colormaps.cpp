@@ -32,6 +32,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -60,9 +61,9 @@ int main()
 
   // Creating colormap.
   GradientColorMap<int> cmap_grad( 0, 15 );
-  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   // Creating board.
   DGtalBoard board;
@@ -78,7 +79,7 @@ int main()
       unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
       // specific color depending on the distance to point c1.
       board << CustomStyle( specificStyle,
-			    new CustomColors( DGtalBoard::Color::Black,
+			    new CustomColors( Color::Black,
 					      cmap_grad( d ) ) )
 	    << *it;
     }
