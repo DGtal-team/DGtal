@@ -31,6 +31,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -58,16 +60,16 @@ int main()
   Cell linell = K.uCell( Point( 0, 1 ) ); // linel (0,1) left
   Cell linelr = K.uCell( Point( 2, 1 ) ); // linel (2,1) right
   board << CustomStyle( ptlow.styleName(), 
-			new CustomColors( DGtalBoard::Color( 0, 0, 200 ), 
-					  DGtalBoard::Color( 100, 100, 255 ) ) )
+			new CustomColors( Color( 0, 0, 200 ), 
+					  Color( 100, 100, 255 ) ) )
 	<< ptlow << ptup2;
   board << CustomStyle( pixlow.styleName(), 
-			new CustomColors( DGtalBoard::Color( 200, 0, 0 ), 
-					  DGtalBoard::Color( 255, 100, 100 ) ) )
+			new CustomColors( Color( 200, 0, 0 ), 
+					  Color( 255, 100, 100 ) ) )
 	<< pixlow << pixup;
   board << CustomStyle( linelb.styleName(), 
-			new CustomColors( DGtalBoard::Color( 0, 200, 0 ), 
-					  DGtalBoard::Color( 100, 255, 100 ) ) )
+			new CustomColors( Color( 0, 200, 0 ), 
+					  Color( 100, 255, 100 ) ) )
 	<< linelb << linelt << linell << linelr;
   board.saveSVG("ctopo-1.svg");
   board.saveEPS("ctopo-1.eps");

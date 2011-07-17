@@ -38,6 +38,8 @@
 
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/Color.h"
+
 #include "ConfigExamples.h"
 
 
@@ -84,19 +86,19 @@ int main( int argc, char** argv )
 					  ks, SAdj, set2d, aCell );
   
   board << CustomStyle( (*(vectBdrySCell.begin())).styleName(), 
-			new CustomColors(  DGtalBoard::Color( 255, 255, 0 ),
-					   DGtalBoard::Color( 192, 192, 0 ) ));
+			new CustomColors(  Color( 255, 255, 0 ),
+					   Color( 192, 192, 0 ) ));
   
   GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
-  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   unsigned int d=0;
   std::vector<Z2i::SCell>::iterator it;
   for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
     board<< CustomStyle((*it).styleName() ,
-			new CustomColors( DGtalBoard::Color::Black,
+			new CustomColors( Color::Black,
 					  cmap_grad( d )))<< *it;
     d++;
   }
@@ -113,7 +115,7 @@ int main( int argc, char** argv )
   std::set<Z2i::SCell>::iterator itB;
   for ( itB=bdry.begin() ; itB != bdry.end(); itB++ ){
     board2<< CustomStyle((*itB).styleName() ,
-			 new CustomColors( DGtalBoard::Color::Black,
+			 new CustomColors( Color::Black,
 					   cmap_grad( d )))<< *itB;
     d++;
   }
@@ -122,19 +124,19 @@ int main( int argc, char** argv )
   Surfaces<Z2i::KSpace>::extractAll2DSCellContours( vectContoursBdrySCell,
 					       ks, SAdj, set2d );
   GradientColorMap<int> cmap_grad3( 0, vectContoursBdrySCell.size() );
-  cmap_grad3.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad3.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad3.addColor( DGtalBoard::Color( 20, 200, 0 ) );
-  cmap_grad3.addColor( DGtalBoard::Color( 200, 200, 200 ) );
-  cmap_grad3.addColor( DGtalBoard::Color( 20, 200, 200 ) );
-  cmap_grad3.addColor( DGtalBoard::Color( 200, 20, 200 ) );
+  cmap_grad3.addColor( Color( 50, 50, 255 ) );
+  cmap_grad3.addColor( Color( 255, 0, 0 ) );
+  cmap_grad3.addColor( Color( 20, 200, 0 ) );
+  cmap_grad3.addColor( Color( 200, 200, 200 ) );
+  cmap_grad3.addColor( Color( 20, 200, 200 ) );
+  cmap_grad3.addColor( Color( 200, 20, 200 ) );
   
   d=0;
   for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     d++;
     for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
       board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).styleName() ,
-			   new CustomColors( DGtalBoard::Color::Black,
+			   new CustomColors( Color::Black,
 					     cmap_grad3( d )))<<vectContoursBdrySCell.at(i).at(j) ;
       
     }
