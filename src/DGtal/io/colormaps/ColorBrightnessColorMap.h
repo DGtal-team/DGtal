@@ -70,7 +70,7 @@ namespace DGtal
    *
    * The code below shows a possible use of this class.
    * @code
-   * #include "Board/Color.h"
+   * #include "DGtal/io/Color.h"
    * #include "ColorBrightnessColorMap.h"
    * // ...
    * {
