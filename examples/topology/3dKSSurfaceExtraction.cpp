@@ -106,13 +106,13 @@ int main( int argc, char** argv )
 
   // Each connected compoments are simply displayed with a specific color.
   GradientColorMap<long> gradient( 0,vectConnectedSCell.size());
-  gradient.addColor(DGtal::Color::Red);
-  gradient.addColor(DGtal::Color::Yellow);
-  gradient.addColor(DGtal::Color::Green);
-  gradient.addColor(DGtal::Color::Cyan);
-  gradient.addColor(DGtal::Color::Blue);
-  gradient.addColor(DGtal::Color::Magenta);
-  gradient.addColor(DGtal::Color::Red);  
+  gradient.addColor(Color::Red);
+  gradient.addColor(Color::Yellow);
+  gradient.addColor(Color::Green);
+  gradient.addColor(Color::Cyan);
+  gradient.addColor(Color::Blue);
+  gradient.addColor(Color::Magenta);
+  gradient.addColor(Color::Red);  
  
   
   for(uint i=0; i< vectConnectedSCell.size();i++){

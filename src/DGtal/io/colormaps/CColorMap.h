@@ -114,7 +114,7 @@ namespace DGtal
     
     // ------------------------- Internals ------------------------------------
   private:
-    DGtal::Color myColor;
+    Color myColor;
     Value myMin, myMax, myValue;    
   }; // end of concept CColorMap
   

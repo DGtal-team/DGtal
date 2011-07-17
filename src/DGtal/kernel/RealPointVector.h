@@ -50,6 +50,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/DGtalBoard.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
@@ -266,7 +267,7 @@ namespace DGtal
     {
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
-	aBoard.setPenColor(DGtalBoard::Color::Black);
+	aBoard.setPenColor(Color::Black);
 	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
       }
     };
@@ -416,7 +417,7 @@ namespace DGtal
 
     virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
     {
-      //aBoard.setPenColor(DGtalBoard::Color::Black);
+      //aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
     }
   };
