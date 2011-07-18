@@ -18,7 +18,7 @@
 #endif
 
 ShapeList::ShapeList( int depthValue )
-  : Shape( Color::None, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
+  : Shape( DGtal::Color::None, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
     _nextDepth( std::numeric_limits<int>::max() - 1 )
 { }
 

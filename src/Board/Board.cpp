@@ -57,8 +57,8 @@ const double Board::Degree =  3.14159265358979323846 / 180.0;
 
 Board::State::State()
 {
-  penColor = Color::Black;
-  fillColor =  Color::None;
+  penColor = DGtal::Color::Black;
+  fillColor =  DGtal::Color::None;
   lineWidth = 0.5;
   lineStyle = Shape::SolidStyle;
   lineCap = Shape::ButtCap;
@@ -68,7 +68,7 @@ Board::State::State()
   unitFactor = 1.0;
 }
 
-Board::Board( const Color & bgColor )
+Board::Board( const DGtal::Color & bgColor )
   : _backgroundColor( bgColor )
 {
 }
@@ -116,7 +116,7 @@ Board::~Board()
 }
 
 void
-Board::clear( const Color & color )
+Board::clear( const DGtal::Color & color )
 {
   ShapeList::clear();
   _backgroundColor = color;
@@ -262,7 +262,7 @@ Board::setPenColorRGBf(  float red,
 }
 
 Board &
-Board::setPenColor( const Color & color )
+Board::setPenColor( const DGtal::Color & color )
 {
   _state.penColor = color;
   return *this;
@@ -286,7 +286,7 @@ Board::setFillColorRGBf( float red, float green, float blue, float alpha )
 }
 
 Board &
-Board::setFillColor( const Color & color )
+Board::setFillColor( const DGtal::Color & color )
 {
   _state.fillColor = color;
   return *this;
@@ -315,7 +315,7 @@ Board::setFontSize( double fontSize )
 }
 
 void
-Board::backgroundColor( const Color & color )
+Board::backgroundColor( const DGtal::Color & color )
 {
   _backgroundColor = color;
 }
@@ -355,12 +355,12 @@ Board::drawArrow( double x1, double y1, double x2, double y2,
   if ( depthValue != -1 )
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filledArrow ? _state.penColor : Color::None,
+				  _state.penColor, filledArrow ? _state.penColor : DGtal::Color::None,
 				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, depthValue ) );
   else
     _shapes.push_back( new Arrow( _state.unit(x1), _state.unit(y1),
 				  _state.unit(x2), _state.unit(y2),
-				  _state.penColor, filledArrow ? _state.penColor : Color::None,
+				  _state.penColor, filledArrow ? _state.penColor : DGtal::Color::None,
 				  _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
@@ -393,7 +393,7 @@ Board::fillRectangle( double x, double y,
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height),
-				    Color::None, _state.penColor,
+				    DGtal::Color::None, _state.penColor,
 				    0.0f, _state.lineStyle, _state.lineCap, _state.lineJoin,
 				    d ) );
 }
@@ -415,7 +415,7 @@ Board::fillCircle( double x, double y,
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
   _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
-				 Color::None, _state.penColor,
+				 DGtal::Color::None, _state.penColor,
 				 0.0f, _state.lineStyle, d ) );
 }
 
@@ -441,7 +441,7 @@ Board::fillEllipse( double x, double y,
 {
   int d = depthValue ? depthValue : _nextDepth--;
   _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y), _state.unit(xRadius), _state.unit(yRadius),
-				  Color::None,
+				  DGtal::Color::None,
 				  _state.penColor,
 				  0.0f, 
 				  _state.lineStyle,
@@ -493,7 +493,7 @@ Board::fillPolyline( const std::vector<Point> & points,
 		     int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
+  _shapes.push_back( new Polyline( points, true, DGtal::Color::None, _state.penColor,
 				   0.0f,
 				   _state.lineStyle,
 				   _state.lineCap,
@@ -550,7 +550,7 @@ Board::fillTriangle( double x1, double y1,
   points.push_back( Point( _state.unit(x1), _state.unit(y1) ) );
   points.push_back( Point( _state.unit(x2), _state.unit(y2) ) );
   points.push_back( Point( _state.unit(x3), _state.unit(y3) ) );
-  _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
+  _shapes.push_back( new Polyline( points, true, DGtal::Color::None, _state.penColor,
 				   0.0f,
 				   _state.lineStyle,
 				   _state.lineCap,
@@ -569,7 +569,7 @@ Board::fillTriangle( const Point & p1,
   points.push_back( Point( _state.unit(p1.x), _state.unit(p1.y) ) );
   points.push_back( Point( _state.unit(p2.x), _state.unit(p2.y) ) );
   points.push_back( Point( _state.unit(p3.x), _state.unit(p3.y) ) );
-  _shapes.push_back( new Polyline( points, true, Color::None, _state.penColor,
+  _shapes.push_back( new Polyline( points, true, DGtal::Color::None, _state.penColor,
 				   0.0f,
 				   _state.lineStyle,
 				   _state.lineCap,
@@ -579,11 +579,11 @@ Board::fillTriangle( const Point & p1,
 
 void
 Board::fillGouraudTriangle( const Point & p1,
-			    const Color & color1,
+			    const DGtal::Color & color1,
 			    const Point & p2,
-			    const Color & color2,
+			    const DGtal::Color & color2,
 			    const Point & p3,
-			    const Color & color3,
+			    const DGtal::Color & color3,
 			    unsigned char divisions,
 			    int depthValue /* = -1 */ )
 {
@@ -604,9 +604,9 @@ Board::fillGouraudTriangle( const Point & p1,
 			    unsigned char divisions,
 			    int depthValue /* = -1 */ )
 {
-  Color color1( _state.penColor );
-  Color color2( _state.penColor );
-  Color color3( _state.penColor );
+  DGtal::Color color1( _state.penColor );
+  DGtal::Color color2( _state.penColor );
+  DGtal::Color color3( _state.penColor );
   color1.red( static_cast<unsigned char>( std::min( 255.0f, color1.red() * brightness1 ) ) );
   color1.green( static_cast<unsigned char>( std::min( 255.0f, color1.green() * brightness1 ) ) );
   color1.blue( static_cast<unsigned char>( std::min( 255.0f, color1.blue() * brightness1 ) ) );
@@ -800,8 +800,8 @@ Board::saveEPS( const char * filename, double pageWidth, double pageHeight, doub
   }
   
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
-    Rectangle r( box, Color::None, _backgroundColor, 0.0f );
+  if ( _backgroundColor != DGtal::Color::None ) { 
+    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0f );
     r.flushPostscript( file, transform );
   }
 
@@ -847,18 +847,18 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
   file << "-2\n";
   file << "1200 2\n";
 
-  std::map<Color,int> colormap;
+  std::map<DGtal::Color,int> colormap;
   int maxColor = 32;
 
 
-  colormap[Color(0,0,0)] = 0; 
-  colormap[Color(0,0,255)] = 1; 
-  colormap[Color(0,255,0)] = 2; 
-  colormap[Color(0,255,255)] = 0; 
-  colormap[Color(255,0,0)] = 4; 
-  colormap[Color(255,0,255)] = 0; 
-  colormap[Color(255,255,0)] = 6; 
-  colormap[Color(255,255,255)] = 7;
+  colormap[DGtal::Color(0,0,0)] = 0; 
+  colormap[DGtal::Color(0,0,255)] = 1; 
+  colormap[DGtal::Color(0,255,0)] = 2; 
+  colormap[DGtal::Color(0,255,255)] = 0; 
+  colormap[DGtal::Color(255,0,0)] = 4; 
+  colormap[DGtal::Color(255,0,255)] = 0; 
+  colormap[DGtal::Color(255,255,0)] = 6; 
+  colormap[DGtal::Color(255,255,255)] = 7;
 
 
   std::vector< Shape* > shapes = _shapes;
@@ -880,8 +880,8 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
     colormap[ _backgroundColor ] = maxColor++;
   
   // Write the colormap
-  std::map<Color,int>::const_iterator iColormap = colormap.begin();
-  std::map<Color,int>::const_iterator endColormap = colormap.end();
+  std::map<DGtal::Color,int>::const_iterator iColormap = colormap.begin();
+  std::map<DGtal::Color,int>::const_iterator endColormap = colormap.end();
   char colorString[255];
   while ( iColormap != endColormap ) {
     secured_sprintf( colorString, 255,
@@ -895,8 +895,8 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
   }
 
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
-    Rectangle r( box, Color::None, _backgroundColor, 0.0f );
+  if ( _backgroundColor != DGtal::Color::None ) { 
+    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0f );
     r.depth( std::numeric_limits<int>::max() );
     r.flushFIG( file, transform, colormap );
   }
@@ -968,8 +968,8 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
   }
   
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
-    Rectangle r( box, Color::None, _backgroundColor, 0.0 );
+  if ( _backgroundColor != DGtal::Color::None ) { 
+    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushSVG( file, transform );
   }
   
@@ -1074,8 +1074,8 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   //temp: http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
       
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
-    Rectangle r( box, Color::None, _backgroundColor, 0.0 );
+  if ( _backgroundColor != DGtal::Color::None ) { 
+    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushCairo( cr, transform );
   }
   

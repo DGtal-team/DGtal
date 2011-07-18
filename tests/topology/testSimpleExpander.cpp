@@ -43,6 +43,7 @@
 #include "DGtal/topology/Expander.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -216,10 +217,10 @@ bool testLayers()
 {
 
   GradientColorMap<int> cmap_grad( 0, 30 );
-  cmap_grad.addColor( DGtalBoard::Color( 128, 128, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 128 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 128, 255, 128 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 128, 128, 128 ) );
+  cmap_grad.addColor( Color( 128, 128, 255 ) );
+  cmap_grad.addColor( Color( 255, 255, 128 ) );
+  cmap_grad.addColor( Color( 128, 255, 128 ) );
+  cmap_grad.addColor( Color( 128, 128, 128 ) );
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
 
   trace.beginBlock ( "(4,8) Filling ..." );

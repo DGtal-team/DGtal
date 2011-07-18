@@ -49,7 +49,7 @@ namespace LibBoard {
  * @brief Abstract structure for a 2D shape.
  */
 struct Shape {
-  typedef DGtal::Color Color;
+
   enum LineCap { ButtCap = 0, RoundCap, SquareCap };
   enum LineJoin { MiterJoin = 0, RoundJoin, BevelJoin };
   enum LineStyle { SolidStyle = 0,
@@ -67,7 +67,7 @@ struct Shape {
    * @param lineWidth The line thickness.
    * @param depth The depth of the shape.
    */
-  inline Shape( Color penColor, Color fillColor,
+  inline Shape( DGtal::Color penColor, DGtal::Color fillColor,
 		double lineWidth, 
 		LineStyle style,
 		const LineCap cap,
@@ -98,7 +98,7 @@ struct Shape {
    * 
    * @return true if the shape is filled.
    */
-  inline bool filled() const { return _fillColor != Color::None; }
+  inline bool filled() const { return _fillColor != DGtal::Color::None; }
   
   /** 
    * Returns the gravity center of the shape.
@@ -233,7 +233,7 @@ struct Shape {
    */
   virtual void flushFIG( std::ostream & stream,
 			 const TransformFIG & transform,
-			 std::map<Color,int> & colormap ) const = 0;
+			 std::map<DGtal::Color,int> & colormap ) const = 0;
 
   /** 
    * Writes the SVG code of the shape in a stream according
@@ -263,9 +263,9 @@ struct Shape {
 
   virtual void shiftDepth( int shift );
   
-  inline const Color & penColor() const;
+  inline const DGtal::Color & penColor() const;
 
-  inline const Color & fillColor() const;
+  inline const DGtal::Color & fillColor() const;
 
 private:
   static const std::string _name; /**< The generic name of the shape. */
@@ -273,8 +273,8 @@ private:
 protected:
 
   int _depth;    		/**< The depth of the shape. */
-  Color _penColor;		/**< The color of the shape. */
-  Color _fillColor;		/**< The color of the shape. */
+  DGtal::Color _penColor;		/**< The color of the shape. */
+  DGtal::Color _fillColor;		/**< The color of the shape. */
   double _lineWidth;	/**< The line thickness. */
   LineStyle _lineStyle;	/**< The line style (solid, dashed, etc.). */
   LineCap _lineCap;		/**< The linecap attribute. (The way line terminates.) */
@@ -336,13 +336,13 @@ Shape::depth() const
   return _depth;
 }
 
-inline const Color &
+inline const DGtal::Color &
 Shape::penColor() const
 {
   return _penColor;
 }
 
-const Color &
+const DGtal::Color &
 Shape::fillColor() const
 {
   return _fillColor;
@@ -371,7 +371,7 @@ Shape::rotateDeg( double angle )
 struct Dot : public Shape { 
   
   inline Dot( double x, double y,
-	      Color color, 
+	      DGtal::Color color, 
 	      double lineWidth,
 	      int depth = -1 );
 
@@ -473,7 +473,7 @@ struct Dot : public Shape {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -513,7 +513,7 @@ struct Line : public Shape {
    * @param depth The depth of the line.
    */
   inline Line( double x1, double y1, double x2, double y2, 
-	       Color color, 
+	       DGtal::Color color, 
 	       double lineWidth,
 	       const LineStyle style = SolidStyle,
 	       const LineCap cap = ButtCap,
@@ -593,7 +593,7 @@ struct Line : public Shape {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -639,7 +639,7 @@ struct Arrow : public Line {
    * @param depth The depth of the line.
    */
   inline Arrow( double x1, double y1, double x2, double y2,
-		Color penColor, Color fillColor,
+		DGtal::Color penColor, DGtal::Color fillColor,
 		double lineWidth, 
 		const LineStyle style = SolidStyle,
 		const LineCap cap = ButtCap,
@@ -699,7 +699,7 @@ struct Arrow : public Line {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
 
@@ -721,7 +721,7 @@ private:
 struct Polyline : public Shape { 
   inline Polyline( const std::vector<Point> & points, 
 		   bool closed,
-		   Color penColor, Color fillColor,
+		   DGtal::Color penColor, DGtal::Color fillColor,
 		   double lineWidth,
 		   const LineStyle lineStyle = SolidStyle,
 		   const LineCap cap = ButtCap,
@@ -729,14 +729,14 @@ struct Polyline : public Shape {
 		   int depth = -1 );
 
   inline Polyline( const Path & path, 
-		   Color penColor, Color fillColor,
+		   DGtal::Color penColor, DGtal::Color fillColor,
 		   double lineWidth,
 		   const LineStyle lineStyle = SolidStyle,
 		   const LineCap cap = ButtCap,
 		   const LineJoin join = MiterJoin,
 		   int depth = -1 );
 
-  inline Polyline( bool closed, Color penColor, Color fillColor,
+  inline Polyline( bool closed, DGtal::Color penColor, DGtal::Color fillColor,
 		   double lineWidth,
 		   const LineStyle lineStyle = SolidStyle,
 		   const LineCap cap = ButtCap,
@@ -837,7 +837,7 @@ struct Polyline : public Shape {
 
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -865,7 +865,7 @@ protected:
 struct Rectangle : public Polyline {
 
   inline Rectangle( double x, double y, double width, double height,
-	     Color penColor, Color fillColor,
+	     DGtal::Color penColor, DGtal::Color fillColor,
 	     double lineWidth, 
 	     const LineStyle style = SolidStyle,
 	     const LineCap cap = ButtCap,
@@ -873,7 +873,7 @@ struct Rectangle : public Polyline {
 		    int depth = -1 );
 
   inline Rectangle( const Rect & rect,
-		    Color penColor, Color fillColor,
+		    DGtal::Color penColor, DGtal::Color fillColor,
 		    double lineWidth,
 		    const LineStyle style = SolidStyle,
 		    const LineCap cap = ButtCap,
@@ -948,7 +948,7 @@ struct Rectangle : public Polyline {
 
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -1000,7 +1000,7 @@ struct Image : public Rectangle {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -1032,8 +1032,8 @@ protected:
 struct Triangle : public Polyline {
 
   Triangle( const Point & p1, const Point & p2, const Point & p3,
-	    Color pen,
-	    Color fill,
+	    DGtal::Color pen,
+	    DGtal::Color fill,
 	    double lineWidth,
 	    const LineStyle style = SolidStyle,
 	    const LineCap cap = ButtCap,
@@ -1048,8 +1048,8 @@ struct Triangle : public Polyline {
   Triangle( const double x1, const double y1, 
 	    const double x2, const double y2, 
 	    const double x3, const double y3,
-	    Color pen,
-	    Color fill,
+	    DGtal::Color pen,
+	    DGtal::Color fill,
 	    double lineWidth,
 	    const LineStyle style = SolidStyle,
 	    const LineCap cap = ButtCap,
@@ -1108,16 +1108,16 @@ protected:
 struct GouraudTriangle : public Polyline {
 
 
-  GouraudTriangle( const Point & p0, const Color & color0,
-		   const Point & p1, const Color & color1,
-		   const Point & p2, const Color & color2,
+  GouraudTriangle( const Point & p0, const DGtal::Color & color0,
+		   const Point & p1, const DGtal::Color & color1,
+		   const Point & p2, const DGtal::Color & color2,
 		   int subdivisions,
 		   int depth = -1 );
 
   GouraudTriangle( const Point & p0, float brightness0,
 		   const Point & p1, float brightness1,
 		   const Point & p2, float brightness2,
-		   const Color & fillColor,
+		   const DGtal::Color & fillColor,
 		   int subdivisions,
 		   int depth = -1 );
 
@@ -1187,12 +1187,12 @@ struct GouraudTriangle : public Polyline {
    * 
    * @param stream 
    * @param transform 
-   * @param Color 
+   * @param DGtal::Color 
    * @param colormap 
    */
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -1208,9 +1208,9 @@ private:
   static const std::string _name; /**< The generic name of the shape. */
 
 protected:
-  Color _color0;
-  Color _color1;
-  Color _color2;
+  DGtal::Color _color0;
+  DGtal::Color _color1;
+  DGtal::Color _color2;
   int _subdivisions;
 };
 
@@ -1222,7 +1222,7 @@ struct Ellipse : public Shape {
   
   Ellipse( double x, double y, 
 	   double xRadius, double yRadius, 
-	   Color pen, Color fill,
+	   DGtal::Color pen, DGtal::Color fill,
 	   double lineWidth,
 	   const LineStyle lineStyle = SolidStyle,
 	   int depthValue = -1 )
@@ -1308,7 +1308,7 @@ struct Ellipse : public Shape {
 
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -1340,7 +1340,7 @@ protected:
 struct Circle : public Ellipse {
 
   Circle( double x, double y, double radius, 
-	  Color pen, Color fill,
+	  DGtal::Color pen, DGtal::Color fill,
 	  double lineWidth,
 	  const LineStyle style = SolidStyle,
 	  int depthValue = -1 )
@@ -1405,7 +1405,7 @@ private:
 struct Arc : public Circle {
 
   Arc( double x, double y, double radius, double angle1, double angle2, bool negative,
-	  Color pen, Color fill,
+	  DGtal::Color pen, DGtal::Color fill,
 	  double lineWidth,
 	  const LineStyle style = SolidStyle,
 	  int depthValue = -1 )
@@ -1456,9 +1456,9 @@ struct Text : public Shape {
 	const std::string & text,
 	const Fonts::Font font,
 	double size,
-	Color color = Color::Black,
+	DGtal::Color color = DGtal::Color::Black,
 	int depthValue = -1 )
-    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
+    : Shape( color, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ), _text( text ), _font( font ),
       _angle( 0.0 ), _size( size ),
       _xScale( 1.0 ), _yScale( 1.0 ) { }
@@ -1483,9 +1483,9 @@ struct Text : public Shape {
 	const Fonts::Font font,
 	const std::string & svgFont,
 	double size,
-	Color color = Color::Black,
+	DGtal::Color color = DGtal::Color::Black,
 	int depthValue = -1 )
-    : Shape( color, Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
+    : Shape( color, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ),
       _text( text ), _font( font ), _svgFont( svgFont ),
       _angle( 0.0 ),
@@ -1534,7 +1534,7 @@ struct Text : public Shape {
 
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;

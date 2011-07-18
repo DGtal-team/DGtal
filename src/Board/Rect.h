@@ -24,7 +24,7 @@ namespace LibBoard {
  * @brief Struct representing a rectangle on the plane. 
  */
 struct Rect {
-  typedef DGtal::Color Color;
+  
   double left;			/**< Coordinate of the left side. */
   double top;			/**< Coordinate of the upper side. */
   double width;			/**< Width of the rectangle. */

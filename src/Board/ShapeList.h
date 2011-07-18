@@ -26,7 +26,7 @@ namespace LibBoard {
  * @brief A group of shapes
  */
 struct ShapeList : public Shape {
-  typedef DGtal::Color Color;
+  
   
   inline ShapeList( int depth = -1 );
 
@@ -78,7 +78,7 @@ struct ShapeList : public Shape {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;
@@ -247,7 +247,7 @@ struct Group : public ShapeList {
   
   void flushFIG( std::ostream & stream,
 		 const TransformFIG & transform,
-		 std::map<Color,int> & colormap ) const;
+		 std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
 		 const TransformSVG & transform ) const;

@@ -33,6 +33,7 @@
 #include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
@@ -97,7 +98,7 @@ int main( int argc, char** argv )
 
 		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
 
-			aPenColor = new CustomPenColor( DGtalBoard::Color::Black );
+			aPenColor = new CustomPenColor( Color::Black );
 
 		} else {
 	    //begin and end iterators
@@ -117,18 +118,18 @@ int main( int argc, char** argv )
 			//configurations
 			if ( (segment.getRemainder(*back)<=mu-1)&&
 				   (segment.getRemainder(*front)<=mu-1) ) {                //concave
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Green);
+				aPenColor = new CustomPenColor( Color::Green);
 			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
 					  (segment.getRemainder(*front)>=mu+omega) ) {           //convex
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Blue );
+				aPenColor = new CustomPenColor( Color::Blue );
 			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
 					  (segment.getRemainder(*front)<=mu-1) ) {               //convex to concave
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+				aPenColor = new CustomPenColor( Color::Yellow );
 			} else if ( (segment.getRemainder(*back)<=mu-1)&&
 					  (segment.getRemainder(*front)>=mu+omega) ) {           //concave to convex
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Yellow );
+				aPenColor = new CustomPenColor( Color::Yellow );
 			} else {                                                    //pb
-				aPenColor = new CustomPenColor( DGtalBoard::Color::Red );
+				aPenColor = new CustomPenColor( Color::Red );
 			}
 
 		}

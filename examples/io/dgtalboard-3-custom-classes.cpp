@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DGtalBoard.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/Color.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,11 +49,11 @@ int main()
   Point p3( 0, 0 );
   Domain domain( p1, p2 );
 
-  DGtalBoard::Color red( 255, 0, 0 );
-  DGtalBoard::Color dred( 192, 0, 0 );
-  DGtalBoard::Color dgreen( 0, 192, 0 );
-  DGtalBoard::Color blue( 0, 0, 255 );
-  DGtalBoard::Color dblue( 0, 0, 192 );
+  Color red( 255, 0, 0 );
+  Color dred( 192, 0, 0 );
+  Color dgreen( 0, 192, 0 );
+  Color blue( 0, 0, 255 );
+  Color dblue( 0, 0, 192 );
   
   DGtalBoard board;
   board << domain 

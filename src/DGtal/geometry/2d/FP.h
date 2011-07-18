@@ -46,6 +46,7 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -215,9 +216,9 @@ namespace DGtal
         {
 				// Set board style
 				aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
-				aBoard.setPenColor(DGtalBoard::Color::Red);
+				aBoard.setPenColor(Color::Red);
 				aBoard.setLineWidth(2);
-				aBoard.setFillColor(DGtalBoard::Color::None);
+				aBoard.setFillColor(Color::None);
 			  }
     };
     // --------------- CDrawableWithDGtalBoard realization --------------------

@@ -34,6 +34,7 @@
 #include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -82,7 +83,7 @@ int main( )
       DSS4 segment(*i);
       std::cout << segment << std::endl;
       aBoard << CustomStyle( styleName, 
-			     new CustomPenColor( DGtalBoard::Color::Blue ) )
+			     new CustomPenColor( Color::Blue ) )
 	     << segment; // draw each segment
       
     } 

@@ -25,7 +25,7 @@ namespace LibBoard {
  * @brief Struct representing a 2D point. 
  */
 struct Point {
-  typedef DGtal::Color Color;
+
   double x;			/**< The point's first coordinate */
   double y;			/**< The point's second coordinate */
 

@@ -34,7 +34,7 @@ namespace LibBoard {
  * @brief A path, according to Postscript and SVG definition.
  */
 struct Path { 
-  typedef DGtal::Color Color;
+  
   Path() : _closed( false ) { }
 
   Path( const std::vector<Point> & points, bool closedPath )

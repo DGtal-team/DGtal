@@ -53,6 +53,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/kernel/IntegerTraits.h"
 
 #include "DGtal/helpers/StdDefs.h"
@@ -1699,8 +1700,8 @@ namespace DGtal
     {
       SelfDrawStyle(DGtalBoard & aBoard)
       {
-	aBoard.setFillColor(DGtalBoard::Color::None);
-	aBoard.setPenColor(DGtalBoard::Color::Black);
+	aBoard.setFillColor(Color::None);
+	aBoard.setPenColor(Color::Black);
       }
     };
 
@@ -1710,7 +1711,7 @@ namespace DGtal
       {
        	
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(DGtalBoard::Color::None);
+	aBoard.setFillColor(Color::None);
       }
     };
 
@@ -1719,7 +1720,7 @@ namespace DGtal
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(DGtalBoard::Color::None);
+	aBoard.setFillColor(Color::None);
       }
     };
 
@@ -1728,7 +1729,7 @@ namespace DGtal
       virtual void selfDraw( DGtalBoard & aBoard ) const
       {
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(DGtalBoard::Color::None);
+	aBoard.setFillColor(Color::None);
       }
     };
 

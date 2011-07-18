@@ -48,6 +48,8 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -518,9 +520,9 @@ namespace DGtal
       {
 	// Set board style
 	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
-	aBoard.setPenColor(DGtalBoard::Color::Red);
+	aBoard.setPenColor(Color::Red);
 	aBoard.setLineWidth(1);
-	aBoard.setFillColor(DGtalBoard::Color::None);
+	aBoard.setFillColor(Color::None);
       }
     };
     
@@ -533,9 +535,9 @@ namespace DGtal
       {
 	// Set board style
 	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
-	aBoard.setPenColor(DGtalBoard::Color::Black);
+	aBoard.setPenColor(Color::Black);
 	aBoard.setLineWidth(2);
-	aBoard.setFillColor(DGtalBoard::Color::None);
+	aBoard.setFillColor(Color::None);
       }
     };
 

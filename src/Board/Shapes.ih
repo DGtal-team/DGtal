@@ -14,8 +14,8 @@
 
 namespace LibBoard {
 
-Shape::Shape( Color pen,
-	      Color fill,
+Shape::Shape( DGtal::Color pen,
+	      DGtal::Color fill,
 	      double lineWidth, 
 	      LineStyle style,
 	      const LineCap cap,
@@ -32,24 +32,24 @@ Shape::Shape( Color pen,
 }
 
 Dot::Dot( double x, double y,
-	  Color color, 
+	  DGtal::Color color, 
 	  double lineWidth,
 	  int depthValue )
   : Shape( color, 
-	   Color::None, 
+	   DGtal::Color::None, 
 	   lineWidth, SolidStyle, RoundCap, MiterJoin, depthValue ),
     _x( x ), _y( y ) 
 {
 }
 
 Line::Line( double x1, double y1, double x2, double y2, 
-	    Color color, 
+	    DGtal::Color color, 
 	    double lineWidth,
 	    const LineStyle style,
 	    const LineCap cap,
 	    const LineJoin join,
 	    int depthValue )
-  : Shape( color, Color::None, lineWidth, style, cap, join, depthValue ),
+  : Shape( color, DGtal::Color::None, lineWidth, style, cap, join, depthValue ),
     _x1( x1 ), _y1( y1 ), _x2( x2 ), _y2( y2 )
 {
 }
@@ -57,8 +57,8 @@ Line::Line( double x1, double y1, double x2, double y2,
 
 
 Arrow::Arrow( double x1, double y1, double x2, double y2,
-	      Color pen,
-	      Color fill,
+	      DGtal::Color pen,
+	      DGtal::Color fill,
 	      double lineWidth, 
 	      const LineStyle style,
 	      const LineCap cap,
@@ -71,8 +71,8 @@ Arrow::Arrow( double x1, double y1, double x2, double y2,
 
 Polyline::Polyline( const std::vector<Point> & points, 
 		    bool closed,
-		    Color pen,
-		    Color fill,
+		    DGtal::Color pen,
+		    DGtal::Color fill,
 		    double lineWidth,
 		    const LineStyle lineStyle,
 		    const LineCap cap,
@@ -84,8 +84,8 @@ Polyline::Polyline( const std::vector<Point> & points,
 }
 
 Polyline::Polyline( const Path & path, 
-		    Color pen,
-		    Color fill,
+		    DGtal::Color pen,
+		    DGtal::Color fill,
 		    double lineWidth,
 		    const LineStyle lineStyle,
 		    const LineCap cap,
@@ -97,8 +97,8 @@ Polyline::Polyline( const Path & path,
 }
 
   Polyline::Polyline( bool closed,
-		      Color pen,
-		      Color fill,
+		      DGtal::Color pen,
+		      DGtal::Color fill,
 		      double lineWidth,
 		      const LineStyle lineStyle,
 		      const LineCap cap,
@@ -113,8 +113,8 @@ Rectangle::Rectangle( double xLeft,
 		      double yTop,
 		      double rectWidth, 
 		      double rectHeight,
-		      Color pen,
-		      Color fill,
+		      DGtal::Color pen,
+		      DGtal::Color fill,
 		      double lineWidth, 
 		      const LineStyle style,
 		      const LineCap cap,
@@ -130,8 +130,8 @@ Rectangle::Rectangle( double xLeft,
 }
   
 Rectangle::Rectangle( const Rect & rect,
-		      Color pen,
-		      Color fill,
+		      DGtal::Color pen,
+		      DGtal::Color fill,
 		      double lineWidth,
 		      const LineStyle style,
 		      const LineCap cap,
@@ -148,7 +148,7 @@ Rectangle::Rectangle( const Rect & rect,
   
 Image::Image( double x0, double y0, double aWidth, double aHeight, 
 	      std::string fileName, int depthValue, double alpha )
-  : Rectangle(x0, y0, aWidth, aHeight, Color::None, Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
+  : Rectangle(x0, y0, aWidth, aHeight, DGtal::Color::None, DGtal::Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
     _x0(x0), _y0(y0), _width(aWidth), _height(aHeight), _filename(fileName), _alpha (alpha)
 {
 }

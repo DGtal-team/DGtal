@@ -38,7 +38,7 @@
 #include "DGtal/topology/SurfelNeighborhood.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/Surfaces.h"
-
+#include "DGtal/io/Color.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -357,8 +357,8 @@ bool testCellDrawOnBoard()
   Point kp2( spel2 );
   SCell sspel2 = K.sCell( kp2, K.POS );
   board << CustomStyle( sspel2.styleName(), 
-			new CustomPen( DGtalBoard::Color( 200, 0, 0 ), 
-				       DGtalBoard::Color( 255, 100, 100 ),
+			new CustomPen( Color( 200, 0, 0 ), 
+				       Color( 255, 100, 100 ),
 				       2.0, 
 				       DGtalBoard::Shape::SolidStyle ) )
 	<< sspel2 
@@ -372,16 +372,16 @@ bool testCellDrawOnBoard()
   SCell slinel0 = K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) );
   SCell spointel01 = K.sIncident( slinel0, 1, K.sDirect( slinel0, 1 ) );
   board << CustomStyle( sspel2.styleName(), 
-			new CustomColors( DGtalBoard::Color( 200, 0, 0 ), 
-					  DGtalBoard::Color( 255, 100, 100 ) ) )
+			new CustomColors( Color( 200, 0, 0 ), 
+					  Color( 255, 100, 100 ) ) )
 	<< sspel2
 	<< CustomStyle( slinel0.styleName(), 
-			new CustomColors( DGtalBoard::Color( 0, 200, 0 ), 
-					  DGtalBoard::Color( 100, 255, 100 ) ) )
+			new CustomColors( Color( 0, 200, 0 ), 
+					  Color( 100, 255, 100 ) ) )
 	<< slinel0
 	<< CustomStyle( spointel01.styleName(), 
-			new CustomColors( DGtalBoard::Color( 0, 0, 200 ), 
-					  DGtalBoard::Color( 100, 100, 255 ) ) )
+			new CustomColors( Color( 0, 0, 200 ), 
+					  Color( 100, 100, 255 ) ) )
 	<< spointel01;
   board.saveEPS( "cells-3.eps" );
   board.saveSVG( "cells-3.svg" );
