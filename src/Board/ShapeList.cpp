@@ -314,7 +314,7 @@ ShapeList::flushPostscript( std::ostream & stream,
 void
 ShapeList::flushFIG( std::ostream & stream,
                      const TransformFIG & transform,
-                     std::map<Color,int> & colormap ) const
+                     std::map<DGtal::Color,int> & colormap ) const
 {
     std::vector< Shape* > shapes = _shapes;
     stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
@@ -594,7 +594,7 @@ Group::flushPostscript( std::ostream & stream,
 void
 Group::flushFIG( std::ostream & stream,
                  const TransformFIG & transform,
-                 std::map<Color,int> & colormap ) const
+                 std::map<DGtal::Color,int> & colormap ) const
 {
     Rect box = boundingBox();
     stream << "# Begin group\n";

@@ -18,7 +18,7 @@ inline
 void
 Board::clear( unsigned char red, unsigned char green, unsigned char blue )
 {
-  clear( Color( red, green, blue ) );
+  clear( DGtal::Color( red, green, blue ) );
 }
 
 inline
@@ -48,11 +48,11 @@ Board::setLineJoin( Shape::LineJoin join )
 inline
 void
 Board::fillGouraudTriangle( const double x1, const double y1,
-			    const Color & color1,
+			    const DGtal::Color & color1,
 			    const double x2, const double y2, 
-			    const Color & color2,
+			    const DGtal::Color & color2,
 			    const double x3, const double y3,
-			    const Color & color3,
+			    const DGtal::Color & color3,
 			    unsigned char divisions,
 			    int depthValue /* = -1 */ )
 {

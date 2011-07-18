@@ -42,7 +42,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/DGtalBoard.h"
-
+#include "DGtal/io/Color.h"
 #include "DGtal/kernel/RealPointVector.h"
 
 #ifdef WITH_MAGICK
@@ -150,7 +150,7 @@ if(vm.count("backgroundImage")){
    vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
    aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
    aBoard << CustomStyle( vectFc.at(0).styleName(), 
-			  new CustomColors( DGtalBoard::Color::Red  ,  DGtalBoard::Color::None ) );    
+			  new CustomColors( Color::Red  ,  Color::None ) );    
    for(unsigned int i=0; i<vectFc.size(); i++){
      aBoard <<  vectFc.at(i) ;
    }
@@ -195,7 +195,7 @@ if(vm.count("SDP") || vm.count("SFP")){
   }
   
   
-  aBoard.setPenColor(DGtalBoard::Color::Red);
+  aBoard.setPenColor(Color::Red);
   aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
   aBoard.setLineWidth (lineWidth);
   aBoard.drawPolyline(contourPt);

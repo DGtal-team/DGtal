@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
@@ -286,7 +287,7 @@ bool testClosedCurvesProcessedAsClosed()
 
 			DSS4 segment(*i);
 			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+												     new CustomPenColor( Color::Blue ) )
 						 << segment; // draw each segment
 
     } 
@@ -333,7 +334,7 @@ bool testClosedCurvesProcessedAsOpen()
 
 			DSS4 segment(*i);
 			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+												     new CustomPenColor( Color::Blue ) )
 						 << segment; // draw each segment
 
     } 
@@ -380,7 +381,7 @@ bool testOpenCurvesProcessedAsClosed()
 
 			DSS4 segment(*i);
 			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( DGtalBoard::Color::Blue ) )
+												     new CustomPenColor( Color::Blue ) )
 						 << segment; // draw each segment
 
     } 

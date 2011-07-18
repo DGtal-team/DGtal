@@ -42,6 +42,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 
@@ -81,12 +82,12 @@ int main()
   aBoard << image.domain();  
 
   GradientColorMap<int> cmap_grad( 0, vectContoursBdryPointels.size() );
-  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 25, 255, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 25, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 25, 25, 25 ) );
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color( 25, 255, 255 ) );
+  cmap_grad.addColor( Color( 255, 25, 255 ) );
+  cmap_grad.addColor( Color( 25, 25, 25 ) );
   
   
   for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
@@ -94,7 +95,7 @@ int main()
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
     aBoard << SetMode( fc.styleName(), "InterGrid" );
     aBoard<< CustomStyle( fc.styleName(), 
-    			  new CustomColors(  cmap_grad(i),  DGtalBoard::Color::None ) );    
+    			  new CustomColors(  cmap_grad(i),  Color::None ) );    
     
     
     

@@ -98,7 +98,7 @@ Shape::svgProperties( const TransformSVG & transform ) const
     static const char * capStrings[3] = { "butt", "round", "square" };
     static const char * joinStrings[3] = { "miter", "round", "bevel" };
     std::stringstream str;
-    if ( _penColor != Color::None ) {
+    if ( _penColor != DGtal::Color::None ) {
         str << " fill=\"" << _fillColor.svg() << '"'
         << " stroke=\"" << _penColor.svg() << '"'
         << " stroke-width=\"" << transform.mapWidth( _lineWidth ) << "mm\""
@@ -489,7 +489,7 @@ Line::flushPostscript( std::ostream & stream,
 void
 Line::flushFIG( std::ostream & stream,
                 const TransformFIG & transform,
-                std::map<Color,int> & colormap ) const
+                std::map<DGtal::Color,int> & colormap ) const
 {
     stream << "2 1 ";
     // Line style
@@ -593,7 +593,7 @@ Image::clone() const {
 void
 Image::flushFIG( std::ostream & stream,
                 const TransformFIG & transform,
-                std::map<Color,int> & colormap ) const
+                std::map<DGtal::Color,int> & colormap ) const
 
 {
   stream << "2 5 ";
@@ -783,7 +783,7 @@ Arrow::flushPostscript( std::ostream & stream,
 void
 Arrow::flushFIG( std::ostream & stream,
                  const TransformFIG & transform,
-                 std::map<Color,int> & colormap ) const
+                 std::map<DGtal::Color,int> & colormap ) const
 {
     stream << "2 1 ";
     // Line style
@@ -911,7 +911,7 @@ Arrow::flushCairo( cairo_t *cr,
 
       if ( filled() )
       {
-	if ( _penColor != Color::None )
+	if ( _penColor != DGtal::Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
@@ -919,7 +919,7 @@ Arrow::flushCairo( cairo_t *cr,
       
       //
       
-      if ( _penColor != Color::None )
+      if ( _penColor != DGtal::Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 	
@@ -1094,7 +1094,7 @@ Ellipse::flushPostscript( std::ostream & stream,
         stream << " fill gr" << std::endl;
     }
 
-    if ( _penColor != Color::None ) {
+    if ( _penColor != DGtal::Color::None ) {
         stream << postscriptProperties() << "\n";
         stream << "gs " << transform.mapX( _center.x ) << " " << transform.mapY( _center.y ) << " tr";
         if ( _angle != 0.0 ) stream << " " << (_angle*180/M_PI) << " rot ";
@@ -1109,7 +1109,7 @@ Ellipse::flushPostscript( std::ostream & stream,
 void
 Ellipse::flushFIG( std::ostream & stream,
                    const TransformFIG & transform,
-                   std::map<Color,int> & colormap ) const
+                   std::map<DGtal::Color,int> & colormap ) const
 {
     // Ellipse, Sub type, Line style, Thickness
     if ( _circle )
@@ -1172,7 +1172,7 @@ Ellipse::flushCairo( cairo_t *cr,
     
     if ( filled() )
     {
-      if ( _penColor != Color::None )
+      if ( _penColor != DGtal::Color::None )
 	cairo_fill_preserve (cr);
       else
 	cairo_fill (cr);
@@ -1180,7 +1180,7 @@ Ellipse::flushCairo( cairo_t *cr,
     
     //
     
-    if ( _penColor != Color::None )
+    if ( _penColor != DGtal::Color::None )
     {
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
   
@@ -1352,7 +1352,7 @@ Circle::flushCairo( cairo_t *cr,
 	
 	if ( filled() )
 	{
-	  if ( _penColor != Color::None )
+	  if ( _penColor != DGtal::Color::None )
 	    cairo_fill_preserve (cr);
 	  else
 	    cairo_fill (cr);
@@ -1360,7 +1360,7 @@ Circle::flushCairo( cairo_t *cr,
 	
 	//
 	
-	if ( _penColor != Color::None )
+	if ( _penColor != DGtal::Color::None )
 	{
 	  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
       
@@ -1405,7 +1405,7 @@ Arc::flushCairo( cairo_t *cr,
       
       if ( filled() )
       {
-	if ( _penColor != Color::None )
+	if ( _penColor != DGtal::Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
@@ -1413,7 +1413,7 @@ Arc::flushCairo( cairo_t *cr,
       
       //
       
-      if ( _penColor != Color::None )
+      if ( _penColor != DGtal::Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
     
@@ -1543,7 +1543,7 @@ Polyline::flushPostscript( std::ostream & stream,
 	stream << " " << postscriptProperties();
         stream << " fill" << std::endl;
     }
-    if ( _penColor != Color::None ) {
+    if ( _penColor != DGtal::Color::None ) {
         stream << " " << postscriptProperties() << "\n";
         stream << "n ";
         _path.flushPostscript( stream, transform );
@@ -1556,7 +1556,7 @@ Polyline::flushPostscript( std::ostream & stream,
 void
 Polyline::flushFIG( std::ostream & stream,
                     const TransformFIG & transform,
-                    std::map<Color,int> & colormap ) const
+                    std::map<DGtal::Color,int> & colormap ) const
 {
     if ( _path.empty() )
         return;
@@ -1619,7 +1619,7 @@ Polyline::flushCairo( cairo_t *cr,
       
       if ( filled() )
       {
-	if ( _penColor != Color::None )
+	if ( _penColor != DGtal::Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
@@ -1627,7 +1627,7 @@ Polyline::flushCairo( cairo_t *cr,
       
       //
       
-      if ( _penColor != Color::None )
+      if ( _penColor != DGtal::Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 	
@@ -1705,7 +1705,7 @@ Rectangle::clone() const {
 void
 Rectangle::flushFIG( std::ostream & stream,
                      const TransformFIG & transform,
-                     std::map<Color,int> & colormap ) const
+                     std::map<DGtal::Color,int> & colormap ) const
 {
   if ( _path[0].y != _path[1].y ) {
         Polyline::flushFIG( stream, transform, colormap );
@@ -1823,7 +1823,7 @@ Rectangle::flushCairo( cairo_t *cr,
       
       if ( filled() )
       {
-	if ( _penColor != Color::None )
+	if ( _penColor != DGtal::Color::None )
 	  cairo_fill_preserve (cr);
 	else
 	  cairo_fill (cr);
@@ -1831,7 +1831,7 @@ Rectangle::flushCairo( cairo_t *cr,
       
       //
       
-      if ( _penColor != Color::None )
+      if ( _penColor != DGtal::Color::None )
       {
 	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
 	
@@ -1859,12 +1859,12 @@ GouraudTriangle::name() const
     return _name;
 }
 
-GouraudTriangle::GouraudTriangle( const Point & p0, const Color & color0,
-                                  const Point & p1, const Color & color1,
-                                  const Point & p2, const Color & color2,
+GouraudTriangle::GouraudTriangle( const Point & p0, const DGtal::Color & color0,
+                                  const Point & p1, const DGtal::Color & color1,
+                                  const Point & p2, const DGtal::Color & color2,
                                   int subdivisions,
                                   int depthValue )
-        : Polyline( std::vector<Point>(), true, Color::None, Color::None,
+        : Polyline( std::vector<Point>(), true, DGtal::Color::None, DGtal::Color::None,
                     0.0f, SolidStyle, ButtCap, MiterJoin, depthValue ),
         _color0( color0 ), _color1( color1 ), _color2( color2 ), _subdivisions( subdivisions ) {
     _path << p0;
@@ -1879,10 +1879,10 @@ GouraudTriangle::GouraudTriangle( const Point & p0, const Color & color0,
 GouraudTriangle::GouraudTriangle( const Point & p0, float brightness0,
                                   const Point & p1, float brightness1,
                                   const Point & p2, float brightness2,
-                                  const Color & fill,
+                                  const DGtal::Color & fill,
                                   int subdivisions,
                                   int depthValue )
-        : Polyline( std::vector<Point>(), true, Color::None, Color::None,
+        : Polyline( std::vector<Point>(), true, DGtal::Color::None, DGtal::Color::None,
                     0.0f, SolidStyle, ButtCap, MiterJoin, depthValue ),
 	  _color0( fill ), _color1( fill ), _color2( fill ), _subdivisions( subdivisions )
 {
@@ -1975,15 +1975,15 @@ GouraudTriangle::flushPostscript( std::ostream & stream,
     const Point & p1 = _path[1];
     const Point & p2 = _path[2];
     Point p01( 0.5*(p0.x+p1.x), 0.5*(p0.y+p1.y) );
-    Color c01( (_color0.red() + _color1.red())/2,
+    DGtal::Color c01( (_color0.red() + _color1.red())/2,
                (_color0.green() + _color1.green())/2,
                (_color0.blue() + _color1.blue())/2 );
     Point p12( 0.5*(p1.x+p2.x), 0.5*(p1.y+p2.y) );
-    Color c12( (_color1.red() + _color2.red())/2,
+    DGtal::Color c12( (_color1.red() + _color2.red())/2,
                (_color1.green() + _color2.green())/2,
                (_color1.blue() + _color2.blue())/2 );
     Point p20( 0.5*(p2.x+p0.x), 0.5*(p2.y+p0.y) );
-    Color c20( (_color2.red() + _color0.red())/2,
+    DGtal::Color c20( (_color2.red() + _color0.red())/2,
                (_color2.green() + _color0.green())/2,
                (_color2.blue() + _color0.blue())/2 );
     GouraudTriangle( p0, _color0, p20, c20, p01, c01, _subdivisions - 1, _depth ).flushPostscript( stream, transform );
@@ -1995,13 +1995,13 @@ GouraudTriangle::flushPostscript( std::ostream & stream,
 void
 GouraudTriangle::flushFIG( std::ostream & stream,
                            const TransformFIG & transform,
-                           std::map<Color,int> & colormap ) const
+                           std::map<DGtal::Color,int> & colormap ) const
 {
 
-    Color c( static_cast<unsigned char>((_color0.red() + _color1.red() + _color2.red() )/3.0),
+    DGtal::Color c( static_cast<unsigned char>((_color0.red() + _color1.red() + _color2.red() )/3.0),
              static_cast<unsigned char>((_color0.green() + _color1.green() + _color2.green())/3.0),
              static_cast<unsigned char>((_color0.blue() + _color1.blue() + _color2.blue())/3.0 ));
-    Polyline( _path, Color::None, c, 0.0f ).flushFIG( stream, transform, colormap );
+    Polyline( _path, DGtal::Color::None, c, 0.0f ).flushFIG( stream, transform, colormap );
 
     // if ( ! _subdivisions ) {
     // Polyline::flushFIG( stream, transform, colormap );
@@ -2012,15 +2012,15 @@ GouraudTriangle::flushFIG( std::ostream & stream,
 //   const Point & p1 = _points[1];
 //   const Point & p2 = _points[2];
 //   Point p01( 0.5*(p0.x+p1.x), 0.5*(p0.y+p1.y) );
-//   Color c01( (_color0.red() + _color1.red())/2,
+//   DGtal::Color c01( (_color0.red() + _color1.red())/2,
 // 	     (_color0.green() + _color1.green())/2,
 // 	     (_color0.blue() + _color1.blue())/2 );
 //   Point p12( 0.5*(p1.x+p2.x), 0.5*(p1.y+p2.y) );
-//   Color c12( (_color1.red() + _color2.red())/2,
+//   DGtal::Color c12( (_color1.red() + _color2.red())/2,
 // 	     (_color1.green() + _color2.green())/2,
 // 	     (_color1.blue() + _color2.blue())/2 );
 //   Point p20( 0.5*(p2.x+p0.x), 0.5*(p2.y+p0.y) );
-//   Color c20( (_color2.red() + _color0.red())/2,
+//   DGtal::Color c20( (_color2.red() + _color0.red())/2,
 // 	     (_color2.green() + _color0.green())/2,
 // 	     (_color2.blue() + _color0.blue())/2 );
 //   GouraudTriangle( p0, _color0, p20, c20, p01, c01, _subdivisions - 1, _depth ).flushFIG( stream, transform, colormap );
@@ -2041,15 +2041,15 @@ GouraudTriangle::flushSVG( std::ostream & stream,
     const Point & p1 = _path[1];
     const Point & p2 = _path[2];
     Point p01( 0.5*(p0.x+p1.x), 0.5*(p0.y+p1.y) );
-    Color c01( (_color0.red() + _color1.red())/2,
+    DGtal::Color c01( (_color0.red() + _color1.red())/2,
                (_color0.green() + _color1.green())/2,
                (_color0.blue() + _color1.blue())/2 );
     Point p12( 0.5*(p1.x+p2.x), 0.5*(p1.y+p2.y) );
-    Color c12( (_color1.red() + _color2.red())/2,
+    DGtal::Color c12( (_color1.red() + _color2.red())/2,
                (_color1.green() + _color2.green())/2,
                (_color1.blue() + _color2.blue())/2 );
     Point p20( 0.5*(p2.x+p0.x), 0.5*(p2.y+p0.y) );
-    Color c20( (_color2.red() + _color0.red())/2,
+    DGtal::Color c20( (_color2.red() + _color0.red())/2,
                (_color2.green() + _color0.green())/2,
                (_color2.blue() + _color0.blue())/2 );
     GouraudTriangle( p0, _color0, p20, c20, p01, c01,
