@@ -191,7 +191,11 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 		 const ConstIteratorOnPoints& itb, 
 		 const ConstIteratorOnPoints& ite )
 {
-  TValue xmin, ymin, xmax, ymax;
+  Point p(*itb); 
+  TValue xmin = p[ 0 ];
+  TValue ymin = p[ 1 ];
+  TValue xmax = p[ 0 ];
+  TValue ymax = p[ 1 ];
   for ( ConstIteratorOnPoints it = itb; it != ite; ++it )
     {
 /*      TValue x = it->operator[]( 0 );
