@@ -64,25 +64,19 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    * Description of class 'TangentFromDSSFunctor' <p> Aim: 
-   * computes the tangent orientation (in radians) from the 
-   * getA() and getB() returning the components of the main
-   * direction vector of a segment 
+   * computes the normalized tangent vector of a DSS 
    *
-   * Example :
-   * @code 
-
-   * @endcode
    */
 
-  template <typename DSSComputer, typename TRealVector>
+  template <typename DSSComputer>
   class TangentFromDSSFunctor
   {
 
   public: 
 
     // ----------------------- inner type ------------------------------
-    typedef TRealVector Value;
-    typedef TRealVector RealVector;
+    typedef DGtal::RealPointVector<2> RealVector;
+    typedef RealVector Value;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -103,16 +97,6 @@ namespace DGtal
      */
     TangentFromDSSFunctor( const TangentFromDSSFunctor & other ) {};
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-//    TangentFromDSSFunctor & operator=( const TangentFromDSSFunctor & other ) { 
-//     return *this;
-//    };
-
-
 
 
     // ----------------------- Interface --------------------------------------
@@ -121,11 +105,17 @@ namespace DGtal
     /**
      * Operator() 
      * @return the tangent at [aPoint]
+     * @param aPoint the point at which the tangent is estimated.
      * @param aDSS a DSSComputer. 
-     * @param aPoint the point at which the tangent is estimated. 
+     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
+     * be extended at back and false otherwise. 
+     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
+     * be extended at front and false otherwise.  
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
-                      const DSSComputer& aDSS ) const {
+                      const DSSComputer& aDSS, 
+                      const bool& isExtendableAtBack = false,
+                      const bool& isExtendableAtFront = false) const {
 
       double x = IntegerTraits<typename DSSComputer::Integer>
       ::castToDouble( aDSS.getB() ); 
@@ -166,13 +156,9 @@ namespace DGtal
   /**
    * Description of class 'TangentAngleFromDSSFunctor' <p> Aim: 
    * computes the tangent orientation (in radians) from the 
-   * getA() and getB() returning the components of the main
+   * getA() and getB() methods returning the components of the main
    * direction vector of a segment 
    *
-   * Example :
-   * @code 
-
-   * @endcode
    */
 
   template <typename DSSComputer>
@@ -203,14 +189,6 @@ namespace DGtal
      */
     TangentAngleFromDSSFunctor( const TangentAngleFromDSSFunctor & other ) {};
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-//    TangentAngleFromDSSFunctor & operator=( const TangentAngleFromDSSFunctor & other ) { 
-//     return *this;
-//    };
 
 
 
@@ -222,11 +200,17 @@ namespace DGtal
      * Operator() 
      * @return the tangent orientation at [aPoint]
      * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+     * @param aPoint the point at which the tangent is estimated.
      * @param aDSS a DSSComputer. 
-     * @param aPoint the point at which the tangent orientation is estimated. 
+     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
+     * be extended at back and false otherwise. 
+     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
+     * be extended at front and false otherwise.  
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
-                      const DSSComputer& aDSS ) const {
+                      const DSSComputer& aDSS, 
+                      const bool& isExtendableAtBack = false,
+                      const bool& isExtendableAtFront = false ) const {
 
       Value a = (Value) IntegerTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getA());      
@@ -260,7 +244,184 @@ namespace DGtal
   }; // end of class TangentAngleFromDSSFunctor
 
 
+  /////////////////////////////////////////////////////////////////////////////
+  // class CurvatureFromDSSLengthFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'CurvatureFromDSSLengthFunctor' <p> Aim: 
+   * computes the curvature k from the length l of a DSS as follow: 
+   * rinf = (l − 1/2)2 − 1/4
+   * rsup = (l + 1/2)2 − 1/4
+   * k = 2/(rinf + rsup)
+   *
+   * @note Coeurjolly, D. and Miguet, S. and Tougne, L.
+   *  "Discrete Curvature Based on Osculating Circle Estimation", 
+   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   *
+   */
 
+  template <typename DSSComputer>
+  class CurvatureFromDSSLengthFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef double Value;
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Destructor.
+     */
+    ~CurvatureFromDSSLengthFunctor(){};
+
+    /**
+     * Default Constructor.
+     */
+    CurvatureFromDSSLengthFunctor(){};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & other ) {};
+
+
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Operator() 
+     * @return the curvature at [aPoint]
+     * @param aPoint the point at which the curvature is estimated.
+     * @param aDSS a DSSComputer. 
+     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
+     * be extended at back and false otherwise. 
+     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
+     * be extended at front and false otherwise.  
+     */
+    Value operator()( const typename DSSComputer::Point& aPoint, 
+                      const DSSComputer& aDSS, 
+                      const bool& isExtendableAtBack = false,
+                      const bool& isExtendableAtFront = false) const {
+
+      //types
+      typedef typename DSSComputer::Integer Integer; 
+      typedef typename DSSComputer::ConstIterator ConstIterator; 
+
+      //curvature value
+      Value k = 0;  
+
+      //begin and end iterators
+      //(back point on the first point)
+      //(front point after the last point)
+      ConstIterator front = aDSS.getFront();
+      ConstIterator back = aDSS.getBack();	
+
+      if (isExtendableAtBack) {
+        if (isExtendableAtFront) {
+
+			    --back;
+          ++front; 
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
+				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS) ); 
+			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+				    k = -getValue( getLength(aDSS) ); 
+			    } //else                                                  //inflection
+
+        } else {
+
+			    --back;
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS) ); 
+			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+				    k = -getValue( getLength(aDSS) ); 
+			    } //else                                                 //inflection
+
+        }
+      } else if (isExtendableAtFront) {
+
+          ++front; 
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS) ); 
+			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+				    k = -getValue( getLength(aDSS) ); 
+			    } //else                                                  //inflection
+
+      } //else cannot be extended: k is set to 0
+
+      return k;
+    };
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const
+    {
+      return true;
+    };
+
+
+
+    // ------------------------- Public Datas --------------------------------
+  public:
+
+
+
+    // ------------------------- Internal --------------------------------
+  private:
+
+   /*
+   * @param aDSS a DSSComputer. 
+   * @return the length l of a DSS
+   * defined as the length of the straight segment 
+   * linking the two ends of the DSS
+   */
+   Value getLength(const DSSComputer& aDSS) const {
+      typedef typename DSSComputer::Vector Vector; 
+      Vector v(aDSS.getFrontPoint() - aDSS.getBackPoint()); 
+      return v.norm(Vector::L_2); 
+   }
+
+   /*
+   * @param the length l
+   * @return the curvature k from the length l of a DSS as follow: 
+   * rinf = (l − 1/2)2 − 1/4
+   * rsup = (l + 1/2)2 − 1/4
+   * k = 2/(rinf + rsup)
+   */
+   Value getValue(Value l = 1) const {
+      Value rinf =  pow( (l - 0.5), 2 ) - 0.25; 
+      Value rsup =  pow( (l + 0.5), 2 ) - 0.25; 
+      return 2/(rinf + rsup); 
+   }
+ 
+
+  }; // end of class CurvatureFromDSSLengthFunctor
 
 
 } // namespace DGtal

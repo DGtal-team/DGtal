@@ -120,7 +120,8 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
       if (nextSegIt == segItEnd ) {    //only one maximal segment                         
 
         for (ConstIterator i = itb; i != ite; ++i) {
-           *result++ = myFunctor(*i,*segIt);
+           *result++ = myFunctor(*i,*segIt, 
+                                segIt.intersectPrevious(),segIt.intersectNext() ); 
         }
 
       } else {           //strictly more than one maximal segment
@@ -153,10 +154,12 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
             //estimation and incrementation of eltIt
             if (hasToBeEstimated) {
-               *result++ = myFunctor(*eltIt,*segIt);
+               *result++ = myFunctor(*eltIt,*segIt, 
+                                segIt.intersectPrevious(),segIt.intersectNext() ); 
             } else if (eltIt == itb) {
               hasToBeEstimated = true; 
-               *result++ = myFunctor(*eltIt,*segIt);
+               *result++ = myFunctor(*eltIt,*segIt, 
+                                segIt.intersectPrevious(),segIt.intersectNext() ); 
             }
             ++eltIt;
             if (eltIt == myEnd) {
@@ -183,10 +186,12 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
             //estimation and incrementation of eltIt
             if (hasToBeEstimated) {
-               *result++ = myFunctor(*eltIt,*segIt);
+               *result++ = myFunctor(*eltIt,*segIt, 
+                                segIt.intersectPrevious(),segIt.intersectNext() ); 
             } else if (eltIt == itb) {
               hasToBeEstimated = true; 
-               *result++ = myFunctor(*eltIt,*segIt);
+               *result++ = myFunctor(*eltIt,*segIt, 
+                                segIt.intersectPrevious(),segIt.intersectNext() ); 
             }
             ++eltIt; 
           }

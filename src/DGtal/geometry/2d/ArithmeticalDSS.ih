@@ -821,6 +821,19 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFrontPoint() const {
 	return (*myL);
 }
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBack() const {
+	return myF;
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFront() const {
+	return myL;
+}
 //-----------------------------------------------------------------
 /**
  * Checks the validity/consistency of the object.

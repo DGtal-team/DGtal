@@ -44,15 +44,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //Estimators
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
-
 #include "DGtal/geometry/2d/BinomialConvolver.h"
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
 
 #include <boost/program_options/options_description.hpp>
@@ -61,6 +53,7 @@
 
 #include <vector>
 #include <string>
+#include <iomanip>
 
 using namespace DGtal;
 
@@ -113,7 +106,7 @@ int main( int argc, char** argv )
     for(unsigned int i=0; i<vectFcs.size(); i++){
 
       bool isClosed = vectFcs.at(i).isClosed(); 
-      cout << "# grid curve " << i << "/" << vectFcs.size() << " "
+      cout << "# grid curve " << i+1 << "/" << vectFcs.size() << " "
       << ( (isClosed)?"closed":"open" ) << endl;
 
       Storage vectPts; 
