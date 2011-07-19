@@ -86,7 +86,8 @@ bool testEval(string filename)
 
   typedef Range::ConstIterator ConstIterator;//constIterator
   typedef ArithmeticalDSS<ConstIterator,Kspace::Integer,4> SegmentComputer;//segmentComputer
-  typedef TangentAngleFromDSSFunctor<SegmentComputer> Functor; //functor
+  typedef TangentFromDSSFunctor<SegmentComputer> Functor; //functor
+  typedef Functor::Value Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> Estimator;//estimator
 
   SegmentComputer sc;
@@ -105,10 +106,10 @@ bool testEval(string filename)
 
 {
   trace.info() << "Eval for each element between begin and end " << endl;
-  vector<double> v(r.size()); 
+  vector<Value> v(r.size()); 
   e.eval(r.begin(),r.end(),v.begin());
 
-  for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
+  for (vector<Value>::iterator i = v.begin(); i != v.end(); ++i) {
     cout << *i << " "; 
   }
   cout << endl;
@@ -122,10 +123,10 @@ bool testEval(string filename)
     ConstIterator it2 = it1;
     for (  int compteur = 0; compteur < 5; ++compteur ) ++it2;
 
-    vector<double> v(5); 
+    vector<Value> v(5); 
     e.eval(it1,it2,v.begin());
 
-    for (vector<double>::iterator i = v.begin(); i != v.end(); ++i) {
+    for (vector<Value>::iterator i = v.begin(); i != v.end(); ++i) {
       cout << *i << " "; 
     }
     cout << endl;
