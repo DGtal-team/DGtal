@@ -69,6 +69,8 @@ int main( int argc, char** argv )
   Z3i::KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   
+  ASSERT(space_ok);
+
   std::vector<Z3i::SCell> vectBdrySCell;
   std::vector<Z3i::SCell> vectBdrySCell2;
   std::set<Z3i::SCell> vectBdrySCellALL;

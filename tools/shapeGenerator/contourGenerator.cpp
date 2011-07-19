@@ -370,6 +370,7 @@ generateContour(
 		<< " error in finding a bel." << std::endl;
       return false;
     }
+  return true;
 }
 
 /** 
