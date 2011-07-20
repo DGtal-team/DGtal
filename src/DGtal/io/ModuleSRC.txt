@@ -16,9 +16,11 @@ SET(DGTAL_SRC ${DGTAL_SRC}
 		DGtal/io/boards/DGtalCairo)
 endif( WITH_CAIRO )
 
+
 ##########################################
 #### viewers
 ##########################################
+
 if( WITH_VISU3D_IV )
   SET(DGTALIV_SRC ${DGTALIV_SRC} 
 		DGtal/io/viewers/IVViewer	)
