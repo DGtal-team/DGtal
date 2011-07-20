@@ -114,6 +114,7 @@ namespace DGtal
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
                       const DSSComputer& aDSS, 
+                      const double& h = 1,
                       const bool& isExtendableAtBack = false,
                       const bool& isExtendableAtFront = false) const {
 
@@ -209,6 +210,7 @@ namespace DGtal
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
                       const DSSComputer& aDSS, 
+                      const double& h = 1, 
                       const bool& isExtendableAtBack = false,
                       const bool& isExtendableAtFront = false ) const {
 
@@ -250,11 +252,10 @@ namespace DGtal
   /**
    * Description of class 'CurvatureFromDSSLengthFunctor' <p> Aim: 
    * computes the curvature k from the length l of a DSS as follow: 
-   * rinf = (l − 1/2)2 − 1/4
-   * rsup = (l + 1/2)2 − 1/4
-   * k = 2/(rinf + rsup)
+   * 1/k = l*l/8 + 1/2
    *
-   * @note Coeurjolly, D. and Miguet, S. and Tougne, L.
+   * @note Adaption from 
+   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
    *  "Discrete Curvature Based on Osculating Circle Estimation", 
    * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
    *
@@ -305,6 +306,7 @@ namespace DGtal
      */
     Value operator()( const typename DSSComputer::Point& aPoint, 
                       const DSSComputer& aDSS, 
+                      const double& h = 1, 
                       const bool& isExtendableAtBack = false,
                       const bool& isExtendableAtFront = false) const {
 
@@ -334,10 +336,10 @@ namespace DGtal
 			    //cases
 			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
 				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) ); 
+				    k = getValue( getLength(aDSS) )/h; 
 			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
 					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-				    k = -getValue( getLength(aDSS) ); 
+				    k = -getValue( getLength(aDSS) )/h; 
 			    } //else                                                  //inflection
 
         } else {
@@ -350,9 +352,9 @@ namespace DGtal
 
 			    //cases
 			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) ); 
+				    k = getValue( getLength(aDSS) )/h; 
 			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) ); 
+				    k = -getValue( getLength(aDSS) )/h; 
 			    } //else                                                 //inflection
 
         }
@@ -366,9 +368,9 @@ namespace DGtal
 
 			    //cases
 			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) ); 
+				    k = getValue( getLength(aDSS) )/h; 
 			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) ); 
+				    k = -getValue( getLength(aDSS) )/h; 
 			    } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
@@ -410,19 +412,204 @@ namespace DGtal
    /*
    * @param the length l
    * @return the curvature k from the length l of a DSS as follow: 
-   * rinf = (l − 1/2)2 − 1/4
-   * rsup = (l + 1/2)2 − 1/4
-   * k = 2/(rinf + rsup)
+   * 1/k = l*l/8 + 1/2
    */
-   Value getValue(Value l = 1) const {
-      Value rinf =  pow( (l - 0.5), 2 ) - 0.25; 
-      Value rsup =  pow( (l + 0.5), 2 ) - 0.25; 
-      return 2/(rinf + rsup); 
+   Value getValue(const Value& l = 1) const {
+      return 1/( (l*l)/8 + 0.5 ); 
    }
  
 
   }; // end of class CurvatureFromDSSLengthFunctor
 
+  /////////////////////////////////////////////////////////////////////////////
+  // class CurvatureFromDSSFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'CurvatureFromDSSFunctor' <p> Aim: 
+   * computes the curvature k from 
+   * the length l and the width w of a DSS as follow: 
+   * 1/k = (l*l)/(8*w) + w/2
+   *
+   * @note Adaption from 
+   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
+   *  "Discrete Curvature Based on Osculating Circle Estimation", 
+   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   *
+   */
+
+  template <typename DSSComputer>
+  class CurvatureFromDSSFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef double Value;
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Destructor.
+     */
+    ~CurvatureFromDSSFunctor(){};
+
+    /**
+     * Default Constructor.
+     */
+    CurvatureFromDSSFunctor(){};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & other ) {};
+
+
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Operator() 
+     * @return the curvature at [aPoint]
+     * @param aPoint the point at which the curvature is estimated.
+     * @param aDSS a DSSComputer. 
+     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
+     * be extended at back and false otherwise. 
+     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
+     * be extended at front and false otherwise.  
+     */
+    Value operator()( const typename DSSComputer::Point& aPoint, 
+                      const DSSComputer& aDSS, 
+                      const double& h = 1, 
+                      const bool& isExtendableAtBack = false,
+                      const bool& isExtendableAtFront = false) const {
+
+      //types
+      typedef typename DSSComputer::Integer Integer; 
+      typedef typename DSSComputer::ConstIterator ConstIterator; 
+
+      //curvature value
+      Value k = 0;  
+
+      //begin and end iterators
+      //(back point on the first point)
+      //(front point after the last point)
+      ConstIterator front = aDSS.getFront();
+      ConstIterator back = aDSS.getBack();	
+
+      if (isExtendableAtBack) {
+        if (isExtendableAtFront) {
+
+			    --back;
+          ++front; 
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
+				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } //else                                                  //inflection
+
+        } else {
+
+			    --back;
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } //else                                                 //inflection
+
+        }
+      } else if (isExtendableAtFront) {
+
+          ++front; 
+
+	        //parameters
+	        Integer mu = aDSS.getMu();
+	        Integer omega = aDSS.getOmega();
+
+			    //cases
+			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+			    } //else                                                  //inflection
+
+      } //else cannot be extended: k is set to 0
+
+      return k;
+    };
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const
+    {
+      return true;
+    };
+
+
+
+    // ------------------------- Public Datas --------------------------------
+  public:
+
+
+
+    // ------------------------- Internal --------------------------------
+  private:
+
+   /*
+   * @param aDSS a DSSComputer. 
+   * @return the length l of a DSS
+   * defined as the length of the straight segment 
+   * linking the two ends of the DSS
+   */
+   Value getLength(const DSSComputer& aDSS) const {
+      typedef typename DSSComputer::Vector Vector; 
+      Vector v(aDSS.getFrontPoint() - aDSS.getBackPoint()); 
+      return v.norm(Vector::L_2); 
+   }
+
+   /*
+   * @param aDSS a DSSComputer. 
+   * @return the width w of a DSS
+   * defined as 1/sqrt(a*a + b*b)
+   */
+   Value getWidth(const DSSComputer& aDSS) const {
+      typedef typename DSSComputer::Vector Vector; 
+      Vector v( aDSS.getB(), aDSS.getA() ); 
+      return 1/v.norm(Vector::L_2); 
+   }
+
+
+   /*
+   * @param the length l
+   * @param the width w
+   * @return the curvature k from 
+   * the length l and the width w of a DSS as follow: 
+   * 1/k = (l*l)/(8*w) + w/2
+   */
+   Value getValue(const Value& l = 1, const Value& w = 1) const {
+      return 1/( (l*l)/(8*w) + w/2 ); 
+   }
+ 
+
+  }; // end of class CurvatureFromDSSLengthFunctor
 
 } // namespace DGtal
 
