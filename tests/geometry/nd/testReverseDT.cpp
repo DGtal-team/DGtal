@@ -36,7 +36,7 @@
 #include "DGtal/geometry/nd/volumetric/ReverseDistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

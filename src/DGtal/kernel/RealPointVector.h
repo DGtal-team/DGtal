@@ -51,10 +51,10 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/DGtalQGLViewer.h"
 #endif
 
 

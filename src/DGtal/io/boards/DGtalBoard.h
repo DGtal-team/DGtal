@@ -444,7 +444,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/DGtalBoard.ih"
+#include "DGtal/io/boards/DGtalBoard.ih"
 
 
 //                                                                           //

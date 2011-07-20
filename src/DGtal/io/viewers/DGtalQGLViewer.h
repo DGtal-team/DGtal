@@ -651,7 +651,7 @@ operator<< ( std::ostream & out, const DGtalQGLViewer & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/3dViewers/DGtalQGLViewer.ih"
+#include "DGtal/io/viewers/DGtalQGLViewer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -44,9 +44,8 @@
 // Inclusions
 
 #include <iostream>
-#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/DGtalQGLViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

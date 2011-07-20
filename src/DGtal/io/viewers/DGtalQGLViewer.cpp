@@ -28,7 +28,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/DGtalQGLViewer.h"
 #include <limits>
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)

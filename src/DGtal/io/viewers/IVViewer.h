@@ -211,7 +211,7 @@ operator<< ( std::ostream & out, const IVViewer & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/3dViewers/IVViewer.ih"
+#include "DGtal/io/viewers/IVViewer.ih"
 
 
 //                                                                           //
