@@ -46,7 +46,6 @@
 
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
 #include "DGtal/base/Common.h"
 
 
