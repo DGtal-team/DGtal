@@ -45,9 +45,8 @@
 // Inclusions
 
 #include <iostream>
-#include "boost/concept_check.hpp"
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/io/boards/DGtalCairo.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

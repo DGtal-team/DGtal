@@ -50,11 +50,11 @@
 
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/DGtalQGLViewer.h"
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/boards/DGtalCairo.h"
 #endif
 
 

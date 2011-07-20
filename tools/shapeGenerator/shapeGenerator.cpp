@@ -45,7 +45,7 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 
 
 #include <boost/program_options/options_description.hpp>

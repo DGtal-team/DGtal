@@ -31,8 +31,8 @@
 #include <iostream>
 #include <Qt/qapplication.h>
 #include <Inventor/nodes/SoCube.h>
-#include "DGtal/io/3dViewers/DGtalInventor.h"
-#include "DGtal/io/3dViewers/IVViewer.h"
+#include "DGtal/io/viewers/DGtalInventor.h"
+#include "DGtal/io/viewers/IVViewer.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
