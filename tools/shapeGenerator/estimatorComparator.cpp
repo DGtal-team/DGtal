@@ -266,12 +266,12 @@ compareShapeEstimators( const string & name,
     // Maximal Segments
   	std::cout << "# Maximal DSS tangent estimation" << std::endl;  
     typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
-    typedef TangentFromDSSFunctor<SegmentComputer,RealPoint> SCFunctor;
+    typedef TangentFromDSSFunctor<SegmentComputer> SCFunctor;
     SegmentComputer sc;
     SCFunctor f; 
     MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
     MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
-    std::vector<RealPoint> MSTangents = 
+    std::vector<typename SCFunctor::Value> MSTangents = 
       estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
 
     // Binomial

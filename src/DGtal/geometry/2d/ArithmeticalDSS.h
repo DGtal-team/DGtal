@@ -434,6 +434,17 @@ namespace DGtal
     Point getFrontPoint() const;
 
     /**
+     * Accessor to the iterator at the back of the DSS
+     * @return iterator.
+     */
+    ConstIterator getBack() const;
+    /**
+     * Accessor to the iterator at the front of the DSS
+     * @return iterator.
+     */
+    ConstIterator getFront() const;
+
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
