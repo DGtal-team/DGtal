@@ -360,9 +360,9 @@ namespace DGtal
          /** 
      * Default style.
      */
-    struct DefaultDrawStyleQGL : public  DrawableWithViewer3D 
+    struct DefaultDrawStyleViewer3D : public  DrawableWithViewer3D 
     {
-       virtual void selfDrawQGL(Viewer3D & viewer) const
+       virtual void selfDrawViewer3D(Viewer3D & viewer) const
         {
 	  viewer.myModes[ "DigitalSetBySTLVector" ] = "";
 	}
@@ -373,16 +373,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-  DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
+  DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL(  Viewer3D & viewer ) const;
-    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
-    void selfDrawAsPavingTransparentQGL( Viewer3D & viewer ) const;
+    void selfDrawViewer3D(  Viewer3D & viewer ) const;
+    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
+    void selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const;
 
 
 

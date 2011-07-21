@@ -489,7 +489,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDraw( DGtalBoard & board ) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(false);
@@ -506,7 +506,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentQGL( Viewer3D & vi
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
 {   
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(true);
@@ -522,7 +522,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingQGL( Viewer3D & viewer ) cons
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   for ( ConstIterator it = this->begin(); 
@@ -538,7 +538,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridQGL( Viewer3D & viewer ) const
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -546,15 +546,15 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawQGL( Viewer3D & viewer ) const
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingViewer3D( viewer );
   else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentQGL( viewer );
+    selfDrawAsPavingTransparentViewer3D( viewer );
   else if ( mode == "Grid" )
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingQGL(viewer);
-      selfDrawAsGridQGL( viewer );
+      selfDrawAsPavingViewer3D(viewer);
+      selfDrawAsGridViewer3D( viewer );
     }
   
 }

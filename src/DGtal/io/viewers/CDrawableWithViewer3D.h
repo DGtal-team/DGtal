@@ -130,14 +130,14 @@ namespace DGtal
     BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyleQGL() );
+      ConceptUtils::sameType( myD, myT.defaultStyleViewer3D() );
       //Drawable model should have a defaultStyle( string ) returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyleQGL( myS ) );
+      ConceptUtils::sameType( myD, myT.defaultStyleViewer3D( myS ) );
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
       ///@todo FIXME: si on décommente ça plante
-      myT.selfDrawQGL( myB );
+      myT.selfDrawViewer3D( myB );
     }
 
     // ------------------------- Private Datas --------------------------------

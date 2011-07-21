@@ -67,18 +67,18 @@ namespace DGtal
    * modify a Viewer3D stream.
    * 
    */
-  struct DrawWithQGLViewerModifier {
+  struct DrawWithViewer3DModifier {
     std::string styleName() const
     {
-      return "DrawWithQGLViewerModifier";
+      return "DrawWithViewer3DModifier";
     }
 
-    DrawableWithViewer3D* defaultStyleQGL( std::string = "" ) const
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string = "" ) const
     {
       return 0;
     }
 
-    virtual void selfDrawQGL( Viewer3D &  ) const 
+    virtual void selfDrawViewer3D( Viewer3D &  ) const 
     {}
     
 };
@@ -500,7 +500,7 @@ private:
    * own mode for a given class. Realizes the concept
    * CDrawableWithViewer3D.
    */
-  struct SetMode3D : public DrawWithQGLViewerModifier {
+  struct SetMode3D : public DrawWithViewer3DModifier {
     /**
      * @param classname the name of the class to which the style is associated.
      *
@@ -510,7 +510,7 @@ private:
     SetMode3D( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ myClassname ] = myMode;
     }
@@ -530,7 +530,7 @@ private:
    * style for a given class. Realizes the concept
    * CDrawableWithViewer3D.
    */
-  struct CustomStyle3D : public DrawWithQGLViewerModifier {
+  struct CustomStyle3D : public DrawWithViewer3DModifier {
     /**
      * @param classname the name of the class to which the style is associated.
      *
@@ -546,7 +546,7 @@ private:
       return "CustomStyle3D";
     }
 
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myStyles[ myClassname ] = myStyle;
     }
@@ -571,7 +571,7 @@ private:
    \endcode
    * @see Viewer3D
    */
-  struct CustomColors3D : public DrawWithQGLViewerModifier
+  struct CustomColors3D : public DrawWithViewer3DModifier
   {
     QColor myPenColor;
     QColor myFillColor;
@@ -587,7 +587,7 @@ private:
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDrawQGL( Viewer3D & viewer) const
+    virtual void selfDrawViewer3D( Viewer3D & viewer) const
     {
       viewer.setFillColor(myFillColor);
       viewer.setLineColor(myPenColor);
@@ -600,7 +600,7 @@ private:
    */
 
 
-  struct ClippingPlane : public DrawWithQGLViewerModifier {
+  struct ClippingPlane : public DrawWithViewer3DModifier {
     /**
      * @param classname the name of the class to which the style is associated.
      *
@@ -610,7 +610,7 @@ private:
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
       

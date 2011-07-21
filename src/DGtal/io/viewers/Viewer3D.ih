@@ -144,7 +144,7 @@ DGtal::Viewer3D::operator<<( const TDrawableWithViewer3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithViewer3D< TDrawableWithViewer3D >));
   
-  object.selfDrawQGL( *this );
+  object.selfDrawViewer3D( *this );
   return *this;
 }
 
