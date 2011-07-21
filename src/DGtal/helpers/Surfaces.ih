@@ -437,7 +437,7 @@ extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour
     }
 }
 
-
+/*
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -492,7 +492,7 @@ extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCel
   }
 }
     
-    
+*/
 
 
 //-----------------------------------------------------------------------------
