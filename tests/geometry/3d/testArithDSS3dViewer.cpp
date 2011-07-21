@@ -37,7 +37,7 @@
 #include <iostream>
 
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 
@@ -80,7 +80,7 @@ int main( int argc, char** argv )
 	#ifdef WITH_VISU3D_QGLVIEWER
 
 	QApplication application(argc,argv);
-	DGtalQGLViewer viewer;
+	Viewer3D viewer;
 	viewer.show();
 
 	Point p;
@@ -100,7 +100,7 @@ int main( int argc, char** argv )
 			c++;
 		} 
  
-	viewer << DGtalQGLViewer::updateDisplay;
+	viewer << Viewer3D::updateDisplay;
 	flag = application.exec();
  	#endif
 	return flag;

@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file dgtalQGLviewer-1-points.cpp
+ * @file viewer3D-4-modes.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class DGtalQGLViewer.
+ * Simple example of class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -49,23 +49,29 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
-
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.show();
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
+ 
+ 
+ Point p1( -1, -1, -2 );
+ Point p2( 2, 2, 3 );
  Domain domain( p1, p2 );
- viewer << domain;
+ Point p3( 1, 1, 1 );
+ Point p4( 2, -1, 3 );
+ Point p5( -1, 2, 3 );
+ Point p6( 0, 0, 0 );
+ Point p0( 0, 2, 1 );
  
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+ // viewer <<  SetMode3D( p1.styleName(), "Grid" );
+
+ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+  
+
+ //viewer << SetMode3D(domain.styleName(), "PavingGrids");
+ viewer << domain << Viewer3D::updateDisplay;
  
- shape_set.erase(Point(3,3,3));
- shape_set.erase(Point(6,6,6));
- viewer << shape_set<< DGtalQGLViewer::updateDisplay; 
- 
+
  return application.exec();
 }
 //                                                                           //

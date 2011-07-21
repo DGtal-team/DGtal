@@ -568,7 +568,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(DGtalBoard & aBoard) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentQGL( DGtalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentQGL( Viewer3D & viewer ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(false);
@@ -587,7 +587,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentQGL( DGtalQGLVi
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithDGtalQGLViewer *
+DGtal::DrawableWithViewer3D *
 DGtal::DigitalSetBySTLVector<Domain>::defaultStyleQGL( std::string ) const
 {
   return new DefaultDrawStyleQGL;
@@ -596,7 +596,7 @@ DGtal::DigitalSetBySTLVector<Domain>::defaultStyleQGL( std::string ) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
 {
   
   
@@ -614,7 +614,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( DGtalQGLViewer & view
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -631,7 +631,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( DGtalQGLViewer & viewer
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawQGL( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   

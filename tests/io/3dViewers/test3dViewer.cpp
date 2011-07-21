@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class DGtalQGLViewer.
+ * Functions for testing class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -41,13 +41,13 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class DGtalQGLViewer.
+// Functions for testing class Viewer3D.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testDGtalQGLViewer()
+bool testViewer3D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
 
@@ -129,7 +129,7 @@ int main( int argc, char** argv )
   viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain2;
   
-  viewer << DGtalQGLViewer::updateDisplay;
+  viewer << Viewer3D::updateDisplay;
  
 
  bool res = application.exec();

@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file dgtalQGLviewer-1-points.cpp
+ * @file viewer3D-1-points.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class DGtalQGLViewer.
+ * Simple example of class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -30,10 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,35 +48,18 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
- viewer.show();
 
-  
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
+ Point p1( 0, 0, 0 );
+ Point p2( 5, 5 ,5 );
+ Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
- viewer <<  SetMode3D( p1.styleName(), "Paving" );
+
+ Viewer3D viewer;
+ viewer.show();
+ viewer << domain;  
  viewer << p1 << p2 << p3;
-  
-  //viewer <<  SetMode3D( p1.styleName(), "Grid" );
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
-  viewer << p4 << p5 ;
-  viewer <<  SetMode3D( p1.styleName(), "Both" );
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
-  viewer << p6;
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
-  viewer << p0;
-
-
-  viewer << SetMode3D(domain.styleName(), "Paving");
-  viewer << domain << DGtalQGLViewer::updateDisplay;   
-
-
+ 
+ viewer<< Viewer3D::updateDisplay;
  return application.exec();
 }
 //                                                                           //
