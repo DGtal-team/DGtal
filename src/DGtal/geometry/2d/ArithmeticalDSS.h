@@ -65,27 +65,26 @@ namespace DGtal
    * Dynamic recognition of a digital straight segment (DSS)
    * defined as the sequence of simply connected points (x,y)
    * such that mu <= ax - by < mu + omega.  
-   * (see Debled and Reveilles [1995]).
+   *
+   * @note I. DEBLED-RENNESSON, J.-P. REVEILLES, 
+   * A linear algorithm for segmentation of digital curves, 
+   * International Journal of Pattern Recognition and Artificial
+   * Intelligence, Volume 9, N. 6, December 1995. 
+   *
    * This class is a model of the concept CSegmentComputer. 
    *
-   * This class is templated by the typename 'TIterator', the type
-   * of an iterator on a sequence of points, the typename 'TInteger',
-   * the type of the coordinates of the points (satisfying CInteger) 
-   * and by the integer 'connectivity', which may be equal to 
-   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
-   * Any other integers act as 8. 
    *
    * Here is a short example of how to use this class:
    * @code 
 
-   //type definitions: sequence of points, iterator and DSS recognition
+   //type definitions: 
    typedef PointVector<2,int> Point;
-   typedef std::vector<Point> Sequence;
-   typedef Sequence::const_iterator ConstIterator;
+   typedef std::vector<Point> Range;
+   typedef Range::const_iterator ConstIterator;
    typedef ArithmeticalDSS<ConstIterator, int, 4> DSS4;
 
-   // Sequence of input points
-   Sequence contour;
+   // Input points
+   Range contour;
    contour.push_back(Point(0,0));
    contour.push_back(Point(1,0));
    contour.push_back(Point(2,0));
@@ -97,15 +96,13 @@ namespace DGtal
 
   
    // Add points while it is possible
-   ConstIterator i = contour.begin();
-   DSS4 theDSS4(i);		
-   do {
-   i++;
-   } while ( (i!=contour.end())
-   &&(theDSS4.extend(i)) );
+		DSS4 s;
+		s.init( contour.begin() );
+    while ( (s.end()!=contour.end())
+					&&(s.extend()) ) {} 
 
    // Output parameters
-   cout << theDSS4 << endl;
+   cout << s << endl;
 
    //You must get:
    //[ArithmeticalDSS]
@@ -124,31 +121,19 @@ namespace DGtal
    //[End ArithmeticalDSS]
 
    * @endcode
+   *
+   * @tparam 'TIterator', type ConstIterator on 2D points, 
+   * @tparam 'TInteger', type of scalars used for the DSS parameters 
+   * (satisfying CInteger) 
+   * @tparam 'connectivity', an integer equal to 
+   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
+   * (Any other integers act as 8). 
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class ArithmeticalDSS
   {
 
 
-    // ----------------------- inner types ------------------------------
-  public:
-
-    //entier
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    typedef TInteger Integer;
-
-    //requiered types
-    typedef TIterator ConstIterator;
-		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
-
-
-    //2D point and 2D vector
-    typedef DGtal::PointVector<2,Integer> Point;
-    typedef DGtal::PointVector<2,Integer> Vector;
-  
-    typedef DGtal::PointVector<2,double> PointD;
-  
 
     //////////////////////////////////////////////////////////////////////////////
     // generic class for computing the norm of (a,b)
@@ -221,6 +206,31 @@ namespace DGtal
 
     };
 
+
+    // ----------------------- inner types ------------------------------
+  public:
+
+    //entier
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    typedef TInteger Integer;
+
+    //requiered types
+    typedef TIterator ConstIterator;
+		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
+		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+
+
+    //2D point and 2D vector
+    typedef DGtal::PointVector<2,Integer> Point;
+    typedef DGtal::PointVector<2,Integer> Vector;
+  
+    typedef DGtal::PointVector<2,double> PointD;
+/*
+    typedef IteratorCirculatorTraits<ConstIterator>::Value Point; 
+    typedef IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+*/
+  
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -233,13 +243,13 @@ namespace DGtal
 
     /**
      * Constructor with initialisation
-     * @param it an iterator on a sequence of points
+     * @param it an iterator on 2D points
      */
     ArithmeticalDSS(const ConstIterator& it);
 
     /**
      * Initialisation.
-     * @param it an iterator on a sequence of points
+     * @param it an iterator on 2D points
      */
     void init(const ConstIterator& it);
 
@@ -248,14 +258,19 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ArithmeticalDSS ( const ArithmeticalDSS & other );
+    ArithmeticalDSS ( const Self & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ArithmeticalDSS & operator= ( const ArithmeticalDSS & other );
+    ArithmeticalDSS & operator= ( const Self & other );
+
+    /**
+     * @return a reverse version of '*this'.
+     */
+    Reverse getReverse() const;
 
     /**
      * Equality operator.
@@ -265,7 +280,7 @@ namespace DGtal
      * (same DSS scanned in the reverse way) 
      * and 'false' otherwise
      */
-    bool operator==( const ArithmeticalDSS & other ) const;
+    bool operator==( const Self & other ) const;
 
     /**
      * Difference operator.
@@ -273,7 +288,7 @@ namespace DGtal
      * @return 'false' if equal
      * 'true' otherwise
      */
-    bool operator!=( const ArithmeticalDSS & other ) const;
+    bool operator!=( const Self & other ) const;
 
     /**
      * Destructor.
@@ -284,6 +299,8 @@ namespace DGtal
   public:
      
     /**
+     * Deprecated
+     *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
      * with respect to the scan orientaion) 
@@ -294,6 +311,15 @@ namespace DGtal
     bool isExtendable(const ConstIterator & itf);
 
     /**
+     * Tests whether the current DSS can be extended at the front.
+     *  
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool isExtendable();
+
+    /**
+     * Deprecated
+     *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
      * with respect to the scan orientaion) 
@@ -306,6 +332,8 @@ namespace DGtal
     bool extend(const ConstIterator & itf);
 
     /**
+     * Deprecated
+     *
      * Tests whether the union between a point 
      * (adding to the back of the DSS 
      * with respect to the scan orientaion) 
@@ -318,20 +346,30 @@ namespace DGtal
     bool extendOppositeEnd(const ConstIterator & itb);
 
     /**
-     * Removes the back point of a DSS
-     * (located at the back with respect to 
-     * the scan orientaion)
-     * if the DSS has more than two points
+     * Tests whether the current DSS can be extended at the front.
+     * Computes the parameters of the extended DSS if yes.
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool extend();
+
+    /**
+     * Tests whether the current DSS can be extended at the back.
+     * Computes the parameters of the extended DSS if yes.
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool extendOppositeEnd();
+
+    /**
+     * Removes the first point of the DSS (at back) 
+     * if it has more than two points
      * @return 'true' if the first point is removed, 'false' otherwise.
      */
     bool retract();
 
     /**
-     * Removes the front point of a DSS
-     * (located at the front with respect to 
-     * the scan orientaion)
-     * if the DSS has more than two points
-     * @return 'true' if the first point is removed, 'false' otherwise.
+     * Removes the last point of the DSS (at front)
+     * if it has more than two points
+     * @return 'true' if the last point is removed, 'false' otherwise.
      */
     bool retractOppositeEnd();
 
@@ -340,7 +378,7 @@ namespace DGtal
     /**
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
-     * @param it an iterator on a sequence of points
+     * @param it an iterator on points
      * @return the remainder.
      */
     Integer getRemainder(const ConstIterator & it) const;
@@ -356,7 +394,7 @@ namespace DGtal
     /**
      * Checks whether a point is in the DSL
      * of parameters (myA,myB,myMu,myOmega)
-     * @param aPoint the point checked 
+     * @param aPoint the point to be checked 
      * @return 'true' if yes, 'false' otherwise
      */
     bool isInDSL( const Point& aPoint ) const;
@@ -371,7 +409,7 @@ namespace DGtal
 
     /**
      * Checks whether a point belongs to the DSS or not
-     * @param aPoint the point checked
+     * @param aPoint the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
     bool isInDSS( const Point& aPoint ) const;
@@ -434,17 +472,40 @@ namespace DGtal
      * @return point.
      */
     Point getFrontPoint() const;
-
     /**
+     * Accessor to the first added point to the DSS
+     * @return point.
+     */
+    Point getFirstPoint() const;
+    /**
+     * Accessor to the last added point to the DSS
+     * @return point.
+     */
+    Point getLastPoint() const;
+    /**
+     * Deprecated
+     *
      * Accessor to the iterator at the back of the DSS
      * @return iterator.
      */
     ConstIterator getBack() const;
     /**
+     * Deprecated
+     *
      * Accessor to the iterator at the front of the DSS
      * @return iterator.
      */
     ConstIterator getFront() const;
+    /**
+     *  
+     * @return begin iterator of the DSS range.
+     */
+    ConstIterator begin() const;
+    /**
+     * @return end iterator of the DSS range.
+     */
+    ConstIterator end() const;
+
 
     /**
      * Checks the validity/consistency of the object.
@@ -598,11 +659,12 @@ namespace DGtal
     Point myUf, myUl, myLf, myLl;
 
     //first (at the front) and last (at the back) points of the DSS
+    //Deprecated or to be redefinied (myBackIt, myFrontIt) ?
     ConstIterator myF, myL;
 
     //steps of the DSS 
     //e.g. right and up in the first octant
-    std::vector<Vector> step;
+    std::vector<Vector> mySteps;
 
     // ------------------------- Private Datas --------------------------------
 	
