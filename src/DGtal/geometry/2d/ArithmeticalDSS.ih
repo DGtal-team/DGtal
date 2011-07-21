@@ -97,7 +97,7 @@ void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIt
 	myNbUpPat = 0;
 	myNbLowPat = 0;
 
-	step.clear();
+	mySteps.clear();
 
 }
 
@@ -115,10 +115,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS (
 					myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
 					myF(other.myF), myL(other.myL) {
 
-	step.clear();
-	for (unsigned int i = 0; i < other.step.size(); i++) {
-		step.push_back(other.step.at(i));
-	}
+	mySteps.clear();
+	mySteps = other.mySteps;
 }
 
 /**
@@ -146,13 +144,18 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
       myLl = other.myLl;
       myF = other.myF;
       myL = other.myL;
-      step = other.step;
-      // step.clear();
-      // for (int i = 0; i < other.step.size(); i++) {
-      // 	step.push_back(other.step.at(i));
-      // }
+      mySteps = other.mySteps;
+
     }
   return *this;
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+ArithmeticalDSS<std::reverse_iterator<TIterator>,TInteger,connectivity>
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+::getReverse() const {
+  return Reverse(); 
 }
 
 /**
@@ -234,13 +237,13 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 	Integer deviation = Tools<TInteger,connectivity>
 												::norm(lastMove[0],lastMove[1]);
 	if ( (deviation>1)||(deviation<=0) ) return false;
-  else if (step.size()<2) {
+  else if (mySteps.size()<2) {
 
 		//initialisation stage
 
-		if (step.size()==0) {
+		if (mySteps.size()==0) {
 
-			step.push_back(lastMove);
+			mySteps.push_back(lastMove);
 
 			//update
 			lastIt = it; 
@@ -255,9 +258,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 			return true;
 
-		} else { //step.size() == 1
+		} else { //mySteps.size() == 1
 
-			if (lastMove == step.at(0)) {
+			if (lastMove == mySteps.at(0)) {
 
 				//update
 				lastIt = it; 
@@ -271,7 +274,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 			} else {
 
 				//difference of the two steps viewed as points
-				Vector diff = ( lastMove-step.at(0) );
+				Vector diff = ( lastMove-mySteps.at(0) );
 				if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
 								 //the two steps are compatible
 
@@ -282,22 +285,22 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 					if ( r < myMu) {	//on the left
 						Ul = lastPoint; 
 						Lf = Ll;
-						myA = myNbUpPat*step.at(0)[1] + lastMove[1];
-						myB = myNbUpPat*step.at(0)[0] + lastMove[0];
+						myA = myNbUpPat*mySteps.at(0)[1] + lastMove[1];
+						myB = myNbUpPat*mySteps.at(0)[0] + lastMove[0];
 						myNbUpPat = 1;
 						myNbLowPat = 0;
 					} else {            //on the right
 						Ll = lastPoint; 
 						Uf = Ul;
-						myA = myNbUpPat*step.at(0)[1] + lastMove[1];
-						myB = myNbUpPat*step.at(0)[0] + lastMove[0];
+						myA = myNbUpPat*mySteps.at(0)[1] + lastMove[1];
+						myB = myNbUpPat*mySteps.at(0)[0] + lastMove[0];
 						myNbUpPat = 0;
 						myNbLowPat = 1;
 					}
 					myMu = myA*myUl[0] - myB*myUl[1]; 
 					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 
-					step.push_back(lastMove);
+					mySteps.push_back(lastMove);
 
 					return true;
 
@@ -308,7 +311,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 		}
 
-	} else {  //step.size() == 2
+	} else {  //mySteps.size() == 2
 
 		//main stage
 
@@ -367,40 +370,19 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 }
 
 
-/**
- * Tests whether the union between a point 
- * (adding to the front of the DSS 
- * with respect to the scan orientaion) 
- * and a DSS is a DSS. 
- * Computes the parameters of the new DSS 
- * with the adding point if true.
- * @param it an iterator on a sequence of points
- * @return 'true' if the union is a DSS, 'false' otherwise.
- */
+//--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const ConstIterator& it)
 {
 
-
-//	std::cout << Point(*it) << " - " << Point(*myL) << " == " << (Point(*it) - Point(*myL)) << std::endl;
 	return extend(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
 
 }
 
-
-
-/**
- * Tests whether the union between a point 
- * (adding to the back of the DSS 
- * with respect to the scan orientaion) 
- * and a DSS is a DSS. 
- * Computes the parameters of the new DSS 
- * with the adding point if true.
- * @param it an iterator on a sequence of points
- * @return 'true' if the union is a DSS, 'false' otherwise.
- */
+//Deprecated
+//--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -411,6 +393,32 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const
 
 }
 
+//Deprecated
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend()
+{
+
+  ConstIterator it(myL); ++it;
+	return extend(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
+
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd()
+{
+
+  ConstIterator it(myF); -it;
+	return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
+
+}
+
+//--------------------------------------------------------------------
 
 /**
  * Removes the end point of a DSS
@@ -454,7 +462,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 		myNbUpPat = 0;
 		myNbLowPat = 0;
 
-		step.clear();
+		mySteps.clear();
 
 	} else {                   //there are strictly more than two points
 
@@ -523,14 +531,14 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 		}
 
 		//steps update
-		if (Vector(myB,myA) == step.at(0)) {
-			Vector tmp(step.at(0));
-			step.clear();
-			step.push_back(tmp);
-		} else if (Vector(myB,myA) == step.at(1)) {
-			Vector tmp(step.at(1));
-			step.clear();
-			step.push_back(tmp);
+		if (Vector(myB,myA) == mySteps.at(0)) {
+			Vector tmp(mySteps.at(0));
+			mySteps.clear();
+			mySteps.push_back(tmp);
+		} else if (Vector(myB,myA) == mySteps.at(1)) {
+			Vector tmp(mySteps.at(1));
+			mySteps.clear();
+			mySteps.push_back(tmp);
 		}
 
 	}
@@ -539,13 +547,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 }
 
 
-/**
- * Remove the first point of a DSS
- * (located at the back with respect to 
- * the scan orientaion)
- * if the DSS has more than two points
- * @return 'true' the first point is removed, 'false' otherwise.
- */
+//--------------------------------------------------------------------
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -556,18 +559,13 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
 	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
 		return false;
 	} else {                           //otherwise
-		ConstIterator next = myF; ++next;
+		ConstIterator next(myF); ++next;
 		return retract(myF, myL, next, myUf, myUl, myLf, myLl, 1);
 	}
 }
 
-/**
- * Remove the first point of a DSS
- * (located at the front with respect to 
- * the scan orientaion)
- * if the DSS has more than two points
- * @return 'true' the first point is removed, 'false' otherwise.
- */
+//--------------------------------------------------------------------
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -578,19 +576,13 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
 	if ( (v[0] == 0) && (v[1] == 0) ) {//if there is only one point
 		return false;
 	} else {                           //otherwise
-		ConstIterator previous = myL; --previous;
+		ConstIterator previous(myL); --previous;
 		return retract(myL, myF, previous, myUl, myUf, myLl, myLf, -1);
 	}
 }
 
-/**
- * Tests whether the union between a point 
- * (adding to the front of the DSS 
- * with respect to the scan orientaion) 
- * and a DSS is a DSS. 
- * @param it an iterator on a sequence of points
- * @return 'true' if the union is a DSS, 'false' otherwise.
- */
+//--------------------------------------------------------------------
+//Deprecated
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -605,24 +597,24 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 	Integer deviation = Tools<TInteger,connectivity>
 												::norm(lastMove[0],lastMove[1]);
 	if ( (deviation>1)||(deviation<=0) ) return false;
-  else if (step.size()<2) {
+  else if (mySteps.size()<2) {
 
 		//initialisation stage
 
-		if (step.size()==0) {
+		if (mySteps.size()==0) {
 
 			return true;
 
-		} else { //step.size() == 1
+		} else { //mySteps.size() == 1
 
-			if (lastMove == step.at(0)) {
+			if (lastMove == mySteps.at(0)) {
 
 				return true;
 
 			} else {
 
 				//difference of the two steps viewed as points
-				Vector diff = ( lastMove-step.at(0) );
+				Vector diff = ( lastMove-mySteps.at(0) );
 				if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
 								 //the two steps are compatible
 					return true;
@@ -634,7 +626,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 
 		}
 
-	} else {  //step.size() == 2
+	} else {  //mySteps.size() == 2
 
 		//main stage
 
@@ -659,6 +651,74 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 
 }
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
+{
+
+  ConstIterator it(myL); ++it;
+	Point lastPoint(*it);
+	Vector lastMove = lastPoint-Point(*myL);
+	//if the two last points 
+  //are confounded or not connected
+	//return false
+	Integer deviation = Tools<TInteger,connectivity>
+												::norm(lastMove[0],lastMove[1]);
+	if ( (deviation>1)||(deviation<=0) ) return false;
+  else if (mySteps.size()<2) {
+
+		//initialisation stage
+
+		if (mySteps.size()==0) {
+
+			return true;
+
+		} else { //mySteps.size() == 1
+
+			if (lastMove == mySteps.at(0)) {
+
+				return true;
+
+			} else {
+
+				//difference of the two steps viewed as points
+				Vector diff = ( lastMove-mySteps.at(0) );
+				if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+								 //the two steps are compatible
+					return true;
+
+				} else {  //the two steps are not compatible
+					return false;
+				}
+			}
+
+		}
+
+	} else {  //mySteps.size() == 2
+
+		//main stage
+
+		//if there only two steps at most
+		if (hasLessThanTwoSteps(lastMove)) {
+		
+			//remainder
+			Integer r = myA*lastPoint[0] - myB*lastPoint[1];
+				  
+			if ( (r < myMu-1)||(r > myMu+myOmega) )
+				return false; //strongly exterior
+			else { 
+				return true;
+			}
+
+		} else { 
+			//if there is more than two steps 
+ 			return false;
+		}
+
+	} 
+
+}
 
 
 //-------------------------------------------------------------------------
@@ -823,6 +883,20 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFrontPoint() const {
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
+DGtal::PointVector<2,TInteger>
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFirstPoint() const {
+	return (*myF);
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::PointVector<2,TInteger>
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLastPoint() const {
+	return (*myL);
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
 TIterator
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBack() const {
 	return myF;
@@ -834,6 +908,22 @@ TIterator
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFront() const {
 	return myL;
 }
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::begin() const {
+	return myF;
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
+  ConstIterator i(myL);
+	return ++i;
+}
+
 //-----------------------------------------------------------------
 /**
  * Checks the validity/consistency of the object.
@@ -1115,8 +1205,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
   out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
   out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;
   out << "Steps:" <<  endl;
-  for (unsigned int i = 0; i < step.size(); i++) {
-	  out << "   " << step.at(i) << endl;
+  for (unsigned int i = 0; i < mySteps.size(); i++) {
+	  out << "   " << mySteps.at(i) << endl;
   }
   out << "[End ArithmeticalDSS]" <<  endl;
   
@@ -1138,8 +1228,8 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
 				const Vector& aStep) const
 {
-	if ( (aStep == step.at(0)) || 
-			 (aStep == step.at(1)) ) {
+	if ( (aStep == mySteps.at(0)) || 
+			 (aStep == mySteps.at(1)) ) {
 		return true;
 	} else {
 		return false;
@@ -1158,11 +1248,11 @@ inline
 DGtal::PointVector<2,TInteger>
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::vectorFrom0ToOmega() const
 {
-	Vector v = step.at(1) - step.at(0);
+	Vector v = mySteps.at(1) - mySteps.at(0);
 	if ( (myA*v[0] - myB*v[1]) == myOmega) {
 		return v;
 	} else {
-		return ( step.at(0) - step.at(1) );
+		return ( mySteps.at(0) - mySteps.at(1) );
 	}
 
 }
