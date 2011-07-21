@@ -50,6 +50,8 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class MaximalSegments
   /**
+   * \TODO update doc
+   *
    * Description of template class 'MaximalSegments' <p>
    * \brief Aim: Computes the set of maximal segments of a sequence.
    * Maximal segments are segments that cannot be included in other segments. 
@@ -107,9 +109,10 @@ namespace DGtal
 	public: 
 
 		typedef TSegment Segment;
-		typedef typename TSegment::Iterator Iterator;		
-		typedef typename TSegment::ReverseIterator ReverseIterator;
-		typedef	typename TSegment::ReverseSegmentComputer ReverseSegment;
+		typedef	typename TSegment::Reverse ReverseSegment;
+		typedef typename TSegment::ConstIterator Iterator;		
+		typedef typename ReverseSegment::ConstIterator ReverseIterator;
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -186,7 +189,7 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       SegmentIterator( MaximalSegments<TSegment> *aCov,
-										 const typename TSegment::Iterator& aBack,
+										 const typename TSegment::ConstIterator& aBack,
 										 const TSegment& aSegment);
 
 
@@ -337,6 +340,11 @@ namespace DGtal
 
 
     /**
+     * Default constructor.
+     */
+    MaximalSegments(){};
+
+    /**
      * Constructor.
 		 * Nb: The sequence is processed as a closed one by default.
      * @param begin, begin iterator on a sequence
@@ -349,6 +357,21 @@ namespace DGtal
                     const Iterator& endIt, 
                     const Segment& aSegment, 
                     const bool& aFlag);
+
+    /**
+     * Init.
+		 * Nb: The sequence is processed as a closed one by default.
+     * @param begin, begin iterator on a sequence
+     * @param end, end iterator on a sequence
+     * @param aSegment, a segment computer
+     * @param aFlag a boolean equal to TRUE to decompose the digital
+     * curve as a closed one, FALSE otherwise
+     */
+    void init(const Iterator& beginIt, 
+              const Iterator& endIt, 
+              const Segment& aSegment, 
+              const bool& aFlag);
+
 
     /**
      * Destructor.
@@ -402,15 +425,16 @@ namespace DGtal
 		Iterator myFirstMaximalSegmentBack;
 
     /**
+     * a segment Computer
+     */
+		Segment mySegment;
+
+    /**
      * boolean equal to TRUE if the sequence
      * has to be processed as closed, FALSE otherwise
      */
 		bool isClosed;
 
-    /**
-     * a segment Computer
-     */
-		Segment mySegment;
 
     // ------------------------- Hidden services ------------------------------
 

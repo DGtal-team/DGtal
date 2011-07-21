@@ -421,6 +421,16 @@ DGtal::PointVector<dim, Component>::operator-= ( const Self& v )
   for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] -= v[ i ];
   return *this;
+}//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
+typename DGtal::PointVector<dim, Component>::Component
+DGtal::PointVector<dim, Component>::dot( const Self& v )
+{
+  Component dotprod= IntegerTraits<Component>::ZERO;
+  for ( Dimension i = 0; i < dim; ++i )
+    dotprod += this->myArray[ i ]*v[ i ];
+  return dotprod;
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>

@@ -72,11 +72,12 @@ int main()
   }
   
   Z2i::DigitalSet set2d (image.domain());
+  SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
   SurfelAdjacency<2> sAdj( true );
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						    ks, set2d, sAdj );  
+						    ks, set2dPredicate, sAdj );  
   DGtalBoard aBoard;
   aBoard << set2d;
   aBoard << image.domain();  

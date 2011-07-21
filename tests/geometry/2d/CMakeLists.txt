@@ -7,6 +7,12 @@ SET(DGTAL_TESTS_SRC
 	testMaximalSegments
 	testFP
 	testCombinDSS
+	testGridCurve
+	testLengthEstimators
+	testTrueLocalEstimator
+	testSegmentComputerFunctor
+	testMostCenteredMSEstimator
+	testBinomialConvolver
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

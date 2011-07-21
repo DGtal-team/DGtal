@@ -243,6 +243,36 @@ namespace DGtal
 					  Dimension track_dir,
 					  bool pos ) const;
 
+    /**
+       Go to the next direct or indirect adjacent bel on the boundary
+       of some digital set defined by a PointPredicate [pp].  The
+       boundary may be open (it touches the space borders).
+
+       @tparam PointPredicate any model of predicate on point, i.e. a
+       boolean functor returning 'true' when the point belongs to the
+       object. It is a model of CPointPredicate. The type
+       SurfelNeighborhood::Point should be the same as
+       PointPredicate::Point.
+
+       @param adj_surfel (returns) the signed adjacent surfel in direction
+       [track_dir] if there is one.
+
+       @param pp any predicate taking a Point and returning 'true'
+       whenever the point belongs to the object.
+
+       @param track_dir the direction where to look for the spel.
+       @param pos when 'true' look in positive direction along
+       [track_dir] axis, 'false' look in negative direction.
+
+       @return 0 if the move was impossible (no bels in this direction),
+       1 if it was the first interior, 2 if it was the second interior,
+       3 if it was the third interior.
+    */
+    template <typename PointPredicate>
+    unsigned int getAdjacentOnPointPredicate( SCell & adj_surfel,
+					      const PointPredicate & pp, 
+					      Dimension track_dir,
+					      bool pos ) const;
 
     // ----------------------- Interface --------------------------------------
   public:

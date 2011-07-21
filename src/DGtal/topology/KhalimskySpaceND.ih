@@ -212,9 +212,6 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( DGtalQGLViewer & viewer ) cons
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
   bool zodd = ( myCoordinates[ 2 ] & 1 );
-  float dx = xodd ? 1.0f  : 0.0f;
-  float dy = yodd ? 1.0f  : 0.0f;
-  float dz = zodd ? 1.0f  : 0.0f;
   
 	 
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
@@ -1783,8 +1780,9 @@ sDirectIncident( const SCell & p, Dimension k ) const
   d.myPositive = POS;
   ASSERT( ( ! up ) || ( sKCoord( d, k ) < uKCoord( myCellUpper, k ) ) ); 
   ASSERT( (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( d, k ) ) ); 
-  if ( up ) ++d.myCoordinates[ k ];
-  else      --d.myCoordinates[ k ];
+  if ( up )  ++d.myCoordinates[ k ];
+  else  --d.myCoordinates[ k ];
+  
   return d;
 }
 //-----------------------------------------------------------------------------
@@ -1805,8 +1803,10 @@ sIndirectIncident( const SCell & p, Dimension k ) const
   d.myPositive = NEG;
   ASSERT( ( ! up ) || ( sKCoord( d, k ) < uKCoord( myCellUpper, k ) ) ); 
   ASSERT( (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( d, k ) ) ); 
+
   if ( up ) ++d.myCoordinates[ k ];
-  else      --d.myCoordinates[ k ];
+  else --d.myCoordinates[ k ];
+  
   return d;
 }
 

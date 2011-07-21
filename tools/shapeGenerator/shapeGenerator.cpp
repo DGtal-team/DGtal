@@ -28,6 +28,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <vector>
+#include <string>
+
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
 
@@ -47,13 +53,6 @@
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/DGtalBoard.h"
 
-
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
-
-#include <vector>
-#include <string>
 
 using namespace DGtal;
 
@@ -255,19 +254,21 @@ struct Exporter
   static 
   void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
   {
-    
+    SetPredicate<Set> aSetPredicate( aSet );
     trace.beginBlock("Extracting the boundary");
     Z2i::KSpace ks;
     bool space_ok = ks.init( aDomain.lowerBound(),aDomain.upperBound(), true );
     SurfelAdjacency<2> sAdj( true );
 
     ASSERT(space_ok);
-    trace.info()<<aSet<<std::endl;
-    trace.info()<<ks<<std::endl;
+    trace.info() << aSet << std::endl;
+    trace.info() << ks 
+		 << ( space_ok ? " Successfully instantiated" : " Error" )
+		 << std::endl;
 
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						      ks, aSet, sAdj );  
+						      ks, aSetPredicate, sAdj );  
     trace.endBlock();
     
     ///Export

@@ -154,7 +154,7 @@ int main( int argc, char** argv )
   string imageFileName = vm["image"].as<std::string>();
   Image image = PNMReader<Image>::importPGMImage( imageFileName ); 
   Z2i::DigitalSet set2d (image.domain());
-    
+  SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
 
   for(int i=0; minThreshold+i*increment< maxThreshold; i++){
     min = minThreshold+i*increment;
@@ -172,7 +172,7 @@ int main( int argc, char** argv )
   
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						      ks, set2d, sAdj );  
+						      ks, set2dPredicate, sAdj );  
     for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
       if(vectContoursBdryPointels.at(i).size()>minSize){
 	if(select){
