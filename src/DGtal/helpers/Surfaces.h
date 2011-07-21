@@ -368,14 +368,14 @@ namespace DGtal
      *
      */
     
-    template <typename DigitalSet >
+    /* template <typename DigitalSet >
     static 
     void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
 				   const KSpace & aKSpace,
 				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
 				   const DigitalSet & aShape, bool forceOrientCellExterior=false );
 
-
+    */
     
 
     /**
@@ -389,7 +389,7 @@ namespace DGtal
      * @param aKSpace any space.
      * @param aShape any digital set.
      */
-      
+    /*     
     template <typename DigitalSet >
     static 
     void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  
@@ -398,7 +398,7 @@ namespace DGtal
 
     
 
-
+    */
 
     
     /**
