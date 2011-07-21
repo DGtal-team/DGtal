@@ -55,11 +55,11 @@
 
 
 //Estimators
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeCurvatureFunctor.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
 
 #include "DGtal/geometry/2d/BinomialConvolver.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"

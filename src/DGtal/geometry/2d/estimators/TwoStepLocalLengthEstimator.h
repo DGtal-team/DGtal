@@ -17,53 +17,50 @@
 #pragma once
 
 /**
- * @file MLPLengthEstimator.h
- * @author Tristan Roussillon (\c
- * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
- * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
- * France
+ * @file TwoStepLocalLengthEstimator.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
+ * @date 2011/06/27
  *
- * @date 2011/07/07
- *
- * Header file for module MLPLengthEstimator.cpp
+ * Header file for module TwoStepLocalLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(MLPLengthEstimator_RECURSES)
-#error Recursive header files inclusion detected in MLPLengthEstimator.h
-#else // defined(MLPLengthEstimator_RECURSES)
+#if defined(TwoStepLocalLengthEstimator_RECURSES)
+#error Recursive header files inclusion detected in TwoStepLocalLengthEstimator.h
+#else // defined(TwoStepLocalLengthEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define MLPLengthEstimator_RECURSES
+#define TwoStepLocalLengthEstimator_RECURSES
 
-#if !defined MLPLengthEstimator_h
+#if !defined TwoStepLocalLengthEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define MLPLengthEstimator_h
+#define TwoStepLocalLengthEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/FP.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class MLPLengthEstimator
+  // template class TwoStepLocalLengthEstimator
   /**
-   * Description of template class 'MLPLengthEstimator' <p>
-   * \brief Aim: a model of CGlobalCurveEstimator that computes
-   * the length of a digital curve using its MLP (given by the FP)
+   * Description of template class 'TwoStepLocalLengthEstimator' <p>
+   * \brief Aim: a simple model of CGlobalCurveEstimator that compute
+   * the length of a curve using the l_1 metric (just add 1/h for
+   * every step).
    * 
    * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnPoints. 
+   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
    */
   template <typename TConstIterator>
-  class MLPLengthEstimator
+  class TwoStepLocalLengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -73,21 +70,20 @@ namespace DGtal
     typedef TConstIterator ConstIterator;
 
     typedef double Quantity;
-
-    typedef FP<ConstIterator,int,4> FaithfulPolygon;
-    typedef typename FaithfulPolygon::RealPoint Point;  
-    typedef typename FaithfulPolygon::RealVector Vector;  
+  
 
     /**
      * Default Constructor.
      */
-    MLPLengthEstimator();
+    TwoStepLocalLengthEstimator(const double wdirect, const double wdiag):
+      myWeightDirect(wdirect), myWeightDiagonal(wdiag)
+    {}
     
     
     /**
      * Destructor.
      */
-    ~MLPLengthEstimator();
+    ~TwoStepLocalLengthEstimator();
 
   
     // ----------------------- Interface --------------------------------------
@@ -101,7 +97,9 @@ namespace DGtal
      * @param ite end iterator
      * @param closed true if the input range is closed.
      */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
+    void init( const double h, const ConstIterator& itb, 
+	       const ConstIterator& ite, 
+	       const bool& isClosed);
     
 
     /** 
@@ -132,12 +130,18 @@ namespace DGtal
     ///Grid size.
     double myH;
 
-    ///polygonal representation of the input
-    std::vector<Point> myRep;
+    ///Copy of the range.
+    ConstIterator myBeginIt;
+    ConstIterator myEndIt;
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
+    ///Weights
+    double myWeightDirect;
+    double myWeightDiagonal;
+    
+    
   private:
 
     /**
@@ -145,7 +149,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    MLPLengthEstimator ( const MLPLengthEstimator & other );
+    TwoStepLocalLengthEstimator ( const TwoStepLocalLengthEstimator & other );
 
     /**
      * Assignment.
@@ -153,35 +157,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    MLPLengthEstimator & operator= ( const MLPLengthEstimator & other );
+    TwoStepLocalLengthEstimator & operator= ( const TwoStepLocalLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class MLPLengthEstimator
+  }; // end of class TwoStepLocalLengthEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'MLPLengthEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'TwoStepLocalLengthEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'MLPLengthEstimator' to write.
+   * @param object the object of class 'TwoStepLocalLengthEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const MLPLengthEstimator<T> & object );
+  operator<< ( std::ostream & out, const TwoStepLocalLengthEstimator<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d//MLPLengthEstimator.ih"
+#include "DGtal/geometry/2d/estimators/TwoStepLocalLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined MLPLengthEstimator_h
+#endif // !defined TwoStepLocalLengthEstimator_h
 
-#undef MLPLengthEstimator_RECURSES
-#endif // else defined(MLPLengthEstimator_RECURSES)
+#undef TwoStepLocalLengthEstimator_RECURSES
+#endif // else defined(TwoStepLocalLengthEstimator_RECURSES)

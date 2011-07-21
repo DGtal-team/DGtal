@@ -54,8 +54,6 @@ namespace DGtal
    * Description of template struct 'CompareLocalEstimators' <p>
    * \brief Aim: Functor to compare two local geometric estimators. 
    * 
-   * @note At this point this comparator only deals with scalar value
-   * local estimators.
    *
    * @tparam TFirstEsimator  type of the first estimator.
    * @tparam TSecondEstimator type of the second estimator.
