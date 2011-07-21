@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file FPLengthEstimator.h
+ * @file DSSLengthEstimator.h
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -26,44 +26,48 @@
  *
  * @date 2011/07/07
  *
- * Header file for module FPLengthEstimator.cpp
+ * Header file for module DSSLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(FPLengthEstimator_RECURSES)
-#error Recursive header files inclusion detected in FPLengthEstimator.h
-#else // defined(FPLengthEstimator_RECURSES)
+#if defined(DSSLengthEstimator_RECURSES)
+#error Recursive header files inclusion detected in DSSLengthEstimator.h
+#else // defined(DSSLengthEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define FPLengthEstimator_RECURSES
+#define DSSLengthEstimator_RECURSES
 
-#if !defined FPLengthEstimator_h
+#if !defined DSSLengthEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define FPLengthEstimator_h
+#define DSSLengthEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/FP.h"
+#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class FPLengthEstimator
+  // template class DSSLengthEstimator
   /**
-   * Description of template class 'FPLengthEstimator' <p>
-   * \brief Aim: a model of CGlobalCurveEstimator that computes
-   * the length of a digital curve using its FP (faithful polygon)
-   * 
+   * Description of template class 'DSSLengthEstimator' <p>
+   * \brief Aim: a model of CGlobalCurveEstimator that 
+   * segments the digital curve into DSS and computes
+   * the length of the resulting (not uniquely defined)
+   * polygon. 
+   *
    * Model of @href CGlobalCurveGeometricEstimator.
    *
    * @tparam TConstIterator a model of CConstIteratorOnPoints. 
    */
   template <typename TConstIterator>
-  class FPLengthEstimator
+  class DSSLengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -74,20 +78,20 @@ namespace DGtal
 
     typedef double Quantity;
 
-    typedef FP<ConstIterator,int,4> FaithfulPolygon;
-    typedef typename FaithfulPolygon::Point Point;  
-    typedef typename FaithfulPolygon::Vector Vector;  
+    typedef ArithmeticalDSS<ConstIterator,int,4> DSSComputer;
+    typedef typename DSSComputer::Point Point;  
+    typedef typename DSSComputer::Vector Vector;  
 
     /**
      * Default Constructor.
      */
-    FPLengthEstimator();
+    DSSLengthEstimator();
     
     
     /**
      * Destructor.
      */
-    ~FPLengthEstimator();
+    ~DSSLengthEstimator();
 
   
     // ----------------------- Interface --------------------------------------
@@ -145,7 +149,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    FPLengthEstimator ( const FPLengthEstimator & other );
+    DSSLengthEstimator ( const DSSLengthEstimator & other );
 
     /**
      * Assignment.
@@ -153,35 +157,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    FPLengthEstimator & operator= ( const FPLengthEstimator & other );
+    DSSLengthEstimator & operator= ( const DSSLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class FPLengthEstimator
+  }; // end of class DSSLengthEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'FPLengthEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'DSSLengthEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'FPLengthEstimator' to write.
+   * @param object the object of class 'DSSLengthEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const FPLengthEstimator<T> & object );
+  operator<< ( std::ostream & out, const DSSLengthEstimator<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d//FPLengthEstimator.ih"
+#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined FPLengthEstimator_h
+#endif // !defined DSSLengthEstimator_h
 
-#undef FPLengthEstimator_RECURSES
-#endif // else defined(FPLengthEstimator_RECURSES)
+#undef DSSLengthEstimator_RECURSES
+#endif // else defined(DSSLengthEstimator_RECURSES)

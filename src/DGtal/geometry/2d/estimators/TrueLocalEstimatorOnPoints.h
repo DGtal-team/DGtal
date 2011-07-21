@@ -17,42 +17,39 @@
 #pragma once
 
 /**
- * @file TrueGlobalEstimatorOnPoints.h
+ * @file TrueLocalEstimatorOnPoints.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/06/27
  *
- * Header file for module TrueGlobalEstimatorOnPoints.cpp
+ * Header file for module TrueLocalEstimatorOnPoints.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(TrueGlobalEstimatorOnPoints_RECURSES)
-#error Recursive header files inclusion detected in TrueGlobalEstimatorOnPoints
-#else // defined(TrueGlobalEstimatorOnPoints_RECURSES)
+#if defined(TrueLocalEstimatorOnPoints_RECURSES)
+#error Recursive header files inclusion detected in TrueLocalEstimatorOnPoints.h
+#else // defined(TrueLocalEstimatorOnPoints_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define TrueGlobalEstimatorOnPoints_RECURSES
+#define TrueLocalEstimatorOnPoints_RECURSES
 
-#if !defined TrueGlobalEstimatorOnPoints_h
+#if !defined TrueLocalEstimatorOnPoints_h
 /** Prevents repeated inclusion of headers. */
-#define TrueGlobalEstimatorOnPoints_h
+#define TrueLocalEstimatorOnPoints_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <list>
-
-#include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
-  // template class TrueGlobalEstimatorOnPoints
+  // template class TrueLocalEstimatorOnPoints
   /**
-   * Description of template class 'TrueGlobalEstimatorOnPoints' <p>
+   * Description of template class 'TrueLocalEstimatorOnPoints' <p>
    * \brief Aim: Computes the true quantity to each element of a range associated to 
    * a parametric shape.
    *
@@ -63,16 +60,16 @@ namespace DGtal
    * the quantity.
    */
   template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
-  class TrueGlobalEstimatorOnPoints
+  class TrueLocalEstimatorOnPoints
   {
 
     // ----------------------- Types ------------------------------
   public:
 
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TConstIteratorOnPoints ConstIterator;
 
     typedef TParametricShape ParametricShape;
-    typedef typename ParametricShape::RealPoint RealPoint; 
+    typedef typename TParametricShape::RealPoint RealPoint;
     
     typedef TParametricShapeFunctor ParametricShapeFunctor;
     typedef typename ParametricShapeFunctor::Quantity Quantity;
@@ -84,7 +81,7 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    TrueGlobalEstimatorOnPoints() 
+    TrueLocalEstimatorOnPoints() 
     {
       myFlagIsInit = false;
     }
@@ -97,16 +94,16 @@ namespace DGtal
      * @param aSegmentComputer
      * @param isClosed true if the input range is closed.
      */
-    TrueGlobalEstimatorOnPoints(const double h, 
-			       const ConstIteratorOnPoints& itb, 
-			       const ConstIteratorOnPoints& ite,
+    TrueLocalEstimatorOnPoints(const double h, 
+			       const ConstIterator& itb, 
+			       const ConstIterator& ite,
 			       ParametricShape* aShape,
-			       const bool& isClosed);
+			       const bool isClosed);
     
     /**
      * Destructor.
      */
-    ~TrueGlobalEstimatorOnPoints() {};
+    ~TrueLocalEstimatorOnPoints() {};
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -120,22 +117,24 @@ namespace DGtal
      * @param isClosed true if the input range is viewed as closed.
      */
     void init(const double h, 
-	      const ConstIteratorOnPoints& itb, 
-	      const ConstIteratorOnPoints& ite,
+	      const ConstIterator& itb, 
+	      const ConstIterator& ite,
 	      ParametricShape* aShape,
-	      const bool& isClosed);
+	      const bool isClosed);
     
     /**
-     * @return the estimated quantity 
+     * @return the estimated quantity at *it
      */
-    Quantity eval() ;
+    Quantity eval(const ConstIterator& it);
     
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
-    Quantity eval(const ConstIteratorOnPoints& itb, 
-		  const ConstIteratorOnPoints& ite); 
+    template <typename OutputIterator>
+    OutputIterator eval(const ConstIterator& itb, 
+			const ConstIterator& ite, 
+                        OutputIterator result); 
 
 
     /**
@@ -163,10 +162,10 @@ namespace DGtal
     ParametricShapeFunctor myFunctor;
     
     ///Copy of the begin iterator
-    ConstIteratorOnPoints myBegin;
+    ConstIterator myBegin;
     
     ///Copy of the end iterator
-    ConstIteratorOnPoints myEnd;
+    ConstIterator myEnd;
 
     // ------------------------- Hidden services ------------------------------
   private:
@@ -176,7 +175,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & other );
+    TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & other );
 
     /**
      * Assignment.
@@ -184,22 +183,22 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & other );
+    TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & other );
 
 
-  }; // end of class TrueGlobalEstimatorOnPoints
+  }; // end of class TrueLocalEstimatorOnPoints
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.ih"
+#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined TrueGlobalEstimatorOnPoints_h
+#endif // !defined TrueLocalEstimatorOnPoints_h
 
-#undef TrueGlobalEstimatorOnPoints_RECURSES
-#endif // else defined(TrueGlobalEstimatorOnPoints_RECURSES)
+#undef TrueLocalEstimatorOnPoints_RECURSES
+#endif // else defined(TrueLocalEstimatorOnPoints_RECURSES)

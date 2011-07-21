@@ -56,14 +56,16 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //estimators
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/geometry/2d/L1LengthEstimator.h"
-#include "DGtal/geometry/2d/MLPLengthEstimator.h"
-#include "DGtal/geometry/2d/FPLengthEstimator.h"
-#include "DGtal/geometry/2d/DSSLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/L1LengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/BLUELocalLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/RosenProffittLocalLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/MLPLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/FPLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
 
 
 using namespace DGtal;
@@ -258,15 +260,21 @@ lengthEstimators( const string & name,
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-
+    BLUELocalLengthEstimator< typename ArrowsRange::ConstIterator > BLUElength;
+    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    RosenProffittLocalLengthEstimator< typename ArrowsRange::ConstIterator > RosenProffittlength;
+    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+ 
     // Output
     double trueValue = trueLengthEstimator.eval();
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
-    << " " << l1length.eval() 
-    <<  " " << DSSlength.eval()
-    << " " << MLPlength.eval() 
-    <<  " " << FPlength.eval()
-    << endl;
+	 << " " << l1length.eval() 
+	 << " " << BLUElength.eval() 
+	 << " " << RosenProffittlength.eval() 
+	 <<  " " << DSSlength.eval()
+	 << " " << MLPlength.eval() 
+	 <<  " " << FPlength.eval()
+	 << endl;
     return true;
   }    
   catch ( InputException e )

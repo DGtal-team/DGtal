@@ -17,53 +17,50 @@
 #pragma once
 
 /**
- * @file RosenProffittLocalLengthEstimator.h
+ * @file L1LengthEstimator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/06/27
  *
- * Header file for module RosenProffittLocalLengthEstimator.cpp
+ * Header file for module L1LengthEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(RosenProffittLocalLengthEstimator_RECURSES)
-#error Recursive header files inclusion detected in RosenProffittLocalLengthEstimator.h
-#else // defined(RosenProffittLocalLengthEstimator_RECURSES)
+#if defined(L1LengthEstimator_RECURSES)
+#error Recursive header files inclusion detected in L1LengthEstimator.h
+#else // defined(L1LengthEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define RosenProffittLocalLengthEstimator_RECURSES
+#define L1LengthEstimator_RECURSES
 
-#if !defined RosenProffittLocalLengthEstimator_h
+#if !defined L1LengthEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define RosenProffittLocalLengthEstimator_h
+#define L1LengthEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class RosenProffittLocalLengthEstimator
+  // template class L1LengthEstimator
   /**
-   * Description of template class 'RosenProffittLocalLengthEstimator' <p>
-   * \brief Aim: Rosen-Proffitt Length Estimator.
-   *
-   * @note 	T. J. Ellis and D. Proffitt and D. Rosen and W. Rutkowski
-   * Measurement of the lengths of digitized curved lines
-   * Computer Graphics and Image Processing, Vol. 10, pp. 333-347, August 1979
+   * Description of template class 'L1LengthEstimator' <p>
+   * \brief Aim: a simple model of CGlobalCurveEstimator that compute
+   * the length of a curve using the l_1 metric (just add 1/h for
+   * every step).
    * 
    * Model of @href CGlobalCurveGeometricEstimator.
    *
    * @tparam TConstIterator a model of CConstIteratorOnArrows. 
    */
   template <typename TConstIterator>
-  class RosenProffittLocalLengthEstimator: public DGtal::TwoStepLocalLengthEstimator<TConstIterator>
+  class L1LengthEstimator
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -71,34 +68,70 @@ namespace DGtal
 
     ///@todo CONCEPT CHECK sur ConstIterator
     typedef TConstIterator ConstIterator;
+
     typedef double Quantity;
   
 
     /**
      * Default Constructor.
      */
-    RosenProffittLocalLengthEstimator():
-      TwoStepLocalLengthEstimator<TConstIterator>(M_PI*(sqrt(2)+1)/8,
-						  M_PI*(sqrt(2)+2)/16)
-    {}
+    L1LengthEstimator();
     
     
+    /**
+     * Destructor.
+     */
+    ~L1LengthEstimator();
+
   
     // ----------------------- Interface --------------------------------------
   public:
+    
+    /** 
+     * Initialize the measure computation.
+     * 
+     * @param h grid size (must be >0).
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param closed true if the input range is closed.
+     */
+    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
+    
+
+    /** 
+     * Computation of the l1 length of the curve.
+     * Complexity: O(|Range|)
+     * @pre init() method must be called before.
+     * 
+     * @return the curve length.
+     */
+    Quantity eval( ) const;
+
  
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const
-    {
-      out << "[RosenProffittLocalLengthEstimator]";
-      if (this->myIsInitBefore) 
-	out <<" myH="<< this->myH;
-      else
-	out<< " not initialized";
-  }
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+      // ------------------------- Private Datas --------------------------------
+  private:
+    
+    ///Grid size.
+    double myH;
+
+    ///Copy of the range.
+    ConstIterator myBeginIt;
+    ConstIterator myEndIt;
+
+    ///Boolean to make sure that init() has been called before eval().
+    bool myIsInitBefore;
 
     
   private:
@@ -108,7 +141,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    RosenProffittLocalLengthEstimator ( const RosenProffittLocalLengthEstimator & other );
+    L1LengthEstimator ( const L1LengthEstimator & other );
 
     /**
      * Assignment.
@@ -116,30 +149,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    RosenProffittLocalLengthEstimator & operator= ( const RosenProffittLocalLengthEstimator & other );
+    L1LengthEstimator & operator= ( const L1LengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class RosenProffittLocalLengthEstimator
+  }; // end of class L1LengthEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'RosenProffittLocalLengthEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'L1LengthEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'RosenProffittLocalLengthEstimator' to write.
+   * @param object the object of class 'L1LengthEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const RosenProffittLocalLengthEstimator<T> & object );
+  operator<< ( std::ostream & out, const L1LengthEstimator<T> & object );
 
 } // namespace DGtal
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/geometry/2d/estimators/L1LengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined RosenProffittLocalLengthEstimator_h
+#endif // !defined L1LengthEstimator_h
 
-#undef RosenProffittLocalLengthEstimator_RECURSES
-#endif // else defined(RosenProffittLocalLengthEstimator_RECURSES)
+#undef L1LengthEstimator_RECURSES
+#endif // else defined(L1LengthEstimator_RECURSES)
