@@ -46,52 +46,186 @@
 
 namespace DGtal
 {
+
+  /////////////////////////////////////////////////////////////////////////////
+  // tag classes 
+struct IteratorType {};
+struct CirculatorType {};
+
+  //tags dedicated for circulators only
+struct forward_circulator_tag {};
+struct bidirectional_circulator_tag {};
+struct random_access_circulator_tag {};
+
+
+  //tags valid for both iterator or circulator
+struct ForwardCategory {};
+struct BidirectionalCategory {};
+struct RandomAccessCategory {};
+
+  /////////////////////////////////////////////////////////////////////////////
+  // traits classes 
+
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'IteratorCirculatorTagTraits' <p>
+   * \brief Aim: 
+   *  Provides the category of the iterator (resp. circulator)  
+   * {ForwardCategory,BidirectionalCategory,RandomAccessCategory}
+   * and the type {IteratorType,CirculatorType}
+   * 
+   * @tparam C any category
+   */
+
+//default
+template <typename C>
+struct IteratorCirculatorTagTraits {
+    typedef  IteratorType  type;
+    typedef  C  iterator_category;
+};
+
+//for DGtal circulators
+template <>
+struct IteratorCirculatorTagTraits<forward_circulator_tag> {
+    typedef  CirculatorType  type;
+    typedef  ForwardCategory iterator_category;
+};
+
+template <>
+struct IteratorCirculatorTagTraits<bidirectional_circulator_tag> {
+    typedef  CirculatorType  type;
+    typedef  BidirectionalCategory iterator_category;
+};
+
+template <>
+struct IteratorCirculatorTagTraits<random_access_circulator_tag> {
+    typedef  CirculatorType  type;
+    typedef  RandomAccessCategory iterator_category;
+};
+
+//for STL iterators
+template <>
+struct IteratorCirculatorTagTraits<std::forward_iterator_tag> {
+    typedef  IteratorType  type;
+    typedef  ForwardCategory iterator_category;
+};
+
+template <>
+struct IteratorCirculatorTagTraits<std::bidirectional_iterator_tag> {
+    typedef  IteratorType  type;
+    typedef  BidirectionalCategory iterator_category;
+};
+
+template <>
+struct IteratorCirculatorTagTraits<std::random_access_iterator_tag> {
+    typedef  IteratorType  type;
+    typedef  RandomAccessCategory iterator_category;
+};
+
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'IteratorCirculatorTraits' <p>
+   * \brief Aim: 
+   *  Provides definition types for both iterators and circulators:   
+   *  Type, Category, Value, Difference, Pointer and Reference. 
+   *
+   * @tparam IC any iterator or circulator
+   */
+
+template <typename IC>
+struct IteratorCirculatorTraits {
+
+  typedef typename IteratorCirculatorTagTraits<typename IC::iterator_category>::type
+                                                                 Type;
+
+  typedef typename IteratorCirculatorTagTraits<typename IC::iterator_category>::iterator_category
+                                                                 Category;
+
+  typedef typename iterator_traits<IC>::value_type               Value;
+  typedef typename iterator_traits<IC>::difference_type          Difference;
+  typedef typename iterator_traits<IC>::pointer                  Pointer;
+  typedef typename iterator_traits<IC>::reference                Reference;
+
+};
+
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of template class 'CirculatorTagTraits' <p>
+   * \brief Aim: 
+   *  Transform std::forward_iterator_tag into forward_circulator_tag
+   *  Transform std::bidirectional_iterator_tag into bidirectional_circulator_tag
+   *  Transform std::random_access_iterator_tag into random_access_circulator_tag
+   * 
+   * @tparam T any tag
+   */
+
+template <typename T>
+struct CirculatorTagTraits {
+    typedef  T  iterator_category;
+};
+
+template <>
+struct CirculatorTagTraits<std::forward_iterator_tag> {
+    typedef  forward_circulator_tag iterator_category;
+};
+
+
+template <>
+struct CirculatorTagTraits<std::bidirectional_iterator_tag> {
+    typedef  bidirectional_circulator_tag iterator_category;
+};
+
+
+template <>
+struct CirculatorTagTraits<std::random_access_iterator_tag> {
+    typedef  random_access_circulator_tag iterator_category;
+};
+
   /////////////////////////////////////////////////////////////////////////////
   // template class Circulator
   /**
    * Description of template class 'Circulator' <p>
    * \brief Aim: 
-   *  Provides an adapter for Bidirectional iterators that can 
+   *  Provides an adapter for STL iterators that can 
    *  iterate through the underlying data structure as in a loop. 
-   *  The increment (resp. decrement) operator encapsulates the 
-   *  validity test and the assignement to the first (resp. last)
-   *  iterator. 
-   * For instance, the pre-increment operator does:  
+   *  The increment (resp. decrement if at least bidirectionnal) 
+   *  operator encapsulates the validity test and the assignement
+   *  to the first (resp. last) iterator of a given range. 
+   *  For instance, the pre-increment operator does:  
    *  @code
 	      ++myCurrentIt;
         if (myCurrentIt == myEndIt) myCurrentIt = myBeginIt;
 	      return *this;
    *  @endcode
-   * whereas the pre-decrement operator does: 
+   * whereas the pre-decrement operator does (if at least bidirectionnal): 
    *  @code
         if (myCurrentIt == myBeginIt) myCurrentIt = myEndIt;
         --myCurrentIt;
    *  @endcode
    *
-   *  Note that decrementing the end iterator must results in
-   *  an iterator pointing to the last element of the 
-   *  underlying data structure, as in STL bidirectionnal iterators. 
-   *
+   * @tparam TIterator any forward, bidirectionnal or random access iterator 
   */
 
-  template <typename BidirectionnalIterator>
+  template <typename TIterator>
   class Circulator
-   : public iterator<
-          typename iterator_traits<BidirectionnalIterator>::iterator_category,
-		      typename iterator_traits<BidirectionnalIterator>::value_type,
-		      typename iterator_traits<BidirectionnalIterator>::difference_type,
-		      typename iterator_traits<BidirectionnalIterator>::pointer,
-          typename iterator_traits<BidirectionnalIterator>::reference >
   {
 
     // ----------------------- Types ------------------------------
 	public:
 
+      typedef TIterator					                                  Iterator;
+      typedef Circulator<TIterator>                               Self;
 
-      typedef BidirectionnalIterator					       iterator_type;
-      typedef typename iterator_traits<BidirectionnalIterator>::difference_type   difference_type;
-      typedef typename iterator_traits<BidirectionnalIterator>::reference   reference;
-      typedef typename iterator_traits<BidirectionnalIterator>::pointer     pointer;
+      typedef typename CirculatorTagTraits<
+           typename iterator_traits<TIterator>::iterator_category >::iterator_category 
+                                                                     iterator_category;
+
+      typedef typename iterator_traits<TIterator>::value_type        value_type;
+      typedef typename iterator_traits<TIterator>::difference_type   difference_type;
+      typedef typename iterator_traits<TIterator>::pointer           pointer;
+      typedef typename iterator_traits<TIterator>::reference         reference;
 
 
 
@@ -114,9 +248,9 @@ namespace DGtal
      * @param ite end iterator
      */
     explicit
-    Circulator(const iterator_type& i,
-               const iterator_type& itb, 
-               const iterator_type& ite) 
+    Circulator(const Iterator& i,
+               const Iterator& itb, 
+               const Iterator& ite) 
      : myCurrentIt(i), myBeginIt(itb), myEndIt(ite) {}
 
     /**
@@ -135,8 +269,8 @@ namespace DGtal
      *  Copy of circulators that adapts other iterator types (not const / const).
      * @param other the object to clone.
     */
-    template<typename other_iterator_type>
-    Circulator ( const Circulator<other_iterator_type>& other )
+    template<typename other_Iterator>
+    Circulator ( const Circulator<other_Iterator>& other )
     : myCurrentIt(other.base()), myBeginIt(other.begin()), myEndIt(other.end()) {}
 
     /**
@@ -144,7 +278,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const 
-    { return (myCurrentIt != myEndIt) ; }
+    { return (myBeginIt != myEndIt) ; }
 
 
     // ----------------------- Interface --------------------------------------
@@ -153,32 +287,36 @@ namespace DGtal
     /**
      *  @return  member [myCurrentIt], the underlying iterator.
     */
-    iterator_type base() const
+    Iterator base() const
     { return myCurrentIt; }
 
     /**
      *  @return  member [myBeginIt], begin iterator of the underlying range.
     */
-    iterator_type begin() const
+    Iterator begin() const
     { return myBeginIt; }
 
     /**
      *  @return  member [myEndIt], end iterator of the underlying range.
     */
-    iterator_type end() const
+    Iterator end() const
     { return myEndIt; }
 
     /**
      *  @return  *myCurrentIt.
     */
-    reference operator*() const
-    { return *myCurrentIt; }
+    reference operator*() const { 
+     ASSERT( isValid() ); 
+     return *myCurrentIt; 
+    }
 
     /**
-     *  @return  pointer to what is returned by the dereference operator
+     *  @return  pointer to myCurrentIt
     */
-    pointer operator->() const
-    { return &(operator*()); }
+    pointer operator->() const { 
+     ASSERT( isValid() ); 
+     return myCurrentIt.operator->(); 
+    }
 
 
     // ----------------------- Incrementation/Decrementation --------------------------------------
@@ -187,8 +325,9 @@ namespace DGtal
      /**
       *  Pre-increment
       */
-      Circulator& operator++()
+      Self& operator++()
       {
+        ASSERT( isValid() ); 
 	      ++myCurrentIt;
         if (myCurrentIt == myEndIt) myCurrentIt = myBeginIt;
 	      return *this;
@@ -197,9 +336,9 @@ namespace DGtal
       /**
       * Post-increment
       */
-      Circulator operator++(int)
+      Self operator++(int)
       {
-	      Circulator tmp = *this;
+	      Self tmp = *this;
 	      operator++(); 
 	      return tmp;
       }
@@ -208,8 +347,9 @@ namespace DGtal
      /**
       *  Pre-decrement
       */
-      Circulator& operator--()
+      Self& operator--()
       {
+        ASSERT( isValid() ); 
         if (myCurrentIt == myBeginIt) myCurrentIt = myEndIt;
         --myCurrentIt;
 	      return *this;
@@ -218,46 +358,78 @@ namespace DGtal
       /**
       * Post-decrement
       */
-      Circulator operator--(int)
+      Self operator--(int)
       {
-	      Circulator tmp = *this;
+	      Self tmp = *this;
 	      operator--(); 
 	      return tmp;
       }
 
-    // ----------------------- Comparisons operators --------------------------------------
+    // ----------------------- Equality operators --------------------------------------
   public:
 
-  /**
-   *  Comparison operators between Circulators are based
-   *  on their underlying iterators returned by the base() method. 
-   *  Note however that their begin and end iterators are expected
-   *  to be the same for a valid comparison. 
-   *  @param  other  any Circulator to compare
-   *  @return  a bool
-  */
-
-    template<typename any_iterator_type>
-    inline bool
-    operator==(const Circulator<any_iterator_type>& other) const
-    { 
+    bool operator==( const Self& other) const { 
       ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
       return myCurrentIt == other.base(); 
     }
+    bool operator!=( const Self& other) const { return !(*this == other); }
 
-    template<typename any_iterator_type>
-    inline bool
-    operator!=(const Circulator<any_iterator_type>& other) const
-    { 
-      return !(*this == other); 
+    template<typename OtherIterator>
+    bool operator==( const OtherIterator& other) const { 
+      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
+      return myCurrentIt == other.base(); 
     }
+    template<typename OtherIterator>
+    bool operator!=( const OtherIterator& other) const { return !(*this == other); }
+
+
+    // ----------------------- Random access operators --------------------------------------
+  public:
+
+    Self& operator+=( difference_type d ) {
+        ASSERT( isValid() ); 
+        typename Iterator::difference_type j = myCurrentIt - myBeginIt;
+        typename Iterator::difference_type n = myEndIt - myBeginIt;
+        ASSERT( n > 0 );
+        ASSERT( (j >= 0) && (j < n) );
+        typename Iterator::difference_type e = n - j;        
+        if (d < e) j += d;
+        else j = d - e; 
+        ASSERT( (j >= 0) && (j < n) );
+        myCurrentIt = myBeginIt + j;
+        return *this;
+    }
+    Self operator+( difference_type d) const {
+        Self tmp = *this;
+        return tmp += d;
+    }
+    Self operator-( difference_type d) const {
+        Self tmp = *this;
+        return tmp += -d;
+    }
+    Self& operator-=( difference_type d) { return operator+=( -d); }
+
+    difference_type operator-( const Self& c) const {
+        ASSERT( isValid() );
+        ASSERT( c.isValid() );
+        return myCurrentIt - c.myCurrentIt;
+    }
+    reference operator[]( difference_type d) const {
+        Self tmp = *this;
+        tmp += d;
+        return *tmp;
+    }
+
+    // ----------------------- Comparisons operators --------------------------------------
+    // Contrary to iterators, random access circulators have no comparison operators. 
+
 
     // ------------------------- Protected Datas --------------------------------
   protected:
 
-    iterator_type myCurrentIt; 
-    iterator_type myBeginIt; 
-    iterator_type myEndIt; 
+    Iterator myCurrentIt; 
+    Iterator myBeginIt; 
+    Iterator myEndIt; 
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -272,10 +444,34 @@ namespace DGtal
   private:
 
 
-
-
-
   }; // end of class Circulator
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template functions isNotEmpty
+
+namespace detail {
+
+  template< typename IC > 
+  inline
+  bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
+    return itb != ite;
+  }
+
+  template< typename IC > 
+  inline
+  bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
+    return ( ( c1.isValid() ) && ( c2.isValid() ) );
+  }
+
+} 
+
+
+template< typename IC> 
+inline
+bool isNotEmpty( const IC& itb, const IC& ite ){
+  return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
+}
 
 
 } // namespace DGtal

@@ -85,6 +85,71 @@ testComparison(const Type1& a, const Type2& b) {
   return (a == b);
 }
 
+/**
+ * validity of the range
+ *
+ */
+template<typename Iterator>
+bool testIsNotEmpty(const Iterator& itb, const Iterator& ite, const bool& aFlagIsNotEmpty)
+{
+  return (isNotEmpty(itb,ite) == aFlagIsNotEmpty ); 
+}
+
+
+  template< typename IC > 
+  inline
+  bool getTag( const IC& ic, std::random_access_iterator_tag ) {
+    cout << "random_access_iterator_tag" << endl;
+    return true;
+  }
+
+  template< typename IC > 
+  inline
+  bool getTag( const IC& ic, random_access_circulator_tag ) {
+    cout << "random_access_circulator_tag" << endl;
+    return true;
+  }
+
+  template< typename IC > 
+  inline
+  bool getTag( const IC& ic, RandomAccessCategory ) {
+    cout << "RandomAccessCategory" << endl;
+    return true;
+  }
+
+template< typename IC> 
+inline
+bool getGeneralTag( const IC& ic){
+  return getTag<IC>( ic, typename IteratorCirculatorTraits<IC>::Category() );
+}
+
+template< typename IC> 
+inline
+bool getSpecificTag( const IC& ic){
+  return getTag<IC>( ic, typename IC::iterator_category() );
+}
+
+
+  template< typename IC > 
+  inline
+  bool getType( const IC& ic, IteratorType ) {
+    cout << "IteratorType" << endl;
+    return true;
+  }
+
+  template< typename IC > 
+  inline
+  bool getType( const IC& ic, CirculatorType ) {
+    cout << "CirculatorType" << endl;
+    return true;
+  }
+
+template< typename IC> 
+inline
+bool getType( const IC& ic){
+  return getType<IC>( ic, typename IteratorCirculatorTraits<IC>::Type() );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -141,6 +206,29 @@ int main( int argc, char** argv )
   res = res && testComparison<vector<int>::iterator,vector<int>::iterator>(rc1.base().base(), c4.base().base());
   trace.info() << "first element: (" << *--rc1 << " == " << *--c4 << ")" << endl;
   res = res && testComparison<int,int>(*rc1, *c4);
+
+//tags
+  trace.info() << endl;
+  trace.info() << "Tags" << endl;
+  getGeneralTag< vector<int>::iterator > ( v.begin() ); 
+  getSpecificTag< vector<int>::iterator > ( v.begin() ); 
+  getGeneralTag< Circulator<vector<int>::iterator> > ( c2 ); 
+  getSpecificTag< Circulator<vector<int>::iterator> > ( c2 ); 
+  getType< vector<int>::iterator > ( v.begin() ); 
+  getType< Circulator<vector<int>::iterator> > ( c2 ); 
+
+//range validity
+  trace.info() << endl;
+  trace.info() << "function isNotEmpty" << endl;
+  res = res && testIsNotEmpty<vector<int>::iterator>(v.begin(),v.end(),true)
+ && testIsNotEmpty<vector<int>::iterator>(v.end(),v.end(),false); 
+  Circulator<vector<int>::iterator> validC( v.begin(), v.begin(), v.end() );
+  Circulator<vector<int>::iterator> validC2( v.end(), v.begin(), v.end() );
+  Circulator<vector<int>::iterator> notValidC( v.begin(), v.begin(), v.begin() );
+  res = res && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,validC,true)
+ && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,notValidC,false)
+ && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,validC2,true)
+; 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
