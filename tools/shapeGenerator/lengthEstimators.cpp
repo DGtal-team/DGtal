@@ -62,7 +62,7 @@
 
 #include "DGtal/geometry/2d/estimators/L1LengthEstimator.h"
 #include "DGtal/geometry/2d/estimators/BLUELocalLengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/RosenProffittlengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/RosenProffittLocalLengthEstimator.h"
 #include "DGtal/geometry/2d/estimators/MLPLengthEstimator.h"
 #include "DGtal/geometry/2d/estimators/FPLengthEstimator.h"
 #include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
@@ -260,9 +260,9 @@ lengthEstimators( const string & name,
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    BLUELocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > BLUElength;
+    BLUELocalLengthEstimator< typename ArrowsRange::ConstIterator > BLUElength;
     BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
-    RosenProffittLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > RosenProffittlength;
+    RosenProffittLocalLengthEstimator< typename ArrowsRange::ConstIterator > RosenProffittlength;
     RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
  
     // Output
