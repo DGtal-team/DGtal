@@ -657,7 +657,7 @@ DGtal::PointVector<dim, Component>::selfDraw(DGtalBoard & board,
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -668,7 +668,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer 
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -681,7 +681,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
  
@@ -707,7 +707,7 @@ DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &aPoint ) const
+DGtal::PointVector<dim,Component>::selfDrawQGL( Viewer3D & viewer,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   

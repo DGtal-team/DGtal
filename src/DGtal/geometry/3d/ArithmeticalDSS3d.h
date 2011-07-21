@@ -274,15 +274,15 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
 
     /**
      * Draw the object with QGLViewer
      * @param viewer the output where the object is drawn.
      */
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsPointsQGL( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawQGL ( Viewer3D & viewer ) const;
+    void selfDrawAsPointsQGL( Viewer3D & viewer ) const;
+    void selfDrawAsBoundingBoxQGL( Viewer3D & viewer ) const;
  
  #endif
 

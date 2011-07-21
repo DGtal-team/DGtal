@@ -43,7 +43,7 @@
 // Inclusions
 #include <iostream>
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/viewer3D.h"
 #endif
 
 #ifdef WITH_CAIRO
@@ -657,17 +657,17 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL(  DGtalQGLViewer & viewer ) const;
-    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsPavingPointsQGL( DGtalQGLViewer & viewer ) const;
-    void selfDrawAsBoundingBox ( DGtalQGLViewer & viewer) const;
+    void selfDrawQGL(  Viewer3D & viewer ) const;
+    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
+    void selfDrawAsPavingPointsQGL( Viewer3D & viewer ) const;
+    void selfDrawAsBoundingBox ( Viewer3D & viewer) const;
 
 #endif
     
@@ -732,16 +732,16 @@ namespace DGtal
 
 #ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingVoxel3D : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawPavingVoxel3D : public DrawableWithViewer3D {
+    void selfDrawQGL( Viewer3D & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Paving";
     }
   };
   
   
-  struct DrawGridVoxel3D : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawGridVoxel3D : public DrawableWithViewer3D {
+    void selfDrawQGL( Viewer3D & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }

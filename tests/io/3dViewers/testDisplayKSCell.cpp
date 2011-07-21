@@ -40,7 +40,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -57,7 +57,7 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
-bool testDGtalQGLViewer()
+bool testViewer3D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -79,7 +79,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.show();
 
  KSpace K;
@@ -133,7 +133,7 @@ int main( int argc, char** argv )
  SCell linelAC = K.sCell(Point(5, 4, 4), false);
  viewer << pointelA << pointelB << pointelC << linelAC;
  
- viewer <<  DGtalQGLViewer::updateDisplay;
+ viewer <<  Viewer3D::updateDisplay;
  application.exec();
 
  

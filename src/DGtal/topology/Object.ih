@@ -887,7 +887,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(DGtalBoard
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithDGtalQGLViewer *
+DGtal::DrawableWithViewer3D *
 DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleQGL( std::string ) const
 {
   return new DefaultDrawStyleQGL;
@@ -897,7 +897,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleQGL( std::string ) con
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( Viewer3D & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   if ( mode == "" )
@@ -920,7 +920,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( DGtalQGLViewer & view
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(DGtalQGLViewer & viewer) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(Viewer3D & viewer) const
 {
   Point p;
   for (typename TDigitalSet::ConstIterator it = pointSet().begin();

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file DGtalQGLViewer.ih
+ * @file Viewer3D.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/01/03
  *
- * Implementation of inline methods defined in DGtalQGLViewer.h
+ * Implementation of inline methods defined in Viewer3D.h
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/viewers/CDrawableWithDGtalQGLViewer.h"
+#include "DGtal/io/viewers/CDrawableWithViewer3D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -45,8 +45,8 @@
 
 
 inline
-DGtal::DGtalQGLViewer & 
-DGtal::DGtalQGLViewer::operator<<(const QColor & aColor){
+DGtal::Viewer3D & 
+DGtal::Viewer3D::operator<<(const QColor & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -62,8 +62,8 @@ DGtal::DGtalQGLViewer::operator<<(const QColor & aColor){
    **/
 
 inline
-DGtal::DGtalQGLViewer & 
-DGtal::DGtalQGLViewer::operator<<(const DGtalQGLViewer::StreamKey  & key){
+DGtal::Viewer3D & 
+DGtal::Viewer3D::operator<<(const Viewer3D::StreamKey  & key){
   switch (key){
   case updateDisplay:
     updateList();
@@ -85,7 +85,7 @@ DGtal::DGtalQGLViewer::operator<<(const DGtalQGLViewer::StreamKey  & key){
 
 inline
 void
-DGtal::DGtalQGLViewer::createNewVoxelList(bool depthTest){
+DGtal::Viewer3D::createNewVoxelList(bool depthTest){
   std::vector< voxelGL > v;
   myVoxelSetList.push_back(v);
   myListVoxelDepthTest.push_back(depthTest);
@@ -94,7 +94,7 @@ DGtal::DGtalQGLViewer::createNewVoxelList(bool depthTest){
 
 inline
 void
-DGtal::DGtalQGLViewer::createNewLineList(){
+DGtal::Viewer3D::createNewLineList(){
   std::vector< lineGL > v;
   myLineSetList.push_back(v);
 }
@@ -102,7 +102,7 @@ DGtal::DGtalQGLViewer::createNewLineList(){
 
 inline
 void
-DGtal::DGtalQGLViewer::createNewPointList(){
+DGtal::Viewer3D::createNewPointList(){
   std::vector< pointGL > v;
   myPointSetList.push_back(v);
 }
@@ -110,39 +110,39 @@ DGtal::DGtalQGLViewer::createNewPointList(){
 
 inline
 void
-DGtal::DGtalQGLViewer::setFillColor(QColor aColor){
+DGtal::Viewer3D::setFillColor(QColor aColor){
   myCurrentFillColor=aColor;  
 }
 
 
 inline
 void
-DGtal::DGtalQGLViewer::setLineColor(QColor aColor){
+DGtal::Viewer3D::setLineColor(QColor aColor){
   myCurrentLineColor=aColor;  
 }
 
 
 inline
 QColor
-DGtal::DGtalQGLViewer::getFillColor(){
+DGtal::Viewer3D::getFillColor(){
   return myCurrentFillColor;  
 }
 
 inline
 QColor
-DGtal::DGtalQGLViewer::getLineColor(){
+DGtal::Viewer3D::getLineColor(){
   return myCurrentLineColor;  
 }
 
 
 
 
-template <typename TDrawableWithDGtalQGLViewer>
+template <typename TDrawableWithViewer3D>
 inline
-DGtal::DGtalQGLViewer & 
-DGtal::DGtalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
+DGtal::Viewer3D & 
+DGtal::Viewer3D::operator<<( const TDrawableWithViewer3D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalQGLViewer< TDrawableWithDGtalQGLViewer >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithViewer3D< TDrawableWithViewer3D >));
   
   object.selfDrawQGL( *this );
   return *this;
@@ -155,7 +155,7 @@ DGtal::DGtalQGLViewer::operator<<( const TDrawableWithDGtalQGLViewer & object )
 
 inline
 std::string
-DGtal::DGtalQGLViewer::getMode( const std::string & objectName ) const
+DGtal::Viewer3D::getMode( const std::string & objectName ) const
 {
   ModeMapping::const_iterator itm = myModes.find( objectName );
   return itm == myModes.end() ? "" : itm->second;
@@ -164,7 +164,7 @@ DGtal::DGtalQGLViewer::getMode( const std::string & objectName ) const
 
 inline
 void
-DGtal::DGtalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width){
+DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width){
   voxelGL v;
   updateBoundingBox(x, y, z);  
   v.x=x;
@@ -184,7 +184,7 @@ DGtal::DGtalQGLViewer::addVoxel(int x, int y, int z, QColor aColor, double width
 
 inline
 void
-DGtal::DGtalQGLViewer::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, double size){
   pointGL p;
   updateBoundingBox(x, y, z);
   
@@ -203,7 +203,7 @@ DGtal::DGtalQGLViewer::addPoint(double x, double y, double z ,const QColor &aCol
 
 inline
 void
-DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const QColor & aColor, double width){
   lineGL l;
   l.x1=x1;
@@ -228,7 +228,7 @@ DGtal::DGtalQGLViewer::addLine(double x1, double y1, double z1,  double x2, doub
 
 inline
 void
-DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Viewer3D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
   quadGL aQuad;
   updateBoundingBox(x1, y1, z1);
@@ -267,7 +267,7 @@ DGtal::DGtalQGLViewer::addQuad(double x1, double y1, double z1,  double x2, doub
 
 inline
 void
-DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z, 
+DGtal::Viewer3D::addKSSurfel(double x, double y, double z, 
 				   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
 				   bool isOriented, bool isOrientedPositively, bool basicMode ){
   
@@ -454,7 +454,7 @@ DGtal::DGtalQGLViewer::addKSSurfel(double x, double y, double z,
 
 inline
 void
-DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
+DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
   if(myClippingPlaneList.size()<5){
     clippingPlaneGL cp;
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
@@ -525,7 +525,7 @@ DGtal::DGtalQGLViewer::addClippingPlane(double a, double b, double c, double d, 
 
 inline
 void 
-DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size, bool isSigned, bool signPos){
+DGtal::Viewer3D::addKSPointel(double x, double y, double z, double size, bool isSigned, bool signPos){
   pointGL pt;
   updateBoundingBox(x, y, z);
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
@@ -541,7 +541,7 @@ DGtal::DGtalQGLViewer::addKSPointel(double x, double y, double z, double size, b
 
 inline
 void 
-DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z){
+DGtal::Viewer3D::addKSVoxel(int x, int y, int z){
   voxelGL v;
   updateBoundingBox(x, y, z);
   v.x=x;
@@ -560,7 +560,7 @@ DGtal::DGtalQGLViewer::addKSVoxel(int x, int y, int z){
 
 inline
 void
-DGtal::DGtalQGLViewer::addKSLinel(double x1, double y1, double z1,
+DGtal::Viewer3D::addKSLinel(double x1, double y1, double z1,
 				  double x2, double y2, double z2,
 				  double width,  bool isSigned, bool signPos){
   lineGL l;
@@ -580,7 +580,7 @@ DGtal::DGtalQGLViewer::addKSLinel(double x1, double y1, double z1,
 
 inline
 void
-DGtal::DGtalQGLViewer::updateBoundingBox(int x, int y, int z){
+DGtal::Viewer3D::updateBoundingBox(int x, int y, int z){
   if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
   if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
   if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
@@ -596,15 +596,15 @@ DGtal::DGtalQGLViewer::updateBoundingBox(int x, int y, int z){
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGtalQGLViewer'.
+ * Overloads 'operator<<' for displaying objects of class 'Viewer3D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGtalQGLViewer' to write.
+ * @param object the object of class 'Viewer3D' to write.
  * @return the output stream after the writing.
  */
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		    const DGtalQGLViewer & object )
+		    const Viewer3D & object )
 {
     object.selfDisplay ( out );
     return out;

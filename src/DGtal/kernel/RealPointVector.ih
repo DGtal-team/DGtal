@@ -280,7 +280,7 @@ DGtal::RealPointVector<dim>::selfDraw(DGtalBoard & board,
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addVoxel(this->myArray[0],
@@ -291,7 +291,7 @@ DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) cons
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawAsGridQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addPoint(this->myArray[0],
@@ -304,7 +304,7 @@ DGtal::RealPointVector<dim>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawQGL( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
  
@@ -330,7 +330,7 @@ DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &aPoint ) const
+DGtal::RealPointVector<dim>::selfDrawQGL( Viewer3D & viewer,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   

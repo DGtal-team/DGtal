@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDrawableWithDGtalQGLViewer.h
+ * @file CDrawableWithViewer3D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,20 +25,20 @@
  *
  * @date 2010/10/21
  *
- * Header file for concept CDrawableWithDGtalQGLViewer.cpp
+ * Header file for concept CDrawableWithViewer3D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithDGtalQGLViewer_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithDGtalQGLViewer.h
-#else // defined(CDrawableWithDGtalQGLViewer_RECURSES)
+#if defined(CDrawableWithViewer3D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithViewer3D.h
+#else // defined(CDrawableWithViewer3D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithDGtalQGLViewer_RECURSES
+#define CDrawableWithViewer3D_RECURSES
 
-#if !defined CDrawableWithDGtalQGLViewer_h
+#if !defined CDrawableWithViewer3D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithDGtalQGLViewer_h
+#define CDrawableWithViewer3D_h
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -68,11 +68,11 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithDGtalQGLViewer
+  // class CDrawableWithViewer3D
   /**
-   * Description of \b concept '\b CDrawableWithDGtalQGLViewer' <p>
+   * Description of \b concept '\b CDrawableWithViewer3D' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithDGtalQGLViewer specifies what are the classes
+   * Aim:  The concept CDrawableWithViewer3D specifies what are the classes
    * that admit an export with DGtalBoard.
    * An object x satisfying this concept may then be used as:
    * 
@@ -87,7 +87,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithDGtalQGLViewer
+   * - \t X : A type that is a model of CDrawableWithViewer3D
    * - \t x, \t y	: Object of type X
    * - \t m	: a string of characters
    *
@@ -123,11 +123,11 @@ namespace DGtal
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
-  struct CDrawableWithDGtalQGLViewer
+  struct CDrawableWithViewer3D
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE( CDrawableWithDGtalQGLViewer )
+    BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithDGtalBoard*
       ConceptUtils::sameType( myD, myT.defaultStyleQGL() );
@@ -143,16 +143,16 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     T myT;
-    DrawableWithDGtalQGLViewer *myD;
+    DrawableWithViewer3D *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    DGtalQGLViewer myB;
+    Viewer3D myB;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithDGtalQGLViewer
+  }; // end of concept CDrawableWithViewer3D
 
 } // namespace DGtal
 
@@ -160,7 +160,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithDGtalQGLViewer_h
+#endif // !defined CDrawableWithViewer3D_h
 
-#undef CDrawableWithDGtalQGLViewer_RECURSES
-#endif // else defined(CDrawableWithDGtalQGLViewer_RECURSES)
+#undef CDrawableWithViewer3D_RECURSES
+#endif // else defined(CDrawableWithViewer3D_RECURSES)
