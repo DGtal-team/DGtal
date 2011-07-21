@@ -177,7 +177,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/Measure.ih"
+#include "DGtal/geometry/nd/estimators/Measure.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

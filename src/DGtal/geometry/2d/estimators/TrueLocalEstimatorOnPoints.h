@@ -193,7 +193,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.ih"
+#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -36,12 +36,12 @@
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/ShapeFactory.h"
 
-#include "DGtal/geometry/2d/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
 
-#include "DGtal/geometry/2d/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeCurvatureFunctor.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
@@ -57,7 +57,7 @@
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
-#include "DGtal/geometry/2d/CompareLocalEstimators.h"
+#include "DGtal/geometry/2d/estimators/CompareLocalEstimators.h"
 
 
 #include "ConfigTest.h"

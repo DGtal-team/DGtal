@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
+#include "DGtal/geometry/2d/estimators/TwoStepLocalLengthEstimator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

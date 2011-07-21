@@ -194,7 +194,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/TrueGlobalEstimatorOnPoints.ih"
+#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
