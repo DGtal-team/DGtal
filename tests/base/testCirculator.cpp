@@ -209,7 +209,7 @@ int main( int argc, char** argv )
 
 //tags
   trace.info() << endl;
-  trace.info() << "Tags" << endl;
+  trace.info() << "Tags for classic iterators" << endl;
   getGeneralTag< vector<int>::iterator > ( v.begin() ); 
   getSpecificTag< vector<int>::iterator > ( v.begin() ); 
   getGeneralTag< Circulator<vector<int>::iterator> > ( c2 ); 
@@ -217,9 +217,21 @@ int main( int argc, char** argv )
   getType< vector<int>::iterator > ( v.begin() ); 
   getType< Circulator<vector<int>::iterator> > ( c2 ); 
 
+  trace.info() << "Tags for pointers" << endl;
+  int t[5] = {1, 2, 3, 4, 5};
+  getGeneralTag< int* > ( t ); 
+  getType< int* > ( t ); 
+
+  Circulator<int*> tc(t, t, t+5); 
+  trace.info() << *tc++  << *tc++ << *tc++ <<  *tc++ <<  *tc++ <<  *tc++ <<  *tc++ << *tc++ << endl;
+
+  getSpecificTag< Circulator<int*> > ( tc ); 
+  getGeneralTag< Circulator<int*> > ( tc ); 
+  getType< Circulator<int*> > ( tc ); 
+
 //range validity
   trace.info() << endl;
-  trace.info() << "function isNotEmpty" << endl;
+  trace.info() << "Function isNotEmpty" << endl;
   res = res && testIsNotEmpty<vector<int>::iterator>(v.begin(),v.end(),true)
  && testIsNotEmpty<vector<int>::iterator>(v.end(),v.end(),false); 
   Circulator<vector<int>::iterator> validC( v.begin(), v.begin(), v.end() );
