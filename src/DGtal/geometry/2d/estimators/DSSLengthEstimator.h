@@ -180,7 +180,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d//DSSLengthEstimator.ih"
+#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
