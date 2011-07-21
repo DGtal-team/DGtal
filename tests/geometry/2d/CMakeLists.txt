@@ -6,7 +6,6 @@ SET(DGTAL_TESTS_SRC
 	testPreimage
 	testMaximalSegments
 	testFP
-	testCombinDSS
 	testGridCurve
 	testLengthEstimators
 	testTrueLocalEstimator
