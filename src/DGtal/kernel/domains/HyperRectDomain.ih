@@ -223,7 +223,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::HyperRectDomain<TSpace>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
@@ -236,21 +236,21 @@ DGtal::HyperRectDomain<TSpace>::selfDrawQGL( Viewer3D & viewer ) const
     selfDrawAsBoundingBox( viewer );
   }else if( ( mode == "" ) ||  (mode == "Grid")){
      viewer.createNewLineList();
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
   }
   else if ( mode == "Paving" ){
     viewer.createNewVoxelList(false);
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingViewer3D( viewer );
 
   } else if ( mode == "PavingPoints" ){
     viewer.createNewPointList();
-    selfDrawAsPavingPointsQGL( viewer );
+    selfDrawAsPavingPointsViewer3D( viewer );
 
   }else if ( mode == "PavingGrids" ){
     viewer.createNewLineList();
     viewer.createNewVoxelList(false);
-    selfDrawAsGridQGL( viewer );
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
+    selfDrawAsPavingViewer3D( viewer );
   }
   // selfDrawAsGrid( board );
 }
@@ -314,7 +314,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( Viewer3D & viewer) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGridQGL( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -375,7 +375,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridQGL( Viewer3D & viewer) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsQGL( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -405,7 +405,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsQGL( Viewer3D & viewer) co
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingQGL( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   

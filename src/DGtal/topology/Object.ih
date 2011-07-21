@@ -888,28 +888,28 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(DGtalBoard
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleQGL( std::string ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleViewer3D( std::string ) const
 {
-  return new DefaultDrawStyleQGL;
+  return new DefaultDrawStyleViewer3D;
 }
 
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   if ( mode == "" )
-    pointSet().selfDrawQGL( viewer );
+    pointSet().selfDrawViewer3D( viewer );
   else if ( mode == "PavingTransp" ){
-    pointSet().selfDrawAsPavingTransparentQGL(viewer);
+    pointSet().selfDrawAsPavingTransparentViewer3D(viewer);
     
   }
   else if ( mode == "DrawAdjacencies" )
     {
-      pointSet().selfDrawQGL( viewer );
-      selfDrawWithAdjacenciesQGL( viewer );
+      pointSet().selfDrawViewer3D( viewer );
+      selfDrawWithAdjacenciesViewer3D( viewer );
     }
     else
       ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
@@ -920,7 +920,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawQGL( Viewer3D & viewer ) c
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(Viewer3D & viewer) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesViewer3D(Viewer3D & viewer) const
 {
   Point p;
   for (typename TDigitalSet::ConstIterator it = pointSet().begin();
@@ -934,7 +934,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesQGL(Viewer3
         ++it2)
     {
       p = (*it2) - (*it);
-      p.selfDrawQGL(viewer, (*it));
+      p.selfDrawViewer3D(viewer, (*it));
     }
   }
 }

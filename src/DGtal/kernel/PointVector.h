@@ -652,16 +652,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL ( Viewer3D & viewer ) const;
-    void selfDrawQGL ( Viewer3D & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
 
 #endif
     
@@ -752,7 +752,7 @@ namespace DGtal
 #ifdef WITH_VISU3D_QGLVIEWER
 
   struct DrawPavingVoxel : public DrawableWithViewer3D {
-      void selfDrawQGL( Viewer3D & viewer ) const
+      void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 	viewer.myModes[ "PointVector" ] = "Paving";
       }
@@ -760,7 +760,7 @@ namespace DGtal
   
   
   struct DrawGridVoxel : public DrawableWithViewer3D {
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ "PointVector" ] = "Grid";
     }
@@ -768,7 +768,7 @@ namespace DGtal
 
   struct DefaultDrawStyleGrid3D : public DrawableWithViewer3D {
 
-    virtual void selfDrawQGL( Viewer3D & viewer ) const
+    virtual void selfDrawViewer3D( Viewer3D & viewer ) const
     {
 	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );

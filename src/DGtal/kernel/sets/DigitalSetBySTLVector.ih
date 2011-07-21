@@ -568,7 +568,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(DGtalBoard & aBoard) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(false);
@@ -588,15 +588,15 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentQGL( Viewer3D &
 template<typename Domain>
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::DigitalSetBySTLVector<Domain>::defaultStyleQGL( std::string ) const
+DGtal::DigitalSetBySTLVector<Domain>::defaultStyleViewer3D( std::string ) const
 {
-  return new DefaultDrawStyleQGL;
+  return new DefaultDrawStyleViewer3D;
 }
 
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
 {
   
   
@@ -614,7 +614,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingQGL( Viewer3D & viewer ) c
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -631,7 +631,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridQGL( Viewer3D & viewer ) con
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -639,15 +639,15 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawQGL( Viewer3D & viewer ) const
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingViewer3D( viewer );
   else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentQGL( viewer );
+    selfDrawAsPavingTransparentViewer3D( viewer );
   else if ( mode == "Grid" )
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingQGL(viewer);
-      selfDrawAsGridQGL( viewer );
+      selfDrawAsPavingViewer3D(viewer);
+      selfDrawAsGridViewer3D( viewer );
     }  
 }
 

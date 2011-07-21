@@ -184,7 +184,7 @@ selfDraw( DGtalBoard & board ) const
 template < Dimension dim, typename TInteger >
 inline
 void
-DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::KhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   QColor fillColorSave = viewer.getFillColor();  
@@ -245,7 +245,7 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawQGL( Viewer3D & viewer ) const
 template< Dimension dim, typename TInteger >
 inline
 void
-DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
 
    ASSERT(dim == 3);

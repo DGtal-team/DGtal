@@ -657,16 +657,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL(  Viewer3D & viewer ) const;
-    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
-    void selfDrawAsPavingPointsQGL( Viewer3D & viewer ) const;
+    void selfDrawViewer3D(  Viewer3D & viewer ) const;
+    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
+    void selfDrawAsPavingPointsViewer3D( Viewer3D & viewer ) const;
     void selfDrawAsBoundingBox ( Viewer3D & viewer) const;
 
 #endif
@@ -733,7 +733,7 @@ namespace DGtal
 #ifdef WITH_VISU3D_QGLVIEWER
 
   struct DrawPavingVoxel3D : public DrawableWithViewer3D {
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Paving";
     }
@@ -741,7 +741,7 @@ namespace DGtal
   
   
   struct DrawGridVoxel3D : public DrawableWithViewer3D {
-    void selfDrawQGL( Viewer3D & viewer ) const
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }
