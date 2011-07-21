@@ -75,14 +75,14 @@ namespace DGtal
    * Here is a short example of how to use this class:
    * @code 
 
-   //type definitions: sequence of points, iterator and DSS recognition
+   //type definitions: 
    typedef PointVector<2,int> Point;
-   typedef std::vector<Point> Sequence;
-   typedef Sequence::const_iterator ConstIterator;
+   typedef std::vector<Point> Range;
+   typedef Range::const_iterator ConstIterator;
    typedef ArithmeticalDSS<ConstIterator, int, 4> DSS4;
 
-   // Sequence of input points
-   Sequence contour;
+   // Input points
+   Range contour;
    contour.push_back(Point(0,0));
    contour.push_back(Point(1,0));
    contour.push_back(Point(2,0));
@@ -94,15 +94,13 @@ namespace DGtal
 
   
    // Add points while it is possible
-   ConstIterator i = contour.begin();
-   DSS4 theDSS4(i);		
-   do {
-   i++;
-   } while ( (i!=contour.end())
-   &&(theDSS4.extend(i)) );
+		DSS4 s;
+		s.init( contour.begin() );
+    while ( (s.end()!=contour.end())
+					&&(s.extend()) ) {} 
 
    // Output parameters
-   cout << theDSS4 << endl;
+   cout << s << endl;
 
    //You must get:
    //[ArithmeticalDSS]
