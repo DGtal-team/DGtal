@@ -135,17 +135,29 @@ struct IteratorCirculatorTagTraits<std::random_access_iterator_tag> {
 template <typename IC>
 struct IteratorCirculatorTraits {
 
-  typedef typename IteratorCirculatorTagTraits<typename IC::iterator_category>::type
+  typedef typename IteratorCirculatorTagTraits
+          <typename IC::iterator_category>::type
                                                                  Type;
 
-  typedef typename IteratorCirculatorTagTraits<typename IC::iterator_category>::iterator_category
+  typedef typename IteratorCirculatorTagTraits
+          <typename IC::iterator_category>::iterator_category
                                                                  Category;
 
-  typedef typename iterator_traits<IC>::value_type               Value;
-  typedef typename iterator_traits<IC>::difference_type          Difference;
-  typedef typename iterator_traits<IC>::pointer                  Pointer;
-  typedef typename iterator_traits<IC>::reference                Reference;
+  typedef typename IC::value_type                                Value;
+  typedef typename IC::difference_type                           Difference;
+  typedef typename IC::pointer                                   Pointer;
+  typedef typename IC::reference                                 Reference;
 
+};
+
+template <class T>
+struct IteratorCirculatorTraits<T*> {
+  typedef IteratorType               Type; 
+  typedef RandomAccessCategory       Category;
+  typedef T                          Value;
+  typedef ptrdiff_t                  Difference;
+  typedef T*                         Pointer;
+  typedef T&                         Reference;
 };
 
 
