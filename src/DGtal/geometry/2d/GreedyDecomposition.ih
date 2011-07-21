@@ -54,7 +54,7 @@
 inline
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator ( 
 	const GreedyDecomposition<TSegment> *aDec,
-	const typename TSegment::Iterator& aBack, 
+	const typename TSegment::ConstIterator& aBack, 
 	const TSegment& aSegment)
   : myDec( aDec ), 
 		myFront( aBack ), 
@@ -87,6 +87,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator (
 
   }
 }
+
 
 
 /**
@@ -287,7 +288,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
@@ -299,7 +300,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
@@ -360,6 +361,23 @@ DGtal::GreedyDecomposition<TSegment>::GreedyDecomposition
 	 mySegment(aSegment),
 	 isClosed(aFlag)
 {
+}
+
+/**
+ * Init.
+ * @param aBegin, begin iterator on a digital curve
+ * @param aEnd, end iterator on a digital curve
+ */
+  template <typename TSegment>
+inline
+void
+DGtal::GreedyDecomposition<TSegment>::init
+(const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
+{
+  myBegin = aBegin;
+	myEnd = aEnd;
+	mySegment = aSegment;
+	isClosed = aFlag;
 }
 
 /**

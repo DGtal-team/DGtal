@@ -261,22 +261,22 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::
  * @param anIterator an iterator on the digital curve
  * to decompose
  */
- template <typename TSegment>
+template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator ( 
-	MaximalSegments<TSegment> *aCov,
-	const typename TSegment::Iterator& aBack,
-	const TSegment& aSegment)
+DGtal::MaximalSegments<TSegment>::SegmentIterator
+::SegmentIterator( MaximalSegments<TSegment> *aCov,
+		   const typename TSegment::ConstIterator& aBack,
+		   const TSegment& aSegment )
   : myCov( aCov ), 
-		myFront( aBack ), 
-		myBack( aBack ),
-		mySegment( aSegment ), 
-		myFlag(false),
-		myFlagIntersectNext(false),
-		myFlagIntersectPrevious(false)
+    myFront( aBack ), 
+    myBack( aBack ),
+    mySegment( aSegment ), 
+    myFlagIntersectNext(false),
+    myFlagIntersectPrevious(false),
+    myFlag(false)
 {
-	if (myBack != myCov->myEnd) {
-		this->firstMaximalSegment();
+  if (myBack != myCov->myEnd) {
+    this->firstMaximalSegment();
   }
 }
 
@@ -285,16 +285,16 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator (
  * Copy constructor.
  * @param other the iterator to clone.
  */
-  template <typename TSegment>
+template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator
-( const SegmentIterator & aOther )
+DGtal::MaximalSegments<TSegment>::SegmentIterator
+::SegmentIterator( const SegmentIterator & aOther )
   : myCov( aOther.myCov ), 
-		myFront( aOther.myFront ), myBack( aOther.myBack ),
-		mySegment( aOther.mySegment ), 
-		myFlag( aOther.myFlag ), 
-		myFlagIntersectNext( aOther.myFlagIntersectNext ), 
-		myFlagIntersectPrevious( aOther.myFlagIntersectPrevious )  
+    myFront( aOther.myFront ), myBack( aOther.myBack ),
+    mySegment( aOther.mySegment ), 
+    myFlagIntersectNext( aOther.myFlagIntersectNext ), 
+    myFlagIntersectPrevious( aOther.myFlagIntersectPrevious ),
+    myFlag( aOther.myFlag )
 {
 }
     
@@ -303,7 +303,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator
  * @param other the iterator to copy.
  * @return a reference on 'this'.
  */
-  template <typename TSegment>
+template <typename TSegment>
 inline
 typename DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator& 
 DGtal::MaximalSegments<TSegment>::SegmentIterator::operator=
@@ -315,9 +315,9 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator=
       myFront = other.myFront;
       myBack = other.myBack;
       mySegment = other.mySegment;
+      myFlagIntersectNext = other.myFlagIntersectNext;
+      myFlagIntersectPrevious = other.myFlagIntersectPrevious;
       myFlag = other.myFlag;
-			myFlagIntersectNext = other.myFlagIntersectNext;
-			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
     }
   return *this;
 }
@@ -380,7 +380,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator++()
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
@@ -392,7 +392,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
  */
   template <typename TSegment>
 inline
-const typename TSegment::Iterator
+const typename TSegment::ConstIterator
 DGtal::MaximalSegments<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
@@ -468,8 +468,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator!=
  */
   template <typename TSegment>
 DGtal::MaximalSegments<TSegment>::MaximalSegments(
-  const typename TSegment::Iterator& begin, 
-  const typename TSegment::Iterator& end, 
+  const typename TSegment::ConstIterator& begin, 
+  const typename TSegment::ConstIterator& end, 
 	const TSegment& aSegment, 
 	const bool& aFlag)
  : myBegin(begin),
@@ -478,6 +478,26 @@ DGtal::MaximalSegments<TSegment>::MaximalSegments(
 	 mySegment(aSegment),
 	 isClosed(aFlag)
 {
+}
+
+/**
+ * Init.
+ */
+  template <typename TSegment>
+inline
+void
+DGtal::MaximalSegments<TSegment>::init(
+  const typename TSegment::ConstIterator& begin, 
+  const typename TSegment::ConstIterator& end, 
+	const TSegment& aSegment, 
+	const bool& aFlag) {
+
+ myBegin = begin;
+ myEnd = end;
+ myFirstMaximalSegmentBack = begin;
+ mySegment = aSegment;
+ isClosed = aFlag;
+
 }
 
 /**

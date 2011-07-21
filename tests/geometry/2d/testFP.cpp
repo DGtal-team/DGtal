@@ -47,16 +47,37 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FP.
 ///////////////////////////////////////////////////////////////////////////////
+
+template<typename Coordinate>
+void 
+drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, DGtalBoard & aBoard) 
+{
+  //polyline to draw
+	vector<LibBoard::Point> polyline;
+
+	typename vector<PointVector<2,Coordinate> >::const_iterator i = v.begin();
+	for ( ;i != v.end();++i) {
+			PointVector<2,Coordinate> p = (*i);
+			double xp = (double) p[0];
+			double yp = (double) p[1];
+			polyline.push_back(LibBoard::Point(xp,yp));
+	}
+
+  aBoard.drawPolyline(polyline);
+
+}
+
 /**
  * Example of a test. To be completed.
  *
  */
-bool testFP()
+bool testDrawingFP()
 {
 
 	typedef int Coordinate;
 	typedef HyperRectDomain<SpaceND<2,Coordinate> > Domain;
 	typedef PointVector<2,Coordinate> Point;
+	typedef PointVector<2,double> RealPoint;
   typedef FreemanChain<Coordinate> Contour; 
 	typedef FP<Contour::ConstIterator,Coordinate,4> FP;
 
@@ -67,23 +88,34 @@ bool testFP()
   fst.open (filename.c_str(), std::ios::in);
   Contour theContour(fst);
 
-
-
   trace.beginBlock ( "FP of a 4-connected digital curve..." );
 
-	FP theFP( theContour.begin(),theContour.end() );
+	FP theFP( theContour.begin(),theContour.end(),true );
   //trace.info() << theFP << std::endl;
 
 	// Draw the FP
-  Point p1( 0, 0 );
-  Point p2( 48, 12 );
-  Domain domain( p1, p2 );
   DGtalBoard aBoard;
-  aBoard.setUnit(Board::UCentimeter);
-  //aBoard << SetMode( domain.styleName(), "Grid" ) << domain;
 	aBoard << SetMode( "PointVector", "Grid" ) << theContour;
   aBoard << theFP;
-  aBoard.saveSVG("FP4.svg");
+  aBoard.saveEPS("FP.eps");
+
+  //accessors: 
+  DGtalBoard newBoard;
+	newBoard << SetMode( "PointVector", "Grid" ) << theContour;
+
+  trace.info() << "FP" << endl;
+  vector<Point> v( theFP.size() );
+  theFP.copyFP( v.begin() );
+//  copy( v.begin(),v.end(),ostream_iterator<Point>(cout, "\n") );
+  drawVectorOfPointsAsPolygon<int>(v, newBoard); 
+
+  trace.info() << "MLP" << endl;
+  vector<RealPoint> v2( theFP.size() );
+  theFP.copyMLP( v2.begin() );
+//  copy( v2.begin(),v2.end(),ostream_iterator<RealPoint>(cout, "\n") );
+  drawVectorOfPointsAsPolygon<double>(v2, newBoard); 
+
+  newBoard.saveEPS("FP_MLP.eps");
 
   trace.endBlock();
   
@@ -101,7 +133,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testFP(); // && ... other tests
+  bool res = testDrawingFP(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

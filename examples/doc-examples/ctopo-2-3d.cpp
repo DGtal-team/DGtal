@@ -60,6 +60,7 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/cat10.vol"; 
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
+  SetPredicate<Z3i::DigitalSet> set3dPredicate( set3d );
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   DGtalQGLViewer viewer;  
   viewer.show(); 
@@ -69,6 +70,8 @@ int main( int argc, char** argv )
   Z3i::KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   
+  ASSERT(space_ok);
+
   std::vector<Z3i::SCell> vectBdrySCell;
   std::vector<Z3i::SCell> vectBdrySCell2;
   std::set<Z3i::SCell> vectBdrySCellALL;
@@ -77,19 +80,21 @@ int main( int argc, char** argv )
 
   
   //Extract an initial boundary cell
-  Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
+  Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3dPredicate);
   
   // Extracting all boundary surfels which are connected to the initial boundary Cell.
   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
-					ks,SAdj, set3d, aCell );
+					ks,SAdj, set3dPredicate, aCell );
     
   // Extract the bondary contour associated to the initial surfel in its first direction
   Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
- 					  ks, *(ks.sDirs( aCell )),SAdj, set3d, aCell );
+ 					  ks, *(ks.sDirs( aCell )), SAdj, 
+					  set3dPredicate, aCell );
   
   // Extract the bondary contour associated to the initial surfel in its second direction
   Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell2,
- 					  ks, *(++(ks.sDirs( aCell ))),SAdj, set3d, aCell );  
+ 					  ks, *(++(ks.sDirs( aCell ))), SAdj, 
+					  set3dPredicate, aCell );  
   
   
   // Displaying all the surfels in transparent mode

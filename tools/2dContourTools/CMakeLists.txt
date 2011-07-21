@@ -6,6 +6,9 @@
 SET(DGTAL_TOOLS_SRC
   pgm2freeman
   displayContours
+#  curvatureMCMS
+  curvatureBC
+  tangentBC
 )
 
 FOREACH(FILE ${DGTAL_TOOLS_SRC})

@@ -242,47 +242,58 @@ unsigned int nbok = 0;
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
   typedef ImageSelector<Domain, unsigned int>::Type Image;
+  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
 
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  DistanceTransformation<Image, 0> dt0;
+  typedef DistanceTransformation<Image, 0>::OutputImage ImageLong0;
+  DistanceTransformation<Image, 1> dt1;
+  typedef DistanceTransformation<Image, 1>::OutputImage ImageLong1;
   
   DGtalBoard board;
 
-  Ball2D<Z2i::Space> flower(Z2i::Point(0,0), 10);
+  AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), 30, 5,2,0);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
   
   Shapes<Z2i::Domain>::shaper(aSet, flower);
 
   ImageLong result = dt.compute ( aSet );
+  ImageLong0 result0 = dt0.compute ( aSet );
+  ImageLong1 result1 = dt1.compute ( aSet );
   
   trace.warning() << result << endl;
-  typedef GrayscaleColorMap<ImageLong::Value> Gray;
  
   DGtal::uint64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
-  
-  for(int y=-11; y<11; y++)
-    {
-      for(int x=-11; x<11; x++)
-	{
-	  Point a(x,y);
-	  std::cout<<result(a)<<" ";
-	}
-      std::cout<<std::endl;
-    }
-
   trace.error() << "MaxV="<<maxv<<std::endl;
-
-  result.selfDraw<Gray> ( board, 0, maxv);
-  board.saveSVG ( "image-postDTFromSet.svg" );
+  result.selfDraw<Hue> ( board, 0, maxv+1);
+  board.saveSVG ( "image-DTSet.svg" );
   
-
+  board.clear();
+  maxv = 0;
+  for ( ImageLong::Iterator it = result0.begin(), itend = result0.end();
+	it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+  trace.error() << "MaxV="<<maxv<<std::endl;
+  result0.selfDraw<Hue> ( board, 0, maxv+1);
+  board.saveSVG ( "image-DTSet-linfty.svg" );
+  
+  board.clear();
+  maxv = 0;
+  for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();
+	it != itend; ++it)
+    if ( (*it) > maxv)
+      maxv = (*it);
+  trace.error() << "MaxV="<<maxv<<std::endl;
+  result1.selfDraw<Hue> ( board, 0, maxv+1);
+  board.saveSVG ( "image-DTSet-l1.svg" );
   trace.endBlock();
 
   return nbok == nb;
@@ -482,6 +493,10 @@ bool testChessboard()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
+  //L_euc metric
+  typedef DistanceTransformation<Image, 2> DT2;
+  DT2 dt2;
+  
   //L_infinity metric
   typedef DistanceTransformation<Image, 0> DT;
   DT dt;
@@ -494,6 +509,7 @@ bool testChessboard()
 
   DT::OutputImage result = dt.compute ( image );
   DT1::OutputImage result1 = dt1.compute ( image );
+  DT2::OutputImage result2 = dt2.compute (image);
 
   DGtal::uint64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
@@ -539,7 +555,20 @@ bool testChessboard()
   board.saveSVG ( "image-DT-l1.svg" );
   trace.info()<< "done"<<endl;
 
+  trace.info()<< "max  Leuc"<<endl;
+  maxv = 0;
+  for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
+	it != itend; ++it)
+    {
+      if ( result2(it) > maxv)
+	maxv = (*it);
+    }
 
+  trace.info()<< "Exporting to SVG L2"<<endl;
+  board.clear();
+  result2.selfDraw<Hue> ( board, 0, maxv + 1);
+  board.saveSVG ( "image-DT-l2.svg" );
+  trace.info()<< "done"<<endl;
   trace.info() << result << endl;
 
   trace.endBlock();

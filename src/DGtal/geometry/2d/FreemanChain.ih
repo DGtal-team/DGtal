@@ -82,9 +82,6 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOth
 {
 }
 
-
-
-
 /**
  * Constructor.
  *
@@ -114,8 +111,6 @@ FreemanChain( const std::vector<Z2i::Point> vectPoints ){
 
 }
 
-
-
 /**
  * Assignment.
  * @param aOther the object to copy.
@@ -134,7 +129,8 @@ DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther 
   return *this;
 }
 
-
+///////////////////////////////////////////////////////////////////////////////
+// Drawing services                 //
 
 //------------------------------------------------------------------------------
 template <typename TInteger>
@@ -186,7 +182,6 @@ DGtal::FreemanChain<TInteger>::selfDrawAsGrid(DGtalBoard & aBoard) const
   for(unsigned int i=0; i< aVContour.size(); i++){
     contour.push_back(LibBoard::Point(IntegerTraits<TInteger>::castToInt64_t(aVContour[i][0]),
 				      IntegerTraits<TInteger>::castToInt64_t(aVContour[i][1])));
-    //    aBoard << aVContour[i];
   }
   aBoard.drawPolyline(contour);
 }
@@ -209,9 +204,8 @@ DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(DGtalBoard & aBoard) const
   aBoard.drawPolyline(contour);
 }
 
-
-
-
+///////////////////////////////////////////////////////////////////////////////
+// Iterators services                 //
 
 
 /**

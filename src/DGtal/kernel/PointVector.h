@@ -456,6 +456,14 @@ namespace DGtal
      * @return a new Point that is the multiplication of 'this' by coeff.
      */
     PointVector operator*( Component coeff );
+    
+    /**
+     * dot product with a PointVector
+     *
+     * @param v a vector that is dot-producted to *this.
+     * @return the dot product of this and v.
+     */
+    Component dot( const Self &v);
 
     /**
      * Addition operator with assignement.

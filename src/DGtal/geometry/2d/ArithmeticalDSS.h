@@ -81,8 +81,8 @@ namespace DGtal
    //type definitions: sequence of points, iterator and DSS recognition
    typedef PointVector<2,int> Point;
    typedef std::vector<Point> Sequence;
-   typedef Sequence::iterator Iterator;
-   typedef ArithmeticalDSS<Iterator, int, 4> DSS4;
+   typedef Sequence::const_iterator ConstIterator;
+   typedef ArithmeticalDSS<ConstIterator, int, 4> DSS4;
 
    // Sequence of input points
    Sequence contour;
@@ -97,7 +97,7 @@ namespace DGtal
 
   
    // Add points while it is possible
-   Iterator i = contour.begin();
+   ConstIterator i = contour.begin();
    DSS4 theDSS4(i);		
    do {
    i++;
@@ -130,17 +130,18 @@ namespace DGtal
   {
 
 
-    // ----------------------- Types ------------------------------
+    // ----------------------- inner types ------------------------------
   public:
-
-
-    typedef TIterator Iterator;
-		typedef std::reverse_iterator<Iterator> ReverseIterator;
-		typedef ArithmeticalDSS<ReverseIterator,TInteger,connectivity> ReverseSegmentComputer; 
 
     //entier
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
+
+    //requiered types
+    typedef TIterator ConstIterator;
+		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
+		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+
 
     //2D point and 2D vector
     typedef DGtal::PointVector<2,Integer> Point;
@@ -234,13 +235,13 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on a sequence of points
      */
-    ArithmeticalDSS(const Iterator& it);
+    ArithmeticalDSS(const ConstIterator& it);
 
     /**
      * Initialisation.
      * @param it an iterator on a sequence of points
      */
-    void init(const Iterator& it);
+    void init(const ConstIterator& it);
 
 
     /**
@@ -290,7 +291,7 @@ namespace DGtal
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable(const Iterator & itf);
+    bool isExtendable(const ConstIterator & itf);
 
     /**
      * Tests whether the union between a point 
@@ -302,7 +303,7 @@ namespace DGtal
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const Iterator & itf);
+    bool extend(const ConstIterator & itf);
 
     /**
      * Tests whether the union between a point 
@@ -314,7 +315,7 @@ namespace DGtal
      * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendOppositeEnd(const Iterator & itb);
+    bool extendOppositeEnd(const ConstIterator & itb);
 
     /**
      * Removes the back point of a DSS
@@ -342,7 +343,7 @@ namespace DGtal
      * @param it an iterator on a sequence of points
      * @return the remainder.
      */
-    Integer getRemainder(const Iterator & it) const;
+    Integer getRemainder(const ConstIterator & it) const;
 
     /**
      * Computes the remainder of a point
@@ -366,7 +367,7 @@ namespace DGtal
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
-    bool isInDSL(const Iterator & it) const;
+    bool isInDSL(const ConstIterator & it) const;
 
     /**
      * Checks whether a point belongs to the DSS or not
@@ -380,7 +381,7 @@ namespace DGtal
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
-    bool isInDSS(const Iterator & it) const;
+    bool isInDSS(const ConstIterator & it) const;
 
     // ------------------------- Accessors ------------------------------
     /**
@@ -433,6 +434,17 @@ namespace DGtal
      * @return point.
      */
     Point getFrontPoint() const;
+
+    /**
+     * Accessor to the iterator at the back of the DSS
+     * @return iterator.
+     */
+    ConstIterator getBack() const;
+    /**
+     * Accessor to the iterator at the front of the DSS
+     * @return iterator.
+     */
+    ConstIterator getFront() const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -586,7 +598,7 @@ namespace DGtal
     Point myUf, myUl, myLf, myLl;
 
     //first (at the front) and last (at the back) points of the DSS
-    Iterator myF, myL;
+    ConstIterator myF, myL;
 
     //steps of the DSS 
     //e.g. right and up in the first octant
@@ -613,8 +625,8 @@ namespace DGtal
      * @param Ll, last lower leaning point 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend( const Iterator & it, 
-		 Iterator & lastIt, 
+    bool extend( const ConstIterator & it, 
+		 ConstIterator & lastIt, 
 		 const Vector & lastMove,
 		 Point & Uf,	Point & Ul,
 		 Point & Lf,	Point & Ll );
@@ -632,9 +644,9 @@ namespace DGtal
      * @param s, a signed integer equal to 1 or -1
      * @return 'true'.
      */
-    bool retract( Iterator & firstIt,
-		  Iterator & lastIt,
-		  Iterator & nextIt, 		  
+    bool retract( ConstIterator & firstIt,
+		  ConstIterator & lastIt,
+		  ConstIterator & nextIt, 		  
 		  Point & Uf,	Point & Ul,
 		  Point & Lf,	Point & Ll,
 		  const Integer& s );

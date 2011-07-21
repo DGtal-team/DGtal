@@ -1,6 +1,12 @@
-s/DGtal::SpaceND<int, 3ul>/Z3/g
-s/DGtal::SpaceND<int, 2ul>/Z2/g
-s/DGtal::SpaceND<int, 1ul>/Z1/g
+s/DGtal::SpaceND<1u, int>/Z1/g
+s/DGtal::SpaceND<2u, int>/Z2/g
+s/DGtal::SpaceND<3u, int>/Z3/g
+s/DGtal::KhalimskySpaceND<1u, int>/K1/g
+s/DGtal::KhalimskySpaceND<2u, int>/K2/g
+s/DGtal::KhalimskySpaceND<3u, int>/K3/g
+s/PointsRange/PtRange/g
+s/ConstIterator/CIt/g
+s/Iterator/It/g
 s/DGtal::HyperRectDomain/BOX/g
 s/DGtal::MetricAdjacency<Z3, 2ul, 3ul>/Adj18/g
 s/DGtal::MetricAdjacency<Z3, 1ul, 3ul>/Adj6/g
