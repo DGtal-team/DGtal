@@ -87,10 +87,10 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
 			myFlagIntersectNext = false;
     } 
 
+    myFlagIsLast = true; 
+
 	} else {
   //otherwise
-std::cout << "init " << myFlagIntersectNext << " " << *(mySegmentComputer.getFront()) << " " << *(mySegmentComputer.end()) << std::endl;
-
 		myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
   }
 
@@ -105,20 +105,18 @@ void
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
 {
 
-	if (mySegmentComputer.end() != myS->myNewStop) { //if not the end
+	if (myFlagIsLast) { //if the segmentComputer has reached the end
+
+    myFlagIsValid = false; 
+
+	} else { //otherwise
 
 	  myFlagIntersectPrevious = myFlagIntersectNext;
 
     ConstIterator it( mySegmentComputer.end() ); 
     if (myFlagIntersectPrevious) --it; 
 
-std::cout << myFlagIntersectPrevious << " " << *(mySegmentComputer.getFront()) << " " << *it << std::endl;
-
   	this->longestSegment(it);
-
-	} else { //if the segmentComputer has reached the end
-
-    myFlagIsValid = false; 
 
 	}
 
@@ -141,7 +139,8 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 		mySegmentComputer( aSegmentComputer ), 
     myFlagIntersectNext( false ),
 		myFlagIntersectPrevious( false ),
-    myFlagIsValid( isValid )
+    myFlagIsValid( isValid ),
+    myFlagIsLast( false )
 {
 
 	if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
@@ -178,7 +177,8 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 		mySegmentComputer( other.mySegmentComputer ),
 		myFlagIntersectNext( other.myFlagIntersectNext ), 
 		myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
-    myFlagIsValid( other.myFlagIsValid )
+    myFlagIsValid( other.myFlagIsValid ),
+    myFlagIsLast( other.myFlagIsLast )
 {
 }
     
@@ -200,6 +200,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 			myFlagIntersectNext = other.myFlagIntersectNext;
 			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
 			myFlagIsValid = other.myFlagIsValid;
+			myFlagIsLast = other.myFlagIsLast;
     }
   return *this;
 }
@@ -368,7 +369,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
   if (aMode == "Truncate+1") {      //Truncate+1
-    ++myNewStop;
+    if (myNewStop != myEnd) ++myNewStop;
   }
   if (aMode == "DoNotTruncate") {//DoNotTruncate
     myNewStop = myEnd;

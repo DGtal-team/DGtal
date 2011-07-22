@@ -194,6 +194,11 @@ namespace DGtal
       bool  myFlagIntersectPrevious;
 
       /**
+       * A flag equal to TRUE if *this has reached the end, FALSE otherwise 
+       */
+      bool  myFlagIsLast;
+
+      /**
        * A flag equal to TRUE if *this is valid, FALSE otherwise 
        */
       bool  myFlagIsValid;
