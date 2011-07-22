@@ -263,7 +263,7 @@ Then you will work on the new tracked branch aBranch
 @note
 the option --track work only from git version 1.6.2 and later. But you can perform equivalent with the following command:
 @code 
-checkout -b [myBranchName] [aRemoteName]/[aBranch]
+git checkout -b [myBranchName] [aRemoteName]/[aBranch]
 @endcode 
 @endnote
 
@@ -379,7 +379,7 @@ To resolve the conflict you just have to apply the command:
 It will lunch simple tools like opendiff on MacOSX allowing to select the main file. After saving the merged file, you simply have to commit the new change:
 
 @code
-> git checkout -m "Merging GIT conflict! " -a
+> git commit -m "Merging GIT conflict! " -a
 > git pull mainRemote master
 @endcode
 
