@@ -314,7 +314,7 @@ namespace DGtal {
  
  
  Note that the sign of the signed and unsigned are well taked into
-  account in the display with \Ref DGtalQGLViewer .
+  account in the display with \Ref Viewer3D .
 
 
   <CENTER>
@@ -592,12 +592,12 @@ namespace DGtal {
       aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);	
    @endcode
 
-   The first surfel can also be displayed in red with DGtalBoard:      
+   The first surfel can also be displayed in red with Board2D:      
    @code  
-       DGtalBoard board;
+       Board2D board;
        board << image.domain() << set2d; // display domain and set
-       board << CustomStyle( aCell.styleName(), new CustomColors(  DGtalBoard::Color( 255, 0, 0 ),
-       							           DGtalBoard::Color( 192, 0, 0 ) ));
+       board << CustomStyle( aCell.styleName(), new CustomColors(  Board2D::Color( 255, 0, 0 ),
+       							           Board2D::Color( 192, 0, 0 ) ));
        board << aCell;
     @endcode  
 
@@ -614,15 +614,15 @@ namespace DGtal {
     and display it:
     @code
      GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
-     cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-     cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-     cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+     cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 255, 10 ) );
    
      unsigned int d=0;
      std::vector<Z2i::SCell>::iterator it;
      for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
      	  board<< CustomStyle((*it).styleName() ,
-	           	      new CustomColors( DGtalBoard::Color::Black,
+	           	      new CustomColors( Board2D::Color::Black,
 				                cmap_grad( d )))<< *it;
           d++;
     }
@@ -665,7 +665,7 @@ namespace DGtal {
    To avoid surfel superposition we need to increase with a small
    shift the surfel size, for this purpose you can add the following key:
    @code 
-   viewer << DGtalQGLViewer::shiftSurfelVisu; 
+   viewer << Viewer3D::shiftSurfelVisu; 
    @endcode
    or use the special mode "Highlighted" which increase automaticly the surfel size.
 

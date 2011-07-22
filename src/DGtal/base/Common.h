@@ -93,26 +93,26 @@ namespace DGtal
   extern TraceWriterTerm traceWriterTerm;
   extern Trace trace;
 
-  class DGtalBoard;
+  class Board2D;
 
 #ifdef WITH_VISU3D_QGLVIEWER 
-  class DGtalQGLViewer;
+  class Viewer3D;
 #endif
   
 
 #ifdef WITH_VISU3D_QGLVIEWER
   /**
    * Interface that specifies that an object can draw itself on a
-   *  DGtalQGLViewer 
+   *  Viewer3D 
    * (BK)
    */
-  struct DrawableWithDGtalQGLViewer {
+  struct DrawableWithViewer3D {
     /**
      * Operation to override. Does nothing by default.
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( DGtalQGLViewer &  ) const {}
+    virtual void selfDraw( Viewer3D &  ) const {}
   };
 #endif
   
@@ -144,13 +144,13 @@ namespace DGtal
    * board. 
    * @todo (JOL) Put this class elsewhere.
    */
-  struct DrawableWithDGtalBoard {
+  struct DrawableWithBoard2D {
     /**
      * Operation to override. Does nothing by default.
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( DGtalBoard &  ) const {}
+    virtual void selfDraw( Board2D &  ) const {}
   };
 
 

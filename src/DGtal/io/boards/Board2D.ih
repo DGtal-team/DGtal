@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file DGtalBoard.ih
+ * @file Board2D.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/10/11
  *
- * Implementation of inline methods defined in DGtalBoard.h
+ * Implementation of inline methods defined in Board2D.h
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/CDrawableWithDGtalBoard.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -46,7 +46,7 @@
  */
 inline
 std::string
-DGtal::DGtalBoard::getMode( const std::string & objectName ) const
+DGtal::Board2D::getMode( const std::string & objectName ) const
 {
   ModeMapping::const_iterator itm = myModes.find( objectName );
   return itm == myModes.end() ? "" : itm->second;
@@ -54,20 +54,20 @@ DGtal::DGtalBoard::getMode( const std::string & objectName ) const
 
 /**
  * Draws the drawable [object] in this board. It should satisfy
- * the concept CDrawableWithDGtalBoard, which requires for instance a
+ * the concept CDrawableWithBoard2D, which requires for instance a
  * method selfDraw( LibBoard::Board ).
  *
  * @param domain any domain.
  * @return a reference on 'this'.
  */
-template <typename TDrawableWithDGtalBoard>
+template <typename TDrawableWithBoard2D>
 inline
-DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
+DGtal::Board2D & 
+DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalBoard<TDrawableWithDGtalBoard>));
+  BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
-  CountedPtr<DrawableWithDGtalBoard> style( object.defaultStyle() );
+  CountedPtr<DrawableWithBoard2D> style( object.defaultStyle() );
 #ifdef DEBUG_VERBOSE
   trace.info() << "[operator<<] " << object.styleName();
 #endif
@@ -99,7 +99,7 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
       #endif
 
       // Apply default style for specific mode.
-      CountedPtr<DrawableWithDGtalBoard> style_mode
+      CountedPtr<DrawableWithBoard2D> style_mode
 	( object.defaultStyle( itm->second ) );
       if ( style_mode.get() )
 	{
@@ -137,15 +137,15 @@ DGtal::DGtalBoard::operator<<( const TDrawableWithDGtalBoard & object )
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGtalBoard'.
+ * Overloads 'operator<<' for displaying objects of class 'Board2D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGtalBoard' to write.
+ * @param object the object of class 'Board2D' to write.
  * @return the output stream after the writing.
  */
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const DGtalBoard & object )
+                  const Board2D & object )
 {
     object.selfDisplay ( out );
     return out;

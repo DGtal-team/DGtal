@@ -359,7 +359,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsPointsQGL( DGtalQGLViewer & viewer ) const
+		 ::selfDrawAsPointsViewer3D( Viewer3D & viewer ) const
 {
 
 
@@ -400,7 +400,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsBoundingBoxQGL( DGtalQGLViewer & viewer ) const
+		 ::selfDrawAsBoundingBoxViewer3D( Viewer3D & viewer ) const
 {
 
 	//get DSS parameters
@@ -527,16 +527,16 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawQGL( DGtalQGLViewer & viewer ) const
+		 ::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   std::string mode = viewer.getMode( styleName() );
   if ( mode == "BoundingBox" )
-    selfDrawAsBoundingBoxQGL( viewer );
+    selfDrawAsBoundingBoxViewer3D( viewer );
   else if ( mode == "Points" )
-	  selfDrawAsPointsQGL(viewer);
+	  selfDrawAsPointsViewer3D(viewer);
   else if ( ( mode == "" ) )
     {
-	  	selfDrawAsPointsQGL(viewer);
+	  	selfDrawAsPointsViewer3D(viewer);
     }
 
 }

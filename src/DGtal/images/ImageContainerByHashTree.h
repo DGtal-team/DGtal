@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 #include "DGtal/base/Bits.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -431,14 +431,14 @@ namespace DGtal
 	return checkIntegrity();
       }
 
-      // ------------- realization CDrawableWithDGtalBoard --------------------
+      // ------------- realization CDrawableWithBoard2D --------------------
     private:
-      struct DefaultDrawStyle : public DrawableWithDGtalBoard
+      struct DefaultDrawStyle : public DrawableWithBoard2D
       {
-	virtual void selfDraw(DGtalBoard & aboard)
+	virtual void selfDraw(Board2D & aboard)
 	{
 	  aboard.setPenColorRGBi(60, 60, 60);
-	  aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
 	}
       };
 
@@ -447,7 +447,7 @@ namespace DGtal
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithDGtalBoard* defaultStyle() const;
+      DrawableWithBoard2D* defaultStyle() const;
 
       /**
        * @return the style name used for drawing this object.
@@ -463,7 +463,7 @@ namespace DGtal
        * @tparam Coloramp any models of CColormap.
        */
       template<typename Colormap>
-      void selfDraw(DGtalBoard & board, const Value & minValue, const Value & maxValue ) const;
+      void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
 				
     protected:
 

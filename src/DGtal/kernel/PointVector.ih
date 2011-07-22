@@ -583,7 +583,7 @@ DGtal::PointVector<dim,Component>::selfDisplay( std::ostream & out ) const
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::PointVector<dim, Component>::defaultStyle( std::string mode) const
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
@@ -603,7 +603,7 @@ DGtal::PointVector<dim, Component>::styleName() const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPaving( DGtalBoard & board ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPaving( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.drawRectangle( (float) IntegerTraits<Component>::castToInt64_t(myArray[0]) - 0.5f, 
@@ -613,7 +613,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsPaving( DGtalBoard & board ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGrid( DGtalBoard & board ) const
+DGtal::PointVector<dim,Component>::selfDrawAsGrid( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.setPenColor(Color::Black);
@@ -624,7 +624,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGrid( DGtalBoard & board ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDraw( DGtalBoard & board ) const
+DGtal::PointVector<dim,Component>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
@@ -644,7 +644,7 @@ DGtal::PointVector<dim,Component>::selfDraw( DGtalBoard & board ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim, Component>::selfDraw(DGtalBoard & board,
+DGtal::PointVector<dim, Component>::selfDraw(Board2D & board,
 					     const Self &apoint) const
 {
   ASSERT(dim == 2);
@@ -667,7 +667,7 @@ DGtal::PointVector<dim, Component>::selfDraw(DGtalBoard & board,
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -678,7 +678,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer 
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -691,7 +691,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridQGL( DGtalQGLViewer & viewer ) 
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   ASSERT(dim == 3);
  
@@ -699,13 +699,13 @@ DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingViewer3D( viewer );
   else if ( mode == "Grid" )
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingQGL(viewer);
-      selfDrawAsGridQGL( viewer );
+      selfDrawAsPavingViewer3D(viewer);
+      selfDrawAsGridViewer3D( viewer );
     }
   
 }
@@ -717,7 +717,7 @@ DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawQGL( DGtalQGLViewer & viewer,  const Self &aPoint ) const
+DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   

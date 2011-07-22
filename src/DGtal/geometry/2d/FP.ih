@@ -478,7 +478,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
-DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( DGtalBoard & aBoard) const
+DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard) const
 {
   //polyline to draw
 	vector<LibBoard::Point> polyline;
@@ -507,7 +507,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( DGtalBoard & aBoa
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
 {
 	return new DefaultDrawStyle;
@@ -531,7 +531,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::styleName() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( DGtalBoard & board ) const
+DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( styleName() );
   if ( mode == "Polygon" )

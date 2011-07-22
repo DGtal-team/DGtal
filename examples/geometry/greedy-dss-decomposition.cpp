@@ -33,7 +33,7 @@
 #include <iostream>
 #include <sstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
@@ -69,7 +69,7 @@ int main( )
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   Domain domain( p1, p2 );
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
 	 << domain
 	 << SetMode( "PointVector", "Grid" )

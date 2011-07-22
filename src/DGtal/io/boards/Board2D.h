@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file DGtalBoard.h
+ * @file Board2D.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/10/11
  *
- * Header file for module DGtalBoard.cpp
+ * Header file for module Board2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DGtalBoard_RECURSES)
-#error Recursive header files inclusion detected in DGtalBoard.h
-#else // defined(DGtalBoard_RECURSES)
+#if defined(Board2D_RECURSES)
+#error Recursive header files inclusion detected in Board2D.h
+#else // defined(Board2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DGtalBoard_RECURSES
+#define Board2D_RECURSES
 
-#if !defined DGtalBoard_h
+#if !defined Board2D_h
 /** Prevents repeated inclusion of headers. */
-#define DGtalBoard_h
+#define Board2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -57,16 +57,16 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // class DGtalBoard
+  // class Board2D
   /**
-   * Description of class 'DGtalBoard' <p> \brief Aim: This class
+   * Description of class 'Board2D' <p> \brief Aim: This class
    * specializes a 'Board' class so as to display DGtal objects more
-   * naturally (with <<). The user has simply to declare a DGtalBoard
+   * naturally (with <<). The user has simply to declare a Board2D
    * object and uses stream operators to display most digital
    * objects. Furthermore, one can use this class to modify the current
    * style for drawing.
    */
-  class DGtalBoard : public LibBoard::Board
+  class Board2D : public LibBoard::Board
   {
     // ----------------------- local types ------------------------------
   public:
@@ -74,7 +74,7 @@ namespace DGtal
      * The associated map type for storing the default styles of
      * digital objects.
      */
-    typedef std::map< std::string,CountedPtr<DrawableWithDGtalBoard> > StyleMapping;
+    typedef std::map< std::string,CountedPtr<DrawableWithBoard2D> > StyleMapping;
 
     /**
      * The associated map type for storing possible modes used for
@@ -90,14 +90,14 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~DGtalBoard();
+    ~Board2D();
     
     /** 
      * Constructs a new board and sets the background color, if any.
      * 
      * @param backgroundColor A color for the drawing's background.
      */
-    DGtalBoard( const Color & backgroundColor 
+    Board2D( const Color & backgroundColor 
 		= Color::None );
 
     /** 
@@ -105,14 +105,14 @@ namespace DGtal
      * 
      * @param other The object to be copied.
      */
-    DGtalBoard( const DGtalBoard & other );
+    Board2D( const Board2D & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    DGtalBoard & operator= ( const DGtalBoard & other );
+    Board2D & operator= ( const Board2D & other );
 
     /**
      * @param objectName the name of the object (generally obtained
@@ -125,14 +125,14 @@ namespace DGtal
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
-     * the concept CDrawableWithDGtalBoard, which requires for instance a
-     * method selfDraw( DGtalBoard & ).
+     * the concept CDrawableWithBoard2D, which requires for instance a
+     * method selfDraw( Board2D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
      */
-    template <typename TDrawableWithDGtalBoard>
-    DGtalBoard & operator<<( const TDrawableWithDGtalBoard & object );
+    template <typename TDrawableWithBoard2D>
+    Board2D & operator<<( const TDrawableWithBoard2D & object );
 
 
     // ----------------------- Interface --------------------------------------
@@ -172,7 +172,7 @@ namespace DGtal
      * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
      *
      * Modes may only be used in objects implementing the concept
-     * CDrawableWithDGtalBoard.
+     * CDrawableWithBoard2D.
      */
     StyleMapping myStyles;
 
@@ -182,7 +182,7 @@ namespace DGtal
      *
      * Next display of a HyperRectDomain object will used the mode
      * "Paving".  Modes may only be used in objects implementing the
-     * concept CDrawableWithDGtalBoard.
+     * concept CDrawableWithBoard2D.
      */
     ModeMapping myModes;
     // ------------------------- Private Datas --------------------------------
@@ -197,22 +197,22 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class DGtalBoard
+  }; // end of class Board2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DGtalBoard'.
+   * Overloads 'operator<<' for displaying objects of class 'Board2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'DGtalBoard' to write.
+   * @param object the object of class 'Board2D' to write.
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<< ( std::ostream & out, const DGtalBoard & object );
+  operator<< ( std::ostream & out, const Board2D & object );
 
   /**
    * Base class specifying the methods for classes which intend to
-   * modify a DGtalBoard stream.
-   * @todo merge DrawableWithDGtalBoard and DrawWithBoardModifier 
+   * modify a Board2D stream.
+   * @todo merge DrawableWithBoard2D and DrawWithBoardModifier 
    */
   struct DrawWithBoardModifier {
     std::string styleName() const
@@ -220,20 +220,20 @@ namespace DGtal
       return "DrawWithBoardModifier";
     }
 
-    DrawableWithDGtalBoard* defaultStyle( std::string = "" ) const
+    DrawableWithBoard2D* defaultStyle( std::string = "" ) const
     {
       return 0;
     }
 
-    virtual void selfDraw( DGtalBoard &  ) const 
+    virtual void selfDraw( Board2D &  ) const 
     {}
   };
 
 
   /**
-   * Modifier class in a DGtalBoard stream. Useful to choose your own
+   * Modifier class in a Board2D stream. Useful to choose your own
    * style for a given class. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * CDrawableWithBoard2D.
    */
   struct CustomStyle : public DrawWithBoardModifier {
     /**
@@ -242,7 +242,7 @@ namespace DGtal
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    CustomStyle( std::string classname, DrawableWithDGtalBoard* style )
+    CustomStyle( std::string classname, DrawableWithBoard2D* style )
       : myClassname( classname ), myStyle( style )
     {}
 
@@ -251,19 +251,19 @@ namespace DGtal
       return "CustomStyle";
     }
 
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myStyles[ myClassname ] = myStyle;
     }
   private:
     std::string myClassname;
-    CountedPtr<DrawableWithDGtalBoard> myStyle;
+    CountedPtr<DrawableWithBoard2D> myStyle;
   };
 
   /**
-   * Modifier class in a DGtalBoard stream. Useful to choose your own
+   * Modifier class in a Board2D stream. Useful to choose your own
    * mode for a given class. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * CDrawableWithBoard2D.
    */
   struct SetMode : public DrawWithBoardModifier {
     /**
@@ -275,7 +275,7 @@ namespace DGtal
     SetMode( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ myClassname ] = myMode;
     }
@@ -286,16 +286,16 @@ namespace DGtal
 
   /**
    * Custom style class redefining the pen color and the fill
-   * color. You may use DGtalBoard::Color::None for transparent color.
+   * color. You may use Board2D::Color::None for transparent color.
    *
    \code
-   DGtalBoard board;
-   board << CustomColors( DGtalBoard::Color::Red, DGtalBoard::Color::None );
+   Board2D board;
+   board << CustomColors( Board2D::Color::Red, Board2D::Color::None );
    ...
    \endcode
-   * @see DGtalBoard
+   * @see Board2D
    */
-  struct CustomColors : public DrawableWithDGtalBoard
+  struct CustomColors : public DrawableWithBoard2D
   {
     Color myPenColor;
     Color myFillColor;
@@ -311,7 +311,7 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( DGtalBoard & aboard) const
+    virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor);
       aboard.setPenColor( myPenColor );
@@ -320,16 +320,16 @@ namespace DGtal
 
   /**
    * Custom style class redefining the pen color. You may use
-   * DGtalBoard::Color::None for transparent color.
+   * Board2D::Color::None for transparent color.
    *
    \code
-   DGtalBoard board;
-   board << CustomPenColor( DGtalBoard::Color::Green );
+   Board2D board;
+   board << CustomPenColor( Board2D::Color::Green );
    ...
    \endcode
-   * @see DGtalBoard
+   * @see Board2D
    */
-  struct CustomPenColor : public DrawableWithDGtalBoard
+  struct CustomPenColor : public DrawableWithBoard2D
   {
     Color myPenColor;
 
@@ -342,7 +342,7 @@ namespace DGtal
       : myPenColor( penColor )
     {}
     
-    virtual void selfDraw( DGtalBoard & aboard) const
+    virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
     }
@@ -350,16 +350,16 @@ namespace DGtal
 
   /**
    * Custom style class redefining the fill color. You may use
-   * DGtalBoard::Color::None for transparent color.
+   * Board2D::Color::None for transparent color.
    *
    \code
-   DGtalBoard board;
-   board << CustomFillColor( DGtalBoard::Color::Green );
+   Board2D board;
+   board << CustomFillColor( Board2D::Color::Green );
    ...
    \endcode
-   * @see DGtalBoard
+   * @see Board2D
    */
-  struct CustomFillColor : public DrawableWithDGtalBoard
+  struct CustomFillColor : public DrawableWithBoard2D
   {
     Color myFillColor;
 
@@ -372,7 +372,7 @@ namespace DGtal
       : myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( DGtalBoard & aboard) const
+    virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor );
     }
@@ -380,24 +380,24 @@ namespace DGtal
 
   /**
    * Custom style class redefining the pen attributes. You may use
-   * DGtalBoard::Color::None for transparent color.
+   * Board2D::Color::None for transparent color.
    *
    \code
-   DGtalBoard board;
-   board << CustomPen( DGtalBoard::Color::Green, DGtalBoard::Color::Black,
+   Board2D board;
+   board << CustomPen( Board2D::Color::Green, Board2D::Color::Black,
                        3.0 );
    ...
    \endcode
-   * @see DGtalBoard
+   * @see Board2D
    */
-  struct CustomPen : public DrawableWithDGtalBoard
+  struct CustomPen : public DrawableWithBoard2D
   {
     Color myPenColor;
     Color myFillColor;
     double myLineWidth;
-    DGtalBoard::Shape::LineStyle myLineStyle; /**< The line style (solid, dashed, etc.). */
-    DGtalBoard::Shape::LineCap myLineCap; /**< The linecap attribute. (The way line terminates.) */
-    DGtalBoard::Shape::LineJoin myLineJoin; /**< The linejoin attribute. (The shape of line junctions.) */
+    Board2D::Shape::LineStyle myLineStyle; /**< The line style (solid, dashed, etc.). */
+    Board2D::Shape::LineCap myLineCap; /**< The linecap attribute. (The way line terminates.) */
+    Board2D::Shape::LineJoin myLineJoin; /**< The linejoin attribute. (The shape of line junctions.) */
     int myDepth;    		/**< The depth of the shape. */
 
     /**
@@ -420,15 +420,15 @@ namespace DGtal
     CustomPen( const Color & penColor,
 	       const Color & fillColor,
 	       double lineWidth = 1.0,
-	       DGtalBoard::Shape::LineStyle lineStyle = DGtalBoard::Shape::SolidStyle,
-	       DGtalBoard::Shape::LineCap lineCap = DGtalBoard::Shape::ButtCap,
-	       DGtalBoard::Shape::LineJoin lineJoin = DGtalBoard::Shape::MiterJoin )
+	       Board2D::Shape::LineStyle lineStyle = Board2D::Shape::SolidStyle,
+	       Board2D::Shape::LineCap lineCap = Board2D::Shape::ButtCap,
+	       Board2D::Shape::LineJoin lineJoin = Board2D::Shape::MiterJoin )
       : myPenColor( penColor ), myFillColor( fillColor ),
 	myLineWidth( lineWidth ), 
 	myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
     
-    virtual void selfDraw( DGtalBoard & aboard) const
+    virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
       aboard.setFillColor( myFillColor );
@@ -444,13 +444,13 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/DGtalBoard.ih"
+#include "DGtal/io/boards/Board2D.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DGtalBoard_h
+#endif // !defined Board2D_h
 
-#undef DGtalBoard_RECURSES
-#endif // else defined(DGtalBoard_RECURSES)
+#undef Board2D_RECURSES
+#endif // else defined(Board2D_RECURSES)

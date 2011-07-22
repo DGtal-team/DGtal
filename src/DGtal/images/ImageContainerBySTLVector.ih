@@ -92,7 +92,7 @@ template <typename D, typename V>
 template<typename Colormap>
 inline
 void
-DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board,
+DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
 						 const V &minV,
 						 const V &maxV ) const
 {
@@ -118,7 +118,7 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(DGtalBoard & board,
 //------------------------------------------------------------------------------
 template <typename D, typename V>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::ImageContainerBySTLVector<D, V>::defaultStyle() const
 {
   return new DefaultDrawStyle;

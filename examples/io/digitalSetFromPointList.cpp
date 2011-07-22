@@ -31,7 +31,7 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -46,7 +46,7 @@ int main( int argc, char** argv )
 {
   std::string inputFilename = examplesPath + "samples/pointList3d.pl"; 
   QApplication application(argc,argv);
-  DGtalQGLViewer viewer;
+  Viewer3D viewer;
   viewer.show();     
   // Importing the 3d set of points  contained with the default index (0, 1, 2);
   vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
     viewer << vectPoints.at(i);
   }
   
-  viewer   << DGtalQGLViewer::updateDisplay;
+  viewer   << Viewer3D::updateDisplay;
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////

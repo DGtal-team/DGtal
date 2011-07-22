@@ -770,7 +770,7 @@ namespace DGtal
 //------------------------------------------------------------------------------
   template <typename Domain, typename Value, typename HashKey  >
   inline
-  DGtal::DrawableWithDGtalBoard*
+  DGtal::DrawableWithBoard2D*
   experimental::ImageContainerByHashTree<Domain, Value, HashKey >::defaultStyle() const
   {
     return new DefaultDrawStyle;
@@ -788,7 +788,7 @@ namespace DGtal
   template <typename Domain, typename Value, typename HashKey  >
   template <typename C>
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::selfDraw ( DGtalBoard & board, const Value &minV, const Value &maxV ) const
+  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::selfDraw ( Board2D & board, const Value &minV, const Value &maxV ) const
   {
     ASSERT ( dim == 2 );
 

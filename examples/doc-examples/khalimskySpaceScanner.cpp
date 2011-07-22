@@ -50,8 +50,8 @@ int main( int argc, char** argv )
   trace.info() << endl;
   
   
-  DGtalBoard boardScan1; // for 2D display
-  DGtalBoard boardScan2; // for 2D display
+  Board2D boardScan1; // for 2D display
+  Board2D boardScan2; // for 2D display
   
 
   Z2i::KSpace K;

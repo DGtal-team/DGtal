@@ -36,7 +36,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "Board/PSFonts.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +209,7 @@ int main()
   board.saveEPS( "colormaps.eps" );
   
 #ifdef WITH_CAIRO
-  board.saveCairo("colormaps-cairo.ps", DGtalBoard::CairoPS);
+  board.saveCairo("colormaps-cairo.ps", Board2D::CairoPS);
 #endif
 
   return ( res1 ) ? 0 : 1;

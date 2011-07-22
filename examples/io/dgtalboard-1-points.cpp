@@ -31,7 +31,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -50,16 +50,16 @@ int main()
   Point p3( 0, 0 );
   Domain domain( p1, p2 );
   
-  DGtalBoard board;
+  Board2D board;
   board << domain << p1 << p2 << p3;
   board.saveSVG("dgtalboard-1-points.svg");
   board.saveEPS("dgtalboard-1-points.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-1-points-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-1-points-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-1-points-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-1-points-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-1-points-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-1-points-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-1-points-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-1-points-cairo.svg", Board2D::CairoSVG);
 #endif
   
   trace.endBlock();

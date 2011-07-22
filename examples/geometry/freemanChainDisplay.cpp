@@ -40,7 +40,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/io/readers/MagickReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 
@@ -86,7 +86,7 @@ int main()
   unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
   
   // Draw the freemanchain and the contour 
-  DGtalBoard dgBoard;
+  Board2D dgBoard;
   
   dgBoard.drawImage(filenameImage, 0,height-1, width, height );
   dgBoard << fc;

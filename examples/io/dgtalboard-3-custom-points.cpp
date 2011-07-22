@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -40,7 +40,7 @@ using namespace DGtal;
 using namespace DGtal::Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 {
   Color myPenColor;
   Color myFillColor;
@@ -49,7 +49,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
-  virtual void selfDraw( DGtalBoard & aboard) const
+  virtual void selfDraw( Board2D & aboard) const
   {
     aboard.setFillColor( myFillColor);
     aboard.setPenColor( myPenColor );
@@ -72,7 +72,7 @@ int main()
   Color blue( 0, 0, 255 );
   Color dblue( 0, 0, 192 );
   
-  DGtalBoard board;
+  Board2D board;
   board << domain 
 	<< CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
 	<< p1
@@ -84,10 +84,10 @@ int main()
   board.saveEPS("dgtalboard-3-custom-points.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-3-custom-points-cairo.svg", Board2D::CairoSVG);
 #endif
   
   trace.endBlock();

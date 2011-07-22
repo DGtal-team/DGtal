@@ -43,7 +43,7 @@
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -108,7 +108,7 @@ bool testDistanceTransformation()
 
   dt.checkTypesValidity ( image );
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Gray> ( board, 0, 255 );
   board.saveSVG ( "image-preDT.svg" );
@@ -182,7 +182,7 @@ bool testDistanceTransformationNeg()
 
   dt.checkTypesValidity ( image );
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Gray> ( board, 0, 1 );
   board.saveSVG ( "image-preDT-neg.svg" );
@@ -252,7 +252,7 @@ unsigned int nbok = 0;
   DistanceTransformation<Image, 1> dt1;
   typedef DistanceTransformation<Image, 1>::OutputImage ImageLong1;
   
-  DGtalBoard board;
+  Board2D board;
 
   AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), 30, 5,2,0);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
@@ -334,7 +334,7 @@ bool testDistanceTransformationBorder()
 
   dt.checkTypesValidity ( image );
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Hue> ( board, 0, 150 );
   board.saveSVG ( "image-preDT-border.svg" );
@@ -532,7 +532,7 @@ bool testChessboard()
 
   trace.info()<< "Exporting to SVG"<<endl;
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-linfty.svg" );
