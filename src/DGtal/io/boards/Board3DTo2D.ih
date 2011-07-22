@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file   DGtalCairo.ih
+ * @file   Board3DTo2D.ih
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 22 juin 2011
  * 
  * @brief
  *
- * Implementation of inline methods defined in DGtalCairo.h
+ * Implementation of inline methods defined in Board3DTo2D.h
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/boards/CDrawableWithDGtalCairo.h"
+#include "DGtal/io/boards/CDrawableWithBoard3DTo2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,8 +45,8 @@
    *
    **/ 
 inline
-DGtal::DGtalCairo & 
-DGtal::DGtalCairo::operator<<(const QColor & aColor){
+DGtal::Board3DTo2D & 
+DGtal::Board3DTo2D::operator<<(const QColor & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -58,7 +58,7 @@ DGtal::DGtalCairo::operator<<(const QColor & aColor){
    **/  
 inline
 void
-DGtal::DGtalCairo::createNewVoxelList(bool depthTest){
+DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
   std::vector< voxel > v;
   myVoxelSetList.push_back(v);
   myListVoxelDepthTest.push_back(depthTest);
@@ -72,7 +72,7 @@ DGtal::DGtalCairo::createNewVoxelList(bool depthTest){
    **/ 
 inline
 void
-DGtal::DGtalCairo::createNewLineList(){
+DGtal::Board3DTo2D::createNewLineList(){
   std::vector< line > v;
   myLineSetList.push_back(v);
 }
@@ -84,7 +84,7 @@ DGtal::DGtalCairo::createNewLineList(){
    **/ 
 inline
 void
-DGtal::DGtalCairo::createNewPointList(){
+DGtal::Board3DTo2D::createNewPointList(){
   std::vector< point > v;
   myPointSetList.push_back(v);
 }
@@ -96,7 +96,7 @@ DGtal::DGtalCairo::createNewPointList(){
    **/
 inline
 void
-DGtal::DGtalCairo::setFillColor(QColor aColor){
+DGtal::Board3DTo2D::setFillColor(QColor aColor){
   myCurrentFillColor=aColor;  
 }
 
@@ -107,7 +107,7 @@ DGtal::DGtalCairo::setFillColor(QColor aColor){
    **/
 inline
 void
-DGtal::DGtalCairo::setLineColor(QColor aColor){
+DGtal::Board3DTo2D::setLineColor(QColor aColor){
   myCurrentLineColor=aColor;  
 }
 
@@ -118,7 +118,7 @@ DGtal::DGtalCairo::setLineColor(QColor aColor){
    **/
 inline
 QColor
-DGtal::DGtalCairo::getFillColor(){
+DGtal::Board3DTo2D::getFillColor(){
   return myCurrentFillColor;  
 }
 
@@ -129,24 +129,24 @@ DGtal::DGtalCairo::getFillColor(){
    **/
 inline
 QColor
-DGtal::DGtalCairo::getLineColor(){
+DGtal::Board3DTo2D::getLineColor(){
   return myCurrentLineColor;  
 }
 
 /**
    * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithDGtalCairo, which requires for instance a
-   * method selfDraw( DGtalCairo & ).
+   * the concept CDrawableWithBoard3DTo2D, which requires for instance a
+   * method selfDraw( Board3DTo2D & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-template <typename TDrawableWithDGtalCairo>
+template <typename TDrawableWithBoard3DTo2D>
 inline
-DGtal::DGtalCairo & 
-DGtal::DGtalCairo::operator<<( const TDrawableWithDGtalCairo & object )
+DGtal::Board3DTo2D & 
+DGtal::Board3DTo2D::operator<<( const TDrawableWithBoard3DTo2D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDGtalCairo< TDrawableWithDGtalCairo >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D >));
   
   object.selfDrawCairo( *this );
   return *this;
@@ -161,7 +161,7 @@ DGtal::DGtalCairo::operator<<( const TDrawableWithDGtalCairo & object )
    */
 inline
 std::string
-DGtal::DGtalCairo::getMode( const std::string & objectName ) const
+DGtal::Board3DTo2D::getMode( const std::string & objectName ) const
 {
   ModeMapping::const_iterator itm = myModes.find( objectName );
   return itm == myModes.end() ? "" : itm->second;
@@ -179,7 +179,7 @@ DGtal::DGtalCairo::getMode( const std::string & objectName ) const
    **/
 inline
 void
-DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
+DGtal::Board3DTo2D::addVoxel(int x, int y, int z, QColor aColor, double width)
 {
   voxel v;
   
@@ -207,7 +207,7 @@ DGtal::DGtalCairo::addVoxel(int x, int y, int z, QColor aColor, double width)
    **/
 inline
 void
-DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, double size)
+DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const QColor &aColor, double size)
 {
   point p;
   
@@ -239,7 +239,7 @@ DGtal::DGtalCairo::addPoint(double x, double y, double z ,const QColor &aColor, 
    **/
 inline
 void
-DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Board3DTo2D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const QColor & aColor, double width)
 {
   line l;
@@ -281,7 +281,7 @@ DGtal::DGtalCairo::addLine(double x1, double y1, double z1,  double x2, double y
    **/
 inline
 void
-DGtal::DGtalCairo::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Board3DTo2D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor)
 {
   quad aQuad;
@@ -318,7 +318,7 @@ DGtal::DGtalCairo::addQuad(double x1, double y1, double z1,  double x2, double y
    **/
 inline
 void
-DGtal::DGtalCairo::addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Board3DTo2D::addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
 				   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
   quad aQuad;
   
@@ -346,7 +346,7 @@ DGtal::DGtalCairo::addKSSurfel(double x1, double y1, double z1,  double x2, doub
    **/
 inline
 void 
-DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size, 
+DGtal::Board3DTo2D::addKSPointel(double x, double y, double z, double size, 
 				    const QColor &color)
 {
   point pt;
@@ -368,7 +368,7 @@ DGtal::DGtalCairo::addKSPointel(double x, double y, double z, double size,
    **/
 inline
 void 
-DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,  
+DGtal::Board3DTo2D::addKSVoxel(int x, int y, int z,  
 				  const QColor &aColor)
 {
   voxel v;
@@ -400,7 +400,7 @@ DGtal::DGtalCairo::addKSVoxel(int x, int y, int z,
    **/
 inline
 void
-DGtal::DGtalCairo::addKSLinel(double x1, double y1, double z1,
+DGtal::Board3DTo2D::addKSLinel(double x1, double y1, double z1,
 				  double x2, double y2, double z2,
 				  double width, const QColor &color){
   line l;
@@ -419,7 +419,7 @@ DGtal::DGtalCairo::addKSLinel(double x1, double y1, double z1,
    **/
 inline
 void
-DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
+DGtal::Board3DTo2D::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
 {
 }
 
@@ -427,15 +427,15 @@ DGtal::DGtalCairo::addClippingPlane(double a, double b, double c, double d, bool
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGtalCairo'.
+ * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGtalCairo' to write.
+ * @param object the object of class 'Board3DTo2D' to write.
  * @return the output stream after the writing.
  */
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const DGtalCairo & object )
+                  const Board3DTo2D & object )
 {
     object.selfDisplay ( out );
     return out;

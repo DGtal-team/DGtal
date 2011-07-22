@@ -61,7 +61,7 @@
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #endif
 
 
@@ -679,16 +679,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawCairo ( DGtalCairo & viewer ) const;
-    void selfDrawCairo ( DGtalCairo & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
-    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
+    void selfDrawCairo ( Board3DTo2D & viewer ) const;
+    void selfDrawCairo ( Board3DTo2D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
+    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
 
 #endif
 

@@ -47,7 +47,7 @@
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #endif
 
 #include "DGtal/base/Common.h"
@@ -677,17 +677,17 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawCairo(  DGtalCairo & viewer ) const;
-    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
-    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
-    void selfDrawAsPavingPointsCairo( DGtalCairo & viewer ) const;
-    void selfDrawAsBoundingBoxCairo( DGtalCairo & viewer) const;
+    void selfDrawCairo(  Board3DTo2D & viewer ) const;
+    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
+    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
+    void selfDrawAsPavingPointsCairo( Board3DTo2D & viewer ) const;
+    void selfDrawAsBoundingBoxCairo( Board3DTo2D & viewer) const;
 
 #endif
 
@@ -758,16 +758,16 @@ namespace DGtal
 
 #ifdef WITH_CAIRO
 
-  struct DrawPavingVoxel3DCairo : public DrawableWithDGtalCairo {
-      void selfDrawCairo( DGtalCairo & viewer ) const
+  struct DrawPavingVoxel3DCairo : public DrawableWithBoard3DTo2D {
+      void selfDrawCairo( Board3DTo2D & viewer ) const
       {
 	viewer.myModes[ "HyperRectDomain" ] = "Paving";
       }
   };
   
   
-  struct DrawGridVoxel3DCairo : public DrawableWithDGtalCairo {
-    void selfDrawCairo( DGtalCairo & viewer ) const
+  struct DrawGridVoxel3DCairo : public DrawableWithBoard3DTo2D {
+    void selfDrawCairo( Board3DTo2D & viewer ) const
     {
       viewer.myModes[ "HyperRectDomain" ] = "Grid";
     }
