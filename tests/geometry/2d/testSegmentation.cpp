@@ -189,14 +189,14 @@ bool visualTest()
     vPts.pop_back(); 
 	} else isClosed = false;
 
-  trace.beginBlock("Segmentation of a subrange (mode1)");
-{
-  Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
 
   RAConstIterator start = vPts.begin()+15;
   RAConstIterator stop = vPts.begin()+200;
 
+  trace.beginBlock("Segmentation of a subrange (mode1)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
   aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -212,10 +212,6 @@ bool visualTest()
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
-
-  RAConstIterator start = vPts.begin()+15;
-  RAConstIterator stop = vPts.begin()+200;
-
   aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -232,10 +228,6 @@ bool visualTest()
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
-
-  RAConstIterator start = vPts.begin()+15;
-  RAConstIterator stop = vPts.begin()+200;
-
   aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -247,9 +239,106 @@ bool visualTest()
 }
   trace.endBlock();
 
+
+////////////////////////////////////////////////////////
+  typedef Circulator<RAConstIterator> ConstCirculator;
+  ConstCirculator c(vPts.begin(),vPts.begin(),vPts.end()); 
+
+  trace.beginBlock("Segmentation of a whole range (mode1) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("WholeOpenCurveWithCircMode1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a whole range (mode2) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("WholeOpenCurveWithCircMode2.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a whole range (mode3) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("WholeOpenCurveWithCircMode3.eps");
+}
+  trace.endBlock();
+
+///////////////////////////////////////////////////////////////
+
+  ConstCirculator cstart(start,vPts.begin(),vPts.end()); 
+  ConstCirculator cstop(stop,vPts.begin(),vPts.end()); 
+
+  trace.beginBlock("Segmentation of a subrange (mode1) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,
+     cstart,cstop,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithCircMode1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a subrange (mode2) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,
+     cstart,cstop,
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithCircMode2.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a subrange (mode3) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c,c,
+     cstart,cstop,
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithCircMode3.eps");
+}
+  trace.endBlock();
+
+/////////////////////////////////////////////////////////////
+
 	return true;
 }
-
 
 /////////////////////////////////////////////////////////////////////////
 //////////////// MAIN ///////////////////////////////////////////////////
