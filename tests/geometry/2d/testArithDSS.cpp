@@ -370,6 +370,57 @@ bool testCorner()
 
 }
 
+
+bool testSmartDSS()
+{
+
+	typedef PointVector<2,int> Point;
+	typedef std::vector<Point>::iterator Iterator;
+	typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+
+	std::vector<Point> contour;
+	contour.push_back(Point(0,0));
+	contour.push_back(Point(1,0));
+	contour.push_back(Point(1,1));
+	contour.push_back(Point(2,1));
+	contour.push_back(Point(3,1));
+	contour.push_back(Point(3,2));
+	contour.push_back(Point(4,2));
+	contour.push_back(Point(5,2));
+	contour.push_back(Point(6,2));
+	contour.push_back(Point(6,3));
+	contour.push_back(Point(6,4));
+
+  
+  // Adding step
+  trace.beginBlock("extension");
+
+		DSS4 s;
+		s.init( contour.begin() );
+    while ( (s.end()!=contour.end())
+					&&(s.extend()) ) {} 
+
+
+		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
+
+		DGtalBoard board;
+		board.setUnit(Board::UCentimeter);
+		
+  	board << SetMode(domain.styleName(), "Grid")
+				  << domain;		
+    board << SetMode("PointVector", "Grid");
+  	board << SetMode(s.styleName(), "Points") 
+					<< s;
+  	board << SetMode(s.styleName(), "BoundingBox") 
+					<< s;
+		
+		board.saveEPS("DSS.eps");
+	
+  trace.endBlock();
+
+	return true;  
+}
+
 int main(int argc, char **argv)
 {
 
@@ -386,6 +437,7 @@ int main(int argc, char **argv)
 #ifdef WITH_GMP
 					&& testGMP()
 #endif
+         && testSmartDSS()
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
