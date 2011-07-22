@@ -50,6 +50,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
+#include "DGtal/base/Circulator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -225,11 +226,13 @@ namespace DGtal
     typedef DGtal::PointVector<2,Integer> Vector;
   
     typedef DGtal::PointVector<2,double> PointD;
+
 /*
-    typedef IteratorCirculatorTraits<ConstIterator>::Value Point; 
-    typedef IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+
+    typedef DGtal::RealPointVector<2> PointD;  
 */
-  
 
     // ----------------------- Standard services ------------------------------
   public:

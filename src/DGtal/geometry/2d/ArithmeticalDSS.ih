@@ -920,8 +920,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
-  ConstIterator i(myL);
-	return ++i;
+  ConstIterator i(myL); ++i;
+	return i;
 }
 
 //-----------------------------------------------------------------
