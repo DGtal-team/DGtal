@@ -43,7 +43,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"

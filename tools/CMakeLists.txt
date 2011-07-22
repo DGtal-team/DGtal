@@ -8,8 +8,10 @@ endif ( CPP0X_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
+include_directories (${PROJECT_BINARY_DIR}/src/)
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/tools/)
+include_directories (${PROJECT_BINARY_DIR}/src/)
 
 
 # Make sure the linker can find the library.
@@ -27,7 +29,7 @@ add_subdirectory(imageTools)
 #------ Basic tools ------
 
 ##-- Cmake configuration for dgtal-config tool
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in" "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp" IMMEDIATE)
+CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in" "${PROJECT_BINARY_DIR}/tools/dgtal-config.cpp" IMMEDIATE)
 
 
 SET(DGTAL_TOOLS_SRC

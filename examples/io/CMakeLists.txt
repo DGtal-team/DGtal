@@ -28,7 +28,7 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 
 
 if( WITH_VISU3D_QGLVIEWER  )
-add_subdirectory(3dViewer)
+add_subdirectory(viewer3D)
 endif ( WITH_VISU3D_QGLVIEWER )
 
 if( WITH_CAIRO )
