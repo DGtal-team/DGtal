@@ -36,7 +36,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
@@ -53,7 +53,7 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example ctopo-2-3d" );
-  // for 3D display with DGtalQGLViewer
+  // for 3D display with Viewer3D
   QApplication application(argc,argv);
   
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
@@ -61,7 +61,7 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  DGtalQGLViewer viewer;  
+  Viewer3D viewer;  
   viewer.show(); 
   
   
@@ -106,7 +106,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
   
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << DGtalQGLViewer::shiftSurfelVisu; 
+  viewer << Viewer3D::shiftSurfelVisu; 
   viewer << SetMode3D((*(vectBdrySCell2.begin())).styleName(), "");
   viewer.setFillColor(QColor(180, 200, 25, 255));
   
@@ -134,10 +134,10 @@ int main( int argc, char** argv )
   }
   
   // On need once again to avoid superposition.
-  viewer << DGtalQGLViewer::shiftSurfelVisu; 
+  viewer << Viewer3D::shiftSurfelVisu; 
   viewer.setFillColor(QColor(18, 200, 25, 255));
   viewer << aCell ;
-  viewer << DGtalQGLViewer::updateDisplay;
+  viewer << Viewer3D::updateDisplay;
     
   return application.exec();
 }

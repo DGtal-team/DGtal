@@ -32,7 +32,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -77,7 +77,7 @@ int main( int argc, char** argv )
  unsigned char transp = vm["transparency"].as<uint>();
  
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.setWindowTitle("simple Volume Viewer");
  viewer.show();
  
@@ -103,6 +103,6 @@ int main( int argc, char** argv )
    }     
  }
  //viewer << ClippingPlane(0,0,-1, 20);
- viewer << DGtalQGLViewer::updateDisplay;
+ viewer << Viewer3D::updateDisplay;
  return application.exec();
 }

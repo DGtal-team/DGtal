@@ -314,7 +314,7 @@ namespace DGtal {
  
  
  Note that the sign of the signed and unsigned are well taked into
-  account in the display with \Ref DGtalQGLViewer .
+  account in the display with \Ref Viewer3D .
 
 
   <CENTER>
@@ -665,7 +665,7 @@ namespace DGtal {
    To avoid surfel superposition we need to increase with a small
    shift the surfel size, for this purpose you can add the following key:
    @code 
-   viewer << DGtalQGLViewer::shiftSurfelVisu; 
+   viewer << Viewer3D::shiftSurfelVisu; 
    @endcode
    or use the special mode "Highlighted" which increase automaticly the surfel size.
 

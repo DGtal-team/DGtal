@@ -32,7 +32,7 @@
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -49,11 +49,11 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
-  trace.beginBlock ( "Example simple example of DGtalQGLviewer" );
+  trace.beginBlock ( "Example simple example of 3DViewer" );
   
   QApplication application(argc,argv);
-  DGtalQGLViewer viewer;
-  viewer.setWindowTitle("simpleExampleDGtalQGLviewer");
+  Viewer3D viewer;
+  viewer.setWindowTitle("simpleExample3DViewer");
   viewer.show();  
   
   // Domain cretation from two bounding points.
@@ -112,7 +112,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
   viewer << shape_set;
 
-  viewer<< DGtalQGLViewer::updateDisplay;
+  viewer<< Viewer3D::updateDisplay;
    
   
   trace.endBlock();

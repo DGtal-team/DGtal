@@ -57,7 +57,7 @@
 
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #endif
 
 #ifdef WITH_CAIRO
@@ -652,16 +652,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawQGL ( DGtalQGLViewer & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
 
 #endif
     
@@ -751,24 +751,24 @@ namespace DGtal
 
 #ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
-      void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawPavingVoxel : public DrawableWithViewer3D {
+      void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 	viewer.myModes[ "PointVector" ] = "Paving";
       }
   };
   
   
-  struct DrawGridVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawGridVoxel : public DrawableWithViewer3D {
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ "PointVector" ] = "Grid";
     }
   };
 
-  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
+  struct DefaultDrawStyleGrid3D : public DrawableWithViewer3D {
 
-    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    virtual void selfDrawViewer3D( Viewer3D & viewer ) const
     {
 	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );

@@ -1,0 +1,140 @@
+/** 
+ * @file Config.h.in
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2009/12/19
+ * 
+ * Input file for making Configuration file. 
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include <iostream>
+#include <string>
+
+
+#define DGTAL_VERSION "0.3.1"
+
+/*! \namespace DGtal
+*  \brief \p DGtal is the top-level namespace which contains all DGtal
+*         functions and types.
+*/
+
+/*! \namespace DGtal::experimental
+*  \brief \p Experimental functions and types of the DGtal library.
+*/
+
+/*! \namespace DGtal::deprecated
+*  \brief \p Deprecated functions and types of the DGtal library.
+*/
+
+/*! \namespace DGtal::Z2i
+ *  \brief \p Z2i this namespace gathers  the standard of types for 2D imagery.
+*/
+
+/*! \namespace DGtal::Z3i
+ *  \brief \p Z3i this namespace gathers  the standard of types for 3D imagery.
+*/
+
+
+/**
+ * \mainpage DGtal - Digital Geometry Tools and Algorithms Library.
+ *
+ * @image  html logo_DGtal_small.png
+ *
+ *
+ * @section intro_sec_dgtal Introduction
+ 
+
+DGtal is a generic open source library for Digital Geometry
+programming whose main objective is to gather and structure different
+developments from the digital geometry and topology community. The
+benefits are numerous: to make easier the appropriation of our tools
+for a neophyte (new PhD students, researchers from other topics,
+\ldots), to permit better comparisons of new methods with already
+existing approaches, to construct a federative project. Furthermore we
+believe this is a necessary step for a better recognition of the
+efficiency of discrete geometry techniques by the important image
+analysis community. As a consequence, DGtal is designed so as to
+simplify the construction of effective demonstration tools. New
+results are thus easily shared to a vast audience. 
+
+On a more technical level, DGtal is developed in C++. Similarly to
+other classical libraries such as CGAL, it follows the paradigm of
+genericity with efficiency. This approach is made possible with the
+now well-known notion of concepts, implemented with templated
+types. The kernel of DGtal offers digital spaces of arbitrary
+dimension, with user-chosen integer types. Several digital topology
+algorithms are already implemented (Rosenfeld topology, connected
+components, simple points, homotopic thinning). The kernel manages
+generic images (standard raster images but also tree images), and
+arbitrary file formats with ImageMagick installed. Basic geometric
+primitives (digital lines and segments) are also available, as well as
+arbitrary dimensional volumetric distance transforms. A stream
+mechanism has been developed to display digital objects and export
+results in different vector formats.
+
+DGtal is a collaborative effort --- for now --- of the French digital
+geometry community. It is still a work in progress but show already
+many promises to be the common basis for future developments made by
+the digital geometry community. 
+
+Main participants: D. Coeurjolly (LIRIS, Lyon), G. Damiand (LIRIS,
+Lyon), S. Fourey (GREYC, Caen), B. Kerautret (LORIA, Nancy),
+J.-O. Lachaud (LAMA, Chambéry), L. Provot (LORIA, Nancy),
+T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, Lyon).
+
+
+ * @section manuals_dgtal DGtal user-guides
+ *
+ * - \ref DGtalKernel
+ *
+ * - Topology Package
+ *   - \ref dgtal_topology 
+ *   - \ref dgtal_cellular_topology
+ *
+ * - Geometric Package
+ *    - \ref volpackage
+ *    - \ref geometry2d
+ * 
+ * - Helpers and tools
+ *  - \ref dgtal_dgtalboard
+ *  - \ref threeD_visu
+ *  - \ref image_io 
+ *  - \ref freemanChainFromImage
+ *  - \ref Tools3dVolViewer
+ *
+ * - Miscellaneous
+ *  - \ref HowToUseDGtal
+ *  - \ref dgtalITK
+ * 
+ * @section manueldev Manual pages for DGtal developers
+ * - \ref FAQDGtalCmake
+ * - \ref FAQGit
+ * - \ref FAQDGtalSVN
+ *
+ * @section examples_sec_dgtal Code examples
+ *
+ *
+ * @section links_sec_dgtal Links
+ *
+ * <ul>
+ * <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
+ *  <li> LibBoard section page   </li>
+ * </ul>
+ *
+ * @defgroup Concepts DGtal concepts
+ * @defgroup Tests DGtal test files
+ * @defgroup Examples DGtal examples
+ *
+ * @example DSS.cpp
+ *  Illustration of DSS recognition and segmentation on a Freeman contour.  
+ *
+ * @example distancetransform2D.cpp
+ * An example file named distancetransform2D. The aim of this example
+ * is to demonstrate the distance transformation package of the DGtal
+ * library. Using a simple random seed example, we compute the
+ * distance transformation (linear in time algorithm) using the L1,
+ * Linfinity and L2 metrics.
+ */
