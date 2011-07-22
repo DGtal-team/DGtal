@@ -43,7 +43,7 @@ namespace DGtal {
     
      To use the Board2D stream, you must include the header
    \code
-#include "DGtal/io/Board2D.h"
+#include "DGtal/io/boards/Board2D.h"
    \endcode
     
      The class Board2D is designed so as to make easy the
