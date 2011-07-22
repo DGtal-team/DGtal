@@ -78,7 +78,7 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 		
     typename Iterator::SegmentComputer segment(*i); 
 
-    //trace.info() << segment << std::endl;	//standard output
+   // trace.info() << segment << std::endl;	//standard output
 
     aBoard << SetMode(segment.styleName(), "BoundingBox" )
 					 << segment; // draw bounding box
@@ -192,6 +192,8 @@ bool visualTest()
 
   RAConstIterator start = vPts.begin()+15;
   RAConstIterator stop = vPts.begin()+200;
+
+trace.info() << *start << " " << *stop << endl;
 
   trace.beginBlock("Segmentation of a subrange (mode1)");
 {
@@ -337,6 +339,66 @@ bool visualTest()
 
 /////////////////////////////////////////////////////////////
 
+  Curve vPts2; 
+  vPts2.assign( vPts.begin(), vPts.end() ); 
+  vPts2.insert( vPts2.end(), vPts.begin(), vPts.end() );
+  vPts2.insert( vPts2.end(), vPts.begin(), vPts.end() );
+
+  RAConstIterator start2 = vPts2.begin() + vPts.size(); 
+  RAConstIterator stop2 = start2 + vPts.size(); 
+
+trace.info() << *start2 << " " << *stop2 << endl;
+
+  trace.beginBlock("Segmentation of a subrange of a duplicated range (mode1)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("DuplicatedCurveWithItMode1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a subrange of a duplicated range (mode2)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("DuplicatedCurveWithItMode2.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a subrange of a duplicated range (mode3)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("DuplicatedCurveWithItMode3.eps");
+}
+  trace.endBlock();
+
+
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
 	return true;
 }
 
