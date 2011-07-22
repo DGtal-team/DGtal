@@ -186,6 +186,7 @@ bool testDisplay(double radius, double h)
   typedef KSpace::SCell SCell;
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
+  typedef GridCurve<KSpace>::SCellsRange SCellsRange;
   typedef PointsRange::ConstIterator ConstIteratorOnPoints;
 
 
@@ -229,13 +230,49 @@ bool testDisplay(double radius, double h)
     //ranges
     ArrowsRange ra = gridcurve.getArrowsRange(); 
     PointsRange rp = gridcurve.getPointsRange(); 
-
+    SCellsRange rc = gridcurve.get1SCellsRange(); 
   
+    //Explicit reshaping for drawing purposes
+    Z2i::DigitalSet set(domain);
+    Shapes<Z2i::Domain>::shaper( set,
+				 Shape(Point(0,0), radius/h));
+ 
     Board2D board;
-
+    
+    board << domain << set;
+    board.saveSVG( "Ranges-Set.svg" );
+    
+    board.clear();
     board << domain;
+    
+    for(typename PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
+	it != ite; ++it)
+      board << (*it);
+    board.saveSVG( "Ranges-Points.svg" );
+    
 
-    board.saveSVG( "RangesVisu.svg" );
+    board.clear();
+    board << domain;
+    
+    for(typename SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
+	it != ite; ++it)
+      board << (*it);
+    board.saveSVG( "Ranges-SCells.svg" );
+    
+
+    board.clear();
+    board << domain;
+    Space::Vector shift;
+    board.setPenColor( Color::Black );
+    for( typename ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
+	 it != itend;   
+	 ++it)
+      {
+	shift =   (*it).second ;
+	shift.selfDraw(board, (*it).first );
+      }
+
+    board.saveSVG( "Ranges-Arrows.svg" );
 
   }    
   catch ( InputException e )
@@ -268,7 +305,7 @@ int main( int argc, char** argv )
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)
     && testLengthEstimatorsOnBall(r,0.001)
-    && testDisplay(r,1);
+    && testDisplay(r,0.9);
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
