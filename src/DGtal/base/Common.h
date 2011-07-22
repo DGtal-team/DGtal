@@ -63,6 +63,11 @@
 #endif //win32
 #include <cmath>
 
+#if defined( WIN32 )
+#define secured_sprintf sprintf_s
+#else
+#define secured_sprintf snprintf
+#endif // defined( WIN32 )
 
 #include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"

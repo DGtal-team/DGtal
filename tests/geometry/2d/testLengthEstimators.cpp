@@ -173,6 +173,84 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 }
 
 
+bool testDisplay(double radius, double h)
+{
+
+  // Types
+  typedef Ball2D<Space> Shape;
+  typedef Space::Point Point;
+  typedef Space::RealPoint RealPoint;
+  typedef Space::Integer Integer;
+  typedef HyperRectDomain<Space> Domain;
+  typedef KhalimskySpaceND<Space::dimension,Integer> KSpace;
+  typedef KSpace::SCell SCell;
+  typedef GridCurve<KSpace>::PointsRange PointsRange;
+  typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
+  typedef PointsRange::ConstIterator ConstIteratorOnPoints;
+
+
+  //Forme
+  Shape aShape(Point(0,0), radius);
+
+  trace.info() << "#ball created, r=" << radius << endl;
+
+  // Window for the estimation
+  RealPoint xLow ( -radius-1, -radius-1 );
+  RealPoint xUp( radius+1, radius+1 );
+  GaussDigitizer<Space,Shape> dig;  
+  dig.attach( aShape ); // attaches the shape.
+  dig.init( xLow, xUp, h ); 
+  // The domain size is given by the digitizer according to the window
+  // and the step.
+  Domain domain = dig.getDomain();
+  // Create cellular space
+  KSpace K;
+  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+  if ( ! ok )
+    {
+      std::cerr << " "
+		<< " error in creating KSpace." << std::endl;
+      return false;
+    }
+  try {
+
+    // Extracts shape boundary
+    SurfelAdjacency<KSpace::dimension> SAdj( true );
+    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+    // Getting the consecutive surfels of the 2D boundary
+    std::vector<Point> points;
+    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+    trace.info() << "# tracking..." << endl;
+    // Create GridCurve
+    GridCurve<KSpace> gridcurve;
+    gridcurve.initFromVector( points );
+    trace.info() << "#grid curve created, h=" << h << endl;
+
+    //ranges
+    ArrowsRange ra = gridcurve.getArrowsRange(); 
+    PointsRange rp = gridcurve.getPointsRange(); 
+
+  
+    Board2D board;
+
+    board << domain;
+
+    board.saveSVG( "RangesVisu.svg" );
+
+  }    
+  catch ( InputException e )
+    {
+      std::cerr << " "
+		<< " error in finding a bel." << std::endl;
+      return false;
+    }
+
+
+
+  return true;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -187,9 +265,10 @@ int main( int argc, char** argv )
 
   double r = 5; 
   bool res = testLengthEstimatorsOnBall(r,1)
-  && testLengthEstimatorsOnBall(r,0.1)
-  && testLengthEstimatorsOnBall(r,0.01)
-  && testLengthEstimatorsOnBall(r,0.001)
+    && testLengthEstimatorsOnBall(r,0.1)
+    && testLengthEstimatorsOnBall(r,0.01)
+    && testLengthEstimatorsOnBall(r,0.001)
+    && testDisplay(r,1);
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

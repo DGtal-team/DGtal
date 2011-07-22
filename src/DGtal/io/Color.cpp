@@ -116,15 +116,16 @@ DGtal::Color::operator<( const Color & aColor ) const
 void
 DGtal::Color::flushPostscript( std::ostream & stream ) const
 {
-  stream << (myRed/255.0) << " "
-	 << (myGreen/255.0) << " "
-	 << (myBlue/255.0) << " srgb\n";
+  stream << ((double)myRed/255.0) << " "
+	 << ((double)myGreen/255.0) << " "
+	 << ((double)myBlue/255.0) << " srgb\n";
 }
 
 string
 DGtal::Color::postscript() const
 {
   char buffer[255];
+  secured_sprintf( buffer, 255, "%.4f %.4f %.4f", myRed/255.0, myGreen/255.0, myBlue/255.0 );
   return buffer;
 }
 
@@ -133,7 +134,7 @@ DGtal::Color::svg() const
 {
   char buffer[255];
   if ( *this == DGtal::Color::None ) return "none";
-  
+  secured_sprintf( buffer, 255, "rgb(%d,%d,%d)",myRed, myGreen, myBlue );
   return buffer;
 }
 
@@ -142,7 +143,7 @@ DGtal::Color::svgAlpha( const char * prefix ) const
 {
   char buffer[255];
   if ( myAlpha == 255 || *this == DGtal::Color::None ) return "";
-  
+  secured_sprintf( buffer, 255, " %s-opacity=\"%f\"", prefix, myAlpha/255.0f );
   return buffer;
 }
 
