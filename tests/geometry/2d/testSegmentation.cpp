@@ -78,7 +78,7 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 		
     typename Iterator::SegmentComputer segment(*i); 
 
-    trace.info() << segment << std::endl;	//standard output
+    //trace.info() << segment << std::endl;	//standard output
 
     aBoard << SetMode(segment.styleName(), "BoundingBox" )
 					 << segment; // draw bounding box
@@ -131,8 +131,7 @@ bool visualTest()
   FC fc(fst);
 
 
-
-  trace.beginBlock("Segmentation of a whole range");
+  trace.beginBlock("Segmentation of a whole range (mode1)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -142,7 +141,109 @@ bool visualTest()
      fc.begin(),fc.end(),
      "Truncate",aBoard);   
 
-  aBoard.saveEPS("SimpleOpenSeg.eps");
+  aBoard.saveEPS("WholeOpenCurveWithItMode1.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a whole range (mode3)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("WholeOpenCurveWithItMode3.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a whole range (mode2)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("WholeOpenCurveWithItMode2.eps");
+}
+  trace.endBlock();
+
+
+////////////////////////////////////////////////////////////
+
+
+  typedef vector<PointVector<2,Coordinate> > Curve;  
+  typedef Curve::const_iterator RAConstIterator;  
+
+	Curve vPts(fc.size()+1); 
+	copy ( fc.begin(), fc.end(), vPts.begin() ); 
+	bool isClosed;
+	if ( vPts.at(0) == vPts.at(vPts.size()-1) ) { 
+    isClosed = true;
+    vPts.pop_back(); 
+	} else isClosed = false;
+
+  trace.beginBlock("Segmentation of a subrange (mode1)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  RAConstIterator start = vPts.begin()+15;
+  RAConstIterator stop = vPts.begin()+200;
+
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithItMode1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a subrange (mode2)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  RAConstIterator start = vPts.begin()+15;
+  RAConstIterator stop = vPts.begin()+200;
+
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithItMode2.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a subrange (mode3)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  RAConstIterator start = vPts.begin()+15;
+  RAConstIterator stop = vPts.begin()+200;
+
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("PartOpenCurveWithItMode3.eps");
 }
   trace.endBlock();
 
