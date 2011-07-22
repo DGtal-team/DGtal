@@ -56,7 +56,7 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
