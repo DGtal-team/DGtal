@@ -732,7 +732,7 @@ operator<< ( std::ostream & out, const DGtalCairo & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/CairoViewers/DGtalCairo.ih"
+#include "DGtal/io/boards/DGtalCairo.ih"
 
 
 //                                                                           //

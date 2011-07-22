@@ -41,7 +41,7 @@
 
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"

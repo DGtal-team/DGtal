@@ -15,13 +15,14 @@
  **/
 
 /**
- * @file kernelDomain.cpp
- * @ingroup Examples
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * @date 2011/03/05
+ * @file viewer3D-2-sets.cpp
+ * @ingroup examples/3dViewer
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * An example file named demo-kernel-domain.
+ * @date 2011/19/03
+ *
+ * Simple example of class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -29,39 +30,47 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/helpers/Shapes.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
+
 
 ///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
 
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
-  typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
-  typedef MySpace::Point MyPoint;
-  typedef HyperRectDomain<MySpace> MyDomain;
-  MyPoint p1( 0, 0, 0 );
-  MyPoint p2( 5, 5 ,5 );
-  MyPoint p3( 2, 3, 4 );
-  MyDomain domain( p1, p2 );
-  DGtalQGLViewer viewer; // for 3D visualization
-  viewer.show();
-  viewer << domain;  
-  viewer << p1 << p2 << p3;
-  viewer<< DGtalQGLViewer::updateDisplay;
-  return application.exec();
+
+ QApplication application(argc,argv);
+
+ Viewer3D viewer;
+ viewer.show();
+
+ Point p1( 0, 0, 0 );
+ Point p2( 10, 10 , 10 );
+ Domain domain( p1, p2 );
+ viewer << domain;
+ 
+ DigitalSet shape_set( domain );
+ Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+ Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+ 
+ shape_set.erase(Point(3,3,3));
+ shape_set.erase(Point(6,6,6));
+ viewer << shape_set<< Viewer3D::updateDisplay; 
+ 
+ return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+
+
+

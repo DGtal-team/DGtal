@@ -27,10 +27,10 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io//DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/io/DGtalBoard.ih"
+#include "DGtal/io/boards/DGtalBoard.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -15,14 +15,13 @@
  **/
 
 /**
- * @file dgtalQGLviewer-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @file kernelDomain.cpp
+ * @ingroup Examples
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @date 2011/03/05
  *
- * @date 2011/19/03
- *
- * Simple example of class DGtalQGLViewer.
+ * An example file named demo-kernel-domain.
  *
  * This file is part of the DGtal library.
  */
@@ -30,51 +29,39 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 
+#ifdef WITH_GMP
+#include <gmpxx.h>
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
-
 
 ///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
 
 int main( int argc, char** argv )
 {
-
- QApplication application(argc,argv);
- DGtalQGLViewer viewer;
- viewer.show();
-
- Point p1( 0, 0, 0 );
- Point p2( 20, 20, 20 );
- Domain domain(p1, p2);
- DigitalSet shape_set( domain );
- 
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
- viewer << SetMode3D( shape_set.styleName(), "Both" );
- viewer << shape_set;
- viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
- viewer <<  SetMode3D( p1.styleName(), "Paving" );
- 
- //viewer << ClippingPlane(1,0,0,-4.9);
- viewer << ClippingPlane(0,1,0.3,-10); 
- 
- 
- 
- 
- viewer << DGtalQGLViewer::updateDisplay;
- return application.exec();
+  QApplication application(argc,argv);
+  typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
+  typedef MySpace::Point MyPoint;
+  typedef HyperRectDomain<MySpace> MyDomain;
+  MyPoint p1( 0, 0, 0 );
+  MyPoint p2( 5, 5 ,5 );
+  MyPoint p3( 2, 3, 4 );
+  MyDomain domain( p1, p2 );
+  Viewer3D viewer; // for 3D visualization
+  viewer.show();
+  viewer << domain;  
+  viewer << p1 << p2 << p3;
+  viewer<< Viewer3D::updateDisplay;
+  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

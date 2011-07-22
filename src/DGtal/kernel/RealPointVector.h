@@ -51,10 +51,10 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #endif
 
 
@@ -318,16 +318,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
 
     /**
      * Draw the object on a DGtalBoard board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawQGL ( DGtalQGLViewer & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawQGL ( Viewer3D & viewer ) const;
+    void selfDrawQGL ( Viewer3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
 
 #endif
 
@@ -398,24 +398,24 @@ namespace DGtal
 
 #ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingRealVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawPavingRealVoxel : public DrawableWithViewer3D {
+    void selfDrawQGL( Viewer3D & viewer ) const
     {
       viewer.myModes[ "RealPointVector" ] = "Paving";
     }
   };
   
   
-  struct DrawGridRealVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawGridRealVoxel : public DrawableWithViewer3D {
+    void selfDrawQGL( Viewer3D & viewer ) const
     {
       viewer.myModes[ "RealPointVector" ] = "Grid";
     }
   };
 
-  struct DefaultDrawStyleRealGrid3D : public DrawableWithDGtalQGLViewer {
+  struct DefaultDrawStyleRealGrid3D : public DrawableWithViewer3D {
 
-    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    virtual void selfDrawQGL( Viewer3D & viewer ) const
     {
       //aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );

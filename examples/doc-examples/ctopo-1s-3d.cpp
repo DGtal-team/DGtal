@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +44,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  // for 3D display with DGtalQGLViewer
+  // for 3D display with Viewer3D
   QApplication application(argc,argv);
   
   KSpace K;
@@ -53,7 +53,7 @@ int main( int argc, char** argv )
   Domain domain( plow, pup );
   K.init( plow, pup, true );
   
-  DGtalQGLViewer viewer;  
+  Viewer3D viewer;  
   viewer.show();
   viewer << SetMode3D( domain.styleName(), "Paving" );
   
@@ -109,7 +109,7 @@ int main( int argc, char** argv )
   SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
   viewer << vox1 << vox2;
   
-  viewer<< DGtalQGLViewer::updateDisplay;
+  viewer<< Viewer3D::updateDisplay;
   return application.exec();
 
 }

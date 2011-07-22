@@ -44,7 +44,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/PointListReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/RealPointVector.h"
 
