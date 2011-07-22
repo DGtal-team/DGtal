@@ -50,7 +50,7 @@
 #include "DGtal/io/boards/DGtalBoard.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -146,13 +146,13 @@ namespace DGtal
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
       */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
     
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer ) const;
     
 
-    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
-      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    struct DefaultDrawStyle3D : public DrawableWithViewer3D {
+      virtual void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 
 	//aBoard.setPenColor(Color::Black);
@@ -284,12 +284,12 @@ namespace DGtal
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
       */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer ) const;
 
-    struct DefaultDrawStyle3D : public DrawableWithDGtalQGLViewer {
-      virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    struct DefaultDrawStyle3D : public DrawableWithViewer3D {
+      virtual void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );

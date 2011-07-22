@@ -29,7 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -56,11 +56,11 @@ int main( int argc, char** argv )
   MyPoint p2( 5, 5 ,5 );
   MyPoint p3( 2, 3, 4 );
   MyDomain domain( p1, p2 );
-  DGtalQGLViewer viewer; // for 3D visualization
+  Viewer3D viewer; // for 3D visualization
   viewer.show();
   viewer << domain;  
   viewer << p1 << p2 << p3;
-  viewer<< DGtalQGLViewer::updateDisplay;
+  viewer<< Viewer3D::updateDisplay;
   return application.exec();
 }
 //                                                                           //

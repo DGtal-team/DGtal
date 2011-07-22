@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file dgtalQGLviewer-1-points.cpp
+ * @file viewer3D-5-custom.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class DGtalQGLViewer.
+ * Simple example of class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -49,30 +49,35 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
-
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.show();
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
+  
+ Point p1( -1, -1, -2 );
+ Point p2( 2, 2, 3 );
  Domain domain( p1, p2 );
- 
- 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- viewer <<  CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 25));
- viewer << shape_set;  
+ Point p3( 1, 1, 1 );
+ Point p4( 2, -1, 3 );
+ Point p5( -1, 2, 3 );
+ Point p6( 0, 0, 0 );
+ Point p0( 0, 2, 1 );
+ viewer <<  SetMode3D( p1.styleName(), "Paving" );
+ viewer << p1 << p2 << p3;
+  
+  //viewer <<  SetMode3D( p1.styleName(), "Grid" );
+  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+  viewer << p4 << p5 ;
+  viewer <<  SetMode3D( p1.styleName(), "Both" );
+  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
+  viewer << p6;
+  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+  viewer << p0;
 
- Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.styleName(), "DrawAdjacencies" );
- viewer << shape;
 
- Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
- //viewer << shape2;
- 
- viewer<< DGtalQGLViewer::updateDisplay;
+  viewer << SetMode3D(domain.styleName(), "Paving");
+  viewer << domain << Viewer3D::updateDisplay;   
+
+
  return application.exec();
 }
 //                                                                           //
