@@ -403,7 +403,7 @@ bool testSmartDSS()
 
 		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
-		DGtalBoard board;
+		Board2D board;
 		board.setUnit(Board::UCentimeter);
 		
   	board << SetMode(domain.styleName(), "Grid")
