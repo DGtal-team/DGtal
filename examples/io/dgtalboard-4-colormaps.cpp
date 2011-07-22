@@ -31,7 +31,7 @@
 #include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
@@ -66,7 +66,7 @@ int main()
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   // Creating board.
-  DGtalBoard board;
+  Board2D board;
   board << SetMode( domain.styleName(), "Paving" )
 	<< domain
 	<< SetMode( p1.styleName(), "Paving" );
@@ -87,10 +87,10 @@ int main()
   board.saveEPS( "dgtalboard-4-colormaps.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-4-colormaps-cairo.svg", Board2D::CairoSVG);
 #endif
 
   trace.endBlock();

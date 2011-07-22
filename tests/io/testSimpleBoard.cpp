@@ -32,7 +32,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,7 +52,7 @@ bool testSimpleBoard()
   unsigned int nbok = 0;
   unsigned int nb = 2;
   
-  DGtalBoard board;
+  Board2D board;
 
   board.setPenColorRGBi( 0, 0, 0);
   board.drawRectangle( -1, 1, 2.0, 2.0 );
@@ -99,13 +99,13 @@ bool testDomain()
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myDomain ( a,b );
     
-    DGtalBoard board;
+    Board2D board;
     
     board << DrawDomainGrid() << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     
-    DGtalBoard b2;
+    Board2D b2;
     b2 << DrawDomainPaving() << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );

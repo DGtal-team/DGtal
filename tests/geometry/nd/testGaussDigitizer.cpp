@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/geometry/nd/GaussDigitizer.h"
@@ -89,7 +89,7 @@ testDigitization( const Shape & aShape, double h,
   gridcurve.initFromVector( points );
 
   // Display all
-  DGtalBoard board;
+  Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.styleName(), "Paving" )
   	<< domain << aSet;

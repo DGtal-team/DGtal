@@ -313,7 +313,7 @@ public:
      * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
      *
      * Modes may only be used in objects implementing the concept
-     * CDrawableWithDGtalBoard.
+     * CDrawableWithBoard2D.
      */
     StyleMapping myStyles;
 

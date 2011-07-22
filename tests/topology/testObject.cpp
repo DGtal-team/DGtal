@@ -44,7 +44,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/Shapes.h"
@@ -479,7 +479,7 @@ bool testDraw()
 
   trace.beginBlock ( "Testing export as SVG with libboard." );
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board);
@@ -487,7 +487,7 @@ bool testDraw()
   
   board.saveSVG("disk-object.svg");
   
-  DGtalBoard board2;
+  Board2D board2;
   board2.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board2);
@@ -495,7 +495,7 @@ bool testDraw()
   
   board2.saveSVG("disk-object-adj.svg");
 
-  DGtalBoard board3;
+  Board2D board3;
   board3.setUnit(Board::UCentimeter);
 
   domain.selfDrawAsGrid(board3);
@@ -510,9 +510,9 @@ bool testDraw()
   
 }
 
-struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
-  virtual void selfDraw(DGtalBoard & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColor( Color::Red);
     aboard.setPenColorRGBi(200,0,0);
@@ -521,13 +521,13 @@ struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
   }
 };
 
-struct MyDrawStyleCustomFillColor : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomFillColor : public DrawableWithBoard2D
 {
   Color myColor;
   MyDrawStyleCustomFillColor( const Color & c )
     : myColor( c )
   {}
-  virtual void selfDraw(DGtalBoard & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColor( myColor );
     aboard.setPenColorRGBi( 0, 0, 0 );
@@ -571,11 +571,11 @@ bool testSimplePoints2D()
   cmap_grad.addColor( Color( 128, 128, 255 ) );
   cmap_grad.addColor( Color( 255, 255, 128 ) );
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(Board::UCentimeter);
   board << SetMode( domain.styleName(), "Paving" ) // DrawDomainPaving()
 	<< domain;
-  DGtalBoard board2;
+  Board2D board2;
   board2.setUnit(Board::UCentimeter);
   board2 << SetMode( domain.styleName(), "Grid" ) // DrawDomainGrid()
 	 << domain;

@@ -145,7 +145,7 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "Grid" ) ) 
@@ -165,7 +165,7 @@ DGtal::HyperRectDomain<TSpace>::styleName() const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
+DGtal::HyperRectDomain<TSpace>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
@@ -184,7 +184,7 @@ DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 {
   ASSERT(TSpace::dimension == 2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -660,7 +660,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( DGtalCairo & viewer) cons
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
 {
   ASSERT(TSpace::dimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
   

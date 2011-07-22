@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -444,18 +444,18 @@ namespace DGtal
     Point myLowerBound;
     Point myUpperBound;
 
-    // ------------- realization CDrawableWithDGtalBoard --------------------
+    // ------------- realization CDrawableWithBoard2D --------------------
   private:
 
     /**
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setPenColorRGBi(60, 60, 60);
-	aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       }
     };
 
@@ -465,7 +465,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle() const;
+    DrawableWithBoard2D* defaultStyle() const;
 
     /**
      * @return the style name used for drawing this object.
@@ -474,14 +474,14 @@ namespace DGtal
 
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      * @param minValue the minimum value contained in the image (used in the colormap settings)
      * @param maxValue the maximum value contained in the image (used in the colormap settings)
      * @tparam Coloramp any models of CColormap.
      */
     template<typename Colormap>
-    void selfDraw(DGtalBoard & board, const Value & minValue, const Value & maxValue ) const;
+    void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
 
   };
 

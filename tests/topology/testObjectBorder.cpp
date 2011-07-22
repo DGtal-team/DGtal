@@ -42,7 +42,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 //#include "Board/Board.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -56,50 +56,50 @@ using namespace LibBoard;
 
 
 
-struct MyObjectStyleCustom : public DrawableWithDGtalBoard
+struct MyObjectStyleCustom : public DrawableWithBoard2D
 {
-  void selfDraw(DGtalBoard & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(0, 169, 0);
   }
 };
-struct MyObjectStyleCustomRed : public DrawableWithDGtalBoard
+struct MyObjectStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(DGtalBoard & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(169, 0, 0);
   }
 };
 
-struct MyDrawStyleCustomRed : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
-  virtual void selfDraw(DGtalBoard & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(169, 150, 150);
     aboard.setPenColorRGBi(0, 0, 0);
-    aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+    aboard.setLineStyle(Board2D::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
 };
 
-struct MyDrawStyleCustomBlue : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomBlue : public DrawableWithBoard2D
 {
-  virtual void selfDraw(DGtalBoard & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(150, 150, 250);
     aboard.setPenColorRGBi(0, 0, 200);
-    aboard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+    aboard.setLineStyle(Board2D::Shape::SolidStyle);
     aboard.setLineWidth( 1.5 );
   }
 };
 
-struct MyDrawStyleCustomGreen : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
-  virtual void selfDraw(DGtalBoard & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(150, 150, 160);
     aboard.setPenColorRGBi(150, 150, 160);
-    aboard.setLineStyle(DGtalBoard::Shape::DashStyle);
+    aboard.setLineStyle(Board2D::Shape::DashStyle);
     aboard.setLineWidth( 1.0 );
   }
 };
@@ -164,7 +164,7 @@ bool testObjectBorder()
     trace.info() << "The object (8,4) border is not connected." << endl;
 
   //Board Export
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(Board::UCentimeter);
 
   board << DrawDomainGrid() <<  domain << bubble_set;
@@ -227,13 +227,13 @@ bool testObjectBorder()
 
 
 /**
- * Simple test of DGtalBoard. Illustrates the border extraction of a
+ * Simple test of Board2D. Illustrates the border extraction of a
  * simple 2D object considering different topologies.
  *
  */
-bool testDGtalBoard()
+bool testBoard2D()
 {
-  trace.beginBlock ( "Testing DGtalBoard with Object Borders in 2D ..." );
+  trace.beginBlock ( "Testing Board2D with Object Borders in 2D ..." );
 
   typedef int Integer;                // choose your digital line here.
   typedef SpaceND<2> Z2;          // Z^2
@@ -285,7 +285,7 @@ bool testDGtalBoard()
     trace.info() << "The object (8,4) border is not connected." << endl;
 
   //Board Export
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(Board::UCentimeter);
 
   board << DrawDomainGrid()
@@ -311,7 +311,7 @@ bool testDGtalBoard()
 int main(/* int argc, char** argv*/)
 {
   bool res = testObjectBorder()
-      && testDGtalBoard();
+      && testBoard2D();
   return res ? 0 : 1;
 }
 //                                                                           //

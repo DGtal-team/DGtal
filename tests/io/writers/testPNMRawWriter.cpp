@@ -94,7 +94,7 @@ bool testPNMWriter()
   RawWriter<Image,HueTwice>::exportRaw8("export-hue-twice.raw",image,0,255);
 
   //test Image export with libboard
-  DGtalBoard  board;
+  Board2D  board;
   board.setUnit(LibBoard::Board::UCentimeter);
   image.selfDraw<HueTwice>(board,0,255);
   board.saveSVG("export-hue-twice.svg");

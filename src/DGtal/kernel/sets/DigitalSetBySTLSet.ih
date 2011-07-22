@@ -437,7 +437,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
 }
 
 
-// --------------- CDrawableWithDGtalBoard realization -------------------------
+// --------------- CDrawableWithBoard2D realization -------------------------
 
 /**
  * Default drawing style object.
@@ -445,7 +445,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithDGtalBoard* 
+DGtal::DrawableWithBoard2D* 
 DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
@@ -469,7 +469,7 @@ DGtal::DigitalSetBySTLSet<Domain>::styleName() const
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDraw( DGtalBoard & board ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDraw( Board2D & board ) const
 {
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  this->begin(); it != this->end(); ++it)       

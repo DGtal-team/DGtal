@@ -32,7 +32,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -53,7 +53,7 @@ int main()
   MyPoint p2(10,4);
   MyPoint p3(5,1);
   MyDomain domain(p1,p2);
-  DGtalBoard board; // for 2D display
+  Board2D board; // for 2D display
   board << domain;
   board << p1 << p2 << p3;
   board.saveSVG("demo-kernel-1.svg");

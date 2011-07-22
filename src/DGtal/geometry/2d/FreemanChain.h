@@ -52,7 +52,7 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/IntegerTraits.h"
 
@@ -92,7 +92,7 @@ namespace DGtal
    fc.getContourPoints(fc, aContourPointVector);
    
    // Draw the Freeman chain
-   DGtalBoard::Board aBoard;
+   Board2D::Board aBoard;
    aBoard.setUnit(Board::UMillimeter);
    fc.selfDraw(aBoard);
    
@@ -1564,7 +1564,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -1572,30 +1572,30 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-       Draw the object on a DGtalBoard board
+       Draw the object on a Board2D board
        @param board the output board where the object is drawn.
        @tparam Functor a Functor to specialize the Board style
     */
     template<typename Functor>
-    void selfDraw(DGtalBoard & board ) const;
+    void selfDraw(Board2D & board ) const;
     
     /**
-       Draw the object on a DGtalBoard board
+       Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDraw(DGtalBoard & board ) const; 
+    void selfDraw(Board2D & board ) const; 
     /**
-       Draw the object on a DGtalBoard board
+       Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDrawAsGrid(DGtalBoard & board ) const;
+    void selfDrawAsGrid(Board2D & board ) const;
 
      
     /**
-       Draw the object on a DGtalBoard board
+       Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDrawAsInterGrid(DGtalBoard & board ) const;
+    void selfDrawAsInterGrid(Board2D & board ) const;
     // ------------------------- Public Datas ------------------------------
 
   public:
@@ -1666,16 +1666,16 @@ namespace DGtal
 
     struct SelfDrawStyle
     {
-      SelfDrawStyle(DGtalBoard & aBoard)
+      SelfDrawStyle(Board2D & aBoard)
       {
 	aBoard.setFillColor(Color::None);
 	aBoard.setPenColor(Color::Black);
       }
     };
 
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
        	
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
@@ -1683,18 +1683,18 @@ namespace DGtal
       }
     };
 
-    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(Color::None);
       }
     };
 
-  struct DefaultDrawStyleInterGrid : public DrawableWithDGtalBoard
+  struct DefaultDrawStyleInterGrid : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	aBoard.setFillColor(Color::None);

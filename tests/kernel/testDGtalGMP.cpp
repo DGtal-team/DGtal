@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
@@ -121,7 +121,7 @@ bool testGMPSpace()
   trace.info() <<"p2.norm()= "<< p2.norm()<<endl;
 
   Domain domain( p1, p2 );
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
 	 << domain
 	 << theContour

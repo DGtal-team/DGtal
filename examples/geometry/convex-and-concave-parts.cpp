@@ -32,7 +32,7 @@
 #include <sstream>
 #include <fstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -79,7 +79,7 @@ int main( int argc, char** argv )
   DSS4Computer computer;
   Cover theCover( theContour.begin(),theContour.end(),computer,true);
 
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard
 	 << SetMode( "PointVector", "Grid" )
 	 << theContour;

@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -59,7 +59,7 @@ bool testImplicitShape()
   Z2i::Point b(64,64);
   Z2i::Point c(32,32);
   
-  DGtalBoard board;
+  Board2D board;
   
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);

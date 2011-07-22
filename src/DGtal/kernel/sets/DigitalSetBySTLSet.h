@@ -298,23 +298,23 @@ namespace DGtal
     /** 
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw(DGtalBoard & aBoard) const
+      virtual void selfDraw(Board2D & aBoard) const
       {
 	aBoard.setFillColorRGBi(160,160,160);
 	aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
-    // --------------- CDrawableWithDGtalBoard realization ---------------------
+    // --------------- CDrawableWithBoard2D realization ---------------------
   public:
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -322,10 +322,10 @@ namespace DGtal
     std::string styleName() const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw(DGtalBoard & board ) const;
+    void selfDraw(Board2D & board ) const;
 
 
 
@@ -350,7 +350,7 @@ namespace DGtal
   DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDrawViewer3D(  Viewer3D & viewer ) const;
@@ -385,7 +385,7 @@ namespace DGtal
   DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDrawCairo(  DGtalCairo & viewer ) const;

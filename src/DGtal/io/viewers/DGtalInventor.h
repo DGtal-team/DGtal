@@ -213,7 +213,7 @@ namespace DGtal
      *
      * Next display of a HyperRectDomain object will used the mode
      * "Paving".  Modes may only be used in objects implementing the
-     * concept CDrawableWithDGtalBoard.
+     * concept CDrawableWithBoard2D.
      */
     ModeMapping myModes;
 

@@ -172,7 +172,7 @@ int main ( int argc, char** argv )
   typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
   Tree tree ( 12,5,1 );
   // Do not pass concept.
-  //BOOST_CONCEPT_ASSERT((CDrawableWithDGtalBoard<Tree>));
+  //BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<Tree>));
 
   //tree.printInternalState(cerr, 12);
   Dom::Point p1, p2, p3;

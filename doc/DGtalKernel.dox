@@ -189,7 +189,7 @@ MyDomain domain(a,b);
 
 The instance is thus an isothetic domain lying on the space SpaceND<2,DGtal::uint32_t> 
 defined by the bounding box of the points a and b. Note that  type  Z2i::Domain in StdDefs.h exctly corresponds to HyperRectDomain<Space>.
- We can visualise the domain using the DGtalBoard stream mechanism (see \ref dgtal_dgtalboard).
+ We can visualise the domain using the Board2D stream mechanism (see \ref dgtal_dgtalboard).
 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
 @image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
@@ -222,7 +222,7 @@ for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
 By default, HyperRectDomain iterators use the lexicographic order on the dimensions. To visualise this order in dimension 2, we can use the following code snippet in which we display each point by a color map from blue to red according to the order (blue point corresponds to the first point and the red one to the last point).
 Note that in this example, we use a specific drawing primitive (selfDraw) in order to draw a SpaceND::Vector as an arrow..
 
-Again, for details on the DGtalBoard mechanism, please refer to \ref dgtal_dgtalboard.
+Again, for details on the Board2D mechanism, please refer to \ref dgtal_dgtalboard.
 
 @code
  //We draw an arrow between two consecutive points during the iteration.

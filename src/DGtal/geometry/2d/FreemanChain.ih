@@ -135,7 +135,7 @@ DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther 
 //------------------------------------------------------------------------------
 template <typename TInteger>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Grid" ) ) 
@@ -155,7 +155,7 @@ DGtal::FreemanChain<TInteger>::styleName() const
 template <typename TInteger>
 inline
 void 
-DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
+DGtal::FreemanChain<TInteger>::selfDraw(Board2D & aBoard) const
 {
   std::string mode = aBoard.getMode( this->styleName() );
   ASSERT( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
@@ -171,7 +171,7 @@ DGtal::FreemanChain<TInteger>::selfDraw(DGtalBoard & aBoard) const
 template <typename TInteger>
 inline
 void 
-DGtal::FreemanChain<TInteger>::selfDrawAsGrid(DGtalBoard & aBoard) const
+DGtal::FreemanChain<TInteger>::selfDrawAsGrid(Board2D & aBoard) const
 {
   vector<typename FreemanChain<TInteger>::PointI2> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
@@ -189,7 +189,7 @@ DGtal::FreemanChain<TInteger>::selfDrawAsGrid(DGtalBoard & aBoard) const
 template <typename TInteger>
 inline
 void 
-DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(DGtalBoard & aBoard) const
+DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(Board2D & aBoard) const
 {
   vector<typename FreemanChain<TInteger>::PointI2> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);

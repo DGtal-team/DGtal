@@ -111,7 +111,7 @@ using namespace Z3i;
 *
 * \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
 *
-*  As for DGtalBoard, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c styleName() on an instance of the correct type and the desired mode (a string).
+*  As for Board2D, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c styleName() on an instance of the correct type and the desired mode (a string).
 *
 *
 *@code
@@ -151,7 +151,7 @@ using namespace Z3i;
 
 \subsection DGtalGLV_ModeListing Listing of different modes
 
-As for \c DGtalBoard the object can be displayed with different possible mode:
+As for \c Board2D the object can be displayed with different possible mode:
 
    * - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
    * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
@@ -237,7 +237,7 @@ Others mode examples are illustrated for class KhalimskyCell and class SignedKha
 
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
-As for DGtalBoard, it is possible to custom the way to display 3D elements by using an instance of the following classes:
+As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
 
 
 -  CustomColors3D: to change the color used to display surface primitive (GL_QUADS) and the pen color (LINE/POINTS) ;

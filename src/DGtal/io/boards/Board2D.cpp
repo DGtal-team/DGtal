@@ -15,29 +15,29 @@
  **/
 
 /**
- * @file DGtalBoard.cpp
+ * @file Board2D.cpp
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/10/11
  *
- * Implementation of methods defined in DGtalBoard.h
+ * Implementation of methods defined in Board2D.h
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/io/boards/DGtalBoard.ih"
+#include "DGtal/io/boards/Board2D.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
-// class DGtalBoard
+// class Board2D
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ using namespace std;
 /**
  * Destructor.
  */
-DGtal::DGtalBoard::~DGtalBoard()
+DGtal::Board2D::~Board2D()
 {
 }
 
@@ -55,7 +55,7 @@ DGtal::DGtalBoard::~DGtalBoard()
  * 
  * @param backgroundColor A color for the drawing's background.
  */
-DGtal::DGtalBoard::DGtalBoard( const Color & aBackgroundColor )
+DGtal::Board2D::Board2D( const Color & aBackgroundColor )
   : LibBoard::Board( aBackgroundColor ),
     myDomainDrawMode( GRID ),
     myDrawObjectAdjacencies( false ),
@@ -69,7 +69,7 @@ DGtal::DGtalBoard::DGtalBoard( const Color & aBackgroundColor )
  * 
  * @param other The object to be copied.
  */
-DGtal::DGtalBoard::DGtalBoard( const DGtalBoard & other )
+DGtal::Board2D::Board2D( const Board2D & other )
   : LibBoard::Board( other ),
     myDomainDrawMode( other.myDomainDrawMode ),
     myDrawObjectAdjacencies( other.myDrawObjectAdjacencies ),
@@ -82,8 +82,8 @@ DGtal::DGtalBoard::DGtalBoard( const DGtalBoard & other )
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-DGtal::DGtalBoard & 
-DGtal::DGtalBoard::operator= ( const DGtalBoard & other )
+DGtal::Board2D & 
+DGtal::Board2D::operator= ( const Board2D & other )
 {
   if ( this != &other )
     {
@@ -104,9 +104,9 @@ DGtal::DGtalBoard::operator= ( const DGtalBoard & other )
  * @param out the output stream where the object is written.
  */
 void
-DGtal::DGtalBoard::selfDisplay ( std::ostream & out ) const
+DGtal::Board2D::selfDisplay ( std::ostream & out ) const
 {
-    out << "[DGtalBoard]";
+    out << "[Board2D]";
 }
 
 /**
@@ -114,7 +114,7 @@ DGtal::DGtalBoard::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 bool
-DGtal::DGtalBoard::isValid() const
+DGtal::Board2D::isValid() const
 {
     return true;
 }
