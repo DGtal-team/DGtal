@@ -799,7 +799,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
@@ -828,7 +828,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::styleName() const
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDraw( DGtalBoard & board ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   if ( mode == "" )
@@ -847,7 +847,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDraw( DGtalBoard & board ) con
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(DGtalBoard & aBoard) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & aBoard) const
 {
   Point p;
   for (typename TDigitalSet::ConstIterator it = pointSet().begin();
@@ -1018,7 +1018,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesCairo(DGtal
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(DGtalBoard & aBoard) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & aBoard) const
 {
   Point p;
   pointSet().selfDraw(aBoard);

@@ -56,7 +56,7 @@
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 
 
@@ -202,7 +202,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -210,21 +210,21 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-       Draw the object on a DGtalBoard board
+       Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDraw(DGtalBoard & board ) const;
+    void selfDraw(Board2D & board ) const;
     
     /**
-       Draw the points on a DGtalBoard board
+       Draw the points on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDrawPoints(DGtalBoard & board ) const; 
+    void selfDrawPoints(Board2D & board ) const; 
     /**
-       Draw the grid edges on a DGtalBoard board
+       Draw the grid edges on a Board2D board
        @param board the output board where the object is drawn.
     */
-    void selfDrawEdges(DGtalBoard & board ) const;
+    void selfDrawEdges(Board2D & board ) const;
 
   private: 
 
@@ -236,28 +236,28 @@ namespace DGtal
 
     struct SelfDrawStyle
     {
-      SelfDrawStyle(DGtalBoard & aBoard)
+      SelfDrawStyle(Board2D & aBoard)
       {
       }
     };
 
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
       }
     };
 
-    struct DefaultDrawStylePoints : public DrawableWithDGtalBoard
+    struct DefaultDrawStylePoints : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
       }
     };
 
-  struct DefaultDrawStyleEdges : public DrawableWithDGtalBoard
+  struct DefaultDrawStyleEdges : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	      aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
 	      aBoard.setFillColor( DGtal::Color::None);

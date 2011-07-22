@@ -977,7 +977,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsBoundingBox( DGtalBoard & aBoard) const
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsBoundingBox( Board2D & aBoard) const
 {
   
 
@@ -1011,7 +1011,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsBoundingBox( 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints( DGtalBoard & aBoard) const
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints( Board2D & aBoard) const
 {
 
 	ConstIterator end = myL; ++end;
@@ -1047,7 +1047,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "BoundingBox" ) ) 
@@ -1074,7 +1074,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::styleName() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( DGtalBoard & board ) const
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( styleName() );
   if ( mode == "BoundingBox" )

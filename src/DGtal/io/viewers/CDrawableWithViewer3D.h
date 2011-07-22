@@ -73,11 +73,11 @@ namespace DGtal
    * Description of \b concept '\b CDrawableWithViewer3D' <p>
    * @ingroup Concepts
    * Aim:  The concept CDrawableWithViewer3D specifies what are the classes
-   * that admit an export with DGtalBoard.
+   * that admit an export with Board2D.
    * An object x satisfying this concept may then be used as:
    * 
    \code
-   DGtalBoard board;
+   Board2D board;
    board << CustomStyle( x.styleName(), x.defaultStyle() )
          << x;
    \endcode 
@@ -100,7 +100,7 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithDGtalBoard * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
+   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithBoard2D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
    *  <td> </td>
    * </tr>
    * <tr>
@@ -108,7 +108,7 @@ namespace DGtal
    *  <td> </td>
    * </tr>
    * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(DGtalBoard &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
+   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
    *  <td> </td>
    * </tr>
    * </table>
@@ -119,7 +119,7 @@ namespace DGtal
    * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    *
    * <p> Notes <br>
-   * @todo ImageContainerByHashTree does not implement selfDraw(DGtalBoard &).
+   * @todo ImageContainerByHashTree does not implement selfDraw(Board2D &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
@@ -129,9 +129,9 @@ namespace DGtal
   public:
     BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
     {
-      //Drawable model should have a defaultStyle() returning a DrawableWithDGtalBoard*
+      //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
       ConceptUtils::sameType( myD, myT.defaultStyleViewer3D() );
-      //Drawable model should have a defaultStyle( string ) returning a DrawableWithDGtalBoard*
+      //Drawable model should have a defaultStyle( string ) returning a DrawableWithBoard2D*
       ConceptUtils::sameType( myD, myT.defaultStyleViewer3D( myS ) );
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );

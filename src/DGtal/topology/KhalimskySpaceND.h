@@ -47,7 +47,7 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/viewers/Viewer3D.h"
@@ -127,12 +127,12 @@ namespace DGtal
     /**
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setPenColorRGBi( 50, 50, 50 );
-	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi( 80, 80, 80 );
 	aBoard.setLineWidth( 1 );
       }
@@ -156,7 +156,7 @@ namespace DGtal
       {
 
 	//aBoard.setPenColor(Color::Black);
-      //aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+      //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
       
 
@@ -167,14 +167,14 @@ namespace DGtal
     
 #endif
 
-    // --------------- CDrawableWithDGtalBoard realization -------------------
+    // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -182,10 +182,10 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw( DGtalBoard & board ) const;
+    void selfDraw( Board2D & board ) const;
 
   }; 
 
@@ -264,12 +264,12 @@ namespace DGtal
     /**
      * Default style.
      */
-    struct DefaultDrawStyle : public DrawableWithDGtalBoard
+    struct DefaultDrawStyle : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setPenColorRGBi( 50, 50, 50 );
-	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi( 80, 80, 80 );
 	aBoard.setLineWidth( 1 );
       }
@@ -292,7 +292,7 @@ namespace DGtal
       virtual void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 	//aBoard.setPenColor(Color::Black);
-	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
   
@@ -300,14 +300,14 @@ namespace DGtal
 #endif
 
 
-    // --------------- CDrawableWithDGtalBoard realization -------------------
+    // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -315,10 +315,10 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw( DGtalBoard & board ) const;
+    void selfDraw( Board2D & board ) const;
 
   }; 
 

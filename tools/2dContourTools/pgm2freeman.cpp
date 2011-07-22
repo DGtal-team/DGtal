@@ -48,7 +48,7 @@
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/Surfaces.h"
 
 #include <boost/program_options/options_description.hpp>

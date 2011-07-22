@@ -235,7 +235,7 @@ DGtal::RealPointVector<dim>::styleName() const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsPaving( DGtalBoard & board ) const
+DGtal::RealPointVector<dim>::selfDrawAsPaving( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.drawRectangle( (float) this->myArray[0] - 0.5f, 
@@ -245,7 +245,7 @@ DGtal::RealPointVector<dim>::selfDrawAsPaving( DGtalBoard & board ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsGrid( DGtalBoard & board ) const
+DGtal::RealPointVector<dim>::selfDrawAsGrid( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.setPenColor(Color::Black);
@@ -257,7 +257,7 @@ DGtal::RealPointVector<dim>::selfDrawAsGrid( DGtalBoard & board ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDraw(DGtalBoard & board,
+DGtal::RealPointVector<dim>::selfDraw(Board2D & board,
 				      const Self &apoint) const
 {
   ASSERT(dim == 2);

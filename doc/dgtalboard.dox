@@ -7,7 +7,7 @@ namespace DGtal {
   /**
      @author Jacques-Olivier Lachaud.
 
-     @page dgtal_dgtalboard DGtalBoard: a stream mechanism for displaying 2D digital objects
+     @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
     
      This part of the manual describes how to export DGtal objects
      into graphics files (and later buffers). For now, it is limited
@@ -37,27 +37,27 @@ namespace DGtal {
         -# \ref dgtal_dgtalboard_sec24
         -# \ref dgtal_dgtalboard_sec25
     
-     \section dgtal_dgtalboard_sec1 User guide to DGtalBoard
+     \section dgtal_dgtalboard_sec1 User guide to Board2D
     
      \subsection dgtal_dgtalboard_sec11 Elementary usage: displaying a domain and a few points
     
-     To use the DGtalBoard stream, you must include the header
+     To use the Board2D stream, you must include the header
    \code
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/Board2D.h"
    \endcode
     
-     The class DGtalBoard is designed so as to make easy the
+     The class Board2D is designed so as to make easy the
      visualization of digital objects, also it is for now limited to
      2D discrete geometry. For the user, it is very simple to
      visualize digital sets, objects and others. To do so, the user
-     has just to instantiate a DGtalBoard object. This object is then
+     has just to instantiate a Board2D object. This object is then
      an output stream, and if you wish to visualize some object, you
      use the stream \c operator \c << to output the object on the
      board. When you are finished, there is a command to export your
      graphics in SVG, XFIG or EPS format.
     
      The following code snippet defines three points and a rectangular
-     domain in Z2. It then displays them in a DGtalBoard object. The
+     domain in Z2. It then displays them in a Board2D object. The
      two last commands export the graphics in SVG and EPS format. The
      full code is in <a
      href="dgtalboard-1-points_8cpp-example.html">dgtalboard-1-points.cpp</a>.
@@ -71,7 +71,7 @@ namespace DGtal {
    Point p3( 0, 0 );
    Domain domain( p1, p2 );
    
-   DGtalBoard board;
+   Board2D board;
    board << domain << p1 << p2 << p3;
    board.saveSVG("dgtalboard-1-points.svg");
    board.saveEPS("dgtalboard-1-points.eps");
@@ -101,7 +101,7 @@ namespace DGtal {
    shape_set.erase( Point( -5, -1 ) );
    shape_set.erase( Point( 5, 1 ) );
 
-   DGtalBoard board;
+   Board2D board;
    board << domain << shape_set; // display domain and set
    board.saveSVG( "dgtalboard-2-sets-1.svg");
    \endcode
@@ -206,13 +206,13 @@ namespace DGtal {
   Point p3( 0, 0 );
   Domain domain( p1, p2 );
 
-  DGtalBoard::Color red( 255, 0, 0 );
-  DGtalBoard::Color dred( 192, 0, 0 );
-  DGtalBoard::Color dgreen( 0, 192, 0 );
-  DGtalBoard::Color blue( 0, 0, 255 );
-  DGtalBoard::Color dblue( 0, 0, 192 );
+  Board2D::Color red( 255, 0, 0 );
+  Board2D::Color dred( 192, 0, 0 );
+  Board2D::Color dgreen( 0, 192, 0 );
+  Board2D::Color blue( 0, 0, 255 );
+  Board2D::Color dblue( 0, 0, 192 );
   
-  DGtalBoard board;
+  Board2D board;
   board << domain 
 	<< CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
 	<< p1
@@ -220,9 +220,9 @@ namespace DGtal {
 	<< p2
 	<< CustomStyle( p3.styleName(), 
 			new CustomPen( blue, dblue, 3.0, 
-				       DGtalBoard::Shape::SolidStyle,
-				       DGtalBoard::Shape::RoundCap,
-				       DGtalBoard::Shape::RoundJoin ) )
+				       Board2D::Shape::SolidStyle,
+				       Board2D::Shape::RoundCap,
+				       Board2D::Shape::RoundJoin ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-classes.svg");
    \endcode
@@ -242,16 +242,16 @@ namespace DGtal {
      custom style class:
     
    \code
-struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 {
-  DGtalBoard::Color myPenColor;
-  DGtalBoard::Color myFillColor;
-  MyDrawStyleCustomColor( const DGtalBoard::Color & penColor,
-			  const DGtalBoard::Color & fillColor )
+  Board2D::Color myPenColor;
+  Board2D::Color myFillColor;
+  MyDrawStyleCustomColor( const Board2D::Color & penColor,
+			  const Board2D::Color & fillColor )
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
-  virtual void selfDraw( DGtalBoard & aboard) const
+  virtual void selfDraw( Board2D & aboard) const
   {
     aboard.setFillColor( myFillColor); // specifies the fill color.
     aboard.setPenColor( myPenColor );  // specifies the pen color.
@@ -279,21 +279,21 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
      \image html dgtalboard-3-custom-points.png "Custom drawing of point." 
      \image latex dgtalboard-3-custom-points.png "Custom drawing of point." width=6cm
     
-     \subsection dgtal_dgtalboard_sec17 Using colormaps in DGtalBoard streams
+     \subsection dgtal_dgtalboard_sec17 Using colormaps in Board2D streams
     
-     You can use colormaps in conjunction with custom styles for DGtalBoard. Several classes represent colormaps: CColorMap, ColorBrightnessColorMap, GradientColorMap, GrayscaleColorMap, HueShadeColorMap. You can use any of them to produce colors. Here, we define a simple colormap going from blue to red then yellow. Then, each pixel of the digital set \c shape_set (see above) is displayed with a fill color that depends on its distance to the point \c c1.
+     You can use colormaps in conjunction with custom styles for Board2D. Several classes represent colormaps: CColorMap, ColorBrightnessColorMap, GradientColorMap, GrayscaleColorMap, HueShadeColorMap. You can use any of them to produce colors. Here, we define a simple colormap going from blue to red then yellow. Then, each pixel of the digital set \c shape_set (see above) is displayed with a fill color that depends on its distance to the point \c c1.
     
      An interesting point of the exemple below is how we specify a custom style for a \b specific \b mode of some drawable element (here a Point). We just add "/"+ModeName to the name of the style.
     
    \code
   // Creating colormap.
   GradientColorMap<int> cmap_grad( 0, 15 );
-  cmap_grad.addColor( DGtalBoard::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( DGtalBoard::Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Board2D::Color( 255, 255, 10 ) );
 
   // Creating board.
-  DGtalBoard board;
+  Board2D board;
   board << SetMode( domain.styleName(), "Paving" )
 	<< domain
 	<< SetMode( p1.styleName(), "Paving" );
@@ -306,7 +306,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
       unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
       // specific color depending on the distance to point c1.
       board << CustomStyle( specificStyle,
-			    new CustomColors( DGtalBoard::Color::Black,
+			    new CustomColors( Board2D::Color::Black,
 					      cmap_grad( d ) ) )
 	    << *it;
     }
@@ -339,42 +339,42 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
     
      \subsection dgtal_dgtalboard_sec18 Conclusion and future improvements
      
-     The DGtalBoard mechanism is a simple mechanism for displaying 2D digital objects and graphics. A 3D adaptation is under development. Furthermore, in order to enhance its graphics and export possibilities, the hidden drawing library will certainly move to Cairo.
+     The Board2D mechanism is a simple mechanism for displaying 2D digital objects and graphics. A 3D adaptation is under development. Furthermore, in order to enhance its graphics and export possibilities, the hidden drawing library will certainly move to Cairo.
      
-     \section dgtal_dgtalboard_sec2 Developer guide to DGtalBoard
+     \section dgtal_dgtalboard_sec2 Developer guide to Board2D
     
      This section aims at helping the developer to understand the background of the DGtalStream mechanism, and then to create its own drawable elements.
     
-     \subsection dgtal_dgtalboard_sec21 Overview of the DGtalBoard principle
+     \subsection dgtal_dgtalboard_sec21 Overview of the Board2D principle
     
-     Following the concept paradigm adopted in DGtal, the DGtalBoard object may only displayed instances of classes that realize the concept CDrawableWithDGtalBoard. A drawable element must specify his classname and a default style under the form of a (simple) DrawableWithDGtalBoard object. For instance, the default style structure for a PointVector is:
+     Following the concept paradigm adopted in DGtal, the Board2D object may only displayed instances of classes that realize the concept CDrawableWithBoard2D. A drawable element must specify his classname and a default style under the form of a (simple) DrawableWithBoard2D object. For instance, the default style structure for a PointVector is:
      
    \code
-   struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+   struct DefaultDrawStyleGrid : public DrawableWithBoard2D
    {
-     virtual void selfDraw( DGtalBoard & aBoard ) const
+     virtual void selfDraw( Board2D & aBoard ) const
      {
-       aBoard.setPenColor(DGtalBoard::Color::Black);
-       aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+       aBoard.setPenColor(Board2D::Color::Black);
+       aBoard.setLineStyle( Board2D::Shape::SolidStyle );
      }
    };
    \endcode
     
-     A DrawableWithDGtalBoard is just an interface that specifies a virtual method \c selfDraw. Last but not least, the drawable element defines a (non-virtual) method \c selfDraw which contains the drawing commands.
+     A DrawableWithBoard2D is just an interface that specifies a virtual method \c selfDraw. Last but not least, the drawable element defines a (non-virtual) method \c selfDraw which contains the drawing commands.
     
-     The DGtalBoard class operates as an output stream for drawable elements. It inherits from LibBoard::Board. This base class holds the drawing capabilities for several export formats. You must look at this class to see the drawing possibilities. 
+     The Board2D class operates as an output stream for drawable elements. It inherits from LibBoard::Board. This base class holds the drawing capabilities for several export formats. You must look at this class to see the drawing possibilities. 
     
-     An important method of DGtalBoard is the templated DGtalBoard::operator<<. This method takes any drawable element (satisfying CDrawableWithDGtalBoard) and takes care of setting the correct style and calling the drawing method of the object.
+     An important method of Board2D is the templated Board2D::operator<<. This method takes any drawable element (satisfying CDrawableWithBoard2D) and takes care of setting the correct style and calling the drawing method of the object.
     
-     The DGtalBoard remembers what is the current style for a given drawable element type. Furthermore, it can remember its current mode. Last, it remembers also the specific style associated for this mode. Generally, as a developer, you do not have to take care at how user chooses their new style or new mode. You will only prepare in your class if you wish to have modes, and how you draw the object depending on the current mode.
+     The Board2D remembers what is the current style for a given drawable element type. Furthermore, it can remember its current mode. Last, it remembers also the specific style associated for this mode. Generally, as a developer, you do not have to take care at how user chooses their new style or new mode. You will only prepare in your class if you wish to have modes, and how you draw the object depending on the current mode.
     
-     \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithDGtalBoard
+     \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithBoard2D
     
-     The concept CDrawableWithDGtalBoard requires that the three following methods are defined:
+     The concept CDrawableWithBoard2D requires that the three following methods are defined:
     
      - std::string styleName() const: name of the style for this drawable element, generally the name of the class.
-     - DrawableWithDGtalBoard* defaultStyle( const std::string & mode = "" ) const: a dynamically allocated instance of the default style for this drawable element. It may eventually be tuned for a specific mode given as a string. 
-     - void selfDraw( DGtalBoard & ) const: this methods draws the drawable element on the given DGtalBoard instance. The style has been applied automatically before. 
+     - DrawableWithBoard2D* defaultStyle( const std::string & mode = "" ) const: a dynamically allocated instance of the default style for this drawable element. It may eventually be tuned for a specific mode given as a string. 
+     - void selfDraw( Board2D & ) const: this methods draws the drawable element on the given Board2D instance. The style has been applied automatically before. 
     
      \subsection dgtal_dgtalboard_sec23 Developing a new drawable element
     
@@ -409,7 +409,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
   /**
      \example dgtalboard-1-points.cpp
     
-     This simple example shows the basic usage of a DGtalBoard to
+     This simple example shows the basic usage of a Board2D to
      export graphical representations of dgtal objects (here, a
      HyperRectDomain and three points exported as SVG and EPS).
    */
@@ -417,7 +417,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
   /**
      \example dgtalboard-2-sets.cpp
     
-     This simple example shows also some basic usage of a DGtalBoard
+     This simple example shows also some basic usage of a Board2D
      to export graphical representations of dgtal objects (here, a
      digital set and a digital object). Note also the use of different
      modes that may be defined for some classes. An object may thus be
@@ -432,7 +432,7 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
      elements. You just have to create an instance of CustomColors,
      CustomPenColor, CustomFillColor or CustomPen and you attach this
      style to your drawable element type with an instance of CustomStyle
-     outputed in the DGtalBoard stream.
+     outputed in the Board2D stream.
    */
 
   /**
@@ -442,14 +442,14 @@ struct MyDrawStyleCustomColor : public DrawableWithDGtalBoard
      elements. It is a matter of creating a custom style class which
      gives in its method \c selfDraw the specific style
      parameters. Then, you attach this style to your drawable elements
-     with an instance of CustomStyle outputed in the DGtalBoard
+     with an instance of CustomStyle outputed in the Board2D
      stream.
    */
 
   /**
      \example dgtalboard-4-colormaps.cpp
     
-     This example shows you how to use colormaps with DGtalBoard
+     This example shows you how to use colormaps with Board2D
      streams. Note how we redefine the style of a specific mode for
      the drawable element.
    */

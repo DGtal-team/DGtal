@@ -36,7 +36,7 @@
 #include "DGtal/geometry/nd/volumetric/ReverseDistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -357,7 +357,7 @@ bool testReverseDTSet()
   Set reconstruction(result.domain());
   reverseDT.reconstructionAsSet<Set>( reconstruction, result );
   
-  DGtalBoard board;
+  Board2D board;
   board << reconstruction;
   board.saveSVG ( "image-REDTtestSet.svg" );
 

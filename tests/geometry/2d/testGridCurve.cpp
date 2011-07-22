@@ -48,7 +48,7 @@
 
 #include "DGtal/geometry/2d/GridCurve.h"
 
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 #include "ConfigTest.h"
 
@@ -172,7 +172,7 @@ bool testDisplay(const string &filename)
   inputStream.close();
 
   //displaying it
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode(c.styleName(), "Edges") << c;
   
@@ -183,7 +183,7 @@ bool testDisplay(const string &filename)
   aBoard.saveEPS( "GridCurveBoth.eps", Board::BoundingBox, 5000 );
 
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("GridCurveBoth-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("GridCurveBoth-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
 #endif
   
 

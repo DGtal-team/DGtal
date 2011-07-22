@@ -46,7 +46,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -101,7 +101,7 @@ bool testDSS4drawing()
 
 		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
-		DGtalBoard board;
+		Board2D board;
 		board.setUnit(Board::UCentimeter);
 		
   	board << SetMode(domain.styleName(), "Grid")
@@ -166,7 +166,7 @@ bool testDSS8drawing()
 		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
 		
-		DGtalBoard board;
+		Board2D board;
 		board.setUnit(Board::UCentimeter);
 		
 

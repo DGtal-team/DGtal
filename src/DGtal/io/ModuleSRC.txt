@@ -7,7 +7,7 @@
 ##########################################
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-	      DGtal/io/boards/DGtalBoard
+	      DGtal/io/boards/Board2D
 	      DGtal/io/Color )
 
 

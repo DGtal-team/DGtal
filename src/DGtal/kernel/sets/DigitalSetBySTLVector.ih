@@ -496,7 +496,7 @@ DGtal::DigitalSetBySTLVector<Domain>::isValid() const
 
 
 
-// --------------- CDrawableWithDGtalBoard realization -------------------------
+// --------------- CDrawableWithBoard2D realization -------------------------
 
 /**
  * Default drawing style object.
@@ -504,7 +504,7 @@ DGtal::DigitalSetBySTLVector<Domain>::isValid() const
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithDGtalBoard* 
+DGtal::DrawableWithBoard2D* 
 DGtal::DigitalSetBySTLVector<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
@@ -528,7 +528,7 @@ DGtal::DigitalSetBySTLVector<Domain>::styleName() const
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDraw( DGtalBoard & board ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDraw( Board2D & board ) const
 {
   if (Domain::dimension == 2)
     {
@@ -544,7 +544,7 @@ template<typename Domain>
 template<typename Functor>
 inline
 void 
-DGtal::DigitalSetBySTLVector<Domain>::selfDraw(DGtalBoard & aBoard) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
 {
   if (Domain::dimension == 2)
     {

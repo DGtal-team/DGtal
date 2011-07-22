@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC_IOVIEWERS
        testSimpleBoard
-       testDGtalBoardCustomStyle
+       testBoard2DCustomStyle
        testLongvol )
 
 

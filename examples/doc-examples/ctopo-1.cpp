@@ -30,7 +30,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ int main()
   Point plow(-3,-2);
   Point pup(5,3);
   Domain domain( plow, pup );
-  DGtalBoard board; // for 2D display
+  Board2D board; // for 2D display
   K.init( plow, pup, true );
   board << SetMode( domain.styleName(), "Paving" )
 	<< domain;

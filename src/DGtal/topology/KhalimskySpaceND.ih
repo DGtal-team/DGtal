@@ -133,7 +133,7 @@ DGtal::operator<<( std::ostream & out,
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::KhalimskyCell<dim, TInteger>::defaultStyle( std::string mode) const
 {
   return new typename DGtal::KhalimskyCell<dim, TInteger>::DefaultDrawStyle;
@@ -152,7 +152,7 @@ template < Dimension dim, typename TInteger >
 inline
 void
 DGtal::KhalimskyCell<dim, TInteger>::
-selfDraw( DGtalBoard & board ) const
+selfDraw( Board2D & board ) const
 {
   ASSERT( dim == 2 );
   float x = (float) 
@@ -400,7 +400,7 @@ DGtal::operator<<( std::ostream & out,
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::SignedKhalimskyCell<dim, TInteger>::
 defaultStyle( std::string mode) const
 {
@@ -420,7 +420,7 @@ template < Dimension dim, typename TInteger >
 inline
 void
 DGtal::SignedKhalimskyCell<dim, TInteger>::
-selfDraw( DGtalBoard & board ) const
+selfDraw( Board2D & board ) const
 {
   ASSERT( dim == 2 );
   float x = (float) 

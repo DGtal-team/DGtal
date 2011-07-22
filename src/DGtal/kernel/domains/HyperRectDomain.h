@@ -56,7 +56,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 
 
@@ -587,13 +587,13 @@ namespace DGtal
     /**
      * Default style.
      */
-    struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
+    struct DefaultDrawStylePaving : public DrawableWithBoard2D
     {
-      virtual void selfDraw(DGtalBoard & aBoard) const
+      virtual void selfDraw(Board2D & aBoard) const
       {
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(255, 255, 255);
-        aBoard.setLineStyle(DGtalBoard::Shape::SolidStyle);
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setLineWidth( 1 );
       }
     };
@@ -601,25 +601,25 @@ namespace DGtal
     /**
      * Default style.
      */
-    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
     {
-      virtual void selfDraw(DGtalBoard & aBoard) const
+      virtual void selfDraw(Board2D & aBoard) const
       {
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(160, 160, 160);
-        aBoard.setLineStyle(DGtalBoard::Shape::DashStyle);
+        aBoard.setLineStyle(Board2D::Shape::DashStyle);
         aBoard.setLineWidth( 1 );
       }
     };
 
-    // --------------- CDrawableWithDGtalBoard realization --------------------
+    // --------------- CDrawableWithBoard2D realization --------------------
   public:
     
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
@@ -627,10 +627,10 @@ namespace DGtal
     std::string styleName() const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw( DGtalBoard & board ) const;
+    void selfDraw( Board2D & board ) const;
 
 
     /**
@@ -638,7 +638,7 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      * @param asGrid to choose between paving vs. grid representation.
      */
-    void selfDrawAsGrid( DGtalBoard & board) const;
+    void selfDrawAsGrid( Board2D & board) const;
 
     
     /**
@@ -646,7 +646,7 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      * @param asGrid to choose between paving vs. grid representation.
      */
-    void selfDrawAsPaving( DGtalBoard & board ) const;
+    void selfDrawAsPaving( Board2D & board ) const;
     
 
 
@@ -660,7 +660,7 @@ namespace DGtal
     DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDrawViewer3D(  Viewer3D & viewer ) const;
@@ -680,7 +680,7 @@ namespace DGtal
     DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDrawCairo(  DGtalCairo & viewer ) const;
@@ -726,8 +726,8 @@ namespace DGtal
 
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
 
 #ifdef WITH_VISU3D_QGLVIEWER
@@ -752,8 +752,8 @@ namespace DGtal
 #endif
   
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
 
 #ifdef WITH_CAIRO
@@ -790,22 +790,22 @@ namespace DGtal
 
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
   struct DrawDomainGrid : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ "HyperRectDomain" ] = "Grid";
     }
   };
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
   struct DrawDomainPaving : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ "HyperRectDomain" ] = "Paving";
     }

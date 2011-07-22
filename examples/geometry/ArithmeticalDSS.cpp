@@ -38,7 +38,7 @@
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
-#include "DGtal/io/boards/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 using namespace std;
@@ -88,7 +88,7 @@ int main()
     cout << theDSS4 << endl;
 
     // Draw the grid
-    DGtalBoard board;
+    Board2D board;
 	
     Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Grid")
@@ -138,7 +138,7 @@ int main()
     cout << theDSS8 << endl;
 
     //Draw the pixels
-    DGtalBoard board;
+    Board2D board;
     Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Paving")
 	  << domain;		
