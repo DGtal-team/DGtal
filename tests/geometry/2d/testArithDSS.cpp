@@ -394,31 +394,31 @@ bool testSmartDSS()
   
   // Adding step
   trace.beginBlock("extension");
+  
+  DSS4 s;
+  s.init( contour.begin() );
+  while ( (s.end()!=contour.end())
+	  &&(s.extend()) ) {} 
+  
 
-		DSS4 s;
-		s.init( contour.begin() );
-    while ( (s.end()!=contour.end())
-					&&(s.extend()) ) {} 
-
-
-		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
-
-		Board2D board;
-		board.setUnit(Board::UCentimeter);
-		
-  	board << SetMode(domain.styleName(), "Grid")
-				  << domain;		
-    board << SetMode("PointVector", "Grid");
-  	board << SetMode(s.styleName(), "Points") 
-					<< s;
-  	board << SetMode(s.styleName(), "BoundingBox") 
-					<< s;
-		
-		board.saveEPS("DSS.eps");
-	
+  HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
+  
+  Board2D board;
+  board.setUnit(Board::UCentimeter);
+  
+  board << SetMode(domain.styleName(), "Grid")
+	<< domain;		
+  board << SetMode("PointVector", "Grid");
+  board << SetMode(s.styleName(), "Points") 
+	<< s;
+  board << SetMode(s.styleName(), "BoundingBox") 
+	<< s;
+  
+  board.saveEPS("DSS.eps");
+  
   trace.endBlock();
-
-	return true;  
+  
+  return true;  
 }
 
 int main(int argc, char **argv)
