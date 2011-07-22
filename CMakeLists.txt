@@ -140,7 +140,7 @@ endif (BUILD_TESTING)
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" 
-  "${PROJECT_BINARY_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
+  "${CMAKE_CURRENT_BINARY_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
