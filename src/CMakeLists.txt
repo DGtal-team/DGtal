@@ -4,6 +4,7 @@ if ( CPP0X_INITIALIZER_LIST )
 endif ( CPP0X_INITIALIZER_LIST )
 
 include_directories (${PROJECT_SOURCE_DIR}/src)
+include_directories (${CMAKE_CURRENT_BINARY_DIR}/src)
 
 ##Recursive calls
 ## each subdir must contain a ModuleSRC.txt file with a set command on the variable ${DGTAL_SRC}
