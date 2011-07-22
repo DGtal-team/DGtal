@@ -8,11 +8,11 @@ endif ( CPP0X_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
-include_directories (${CMAKE_CURRENT_BINARY_DIR}/src/)
+include_directories (${PROJECT_BINARY_DIR}/src/)
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/tests/)
-include_directories (${CMAKE_CURRENT_BINARY_DIR}/tests/)
+include_directories (${PROJECT_BINARY_DIR}/tests/)
 
 
 
@@ -21,7 +21,7 @@ link_directories (${PROJECT_BINARY_DIR})
 
 # ConfigTest.h instanciation.
 configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in 
-  ${CMAKE_CURRENT_BINARY_DIR}/tests/ConfigTest.h IMMEDIATE)
+  ${PROJECT_BINARY_DIR}/tests/ConfigTest.h IMMEDIATE)
 
 
 #------TESTS subdirectories ------
