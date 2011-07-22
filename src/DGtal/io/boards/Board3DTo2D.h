@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file   DGtalCairo.h
+ * @file   Board3DTo2D.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 22 juin 2011
  * 
  * @brief
  *
- * Header file for module DGtalCairo.cpp
+ * Header file for module Board3DTo2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DGtalCairo_RECURSES)
-#error Recursive header files inclusion detected in DGtalCairo.h
-#else // defined(DGtalCairo_RECURSES)
+#if defined(Board3DTo2D_RECURSES)
+#error Recursive header files inclusion detected in Board3DTo2D.h
+#else // defined(Board3DTo2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DGtalCairo_RECURSES
+#define Board3DTo2D_RECURSES
 
-#if !defined DGtalCairo_h
+#if !defined Board3DTo2D_h
 /** Prevents repeated inclusion of headers. */
-#define DGtalCairo_h
+#define Board3DTo2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -55,7 +55,7 @@ namespace DGtal
 {
  /**
    * Base class specifying the methods for classes which intend to
-   * modify a DGtalCairo stream.
+   * modify a Board3DTo2D stream.
    * 
    */
   struct DrawWithCairoModifier {
@@ -64,22 +64,22 @@ namespace DGtal
       return "DrawWithCairoModifier";
     }
 
-    DrawableWithDGtalCairo* defaultStyleCairo( std::string = "" ) const
+    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string = "" ) const
     {
       return 0;
     }
 
-    virtual void selfDrawCairo( DGtalCairo &  ) const 
+    virtual void selfDrawCairo( Board3DTo2D &  ) const 
     {}
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// class DGtalCairo
+// class Board3DTo2D
 /**
- * Description of class 'DGtalCairo' <p>
+ * Description of class 'Board3DTo2D' <p>
  * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
  */
-  class DGtalCairo
+  class Board3DTo2D
 {
 public:
   /**
@@ -90,14 +90,14 @@ public:
   /*!
    * \brief Constructor.
    */
-  DGtalCairo();
+  Board3DTo2D();
   
   /**
     * @return the style name used for drawing this object.
     */
   std::string styleName() const
   {
-    return "DGtalCairo";
+    return "Board3DTo2D";
   }
   
   /**
@@ -150,7 +150,7 @@ public:
    * The associated map type for storing the default styles of
    * digital objects.
    */
-  typedef std::map< std::string,CountedPtr<DrawableWithDGtalCairo> > StyleMapping;
+  typedef std::map< std::string,CountedPtr<DrawableWithBoard3DTo2D> > StyleMapping;
   
   QColor myDefaultColor;	//!< default color
   QColor myCurrentFillColor;	//!< current fill color
@@ -192,7 +192,7 @@ public:
    * @param aColor: a QColor (allow to set a trasnparency value).
    *
    **/  
-  DGtalCairo & operator<<(const QColor & aColor);
+  Board3DTo2D & operator<<(const QColor & aColor);
 
   /**
    * Add a point as a 3d voxel using default color in the current list.
@@ -355,14 +355,14 @@ public:
 
   /**
    * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithDGtalCairo, which requires for instance a
-   * method selfDraw( DGtalCairo & ).
+   * the concept CDrawableWithBoard3DTo2D, which requires for instance a
+   * method selfDraw( Board3DTo2D & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-  template <typename TDrawableWithDGtalCairo>
-  DGtalCairo & operator<<( const  TDrawableWithDGtalCairo & object );
+  template <typename TDrawableWithBoard3DTo2D>
+  Board3DTo2D & operator<<( const  TDrawableWithBoard3DTo2D & object );
 
 public:
   
@@ -493,7 +493,7 @@ protected :
 
 private:
 
-  }; // end of class DGtalCairo
+  }; // end of class Board3DTo2D
   
   /**
    * Cairo3dCameraPosition class to set camera position.
@@ -512,7 +512,7 @@ private:
       eyex=x; eyey=y; eyez=z;
     }
     
-    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    virtual void selfDrawCairo( Board3DTo2D & viewer) const
     {
       viewer.setCameraPosition(eyex, eyey, eyez);
     }
@@ -538,7 +538,7 @@ private:
       dirx=x; diry=y; dirz=z;
     }
     
-    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    virtual void selfDrawCairo( Board3DTo2D & viewer) const
     {
       viewer.setCameraDirection(dirx, diry, dirz);
     }
@@ -564,7 +564,7 @@ private:
       upx=x; upy=y; upz=z;
     }
     
-    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    virtual void selfDrawCairo( Board3DTo2D & viewer) const
     {
       viewer.setCameraUpVector(upx, upy, upz);
     }
@@ -589,7 +589,7 @@ private:
       ZNear=near; ZFar=far;
     }
     
-    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    virtual void selfDrawCairo( Board3DTo2D & viewer) const
     {
       viewer.setNearFar(ZNear, ZFar);
     }
@@ -599,9 +599,9 @@ private:
   };
 
  /**
-   * Modifier class in a DGtalCairo stream. Useful to choose your
+   * Modifier class in a Board3DTo2D stream. Useful to choose your
    * own mode for a given class. Realizes the concept
-   * CDrawableWithDGtalCairo.
+   * CDrawableWithBoard3DTo2D.
    */
   struct SetMode3DCairo : public DrawWithCairoModifier {
     /**
@@ -613,7 +613,7 @@ private:
     SetMode3DCairo( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDrawCairo( DGtalCairo & viewer ) const
+    void selfDrawCairo( Board3DTo2D & viewer ) const
     {
       viewer.myModes[ myClassname ] = myMode;
     }
@@ -623,9 +623,9 @@ private:
   };
 
   /**
-   * Modifier class in a DGtalCairo stream. Useful to choose your own
+   * Modifier class in a Board3DTo2D stream. Useful to choose your own
    * style for a given class. Realizes the concept
-   * CDrawableWithDGtalCairo.
+   * CDrawableWithBoard3DTo2D.
    */
   struct CustomStyle3DCairo : public DrawWithCairoModifier {
     /**
@@ -634,7 +634,7 @@ private:
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    CustomStyle3DCairo( std::string classname, DrawableWithDGtalCairo* style )
+    CustomStyle3DCairo( std::string classname, DrawableWithBoard3DTo2D* style )
       : myClassname( classname ), myStyle( style )
     {}
 
@@ -643,13 +643,13 @@ private:
       return "CustomStyle3D";
     }
 
-    void selfDrawCairo( DGtalCairo & viewer ) const
+    void selfDrawCairo( Board3DTo2D & viewer ) const
     {
       viewer.myStyles[ myClassname ] = myStyle;
     }
   private:
     std::string myClassname;
-    CountedPtr<DrawableWithDGtalCairo> myStyle;
+    CountedPtr<DrawableWithBoard3DTo2D> myStyle;
   };
 
   /**
@@ -675,7 +675,7 @@ private:
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDrawCairo( DGtalCairo & viewer) const
+    virtual void selfDrawCairo( Board3DTo2D & viewer) const
     {
       viewer.setFillColor(myFillColor);
       viewer.setLineColor(myPenColor);
@@ -683,8 +683,8 @@ private:
   };
 
  /**
-   * Class for adding a Clipping plane through the DGtalCairo
-   * stream. Realizes the concept CDrawableWithDGtalCairo.
+   * Class for adding a Clipping plane through the Board3DTo2D
+   * stream. Realizes the concept CDrawableWithBoard3DTo2D.
    */
   struct ClippingPlaneCairo : public DrawWithCairoModifier {
     /**
@@ -696,7 +696,7 @@ private:
     ClippingPlaneCairo( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
-    void selfDrawCairo( DGtalCairo & viewer ) const
+    void selfDrawCairo( Board3DTo2D & viewer ) const
     {
       viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
       
@@ -720,25 +720,25 @@ private:
   };
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'DGtalCairo'.
+ * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'DGtalCairo' to write.
+ * @param object the object of class 'Board3DTo2D' to write.
  * @return the output stream after the writing.
  */
 std::ostream&
-operator<< ( std::ostream & out, const DGtalCairo & object );
+operator<< ( std::ostream & out, const Board3DTo2D & object );
 
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/boards/DGtalCairo.ih"
+#include "DGtal/io/boards/Board3DTo2D.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DGtalCairo_h
+#endif // !defined Board3DTo2D_h
 
-#undef DGtalCairo_RECURSES
-#endif // else defined(DGtalCairo_RECURSES)
+#undef Board3DTo2D_RECURSES
+#endif // else defined(Board3DTo2D_RECURSES)

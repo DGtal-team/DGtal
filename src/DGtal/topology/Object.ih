@@ -953,7 +953,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesViewer3D(Vi
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithDGtalCairo *
+DGtal::DrawableWithBoard3DTo2D *
 DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleCairo( std::string ) const
 {
   return new DefaultDrawStyleCairo;
@@ -963,7 +963,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleCairo( std::string ) c
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawCairo( DGtalCairo & viewer ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawCairo( Board3DTo2D & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   if ( mode == "" )
@@ -986,7 +986,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawCairo( DGtalCairo & viewer
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesCairo(DGtalCairo & viewer) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesCairo(Board3DTo2D & viewer) const
 {
   Point p;
   for (typename TDigitalSet::ConstIterator it = pointSet().begin();

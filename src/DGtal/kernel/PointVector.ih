@@ -732,7 +732,7 @@ DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer,  const S
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingCairo( DGtalCairo & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingCairo( Board3DTo2D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -743,7 +743,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsPavingCairo( DGtalCairo & viewer ) 
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGridCairo( DGtalCairo & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsGridCairo( Board3DTo2D & viewer ) const
 {
   ASSERT(dim == 3);
   viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
@@ -756,7 +756,7 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridCairo( DGtalCairo & viewer ) co
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawCairo( DGtalCairo & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawCairo( Board3DTo2D & viewer ) const
 {
   ASSERT(dim == 3);
  
@@ -782,7 +782,7 @@ DGtal::PointVector<dim,Component>::selfDrawCairo( DGtalCairo & viewer ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawCairo( DGtalCairo & viewer,  const Self &aPoint ) const
+DGtal::PointVector<dim,Component>::selfDrawCairo( Board3DTo2D & viewer,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   

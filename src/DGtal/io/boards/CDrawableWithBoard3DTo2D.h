@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDrawableWithDGtalCairo.h
+ * @file CDrawableWithBoard3DTo2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,20 +25,20 @@
  *
  * @date 2010/10/21
  *
- * Header file for concept CDrawableWithDGtalCairo.cpp
+ * Header file for concept CDrawableWithBoard3DTo2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithDGtalCairo_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithDGtalCairo.h
-#else // defined(CDrawableWithDGtalCairo_RECURSES)
+#if defined(CDrawableWithBoard3DTo2D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithBoard3DTo2D.h
+#else // defined(CDrawableWithBoard3DTo2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithDGtalCairo_RECURSES
+#define CDrawableWithBoard3DTo2D_RECURSES
 
-#if !defined CDrawableWithDGtalCairo_h
+#if !defined CDrawableWithBoard3DTo2D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithDGtalCairo_h
+#define CDrawableWithBoard3DTo2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -46,18 +46,18 @@
 
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithDGtalCairo
+  // class CDrawableWithBoard3DTo2D
   /**
-   * Description of \b concept '\b CDrawableWithDGtalCairo' <p>
+   * Description of \b concept '\b CDrawableWithBoard3DTo2D' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithDGtalCairo specifies what are the classes
+   * Aim:  The concept CDrawableWithBoard3DTo2D specifies what are the classes
    * that admit an export with Board2D.
    * An object x satisfying this concept may then be used as:
    * 
@@ -72,7 +72,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithDGtalCairo
+   * - \t X : A type that is a model of CDrawableWithBoard3DTo2D
    * - \t x, \t y	: Object of type X
    * - \t m	: a string of characters
    *
@@ -108,11 +108,11 @@ namespace DGtal
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
-  struct CDrawableWithDGtalCairo
+  struct CDrawableWithBoard3DTo2D
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE( CDrawableWithDGtalCairo )
+    BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
       ConceptUtils::sameType( myD, myT.defaultStyleCairo() );
@@ -128,16 +128,16 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     T myT;
-    DrawableWithDGtalCairo *myD;
+    DrawableWithBoard3DTo2D *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    DGtalCairo myB;
+    Board3DTo2D myB;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithDGtalCairo
+  }; // end of concept CDrawableWithBoard3DTo2D
 
 } // namespace DGtal
 
@@ -145,7 +145,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithDGtalCairo_h
+#endif // !defined CDrawableWithBoard3DTo2D_h
 
-#undef CDrawableWithDGtalCairo_RECURSES
-#endif // else defined(CDrawableWithDGtalCairo_RECURSES)
+#undef CDrawableWithBoard3DTo2D_RECURSES
+#endif // else defined(CDrawableWithBoard3DTo2D_RECURSES)
