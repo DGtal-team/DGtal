@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/geometry/nd/GaussDigitizer.h"
