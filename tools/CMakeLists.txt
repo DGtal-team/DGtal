@@ -8,8 +8,10 @@ endif ( CPP0X_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
+include_directories (${PROJECT_BINARY_DIR}/src/)
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/tools/)
+include_directories (${PROJECT_BINARY_DIR}/src/)
 
 
 # Make sure the linker can find the library.

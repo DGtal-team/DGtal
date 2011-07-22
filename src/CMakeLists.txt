@@ -3,8 +3,8 @@ if ( CPP0X_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 endif ( CPP0X_INITIALIZER_LIST )
 
-include_directories (${PROJECT_SOURCE_DIR}/src)
-include_directories (${CMAKE_CURRENT_BINARY_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_BINARY_DIR}/src)
 
 ##Recursive calls
 ## each subdir must contain a ModuleSRC.txt file with a set command on the variable ${DGTAL_SRC}
