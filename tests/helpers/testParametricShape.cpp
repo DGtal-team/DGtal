@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/parametricShapes/Ball2D.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ bool testParametricShape()
   Z2i::Space::RealPoint c(32.0,32.0);
   Z2i::Point cc(32,32);
 
-  DGtalBoard board;
+  Board2D board;
   
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);

@@ -68,7 +68,7 @@ using namespace LibBoard;
   << y << std::endl;
 
 
-struct MyDomainStyleCustomRed : public DrawableWithDGtalBoard
+struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
   void selfDraw(LibBoard::Board & aboard) const
   {
@@ -96,7 +96,7 @@ bool testDigitalSetBoardSnippet()
   Point e(  1, -3  );
   mySet.insert( e );
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(Board::UCentimeter);
   board << mySet;
   board.saveSVG("myset-export.svg");
@@ -217,7 +217,7 @@ bool testDigitalSetDraw()
 
   //Board export test
   trace.beginBlock("SVG Export");
-  DGtalBoard board;
+  Board2D board;
   domain.selfDrawAsGrid(board);
   disk.selfDraw(board);
 

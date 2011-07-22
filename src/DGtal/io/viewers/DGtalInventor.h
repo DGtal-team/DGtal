@@ -57,8 +57,8 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTranslation.h>
-#include "DGtal/io/3dViewers/IVViewer.h"
-#include "DGtal/io/3dViewers/Lattice.h"
+#include "DGtal/io/viewers/IVViewer.h"
+#include "DGtal/io/viewers/Lattice.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ namespace DGtal
      *
      * Next display of a HyperRectDomain object will used the mode
      * "Paving".  Modes may only be used in objects implementing the
-     * concept CDrawableWithDGtalBoard.
+     * concept CDrawableWithBoard2D.
      */
     ModeMapping myModes;
 
@@ -264,7 +264,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/3dViewers/DGtalInventor.ih"
+#include "DGtal/io/viewers/DGtalInventor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

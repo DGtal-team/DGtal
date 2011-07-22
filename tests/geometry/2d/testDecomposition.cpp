@@ -43,7 +43,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
@@ -91,7 +91,7 @@ bool testDec4()
   DecompositionType theDecomposition(theContour.begin(), theContour.end(), computer, false);
   
 	// Draw the grid
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
   aBoard << SetMode("PointVector", "Grid")
@@ -152,7 +152,7 @@ bool testDec8()
   DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
   
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
 	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
@@ -220,7 +220,7 @@ bool testDisconnectedCurve()
   DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
   
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
 	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
@@ -275,7 +275,7 @@ bool testClosedCurvesProcessedAsClosed()
 	DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,true );
 
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
 	 			 << theContour;
   //for each segment
@@ -322,7 +322,7 @@ bool testClosedCurvesProcessedAsOpen()
 	DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,false );
 
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
 	 			 << theContour;
   //for each segment
@@ -369,7 +369,7 @@ bool testOpenCurvesProcessedAsClosed()
 	DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,true );
 
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
 	 			 << theContour;
   //for each segment
@@ -443,7 +443,7 @@ bool testOnePoint()
 		PrimitiveType computer;
 		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		DGtalBoard aBoard;
+		Board2D aBoard;
 		aBoard << curve.at(0);
 		//for each segment
 		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
@@ -529,7 +529,7 @@ bool testOneDSS()
 	DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
 	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
@@ -586,7 +586,7 @@ curve.push_back(Point(9,1));
   DecompositionType theDecomposition(curve.rbegin(), curve.rend(), computer, false);
   
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
 	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {

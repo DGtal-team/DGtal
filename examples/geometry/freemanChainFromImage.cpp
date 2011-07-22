@@ -41,7 +41,7 @@
 
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
@@ -78,7 +78,7 @@ int main()
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 						    ks, set2dPredicate, sAdj );  
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << set2d;
   aBoard << image.domain();  
 

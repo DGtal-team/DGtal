@@ -41,7 +41,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -52,17 +52,17 @@ using namespace DGtal;
 
 
 
-struct MyStyleCustom : public DrawableWithDGtalBoard
+struct MyStyleCustom : public DrawableWithBoard2D
 {
-  void selfDraw(DGtalBoard & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(0, 169, 0);
   }
 };
 
-struct MyStyleCustomRed : public DrawableWithDGtalBoard
+struct MyStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(DGtalBoard & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(169, 0, 0);
   }
@@ -130,7 +130,7 @@ bool testSimpleExpander()
 
 
   //Board Export init
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(LibBoard::Board::UCentimeter);
 
   //Border=4 Filling=4
@@ -259,7 +259,7 @@ bool testLayers()
 
 
   //Board Export init
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(LibBoard::Board::UCentimeter);
 
   //Border=4 Filling=4

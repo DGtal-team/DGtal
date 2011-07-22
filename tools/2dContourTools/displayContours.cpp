@@ -44,7 +44,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/PointListReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/RealPointVector.h"
 
@@ -129,7 +129,7 @@ int main( int argc, char** argv )
     scale = vm["scale"].as<double>();
   }
   
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit (0.05*scale, LibBoard::Board::UCentimeter);
   
 
@@ -330,15 +330,15 @@ int main( int argc, char** argv )
       else
 	if (vm.count("outputEPS")){
 	  string outputFileName= vm["outputEPS"].as<string>();
-	  aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoEPS );
+	  aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoEPS );
 	} else 
 	  if (vm.count("outputPDF")){
 	    string outputFileName= vm["outputPDF"].as<string>();
-	    aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPDF );
+	    aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPDF );
 	  } else 
 	    if (vm.count("outputPNG")){
 	      string outputFileName= vm["outputPNG"].as<string>();
-	      aBoard.saveCairo(outputFileName.c_str(),DGtalBoard::CairoPNG );
+	      aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPNG );
 	    }
 #endif
 	    else { //default output

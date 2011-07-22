@@ -60,7 +60,7 @@ SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
  
 You can display the thresholded set:
 @code 
-DGtalBoard aBoard;
+Board2D aBoard;
 aBoard << set2d;
 aBoard << image.domain();  
 @endcode
@@ -114,7 +114,7 @@ boundary of the digital set we can specify it by using the mode "InterGrid" as f
 @code
 aBoard << SetMode( fc.styleName(), "InterGrid" );
 aBoard<< CustomStyle( fc.styleName(), 
-    			  new CustomColors(  cmap_grad(i),  DGtalBoard::Color::None ) );    
+    			  new CustomColors(  cmap_grad(i),  Board2D::Color::None ) );    
 @endcode
 
 By using the display color defining in the example <a

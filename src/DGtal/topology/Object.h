@@ -50,11 +50,11 @@
 
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/boards/DGtalCairo.h"
 #endif
 
 
@@ -79,8 +79,8 @@ namespace DGtal
    * points which touch the complement in the sense of background
    * adjacency.
    *
-   * \b export: An Object realizes the concept CDrawableWithDGtalBoard. It
-   * may be displayed with a DGtalBoard, and is by default displayed
+   * \b export: An Object realizes the concept CDrawableWithBoard2D. It
+   * may be displayed with a Board2D, and is by default displayed
    * as a set of digital points. An Object reacts to the mode
    * "DrawAdjacencies". In this case the set of points and the
    * adjacency relations are displayed.
@@ -477,9 +477,9 @@ namespace DGtal
       /**
        * Default style.
        */
-      struct DefaultDrawStyle : public DrawableWithDGtalBoard
+      struct DefaultDrawStyle : public DrawableWithBoard2D
       {
-        virtual void selfDraw(DGtalBoard & aBoard) const
+        virtual void selfDraw(Board2D & aBoard) const
         {
           aBoard.setFillColorRGBi(160, 160, 160);
           aBoard.setPenColorRGBi(80, 80, 80);
@@ -490,14 +490,14 @@ namespace DGtal
 
     
 
-      // --------------- CDrawableWithDGtalBoard realization ------------------
+      // --------------- CDrawableWithBoard2D realization ------------------
     public:
 
       /**
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+      DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
       /**
        * @return the style name used for drawing this object.
@@ -505,10 +505,10 @@ namespace DGtal
       std::string styleName() const;
 
       /**
-       * Draw the object on a DGtalBoard board.
+       * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
        */
-      void selfDraw( DGtalBoard & board ) const;
+      void selfDraw( Board2D & board ) const;
 
 
 
@@ -518,13 +518,13 @@ namespace DGtal
        * @tparam Functor a Functor to specialize the Board style
        */
       template<typename Functor>
-      void selfDrawWithAdjacencies(DGtalBoard & board ) const;
+      void selfDrawWithAdjacencies(Board2D & board ) const;
 
       /**
        * Draw the object (with Adjacency relationships) on a LiBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawWithAdjacencies(DGtalBoard & board ) const;
+      void selfDrawWithAdjacencies(Board2D & board ) const;
 
 
 
@@ -536,9 +536,9 @@ namespace DGtal
        /**
        * Default style.
        */
-    struct DefaultDrawStyleQGL : public  DrawableWithDGtalQGLViewer 
+    struct DefaultDrawStyleViewer3D : public  DrawableWithViewer3D 
     {
-        virtual void selfDrawQGL(DGtalQGLViewer & viewer) const
+        virtual void selfDrawViewer3D(Viewer3D & viewer) const
         {
 	  viewer.myModes[ "Object" ] = "";
          }
@@ -549,23 +549,23 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer * defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D * defaultStyleViewer3D( std::string mode = "" ) const;
     
        /**
-       * Draw the object on a DGtalBoard board.
+       * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawQGL( DGtalQGLViewer & viewer ) const;
+      void selfDrawViewer3D( Viewer3D & viewer ) const;
 
 
       template<typename Functor>
-      void selfDrawWithAdjacenciesQGL( DGtalQGLViewer & viewer ) const;
+      void selfDrawWithAdjacenciesViewer3D( Viewer3D & viewer ) const;
 
       /**
        * Draw the object (with Adjacency relationships) on a LiBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawWithAdjacenciesQGL( DGtalQGLViewer & viewer ) const;
+      void selfDrawWithAdjacenciesViewer3D( Viewer3D & viewer ) const;
 
 
     
@@ -595,7 +595,7 @@ namespace DGtal
     DrawableWithDGtalCairo * defaultStyleCairo( std::string mode = "" ) const;
     
        /**
-       * Draw the object on a DGtalBoard board.
+       * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
        */
       void selfDrawCairo( DGtalCairo & viewer ) const;
@@ -635,15 +635,15 @@ namespace DGtal
       const Object<TDigitalTopology, TDigitalSet> & object );
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
   struct DrawObjectAdjacencies : public DrawWithBoardModifier
   {
     DrawObjectAdjacencies( bool drawAdj = true )
         : myDrawAdj( drawAdj )
     {}
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ "Object" ] = myDrawAdj ? "DrawAdjacencies" : "";
     }

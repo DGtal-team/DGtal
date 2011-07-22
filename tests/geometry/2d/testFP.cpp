@@ -50,7 +50,7 @@ using namespace LibBoard;
 
 template<typename Coordinate>
 void 
-drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, DGtalBoard & aBoard) 
+drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, Board2D & aBoard) 
 {
   //polyline to draw
 	vector<LibBoard::Point> polyline;
@@ -94,13 +94,13 @@ bool testDrawingFP()
   //trace.info() << theFP << std::endl;
 
 	// Draw the FP
-  DGtalBoard aBoard;
+  Board2D aBoard;
 	aBoard << SetMode( "PointVector", "Grid" ) << theContour;
   aBoard << theFP;
   aBoard.saveEPS("FP.eps");
 
   //accessors: 
-  DGtalBoard newBoard;
+  Board2D newBoard;
 	newBoard << SetMode( "PointVector", "Grid" ) << theContour;
 
   trace.info() << "FP" << endl;

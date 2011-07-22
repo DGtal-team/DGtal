@@ -38,7 +38,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ int main()
   typedef GrayscaleColorMap<unsigned char> Gray;
   
   //Input shape output
-  DGtalBoard board;
+  Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   image.selfDraw<Gray> ( board , 0, 129);
   board.saveSVG("inputShape.svg");

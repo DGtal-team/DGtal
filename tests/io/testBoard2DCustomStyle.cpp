@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testDGtalBoardCustomStyle.cpp
+ * @file testBoard2DCustomStyle.cpp
  * @ingroup Tests
  * @author davidcoeurjolly (login) (\c Unknown )
  * Unknown
  *
  * @date 2010/10/24
  *
- * Functions for testing class DGtalBoardCustomStyle.
+ * Functions for testing class Board2DCustomStyle.
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +48,7 @@ using namespace DGtal;
 /**
  * Custom style.
  */
-struct MyDrawStyleCustomGreen : public DrawableWithDGtalBoard
+struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
   virtual void selfDraw( LibBoard::Board & aBoard ) const
    {
@@ -58,13 +58,13 @@ struct MyDrawStyleCustomGreen : public DrawableWithDGtalBoard
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class DGtalBoardCustomStyle.
+// Functions for testing class Board2DCustomStyle.
 //////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testDGtalBoardCustomStyle()
+bool testBoard2DCustomStyle()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -88,7 +88,7 @@ bool testDGtalBoardCustomStyle()
   mySet.insert( e );
 
 
-  DGtalBoard board;
+  Board2D board;
   board.setUnit(LibBoard::Board::UCentimeter);
   
   board << DrawDomainGrid()
@@ -113,13 +113,13 @@ bool testDGtalBoardCustomStyle()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class DGtalBoardCustomStyle" );
+  trace.beginBlock ( "Testing class Board2DCustomStyle" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDGtalBoardCustomStyle(); // && ... other tests
+  bool res = testBoard2DCustomStyle(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

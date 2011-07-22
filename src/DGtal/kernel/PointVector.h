@@ -51,17 +51,17 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/kernel/IntegerTraits.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/CInteger.h"
 
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/boards/DGtalCairo.h"
 #endif
 
 
@@ -593,37 +593,37 @@ namespace DGtal
     /**
      * Default styles.
      */
-    struct DefaultDrawStylePaving : public DrawableWithDGtalBoard
+    struct DefaultDrawStylePaving : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi(220,220,220);
 	aBoard.setLineWidth(1);
       }
     };
 
     
-    struct DefaultDrawStyleGrid : public DrawableWithDGtalBoard
+    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
     {
-      virtual void selfDraw( DGtalBoard & aBoard ) const
+      virtual void selfDraw( Board2D & aBoard ) const
       {
 	aBoard.setPenColor(Color::Black);
-	aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
 
 
 
-    // --------------- CDrawableWithDGtalBoard realization -------------------
+    // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalBoard* defaultStyle( std::string mode = "" ) const;
+    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
 
     
@@ -633,25 +633,25 @@ namespace DGtal
     std::string styleName() const;
     
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDraw( DGtalBoard & board ) const;
+    void selfDraw( Board2D & board ) const;
 
     
     /**
-     * Draw a pixel as a unit square on a DGtalBoard board.
+     * Draw a pixel as a unit square on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     
-    void selfDrawAsPaving( DGtalBoard & board ) const;
+    void selfDrawAsPaving( Board2D & board ) const;
     
     
     /**
      * Draw a pixel as a point on a LiBoard board
      * @param board the output board where the object is drawn.
      */
-    void selfDrawAsGrid( DGtalBoard & board ) const;
+    void selfDrawAsGrid( Board2D & board ) const;
     
     
 #ifdef WITH_VISU3D_QGLVIEWER
@@ -660,16 +660,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalQGLViewer* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL ( DGtalQGLViewer & viewer ) const;
-    void selfDrawQGL ( DGtalQGLViewer & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridQGL( DGtalQGLViewer & viewer  ) const;
-    void selfDrawAsPavingQGL( DGtalQGLViewer & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer ) const;
+    void selfDrawViewer3D ( Viewer3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
+    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
 
 #endif
     
@@ -682,7 +682,7 @@ namespace DGtal
     DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
-     * Draw the object on a DGtalBoard board.
+     * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDrawCairo ( DGtalCairo & viewer ) const;
@@ -695,13 +695,13 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     /**
-     * Draw the object (as a Vector from aPoint) on a DGtalBoard board
+     * Draw the object (as a Vector from aPoint) on a Board2D board
      *
      * @param board the output board where the object is drawn.
      * @param startingPoint the starting point of the vector
      * @tparam Functor a Functor to specialize the Board style
      */
-    void selfDraw( DGtalBoard & board, const Self &startingPoint ) const;
+    void selfDraw( Board2D & board, const Self &startingPoint ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -728,22 +728,22 @@ namespace DGtal
 
   
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
   struct DrawPavingPixel : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ "PointVector" ] = "Paving";
     }
   };
   
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
   struct DrawGridPixel : public DrawWithBoardModifier {
-    void selfDraw( DGtalBoard & board ) const
+    void selfDraw( Board2D & board ) const
     {
       board.myModes[ "PointVector" ] = "Grid";
     }
@@ -753,33 +753,33 @@ namespace DGtal
 
 
   /**
-   * Modifier class in a DGtalBoard stream. Realizes the concept
-   * CDrawableWithDGtalBoard.
+   * Modifier class in a Board2D stream. Realizes the concept
+   * CDrawableWithBoard2D.
    */
 
 #ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingVoxel : public DrawableWithDGtalQGLViewer {
-      void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawPavingVoxel : public DrawableWithViewer3D {
+      void selfDrawViewer3D( Viewer3D & viewer ) const
       {
 	viewer.myModes[ "PointVector" ] = "Paving";
       }
   };
   
   
-  struct DrawGridVoxel : public DrawableWithDGtalQGLViewer {
-    void selfDrawQGL( DGtalQGLViewer & viewer ) const
+  struct DrawGridVoxel : public DrawableWithViewer3D {
+    void selfDrawViewer3D( Viewer3D & viewer ) const
     {
       viewer.myModes[ "PointVector" ] = "Grid";
     }
   };
 
-  struct DefaultDrawStyleGrid3D : public DrawableWithDGtalQGLViewer {
+  struct DefaultDrawStyleGrid3D : public DrawableWithViewer3D {
 
-    virtual void selfDrawQGL( DGtalQGLViewer & viewer ) const
+    virtual void selfDrawViewer3D( Viewer3D & viewer ) const
     {
 	//aBoard.setPenColor(Color::Black);
-	//aBoard.setLineStyle( DGtalBoard::Shape::SolidStyle );
+	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
 

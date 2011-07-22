@@ -6,7 +6,7 @@
 namespace DGtal {
 
 /**
- * @page threeD_visu DGtalQGLViewer: a stream mechanism for displaying  3D DGtal objects 
+ * @page threeD_visu Viewer3D: a stream mechanism for displaying  3D DGtal objects 
  *
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
@@ -22,27 +22,27 @@ namespace DGtal {
  *  -# \ref DGtalGLV_Custom
  *  -# \ref DGtalGLV_CLipping 
  *
- * \section DGtalGLV_VisualizeSimpleObject DGtalQGLViewer: simple visualization based on libQGLViewer 
+ * \section DGtalGLV_VisualizeSimpleObject Viewer3D: simple visualization based on libQGLViewer 
  *  
- * First to use the DGtalQGLViewer stream,  you need to include the following hearders:
+ * First to use the Viewer3D stream,  you need to include the following hearders:
  *
  * @code
- #include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+ #include "DGtal/io/3dViewers/viewer3D.h"
 *  @endcode
 *
  *  LibQGLViewer  ( http://www.libqglviewer.com ) is a C++ library based on QT allowing to access 
  *  to simple 3D fonctionalities like camera moving, mouse, keyboard interaction, clipping plane 
- *  .... etc.   The class DGtalQGLViewer inherits from the base class QGLViewer (which is based on QGLwidget). 
+ *  .... etc.   The class Viewer3D inherits from the base class QGLViewer (which is based on QGLwidget). 
  * It permits to display simple 3D shapes. 
  *
  *	
  * The following code snippet defines three points and a rectangular
- * domain in Z3. It then displays them in a DGtalQGLviewer object. The	
- * full code is in <a  href="dgtalQGLviewer-1-points_8cpp-example.html">dgtalQGLviewer-1-points.cpp</a>.
+ * domain in Z3. It then displays them in a Viewer3D object. The	
+ * full code is in <a  href="viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *	
  * 
- * The first step to visualize 3D object with DGtalQGLViewer is to create a QApplication can be done as follows:
+ * The first step to visualize 3D object with Viewer3D is to create a QApplication can be done as follows:
  *
  *
 *
@@ -54,7 +54,7 @@ using namespace DGtal;
 using namespace Z3i;
 
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.show();
  
  Point p1( 0, 0, 0 );
@@ -64,27 +64,27 @@ using namespace Z3i;
 
  viewer << domain;  
  viewer << p1 << p2 << p3; 
- viewer << << DGtalQGLViewer::updateDisplay;
+ viewer << << Viewer3D::updateDisplay;
 
 
 * @endcode
 *
 * You should obtain the following visualisation:
 *
-* \image html simple3dVisu1.png "Digital point visualization  with DGtalQGLViewer." 
-* \image latex simple3dVisu1.png "Digital point visualization  with DGtalQGLViewer." width=5cm
+* \image html simple3dVisu1.png "Digital point visualization  with Viewer3D." 
+* \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
 *
 *
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *
 *
-* The DGtalQGViewer class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
+* The Viewer3Dr class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
 *
 * @code
 
  QApplication application(argc,argv);
- DGtalQGLViewer viewer;
+ Viewer3D viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -98,20 +98,20 @@ using namespace Z3i;
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << DGtalQGLViewer::updateDisplay
+ viewer << shape_set << Viewer3D::updateDisplay
  
  @endcode
 *
-* You should obtain the following visualisation (see example: <a href="dgtalQGLviewer-2-sets_8cpp-example.html">dgtalQGLviewer-2-sets.cpp </a>):
+* You should obtain the following visualisation (see example: <a href="viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
-* \image html simple3dVisu2.png "Digital point visualization  with DGtalQGLViewer." 
-* \image latex simple3dVisu2.png "Digital point visualization  with DGtalQGLViewer." width=5cm
+* \image html simple3dVisu2.png "Digital point visualization  with Viewer3D." 
+* \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
 *
 *
 *
 * \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
 *
-*  As for DGtalBoard, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c styleName() on an instance of the correct type and the desired mode (a string).
+*  As for Board2D, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c styleName() on an instance of the correct type and the desired mode (a string).
 *
 *
 *@code
@@ -128,14 +128,14 @@ using namespace Z3i;
  viewer << shape2;
 @endcode
 
-* You should obtain the two following visualisations (see example: <a href="dgtalQGLviewer-3-objects_8cpp-example.html">dgtalQGLviewer-3-objects.cxx </a>):
+* You should obtain the two following visualisations (see example: <a href="viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cxx </a>):
 *<CENTER>
 *<TABLE> 
 *<TR>
-*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with DGtalQGLViewer." 
-      		    \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization  with DGtalQGLViewer." width=5cm </TD>
-*<TD  align=CENTER >\image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with DGtalQGLViewer."
-      		    \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with DGtalQGLViewer."  width=5cm </TD>
+*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
+      		    \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." width=5cm </TD>
+*<TD  align=CENTER >\image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
+      		    \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm </TD>
 * </TR>
 *</TABLE>
 *</CENTER>
@@ -151,7 +151,7 @@ using namespace Z3i;
 
 \subsection DGtalGLV_ModeListing Listing of different modes
 
-As for \c DGtalBoard the object can be displayed with different possible mode:
+As for \c Board2D the object can be displayed with different possible mode:
 
    * - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
    * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
@@ -164,7 +164,7 @@ As for \c DGtalBoard the object can be displayed with different possible mode:
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with \ref Objet modes
 
-The file <a href="dgtalQGLviewer-4-modes_8cpp-example.html" >  dgtalQGLviewer-4-modes.cxx </a> illustrates several  possible modes to display these objects:
+The file <a href="viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cxx </a> illustrates several  possible modes to display these objects:
 
 
 We can display the set of point and the domain 
@@ -237,7 +237,7 @@ Others mode examples are illustrated for class KhalimskyCell and class SignedKha
 
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
-As for DGtalBoard, it is possible to custom the way to display 3D elements by using an instance of the following classes:
+As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
 
 
 -  CustomColors3D: to change the color used to display surface primitive (GL_QUADS) and the pen color (LINE/POINTS) ;
@@ -253,7 +253,7 @@ The custom color can be applied by an instance of the CustomColors3D as follow:
 
 
 
-The example <a  href="dgtalQGLviewer-5-custom_8cpp-example.html"> dgtalQGLviewer-5-custom </a> illustrates some possible customs :
+The example <a  href="viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </a> illustrates some possible customs :
 
 
 
@@ -269,8 +269,8 @@ The example <a  href="dgtalQGLviewer-5-custom_8cpp-example.html"> dgtalQGLviewer
 It also possible through the stream mechanism to add clipping plane
 with the object \c ClippingPlane. We just have to add the real plane
 equation and adding as for displaying an element. The file <a
-href="dgtalQGLviewer-6-clipping_8cpp-example.html"
->dgtalQGLviewer-6-clipping.cpp</a> gives a simple example.
+href="viewer3D-6-clipping_8cpp-example.html"
+>viewer3D-6-clipping.cpp</a> gives a simple example.
 
 From displaying a digital set defined from a Norm2 ball,
 @code
@@ -315,28 +315,28 @@ It also possible to remove the visualisation of the transparent clipping plane b
 
 
 /**
-\example dgtalQGLviewer-1-points.cpp
+\example viewer3D-1-points.cpp
 * 
 */
 
 /**
-\example dgtalQGLviewer-2-sets.cpp
+\example viewer3D-2-sets.cpp
 * 
 */
 /**
-\example dgtalQGLviewer-3-objects.cpp
+\example viewer3D-3-objects.cpp
 * 
 */
 /**
-\example dgtalQGLviewer-4-modes.cpp
+\example viewer3D-4-modes.cpp
 * 
 */
 /**
-\example dgtalQGLviewer-5-custom.cpp
+\example viewer3D-5-custom.cpp
 * 
 */
 /**
-\example dgtalQGLviewer-6-clipping.cpp
+\example viewer3D-6-clipping.cpp
 * 
 */
  

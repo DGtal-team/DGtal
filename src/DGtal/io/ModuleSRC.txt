@@ -2,7 +2,32 @@
 ##
 
 
+##########################################
+#### boards
+##########################################
+
 SET(DGTAL_SRC ${DGTAL_SRC} 
-	      DGtal/io/DGtalBoard
+	      DGtal/io/boards/Board2D
 	      DGtal/io/Color )
+
+
+if( WITH_CAIRO )
+SET(DGTAL_SRC ${DGTAL_SRC} 
+		DGtal/io/boards/DGtalCairo)
+endif( WITH_CAIRO )
+
+
+##########################################
+#### viewers
+##########################################
+
+if( WITH_VISU3D_IV )
+  SET(DGTALIV_SRC ${DGTALIV_SRC} 
+		DGtal/io/viewers/IVViewer	)
+endif( WITH_VISU3D_IV )
+
+if( WITH_VISU3D_QGLVIEWER )
+SET(DGTALQGLV_SRC ${DGTALQGVL_SRC} 
+		DGtal/io/viewers/Viewer3D)
+endif( WITH_VISU3D_QGLVIEWER )
 

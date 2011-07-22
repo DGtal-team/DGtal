@@ -308,7 +308,7 @@ bool testSurfelAdjacency()
   trace.endBlock();
   if ( K.dimension == 2 )
     {
-      DGtalBoard board;
+      Board2D board;
       board.setUnit( LibBoard::Board::UCentimeter );
       board << SetMode( domain.styleName(), "Paving" )
 	    << domain;
@@ -343,7 +343,7 @@ bool testCellDrawOnBoard()
   Point high( xhigh ); 
   bool space_ok = K.init( low, high, true );
   Domain domain( low, high );
-  DGtalBoard board;
+  Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.styleName(), "Paving" )
 	<< domain;
@@ -361,7 +361,7 @@ bool testCellDrawOnBoard()
 			new CustomPen( Color( 200, 0, 0 ), 
 				       Color( 255, 100, 100 ),
 				       2.0, 
-				       DGtalBoard::Shape::SolidStyle ) )
+				       Board2D::Shape::SolidStyle ) )
 	<< sspel2 
     	<< K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) )
 	<< K.sIncident( sspel2, 1, K.sDirect( sspel2, 0 ) );

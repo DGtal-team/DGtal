@@ -43,7 +43,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
@@ -90,7 +90,7 @@ bool testCover4()
   DecompositionType theDecomposition(theContour.begin(), theContour.end(), primitive, false);
   
 	// Draw the grid
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
   aBoard << SetMode("PointVector", "Grid")
@@ -147,7 +147,7 @@ bool testDisconnectedCurve()
   DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
   
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Grid");
 	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
@@ -202,7 +202,7 @@ bool testClosedCurves(const bool& aFlag)
 	DSS4 dss;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),dss,aFlag );
 
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
 	 			 << theContour;
   //for each segment
@@ -282,7 +282,7 @@ bool testOnePoint()
 	  trace.beginBlock("Digital curve having one point");
 	  DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
 
-		DGtalBoard aBoard;
+		Board2D aBoard;
 		aBoard << curve.at(0);
 		//for each segment
 		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
@@ -367,7 +367,7 @@ bool testOneDSS()
 	DecompositionType theDecomposition(curve.begin(), curve.end(), primitive, false);
   
 	// Draw the pixels
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
 	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {

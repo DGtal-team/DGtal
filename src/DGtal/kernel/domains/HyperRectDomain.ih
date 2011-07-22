@@ -145,7 +145,7 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Both" ) || ( mode == "Grid" ) ) 
@@ -165,7 +165,7 @@ DGtal::HyperRectDomain<TSpace>::styleName() const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
+DGtal::HyperRectDomain<TSpace>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
@@ -184,7 +184,7 @@ DGtal::HyperRectDomain<TSpace>::selfDraw( DGtalBoard & board ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 {
   ASSERT(TSpace::dimension == 2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -223,7 +223,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( DGtalBoard & aboard) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
+DGtal::HyperRectDomain<TSpace>::selfDrawViewer3D( Viewer3D & viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
@@ -236,21 +236,21 @@ DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
     selfDrawAsBoundingBox( viewer );
   }else if( ( mode == "" ) ||  (mode == "Grid")){
      viewer.createNewLineList();
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
   }
   else if ( mode == "Paving" ){
     viewer.createNewVoxelList(false);
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingViewer3D( viewer );
 
   } else if ( mode == "PavingPoints" ){
     viewer.createNewPointList();
-    selfDrawAsPavingPointsQGL( viewer );
+    selfDrawAsPavingPointsViewer3D( viewer );
 
   }else if ( mode == "PavingGrids" ){
     viewer.createNewLineList();
     viewer.createNewVoxelList(false);
-    selfDrawAsGridQGL( viewer );
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsGridViewer3D( viewer );
+    selfDrawAsPavingViewer3D( viewer );
   }
   // selfDrawAsGrid( board );
 }
@@ -261,7 +261,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawQGL( DGtalQGLViewer & viewer ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( DGtalQGLViewer & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   QColor colDef(250,250,250,10);
@@ -314,7 +314,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( DGtalQGLViewer & viewer) 
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGridQGL( DGtalQGLViewer & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -375,7 +375,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridQGL( DGtalQGLViewer & viewer) cons
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsQGL( DGtalQGLViewer & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -405,7 +405,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsQGL( DGtalQGLViewer & view
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingQGL( DGtalQGLViewer & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   
@@ -660,7 +660,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( DGtalCairo & viewer) cons
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( DGtalBoard & aboard) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
 {
   ASSERT(TSpace::dimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
   

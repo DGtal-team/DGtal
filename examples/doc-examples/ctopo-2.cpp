@@ -60,13 +60,13 @@ int main( int argc, char** argv )
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
-  DGtalBoard board;
+  Board2D board;
   board << image.domain() << set2d; // display domain and set
   
-  DGtalBoard board2;
+  Board2D board2;
   board2 << image.domain() << set2d; // display domain and set
 
-  DGtalBoard board3;
+  Board2D board3;
   board3 << image.domain() << set2d; // display domain and set
 
 

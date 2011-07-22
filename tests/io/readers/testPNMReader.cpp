@@ -62,7 +62,7 @@ bool testPNMReader()
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
    
-  DGtalBoard board;
+  Board2D board;
   board << image.domain() << set2d; // display domain and set
   
   board.saveEPS( "testPNMReader.eps");

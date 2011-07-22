@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDrawableWithDGtalCairo.h
+ * @file CDrawableWithBoard2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,45 +25,43 @@
  *
  * @date 2010/10/21
  *
- * Header file for concept CDrawableWithDGtalCairo.cpp
+ * Header file for concept CDrawableWithBoard2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithDGtalCairo_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithDGtalCairo.h
-#else // defined(CDrawableWithDGtalCairo_RECURSES)
+#if defined(CDrawableWithBoard2D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithBoard2D.h
+#else // defined(CDrawableWithBoard2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithDGtalCairo_RECURSES
+#define CDrawableWithBoard2D_RECURSES
 
-#if !defined CDrawableWithDGtalCairo_h
+#if !defined CDrawableWithBoard2D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithDGtalCairo_h
+#define CDrawableWithBoard2D_h
 
 //////////////////////////////////////////////////////////////////////////////
-
 // Inclusions
 
 #include <iostream>
-#include "boost/concept_check.hpp"
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
 #include "DGtal/base/Common.h"
-
+#include "DGtal/io/boards/Board2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithDGtalCairo
+  // class CDrawableWithBoard2D
   /**
-   * Description of \b concept '\b CDrawableWithDGtalCairo' <p>
+   * Description of \b concept '\b CDrawableWithBoard2D' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithDGtalCairo specifies what are the classes
-   * that admit an export with DGtalBoard.
+   * Aim:  The concept CDrawableWithBoard2D specifies what are the classes
+   * that admit an export with Board2D.
    * An object x satisfying this concept may then be used as:
    * 
    \code
-   DGtalBoard board;
+   Board2D board;
    board << CustomStyle( x.styleName(), x.defaultStyle() )
          << x;
    \endcode 
@@ -73,7 +71,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithDGtalCairo
+   * - \t X : A type that is a model of CDrawableWithBoard2D
    * - \t x, \t y	: Object of type X
    * - \t m	: a string of characters
    *
@@ -86,7 +84,7 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithDGtalBoard * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
+   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithBoard2D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
    *  <td> </td>
    * </tr>
    * <tr>
@@ -94,7 +92,7 @@ namespace DGtal
    *  <td> </td>
    * </tr>
    * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(DGtalBoard &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
+   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
    *  <td> </td>
    * </tr>
    * </table>
@@ -105,40 +103,40 @@ namespace DGtal
    * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    *
    * <p> Notes <br>
-   * @todo ImageContainerByHashTree does not implement selfDraw(DGtalBoard &).
+   * @todo ImageContainerByHashTree does not implement selfDraw(Board2D &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
-  struct CDrawableWithDGtalCairo
+  struct CDrawableWithBoard2D
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE( CDrawableWithDGtalCairo )
+    BOOST_CONCEPT_USAGE( CDrawableWithBoard2D )
     {
-      //Drawable model should have a defaultStyle() returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyleCairo() );
-      //Drawable model should have a defaultStyle( string ) returning a DrawableWithDGtalBoard*
-      ConceptUtils::sameType( myD, myT.defaultStyleCairo( myS ) );
+      //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
+      ConceptUtils::sameType( myD, myT.defaultStyle() );
+      //Drawable model should have a defaultStyle( string ) returning a DrawableWithBoard2D*
+      ConceptUtils::sameType( myD, myT.defaultStyle( myS ) );
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
       ///@todo FIXME: si on décommente ça plante
-      myT.selfDrawCairo( myB );
+      myT.selfDraw( myB );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     T myT;
-    DrawableWithDGtalCairo *myD;
+    DrawableWithBoard2D *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    DGtalCairo myB;
+    Board2D myB;
     std::string myS;
-
+    
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithDGtalCairo
+  }; // end of concept CDrawableWithBoard2D
 
 } // namespace DGtal
 
@@ -146,7 +144,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithDGtalCairo_h
+#endif // !defined CDrawableWithBoard2D_h
 
-#undef CDrawableWithDGtalCairo_RECURSES
-#endif // else defined(CDrawableWithDGtalCairo_RECURSES)
+#undef CDrawableWithBoard2D_RECURSES
+#endif // else defined(CDrawableWithBoard2D_RECURSES)

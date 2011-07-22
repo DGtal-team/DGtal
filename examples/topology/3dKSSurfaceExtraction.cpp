@@ -35,7 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 #include "DGtal/io/Color.h"
@@ -99,7 +99,7 @@ int main( int argc, char** argv )
   
   
   QApplication application(argc,argv);
-  DGtalQGLViewer viewer;
+  Viewer3D viewer;
   viewer.show(); 
    
   //viewer << SetMode3D( vectConnectedSCell.at(0).at(0).styleName(), "Basic" );
@@ -131,7 +131,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,200, 200));
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
-  viewer << DGtalQGLViewer::updateDisplay;
+  viewer << Viewer3D::updateDisplay;
   trace.endBlock();
   return application.exec();
 }

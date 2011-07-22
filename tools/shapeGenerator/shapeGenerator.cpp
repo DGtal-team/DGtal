@@ -51,7 +51,7 @@
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/writers/VolWriter.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 
 
 using namespace DGtal;
@@ -209,7 +209,7 @@ struct Exporter
       else
 	if (outputFormat == "svg")
 	  {
-	    DGtalBoard board;
+	    Board2D board;
 	    board << aSet;
 	    board.saveSVG((outputName+"."+outputFormat).c_str());
 	  }
@@ -217,17 +217,17 @@ struct Exporter
 #ifdef WITH_CAIRO
 	  if (outputFormat == "pdf")
 	    {
-	      DGtalBoard board;
+	      Board2D board;
 	      board << aSet;
-	      board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPDF);
+	      board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPDF);
 	      
 	    }
 	  else
 	    if (outputFormat == "png")
 	      {
-		DGtalBoard board;
+		Board2D board;
 		board << aSet;
-		board.saveCairo((outputName+"."+outputFormat).c_str(), DGtalBoard::CairoPNG);
+		board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPNG);
 	      }
 	    else
 #endif

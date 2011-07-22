@@ -36,7 +36,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ bool testFreemanChain(const string& code)
  */
 bool testDisplayFreemanChain(const string &file)
 {
-  DGtalBoard aBoard;
+  Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
   fstream fst;
@@ -184,10 +184,10 @@ bool testDisplayFreemanChain(const string &file)
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
   
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("testDisplayFC-cairo.pdf", DGtalBoard::CairoPDF, Board::BoundingBox, 5000);
-  aBoard.saveCairo("testDisplayFC-cairo.png", DGtalBoard::CairoPNG, Board::BoundingBox, 5000);
-  aBoard.saveCairo("testDisplayFC-cairo.ps", DGtalBoard::CairoPS, Board::BoundingBox, 5000);
-  aBoard.saveCairo("testDisplayFC-cairo.svg", DGtalBoard::CairoSVG, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.png", Board2D::CairoPNG, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.ps", Board2D::CairoPS, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.svg", Board2D::CairoSVG, Board::BoundingBox, 5000);
 #endif
   
   return true;

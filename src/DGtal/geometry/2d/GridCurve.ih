@@ -260,7 +260,7 @@ DGtal::GridCurve<KSpace>::selfDisplay ( std::ostream & out ) const
 
 template <typename KSpace>
 inline
-DGtal::DrawableWithDGtalBoard*
+DGtal::DrawableWithBoard2D*
 DGtal::GridCurve<KSpace>::defaultStyle( std::string mode ) const
 {
   if ( ( mode == "" ) || ( mode == "Points" ) ) 
@@ -280,7 +280,7 @@ DGtal::GridCurve<KSpace>::styleName() const
 template <typename KSpace>
 inline
 void 
-DGtal::GridCurve<KSpace>::selfDraw(DGtalBoard & aBoard) const
+DGtal::GridCurve<KSpace>::selfDraw(Board2D & aBoard) const
 {
   std::string mode = aBoard.getMode( this->styleName() );
   ASSERT( (mode=="Points" || mode=="" || mode=="Edges") ||
@@ -296,7 +296,7 @@ DGtal::GridCurve<KSpace>::selfDraw(DGtalBoard & aBoard) const
 template <typename KSpace>
 inline
 void 
-DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
+DGtal::GridCurve<KSpace>::selfDrawPoints(Board2D & aBoard) const
 {
   for(unsigned int i=0; i< my0SCells.size(); i++){
     aBoard << my0SCells.at(i);
@@ -306,7 +306,7 @@ DGtal::GridCurve<KSpace>::selfDrawPoints(DGtalBoard & aBoard) const
 template <typename KSpace>
 inline
 void 
-DGtal::GridCurve<KSpace>::selfDrawEdges(DGtalBoard & aBoard) const
+DGtal::GridCurve<KSpace>::selfDrawEdges(Board2D & aBoard) const
 {
   for(unsigned int i=0; i< my1SCells.size(); i++){
     aBoard << my1SCells.at(i);

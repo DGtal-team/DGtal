@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,16 +54,16 @@ int main( )
   shape_set.erase( Point( -5, -1 ) );
   shape_set.erase( Point( 5, 1 ) );
 
-  DGtalBoard board;
+  Board2D board;
   board << domain << shape_set; // display domain and set
   board.saveSVG( "dgtalboard-2-sets-1.svg");
   board.saveEPS( "dgtalboard-2-sets-1.eps");
   
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-1-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-1-cairo.svg", Board2D::CairoSVG);
 #endif
 
   board.clear();
@@ -77,10 +77,10 @@ int main( )
   board.saveEPS( "dgtalboard-2-sets-2.eps");
  
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-2-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-2-cairo.svg", Board2D::CairoSVG);
 #endif
 
   board.clear();
@@ -94,10 +94,10 @@ int main( )
   board.saveEPS( "dgtalboard-2-sets-3.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-3-cairo.pdf", DGtalBoard::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.png", DGtalBoard::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.ps", DGtalBoard::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.svg", DGtalBoard::CairoSVG);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalboard-2-sets-3-cairo.svg", Board2D::CairoSVG);
 #endif
 
   trace.endBlock();
