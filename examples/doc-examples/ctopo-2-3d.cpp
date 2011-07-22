@@ -36,7 +36,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/Surfaces.h"
 
-#include "DGtal/io/viewers/viewer3D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
