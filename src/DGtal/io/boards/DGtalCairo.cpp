@@ -27,7 +27,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/CairoViewers/DGtalCairo.h"
+#include "DGtal/io/boards/DGtalCairo.h"
 #include <limits>
 
 // Includes inline functions/methods if necessary.

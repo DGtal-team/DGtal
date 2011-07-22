@@ -96,23 +96,23 @@ namespace DGtal
   class DGtalBoard;
 
 #ifdef WITH_VISU3D_QGLVIEWER 
-  class DGtalQGLViewer;
+  class Viewer3D;
 #endif
   
 
 #ifdef WITH_VISU3D_QGLVIEWER
   /**
    * Interface that specifies that an object can draw itself on a
-   *  DGtalQGLViewer 
+   *  Viewer3D 
    * (BK)
    */
-  struct DrawableWithDGtalQGLViewer {
+  struct DrawableWithViewer3D {
     /**
      * Operation to override. Does nothing by default.
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( DGtalQGLViewer &  ) const {}
+    virtual void selfDraw( Viewer3D &  ) const {}
   };
 #endif
   

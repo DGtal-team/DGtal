@@ -41,7 +41,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"

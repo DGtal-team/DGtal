@@ -16,23 +16,23 @@
  **/
 
 /**
- * @file DGtalQGLViewer.cpp
+ * @file Viewer3D.cpp
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/01/03
  *
- * Implementation of methods defined in DGtalQGLViewer.h
+ * Implementation of methods defined in Viewer3D.h
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/3dViewers/DGtalQGLViewer.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
-#include "DGtal/io/3dViewers/DGtalQGLViewer.ih"
+#include "DGtal/io/3dViewers/Viewer3D.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -41,7 +41,7 @@ using namespace qglviewer;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// class DGtalQGLViewer
+// class Viewer3D
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,9 +59,9 @@ using namespace qglviewer;
  * @param out the output stream where the object is written.
  */
 void
-DGtal::DGtalQGLViewer::selfDisplay ( std::ostream & out ) const
+DGtal::Viewer3D::selfDisplay ( std::ostream & out ) const
 {
-    out << "[DGtalQGLViewer]";
+    out << "[Viewer3D]";
 }
 
 /**
@@ -69,7 +69,7 @@ DGtal::DGtalQGLViewer::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 bool
-DGtal::DGtalQGLViewer::isValid() const
+DGtal::Viewer3D::isValid() const
 {
     return true;
 }
@@ -80,7 +80,7 @@ DGtal::DGtalQGLViewer::isValid() const
 
 
 void
-DGtal::DGtalQGLViewer::drawWithNames(){   
+DGtal::Viewer3D::drawWithNames(){   
   
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
     glCallList(myListToAff+i);
@@ -98,7 +98,7 @@ DGtal::DGtalQGLViewer::drawWithNames(){
 
 
 void
-DGtal::DGtalQGLViewer::draw()
+DGtal::Viewer3D::draw()
 {
 
   glPushMatrix();
@@ -181,7 +181,7 @@ DGtal::DGtalQGLViewer::draw()
 
 
 void
-DGtal::DGtalQGLViewer::init(){
+DGtal::Viewer3D::init(){
   myNbListe=0;
   createNewVoxelList(true);
   vector<lineGL> listeLine;
@@ -220,7 +220,7 @@ DGtal::DGtalQGLViewer::init(){
 
 
 void 
-DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
+DGtal::Viewer3D::sortSurfelFromCamera(){
   compFarthestFromCamera comp;
   comp.posCam= camera()->position();
   for(unsigned int i=0; i<myVoxelSetList.size(); i++){
@@ -237,7 +237,7 @@ DGtal::DGtalQGLViewer::sortSurfelFromCamera(){
 
 
 void 
-DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
+DGtal::Viewer3D::postSelection(const QPoint& point)
 {
   camera()->convertClickToLine(point, myOrig, myDir);
   bool found;
@@ -268,7 +268,7 @@ DGtal::DGtalQGLViewer::postSelection(const QPoint& point)
 
 
 void
-DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
+DGtal::Viewer3D::updateList(bool updateBoundingBox)
 {
   unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
@@ -428,7 +428,7 @@ DGtal::DGtalQGLViewer::updateList(bool updateBoundingBox)
 
 
 void
-DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
+DGtal::Viewer3D::glDrawGLLinel(lineGL aLinel){
   glPushMatrix();
   glTranslatef(aLinel.x1, aLinel.y1, aLinel.z1);
   Vec dir (aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
@@ -446,7 +446,7 @@ DGtal::DGtalQGLViewer::glDrawGLLinel(lineGL aLinel){
 
 
 void 
-DGtal::DGtalQGLViewer::glDrawGLPointel(pointGL pointel){
+DGtal::Viewer3D::glDrawGLPointel(pointGL pointel){
  
  if(!pointel.isSigned){
    glPushMatrix();
@@ -502,7 +502,7 @@ DGtal::DGtalQGLViewer::glDrawGLPointel(pointGL pointel){
 
 
 void 
-DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
+DGtal::Viewer3D::keyPressEvent(QKeyEvent *e){
   bool handled = false;
   
   if ((e->key()==Qt::Key_T) ){
@@ -588,9 +588,9 @@ DGtal::DGtalQGLViewer::keyPressEvent(QKeyEvent *e){
 
 
 QString 
-DGtal::DGtalQGLViewer::helpString() const
+DGtal::Viewer3D::helpString() const
 {
-  QString text("<h2> DGtalQGLViewer</h2>");
+  QString text("<h2> Viewer3D</h2>");
   text += "Use the mouse to move the camera around the object. ";
   text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
   text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";

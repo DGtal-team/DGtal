@@ -40,7 +40,7 @@
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
 #include "DGtal/io/readers/MagickReader.h"
-#include "DGtal/io/DGtalBoard.h"
+#include "DGtal/io/boards/DGtalBoard.h"
 #include "ConfigTest.h"
 
 

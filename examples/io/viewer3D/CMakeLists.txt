@@ -1,10 +1,10 @@
 SET(DGTAL_TESTS_SRC
-   dgtalQGLviewer-1-points
-   dgtalQGLviewer-2-sets
-   dgtalQGLviewer-3-objects
-   dgtalQGLviewer-4-modes
-   dgtalQGLviewer-5-custom
-   dgtalQGLviewer-6-clipping
+   viewer3D-1-points
+   viewer3D-2-sets
+   viewer3D-3-objects
+   viewer3D-4-modes
+   viewer3D-5-custom
+   viewer3D-6-clipping
    demo-kernel-2
 )
 

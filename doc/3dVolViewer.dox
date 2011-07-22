@@ -25,7 +25,7 @@ namespace DGtal {
    * than 50 lines which allows to perform a simple 3D volume
    * viewer.
    *  
-   * The viewer is based on DGtalQGLViewer and the input file is simply a ".vol" and all voxels contained
+   * The viewer is based on Viewer3D and the input file is simply a ".vol" and all voxels contained
    * in an interval can be displayed in 3D. The source program 3dVolViewer.cpp can be found in the directory  
    * \c tools/volumetric . We give here a rapid description of the main parts of the simple viewer.
    *  
@@ -74,7 +74,7 @@ namespace DGtal {
    @endcode
 
 
-   Finally we only have to display the voxels with DGtalQGLViewer:
+   Finally we only have to display the voxels with Viewer3D:
 
    @code
    for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
@@ -86,7 +86,7 @@ namespace DGtal {
           viewer << *it;     
      }     
    }
-   viewer << DGtalQGLViewer::updateDisplay;
+   viewer << Viewer3D::updateDisplay;
    @endcode
 
    By executing the following command line from the build directory:
