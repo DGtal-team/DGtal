@@ -245,7 +245,7 @@ bool testDisplay(double radius, double h)
     board.clear();
     board << domain;
     
-    for(typename PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
+    for( PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
 	it != ite; ++it)
       board << (*it);
     board.saveSVG( "Ranges-Points.svg" );
@@ -254,7 +254,7 @@ bool testDisplay(double radius, double h)
     board.clear();
     board << domain;
     
-    for(typename SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
+    for( SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
 	it != ite; ++it)
       board << (*it);
     board.saveSVG( "Ranges-SCells.svg" );
@@ -264,7 +264,7 @@ bool testDisplay(double radius, double h)
     board << domain;
     Space::Vector shift;
     board.setPenColor( Color::Black );
-    for( typename ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
+    for(  ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
 	 it != itend;   
 	 ++it)
       {
