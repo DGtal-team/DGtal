@@ -72,7 +72,7 @@ int main( int argc, char** argv )
     vRad.push_back(rand()%7);
   }
   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it ){
-    for(int i=0;i<nbSeeds; i++){
+    for(unsigned int i=0;i<nbSeeds; i++){
       if ( (*it - vCenters.at(i)  ).norm1() <= vRad.at(i) && domain.isInside(*it) &&
 	   domain.isInside(*it+Point(1,1,1)) && domain.isInside(*it-Point(1,1,1)) ){ 
 	diamond_set.insertNew( *it );
@@ -89,13 +89,14 @@ int main( int argc, char** argv )
   SurfelAdjacency<3> SAdj( true );
   vector<vector<SCell> > vectConnectedSCell;
   
+  
   //Here since the last argument is set to true, the resulting
   //SignedKhalimskySpaceND are signed in order to indicate the direction
   //of exterior. You can also get the SignefKhalimskySpaceND with default
   //sign:
 
   SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
-  // Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, true);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate);
   
   
   QApplication application(argc,argv);
