@@ -96,7 +96,7 @@ int main( int argc, char** argv )
   //sign:
 
   SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
-  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, true);
   
   
   QApplication application(argc,argv);
