@@ -490,7 +490,7 @@ extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCel
     if(forceOrientCellExterior){
       orientSCellExterior(vCS, aKSpace, pp);
     }
-    //aVectConnectedSCell.push_back(vCS);
+    aVectConnectedSCell.push_back(vCS);
   }
 }
     
