@@ -355,7 +355,7 @@ all your local commits)
 Even it is very rare, conflit can appear when you try to apply a pull:
 
 @code 
->git pull mainRemote master
+>git pull upstream master
 
 remote: Counting objects: 1, done.
 remote: Total 1 (delta 0), reused 1 (delta 0)
@@ -380,7 +380,7 @@ It will lunch simple tools like opendiff on MacOSX allowing to select the main f
 
 @code
 > git commit -m "Merging GIT conflict! " -a
-> git pull mainRemote master
+> git pull upstream master
 @endcode
 
 
