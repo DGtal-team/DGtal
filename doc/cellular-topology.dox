@@ -729,7 +729,8 @@ With this domain bounding points (p1, p2), a KhalimskySpace is
 Then we can extract all connected surfels from the digitalSet surface :
 
 @code 
-  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, true);
+  SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate);
 @endcode
 
 
@@ -748,7 +749,7 @@ sign:
 
 
 @code 
-  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, false);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, false);
 @endcode
 
 
