@@ -63,6 +63,11 @@
 #endif //win32
 #include <cmath>
 
+#if defined( WIN32 )
+#define secured_sprintf sprintf_s
+#else
+#define secured_sprintf snprintf
+#endif // defined( WIN32 )
 
 #include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
@@ -117,23 +122,23 @@ namespace DGtal
 #endif
   
 #ifdef WITH_CAIRO 
-  class DGtalCairo;
+  class Board3DTo2D;
 #endif
   
 
 #ifdef WITH_CAIRO
   /**
    * Interface that specifies that an object can draw itself on a
-   *  DGtalCairo
+   *  Board3DTo2D
    * (MT)
    */
-  struct DrawableWithDGtalCairo {
+  struct DrawableWithBoard3DTo2D {
     /**
      * Operation to override. Does nothing by default.
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( DGtalCairo &  ) const {}
+    virtual void selfDraw( Board3DTo2D &  ) const {}
   };
 #endif
 

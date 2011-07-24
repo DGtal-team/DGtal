@@ -21,14 +21,14 @@
  * 
  * @brief
  *
- * Simple example of class DGtalCairo.
+ * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -45,7 +45,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  DGtalCairo viewer;
+  Board3DTo2D viewer;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-4-modes.png", DGtalCairo::CairoPNG, 600, 400);
+  viewer.saveCairo("dgtalCairo-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

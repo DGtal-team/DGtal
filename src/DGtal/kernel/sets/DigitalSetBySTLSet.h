@@ -55,7 +55,7 @@
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #endif
 
 namespace DGtal
@@ -369,9 +369,9 @@ namespace DGtal
      /** 
      * Default style.
      */
-    struct DefaultDrawStyleCairo : public  DrawableWithDGtalCairo
+    struct DefaultDrawStyleCairo : public  DrawableWithBoard3DTo2D
     {
-       virtual void selfDrawCairo(DGtalCairo & viewer) const
+       virtual void selfDrawCairo(Board3DTo2D & viewer) const
         {
 	  viewer.myModes[ "DigitalSetBySTLSet" ] = "";
 	}
@@ -382,16 +382,16 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-  DrawableWithDGtalCairo* defaultStyleCairo( std::string mode = "" ) const;
+  DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawCairo(  DGtalCairo & viewer ) const;
-    void selfDrawAsGridCairo( DGtalCairo & viewer  ) const;
-    void selfDrawAsPavingCairo( DGtalCairo & viewer ) const;
-    void selfDrawAsPavingTransparentCairo( DGtalCairo & viewer ) const;
+    void selfDrawCairo(  Board3DTo2D & viewer ) const;
+    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
+    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
+    void selfDrawAsPavingTransparentCairo( Board3DTo2D & viewer ) const;
     
     
 
