@@ -437,7 +437,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) con
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawCairo( DGtalCairo& viewer ) const
+DGtal::HyperRectDomain<TSpace>::selfDrawCairo( Board3DTo2D& viewer ) const
 {
   std::string mode = viewer.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
@@ -475,7 +475,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawCairo( DGtalCairo& viewer ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxCairo( DGtalCairo & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxCairo( Board3DTo2D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   QColor colDef(250,250,250,10);
@@ -528,7 +528,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxCairo( DGtalCairo & viewer)
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGridCairo( DGtalCairo & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGridCairo( Board3DTo2D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -589,7 +589,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridCairo( DGtalCairo & viewer) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsCairo( DGtalCairo & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsCairo( Board3DTo2D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -619,7 +619,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsCairo( DGtalCairo & viewer
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( DGtalCairo & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( Board3DTo2D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   

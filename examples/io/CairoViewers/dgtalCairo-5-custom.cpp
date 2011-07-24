@@ -21,14 +21,14 @@
  * 
  * @brief
  *
- * Simple example of class DGtalCairo.
+ * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -45,7 +45,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  DGtalCairo viewer;
+  Board3DTo2D viewer;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -77,10 +77,10 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraUpVector(-0.018884, 0.912344, -0.408990);
   
   viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", DGtalCairo::CairoPNG, 600*2, 400*2);
+  viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
   
   viewer << SetMode3DCairo(viewer.styleName(), "SolidMode");
-  viewer.saveCairo("dgtalCairo-5-custom.png", DGtalCairo::CairoPNG, 600*2, 400*2);
+  viewer.saveCairo("dgtalCairo-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

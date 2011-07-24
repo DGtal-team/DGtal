@@ -54,7 +54,7 @@
 #endif
 
 #ifdef WITH_CAIRO
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #endif
 
 
@@ -579,9 +579,9 @@ namespace DGtal
        /**
        * Default style.
        */
-    struct DefaultDrawStyleCairo : public  DrawableWithDGtalCairo
+    struct DefaultDrawStyleCairo : public  DrawableWithBoard3DTo2D
     {
-        virtual void selfDrawCairo(DGtalCairo & viewer) const
+        virtual void selfDrawCairo(Board3DTo2D & viewer) const
         {
 	  viewer.myModes[ "Object" ] = "";
          }
@@ -592,23 +592,23 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithDGtalCairo * defaultStyleCairo( std::string mode = "" ) const;
+    DrawableWithBoard3DTo2D * defaultStyleCairo( std::string mode = "" ) const;
     
        /**
        * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawCairo( DGtalCairo & viewer ) const;
+      void selfDrawCairo( Board3DTo2D & viewer ) const;
 
 
       template<typename Functor>
-      void selfDrawWithAdjacenciesCairo( DGtalCairo & viewer ) const;
+      void selfDrawWithAdjacenciesCairo( Board3DTo2D & viewer ) const;
 
       /**
        * Draw the object (with Adjacency relationships) on a LiBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawWithAdjacenciesCairo( DGtalCairo & viewer ) const;
+      void selfDrawWithAdjacenciesCairo( Board3DTo2D & viewer ) const;
 
 
     

@@ -28,7 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -55,7 +55,7 @@ int main( int argc, char** argv )
   MyPoint p3( 2, 3, 4 );
   MyDomain domain( p1, p2 );
 
-  DGtalCairo viewer;
+  Board3DTo2D viewer;
 
   viewer << domain;  
   viewer << p1 << p2 << p3;
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
   
   viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", DGtalCairo::CairoPNG, 600, 400);
+  viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

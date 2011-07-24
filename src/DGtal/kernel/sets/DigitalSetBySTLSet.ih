@@ -568,7 +568,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawViewer3D( Viewer3D & viewer ) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentCairo( DGtalCairo & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentCairo( Board3DTo2D & viewer ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(false);
@@ -585,7 +585,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentCairo( DGtalCairo 
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingCairo( DGtalCairo & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingCairo( Board3DTo2D & viewer ) const
 {   
   ASSERT(Domain::Space::dimension == 3);
   viewer.createNewVoxelList(true);
@@ -601,7 +601,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingCairo( DGtalCairo & viewer ) 
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridCairo( DGtalCairo & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridCairo( Board3DTo2D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   for ( ConstIterator it = this->begin(); 
@@ -617,7 +617,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridCairo( DGtalCairo & viewer ) co
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawCairo( DGtalCairo & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawCairo( Board3DTo2D & viewer ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   

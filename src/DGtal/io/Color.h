@@ -43,6 +43,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include <boost/lexical_cast.hpp>
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
