@@ -123,13 +123,15 @@ bool visualTest()
   typedef FreemanChain<Coordinate>::ConstIterator ConstIterator; 
 
 
+
   std::string filename = testPath + "samples/manche.fc";
-  std::cout << filename << std::endl;
 
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
   FC fc(fst);
 
+////////////////////////////////////////////////////////////////////////
+// open digital curve
 
   trace.beginBlock("Segmentation of a whole range (mode1)");
 {
@@ -176,7 +178,7 @@ bool visualTest()
 
 
 ////////////////////////////////////////////////////////////
-
+// subrange
 
   typedef vector<PointVector<2,Coordinate> > Curve;  
   typedef Curve::const_iterator RAConstIterator;  
@@ -243,6 +245,8 @@ trace.info() << *start << " " << *stop << endl;
 
 
 ////////////////////////////////////////////////////////
+// using circulators
+
   typedef Circulator<RAConstIterator> ConstCirculator;
   ConstCirculator c(vPts.begin(),vPts.begin(),vPts.end()); 
 
@@ -287,6 +291,7 @@ trace.info() << *start << " " << *stop << endl;
   trace.endBlock();
 
 ///////////////////////////////////////////////////////////////
+// subrange with circulators
 
   ConstCirculator cstart(start,vPts.begin(),vPts.end()); 
   ConstCirculator cstop(stop,vPts.begin(),vPts.end()); 
@@ -338,21 +343,30 @@ trace.info() << *start << " " << *stop << endl;
   trace.endBlock();
 
 /////////////////////////////////////////////////////////////
+// closed digital curve 
+
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 1112121212121221212121221212212222232232323332333333332333332330333033003030000010001001001000100010101010111" << endl;
+  
+  // Construct the Freeman chain
+  FC fc2(ss);
 
   Curve vPts2; 
-  vPts2.assign( vPts.begin(), vPts.end() ); 
-  vPts2.insert( vPts2.end(), vPts.begin(), vPts.end() );
-  vPts2.insert( vPts2.end(), vPts.begin(), vPts.end() );
+  vPts2.assign( fc2.begin(), fc2.end() ); 
+  vPts2.insert( vPts2.end(), fc2.begin(), fc2.end() );
+  vPts2.insert( vPts2.end(), fc2.begin(), fc2.end() );
 
-  RAConstIterator start2 = vPts2.begin() + vPts.size(); 
-  RAConstIterator stop2 = start2 + vPts.size(); 
+//copy ( vPts2.begin(), vPts2.end(), ostream_iterator<PointVector<2,Coordinate> >(cout,"\n") ) ;
+
+  RAConstIterator start2 = vPts2.begin() + fc2.size()+1; 
+  RAConstIterator stop2 = start2 + fc2.size()+1; 
 
 trace.info() << *start2 << " " << *stop2 << endl;
 
   trace.beginBlock("Segmentation of a subrange of a duplicated range (mode1)");
 {
   Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
   aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -367,7 +381,7 @@ trace.info() << *start2 << " " << *stop2 << endl;
   trace.beginBlock("Segmentation of a subrange of a duplicated range (mode2)");
 {
   Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
   aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -383,7 +397,7 @@ trace.info() << *start2 << " " << *stop2 << endl;
   trace.beginBlock("Segmentation of a subrange of a duplicated range (mode3)");
 {
   Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
   aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
 
   segmentationIntoDSSs<RAConstIterator,Board2D>
@@ -397,6 +411,50 @@ trace.info() << *start2 << " " << *stop2 << endl;
 
 
 ////////////////////////////////////////////////////////
+// closed digital curve with circulators
+
+  ConstCirculator c2(start2,start2,stop2); 
+
+  trace.beginBlock("Segmentation of a whole range (mode1) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("ClosedCurveWithCircMode1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a whole range (mode2) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "Truncate+1",aBoard);   
+
+  aBoard.saveEPS("ClosedCurveWithCircMode2.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Segmentation of a whole range (mode3) with circulators");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+
+  segmentationIntoDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "DoNotTruncate",aBoard);   
+
+  aBoard.saveEPS("ClosedCurveWithCircMode3.eps");
+}
+  trace.endBlock();
+
 
 ////////////////////////////////////////////////////////////
 	return true;

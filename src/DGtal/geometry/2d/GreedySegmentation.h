@@ -422,11 +422,10 @@ namespace DGtal
     //Begin and end iterators of the subrange to be segmented
 		ConstIterator myStart, myStop;
 
-    //end iterator according to the chosen mode
-    //myStop for "Truncate" (default), 
-    //myStop+1 for "Truncate+1", 
-    //myEnd for "DoNotTruncate". 
-    ConstIterator myNewStop; 
+    //Mode
+    //eiter "Truncate" (default), 
+    //"Truncate+1", or "DoNotTruncate". 
+    std::string myMode; 
 
     //SegmentComputer
 		SegmentComputer mySegmentComputer;
