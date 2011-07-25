@@ -218,10 +218,21 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentCo
  */
   template <typename TSegmentComputer>
 inline
-TSegmentComputer
+const TSegmentComputer&
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
 {
   return mySegmentComputer;
+}
+
+/**
+ * @return the pointer to the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+const TSegmentComputer*
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
+{
+  return &mySegmentComputer;
 }
 
 /**
@@ -348,7 +359,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
   template <typename TSegmentComputer>
 inline
 void
-DGtal::GreedySegmentation<TSegmentComputer>::init
+DGtal::GreedySegmentation<TSegmentComputer>::setSubRange
 (const ConstIterator& itb, const ConstIterator& ite)
 {
   myStart = itb;
