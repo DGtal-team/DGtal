@@ -52,6 +52,7 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GreedySegmentation.h"
+#include "DGtal/geometry/2d/SaturedSegmentation.h"
 
 
 #include "ConfigTest.h"
@@ -86,7 +87,7 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 }
 
 /**
- * Segmenting a (sub)range
+ * Greedy segmentation of a (sub)range
  */
 template <typename Iterator, typename Board>
 void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite, 
@@ -111,9 +112,35 @@ void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite,
 }
 
 /**
+ * Satured segmentation of a (sub)range
+ */
+template <typename Iterator, typename Board>
+void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite, 
+                                 const Iterator& sitb, const Iterator& site,
+                                 const string& aMode, Board& aBoard)
+{
+  typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
+  typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
+	typedef SaturedSegmentation<RecognitionAlgorithm> Segmentation;
+
+  RecognitionAlgorithm algo;
+  Segmentation s(itb,ite,algo);
+  s.setSubRange(sitb,site);
+  s.setMode(aMode);
+  
+  typename Segmentation::SegmentComputerIterator i = s.begin();
+  typename Segmentation::SegmentComputerIterator end = s.end();
+
+  draw<typename Segmentation::SegmentComputerIterator, Board>
+  (i,end,aBoard); 
+
+}
+
+
+/**
  * Simple visual test
  */
-bool visualTest()
+bool greedySegmentationVisualTest()
 {
 
   typedef int Coordinate;
@@ -181,14 +208,8 @@ bool visualTest()
   typedef vector<PointVector<2,Coordinate> > Curve;  
   typedef Curve::const_iterator RAConstIterator;  
 
-	Curve vPts(fc.size()+1); 
-	copy ( fc.begin(), fc.end(), vPts.begin() ); 
-	bool isClosed;
-	if ( vPts.at(0) == vPts.at(vPts.size()-1) ) { 
-    isClosed = true;
-    vPts.pop_back(); 
-	} else isClosed = false;
-
+	Curve vPts; 
+	vPts.assign ( fc.begin(), fc.end() ); 
 
   RAConstIterator start = vPts.begin()+15;
   RAConstIterator stop = vPts.begin()+200;
@@ -458,6 +479,74 @@ trace.info() << *start2 << " " << *stop2 << endl;
 	return true;
 }
 
+
+/**
+ * Simple visual test
+ */
+bool saturedSegmentationVisualTest()
+{
+
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> FC; 
+  typedef FreemanChain<Coordinate>::ConstIterator ConstIterator; 
+
+  std::string filename = testPath + "samples/manche.fc";
+
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  FC fc(fst);
+
+///////////////////////////////////////////////////////
+// whole open curve
+
+  trace.beginBlock("Simple Satured Segmentation");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("OpenCurve.eps");
+}
+  trace.endBlock();
+
+////////////////////////////////////////////////////////////
+// subrange
+
+  typedef vector<PointVector<2,Coordinate> > Curve;  
+  typedef Curve::const_iterator RAConstIterator;  
+
+	Curve vPts; 
+	vPts.assign ( fc.begin(), fc.end() ); 
+
+  RAConstIterator start = vPts.begin()+200;
+  RAConstIterator stop = vPts.begin()+400;
+
+trace.info() << *start << " " << *stop << endl;
+
+  trace.beginBlock("Satured Segmentation of a subrange");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("OpenCurvePart.eps");
+}
+  trace.endBlock();
+
+
+  return true; 
+
+}
+
 /////////////////////////////////////////////////////////////////////////
 //////////////// MAIN ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -465,13 +554,14 @@ trace.info() << *start2 << " " << *stop2 << endl;
 int main(int argc, char **argv)
 {
   
-  trace.beginBlock ( "Testing class GreedyDecomposition" );
+  trace.beginBlock ( "Testing class GreedyDecomposition and SaturedSegmentation" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = visualTest()
+  bool res = greedySegmentationVisualTest()
+&& saturedSegmentationVisualTest()
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

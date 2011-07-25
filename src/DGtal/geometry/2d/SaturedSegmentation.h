@@ -17,31 +17,33 @@
 #pragma once
 
 /**
- * @file GreedySegmentation.h
+ * @file SaturedSegmentation.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/07/21
  *
- * Header file for module GreedySegmentation.cpp
+ * Header file for module SaturedSegmentation.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GreedySegmentation_RECURSES)
-#error Recursive header files inclusion detected in GreedySegmentation.h
-#else // defined(GreedySegmentation_RECURSES)
+#if defined(SaturedSegmentation_RECURSES)
+#error Recursive header files inclusion detected in SaturedSegmentation.h
+#else // defined(SaturedSegmentation_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GreedySegmentation_RECURSES
+#define SaturedSegmentation_RECURSES
 
-#if !defined GreedySegmentation_h
+#if !defined SaturedSegmentation_h
 /** Prevents repeated inclusion of headers. */
-#define GreedySegmentation_h
+#define SaturedSegmentation_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+
+#include "DGtal/geometry/2d/SegmentComputerTraits.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -49,13 +51,13 @@ namespace DGtal
 {
 	
   /////////////////////////////////////////////////////////////////////////////
-  // template class GreedySegmentation
+  // template class SaturedSegmentation
   /**
-   * Description of template class 'GreedySegmentation' <p>
-   * \brief Aim: Computes the greedy segmentation of a range 
-   * given by a pair of ConstIterators. 
-   * The last element of a given segment is the first one
-   * one of the next segment.
+   * Description of template class 'SaturedSegmentation' <p>
+   * \brief Aim: Computes the satured segmentation, that is
+   * the whole set of maximal segments within a range given by 
+   * a pair of ConstIterators (maximal segments are segments
+   * that cannot be included in greater segments). 
    *
    * This class is a model of CSegmentation.
    * 
@@ -63,7 +65,7 @@ namespace DGtal
    * (an online algorithm for the recognition of some segment). 
    *
    * In the short example below, a digital curve stored in a STL vector
-   * is decomposed into 8-connected DSSs whose parameters are sent to 
+   * is decomposed into maximal 8-connected DSSs whose parameters are sent to 
    * the standard output.
    * @code 
    
@@ -72,7 +74,7 @@ namespace DGtal
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
-	typedef GreedySegmentation<SegmentComputer> Segmentation;
+	typedef SaturedSegmentation<SegmentComputer> Segmentation;
 
 	//input points
 	Range curve;
@@ -99,18 +101,7 @@ namespace DGtal
 
    * @endcode
    *
-   * If you want to get the DSSs segmentation of the digital curve
-   * when it is scanned in the reverse way, you can use the reverse
-   * iterator of the STL vector:   
-   * @code 
-...
-	typedef Range::const_reverse_iterator ConstReverseIterator;
-...
-  Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
-...
-   * @endcode
-   *
-   * If you want to get the DSSs segmentation of a part of the 
+   * If you want to get the satured segmentation of a part of the 
    * digital curve (not the whole digital curve), you can give 
    * the range to process as a pair of iterators when calling 
    * the setSubRange() method as follow: 
@@ -124,31 +115,36 @@ namespace DGtal
    * Moreover, a part of a digital curve may be processed either
    * as an independant (open) digital curve or as a part whose 
    * segmentation at the ends depends of the underlying digital 
-   * curve. That's why 3 processing modes are available:
-   * - "Truncate" (default), the extension of the last segment 
-   *  (and the segmentation) stops just before endIt.
-   * - "Truncate+1", the last segment is extended to endIt too
-   * if it is possible, provided that endIt != curve.end(). 
-   * - "DoNotTruncate", the last segment is extended as far as 
-   * possible, provided that curve.end() is not reached. 
-   *
+   * curve. That's why several processing modes are available
+   * for both the beginning and the ending of the digital curve.
+   * TODO 
+   * - "Truncate" (default), the extension of the last maximal 
+   * segment (and the segmentation) stops just before endIt.
+   * - "First", "MostCentered", "Last", the first, most centered,
+   * last maximal segment containing the last element is the  
+   * last maximal segment of the segmentation. 
+   * 
    * In order to set a mode (before getting a SegmentComputerIterator),
    * use the setMode() method as follow: 
    * @code 
-  theSegmentation.setMode("DoNotTruncate");
+  theSegmentation.setMode("First","Last");
    * @endcode  
    * Note that the default mode will be used for any unknown modes.  
-   *
    */
 
   template <typename TSegmentComputer>
-  class GreedySegmentation
+  class SaturedSegmentation
   {
 
 	public: 
 
 		typedef TSegmentComputer SegmentComputer;
 		typedef typename SegmentComputer::ConstIterator ConstIterator;
+
+	private: 
+
+		typedef typename TSegmentComputer::Reverse ReverseSegmentComputer;
+		typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -164,7 +160,7 @@ namespace DGtal
 			   // ------------------------- inner Types -----------------------
 
     public: 
-		  typedef typename GreedySegmentation::SegmentComputer SegmentComputer;
+		  typedef typename SaturedSegmentation::SegmentComputer SegmentComputer;
 		  typedef typename SegmentComputer::ConstIterator ConstIterator;
 
 			   // ------------------------- data -----------------------
@@ -173,7 +169,7 @@ namespace DGtal
       /**
        * Pointer to the segmentation
        */
-			const GreedySegmentation<TSegmentComputer> *myS;
+			const SaturedSegmentation<TSegmentComputer> *myS;
 
       /**
        * The current segment
@@ -209,7 +205,7 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class GreedySegmentation<TSegmentComputer>;
+       friend class SaturedSegmentation<TSegmentComputer>;
 			   
 
 
@@ -221,7 +217,7 @@ namespace DGtal
        * @param aSegmentComputer, an online segment recognition algorithm
        * @param aFlag, 'true' to build a valid object, 'false' otherwise
        */
-      SegmentComputerIterator( const GreedySegmentation<TSegmentComputer> *aSegmentation,
+      SegmentComputerIterator( const SaturedSegmentation<TSegmentComputer> *aSegmentation,
 				 const TSegmentComputer& aSegmentComputer,
          const bool& aFlag );
 
@@ -258,12 +254,10 @@ namespace DGtal
        */
       const SegmentComputer& operator*() const;
 
-
       /**
        * @return the current segment.
        */
       SegmentComputer get() const;
-
 
       /**
        * @return the pointer to the current segment
@@ -272,18 +266,11 @@ namespace DGtal
 
       /**
        * Pre-increment.
-       * Goes to the next segment (if possible).
+       * Goes to the next maximal segment (if possible).
        * Nb: complexity in O(n).
        */
       SegmentComputerIterator& operator++();
       
-      /**
-       * Goes to the next segment (if possible).
-       * Nb: complexity in O(n).
-       */
-      void next();
-
-
       /**
        * Equality operator.
        *
@@ -332,18 +319,131 @@ namespace DGtal
 
 			private: 
 
-      /**
-       * Computes the longest possible segment from [it]
-       * @param it, a given iterator
-       * Nb: complexity in O(n).
-       */
-      void longestSegment(const ConstIterator& it);
       
       /**
        * Checks if the current segment intersects the next one (if exists).
        * @param it a given iterator
        */
       bool doesIntersectNext(const ConstIterator& it);
+
+      /**
+       * Computes the longest possible segment from [it]
+       * @param it, a given iterator
+       * Nb: complexity in O(n).
+       */
+      template <typename SC>
+      void longestSegment(SC& s, 
+                         const typename SC::ConstIterator& i, 
+                         const typename SC::ConstIterator& end);
+
+////////////////////////////////////////////////////////// next
+      /**
+       * Goes to the next maximal segment (if possible).
+       * Nb: complexity in O(n).
+       */
+      void nextMaximalSegment();
+
+      /**
+       * Goes to the next maximal segment (if possible)
+       * using only the extend() method. 
+       * @param i, assumed to be the end iterator of the current segment
+       * Nb: linear complexity in the range size
+       */
+      void nextMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+      /**
+       * Goes to the next maximal segment (if possible)
+       * using the extendOppositeEnd() and extend() methods. 
+       * @param i, assumed to be the end iterator of the current segment
+       * Nb: linear complexity in the range size
+       */
+      void nextMaximalSegment(const ConstIterator& i, BidirectionalSegmentComputer);
+      /**
+       * Goes to the next maximal segment (if possible)
+       * using the retract(), isExtendable() and extend() methods. 
+       * @param i, assumed to be the end iterator of the current segment
+       * Nb: linear complexity in the range size
+       */
+      void nextMaximalSegment(const ConstIterator& i, DynamicSegmentComputer);
+      /**
+       * Same as       
+      void nextMaximalSegment(const ConstIterator i, DynamicSegmentComputer);
+       */
+      void nextMaximalSegment(const ConstIterator& i, DynamicBidirectionalSegmentComputer);
+
+////////////////////////////////////////////////////////// first
+      /**
+       * Computes the first maximal segment passing throught i
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void firstMaximalSegment(const ConstIterator& i);
+
+      /**
+       * Computes the first maximal segment passing throught i
+       * using only the extend() method. 
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void firstMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+
+      /**
+       * Computes the first maximal segment passing throught i
+       * using the extendOppositeEnd() and extend() methods.  
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void firstMaximalSegment(const ConstIterator& i,  BidirectionalSegmentComputer);
+
+      /**
+       * Same as 
+      void firstMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+       */
+      void firstMaximalSegment(const ConstIterator& i, DynamicSegmentComputer);
+
+      /**
+       * Same as 
+      void firstMaximalSegment(const ConstIterator& i, BidirectionalSegmentComputer);
+       */
+      void firstMaximalSegment(const ConstIterator& i, DynamicBidirectionalSegmentComputer);
+
+
+////////////////////////////////////////////////////////// last
+      /**
+       * Computes the last maximal segment passing throught i
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void lastMaximalSegment(const ConstIterator& i);
+
+      /**
+       * Computes the last maximal segment passing throught i
+       * using only the extend() method. 
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void lastMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+
+      /**
+       * Computes the last maximal segment passing throught i
+       * using the extendOppositeEnd() and extend() methods.  
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void lastMaximalSegment(const ConstIterator& i,  BidirectionalSegmentComputer);
+
+      /**
+       * Same as 
+      void firstMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+       */
+      void lastMaximalSegment(const ConstIterator& i, DynamicSegmentComputer);
+
+      /**
+       * Same as 
+      void firstMaximalSegment(const ConstIterator& i, BidirectionalSegmentComputer);
+       */
+      void lastMaximalSegment(const ConstIterator& i, DynamicBidirectionalSegmentComputer);
+
+
     };
 
 
@@ -354,7 +454,7 @@ namespace DGtal
      * Default constructor.
 		 * Nb: not valid
      */
-    GreedySegmentation() {};
+    SaturedSegmentation() {};
 
     /**
      * Constructor.
@@ -362,7 +462,7 @@ namespace DGtal
      * @param ite, end iterator of the underlying range
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
-    GreedySegmentation(const ConstIterator& itb, 
+    SaturedSegmentation(const ConstIterator& itb, 
 												const ConstIterator& ite, 
 												const SegmentComputer& aSegmentComputer);
 
@@ -387,19 +487,19 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GreedySegmentation();
+    ~SaturedSegmentation();
 
     /**
      * ConstIterator service.
      * @return an iterator pointing on the first segment of a digital curve.
      */
-    typename GreedySegmentation::SegmentComputerIterator begin() const;
+    typename SaturedSegmentation::SegmentComputerIterator begin() const;
 
     /**
      * ConstIterator service.
      * @return an iterator pointing after the last segment of a digital curve.
      */
-    typename GreedySegmentation::SegmentComputerIterator end() const;
+    typename SaturedSegmentation::SegmentComputerIterator end() const;
 
 
     /**
@@ -442,42 +542,42 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    GreedySegmentation ( const GreedySegmentation & other );
+    SaturedSegmentation ( const SaturedSegmentation & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    GreedySegmentation & operator= ( const GreedySegmentation & other );
+    SaturedSegmentation & operator= ( const SaturedSegmentation & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class GreedySegmentation
+  }; // end of class SaturedSegmentation
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'GreedySegmentation'.
+   * Overloads 'operator<<' for displaying objects of class 'SaturedSegmentation'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'GreedySegmentation' to write.
+   * @param object the object of class 'SaturedSegmentation' to write.
    * @return the output stream after the writing.
    */
   template <typename SegmentComputer>
   std::ostream&
-  operator<< ( std::ostream & out, const GreedySegmentation<SegmentComputer> & object );
+  operator<< ( std::ostream & out, const SaturedSegmentation<SegmentComputer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/GreedySegmentation.ih"
+#include "DGtal/geometry/2d/SaturedSegmentation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GreedySegmentation_h
+#endif // !defined SaturedSegmentation_h
 
-#undef GreedySegmentation_RECURSES
-#endif // else defined(GreedySegmentation_RECURSES)
+#undef SaturedSegmentation_RECURSES
+#endif // else defined(SaturedSegmentation_RECURSES)
