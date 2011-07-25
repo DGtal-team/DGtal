@@ -178,6 +178,11 @@ namespace DGtal
       
 
       /**
+       * Begin and end iterators of the last maximal segment
+       */
+		  ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
+
+      /**
        * A flag equal to TRUE if the current segment
        * intersects the next one, FALSE otherwise 
        * (and FALSE if the current segment is the last one) 
@@ -192,7 +197,8 @@ namespace DGtal
       bool  myFlagIntersectPrevious;
 
       /**
-       * A flag equal to TRUE if *this has reached the end, FALSE otherwise 
+       * A flag equal to TRUE if *this is the last maximal segment,
+       * FALSE otherwise 
        */
       bool  myFlagIsLast;
 
@@ -405,6 +411,42 @@ namespace DGtal
       void firstMaximalSegment(const ConstIterator& i, BidirectionalSegmentComputer);
        */
       void firstMaximalSegment(const ConstIterator& i, DynamicBidirectionalSegmentComputer);
+
+////////////////////////////////////////////////////////// most centered 
+      /**
+       * Computes the most centered maximal segment passing throught i
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void mostCenteredMaximalSegment(const ConstIterator& i);
+
+      /**
+       * Computes the most centered maximal segment passing throught i
+       * using only the extend() method. 
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void mostCenteredMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+
+      /**
+       * Computes the most centered maximal segment passing throught i
+       * using the extendOppositeEnd() and extend() methods.  
+       * @param i any ConstIterator
+       * Nb: linear complexity in the range size
+       */
+      void mostCenteredMaximalSegment(const ConstIterator& i,  BidirectionalSegmentComputer);
+
+      /**
+       * Same as 
+      void mostCenteredMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
+       */
+      void mostCenteredMaximalSegment(const ConstIterator& i, DynamicSegmentComputer);
+
+      /**
+       * Same as 
+      void mostCenteredMaximalSegment(const ConstIterator& i, BidirectionalSegmentComputer);
+       */
+      void mostCenteredMaximalSegment(const ConstIterator& i, DynamicBidirectionalSegmentComputer);
 
 
 ////////////////////////////////////////////////////////// last
