@@ -522,7 +522,7 @@ bool saturedSegmentationVisualTest()
 	Curve vPts; 
 	vPts.assign ( fc.begin(), fc.end() ); 
 
-  RAConstIterator start = vPts.begin()+200;
+  RAConstIterator start = vPts.begin()+190;
   RAConstIterator stop = vPts.begin()+400;
 
 trace.info() << *start << " " << *stop << endl;
@@ -536,7 +536,7 @@ trace.info() << *start << " " << *stop << endl;
   segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
     (vPts.begin(),vPts.end(),
      start,stop,
-     "Truncate",aBoard);   
+     "MostCentered",aBoard);   
 
   aBoard.saveEPS("OpenCurvePart.eps");
 }
