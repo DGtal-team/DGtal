@@ -1,0 +1,654 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SaturedSegmentation.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/07/21
+ *
+ * Implementation of inline methods defined in SaturedSegmentation.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// class SaturedSegmentation::SegmentComputerIterator
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------- Main processings -----------------------
+
+/**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
+{
+		SegmentComputer tmpSegmentComputer;
+		ConstIterator previousIt(it); --previousIt;
+		tmpSegmentComputer.init(previousIt);
+		return tmpSegmentComputer.extend();
+}
+
+ 
+/**
+ * Computes the longest possible segment from an iterator
+ */
+  template <typename TSegmentComputer>
+  template <typename SC>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::longestSegment(SC& s, 
+ const typename SC::ConstIterator& i,
+ const typename SC::ConstIterator& end )
+{
+
+  if ( isNotEmpty<typename SC::ConstIterator>(i,end) ) {
+    s.init(i);
+    while ( (s.extend())
+	       && (s.end() != end) ) {}
+
+  }
+}
+
+/**
+ * Computes the first maximal segment passing through a given element
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::firstMaximalSegment(
+ const ConstIterator& i,
+ ForwardSegmentComputer)
+{
+  std::cerr << "ForwardSegmentComputer" << std::endl;
+//TODO check the bounds
+  //backward extension
+	ConstIterator it( i ); ++it; 
+  ConstReverseIterator rit( it );
+  ConstReverseIterator rend( mySegmentComputer.begin() );
+	ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
+  this->longestSegment(r, rit, rend);
+
+	//forward extension
+	ConstIterator it2( r.end().base() );
+  this->longestSegment(mySegmentComputer, it2, myS->myStop);
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::firstMaximalSegment(
+ const ConstIterator& i,
+ BidirectionalSegmentComputer)
+{
+  std::cerr << "BidirectionalSegmentComputer" << std::endl;
+
+//TODO check the bounds
+  mySegmentComputer.init(i);
+
+  while ( (mySegmentComputer.extendOppositeEnd())
+	      &&(mySegmentComputer.begin() != myS->myBegin) ) {} 
+
+  while ( (mySegmentComputer.end() != myS->myEnd)
+	      &&(mySegmentComputer.extend()) ) {} 
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::firstMaximalSegment(
+ const ConstIterator& i,
+ DynamicSegmentComputer)
+{
+  std::cerr << "DynamicSegmentComputer" << std::endl;
+  this->firstMaximalSegment(i,ForwardSegmentComputer() );
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::firstMaximalSegment(
+ const ConstIterator& i,
+ DynamicBidirectionalSegmentComputer)
+{
+  std::cerr << "DynamicBidirectionalSegmentComputer" << std::endl;
+  this->firstMaximalSegment(i,BidirectionalSegmentComputer() );
+}
+
+/**
+ * Computes the last maximal segment passing through a given element
+ */
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::lastMaximalSegment(
+ const ConstIterator& i,
+ ForwardSegmentComputer)
+{
+
+//TODO check the bounds
+	//forward extension
+	ConstIterator j( i );
+  this->longestSegment(mySegmentComputer, j, myS->myStop);
+
+  if ( isNotEmpty<ConstIterator>(mySegmentComputer.end(),myS->myStop) ) {
+
+    //backward extension
+	  ConstIterator it( mySegmentComputer.end() ); ++it; 
+    ConstReverseIterator rit( it );
+    ConstReverseIterator rend( mySegmentComputer.begin() );
+	  ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
+    this->longestSegment(r, rit, rend);
+
+	  //forward extension
+	  ConstIterator it2( r.end().base() );
+    this->longestSegment(mySegmentComputer, it2, myS->myStop);
+
+  }
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::lastMaximalSegment(
+ const ConstIterator& i,
+ BidirectionalSegmentComputer)
+{
+
+//TODO check the bounds
+  mySegmentComputer.init(i);
+
+  while ( (mySegmentComputer.end() != myS->myEnd)
+	      &&(mySegmentComputer.extend()) ) {} 
+
+  while ( (mySegmentComputer.extendOppositeEnd())
+	      &&(mySegmentComputer.begin() != myS->myBegin) ) {} 
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::lastMaximalSegment(
+ const ConstIterator& i,
+ DynamicSegmentComputer)
+{
+  this->lastMaximalSegment(i,ForwardSegmentComputer() );
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::lastMaximalSegment(
+ const ConstIterator& i,
+ DynamicBidirectionalSegmentComputer)
+{
+  this->lastMaximalSegment(i,BidirectionalSegmentComputer() );
+}
+
+
+/**
+ * Goes to the next segment.
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaximalSegment()
+{
+
+	if (myFlagIsLast) { //if end
+
+    myFlagIsValid = false; 
+
+	} else { //otherwise
+
+	  myFlagIntersectPrevious = myFlagIntersectNext;
+
+  	this->nextMaximalSegment(mySegmentComputer.end(), 
+                      typename SegmentComputer::Category() );
+
+	  //if the end is reached
+	  if (mySegmentComputer.end() == myS->myStop) {
+
+      //TODO to check in the circulator case
+	    myFlagIntersectNext = false;
+      
+      myFlagIsLast = true; 
+
+      //last extension
+     std::cerr << "END" << std::endl;
+
+	  } else {
+    //otherwise
+		  myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+    }
+
+	}
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::nextMaximalSegment(
+ const ConstIterator& i,
+ ForwardSegmentComputer)
+{
+  this->firstMaximalSegment( i, ForwardSegmentComputer() );
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::nextMaximalSegment(
+ const ConstIterator& i,
+ BidirectionalSegmentComputer)
+{
+  this->firstMaximalSegment( i, BidirectionalSegmentComputer() );
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::nextMaximalSegment(
+ const ConstIterator& i,
+ DynamicSegmentComputer)
+{
+//TODO check the bounds
+  while (! mySegmentComputer.isExtendable() ) 
+	      mySegmentComputer.retract(); 
+
+  while ( (mySegmentComputer.end() != myS->myEnd)
+	      &&(mySegmentComputer.extend()) ) {} 
+
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
+::nextMaximalSegment(
+ const ConstIterator& i,
+ DynamicBidirectionalSegmentComputer)
+{
+  this->nextMaximalSegment(i,DynamicSegmentComputer() );
+}
+
+///////////////////////////////////////////////////////////////////////
+// ------------------------- Standard services -----------------------
+
+/**
+ * Constructor.
+ * Nb: complexity in O(n).
+ *
+ */
+ template <typename TSegmentComputer>
+inline
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
+	const SaturedSegmentation<TSegmentComputer> *s,
+	const TSegmentComputer& aSegmentComputer,
+  const bool& isValid )
+  : myS( s ), 
+		mySegmentComputer( aSegmentComputer ), 
+    myFlagIntersectNext( false ),
+		myFlagIntersectPrevious( false ),
+    myFlagIsValid( isValid ),
+    myFlagIsLast( false )
+{
+
+	if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+
+    //TODO to check in the circulator case          
+	  myFlagIntersectPrevious = false;
+
+
+    //TODO different cases 
+    //computation of the longest segment from myS->myStart
+		this->longestSegment(mySegmentComputer, myS->myStart, myS->myStop);	
+
+  }
+
+}
+
+
+
+/**
+ * Copy constructor.
+ * @param other the iterator to clone.
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
+( const SegmentComputerIterator & other )
+  : myS( other.myS ), 
+		mySegmentComputer( other.mySegmentComputer ),
+		myFlagIntersectNext( other.myFlagIntersectNext ), 
+		myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
+    myFlagIsValid( other.myFlagIsValid ),
+    myFlagIsLast( other.myFlagIsLast )
+{
+}
+    
+/**
+ * Assignment.
+ * @param other the iterator to copy.
+ * @return a reference on 'this'.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
+( const SegmentComputerIterator & other )
+{
+  if ( this != &other )
+    {
+      myS = other.myS;
+      mySegmentComputer = other.mySegmentComputer;
+			myFlagIntersectNext = other.myFlagIntersectNext;
+			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
+			myFlagIsValid = other.myFlagIsValid;
+			myFlagIsLast = other.myFlagIsLast;
+    }
+  return *this;
+}
+    
+/**
+ * Destructor.
+ * Does nothing
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ------------------------- iteration services -------------------------
+    
+      
+/**
+ * @return the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+const TSegmentComputer&
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
+{
+  return mySegmentComputer;
+}
+
+/**
+ * @return the pointer to the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+const TSegmentComputer*
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
+{
+  return &mySegmentComputer;
+}
+
+/**
+ * @return the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+TSegmentComputer
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::get() const
+{
+  return mySegmentComputer;
+}
+
+/**
+ * Pre-increment.
+ * Goes to the next segment.
+ */
+
+  template <typename TSegmentComputer>
+inline
+typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator & 
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
+{
+  this->nextMaximalSegment();
+  return *this;
+}
+    
+
+/**
+ * Equality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions coincide.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
+( const SegmentComputerIterator & other ) const
+{
+  return ( isValid() == other.isValid() ); 
+}
+
+/**
+ * Inequality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions differs.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
+( const SegmentComputerIterator & other ) const
+{
+  return !(*this == other);
+}
+
+
+// ------------------------- accessors -------------------------
+  
+  template <typename TSegmentComputer>
+inline
+const bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
+{
+  return myFlagIntersectNext;
+}
+
+  template <typename TSegmentComputer>
+inline
+const bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
+{
+  return myFlagIntersectPrevious;
+}
+
+
+
+  template <typename TSegmentComputer>
+inline
+const typename TSegmentComputer::ConstIterator
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
+{
+  return mySegmentComputer.begin();
+}
+
+  template <typename TSegmentComputer>
+inline
+const typename TSegmentComputer::ConstIterator
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
+{
+  return mySegmentComputer.end();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// class SaturedSegmentation
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+/**
+ * Constructor.
+ */
+  template <typename TSegmentComputer>
+DGtal::SaturedSegmentation<TSegmentComputer>::SaturedSegmentation
+(const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
+ : myBegin(itb),
+	 myEnd(ite),
+   myStart(itb),
+	 myStop(ite),
+	 mySegmentComputer(aSegmentComputer),
+   myMode("Truncate")
+{
+}
+
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::setSubRange
+(const ConstIterator& itb, const ConstIterator& ite)
+{
+  myStart = itb;
+	myStop = ite;
+  myMode = "Truncate";
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::setMode
+(const std::string& aMode)
+{
+  myMode = aMode; 
+}
+
+
+/**
+ * Destructor.
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::SaturedSegmentation<TSegmentComputer>::~SaturedSegmentation()
+{
+}
+
+/**
+ * ConstIterator service.
+ * @return an iterator pointing on the first segment
+ * of the digital curve.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::SaturedSegmentation<TSegmentComputer>::begin() const
+{
+  return SegmentComputerIterator(this, mySegmentComputer, true);
+}
+
+/**
+ * ConstIterator service.
+ * @return an iterator pointing after the last segment
+ * of the digital curve.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::SaturedSegmentation<TSegmentComputer>::end() const
+{
+  return SegmentComputerIterator(this, mySegmentComputer, false);
+}
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturedSegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[SaturedSegmentation]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+  template <typename TSegmentComputer>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const SaturedSegmentation<TSegmentComputer> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
