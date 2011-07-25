@@ -413,7 +413,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd()
 {
 
-  ConstIterator it(myF); -it;
+  ConstIterator it(myF); --it;
 	return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
 
 }

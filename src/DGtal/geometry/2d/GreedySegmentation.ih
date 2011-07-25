@@ -75,19 +75,21 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
 	//if the end is reached
 	if (mySegmentComputer.end() == myS->myStop) {
 
-    //last extension
-    while ( (mySegmentComputer.end() != myS->myNewStop)
-	    &&(mySegmentComputer.extend()) ) {} 
-
-    //checks if the first and last segments intersect
-    //at a same element
-		if (*(myS->myBegin) == *(mySegmentComputer.getFront()) ) {
-			myFlagIntersectNext = true;
-		} else {
-			myFlagIntersectNext = false;
-    } 
-
+    //TODO to check in the circulator case
+	  myFlagIntersectNext = false;
+    
     myFlagIsLast = true; 
+
+    //last extension
+  	if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) { 
+      if (myS->myMode == "Truncate+1") {
+        mySegmentComputer.extend(); 
+      }
+      if (myS->myMode == "DoNotTruncate") {
+        while ( (mySegmentComputer.extend())
+             && (mySegmentComputer.end() != myS->myEnd) ) {} 
+      }
+    }
 
 	} else {
   //otherwise
@@ -145,21 +147,13 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 
 	if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
 
-    //checks whether myS->myStart and myS->myStop 
-    // are iterators on the same element
-    if ( (myS->myStop != myS->myEnd) 
-      && ( *(myS->myStart) == *(myS->myStop) ) ) {
-			myFlagIntersectPrevious = true;
-		} else {             
-			myFlagIntersectPrevious = false;
-    }
+    //TODO to check in the circulator case          
+	  myFlagIntersectPrevious = false;
 
     //computation of the longest segment from myS->myStart
 		this->longestSegment(myS->myStart);	
 
   }
-
-
 
 }
 
@@ -346,7 +340,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
    myStart(itb),
 	 myStop(ite),
 	 mySegmentComputer(aSegmentComputer),
-   myNewStop(ite)
+   myMode("Truncate")
 {
 }
 
@@ -359,7 +353,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::init
 {
   myStart = itb;
 	myStop = ite;
-  myNewStop = ite;
+  myMode = "Truncate";
 }
 
   template <typename TSegmentComputer>
@@ -368,12 +362,7 @@ void
 DGtal::GreedySegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
-  if (aMode == "Truncate+1") {      //Truncate+1
-    if (myNewStop != myEnd) ++myNewStop;
-  }
-  if (aMode == "DoNotTruncate") {//DoNotTruncate
-    myNewStop = myEnd;
-  }
+  myMode = aMode; 
 }
 
 
