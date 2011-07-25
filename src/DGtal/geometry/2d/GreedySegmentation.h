@@ -112,9 +112,9 @@ namespace DGtal
    * If you want to get the DSSs segmentation of a part of the 
    * digital curve (not the whole digital curve), you can give 
    * the range to process as a pair of iterators when calling 
-   * the init() method as follow: 
+   * the setSubRange() method as follow: 
    * @code 
-  theSegmentation.init(beginIt, endIt);
+  theSegmentation.setSubRange(beginIt, endIt);
    * @endcode   
    *
    * Obviously, [beginIt, endIt) has to be a valid range included
@@ -254,12 +254,19 @@ namespace DGtal
       /**
        * @return the current segment
        */
-      SegmentComputer operator*() const;
+      const SegmentComputer& operator*() const;
+
 
       /**
        * @return the current segment.
        */
       SegmentComputer get() const;
+
+
+      /**
+       * @return the pointer to the current segment
+       */
+      const SegmentComputer* operator->() const;
 
       /**
        * Pre-increment.
@@ -324,12 +331,6 @@ namespace DGtal
 			private: 
 
       /**
-       * Computes the longest possible segment
-       * Nb: complexity in O(n).
-       */
-      void longestSegmentComputer();
-
-      /**
        * Computes the longest possible segment from [it]
        * @param it, a given iterator
        * Nb: complexity in O(n).
@@ -369,8 +370,8 @@ namespace DGtal
      * @param ite, end iterator the range to processed
 		 * Nb: must be a valid range included in the underlying range.
      */
-    void init(const ConstIterator& itb, 
-							const ConstIterator& ite);
+    void setSubRange(const ConstIterator& itb, 
+							       const ConstIterator& ite);
 
 
     /**

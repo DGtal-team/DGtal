@@ -75,10 +75,8 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
 
   for (Iterator i(itb); i != ite; ++i) {
-		
+	 	
     typename Iterator::SegmentComputer segment(*i); 
-
-   // trace.info() << segment << std::endl;	//standard output
 
     aBoard << SetMode(segment.styleName(), "BoundingBox" )
 					 << segment; // draw bounding box
@@ -101,7 +99,7 @@ void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite,
 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
-  s.init(sitb,site);
+  s.setSubRange(sitb,site);
   s.setMode(aMode);
   
   typename Segmentation::SegmentComputerIterator i = s.begin();
