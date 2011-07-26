@@ -112,22 +112,24 @@ namespace DGtal
    * Obviously, [beginIt, endIt) has to be a valid range included
    * in the wider range [curve.begin(), curve.end()). 
    *
-   * Moreover, a part of a digital curve may be processed either
-   * as an independant (open) digital curve or as a part whose 
-   * segmentation at the ends depends of the underlying digital 
-   * curve. That's why several processing modes are available
-   * for both the beginning and the ending of the digital curve.
-   * TODO 
-   * - "Truncate" (default), the extension of the last maximal 
-   * segment (and the segmentation) stops just before endIt.
-   * - "First", "MostCentered", "Last", the first, most centered,
-   * last maximal segment containing the last element is the  
-   * last maximal segment of the segmentation. 
+   * Moreover, the segmentation at the ends depends of the 
+   * underlying digital curve. Among the whole set of  
+   * maximal segments that pass through the first (resp. last) 
+   * element of the range, one maximal segment must be chosen
+   * as the first (resp. last) retrieved maximal segments. 
+   * Several processing modes are therefore available: 
+   * - "First", 
+   * - "MostCentered" (default), 
+   * - "Last", 
+   * The mode i indicates that the segmentation begins with 
+   * the i maximal segment passing through the first element
+   * and ends with the i maximal segment passing through the 
+   * last element. 
    * 
    * In order to set a mode (before getting a SegmentComputerIterator),
    * use the setMode() method as follow: 
    * @code 
-  theSegmentation.setMode("First","Last");
+  theSegmentation.setMode("First");
    * @endcode  
    * Note that the default mode will be used for any unknown modes.  
    */
@@ -332,26 +334,84 @@ namespace DGtal
        */
       bool doesIntersectNext(const ConstIterator& it);
 
-
- 
-      /**
-       * Computes the longest possible segment from [it]
-       * @param it, a given iterator
-       * @return 'true' if the [i,end) is an empty range
-       * or if ( s.end() == end ), 'false' otherwise 
-       */
-      template <typename SC>
-      bool longestSegment(SC& s, 
-                         const typename SC::ConstIterator& i, 
-                         const typename SC::ConstIterator& end);
-
-
       /**
        * Computes the middle iterator of a given range
        * @param itb, ite, begin and end iterators of a range
        * @return the middle iterator of the range [itb,ite)
        */
       ConstIterator getMiddle(const ConstIterator& itb, const ConstIterator& ite); 
+ 
+      /**
+       * Computes the longest possible segment from [it]
+       * @param s any instance of SegmentComputer
+       * @param it, a given ConstIterator
+       * @param end, any ConstIterator
+       * @tparam SC any model of CSegmentComputer
+       */
+      template <typename SC>
+      void longestSegment(SC& s, 
+                         const typename SC::ConstIterator& i, 
+                         const typename SC::ConstIterator& end);
+
+      /**
+       * Specialization for Iterator type
+       */
+      template <typename SC>
+      void longestSegment(SC& s, 
+                         const typename SC::ConstIterator& i,
+                         const typename SC::ConstIterator& end, 
+                         IteratorType );
+
+      /**
+       * Specialization for Circulator type
+       */
+      template <typename SC>
+      void longestSegment(SC& s, 
+                         const typename SC::ConstIterator& i, 
+                         const typename SC::ConstIterator& end,
+                         CirculatorType );
+
+      /**
+       * Calls s.extend() while possible
+       * @param s any instance of SegmentComputer
+       * @param end any ConstIterator
+       * @tparam SC any model of CSegmentComputer
+       */
+      template <typename SC>
+      void extend(SC& s, const typename SC::ConstIterator& end);
+
+      /**
+       * Specialization for Iterator type
+       */
+      template <typename SC>
+      void extend(SC& s, const typename SC::ConstIterator& end, IteratorType );
+
+      /**
+       * Specialization for Circulator type
+       */
+      template <typename SC>
+      void extend(SC& s, const typename SC::ConstIterator& end, CirculatorType );
+
+      /**
+       * Calls s.extendOppositeEnd() while possible
+       * @param s any instance of (bidirectional)SegmentComputer
+       * @param begin any ConstIterator
+       * @tparam SC any model of CBidirectionalSegmentComputer
+       */
+      template <typename SC>
+      void extendOppositeEnd(SC& s, const typename SC::ConstIterator& begin);
+
+      /**
+       * Specialization for Iterator type
+       */
+      template <typename SC>
+      void extendOppositeEnd(SC& s, const typename SC::ConstIterator& begin, IteratorType );
+
+      /**
+       * Specialization for Circulator type
+       */
+      template <typename SC>
+      void extendOppositeEnd(SC& s, const typename SC::ConstIterator& begin, CirculatorType );
 
 ////////////////////////////////////////////////////////// next
       /**
@@ -577,13 +637,8 @@ namespace DGtal
 		ConstIterator myStart, myStop;
 
     //Mode
-    //eiter "Truncate" (default), 
-    //"Frist", "MostCentered", "Last"
+    //"Frist", "MostCentered" (default), "Last"
     std::string myMode; 
-
-    //Either equal to myStop in the "Truncate" mode
-    //or to myEnd in the other modes
-		ConstIterator myNewStop;
 
     //SegmentComputer
 		SegmentComputer mySegmentComputer;

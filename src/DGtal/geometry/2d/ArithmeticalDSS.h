@@ -50,7 +50,6 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
-#include "DGtal/base/Circulator.h"
 #include "DGtal/geometry/2d/SegmentComputerTraits.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -221,8 +220,9 @@ namespace DGtal
     typedef TIterator ConstIterator;
 		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
 		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
-//    typedef DynamicBidirectionnalSegmentComputer Category;   
-    typedef ForwardSegmentComputer Category; 
+//    typedef DynamicBidirectionalSegmentComputer Category;   
+//    typedef ForwardSegmentComputer Category; 
+    typedef BidirectionalSegmentComputer Category;   
 
 
     //2D point and 2D vector
