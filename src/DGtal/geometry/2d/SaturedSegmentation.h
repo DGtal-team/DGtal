@@ -332,20 +332,30 @@ namespace DGtal
        */
       bool doesIntersectNext(const ConstIterator& it);
 
+
+ 
       /**
        * Computes the longest possible segment from [it]
        * @param it, a given iterator
-       * Nb: complexity in O(n).
+       * @return 'true' if the [i,end) is an empty range
+       * or if ( s.end() == end ), 'false' otherwise 
        */
       template <typename SC>
-      void longestSegment(SC& s, 
+      bool longestSegment(SC& s, 
                          const typename SC::ConstIterator& i, 
                          const typename SC::ConstIterator& end);
+
+
+      /**
+       * Computes the middle iterator of a given range
+       * @param itb, ite, begin and end iterators of a range
+       * @return the middle iterator of the range [itb,ite)
+       */
+      ConstIterator getMiddle(const ConstIterator& itb, const ConstIterator& ite); 
 
 ////////////////////////////////////////////////////////// next
       /**
        * Goes to the next maximal segment (if possible).
-       * Nb: complexity in O(n).
        */
       void nextMaximalSegment();
 
@@ -353,7 +363,6 @@ namespace DGtal
        * Goes to the next maximal segment (if possible)
        * using only the extend() method. 
        * @param i, assumed to be the end iterator of the current segment
-       * Nb: linear complexity in the range size
        */
       void nextMaximalSegment(const ConstIterator& i, ForwardSegmentComputer);
       /**
@@ -569,8 +578,12 @@ namespace DGtal
 
     //Mode
     //eiter "Truncate" (default), 
-    //"Truncate+1", or "DoNotTruncate". 
+    //"Frist", "MostCentered", "Last"
     std::string myMode; 
+
+    //Either equal to myStop in the "Truncate" mode
+    //or to myEnd in the other modes
+		ConstIterator myNewStop;
 
     //SegmentComputer
 		SegmentComputer mySegmentComputer;
