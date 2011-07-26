@@ -499,7 +499,7 @@ bool saturedSegmentationVisualTest()
 ///////////////////////////////////////////////////////
 // whole open curve
 
-  trace.beginBlock("Simple Satured Segmentation");
+  trace.beginBlock("Simple Satured Segmentation (mode=Truncate)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -509,7 +509,49 @@ bool saturedSegmentationVisualTest()
      fc.begin(),fc.end(),
      "Truncate",aBoard);   
 
-  aBoard.saveEPS("OpenCurve.eps");
+  aBoard.saveEPS("OpenCurve1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Simple Satured Segmentation (mode=First)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "First",aBoard);   
+
+  aBoard.saveEPS("OpenCurve2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Simple Satured Segmentation (mode=MostCentered)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "MostCentered",aBoard);   
+
+  aBoard.saveEPS("OpenCurve3.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Simple Satured Segmentation (mode=Last)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstIterator,Board2D>
+    (fc.begin(),fc.end(),
+     fc.begin(),fc.end(),
+     "Last",aBoard);   
+
+  aBoard.saveEPS("OpenCurve4.eps");
 }
   trace.endBlock();
 
@@ -527,7 +569,37 @@ bool saturedSegmentationVisualTest()
 
 trace.info() << *start << " " << *stop << endl;
 
-  trace.beginBlock("Satured Segmentation of a subrange");
+  trace.beginBlock("Satured Segmentation of a subrange (mode=Truncate)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "Truncate",aBoard);   
+
+  aBoard.saveEPS("OpenCurvePart1.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Satured Segmentation of a subrange (mode=First)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "First",aBoard);   
+
+  aBoard.saveEPS("OpenCurvePart2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Satured Segmentation of a subrange (mode=MostCentered)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -538,11 +610,26 @@ trace.info() << *start << " " << *stop << endl;
      start,stop,
      "MostCentered",aBoard);   
 
-  aBoard.saveEPS("OpenCurvePart.eps");
+  aBoard.saveEPS("OpenCurvePart3.eps");
 }
   trace.endBlock();
 
+  trace.beginBlock("Satured Segmentation of a subrange (mode=Last)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
 
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts.begin(),vPts.end(),
+     start,stop,
+     "Last",aBoard);   
+
+  aBoard.saveEPS("OpenCurvePart4.eps");
+}
+  trace.endBlock();
+
+///////////////////////////////////////////////////////////
   return true; 
 
 }

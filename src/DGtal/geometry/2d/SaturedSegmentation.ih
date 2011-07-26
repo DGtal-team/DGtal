@@ -42,6 +42,33 @@
 // ------------------------- Main processings -----------------------
 
 /**
+ * Computes the middle iterator of a given range
+ * @param itb, ite, begin and end iterators of a range
+ * @return the middle iterator of the range [itb,ite)
+ */
+  template <typename TSegmentComputer>
+inline
+typename TSegmentComputer::ConstIterator
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::getMiddle(
+   const ConstIterator& itb, const ConstIterator& ite) 
+{
+    ConstIterator b( itb ); 
+    ConstIterator f( ite ); 
+
+    bool flag = true; 
+    while (b != f) {
+      if (flag) {
+        --f;
+        flag = false; 
+      } else {
+        ++b; 
+        flag = true; 
+      } 
+    }
+    return b;   
+} 
+
+/**
  * Checks if the current segment intersects the next one (if exists).
  */
   template <typename TSegmentComputer>
@@ -62,7 +89,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInter
   template <typename TSegmentComputer>
   template <typename SC>
 inline
-void
+bool
 DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
 ::longestSegment(SC& s, 
  const typename SC::ConstIterator& i,
@@ -74,6 +101,9 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
     while ( (s.extend())
 	       && (s.end() != end) ) {}
 
+    return ( s.end() == end ); 
+  } else {
+    return true;
   }
 }
 
@@ -98,20 +128,19 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  const ConstIterator& i,
  ForwardSegmentComputer)
 {
-//TODO check the upper bounds
 
-  if ( isNotEmpty<ConstIterator>(i,myS->myEnd) ) {
+  if ( isNotEmpty<ConstIterator>(i,myS->myNewStop) ) {
 
     //backward extension
 	  ConstIterator it( i ); ++it; 
     ConstReverseIterator rit( it );
-    ConstReverseIterator rend( mySegmentComputer.begin() );
+    ConstReverseIterator rend( myS->myBegin );
 	  ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
     this->longestSegment(r, rit, rend);
 
 	  //forward extension
 	  ConstIterator it2( r.end().base() );
-    this->longestSegment(mySegmentComputer, it2, myS->myEnd);
+    this->longestSegment(mySegmentComputer, it2, myS->myNewStop);
 
   }
 }
@@ -124,7 +153,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  const ConstIterator& i,
  BidirectionalSegmentComputer)
 {
-//TODO check the stop bounds
+
   if ( isNotEmpty(i,myS->myBegin) ) {
 
     mySegmentComputer.init(i);
@@ -132,9 +161,9 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
     while ( (mySegmentComputer.extendOppositeEnd())
           &&(mySegmentComputer.begin() != myS->myBegin) ) {} 
 
-    if ( isNotEmpty(i,myS->myStop) ) {
+    if ( isNotEmpty(i,myS->myNewStop) ) {
 
-      while ( (mySegmentComputer.end() != myS->myEnd)
+      while ( (mySegmentComputer.end() != myS->myNewStop)
 	          &&(mySegmentComputer.extend()) ) {} 
 
     }
@@ -186,9 +215,36 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  ForwardSegmentComputer)
 {
 
-//TODO most centered
-  this->firstMaximalSegment(i,ForwardSegmentComputer() );
- //next  jusqu'a avoir le milieu!
+ //get the first maximal segment passing through i
+
+  this->firstMaximalSegment( i, ForwardSegmentComputer() );
+
+ //get the next maximal segment while i is not the middle of 
+ //the current maximal segment. 
+
+  ConstIterator k( mySegmentComputer.begin() ); 
+  while ( k != i ) {
+
+    if ( isNotEmpty<ConstIterator>(i,myS->myNewStop) ) {
+
+      //backward extension
+	    ConstIterator it( mySegmentComputer.end() ); ++it; 
+      ConstReverseIterator rit( it );
+      ConstReverseIterator rend( mySegmentComputer.begin() );
+	    ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
+      this->longestSegment(r, rit, rend);
+      ConstIterator begin = r.end().base(); 
+      ConstIterator end = r.begin().base(); 
+
+      while ( ( k != getMiddle(begin, end) )&&( k != i ) )
+        ++k; 
+      if ( k != i ) this->nextMaximalSegment();
+
+    } else {
+      k = i; 
+    }
+  }
+
 }
 
   template <typename TSegmentComputer>
@@ -199,17 +255,32 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  const ConstIterator& i,
  BidirectionalSegmentComputer)
 {
-//TODO most centered
-  if ( ( isNotEmpty(i,myS->myEnd) ) 
-    && ( isNotEmpty(i,myS->myBegin) ) ) {
+
+  if ( (isNotEmpty(i,myS->myNewStop)) || (isNotEmpty(i,myS->myBegin)) ) { 
 
     mySegmentComputer.init(i);
 
-    while ( (mySegmentComputer.extend() )
-	        &&(mySegmentComputer.end() != myS->myEnd ) 
-          &&(mySegmentComputer.extendOppositeEnd() )
-	        &&(mySegmentComputer.begin() != myS->myBegin ) ) {} 
-    
+    //symmetric extension
+    if ( (isNotEmpty(i,myS->myNewStop)) && (isNotEmpty(i,myS->myBegin)) ) { 
+      while ( (mySegmentComputer.extend() )
+	          &&(mySegmentComputer.end() != myS->myNewStop ) 
+            &&(mySegmentComputer.extendOppositeEnd() )
+	          &&(mySegmentComputer.begin() != myS->myBegin ) ) {} 
+
+    }
+
+    //forward extension
+    if ( isNotEmpty(mySegmentComputer.end(),myS->myNewStop) ) {
+      while ( (mySegmentComputer.extend() )
+	          &&(mySegmentComputer.end() != myS->myNewStop ) ) {}
+    }
+      
+    //backward extension
+    if ( isNotEmpty(mySegmentComputer.begin(),myS->myBegin) ) {
+      while ( ( mySegmentComputer.extendOppositeEnd() )
+	         && ( mySegmentComputer.begin() != myS->myBegin ) ) {} 
+    }
+
   }
 }
 
@@ -257,10 +328,9 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  ForwardSegmentComputer)
 {
 
-//TODO check the stop bounds
 	//forward extension
 	ConstIterator j( i );
-  this->longestSegment(mySegmentComputer, j, myS->myEnd);
+  this->longestSegment(mySegmentComputer, j, myS->myNewStop);
 
   //backward extension
   ConstIterator it( mySegmentComputer.end() );
@@ -275,7 +345,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
 
     //forward extension
     ConstIterator it2( r.end().base() );
-    this->longestSegment(mySegmentComputer, it2, myS->myEnd);
+    this->longestSegment(mySegmentComputer, it2, myS->myNewStop);
   }
 }
 
@@ -288,13 +358,12 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  BidirectionalSegmentComputer)
 {
 
-//TODO check the stop bounds
-  if ( isNotEmpty(i,myS->myEnd) ) {
+  if ( isNotEmpty(i,myS->myNewStop) ) {
 
     mySegmentComputer.init(i);
 
     while ( (mySegmentComputer.extend())
-	        &&(mySegmentComputer.end() != myS->myEnd) ) {} 
+	        &&(mySegmentComputer.end() != myS->myNewStop) ) {} 
 
     if ( isNotEmpty(i,myS->myBegin) ) {
       while ( (mySegmentComputer.extendOppositeEnd())
@@ -393,11 +462,12 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator
  const ConstIterator& i,
  DynamicSegmentComputer)
 {
-//TODO check the bounds
-  while (! mySegmentComputer.isExtendable() ) 
-	      mySegmentComputer.retract(); 
 
-  while ( (mySegmentComputer.end() != myS->myEnd)
+  while ( ( (mySegmentComputer.end() == myS->myNewStop )
+          ||(! mySegmentComputer.isExtendable() ) )
+        &&(mySegmentComputer.retract() ) ) {} 
+
+  while ( (mySegmentComputer.end() != myS->myNewStop)
 	      &&(mySegmentComputer.extend()) ) {} 
 
 }
@@ -435,56 +505,57 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCo
     myFlagIsValid( isValid )
 {
 
-	if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+  if (myFlagIsValid) {
+	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
 
-    //TODO to check in the circulator case          
-	  myFlagIntersectPrevious = false;
+      //TODO to check in the circulator case          
+	    myFlagIntersectPrevious = false;
 
-    if (myS->myMode == "First") {
-      //end
-      ConstIterator i(myS->myStop); --i; 
-      this->firstMaximalSegment(i);
-      myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
-      myLastMaximalSegmentEnd = mySegmentComputer.end(); 
-      //beginning
-      this->firstMaximalSegment(myS->myStart);
-    } else
-    if (myS->myMode == "Last") {
-      //end
-      ConstIterator i(myS->myStop); --i; 
-      this->lastMaximalSegment(i);
-      myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
-      myLastMaximalSegmentEnd = mySegmentComputer.end(); 
-      //beginning
-      this->lastMaximalSegment(myS->myStart);
-    } 
-    else
-    if (myS->myMode == "MostCentered") {
-      //end
-      ConstIterator i(myS->myStop); --i; 
-      this->mostCenteredMaximalSegment(i);
-      myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
-      myLastMaximalSegmentEnd = mySegmentComputer.end(); 
-      //beginning
-      this->mostCenteredMaximalSegment(myS->myStart);
+      if (myS->myMode == "First") {
+        //end
+        ConstIterator i(myS->myStop); --i; 
+        this->firstMaximalSegment(i);
+        myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
+        myLastMaximalSegmentEnd = mySegmentComputer.end(); 
+        //beginning
+        this->firstMaximalSegment(myS->myStart);
+      } 
+      else
+      if (myS->myMode == "Last") {
+        //end
+        ConstIterator i(myS->myStop); --i; 
+        this->lastMaximalSegment(i);
+        myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
+        myLastMaximalSegmentEnd = mySegmentComputer.end(); 
+        //beginning
+        this->lastMaximalSegment(myS->myStart);
+      } 
+      else
+      if (myS->myMode == "MostCentered") {
+        //end
+        ConstIterator i(myS->myStop); --i; 
+        this->mostCenteredMaximalSegment(i);
+        myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
+        myLastMaximalSegmentEnd = mySegmentComputer.end(); 
+        //beginning
+        this->mostCenteredMaximalSegment(myS->myStart);
+      }
+      else { //"Truncate" mode
+        //end
+        ConstReverseIterator rit( myS->myStop );
+        ConstReverseIterator rend( myS->myStart );
+        ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
+        this->longestSegment(r, rit, rend);
+        myLastMaximalSegmentBegin = r.end().base(); 
+        myLastMaximalSegmentEnd = r.begin().base(); 
+        //beginning
+		    this->longestSegment(mySegmentComputer, myS->myStart, myS->myStop);	
+      }
+      
+    } else {
+      myFlagIsValid = false;
     }
-    else { //"Truncate" mode
-      //end
-      ConstIterator it(myS->myStop); 
-      ConstReverseIterator rit( it );
-      ConstReverseIterator rend( myS->myStart );
-      ReverseSegmentComputer r( mySegmentComputer.getReverse() ); 
-      this->longestSegment(r, rit, rend);
-      myLastMaximalSegmentBegin = r.end().base(); 
-      myLastMaximalSegmentEnd = r.begin().base(); 
-      //beginning
-		  this->longestSegment(mySegmentComputer, myS->myStart, myS->myStop);	
-    }
-    
-  } else {
-    myFlagIsValid = false;
   }
-
 }
 
 
@@ -690,6 +761,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SaturedSegmentation
 	 myEnd(ite),
    myStart(itb),
 	 myStop(ite),
+	 myNewStop(ite),
 	 mySegmentComputer(aSegmentComputer),
    myMode("Truncate")
 {
@@ -705,6 +777,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::setSubRange
   myStart = itb;
 	myStop = ite;
   myMode = "Truncate";
+  myNewStop = ite;
 }
 
   template <typename TSegmentComputer>
@@ -714,6 +787,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
   myMode = aMode; 
+  if (myMode == "Truncate")   myNewStop = myStop; 
+  else myNewStop = myEnd; 
 }
 
 
