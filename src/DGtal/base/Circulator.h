@@ -246,9 +246,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
 
     /**
      * Default constructor.
-     * Default-initializes member [myCurrentIt].
+     * Default-initializes iterator members.
      */
-    Circulator() : myCurrentIt() {}
+    Circulator() : myCurrentIt(), myBeginIt(), myEndIt() {}
 
 
     /**
@@ -380,16 +380,25 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     // ----------------------- Equality operators --------------------------------------
   public:
 
+    //'true' if their three underlying iterators are equal
+    //or if their underlying ranges are both empty,
+    //'false' otherwise
     bool operator==( const Self& other) const { 
-      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
-      return myCurrentIt == other.base(); 
+        return ( ( (myBeginIt == other.begin())
+                 &&(myEndIt == other.end())
+                 &&(myCurrentIt == other.base()) ) 
+               ||( (myBeginIt == myEndIt)
+                 &&(other.begin() == other.end()) ) ); 
     }
     bool operator!=( const Self& other) const { return !(*this == other); }
 
     template<typename OtherIterator>
     bool operator==( const OtherIterator& other) const { 
-      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
-      return myCurrentIt == other.base(); 
+        return ( ( (myBeginIt == other.begin())
+                 &&(myEndIt == other.end())
+                 &&(myCurrentIt == other.base()) ) 
+               ||( (myBeginIt == myEndIt)
+                 &&(other.begin() == other.end()) ) ); 
     }
     template<typename OtherIterator>
     bool operator!=( const OtherIterator& other) const { return !(*this == other); }
@@ -473,7 +482,9 @@ namespace detail {
   template< typename IC > 
   inline
   bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
-    return ( ( c1.isValid() ) && ( c2.isValid() ) );
+//    return ( ( c1.isValid() ) && ( c2.isValid() ) );
+    IC c; 
+    return ( (c1 != c ) && ( c2 != c ) );  
   }
 
 } 

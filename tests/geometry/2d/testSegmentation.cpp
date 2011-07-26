@@ -28,7 +28,7 @@
 
 /**
  * Description of testSegmentation <p>
- * Aim: simple test of \ref GreedySegmentation
+ * Aim: simple test of \ref GreedySegmentation and \ref SaturedSegmentation
  */
 
 #include <cstdio>
@@ -480,6 +480,12 @@ trace.info() << *start2 << " " << *stop2 << endl;
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class SaturedSegmentation
+///////////////////////////////////////////////////////////////////////////////
+
+
+
 /**
  * Simple visual test
  */
@@ -499,20 +505,6 @@ bool saturedSegmentationVisualTest()
 ///////////////////////////////////////////////////////
 // whole open curve
 
-  trace.beginBlock("Simple Satured Segmentation (mode=Truncate)");
-{
-  Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
-
-  segmentationIntoMaximalDSSs<ConstIterator,Board2D>
-    (fc.begin(),fc.end(),
-     fc.begin(),fc.end(),
-     "Truncate",aBoard);   
-
-  aBoard.saveEPS("OpenCurve1.eps");
-}
-  trace.endBlock();
-
   trace.beginBlock("Simple Satured Segmentation (mode=First)");
 {
   Board2D aBoard;
@@ -523,7 +515,7 @@ bool saturedSegmentationVisualTest()
      fc.begin(),fc.end(),
      "First",aBoard);   
 
-  aBoard.saveEPS("OpenCurve2.eps");
+  aBoard.saveEPS("MSOpenCurve2.eps");
 }
   trace.endBlock();
 
@@ -537,7 +529,7 @@ bool saturedSegmentationVisualTest()
      fc.begin(),fc.end(),
      "MostCentered",aBoard);   
 
-  aBoard.saveEPS("OpenCurve3.eps");
+  aBoard.saveEPS("MSOpenCurve3.eps");
 }
   trace.endBlock();
 
@@ -551,7 +543,7 @@ bool saturedSegmentationVisualTest()
      fc.begin(),fc.end(),
      "Last",aBoard);   
 
-  aBoard.saveEPS("OpenCurve4.eps");
+  aBoard.saveEPS("MSOpenCurve4.eps");
 }
   trace.endBlock();
 
@@ -569,20 +561,6 @@ bool saturedSegmentationVisualTest()
 
 trace.info() << *start << " " << *stop << endl;
 
-  trace.beginBlock("Satured Segmentation of a subrange (mode=Truncate)");
-{
-  Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid") << fc; 
-  aBoard << SetMode("PointVector", "Paving") << *start << *stop; 
-
-  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
-    (vPts.begin(),vPts.end(),
-     start,stop,
-     "Truncate",aBoard);   
-
-  aBoard.saveEPS("OpenCurvePart1.eps");
-}
-  trace.endBlock();
 
   trace.beginBlock("Satured Segmentation of a subrange (mode=First)");
 {
@@ -595,7 +573,7 @@ trace.info() << *start << " " << *stop << endl;
      start,stop,
      "First",aBoard);   
 
-  aBoard.saveEPS("OpenCurvePart2.eps");
+  aBoard.saveEPS("MSOpenCurvePart2.eps");
 }
   trace.endBlock();
 
@@ -610,7 +588,7 @@ trace.info() << *start << " " << *stop << endl;
      start,stop,
      "MostCentered",aBoard);   
 
-  aBoard.saveEPS("OpenCurvePart3.eps");
+  aBoard.saveEPS("MSOpenCurvePart3.eps");
 }
   trace.endBlock();
 
@@ -625,13 +603,211 @@ trace.info() << *start << " " << *stop << endl;
      start,stop,
      "Last",aBoard);   
 
-  aBoard.saveEPS("OpenCurvePart4.eps");
+  aBoard.saveEPS("MSOpenCurvePart4.eps");
+}
+  trace.endBlock();
+
+
+////////////////////////////////////////////////////////
+// using circulators
+
+  typedef Circulator<RAConstIterator> ConstCirculator;
+  ConstCirculator c(vPts.begin(),vPts.begin(),vPts.end()); 
+
+
+  trace.beginBlock("Segmentation of a range with circulators (mode=First)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "First",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurveWithCirc2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a range bounded by circulators (mode=MostCentered)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "MostCentered",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurveWithCirc3.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a range bounded by circulators (mode=Last)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,c,c,
+     "Last",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurveWithCirc4.eps");
+}
+  trace.endBlock();
+
+
+///////////////////////////////////////////////////////////////
+// subrange with circulators
+
+  ConstCirculator cstart(start,vPts.begin(),vPts.end()); 
+  ConstCirculator cstop(stop,vPts.begin(),vPts.end()); 
+
+
+  trace.beginBlock("Segmentation of a subrange with circulators (mode=First)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *cstart << *cstop; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,cstart,cstop,
+     "First",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurvePartWithCirc2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a subrange with circulators (mode=MostCentered)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *cstart << *cstop; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,cstart,cstop,
+     "MostCentered",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurvePartWithCirc3.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Segmentation of a subrange with circulators (mode=Last)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc; 
+  aBoard << SetMode("PointVector", "Paving") << *cstart << *cstop; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c,c,cstart,cstop,
+     "Last",aBoard);   
+
+  aBoard.saveEPS("MSOpenCurvePartWithCirc4.eps");
+}
+  trace.endBlock();
+
+/////////////////////////////////////////////////////////////
+// closed digital curve 
+
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 1112121212121221212121221212212222232232323332333333332333332330333033003030000010001001001000100010101010111" << endl;
+  
+  // Construct the Freeman chain
+  FC fc2(ss);
+
+  Curve vPts2; 
+  vPts2.assign( fc2.begin(), fc2.end() ); 
+
+  ConstCirculator c2(vPts2.begin(),vPts2.begin(),vPts2.end()); 
+
+  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=First)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *c2; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "First",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithCirc2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=MostCentered)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *c2; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "MostCentered",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithCirc3.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=Last)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *c2; 
+
+  segmentationIntoMaximalDSSs<ConstCirculator,Board2D>
+    (c2,c2,c2,c2,
+     "Last",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithCirc4.eps");
 }
   trace.endBlock();
 
 ///////////////////////////////////////////////////////////
+
   return true; 
 
+}
+
+
+/**
+ * Simple visual test
+ */
+bool saturedSegmentationTest()
+{
+
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> FC; 
+  typedef FreemanChain<Coordinate>::ConstIterator ConstIterator; 
+
+  std::string filename = testPath + "samples/france.fc";
+
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  FC fc(fst);
+
+  typedef IteratorCirculatorTraits<ConstIterator>::Value::Coordinate Coordinate; 
+  typedef ArithmeticalDSS<ConstIterator,Coordinate,4> RecognitionAlgorithm;
+	typedef SaturedSegmentation<RecognitionAlgorithm> Segmentation;
+
+  trace.beginBlock("Satured Segmentation (france.fc)");
+
+  RecognitionAlgorithm algo;
+  Segmentation s(fc.begin(),fc.end(),algo);
+//  s.setSubRange( );
+//  s.setMode( );
+  
+  Segmentation::SegmentComputerIterator begin = s.begin();
+  Segmentation::SegmentComputerIterator end = s.end();
+
+  unsigned int compteur = 0; 
+  for (Segmentation::SegmentComputerIterator i(begin); i != end; ++i) {
+    ++compteur; 
+  } 
+
+  trace.info() << "# nbpts nbsegments " << endl;
+  trace.info() << fc.size()+1 << " " << compteur << endl;
+
+  trace.endBlock();
+
+  return (compteur == 965);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -649,6 +825,7 @@ int main(int argc, char **argv)
 
   bool res = greedySegmentationVisualTest()
 && saturedSegmentationVisualTest()
+&& saturedSegmentationTest()
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
