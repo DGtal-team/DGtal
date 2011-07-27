@@ -50,7 +50,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
-#include "DGtal/geometry/2d/SegmentComputerTraits.h"
+#include "DGtal/geometry/2d/SegmentComputerUtils.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -220,9 +220,9 @@ namespace DGtal
     typedef TIterator ConstIterator;
 		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
 		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
-//    typedef DynamicBidirectionalSegmentComputer Category;   
+    typedef DynamicBidirectionalSegmentComputer Category;   
 //    typedef ForwardSegmentComputer Category; 
-    typedef BidirectionalSegmentComputer Category;   
+//    typedef BidirectionalSegmentComputer Category;   
 
 
     //2D point and 2D vector
@@ -323,6 +323,13 @@ namespace DGtal
      * @return 'true' if yes, 'false' otherwise.
      */
     bool isExtendable();
+
+    /**
+     * Tests whether the current DSS can be extended at the back.
+     *  
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool isOppositeEndExtendable();
 
     /**
      * Deprecated
@@ -679,6 +686,18 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   private:
+
+    /**
+     * Tests whether the union between a point 
+     * (pointing by it) and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param lastPoint, the new point
+     * @param lastMove, end shift vector of the DSS  
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool isExtendable( const Point & lastPoint, 
+		 const Vector & lastMove );
 
     /**
      * Tests whether the union between a point 
