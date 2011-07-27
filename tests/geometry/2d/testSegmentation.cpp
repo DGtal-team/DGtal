@@ -615,7 +615,7 @@ trace.info() << *start << " " << *stop << endl;
   ConstCirculator c(vPts.begin(),vPts.begin(),vPts.end()); 
 
 
-  trace.beginBlock("Segmentation of a range with circulators (mode=First)");
+  trace.beginBlock("Segmentation of a range bounded by circulators (mode=First)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -775,24 +775,32 @@ bool saturedSegmentationTest()
 
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> FC; 
-  typedef FreemanChain<Coordinate>::ConstIterator ConstIterator; 
 
-  std::string filename = testPath + "samples/france.fc";
+  std::string filename = testPath + "samples/SmallBall2.fc";
 
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
   FC fc(fst);
 
-  typedef IteratorCirculatorTraits<ConstIterator>::Value::Coordinate Coordinate; 
-  typedef ArithmeticalDSS<ConstIterator,Coordinate,4> RecognitionAlgorithm;
+  typedef PointVector<2,Coordinate> Point; 
+
+  vector<Point> vPts; 
+  vPts.assign(fc.begin(),fc.end()); 
+ 
+  typedef vector<Point>::const_iterator ConstIterator; 
+  typedef Circulator<ConstIterator> ConstCirculator; 
+
+  Circulator<ConstIterator> c(vPts.begin(), vPts.begin(), vPts.end() ); 
+
+  typedef ArithmeticalDSS<ConstCirculator,Coordinate,4> RecognitionAlgorithm;
 	typedef SaturedSegmentation<RecognitionAlgorithm> Segmentation;
 
-  trace.beginBlock("Satured Segmentation (france.fc)");
+  trace.beginBlock("Satured Segmentation");
+  trace.info() << filename << endl;
 
   RecognitionAlgorithm algo;
-  Segmentation s(fc.begin(),fc.end(),algo);
-//  s.setSubRange( );
-//  s.setMode( );
+  Segmentation s(c,c,algo);
+  s.setMode("First"); 
   
   Segmentation::SegmentComputerIterator begin = s.begin();
   Segmentation::SegmentComputerIterator end = s.end();
@@ -807,7 +815,7 @@ bool saturedSegmentationTest()
 
   trace.endBlock();
 
-  return (compteur == 965);
+  return (compteur == 193);
 }
 
 /////////////////////////////////////////////////////////////////////////

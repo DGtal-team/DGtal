@@ -369,7 +369,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 }
 
-
+//Deprecated
 //--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -393,7 +393,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const
 
 }
 
-//Deprecated
+
 //--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -651,6 +651,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 
 }
 
+//--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -658,8 +659,30 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
 {
 
   ConstIterator it(myL); ++it;
-	Point lastPoint(*it);
-	Vector lastMove = lastPoint-Point(*myL);
+	return isExtendable(*it, (Point(*it) - Point(*myL)) ); 
+
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isOppositeEndExtendable()
+{
+
+  ConstIterator it(myF); --it;
+	return isExtendable(*it, (Point(*myF) - Point(*it)) ); 
+
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(
+   const Point & lastPoint, 
+	 const Vector & lastMove )
+{
+
 	//if the two last points 
   //are confounded or not connected
 	//return false

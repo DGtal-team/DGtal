@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/2d/SegmentComputerTraits.h"
+#include "DGtal/geometry/2d/SegmentComputerUtils.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -153,9 +153,13 @@ namespace DGtal
 
 
 
-    /**
-     * This class is an iterator storing the current 'SegmentComputer'.
-     */
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SegmentComputerIterator
+  /**
+   * Description of template class 'SaturedSegmentation::SegmentComputerIterator'
+   *  <p> \brief Aim: Specific iterator to visit all the maximal segments of a 
+   * satured segmentation. 
+   */
     class SegmentComputerIterator
     {
 
@@ -180,7 +184,7 @@ namespace DGtal
       
 
       /**
-       * Begin and end iterators of the last maximal segment
+       * Begin and end iterators of the last maximal segment of the segmentation
        */
 		  ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
 
@@ -338,6 +342,18 @@ namespace DGtal
        * Goes to the next maximal segment (if possible).
        */
       void nextMaximalSegment();
+
+      /**
+       * Computes the first maximal segment of the segmentation.
+       */
+      void initFirstMaximalSegment();
+
+      /**
+       * Computes the last maximal segment of the segmentation.
+       */
+      void initLastMaximalSegment();
+      void initLastMaximalSegment(IteratorType);
+      void initLastMaximalSegment(CirculatorType);
 
     };
 
