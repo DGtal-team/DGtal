@@ -87,6 +87,65 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 }
 
 /**
+ * Drawing a segmentation
+ */
+template <typename Iterator, typename Board>
+void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
+{
+
+	typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
+
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string aStyleName = "ArithmeticalDSS/BoundingBox";
+
+  for (Iterator i(itb); i != ite; ++i) {
+	 	
+    //choose pen color
+    CustomPenColor* aPenColor;
+
+		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
+
+			aPenColor = new CustomPenColor( Color::Black );
+
+		} else {
+
+      //end points
+
+      PointIterator begin = i->begin();	--begin; 
+	    PointIterator end = i->end();
+
+	    //parameters
+	    int mu = i->getMu();
+	    int omega = i->getOmega();
+
+			//configurations
+			if ( (i->getRemainder(begin)<=mu-1)&&
+				   (i->getRemainder(end)<=mu-1) ) {                //concave
+				aPenColor = new CustomPenColor( Color::Green);
+			} else if ( (i->getRemainder(begin)>=mu+omega)&&
+					  (i->getRemainder(end)>=mu+omega) ) {           //convex
+				aPenColor = new CustomPenColor( Color::Blue );
+			} else if ( (i->getRemainder(begin)>=mu+omega)&&
+					  (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+				aPenColor = new CustomPenColor( Color::Yellow );
+			} else if ( (i->getRemainder(begin)<=mu-1)&&
+					  (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+				aPenColor = new CustomPenColor( Color::Yellow );
+			} else {                                                    //pb
+				aPenColor = new CustomPenColor( Color::Red );
+			}
+
+		}
+
+    // draw each segment
+    aBoard << CustomStyle( aStyleName, aPenColor )
+			     << *i; 
+  
+  } 
+
+}
+
+/**
  * Greedy segmentation of a (sub)range
  */
 template <typename Iterator, typename Board>
@@ -131,7 +190,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
   typename Segmentation::SegmentComputerIterator i = s.begin();
   typename Segmentation::SegmentComputerIterator end = s.end();
 
-  draw<typename Segmentation::SegmentComputerIterator, Board>
+  drawCCP<typename Segmentation::SegmentComputerIterator, Board>
   (i,end,aBoard); 
 
 }
@@ -776,7 +835,7 @@ bool saturedSegmentationTest()
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> FC; 
 
-  std::string filename = testPath + "samples/SmallBall2.fc";
+  std::string filename = testPath + "samples/BigBall2.fc";
 
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
@@ -815,7 +874,7 @@ bool saturedSegmentationTest()
 
   trace.endBlock();
 
-  return (compteur == 193);
+  return (compteur == 4295);
 }
 
 /////////////////////////////////////////////////////////////////////////

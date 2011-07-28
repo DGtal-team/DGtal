@@ -77,7 +77,10 @@ IC getMiddleIterator(const IC& itb, const IC& ite) {
 template<typename IC>
 IC getMiddleIterator(const IC& itb, const IC& ite, RandomAccessCategory)
 {
-  return itb + ((ite-itb)/2);    
+//how to compute this with circulators ?
+//return itb + ((ite-itb)/2);  
+//does not work  
+  return getMiddleIterator(itb, ite, BidirectionalCategory() ); 
 }
 
 /**
@@ -506,7 +509,7 @@ void mostCenteredMaximalSegment(SC& s,
 
   firstMaximalSegment( s, i, begin, end, ForwardSegmentComputer() );
 
- //get the next maximal segment while i is not the middle of 
+ //get the next maximal segment while i is not at the middle of 
  //the current maximal segment. 
 
   ConstIterator k( s.begin() ); 
@@ -520,15 +523,17 @@ void mostCenteredMaximalSegment(SC& s,
       ConstReverseIterator rend( s.begin() );
       ReverseSegmentComputer r( s.getReverse() ); 
       longestSegment(r, rit, rend);
-      ConstIterator begin = r.end().base(); 
-      ConstIterator end = r.begin().base(); 
-
-      while ( ( k != getMiddleIterator(begin, end) )&&( k != i ) )
+      ConstIterator newBegin = r.end().base(); 
+      ASSERT( newBegin != s.begin() );
+std::cerr << "m " << *(getMiddleIterator(newBegin, s.end() )) << std::endl;
+      while ( ( k != getMiddleIterator(newBegin, s.end() ) )
+            &&( k != i ) ) {
         ++k; 
+      }
       if ( k != i ) {
    
         //get the next maximal segment
-        firstMaximalSegment( s, s.end(), begin, end, ForwardSegmentComputer() );
+        longestSegment(s, newBegin, end);  
 
       }
 
@@ -776,8 +781,12 @@ void nextMaximalSegment(SC& s,
   ConstIterator i( s.begin() ); ++i; 
   //if the intersection between the two 
   // consecutive maximal segments is empty 
-  if (! isNotEmpty<ConstIterator>(i,end) )
-    s.init(i);  
+  if ( i == s.end() ) {
+    if ( isNotEmpty<ConstIterator>(i, end) ) {
+      ++i; 
+      s.init(i);  
+    }
+  }
 
   //extend
   segmentComputerMaximalExtension(s, end);
@@ -867,8 +876,12 @@ void previousMaximalSegment(SC& s,
   ConstIterator i( s.end() ); --i; 
   //if the intersection between the two 
   // consecutive maximal segments is empty 
-  if (! isNotEmpty<ConstIterator>(i,begin) )
-    s.init(i);  
+  if ( i == s.begin() ) {
+    if ( isNotEmpty<ConstIterator>(i, begin) ) {
+      --i; 
+      s.init(i);  
+    }
+  }
 
   //extend
   segmentComputerOppositeEndMaximalExtension(s, begin);

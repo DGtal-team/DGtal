@@ -220,9 +220,10 @@ namespace DGtal
     typedef TIterator ConstIterator;
 		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
 		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
-    typedef DynamicBidirectionalSegmentComputer Category;   
-//    typedef ForwardSegmentComputer Category; 
-//    typedef BidirectionalSegmentComputer Category;   
+//    typedef DynamicBidirectionalSegmentComputer Category; 
+//    typedef BidirectionalSegmentComputer Category;     
+    typedef ForwardSegmentComputer Category; 
+
 
 
     //2D point and 2D vector

@@ -44,6 +44,47 @@
 // ------------------------- Some processings -----------------------
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
+{
+  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
+  this->doesIntersectNext( it, itb, ite, Type() );
+}
+
+/**
+ * Specialization for iterators.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
+{
+		ConstIterator previousIt(it); 
+    if ( (it != itb)&&(it != ite) ) {
+      --previousIt;
+		  SegmentComputer tmpSegmentComputer;
+		  tmpSegmentComputer.init(previousIt);
+		  return tmpSegmentComputer.extend();
+    } else {
+      return false; 
+    }
+}
+
+/**
+ * Specialization for circulators
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+{
+		this->doesIntersectNext(it);
+}
 
 /**
  * Checks if the current segment intersects the next one (if exists).
@@ -53,8 +94,9 @@ inline
 bool
 DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
-		SegmentComputer tmpSegmentComputer;
 		ConstIterator previousIt(it); --previousIt;
+
+		SegmentComputer tmpSegmentComputer;
 		tmpSegmentComputer.init(previousIt);
 		return tmpSegmentComputer.extend();
 }
@@ -77,8 +119,6 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFirst
   else { // (myS->myMode == "MostCentered") 
     DGtal::mostCenteredMaximalSegment(mySegmentComputer, myS->myStart, myS->myBegin, myS->myEnd);
   }
-
-std::cerr << "First " << *mySegmentComputer.begin() << " " << *mySegmentComputer.end() << std::endl;
 }
 
 /**
@@ -114,7 +154,6 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastM
   }
   myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
   myLastMaximalSegmentEnd = mySegmentComputer.end(); 
-std::cerr << "Last " << *myLastMaximalSegmentBegin << " " << *myLastMaximalSegmentEnd << std::endl;
 }
 
 /**
@@ -125,12 +164,14 @@ inline
 void
 DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(CirculatorType)
 {
-  this->initFirstMaximalSegment(); 
-  DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
-  myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
-  myLastMaximalSegmentEnd = mySegmentComputer.end(); 
-std::cerr << "Last " << *myLastMaximalSegmentBegin << " " << *myLastMaximalSegmentEnd << std::endl;
-
+  if (myS->myStop == myS->myStart) {
+    this->initFirstMaximalSegment(); 
+    DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
+    myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
+    myLastMaximalSegmentEnd = mySegmentComputer.end(); 
+  } else {
+    this->initLastMaximalSegment( IteratorType() ); 
+  }
 }
 
 /**
@@ -153,19 +194,14 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaxim
   	DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd, 
                       typename SegmentComputer::Category() );
 
-std::cout << *mySegmentComputer.begin() << " " << *mySegmentComputer.end() << std::endl;
+    if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
+       &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
 
-	  if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
-       &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if end
-
-      //TODO to check in the circulator case
-	    myFlagIntersectNext = false;
-  
+	    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
       myFlagIsLast = true; 
       
-	  } else {
-    //otherwise
-		  myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+    } else {                                                     //otherwise
+	    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
     }
 
 	}
@@ -198,14 +234,24 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCo
 {
 
   if (myFlagIsValid) {
-	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) { //if at least one element
 
+std::cerr << "last" << std::endl;
       this->initLastMaximalSegment(); 
+//std::cerr << "first" << std::endl;
       this->initFirstMaximalSegment(); 
-      
-      //TODO to check in the circulator case          
-	    myFlagIntersectPrevious = false;
+std::cerr << "initialized" << std::endl;
+		  myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
+	    if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
+         &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
+
+		    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+        myFlagIsLast = true; 
+        
+	    } else {                                                     //otherwise
+		    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+      }
  
     } else {
       myFlagIsValid = false;
