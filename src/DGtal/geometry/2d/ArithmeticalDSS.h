@@ -46,6 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -220,24 +221,13 @@ namespace DGtal
     typedef TIterator ConstIterator;
 		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
 		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
-//    typedef DynamicBidirectionalSegmentComputer Category; 
-//    typedef BidirectionalSegmentComputer Category;     
-    typedef ForwardSegmentComputer Category; 
-
-
 
     //2D point and 2D vector
-    typedef DGtal::PointVector<2,Integer> Point;
-    typedef DGtal::PointVector<2,Integer> Vector;
-  
-    typedef DGtal::PointVector<2,double> PointD;
-
-/*
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
 
     typedef DGtal::RealPointVector<2> PointD;  
-*/
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -390,51 +380,7 @@ namespace DGtal
 
 
 
-    /**
-     * Computes the remainder of a point
-     * (that does not necessarily belong to the DSS)
-     * @param it an iterator on points
-     * @return the remainder.
-     */
-    Integer getRemainder(const ConstIterator & it) const;
 
-    /**
-     * Computes the remainder of a point
-     * (that does not necessarily belong to the DSS)
-     * @param aPoint the point whose remainder is returned 
-     * @return the remainder.
-     */
-    Integer getRemainder( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
-     * @param aPoint the point to be checked 
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSL( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
-     * @param it an iterator on the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSL(const ConstIterator & it) const;
-
-    /**
-     * Checks whether a point belongs to the DSS or not
-     * @param aPoint the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSS( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point belongs to the DSS or not
-     * @param it an iterator on the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSS(const ConstIterator & it) const;
 
     // ------------------------- Accessors ------------------------------
     /**
@@ -527,6 +473,174 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+
+    // ------------------ Useful tools -----------------------------------
+
+    /**
+     * Computes the remainder of a point
+     * (that does not necessarily belong to the DSS)
+     * @param it an iterator on points
+     * @return the remainder of *it.
+     */
+    Integer getRemainder(const ConstIterator & it) const;
+
+    /**
+     * Computes the remainder of a point
+     * (that does not necessarily belong to the DSS)
+     * @param aPoint the point whose remainder is returned 
+     * @return myA*aPoint[0] - myB*aPoint[1].
+     */
+    Integer getRemainder( const Point& aPoint ) const;
+
+    /**
+     * Computes the position of a point
+     * (that does not necessarily belong to the DSS)
+     * @param it an iterator on points
+     * @return the position of *it.
+     */
+    Integer getPosition(const ConstIterator & it) const;
+
+    /**
+     * Computes the position of a point
+     * (that does not necessarily belong to the DSS)
+     * @param aPoint the point whose position is returned 
+     * @return myA*aPoint[0] + myB*aPoint[1].
+     */
+    Integer getPosition( const Point& aPoint ) const;
+
+    /**
+     * Checks whether a point is in the DSL
+     * of parameters (myA,myB,myMu,myOmega)
+     * @param aPoint the point to be checked 
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSL( const Point& aPoint ) const;
+
+    /**
+     * Checks whether a point is in the DSL
+     * of parameters (myA,myB,myMu,myOmega)
+     * @param it an iterator on the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSL(const ConstIterator & it) const;
+
+    /**
+     * Checks whether a point belongs to the DSS or not
+     * @param aPoint the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS( const Point& aPoint ) const;
+
+    /**
+     * Checks whether a point belongs to the DSS or not
+     * @param it an iterator on the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS(const ConstIterator & it) const;
+
+
+    // ------------------------- Hidden services ------------------------------
+  private:
+
+    /**
+     * Tests whether the union between a point 
+     * (pointing by it) and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param lastPoint, the new point
+     * @param lastMove, end shift vector of the DSS  
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool isExtendable( const Point & lastPoint, 
+		 const Vector & lastMove );
+
+    /**
+     * Tests whether the union between a point 
+     * (pointing by it) and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     * @param it an iterator on a sequence of points
+     * @param lastIt, an iterator pointing at the end of the DSS 
+     * @param lastMove, end shift vector of the DSS  
+     * @param Uf, first upper leaning point  
+     * @param Ul, last upper leaning point 
+     * @param Lf, first lower leaning point  
+     * @param Ll, last lower leaning point 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     */
+    bool extend( const ConstIterator & it, 
+		 ConstIterator & lastIt, 
+		 const Vector & lastMove,
+		 Point & Uf,	Point & Ul,
+		 Point & Lf,	Point & Ll );
+
+    /**
+     * Removes the end point of a DSS
+     * (pointing by firstIt)
+     * @param firstIt, an iterator pointing at the end of the DSS 
+     * @param lastIt, an iterator pointing at the other end of the DSS 
+     * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
+     * @param Uf, first upper leaning point  
+     * @param Ul, last upper leaning point 
+     * @param Lf, first lower leaning point  
+     * @param Ll, last lower leaning point 
+     * @param s, a signed integer equal to 1 or -1
+     * @return 'true'.
+     */
+    bool retract( ConstIterator & firstIt,
+		  ConstIterator & lastIt,
+		  ConstIterator & nextIt, 		  
+		  Point & Uf,	Point & Ul,
+		  Point & Lf,	Point & Ll,
+		  const Integer& s );
+
+
+    /**
+     * Checks whether the DSS has less or more
+     * than two displacement vectors (steps)
+     * between two consecutive points
+     * (must be called only in the main stage)
+     * @param aStep, the last displacement vector. 
+     * @return 'true' if less or equal, 'false' otherwise.
+     */
+    bool hasLessThanTwoSteps(const Vector& aStep) const;
+
+
+    /**
+     * Returns the 2D vector 
+     * starting at a point of remainder 0
+     * and pointing at the closer point of
+     * remainder omega
+     * @return the 2D vector.
+     */
+    Vector vectorFrom0ToOmega() const;
+
+
+
+    // ------------------------- Protected Datas ------------------------------
+  protected:
+
+    //parameters of the DSS
+    Integer myA, myB, myMu, myOmega;
+    //number of upper and lower patterns
+    Integer myNbUpPat, myNbLowPat; 
+
+    //leaning points
+    Point myUf, myUl, myLf, myLl;
+
+    //first (at the front) and last (at the back) points of the DSS
+    //Deprecated or to be redefinied (myBackIt, myFrontIt) ?
+    ConstIterator myF, myL;
+
+    //steps of the DSS 
+    //e.g. right and up in the first octant
+    std::vector<Vector> mySteps;
+
+    // ------------------------- Private Datas --------------------------------
+	
+  private:
+
 
     // ------------------ Display ------------------------------------------
 
@@ -643,10 +757,6 @@ namespace DGtal
      */
     std::string styleName() const;
 
-
-
-
-
     /**
      * Draw the DSS on a LiBoard board as its bounding box and the
      * polyline of its points 
@@ -658,111 +768,6 @@ namespace DGtal
     void selfDraw(Board2D & board ) const;
     
     
-
-
-
-
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
-    //parameters of the DSS
-    Integer myA, myB, myMu, myOmega;
-    //number of upper and lower patterns
-    Integer myNbUpPat, myNbLowPat; 
-
-    //leaning points
-    Point myUf, myUl, myLf, myLl;
-
-    //first (at the front) and last (at the back) points of the DSS
-    //Deprecated or to be redefinied (myBackIt, myFrontIt) ?
-    ConstIterator myF, myL;
-
-    //steps of the DSS 
-    //e.g. right and up in the first octant
-    std::vector<Vector> mySteps;
-
-    // ------------------------- Private Datas --------------------------------
-	
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  private:
-
-    /**
-     * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
-     * Computes the parameters of the new DSS 
-     * with the adding point if true.
-     * @param lastPoint, the new point
-     * @param lastMove, end shift vector of the DSS  
-     * @return 'true' if the union is a DSS, 'false' otherwise.
-     */
-    bool isExtendable( const Point & lastPoint, 
-		 const Vector & lastMove );
-
-    /**
-     * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
-     * Computes the parameters of the new DSS 
-     * with the adding point if true.
-     * @param it an iterator on a sequence of points
-     * @param lastIt, an iterator pointing at the end of the DSS 
-     * @param lastMove, end shift vector of the DSS  
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
-     * @return 'true' if the union is a DSS, 'false' otherwise.
-     */
-    bool extend( const ConstIterator & it, 
-		 ConstIterator & lastIt, 
-		 const Vector & lastMove,
-		 Point & Uf,	Point & Ul,
-		 Point & Lf,	Point & Ll );
-
-    /**
-     * Removes the end point of a DSS
-     * (pointing by firstIt)
-     * @param firstIt, an iterator pointing at the end of the DSS 
-     * @param lastIt, an iterator pointing at the other end of the DSS 
-     * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
-     * @param s, a signed integer equal to 1 or -1
-     * @return 'true'.
-     */
-    bool retract( ConstIterator & firstIt,
-		  ConstIterator & lastIt,
-		  ConstIterator & nextIt, 		  
-		  Point & Uf,	Point & Ul,
-		  Point & Lf,	Point & Ll,
-		  const Integer& s );
-
-
-    /**
-     * Checks whether the DSS has less or more
-     * than two displacement vectors (steps)
-     * between two consecutive points
-     * (must be called only in the main stage)
-     * @param aStep, the last displacement vector. 
-     * @return 'true' if less or equal, 'false' otherwise.
-     */
-    bool hasLessThanTwoSteps(const Vector& aStep) const;
-
-
-    /**
-     * Returns the 2D vector 
-     * starting at a point of remainder 0
-     * and pointing at the closer point of
-     * remainder omega
-     * @return the 2D vector.
-     */
-    Vector vectorFrom0ToOmega() const;
-
-
-
   }; // end of class ArithmeticalDSS
 
 
