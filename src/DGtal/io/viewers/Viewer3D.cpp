@@ -130,6 +130,9 @@ DGtal::Viewer3D::draw()
   }   
  
   for(unsigned int i=0; i<myLineSetList.size(); i++){
+    if(myLineSetList.at(i).size()!=0){
+      glLineWidth((myLineSetList.at(i).at(0).width));
+    }
     glCallList(myListToAff+myVoxelSetList.size()+1+i);
   }
   
@@ -380,6 +383,8 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
     for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it){
+
+
 
 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
 	glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);

@@ -164,7 +164,7 @@ DGtal::Viewer3D::getMode( const std::string & objectName ) const
 
 inline
 void
-DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width){
+DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width, bool withWire){
   voxelGL v;
   updateBoundingBox(x, y, z);  
   v.x=x;
@@ -175,7 +175,23 @@ DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width){
   v.B=aColor.blue();
   v.T=aColor.alpha();
   v.width=width;
-  
+  if(withWire){
+    addLine(x-0.5, y-0.5, z-0.5, x+0.5, y-0.5, z-0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y+0.5, z-0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z-0.5, x-0.5, y+0.5, z-0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y-0.5, z-0.5, QColor(0,0,0), 2);
+
+    addLine(x-0.5, y-0.5, z+0.5, x+0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z+0.5, x+0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z+0.5, x-0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z+0.5, x-0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
+
+    addLine(x-0.5, y-0.5, z-0.5, x-0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z-0.5, x+0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
+    
+  }
   (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
    
 }
@@ -204,7 +220,7 @@ DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, do
 inline
 void
 DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       const QColor & aColor, double width){
+			 const QColor & aColor, double width){
   lineGL l;
   l.x1=x1;
   l.y1=y1;

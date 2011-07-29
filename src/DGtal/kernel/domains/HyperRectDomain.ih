@@ -265,46 +265,47 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( Viewer3D & viewer) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   QColor colDef(250,250,250,10);
+  float shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+      viewer.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       //Z lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+      viewer.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
 		     colDef);
       
       //Y upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+      viewer.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       //Y lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+      viewer.addQuad(myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
 		     colDef);
       
       // X upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+      viewer.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
 		     colDef);
       
       //  X lower face
-      viewer.addQuad(myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+      viewer.addQuad(myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       
     }  
