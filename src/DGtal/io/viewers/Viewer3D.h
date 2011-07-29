@@ -199,7 +199,7 @@ public:
    **/
   
   
-  void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5);
+  void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5,bool withWire=false);
   
   void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
 

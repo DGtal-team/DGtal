@@ -670,6 +670,7 @@ namespace DGtal
     void selfDrawViewer3D ( Viewer3D & viewer, const Self &startingPoint ) const;
     void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
     void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
+    void selfDrawAsPavingWiredViewer3D( Viewer3D & viewer ) const;
 
 #endif
     

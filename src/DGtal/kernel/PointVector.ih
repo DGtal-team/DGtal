@@ -674,6 +674,16 @@ DGtal::PointVector<dim,Component>::selfDrawAsPavingViewer3D( Viewer3D & viewer )
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor());
 }
+template<Dimension dim, typename Component>
+inline
+void
+DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredViewer3D( Viewer3D & viewer ) const
+{
+  ASSERT(dim == 3);
+  viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
+		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor(),0.5, true);
+}
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
@@ -696,7 +706,7 @@ DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer ) const
   ASSERT(dim == 3);
  
   std::string mode = viewer.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="PavingWired"|| mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
     selfDrawAsPavingViewer3D( viewer );
@@ -707,7 +717,9 @@ DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer ) const
       selfDrawAsPavingViewer3D(viewer);
       selfDrawAsGridViewer3D( viewer );
     }
-  
+  else if( mode=="PavingWired"){
+    selfDrawAsPavingWiredViewer3D(viewer);
+  }
 }
 
 

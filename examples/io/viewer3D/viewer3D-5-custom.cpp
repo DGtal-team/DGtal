@@ -61,10 +61,11 @@ int main( int argc, char** argv )
  Point p5( -1, 2, 3 );
  Point p6( 0, 0, 0 );
  Point p0( 0, 2, 1 );
- viewer <<  SetMode3D( p1.styleName(), "Paving" );
+ viewer <<  SetMode3D( p1.styleName(), "PavingWired" );
  viewer << p1 << p2 << p3;
   
-  //viewer <<  SetMode3D( p1.styleName(), "Grid" );
+ 
+ //viewer <<  SetMode3D( p1.styleName(), "Grid" );
   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
   viewer << p4 << p5 ;
   viewer <<  SetMode3D( p1.styleName(), "Both" );
