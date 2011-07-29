@@ -158,9 +158,12 @@ git branch
 @endcode
 
 Note also that the branch marked with a star is your 
-current local branch. At this point you should see: 
- - * master
- - cool-feature
+current local branch. At this point you should see
+
+@code
+ * master
+ cool-feature
+@endcode
 
 (the '*' indicates your current active branch).
 
