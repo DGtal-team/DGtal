@@ -191,8 +191,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaxim
 
 	  myFlagIntersectPrevious = myFlagIntersectNext;
 
-  	DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd, 
-                      typename SegmentComputer::Category() );
+  	DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd );
 
     if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
        &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
@@ -236,11 +235,9 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCo
   if (myFlagIsValid) {
 	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) { //if at least one element
 
-std::cerr << "last" << std::endl;
       this->initLastMaximalSegment(); 
-//std::cerr << "first" << std::endl;
       this->initFirstMaximalSegment(); 
-std::cerr << "initialized" << std::endl;
+
 		  myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
 	    if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
