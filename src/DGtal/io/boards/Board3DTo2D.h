@@ -49,29 +49,14 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/io/Display3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
- /**
-   * Base class specifying the methods for classes which intend to
-   * modify a Board3DTo2D stream.
-   * 
-   */
-  struct DrawWithCairoModifier {
-    std::string styleName() const
-    {
-      return "DrawWithCairoModifier";
-    }
 
-    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string = "" ) const
-    {
-      return 0;
-    }
-
-    virtual void selfDrawCairo( Board3DTo2D &  ) const 
-    {}
-};
 
 /////////////////////////////////////////////////////////////////////////////
 // class Board3DTo2D
@@ -79,7 +64,7 @@ namespace DGtal
  * Description of class 'Board3DTo2D' <p>
  * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
  */
-  class Board3DTo2D
+  class Board3DTo2D : public Display3D
 {
 public:
   /**
@@ -90,8 +75,12 @@ public:
   /*!
    * \brief Constructor.
    */
-  Board3DTo2D();
+  //  Board3DTo2D();
   
+  
+  //  ~Board3DTo2D(){};
+  
+
   /**
     * @return the style name used for drawing this object.
     */
@@ -144,13 +133,13 @@ public:
    * The associated map type for storing possible modes used for
    * displaying for digital objects.
    */
-  typedef std::map< std::string, std::string > ModeMapping;
+  //typedef std::map< std::string, std::string > ModeMapping;
 
-  /**
-   * The associated map type for storing the default styles of
-   * digital objects.
-   */
-  typedef std::map< std::string,CountedPtr<DrawableWithBoard3DTo2D> > StyleMapping;
+ //  /**
+//    * The associated map type for storing the default styles of
+//    * digital objects.
+//    */
+//   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
   QColor myDefaultColor;	//!< default color
   QColor myCurrentFillColor;	//!< current fill color
@@ -204,7 +193,7 @@ public:
    * @param width: the width of the voxel (default: 0.5).
    *
    **/
-  void addVoxel(int x, int y, int z, QColor color=QColor(220, 220, 220), double width=0.5);
+  void addVoxel(int x, int y, int z, QColor color=QColor(220, 220, 220), double width=0.5, bool withWire=false);
   
   /**
    * Add a point using default color in the current list.
@@ -274,8 +263,9 @@ public:
    * @param color: the color of the KSSurfel (default: 180,180,250,255).
    *
    **/
-  void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
-		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(180,180,250,255));
+  void addKSSurfel(double x, double y, double z, 
+		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+		   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
 
   /**
    * Add KSVoxel using default color in the current list.
@@ -286,7 +276,7 @@ public:
    * @param color: the color of the KSVoxel (default: 255,180,250,255).
    *
    **/
-  void addKSVoxel(int x, int y, int z, const QColor &aColor=QColor(255,180,250,255));
+  void addKSVoxel(int x, int y, int z);
   
   /**
    * Add a KSPointel using default color in the current list.
@@ -298,7 +288,8 @@ public:
    * @param color: the color of the KSPointel (default: 200,20,20,255).
    *
    **/
-  void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
+  void addKSPointel(double x, double y, double z, double size=0.1,
+		    bool isSigned=false, bool signPos=true);
   
   /**
    * Add a KSLinel using default color in the current list.
@@ -315,8 +306,8 @@ public:
    **/
   void addKSLinel(double x1, double y1, double z1,
 		  double x2, double y2, double z2,
-		  double width=0.02, const QColor &color=QColor(20,20,200,255));
-
+		  double width, bool isSigned, bool signPos);
+  
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
    * A maximal of five clipping plane can be added.
@@ -355,14 +346,14 @@ public:
 
   /**
    * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithBoard3DTo2D, which requires for instance a
+   * the concept CDrawableWithDisplay3D, which requires for instance a
    * method selfDraw( Board3DTo2D & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-  template <typename TDrawableWithBoard3DTo2D>
-  Board3DTo2D & operator<<( const  TDrawableWithBoard3DTo2D & object );
+  template <typename TDrawableWithDisplay3D>
+  Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
 public:
   
@@ -487,7 +478,7 @@ private:
   
 protected :
   /*!
-  * \brief init function (should be in Constructor).
+   * \brief init function (should be in Constructor).
   */
   virtual void init();
 
@@ -498,7 +489,7 @@ private:
   /**
    * Cairo3dCameraPosition class to set camera position.
    */
-  struct Cairo3dCameraPosition : public DrawWithCairoModifier
+  struct Cairo3dCameraPosition : public DrawWithDisplay3DModifier
   {
     /**
      * Constructor.
@@ -512,9 +503,9 @@ private:
       eyex=x; eyey=y; eyez=z;
     }
     
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
+    void selfDrawDisplay3D( Display3D & display) const
     {
-      viewer.setCameraPosition(eyex, eyey, eyez);
+      display.setCameraPosition(eyex, eyey, eyez);
     }
     
     private:
@@ -524,7 +515,7 @@ private:
   /**
    * Cairo3dCameraDirection class to set camera direction.
    */
-  struct Cairo3dCameraDirection : public DrawWithCairoModifier
+  struct Cairo3dCameraDirection : public DrawWithDisplay3DModifier
   {
     /**
      * Constructor.
@@ -538,9 +529,9 @@ private:
       dirx=x; diry=y; dirz=z;
     }
     
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
+    virtual void selfDrawDisplay3D( Display3D & display) const
     {
-      viewer.setCameraDirection(dirx, diry, dirz);
+      display.setCameraDirection(dirx, diry, dirz);
     }
     
     private:
@@ -550,7 +541,7 @@ private:
   /**
    * Cairo3dCameraUpVector class to set camera up-vector.
    */
-  struct Cairo3dCameraUpVector : public DrawWithCairoModifier
+  struct Cairo3dCameraUpVector : public DrawWithDisplay3DModifier
   {
     /**
      * Constructor.
@@ -564,7 +555,7 @@ private:
       upx=x; upy=y; upz=z;
     }
     
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
+    virtual void selfDrawDisplay3D( Display3D & viewer) const
     {
       viewer.setCameraUpVector(upx, upy, upz);
     }
@@ -576,7 +567,7 @@ private:
   /**
    * Cairo3dCameraZNearFar class to set near and far distance.
    */
-  struct Cairo3dCameraZNearFar : public DrawWithCairoModifier
+  struct Cairo3dCameraZNearFar : public DrawWithDisplay3DModifier
   {
     /**
      * Constructor.
@@ -589,7 +580,7 @@ private:
       ZNear=near; ZFar=far;
     }
     
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
+    virtual void selfDrawDisplay3D( Display3D & viewer) const
     {
       viewer.setNearFar(ZNear, ZFar);
     }
@@ -598,127 +589,9 @@ private:
       double ZNear, ZFar;
   };
 
- /**
-   * Modifier class in a Board3DTo2D stream. Useful to choose your
-   * own mode for a given class. Realizes the concept
-   * CDrawableWithBoard3DTo2D.
-   */
-  struct SetMode3DCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    SetMode3DCairo( std::string classname, std::string mode )
-      : myClassname( classname ), myMode( mode )
-    {}
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.myModes[ myClassname ] = myMode;
-    }
-  private:
-    std::string myClassname;
-    std::string myMode;
-  };
+ 
 
-  /**
-   * Modifier class in a Board3DTo2D stream. Useful to choose your own
-   * style for a given class. Realizes the concept
-   * CDrawableWithBoard3DTo2D.
-   */
-  struct CustomStyle3DCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    CustomStyle3DCairo( std::string classname, DrawableWithBoard3DTo2D* style )
-      : myClassname( classname ), myStyle( style )
-    {}
-
-    std::string styleName() const
-    {
-      return "CustomStyle3D";
-    }
-
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.myStyles[ myClassname ] = myStyle;
-    }
-  private:
-    std::string myClassname;
-    CountedPtr<DrawableWithBoard3DTo2D> myStyle;
-  };
-
-  /**
-   * Custom style class redefining the fill color and the
-   * gl_LINE/gl_POINT color. You can use Qcolor with alpha
-   * transparency value but you nedd to take into account the z-buffer
-   * during the Open-GL based rendering.
-   *
-   */
-  struct CustomColors3DCairo : public DrawWithCairoModifier
-  {
-    QColor myPenColor;
-    QColor myFillColor;
-
-    /**
-     * Constructor.
-     *
-     * @param penColor specifies the pen color.
-     * @param fillColor specifies the fill color.
-     */
-    CustomColors3DCairo( const QColor & penColor,
-		    const QColor & fillColor )
-      : myPenColor( penColor ), myFillColor( fillColor )
-    {}
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setFillColor(myFillColor);
-      viewer.setLineColor(myPenColor);
-    }
-  };
-
- /**
-   * Class for adding a Clipping plane through the Board3DTo2D
-   * stream. Realizes the concept CDrawableWithBoard3DTo2D.
-   */
-  struct ClippingPlaneCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    ClippingPlaneCairo( double a, double b, double c, double d, bool drawPlane=true )
-      : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
-    {}
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-      
-    }
-    double * getEquation(){
-      double *r = new double[4];
-      r[0] = myA;
-      r[1] = myB;
-      r[2] = myC;
-      r[3] = myD;
-      return r;
-    } 
   
-  private:
-    double myA;
-    double myB;
-    double myC;
-    double myD;
-    bool myDrawPlane;
-    
-  };
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
  * @param out the output stream where the object is written.
@@ -729,6 +602,7 @@ std::ostream&
 operator<< ( std::ostream & out, const Board3DTo2D & object );
 
 } // namespace DGtal
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.

@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -59,7 +60,7 @@ int main( int argc, char** argv )
   shape_set.erase(Point(6,6,6));
   
   // example with wireframe mode
-  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
 
   viewer << shape_set;
   

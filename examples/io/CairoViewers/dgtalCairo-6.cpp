@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -54,10 +55,10 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
 
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
-  viewer << SetMode3DCairo( shape_set.styleName(), "Both" );
+  viewer << SetMode3D( shape_set.styleName(), "Both" );
   viewer << shape_set;
-  viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
-  viewer << SetMode3DCairo( p1.styleName(), "Paving" );
+  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+  viewer << SetMode3D( p1.styleName(), "Paving" );
   
   viewer << Cairo3dCameraPosition(10.000000, 10.000000, 41.682465)
 	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)

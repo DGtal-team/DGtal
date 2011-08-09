@@ -184,11 +184,11 @@ selfDraw( Board2D & board ) const
 template < Dimension dim, typename TInteger >
 inline
 void
-DGtal::KhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  QColor fillColorSave = viewer.getFillColor();  
-  std::string mode = viewer.getMode( this->styleName() );
+  QColor fillColorSave = display.getFillColor();  
+  std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
 	 ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
@@ -196,9 +196,9 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
-    viewer.setFillColor(QColor(255, 50, 50, 255));	
+    display.setFillColor(QColor(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
-    viewer.setFillColor(QColor(180, 180, 250, 25));	
+    display.setFillColor(QColor(180, 180, 250, 25));	
   }else if(mode=="Basic"){
     basicMode=true;
   }
@@ -219,22 +219,22 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
 	 
   switch (spaceDim) {
   case 0:  
-    viewer.setFillColor(QColor(200, 20, 20, 255));
-    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
+    display.setFillColor(QColor(200, 20, 20, 255));
+    display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
     break;
   case 1:
-    viewer.setFillColor(QColor(20, 20, 200, 255));
-    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
+    display.setFillColor(QColor(20, 20, 200, 255));
+    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
     break;
   case 3:
-    viewer.setFillColor(QColor(255, 180, 250, 255));
-    viewer.addKSVoxel((int)x, (int) y, (int) z);
+    display.setFillColor(QColor(255, 180, 250, 255));
+    display.addKSVoxel((int)x, (int) y, (int) z);
     break; 
   }
-  viewer.setFillColor(fillColorSave);
+  display.setFillColor(fillColorSave);
 }
     
     
@@ -242,12 +242,12 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
 template< Dimension dim, typename TInteger >
 inline
 void
-DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
 {
 
    ASSERT(dim == 3);
-  QColor fillColorSave = viewer.getFillColor();  
-  std::string mode = viewer.getMode( this->styleName() );
+  QColor fillColorSave = display.getFillColor();  
+  std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
 	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
@@ -255,9 +255,9 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer )
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;
-    viewer.setFillColor(QColor(255, 50, 50, 255));	
+    display.setFillColor(QColor(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
-    viewer.setFillColor(QColor(180, 180, 250, 25));	
+    display.setFillColor(QColor(180, 180, 250, 25));	
   }else if(mode=="Basic"){
     basicMode=true;
   }
@@ -279,30 +279,30 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawViewer3D( Viewer3D & viewer )
     
   case 0:
     if( myPositive)
-      viewer.setFillColor(QColor(20, 20, 250, 255));
+      display.setFillColor(QColor(20, 20, 250, 255));
     else
-      viewer.setFillColor(QColor(20, 20, 150, 255));
+      display.setFillColor(QColor(20, 20, 150, 255));
     
-    viewer.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, myPositive);
+    display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, myPositive);
     break;
   case 1:
-    viewer.setFillColor(QColor(20, 200, 200, 255));
-    viewer.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
+    display.setFillColor(QColor(20, 200, 200, 255));
+    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
 		      0.02, true, myPositive);
     break;
   case 2:
     
-    viewer.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive,basicMode ); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive,basicMode ); 
     break;
   case 3:
     if( myPositive)
-      viewer.setFillColor(QColor(20, 20, 250, 255));
+      display.setFillColor(QColor(20, 20, 250, 255));
     else
-      viewer.setFillColor(QColor(20, 20, 150, 255));
-    viewer.addKSVoxel((int)x, (int) y, (int) z);
+      display.setFillColor(QColor(20, 20, 150, 255));
+    display.addKSVoxel((int)x, (int) y, (int) z);
     break; 
   } 
-  viewer.setFillColor(fillColorSave);
+  display.setFillColor(fillColorSave);
 }
 
 

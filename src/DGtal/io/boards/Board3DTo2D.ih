@@ -32,7 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/boards/CDrawableWithBoard3DTo2D.h"
+#include "DGtal/io/CDrawableWithDisplay3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,14 +141,14 @@ DGtal::Board3DTo2D::getLineColor(){
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-template <typename TDrawableWithBoard3DTo2D>
+template <typename TDrawableWithDisplay3D>
 inline
 DGtal::Board3DTo2D & 
-DGtal::Board3DTo2D::operator<<( const TDrawableWithBoard3DTo2D & object )
+DGtal::Board3DTo2D::operator<<( const TDrawableWithDisplay3D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
   
-  object.selfDrawCairo( *this );
+  object.selfDrawDisplay3D( *this );
   return *this;
 }
 
@@ -179,7 +179,7 @@ DGtal::Board3DTo2D::getMode( const std::string & objectName ) const
    **/
 inline
 void
-DGtal::Board3DTo2D::addVoxel(int x, int y, int z, QColor aColor, double width)
+DGtal::Board3DTo2D::addVoxel(int x, int y, int z, QColor aColor, double width, bool withWire)
 {
   voxel v;
   
@@ -318,20 +318,22 @@ DGtal::Board3DTo2D::addQuad(double x1, double y1, double z1,  double x2, double 
    **/
 inline
 void
-DGtal::Board3DTo2D::addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
-				   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
-  quad aQuad;
+DGtal::Board3DTo2D::addKSSurfel(double x, double y, double z, 
+		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+		   bool isOriented, bool isOrientedPositively, bool basicMode){
+  // ### A corriger à partir de Viewer3D
+//   quad aQuad;  
+//   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
+//   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
+//   aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
+//   aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
+//   aQuad.R=aColor.red();
+//   aQuad.G=aColor.green();
+//   aQuad.B=aColor.blue();
+//   aQuad.T=aColor.alpha();
   
-  aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
-  aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
-  aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
-  aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
-  aQuad.R=aColor.red();
-  aQuad.G=aColor.green();
-  aQuad.B=aColor.blue();
-  aQuad.T=aColor.alpha();
-  
-  myKSSurfelList.push_back(aQuad);  
+//   myKSSurfelList.push_back(aQuad);  
+
 }
 
 /**
@@ -346,15 +348,17 @@ DGtal::Board3DTo2D::addKSSurfel(double x1, double y1, double z1,  double x2, dou
    **/
 inline
 void 
-DGtal::Board3DTo2D::addKSPointel(double x, double y, double z, double size, 
-				    const QColor &color)
+DGtal::Board3DTo2D::addKSPointel(double x, double y, double z, double size,
+		    bool isSigned, bool signPos)
 {
-  point pt;
+// ### A corriger à partir de Viewer3D
+//   point pt;
   
-  pt.x=x; pt.y=y; pt.z=z; pt.size=size; pt.R=color.red();
-  pt.G=color.green(); pt.B=color.blue(); pt.T=color.alpha();
+//   pt.x=x; pt.y=y; pt.z=z; pt.size=size; pt.R=color.red();
+//   pt.G=color.green(); pt.B=color.blue(); pt.T=color.alpha();
   
-  myKSPointelList.push_back(pt);
+//   myKSPointelList.push_back(pt);
+
 }
 
 /**
@@ -368,21 +372,21 @@ DGtal::Board3DTo2D::addKSPointel(double x, double y, double z, double size,
    **/
 inline
 void 
-DGtal::Board3DTo2D::addKSVoxel(int x, int y, int z,  
-				  const QColor &aColor)
+DGtal::Board3DTo2D::addKSVoxel(int x, int y, int z)
 {
-  voxel v;
+//   voxel v;
+// ### A corriger à partir de Viewer3D
+//   v.x=x;
+//   v.y=y;
+//   v.z=z;
+//   v.R=aColor.red();
+//   v.G=aColor.green();
+//   v.B=aColor.blue();
+//   v.T=aColor.alpha();
+//   v.width=0.47;
   
-  v.x=x;
-  v.y=y;
-  v.z=z;
-  v.R=aColor.red();
-  v.G=aColor.green();
-  v.B=aColor.blue();
-  v.T=aColor.alpha();
-  v.width=0.47;
-  
-  (myVoxelSetList.at(0)).push_back(v);
+//   (myVoxelSetList.at(0)).push_back(v);
+
 }
 
 /**
@@ -401,14 +405,16 @@ DGtal::Board3DTo2D::addKSVoxel(int x, int y, int z,
 inline
 void
 DGtal::Board3DTo2D::addKSLinel(double x1, double y1, double z1,
-				  double x2, double y2, double z2,
-				  double width, const QColor &color){
-  line l;
+			       double x2, double y2, double z2,
+			       double width, bool isSigned, bool signPos){
+  //  ### A corriger à partir de Viewer3D
+  // line l;
   
-  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2; 
-  l.width=width; l.R= color.red(); l.G= color.green(); l.B=color.blue(); l.T=color.alpha();
+//   l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2; 
+//   l.width=width; l.R= color.red(); l.G= color.green(); l.B=color.blue(); l.T=color.alpha();
   
-  myKSLinelList.push_back(l);
+//   myKSLinelList.push_back(l);
+
 }
 
 /**
@@ -423,23 +429,23 @@ DGtal::Board3DTo2D::addClippingPlane(double a, double b, double c, double d, boo
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline functions and external operators                 //
+// ///////////////////////////////////////////////////////////////////////////////
+// // Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Board3DTo2D' to write.
- * @return the output stream after the writing.
- */
-inline
-std::ostream&
-DGtal::operator<< ( std::ostream & out,
-                  const Board3DTo2D & object )
-{
-    object.selfDisplay ( out );
-    return out;
-}
+// /**
+//  * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
+//  * @param out the output stream where the object is written.
+//  * @param object the object of class 'Board3DTo2D' to write.
+//  * @return the output stream after the writing.
+//  */
+// inline
+// std::ostream&
+// DGtal::operator<< ( std::ostream & out,
+//                   const Board3DTo2D & object )
+// {
+//     object.selfDisplay ( out );
+//     return out;
+// }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
