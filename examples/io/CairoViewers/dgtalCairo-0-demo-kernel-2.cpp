@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -64,7 +65,7 @@ int main( int argc, char** argv )
 	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
 	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
   
-  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //

@@ -276,27 +276,27 @@ DGtal::RealPointVector<dim>::selfDraw(Board2D & board,
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsPavingQGL( Viewer3D & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawAsPavingDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  viewer.addVoxel(this->myArray[0],
+  display.addVoxel(this->myArray[0],
 		  this->myArray[1],
-		  this->myArray[2], viewer.getFillColor());
+		   this->myArray[2], display.getFillColor());
 }
 //------------------------------------------------------------------------------
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsGridQGL( Viewer3D & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawAsGridDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  viewer.addPoint(this->myArray[0],
+  display.addPoint(this->myArray[0],
 		  this->myArray[1],
-		  this->myArray[2],viewer.getLineColor());
+		  this->myArray[2],display.getLineColor());
 
 }
 
@@ -304,21 +304,21 @@ DGtal::RealPointVector<dim>::selfDrawAsGridQGL( Viewer3D & viewer ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawQGL( Viewer3D & viewer ) const
+DGtal::RealPointVector<dim>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
  
-  std::string mode = viewer.getMode( this->styleName() );
+  std::string mode = display.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingQGL( viewer );
+    selfDrawAsPavingDisplay3D( display );
   else if ( mode == "Grid" )
-    selfDrawAsGridQGL( viewer );
+    selfDrawAsGridDisplay3D( display );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingQGL(viewer);
-      selfDrawAsGridQGL( viewer );
+      selfDrawAsPavingDisplay3D(display);
+      selfDrawAsGridDisplay3D( display );
     }
   
 }
@@ -330,18 +330,18 @@ DGtal::RealPointVector<dim>::selfDrawQGL( Viewer3D & viewer ) const
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawQGL( Viewer3D & viewer,  const Self &aPoint ) const
+DGtal::RealPointVector<dim>::selfDrawDisplay3D( Display3D & display3d,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   
-  viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-		 (float) aPoint[0] + this->myArray[0], 
-		 (float)aPoint[1] + this->myArray[1], 
-		 (float) aPoint[2] + this->myArray[2]);
+  display3d.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
+		    (float) aPoint[0] + this->myArray[0], 
+		    (float)aPoint[1] + this->myArray[1], 
+		    (float) aPoint[2] + this->myArray[2]);
   
 }
 
-#endif
+
 
 
 //------------------------------------------------------------------------------

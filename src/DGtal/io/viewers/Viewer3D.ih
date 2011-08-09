@@ -32,7 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/viewers/CDrawableWithViewer3D.h"
+#include "DGtal/io/CDrawableWithDisplay3D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,6 +81,18 @@ DGtal::Viewer3D::operator<<(const Viewer3D::StreamKey  & key){
   
   return *this;
 }
+
+
+  template <typename TDrawableWithDisplay3D>
+  inline
+  DGtal::Viewer3D & 
+  DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
+  {
+    BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+    
+    object.selfDrawDisplay3D( *this );
+    return *this;
+  }
 
 
 inline
@@ -135,18 +147,6 @@ DGtal::Viewer3D::getLineColor(){
 }
 
 
-
-
-template <typename TDrawableWithViewer3D>
-inline
-DGtal::Viewer3D & 
-DGtal::Viewer3D::operator<<( const TDrawableWithViewer3D & object )
-{
-  BOOST_CONCEPT_ASSERT((CDrawableWithViewer3D< TDrawableWithViewer3D >));
-  
-  object.selfDrawViewer3D( *this );
-  return *this;
-}
 
 
 
@@ -284,8 +284,8 @@ DGtal::Viewer3D::addQuad(double x1, double y1, double z1,  double x2, double y2,
 inline
 void
 DGtal::Viewer3D::addKSSurfel(double x, double y, double z, 
-				   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-				   bool isOriented, bool isOrientedPositively, bool basicMode ){
+			     bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+			     bool isOriented, bool isOrientedPositively, bool basicMode ){
   
   float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);

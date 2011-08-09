@@ -52,7 +52,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-
+#include "DGtal/io/Display3D.h"
 
 
 
@@ -62,27 +62,6 @@
 
 namespace DGtal
 {
- /**
-   * Base class specifying the methods for classes which intend to
-   * modify a Viewer3D stream.
-   * 
-   */
-  struct DrawWithViewer3DModifier {
-    std::string styleName() const
-    {
-      return "DrawWithViewer3DModifier";
-    }
-
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string = "" ) const
-    {
-      return 0;
-    }
-
-    virtual void selfDrawViewer3D( Viewer3D &  ) const 
-    {}
-    
-};
-
 
 
 
@@ -95,28 +74,15 @@ namespace DGtal
  * Description of class 'Viewer3D' <p>
  * \brief Aim:
  */
-  class Viewer3D : public QGLViewer
+  class Viewer3D : public QGLViewer, Display3D
 {
     // ----------------------- Standard services ------------------------------
 public:
 
 
   enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
-  
-  /**
-   * The associated map type for storing possible modes used for
-   * displaying for digital objects.
-   */
-  typedef std::map< std::string, std::string > ModeMapping;
-  
 
-  
-  /**
-   * The associated map type for storing the default styles of
-   * digital objects.
-   */
-  typedef std::map< std::string,CountedPtr<DrawableWithViewer3D> > StyleMapping;
-  
+
   QColor myDefaultBackgroundColor;
   QColor myDefaultColor;
   QColor myCurrentFillColor;
@@ -159,9 +125,9 @@ public:
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
      */
-    std::string getMode( const std::string & objectName ) const;
+  std::string getMode( const std::string & objectName ) const;
 
-
+  
   
 
   
@@ -249,7 +215,20 @@ public:
 
 
 
-
+   /**
+  * Set camera up-vector.
+  * @param x x coordinate of up-vector.
+  * @param y y coordinate of up-vector.
+  * @param z z coordinate of up-vector.
+  */
+  void setCameraUpVector(double x, double y, double z){}; 
+  
+  /**
+  * Set near and far distance.
+  * @param near near distance.
+  * @param far far distance.
+  */
+   void setNearFar(double near, double far){}
   
 
   /**
@@ -493,145 +472,9 @@ private:
 
 
 
- 
-
- /**
-   * Modifier class in a Viewer3D stream. Useful to choose your
-   * own mode for a given class. Realizes the concept
-   * CDrawableWithViewer3D.
-   */
-  struct SetMode3D : public DrawWithViewer3DModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    SetMode3D( std::string classname, std::string mode )
-      : myClassname( classname ), myMode( mode )
-    {}
-    void selfDrawViewer3D( Viewer3D & viewer ) const
-    {
-      viewer.myModes[ myClassname ] = myMode;
-    }
-  private:
-    std::string myClassname;
-    std::string myMode;
-  };
-
-
-
-
-
-
-
-  /**
-   * Modifier class in a Viewer3D stream. Useful to choose your own
-   * style for a given class. Realizes the concept
-   * CDrawableWithViewer3D.
-   */
-  struct CustomStyle3D : public DrawWithViewer3DModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    CustomStyle3D( std::string classname, DrawableWithViewer3D* style )
-      : myClassname( classname ), myStyle( style )
-    {}
-
-    std::string styleName() const
-    {
-      return "CustomStyle3D";
-    }
-
-    void selfDrawViewer3D( Viewer3D & viewer ) const
-    {
-      viewer.myStyles[ myClassname ] = myStyle;
-    }
-  private:
-    std::string myClassname;
-    CountedPtr<DrawableWithViewer3D> myStyle;
-  };
-
-
-
-
-  /**
-   * Custom style class redefining the fill color and the
-   * gl_LINE/gl_POINT color. You can use Qcolor with alpha
-   * transparency value but you nedd to take into account the z-buffer
-   * during the Open-GL based rendering.
-   *
-   \code
-   Viewer3D viewer;
-   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
-   ...
-   \endcode
-   * @see Viewer3D
-   */
-  struct CustomColors3D : public DrawWithViewer3DModifier
-  {
-    QColor myPenColor;
-    QColor myFillColor;
-
-    /**
-     * Constructor.
-     *
-     * @param penColor specifies the pen color.
-     * @param fillColor specifies the fill color.
-     */
-    CustomColors3D( const QColor & penColor,
-		    const QColor & fillColor )
-      : myPenColor( penColor ), myFillColor( fillColor )
-    {}
-    
-    virtual void selfDrawViewer3D( Viewer3D & viewer) const
-    {
-      viewer.setFillColor(myFillColor);
-      viewer.setLineColor(myPenColor);
-    }
-  };
-
- /**
-   * Class for adding a Clipping plane through the Viewer3D
-   * stream. Realizes the concept CDrawableWithViewer3D.
-   */
-
-
-  struct ClippingPlane : public DrawWithViewer3DModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
-      : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
-    {}
-    void selfDrawViewer3D( Viewer3D & viewer ) const
-    {
-      viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-      
-    }
-    double * getEquation(){
-      double *r = new double[4];
-      r[0] = myA;
-      r[1] = myB;
-      r[2] = myC;
-      r[3] = myD;
-      return r;
-    } 
   
-  private:
-    double myA;
-    double myB;
-    double myC;
-    double myD;
-    bool myDrawPlane;
-    
-  };
+
+
 
 
 /**

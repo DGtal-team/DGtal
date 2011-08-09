@@ -49,9 +49,9 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
+
+#include "DGtal/io/Display3D.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -140,19 +140,19 @@ namespace DGtal
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 
      /**
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
       */
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
     
-    void selfDrawViewer3D ( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D ( Display3D & display ) const;
     
 
-    struct DefaultDrawStyle3D : public DrawableWithViewer3D {
-      virtual void selfDrawViewer3D( Viewer3D & viewer ) const
+    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
+      virtual void selfDrawDisplay3D( Display3D & display ) const
       {
 
 	//aBoard.setPenColor(Color::Black);
@@ -165,7 +165,7 @@ namespace DGtal
 
 
     
-#endif
+
 
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
@@ -276,20 +276,19 @@ namespace DGtal
     };
 
 
-
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 
      /**
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
       */
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
-    void selfDrawViewer3D ( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D ( Display3D & display ) const;
 
-    struct DefaultDrawStyle3D : public DrawableWithViewer3D {
-      virtual void selfDrawViewer3D( Viewer3D & viewer ) const
+    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
+      virtual void selfDrawDisplay3D( Display3D & display ) const
       {
 	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
@@ -297,7 +296,6 @@ namespace DGtal
     };
   
 
-#endif
 
 
     // --------------- CDrawableWithBoard2D realization -------------------

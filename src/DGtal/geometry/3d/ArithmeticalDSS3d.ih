@@ -353,26 +353,26 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::os
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsPointsViewer3D( Viewer3D & viewer ) const
+		 ::selfDrawAsPointsDisplay3D( Display3D & display ) const
 {
 
 
   // Draw points
-	viewer << CustomColors3D(QColor(250,250,250,100),QColor(250,250,250,100));
-	ConstIterator end = myL; ++end;
-	for (ConstIterator i = myF; i != end; ++i) {
-		Point3d p = *i;
-		viewer << p;
-	}
-
+  display << CustomColors3D(QColor(250,250,250,100),QColor(250,250,250,100));
+  ConstIterator end = myL; ++end;
+  for (ConstIterator i = myF; i != end; ++i) {
+    Point3d p = *i;
+    display << p;
+  }
+  
   // Draw a linking polygonal line if the voxels are drawn as points. 
-  if(viewer.getMode("PointVector")=="Grid")
+  if(display.getMode("PointVector")=="Grid")
     {
 			ConstIterator k = myF;
 			Point3d prevp = *k;
@@ -385,7 +385,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 				double xp = (double) IntegerTraits<TInteger>::castToInt64_t(p[0]);
 				double yp = (double) IntegerTraits<TInteger>::castToInt64_t(p[1]);
 				double zp = (double) IntegerTraits<TInteger>::castToInt64_t(p[2]);
-				viewer.addLine(xprevp,yprevp,zprevp,
+				display.addLine(xprevp,yprevp,zprevp,
 											 xp,yp,zp,
 											 QColor(0,250,0));
 				xprevp = xp;
@@ -400,7 +400,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsBoundingBoxViewer3D( Viewer3D & viewer ) const
+		 ::selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const
 {
 
 	//get DSS parameters
@@ -463,7 +463,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														mu[1] - ( (m1+dl)*u[1] )/n, 
 														mu[2] - ( (m1+dl)*u[2] )/n ); 
 
-			viewer.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
+			display.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
 										 QColor(250,0,0));
 
 		PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
@@ -474,7 +474,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
 														(mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
 
-			viewer.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
+			display.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
 										 QColor(250,0,0));
 
 		PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
@@ -485,7 +485,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
 														(mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
 
-			viewer.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
+			display.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
 										 QColor(250,0,0));
 
 		PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
@@ -496,16 +496,16 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
 														(mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
 
-			viewer.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
+			display.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
 										 QColor(250,0,0));
 
 		//two end facets
-		viewer.addQuad(pf[0],pf[1],pf[2],
+		display.addQuad(pf[0],pf[1],pf[2],
 									 pf2[0],pf2[1],pf2[2],
 									 pf4[0],pf4[1],pf4[2],
 									 pf3[0],pf3[1],pf3[2],
 									 QColor(250,0,0));
-		viewer.addQuad(pl[0],pl[1],pl[2],
+		display.addQuad(pl[0],pl[1],pl[2],
 									 pl2[0],pl2[1],pl2[2],
 									 pl4[0],pl4[1],pl4[2],
 									 pl3[0],pl3[1],pl3[2],
@@ -515,7 +515,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 /* else { //n == 0
 
-			viewer.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
+			display.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
 										 QColor(250,0,0));
 
 	}*/
@@ -527,19 +527,18 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawViewer3D( Viewer3D & viewer ) const
+		 ::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = viewer.getMode( styleName() );
+  std::string mode = display.getMode( styleName() );
   if ( mode == "BoundingBox" )
-    selfDrawAsBoundingBoxViewer3D( viewer );
+    selfDrawAsBoundingBoxDisplay3D( display );
   else if ( mode == "Points" )
-	  selfDrawAsPointsViewer3D(viewer);
+	  selfDrawAsPointsDisplay3D(display);
   else if ( ( mode == "" ) )
     {
-	  	selfDrawAsPointsViewer3D(viewer);
+	  	selfDrawAsPointsDisplay3D(display);
     }
 
 }
 
-#endif
 

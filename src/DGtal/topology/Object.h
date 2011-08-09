@@ -49,13 +49,8 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
+#include "DGtal/io/Display3D.h"
 
-#ifdef WITH_CAIRO
-#include "DGtal/io/boards/Board3DTo2D.h"
-#endif
 
 
 
@@ -527,20 +522,17 @@ namespace DGtal
       void selfDrawWithAdjacencies(Board2D & board ) const;
 
 
-
-       
-#ifdef WITH_VISU3D_QGLVIEWER
     
 
   private:
        /**
        * Default style.
        */
-    struct DefaultDrawStyleViewer3D : public  DrawableWithViewer3D 
+    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
     {
-        virtual void selfDrawViewer3D(Viewer3D & viewer) const
+        virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  viewer.myModes[ "Object" ] = "";
+	  display.myModes[ "Object" ] = "";
          }
       };
 
@@ -549,72 +541,23 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D * defaultStyleViewer3D( std::string mode = "" ) const;
+    DrawableWithDisplay3D * defaultStyleDisplay3D( std::string mode = "" ) const;
     
        /**
        * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawViewer3D( Viewer3D & viewer ) const;
+      void selfDrawDisplay3D( Display3D & display ) const;
 
 
       template<typename Functor>
-      void selfDrawWithAdjacenciesViewer3D( Viewer3D & viewer ) const;
+      void selfDrawWithAdjacenciesDisplay3D( Display3D & display ) const;
 
       /**
        * Draw the object (with Adjacency relationships) on a LiBoard board.
        * @param board the output board where the object is drawn.
        */
-      void selfDrawWithAdjacenciesViewer3D( Viewer3D & viewer ) const;
-
-
-    
-
-#endif
-      
-#ifdef WITH_CAIRO
-    
-
-  private:
-       /**
-       * Default style.
-       */
-    struct DefaultDrawStyleCairo : public  DrawableWithBoard3DTo2D
-    {
-        virtual void selfDrawCairo(Board3DTo2D & viewer) const
-        {
-	  viewer.myModes[ "Object" ] = "";
-         }
-      };
-
-  public:
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithBoard3DTo2D * defaultStyleCairo( std::string mode = "" ) const;
-    
-       /**
-       * Draw the object on a Board2D board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDrawCairo( Board3DTo2D & viewer ) const;
-
-
-      template<typename Functor>
-      void selfDrawWithAdjacenciesCairo( Board3DTo2D & viewer ) const;
-
-      /**
-       * Draw the object (with Adjacency relationships) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDrawWithAdjacenciesCairo( Board3DTo2D & viewer ) const;
-
-
-    
-
-#endif
-
+      void selfDrawWithAdjacenciesDisplay3D( Display3D & display ) const;
 
 
       // ------------------------- internals ------------------------------------

@@ -663,37 +663,37 @@ DGtal::PointVector<dim, Component>::selfDraw(Board2D & board,
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+  display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor());
+		  IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
 }
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredViewer3D( Viewer3D & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+  display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor(),0.5, true);
+		  IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor(),0.5, true);
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawAsGridDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
+  display.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
 		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor());
+  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),display.getLineColor());
 
 }
 
@@ -701,24 +701,24 @@ DGtal::PointVector<dim,Component>::selfDrawAsGridViewer3D( Viewer3D & viewer ) c
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
  
-  std::string mode = viewer.getMode( this->styleName() );
+  std::string mode = display.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="PavingWired"|| mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingViewer3D( viewer );
+    selfDrawAsPavingDisplay3D( display );
   else if ( mode == "Grid" )
-    selfDrawAsGridViewer3D( viewer );
+    selfDrawAsGridDisplay3D( display );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingViewer3D(viewer);
-      selfDrawAsGridViewer3D( viewer );
+      selfDrawAsPavingDisplay3D(display);
+      selfDrawAsGridDisplay3D( display );
     }
   else if( mode=="PavingWired"){
-    selfDrawAsPavingWiredViewer3D(viewer);
+    selfDrawAsPavingWiredDisplay3D(display);
   }
 }
 
@@ -729,81 +729,14 @@ DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer ) const
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawViewer3D( Viewer3D & viewer,  const Self &aPoint ) const
+DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   
-  viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
+  display.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
 		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
   
 }
-
-#endif
-
-#ifdef WITH_CAIRO
-template<Dimension dim, typename Component>
-inline
-void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingCairo( Board3DTo2D & viewer ) const
-{
-  ASSERT(dim == 3);
-  viewer.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[2]), viewer.getFillColor());
-}
-//------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-inline
-void
-DGtal::PointVector<dim,Component>::selfDrawAsGridCairo( Board3DTo2D & viewer ) const
-{
-  ASSERT(dim == 3);
-  viewer.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),viewer.getLineColor(), 10);
-
-}
-
-
-template<Dimension dim, typename Component>
-inline
-void
-DGtal::PointVector<dim,Component>::selfDrawCairo( Board3DTo2D & viewer ) const
-{
-  ASSERT(dim == 3);
- 
-  std::string mode = viewer.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") );
-
-  if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingCairo( viewer );
-  else if ( mode == "Grid" )
-    selfDrawAsGridCairo( viewer );
-  else if ( ( mode == "Both" ) )
-    {
-      selfDrawAsPavingCairo(viewer);
-      selfDrawAsGridCairo( viewer );
-    }
-  
-}
-
-
-
-
-
-template<Dimension dim, typename Component>
-inline
-void
-DGtal::PointVector<dim,Component>::selfDrawCairo( Board3DTo2D & viewer,  const Self &aPoint ) const
-{
-  ASSERT(dim == 3);
-  
-  viewer.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
-  
-}
-
-#endif
 
 
 //------------------------------------------------------------------------------

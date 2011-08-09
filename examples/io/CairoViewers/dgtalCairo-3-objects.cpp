@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -54,15 +55,15 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  viewer <<  CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 25));
+  viewer <<  CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 25));
   viewer << shape_set;  
 
   Object6_18 shape( dt6_18, shape_set );
-  viewer << SetMode3DCairo( shape.styleName(), "DrawAdjacencies" );
+  viewer << SetMode3D( shape.styleName(), "DrawAdjacencies" );
   viewer << shape;
 
   Object18_6 shape2( dt18_6, shape_set );
-  viewer << SetMode3DCairo( shape2.styleName(), "DrawAdjacencies" );
+  viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
   //viewer << shape2;
   
   viewer << Cairo3dCameraPosition(4.000000, 4.000000, 17.578199)

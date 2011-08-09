@@ -31,6 +31,7 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -107,7 +108,7 @@ int main( int argc, char** argv )
 
   Domain domain2( pp1, pp2 );
   Point pp3( 1, 1, 1 );
-  Point pp4( 2, -1, 3 );
+  Point pp4( 2, -1, 5 );
   Point pp5( -1, 2, 3 );
   Point pp6( 0, 0, 0 );
   Point pp0( 0, 2, 1 );
@@ -118,6 +119,7 @@ int main( int argc, char** argv )
   
   //viewer <<  SetMode3D( pp1.styleName(), "Grid" );
   viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+  viewer <<  SetMode3D( pp1.styleName(), "PavingWired" );
   viewer << pp4 << pp5 ;
   viewer <<  SetMode3D( pp1.styleName(), "Both" );
   viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 0,0, 100));

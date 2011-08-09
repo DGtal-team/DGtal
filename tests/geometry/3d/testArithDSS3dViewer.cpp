@@ -38,8 +38,9 @@
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/readers/PointListReader.h"
-
+#include "DGtal/io/CDrawableWithDisplay3D.h"
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -67,7 +68,7 @@ int main( int argc, char** argv )
 	typedef GreedyDecomposition<SegmentComputer> Decomposition;
 //	typedef MaximalSegments<SegmentComputer> Decomposition;
 
-  string inputFilename = examplesPath + "samples/sinus.dat"; 
+	string inputFilename = examplesPath + "samples/sinus.dat"; 
 	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
 
 

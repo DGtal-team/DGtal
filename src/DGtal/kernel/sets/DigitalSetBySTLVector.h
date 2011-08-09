@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/Display3D.h"
 #endif
 
 
@@ -355,16 +355,16 @@ namespace DGtal
 
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
+
     
          /** 
      * Default style.
      */
-    struct DefaultDrawStyleViewer3D : public  DrawableWithViewer3D 
+    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
     {
-       virtual void selfDrawViewer3D(Viewer3D & viewer) const
+       virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  viewer.myModes[ "DigitalSetBySTLVector" ] = "";
+	  display.myModes[ "DigitalSetBySTLVector" ] = "";
 	}
 
     };
@@ -373,22 +373,18 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-  DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+  DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawViewer3D(  Viewer3D & viewer ) const;
-    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
-    void selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D(  Display3D & display ) const;
+    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
+    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
+    void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
 
 
-
-
-
-#endif
 
 
 

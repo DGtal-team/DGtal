@@ -30,10 +30,7 @@
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include <limits>
 
-// Includes inline functions/methods if necessary.
-#if !defined(INLINE)
-#include "DGtal/io/CairoViewers/Board3DTo2D.ih"
-#endif
+
 
 // Cairo includes
 #include <cairo.h>
@@ -55,10 +52,10 @@ using namespace std;
 /*!
  * \brief Constructor.
  */
-Board3DTo2D::Board3DTo2D()
-{
-  init();
-}
+//DGtal::Board3DTo2D::Board3DTo2D()
+//{
+  // init();
+//}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -507,8 +504,3 @@ DGtal::Board3DTo2D::init()
   myModes["Board3DTo2D"]="SolidMode";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Internals - private :
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
