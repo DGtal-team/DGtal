@@ -82,7 +82,7 @@ public:
    * @param a, b, c, d : plane equation.
    **/
   
-  virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane){};
+  virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
   
    /**
   * Set camera up-vector.
@@ -160,18 +160,18 @@ public:
 
   virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 		       double x3, double y3, double z3,  double x4, double y4, double z4, 
-		       DGtal::Color aColor){};
+		       DGtal::Color aColor);
 
   
-
   virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5){};
+		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
   
+
   virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
-			double width=0.5,bool withWire=false){};
+			double width=0.5,bool withWire=false);
   
   virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
-			double size=40){};
+			double size=40);
   
   virtual DGtal::Color getFillColor();
    
@@ -181,18 +181,27 @@ public:
   
   virtual void addKSSurfel(double x, double y, double z, 
 		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-			   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false){};
+			   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
   
-  virtual void addKSVoxel(int x, int y, int z){};
-  
-  virtual void addKSPointel(double x, double y, double z, double size=0.1,
-			    bool isSigned=false, bool signPos=true){};
-  
-  virtual void addKSLinel(double x1, double y1, double z1,
-		  double x2, double y2, double z2,
-			  double width=0.02, bool isSigned=false, bool signPos=true){};
+  virtual void addKSVoxel(int x, int y, int z);
   
 
+
+  virtual void addKSPointel(double x, double y, double z, double size=0.1,
+			    bool isSigned=false, bool signPos=true);
+  
+
+  virtual void addKSLinel(double x1, double y1, double z1,
+			  double x2, double y2, double z2,
+			  double width=0.02, bool isSigned=false, bool signPos=true);
+  
+   /**
+   * Used to define update the scene bounding box when objects are added 
+   *
+   **/
+  
+  void updateBoundingBox(int x, int y, int z);
+  
 
   
   /**
@@ -254,12 +263,13 @@ public:
      * CDrawableWithBoard2D.
      */
     StyleMapping myStyles;
+  
+  
 
-  protected:
-  DGtal::Color myCurrentFillColor;
-  DGtal::Color myCurrentLineColor;
+  qglviewer::Vec myBoundingPtUp;
+  qglviewer::Vec myBoundingPtLow;
 
-
+  
 private:
     // ------------------------- Private Datas --------------------------------
 private:
@@ -303,8 +313,48 @@ protected:
   };
 
 
-    // ------------------------- Hidden services ------------------------------
 protected:
+  DGtal::Color myCurrentFillColor;
+  DGtal::Color myCurrentLineColor;
+
+  double myCurrentfShiftVisuKSSurfels;
+
+  // Used to represent all the list used in the display.
+  std::vector< std::vector<voxelD3D> > myVoxelSetList;
+
+   //!< Used to represent all the list of line primitive
+  std::vector< std::vector<lineD3D> > myLineSetList;
+  
+  
+  //!< Used to represent all the list of point primitive
+  std::vector< std::vector<pointD3D> > myPointSetList;
+
+// Represent all the clipping planes added to the scene (of maxSize=5).
+  std::vector< clippingPlaneD3D > myClippingPlaneList;
+ 
+  
+  // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< quadD3D > myKSSurfelList;
+  
+
+  // For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< pointD3D > myKSPointelList;
+
+
+  // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
+  std::vector< lineD3D > myKSLinelList;
+  
+  
+  // Represent all the drawed planes
+  std::vector< quadD3D > myQuadList;
+
+
+  //Used to define if GL_TEST_DEPTH is used. 
+  std::vector<bool> myListVoxelDepthTest;
+
+
+
+  // ------------------------- Hidden services ------------------------------
 
     /**
      * Constructor.
@@ -332,8 +382,7 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-
-
+  
 }; // end of class Display3D
 
 

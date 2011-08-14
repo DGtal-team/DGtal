@@ -449,6 +449,7 @@ DGtal::Viewer3D::glDrawGLLinel(lineD3D aLinel){
 
 
 
+
 void 
 DGtal::Viewer3D::glDrawGLPointel(pointD3D pointel){
  
