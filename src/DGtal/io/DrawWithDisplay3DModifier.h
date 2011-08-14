@@ -143,15 +143,15 @@ namespace DGtal
    *
    \code
    Display3D display;
-   display << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+   display << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
    ...
    \endcode
    * @see Display3D
    */
   struct CustomColors3D : public DrawWithDisplay3DModifier
   {
-    QColor myPenColor;
-    QColor myFillColor;
+    Color myPenColor;
+    Color myFillColor;
 
     /**
      * Constructor.
@@ -159,8 +159,8 @@ namespace DGtal
      * @param penColor specifies the pen color.
      * @param fillColor specifies the fill color.
      */
-    CustomColors3D( const QColor & penColor,
-		    const QColor & fillColor )
+    CustomColors3D( const Color & penColor,
+		    const Color & fillColor )
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     

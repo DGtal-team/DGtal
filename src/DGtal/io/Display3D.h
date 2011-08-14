@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -71,8 +72,8 @@ public:
   enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
   
  
-  virtual void setFillColor(QColor aColor);
-  virtual void setLineColor(QColor aColor);
+  virtual void setFillColor(DGtal::Color aColor);
+  virtual void setLineColor(DGtal::Color aColor);
    
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
@@ -158,21 +159,21 @@ public:
 
 
   virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-		       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){};
+		       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor){};
 
   
 
   virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-		       const QColor &color=QColor(20,20,20,200), double width=1.5){};
+		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5){};
   
-  virtual void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5,bool withWire=false){};
+  virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220), double width=0.5,bool withWire=false){};
   
-  virtual void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40){
+  virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20), double size=40){
   cerr << "in addd Point pere" << endl;};
   
-  virtual QColor getFillColor();
+  virtual DGtal::Color getFillColor();
    
-  virtual QColor getLineColor();
+  virtual DGtal::Color getLineColor();
 
  
   
@@ -251,8 +252,8 @@ public:
     StyleMapping myStyles;
 
   protected:
-  QColor myCurrentFillColor;
-  QColor myCurrentLineColor;
+  DGtal::Color myCurrentFillColor;
+  DGtal::Color myCurrentLineColor;
 
 
 private:

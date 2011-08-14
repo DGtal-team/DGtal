@@ -33,6 +33,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/Color.h"
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -264,7 +265,7 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxDisplay3D( Display3D & display) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-  QColor colDef(250,250,250,10);
+  DGtal::Color colDef(250,250,250,10);
   float shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
@@ -390,7 +391,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsDisplay3D( Display3D & dis
       
 	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  display.addPoint(x, y , z, QColor(255, 0 ,0));
+	  display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
 
 	}
       }
@@ -421,7 +422,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) 
       
 	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  display.addVoxel(x, y , z, QColor(255, 255 ,255, 15),0.51);
+	  display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
 
 	}
       }

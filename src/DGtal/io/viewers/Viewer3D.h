@@ -46,7 +46,6 @@
 
 
 #include <QGLViewer/qglviewer.h>
-#include <QColor>
 #include <QGLWidget>
 #include <QKeyEvent>
 
@@ -88,8 +87,8 @@ public:
 
 
 
-  QColor myDefaultBackgroundColor;
-  QColor myDefaultColor;
+  DGtal::Color myDefaultBackgroundColor;
+  DGtal::Color myDefaultColor;
   bool myIsBackgroundDefault;
 
 
@@ -123,18 +122,18 @@ public:
   /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a trasnparency value).
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/  
   
-  Viewer3D & operator<<(const QColor & aColor);
+  Viewer3D & operator<<(const DGtal::Color & aColor);
   
   
 
   /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a trasnparency value).
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/
   
@@ -153,17 +152,17 @@ public:
    **/
   
   
-  void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5,bool withWire=false);
+  void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220), double width=0.5,bool withWire=false);
   
-  void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
+  void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20), double size=40);
 
   
   void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-	       const QColor &color=QColor(20,20,20,200), double width=1.5);
+	       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
   
  
   void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-  	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
+  	       double x3, double y3, double z3,  double x4, double y4, double z4, Color aColor);
 
   
   void addKSSurfel(double x, double y, double z, 
