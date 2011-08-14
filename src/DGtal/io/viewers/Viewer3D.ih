@@ -45,7 +45,7 @@
 
 inline
 DGtal::Viewer3D & 
-DGtal::Viewer3D::operator<<(const QColor & aColor){
+DGtal::Viewer3D::operator<<(const DGtal::Color & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -56,7 +56,7 @@ DGtal::Viewer3D::operator<<(const QColor & aColor){
   /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a transparency value).
+   * @param aColor: a DGtal::Color (allow to set a transparency value).
    *
    **/
 
@@ -128,7 +128,7 @@ DGtal::Viewer3D::createNewPointList(){
 
 inline
 void
-DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width, bool withWire){
+DGtal::Viewer3D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire){
   voxelGL v;
   updateBoundingBox(x, y, z);  
   v.x=x;
@@ -140,20 +140,20 @@ DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width, bool
   v.T=aColor.alpha();
   v.width=width;
   if(withWire){
-    addLine(x-0.5, y-0.5, z-0.5, x+0.5, y-0.5, z-0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y+0.5, z-0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y+0.5, z-0.5, x-0.5, y+0.5, z-0.5, QColor(0,0,0), 2);
-    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y-0.5, z-0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y-0.5, z-0.5, x+0.5, y-0.5, z-0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y+0.5, z-0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z-0.5, x-0.5, y+0.5, z-0.5, DGtal::Color(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y-0.5, z-0.5, DGtal::Color(0,0,0), 2);
 
-    addLine(x-0.5, y-0.5, z+0.5, x+0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y-0.5, z+0.5, x+0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y+0.5, z+0.5, x-0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x-0.5, y+0.5, z+0.5, x-0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y-0.5, z+0.5, x+0.5, y-0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z+0.5, x+0.5, y+0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z+0.5, x-0.5, y+0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z+0.5, x-0.5, y-0.5, z+0.5, DGtal::Color(0,0,0), 2);
 
-    addLine(x-0.5, y-0.5, z-0.5, x-0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y-0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x+0.5, y+0.5, z-0.5, x+0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
-    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y+0.5, z+0.5, QColor(0,0,0), 2);
+    addLine(x-0.5, y-0.5, z-0.5, x-0.5, y-0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y-0.5, z-0.5, x+0.5, y-0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x+0.5, y+0.5, z-0.5, x+0.5, y+0.5, z+0.5, DGtal::Color(0,0,0), 2);
+    addLine(x-0.5, y+0.5, z-0.5, x-0.5, y+0.5, z+0.5, DGtal::Color(0,0,0), 2);
     
   }
   (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
@@ -165,7 +165,7 @@ DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width, bool
 
 inline
 void
-DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, double size){
+DGtal::Viewer3D::addPoint(double x, double y, double z ,const DGtal::Color &aColor, double size){
   pointGL p;
   updateBoundingBox(x, y, z);
   p.x=x;
@@ -182,7 +182,7 @@ DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, do
 inline
 void
 DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
-			 const QColor & aColor, double width){
+			 const DGtal::Color & aColor, double width){
   lineGL l;
   l.x1=x1;
   l.y1=y1;
@@ -207,7 +207,7 @@ DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2,
 inline
 void
 DGtal::Viewer3D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor){
+			       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor){
   quadGL aQuad;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
@@ -454,9 +454,9 @@ DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool d
 	x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
 	z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;     
 	if(c>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
 	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
 	}
 	
       }// Y dominant projection of the upper face
@@ -470,9 +470,9 @@ DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool d
 	x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
 	y4=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
 	if(b>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
 	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
 	}
       }// X dominant projection of the upper face
       else   if(abs(a)>=abs(c) && abs(a) >= abs(b)){
@@ -486,9 +486,9 @@ DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool d
 	x4=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
 	
 	if(a>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, QColor(205,0,0, 30));       
+	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
 	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , QColor(205,0,0, 30));       
+	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
 	}
       }
       

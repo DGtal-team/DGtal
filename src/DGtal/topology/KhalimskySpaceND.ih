@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -187,7 +188,7 @@ void
 DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  QColor fillColorSave = display.getFillColor();  
+  DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
 	 ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
@@ -196,9 +197,9 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) co
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
-    display.setFillColor(QColor(255, 50, 50, 255));	
+    display.setFillColor(DGtal::Color(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
-    display.setFillColor(QColor(180, 180, 250, 25));	
+    display.setFillColor(DGtal::Color(180, 180, 250, 25));	
   }else if(mode=="Basic"){
     basicMode=true;
   }
@@ -219,18 +220,18 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) co
 	 
   switch (spaceDim) {
   case 0:  
-    display.setFillColor(QColor(200, 20, 20, 255));
+    display.setFillColor(DGtal::Color(200, 20, 20, 255));
     display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
     break;
   case 1:
-    display.setFillColor(QColor(20, 20, 200, 255));
+    display.setFillColor(DGtal::Color(20, 20, 200, 255));
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
     display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
     break;
   case 3:
-    display.setFillColor(QColor(255, 180, 250, 255));
+    display.setFillColor(DGtal::Color(255, 180, 250, 255));
     display.addKSVoxel((int)x, (int) y, (int) z);
     break; 
   }
@@ -246,7 +247,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
 {
 
    ASSERT(dim == 3);
-  QColor fillColorSave = display.getFillColor();  
+  DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
 	  ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
@@ -255,9 +256,9 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;
-    display.setFillColor(QColor(255, 50, 50, 255));	
+    display.setFillColor(DGtal::Color(255, 50, 50, 255));	
   }else if(mode=="Transparent"){
-    display.setFillColor(QColor(180, 180, 250, 25));	
+    display.setFillColor(DGtal::Color(180, 180, 250, 25));	
   }else if(mode=="Basic"){
     basicMode=true;
   }
@@ -279,14 +280,14 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
     
   case 0:
     if( myPositive)
-      display.setFillColor(QColor(20, 20, 250, 255));
+      display.setFillColor(DGtal::Color(20, 20, 250, 255));
     else
-      display.setFillColor(QColor(20, 20, 150, 255));
+      display.setFillColor(DGtal::Color(20, 20, 150, 255));
     
     display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, myPositive);
     break;
   case 1:
-    display.setFillColor(QColor(20, 200, 200, 255));
+    display.setFillColor(DGtal::Color(20, 200, 200, 255));
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
 		      0.02, true, myPositive);
     break;
@@ -296,9 +297,9 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
     break;
   case 3:
     if( myPositive)
-      display.setFillColor(QColor(20, 20, 250, 255));
+      display.setFillColor(DGtal::Color(20, 20, 250, 255));
     else
-      display.setFillColor(QColor(20, 20, 150, 255));
+      display.setFillColor(DGtal::Color(20, 20, 150, 255));
     display.addKSVoxel((int)x, (int) y, (int) z);
     break; 
   } 

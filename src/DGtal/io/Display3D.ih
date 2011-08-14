@@ -47,26 +47,26 @@
 
 inline
 void
-DGtal::Display3D::setFillColor(QColor aColor){
+DGtal::Display3D::setFillColor(DGtal::Color aColor){
   myCurrentFillColor=aColor;  
 }
 
 
 inline
 void
-DGtal::Display3D::setLineColor(QColor aColor){
+DGtal::Display3D::setLineColor(DGtal::Color aColor){
   myCurrentLineColor=aColor;  
 }
 
 
 inline
-QColor
+DGtal::Color
 DGtal::Display3D::getLineColor(){
   return myCurrentLineColor;
 }
 
 inline
-QColor
+DGtal::Color
 DGtal::Display3D::getFillColor(){
   return myCurrentFillColor;
 }
