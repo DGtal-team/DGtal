@@ -293,7 +293,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
   {
-    for (std::vector<point>::iterator s_it = myPointSetList.at(i).begin();
+    for (std::vector<pointD3D>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it)
 	{
@@ -356,7 +356,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myLineSetList
   for(unsigned int i=0; i<myLineSetList.size(); i++)
   {
-    for (std::vector<line>::iterator s_it = myLineSetList.at(i).begin();
+    for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it)
 	{
@@ -385,7 +385,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myVoxelSetList
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
   {
-    for (std::vector<voxel>::iterator s_it = myVoxelSetList.at(i).begin();
+    for (std::vector<voxelD3D>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it)
 	{
@@ -462,7 +462,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   }
   
   // from updateList
-  for (std::vector<quad>::iterator s_it = myKSSurfelList.begin();
+  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it)
 	  trace.info() << "-> Khalimsky Surfel not YET implemented in Board3DTo2D" << std::endl;
@@ -476,17 +476,17 @@ DGtal::Board3DTo2D::init()
 {
   createNewVoxelList(true);
   
-  vector<line> listeLine;
+  vector<lineD3D> listeLine;
   myLineSetList.push_back(listeLine);
   
-  vector<point> listePoint;
+  vector<pointD3D> listePoint;
   myPointSetList.push_back(listePoint);
   
   myCurrentFillColor = DGtal::Color (220, 220, 220);
   myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
   
   /*createNewVoxelList(true);
-  std::vector<voxel> aKSVoxelList;*/
+  std::vector<voxelD3D> aKSVoxelList;*/
   
   myDefaultColor= DGtal::Color(255, 255, 255);
   

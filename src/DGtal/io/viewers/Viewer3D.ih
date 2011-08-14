@@ -96,7 +96,7 @@ DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 inline
 void
 DGtal::Viewer3D::createNewVoxelList(bool depthTest){
-  std::vector< voxelGL > v;
+  std::vector< voxelD3D > v;
   myVoxelSetList.push_back(v);
   myListVoxelDepthTest.push_back(depthTest);
   
@@ -105,7 +105,7 @@ DGtal::Viewer3D::createNewVoxelList(bool depthTest){
 inline
 void
 DGtal::Viewer3D::createNewLineList(){
-  std::vector< lineGL > v;
+  std::vector< lineD3D > v;
   myLineSetList.push_back(v);
 }
 
@@ -113,7 +113,7 @@ DGtal::Viewer3D::createNewLineList(){
 inline
 void
 DGtal::Viewer3D::createNewPointList(){
-  std::vector< pointGL > v;
+  std::vector< pointD3D > v;
   myPointSetList.push_back(v);
 }
 
@@ -129,7 +129,7 @@ DGtal::Viewer3D::createNewPointList(){
 inline
 void
 DGtal::Viewer3D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire){
-  voxelGL v;
+  voxelD3D v;
   updateBoundingBox(x, y, z);  
   v.x=x;
   v.y=y;
@@ -166,7 +166,7 @@ DGtal::Viewer3D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width
 inline
 void
 DGtal::Viewer3D::addPoint(double x, double y, double z ,const DGtal::Color &aColor, double size){
-  pointGL p;
+  pointD3D p;
   updateBoundingBox(x, y, z);
   p.x=x;
   p.y=y;
@@ -175,6 +175,8 @@ DGtal::Viewer3D::addPoint(double x, double y, double z ,const DGtal::Color &aCol
   p.G=aColor.green();
   p.B=aColor.blue();
   p.T=aColor.alpha();
+  p.isSigned=false;
+  p.signPos=false;
   p.size=size;
   (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
 }
@@ -183,7 +185,7 @@ inline
 void
 DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			 const DGtal::Color & aColor, double width){
-  lineGL l;
+  lineD3D l;
   l.x1=x1;
   l.y1=y1;
   l.z1=z1;
@@ -199,7 +201,9 @@ DGtal::Viewer3D::addLine(double x1, double y1, double z1,  double x2, double y2,
   l.B=aColor.blue();
   l.T=aColor.alpha();
   l.width=width;
-  
+  l.isSigned=false;
+  l.signPos=false;
+
   (myLineSetList.at(myLineSetList.size()-1)).push_back(l);  
    
 }
@@ -208,7 +212,7 @@ inline
 void
 DGtal::Viewer3D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor){
-  quadGL aQuad;
+  quadD3D aQuad;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   updateBoundingBox(x3, y3, z3);
@@ -327,7 +331,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
   }else{
 
     //main up face
-    quadGL qFaceUp;
+    quadD3D qFaceUp;
     qglviewer::Vec normaleUp( dx!=0.0? 1.0:0.0, dy!=0.0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
     qFaceUp.nx=  normaleUp[0];
     qFaceUp.ny=  normaleUp[1];
@@ -342,7 +346,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
     qFaceUp.T=myCurrentFillColor.alpha();
     myKSSurfelList.push_back(qFaceUp);  
     //main down face
-    quadGL qFaceDown;
+    quadD3D qFaceDown;
     qFaceDown.nx=  -normaleUp[0];
     qFaceDown.ny=  -normaleUp[1];
     qFaceDown.nz=  -normaleUp[2];
@@ -355,7 +359,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
     myKSSurfelList.push_back(qFaceDown);  
     
     //small face 1
-    quadGL qFace1;
+    quadD3D qFace1;
     qglviewer::Vec vF1 (x2-x1, y2-y1, z2-z1);
     qglviewer::Vec v1 (x5-x1, y5-y1, z5-z1);// 
     qglviewer::Vec n1 =cross(v1,vF1);
@@ -370,7 +374,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
     myKSSurfelList.push_back(qFace1);    
   
     //small face 2
-    quadGL qFace2;
+    quadD3D qFace2;
     qglviewer::Vec vF2 (x3-x2, y3-y2, z3-z2);
     qglviewer::Vec v2 (x6-x2, y6-y2, z6-z2);
     qglviewer::Vec n2 = cross(v2,vF2);
@@ -386,7 +390,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
   
   
     //small face 3
-    quadGL qFace3;
+    quadD3D qFace3;
     qglviewer::Vec vF3 (x4-x3, y4-y3, z4-z3);
     qglviewer::Vec v3 (x7-x3, y7-y3, z7-z3);
     qglviewer::Vec n3 = cross(v3,vF3);
@@ -401,7 +405,7 @@ DGtal::Viewer3D::addKSSurfel(double x, double y, double z,
     myKSSurfelList.push_back(qFace3);  
    
     //small face 4
-    quadGL qFace4;
+    quadD3D qFace4;
     qglviewer::Vec vF4 (x1-x4, y1-y4, z1-z4);
     qglviewer::Vec v4 (x5-x4, y5-y4, z5-z4);
     qglviewer::Vec n4 = cross(v4,vF4);
@@ -434,7 +438,7 @@ inline
 void
 DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool drawPlane){
   if(myClippingPlaneList.size()<5){
-    clippingPlaneGL cp;
+    clippingPlaneD3D cp;
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
     myClippingPlaneList.push_back(cp);
     if(drawPlane){
@@ -504,7 +508,7 @@ DGtal::Viewer3D::addClippingPlane(double a, double b, double c, double d, bool d
 inline
 void 
 DGtal::Viewer3D::addKSPointel(double x, double y, double z, double size, bool isSigned, bool signPos){
-  pointGL pt;
+  pointD3D pt;
   updateBoundingBox(x, y, z);
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
   pt.R=myCurrentFillColor.red();
@@ -520,7 +524,7 @@ DGtal::Viewer3D::addKSPointel(double x, double y, double z, double size, bool is
 inline
 void 
 DGtal::Viewer3D::addKSVoxel(int x, int y, int z){
-  voxelGL v;
+  voxelD3D v;
   updateBoundingBox(x, y, z);
   v.x=x;
   v.y=y;
@@ -541,7 +545,7 @@ void
 DGtal::Viewer3D::addKSLinel(double x1, double y1, double z1,
 				  double x2, double y2, double z2,
 				  double width,  bool isSigned, bool signPos){
-  lineGL l;
+  lineD3D l;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2; 

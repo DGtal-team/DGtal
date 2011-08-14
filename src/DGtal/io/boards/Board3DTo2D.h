@@ -179,8 +179,8 @@ public:
    * @param x x position.
    * @param y y position.
    * @param z z position.
-   * @param color: the color of the voxel (default: 220, 220, 220).
-   * @param width: the width of the voxel (default: 0.5).
+   * @param color: the color of the voxelD3D (default: 220, 220, 220).
+   * @param width: the width of the voxelD3D (default: 0.5).
    *
    **/
   void addVoxel(int x, int y, int z, DGtal::Color color=DGtal::Color(220, 220, 220), double width=0.5, bool withWire=false);
@@ -341,65 +341,34 @@ public:
     // ------------------------- Private Datas --------------------------------
 private:
   
-  //!< struct used to store a line
-  struct line{
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double width;
-    unsigned int R,G,B,T;
-  };
   
-  //!< struct used to store a voxel
-  struct voxel{
-    int x, y,z;
-    unsigned int R,G,B,T;
-    double width;
-  };
   
-  //!< struct used to store a point
-  struct point{
-    double  x, y,z;
-    unsigned int R,G,B,T;
-    double size;
-  };
   
-  //!< struct used to store a clipping plane
-  struct clippingPlane{
-    double a,b,c,d;
-  };
 
-  //!< struct used to store a quad
-  struct quad{
-    double x1,y1,z1;
-    double x2,y2,z2;
-    double x3,y3,z3;
-    double x4,y4,z4;    
-    unsigned int R,G,B,T;
-  };
     
   //!< Used to represent all the list of voxel primitive
-  std::vector< std::vector<voxel> > myVoxelSetList;
+  std::vector< std::vector<voxelD3D> > myVoxelSetList;
   
   //!< Used to represent all the list of line primitive
-  std::vector< std::vector<line> > myLineSetList;
+  std::vector< std::vector<lineD3D> > myLineSetList;
   
   //!< Used to represent all the list of point primitive
-  std::vector< std::vector<point> > myPointSetList;
+  std::vector< std::vector<pointD3D> > myPointSetList;
 
   //!< Represent all the clipping planes added to the scene (of maxSize=5)
-  std::vector< clippingPlane > myClippingPlaneList;
+  std::vector< clippingPlaneD3D > myClippingPlaneList;
   
   //!< For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< quad > myKSSurfelList;
+  std::vector< quadD3D > myKSSurfelList;
 
   //!< For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< point > myKSPointelList;
+  std::vector< pointD3D > myKSPointelList;
 
   //!< For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< line > myKSLinelList;
+  std::vector< lineD3D > myKSLinelList;
 
   //!< Represent all the drawed planes
-  std::vector< quad > myQuadList;
+  std::vector< quadD3D > myQuadList;
   
   //!< Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
