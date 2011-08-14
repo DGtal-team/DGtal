@@ -137,7 +137,7 @@ namespace DGtal
   
   /**
    * Custom style class redefining the fill color and the
-   * gl_LINE/gl_POINT color. You can use Qcolor with alpha
+   * gl_LINE/gl_POINT color. You can use DGtal::Color with alpha
    * transparency value but you nedd to take into account the z-buffer
    * during the Open-GL based rendering.
    *

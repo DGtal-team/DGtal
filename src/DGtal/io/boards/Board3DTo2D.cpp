@@ -482,13 +482,13 @@ DGtal::Board3DTo2D::init()
   vector<point> listePoint;
   myPointSetList.push_back(listePoint);
   
-  myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 222, 50);
+  myCurrentFillColor = DGtal::Color (220, 220, 220);
+  myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
   
   /*createNewVoxelList(true);
   std::vector<voxel> aKSVoxelList;*/
   
-  myDefaultColor= QColor(255, 255, 255);
+  myDefaultColor= DGtal::Color(255, 255, 255);
   
   //
   

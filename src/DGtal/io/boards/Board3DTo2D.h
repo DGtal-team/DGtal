@@ -45,12 +45,11 @@
 #include <algorithm>
 #include <map>
 
-#include <QColor>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -141,9 +140,9 @@ public:
 //    */
 //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
-  QColor myDefaultColor;	//!< default color
-  QColor myCurrentFillColor;	//!< current fill color
-  QColor myCurrentLineColor;	//!< current line color
+  DGtal::Color myDefaultColor;	//!< default color
+  DGtal::Color myCurrentFillColor;	//!< current fill color
+  DGtal::Color myCurrentLineColor;	//!< current line color
 
   /**
    * Used to create a new list containing new Voxel objects
@@ -178,10 +177,10 @@ public:
   /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a trasnparency value).
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/  
-  Board3DTo2D & operator<<(const QColor & aColor);
+  Board3DTo2D & operator<<(const DGtal::Color & aColor);
 
   /**
    * Add a point as a 3d voxel using default color in the current list.
@@ -193,7 +192,7 @@ public:
    * @param width: the width of the voxel (default: 0.5).
    *
    **/
-  void addVoxel(int x, int y, int z, QColor color=QColor(220, 220, 220), double width=0.5, bool withWire=false);
+  void addVoxel(int x, int y, int z, DGtal::Color color=DGtal::Color(220, 220, 220), double width=0.5, bool withWire=false);
   
   /**
    * Add a point using default color in the current list.
@@ -205,7 +204,7 @@ public:
    * @param size: the size of the point (default: 40).
    *
    **/
-  void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
+  void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20), double size=40);
 
   /**
    * Add a line using default color in the current list.
@@ -221,7 +220,7 @@ public:
    *
    **/
   void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-	       const QColor &color=QColor(20,20,20,200), double width=1.5);
+	       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
   
   /**
    * Add a quad using default color in the current list.
@@ -242,7 +241,7 @@ public:
    *
    **/
   void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-  	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
+  	       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor);
 
   
   /**
@@ -321,28 +320,28 @@ public:
    * @param aColor: the color of the line.
    *
    **/
-  void setLineColor(QColor aColor) ;
+  void setLineColor(DGtal::Color aColor) ;
   
   /**
    * Get line color.
    * @return the color of the line.
    *
    **/
-  QColor getLineColor() ;
+  DGtal::Color getLineColor() ;
 
   /**
    * Set fill color.
    * @param aColor: the fill color.
    *
    **/
-  void setFillColor(QColor aColor) ;
+  void setFillColor(DGtal::Color aColor) ;
   
   /**
    * Get fill color.
    * @return the fill color.
    *
    **/
-  QColor getFillColor() ;
+  DGtal::Color getFillColor() ;
 
   /**
    * Draws the drawable [object] in this board. It should satisfy
