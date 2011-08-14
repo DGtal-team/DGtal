@@ -61,7 +61,7 @@ DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
 inline
 void
 DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
-  std::vector< voxel > v;
+  std::vector< voxelD3D > v;
   myVoxelSetList.push_back(v);
   myListVoxelDepthTest.push_back(depthTest);
   
@@ -75,7 +75,7 @@ DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
 inline
 void
 DGtal::Board3DTo2D::createNewLineList(){
-  std::vector< line > v;
+  std::vector< lineD3D > v;
   myLineSetList.push_back(v);
 }
 
@@ -87,7 +87,7 @@ DGtal::Board3DTo2D::createNewLineList(){
 inline
 void
 DGtal::Board3DTo2D::createNewPointList(){
-  std::vector< point > v;
+  std::vector< pointD3D > v;
   myPointSetList.push_back(v);
 }
 
@@ -125,7 +125,7 @@ inline
 void
 DGtal::Board3DTo2D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire)
 {
-  voxel v;
+  voxelD3D v;
   
   v.x=x;
   v.y=y;
@@ -153,7 +153,7 @@ inline
 void
 DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const DGtal::Color &aColor, double size)
 {
-  point p;
+  pointD3D p;
   
   p.x=x;
   p.y=y;
@@ -163,7 +163,8 @@ DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const DGtal::Color &a
   p.B=aColor.blue();
   p.T=aColor.alpha();
   p.size=size;
-  
+  p.isSigned=false;
+  p.signPos=false;
   (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
    
 }
@@ -186,7 +187,7 @@ void
 DGtal::Board3DTo2D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       const DGtal::Color & aColor, double width)
 {
-  line l;
+  lineD3D l;
   
   l.x1=x1;
   l.y1=y1;
@@ -201,7 +202,8 @@ DGtal::Board3DTo2D::addLine(double x1, double y1, double z1,  double x2, double 
   l.B=aColor.blue();
   l.T=aColor.alpha();
   l.width=width;
-  
+  l.isSigned=false;
+  l.signPos=false;
   (myLineSetList.at(myLineSetList.size()-1)).push_back(l);
 }
 
@@ -228,7 +230,7 @@ void
 DGtal::Board3DTo2D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor)
 {
-  quad aQuad;
+  quadD3D aQuad;
   
   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
@@ -266,7 +268,7 @@ DGtal::Board3DTo2D::addKSSurfel(double x, double y, double z,
 		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
 		   bool isOriented, bool isOrientedPositively, bool basicMode){
   // ### A corriger à partir de Viewer3D
-//   quad aQuad;  
+//   quadD3D aQuad;  
 //   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
 //   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
 //   aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;

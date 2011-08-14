@@ -159,17 +159,19 @@ public:
 
 
   virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-		       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor){};
+		       double x3, double y3, double z3,  double x4, double y4, double z4, 
+		       DGtal::Color aColor){};
 
   
 
   virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
 		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5){};
   
-  virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220), double width=0.5,bool withWire=false){};
+  virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
+			double width=0.5,bool withWire=false){};
   
-  virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20), double size=40){
-  cerr << "in addd Point pere" << endl;};
+  virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
+			double size=40){};
   
   virtual DGtal::Color getFillColor();
    
@@ -191,6 +193,8 @@ public:
 			  double width=0.02, bool isSigned=false, bool signPos=true){};
   
 
+
+  
   /**
    * Draws the drawable [object] in this board. It should satisfy
    * the concept CDrawableWithViewer3D, which requires for instance a
@@ -259,6 +263,45 @@ public:
 private:
     // ------------------------- Private Datas --------------------------------
 private:
+
+protected:
+
+  struct lineD3D{
+    double x1, y1, z1;
+    double x2, y2, z2;
+    double width;
+    unsigned int R,G,B,T;
+    bool isSigned;
+    bool signPos;
+  };
+    
+  struct voxelD3D{
+    int x, y,z;
+    unsigned int R,G,B,T;
+    double width;
+  };
+  
+  struct pointD3D{
+    double  x, y,z;
+    unsigned int R,G,B,T;
+    bool isSigned;
+    bool signPos;
+    double size;
+  };
+  
+  struct clippingPlaneD3D{
+    double a,b,c,d;
+  };
+
+  struct  quadD3D{
+    double x1,y1,z1;
+    double x2,y2,z2;
+    double x3,y3,z3;
+    double x4,y4,z4;    
+    double nx, ny, nz;
+    unsigned int R,G,B,T;
+  };
+
 
     // ------------------------- Hidden services ------------------------------
 protected:

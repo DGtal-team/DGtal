@@ -275,72 +275,36 @@ public:
     // ------------------------- Private Datas --------------------------------
 private:
   
-  struct lineGL{
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double width;
-    unsigned int R,G,B,T;
-    bool isSigned;
-    bool signPos;
-  };
-    
-  struct voxelGL{
-    int x, y,z;
-    unsigned int R,G,B,T;
-    double width;
-  };
-  
-  struct pointGL{
-    double  x, y,z;
-    unsigned int R,G,B,T;
-    bool isSigned;
-    bool signPos;
-    double size;
-  };
-  
-  struct clippingPlaneGL{
-    double a,b,c,d;
-  };
-
-  struct  quadGL{
-    double x1,y1,z1;
-    double x2,y2,z2;
-    double x3,y3,z3;
-    double x4,y4,z4;    
-    double nx, ny, nz;
-    unsigned int R,G,B,T;
-  };
-
 
 
   // Represent all the clipping planes added to the scene (of maxSize=5).
-  std::vector< clippingPlaneGL > myClippingPlaneList;
+  std::vector< clippingPlaneD3D > myClippingPlaneList;
  
   // Used to represent all the list used in the display.
-  std::vector< std::vector<voxelGL> > myVoxelSetList;
+  std::vector< std::vector<voxelD3D> > myVoxelSetList;
   
   // Used to represent all the list of line primitive
-  std::vector< std::vector<lineGL> > myLineSetList; 
+  std::vector< std::vector<lineD3D> > myLineSetList; 
   
   // For saving all voxels of Khalimsky space (used to display Khalimsky Space Cell)
   // see. myVoxelSetList (first vector)
   
   
   // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< quadGL > myKSSurfelList;
+  std::vector< quadD3D > myKSSurfelList;
 
   // For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< pointGL > myKSPointelList;
+  std::vector< pointD3D > myKSPointelList;
 
   // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< lineGL > myKSLinelList;
+  std::vector< lineD3D > myKSLinelList;
 
 // Used to represent all the list of line primitive
-  std::vector< std::vector<pointGL> > myPointSetList;
+  std::vector< std::vector<pointD3D> > myPointSetList;
   
 
   // Represent all the drawed planes
-  std::vector< quadGL > myQuadList;
+  std::vector< quadD3D > myQuadList;
   
   
   //Used to define if GL_TEST_DEPTH is used. 
@@ -381,7 +345,7 @@ protected:
    * 
    *
    **/
-  void glDrawGLLinel(lineGL aLinel);
+  void glDrawGLLinel(lineD3D aLinel);
   
   
  
@@ -391,7 +355,7 @@ protected:
    * 
    *
    **/
-  void glDrawGLPointel(pointGL pointel);
+  void glDrawGLPointel(pointD3D pointel);
 
 
 
@@ -404,7 +368,7 @@ protected:
   
   struct compFarthestFromCamera{
     qglviewer::Vec posCam;
-    bool operator() ( voxelGL s1, voxelGL s2){
+    bool operator() ( voxelD3D s1, voxelD3D s2){
       double dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
       double dist2= sqrt((posCam.x-s2.x)*(posCam.x-s2.x)+ (posCam.y-s2.y)*(posCam.y-s2.y)+(posCam.z-s2.z)*(posCam.z-s2.z));
       return dist1>dist2;
@@ -414,7 +378,7 @@ protected:
   
 struct compFarthestSurfelFromCamera{
   qglviewer::Vec posCam;
-  bool operator() ( quadGL q1, quadGL q2){
+  bool operator() ( quadD3D q1, quadD3D q2){
     qglviewer::Vec center1((q1.x1+q1.x2+q1.x3+q1.x4)/4.0, (q1.y1+q1.y2+q1.y3+q1.y4)/4.0, (q1.z1+q1.z2+q1.z3+q1.z4)/4.0 );
     qglviewer::Vec center2((q2.x1+q2.x2+q2.x3+q2.x4)/4.0, (q2.y1+q2.y2+q2.y3+q2.y4)/4.0, (q2.z1+q2.z2+q2.z3+q2.z4)/4.0 );
     
