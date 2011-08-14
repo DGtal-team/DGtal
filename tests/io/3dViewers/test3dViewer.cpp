@@ -133,9 +133,7 @@ int main( int argc, char** argv )
 
 
   viewer << SetMode3D(domain.styleName(), "Paving");
-  viewer << domain2;
-  
-   viewer << Viewer3D::updateDisplay;
+  viewer << domain2 << Display3D::updateDisplay;
  
 
  bool res = application.exec();
