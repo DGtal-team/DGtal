@@ -62,12 +62,12 @@ int main( int argc, char** argv )
   viewer << p1 << p2 << p3;
 
   //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
   viewer << SetMode3D( p1.styleName(), "Both" );
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
   viewer << p6;
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   viewer << p0;
 
   viewer << SetMode3D(domain.styleName(), "Paving");

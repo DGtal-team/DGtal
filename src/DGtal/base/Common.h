@@ -44,7 +44,6 @@
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include <QGLViewer/qglviewer.h>
-#include <QColor>
 #include <QGLWidget>
 #include <QKeyEvent>
 #endif

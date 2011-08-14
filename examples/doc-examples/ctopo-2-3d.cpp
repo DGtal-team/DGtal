@@ -114,13 +114,13 @@ int main( int argc, char** argv )
   // Need to avoid surfel superposition (the surfel size in increased)
   viewer << Viewer3D::shiftSurfelVisu; 
   viewer << SetMode3D((*(vectBdrySCell2.begin())).styleName(), "");
-  viewer.setFillColor(QColor(180, 200, 25, 255));
+  viewer.setFillColor(Color(180, 200, 25, 255));
   
   int d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell2.begin(); 
        it!= vectBdrySCell2.end(); it++){
     Color col= cmap_grad(d);
-    viewer.setFillColor(QColor(col.red(),col.green() ,col.blue(), 255));
+    viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
     viewer<< *it;
     d++;
   }
@@ -134,14 +134,14 @@ int main( int argc, char** argv )
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell.begin(); 
        it!= vectBdrySCell.end(); it++){
      Color col= cmap_grad2(d);
-     viewer.setFillColor(QColor(col.red(),col.green() ,col.blue(), 255));
+     viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
      viewer<< *it;
     d++;
   }
   
   // On need once again to avoid superposition.
   viewer << Viewer3D::shiftSurfelVisu; 
-  viewer.setFillColor(QColor(18, 200, 25, 255));
+  viewer.setFillColor(Color(18, 200, 25, 255));
   viewer << aCell ;
   viewer << Viewer3D::updateDisplay;
     
