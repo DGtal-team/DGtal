@@ -74,10 +74,10 @@ public:
   /*!
    * \brief Constructor.
    */
-  //  Board3DTo2D();
+  Board3DTo2D();
   
   
-  //  ~Board3DTo2D(){};
+  ~Board3DTo2D(){};
   
 
   /**
@@ -141,9 +141,8 @@ public:
 //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
   DGtal::Color myDefaultColor;	//!< default color
-  DGtal::Color myCurrentFillColor;	//!< current fill color
-  DGtal::Color myCurrentLineColor;	//!< current line color
 
+  
   /**
    * Used to create a new list containing new Voxel objects
    * (useful to use transparency between different objects).
@@ -165,15 +164,7 @@ public:
    **/  
   void createNewPointList();
 
-  /**
-   * @param objectName the name of the object (generally obtained
-   * with a 'object.styleName()').
-   *
-   * @return the current mode for the given object name or "" if no
-   * specific mode has been set.
-   */
-  std::string getMode( const std::string & objectName ) const;
-
+ 
   /**
    * Set the default color for future drawing.
    *
@@ -315,33 +306,9 @@ public:
    **/
   void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
 
-  /**
-   * Set line color.
-   * @param aColor: the color of the line.
-   *
-   **/
-  void setLineColor(DGtal::Color aColor) ;
   
-  /**
-   * Get line color.
-   * @return the color of the line.
-   *
-   **/
-  DGtal::Color getLineColor() ;
-
-  /**
-   * Set fill color.
-   * @param aColor: the fill color.
-   *
-   **/
-  void setFillColor(DGtal::Color aColor) ;
+ 
   
-  /**
-   * Get fill color.
-   * @return the fill color.
-   *
-   **/
-  DGtal::Color getFillColor() ;
 
   /**
    * Draws the drawable [object] in this board. It should satisfy
@@ -370,19 +337,6 @@ public:
 
 public:
   
-  ModeMapping myModes;
-  
-  /**
-    * For instance, may associate a new style object T1 to the class
-    * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
-    *
-    * One can also store a new style T2 for a specific mode used for
-    * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
-    *
-    * Modes may only be used in objects implementing the concept
-    * CDrawableWithBoard2D.
-    */
-  StyleMapping myStyles;
 
     // ------------------------- Private Datas --------------------------------
 private:

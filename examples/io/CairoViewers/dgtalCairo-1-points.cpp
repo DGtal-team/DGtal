@@ -54,14 +54,15 @@ int main( int argc, char** argv )
   viewer << domain;  
   viewer << p1 << p2 << p3;
   
-  viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
+    viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
 	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
 	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
 
   //viewer << Cairo3dCameraZNearFar(4.578200, 22.578199);
 
-  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

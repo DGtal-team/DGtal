@@ -57,6 +57,7 @@ DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
    * (useful to use transparency between different objects).
    * 
    **/  
+
 inline
 void
 DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
@@ -90,49 +91,6 @@ DGtal::Board3DTo2D::createNewPointList(){
   myPointSetList.push_back(v);
 }
 
-/**
-   * Set fill color.
-   * @param aColor: the fill color.
-   *
-   **/
-inline
-void
-DGtal::Board3DTo2D::setFillColor(DGtal::Color aColor){
-  myCurrentFillColor=aColor;  
-}
-
-/**
-   * Set line color.
-   * @param aColor: the color of the line.
-   *
-   **/
-inline
-void
-DGtal::Board3DTo2D::setLineColor(DGtal::Color aColor){
-  myCurrentLineColor=aColor;  
-}
-
-/**
-   * Get fill color.
-   * @return the fill color.
-   *
-   **/
-inline
-DGtal::Color
-DGtal::Board3DTo2D::getFillColor(){
-  return myCurrentFillColor;  
-}
-
-/**
-   * Get line color.
-   * @return the color of the line.
-   *
-   **/
-inline
-DGtal::Color
-DGtal::Board3DTo2D::getLineColor(){
-  return myCurrentLineColor;  
-}
 
 /**
    * Draws the drawable [object] in this board. It should satisfy
@@ -148,25 +106,10 @@ DGtal::Board3DTo2D &
 DGtal::Board3DTo2D::operator<<( const TDrawableWithDisplay3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
-  
   object.selfDrawDisplay3D( *this );
   return *this;
 }
 
-/**
-   * @param objectName the name of the object (generally obtained
-   * with a 'object.styleName()').
-   *
-   * @return the current mode for the given object name or "" if no
-   * specific mode has been set.
-   */
-inline
-std::string
-DGtal::Board3DTo2D::getMode( const std::string & objectName ) const
-{
-  ModeMapping::const_iterator itm = myModes.find( objectName );
-  return itm == myModes.end() ? "" : itm->second;
-}
 
 /**
    * Add a point as a 3d voxel using default color in the current list.
