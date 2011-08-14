@@ -52,10 +52,10 @@ using namespace std;
 /*!
  * \brief Constructor.
  */
-//DGtal::Board3DTo2D::Board3DTo2D()
-//{
-  // init();
-//}
+DGtal::Board3DTo2D::Board3DTo2D()
+{
+  init();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
