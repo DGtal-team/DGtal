@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/Display3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

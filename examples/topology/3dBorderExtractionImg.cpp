@@ -65,7 +65,8 @@ int main( int argc, char** argv )
   Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
-  viewer << ClippingPlane(0,1,0, -40)<< Viewer3D::updateDisplay;
+  viewer << ClippingPlane(0,1,0, -40);
+  viewer << Display3D::updateDisplay;
   //viewer << ClippingPlane(0,-1,0, 70)<< Viewer3D::updateDisplay;
   //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D::updateDisplay;
   //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D::updateDisplay;

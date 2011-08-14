@@ -51,8 +51,7 @@ using namespace Z3i;
 bool testViewer3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
+  unsigned int nb = 0;  
   trace.beginBlock ( "Testing block ..." );
   nbok += true ? 1 : 0; 
   nb++;
@@ -73,22 +72,27 @@ int main( int argc, char** argv )
  Viewer3D viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
+ 
+
+
+
+
+
 
 
 
  Point p1( 14, 14, 14 );
  Point p2( 27, 27, 27 );
  Domain domain( p1, p2 );
-
+ 
  viewer << CustomColors3D(QColor(20, 20, 20, 50),QColor(20, 0,250,30));
  viewer << SetMode3D(domain.styleName(), "Grid");
  viewer << domain;  
-
  
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 13, 23, 13 ), 7 );
- viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 50));
-
+   viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 50));
+ 
  viewer << shape_set ;
  DigitalSet shape_set2( domain ); 
  Shapes<Domain>::addNorm1Ball( shape_set2, Point( 24, 15, 12 ), 12 );
@@ -131,13 +135,16 @@ int main( int argc, char** argv )
   viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain2;
   
-  viewer << Viewer3D::updateDisplay;
+   viewer << Viewer3D::updateDisplay;
  
 
  bool res = application.exec();
  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
  trace.endBlock();
  return res ? 0 : 1;
+
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
