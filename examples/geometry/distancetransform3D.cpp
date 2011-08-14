@@ -172,12 +172,12 @@ int main( int argc, char** argv )
    Color c= gradient(valDist);
    
    if(resultL1(*it)<=30 ){
-     viewer << CustomColors3D(QColor((float)(c.red()), 
-				     (float)(c.green()),
-				     (float)(c.blue(),205)), 
-			      QColor((float)(c.red()), 
-				     (float)(c.green()),
-				     (float)(c.blue()),205));
+     viewer << CustomColors3D(Color((float)(c.red()), 
+				    (float)(c.green()),
+				    (float)(c.blue(),205)), 
+			      Color((float)(c.red()), 
+				    (float)(c.green()),
+				    (float)(c.blue()),205));
      viewer << *it ;
    }     
  }

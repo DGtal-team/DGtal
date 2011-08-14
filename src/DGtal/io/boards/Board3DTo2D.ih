@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,12 +42,12 @@
 /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a trasnparency value).
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/ 
 inline
 DGtal::Board3DTo2D & 
-DGtal::Board3DTo2D::operator<<(const QColor & aColor){
+DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -96,7 +97,7 @@ DGtal::Board3DTo2D::createNewPointList(){
    **/
 inline
 void
-DGtal::Board3DTo2D::setFillColor(QColor aColor){
+DGtal::Board3DTo2D::setFillColor(DGtal::Color aColor){
   myCurrentFillColor=aColor;  
 }
 
@@ -107,7 +108,7 @@ DGtal::Board3DTo2D::setFillColor(QColor aColor){
    **/
 inline
 void
-DGtal::Board3DTo2D::setLineColor(QColor aColor){
+DGtal::Board3DTo2D::setLineColor(DGtal::Color aColor){
   myCurrentLineColor=aColor;  
 }
 
@@ -117,7 +118,7 @@ DGtal::Board3DTo2D::setLineColor(QColor aColor){
    *
    **/
 inline
-QColor
+DGtal::Color
 DGtal::Board3DTo2D::getFillColor(){
   return myCurrentFillColor;  
 }
@@ -128,7 +129,7 @@ DGtal::Board3DTo2D::getFillColor(){
    *
    **/
 inline
-QColor
+DGtal::Color
 DGtal::Board3DTo2D::getLineColor(){
   return myCurrentLineColor;  
 }
@@ -179,7 +180,7 @@ DGtal::Board3DTo2D::getMode( const std::string & objectName ) const
    **/
 inline
 void
-DGtal::Board3DTo2D::addVoxel(int x, int y, int z, QColor aColor, double width, bool withWire)
+DGtal::Board3DTo2D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire)
 {
   voxel v;
   
@@ -207,7 +208,7 @@ DGtal::Board3DTo2D::addVoxel(int x, int y, int z, QColor aColor, double width, b
    **/
 inline
 void
-DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const QColor &aColor, double size)
+DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const DGtal::Color &aColor, double size)
 {
   point p;
   
@@ -240,7 +241,7 @@ DGtal::Board3DTo2D::addPoint(double x, double y, double z ,const QColor &aColor,
 inline
 void
 DGtal::Board3DTo2D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       const QColor & aColor, double width)
+			       const DGtal::Color & aColor, double width)
 {
   line l;
   
@@ -282,7 +283,7 @@ DGtal::Board3DTo2D::addLine(double x1, double y1, double z1,  double x2, double 
 inline
 void
 DGtal::Board3DTo2D::addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-			       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor)
+			       double x3, double y3, double z3,  double x4, double y4, double z4, DGtal::Color aColor)
 {
   quad aQuad;
   
