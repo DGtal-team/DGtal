@@ -64,12 +64,15 @@ public:
      */
  
   Display3D(){};
+  virtual ~Display3D(){};
+
     // ----------------------- Interface --------------------------------------
 public:
-
+  enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+  
  
-  virtual void setFillColor(QColor aColor){} ;
-  virtual void setLineColor(QColor aColor){} ;
+  virtual void setFillColor(QColor aColor);
+  virtual void setLineColor(QColor aColor);
    
   /**
    * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
@@ -94,7 +97,7 @@ public:
   * @param y y position.
   * @param z z position.
   */
-  virtual void setCameraPosition(double x, double y, double z) {  }
+  virtual void setCameraPosition(double x, double y, double z) {  };
   
   /**
   * Set near and far distance.
@@ -122,7 +125,7 @@ public:
    * @return the current mode for the given object name or "" if no
    * specific mode has been set.
    */
-  virtual std::string getMode( const std::string & objectName ){}  ;
+  virtual std::string getMode( const std::string & objectName ) const;
   
    /**
     * Used to create a new list containing new 3D objects
@@ -164,11 +167,12 @@ public:
   
   virtual void addVoxel(int x, int y, int z, QColor color= QColor(220, 220, 220), double width=0.5,bool withWire=false){};
   
-  virtual void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40){};
+  virtual void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40){
+  cerr << "in addd Point pere" << endl;};
   
-  virtual QColor getFillColor(){};
+  virtual QColor getFillColor();
    
-  virtual QColor getLineColor(){};
+  virtual QColor getLineColor();
 
  
   
@@ -176,7 +180,7 @@ public:
 		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
 			   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false){};
   
-    virtual void addKSVoxel(int x, int y, int z){};
+  virtual void addKSVoxel(int x, int y, int z){};
   
   virtual void addKSPointel(double x, double y, double z, double size=0.1,
 			    bool isSigned=false, bool signPos=true){};
@@ -194,8 +198,8 @@ public:
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-  template <typename TDrawableWithViewer3D>
-  Display3D & operator<<( const  TDrawableWithViewer3D & object );
+  template <typename TDrawableWithDisplay3D>
+  Display3D & operator<<( const  TDrawableWithDisplay3D & object );
   
 
 
@@ -232,6 +236,7 @@ public:
     // ------------------------- Protected Datas ------------------------------
 public:
   
+    
   ModeMapping myModes;  
       /**
      * For instance, may associate a new style object T1 to the class
@@ -244,6 +249,10 @@ public:
      * CDrawableWithBoard2D.
      */
     StyleMapping myStyles;
+
+  protected:
+  QColor myCurrentFillColor;
+  QColor myCurrentLineColor;
 
 
 private:

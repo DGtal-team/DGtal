@@ -69,7 +69,8 @@ int main( int argc, char** argv )
   
 
  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
- viewer << domain << Viewer3D::updateDisplay;
+ viewer << domain;
+ viewer << Display3D::updateDisplay;
  
 
  return application.exec();

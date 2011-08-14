@@ -74,19 +74,22 @@ namespace DGtal
  * Description of class 'Viewer3D' <p>
  * \brief Aim:
  */
-  class Viewer3D : public QGLViewer, Display3D
+  class Viewer3D : public QGLViewer, public Display3D
 {
     // ----------------------- Standard services ------------------------------
 public:
 
 
-  enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+
+  Viewer3D():QGLViewer(), Display3D(){
+   
+  };
+
+
 
 
   QColor myDefaultBackgroundColor;
   QColor myDefaultColor;
-  QColor myCurrentFillColor;
-  QColor myCurrentLineColor;
   bool myIsBackgroundDefault;
 
 
@@ -113,22 +116,7 @@ public:
    * 
    **/  
 
-  void createNewPointList();
-
-  
-
-
-    /**
-     * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
-     *
-     * @return the current mode for the given object name or "" if no
-     * specific mode has been set.
-     */
-  std::string getMode( const std::string & objectName ) const;
-
-  
-  
+  void createNewPointList(); 
 
   
   
@@ -150,7 +138,7 @@ public:
    *
    **/
   
-  Viewer3D & operator<<(const Viewer3D::StreamKey  & key);
+  Display3D & operator<<(const Display3D::StreamKey  & key);
   
   
   
@@ -201,18 +189,6 @@ public:
    **/
   
   void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
-  
-
-  
-
-  void setLineColor(QColor aColor) ;
-  QColor getLineColor() ;
-
-  void setFillColor(QColor aColor) ;
-  QColor getFillColor() ;
-
-
-
 
 
    /**
@@ -221,14 +197,14 @@ public:
   * @param y y coordinate of up-vector.
   * @param z z coordinate of up-vector.
   */
-  void setCameraUpVector(double x, double y, double z){}; 
+  virtual void setCameraUpVector(double x, double y, double z){}; 
   
   /**
   * Set near and far distance.
   * @param near near distance.
   * @param far far distance.
   */
-   void setNearFar(double near, double far){}
+  virtual void setNearFar(double near, double far){};
   
 
   /**
@@ -250,8 +226,8 @@ public:
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-  template <typename TDrawableWithViewer3D>
-  Viewer3D & operator<<( const  TDrawableWithViewer3D & object );
+   template <typename TDrawableWithDisplay3D>
+   Display3D & operator<<( const  TDrawableWithDisplay3D & object );
   
 
 
@@ -283,7 +259,7 @@ private:
 
 public:
   
-  ModeMapping myModes;  
+  //  ModeMapping myModes;  
       /**
      * For instance, may associate a new style object T1 to the class
      * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
@@ -294,7 +270,7 @@ public:
      * Modes may only be used in objects implementing the concept
      * CDrawableWithBoard2D.
      */
-    StyleMapping myStyles;
+  //    StyleMapping myStyles;
 
   
     // ------------------------- Private Datas --------------------------------
@@ -335,18 +311,17 @@ private:
     double nx, ny, nz;
     unsigned int R,G,B,T;
   };
-    
+
+
+
+  // Represent all the clipping planes added to the scene (of maxSize=5).
+  std::vector< clippingPlaneGL > myClippingPlaneList;
+ 
   // Used to represent all the list used in the display.
   std::vector< std::vector<voxelGL> > myVoxelSetList;
   
   // Used to represent all the list of line primitive
-  std::vector< std::vector<lineGL> > myLineSetList;
-  
-  // Used to represent all the list of line primitive
-  std::vector< std::vector<pointGL> > myPointSetList;
-
-  // Represent all the clipping planes added to the scene (of maxSize=5).
-  std::vector< clippingPlaneGL > myClippingPlaneList;
+  std::vector< std::vector<lineGL> > myLineSetList; 
   
   // For saving all voxels of Khalimsky space (used to display Khalimsky Space Cell)
   // see. myVoxelSetList (first vector)
@@ -361,9 +336,8 @@ private:
   // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
   std::vector< lineGL > myKSLinelList;
 
-  
- 
-  
+// Used to represent all the list of line primitive
+  std::vector< std::vector<pointGL> > myPointSetList;
   
 
   // Represent all the drawed planes
@@ -373,6 +347,14 @@ private:
   //Used to define if GL_TEST_DEPTH is used. 
   std::vector<bool> myListVoxelDepthTest;
 
+
+
+
+  
+ 
+  
+  
+
   qglviewer::Vec myBoundingPtUp;
   qglviewer::Vec myBoundingPtLow;
 
@@ -380,6 +362,8 @@ private:
   unsigned int myNbListe;
   qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;  
   QPoint myPosSelector;
+
+public:
   
     // ------------------------- Hidden services ------------------------------
 protected:

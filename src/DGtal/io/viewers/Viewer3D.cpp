@@ -1,4 +1,3 @@
-
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -92,15 +91,12 @@ DGtal::Viewer3D::drawWithNames(){
   for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
   }   
-
-
 }
 
 
 void
 DGtal::Viewer3D::draw()
-{
-
+{ 
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
@@ -183,6 +179,7 @@ DGtal::Viewer3D::draw()
 
 
 
+
 void
 DGtal::Viewer3D::init(){
   myNbListe=0;
@@ -216,7 +213,6 @@ DGtal::Viewer3D::init(){
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
-
   
 }
 
@@ -273,6 +269,7 @@ DGtal::Viewer3D::postSelection(const QPoint& point)
 void
 DGtal::Viewer3D::updateList(bool updateBoundingBox)
 {
+  
   unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
@@ -619,3 +616,5 @@ DGtal::Viewer3D::helpString() const
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+

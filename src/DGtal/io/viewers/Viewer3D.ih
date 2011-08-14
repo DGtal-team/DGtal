@@ -33,7 +33,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -62,18 +61,18 @@ DGtal::Viewer3D::operator<<(const QColor & aColor){
    **/
 
 inline
-DGtal::Viewer3D & 
-DGtal::Viewer3D::operator<<(const Viewer3D::StreamKey  & key){
+DGtal::Display3D & 
+DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
   switch (key){
-  case updateDisplay:
+  case Display3D::updateDisplay:
     updateList();
     break;
     
-  case addNewList:
+  case Display3D::addNewList:
     createNewVoxelList();
     break;
     
-  case shiftSurfelVisu:
+  case Display3D::shiftSurfelVisu:
     myCurrentfShiftVisuKSSurfels+=0.3;
     break;
     
@@ -83,16 +82,15 @@ DGtal::Viewer3D::operator<<(const Viewer3D::StreamKey  & key){
 }
 
 
-  template <typename TDrawableWithDisplay3D>
-  inline
-  DGtal::Viewer3D & 
-  DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
-  {
-    BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
-    
-    object.selfDrawDisplay3D( *this );
-    return *this;
-  }
+template <typename TDrawableWithDisplay3D>
+inline
+DGtal::Display3D & 
+DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
+{
+  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+  object.selfDrawDisplay3D( *this );
+  return *this;
+}
 
 
 inline
@@ -120,46 +118,12 @@ DGtal::Viewer3D::createNewPointList(){
 }
 
 
-inline
-void
-DGtal::Viewer3D::setFillColor(QColor aColor){
-  myCurrentFillColor=aColor;  
-}
-
-
-inline
-void
-DGtal::Viewer3D::setLineColor(QColor aColor){
-  myCurrentLineColor=aColor;  
-}
-
-
-inline
-QColor
-DGtal::Viewer3D::getFillColor(){
-  return myCurrentFillColor;  
-}
-
-inline
-QColor
-DGtal::Viewer3D::getLineColor(){
-  return myCurrentLineColor;  
-}
 
 
 
 
 
 
-
-
-inline
-std::string
-DGtal::Viewer3D::getMode( const std::string & objectName ) const
-{
-  ModeMapping::const_iterator itm = myModes.find( objectName );
-  return itm == myModes.end() ? "" : itm->second;
-}
 
 
 inline
@@ -198,12 +162,12 @@ DGtal::Viewer3D::addVoxel(int x, int y, int z, QColor aColor, double width, bool
 
 
 
+
 inline
 void
 DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, double size){
   pointGL p;
   updateBoundingBox(x, y, z);
-  
   p.x=x;
   p.y=y;
   p.z=z;
@@ -212,9 +176,7 @@ DGtal::Viewer3D::addPoint(double x, double y, double z ,const QColor &aColor, do
   p.B=aColor.blue();
   p.T=aColor.alpha();
   p.size=size;
-  
   (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
-   
 }
 
 inline

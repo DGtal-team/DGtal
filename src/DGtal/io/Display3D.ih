@@ -45,6 +45,42 @@
 // Implementation of inline functions and external operators                 //
 
 
+inline
+void
+DGtal::Display3D::setFillColor(QColor aColor){
+  myCurrentFillColor=aColor;  
+}
+
+
+inline
+void
+DGtal::Display3D::setLineColor(QColor aColor){
+  myCurrentLineColor=aColor;  
+}
+
+
+inline
+QColor
+DGtal::Display3D::getLineColor(){
+  return myCurrentLineColor;
+}
+
+inline
+QColor
+DGtal::Display3D::getFillColor(){
+  return myCurrentFillColor;
+}
+
+
+inline
+std::string
+DGtal::Display3D::getMode( const std::string & objectName ) const
+{
+  ModeMapping::const_iterator itm = myModes.find( objectName );
+  return itm == myModes.end() ? "" : itm->second;
+}
+
+
 
 
 template <typename TDrawableWithDisplay3D>
