@@ -61,7 +61,7 @@ DGtal::Viewer3D::operator<<(const QColor & aColor){
    **/
 
 inline
-DGtal::Display3D & 
+DGtal::Viewer3D & 
 DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
   switch (key){
   case Display3D::updateDisplay:
@@ -84,7 +84,7 @@ DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
 
 template <typename TDrawableWithDisplay3D>
 inline
-DGtal::Display3D & 
+DGtal::Viewer3D & 
 DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));

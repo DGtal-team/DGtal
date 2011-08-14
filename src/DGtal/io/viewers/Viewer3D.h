@@ -138,7 +138,7 @@ public:
    *
    **/
   
-  Display3D & operator<<(const Display3D::StreamKey  & key);
+  Viewer3D & operator<<(const Display3D::StreamKey  & key);
   
   
   
@@ -227,7 +227,7 @@ public:
    * @return a reference on 'this'.
    */
    template <typename TDrawableWithDisplay3D>
-   Display3D & operator<<( const  TDrawableWithDisplay3D & object );
+   Viewer3D & operator<<( const  TDrawableWithDisplay3D & object );
   
 
 
