@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <boost/math/common_factor_rt.hpp>
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -364,7 +365,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 
   // Draw points
-  display << CustomColors3D(QColor(250,250,250,100),QColor(250,250,250,100));
+  display << CustomColors3D(Color(250,250,250,100),Color(250,250,250,100));
   ConstIterator end = myL; ++end;
   for (ConstIterator i = myF; i != end; ++i) {
     Point3d p = *i;
@@ -387,7 +388,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 				double zp = (double) IntegerTraits<TInteger>::castToInt64_t(p[2]);
 				display.addLine(xprevp,yprevp,zprevp,
 											 xp,yp,zp,
-											 QColor(0,250,0));
+											 Color(0,250,0));
 				xprevp = xp;
 				yprevp = yp;
 				zprevp = zp;
@@ -464,7 +465,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														mu[2] - ( (m1+dl)*u[2] )/n ); 
 
 			display.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
-										 QColor(250,0,0));
+										 Color(250,0,0));
 
 		PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
 														(mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
@@ -475,7 +476,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
 
 			display.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
-										 QColor(250,0,0));
+										 Color(250,0,0));
 
 		PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
 														(mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
@@ -486,7 +487,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
 
 			display.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
-										 QColor(250,0,0));
+										 Color(250,0,0));
 
 		PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
 														(mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
@@ -497,26 +498,26 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 														(mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
 
 			display.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
-										 QColor(250,0,0));
+										 Color(250,0,0));
 
 		//two end facets
 		display.addQuad(pf[0],pf[1],pf[2],
 									 pf2[0],pf2[1],pf2[2],
 									 pf4[0],pf4[1],pf4[2],
 									 pf3[0],pf3[1],pf3[2],
-									 QColor(250,0,0));
+									 Color(250,0,0));
 		display.addQuad(pl[0],pl[1],pl[2],
 									 pl2[0],pl2[1],pl2[2],
 									 pl4[0],pl4[1],pl4[2],
 									 pl3[0],pl3[1],pl3[2],
-									 QColor(250,0,0));
+									 Color(250,0,0));
 
 	}
 
 /* else { //n == 0
 
 			display.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
-										 QColor(250,0,0));
+										 Color(250,0,0));
 
 	}*/
 

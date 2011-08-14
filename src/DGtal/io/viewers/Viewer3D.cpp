@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
+#include <QColor>
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
 #include "DGtal/io/3dViewers/Viewer3D.ih"
@@ -188,9 +189,10 @@ DGtal::Viewer3D::init(){
   myLineSetList.push_back(listeLine);
   vector<pointGL> listePoint;
   myPointSetList.push_back(listePoint);
-  myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 222, 50);
-  myDefaultBackgroundColor = backgroundColor ();
+  myCurrentFillColor = Color (220, 220, 220);
+  myCurrentLineColor = Color (22, 22, 222, 50);
+  myDefaultBackgroundColor = Color(backgroundColor().red(), backgroundColor().green(), 
+				    backgroundColor().blue());
   myIsBackgroundDefault=true;
   myBoundingPtLow[0]=numeric_limits<double>::max( );
   myBoundingPtLow[1]=numeric_limits<double>::max( );
@@ -203,7 +205,7 @@ DGtal::Viewer3D::init(){
   std::vector<voxelGL>  aKSVoxelList;
   
   myCurrentfShiftVisuKSSurfels=0.0;
-  myDefaultColor= QColor(255, 255, 255);
+  myDefaultColor= Color(255, 255, 255);
   camera()->showEntireScene();
   
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
