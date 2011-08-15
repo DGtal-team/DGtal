@@ -52,22 +52,6 @@ DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
   return *this;
 }
 
-/**
-   * Used to create a new list containing new Voxel objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-
-inline
-void
-DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
-  std::vector< voxelD3D > v;
-  myVoxelSetList.push_back(v);
-  myListVoxelDepthTest.push_back(depthTest);
-  
-}
-
-
 
 /**
    * Draws the drawable [object] in this board. It should satisfy
@@ -89,24 +73,6 @@ DGtal::Board3DTo2D::operator<<( const TDrawableWithDisplay3D & object )
 
 
 
-
-// ///////////////////////////////////////////////////////////////////////////////
-// // Implementation of inline functions and external operators                 //
-
-// /**
-//  * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
-//  * @param out the output stream where the object is written.
-//  * @param object the object of class 'Board3DTo2D' to write.
-//  * @return the output stream after the writing.
-//  */
-// inline
-// std::ostream&
-// DGtal::operator<< ( std::ostream & out,
-//                   const Board3DTo2D & object )
-// {
-//     object.selfDisplay ( out );
-//     return out;
-// }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

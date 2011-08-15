@@ -211,6 +211,111 @@ namespace DGtal
   };
 
 
+  /**
+   * CameraPosition class to set camera position.
+   */
+
+  struct CameraPosition : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x position.
+     * @param y y position.
+     * @param z z position.
+     */
+    CameraPosition( const double x, const double y, const double z )
+    {
+      eyex=x; eyey=y; eyez=z;
+    }
+    
+    void selfDrawDisplay3D( Display3D & display) const
+    {
+      display.setCameraPosition(eyex, eyey, eyez);
+    }
+    
+    private:
+      double eyex, eyey, eyez;
+  };
+  
+  /**
+   * CameraDirection class to set camera direction.
+   */
+  struct CameraDirection : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x direction.
+     * @param y y direction.
+     * @param z z direction.
+     */
+    CameraDirection( const double x, const double y, const double z )
+    {
+      dirx=x; diry=y; dirz=z;
+    }
+    
+    virtual void selfDrawDisplay3D( Display3D & display) const
+    {
+      display.setCameraDirection(dirx, diry, dirz);
+    }
+    
+    private:
+      double dirx, diry, dirz;
+  };
+  
+  /**
+   * CameraUpVector class to set camera up-vector.
+   */
+  struct CameraUpVector : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param x x coordinate of up-vector.
+     * @param y y coordinate of up-vector.
+     * @param z z coordinate of up-vector.
+     */
+    CameraUpVector( const double x, const double y, const double z )
+    {
+      upx=x; upy=y; upz=z;
+    }
+    
+    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    {
+      viewer.setCameraUpVector(upx, upy, upz);
+    }
+    
+    private:
+      double upx, upy, upz;
+  };
+  
+  /**
+   * CameraZNearFar class to set near and far distance.
+   */
+  struct CameraZNearFar : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param near near distance.
+     * @param far far distance.
+     */
+    CameraZNearFar( const double near, const double far )
+    {
+      ZNear=near; ZFar=far;
+    }
+    
+    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    {
+      viewer.setNearFar(ZNear, ZFar);
+    }
+    
+    private:
+      double ZNear, ZFar;
+  };
+
+ 
 
 
 

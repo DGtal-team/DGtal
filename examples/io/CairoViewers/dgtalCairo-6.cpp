@@ -62,9 +62,9 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   viewer << SetMode3D( p1.styleName(), "Paving" );
   
-  viewer << Cairo3dCameraPosition(10.000000, 10.000000, 41.682465)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << CameraPosition(10.000000, 10.000000, 41.682465)
+	 << CameraDirection(0.000000, 0.000000, -1.000000)
+	 << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-6.png", Board3DTo2D::CairoPNG, 600, 400);
