@@ -20,6 +20,8 @@
  * @file NGon2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/12
  *
@@ -56,6 +58,8 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any regular k-gon in the plane.
    *
+   * NB: A backport from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TSpace>
   class NGon2D:  public StarShaped2D<TSpace>
