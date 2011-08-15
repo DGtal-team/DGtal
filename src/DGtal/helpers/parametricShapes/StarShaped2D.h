@@ -20,6 +20,8 @@
  * @file StarShaped2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/12
  *
@@ -53,12 +55,14 @@ namespace DGtal
   /**
    * Description of template class 'StarShaped2D' <p>
    * 
-   * Aim: Abstract class that
-   * represents any star-shaped object in dimension 2. Such a shape as a center and any
-   * segment from this center to the shape boundary is included in the
-   * shape. These shapes can thus be parameterized by an angle 't'
-   * turning around the center.
-   * (backport from ImaGene)
+   * Aim: Abstract class that represents any star-shaped object in
+   * dimension 2. Such a shape as a center and any segment from this
+   * center to the shape boundary is included in the shape. These
+   * shapes can thus be parameterized by an angle 't' turning around
+   * the center.
+   *
+   * NB: A backport from <a
+   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TSpace>
   class StarShaped2D
