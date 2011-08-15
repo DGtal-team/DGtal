@@ -64,9 +64,9 @@ int main( int argc, char** argv )
 
   viewer << shape_set;
   
-  viewer << Cairo3dCameraPosition(5.000000, 5.000000, 15)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << CameraPosition(5.000000, 5.000000, 15)
+	 << CameraDirection(0.000000, 0.000000, -1.000000)
+	 << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   viewer.saveCairo("dgtalCairo-2bis-sets-wireframe.png", Board3DTo2D::CairoPNG, 600, 400);
 }

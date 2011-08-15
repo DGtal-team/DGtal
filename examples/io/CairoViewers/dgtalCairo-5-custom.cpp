@@ -58,7 +58,7 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  viewer << SetMode3D( p1.styleName(), "Paving" );
+  viewer << SetMode3D( p1.styleName(), "PavingWired" );
   viewer << p1 << p2 << p3;
 
   //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
@@ -72,11 +72,6 @@ int main( int argc, char** argv )
 
   viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain;
-
-  viewer << Cairo3dCameraPosition(-6.017646, -0.218156, -0.801076)
-	<< Cairo3dCameraDirection(0.974976, 0.107429, 0.194628)
-	<< Cairo3dCameraUpVector(-0.018884, 0.912344, -0.408990);
-  
   viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
   

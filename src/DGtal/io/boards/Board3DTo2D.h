@@ -143,15 +143,6 @@ public:
   DGtal::Color myDefaultColor;	//!< default color
 
   
-  /**
-   * Used to create a new list containing new Voxel objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewVoxelList(bool depthTest=true);
-  
- 
-
 
  
   /**
@@ -232,109 +223,7 @@ private:
 
   }; // end of class Board3DTo2D
   
-  /**
-   * Cairo3dCameraPosition class to set camera position.
-   */
-  struct Cairo3dCameraPosition : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x position.
-     * @param y y position.
-     * @param z z position.
-     */
-    Cairo3dCameraPosition( const double x, const double y, const double z )
-    {
-      eyex=x; eyey=y; eyez=z;
-    }
-    
-    void selfDrawDisplay3D( Display3D & display) const
-    {
-      display.setCameraPosition(eyex, eyey, eyez);
-    }
-    
-    private:
-      double eyex, eyey, eyez;
-  };
-  
-  /**
-   * Cairo3dCameraDirection class to set camera direction.
-   */
-  struct Cairo3dCameraDirection : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x direction.
-     * @param y y direction.
-     * @param z z direction.
-     */
-    Cairo3dCameraDirection( const double x, const double y, const double z )
-    {
-      dirx=x; diry=y; dirz=z;
-    }
-    
-    virtual void selfDrawDisplay3D( Display3D & display) const
-    {
-      display.setCameraDirection(dirx, diry, dirz);
-    }
-    
-    private:
-      double dirx, diry, dirz;
-  };
-  
-  /**
-   * Cairo3dCameraUpVector class to set camera up-vector.
-   */
-  struct Cairo3dCameraUpVector : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x coordinate of up-vector.
-     * @param y y coordinate of up-vector.
-     * @param z z coordinate of up-vector.
-     */
-    Cairo3dCameraUpVector( const double x, const double y, const double z )
-    {
-      upx=x; upy=y; upz=z;
-    }
-    
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
-    {
-      viewer.setCameraUpVector(upx, upy, upz);
-    }
-    
-    private:
-      double upx, upy, upz;
-  };
-  
-  /**
-   * Cairo3dCameraZNearFar class to set near and far distance.
-   */
-  struct Cairo3dCameraZNearFar : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param near near distance.
-     * @param far far distance.
-     */
-    Cairo3dCameraZNearFar( const double near, const double far )
-    {
-      ZNear=near; ZFar=far;
-    }
-    
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
-    {
-      viewer.setNearFar(ZNear, ZFar);
-    }
-    
-    private:
-      double ZNear, ZFar;
-  };
-
+ 
  
 
   

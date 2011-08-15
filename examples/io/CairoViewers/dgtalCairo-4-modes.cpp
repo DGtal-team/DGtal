@@ -64,11 +64,11 @@ int main( int argc, char** argv )
   //viewer << SetMode3DCairo(domain.styleName(), "PavingGrids");
   viewer << domain;
   
-  viewer << Cairo3dCameraPosition(0.500000, 0.500000, 11.274194)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << CameraPosition(0.500000, 0.500000, 11.274194)
+	 << CameraDirection(0.000000, 0.000000, -1.000000)
+	 << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
