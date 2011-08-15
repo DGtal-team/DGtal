@@ -93,35 +93,6 @@ DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 }
 
 
-inline
-void
-DGtal::Viewer3D::createNewVoxelList(bool depthTest){
-  std::vector< voxelD3D > v;
-  myVoxelSetList.push_back(v);
-  myListVoxelDepthTest.push_back(depthTest);
-  
-}
-
-inline
-void
-DGtal::Viewer3D::createNewLineList(){
-  std::vector< lineD3D > v;
-  myLineSetList.push_back(v);
-}
-
-
-inline
-void
-DGtal::Viewer3D::createNewPointList(){
-  std::vector< pointD3D > v;
-  myPointSetList.push_back(v);
-}
-
-
-
-
-
-
 
   
 

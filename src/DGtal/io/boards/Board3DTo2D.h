@@ -150,19 +150,8 @@ public:
    **/  
   void createNewVoxelList(bool depthTest=true);
   
-  /**
-   * Used to create a new list containing new Line objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewLineList();
+ 
 
-  /**
-   * Used to create a new list containing new Point objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewPointList();
 
  
   /**
