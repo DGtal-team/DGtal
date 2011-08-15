@@ -134,7 +134,7 @@ public:
    * 
    **/  
 
-  virtual void createNewLineList(){};
+  virtual void createNewLineList();
   
 
   /**
@@ -142,19 +142,18 @@ public:
    * (useful to use transparency between different objects).
    * 
    **/  
-
-  virtual void createNewVoxelList(bool depthTest=true){};
-
-
-
   
+  virtual void createNewPointList();
+
+
   /**
    * Used to create a new list containing new 3D objects
    * (useful to use transparency between different objects).
    * 
    **/  
-  
-  virtual void createNewPointList(){};
+
+  virtual void createNewVoxelList(bool depthTest=true);
+
 
 
 

@@ -67,29 +67,6 @@ DGtal::Board3DTo2D::createNewVoxelList(bool depthTest){
   
 }
 
-/**
-   * Used to create a new list containing new Line objects
-   * (useful to use transparency between different objects).
-   * 
-   **/ 
-inline
-void
-DGtal::Board3DTo2D::createNewLineList(){
-  std::vector< lineD3D > v;
-  myLineSetList.push_back(v);
-}
-
-/**
-   * Used to create a new list containing new Point objects
-   * (useful to use transparency between different objects).
-   * 
-   **/ 
-inline
-void
-DGtal::Board3DTo2D::createNewPointList(){
-  std::vector< pointD3D > v;
-  myPointSetList.push_back(v);
-}
 
 
 /**

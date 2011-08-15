@@ -90,33 +90,7 @@ public:
   DGtal::Color myDefaultBackgroundColor;
   DGtal::Color myDefaultColor;
   bool myIsBackgroundDefault;
-
-
-  /**
-   * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-
-  void createNewVoxelList(bool depthTest=true);
-  
-  
-  /**
-   * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-
-  void createNewLineList();
-
-  /**
-   * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-
-  void createNewPointList(); 
-
+ 
   
   
   /**
@@ -141,31 +115,6 @@ public:
   
   
   
-
-
- 
-    
- 
-
-  
-  // ----------
-  
-  
-  
-   /**
-  * Set camera up-vector.
-  * @param x x coordinate of up-vector.
-  * @param y y coordinate of up-vector.
-  * @param z z coordinate of up-vector.
-  */
-  virtual void setCameraUpVector(double x, double y, double z){}; 
-  
-  /**
-  * Set near and far distance.
-  * @param near near distance.
-  * @param far far distance.
-  */
-  virtual void setNearFar(double near, double far){};
   
 
   /**
