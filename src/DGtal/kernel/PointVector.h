@@ -46,6 +46,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <algorithm>
 #include <boost/array.hpp>
 
 #include "DGtal/base/Common.h"
@@ -538,6 +539,37 @@ namespace DGtal
      * NB: faster than computing the supremum and compare it afterwards.
      */
     bool isUpper( const Self& p ) const;
+
+    /** 
+     * Return the maximum component value of a point/vector.
+     * 
+     * @return the maximum value.
+     */
+    Component max() const;
+   
+    /** 
+     * Return the minimum component value of a point/vector.
+     * 
+     * @return the minimum value.
+     */ 
+    Component min() const;
+
+    /** 
+     * Return the iterator on the component with maximim value of a
+     * point/vector.
+     * 
+     * @return an iterator.
+     */
+    Iterator maxElement();
+   
+    /** 
+     * Return the iterator on the component with minimum value of a
+     * point/vector.
+     * 
+     * @return an iterator.
+     */ 
+    Iterator minElement();
+
 
     /**
      * Specify the set of norm types

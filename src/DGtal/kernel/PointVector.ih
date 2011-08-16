@@ -490,6 +490,38 @@ DGtal::PointVector<dim, Component>::isUpper( const Self& p ) const
 //------------------------------------------------------------------------------
 template<Dimension dim, typename Component>
 inline
+Component
+DGtal::PointVector<dim, Component>::max(  ) const
+{
+  return  *std::max_element(this->begin(), this->end());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
+Component
+DGtal::PointVector<dim, Component>::min( ) const
+{
+  return  *std::min_element(this->begin(), this->end());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
+typename DGtal::PointVector<dim, Component>::Iterator
+DGtal::PointVector<dim, Component>::maxElement(  ) 
+{
+  return  std::max_element(this->begin(), this->end());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
+typename DGtal::PointVector<dim, Component>::Iterator
+DGtal::PointVector<dim, Component>::minElement( ) 
+{
+  return  std::min_element(this->begin(), this->end());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename Component>
+inline
 double
 DGtal::PointVector<dim, Component>::norm (const
 					  typename Self::NormType aType ) const
