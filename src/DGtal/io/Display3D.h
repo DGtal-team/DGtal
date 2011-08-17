@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
