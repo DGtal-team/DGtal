@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -52,6 +53,8 @@ int main( int argc, char** argv )
   Domain domain( p1, p2 );
 
   viewer << domain;
+
+
 
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );

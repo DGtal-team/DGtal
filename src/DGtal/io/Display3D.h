@@ -41,9 +41,13 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
+#include <algorithm>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -64,8 +68,12 @@ public:
      * Destructor.
      */
  
-  Display3D(){};
+  
   virtual ~Display3D(){};
+
+
+protected:  
+  Display3D(){};
 
     // ----------------------- Interface --------------------------------------
 public:
