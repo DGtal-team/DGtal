@@ -74,6 +74,7 @@ int main( int argc, char** argv )
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-3-objects.png", Board3DTo2D::CairoPNG, 600, 400);
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
