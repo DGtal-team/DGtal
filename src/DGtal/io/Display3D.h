@@ -49,6 +49,8 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
 
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -273,9 +275,12 @@ public:
     StyleMapping myStyles;
   
   
+  
+  double  myBoundingPtUp [3];
+  double  myBoundingPtLow [3];
 
-  qglviewer::Vec myBoundingPtUp;
-  qglviewer::Vec myBoundingPtLow;
+  
+  
 
   
 private:

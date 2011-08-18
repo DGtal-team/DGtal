@@ -423,7 +423,8 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
 
 
   if( updateBoundingBox){
-    setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
+    setSceneBoundingBox(qglviewer::Vec(myBoundingPtLow[0],myBoundingPtLow[1],myBoundingPtLow[2]),
+			qglviewer::Vec(myBoundingPtUp[0], myBoundingPtUp[1], myBoundingPtUp[2]));
     showEntireScene();
   }  
 }

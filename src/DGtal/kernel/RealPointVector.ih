@@ -280,7 +280,7 @@ DGtal::RealPointVector<dim>::selfDraw(Board2D & board,
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsPavingDisplay3D( Display3D & display ) const
+DGtal::RealPointVector<dim>::selfDrawAsPavingDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
   display.addVoxel(this->myArray[0],
@@ -291,12 +291,12 @@ DGtal::RealPointVector<dim>::selfDrawAsPavingDisplay3D( Display3D & display ) co
 template<Dimension dim>
 inline
 void
-DGtal::RealPointVector<dim>::selfDrawAsGridDisplay3D( Display3D & display ) const
+DGtal::RealPointVector<dim>::selfDrawAsGridDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
   display.addPoint(this->myArray[0],
 		  this->myArray[1],
-		  this->myArray[2],display.getLineColor());
+		   this->myArray[2],display.getLineColor());
 
 }
 
