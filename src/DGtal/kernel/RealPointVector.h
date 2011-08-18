@@ -324,10 +324,10 @@ namespace DGtal
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawDisplay3D ( Display3D & viewer ) const;
-    void selfDrawDisplay3D ( Display3D & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridDisplay3D( Display3D & viewer  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & viewer ) const;
+    void selfDrawDisplay3D ( DGtal::Display3D & viewer ) const;
+    void selfDrawDisplay3D ( DGtal::Display3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridDisplay3D( DGtal::Display3D & viewer  ) const;
+    void selfDrawAsPavingDisplay3D( DGtal::Display3D & viewer ) const;
 
 
 
@@ -399,7 +399,7 @@ namespace DGtal
 
 
   struct DrawPavingRealVoxel : public DrawableWithDisplay3D {
-    void selfDrawQGL( Display3D & display ) const
+    void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
       display.myModes[ "RealPointVector" ] = "Paving";
     }
@@ -407,7 +407,7 @@ namespace DGtal
   
   
   struct DrawGridRealVoxel : public DrawableWithDisplay3D {
-    void selfDrawQGL( Display3D & display ) const
+    void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
       display.myModes[ "RealPointVector" ] = "Grid";
     }
@@ -415,7 +415,7 @@ namespace DGtal
 
   struct DefaultDrawStyleRealGrid3D : public DrawableWithDisplay3D {
 
-    virtual void selfDrawQGL( Display3D & display ) const
+    virtual void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
       //aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( Board2D::Shape::SolidStyle );

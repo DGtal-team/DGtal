@@ -699,17 +699,17 @@ DGtal::PointVector<dim, Component>::selfDraw(Board2D & board,
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingDisplay3D( Display3D & display ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
   display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
+		   IntegerTraits<Component>::castToInt64_t(myArray[1]),
+		   IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
 }
 template<Dimension dim, typename Component>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredDisplay3D( Display3D & display ) const
+DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
   display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
