@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set<< Viewer3D::updateDisplay; 
+ viewer << shape_set << Display3D::updateDisplay; 
  
  return application.exec();
 }

@@ -45,33 +45,17 @@
 #include <algorithm>
 #include <map>
 
-#include <QColor>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/io/Display3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
- /**
-   * Base class specifying the methods for classes which intend to
-   * modify a Board3DTo2D stream.
-   * 
-   */
-  struct DrawWithCairoModifier {
-    std::string styleName() const
-    {
-      return "DrawWithCairoModifier";
-    }
 
-    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string = "" ) const
-    {
-      return 0;
-    }
-
-    virtual void selfDrawCairo( Board3DTo2D &  ) const 
-    {}
-};
 
 /////////////////////////////////////////////////////////////////////////////
 // class Board3DTo2D
@@ -79,7 +63,7 @@ namespace DGtal
  * Description of class 'Board3DTo2D' <p>
  * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
  */
-  class Board3DTo2D
+  class Board3DTo2D : public Display3D
 {
 public:
   /**
@@ -92,6 +76,10 @@ public:
    */
   Board3DTo2D();
   
+  
+  ~Board3DTo2D(){};
+  
+
   /**
     * @return the style name used for drawing this object.
     */
@@ -144,225 +132,39 @@ public:
    * The associated map type for storing possible modes used for
    * displaying for digital objects.
    */
-  typedef std::map< std::string, std::string > ModeMapping;
+  //typedef std::map< std::string, std::string > ModeMapping;
 
-  /**
-   * The associated map type for storing the default styles of
-   * digital objects.
-   */
-  typedef std::map< std::string,CountedPtr<DrawableWithBoard3DTo2D> > StyleMapping;
+ //  /**
+//    * The associated map type for storing the default styles of
+//    * digital objects.
+//    */
+//   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
-  QColor myDefaultColor;	//!< default color
-  QColor myCurrentFillColor;	//!< current fill color
-  QColor myCurrentLineColor;	//!< current line color
+  DGtal::Color myDefaultColor;	//!< default color
 
-  /**
-   * Used to create a new list containing new Voxel objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewVoxelList(bool depthTest=true);
   
-  /**
-   * Used to create a new list containing new Line objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewLineList();
 
-  /**
-   * Used to create a new list containing new Point objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  void createNewPointList();
-
-  /**
-   * @param objectName the name of the object (generally obtained
-   * with a 'object.styleName()').
-   *
-   * @return the current mode for the given object name or "" if no
-   * specific mode has been set.
-   */
-  std::string getMode( const std::string & objectName ) const;
-
+ 
   /**
    * Set the default color for future drawing.
    *
-   * @param aColor: a QColor (allow to set a trasnparency value).
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/  
-  Board3DTo2D & operator<<(const QColor & aColor);
+  Board3DTo2D & operator<<(const DGtal::Color & aColor);
 
-  /**
-   * Add a point as a 3d voxel using default color in the current list.
-   * A voxel can be added in a new list by calling: @createNewList().
-   * @param x x position.
-   * @param y y position.
-   * @param z z position.
-   * @param color: the color of the voxel (default: 220, 220, 220).
-   * @param width: the width of the voxel (default: 0.5).
-   *
-   **/
-  void addVoxel(int x, int y, int z, QColor color=QColor(220, 220, 220), double width=0.5);
-  
-  /**
-   * Add a point using default color in the current list.
-   * A point can be added in a new list by calling: @createNewList().
-   * @param x x position.
-   * @param y y position.
-   * @param z z position.
-   * @param color: the color of the point (default: 200,20,20).
-   * @param size: the size of the point (default: 40).
-   *
-   **/
-  void addPoint(double x, double y, double z ,const QColor &color=QColor(200,20,20), double size=40);
 
-  /**
-   * Add a line using default color in the current list.
-   * A line can be added in a new list by calling: @createNewList().
-   * @param x1 x position of first point.
-   * @param y1 y position of first point.
-   * @param z1 z position of first point.
-   * @param x2 x position of second point.
-   * @param y2 y position of second point.
-   * @param z2 z position of second point.
-   * @param color: the color of the line (default: 20,20,20,200).
-   * @param width: the width of the line (default: 1.5).
-   *
-   **/
-  void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-	       const QColor &color=QColor(20,20,20,200), double width=1.5);
-  
-  /**
-   * Add a quad using default color in the current list.
-   * A quad can be added in a new list by calling: @createNewList().
-   * @param x1 x position of first point.
-   * @param y1 y position of first point.
-   * @param z1 z position of first point.
-   * @param x2 x position of second point.
-   * @param y2 y position of second point.
-   * @param z2 z position of second point.
-   * @param x3 x position of third point.
-   * @param y3 y position of third point.
-   * @param z3 z position of third point.
-   * @param x4 x position of fourth point.
-   * @param y4 y position of fourth point.
-   * @param z4 z position of fourth point.
-   * @param color: the color of the quad.
-   *
-   **/
-  void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-  	       double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor);
-
-  
-  /**
-   * Add a KSSurfel using default color in the current list.
-   * A KSSurfel can be added in a new list by calling: @createNewList().
-   * @param x1 x position of first point.
-   * @param y1 y position of first point.
-   * @param z1 z position of first point.
-   * @param x2 x position of second point.
-   * @param y2 y position of second point.
-   * @param z2 z position of second point.
-   * @param x3 x position of third point.
-   * @param y3 y position of third point.
-   * @param z3 z position of third point.
-   * @param x4 x position of fourth point.
-   * @param y4 y position of fourth point.
-   * @param z4 z position of fourth point.
-   * @param color: the color of the KSSurfel (default: 180,180,250,255).
-   *
-   **/
-  void addKSSurfel(double x1, double y1, double z1,  double x2, double y2, double z2,
-		   double x3, double y3, double z3,  double x4, double y4, double z4, QColor aColor=QColor(180,180,250,255));
-
-  /**
-   * Add KSVoxel using default color in the current list.
-   * A KSVoxel can be added in a new list by calling: @createNewList().
-   * @param x x position.
-   * @param y y position.
-   * @param z z position.
-   * @param color: the color of the KSVoxel (default: 255,180,250,255).
-   *
-   **/
-  void addKSVoxel(int x, int y, int z, const QColor &aColor=QColor(255,180,250,255));
-  
-  /**
-   * Add a KSPointel using default color in the current list.
-   * A KSPointel can be added in a new list by calling: @createNewList().
-   * @param x x position.
-   * @param y y position.
-   * @param z z position.
-   * @param size: the size of the KSPointel (default: 0.1).
-   * @param color: the color of the KSPointel (default: 200,20,20,255).
-   *
-   **/
-  void addKSPointel(double x, double y, double z, double size=0.1, const QColor &color=QColor(200,20,20,255));
-  
-  /**
-   * Add a KSLinel using default color in the current list.
-   * A KSLinel can be added in a new list by calling: @createNewList().
-   * @param x1 x position of first point.
-   * @param y1 y position of first point.
-   * @param z1 z position of first point.
-   * @param x2 x position of second point.
-   * @param y2 y position of second point.
-   * @param z2 z position of second point.
-   * @param width: the width of the KSLinel (default: 0.02).
-   * @param color: the color of the KSLinel (default: 20,20,200,255).
-   *
-   **/
-  void addKSLinel(double x1, double y1, double z1,
-		  double x2, double y2, double z2,
-		  double width=0.02, const QColor &color=QColor(20,20,200,255));
-
-  /**
-   * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
-   * A maximal of five clipping plane can be added.
-   *
-   * @param a, b, c, d : plane equation.
-   **/
-  void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
-
-  /**
-   * Set line color.
-   * @param aColor: the color of the line.
-   *
-   **/
-  void setLineColor(QColor aColor) ;
-  
-  /**
-   * Get line color.
-   * @return the color of the line.
-   *
-   **/
-  QColor getLineColor() ;
-
-  /**
-   * Set fill color.
-   * @param aColor: the fill color.
-   *
-   **/
-  void setFillColor(QColor aColor) ;
-  
-  /**
-   * Get fill color.
-   * @return the fill color.
-   *
-   **/
-  QColor getFillColor() ;
 
   /**
    * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithBoard3DTo2D, which requires for instance a
+   * the concept CDrawableWithDisplay3D, which requires for instance a
    * method selfDraw( Board3DTo2D & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-  template <typename TDrawableWithBoard3DTo2D>
-  Board3DTo2D & operator<<( const  TDrawableWithBoard3DTo2D & object );
+  template <typename TDrawableWithDisplay3D>
+  Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
 public:
   
@@ -380,85 +182,11 @@ public:
 
 public:
   
-  ModeMapping myModes;
-  
-  /**
-    * For instance, may associate a new style object T1 to the class
-    * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
-    *
-    * One can also store a new style T2 for a specific mode used for
-    * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
-    *
-    * Modes may only be used in objects implementing the concept
-    * CDrawableWithBoard2D.
-    */
-  StyleMapping myStyles;
 
     // ------------------------- Private Datas --------------------------------
 private:
+ 
   
-  //!< struct used to store a line
-  struct line{
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double width;
-    unsigned int R,G,B,T;
-  };
-  
-  //!< struct used to store a voxel
-  struct voxel{
-    int x, y,z;
-    unsigned int R,G,B,T;
-    double width;
-  };
-  
-  //!< struct used to store a point
-  struct point{
-    double  x, y,z;
-    unsigned int R,G,B,T;
-    double size;
-  };
-  
-  //!< struct used to store a clipping plane
-  struct clippingPlane{
-    double a,b,c,d;
-  };
-
-  //!< struct used to store a quad
-  struct quad{
-    double x1,y1,z1;
-    double x2,y2,z2;
-    double x3,y3,z3;
-    double x4,y4,z4;    
-    unsigned int R,G,B,T;
-  };
-    
-  //!< Used to represent all the list of voxel primitive
-  std::vector< std::vector<voxel> > myVoxelSetList;
-  
-  //!< Used to represent all the list of line primitive
-  std::vector< std::vector<line> > myLineSetList;
-  
-  //!< Used to represent all the list of point primitive
-  std::vector< std::vector<point> > myPointSetList;
-
-  //!< Represent all the clipping planes added to the scene (of maxSize=5)
-  std::vector< clippingPlane > myClippingPlaneList;
-  
-  //!< For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< quad > myKSSurfelList;
-
-  //!< For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< point > myKSPointelList;
-
-  //!< For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< line > myKSLinelList;
-
-  //!< Represent all the drawed planes
-  std::vector< quad > myQuadList;
-  
-  //!< Used to define if GL_TEST_DEPTH is used. 
-  std::vector<bool> myListVoxelDepthTest;
   
   /**
    * Precompute 4x4 projection matrix for 3D->2D projection.
@@ -487,7 +215,7 @@ private:
   
 protected :
   /*!
-  * \brief init function (should be in Constructor).
+   * \brief init function (should be in Constructor).
   */
   virtual void init();
 
@@ -495,230 +223,10 @@ private:
 
   }; // end of class Board3DTo2D
   
-  /**
-   * Cairo3dCameraPosition class to set camera position.
-   */
-  struct Cairo3dCameraPosition : public DrawWithCairoModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x position.
-     * @param y y position.
-     * @param z z position.
-     */
-    Cairo3dCameraPosition( const double x, const double y, const double z )
-    {
-      eyex=x; eyey=y; eyez=z;
-    }
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setCameraPosition(eyex, eyey, eyez);
-    }
-    
-    private:
-      double eyex, eyey, eyez;
-  };
+ 
+ 
+
   
-  /**
-   * Cairo3dCameraDirection class to set camera direction.
-   */
-  struct Cairo3dCameraDirection : public DrawWithCairoModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x direction.
-     * @param y y direction.
-     * @param z z direction.
-     */
-    Cairo3dCameraDirection( const double x, const double y, const double z )
-    {
-      dirx=x; diry=y; dirz=z;
-    }
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setCameraDirection(dirx, diry, dirz);
-    }
-    
-    private:
-      double dirx, diry, dirz;
-  };
-  
-  /**
-   * Cairo3dCameraUpVector class to set camera up-vector.
-   */
-  struct Cairo3dCameraUpVector : public DrawWithCairoModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x coordinate of up-vector.
-     * @param y y coordinate of up-vector.
-     * @param z z coordinate of up-vector.
-     */
-    Cairo3dCameraUpVector( const double x, const double y, const double z )
-    {
-      upx=x; upy=y; upz=z;
-    }
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setCameraUpVector(upx, upy, upz);
-    }
-    
-    private:
-      double upx, upy, upz;
-  };
-  
-  /**
-   * Cairo3dCameraZNearFar class to set near and far distance.
-   */
-  struct Cairo3dCameraZNearFar : public DrawWithCairoModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param near near distance.
-     * @param far far distance.
-     */
-    Cairo3dCameraZNearFar( const double near, const double far )
-    {
-      ZNear=near; ZFar=far;
-    }
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setNearFar(ZNear, ZFar);
-    }
-    
-    private:
-      double ZNear, ZFar;
-  };
-
- /**
-   * Modifier class in a Board3DTo2D stream. Useful to choose your
-   * own mode for a given class. Realizes the concept
-   * CDrawableWithBoard3DTo2D.
-   */
-  struct SetMode3DCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    SetMode3DCairo( std::string classname, std::string mode )
-      : myClassname( classname ), myMode( mode )
-    {}
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.myModes[ myClassname ] = myMode;
-    }
-  private:
-    std::string myClassname;
-    std::string myMode;
-  };
-
-  /**
-   * Modifier class in a Board3DTo2D stream. Useful to choose your own
-   * style for a given class. Realizes the concept
-   * CDrawableWithBoard3DTo2D.
-   */
-  struct CustomStyle3DCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    CustomStyle3DCairo( std::string classname, DrawableWithBoard3DTo2D* style )
-      : myClassname( classname ), myStyle( style )
-    {}
-
-    std::string styleName() const
-    {
-      return "CustomStyle3D";
-    }
-
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.myStyles[ myClassname ] = myStyle;
-    }
-  private:
-    std::string myClassname;
-    CountedPtr<DrawableWithBoard3DTo2D> myStyle;
-  };
-
-  /**
-   * Custom style class redefining the fill color and the
-   * gl_LINE/gl_POINT color. You can use Qcolor with alpha
-   * transparency value but you nedd to take into account the z-buffer
-   * during the Open-GL based rendering.
-   *
-   */
-  struct CustomColors3DCairo : public DrawWithCairoModifier
-  {
-    QColor myPenColor;
-    QColor myFillColor;
-
-    /**
-     * Constructor.
-     *
-     * @param penColor specifies the pen color.
-     * @param fillColor specifies the fill color.
-     */
-    CustomColors3DCairo( const QColor & penColor,
-		    const QColor & fillColor )
-      : myPenColor( penColor ), myFillColor( fillColor )
-    {}
-    
-    virtual void selfDrawCairo( Board3DTo2D & viewer) const
-    {
-      viewer.setFillColor(myFillColor);
-      viewer.setLineColor(myPenColor);
-    }
-  };
-
- /**
-   * Class for adding a Clipping plane through the Board3DTo2D
-   * stream. Realizes the concept CDrawableWithBoard3DTo2D.
-   */
-  struct ClippingPlaneCairo : public DrawWithCairoModifier {
-    /**
-     * @param classname the name of the class to which the style is associated.
-     *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
-     */
-    ClippingPlaneCairo( double a, double b, double c, double d, bool drawPlane=true )
-      : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
-    {}
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-      
-    }
-    double * getEquation(){
-      double *r = new double[4];
-      r[0] = myA;
-      r[1] = myB;
-      r[2] = myC;
-      r[3] = myD;
-      return r;
-    } 
-  
-  private:
-    double myA;
-    double myB;
-    double myC;
-    double myD;
-    bool myDrawPlane;
-    
-  };
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
  * @param out the output stream where the object is written.
@@ -729,6 +237,7 @@ std::ostream&
 operator<< ( std::ostream & out, const Board3DTo2D & object );
 
 } // namespace DGtal
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.

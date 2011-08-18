@@ -34,8 +34,11 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
+
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 #include "DGtal/io/Color.h"
@@ -119,7 +122,7 @@ int main( int argc, char** argv )
   
   for(uint i=0; i< vectConnectedSCell.size();i++){
     DGtal::Color c= gradient(i);
-    viewer << CustomColors3D(QColor(250, 0,0), QColor(c.red(), 
+    viewer << CustomColors3D(Color(250, 0,0), Color(c.red(), 
 						      c.green(),
 						      c.blue()));
     
@@ -129,7 +132,7 @@ int main( int argc, char** argv )
   }
 
   
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,200, 200));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 200,200, 200));
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
   viewer << Viewer3D::updateDisplay;

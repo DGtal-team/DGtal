@@ -33,6 +33,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/Color.h"
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -219,38 +220,38 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
+
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::HyperRectDomain<TSpace>::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = viewer.getMode( this->styleName() );
+  std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
 	  mode=="BoundingBox")||
 	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   
   if (  mode == "BoundingBox"  ){
-    viewer.createNewLineList();
-    selfDrawAsBoundingBox( viewer );
+    display.createNewLineList();
+    selfDrawAsBoundingBoxDisplay3D( display );
   }else if( ( mode == "" ) ||  (mode == "Grid")){
-     viewer.createNewLineList();
-    selfDrawAsGridViewer3D( viewer );
+    display.createNewLineList();
+    selfDrawAsGridDisplay3D( display );
   }
   else if ( mode == "Paving" ){
-    viewer.createNewVoxelList(false);
-    selfDrawAsPavingViewer3D( viewer );
+    display.createNewVoxelList(false);
+    selfDrawAsPavingDisplay3D( display );
 
   } else if ( mode == "PavingPoints" ){
-    viewer.createNewPointList();
-    selfDrawAsPavingPointsViewer3D( viewer );
+    display.createNewPointList();
+    selfDrawAsPavingPointsDisplay3D( display );
 
   }else if ( mode == "PavingGrids" ){
-    viewer.createNewLineList();
-    viewer.createNewVoxelList(false);
-    selfDrawAsGridViewer3D( viewer );
-    selfDrawAsPavingViewer3D( viewer );
+    display.createNewLineList();
+    display.createNewVoxelList(false);
+    selfDrawAsGridDisplay3D( display );
+    selfDrawAsPavingDisplay3D( display );
   }
   // selfDrawAsGrid( board );
 }
@@ -261,50 +262,51 @@ DGtal::HyperRectDomain<TSpace>::selfDrawViewer3D( Viewer3D & viewer ) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxDisplay3D( Display3D & display) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-  QColor colDef(250,250,250,10);
+  DGtal::Color colDef(250,250,250,10);
+  float shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
+      display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       //Z lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
+      display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
 		     colDef);
       
       //Y upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
+      display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       //Y lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
+      display.addQuad(myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
 		     colDef);
       
       // X upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
+      display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
 		     colDef);
       
       //  X lower face
-      viewer.addQuad(myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
+      display.addQuad(myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
 		     colDef);
       
     }  
@@ -314,7 +316,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBox( Viewer3D & viewer) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsGridDisplay3D( Display3D & display) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -325,13 +327,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
 	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
       for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
 	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,viewer.getLineColor() );
+	display.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
+		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,display.getLineColor() );
       }
       for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  viewer.getLineColor());
+	display.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  display.getLineColor());
       }
     }
     
@@ -340,13 +342,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
 	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
       for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
 	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,viewer.getLineColor());
+	display.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,display.getLineColor());
       }
       for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
 	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, viewer.getLineColor());
+	display.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, display.getLineColor());
       }
     }
     
@@ -357,13 +359,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
       
       for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
 	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, viewer.getLineColor());
+	display.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,IntegerTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
 	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, viewer.getLineColor());
+	display.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
+		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, display.getLineColor());
       }
     }
     
@@ -375,7 +377,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridViewer3D( Viewer3D & viewer) const
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsViewer3D( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsDisplay3D( Display3D & display) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -389,7 +391,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsViewer3D( Viewer3D & viewe
       
 	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  viewer.addPoint(x, y , z, QColor(255, 0 ,0));
+	  display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
 
 	}
       }
@@ -405,7 +407,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsViewer3D( Viewer3D & viewe
 template<typename TSpace>
 inline
 void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) const
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) const
 {
   ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
   
@@ -420,7 +422,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) con
       
 	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
 	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  viewer.addVoxel(x, y , z, QColor(255, 255 ,255, 15),0.51);
+	  display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
 
 	}
       }
@@ -431,221 +433,6 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingViewer3D( Viewer3D & viewer) con
     }
 }
 
-#endif
-
-#ifdef WITH_CAIRO
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawCairo( Board3DTo2D& viewer ) const
-{
-  std::string mode = viewer.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
-	  mode=="BoundingBox")||
-	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
-  
-  
-  if (  mode == "BoundingBox"  ){
-    viewer.createNewLineList();
-    selfDrawAsBoundingBoxCairo( viewer );
-  }else if( ( mode == "" ) ||  (mode == "Grid")){
-     viewer.createNewLineList();
-    selfDrawAsGridCairo( viewer );
-  }
-  else if ( mode == "Paving" ){
-    viewer.createNewVoxelList(false);
-    selfDrawAsPavingCairo( viewer );
-
-  } else if ( mode == "PavingPoints" ){
-    viewer.createNewPointList();
-    selfDrawAsPavingPointsCairo( viewer );
-
-  }else if ( mode == "PavingGrids" ){
-    viewer.createNewLineList();
-    viewer.createNewVoxelList(false);
-    selfDrawAsGridCairo( viewer );
-    selfDrawAsPavingCairo( viewer );
-  }
-  // selfDrawAsGrid( board );
-}
-
-
-
-
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxCairo( Board3DTo2D & viewer) const
-{
-  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-  QColor colDef(250,250,250,10);
-  if (TSpace::dimension == 3)
-    {
-      //Z upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myUpperBound[2]+0.5,
-		     colDef);
-      //Z lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5, myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5, myLowerBound[2]-0.5,
-		     colDef);
-      
-      //Y upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     colDef);
-      //Y lower face
-      viewer.addQuad(myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     colDef);
-      
-      // X upper face
-      viewer.addQuad(myUpperBound[0]+0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     myUpperBound[0]+0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myUpperBound[0]+0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
-		     colDef);
-      
-      //  X lower face
-      viewer.addQuad(myLowerBound[0]-0.5, myUpperBound[1]+0.5,myUpperBound[2]+0.5,
-		     myLowerBound[0]-0.5, myUpperBound[1]+0.5,myLowerBound[2]-0.5,		     
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myLowerBound[2]-0.5,
-		     myLowerBound[0]-0.5, myLowerBound[1]-0.5,myUpperBound[2]+0.5,
-		     colDef);
-      
-    }  
-}
-
-
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsGridCairo( Board3DTo2D & viewer) const
-{
-  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-
-  if (TSpace::dimension == 3)
-  {
-    // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,viewer.getLineColor() );
-      }
-      for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  viewer.getLineColor());
-      }
-    }
-    
-    // Faces XZ
-    for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,viewer.getLineColor());
-      }
-      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	viewer.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, viewer.getLineColor());
-      }
-    }
-    
-
-    // Faces YZ
-    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-      
-      for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	viewer.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, viewer.getLineColor());
-      }
-      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	viewer.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, viewer.getLineColor());
-      }
-    }
-    
-  }
-
-}
-
-
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsCairo( Board3DTo2D & viewer) const
-{
-  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-
-  if (TSpace::dimension == 3)
-  {
-    // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-      
-	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  viewer.addPoint(x, y , z, QColor(255, 0 ,0), 3);
-
-	}
-      }
-    }
-    
-    
-    
-  }
-}
-
-
-
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingCairo( Board3DTo2D & viewer) const
-{
-  ASSERT(TSpace::dimension == 3 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND");
-  
-
-  if (TSpace::dimension == 3)
-    {
-    // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-      
-	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  viewer.addVoxel(x, y , z, QColor(255, 255 ,255, 15),0.51);
-
-	}
-      }
-    }
-    
-
-    
-    }
-}
-
-#endif
 
 
 

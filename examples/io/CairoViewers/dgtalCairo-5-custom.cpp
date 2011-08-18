@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -57,29 +58,24 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  viewer << SetMode3DCairo( p1.styleName(), "Paving" );
+  viewer << SetMode3D( p1.styleName(), "PavingWired" );
   viewer << p1 << p2 << p3;
 
   //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
-  viewer << CustomColors3DCairo(QColor(250, 0,0),QColor(250, 0,0));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
-  viewer << SetMode3DCairo( p1.styleName(), "Both" );
-  viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
+  viewer << SetMode3D( p1.styleName(), "Both" );
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
   viewer << p6;
-  viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   viewer << p0;
 
-  viewer << SetMode3DCairo(domain.styleName(), "Paving");
+  viewer << SetMode3D(domain.styleName(), "Paving");
   viewer << domain;
-
-  viewer << Cairo3dCameraPosition(-6.017646, -0.218156, -0.801076)
-	<< Cairo3dCameraDirection(0.974976, 0.107429, 0.194628)
-	<< Cairo3dCameraUpVector(-0.018884, 0.912344, -0.408990);
-  
-  viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
   
-  viewer << SetMode3DCairo(viewer.styleName(), "SolidMode");
+  viewer << SetMode3D(viewer.styleName(), "SolidMode");
   viewer.saveCairo("dgtalCairo-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //

@@ -42,13 +42,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
+#include "DGtal/io/Display3D.h"
 
-#ifdef WITH_CAIRO
-#include "DGtal/io/boards/Board3DTo2D.h"
-#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -651,46 +646,23 @@ namespace DGtal
 
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
-
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawViewer3D(  Viewer3D & viewer ) const;
-    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
-    void selfDrawAsPavingPointsViewer3D( Viewer3D & viewer ) const;
-    void selfDrawAsBoundingBox ( Viewer3D & viewer) const;
-
-#endif
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
     
-#ifdef WITH_CAIRO
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
-
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawCairo(  Board3DTo2D & viewer ) const;
-    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
-    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
-    void selfDrawAsPavingPointsCairo( Board3DTo2D & viewer ) const;
-    void selfDrawAsBoundingBoxCairo( Board3DTo2D & viewer) const;
+    void selfDrawDisplay3D(  Display3D & display ) const;
+    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
+    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
+    void selfDrawAsPavingPointsDisplay3D( Display3D & display ) const;
+    void selfDrawAsBoundingBoxDisplay3D ( Display3D & display) const;
 
-#endif
-
+    
 
     
     /**
@@ -730,52 +702,24 @@ namespace DGtal
    * CDrawableWithBoard2D.
    */
 
-#ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingVoxel3D : public DrawableWithViewer3D {
-    void selfDrawViewer3D( Viewer3D & viewer ) const
+
+  struct DrawPavingVoxel3D : public DrawableWithDisplay3D {
+    void selfDrawDisplay3D( Display3D & display ) const
     {
-      viewer.myModes[ "HyperRectDomain" ] = "Paving";
+      display.myModes[ "HyperRectDomain" ] = "Paving";
     }
   };
   
   
-  struct DrawGridVoxel3D : public DrawableWithViewer3D {
-    void selfDrawViewer3D( Viewer3D & viewer ) const
+  struct DrawGridVoxel3D : public DrawableWithDisplay3D {
+    void selfDrawDisplay3D( Display3D & display ) const
     {
-      viewer.myModes[ "HyperRectDomain" ] = "Grid";
+      display.myModes[ "HyperRectDomain" ] = "Grid";
     }
   };
 
 
-
-#endif
-  
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-
-#ifdef WITH_CAIRO
-
-  struct DrawPavingVoxel3DCairo : public DrawableWithBoard3DTo2D {
-      void selfDrawCairo( Board3DTo2D & viewer ) const
-      {
-	viewer.myModes[ "HyperRectDomain" ] = "Paving";
-      }
-  };
-  
-  
-  struct DrawGridVoxel3DCairo : public DrawableWithBoard3DTo2D {
-    void selfDrawCairo( Board3DTo2D & viewer ) const
-    {
-      viewer.myModes[ "HyperRectDomain" ] = "Grid";
-    }
-  };
-
-
-
-#endif
 
 
   /**

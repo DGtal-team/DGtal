@@ -100,11 +100,11 @@ namespace DGtal
     
     void red( const unsigned char aRedValue );
 
-    void green( unsigned char aGreenValue );
+    void green( const unsigned char aGreenValue );
     
-    void blue( unsigned char aBlueValue );
+    void blue( const unsigned char aBlueValue );
 
-    void alpha( unsigned char aAlphaValue );
+    void alpha( const unsigned char aAlphaValue );
     
     unsigned char red() const ;
 

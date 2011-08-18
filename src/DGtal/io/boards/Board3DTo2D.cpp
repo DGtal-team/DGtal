@@ -30,10 +30,7 @@
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include <limits>
 
-// Includes inline functions/methods if necessary.
-#if !defined(INLINE)
-#include "DGtal/io/CairoViewers/Board3DTo2D.ih"
-#endif
+
 
 // Cairo includes
 #include <cairo.h>
@@ -55,7 +52,7 @@ using namespace std;
 /*!
  * \brief Constructor.
  */
-Board3DTo2D::Board3DTo2D()
+DGtal::Board3DTo2D::Board3DTo2D()
 {
   init();
 }
@@ -83,32 +80,6 @@ DGtal::Board3DTo2D::isValid() const
     return true;
 }
 
-/**
- * Calculate the cross product of two 3d vectors and return it.
- * @param dst destination vector.
- * @param srcA source vector A.
- * @param srcB source vector B.
- */
-static void cross (float dst[3], float srcA[3], float srcB[3])
-{
-    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
-    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
-    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
-}
-
-/**
- * Normalize the input 3d vector.
- * @param vec source & destination vector.
- */
-static void normalize (float vec[3])
-{
-    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-    const float invLen = 1.f / (float) sqrt (squaredLen);
-
-    vec[0] *= invLen;
-    vec[1] *= invLen;
-    vec[2] *= invLen;
-}
 
 /**
  * Transpose a 4x4 matrix.
@@ -296,7 +267,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
   {
-    for (std::vector<point>::iterator s_it = myPointSetList.at(i).begin();
+    for (std::vector<pointD3D>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it)
 	{
@@ -359,7 +330,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myLineSetList
   for(unsigned int i=0; i<myLineSetList.size(); i++)
   {
-    for (std::vector<line>::iterator s_it = myLineSetList.at(i).begin();
+    for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it)
 	{
@@ -388,7 +359,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   // myVoxelSetList
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
   {
-    for (std::vector<voxel>::iterator s_it = myVoxelSetList.at(i).begin();
+    for (std::vector<voxelD3D>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it)
 	{
@@ -465,7 +436,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   }
   
   // from updateList
-  for (std::vector<quad>::iterator s_it = myKSSurfelList.begin();
+  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it)
 	  trace.info() << "-> Khalimsky Surfel not YET implemented in Board3DTo2D" << std::endl;
@@ -479,19 +450,19 @@ DGtal::Board3DTo2D::init()
 {
   createNewVoxelList(true);
   
-  vector<line> listeLine;
+  vector<lineD3D> listeLine;
   myLineSetList.push_back(listeLine);
   
-  vector<point> listePoint;
+  vector<pointD3D> listePoint;
   myPointSetList.push_back(listePoint);
   
-  myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 222, 50);
+  myCurrentFillColor = DGtal::Color (220, 220, 220);
+  myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
   
   /*createNewVoxelList(true);
-  std::vector<voxel> aKSVoxelList;*/
+  std::vector<voxelD3D> aKSVoxelList;*/
   
-  myDefaultColor= QColor(255, 255, 255);
+  myDefaultColor= DGtal::Color(255, 255, 255);
   
   //
   
@@ -507,8 +478,3 @@ DGtal::Board3DTo2D::init()
   myModes["Board3DTo2D"]="SolidMode";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Internals - private :
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
