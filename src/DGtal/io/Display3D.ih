@@ -220,7 +220,10 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,  double x2,
   double  vy=y4-y1; 
   double  vz=z4-z1; 
   
-  qglviewer::Vec n( uy*vz-uz*vy, uz*vx-ux*vz,  ux*vy-uy*vx );
+  double n[3];
+  n[0]= uy*vz-uz*vy;
+  n[1]= uz*vx-ux*vz;
+  n[2]= ux*vy-uy*vx;
   double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
   
   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
@@ -329,7 +332,10 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
 
     //main up face
     quadD3D qFaceUp;
-    qglviewer::Vec normaleUp( dx!=0.0? 1.0:0.0, dy!=0.0 ? 1.0:0.0, dz!=0.0? 1.0:0.0);
+    float normaleUp [3];
+    normaleUp[0] = dx!=0.0? 1.0:0.0;
+    normaleUp[1] = dy!=0.0 ? 1.0:0.0;
+    normaleUp[2] = dz!=0.0? 1.0:0.0;
     qFaceUp.nx=  normaleUp[0];
     qFaceUp.ny=  normaleUp[1];
     qFaceUp.nz=  normaleUp[2];
@@ -357,8 +363,11 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     
     //small face 1
     quadD3D qFace1;
-    qglviewer::Vec vF1 (x2-x1, y2-y1, z2-z1);
-    qglviewer::Vec v1 (x5-x1, y5-y1, z5-z1);// 
+    float vF1[3]; float v1 [3]; float n1 [3]; 
+    vF1[0] = x2-x1; vF1[1] = y2-y1; vF1[2] = z2-z1;
+    v1[0] = x5-x1; v1[1] = y5-y1; v1[2] = z5-z1;
+    
+    qglviewer::Vec v1 (, , );// 
     qglviewer::Vec n1 =cross(v1,vF1);
     n1.normalize();
     qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
@@ -601,6 +610,36 @@ DGtal::operator<< ( std::ostream & out,
 {
     object.selfDisplay ( out );
     return out;
+}
+
+
+
+
+/**
+ * Calculate the cross product of two 3d vectors and return it.
+ * @param dst destination vector.
+ * @param srcA source vector A.
+ * @param srcB source vector B.
+ */
+static void cross (float dst[3], float srcA[3], float srcB[3])
+{
+    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
+    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
+    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
+}
+
+/**
+ * Normalize the input 3d vector.
+ * @param vec source & destination vector.
+ */
+static void normalize (float vec[3])
+{
+    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
+    const float invLen = 1.f / (float) sqrt (squaredLen);
+
+    vec[0] *= invLen;
+    vec[1] *= invLen;
+    vec[2] *= invLen;
 }
 
 //                                                                           //
