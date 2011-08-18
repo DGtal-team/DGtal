@@ -80,32 +80,6 @@ DGtal::Board3DTo2D::isValid() const
     return true;
 }
 
-/**
- * Calculate the cross product of two 3d vectors and return it.
- * @param dst destination vector.
- * @param srcA source vector A.
- * @param srcB source vector B.
- */
-static void cross (float dst[3], float srcA[3], float srcB[3])
-{
-    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
-    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
-    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
-}
-
-/**
- * Normalize the input 3d vector.
- * @param vec source & destination vector.
- */
-static void normalize (float vec[3])
-{
-    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-    const float invLen = 1.f / (float) sqrt (squaredLen);
-
-    vec[0] *= invLen;
-    vec[1] *= invLen;
-    vec[2] *= invLen;
-}
 
 /**
  * Transpose a 4x4 matrix.

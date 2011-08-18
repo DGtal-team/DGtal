@@ -45,6 +45,37 @@
 // Implementation of inline functions and external operators                 //
 
 
+
+/**
+ * Calculate the cross product of two 3d vectors and return it.
+ * @param dst destination vector.
+ * @param srcA source vector A.
+ * @param srcB source vector B.
+ */
+static inline 
+void DGtal::cross (float dst[3], float srcA[3], float srcB[3])
+{
+    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
+    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
+    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
+}
+
+/**
+ * Normalize the input 3d vector.
+ * @param vec source & destination vector.
+ */
+static inline  
+void 
+DGtal::normalize (float vec[3])
+{
+    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
+    const float invLen = 1.f / (float) sqrt (squaredLen);
+
+    vec[0] *= invLen;
+    vec[1] *= invLen;
+    vec[2] *= invLen;
+}
+
 inline
 void
 DGtal::Display3D::setFillColor(DGtal::Color aColor){
@@ -367,8 +398,8 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     vF1[0] = x2-x1; vF1[1] = y2-y1; vF1[2] = z2-z1;
     v1[0] = x5-x1; v1[1] = y5-y1; v1[2] = z5-z1;
     
-    Display3D::cross(n1, v1,vF1);
-    Display3D::normalize(n1);
+    cross(n1, v1,vF1);
+    normalize(n1);
     qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
     qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
     qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
@@ -383,8 +414,8 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     float vF2[3]; float v2 [3]; float n2[3];
     vF2[0]= x3-x2; vF2[1]=y3-y2; vF2[2]= z3-z2;
     v2[0]= x6-x2; v2[1]= y6-y2; v2[2]=z6-z2;
-    Display3D::cross(n2, v2, vF2);
-    Display3D::normalize(n2);
+    cross(n2, v2, vF2);
+    normalize(n2);
     
     qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
     qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
@@ -401,8 +432,8 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     float vF3[3]; float v3 [3]; float n3[3];
     vF3[0]= x4-x3; vF3[1]=y4-y3; vF3[2]= z4-z3;
     v3[0]= x7-x3; v3[1]= y7-y3; v3[2]=z7-z3;
-    Display3D::cross(n3, v3, vF3);
-    Display3D::normalize(n3);    
+    cross(n3, v3, vF3);
+    normalize(n3);    
     qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
     qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
     qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
@@ -417,8 +448,8 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     float vF4[3]; float v4 [3]; float n4[3];
     vF4[0]= x1-x4; vF4[1]=y1-y4; vF4[2]= z1-z4;
     v4[0]= x5-x4; v4[1]= y5-y4; v4[2]=z5-z4;
-    Display3D::cross(n4, v4, vF4);
-    Display3D::normalize(n4);    
+    cross(n4, v4, vF4);
+    normalize(n4);    
     qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
     qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
     qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
@@ -618,32 +649,6 @@ DGtal::operator<< ( std::ostream & out,
 
 
 
-/**
- * Calculate the cross product of two 3d vectors and return it.
- * @param dst destination vector.
- * @param srcA source vector A.
- * @param srcB source vector B.
- */
-static void Display3D::cross (float dst[3], float srcA[3], float srcB[3])
-{
-    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
-    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
-    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
-}
-
-/**
- * Normalize the input 3d vector.
- * @param vec source & destination vector.
- */
-static void Display3D::normalize (float vec[3])
-{
-    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-    const float invLen = 1.f / (float) sqrt (squaredLen);
-
-    vec[0] *= invLen;
-    vec[1] *= invLen;
-    vec[2] *= invLen;
-}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
