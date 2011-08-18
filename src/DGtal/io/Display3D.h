@@ -396,6 +396,10 @@ private:
 private:
 
 
+
+  
+}; // end of class Display3D
+
 /**
  * Calculate the cross product of two 3d vectors and return it.
  * @param dst destination vector.
@@ -409,10 +413,6 @@ private:
  * @param vec source & destination vector.
  */
   static void normalize (float vec[3]);
-
-
-  
-}; // end of class Display3D
 
 
 /**
