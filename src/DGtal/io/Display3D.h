@@ -395,6 +395,22 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
+
+/**
+ * Calculate the cross product of two 3d vectors and return it.
+ * @param dst destination vector.
+ * @param srcA source vector A.
+ * @param srcB source vector B.
+ */
+  static void cross (float dst[3], float srcA[3], float srcB[3]);
+
+/**
+ * Normalize the input 3d vector.
+ * @param vec source & destination vector.
+ */
+  static void normalize (float vec[3]);
+
+
   
 }; // end of class Display3D
 
@@ -407,6 +423,9 @@ private:
  */
 std::ostream&
 operator<< ( std::ostream & out, const Display3D & object );
+
+
+
 
 
 } // namespace DGtal
