@@ -50,13 +50,8 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
+#include "DGtal/io/Display3D.h"
 
-#ifdef WITH_CAIRO
-#include "DGtal/io/boards/Board3DTo2D.h"
-#endif
 
 namespace DGtal
 {
@@ -330,15 +325,14 @@ namespace DGtal
 
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
      /** 
      * Default style.
      */
-    struct DefaultDrawStyleViewer3D : public  DrawableWithViewer3D 
+    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
     {
-       virtual void selfDrawViewer3D(Viewer3D & viewer) const
+       virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  viewer.myModes[ "DigitalSetBySTLSet" ] = "";
+	  display.myModes[ "DigitalSetBySTLSet" ] = "";
 	}
 
     };
@@ -347,58 +341,21 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-  DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+  DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawViewer3D(  Viewer3D & viewer ) const;
-    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
-    void selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D(  Display3D & display ) const;
+    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
+    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
+    void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
     
     
 
 
 
-
-#endif
-    
-#ifdef WITH_CAIRO
-     /** 
-     * Default style.
-     */
-    struct DefaultDrawStyleCairo : public  DrawableWithBoard3DTo2D
-    {
-       virtual void selfDrawCairo(Board3DTo2D & viewer) const
-        {
-	  viewer.myModes[ "DigitalSetBySTLSet" ] = "";
-	}
-
-    };
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-  DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawCairo(  Board3DTo2D & viewer ) const;
-    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
-    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
-    void selfDrawAsPavingTransparentCairo( Board3DTo2D & viewer ) const;
-    
-    
-
-
-
-
-#endif
 
 
     // ------------------------- Hidden services ------------------------------

@@ -17,68 +17,53 @@
 #pragma once
 
 /**
- * @file CDrawableWithViewer3D.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file CDrawableWithDisplay3D.h
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2010/10/21
+ * @date 2011/08/08
  *
- * Header file for concept CDrawableWithViewer3D.cpp
+ * Header file for concept CDrawableWithDisplay3D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithViewer3D_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithViewer3D.h
-#else // defined(CDrawableWithViewer3D_RECURSES)
+#if defined(CDrawableWithDisplay3D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithDisplay3D.h
+#else // defined(CDrawableWithDisplay3D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithViewer3D_RECURSES
+#define CDrawableWithDisplay3D_RECURSES
 
-#if !defined CDrawableWithViewer3D_h
+#if !defined CDrawableWithDisplay3D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithViewer3D_h
+#define CDrawableWithDisplay3D_h
 
 //////////////////////////////////////////////////////////////////////////////
-
 // Inclusions
-
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-
-
-
-
-
-
-
-
-
-
-
+#include "DGtal/io/Display3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-
-
-
-
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithViewer3D
+  // class CDrawableWithDisplay3D
+ 
+/////////////////////////////////////////////////////////////////////////////
+  // class CDrawableWithBoard3DTo2D
   /**
-   * Description of \b concept '\b CDrawableWithViewer3D' <p>
+   * Description of \b concept '\b CDrawableWithDisplay3D' <p>
    * @ingroup Concepts
-   * Aim:  The concept CDrawableWithViewer3D specifies what are the classes
-   * that admit an export with Board2D.
+   * Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
+   * that admit an export with Display3D.
    * An object x satisfying this concept may then be used as:
    * 
    \code
-   Board2D board;
-   board << CustomStyle( x.styleName(), x.defaultStyle() )
+   Display3D display;
+   display << CustomStyle( x.styleName(), x.defaultStyle() )
          << x;
    \endcode 
    *
@@ -87,7 +72,7 @@ namespace DGtal
    * <p> Associated types :
    *
    * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithViewer3D
+   * - \t X : A type that is a model of CDrawableWithDisplay3DD
    * - \t x, \t y	: Object of type X
    * - \t m	: a string of characters
    *
@@ -100,7 +85,7 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithBoard2D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
+   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> CDrawableWithDisplay3D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
    *  <td> </td>
    * </tr>
    * <tr>
@@ -108,7 +93,7 @@ namespace DGtal
    *  <td> </td>
    * </tr>
    * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
+   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(CDrawableWithDisplay3D &display) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c display stream the object \c x </td><td> </td>
    *  <td> </td>
    * </tr>
    * </table>
@@ -119,48 +104,47 @@ namespace DGtal
    * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    *
    * <p> Notes <br>
-   * @todo ImageContainerByHashTree does not implement selfDraw(Board2D &).
+   * @todo ImageContainerByHashTree does not implement selfDraw(display &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
-   */
-  template <typename T>
-  struct CDrawableWithViewer3D
+   */  template <typename T>
+  struct CDrawableWithDisplay3D
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
+
+  BOOST_CONCEPT_USAGE( CDrawableWithDisplay3D )
     {
-      //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
-      ConceptUtils::sameType( myD, myT.defaultStyleViewer3D() );
-      //Drawable model should have a defaultStyle( string ) returning a DrawableWithBoard2D*
-      ConceptUtils::sameType( myD, myT.defaultStyleViewer3D( myS ) );
+      //Drawable model should have a defaultStyle() returning a DrawableWithDisplay3D*
+      ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D() );
+      //Drawable model should have a defaultStyle( string ) returning a DrawableWithDisplay3D*
+      ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D( myS ) );
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
       ///@todo FIXME: si on décommente ça plante
-      myT.selfDrawViewer3D( myB );
+      myT.selfDrawDisplay3D( myD3D );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     T myT;
-    DrawableWithViewer3D *myD;
+    DrawableWithDisplay3D *myD;
 
     ///@todo FIXME: si on décommente ça plante
-    Viewer3D myB;
+    Display3D myD3D;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithViewer3D
-
+  }; // end of concept CDrawableWithDisplay3D
+  
 } // namespace DGtal
+
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithViewer3D_h
+#endif // !defined CDrawableWithDisplay3D_h
 
-#undef CDrawableWithViewer3D_RECURSES
-#endif // else defined(CDrawableWithViewer3D_RECURSES)
+#undef CDrawableWithDisplay3D_RECURSES
+#endif // else defined(CDrawableWithDisplay3D_RECURSES)

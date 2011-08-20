@@ -878,8 +878,6 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & 
 //------------------------------------------------------------------------------
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
-
 
 /**
  * Default drawing style object.
@@ -887,29 +885,29 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & 
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithViewer3D *
-DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleViewer3D( std::string ) const
+DGtal::DrawableWithDisplay3D *
+DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleDisplay3D( std::string ) const
 {
-  return new DefaultDrawStyleViewer3D;
+  return new DefaultDrawStyleDisplay3D;
 }
 
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = viewer.getMode( this->styleName() );
+  std::string mode = display.getMode( this->styleName() );
   if ( mode == "" )
-    pointSet().selfDrawViewer3D( viewer );
+    pointSet().selfDrawDisplay3D( display );
   else if ( mode == "PavingTransp" ){
-    pointSet().selfDrawAsPavingTransparentViewer3D(viewer);
+    pointSet().selfDrawAsPavingTransparentDisplay3D(display);
     
   }
   else if ( mode == "DrawAdjacencies" )
     {
-      pointSet().selfDrawViewer3D( viewer );
-      selfDrawWithAdjacenciesViewer3D( viewer );
+      pointSet().selfDrawDisplay3D( display );
+      selfDrawWithAdjacenciesDisplay3D( display );
     }
     else
       ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
@@ -920,7 +918,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawViewer3D( Viewer3D & viewe
 template<typename TDigitalTopology, typename TDigitalSet>
 inline
 void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesViewer3D(Viewer3D & viewer) const
+DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesDisplay3D(Display3D & display) const
 {
   Point p;
   for (typename TDigitalSet::ConstIterator it = pointSet().begin();
@@ -934,81 +932,12 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesViewer3D(Vi
         ++it2)
     {
       p = (*it2) - (*it);
-      p.selfDrawViewer3D(viewer, (*it));
+      p.selfDrawDisplay3D(display, (*it));
     }
   }
 }
 
 
-
-
-#endif
-
-#ifdef WITH_CAIRO
-
-
-/**
- * Default drawing style object.
- * @return the dyn. alloc. default style for this object.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::DrawableWithBoard3DTo2D *
-DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyleCairo( std::string ) const
-{
-  return new DefaultDrawStyleCairo;
-}
-
-
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawCairo( Board3DTo2D & viewer ) const
-{
-  std::string mode = viewer.getMode( this->styleName() );
-  if ( mode == "" )
-    pointSet().selfDrawCairo( viewer );
-  else if ( mode == "PavingTransp" ){
-    pointSet().selfDrawAsPavingTransparentCairo(viewer);
-    
-  }
-  else if ( mode == "DrawAdjacencies" )
-    {
-      pointSet().selfDrawCairo( viewer );
-      selfDrawWithAdjacenciesCairo( viewer );
-    }
-    else
-      ASSERT(false && (("DGtal::Object<TDigitalTopology,TDigitalSet>::selfDraw: Unknown mode " + mode) == ""));
-}
-
-
-
-template<typename TDigitalTopology, typename TDigitalSet>
-inline
-void
-DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesCairo(Board3DTo2D & viewer) const
-{
-  Point p;
-  for (typename TDigitalSet::ConstIterator it = pointSet().begin();
-      it != pointSet().end();
-      ++it)
-  {
-    //Brute-force scan of the neighborhood.
-    SmallObject neig = this->properNeighborhood(*it);
-    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
-        it2 != neig.pointSet().end();
-        ++it2)
-    {
-      p = (*it2) - (*it);
-      p.selfDrawCairo(viewer, (*it));
-    }
-  }
-}
-
-
-
-
-#endif
 
 
 
