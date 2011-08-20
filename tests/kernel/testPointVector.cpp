@@ -107,6 +107,21 @@ bool testComparison()
 }
 
 
+bool testMaxMin()
+{
+
+  const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
+  PointVector<4,double> v ( t );
+
+  trace.beginBlock("Testing max/min of a vector");
+  trace.info() << " Vector: "<< v<<std::endl;
+  trace.info() << "max val = "<< v.max() <<std::endl;
+  trace.info()<< "min val = "<<v.min() << std::endl;
+  trace.info() << "maxElement val = "<< *v.maxElement() <<std::endl;
+  trace.info()<< "minElement val = "<<*v.minElement() << std::endl;
+  trace.endBlock();
+  return ((v.max() == 4.1) && (v.min()==2.2));
+}
 
 /**
  * Test instanciation of Points
@@ -224,6 +239,7 @@ bool testOperators()
   trace.info() << "inf(p1,p2): "<<p1.inf(p2) <<std::endl;
   trace.info() << "sup(p1,p2): "<<p1.sup(p2) <<std::endl;
   trace.info() << "p1 dot p2: "<<p1.dot(p2) <<std::endl;
+
   trace.endBlock();
 
   return true; 
@@ -265,7 +281,8 @@ int main()
     && testIterator() 
     && testComparison() 
     && testOperators()
-    && testIntegerNorms();
+    && testIntegerNorms()
+    && testMaxMin();
   if (res)
     return 0;
   else

@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

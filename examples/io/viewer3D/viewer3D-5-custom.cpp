@@ -31,6 +31,8 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -61,21 +63,22 @@ int main( int argc, char** argv )
  Point p5( -1, 2, 3 );
  Point p6( 0, 0, 0 );
  Point p0( 0, 2, 1 );
- viewer <<  SetMode3D( p1.styleName(), "Paving" );
+ viewer <<  SetMode3D( p1.styleName(), "PavingWired" );
  viewer << p1 << p2 << p3;
   
-  //viewer <<  SetMode3D( p1.styleName(), "Grid" );
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+ 
+ //viewer <<  SetMode3D( p1.styleName(), "Grid" );
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
   viewer <<  SetMode3D( p1.styleName(), "Both" );
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 0,0, 100));
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
   viewer << p6;
-  viewer << CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   viewer << p0;
 
 
   viewer << SetMode3D(domain.styleName(), "Paving");
-  viewer << domain << Viewer3D::updateDisplay;   
+  viewer << domain << Display3D::updateDisplay;   
 
 
  return application.exec();

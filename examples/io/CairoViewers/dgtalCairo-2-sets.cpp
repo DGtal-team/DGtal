@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
 
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,6 +54,8 @@ int main( int argc, char** argv )
 
   viewer << domain;
 
+
+
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
@@ -61,9 +64,9 @@ int main( int argc, char** argv )
   shape_set.erase(Point(6,6,6));
   viewer << shape_set;
   
-  viewer << Cairo3dCameraPosition(5.000000, 5.000000, 29.893368)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << CameraPosition(5.000000, 5.000000, 29.893368)
+	<< CameraDirection(0.000000, 0.000000, -1.000000)
+	<< CameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-2-sets.png", Board3DTo2D::CairoPNG, 600, 400);

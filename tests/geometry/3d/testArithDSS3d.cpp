@@ -48,6 +48,7 @@
 #include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
 #include "DGtal/geometry/2d/GreedyDecomposition.h"
 
+
 #ifdef WITH_GMP
 #include <gmpxx.h>
 #endif

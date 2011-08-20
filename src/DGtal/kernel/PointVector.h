@@ -46,6 +46,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <algorithm>
 #include <boost/array.hpp>
 
 #include "DGtal/base/Common.h"
@@ -55,14 +56,9 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/CInteger.h"
 
+#include "DGtal/io/Display3D.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
 
-#ifdef WITH_CAIRO
-#include "DGtal/io/boards/Board3DTo2D.h"
-#endif
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -539,6 +535,37 @@ namespace DGtal
      */
     bool isUpper( const Self& p ) const;
 
+    /** 
+     * Return the maximum component value of a point/vector.
+     * 
+     * @return the maximum value.
+     */
+    Component max() const;
+   
+    /** 
+     * Return the minimum component value of a point/vector.
+     * 
+     * @return the minimum value.
+     */ 
+    Component min() const;
+
+    /** 
+     * Return the iterator on the component with maximim value of a
+     * point/vector.
+     * 
+     * @return an iterator.
+     */
+    Iterator maxElement();
+   
+    /** 
+     * Return the iterator on the component with minimum value of a
+     * point/vector.
+     * 
+     * @return an iterator.
+     */ 
+    Iterator minElement();
+
+
     /**
      * Specify the set of norm types
      *
@@ -654,44 +681,27 @@ namespace DGtal
     void selfDrawAsGrid( Board2D & board ) const;
     
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
+
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawViewer3D ( Viewer3D & viewer ) const;
-    void selfDrawViewer3D ( Viewer3D & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridViewer3D( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingViewer3D( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D ( Display3D & display ) const;
+    void selfDrawDisplay3D ( Display3D & display, const Self &startingPoint ) const;
+    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
+    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
+    void selfDrawAsPavingWiredDisplay3D( Display3D & display ) const;
 
-#endif
+
     
-#ifdef WITH_CAIRO
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithBoard3DTo2D* defaultStyleCairo( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawCairo ( Board3DTo2D & viewer ) const;
-    void selfDrawCairo ( Board3DTo2D & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridCairo( Board3DTo2D & viewer  ) const;
-    void selfDrawAsPavingCairo( Board3DTo2D & viewer ) const;
-
-#endif
-
     // ----------------------- Interface --------------------------------------
   public:
     /**
@@ -757,26 +767,26 @@ namespace DGtal
    * CDrawableWithBoard2D.
    */
 
-#ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingVoxel : public DrawableWithViewer3D {
-      void selfDrawViewer3D( Viewer3D & viewer ) const
+
+  struct DrawPavingVoxel : public DrawableWithDisplay3D {
+      void selfDrawDisplay3D( Display3D & viewer ) const
       {
 	viewer.myModes[ "PointVector" ] = "Paving";
       }
   };
   
   
-  struct DrawGridVoxel : public DrawableWithViewer3D {
-    void selfDrawViewer3D( Viewer3D & viewer ) const
+  struct DrawGridVoxel : public DrawableWithDisplay3D {
+    void selfDrawDisplay3D( Display3D & viewer ) const
     {
       viewer.myModes[ "PointVector" ] = "Grid";
     }
   };
 
-  struct DefaultDrawStyleGrid3D : public DrawableWithViewer3D {
+  struct DefaultDrawStyleGrid3D : public DrawableWithDisplay3D {
 
-    virtual void selfDrawViewer3D( Viewer3D & viewer ) const
+    virtual void selfDrawDisplay3D( Display3D & viewer ) const
     {
 	//aBoard.setPenColor(Color::Black);
 	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
@@ -785,7 +795,7 @@ namespace DGtal
 
 
 
-#endif
+
 
 
 

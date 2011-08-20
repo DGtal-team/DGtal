@@ -484,20 +484,19 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDraw( Board2D & board ) const
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
 
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(false);
+  display.createNewVoxelList(false);
   for (  ConstIterator it = this->begin(); 
 	 it != this->end();
 	 ++it )
     {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
 
 }
@@ -506,15 +505,15 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentViewer3D( Viewer3D
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingDisplay3D( Display3D & display ) const
 {   
   ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(true);
+  display.createNewVoxelList(true);
   for (  ConstIterator it = this->begin(); 
 	 it != this->end();
 	 ++it )
     {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
 
 }
@@ -522,14 +521,14 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewer )
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridDisplay3D( Display3D & display ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   for ( ConstIterator it = this->begin(); 
 	it != this->end();
         ++it )
     {
-      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor());
+      display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
     }
 
 }
@@ -538,109 +537,26 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer ) c
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLSet<Domain>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
-  std::string mode = viewer.getMode( this->styleName() );
+  std::string mode = display.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingViewer3D( viewer );
+    selfDrawAsPavingDisplay3D( display );
   else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentViewer3D( viewer );
+    selfDrawAsPavingTransparentDisplay3D( display );
   else if ( mode == "Grid" )
-    selfDrawAsGridViewer3D( viewer );
+    selfDrawAsGridDisplay3D( display );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingViewer3D(viewer);
-      selfDrawAsGridViewer3D( viewer );
+      selfDrawAsPavingDisplay3D(display);
+      selfDrawAsGridDisplay3D( display );
     }
   
 }
-
-
-
-#endif
-
-#ifdef WITH_CAIRO
-
-template <typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentCairo( Board3DTo2D & viewer ) const
-{  
-  ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(false);
-  for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
-    {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
-    }
-
-}
-
-
-template <typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingCairo( Board3DTo2D & viewer ) const
-{   
-  ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(true);
-  for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
-    {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
-    }
-
-}
-//------------------------------------------------------------------------------
-template<typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridCairo( Board3DTo2D & viewer ) const
-{
-  ASSERT(Domain::Space::dimension == 3);
-  for ( ConstIterator it = this->begin(); 
-	it != this->end();
-        ++it )
-    {
-      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor(),3);
-    }
-
-}
-
-
-template<typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawCairo( Board3DTo2D & viewer ) const
-{
-  ASSERT(Domain::Space::dimension == 3);
-  
-  std::string mode = viewer.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
-
-  if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingCairo( viewer );
-  else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentCairo( viewer );
-  else if ( mode == "Grid" )
-    selfDrawAsGridCairo( viewer );
-  else if ( ( mode == "Both" ) )
-    {
-      selfDrawAsPavingCairo(viewer);
-      selfDrawAsGridCairo( viewer );
-    }
-  
-}
-
-
-
-#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////

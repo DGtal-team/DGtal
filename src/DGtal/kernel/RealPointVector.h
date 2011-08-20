@@ -53,9 +53,9 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
-#endif
+
+#include "DGtal/io/Display3D.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -312,24 +312,24 @@ namespace DGtal
     void selfDrawAsGrid( Board2D & board ) const;
     
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleQGL( std::string mode = "" ) const;
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
-    void selfDrawQGL ( Viewer3D & viewer ) const;
-    void selfDrawQGL ( Viewer3D & viewer, const Self &startingPoint ) const;
-    void selfDrawAsGridQGL( Viewer3D & viewer  ) const;
-    void selfDrawAsPavingQGL( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D ( DGtal::Display3D & viewer ) const;
+    void selfDrawDisplay3D ( DGtal::Display3D & viewer, const Self &startingPoint ) const;
+    void selfDrawAsGridDisplay3D( DGtal::Display3D & viewer  ) const;
+    void selfDrawAsPavingDisplay3D( DGtal::Display3D & viewer ) const;
 
-#endif
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -396,26 +396,26 @@ namespace DGtal
    * CDrawableWithBoard2D.
    */
 
-#ifdef WITH_VISU3D_QGLVIEWER
 
-  struct DrawPavingRealVoxel : public DrawableWithViewer3D {
-    void selfDrawQGL( Viewer3D & viewer ) const
+
+  struct DrawPavingRealVoxel : public DrawableWithDisplay3D {
+    void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
-      viewer.myModes[ "RealPointVector" ] = "Paving";
+      display.myModes[ "RealPointVector" ] = "Paving";
     }
   };
   
   
-  struct DrawGridRealVoxel : public DrawableWithViewer3D {
-    void selfDrawQGL( Viewer3D & viewer ) const
+  struct DrawGridRealVoxel : public DrawableWithDisplay3D {
+    void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
-      viewer.myModes[ "RealPointVector" ] = "Grid";
+      display.myModes[ "RealPointVector" ] = "Grid";
     }
   };
 
-  struct DefaultDrawStyleRealGrid3D : public DrawableWithViewer3D {
+  struct DefaultDrawStyleRealGrid3D : public DrawableWithDisplay3D {
 
-    virtual void selfDrawQGL( Viewer3D & viewer ) const
+    virtual void selfDrawDisplay3D( DGtal::Display3D & display ) const
     {
       //aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
@@ -424,7 +424,6 @@ namespace DGtal
 
 
 
-#endif
   
   /// Operator <<
   template<DGtal::Dimension dim>
