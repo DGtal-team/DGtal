@@ -20,13 +20,52 @@ message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualiz
 message(STATUS " ")
 message(STATUS "-DWITH_ALL:string=true to use all previous possible options if available.")
 
+IF(WITH_ALL)
+  SET( WITH_GMP  TRUE)
+  SET( WITH_ITK  TRUE)
+  SET( WITH_CAIRO  TRUE)
+  SET( WITH_COIN3D-SOQT  TRUE)
+  SET( WITH_QGLVIEWER  TRUE)
+  SET( WITH_MAGICK  TRUE)
+ENDIF(WITH_ALL)
+
+IF(WITH_GMP) 
+SET (LIST_OPTION ${LIST_OPTION} [GMP]\ ) 
+ENDIF(WITH_GMP)
+
+IF(WITH_ITK) 
+SET (LIST_OPTION ${LIST_OPTION} [ITK]\ ) 
+ENDIF(WITH_ITK)
+
+IF(WITH_CAIRO) 
+SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ ) 
+ENDIF(WITH_CAIRO)
+
+IF(WITH_COIN3D-SOQT) 
+SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ ) 
+ENDIF(WITH_COIN3D-SOQT)
+
+IF(WITH_QGLVIEWER) 
+SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ ) 
+ENDIF(WITH_QGLVIEWER)
+ 
+IF(WITH_MAGICK) 
+SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ ) 
+ENDIF(WITH_MAGICK)
+
+
+
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "Selected options: " ${LIST_OPTION})
+message(STATUS "-------------------------------------------------------------------------------")
+
 cmake_minimum_required (VERSION 2.6) 
+
 
 # -----------------------------------------------------------------------------
 # Display some information
 # -----------------------------------------------------------------------------
 
-message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
