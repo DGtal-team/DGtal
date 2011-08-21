@@ -12,14 +12,24 @@ cmake_minimum_required (VERSION 2.6)
 # -----------------------------------------------------------------------------
 # Display some information
 # -----------------------------------------------------------------------------
+
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "You may specify the following options:")
+message(STATUS "-DWITH_GMP:string=true to get the GNU Multiple Precision Arithmetic library ")
+message(STATUS "-DWITH_MAGICK:string=true to get the GraphicsMagic library ")
+message(STATUS "-DWITH_ITK:string=true to get the  Insight Toolkit library ")
+message(STATUS "-DWITH_CAIRO:string=true to get the Cairo (2D graphics) library ")
+message(STATUS "-DWITH_COIN3D-SOQT:string=true to use COIN3D & SOQT for 3D visualization (Qt required)  ")
+message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualization (Qt required)  ")
+message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
-message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
-message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
-
+message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
+message(STATUS "-------------------------------------------------------------------------------")
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters
 # -----------------------------------------------------------------------------
