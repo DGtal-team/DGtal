@@ -10,6 +10,16 @@ INCLUDE(CmakeDependentOption)
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 
+IF(WITH_ALL)
+  SET( WITH_GMP  TRUE)
+  SET( WITH_ITK  TRUE)
+  SET( WITH_CAIRO  TRUE)
+  SET( WITH_COIN3D-SOQT  TRUE)
+  SET( WITH_QGLVIEWER  TRUE)
+  SET( WITH_MAGICK  TRUE)
+ENDIF(WITH_ALL)
+
+
 FIND_PACKAGE(Boost 1.40.0 REQUIRED COMPONENTS program_options)
 if ( Boost_FOUND )
   message(STATUS "Boost and boost_program_options found.")

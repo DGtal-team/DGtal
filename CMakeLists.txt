@@ -7,13 +7,8 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.6) 
-
-# -----------------------------------------------------------------------------
-# Display some information
-# -----------------------------------------------------------------------------
-
 message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "DGtal Library CMAKE configuration:")
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "You may specify the following options:")
 message(STATUS "-DWITH_GMP:string=true to get the GNU Multiple Precision Arithmetic library ")
@@ -22,6 +17,15 @@ message(STATUS "-DWITH_ITK:string=true to get the  Insight Toolkit library ")
 message(STATUS "-DWITH_CAIRO:string=true to get the Cairo (2D graphics) library ")
 message(STATUS "-DWITH_COIN3D-SOQT:string=true to use COIN3D & SOQT for 3D visualization (Qt required)  ")
 message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualization (Qt required)  ")
+message(STATUS " ")
+message(STATUS "-DWITH_ALL:string=true to use all previous possible options if available.")
+
+cmake_minimum_required (VERSION 2.6) 
+
+# -----------------------------------------------------------------------------
+# Display some information
+# -----------------------------------------------------------------------------
+
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
