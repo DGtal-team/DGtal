@@ -17,6 +17,7 @@
  * @file LengthEstimator.cpp
  * @ingroup Tools
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr ) 
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
  *
@@ -253,27 +254,61 @@ lengthEstimators( const string & name,
     trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
 
     L1LengthEstimator< typename ArrowsRange::ConstIterator > l1length;
-    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     DSSLengthEstimator< typename PointsRange::ConstIterator > DSSlength;
-    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     MLPLengthEstimator< typename PointsRange::ConstIterator > MLPlength;
-    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
-    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     BLUELocalLengthEstimator< typename ArrowsRange::ConstIterator > BLUElength;
-    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     RosenProffittLocalLengthEstimator< typename ArrowsRange::ConstIterator > RosenProffittlength;
-    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
- 
+  
     // Output
     double trueValue = trueLengthEstimator.eval();
+    double l1, blue, rosen,dss,mlp,fp;
+    double Tl1, Tblue, Trosen,Tdss,Tmlp,Tfp;
+    
+    //Length evaluation & timing
+    trace.beginBlock("L1");
+    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    l1 = l1length.eval();
+    Tl1 = trace.endBlock();
+    
+    trace.beginBlock("BLUE");
+    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    blue = BLUElength.eval();
+    Tblue = trace.endBlock();
+    
+    trace.beginBlock("ROSEN");
+    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    rosen = RosenProffittlength.eval();
+    Trosen = trace.endBlock();
+    
+    trace.beginBlock("DSS");
+    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    dss = DSSlength.eval();
+    Tdss = trace.endBlock();
+    
+    trace.beginBlock("MLP");
+    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    mlp = MLPlength.eval();
+    Tmlp = trace.endBlock();
+
+    trace.beginBlock("FP");
+    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    fp = FPlength.eval();
+    Tfp = trace.endBlock();
+
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
-	 << " " << l1length.eval() 
-	 << " " << BLUElength.eval() 
-	 << " " << RosenProffittlength.eval() 
-	 <<  " " << DSSlength.eval()
-	 << " " << MLPlength.eval() 
-	 <<  " " << FPlength.eval()
+	 << " " << l1
+	 << " " << blue
+	 << " " << rosen
+	 << " " << dss
+	 << " " << mlp
+	 << " " << fp
+      	 << " " << Tl1
+	 << " " << Tblue
+	 << " " << Trosen
+	 << " " << Tdss
+	 << " " << Tmlp
+	 << " " << Tfp     
 	 << endl;
     return true;
   }    
@@ -336,7 +371,7 @@ int main( int argc, char** argv )
 
 
 ///////////////////////////////////
-  cout << "#h nbp true naive DSS MLP FP " <<std::endl;
+  cout << "#h nbPoints true-length L1 BLUE RosenProffit DSS MLP FP Time-L1 Time-BLUE Time-RosenProffitt Time-DSS Time-MLP Time-FP" <<std::endl;
   double h = 1; 
   double step = 0.75;
   while (h > 0.001) {
