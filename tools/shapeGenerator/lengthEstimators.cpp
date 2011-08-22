@@ -372,6 +372,8 @@ int main( int argc, char** argv )
 
 ///////////////////////////////////
   cout << "#h nbPoints true-length L1 BLUE RosenProffit DSS MLP FP Time-L1 Time-BLUE Time-RosenProffitt Time-DSS Time-MLP Time-FP" <<std::endl;
+  cout << "# timings are given in msec." <<std::endl;
+
   double h = 1; 
   double step = 0.75;
   while (h > 0.001) {
