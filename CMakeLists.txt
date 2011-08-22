@@ -183,6 +183,9 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/"
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
 
+# -----------------------------------------------------------------------------
+# Check Optional Dependencies
+# -----------------------------------------------------------------------------
 
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "DGtal Library optional configuration:")
@@ -190,21 +193,7 @@ message(STATUS "   (to change these values, use ccmake, a graphical")
 message(STATUS "   cmake frontend, or define cmake commandline variables") 
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "-------------------------------------------------------------------------------")
-#message(STATUS "You may specify the following options:")
-#message(STATUS "-DWITH_GMP:string=true to get the GNU Multiple Precision Arithmetic library ")
-#message(STATUS "-DWITH_MAGICK:string=true to get the GraphicsMagic library ")
-#message(STATUS "-DWITH_ITK:string=true to get the  Insight Toolkit library ")
-#message(STATUS "-DWITH_CAIRO:string=true to get the Cairo (2D graphics) library ")
-#message(STATUS "-DWITH_COIN3D-SOQT:string=true to use COIN3D & SOQT for 3D visualization (Qt required)  ")
-#message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualization (Qt required)  ")
-#message(STATUS "-DWITH_ALL:string=true to use all previous possible options if available.")
 
-# -----------------------------------------------------------------------------
-# Check Optional Dependencies
-# -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 
-
 message(STATUS "-------------------------------------------------------------------------------")
-#message(STATUS "Selected options: " ${LIST_OPTION})
-#message(STATUS "-------------------------------------------------------------------------------")
