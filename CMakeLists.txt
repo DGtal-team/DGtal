@@ -7,57 +7,6 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "DGtal Library CMAKE configuration:")
-message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "You may specify the following options:")
-message(STATUS "-DWITH_GMP:string=true to get the GNU Multiple Precision Arithmetic library ")
-message(STATUS "-DWITH_MAGICK:string=true to get the GraphicsMagic library ")
-message(STATUS "-DWITH_ITK:string=true to get the  Insight Toolkit library ")
-message(STATUS "-DWITH_CAIRO:string=true to get the Cairo (2D graphics) library ")
-message(STATUS "-DWITH_COIN3D-SOQT:string=true to use COIN3D & SOQT for 3D visualization (Qt required)  ")
-message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualization (Qt required)  ")
-message(STATUS " ")
-message(STATUS "-DWITH_ALL:string=true to use all previous possible options if available.")
-
-IF(WITH_ALL)
-  SET( WITH_GMP  TRUE)
-  SET( WITH_ITK  TRUE)
-  SET( WITH_CAIRO  TRUE)
-  SET( WITH_COIN3D-SOQT  TRUE)
-  SET( WITH_QGLVIEWER  TRUE)
-  SET( WITH_MAGICK  TRUE)
-ENDIF(WITH_ALL)
-
-IF(WITH_GMP) 
-SET (LIST_OPTION ${LIST_OPTION} [GMP]\ ) 
-ENDIF(WITH_GMP)
-
-IF(WITH_ITK) 
-SET (LIST_OPTION ${LIST_OPTION} [ITK]\ ) 
-ENDIF(WITH_ITK)
-
-IF(WITH_CAIRO) 
-SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ ) 
-ENDIF(WITH_CAIRO)
-
-IF(WITH_COIN3D-SOQT) 
-SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ ) 
-ENDIF(WITH_COIN3D-SOQT)
-
-IF(WITH_QGLVIEWER) 
-SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ ) 
-ENDIF(WITH_QGLVIEWER)
- 
-IF(WITH_MAGICK) 
-SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ ) 
-ENDIF(WITH_MAGICK)
-
-
-
-message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "Selected options: " ${LIST_OPTION})
-message(STATUS "-------------------------------------------------------------------------------")
 
 cmake_minimum_required (VERSION 2.6) 
 
@@ -66,14 +15,9 @@ cmake_minimum_required (VERSION 2.6)
 # Display some information
 # -----------------------------------------------------------------------------
 
-message(STATUS "-------------------------------------------------------------------------------" )
-message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
-message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
-message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
-message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
-message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
-message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
+
 message(STATUS "-------------------------------------------------------------------------------")
+
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters
 # -----------------------------------------------------------------------------
@@ -89,6 +33,13 @@ SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
+message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
+message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
+message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
+message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
+
 
 # -- Environement variables
 if (UNIX)
@@ -165,9 +116,10 @@ endif (BUILD_INLINE_FUNCTIONS)
 INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
 
 # -----------------------------------------------------------------------------
-# Check Dependencies
+# Check Mandatory Dependencies
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
+
 
 # -----------------------------------------------------------------------------
 # Benchmark target
@@ -230,3 +182,29 @@ ENDIF(BUILD_EXAMPLES)
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
+
+
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "DGtal Library optional configuration:")
+message(STATUS "   (to change these values, use ccmake, a graphical")
+message(STATUS "   cmake frontend, or define cmake commandline variables") 
+message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
+message(STATUS "-------------------------------------------------------------------------------")
+#message(STATUS "You may specify the following options:")
+#message(STATUS "-DWITH_GMP:string=true to get the GNU Multiple Precision Arithmetic library ")
+#message(STATUS "-DWITH_MAGICK:string=true to get the GraphicsMagic library ")
+#message(STATUS "-DWITH_ITK:string=true to get the  Insight Toolkit library ")
+#message(STATUS "-DWITH_CAIRO:string=true to get the Cairo (2D graphics) library ")
+#message(STATUS "-DWITH_COIN3D-SOQT:string=true to use COIN3D & SOQT for 3D visualization (Qt required)  ")
+#message(STATUS "-DWITH_QGLVIEWER:string=true to use LibQGLViewer for 3D visualization (Qt required)  ")
+#message(STATUS "-DWITH_ALL:string=true to use all previous possible options if available.")
+
+# -----------------------------------------------------------------------------
+# Check Optional Dependencies
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
+
+
+message(STATUS "-------------------------------------------------------------------------------")
+#message(STATUS "Selected options: " ${LIST_OPTION})
+#message(STATUS "-------------------------------------------------------------------------------")
