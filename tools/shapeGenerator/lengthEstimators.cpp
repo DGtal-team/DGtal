@@ -348,7 +348,7 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate multigrid length estimations of paramteric shapes using DGtal library. It will output length estimations using several algorithms for decreasing grid steps." <<std::endl << "Basic usage: "<<std::endl
+      trace.info()<< "Generate multigrid length estimations of paramteric shapes using DGtal library. It will output length estimations (and timings) using several algorithms for decreasing grid steps." <<std::endl << "Basic usage: "<<std::endl
 		  << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
 		  << general_opt << "\n";
       return 0;
