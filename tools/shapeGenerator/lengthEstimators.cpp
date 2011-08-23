@@ -266,42 +266,42 @@ lengthEstimators( const string & name,
     double Tl1, Tblue, Trosen,Tdss,Tmlp,Tfp;
     
     //Length evaluation & timing
-    trace.beginBlock("L1");
+    trace.beginClock();
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     l1 = l1length.eval();
-    Tl1 = trace.endBlock();
+    Tl1 = trace.endClock();
     
-    trace.beginBlock("BLUE");
+    trace.beginClock();
     BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     blue = BLUElength.eval();
-    Tblue = trace.endBlock();
+    Tblue = trace.endClock();
     
-    trace.beginBlock("ROSEN");
+    trace.beginClock();
     RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     rosen = RosenProffittlength.eval();
-    Trosen = trace.endBlock();
+    Trosen = trace.endClock();
     
-    trace.beginBlock("DSS");
+    trace.beginClock();
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     dss = DSSlength.eval();
-    Tdss = trace.endBlock();
+    Tdss = trace.endClock();
     
-    trace.beginBlock("MLP");
+    trace.beginClock();
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     mlp = MLPlength.eval();
-    Tmlp = trace.endBlock();
+    Tmlp = trace.endClock();
 
-    trace.beginBlock("FP");
+    trace.beginClock();;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     fp = FPlength.eval();
-    Tfp = trace.endBlock();
+    Tfp = trace.endClock();
 
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
 	 << " " << l1
 	 << " " << blue
 	 << " " << rosen
 	 << " " << dss
-	 << " " << mlp
+	 << " " << mlp	 
 	 << " " << fp
       	 << " " << Tl1
 	 << " " << Tblue
