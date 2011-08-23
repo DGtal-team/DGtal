@@ -119,12 +119,30 @@ inline
 void
 DGtal::Trace::beginBlock(const std::string &keyword)
 {
-  myWriter.outputStream()<< myCurrentPrefix << myWriter.prefixEmphase() << "New Block ["<<keyword << "]"<< myWriter.postfixReset()<<std::endl;
+  myWriter.outputStream()<< myCurrentPrefix 
+			 << myWriter.prefixEmphase()
+			 << "New Block ["<<keyword << "]"
+			 << myWriter.postfixReset()
+			 <<std::endl;
   myCurrentLevel++;
   myCurrentPrefix += TRACE_PATTERN;
   myKeywordStack.push(keyword);
 
 	//Block timer start
+  Clock *c = new(Clock);
+  c->startClock();
+  myClockStack.push(c);
+}
+
+/**
+ * Enter a new block (timer only)
+ *
+ */
+inline
+void
+DGtal::Trace::beginClock()
+{
+  //Block timer start
   Clock *c = new(Clock);
   c->startClock();
   myClockStack.push(c);
@@ -144,25 +162,43 @@ DGtal::Trace::endBlock()
   long tick;
   Clock *localClock;
 
-  if (myCurrentLevel >0)
-  {
-    myCurrentLevel--;
-    myCurrentPrefix = "";
-    for(unsigned int i = 0; i < myCurrentLevel; i++)
-      myCurrentPrefix += TRACE_PATTERN;
-    localClock =  myClockStack.top();
-    tick = localClock->stopClock();
+  ASSERT (myCurrentLevel >0);
+  
+  myCurrentLevel--;
+  myCurrentPrefix = "";
+  for(unsigned int i = 0; i < myCurrentLevel; i++)
+    myCurrentPrefix += TRACE_PATTERN;
+  localClock =  myClockStack.top();
+  tick = localClock->stopClock();
 
-    myWriter.outputStream() << myCurrentPrefix << myWriter.prefixEmphase() << "EndBlock [" << myKeywordStack.top()<< "] (" << tick<<" ms)"<< myWriter.postfixReset()<< std::endl;
-    myKeywordStack.pop();
-    myClockStack.pop();
-    delete localClock;
-   return tick;
-  }
-  //Should never happen
-  return 0;
+  myWriter.outputStream() << myCurrentPrefix 
+			  << myWriter.prefixEmphase() 
+			  << "EndBlock [" << myKeywordStack.top()
+			  << "] (" << tick<<" ms)"
+			  << myWriter.postfixReset()<< std::endl;
+  myKeywordStack.pop();
+  myClockStack.pop();
+  delete localClock;
+  return tick;
 }
+ /**
+  * Leave a current block (timer only)
+  * @return  the ellapsed time in the block in milliseconds (Class Clock).
+  *
+  */
+inline long
+DGtal::Trace::endClock()
+{
+  long tick;
+  Clock *localClock;
 
+  localClock =  myClockStack.top();
+  tick = localClock->stopClock();
+
+  myClockStack.pop();
+  delete localClock;
+  return tick;
+}
 
 /**
  * Create a string with an indentation prefix for a warning trace.
