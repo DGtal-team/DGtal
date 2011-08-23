@@ -338,7 +338,9 @@ int main( int argc, char** argv )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
-    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" );
+    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
+    ("hMin",   po::value<double>()->default_value(0.0001), "Minimum value for the grid step h (double)" )
+    ("steps",   po::value<int>()->default_value(32), "Number of multigrid steps between 1 and hMin (integer)" );
   
   
   po::variables_map vm;
@@ -346,7 +348,7 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate length estimations of implicite shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
+      trace.info()<< "Generate multigrid length estimations of paramteric shapes using DGtal library. It will output length estimations using several algorithms for decreasing grid steps." <<std::endl << "Basic usage: "<<std::endl
 		  << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
 		  << general_opt << "\n";
       return 0;
@@ -364,19 +366,22 @@ int main( int argc, char** argv )
   //Parse options
   if (not(vm.count("shape"))) missingParam("--shape");
   std::string shapeName = vm["shape"].as<std::string>();
-    
+  double hMin  = vm["hMin"].as<double>();
+  int nbSteps = vm["steps"].as<int>();
     
   //We check that the shape is known
   unsigned int id = checkAndRetrunIndex(shapeName);
 
 
 ///////////////////////////////////
-  cout << "#h nbPoints true-length L1 BLUE RosenProffit DSS MLP FP Time-L1 Time-BLUE Time-RosenProffitt Time-DSS Time-MLP Time-FP" <<std::endl;
+  cout << "#h nbPoints true-length L1 BLUE RosenProffit "
+       << "DSS MLP FP Time-L1 Time-BLUE Time-RosenProffitt "
+       << "Time-DSS Time-MLP Time-FP" <<std::endl;
   cout << "# timings are given in msec." <<std::endl;
-
+  
   double h = 1; 
-  double step = 0.75;
-  while (h > 0.001) {
+  double step = exp( log(hMin) / (double)nbSteps);
+  while (h > hMin) {
 
     if (id ==0) ///ball
       {
