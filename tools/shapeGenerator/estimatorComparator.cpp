@@ -245,65 +245,80 @@ compareShapeEstimators( const string & name,
     gridcurve.initFromVector( points );
     // Ranges
     PointsRange r = gridcurve.getPointsRange(); 
-	  std::cout << "# range size = " << r.size() << std::endl;  
+    std::cout << "# range size = " << r.size() << std::endl;  
 
     // Estimations
     // True values
-	std::cout << "# True values computation" << std::endl;  
-  typedef ParametricShapeTangentFunctor< Shape > TangentFunctor;
-  typedef ParametricShapeCurvatureFunctor< Shape > CurvatureFunctor;
+    std::cout << "# True values computation" << std::endl;  
+    typedef ParametricShapeTangentFunctor< Shape > TangentFunctor;
+    typedef ParametricShapeCurvatureFunctor< Shape > CurvatureFunctor;
+  
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, TangentFunctor >  
       trueTangentEstimator;
     TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, CurvatureFunctor >  
       trueCurvatureEstimator;
+  
     trueTangentEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
     std::vector<RealPoint> trueTangents = 
       estimateQuantity( trueTangentEstimator, r.begin(), r.end() );
     trueCurvatureEstimator.init( h, r.begin(), r.end(), &aShape, gridcurve.isClosed());
     std::vector<double> trueCurvatures = 
       estimateQuantity( trueCurvatureEstimator, r.begin(), r.end() );
-
+  
     // Maximal Segments
-  	std::cout << "# Maximal DSS tangent estimation" << std::endl;  
+    std::cout << "# Maximal DSS tangent estimation" << std::endl;  
     typedef ArithmeticalDSS<ConstIteratorOnPoints,Integer,4> SegmentComputer;
     typedef TangentFromDSSFunctor<SegmentComputer> SCFunctor;
     SegmentComputer sc;
     SCFunctor f; 
     MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
+   
+    trace.beginClock();
     MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<typename SCFunctor::Value> MSTangents = 
       estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
+    double TMST = trace.endClock();
+
 
     // Binomial
-  	std::cout << "# Tangent and curvature estimation from binomial convolution" << std::endl;
+    std::cout << "# Tangent and curvature estimation from binomial convolution" << std::endl;
     typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
-  	std::cout << "# mask size = " << 
-    MyBinomialConvolver::suggestedSize( h, r.begin(), r.end() ) << std::endl;
+    std::cout << "# mask size = " << 
+      MyBinomialConvolver::suggestedSize( h, r.begin(), r.end() ) << std::endl;
     typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
       TangentBCFct;
     typedef CurvatureFromBinomialConvolverFunctor< MyBinomialConvolver, double >
       CurvatureBCFct;
     BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
     BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
+    
+    trace.beginClock();
     BCTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<RealPoint> BCTangents = 
       estimateQuantity( BCTangentEstimator, r.begin(), r.end() );
+    double TBCTan = trace.endClock();
+
+    trace.beginClock();
     BCCurvatureEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<double> BCCurvatures =
       estimateQuantity( BCCurvatureEstimator, r.begin(), r.end() );
+    double TBCCurv = trace.endClock();
 
     // Output
-	std::cout << "# id x y tangentx tangenty curvature"
-  << " BCtangentx BCtangenty BCcurvature"
-  << " MStangentx MStangenty"
-  << std::endl;  
+    std::cout << "# Time-BCtangent = "<<TBCTan <<std::endl
+	      << "# Time-BCcurvature = "<<TBCCurv<<std::endl
+	      << "# Time-MStangent = "<<TMST<<std::endl
+	      << "# id x y tangentx tangenty curvature"
+	      << " BCtangentx BCtangenty BCcurvature"
+	      << " MStangentx MStangenty"
+	      << std::endl;  
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
 	  it != it_end; ++it, ++i )
       {
 	Point p = *it;
 	std::cout << i << setprecision( 15 )
-      << " " << p[ 0 ] << " " << p[ 1 ] 
+		  << " " << p[ 0 ] << " " << p[ 1 ] 
 		  << " " << trueTangents[ i ][ 0 ]
 		  << " " << trueTangents[ i ][ 1 ]
 		  << " " << trueCurvatures[ i ]
@@ -312,7 +327,7 @@ compareShapeEstimators( const string & name,
 		  << " " << BCCurvatures[ i ]
 		  << " " << MSTangents[ i ][ 0 ]
 		  << " " << MSTangents[ i ][ 1 ]
- << std::endl;
+		  << std::endl;
       }
     return true;
   }    
@@ -397,7 +412,7 @@ int main( int argc, char** argv )
   typedef Space::RealPoint RealPoint;
 
   RealPoint center( vm["center_x"].as<double>(),
-		                vm["center_y"].as<double>() );
+		    vm["center_y"].as<double>() );
   double h = vm["gridstep"].as<double>();
   if (id ==0)
     {
@@ -411,8 +426,8 @@ int main( int argc, char** argv )
       if (not(vm.count("width"))) missingParam("--width");
       double width = vm["width"].as<double>();
       ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
+      trace.error()<< "Not available.";
+      trace.info()<<std::endl;
     }
   else if (id ==2)
     {
@@ -421,8 +436,8 @@ int main( int argc, char** argv )
       double radius = vm["radius"].as<double>();
       double power = vm["power"].as<double>();
       ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
+      trace.error()<< "Not available.";
+      trace.info()<<std::endl;
     }
   else if (id ==3)
     {
