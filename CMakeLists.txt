@@ -126,22 +126,6 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
 
-# -----------------------------------------------------------------------------
-# CTest options
-# -----------------------------------------------------------------------------
-ENABLE_TESTING()
-include(CTest)
-if (BUILD_TESTING)
-  if (CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
-  endif (CMAKE_COMPILER_IS_GNUCXX)
-  if (CMAKE_COMPILER_IS_GNUCC)
-    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
-  endif (CMAKE_COMPILER_IS_GNUCC)
-  add_subdirectory (tests)
-endif (BUILD_TESTING)
-
-
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
@@ -159,6 +143,21 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
+
+# -----------------------------------------------------------------------------
+# Check Optional Dependencies
+# -----------------------------------------------------------------------------
+
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "DGtal Library optional configuration:")
+message(STATUS "   (to change these values, use ccmake, a graphical")
+message(STATUS "   cmake frontend, or define cmake commandline variables") 
+message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
+message(STATUS "-------------------------------------------------------------------------------")
+
+INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
+
+message(STATUS "-------------------------------------------------------------------------------")
 
 #------------------------------------------------------------------------------
 # Add subdirectories
@@ -183,17 +182,19 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/"
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
 
+
 # -----------------------------------------------------------------------------
-# Check Optional Dependencies
+# CTest options
 # -----------------------------------------------------------------------------
+ENABLE_TESTING()
+include(CTest)
+if (BUILD_TESTING)
+  if (CMAKE_COMPILER_IS_GNUCXX)
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+  endif (CMAKE_COMPILER_IS_GNUCXX)
+  if (CMAKE_COMPILER_IS_GNUCC)
+    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
+  endif (CMAKE_COMPILER_IS_GNUCC)
+  add_subdirectory (tests)
+endif (BUILD_TESTING)
 
-message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "DGtal Library optional configuration:")
-message(STATUS "   (to change these values, use ccmake, a graphical")
-message(STATUS "   cmake frontend, or define cmake commandline variables") 
-message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
-message(STATUS "-------------------------------------------------------------------------------")
-
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
-
-message(STATUS "-------------------------------------------------------------------------------")
