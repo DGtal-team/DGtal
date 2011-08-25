@@ -99,10 +99,6 @@ int main()
   image.selfDraw<Gray> ( board , 0, 129);
   board.saveSVG("inputShape.svg");
 
-  //Output image type with unsigned int values (note that we have to
-  //store squares distances)
-  typedef ImageSelector<Z2i::Domain, long int>::Type ImageLong;
-
   typedef  DistanceTransformation<Image, 2> DTL2;
   typedef  DistanceTransformation<Image, 0> DTLInf;
   typedef  DistanceTransformation<Image, 1> DTL1;
