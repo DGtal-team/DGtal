@@ -9,7 +9,7 @@
 namespace po = boost::program_options;
 
 
-#define LIBS "@DGtalLibDependencies@"
+#define DEPS "@LIST_OPTION@"
 
 
 int main(int argc, char **argv)
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   desc.add_options()
     ("help,h", "produce this help message")
     ("version,v", "return the current DGtal version")
-    ("libs,l", "libs required for linking against DGtal");
+    ("deps,d", "Optional dependencies used to build DGtal");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -40,12 +40,12 @@ int main(int argc, char **argv)
 
   if (vm.count("libs")) 
     {
-      cout << LIBS << endl;;
+      cout << DEPS << endl;;
       return 1;
     } 
 
   // By default, we display the help message
-  cout << desc<<endl;
+  cout << desc <<endl;
 
   return 0;
 }
