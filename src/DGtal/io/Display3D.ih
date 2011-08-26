@@ -316,7 +316,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     z1+=retract; z2-=retract; z3-=retract; z4+=retract;
     dx=0.0; dy=width; dz=0.0;
   }
- else if(xSurfel){
+  else {
     x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
     x2= x-0.5;  y2= y+0.5;  z2= z-0.5;
     x3= x-0.5;  y3= y+0.5;  z3= z+0.5;
