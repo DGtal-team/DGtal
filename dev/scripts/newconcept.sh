@@ -25,13 +25,8 @@ then
     echo "File ${INCLUDE_DIR}/$2/$1.h exists and is writable. Please remove it before." ;
     exit 2;
 fi
-if test -w "${INCLUDE_DIR}/$2/$1.ih" ;
-then
-    echo "File ${INCLUDE_DIR}/$2/$1.ih exists and is writable. Please remove it before." ;
-    exit 2;
-fi
 
-echo "--- Creating files ${INCLUDE_DIR}/$2/$1.h and ${INCLUDE_DIR}/$2/$1.ih"
+echo "--- Creating files ${INCLUDE_DIR}/$2/$1.h"
 
 if test "$#" = "3"; then namespace=$3; fi
 enspace="s@YYY@${namespace}@g"
@@ -61,11 +56,5 @@ if test ! -r "${MODELS_DIR}/CXXX.h"; then
     echo "Missing model CXXX.h in ${MODELS_DIR}."
     exit 2
 fi
-if test ! -r "${MODELS_DIR}/CXXX.ih"; then
-    echo "Missing model CXXX.ih in ${MODELS_DIR}."
-    exit 2
-fi
 
 cat "${MODELS_DIR}/CXXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
-cat "${MODELS_DIR}/CXXX.ih" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}"  > "${INCLUDE_DIR}/$2/$1.ih"
-echo "--> done."

@@ -54,7 +54,7 @@ namespace DGtal
   /**
    * Description of \b concept '\b CCommutativeRing' <p>
    * @ingroup Concepts
-   * Aim: Definses unitary commutative ring.
+   * @brief Aim: Definses unitary commutative ring.
    * 
    * <p> Refinement of
    *
@@ -86,7 +86,8 @@ namespace DGtal
    *
    * <p> Invariants <br>
    *
-   * <p> Models <br>: DGta::int32_t,DGta::int8_t; mpz_class;
+   * <p> Models <br>
+   *   DGtal::int32_t, DGtal::int64_t, DGtal::int8_t; mpz_class
    *
    * <p> Notes <br>
    */
@@ -106,6 +107,22 @@ namespace DGtal
       ConceptUtils::sameType( c, a*b );  
       ConceptUtils::sameType( c, IntegerTraits<Integer>::ONE );  
       ConceptUtils::sameType( c, IntegerTraits<Integer>::ZERO );  
+
+      static Integer two = IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE;
+      static Integer three =  two+IntegerTraits<Integer>::ONE;
+      
+      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ZERO  == 
+			  three * IntegerTraits<Integer>::ZERO );
+    
+      BOOST_STATIC_ASSERT(three  == 
+			  three + IntegerTraits<Integer>::ZERO );
+
+      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ONE  == 
+			  ((IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE)
+			   - IntegerTraits<Integer>::ONE ) );
+
+      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ONE  == 
+			  IntegerTraits<Integer>::ONE*IntegerTraits<Integer>::ONE );
     
     }
     // ------------------------- Private Datas --------------------------------
