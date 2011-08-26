@@ -103,15 +103,14 @@ Point4Int a= {2, 3 , -5 , 6};
     BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
 
   public:
-    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
+    ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;
     ///Unsigned version of the Integers.
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     
     ///Type used to represent sizes in the digital space.
     typedef UnsignedInteger Size;
-    
-    
+     
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
 
