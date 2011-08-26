@@ -17,55 +17,52 @@
 #pragma once
 
 /**
- * @file CPointPredicate.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file CCommutativeRing.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/10
+ * @date 2011/08/26
  *
- * Header file for concept CPointPredicate.cpp
+ * Header file for concept CCommutativeRing.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPointPredicate_RECURSES)
-#error Recursive header files inclusion detected in CPointPredicate.h
-#else // defined(CPointPredicate_RECURSES)
+#if defined(CCommutativeRing_RECURSES)
+#error Recursive header files inclusion detected in CCommutativeRing.h
+#else // defined(CCommutativeRing_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPointPredicate_RECURSES
+#define CCommutativeRing_RECURSES
 
-#if !defined CPointPredicate_h
+#if !defined CCommutativeRing_h
 /** Prevents repeated inclusion of headers. */
-#define CPointPredicate_h
+#define CCommutativeRing_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/IntegerTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPointPredicate
+  // class CCommutativeRing
   /**
-   * Description of \b concept '\b CPointPredicate' <p>
+   * Description of \b concept '\b CCommutativeRing' <p>
    * @ingroup Concepts
-   * \brief Aim: Defines a predicate on a point.
+   * Aim: Definses unitary commutative ring.
    * 
-   * Associates a boolean to points.
-   *
    * <p> Refinement of
    *
    * <p> Associated types :
    *
-   * - Point
-   *
    * <p> Notation
-   * - \t X : A type that is a model of CPointPredicate
-   * - \t x : Object of type X
-   * - \t p : Object of type Point
+   * - \t Integer : A type that is a model of CCommutativeRing
+   * - \t x, \t y	: Object of type Integer
    *
    * <p> Definitions
    *
@@ -76,54 +73,57 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> Apply predicate </td> <td> x( p )</td> <td> </td> <td> \c bool </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
+   * <td> Addition </td> <td> x+y </td> <td> x,y of type Integer </td> <td> Integer</td>
+   * <td> </td> <td> scalar addition </td> <td> </td> <td> </td>
+   * </tr><tr>
+  * <td> Opposite </td> <td> -x </td> <td> x of type Integer </td> <td> Integer</td>
+   * <td> </td> <td> opposite of a scalar </td> <td> </td> <td> </td>
+   * </tr><tr>
+   * <td> multiplication </td> <td> x*y </td> <td> x ,yof type Integer </td> <td> Integer</td>
+   * <td> </td> <td> multiplication of scalars </td> <td> </td> <td> </td>
    * </tr>
    * </table>
    *
    * <p> Invariants <br>
    *
-   * <p> Models <br>
-   *
-   * - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-   * - complex predicate constructor: BinaryPointPredicate
-   * - others: DomainPredicate,SetPredicate
+   * <p> Models <br>: DGta::int32_t,DGta::int8_t; mpz_class;
    *
    * <p> Notes <br>
    */
-  template <typename T>
-  struct CPointPredicate
+  template <typename Integer>
+  struct CCommutativeRing
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Point Point;
 
-    BOOST_CONCEPT_USAGE( CPointPredicate )
+    BOOST_CONCEPT_ASSERT((CSignedInteger<Integer>));
+
+    BOOST_CONCEPT_USAGE( CCommutativeRing )
     {
       // x( p ) returns bool.
-      ConceptUtils::sameType( myBool, myPred.operator() ( myPoint ) );
+      ConceptUtils::sameType( c, a+b );
+      ConceptUtils::sameType( c, -a );
+      ConceptUtils::sameType( c, a*b );  
+      ConceptUtils::sameType( c, IntegerTraits<Integer>::ONE );  
+      ConceptUtils::sameType( c, IntegerTraits<Integer>::ZERO );  
+    
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    T myPred;
-    Point myPoint;
-    bool myBool;
+    
     // ------------------------- Internals ------------------------------------
   private:
-    
-  }; // end of concept CPointPredicate
+    Integer a,b,c;
+  
+  }; // end of concept CCommutativeRing
   
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/CPointPredicate.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPointPredicate_h
+#endif // !defined CCommutativeRing_h
 
-#undef CPointPredicate_RECURSES
-#endif // else defined(CPointPredicate_RECURSES)
+#undef CCommutativeRing_RECURSES
+#endif // else defined(CCommutativeRing_RECURSES)
