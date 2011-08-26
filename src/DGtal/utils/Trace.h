@@ -45,6 +45,7 @@
 #include <stack>
 
 #include "DGtal/utils/Clock.h"
+#include "DGtal/utils/Assert.h"
 #include "DGtal/utils/TraceWriter.h"
 #include "DGtal/utils/TraceWriterTerm.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -108,6 +109,12 @@ namespace DGtal
      */
     void beginBlock(const std::string &keyword = "");
 
+    /**
+     * Define a new block to compute the ellapsed time only.
+     *
+     */
+    void beginClock();
+
 
     /**
      * Leave a current block, decrease the indentation level and display the associate keyword
@@ -115,6 +122,13 @@ namespace DGtal
      * @return  the ellapsed time in the block in milliseconds (Class Clock).
      */
     long endBlock();
+ 
+    /**
+     * Leave a current block.
+     *
+     * @return  the ellapsed time in the block in milliseconds (Class Clock).
+     */
+    long endClock();
     
 
     /**
