@@ -44,6 +44,10 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/IntegerTraits.h"
+
+#ifdef WITH_GMP
+#include <gmpxx.h>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -101,7 +105,6 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CCommutativeRing )
     {
-      // x( p ) returns bool.
       ConceptUtils::sameType( c, a+b );
       ConceptUtils::sameType( c, -a );
       ConceptUtils::sameType( c, a*b );  
@@ -132,8 +135,51 @@ namespace DGtal
   private:
     Integer a,b,c;
   
+  };
+
+#ifdef WITH_GMP
+  template<>
+  struct CCommutativeRing<mpz_class>
+  {
+    // ----------------------- Concept checks ------------------------------
+  public:
+
+    BOOST_CONCEPT_ASSERT((CSignedInteger<mpz_class>));
+
+    BOOST_CONCEPT_USAGE( CCommutativeRing )
+    {
+      //ConceptUtils::sameType( c, a+b );
+      //ConceptUtils::sameType( c, -a );
+      //ConceptUtils::sameType( c, a*b );  
+      ConceptUtils::sameType( c, IntegerTraits<mpz_class>::ONE );  
+      ConceptUtils::sameType( c, IntegerTraits<mpz_class>::ZERO );  
+
+      static mpz_class two = IntegerTraits<mpz_class>::ONE+IntegerTraits<mpz_class>::ONE;
+      static mpz_class three =  two+IntegerTraits<mpz_class>::ONE;
+      
+      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ZERO  == 
+      // 			  three * IntegerTraits<mpz_class>::ZERO );
+    
+      // BOOST_STATIC_ASSERT(three  == 
+      // 			  three + IntegerTraits<mpz_class>::ZERO );
+
+      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ONE  == 
+      // 			  ((IntegerTraits<mpz_class>::ONE+IntegerTraits<mpz_class>::ONE)
+      // 			   - IntegerTraits<mpz_class>::ONE ) );
+
+      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ONE  == 
+      // 			  IntegerTraits<mpz_class>::ONE*IntegerTraits<mpz_class>::ONE );
+    
+    }
+    // ------------------------- Private Datas --------------------------------
+  private:
+    
+    // ------------------------- Internals ------------------------------------
+  private:
+    mpz_class a,b,c;
+    
   }; // end of concept CCommutativeRing
-  
+#endif
 } // namespace DGtal
 
 
