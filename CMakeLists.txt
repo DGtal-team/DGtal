@@ -111,17 +111,6 @@ else (BUILD_INLINE_FUNCTIONS)
 endif (BUILD_INLINE_FUNCTIONS)
 
 # -----------------------------------------------------------------------------
-# Check CPP0X
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
-
-# -----------------------------------------------------------------------------
-# Check Mandatory Dependencies
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
-
-
-# -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
@@ -143,6 +132,16 @@ ADD_CUSTOM_TARGET(distclean
 #------------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
+
+# -----------------------------------------------------------------------------
+# Check CPP0X
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
+
+# -----------------------------------------------------------------------------
+# Check Mandatory Dependencies
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
 
 # -----------------------------------------------------------------------------
 # Check Optional Dependencies
@@ -182,7 +181,6 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/"
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
 
-
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
@@ -197,4 +195,3 @@ if (BUILD_TESTING)
   endif (CMAKE_COMPILER_IS_GNUCC)
   add_subdirectory (tests)
 endif (BUILD_TESTING)
-

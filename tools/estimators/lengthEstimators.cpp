@@ -17,6 +17,7 @@
  * @file LengthEstimator.cpp
  * @ingroup Tools
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr ) 
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
  *
@@ -253,27 +254,61 @@ lengthEstimators( const string & name,
     trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
 
     L1LengthEstimator< typename ArrowsRange::ConstIterator > l1length;
-    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     DSSLengthEstimator< typename PointsRange::ConstIterator > DSSlength;
-    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     MLPLengthEstimator< typename PointsRange::ConstIterator > MLPlength;
-    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
-    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     BLUELocalLengthEstimator< typename ArrowsRange::ConstIterator > BLUElength;
-    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     RosenProffittLocalLengthEstimator< typename ArrowsRange::ConstIterator > RosenProffittlength;
-    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
- 
+  
     // Output
     double trueValue = trueLengthEstimator.eval();
+    double l1, blue, rosen,dss,mlp,fp;
+    double Tl1, Tblue, Trosen,Tdss,Tmlp,Tfp;
+    
+    //Length evaluation & timing
+    trace.beginClock();
+    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    l1 = l1length.eval();
+    Tl1 = trace.endClock();
+    
+    trace.beginClock();
+    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    blue = BLUElength.eval();
+    Tblue = trace.endClock();
+    
+    trace.beginClock();
+    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    rosen = RosenProffittlength.eval();
+    Trosen = trace.endClock();
+    
+    trace.beginClock();
+    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    dss = DSSlength.eval();
+    Tdss = trace.endClock();
+    
+    trace.beginClock();
+    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    mlp = MLPlength.eval();
+    Tmlp = trace.endClock();
+
+    trace.beginClock();;
+    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    fp = FPlength.eval();
+    Tfp = trace.endClock();
+
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
-	 << " " << l1length.eval() 
-	 << " " << BLUElength.eval() 
-	 << " " << RosenProffittlength.eval() 
-	 <<  " " << DSSlength.eval()
-	 << " " << MLPlength.eval() 
-	 <<  " " << FPlength.eval()
+	 << " " << l1
+	 << " " << blue
+	 << " " << rosen
+	 << " " << dss
+	 << " " << mlp	 
+	 << " " << fp
+      	 << " " << Tl1
+	 << " " << Tblue
+	 << " " << Trosen
+	 << " " << Tdss
+	 << " " << Tmlp
+	 << " " << Tfp     
 	 << endl;
     return true;
   }    
@@ -303,7 +338,9 @@ int main( int argc, char** argv )
     ("k,k",  po::value<unsigned int>()->default_value(3), "Number of branches or corners the shape" )
     ("phi",  po::value<double>()->default_value(0.0), "Phase of the shape (in radian)" )
     ("width,w",  po::value<double>()->default_value(10.0), "Width of the shape" )
-    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" );
+    ("power,p",   po::value<double>()->default_value(2.0), "Power of the metric (double)" )
+    ("hMin",   po::value<double>()->default_value(0.0001), "Minimum value for the grid step h (double)" )
+    ("steps",   po::value<int>()->default_value(32), "Number of multigrid steps between 1 and hMin (integer)" );
   
   
   po::variables_map vm;
@@ -311,7 +348,7 @@ int main( int argc, char** argv )
   po::notify(vm);    
   if(vm.count("help")||argc<=1)
     {
-      trace.info()<< "Generate length estimations of implicite shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
+      trace.info()<< "Generate multigrid length estimations of paramteric shapes using DGtal library. It will output length estimations (and timings) using several algorithms for decreasing grid steps." <<std::endl << "Basic usage: "<<std::endl
 		  << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
 		  << general_opt << "\n";
       return 0;
@@ -329,17 +366,22 @@ int main( int argc, char** argv )
   //Parse options
   if (not(vm.count("shape"))) missingParam("--shape");
   std::string shapeName = vm["shape"].as<std::string>();
-    
+  double hMin  = vm["hMin"].as<double>();
+  int nbSteps = vm["steps"].as<int>();
     
   //We check that the shape is known
   unsigned int id = checkAndRetrunIndex(shapeName);
 
 
 ///////////////////////////////////
-  cout << "#h nbp true naive DSS MLP FP " <<std::endl;
+  cout << "#h nbPoints true-length L1 BLUE RosenProffit "
+       << "DSS MLP FP Time-L1 Time-BLUE Time-RosenProffitt "
+       << "Time-DSS Time-MLP Time-FP" <<std::endl;
+  cout << "# timings are given in msec." <<std::endl;
+  
   double h = 1; 
-  double step = 0.75;
-  while (h > 0.001) {
+  double step = exp( log(hMin) / (double)nbSteps);
+  while (h > hMin) {
 
     if (id ==0) ///ball
       {

@@ -1,7 +1,5 @@
 SET(DGTAL_TOOLS_SRC
   shapeGenerator
-  estimatorComparator
-  lengthEstimators
   contourGenerator
 )
 
