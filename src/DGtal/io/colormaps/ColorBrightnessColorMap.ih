@@ -140,7 +140,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color colo
 						     const PValue & max,
 						     const PValue & value )
 {
-  double h,s,v;
+  double h=0.0,s,v;
   ColorBrightnessColorMap<PValue,PDefaultColor>::RGBtoHSV( h, s, v,
 						color.red(),
 						color.green(),
