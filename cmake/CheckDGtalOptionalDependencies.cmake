@@ -31,7 +31,7 @@ ENDIF(WITH_ALL)
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 IF(WITH_GMP)
-  FIND_PACKAGE(GMP)
+  FIND_PACKAGE(GMP REQUIRED)
   IF(GMP_FOUND)
     INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
     SET(GMP_FOUND_DGTAL 1)
@@ -50,7 +50,7 @@ ENDIF(WITH_GMP)
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 IF(WITH_MAGICK)
-  FIND_PACKAGE(Magick)
+  FIND_PACKAGE(Magick REQUIRED)
   IF(MAGICK++_FOUND)
     INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
     message(STATUS "(optional) GraphicsMagick++ found." )
@@ -70,7 +70,7 @@ ENDIF(WITH_MAGICK)
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 IF(WITH_ITK)
-  FIND_PACKAGE(ITK)
+  FIND_PACKAGE(ITK REQUIRED)
   IF(ITK_FOUND)
     INCLUDE(${ITK_USE_FILE})
     MESSAGE(STATUS "(optional) ITK found ${ITK_USE_FILE}.")
@@ -87,7 +87,7 @@ ENDIF(WITH_ITK)
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 IF(WITH_CAIRO)
-  FIND_PACKAGE(Cairo)
+  FIND_PACKAGE(Cairo REQUIRED)
   IF(CAIRO_FOUND)
     INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRAIRIES})
@@ -110,7 +110,7 @@ ENDIF(WITH_CAIRO)
 # -----------------------------------------------------------------------------
 
 IF(WITH_COIN3D-SOQT)
-  find_package(COIN3D)
+  find_package(COIN3D REQUIRED)
   if ( COIN3D_FOUND )
     set(COIN3D_FOUND_DGTAL 1)
     message(STATUS "(optional) Coin3d found.")
@@ -123,7 +123,7 @@ IF(WITH_COIN3D-SOQT)
     message(STATUS "(optional) Coin3d not found." )
   endif ( COIN3D_FOUND )
   
-  find_package(SOQT)
+  find_package(SOQT REQUIRED)
   if ( SOQT_FOUND )
     SET(SOQT_FOUND_DGTAL 1)
     message(STATUS  "(optional) SoQt found. ")
@@ -151,7 +151,7 @@ endif( COIN3D_FOUND  AND SOQT_FOUND )
 # -----------------------------------------------------------------------------
 
 IF(WITH_QGLVIEWER)
-  find_package(QGLVIEWER)
+  find_package(QGLVIEWER REQUIRED)
   if(QGLVIEWER_FOUND)
     find_package(OpenGL REQUIRED)
     message(STATUS  "(optional) libQGLViewer found.")
@@ -182,7 +182,7 @@ endif(NOT WITH_VISU3D_QGLVIEWER)
 # Look for Qt (if LibqglViewer or coin3D are set).
 # -----------------------------------------------------------------------------
 
-IF( WITH_VISU3D_IV OR QGLVIEWER_FOUND)
+IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
   if ( QT4_FOUND )
     set(QT4_FOUND_DGTAL 1)
@@ -196,7 +196,7 @@ IF( WITH_VISU3D_IV OR QGLVIEWER_FOUND)
     set(QT4_FOUND_DGTAL 0)
     message(STATUS  "(optional) Qt4 not found." )
   endif ( QT4_FOUND )
-ENDIF( WITH_VISU3D_IV OR QGLVIEWER_FOUND)
+ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 
 
 
