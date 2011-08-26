@@ -78,7 +78,12 @@ testDigitization( const Shape & aShape, double h,
   typedef Z2i::SCell SCell;
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+ 
+  ASSERT( ok );
+
   SurfelAdjacency<KSpace::dimension> SAdj( true );
+
+ 
 
   // Extracts shape boundary
   SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
