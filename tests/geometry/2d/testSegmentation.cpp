@@ -28,7 +28,7 @@
 
 /**
  * Description of testSegmentation <p>
- * Aim: simple test of \ref GreedySegmentation and \ref SaturedSegmentation
+ * Aim: simple test of \ref GreedySegmentation and \ref SaturatedSegmentation
  */
 
 #include <cstdio>
@@ -52,7 +52,7 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GreedySegmentation.h"
-#include "DGtal/geometry/2d/SaturedSegmentation.h"
+#include "DGtal/geometry/2d/SaturatedSegmentation.h"
 
 
 #include "ConfigTest.h"
@@ -171,7 +171,7 @@ void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite,
 }
 
 /**
- * Satured segmentation of a (sub)range
+ * saturated segmentation of a (sub)range
  */
 template <typename Iterator, typename Board>
 void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite, 
@@ -180,7 +180,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
   typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
-	typedef SaturedSegmentation<RecognitionAlgorithm> Segmentation;
+	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
@@ -540,7 +540,7 @@ trace.info() << *start2 << " " << *stop2 << endl;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class SaturedSegmentation
+// Functions for testing class SaturatedSegmentation
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -548,7 +548,7 @@ trace.info() << *start2 << " " << *stop2 << endl;
 /**
  * Simple visual test
  */
-bool saturedSegmentationVisualTest()
+bool SaturatedSegmentationVisualTest()
 {
 
   typedef int Coordinate;
@@ -564,7 +564,7 @@ bool saturedSegmentationVisualTest()
 ///////////////////////////////////////////////////////
 // whole open curve
 
-  trace.beginBlock("Simple Satured Segmentation (mode=First)");
+  trace.beginBlock("Simple saturated Segmentation (mode=First)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -578,7 +578,7 @@ bool saturedSegmentationVisualTest()
 }
   trace.endBlock();
 
-  trace.beginBlock("Simple Satured Segmentation (mode=MostCentered)");
+  trace.beginBlock("Simple saturated Segmentation (mode=MostCentered)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -592,7 +592,7 @@ bool saturedSegmentationVisualTest()
 }
   trace.endBlock();
 
-  trace.beginBlock("Simple Satured Segmentation (mode=Last)");
+  trace.beginBlock("Simple saturated Segmentation (mode=Last)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -621,7 +621,7 @@ bool saturedSegmentationVisualTest()
 trace.info() << *start << " " << *stop << endl;
 
 
-  trace.beginBlock("Satured Segmentation of a subrange (mode=First)");
+  trace.beginBlock("saturated Segmentation of a subrange (mode=First)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -636,7 +636,7 @@ trace.info() << *start << " " << *stop << endl;
 }
   trace.endBlock();
 
-  trace.beginBlock("Satured Segmentation of a subrange (mode=MostCentered)");
+  trace.beginBlock("saturated Segmentation of a subrange (mode=MostCentered)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -651,7 +651,7 @@ trace.info() << *start << " " << *stop << endl;
 }
   trace.endBlock();
 
-  trace.beginBlock("Satured Segmentation of a subrange (mode=Last)");
+  trace.beginBlock("saturated Segmentation of a subrange (mode=Last)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc; 
@@ -777,7 +777,7 @@ trace.info() << *start << " " << *stop << endl;
 
   ConstCirculator c2(vPts2.begin(),vPts2.begin(),vPts2.end()); 
 
-  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=First)");
+  trace.beginBlock("saturated Segmentation of a closed digital curve (mode=First)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc2; 
@@ -791,7 +791,7 @@ trace.info() << *start << " " << *stop << endl;
 }
   trace.endBlock();
 
-  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=MostCentered)");
+  trace.beginBlock("saturated Segmentation of a closed digital curve (mode=MostCentered)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc2; 
@@ -805,7 +805,7 @@ trace.info() << *start << " " << *stop << endl;
 }
   trace.endBlock();
 
-  trace.beginBlock("Satured Segmentation of a closed digital curve (mode=Last)");
+  trace.beginBlock("saturated Segmentation of a closed digital curve (mode=Last)");
 {
   Board2D aBoard;
   aBoard << SetMode("PointVector", "Grid") << fc2; 
@@ -829,7 +829,7 @@ trace.info() << *start << " " << *stop << endl;
 /**
  * Simple visual test
  */
-bool saturedSegmentationTest()
+bool SaturatedSegmentationTest()
 {
 
   typedef int Coordinate;
@@ -852,9 +852,9 @@ bool saturedSegmentationTest()
   Circulator<ConstIterator> c(vPts.begin(), vPts.begin(), vPts.end() ); 
 
   typedef ArithmeticalDSS<ConstCirculator,Coordinate,4> RecognitionAlgorithm;
-	typedef SaturedSegmentation<RecognitionAlgorithm> Segmentation;
+	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
-  trace.beginBlock("Satured Segmentation");
+  trace.beginBlock("saturated Segmentation");
   trace.info() << filename << endl;
 
   RecognitionAlgorithm algo;
@@ -884,15 +884,15 @@ bool saturedSegmentationTest()
 int main(int argc, char **argv)
 {
   
-  trace.beginBlock ( "Testing class GreedyDecomposition and SaturedSegmentation" );
+  trace.beginBlock ( "Testing class GreedyDecomposition and SaturatedSegmentation" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
   bool res = greedySegmentationVisualTest()
-&& saturedSegmentationVisualTest()
-&& saturedSegmentationTest()
+&& SaturatedSegmentationVisualTest()
+&& SaturatedSegmentationTest()
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file SaturedSegmentation.h
+ * @file SaturatedSegmentation.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/07/21
  *
- * Header file for module SaturedSegmentation.cpp
+ * Header file for module SaturatedSegmentation.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(SaturedSegmentation_RECURSES)
-#error Recursive header files inclusion detected in SaturedSegmentation.h
-#else // defined(SaturedSegmentation_RECURSES)
+#if defined(SaturatedSegmentation_RECURSES)
+#error Recursive header files inclusion detected in SaturatedSegmentation.h
+#else // defined(SaturatedSegmentation_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SaturedSegmentation_RECURSES
+#define SaturatedSegmentation_RECURSES
 
-#if !defined SaturedSegmentation_h
+#if !defined SaturatedSegmentation_h
 /** Prevents repeated inclusion of headers. */
-#define SaturedSegmentation_h
+#define SaturatedSegmentation_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,10 +51,10 @@ namespace DGtal
 {
 	
   /////////////////////////////////////////////////////////////////////////////
-  // template class SaturedSegmentation
+  // template class SaturatedSegmentation
   /**
-   * Description of template class 'SaturedSegmentation' <p>
-   * \brief Aim: Computes the satured segmentation, that is
+   * Description of template class 'SaturatedSegmentation' <p>
+   * \brief Aim: Computes the saturated segmentation, that is
    * the whole set of maximal segments within a range given by 
    * a pair of ConstIterators (maximal segments are segments
    * that cannot be included in greater segments). 
@@ -74,7 +74,7 @@ namespace DGtal
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
-	typedef SaturedSegmentation<SegmentComputer> Segmentation;
+	typedef SaturatedSegmentation<SegmentComputer> Segmentation;
 
 	//input points
 	Range curve;
@@ -101,7 +101,7 @@ namespace DGtal
 
    * @endcode
    *
-   * If you want to get the satured segmentation of a part of the 
+   * If you want to get the saturated segmentation of a part of the 
    * digital curve (not the whole digital curve), you can give 
    * the range to process as a pair of iterators when calling 
    * the setSubRange() method as follow: 
@@ -135,7 +135,7 @@ namespace DGtal
    */
 
   template <typename TSegmentComputer>
-  class SaturedSegmentation
+  class SaturatedSegmentation
   {
 
 	public: 
@@ -156,9 +156,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SegmentComputerIterator
   /**
-   * Description of template class 'SaturedSegmentation::SegmentComputerIterator'
+   * Description of template class 'SaturatedSegmentation::SegmentComputerIterator'
    *  <p> \brief Aim: Specific iterator to visit all the maximal segments of a 
-   * satured segmentation. 
+   * saturated segmentation. 
    */
     class SegmentComputerIterator
     {
@@ -166,7 +166,7 @@ namespace DGtal
 			   // ------------------------- inner Types -----------------------
 
     public: 
-		  typedef typename SaturedSegmentation::SegmentComputer SegmentComputer;
+		  typedef typename SaturatedSegmentation::SegmentComputer SegmentComputer;
 		  typedef typename SegmentComputer::ConstIterator ConstIterator;
 
 			   // ------------------------- data -----------------------
@@ -175,7 +175,7 @@ namespace DGtal
       /**
        * Pointer to the segmentation
        */
-			const SaturedSegmentation<TSegmentComputer> *myS;
+			const SaturatedSegmentation<TSegmentComputer> *myS;
 
       /**
        * The current segment
@@ -217,7 +217,7 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class SaturedSegmentation<TSegmentComputer>;
+       friend class SaturatedSegmentation<TSegmentComputer>;
 			   
 
 
@@ -229,7 +229,7 @@ namespace DGtal
        * @param aSegmentComputer, an online segment recognition algorithm
        * @param aFlag, 'true' to build a valid object, 'false' otherwise
        */
-      SegmentComputerIterator( const SaturedSegmentation<TSegmentComputer> *aSegmentation,
+      SegmentComputerIterator( const SaturatedSegmentation<TSegmentComputer> *aSegmentation,
 				 const TSegmentComputer& aSegmentComputer,
          const bool& aFlag );
 
@@ -387,7 +387,7 @@ namespace DGtal
      * Default constructor.
 		 * Nb: not valid
      */
-    SaturedSegmentation() {};
+    SaturatedSegmentation() {};
 
     /**
      * Constructor.
@@ -395,7 +395,7 @@ namespace DGtal
      * @param ite, end iterator of the underlying range
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
-    SaturedSegmentation(const ConstIterator& itb, 
+    SaturatedSegmentation(const ConstIterator& itb, 
 												const ConstIterator& ite, 
 												const SegmentComputer& aSegmentComputer);
 
@@ -420,19 +420,19 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~SaturedSegmentation();
+    ~SaturatedSegmentation();
 
     /**
      * ConstIterator service.
      * @return an iterator pointing on the first segment of a digital curve.
      */
-    typename SaturedSegmentation::SegmentComputerIterator begin() const;
+    typename SaturatedSegmentation::SegmentComputerIterator begin() const;
 
     /**
      * ConstIterator service.
      * @return an iterator pointing after the last segment of a digital curve.
      */
-    typename SaturedSegmentation::SegmentComputerIterator end() const;
+    typename SaturatedSegmentation::SegmentComputerIterator end() const;
 
 
     /**
@@ -474,42 +474,42 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    SaturedSegmentation ( const SaturedSegmentation & other );
+    SaturatedSegmentation ( const SaturatedSegmentation & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    SaturedSegmentation & operator= ( const SaturedSegmentation & other );
+    SaturatedSegmentation & operator= ( const SaturatedSegmentation & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class SaturedSegmentation
+  }; // end of class SaturatedSegmentation
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'SaturedSegmentation'.
+   * Overloads 'operator<<' for displaying objects of class 'SaturatedSegmentation'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'SaturedSegmentation' to write.
+   * @param object the object of class 'SaturatedSegmentation' to write.
    * @return the output stream after the writing.
    */
   template <typename SegmentComputer>
   std::ostream&
-  operator<< ( std::ostream & out, const SaturedSegmentation<SegmentComputer> & object );
+  operator<< ( std::ostream & out, const SaturatedSegmentation<SegmentComputer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/SaturedSegmentation.ih"
+#include "DGtal/geometry/2d/SaturatedSegmentation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SaturedSegmentation_h
+#endif // !defined SaturatedSegmentation_h
 
-#undef SaturedSegmentation_RECURSES
-#endif // else defined(SaturedSegmentation_RECURSES)
+#undef SaturatedSegmentation_RECURSES
+#endif // else defined(SaturatedSegmentation_RECURSES)
