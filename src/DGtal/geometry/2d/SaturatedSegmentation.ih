@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file SaturedSegmentation.ih
+ * @file SaturatedSegmentation.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/07/21
  *
- * Implementation of inline methods defined in SaturedSegmentation.h
+ * Implementation of inline methods defined in SaturatedSegmentation.h
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// class SaturedSegmentation::SegmentComputerIterator
+// class SaturatedSegmentation::SegmentComputerIterator
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -50,7 +50,7 @@
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
 {
   typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
   this->doesIntersectNext( it, itb, ite, Type() );
@@ -62,7 +62,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInter
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
 {
 		ConstIterator previousIt(it); 
     if ( (it != itb)&&(it != ite) ) {
@@ -81,7 +81,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInter
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
 {
 		this->doesIntersectNext(it);
 }
@@ -92,7 +92,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInter
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
 		ConstIterator previousIt(it); --previousIt;
 
@@ -107,7 +107,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInter
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFirstMaximalSegment()
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFirstMaximalSegment()
 {
   if (myS->myMode == "First") {
     DGtal::firstMaximalSegment(mySegmentComputer, myS->myStart, myS->myBegin, myS->myEnd);
@@ -127,7 +127,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFirst
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment()
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment()
 {
   typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
   this->initLastMaximalSegment( Type() );
@@ -139,7 +139,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastM
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(IteratorType)
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(IteratorType)
 {
   ConstIterator i(myS->myStop); --i; 
   if (myS->myMode == "First") {
@@ -162,7 +162,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastM
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(CirculatorType)
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(CirculatorType)
 {
   if (myS->myStop == myS->myStart) {
     this->initFirstMaximalSegment(); 
@@ -180,7 +180,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastM
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaximalSegment()
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaximalSegment()
 {
 
 	if ( myFlagIsLast ) { //if end
@@ -220,8 +220,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaxim
  */
  template <typename TSegmentComputer>
 inline
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
-	const SaturedSegmentation<TSegmentComputer> *s,
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
+	const SaturatedSegmentation<TSegmentComputer> *s,
 	const TSegmentComputer& aSegmentComputer,
   const bool& isValid )
   : myS( s ), 
@@ -264,7 +264,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCo
  */
   template <typename TSegmentComputer>
 inline
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
   : myS( other.myS ), 
 		mySegmentComputer( other.mySegmentComputer ),
@@ -284,8 +284,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCo
  */
   template <typename TSegmentComputer>
 inline
-typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
+typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 ( const SegmentComputerIterator & other )
 {
   if ( this != &other )
@@ -308,7 +308,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
  */
   template <typename TSegmentComputer>
 inline
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
 {
 }
 
@@ -323,7 +323,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentC
   template <typename TSegmentComputer>
 inline
 const TSegmentComputer&
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
 {
   return mySegmentComputer;
 }
@@ -334,7 +334,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator*
   template <typename TSegmentComputer>
 inline
 const TSegmentComputer*
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
 {
   return &mySegmentComputer;
 }
@@ -345,7 +345,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator-
   template <typename TSegmentComputer>
 inline
 TSegmentComputer
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::get() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::get() const
 {
   return mySegmentComputer;
 }
@@ -357,8 +357,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::get() con
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator & 
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
+typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator & 
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
 {
   this->nextMaximalSegment();
   return *this;
@@ -375,7 +375,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator+
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
 ( const SegmentComputerIterator & other ) const
 {
  if ( isValid() ) 
@@ -397,7 +397,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
 ( const SegmentComputerIterator & other ) const
 {
   return !(*this == other);
@@ -410,7 +410,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator!
   template <typename TSegmentComputer>
 inline
 const bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
 {
   return myFlagIntersectNext;
 }
@@ -418,7 +418,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersect
   template <typename TSegmentComputer>
 inline
 const bool
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;
 }
@@ -428,7 +428,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersect
   template <typename TSegmentComputer>
 inline
 const typename TSegmentComputer::ConstIterator
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
 {
   return mySegmentComputer.begin();
 }
@@ -436,7 +436,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin() c
   template <typename TSegmentComputer>
 inline
 const typename TSegmentComputer::ConstIterator
-DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
 {
   return mySegmentComputer.end();
 }
@@ -444,7 +444,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() con
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// class SaturedSegmentation
+// class SaturatedSegmentation
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -455,7 +455,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() con
  * Constructor.
  */
   template <typename TSegmentComputer>
-DGtal::SaturedSegmentation<TSegmentComputer>::SaturedSegmentation
+DGtal::SaturatedSegmentation<TSegmentComputer>::SaturatedSegmentation
 (const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
  : myBegin(itb),
 	 myEnd(ite),
@@ -470,7 +470,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::SaturedSegmentation
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::setSubRange
+DGtal::SaturatedSegmentation<TSegmentComputer>::setSubRange
 (const ConstIterator& itb, const ConstIterator& ite)
 {
   myStart = itb;
@@ -481,7 +481,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::setSubRange
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::setMode
+DGtal::SaturatedSegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
   myMode = aMode; 
@@ -493,7 +493,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::setMode
  */
   template <typename TSegmentComputer>
 inline
-DGtal::SaturedSegmentation<TSegmentComputer>::~SaturedSegmentation()
+DGtal::SaturatedSegmentation<TSegmentComputer>::~SaturatedSegmentation()
 {
 }
 
@@ -504,8 +504,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::~SaturedSegmentation()
  */
   template <typename TSegmentComputer>
 inline
-typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator 
-DGtal::SaturedSegmentation<TSegmentComputer>::begin() const
+typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::SaturatedSegmentation<TSegmentComputer>::begin() const
 {
   return SegmentComputerIterator(this, mySegmentComputer, true);
 }
@@ -517,8 +517,8 @@ DGtal::SaturedSegmentation<TSegmentComputer>::begin() const
  */
   template <typename TSegmentComputer>
 inline
-typename DGtal::SaturedSegmentation<TSegmentComputer>::SegmentComputerIterator 
-DGtal::SaturedSegmentation<TSegmentComputer>::end() const
+typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::SaturatedSegmentation<TSegmentComputer>::end() const
 {
   return SegmentComputerIterator(this, mySegmentComputer, false);
 }
@@ -531,9 +531,9 @@ DGtal::SaturedSegmentation<TSegmentComputer>::end() const
   template <typename TSegmentComputer>
 inline
 void
-DGtal::SaturedSegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) const
+DGtal::SaturatedSegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[SaturedSegmentation]";
+  out << "[SaturatedSegmentation]";
 }
 
 /**
@@ -543,7 +543,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out )
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturedSegmentation<TSegmentComputer>::isValid() const
+DGtal::SaturatedSegmentation<TSegmentComputer>::isValid() const
 {
     return true;
 }
@@ -557,7 +557,7 @@ DGtal::SaturedSegmentation<TSegmentComputer>::isValid() const
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const SaturedSegmentation<TSegmentComputer> & object )
+		  const SaturatedSegmentation<TSegmentComputer> & object )
 {
   object.selfDisplay( out );
   return out;
