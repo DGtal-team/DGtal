@@ -7,22 +7,13 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-
 cmake_minimum_required (VERSION 2.6) 
 
-
 # -----------------------------------------------------------------------------
-# Display some information
-# -----------------------------------------------------------------------------
-
-
-message(STATUS "-------------------------------------------------------------------------------")
-
-# -----------------------------------------------------------------------------
-# Define variables and cmake parameters
+# Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
 # Look for modules
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 4)
@@ -31,6 +22,7 @@ SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
+message(STATUS "-------------------------------------------------------------------------------")
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
@@ -71,16 +63,16 @@ endforeach()
 # Doxygen doc target
 # -----------------------------------------------------------------------------
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
-INCLUDE("${CMAKE_MODULE_PATH}/doxygen.cmake")
-INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
+INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
 # -----------------------------------------------------------------------------
 CONFIGURE_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake"
-  IMMEDIATE @ONLY)
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake
+  @ONLY)
 ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
@@ -118,8 +110,8 @@ ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" 
-  "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
+  ${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -131,7 +123,7 @@ ADD_CUSTOM_TARGET(distclean
 # CPack Configurations
 #------------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
+INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
 
 # -----------------------------------------------------------------------------
 # Check CPP0X
@@ -179,7 +171,7 @@ ENDIF(BUILD_EXAMPLES)
 #--- Headers installation
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
-INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
+INCLUDE(${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake)
 
 # -----------------------------------------------------------------------------
 # CTest options
