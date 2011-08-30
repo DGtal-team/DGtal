@@ -106,9 +106,11 @@ namespace YYY
     typedef typename T::InnerType InnerType;
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-    // 2. then check the presence of operators and methods with
+    // 2. then check the presence of static members, operators and methods with
     BOOST_CONCEPT_USAGE( XXX )
     {
+      // Static members of type A can be tested with
+      ConceptUtils::sameType( myA, T::staticMember );
       // Method dummy should take parameter myA of type A and return
       // something of type B
       ConceptUtils::sameType( myB, myX.dummy( myA ) );
@@ -116,7 +118,7 @@ namespace YYY
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX;
+    T myX; // only if T is default constructible.
     A myA;
     B myB;
     
