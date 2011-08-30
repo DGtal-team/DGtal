@@ -294,7 +294,7 @@ DGtal::FreemanChain<TInteger>::previous( unsigned int aPos ) const
  * @param aCode the code.
  */
 template <typename TInteger>
-INLINE
+inline
 void
 DGtal::FreemanChain<TInteger>::displacement( int & dx, int & dy, unsigned int aCode )
 {
@@ -312,7 +312,7 @@ DGtal::FreemanChain<TInteger>::displacement( int & dx, int & dy, unsigned int aC
  * Returns the displacement vector of the Freeman code.
  */
 template <typename TInteger>
-INLINE
+inline
 typename DGtal::PointVector<2,TInteger>
 DGtal::FreemanChain<TInteger>::displacement( unsigned int aCode )
 {
@@ -351,7 +351,7 @@ DGtal::FreemanChain<TInteger>::displacement( unsigned int aCode )
  * @return the turned code.
  */
 template <typename TInteger>
-INLINE
+inline
 unsigned int
 DGtal::FreemanChain<TInteger>::turnedCode( unsigned int aCode, bool ccw )
 {
@@ -386,7 +386,7 @@ DGtal::FreemanChain<TInteger>::movePointFromFC(PointI2 & aPoint, unsigned int aC
  * @return the output stream after the writing.
  */
 template <typename TInteger>
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const FreemanChain<TInteger> & aObject )
