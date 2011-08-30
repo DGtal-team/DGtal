@@ -107,12 +107,11 @@ namespace DGtal
     BOOST_CONCEPT_USAGE( CSpace )
     {
       //Should have a static dimnesion.
-      ConceptUtils::sameType( myDim, myX.dimension );
+      ConceptUtils::sameType( myDim, T::dimension );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX;
     Dimension myDim;
 
     // ------------------------- Internals ------------------------------------
