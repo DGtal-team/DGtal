@@ -114,17 +114,14 @@ namespace DGtal
    * q.at(3) = -5   // q = {0, 0, 0, -5, 0}
    * r =  p + q ;   //  r = {0, 2, 0, -5, 0}
    *
-   * double d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
    * ...
    * @endcode
-   * @todo continue snippet
    *
    * @see testPointVector.cpp
-   * @tparam T the Ring class used to specify the arithmetic computations (default type = int).
-   * @tparam TDimension the type used to represent indices of coordinates.
+
+   * @tparam dim the dimension of the space (i.e. the number of components or of coordinates)
+   * @tparam TComponent the ring used to specify the arithmetic computations (default type = int).
    *
-   * @TODO rename T in TRing; rename Component and UnsignedComponent (uniform name with space)
-   *       correct all the use of size_t, Dimension, .....
    */
   template < DGtal::Dimension dim, typename TComponent >
   class PointVector
