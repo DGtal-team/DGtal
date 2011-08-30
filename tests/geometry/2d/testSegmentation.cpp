@@ -764,7 +764,7 @@ trace.info() << *start << " " << *stop << endl;
   trace.endBlock();
 
 /////////////////////////////////////////////////////////////
-// closed digital curve 
+// closed digital curve with circulators
 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 1112121212121221212121221212212222232232323332333333332333332330333033003030000010001001001000100010101010111" << endl;
@@ -774,8 +774,68 @@ trace.info() << *start << " " << *stop << endl;
 
   Curve vPts2; 
   vPts2.assign( fc2.begin(), fc2.end() ); 
+  vPts2.insert( vPts2.end(), fc2.begin(), fc2.end() );
+  vPts2.insert( vPts2.end(), fc2.begin(), fc2.end() );
 
-  ConstCirculator c2(vPts2.begin(),vPts2.begin(),vPts2.end()); 
+  RAConstIterator start2 = vPts2.begin() + fc2.size()+1; 
+  RAConstIterator stop2 = start2 + fc2.size()+1; 
+
+  trace.info() << *start2 << " " << *stop2 << endl;
+
+  trace.beginBlock("Satured Segmentation of a duplicated range (mode2)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "First",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithIt2.eps");
+}
+  trace.endBlock();
+
+  trace.beginBlock("Satured Segmentation of a duplicated range (mode3)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "MostCentered",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithIt3.eps");
+}
+  trace.endBlock();
+
+
+  trace.beginBlock("Satured Segmentation of a duplicated range (mode4)");
+{
+  Board2D aBoard;
+  aBoard << SetMode("PointVector", "Grid") << fc2; 
+  aBoard << SetMode("PointVector", "Paving") << *start2 << *stop2; 
+
+  segmentationIntoMaximalDSSs<RAConstIterator,Board2D>
+    (vPts2.begin(),vPts2.end(),
+     start2,stop2,
+     "Last",aBoard);   
+
+  aBoard.saveEPS("MSClosedCurveWithIt4.eps");
+}
+  trace.endBlock();
+
+
+/////////////////////////////////////////////////////////////////
+////////// closed digital curve with circulators
+
+  Curve vPts3; 
+  vPts3.assign( fc2.begin(), fc2.end() ); 
+
+  ConstCirculator c2(vPts3.begin(),vPts3.begin(),vPts3.end()); 
 
   trace.beginBlock("saturated Segmentation of a closed digital curve (mode=First)");
 {

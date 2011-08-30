@@ -129,14 +129,51 @@ inline
 void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment()
 {
-  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
-  this->initLastMaximalSegment( Type() );
+//  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
+//  this->initLastMaximalSegment( Type() );
+
+  ConstIterator i(myS->myStop); 
+
+  if (isNotEmpty(myS->myStop,myS->myEnd)) {
+
+    if (myS->myMode == "First") {
+      DGtal::firstMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    } 
+    else
+    if (myS->myMode == "Last") {
+      DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    } 
+    else { // (myS->myMode == "MostCentered") 
+      DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    }
+
+    DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
+
+  } else { //processing of a whole linear range
+
+    --i;
+    if (myS->myMode == "First") {
+      DGtal::firstMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    } 
+    else
+    if (myS->myMode == "Last") {
+      DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    } 
+    else { // (myS->myMode == "MostCentered") 
+      DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+    }
+
+  }
+
+  myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
+  myLastMaximalSegmentEnd = mySegmentComputer.end();  
+
 }
 
 /**
  * Specialization for iterator.
  */
-  template <typename TSegmentComputer>
+/*  template <typename TSegmentComputer>
 inline
 void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(IteratorType)
@@ -155,11 +192,11 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
   myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
   myLastMaximalSegmentEnd = mySegmentComputer.end(); 
 }
-
+*/
 /**
  * Specialization for circulator.
  */
-  template <typename TSegmentComputer>
+/*  template <typename TSegmentComputer>
 inline
 void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLastMaximalSegment(CirculatorType)
@@ -173,7 +210,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
     this->initLastMaximalSegment( IteratorType() ); 
   }
 }
-
+*/
 /**
  * Goes to the next segment.
  */
