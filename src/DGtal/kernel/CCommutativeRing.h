@@ -94,6 +94,8 @@ namespace DGtal
    *   DGtal::int32_t, DGtal::int64_t, DGtal::int8_t; mpz_class
    *
    * <p> Notes <br>
+   
+   * @todo Complete doc and test.
    */
   template <typename Integer>
   struct CCommutativeRing
