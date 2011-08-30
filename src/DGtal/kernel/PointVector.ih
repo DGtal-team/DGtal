@@ -65,18 +65,18 @@ std::bitset<dim> DGtal::setDimensionsNotIn( const Container &dimensions )
   return t1;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector()
+DGtal::PointVector<dim, TComponent>::PointVector()
 {
   for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 template<typename Functor>
 inline
-DGtal::PointVector<dim, Component>::PointVector(const Self& apoint1,
+DGtal::PointVector<dim, TComponent>::PointVector(const Self& apoint1,
 						const Self& apoint2,
 						const Functor& f)
 {
@@ -84,23 +84,23 @@ DGtal::PointVector<dim, Component>::PointVector(const Self& apoint1,
     myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::~PointVector()
+DGtal::PointVector<dim, TComponent>::~PointVector()
 {}
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector( const Component * ptrValues )
+DGtal::PointVector<dim, TComponent>::PointVector( const Component * ptrValues )
 {
   // The problem here is that we have no guaranty on the size of init !!
   for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = ptrValues[ i ];
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector( const Component & x, const Component & y )
+DGtal::PointVector<dim, TComponent>::PointVector( const Component & x, const Component & y )
 {
   ASSERT( dim >= 2 );
   myArray[ 0 ] = x;
@@ -109,9 +109,9 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x, const Comp
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector( const Component & x,
+DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
 						 const Component & y,
 						 const Component & z )
 {
@@ -123,9 +123,9 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x,
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector( const Component & x,
+DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
 						 const Component & y,
 						 const Component & z,
 						 const Component & t )
@@ -140,9 +140,9 @@ DGtal::PointVector<dim, Component>::PointVector( const Component & x,
 }
 //------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector(std::initializer_list<Component> init)
+DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component> init)
 {
   unsigned int i = 0;
   for (const Component *p = init.begin (); p != init.end () && i < dim; ++p, ++i)
@@ -152,116 +152,120 @@ DGtal::PointVector<dim, Component>::PointVector(std::initializer_list<Component>
 }
 #endif // CPP0X_INITIALIZER_LIST
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>::PointVector ( const Self & other )
+DGtal::PointVector<dim, TComponent>::PointVector ( const Self & other )
   : myArray( other.myArray )
 {}
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::Iterator
-DGtal::PointVector<dim, Component>::begin()
+typename DGtal::PointVector<dim, TComponent>::Iterator
+DGtal::PointVector<dim, TComponent>::begin()
 {
   return myArray.begin();
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::Iterator
-DGtal::PointVector<dim, Component>::end()
+typename DGtal::PointVector<dim, TComponent>::Iterator
+DGtal::PointVector<dim, TComponent>::end()
 {
   return myArray.end();
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::ConstIterator
-DGtal::PointVector<dim, Component>::begin() const
+typename DGtal::PointVector<dim, TComponent>::ConstIterator
+DGtal::PointVector<dim, TComponent>::begin() const
 {
   return myArray.begin();
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::ConstIterator
-DGtal::PointVector<dim, Component>::end() const
+typename DGtal::PointVector<dim, TComponent>::ConstIterator
+DGtal::PointVector<dim, TComponent>::end() const
 {
   return myArray.end();
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 typename DGtal::Dimension
-DGtal::PointVector<dim, Component>::size()
+DGtal::PointVector<dim, TComponent>::size()
 {
   return dim;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-const Component&
-DGtal::PointVector<dim, Component>::at ( Dimension i ) const
+const typename DGtal::PointVector<dim, TComponent>::Component &
+DGtal::PointVector<dim, TComponent>::at ( Dimension i ) const
 {
   ASSERT ( i < dim );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-inline Component& DGtal::PointVector<dim, Component>::at( Dimension i )
+template<Dimension dim, typename TComponent>
+inline 
+typename DGtal::PointVector<dim, TComponent>::Component &
+DGtal::PointVector<dim, TComponent>::at( Dimension i )
 {
   ASSERT ( i < dim );
   return myArray.at( i );
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-const Component&
-DGtal::PointVector<dim, Component>::operator[]( Dimension i ) const
+const typename DGtal::PointVector<dim, TComponent>::Component &
+DGtal::PointVector<dim, TComponent>::operator[]( Dimension i ) const
 {
   ASSERT ( i < dim );
   return myArray[i];
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-inline Component& DGtal::PointVector<dim, Component>::operator[]( Dimension i )
+template<Dimension dim, typename TComponent>
+inline 
+typename DGtal::PointVector<dim, TComponent>::Component &
+DGtal::PointVector<dim, TComponent>::operator[]( Dimension i )
 {
   ASSERT ( i < dim );
   return myArray[i];
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::operator*= ( Component coeff )
+template<Dimension dim, typename TComponent>
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::operator*= ( Component coeff )
 {
   for ( Dimension i = 0; i < myArray.size(); ++i )
     myArray[ i ] *= coeff;
   return *this;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
-DGtal::PointVector<dim, Component>
-DGtal::PointVector<dim, Component>::operator* ( Component coeff )
+template<Dimension dim, typename TComponent>
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::operator* ( Component coeff )
 {
   Self v = *this;
   v *= coeff;
   return v;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::operator= ( const Self & pv )
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::operator= ( const Self & pv )
 {
   myArray = pv.myArray;
   return *this;
 }
 //------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::partialCopy
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::partialCopy
   ( const Self & pv,
     std::initializer_list<Dimension> dimensions )
 {
@@ -272,10 +276,10 @@ DGtal::PointVector<dim, Component>::partialCopy
   return partialCopy(pv, dims);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::partialCopyInv
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::partialCopyInv
 ( const Self & pv,
   std::initializer_list<Dimension> dimensions )
 {
@@ -287,10 +291,10 @@ DGtal::PointVector<dim, Component>::partialCopyInv
 }
 #endif
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::partialCopy
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::partialCopy
 ( const Self & pv,
   const std::vector<Dimension> &dimensions)
 {
@@ -302,10 +306,10 @@ DGtal::PointVector<dim, Component>::partialCopy
   return *this;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::partialCopyInv
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::partialCopyInv
 ( const Self & pv,
   const std::vector<Dimension> &dimensions)
 {
@@ -317,10 +321,10 @@ DGtal::PointVector<dim, Component>::partialCopyInv
   return *this;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::partialEqual
+DGtal::PointVector<dim, TComponent>::partialEqual
 ( const Self & pv,
   const std::vector<Dimension> &dimensions ) const
 {
@@ -332,10 +336,10 @@ DGtal::PointVector<dim, Component>::partialEqual
   return true;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::partialEqualInv
+DGtal::PointVector<dim, TComponent>::partialEqualInv
 ( const Self & pv,
   const std::vector<Dimension> &dimensions ) const
 {
@@ -347,129 +351,129 @@ DGtal::PointVector<dim, Component>::partialEqualInv
   return true;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator==( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator==( const Self & pv ) const
 {
   return (myArray == pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator!= ( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator!= ( const Self & pv ) const
 {
   return (myArray != pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator< ( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator< ( const Self & pv ) const
 {
   return (myArray < pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator<= ( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator<= ( const Self & pv ) const
 {
   return (myArray <= pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator> ( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator> ( const Self & pv ) const
 {
   return (myArray > pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::operator>= ( const Self & pv ) const
+DGtal::PointVector<dim, TComponent>::operator>= ( const Self & pv ) const
 {
   return (myArray >= pv.myArray);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::operator+= ( const Self& v )
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::operator+= ( const Self& v )
 {
   for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] += v[ i ];
   return *this;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>
-DGtal::PointVector<dim, Component>::operator+ ( const Self& v ) const
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::operator+ ( const Self& v ) const
 {
   return Self(*this, v, std::plus<Component>());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>&
-DGtal::PointVector<dim, Component>::operator-= ( const Self& v )
+DGtal::PointVector<dim, TComponent>&
+DGtal::PointVector<dim, TComponent>::operator-= ( const Self& v )
 {
   for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] -= v[ i ];
   return *this;
 }//------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::Component
-DGtal::PointVector<dim, Component>::dot( const Self& v )
+typename DGtal::PointVector<dim, TComponent>::Component
+DGtal::PointVector<dim, TComponent>::dot( const Self& v )
 {
-  Component dotprod= IntegerTraits<Component>::ZERO;
+  Component dotprod= NumberTraits<Component>::ZERO;
   for ( Dimension i = 0; i < dim; ++i )
     dotprod += this->myArray[ i ]*v[ i ];
   return dotprod;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>
-DGtal::PointVector<dim, Component>::operator- ( const Self& v ) const
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::operator- ( const Self& v ) const
 {
   return Self(*this, v, MinusFunctor<Component>());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim, Component>::reset()
+DGtal::PointVector<dim, TComponent>::reset()
 {
   for ( Dimension i = 0; i < myArray.size(); ++i )
     myArray[ i ] = 0;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>
-DGtal::PointVector<dim, Component>::inf( const Self& apoint ) const
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::inf( const Self& apoint ) const
 {
   return Self(*this, apoint, MinFunctor<Component>());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim, Component>
-DGtal::PointVector<dim, Component>::sup( const Self& apoint ) const
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::sup( const Self& apoint ) const
 {
   return Self(*this, apoint, MaxFunctor<Component>());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::isLower( const Self& p ) const
+DGtal::PointVector<dim, TComponent>::isLower( const Self& p ) const
 {
   for ( Dimension i = 0; i < myArray.size(); ++i )
     if ( p[ i ] < myArray[ i ] )
@@ -477,10 +481,10 @@ DGtal::PointVector<dim, Component>::isLower( const Self& p ) const
   return true;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::isUpper( const Self& p ) const
+DGtal::PointVector<dim, TComponent>::isUpper( const Self& p ) const
 {
   for ( Dimension i = 0; i < myArray.size(); ++i )
     if ( p[ i ] > myArray[ i ] )
@@ -488,42 +492,42 @@ DGtal::PointVector<dim, Component>::isUpper( const Self& p ) const
   return true;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-Component
-DGtal::PointVector<dim, Component>::max(  ) const
+typename DGtal::PointVector<dim, TComponent>::Component
+DGtal::PointVector<dim, TComponent>::max(  ) const
 {
   return  *std::max_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-Component
-DGtal::PointVector<dim, Component>::min( ) const
+typename DGtal::PointVector<dim, TComponent>::Component
+DGtal::PointVector<dim, TComponent>::min( ) const
 {
   return  *std::min_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::Iterator
-DGtal::PointVector<dim, Component>::maxElement(  ) 
+typename DGtal::PointVector<dim, TComponent>::Iterator
+DGtal::PointVector<dim, TComponent>::maxElement(  ) 
 {
   return  std::max_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::Iterator
-DGtal::PointVector<dim, Component>::minElement( ) 
+typename DGtal::PointVector<dim, TComponent>::Iterator
+DGtal::PointVector<dim, TComponent>::minElement( ) 
 {
   return  std::min_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 double
-DGtal::PointVector<dim, Component>::norm (const
+DGtal::PointVector<dim, TComponent>::norm (const
 					  typename Self::NormType aType ) const
 {
   double tmp = 0.0;
@@ -534,28 +538,28 @@ DGtal::PointVector<dim, Component>::norm (const
     {
     case L_2:
       for ( Dimension i = 0; i < dimension; i++ )
-        tmp += IntegerTraits<Component>::castToDouble(at ( i )) *
-	  IntegerTraits<Component>::castToDouble(at ( i ));
+        tmp += NumberTraits<Component>::castToDouble(at ( i )) *
+	  NumberTraits<Component>::castToDouble(at ( i ));
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
       for ( Dimension i = 0; i < dimension; i++ )
-        tmp += fabs (  IntegerTraits<Component>::castToDouble(at( i ) ));
+        tmp += fabs (  NumberTraits<Component>::castToDouble(at( i ) ));
       break;
     case L_infty:
-      tmp = IntegerTraits<Component>::castToDouble( at( 0 ));
+      tmp = NumberTraits<Component>::castToDouble( at( 0 ));
       for ( Dimension i = 1; i < dimension; i++ )
-        if ( tmp < fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ) ))
-          tmp = fabs ( IntegerTraits<Component>::castToDouble(at ( i ) ));
+        if ( tmp < fabs ( NumberTraits<Component>::castToDouble(at ( i ) ) ))
+          tmp = fabs ( NumberTraits<Component>::castToDouble(at ( i ) ));
       break;
   }
   return tmp;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::UnsignedComponent
-DGtal::PointVector<dim, Component>::norm1() const
+typename DGtal::PointVector<dim, TComponent>::UnsignedComponent
+DGtal::PointVector<dim, TComponent>::norm1() const
 {
   ASSERT ( dimension > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
@@ -564,10 +568,10 @@ DGtal::PointVector<dim, Component>::norm1() const
   return val;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-typename DGtal::PointVector<dim, Component>::UnsignedComponent
-DGtal::PointVector<dim, Component>::normInfinity() const
+typename DGtal::PointVector<dim, TComponent>::UnsignedComponent
+DGtal::PointVector<dim, TComponent>::normInfinity() const
 {
   ASSERT ( dimension > 0 );
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
@@ -581,10 +585,10 @@ DGtal::PointVector<dim, Component>::normInfinity() const
   return val;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
-DGtal::PointVector<dim,Component>
-DGtal::PointVector<dim,Component>::diagonal( Component val )
+DGtal::PointVector<dim,TComponent>
+DGtal::PointVector<dim,TComponent>::diagonal( Component val )
 {
   Self p;
   for ( Dimension i = 0; i < dim; ++i )
@@ -592,20 +596,20 @@ DGtal::PointVector<dim,Component>::diagonal( Component val )
   return p;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim,typename Component>
+template<Dimension dim,typename TComponent>
 inline
-DGtal::PointVector<dim,Component>
-DGtal::PointVector<dim,Component>::base( Dimension k, Component val )
+DGtal::PointVector<dim,TComponent>
+DGtal::PointVector<dim,TComponent>::base( Dimension k, Component val )
 {
   Self p;
   p.myArray[ k ] = val;
   return p;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim,typename Component>
+template<Dimension dim,typename TComponent>
 inline
 void 
-DGtal::PointVector<dim,Component>::selfDisplay( std::ostream & out ) const
+DGtal::PointVector<dim,TComponent>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";
   for (Dimension i = 0; i < dimension ; ++i)
@@ -613,10 +617,10 @@ DGtal::PointVector<dim,Component>::selfDisplay( std::ostream & out ) const
   out << "}";
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 DGtal::DrawableWithBoard2D*
-DGtal::PointVector<dim, Component>::defaultStyle( std::string mode) const
+DGtal::PointVector<dim, TComponent>::defaultStyle( std::string mode) const
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
     return new DefaultDrawStylePaving;
@@ -624,39 +628,39 @@ DGtal::PointVector<dim, Component>::defaultStyle( std::string mode) const
     return new DefaultDrawStyleGrid;  
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 std::string
-DGtal::PointVector<dim, Component>::styleName() const
+DGtal::PointVector<dim, TComponent>::styleName() const
 {
   return "PointVector";
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPaving( Board2D & board ) const
+DGtal::PointVector<dim,TComponent>::selfDrawAsPaving( Board2D & board ) const
 {
   ASSERT(dim == 2);
-  board.drawRectangle( (float) IntegerTraits<Component>::castToInt64_t(myArray[0]) - 0.5f, 
- 		       (float) IntegerTraits<Component>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) NumberTraits<Component>::castToInt64_t(myArray[0]) - 0.5f, 
+ 		       (float) NumberTraits<Component>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGrid( Board2D & board ) const
+DGtal::PointVector<dim,TComponent>::selfDrawAsGrid( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.setPenColor(Color::Black);
-  board.fillCircle((float) IntegerTraits<Component>::castToInt64_t(myArray[0]), 
-		   (float) IntegerTraits<Component>::castToInt64_t(myArray[1]),0.1);
+  board.fillCircle((float) NumberTraits<Component>::castToInt64_t(myArray[0]), 
+		   (float) NumberTraits<Component>::castToInt64_t(myArray[1]),0.1);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDraw( Board2D & board ) const
+DGtal::PointVector<dim,TComponent>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
@@ -673,10 +677,10 @@ DGtal::PointVector<dim,Component>::selfDraw( Board2D & board ) const
     }
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim, Component>::selfDraw(Board2D & board,
+DGtal::PointVector<dim, TComponent>::selfDraw(Board2D & board,
 					     const Self &apoint) const
 {
   ASSERT(dim == 2);
@@ -696,44 +700,44 @@ DGtal::PointVector<dim, Component>::selfDraw(Board2D & board,
 
     
 
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingDisplay3D( DGtal::Display3D & display ) const
+DGtal::PointVector<dim,TComponent>::selfDrawAsPavingDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
-  display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		   IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		   IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
+  display.addVoxel(NumberTraits<Component>::castToInt64_t(myArray[0]),
+		   NumberTraits<Component>::castToInt64_t(myArray[1]),
+		   NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
 }
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsPavingWiredDisplay3D( DGtal::Display3D & display ) const
+DGtal::PointVector<dim,TComponent>::selfDrawAsPavingWiredDisplay3D( DGtal::Display3D & display ) const
 {
   ASSERT(dim == 3);
-  display.addVoxel(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor(),0.5, true);
+  display.addVoxel(NumberTraits<Component>::castToInt64_t(myArray[0]),
+		  NumberTraits<Component>::castToInt64_t(myArray[1]),
+		  NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor(),0.5, true);
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawAsGridDisplay3D( Display3D & display ) const
+DGtal::PointVector<dim,TComponent>::selfDrawAsGridDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
-  display.addPoint(IntegerTraits<Component>::castToInt64_t(myArray[0]),
-		  IntegerTraits<Component>::castToInt64_t(myArray[1]),
-  		  IntegerTraits<Component>::castToInt64_t(myArray[2]),display.getLineColor());
+  display.addPoint(NumberTraits<Component>::castToInt64_t(myArray[0]),
+		  NumberTraits<Component>::castToInt64_t(myArray[1]),
+  		  NumberTraits<Component>::castToInt64_t(myArray[2]),display.getLineColor());
 
 }
 
 
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display ) const
+DGtal::PointVector<dim,TComponent>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
  
@@ -758,10 +762,10 @@ DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display ) cons
 
 
 
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 void
-DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display,  const Self &aPoint ) const
+DGtal::PointVector<dim,TComponent>::selfDrawDisplay3D( Display3D & display,  const Self &aPoint ) const
 {
   ASSERT(dim == 3);
   
@@ -772,20 +776,20 @@ DGtal::PointVector<dim,Component>::selfDrawDisplay3D( Display3D & display,  cons
 
 
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & out,
-		   const  PointVector<dim, Component>& object )
+		   const  PointVector<dim, TComponent>& object )
 {
   object.selfDisplay( out );
   return out;
 }
 //------------------------------------------------------------------------------
-template<Dimension dim, typename Component>
+template<Dimension dim, typename TComponent>
 inline
 bool
-DGtal::PointVector<dim, Component>::isValid() const
+DGtal::PointVector<dim, TComponent>::isValid() const
 {
   return true;
 }

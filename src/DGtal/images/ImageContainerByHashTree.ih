@@ -174,10 +174,7 @@ namespace DGtal
     Node* n = getNode ( key );
     if ( n )
     {
-      //cerr << "Node already exists" ;
       n->getObject() = value;
-      //cerr << " return" << endl;
-      //n->setObject(value);
       return;
     }
 
@@ -190,7 +187,6 @@ namespace DGtal
       n = getNode ( iterKey );
       if ( n )
       {
-        //  cerr <<"Node found" << endl;
         Value tempVal = n->getObject();
         if ( tempVal == value )
           return;
@@ -219,13 +215,11 @@ namespace DGtal
       iterKey >>= dim;
     }
     addNode ( value, key );
-    //    cerr <<" if there's a leaf below the requested node"<<endl;
     unsigned int nbRecur = myTreeDepth - getKeyDepth ( key ) + 1;
     HashKey children[N];
     myMorton.childrenKeys ( key, children );
     for ( unsigned int i = 0; i < N; ++i )
       recursiveRemoveNode ( children[i], nbRecur );
-    //cerr << "ImageContainerByHashTree<"<<dim<<">::setValue : return" <<endl;
 
     return;
 
@@ -255,9 +249,7 @@ namespace DGtal
         return n->getObject();
       iterKey >>= dim;
     }
-
     //if the node is deeper than the one requested
-    //cerr << "blendChildren() called" << endl;
     return blendChildren ( key );
   }
 
@@ -284,9 +276,6 @@ namespace DGtal
         return n->getObject();
       iterKey >>= dim;
     }
-    cerr << "the node should be found by now" << endl;
-    //if the node is deeper than the one requested
-    //cerr << "blendChildren() called" << endl;
     return 0;
   }
 
@@ -317,7 +306,6 @@ namespace DGtal
           return iter->getObject();
         iter = iter->getNext();
       }
-      //key3 << dim; // transorm the key to search in an upper level
       aKey >>= dim; // transorm the key to search in an upper level
     }
   }
@@ -350,13 +338,11 @@ namespace DGtal
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::Iterator::next()
   {
-    //cerr << "Iterator::next()" << endl;
     if ( myNode )
     {
       myNode = myNode->getNext();
       if ( myNode )
       {
-        //cerr << "case A" << endl;
         return true;
       }
       else
@@ -364,7 +350,6 @@ namespace DGtal
         do
         {
           myNode = myContainerData[++myCurrentCell];
-          //cerr << "skip" << endl;
           if ( myCurrentCell >= myArraySize )
             return false;
         }
@@ -383,19 +368,15 @@ namespace DGtal
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::removeNode ( HashKey key )
   {
-    //cerr << "removeNode: " << bits::bitString(key, 12)<< endl;
     HashKey key2 = getIntermediateKey ( key );
     Node* iter = myData[key2];
     // if the node is the first in the list we have to modify the pointer stored in myData
     if ( iter && ( iter->getKey() == key ) )
     {
-      //cerr << "removeNode: first node in the list" << endl;
       myData[key2] = iter->getNext();
       delete iter;
       return true;
     }
-
-    //
     while ( iter )
     {
       Node* next = iter->getNext();
@@ -410,25 +391,22 @@ namespace DGtal
       }
       iter = iter->getNext();
     }
-    //cerr << "plop" << endl;
     return false;
-
   }
+  
   template < typename Domain, typename Value, typename HashKey  >
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::recursiveRemoveNode ( HashKey key, unsigned int nbRecursions )
   {
     if ( removeNode ( key ) )
       return;
-    //cerr << "recursiveRemoveNode " << bits::bitString(key, 8) << endl;
     if ( --nbRecursions > 0 )
     {
       HashKey children[N];
       myMorton.childrenKeys ( key, children );
       for ( unsigned int i = 0; i < N; ++i )
       {
-        //cerr << ">recursiveRemoveNode "<<N<<" " << bits::bitString(children[i], 8) << endl;
-        recursiveRemoveNode ( children[i], nbRecursions );
+	recursiveRemoveNode ( children[i], nbRecursions );
       }
     }
   }
@@ -467,9 +445,7 @@ namespace DGtal
   int*
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getCoordinatesFromKey ( HashKey key ) const
   {
-    cerr << "ImageContainerByHashTree::getCoordinatesFromKey" << endl;
     //remove the first bit equal 1
-
     for ( int i = ( sizeof ( HashKey ) << 3 ) - 1; i >= 0; --i )
     {
       if ( key & Bits::mask<HashKey> ( i ) )
@@ -478,8 +454,6 @@ namespace DGtal
         break;
       }
     }
-
-    //cerr << "root bit removed" << endl;
     int* coordinates = new int[dim];
     //deinterleave the bits
     for ( unsigned int i = 0; i < dim; ++i )
@@ -487,8 +461,7 @@ namespace DGtal
       coordinates[i] = 0;
       for ( unsigned int bitPos = 0; bitPos < ( sizeof ( HashKey ) << 3 ) / dim; ++bitPos )
       {
-        //cerr << "debug: i="<< i<< " bitPos="<< bitPos<<endl;
-        if ( key & Bits::mask ( bitPos*dim + i ) )
+	if ( key & Bits::mask ( bitPos*dim + i ) )
         {
           coordinates[i] |= Bits::mask<HashKey> ( bitPos );
         }
@@ -502,7 +475,6 @@ namespace DGtal
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::isKeyValid ( HashKey key ) const
   {
-    //if(key == ROOT_KEY) return true;
     if ( !key )
       return false;
     if ( getKeyDepth ( key ) > myTreeDepth )
@@ -515,7 +487,6 @@ namespace DGtal
 
     if ( i % dim )
     {
-      //cerr <<"isKeyValid: i % dim = " << (i % dim) << " i = "<< i << endl;
       return false;
     }
 
@@ -540,9 +511,7 @@ namespace DGtal
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, ostream& out, bool displayKeys ) const
   {
-    //cerr << "ImageContainerByHashTree::printTree key: " << key ;//<< endl;
     unsigned int level = getKeyDepth ( key );
-    //cerr << " level: " << level << endl;
     for ( unsigned int i = 0; i < level; ++i )
       out << "  ";
     Node* n = getNode ( key );
@@ -563,12 +532,10 @@ namespace DGtal
 
     if ( level < myTreeDepth )
     {
-      //HashKey* children = getChildrenKeys(key);
       HashKey children[N];
       myMorton.childrenKeys ( key, children );
       for ( unsigned int i = 0; i < N; ++i )
         printTree ( children[i], out, displayKeys );
-      //delete[] children;
     }
   }
 
@@ -868,9 +835,7 @@ namespace DGtal
       float result = 0;
       for ( unsigned int i = 0; i < N; ++i )
       {
-        //cerr << "child > "<<N<<" " << Bits::bitString(children[i], 12)<<endl;
-        result += blendChildren ( children[i] );
-        //cerr << "dbg > " << result << endl;
+	result += blendChildren ( children[i] );
       }
       return static_cast<Value> ( result / N );
     }
@@ -888,9 +853,6 @@ namespace DGtal
       trace.info() << endl;
       ASSERT ( 1 == 0 );
     }
-
-    //else cerr << "checkIntegrity->key ok "<< Bits::bitString(key) << endl;
-    //cerr << "check integrity, depth " << getKeyDepth(key)<< " - "<< "treeDepth "<< myTreeDepth << " - " << Bits::bitString(key) << endl;
 
     Node* n = getNode ( key );
 

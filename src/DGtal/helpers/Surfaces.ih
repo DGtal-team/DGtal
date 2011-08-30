@@ -518,9 +518,9 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
     for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
       SCell sc = vectContoursBdrySCell.at(i).at(j);
       float x = (float) 
-	( IntegerTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[0] ) >> 1 );
+	( NumberTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[0] ) >> 1 );
       float y = (float) 
-	( IntegerTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[1] ) >> 1 );
+	( NumberTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[1] ) >> 1 );
       bool xodd = ( sc.myCoordinates[ 0 ] & 1 );
       bool yodd = ( sc.myCoordinates[ 1 ] & 1 );
       double x0 = !xodd ? x  - 0.5 : (!aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;

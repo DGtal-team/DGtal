@@ -50,7 +50,7 @@ namespace DGtal
 
 
  /**
-   * Base class specifying the methods for classes which intend to
+   *@brief Base class specifying the methods for classes which intend to
    * modify a Viewer3D stream.
    * 
    */
@@ -76,7 +76,7 @@ namespace DGtal
 
 
   /**
-   * Modifier class in a Display3D stream. Useful to choose your
+   * @brief Modifier class in a Display3D stream. Useful to choose your
    * own mode for a given class. Realizes the concept
    * CDrawableWithDisplay3D.
    */
@@ -103,7 +103,7 @@ namespace DGtal
 
 
   /**
-   * Modifier class in a Display3D stream. Useful to choose your own
+   * @brief Modifier class in a Display3D stream. Useful to choose your own
    * style for a given class. Realizes the concept
    * CDrawableWithDisplay3D.
    */
@@ -136,7 +136,7 @@ namespace DGtal
 
   
   /**
-   * Custom style class redefining the fill color and the
+   * @brief Custom style class redefining the fill color and the
    * gl_LINE/gl_POINT color. You can use DGtal::Color with alpha
    * transparency value but you nedd to take into account the z-buffer
    * during the Open-GL based rendering.
@@ -175,7 +175,7 @@ namespace DGtal
 
   
  /**
-  * Class for adding a Clipping plane through the Viewer3D
+  * @brief Class for adding a Clipping plane through the Viewer3D
   * stream. Realizes the concept CDrawableWithViewer3D.
   */
   
@@ -212,9 +212,8 @@ namespace DGtal
 
 
   /**
-   * CameraPosition class to set camera position.
+   * @brief  CameraPosition class to set camera position.
    */
-
   struct CameraPosition : public DrawWithDisplay3DModifier
   {
     /**
@@ -239,7 +238,7 @@ namespace DGtal
   };
   
   /**
-   * CameraDirection class to set camera direction.
+   * @brief CameraDirection class to set camera direction.
    */
   struct CameraDirection : public DrawWithDisplay3DModifier
   {
@@ -265,7 +264,7 @@ namespace DGtal
   };
   
   /**
-   * CameraUpVector class to set camera up-vector.
+   * @brief CameraUpVector class to set camera up-vector.
    */
   struct CameraUpVector : public DrawWithDisplay3DModifier
   {
@@ -291,7 +290,7 @@ namespace DGtal
   };
   
   /**
-   * CameraZNearFar class to set near and far distance.
+   * @brief CameraZNearFar class to set near and far distance.
    */
   struct CameraZNearFar : public DrawWithDisplay3DModifier
   {

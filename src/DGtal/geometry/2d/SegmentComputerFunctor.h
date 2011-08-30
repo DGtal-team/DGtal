@@ -118,9 +118,9 @@ namespace DGtal
                       const bool& isExtendableAtBack = false,
                       const bool& isExtendableAtFront = false) const {
 
-      double x = IntegerTraits<typename DSSComputer::Integer>
+      double x = NumberTraits<typename DSSComputer::Integer>
       ::castToDouble( aDSS.getB() ); 
-      double y = IntegerTraits<typename DSSComputer::Integer>
+      double y = NumberTraits<typename DSSComputer::Integer>
       ::castToDouble( aDSS.getA() );
       RealVector v(x,y); 
       double norm = v.norm(RealVector::L_2);
@@ -214,9 +214,9 @@ namespace DGtal
                       const bool& isExtendableAtBack = false,
                       const bool& isExtendableAtFront = false ) const {
 
-      Value a = (Value) IntegerTraits<typename DSSComputer::Integer>
+      Value a = (Value) NumberTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getA());      
-      Value b = (Value) IntegerTraits<typename DSSComputer::Integer>
+      Value b = (Value) NumberTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getB());      
 
       return std::atan2(a,b);
@@ -612,13 +612,6 @@ namespace DGtal
   }; // end of class CurvatureFromDSSLengthFunctor
 
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-//#if defined(INLINE)
-//#include "DGtal/geometry/2d/SegmentComputerFunctor.ih"
-//#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

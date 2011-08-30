@@ -97,12 +97,17 @@ namespace DGtal
 
       /**
        * Constructor.
+       * @param aPointA one of the image bound (lower or upper point). 
+       * @param aPointB one of the image bound (lower or upper point). 
        */
       ImageContainerByITKImage(const Point &aPointA,
 			       const Point &aPointB );
 
       /**
        * Constructor.
+       * @param aPointA one of the image bound (lower or upper point). 
+       * @param aPointB one of the image bound (lower or upper point). 
+       * @param aRef a reference to an ITKImage
        */
       ImageContainerByITKImage(const Point &aPointA,
 			       const Point &aPointB,
@@ -246,7 +251,7 @@ namespace DGtal
 
       /**
        * end() iterator.
-       I         * @returns a ConstIterator at the endpoint \param aPoint
+       * @return  a ConstIterator at the endpoint \param aPoint
        *
        **/
       ConstIterator end(const Point &aPoint) const;

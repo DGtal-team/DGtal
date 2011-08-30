@@ -394,13 +394,12 @@ bool testSmartDSS()
   
   // Adding step
   trace.beginBlock("extension");
-  
+
   DSS4 s;
   s.init( contour.begin() );
   while ( (s.end()!=contour.end())
 	  &&(s.extend()) ) {} 
   
-
   HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
   
   Board2D board;
@@ -414,8 +413,14 @@ bool testSmartDSS()
   board << SetMode(s.styleName(), "BoundingBox") 
 	<< s;
   
+
   board.saveEPS("DSS.eps");
-  
+
+ trace.info() << s << endl;
+ for (DSS4::ConstIterator i = s.begin(); i != s.end(); ++i) {
+   trace.info() << *i << endl;
+ }
+
   trace.endBlock();
   
   return true;  
