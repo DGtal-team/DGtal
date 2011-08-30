@@ -131,7 +131,7 @@ namespace DGtal
      * @return the index of the letter [c] in the order relation,
      * starting from 0 to myNb-1.
      */
-    INLINE unsigned int order( char c ) const;
+    unsigned int order( char c ) const;
 
     /**
      * @param i the index of some letter in the order relation,
@@ -141,28 +141,28 @@ namespace DGtal
      *
      * NB: O(nb of letters in the alphabet).
      */
-    INLINE char letter( unsigned int i ) const;
+    char letter( unsigned int i ) const;
 
     /**
      * @param c1 a letter in the alphabet
      * @param c2 another letter in the same alphabet.
      * @return 'true' iff c1 < c2
      */
-    INLINE bool less( char c1, char c2 ) const;
+    bool less( char c1, char c2 ) const;
 
     /**
      * @param c1 a letter in the alphabet
      * @param c2 another letter in the same alphabet.
      * @return 'true' iff c1 <= c2
      */
-    INLINE bool lessOrEqual( char c1, char c2 ) const;
+    bool lessOrEqual( char c1, char c2 ) const;
 
     /**
      * @param c1 a letter in the alphabet
      * @param c2 another letter in the same alphabet.
      * @return 'true' iff c1 == c2
      */
-    INLINE bool equal( char c1, char c2 ) const;
+    bool equal( char c1, char c2 ) const;
 
     // ----------------------- word services ------------------------------
   public:
