@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
 	testSegmentComputerFunctor
 	testMostCenteredMSEstimator
 	testBinomialConvolver
+    testCombinDSS
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
