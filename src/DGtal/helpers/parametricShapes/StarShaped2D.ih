@@ -55,8 +55,8 @@ bool
 DGtal::StarShaped2D<TSpace>::isInside( const Point & p ) const
 {
 
-  RealPoint prel(IntegerTraits<typename Point::Component>::castToDouble(p[0]),
-		 IntegerTraits<typename Point::Component>::castToDouble(p[1]));
+  RealPoint prel(NumberTraits<typename Point::Component>::castToDouble(p[0]),
+		 NumberTraits<typename Point::Component>::castToDouble(p[1]));
   
   return this->isInside(prel);
 }
