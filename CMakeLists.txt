@@ -94,7 +94,6 @@ set ( LIBDGTALVISU3D_NAME "DGtal-visu3d" )
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
-OPTION(BUILD_INLINE_FUNCTIONS "Build inline functions." ON)
 OPTION(DEBUG_VERBOSE "Verbose messages in debug mode." OFF)
 
 if ( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
@@ -104,11 +103,20 @@ if ( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
   ENDIF(DEBUG_VERBOSE)
 endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 
-if (BUILD_INLINE_FUNCTIONS)
-  ADD_DEFINITIONS(-DINLINE=inline)
-else (BUILD_INLINE_FUNCTIONS)
-  ADD_DEFINITIONS(-DINLINE="")
-endif (BUILD_INLINE_FUNCTIONS)
+# Functions are INLINE only in Release mode
+if ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
+    ADD_DEFINITIONS(-DINLINE=inline)
+else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
+    ADD_DEFINITIONS(-DINLINE=)
+endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
+
+# Version of INLINE functions with an option
+# OPTION(BUILD_INLINE_FUNCTIONS "Build inline functions." ON)
+# if (BUILD_INLINE_FUNCTIONS)
+#   ADD_DEFINITIONS(-DINLINE=inline)
+# else (BUILD_INLINE_FUNCTIONS)
+#   ADD_DEFINITIONS(-DINLINE="")
+# endif (BUILD_INLINE_FUNCTIONS)
 
 # -----------------------------------------------------------------------------
 # Benchmark target
