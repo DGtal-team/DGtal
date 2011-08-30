@@ -234,11 +234,9 @@ public:
       FDeltaZ * ATriplet.getZ() ;
   }
   //------------------------------------------------------------------------------
-
   TKhalimskyElt CKhalimsky::getKhalimskyElt(const CTriplet& ATriplet) const
   { return FMatrix[getIndex(ATriplet)]; }
   //------------------------------------------------------------------------------
-
   TKhalimskyElt CKhalimsky::getBits(unsigned int AIndex,
 				    TKhalimskyElt AMask) const
   {
@@ -247,12 +245,10 @@ public:
     return FMatrix[AIndex] & AMask;
   }
   //------------------------------------------------------------------------------
-
   TKhalimskyElt CKhalimsky::getBits(const CTriplet& ATriplet,
 				    TKhalimskyElt AMask) const
   { return getBits(getIndex(ATriplet),AMask); }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setBits(unsigned int AIndex, TKhalimskyElt AMask, bool AOn)
   {
     assert(AIndex < FSize);
@@ -263,20 +259,16 @@ public:
       FMatrix[AIndex] &= ~AMask;
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setBits(const CTriplet& ATriplet,
 			   TKhalimskyElt AMask, bool AOn)
   { setBits(getIndex(ATriplet),AMask, AOn); }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isBits(unsigned int AIndex, TKhalimskyElt AMask) const
   { return (getBits(AIndex,AMask)==AMask); }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isBits(const CTriplet& ATriplet, TKhalimskyElt AMask) const
   { return (isBits(getIndex(ATriplet),AMask)); }
   //******************************************************************************
-
   bool CKhalimsky::isPCell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletPointel(ATriplet));
@@ -288,7 +280,6 @@ public:
     return getBits(triplet, POINTEL);
   }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isLCell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletLinel(ATriplet));
@@ -310,7 +301,6 @@ public:
     return false;
   }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isL2Cell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(ATriplet);
@@ -318,7 +308,6 @@ public:
     return isLCell(triplet);
   }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isFictivePCell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletPointel(ATriplet));
@@ -330,7 +319,6 @@ public:
     return getBits(triplet, POINTEL_FICTIF);
   }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isFictiveLCell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletPointel(ATriplet));
@@ -352,7 +340,6 @@ public:
     return false;
   }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isSCell(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletSurfel(ATriplet));
@@ -404,11 +391,9 @@ public:
     return false;
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setPCell(const CTriplet& ATriplet, bool AOn)
   { setBits(getIndex(normaliseTripletPointel(ATriplet)), POINTEL, AOn); }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setLCell(const CTriplet& ATriplet, bool AOn)
   {
     unsigned int index = getIndex(normaliseTripletLinel(ATriplet));
@@ -425,11 +410,9 @@ public:
       }
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setFictivePCell(const CTriplet& ATriplet, bool AOn)
   { setBits(getIndex(normaliseTripletPointel(ATriplet)), POINTEL_FICTIF, AOn); }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setFictiveLCell(const CTriplet& ATriplet, bool AOn)
   {
     unsigned int index = getIndex(normaliseTripletLinel(ATriplet));
@@ -446,7 +429,6 @@ public:
       }
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setSCell(const CTriplet& ATriplet, bool AOn)
   {
     unsigned int index = getIndex(normaliseTripletSurfel(ATriplet));
@@ -507,7 +489,6 @@ public:
       }
   }
   //******************************************************************************
-
   bool CKhalimsky::isSurfelMarked(const CTriplet& ATriplet) const
   {
     CTriplet triplet(normaliseTripletSurfel(ATriplet));
@@ -560,7 +541,6 @@ public:
     return ( isBits(triplet,bit)!=FSurfelMaskMark );
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::setSurfelMark(const CTriplet& ATriplet, bool AOn)
   {
     unsigned int index = getIndex(normaliseTripletSurfel(ATriplet));
@@ -613,23 +593,18 @@ public:
       }
   }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::markSurfel(const CTriplet& ATriplet)
   { setSurfelMark(ATriplet,true); }  
   //------------------------------------------------------------------------------
-
   void CKhalimsky::unmarkSurfel(const CTriplet& ATriplet)
   { setSurfelMark(ATriplet,false); }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isWholeSurfelsUnmarked() const
   { return FNbMarkedSurfels==0; }
   //------------------------------------------------------------------------------
-
   bool CKhalimsky::isWholeSurfelsMarked() const
   { return FNbMarkedSurfels==FNbSurfelsOn; }
   //------------------------------------------------------------------------------
-
   void CKhalimsky::negateSurfelMaskMark()
   {
     FSurfelMaskMark  = !FSurfelMaskMark;

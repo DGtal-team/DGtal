@@ -5,16 +5,16 @@
 #include <set>
 #include <bitset>
 #include <list>
-#include "Combinatorial_map.h"
+#include <utility>
+#include <stack>
+#include "CGAL/Combinatorial_map.h"
 #include "image3D.hh"
 #include "triplet.hh"
-#include "vertex.hh"
 #include "khalimsky.hh"
 #include "limited-stack.hh"
-#include "pair.hh"
-#include "stack.hh"
-#include "darts-stack.hh"
 #include "coordinate.hh"
+// #include "vertex.hh" ?
+//#include "darts-stack.hh"
 //#include "volume.hh"
 //******************************************************************************
 
@@ -45,7 +45,7 @@ namespace Map3d
   {
   public:
     typedef CGAL::Combinatorial_map<3, Topological_dart_items> Base;
-    typedef CTopologicalMap                                    Self;
+    typedef CTopologicalMap                                    Self;    
     
     /// @name Constructeur et destructeur
     //@{
@@ -96,7 +96,7 @@ namespace Map3d
      *  garder les marques utilisées). Puis l'image, la matrice de
      *  Khalimsky et l'arbre d'inclusion sont détruit.
      */
-    void empty();
+    void clear();
 
     //@}
     
@@ -107,14 +107,14 @@ namespace Map3d
      *  @param  ADart Un brin de la carte
      *  @return Vrai si l'arête incidente à ADart est localement de degrée deux.
      */
-    bool isLocalDegreeTwoEdge(CDart* ADart);
+    bool isLocalDegreeTwoEdge(Dart_handle ADart);
     
     /**
      *  @param  ADart Un brin de la carte
      *  @return Vrai ssi l'arête incidente à ADart est une boucle
      *          (c'est à dire incidente 2 fois au même sommet).
      */
-    bool isEdgeLoop(CDart* ADart);
+    bool isEdgeLoop(Dart_handle ADart);
     
     /**
      *  @param  ADart Un brin de la carte
@@ -122,32 +122,32 @@ namespace Map3d
      *          (c'est à dire composé de 2 sommets, une arête et une face).
      *          Notez qu'une région étant une sphère est une région isolée.
      */
-    bool isVolumeSphere(CDart* ADart);
+    bool isVolumeSphere(Dart_handle ADart);
 
     /**
      *  @param  ADart Un brin de la carte
      *  @return Vrai ssi l'arête incidente à ADart est une arête fictive.
      */
-    bool isFictiveEdge(CDart* ADart);
+    bool isFictiveEdge(Dart_handle ADart);
     
     /**
      *  @param  ADart Un brin de la carte
      *  Marque tout les brins de l'arête incidente à ADart comme fictif.
      */
-    void markFictiveEdge(CDart* ADart);
+    void markFictiveEdge(Dart_handle ADart);
     
     /**
      *  @param  ADart Un brin de la carte
      *  @return Vrai ssi on peut supprimer l'arête incidente à ADart sans
      *          déconnecter la carte en plusieurs composantes connexes.
      */
-    bool canRemoveEdgeWithoutDisconnection(CDart* ADart);
+    bool canRemoveEdgeWithoutDisconnection(Dart_handle ADart);
     
     /**
      *  @param  ADart Un brin de la carte
      *  @return Le nombre d'arêtes réelles incidentes au sommet touchant ADart.
      */
-    int reelVertexDegree(CDart* ADart);
+    int reelVertexDegree(Dart_handle ADart);
     
     /** 
      * Fournit le type du sommet incident à ADart.
@@ -163,7 +163,7 @@ namespace Map3d
      *          3 ssi soit il y a deux arêtes réelles incidente au sommet,
      *            et au moins une est une boucle, soit le degré réel est > 2.
      */
-    int findVertexType(CDart* ADart, CDart** AResDart);
+    int findVertexType(Dart_handle ADart, Dart_handle* AResDart);
     
     /**
      * Renvoit un brin sur une arête incidente qui n'est pas une boucle.
@@ -173,7 +173,7 @@ namespace Map3d
      *             désigné par ADArt s'il en existe une
      *          NULL Sinon
      */
-    CDart* findIncidentEdgeNonLoop(CDart* ADart);
+    Dart_handle findIncidentEdgeNonLoop(Dart_handle ADart);
 
     /**
      *  Pousse l'arête fictive incidente au brin ADart sur le "prochain"
@@ -182,7 +182,7 @@ namespace Map3d
      *  @param  ADart  Un brin de l'arête à pousser.
      *  @param  ADart2 Un brin désignant l'endroit où l'arête va être mise.
      */
-    void shiftFictiveEdge(CDart* ADart, CDart* ADart2);
+    void shiftFictiveEdge(Dart_handle ADart, Dart_handle ADart2);
       
     /**
      *  Pousse toute les arêtes fictives incidentes au sommet et à l'arête
@@ -194,7 +194,7 @@ namespace Map3d
      *  @pre l'arête incidente à ADart ne doit pas être une boucle
      *  @param  ADart Un brin appartenant au sommet "à nettoyer".
      */
-    void shiftAllFictiveEdgesAroundEdge(CDart* ADart);
+    void shiftAllFictiveEdgesAroundEdge(Dart_handle ADart);
       
     /**
      *  Supprime l'arête pendande incidente à ADart en "recollant" les
@@ -205,7 +205,7 @@ namespace Map3d
      *  @pre Le sommet incident à ADart est de degré 1 (arête pendante)
      *  @param  ADart Un brin de la carte du coté du sommet de degré 1
      */
-    void danglinEdgeRemoval(CDart* ADart);
+    void danglinEdgeRemoval(Dart_handle ADart);
 
     /**  Contracte l'arête incidente à ADart en "recollant" les deux sommets
      *  autour de cette arête.
@@ -214,7 +214,7 @@ namespace Map3d
      *
      *  @param  ADart       Un brin de la carte
      */
-    void edgeContraction( CDart* ADart );
+    void edgeContraction( Dart_handle ADart );
 
     //@}
 
@@ -250,46 +250,22 @@ namespace Map3d
      *  @param ADart le brin
      *  @return Le triplet.
      */
-    CTriplet & getTriplet( CDart * ADart ) const;
+    CTriplet & getTriplet( Dart_handle ADart ) const;
 
     /**
      *  Affecte le triplet associé au brin.
      *  @param ADart    le brin
      *  @param ATriplet le nouveau triplet
      */
-    void setTriplet( CDart * ADart, const CTriplet & ATriplet );
+    void setTriplet( Dart_handle ADart, const CTriplet & ATriplet );
 
     /**
      *  Test pour savoir si un brin est représentant de sa région.
      *  @param ADart le brin
      *  @return Vrai ou faux selon si le brin est représentant ou non.
      */
-    bool isRepresentative(CDart* ADart);
+    bool isRepresentative(Dart_handle ADart);
 
-    /// @name Accesseurs sur les cellules
-    //@{
-    bool isPCell (const CTriplet& ATriplet) const;
-    bool isLCell (const CTriplet& ATriplet) const;
-    bool isSCell (const CTriplet& ATriplet) const;
-    bool isL2Cell(const CTriplet& ATriplet) const;
-    
-    bool isFictivePCell(const CTriplet& ATriplet) const;
-    bool isFictiveLCell(const CTriplet& ATriplet) const;
-
-    CTriplet normaliseTripletPointel(const CTriplet& ATriplet) const;
-    CTriplet normaliseTripletLinel  (const CTriplet& ATriplet) const;
-    CTriplet normaliseTripletSurfel (const CTriplet& ATriplet) const;
-
-    bool isSurfelMarked  (const CTriplet& ATriplet) const;
-    void setSurfelMark   (const CTriplet& ATriplet, bool AOn);
-    void markSurfel      (const CTriplet& ATriplet);
-    void unmarkSurfel    (const CTriplet& ATriplet);
-    void unmarkAllSurfels();
-    bool isWholeSurfelsMarked() const;
-    bool isWholeSurfelsUnmarked() const;
-    void negateSurfelMaskMark();
-    //@}
-    
     /// @name Méthodes pour explorer une surface.
     //@{
     /// Retourne vrai ssi le pointel de ATriplet est de degré 2
@@ -325,7 +301,7 @@ namespace Map3d
      *  @param ADart un brin désignant le sommet à marquer
      *  @param AMark la marque
      */
-    void markVertexInVolume( CDart* ADart, int AMark );
+    void markVertexInVolume( Dart_handle ADart, int AMark );
 
     /**
      *  Pour démarquer le sommet incident à ADart uniquement à l'intérieur
@@ -334,7 +310,7 @@ namespace Map3d
      *  @param ADart un brin désignant le sommet à démarquer
      *  @param AMark la marque
      */
-    void unmarkVertexInVolume( CDart* ADart, int AMark );
+    void unmarkVertexInVolume( Dart_handle ADart, int AMark );
 
     
     ///@name Création d'objet de base.
@@ -349,8 +325,8 @@ namespace Map3d
      *  @param  ATree    un arbre union-find.
      *  @return Le premier brin de la face.
      */
-    CDart* createSquareFace(const CTriplet& ATriplet, CRegion* ARegion,
-			    CFace* ATree=NULL);
+    Dart_handle createSquareFace(const CTriplet& ATriplet, CRegion* ARegion,
+				 CFace* ATree=NULL);
 
     /**
      *  3-couds 2 faces carrés
@@ -358,7 +334,7 @@ namespace Map3d
      *  @param  ADart1 le brin de la première face
      *  @param  ADart2 le brin de la deuxième face
      */
-    void sew3TwoSquareFaces(CDart* ADart1, CDart* ADart2);
+    void sew3TwoSquareFaces(Dart_handle ADart1, Dart_handle ADart2);
 
     /**
      *  Crée un cube plongé et le cous par beta3 aux brins "ALast"
@@ -372,8 +348,8 @@ namespace Map3d
      *  @param  ARegion la région d'appartenance du cube.
      *  @return Un brin du cube.
      */
-    CDart* createCube(CDart* ALast, CDart* AUp, CDart* ABehind,
-		      const CTriplet& ATriplet, CRegion* ARegion);
+    Dart_handle createCube(Dart_handle ALast, Dart_handle AUp, Dart_handle ABehind,
+			   const CTriplet& ATriplet, CRegion* ARegion);
     
     /**
      *  Précode L8
@@ -385,8 +361,8 @@ namespace Map3d
      *         à gauche et derrière
      *  @return Le prochain last 
      */
-    CDart* precodeL8(CDart* ALast, CDart* AUp, CDart* ABehind,
-		     const CTriplet& ATriplet);
+    Dart_handle precodeL8(Dart_handle ALast, Dart_handle AUp,
+			  Dart_handle ABehind, const CTriplet& ATriplet);
     
     //@}
 
@@ -398,9 +374,9 @@ namespace Map3d
      *  @param AThreshold Seuil de présegmentation de l'image.
      *  @param AStep  pour extraire l'image en pas à pas si vrai
      */
-    CDart* extractTopologicalMap( CImage3D* AImage,
-				  TColor    AThreshold = 0,
-				  bool      AStep = false );
+    Dart_handle extractTopologicalMap( CImage3D* AImage,
+				       TColor    AThreshold = 0,
+				       bool      AStep = false );
 
     /**
      *  Extrait un voxel supplémentaire de l'image passé en paramètre.
@@ -417,15 +393,15 @@ namespace Map3d
      *  @param AThreshold Seuil de présegmentation (defaut : 0)
      *  @return le prochain last
      */
-    CDart* extractTopologicalMapOneStep( CImage3D* AImage,
-					 CDart*    ALast,
-					 unsigned int Ax,
-					 unsigned int Ay,
-					 unsigned int Az,
-					 int AMarkTreated,
-					 CDart* & ADart,
-					 TColor    AThreshold = 0
-					 );
+    Dart_handle extractTopologicalMapOneStep( CImage3D* AImage,
+					      Dart_handle    ALast,
+					      unsigned int Ax,
+					      unsigned int Ay,
+					      unsigned int Az,
+					      int AMarkTreated,
+					      Dart_handle & ADart,
+					      TColor    AThreshold = 0
+					      );
 
   private:
     /**
@@ -433,10 +409,10 @@ namespace Map3d
      *  d'appeller pour chaque voxel la fonction extractTopologicalMapOneStep,
      *  mais on a recopier pour acceller les temps d'exécutions.
      */
-    CDart* extractTopologicalMapMainLoop( CImage3D* AImage, 
-					  CDart* ALast,
-					  TColor    AThreshold = 0
-					  );
+    Dart_handle extractTopologicalMapMainLoop( CImage3D* AImage, 
+					       Dart_handle ALast,
+					       TColor    AThreshold = 0
+					       );
 
     /**
      *  Crée le bord initial supérieur avant l'extraction d'une image 3D.
@@ -446,7 +422,7 @@ namespace Map3d
      *  @return Le brin en haut à gauche incident au premier pointel
      *          (cf. thèse page 166).
      */
-    CDart* makeBorder( int ALargX, int ALargY );
+    Dart_handle makeBorder( int ALargX, int ALargY );
 
     /**
      *  Détruit le bord initial supérieur après l'extraction d'une image 3D.
@@ -454,7 +430,7 @@ namespace Map3d
      *
      *  @param ADart le dernier last qui appartient au bord à détruire.
      */
-    void destroyBorder( CDart* ADart );
+    void destroyBorder( Dart_handle ADart );
 
     /**
      *  Calcule l'arbre d'inclusion des régions. La liste AList est la liste
@@ -476,7 +452,7 @@ namespace Map3d
      * @return le nombre de sommets incident à la face en ignorant les brins
      *         supprimés ou déjà traités (ie marqués par AMarkVertex)
      */
-    int countNbVerticesIncidentToFace4( CDart* ADart, int AMarkVertex );
+    int countNbVerticesIncidentToFace4( Dart_handle ADart, int AMarkVertex );
 
     
     /**
@@ -485,7 +461,7 @@ namespace Map3d
      *  @param  ADart le brin "last".
      *  @return Le brin "up".
      */
-    CDart* computeUpFromLast(CDart* ADart);
+    Dart_handle computeUpFromLast(Dart_handle ADart);
     
     /**
      *  Calcule le brin "behind" à partir du brin "last".
@@ -493,7 +469,7 @@ namespace Map3d
      *  @param  ADart le brin "last".
      *  @return Le brin "behind".
      */
-    CDart* computeBehindFromLast(CDart* ADart);
+    Dart_handle computeBehindFromLast(Dart_handle ADart);
     
     /**
      *  "Traite" l'arête AnEdge : teste si elle est de degré deux et
@@ -503,7 +479,7 @@ namespace Map3d
      *  @param AnEdge   Les brins de l'arête à traiter.
      *  @param ATriplet Le triplet associé à l'arête.
      */
-    void processEdge( CLimitedStack<CDart*>& AnEdge,
+    void processEdge( CLimitedStack<Dart_handle>& AnEdge,
 		      CTriplet& ATriplet );
 
     /**
@@ -518,7 +494,7 @@ namespace Map3d
      *                      de degré réel différent de zéro (utile pour la
      *                      méthode removeAllReelDegreeZeroVertex).
      */
-    void processVertex( CLimitedStack<CDart*>& AVertex,
+    void processVertex( CLimitedStack<Dart_handle>& AVertex,
 			CTriplet& ATriplet,
 			int AMarkTreated );
 
@@ -675,7 +651,7 @@ namespace Map3d
      * @param ADart un brin.
      * @return Le voxel qui est à l'intérieur.
      */
-    const CCoordinate getVoxelIn( CDart * ADart ) const;
+    const CCoordinate getVoxelIn( Dart_handle ADart ) const;
 
     /**
      * Donne le voxel externe à la région délimité par le triplet courant.
@@ -684,100 +660,7 @@ namespace Map3d
      * @param ADart un brin.
      * @return Le voxel qui est à l'extérieur.
      */
-    const CCoordinate getVoxelOut( CDart * ADart ) const;
-
-    /**
-     * Est-ce que le voxel désigné est dans la région infinie?
-     *
-     * @param Ax coordonnée du voxel selon l'axe X.
-     * @param Ay coordonnée du voxel selon l'axe Y.
-     * @param Az coordonnée du voxel selon l'axe Z.
-     * @return True si le voxel est dans la région infinie. False sinon.
-     */
-    bool isVoxelInInfiniteRegion(unsigned int Ax, unsigned int Ay,
-				 unsigned int Az) const;
-
-    /** Est-ce que le voxel désigné est dans la région infinie?
-     *
-     * @param ACoord coordonnées du voxel.
-     * @return True si le voxel est dans la région infinie. False sinon.
-     */
-    bool isVoxelInInfiniteRegion( const CCoordinate & ACoord ) const;
-
-    /**
-     * Est-ce que les voxels désignés ont la même couleur?
-     *
-     * @param Ax1 coordonnée du voxel 1 selon l'axe X.
-     * @param Ay1 coordonnée du voxel 1 selon l'axe Y.
-     * @param Az1 coordonnée du voxel 1 selon l'axe Z.
-     * @param Ax2 coordonnée du voxel 2 selon l'axe X.
-     * @param Ay2 coordonnée du voxel 2 selon l'axe Y.
-     * @param Az2 coordonnée du voxel 2 selon l'axe Z.
-     * @return True si les voxels ont la même couleur.
-     */
-    bool sameVoxel(unsigned int Ax1, unsigned int Ay1, unsigned int Az1,
-		   unsigned int Ax2, unsigned int Ay2, unsigned int Az2) const;
-
-    /**
-     * Les méthodes suivantes testent l'appartenante à la même région de deux
-     * voxels. Le premier mot de la méthode désigne la position du premier voxel
-     * par rapport au voxel courant (Ax, Ay, Az). Le deuxième mot (après le -)
-     * désigne la position du deuxième voxel par rapport au premier (et donc
-     * est soit up, left ou behind). 
-     */
-    bool sameVoxelActuLeft    (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelActuBehind  (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelActuUp      (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelLeftBehind  (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelLeftUp      (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelBehindLeft  (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelBehindUp    (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelUpLeft      (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelUpBehind    (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelUpbehindLeft(unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelLeftbehindUp(unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelLeftupBehind(unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    /**
-     * Les méthodes suivantes testent l'appartenance à la même région d'un voxel
-     * situé à l'extérieur de la région avec ses voisins respectivement de gauche,
-     * de derrière et de dessus (left, behind, up).
-     */
-    bool sameVoxelOutLeft     (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelOutBehind   (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-    bool sameVoxelOutUp       (unsigned int Ax, unsigned int Ay, 
-			       unsigned int Az) const;
-
-
-    //******************************************************************************
-
+    const CCoordinate getVoxelOut( Dart_handle ADart ) const;
     
     //******************************************************************************
   public:

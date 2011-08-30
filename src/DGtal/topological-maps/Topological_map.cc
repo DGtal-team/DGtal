@@ -37,10 +37,9 @@ CTopologicalDart* CTopologicalMap::addMapDart( const CTriplet & ATriplet,
   return res;
 }
 //------------------------------------------------------------------------------
-
-void CTopologicalMap::empty()
+void CTopologicalMap::clear()
 {
-  CMapGeneric::empty();  
+  Base::clear();  
 
   assert( getNbDarts()==0 );
 
@@ -845,42 +844,6 @@ CDart* CTopologicalMap::precodeL8( CDart* ALast, CDart* AUp, CDart* ABehind,
   return ABehind;
 }
 //******************************************************************************
-
-CVertex CTopologicalMap::barycenter(CDart * ADart, TOrbit AOrbit)
-{
-  assert(ADart!=NULL);
-
-  CVertex bary(ORIGIN);
-  int n = 0;
-  int treated = getNewMark();
-
-  CCoverage * cov = getDynamicCoverage(ADart, AOrbit);
-
-  assert(cov!=NULL);
-
-  for (; cov->cont(); ++(*cov))
-    if ( !isMarked(**cov, treated) )
-      {
-	bary += getTriplet(**cov);	
-	++n;
-	markOrbit(**cov, ORBIT_VERTEX, treated);
-      }
-
-  // Démarquage:
-  for ( cov->reinit(); cov->cont(); ++(*cov))
-    {
-      if ( isMarked(**cov, treated) )
-	unmarkOrbit(**cov, ORBIT_VERTEX, treated);
-    }
-  
-  delete cov;
-
-  freeMark(treated);
-
-  return n==0 ? ORIGIN : bary/n;
-}
-//******************************************************************************
-
 void CTopologicalMap::edgeContraction( CDart* ADart )
 {
   assert( ADart!=NULL );
@@ -946,7 +909,6 @@ void CTopologicalMap::edgeContraction( CDart* ADart )
 		    getRepresentativeDart(),FMarkToDelete) );
 }
 //******************************************************************************
-
 CCoordinate CTopologicalMap::getVoxelFromTriplet(const CTriplet & ATriplet)const
 {
   CTriplet tripletNormalise = normaliseTripletSurfel(ATriplet);
@@ -1116,7 +1078,6 @@ void CTopologicalMap::cleanMap()
 }
 //******************************************************************************
 CTopologicalMap::CTopologicalMap() :
-  CMapGeneric       (ASizeDartArray),
   FFirstRegion      (NULL),
   FFirstFace        (NULL),
   FImage            (NULL),
@@ -1126,7 +1087,6 @@ CTopologicalMap::CTopologicalMap() :
 }
 //------------------------------------------------------------------------------
 CTopologicalMap::CTopologicalMap(CImage3D* AImage) :
-  CMapGeneric       (ASizeDartArray),
   FFirstRegion      (NULL),
   FFirstFace        (NULL),
   FImage            (NULL),

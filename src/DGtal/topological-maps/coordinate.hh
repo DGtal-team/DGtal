@@ -1,7 +1,6 @@
 #ifndef COORDINATE_HH
 #define COORDINATE_HH
 //*****************************************************************************
-#include "inline-macro.hh"
 #include "triplet.hh"
 
 /**
@@ -204,7 +203,167 @@ static const CCoordinate COORDINATE_BASE[3] = { COORDINATE_OX,
 // @}
 
 //******************************************************************************
-#include INCLUDE_INLINE("coordinate.icc")
+#include <cassert>
+#include <cmath>
+//*****************************************************************************
+inline
+CCoordinate::CCoordinate()
+{
+  FCoord[0] = 0;
+  FCoord[1] = 0;
+  FCoord[2] = 0;
+}
+//-----------------------------------------------------------------------------
+inline
+CCoordinate::CCoordinate(int Ax, int Ay, int Az)
+{
+  FCoord[0] = Ax;
+  FCoord[1] = Ay;
+  FCoord[2] = Az;
+}
+//-----------------------------------------------------------------------------
+inline
+CCoordinate::CCoordinate(int ATab[3])
+{
+  FCoord[0] = ATab[0];
+  FCoord[1] = ATab[1];
+  FCoord[2] = ATab[2];
+}
+//-----------------------------------------------------------------------------
+inline
+CCoordinate::CCoordinate(const CCoordinate& AVertex)
+{
+  FCoord[0] = AVertex.FCoord[0];
+  FCoord[1] = AVertex.FCoord[1];
+  FCoord[2] = AVertex.FCoord[2];
+}
+//-----------------------------------------------------------------------------
+inline
+CCoordinate::CCoordinate(const CTriplet& ATriplet)
+{
+  FCoord[0] = ATriplet.getX();
+  FCoord[1] = ATriplet.getY();
+  FCoord[2] = ATriplet.getZ();
+}
+//*****************************************************************************
+inline
+int CCoordinate::getX() const
+{ return FCoord[0]; }
+//-----------------------------------------------------------------------------
+inline
+int CCoordinate::getY() const
+{ return FCoord[1]; }
+//-----------------------------------------------------------------------------
+inline
+int CCoordinate::getZ() const
+{ return FCoord[2]; }
+//-----------------------------------------------------------------------------
+inline
+int CCoordinate::getCoord(int ADim) const
+{
+  assert(0<=ADim && ADim<=2);
+  return FCoord[ADim];
+}
+//*****************************************************************************
+inline
+void CCoordinate::setX(int ANewX)
+{ FCoord[0] = ANewX; }
+//-----------------------------------------------------------------------------
+inline
+void CCoordinate::setY(int ANewY)
+{ FCoord[1] = ANewY; }
+//-----------------------------------------------------------------------------
+inline
+void CCoordinate::setZ(int ANewZ)
+{ FCoord[2] = ANewZ; }
+//-----------------------------------------------------------------------------
+inline
+void CCoordinate::setCoord(int ADim, int ANewCoord)
+{
+  assert(0<=ADim && ADim<=2);
+  FCoord[ADim] = ANewCoord;
+}
+//-----------------------------------------------------------------------------
+inline
+void CCoordinate::setXYZ(int ANewX, int ANewY, int ANewZ)
+{
+  setX(ANewX);
+  setY(ANewY);
+  setZ(ANewZ);
+}
+//*****************************************************************************
+inline
+CCoordinate& CCoordinate::operator=(const CCoordinate& AVector)
+{
+  setXYZ(AVector.getX(), AVector.getY(), AVector.getZ());
+  return *this;
+}
+//*****************************************************************************
+inline
+CCoordinate CCoordinate::operator+(const CCoordinate& AVertex)
+{
+  return CCoordinate(AVertex.getX()+getX(), AVertex.getY()+getY(), AVertex.getZ()+getZ());
+}
+//*****************************************************************************
+inline
+CCoordinate CCoordinate::operator-(const CCoordinate& AVertex)
+{
+  return CCoordinate(getX()-AVertex.getX(), getY()-AVertex.getY(), getZ()-AVertex .getZ());
+}
+//*****************************************************************************
+inline
+CCoordinate CCoordinate::operator/(const int AScalar)
+{
+  return CCoordinate(getX()/AScalar, getY()/AScalar, getZ()/AScalar);
+}
+//*****************************************************************************
+inline
+CCoordinate CCoordinate::operator*(const int AScalar)
+{
+  return CCoordinate(getX()*AScalar, getY()*AScalar, getZ()*AScalar);
+}
+//*****************************************************************************
+inline
+bool CCoordinate::operator==(const CCoordinate& AVector) const
+{
+  return
+    this->getX() == AVector.getX() &&
+    this->getY() == AVector.getY() &&
+    this->getZ() == AVector.getZ();
+}
+//*****************************************************************************
+inline
+bool CCoordinate::operator!=(const CCoordinate& AVector) const
+{ return ! (*this == AVector); }
+//*****************************************************************************
+inline
+bool operator <  (CCoordinate u,CCoordinate v)
+{
+  return u.getZ() <  v.getZ()
+    || ( u.getZ() == v.getZ() 
+	 && ( u.getY()  < v.getY()
+	      || ( u.getY() == v.getY() && u.getX() < v.getX() ) ) );
+}
+//*****************************************************************************
+inline
+bool operator >  (CCoordinate u,CCoordinate v)
+{ return v < u; }
+//*****************************************************************************
+inline
+bool operator <= (CCoordinate u,CCoordinate v)
+{ return ! ( u > v ); }
+//*****************************************************************************
+inline
+bool operator >= (CCoordinate u,CCoordinate v)
+{ return ! ( u < v ); }
+//*****************************************************************************
+inline
+int CCoordinate::sqrNorm() const
+{
+  return getX() * getX() + getY() * getY() + getZ() * getZ();
+}
+//*****************************************************************************
+
 //******************************************************************************
 #endif // VERTEX_HH
 //******************************************************************************
