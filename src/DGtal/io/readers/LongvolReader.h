@@ -68,7 +68,7 @@ namespace DGtal
    * Example usage:
    * @code
    * ...
-   * #include <DGtal/utils/StdDefs.h>
+   * #include <DGtal/helpers/StdDefs.h>
    *
    * //Default image container = STLVector
    * typedef ImageSelector<Z3i::Domain, DGtal::uint64_t>::Type Image;
