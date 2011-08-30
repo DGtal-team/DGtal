@@ -20,6 +20,8 @@
  * @file CCommutativeRing.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/08/26
  *
@@ -43,7 +45,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -56,130 +58,144 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CCommutativeRing
   /**
-   * Description of \b concept '\b CCommutativeRing' <p>
-   * @ingroup Concepts
-   * @brief Aim: Definses unitary commutative ring.
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t Integer : A type that is a model of CCommutativeRing
-   * - \t x, \t y	: Object of type Integer
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> Addition </td> <td> x+y </td> <td> x,y of type Integer </td> <td> Integer</td>
-   * <td> </td> <td> scalar addition </td> <td> </td> <td> </td>
-   * </tr><tr>
-  * <td> Opposite </td> <td> -x </td> <td> x of type Integer </td> <td> Integer</td>
-   * <td> </td> <td> opposite of a scalar </td> <td> </td> <td> </td>
-   * </tr><tr>
-   * <td> multiplication </td> <td> x*y </td> <td> x ,yof type Integer </td> <td> Integer</td>
-   * <td> </td> <td> multiplication of scalars </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   *   DGtal::int32_t, DGtal::int64_t, DGtal::int8_t; mpz_class
-   *
-   * <p> Notes <br>
+     Description of \b concept '\b CCommutativeRing' <p>
+     @ingroup Concepts
+    
+     @brief Aim: Defines the mathematical concept equivalent to a
+     unitary commutative ring.
+     
+     <p> Refinement of boost::Assignable<T>,
+     boost::EqualityComparable<T>, boost::LessThanComparable<T>
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CCommutativeRing
+     - \t x, \t y	: Object of type Integer
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table> 
+     <tr> 
+     <td class=CName> \b Name </td> 
+     <td class=CExpression> \b Expression </td>
+     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CReturnType> \b Return type </td>
+     <td class=CPrecondition> \b Precondition </td> 
+     <td class=CSemantics> \b Semantics </td> 
+     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CComplexity> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Construction from basic integer type </td>
+     <td class=CExpression>      X( i ) </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       \t X represents the integer \t i</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Addition </td>
+     <td class=CExpression>      \t x + \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       addition of two numbers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Subtraction </td>
+     <td class=CExpression>      \t x - \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       subtraction of two numbers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Multiplication </td>
+     <td class=CExpression>      \t x - \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       subtraction of two numbers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Opposite operator </td>
+     <td class=CExpression>      - \t x </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       defines the opposite of \t x (\t x + \t -x = 0) </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have a 0 (neutral
+     element for addition) </td> 
+     <td class=CExpression>      \t X( 0 ) </td>
+     <td class=CRequirements>    </td> 
+     <td class=CReturnType>      \t X </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       the value 0</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have  a 1 (neutral
+     element for multiplication)</td> 
+     <td class=CExpression>      \t X ( 1 )  </td>
+     <td class=CRequirements>     </td> 
+     <td class=CReturnType>      \t X </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       the value 1</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br>
+       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, mpz_class
+    
+     <p> Notes <br>
+   
+     @tparam T the type that should be a model of commutative ring.
    */
-  template <typename Integer>
-  struct CCommutativeRing
+  template <typename T>
+  struct CCommutativeRing : boost::Assignable<T>, 
+    boost::EqualityComparable<T>, boost::LessThanComparable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT((CSignedInteger<Integer>));
-
     BOOST_CONCEPT_USAGE( CCommutativeRing )
     {
-      ConceptUtils::sameType( c, a+b );
-      ConceptUtils::sameType( c, -a );
-      ConceptUtils::sameType( c, a*b );  
-      ConceptUtils::sameType( c, IntegerTraits<Integer>::ONE );  
-      ConceptUtils::sameType( c, IntegerTraits<Integer>::ZERO );  
+      ConceptUtils::sameType( c, T( a+b ) );
+      ConceptUtils::sameType( c, T( -a ) );
+      ConceptUtils::sameType( c, T( a-b ) );
+      ConceptUtils::sameType( c, T( a*b ) );  
+      ConceptUtils::sameType( c, T( 0 ) );  
+      ConceptUtils::sameType( c, T( 1 ) );  
 
-      static Integer two = IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE;
-      static Integer three =  two+IntegerTraits<Integer>::ONE;
-      
-      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ZERO  == 
-			  three * IntegerTraits<Integer>::ZERO );
-    
-      BOOST_STATIC_ASSERT(three  == 
-			  three + IntegerTraits<Integer>::ZERO );
-
-      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ONE  == 
-			  ((IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE)
-			   - IntegerTraits<Integer>::ONE ) );
-
-      BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ONE  == 
-			  IntegerTraits<Integer>::ONE*IntegerTraits<Integer>::ONE );
-    
+      ///The 0 and 1 neutral elements should be tested.
     }
     // ------------------------- Private Datas --------------------------------
   private:
     
     // ------------------------- Internals ------------------------------------
   private:
-    Integer a,b,c;
+    T a,b,c;
   
   };
-
-#ifdef WITH_GMP
-  template<>
-  struct CCommutativeRing<mpz_class>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_ASSERT((CSignedInteger<mpz_class>));
-
-    BOOST_CONCEPT_USAGE( CCommutativeRing )
-    {
-      //ConceptUtils::sameType( c, a+b );
-      //ConceptUtils::sameType( c, -a );
-      //ConceptUtils::sameType( c, a*b );  
-      ConceptUtils::sameType( c, IntegerTraits<mpz_class>::ONE );  
-      ConceptUtils::sameType( c, IntegerTraits<mpz_class>::ZERO );  
-
-      static mpz_class two = IntegerTraits<mpz_class>::ONE+IntegerTraits<mpz_class>::ONE;
-      static mpz_class three =  two+IntegerTraits<mpz_class>::ONE;
-      
-      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ZERO  == 
-      // 			  three * IntegerTraits<mpz_class>::ZERO );
-    
-      // BOOST_STATIC_ASSERT(three  == 
-      // 			  three + IntegerTraits<mpz_class>::ZERO );
-
-      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ONE  == 
-      // 			  ((IntegerTraits<mpz_class>::ONE+IntegerTraits<mpz_class>::ONE)
-      // 			   - IntegerTraits<mpz_class>::ONE ) );
-
-      // BOOST_STATIC_ASSERT(IntegerTraits<mpz_class>::ONE  == 
-      // 			  IntegerTraits<mpz_class>::ONE*IntegerTraits<mpz_class>::ONE );
-    
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    mpz_class a,b,c;
-    
-  }; // end of concept CCommutativeRing
-#endif
 } // namespace DGtal
 
 

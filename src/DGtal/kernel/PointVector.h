@@ -51,10 +51,10 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicTypes.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 
 #include "DGtal/io/Display3D.h"
 
@@ -81,16 +81,18 @@ namespace DGtal
    * @brief Aim: Implements basic operations that will be used in 
    * Point and  Vector classes.
    *
-   * A PointVector may represent either a digital point or a digital
-   * vector depending on the context. For performance reasons, these
-   * two types are just aliases. The user should take care how to use
-   * it depending on the context. For instance, adding two points has
-   * no meaning, but will be authorized by the compiler.
+   * A PointVector may represent either a symbolic point or a symbolic
+   * vector depending on the context. The coordinates of the point or
+   * the components of the vector should be part of a ring. For
+   * performance reasons, these two types are just aliases. The user
+   * should take care how to use it depending on the context. For
+   * instance, adding two points has no meaning, but will be
+   * authorized by the compiler.
    *
    * @tparam dim static constant of type DGtal::uint32_t that
    * specifies the static  dimension of the space and thus the number
    * of elements  of the Point or Vector.
-   * @tparam Integer speficies the integer number type used as
+   * @tparam Ring speficies the ring number type used as
    * type of PointVector elements (Coordinate for Point and Component
    * for Vector).
    *
@@ -118,27 +120,28 @@ namespace DGtal
    * @todo continue snippet
    *
    * @see testPointVector.cpp
-   * @tparam T the Integer class used to specify the arithmetic computations (default type = int).
+   * @tparam T the Ring class used to specify the arithmetic computations (default type = int).
    * @tparam TDimension the type used to represent indices of coordinates.
    *
-   * @TODO rename T in TInteger; rename Component and UnsignedComponent (uniform name with space)
+   * @TODO rename T in TRing; rename Component and UnsignedComponent (uniform name with space)
    *       correct all the use of size_t, Dimension, .....
    */
-  template < DGtal::Dimension dim, typename Integer >
+  template < DGtal::Dimension dim, typename TComponent >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
-    //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ) );
 
-    typedef PointVector<dim, Integer> Self;
- 
-    typedef Integer Component;
-    typedef Integer Coordinate;
+    typedef TComponent Component;
+
+    //Ring must be a model of the concept CRing.
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing<Component> ) );
+
+    typedef PointVector<dim, Component> Self;
+    typedef Component Coordinate;
 
     // JOL need it in various norm().
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedComponent;
+    typedef typename NumberTraits<Component>::UnsignedVersion UnsignedComponent;
     
     ///Copy of the dimension type
     typedef DGtal::Dimension Dimension;
@@ -802,12 +805,12 @@ namespace DGtal
 
 
   /// Operator <<
-  template<Dimension dim, typename Integer>
+  template<Dimension dim, typename Component>
   std::ostream&
-  operator<<( std::ostream & out, const PointVector<dim, Integer> & object );
+  operator<<( std::ostream & out, const PointVector<dim, Component> & object );
 
-  template< Dimension dim, typename Integer>
-  PointVector<dim, Integer>  PointVector<dim, Integer>::zero;
+  template< Dimension dim, typename Component>
+  PointVector<dim, Component>  PointVector<dim, Component>::zero;
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

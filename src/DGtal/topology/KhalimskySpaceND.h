@@ -59,7 +59,7 @@ namespace DGtal
 {
 
   /**
-     Represents an (unsigned) cell in a cellular grid space by its
+     @brief Represents an (unsigned) cell in a cellular grid space by its
      Khalimsky coordinates.
    */
   template < Dimension dim,
@@ -75,7 +75,7 @@ namespace DGtal
   public:
     typedef TInteger Integer;
     
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
     Point myCoordinates;
@@ -196,7 +196,7 @@ namespace DGtal
 	      const KhalimskyCell< dim, TInteger > & object );
 
   /**
-     Represents a signed cell in a cellular grid space by its
+     @brief Represents a signed cell in a cellular grid space by its
      Khalimsky coordinates and a boolean value.
    */
   template < Dimension dim,
@@ -210,7 +210,7 @@ namespace DGtal
  
   public:
     typedef TInteger Integer;
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
     Point myCoordinates;
@@ -327,7 +327,7 @@ namespace DGtal
 	      const SignedKhalimskyCell< dim, TInteger > & object );
 
   /**
-     This class is useful for looping on all "interesting" coordinates of a
+     @bried This class is useful for looping on all "interesting" coordinates of a
      cell. For instance, surfels in Z3 have two interesting coordinates (the
      ones spanned by the surfel).
      @code
@@ -445,7 +445,7 @@ namespace DGtal
     typedef TInteger Integer;
     
     ///Type used to represent sizes in the digital space.
-    typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
+    typedef typename NumberTraits<Integer>::UnsignedVersion Size;
       
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;

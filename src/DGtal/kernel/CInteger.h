@@ -44,7 +44,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,58 +53,216 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CInteger
   /**
-   * Description of \b concept '\b CInteger' <p>     
-   * @ingroup Concepts
-   *
-   * \brief Aim: The concept CInteger specifies what are the usual
-   * integer numbers, more precisely the ones that are representable
-   * on a computer.
-   *
-   * Generally, all the basic computer integer types are models of
-   * this concept. More elaborate integer types with variable sizes,
-   * for instance the big integers of GMP, are also models of this
-   * concept.
-   * 
-   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CInteger
-   * - \t x, \t y	: Object of type X
-   * - \t i, \t j	: basic integer type.
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table>
-   * <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> Construction from basic integer type</td>
-   * <td> X( i ) </td> <td> </td> <td> </td>
-   * <td> </td> <td> \c X represents the integer \c i</td> <td> </td> <td> </td>
-   * </tr>
-   * <tr> <td> Addition </td> <td> x+y </td>
-   * <td>  </td> <td> X </td>
-   * <td>  </td> <td> addition of two integers </td> 
-   * <td>  </td> <td>  </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br> 
-   * 
-   * short, int, unsigned int, long long, unsigned long long,
-   * uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
-   *
-   * <p> Notes <br>
-   *
-   * @todo Complete integer checking.
+     Description of \b concept '\b CInteger' <p>     
+     @ingroup Concepts
+    
+     \brief Aim: The concept CInteger specifies what are the usual
+     integer numbers, more precisely the ones that are representable
+     on a computer.
+    
+     Generally, all the basic computer integer types are models of
+     this concept. More elaborate integer types with variable sizes,
+     for instance the big integers of GMP, are also models of this
+     concept.
+     
+     <p> Refinement of boost::Assignable<T>,
+     boost::EqualityComparable<T>, boost::LessThanComparable<T>
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CInteger
+     - \t x, \t y	: Object of type X
+     - \t i, \t j	: basic integer type.
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table>
+     <tr> 
+     <td class=CName> \b Name </td> 
+     <td class=CExpression> \b Expression </td>
+     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CReturnType> \b Return type </td>
+     <td class=CPrecondition> \b Precondition </td> 
+     <td class=CSemantics> \b Semantics </td> 
+     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CComplexity> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Construction from basic integer type </td>
+     <td class=CExpression>      X( i ) </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       \t X represents the integer \t i</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Addition </td>
+     <td class=CExpression>      \t x + \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       addition of two integers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Subtraction </td>
+     <td class=CExpression>      \t x - \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       subtraction of two integers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Multiplication </td>
+     <td class=CExpression>      \t x * \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       multiplication of two integers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Division </td>
+     <td class=CExpression>      \t x / \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       euclidean division of two integers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Modulo </td>
+     <td class=CExpression>      \t x % \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       modulo of two integers </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Pre-increment </td>
+     <td class=CExpression>      ++ \t x </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       \t x is incremented then its value is returned  </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            Pre-decrement </td>
+     <td class=CExpression>      -- \t x </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       \t x is decremented then its value is returned  </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have constant \t ZERO  in \t NumberTraits. </td> 
+     <td class=CExpression>      NumberTraits<X>::ZERO </td>
+     <td class=CRequirements>    constant should be defined </td> 
+     <td class=CReturnType>      const \t X </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       the value 0</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have constant \t ONE in \t NumberTraits. </td> 
+     <td class=CExpression>      NumberTraits<X>::ONE </td>
+     <td class=CRequirements>    constant should be defined </td> 
+     <td class=CReturnType>      const \t X </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       the value 1</td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t X should be tagged in \t NumberTraits for \t IsUnsigned. </td>
+     <td class=CExpression>      typename NumberTraits<X>::IsUnsigned </td> 
+     <td class=CRequirements>    TagTrue or TagFalse </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should be tagged in \t NumberTraits for \t IsSigned. </td> 
+     <td class=CExpression>      typename NumberTraits<X>::IsSigned </td>
+     <td class=CRequirements>    TagTrue or TagFalse </td> 
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should be tagged in \t NumberTraits for \t IsBounded. </td> 
+     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td>
+     <td class=CRequirements>    TagTrue or TagFalse </td> 
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have type \t SignedVersion  in \t NumberTraits. </td> 
+     <td class=CExpression>      typename NumberTraits<X>::SignedVersion </td>
+     <td class=CRequirements>    type must be defined </td> 
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have type \t UnsignedVersion  in \t NumberTraits. </td> 
+     <td class=CExpression>      typename NumberTraits<X>::UnsignedVersion </td>
+     <td class=CRequirements>    type must be defined </td> 
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>             \t X should have type \t ReturnType  in \t NumberTraits. </td> 
+     <td class=CExpression>      typename NumberTraits<X>::ReturnType </td>
+     <td class=CRequirements>    type must be defined </td> 
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br> 
+     
+     short, int, unsigned int, long long, unsigned long long,
+     uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t,
+     mpz_class
+    
+     <p> Notes <br>
+    
+     @tparam T the type that should be a model of integer.
    */
   template <typename T>
   struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
@@ -115,33 +273,43 @@ namespace DGtal
     {
       T x( 0 ); // require constructor from built-in integer.
       T y( 1 ); // require constructor from built-in integer.
-      x = x + y;
-      x = x - y;
       ConceptUtils::sameType( myX, ++x );
       ConceptUtils::sameType( myX, --x );
-      ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
-      ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
+      ConceptUtils::sameType( myX, NumberTraits<T>::ZERO );
+      ConceptUtils::sameType( myX, NumberTraits<T>::ONE );
       
-      // @todo x+y with short is promoted to int. We should use some
+      // @note x-y with short is promoted to int. We should use some
+      // verification with possible promoting.
+      //
+      // @note T(x-y) is required (instead of 'x-y') because of
+      // gmpxx. Indeed, x+y returns an expression template in GMP and
+      // thus cannot be of type T.
+      ConceptUtils::sameType( myX, T(x-y) );
+      // @note x+y with short is promoted to int. We should use some
       // verification with possible promoting.
       //
       // @note T(x+y) is required (instead of 'x+y') because of
       // gmpxx. Indeed, x+y returns an expression template in GMP and
       // thus cannot be of type T.
-      ConceptUtils::sameType( myX, T(x-y) );
       ConceptUtils::sameType( myX, T(x+y) );
+      ConceptUtils::sameType( myX, T(x*y) );
+      ConceptUtils::sameType( myX, T(x/y) );
+      ConceptUtils::sameType( myX, T(x%y) );
       
+      ConceptUtils::checkTrueOrFalse( myIsUnsigned );
+      ConceptUtils::checkTrueOrFalse( myIsSigned );
+      ConceptUtils::checkTrueOrFalse( myIsBounded );
     }
       
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
-    typename IntegerTraits<T>::IsUnsigned myIsSigned;
-    typename IntegerTraits<T>::IsBounded myIsBounded;
-    typename IntegerTraits<T>::SignedVersion mySignedVersion;
-    typename IntegerTraits<T>::UnsignedVersion myUnsignedVersion;
-    typename IntegerTraits<T>::ReturnType myReturnType;
+    typename NumberTraits<T>::IsUnsigned myIsUnsigned;
+    typename NumberTraits<T>::IsSigned myIsSigned;
+    typename NumberTraits<T>::IsBounded myIsBounded;
+    typename NumberTraits<T>::SignedVersion mySignedVersion;
+    typename NumberTraits<T>::UnsignedVersion myUnsignedVersion;
+    typename NumberTraits<T>::ReturnType myReturnType;
 
     // ------------------------- Internals ------------------------------------
   private:
