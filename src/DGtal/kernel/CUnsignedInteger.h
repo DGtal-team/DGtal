@@ -46,7 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -104,7 +104,7 @@ namespace DGtal
     
     // ------------------------- Internals ------------------------------------
   private:
-    typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
+    typename NumberTraits<T>::IsUnsigned myIsUnsigned;
 
   }; // end of concept CUnsignedInteger
   

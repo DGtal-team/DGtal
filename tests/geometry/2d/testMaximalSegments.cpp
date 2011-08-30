@@ -77,7 +77,7 @@ bool testCover4()
   
 	typedef MaximalSegments<PrimitiveType> DecompositionType;
 
-  std::string filename = testPath + "samples/manche.fc";
+  std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
 
   std::fstream fst;
@@ -109,7 +109,9 @@ bool testCover4()
   
   } 
 
-  aBoard.saveSVG("segmentationDSS4.svg");
+  aBoard.saveEPS("segmentationDSS4.eps");
+
+trace.info() << "# segments" << compteur << std::endl;
 
   trace.endBlock();
 	return true;

@@ -80,7 +80,7 @@ namespace DGtal
    * @tparam TPoint any point type
    */
   template <typename TPoint>
-  struct TruePointPredicate : ConstantPointPredicate<TPoint,true>
+  struct TruePointPredicate : public ConstantPointPredicate<TPoint,true>
   {
       typedef TPoint Point;
   };
@@ -94,7 +94,7 @@ namespace DGtal
    * @tparam TPoint any point type
    */
   template <typename TPoint>
-  struct FalsePointPredicate : ConstantPointPredicate<TPoint,false>
+  struct FalsePointPredicate : public ConstantPointPredicate<TPoint,false>
   {
       typedef TPoint Point;
   };
@@ -123,6 +123,7 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /// the upper bound.
     Point myUpperBound;
   };
 
@@ -150,6 +151,7 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /// the lower bound.
     Point myLowerBound;
   };
 
@@ -177,15 +179,18 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /// the upper bound.
     Point myLowerBound;
+    /// the lower bound.
     Point myUpperBound;
   };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class NotPointPredicate
   /**
-   * Description of template class 'NotPointPredicate' <p> \brief
-   * Aim: The predicate returns true when the point is within the given bounds.
+   * Description of template class 'NotPointPredicate' <p> \brief Aim:
+   * The predicate returns true when the point predicate given at
+   * construction return false. Thus inverse a predicate: NOT operator.
    *
    * @tparam TPointPredicate the predicate type.
    */
@@ -206,6 +211,7 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /// the PointPredicate that is inversed.
     const PointPredicate & myPred;
   };
 
@@ -213,7 +219,8 @@ namespace DGtal
   // template class BinaryPointPredicate
   /**
    * Description of template class 'BinaryPointPredicate' <p> \brief
-   * Aim: The predicate returns true when the point is within the given bounds.
+   * Aim: The predicate returns true when the given binary functor
+   * returns true for the two PointPredicate(s) given at construction.
    *
    * @tparam PointPredicate1 the left predicate type.
    * @tparam PointPredicate2 the right predicate type.
@@ -228,7 +235,12 @@ namespace DGtal
     typedef typename PointPredicate2::Point Point2;
 
     /**
-     * Constructor from predicates and bool Functor.
+       Constructor from predicates and bool Functor.
+       @param pred1 the left predicate.
+       @param pred2 the right predicate.
+
+       @param boolFunctor the binary function used to combine pred1
+       and pred2.
      */
     BinaryPointPredicate( const PointPredicate1 & pred1,
 			  const PointPredicate2 & pred2,
@@ -240,8 +252,11 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
+    /// the left predicate.
     const PointPredicate1 & myPred1;
+    /// the right predicate.
     const PointPredicate2 & myPred2;
+    /// the binary functor.
     BoolFunction2 myBoolFunctor;
   };
 

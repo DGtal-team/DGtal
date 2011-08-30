@@ -97,7 +97,7 @@ namespace DGtal
     inline
     double operator()(const Point &aPoint) const
     {
-      return IntegerTraits<Integer>::castToDouble(myHalfWidth) - 
+      return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
 	(aPoint - myCenter ).norm(Point::L_1);
     }
 

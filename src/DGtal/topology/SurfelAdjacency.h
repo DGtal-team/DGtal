@@ -174,7 +174,6 @@ namespace DGtal
 // Includes inline functions.
 #include "DGtal/topology/SurfelAdjacency.ih"
 
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

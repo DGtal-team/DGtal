@@ -57,8 +57,7 @@ int main( int argc, char** argv )
   po::options_description general_opt("Allowed options are: ");
   general_opt.add_options()
     ("help,h", "display this message")
-    ("input-file,i", po::value<std::string>(), "volume file" 
-     " (default: standard input)")
+    ("input-file,i", po::value<std::string>(), "volume file" )
     ("thresholdMin,m",  po::value<int>()->default_value(0), "threshold min to define binary shape" ) 
     ("thresholdMax,M",  po::value<int>()->default_value(255), "threshold max to define binary shape" )
     ("transparency,t",  po::value<uint>()->default_value(255), "transparency") ; 
@@ -72,38 +71,43 @@ int main( int argc, char** argv )
 		<< general_opt << "\n";
       return 0;
     }
- string inputFilename = vm["input-file"].as<std::string>();
- int thresholdMin = vm["thresholdMin"].as<int>();
- int thresholdMax = vm["thresholdMax"].as<int>();
- unsigned char transp = vm["transparency"].as<uint>();
+  
+  if(! vm.count("input-file"))
+    {
+      trace.error() << " The file name was defined" << endl;      
+      return 0;
+    }
+  string inputFilename = vm["input-file"].as<std::string>();
+  int thresholdMin = vm["thresholdMin"].as<int>();
+  int thresholdMax = vm["thresholdMax"].as<int>();
+  unsigned char transp = vm["transparency"].as<uint>();
  
- QApplication application(argc,argv);
- Viewer3D viewer;
- viewer.setWindowTitle("simple Volume Viewer");
- viewer.show();
+  QApplication application(argc,argv);
+  Viewer3D viewer;
+  viewer.setWindowTitle("simple Volume Viewer");
+  viewer.show();
  
- typedef ImageSelector<Domain, unsigned char>::Type Image;
- Image image = VolReader<Image>::importVol( inputFilename );
+  typedef ImageSelector<Domain, unsigned char>::Type Image;
+  Image image = VolReader<Image>::importVol( inputFilename );
 
- trace.info() << "Image loaded: "<<image<< std::endl;
+  trace.info() << "Image loaded: "<<image<< std::endl;
 
- Domain domain(image.lowerBound(), image.upperBound());
- GradientColorMap<long> gradient( thresholdMin, thresholdMax);
- gradient.addColor(Color::Blue);
- gradient.addColor(Color::Green);
- gradient.addColor(Color::Yellow);
- gradient.addColor(Color::Red);
- for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
-   unsigned char  val= image( (*it) );     
+  Domain domain(image.lowerBound(), image.upperBound());
+  GradientColorMap<long> gradient( thresholdMin, thresholdMax);
+  gradient.addColor(Color::Blue);
+  gradient.addColor(Color::Green);
+  gradient.addColor(Color::Yellow);
+  gradient.addColor(Color::Red);
+  for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
+    unsigned char  val= image( (*it) );     
    
-   Color c= gradient(val);
-   if(val<=thresholdMax && val >=thresholdMin){
-     viewer <<  CustomColors3D(Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
-			       Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
-     viewer << *it;     
-   }     
- }
- //viewer << ClippingPlane(0,0,-1, 20);
- viewer << Viewer3D::updateDisplay;
- return application.exec();
+    Color c= gradient(val);
+    if(val<=thresholdMax && val >=thresholdMin){
+      viewer <<  CustomColors3D(Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
+				Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
+      viewer << *it;     
+    }     
+  }
+  viewer << Viewer3D::updateDisplay;
+  return application.exec();
 }

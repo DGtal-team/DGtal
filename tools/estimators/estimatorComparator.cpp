@@ -42,6 +42,7 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/utils/Clock.h"
 
 //shapes
 #include "DGtal/helpers/ShapeFactory.h"
@@ -273,11 +274,13 @@ compareShapeEstimators( const string & name,
     SCFunctor f; 
     MostCenteredMaximalSegmentEstimator<SegmentComputer,SCFunctor> MSTangentEstimator(sc, f); 
    
-    trace.beginClock();
+    Clock c;
+    
+    c.startClock();
     MSTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<typename SCFunctor::Value> MSTangents = 
       estimateQuantity( MSTangentEstimator, r.begin(), r.end() );
-    double TMST = trace.endClock();
+    double TMST = c.stopClock();
 
 
     // Binomial
@@ -292,17 +295,17 @@ compareShapeEstimators( const string & name,
     BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
     BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
     
-    trace.beginClock();
+    c.startClock();
     BCTangentEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<RealPoint> BCTangents = 
       estimateQuantity( BCTangentEstimator, r.begin(), r.end() );
-    double TBCTan = trace.endClock();
+    double TBCTan = c.stopClock();
 
-    trace.beginClock();
+    c.startClock();
     BCCurvatureEstimator.init( h, r.begin(), r.end(), gridcurve.isClosed() );
     std::vector<double> BCCurvatures =
       estimateQuantity( BCCurvatureEstimator, r.begin(), r.end() );
-    double TBCCurv = trace.endClock();
+    double TBCCurv = c.stopClock();
 
     // Output
     std::cout << "# Time-BCtangent = "<<TBCTan <<std::endl

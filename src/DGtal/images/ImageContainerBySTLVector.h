@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CBoundedDomain.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
@@ -245,8 +245,6 @@ namespace DGtal
 	myShift = 1;
 	for (unsigned int k = 0; k < myDimension  ; k++)
 	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
-	
-	//trace.warning() <<"SpanIter("<<p<<" "<<aDim<<") Pos="<<myPos<<" shift="<<myShift<<std::endl;
       }
 
 

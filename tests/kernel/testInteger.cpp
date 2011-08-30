@@ -59,7 +59,7 @@ bool testInteger()
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
 
   //OS depedent instances
-  BOOST_CONCEPT_ASSERT(( CInteger<long int> ));
+  //BOOST_CONCEPT_ASSERT(( CInteger<long int> ));
   
   // These tests fail : bool is not a model of CInteger.
   // BOOST_CONCEPT_ASSERT(( CInteger<std::string> ));
@@ -69,29 +69,29 @@ bool testInteger()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
 
-  trace.info() << "  - max int16 = " << IntegerTraits<DGtal::int16_t>::max()
+  trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
 	       << std::endl;
-  trace.info() << "  - min int16 = " << IntegerTraits<DGtal::int16_t>::min()
+  trace.info() << "  - min int16 = " << NumberTraits<DGtal::int16_t>::min()
 	       << std::endl;
-  trace.info() << "  - max int32 = " << IntegerTraits<DGtal::int32_t>::max()
+  trace.info() << "  - max int32 = " << NumberTraits<DGtal::int32_t>::max()
 	       << std::endl;
-  trace.info() << "  - min int32 = " << IntegerTraits<DGtal::int32_t>::min()
+  trace.info() << "  - min int32 = " << NumberTraits<DGtal::int32_t>::min()
 	       << std::endl;
-  trace.info() << "  - max int64 = " << IntegerTraits<DGtal::int64_t>::max()
+  trace.info() << "  - max int64 = " << NumberTraits<DGtal::int64_t>::max()
 	       << std::endl;
-  trace.info() << "  - min int64 = " << IntegerTraits<DGtal::int64_t>::min()
+  trace.info() << "  - min int64 = " << NumberTraits<DGtal::int64_t>::min()
 	       << std::endl;
-  trace.info() << "  - max uint16 = " << IntegerTraits<DGtal::uint16_t>::max()
+  trace.info() << "  - max uint16 = " << NumberTraits<DGtal::uint16_t>::max()
 	       << std::endl;
-  trace.info() << "  - min uint16 = " << IntegerTraits<DGtal::uint16_t>::min()
+  trace.info() << "  - min uint16 = " << NumberTraits<DGtal::uint16_t>::min()
 	       << std::endl;
-  trace.info() << "  - max uint32 = " << IntegerTraits<DGtal::uint32_t>::max()
+  trace.info() << "  - max uint32 = " << NumberTraits<DGtal::uint32_t>::max()
 	       << std::endl;
-  trace.info() << "  - min uint32 = " << IntegerTraits<DGtal::uint32_t>::min()
+  trace.info() << "  - min uint32 = " << NumberTraits<DGtal::uint32_t>::min()
 	       << std::endl;
-  trace.info() << "  - max uint64 = " << IntegerTraits<DGtal::uint64_t>::max()
+  trace.info() << "  - max uint64 = " << NumberTraits<DGtal::uint64_t>::max()
 	       << std::endl;
-  trace.info() << "  - min uint64 = " << IntegerTraits<DGtal::uint64_t>::min()
+  trace.info() << "  - min uint64 = " << NumberTraits<DGtal::uint64_t>::min()
 	       << std::endl;
 
   trace.endBlock();
@@ -106,19 +106,19 @@ bool testInteger()
 	       << "true == true" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "Checking IntegerTraits on  built-in OS dependent types ..." );
+  trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );
   trace.warning() << "If digits() returns 0, the type is not considered in specilizations"<<endl;
-  trace.info() << "  - digits int = " << IntegerTraits<int>::digits()<< std::endl;
-  //  nbok += (IntegerTraits<int>::digits() == 0) ? 0 : 1; 
+  trace.info() << "  - digits int = " << NumberTraits<int>::digits()<< std::endl;
+  //  nbok += (NumberTraits<int>::digits() == 0) ? 0 : 1; 
   //  nb++;
-  trace.info() << "  - digits unsigned int = " << IntegerTraits<unsigned int>::digits()<< std::endl;
-  // nbok += (IntegerTraits<unsigned int>::digits() == 0) ? 0 : 1; 
+  trace.info() << "  - digits unsigned int = " << NumberTraits<unsigned int>::digits()<< std::endl;
+  // nbok += (NumberTraits<unsigned int>::digits() == 0) ? 0 : 1; 
   //nb++;
-  trace.info() << "  - digits long int = " << IntegerTraits<long int>::digits()<< std::endl;
-  //nbok += (IntegerTraits<long int>::digits() == 0) ? 0 : 1; 
+  trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;
+  //nbok += (NumberTraits<long int>::digits() == 0) ? 0 : 1; 
   //nb++;
-  trace.info() << "  - digits long long int = " << IntegerTraits<long long int>::digits()<< std::endl;
-  //nbok += (IntegerTraits<long long int>::digits() == 0) ? 0 : 1; 
+  trace.info() << "  - digits long long int = " << NumberTraits<long long int>::digits()<< std::endl;
+  //nbok += (NumberTraits<long long int>::digits() == 0) ? 0 : 1; 
   //nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") "
