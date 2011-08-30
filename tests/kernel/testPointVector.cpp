@@ -43,7 +43,7 @@ using namespace std;
 
 /**
  *
- * A PointVector may represent either a digital point or a digital
+ * A PointVector may represent either a  point or a 
  * vector depending on the context. For performance reasons, these
  * two types are just aliases. The user should take care how to use
  * it depending on the context. For instance, adding two points has
@@ -60,7 +60,7 @@ using namespace std;
  * @code
  *
  * ...
- * typedef PointVector<double,5> VectorD5;
+ * typedef PointVector<5,double> VectorD5;
  * VectorD5 p, q, r;
  *
  * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
