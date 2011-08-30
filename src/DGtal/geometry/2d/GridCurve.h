@@ -1289,10 +1289,8 @@ and/or passing myK in the constructor
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions/methods.
 #include "DGtal/geometry/2d/GridCurve.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
