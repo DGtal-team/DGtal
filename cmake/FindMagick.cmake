@@ -26,6 +26,7 @@ FIND_PATH( MAGICK_INCLUDE_DIR magick.h
   /usr/include/magick
   /usr/include/
   /usr/include/GraphicsMagick/
+  /usr/include/GraphicsMagick/magick/
   /usr/local/include
   /usr/local/include/GraphicsMagick/magick
   /usr/local/include/GraphicsMagick/
