@@ -413,7 +413,13 @@ bool testSmartDSS()
   board << SetMode(s.styleName(), "BoundingBox") 
 	<< s;
   
+
   board.saveEPS("DSS.eps");
+
+ trace.info() << s << endl;
+ for (DSS4::ConstIterator i = s.begin(); i != s.end(); ++i) {
+   trace.info() << *i << endl;
+ }
 
   trace.endBlock();
   
