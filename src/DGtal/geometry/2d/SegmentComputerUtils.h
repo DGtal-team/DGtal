@@ -79,18 +79,6 @@ struct SegmentComputerTraits {
 ////////////////////////////////////////////
 // Useful functions for segment computers
 
-/**
- * Computes the middle iterator of a given range, 
- * i.e. itb + (ite-itb)/2)
- * @param itb, ite, begin and end iterators of a range
- * @return the middle iterator of the range [itb,ite)
- * @tparam any iterator or circulator
- */
-template<typename IC>
-IC getMiddleIterator(const IC& itb, const IC& ite) {
-  typedef typename IteratorCirculatorTraits<IC>::Category Category; 
-  return getMiddleIterator(itb, ite, Category() ); 
-} 
 
 /**
  * Specialization for random access category
@@ -151,21 +139,22 @@ IC getMiddleIterator(const IC& itb, const IC& ite, ForwardCategory)
 
   return i;   
 }
+/**
+ * Computes the middle iterator of a given range, 
+ * i.e. itb + (ite-itb)/2)
+ * @param itb, ite, begin and end iterators of a range
+ * @return the middle iterator of the range [itb,ite)
+ * @tparam any iterator or circulator
+ */
+template<typename IC>
+IC getMiddleIterator(const IC& itb, const IC& ite) {
+  typedef typename IteratorCirculatorTraits<IC>::Category Category; 
+  return getMiddleIterator(itb, ite, Category() ); 
+} 
 
 ///////////////////////////////////////////////////////////
 /////////////////////////////////////// extension functions
 
-/**
- * Calls s.extend() while possible
- * @param s any instance of segment computer 
- * @param end any ConstIterator
- * @tparam SC any model of segment computer 
- */
-template <typename SC>
-void maximalExtension(SC& s, const typename SC::ConstIterator& end) {
-  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
-  maximalExtension( s, end, Type() ); 
-}
 
 /**
  * Specialization for Iterator type
@@ -187,18 +176,18 @@ void maximalExtension(SC& s, const typename SC::ConstIterator& end, CirculatorTy
   while ( (s.extend())
        && (s.end() != newEnd) ) {}
 }
-
 /**
- * Calls s.extendOppositeEnd() while possible
- * @param s any instance of (bidirectional) segment computer
- * @param begin any ConstIterator
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * Calls s.extend() while possible
+ * @param s any instance of segment computer 
+ * @param end any ConstIterator
+ * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin) {
+void maximalExtension(SC& s, const typename SC::ConstIterator& end) {
   typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
-  oppositeEndMaximalExtension( s, begin, Type() ); 
+  maximalExtension( s, end, Type() ); 
 }
+
 
 /**
  * Specialization for Iterator type
@@ -223,23 +212,18 @@ void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin,
 }
 
 /**
- * Calls alternatively s.extend() and s.extendOppositeEnd() 
- * while it is possible
- * @param s any instance of (bidirectional)segment computer 
- * @param begin, end, begin and end iterator of a range
- * @return 'true' if the extension at the front fails first
- * and 'false' if the extension at the back fails first
+ * Calls s.extendOppositeEnd() while possible
+ * @param s any instance of (bidirectional) segment computer
+ * @param begin any ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
  */
 template <typename SC>
-bool maximalSymmetricExtension(SC& s, 
-  const typename SC::ConstIterator& begin, 
-  const typename SC::ConstIterator& end) {
-
+void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin) {
   typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
-  return maximalSymmetricExtension( s, begin, end, Type() ); 
-
+  oppositeEndMaximalExtension( s, begin, Type() ); 
 }
+
+
 
 /**
  * Specialization for Iterator type
@@ -301,6 +285,26 @@ bool maximalSymmetricExtension(SC& s,
 }
 
 /**
+ * Calls alternatively s.extend() and s.extendOppositeEnd() 
+ * while it is possible
+ * @param s any instance of (bidirectional)segment computer 
+ * @param begin, end, begin and end iterator of a range
+ * @return 'true' if the extension at the front fails first
+ * and 'false' if the extension at the back fails first
+ * @tparam SC any model of CBidirectionalSegmentComputer
+ */
+template <typename SC>
+bool maximalSymmetricExtension(SC& s, 
+  const typename SC::ConstIterator& begin, 
+  const typename SC::ConstIterator& end) {
+
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
+  return maximalSymmetricExtension( s, begin, end, Type() ); 
+
+}
+
+
+/**
  * Calls s.retract() while s.isExtendable()
  * returns false 
  * @param s any instance of segment computer 
@@ -339,21 +343,6 @@ void oppositeEndMaximalRetraction(SC& s, const typename SC::ConstIterator& begin
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// longest segment
 
-/**
- * Computes the longest possible segment from [i]
- * @param s any instance of segment computer 
- * @param i, a given ConstIterator
- * @param end, any end ConstIterator
- * @tparam SC any model of segment computer 
- */
-template <typename SC>
-void longestSegment(SC& s, 
-                   const typename SC::ConstIterator& i, 
-                   const typename SC::ConstIterator& end) 
-{
-  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
-  longestSegment( s, i, end, Type() ); 
-}
 
 /**
  * Specialization for Iterator type
@@ -383,23 +372,25 @@ void longestSegment(SC& s,
   maximalExtension(s, end, CirculatorType() );
 }
 
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////// first maximal segment
 /**
- * Computes the first maximal segment passing through i
- * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * Computes the longest possible segment from [i]
+ * @param s any instance of segment computer 
+ * @param i, a given ConstIterator
+ * @param end, any end ConstIterator
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void firstMaximalSegment(SC& s, 
-  const typename SC::ConstIterator& i, 
-  const typename SC::ConstIterator& begin, 
-  const typename SC::ConstIterator& end ) 
+void longestSegment(SC& s, 
+                   const typename SC::ConstIterator& i, 
+                   const typename SC::ConstIterator& end) 
 {
-  firstMaximalSegment<SC>(s, i, begin, end, 
-typename DGtal::SegmentComputerTraits<SC>::Category() );
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type; 
+  longestSegment( s, i, end, Type() ); 
 }
+
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////// first maximal segment
 
 /**
  * Computes the first maximal segment passing through i
@@ -489,23 +480,24 @@ void firstMaximalSegment(SC& s,
   firstMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
 }
 
-////////////////////////////////////////////////////////////////
-/////////////////////////////////// most centered maximal segment
 /**
- * Computes the most centered maximal segment passing through i
+ * Computes the first maximal segment passing through i
  * @param i any ConstIterator
  * @param begin, end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void mostCenteredMaximalSegment(SC& s, 
+void firstMaximalSegment(SC& s, 
   const typename SC::ConstIterator& i, 
   const typename SC::ConstIterator& begin, 
   const typename SC::ConstIterator& end ) 
 {
- 	mostCenteredMaximalSegment<SC>(s, i, begin, end, 
+  firstMaximalSegment<SC>(s, i, begin, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
+
+////////////////////////////////////////////////////////////////
+/////////////////////////////////// most centered maximal segment
 
 /**
  * Computes the most centered maximal segment passing through i
@@ -630,23 +622,24 @@ void mostCenteredMaximalSegment(SC& s,
   mostCenteredMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
 }
 
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////// last maximal segment
 /**
- * Computes the last maximal segment passing through i
+ * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
  * @param begin, end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void lastMaximalSegment(SC& s, 
+void mostCenteredMaximalSegment(SC& s, 
   const typename SC::ConstIterator& i, 
   const typename SC::ConstIterator& begin, 
   const typename SC::ConstIterator& end ) 
 {
- 	lastMaximalSegment<SC>(s, i, begin, end, 
+ 	mostCenteredMaximalSegment<SC>(s, i, begin, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////// last maximal segment
 
 /**
  * Computes the last maximal segment passing through i
@@ -735,21 +728,24 @@ void lastMaximalSegment(SC& s,
   lastMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
 }
 
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////// next maximal segment
 /**
- * Computes the next maximal segment of s
- * (s is assumed to be maximal)
- * @param end, any end ConstIterator
+ * Computes the last maximal segment passing through i
+ * @param i any ConstIterator
+ * @param begin, end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void nextMaximalSegment(SC& s, 
+void lastMaximalSegment(SC& s, 
+  const typename SC::ConstIterator& i, 
+  const typename SC::ConstIterator& begin, 
   const typename SC::ConstIterator& end ) 
 {
- 	nextMaximalSegment<SC>(s, end, 
+ 	lastMaximalSegment<SC>(s, i, begin, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////// next maximal segment
 
 /**
  * Computes the next maximal segment of s
@@ -827,21 +823,22 @@ void nextMaximalSegment(SC& s,
   nextMaximalSegment(s, end, DGtal::DynamicSegmentComputer() ); 
 }
 
-////////////////////////////////////////////////////////////////
-/////////////////////////////////////// previous maximal segment
 /**
- * Computes the previous maximal segment of s
+ * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param begin, any begin ConstIterator
+ * @param end, any end ConstIterator
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
-void previousMaximalSegment(SC& s, 
-  const typename SC::ConstIterator& begin ) 
+void nextMaximalSegment(SC& s, 
+  const typename SC::ConstIterator& end ) 
 {
-  previousMaximalSegment(s, begin, 
+ 	nextMaximalSegment<SC>(s, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
+
+////////////////////////////////////////////////////////////////
+/////////////////////////////////////// previous maximal segment
 
 /**
  * Computes the previous maximal segment of s
@@ -923,6 +920,19 @@ void previousMaximalSegment(SC& s,
   previousMaximalSegment(s, end, DGtal::DynamicSegmentComputer() ); 
 }
 
+/**
+ * Computes the previous maximal segment of s
+ * (s is assumed to be maximal)
+ * @param begin, any begin ConstIterator
+ * @tparam SC any model of segment computer 
+ */
+template <typename SC>
+void previousMaximalSegment(SC& s, 
+  const typename SC::ConstIterator& begin ) 
+{
+  previousMaximalSegment(s, begin, 
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
 
 } // namespace DGtal
 
