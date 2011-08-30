@@ -43,10 +43,10 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/images/CImageContainer.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -105,8 +105,8 @@ namespace DGtal
      * @param defaultBackgroundValue (optional) default used to represent background
      * grid points
      */
-    ReverseDistanceTransformation(const IntegerShort defaultForeground = IntegerTraits< IntegerShort >::ONE, 
-				  const IntegerShort defaultBackground = IntegerTraits< IntegerShort >::ZERO);
+    ReverseDistanceTransformation(const IntegerShort defaultForeground = NumberTraits< IntegerShort >::ONE, 
+				  const IntegerShort defaultBackground = NumberTraits< IntegerShort >::ZERO);
 
     /**
      * Default destructor

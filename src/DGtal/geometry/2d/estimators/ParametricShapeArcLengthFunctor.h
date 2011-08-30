@@ -127,7 +127,7 @@ namespace DGtal
 
       //determining nbSamples from the bounding box size of the shape
       Vector v = myShape->getUpperBound() - myShape->getLowerBound();
-      double n = (double) IntegerTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
+      double n = (double) NumberTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
       unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
 
       //computes the angles
@@ -149,7 +149,7 @@ namespace DGtal
 
       //determining nbSamples from the bounding box size of the shape
       Vector v = myShape->getUpperBound() - myShape->getLowerBound();
-      double n = (double) IntegerTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
+      double n = (double) NumberTraits<Integer>::castToInt64_t( v.norm(Vector::L_infty) );
       unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
 
       return myShape->arclength (0,2*M_PI,nbSamples); 

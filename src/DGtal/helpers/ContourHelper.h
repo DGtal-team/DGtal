@@ -139,10 +139,8 @@ operator<< ( std::ostream & out, const ContourHelper & object );
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#if defined(INLINE)
+// Includes inline functions/methods.
 #include "DGtal/helpers/ContourHelper.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

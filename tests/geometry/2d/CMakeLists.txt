@@ -1,7 +1,8 @@
 SET(DGTAL_TESTS_SRC
 	testArithDSS
-	testFreemanChain	
-	testDecomposition
+	testFreemanChain
+	testDecomposition	
+	testSegmentation
 	testHalfPlane
 	testPreimage
 	testMaximalSegments

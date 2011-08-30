@@ -101,17 +101,17 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
   Colormap colormap(minV, maxV);
   Color c;
   V val;
-  D domain(myLowerBound, myUpperBound);
+  D ldomain(myLowerBound, myUpperBound);
 
-  for (typename D::ConstIterator it =  domain.range().begin();
-       it != domain.range().end(); ++it)
+  for (typename D::ConstIterator it =  ldomain.range().begin();
+       it != ldomain.range().end(); ++it)
   {
     val = this->operator()( (*it) );
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( IntegerTraits<typename D::Integer>::
+    board.drawRectangle( NumberTraits<typename D::Integer>::
 			 castToInt64_t((*it)[0]) - 0.5, 
-			 IntegerTraits<typename D::Integer>::
+			 NumberTraits<typename D::Integer>::
 			 castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }

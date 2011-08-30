@@ -63,7 +63,7 @@ namespace DGtal
     typedef typename DigitalSet::Domain Domain;
     typedef typename Domain::Space Space;
     typedef typename Domain::Integer Integer;
-    typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
+    typedef typename NumberTraits<Integer>::IsBounded IsBounded;
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;
     typedef typename Domain::Size Size;
