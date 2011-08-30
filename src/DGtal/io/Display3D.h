@@ -101,7 +101,7 @@ public:
   * @param y y coordinate of up-vector.
   * @param z z coordinate of up-vector.
   */
-  virtual void setCameraUpVector(double x, double y, double z){}; 
+  virtual void setCameraUpVector(double , double , double ){}; 
   
   /**
   * Set camera position.
@@ -109,7 +109,7 @@ public:
   * @param y y position.
   * @param z z position.
   */
-  virtual void setCameraPosition(double x, double y, double z) {  };
+  virtual void setCameraPosition(double , double , double ) {  };
   
   /**
   * Set near and far distance.
@@ -126,7 +126,7 @@ public:
   * @param y y direction.
   * @param z z direction.
   */
-  virtual void setCameraDirection(double x, double y, double z) { };
+  virtual void setCameraDirection(double , double , double ) { };
 
   
   
