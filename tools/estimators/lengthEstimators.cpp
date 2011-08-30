@@ -269,7 +269,7 @@ lengthEstimators( const string & name,
     Clock c;
 
     //Length evaluation & timing
-    c.startClock()
+    c.startClock();
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     l1 = l1length.eval();
     Tl1 = c.stopClock();
@@ -277,27 +277,27 @@ lengthEstimators( const string & name,
     c.startClock();
     BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     blue = BLUElength.eval();
-    Tblue = trace.endClock();
+    Tblue = c.stopClock();
     
     c.startClock();
     RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     rosen = RosenProffittlength.eval();
-    Trosen = trace.endClock();
+    Trosen = c.stopClock();
     
     c.startClock();
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     dss = DSSlength.eval();
-    Tdss = trace.endClock();
+    Tdss = c.stopClock();
     
     c.startClock();
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     mlp = MLPlength.eval();
-    Tmlp = trace.endClock();
+    Tmlp = c.stopClock();
 
     c.startClock();;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     fp = FPlength.eval();
-    Tfp = trace.endClock();
+    Tfp = c.stopClock();
 
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
 	 << " " << l1
