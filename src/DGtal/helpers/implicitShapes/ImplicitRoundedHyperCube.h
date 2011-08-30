@@ -107,10 +107,10 @@ namespace DGtal
       Point dec = (aPoint - myCenter);
       double partialpower=0;
       for(Dimension i = 0; i < Point::dimension; ++i)
-	partialpower +=  std::pow(std::abs(IntegerTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
+	partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
 				  myPower);
       
-      return std::pow(IntegerTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
+      return std::pow(NumberTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
 	      partialpower;      
     }
 
