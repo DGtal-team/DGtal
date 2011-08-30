@@ -177,7 +177,7 @@ namespace DGtal
        * are much better when accessing a leaf from a deeper key (needs
        * no blending).
        * @param key the haskkey
-       * @return the value type
+       * @return the value
        */
       Value get(const HashKey key) const;
 
@@ -186,19 +186,22 @@ namespace DGtal
        * Returns the value at a given key.
        *
        * @param key the hash key used as an index.
+       * @return the value
        */
       Value operator () (const HashKey key) const;
 
       /**
        * Returns the value at a given point.
        *
-       * @param aPoint The point.
+       * @param aPoint The point
+       * @return the value 
        */
       Value operator()(const Point &aPoint) const;
 
       /**
        * Returns the value at a given coordinate using upwardGet().
-       * @param aPoint The point.
+       * @param aPoint The point
+       * @return the value
        */
       Value get(const Point & aPoint) const;
 
@@ -207,8 +210,8 @@ namespace DGtal
        * Returns the value corresponding to a key making the assomption
        * that the key is at same depth or deeper than the leaf we are
        * looking for.
-       *
-       *
+       * @param key The key
+       * @return the value
        */
       Value upwardGet(const HashKey key) const ;
 
@@ -216,6 +219,8 @@ namespace DGtal
        * A attempt to do the same thing as get(HashKey) but looking for
        * deeper leafs in the first place instead of doing this in the
        * second place. It hasn't show better results so far.
+       * @param key The key. 
+       * @return the value
        */
       Value reverseGet(const HashKey key) const;
 
@@ -227,6 +232,8 @@ namespace DGtal
        * performances strongly depend on wether or not and how much the
        * tree's structure needs to be modified.  For efficiency no check
        * is performed on the key
+       * @param key The key
+       * @param object The associated object 
        */
       void setValue(const HashKey key, const Value object);
 
@@ -237,6 +244,8 @@ namespace DGtal
        * performances strongly depend on wether or not and how much the
        * tree's structure needs to be modified.  For efficiency no check
        * is performed on the coordinates
+       * @param key The point
+       * @param object the associated object
        */
       void setValue(const Point& aPoint, const Value object);
 
@@ -244,6 +253,7 @@ namespace DGtal
        * Returns the size of a dimension (the container represents a
        * line, a square, a cube, etc. depending on the dimmension so no
        * need for distinctions between width, height, ect.)
+       * @return the dimension size
        */
       inline unsigned int getSpanSize() const
       {
@@ -252,6 +262,7 @@ namespace DGtal
 
       /**
        *  Returns the tree's depth.
+       * @return the depth
        */
       inline unsigned int getDepth() const
       {
@@ -263,6 +274,8 @@ namespace DGtal
        * most important bit that is equal to 1 is at a position of the
        * type dim*k with dim the dimmension of the container (template
        * parameter) and k a strictly positive integer.
+       * @param key the key
+       * @return the boolean result
        */
       bool isKeyValid(HashKey key) const;
 
@@ -270,6 +283,8 @@ namespace DGtal
        * Checks recursively that the sub-tree starting with key is
        * valid.  A tree is valid if there's one (and only one) leaf for
        * each position at maximal depth.
+       * @param key the key
+       * @param leafAbove  
        */
       bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 
@@ -557,6 +572,8 @@ namespace DGtal
        * Returns a pointer to the node corresponding to the key. If it
        * does'nt exist, returns 0.  This method is called VERY often,
        * and thus should operate as fast as possible.
+       * @param key The key.
+       * @return the pointer to the node corresponding to the key.
        */
       inline Node* getNode(const HashKey key)	const	// very used !!
       {
@@ -573,11 +590,14 @@ namespace DGtal
       /**
        * Remove the node corresponding to a key. Returns false if the
        * node doesn't exist.
+       * @param key The key
        */
       bool removeNode(HashKey key);
 
       /**
        * Recusrively calls RemoveNode on the key and its children.
+       * @param key The key. 
+       * @param nbRecursions the number of recursions performed.
        */
       void recursiveRemoveNode(HashKey key, unsigned int nbRecursions);
 
@@ -586,6 +606,7 @@ namespace DGtal
        * Set the (maximum) depth of the tree and precompute a mask used
        * for some calculations.  The depth of the tree must be known
        * because accessing the data from coordinates depends on it.
+       * @param depth the maxumum depth.
        */
       void setDepth(unsigned int depth);
 
