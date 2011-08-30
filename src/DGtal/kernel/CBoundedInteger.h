@@ -45,7 +45,7 @@
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -122,7 +122,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    typename IntegerTraits<T>::IsBounded myIsBounded;
+    typename NumberTraits<T>::IsBounded myIsBounded;
    
     // ------------------------- Internals ------------------------------------
   private:
