@@ -1,9 +1,9 @@
 SET(DGTAL_TESTS_SRC
-   dgtalboard-1-points
-   dgtalboard-2-sets
-   dgtalboard-3-custom-classes
-   dgtalboard-3-custom-points
-   dgtalboard-4-colormaps
+   dgtalBoard2D-1-points
+   dgtalBoard2D-2-sets
+   dgtalBoard2D-3-custom-classes
+   dgtalBoard2D-3-custom-points
+   dgtalBoard2D-4-colormaps
    )
 
 
