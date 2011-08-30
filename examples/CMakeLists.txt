@@ -29,4 +29,5 @@ add_subdirectory(io)
 add_subdirectory(geometry)
 add_subdirectory(doc-examples)
 add_subdirectory(topology)
+add_subdirectory(topological-maps)
 

@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
-#include <stdint.hh>
+#include <stdint.h>
 #include <iostream>
 #include "voxel.hh"
 //******************************************************************************
