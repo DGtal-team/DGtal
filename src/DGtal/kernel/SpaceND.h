@@ -154,17 +154,6 @@ Point4Int a= {2, 3 , -5 , 6};
   public:
 
     /**
-     * Constructor
-     *
-     */
-    SpaceND() {};
-
-    /**
-     * Destructor.
-     */
-    ~SpaceND() {};
-
-    /**
      * @return the digital space of specified subdimension of this space.
      */
     template <Dimension subdimension>
@@ -208,27 +197,23 @@ Point4Int a= {2, 3 , -5 , 6};
      * Forbidden by default.
      */
     SpaceND & operator=( const SpaceND & other );
+    
+    /**
+     * Constructor
+     *
+     */
+    SpaceND() ;
+
+    /**
+     * Destructor.
+     */
+    ~SpaceND() ;
+
 
     // ------------------------- Internals ------------------------------------
   private:
 
   }; // end of class SpaceND
-
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'SpaceND'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'SpaceND' to write.
-   * @return the output stream after the writing.
-   */
-  template <Dimension dim, typename Integer>
-  static std::ostream&
-  operator<<( std::ostream & out, const SpaceND<dim, Integer> & object )
-  {
-    object.selfDisplay( out );
-    return out;
-  }
-
 
 } // namespace DGtal
 
