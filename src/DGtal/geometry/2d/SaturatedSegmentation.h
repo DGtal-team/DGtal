@@ -370,8 +370,6 @@ namespace DGtal
        * Computes the last maximal segment of the segmentation.
        */
       void initLastMaximalSegment();
-      void initLastMaximalSegment(IteratorType);
-      void initLastMaximalSegment(CirculatorType);
 
     };
 

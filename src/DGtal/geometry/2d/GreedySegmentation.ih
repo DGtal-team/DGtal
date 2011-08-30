@@ -47,10 +47,53 @@
   template <typename TSegmentComputer>
 inline
 bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
+{
+  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
+  this->doesIntersectNext( it, itb, ite, Type() );
+}
+
+/**
+ * Specialization for iterators.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
+{
+		ConstIterator previousIt(it); 
+    if ( (it != itb)&&(it != ite) ) {
+      --previousIt;
+		  SegmentComputer tmpSegmentComputer;
+		  tmpSegmentComputer.init(previousIt);
+		  return tmpSegmentComputer.extend();
+    } else {
+      return false; 
+    }
+}
+
+/**
+ * Specialization for circulators
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+{
+		this->doesIntersectNext(it);
+}
+
+/**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegmentComputer>
+inline
+bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
-		SegmentComputer tmpSegmentComputer;
 		ConstIterator previousIt(it); --previousIt;
+
+		SegmentComputer tmpSegmentComputer;
 		tmpSegmentComputer.init(previousIt);
 		return tmpSegmentComputer.extend();
 }
@@ -75,9 +118,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
 	//if the end is reached
 	if (mySegmentComputer.end() == myS->myStop) {
 
-    //TODO to check in the circulator case
-	  myFlagIntersectNext = false;
-    
+    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
     myFlagIsLast = true; 
 
     //last extension
@@ -145,16 +186,20 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
     myFlagIsLast( false )
 {
 
-	if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+  if (myFlagIsValid) {
 
-    //TODO to check in the circulator case          
-	  myFlagIntersectPrevious = false;
+	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
 
-    //computation of the longest segment from myS->myStart
-		this->longestSegment(myS->myStart);	
+		  myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
+
+      //computation of the longest segment from myS->myStart
+		  this->longestSegment(myS->myStart);	
+
+    } else {
+      myFlagIsValid = false;
+    }
 
   }
-
 }
 
 
@@ -274,7 +319,13 @@ bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
 ( const SegmentComputerIterator & other ) const
 {
-  return ( isValid() == other.isValid() ); 
+
+ if ( isValid() ) 
+  return ( (other.isValid() ) && 
+( mySegmentComputer.begin() == other.mySegmentComputer.begin() ) &&
+( mySegmentComputer.end() == other.mySegmentComputer.end() ) );  
+ else 
+  return ( ! other.isValid() );
 }
 
 /**
