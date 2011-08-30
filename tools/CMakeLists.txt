@@ -30,7 +30,8 @@ add_subdirectory(imageTools)
 #------ Basic tools ------
 
 ##-- Cmake configuration for dgtal-config tool
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in" "${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp" IMMEDIATE)
+CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in
+  ${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp)
 
 
 SET(DGTAL_TOOLS_SRC
