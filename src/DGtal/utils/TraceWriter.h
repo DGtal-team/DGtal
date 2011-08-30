@@ -50,9 +50,9 @@ namespace DGtal
   // class TraceWriter
   /** 
    * Description of class 'TraceWriter' <p>
-   * Aim: Virtual Class to implement trace writers.
+   * Aim: @brief Virtual Class to implement trace writers.
    *
-   *
+   * @see testTrace.cpp
    */
   class TraceWriter
   {
