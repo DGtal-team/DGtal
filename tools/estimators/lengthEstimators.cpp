@@ -41,6 +41,7 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/utils/Clock.h"
 
 //space / domain
 #include "DGtal/kernel/SpaceND.h"
@@ -265,33 +266,35 @@ lengthEstimators( const string & name,
     double l1, blue, rosen,dss,mlp,fp;
     double Tl1, Tblue, Trosen,Tdss,Tmlp,Tfp;
     
+    Clock c;
+
     //Length evaluation & timing
-    trace.beginClock();
+    c.startClock()
     l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     l1 = l1length.eval();
-    Tl1 = trace.endClock();
+    Tl1 = c.stopClock();
     
-    trace.beginClock();
+    c.startClock();
     BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     blue = BLUElength.eval();
     Tblue = trace.endClock();
     
-    trace.beginClock();
+    c.startClock();
     RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     rosen = RosenProffittlength.eval();
     Trosen = trace.endClock();
     
-    trace.beginClock();
+    c.startClock();
     DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     dss = DSSlength.eval();
     Tdss = trace.endClock();
     
-    trace.beginClock();
+    c.startClock();
     MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     mlp = MLPlength.eval();
     Tmlp = trace.endClock();
 
-    trace.beginClock();;
+    c.startClock();;
     FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
     fp = FPlength.eval();
     Tfp = trace.endClock();
