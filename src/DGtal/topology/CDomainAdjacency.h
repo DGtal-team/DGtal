@@ -132,12 +132,7 @@ namespace DGtal
   
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/topology/CDomainAdjacency.ih"
-
-//                                                                           //
+                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CDomainAdjacency_h

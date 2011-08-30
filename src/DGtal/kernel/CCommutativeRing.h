@@ -71,17 +71,35 @@ namespace DGtal
    * <p> Definitions
    *
    * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
+   * <table> 
    * <tr> 
-   * <td> Addition </td> <td> x+y </td> <td> x,y of type Integer </td> <td> Integer</td>
-   * <td> </td> <td> scalar addition </td> <td> </td> <td> </td>
-   * </tr><tr>
-  * <td> Opposite </td> <td> -x </td> <td> x of type Integer </td> <td> Integer</td>
-   * <td> </td> <td> opposite of a scalar </td> <td> </td> <td> </td>
+   *  <td> \b Name </td> 
+   *  <td> \b Expression </td>
+   *  <td> \b Type requirements </td> 
+   *  <td> \b Return type </td>
+   *  <td> \b Precondition </td> <td> \b Semantics </td> 
+   *  <td> \b Postcondition </td> <td> \b Complexity </td>
+   * </tr>
+   *
+   * <tr> 
+   *   <td> Addition </td> 
+   *   <td> x+y </td> 
+   *   <td> x,y of type Integer </td> 
+   *   <td> Integer</td>
+   *   <td> </td>
+   *   <td> scalar addition </td> 
+   *   <td> </td> 
+   *   <td> </td>
+   * </tr>
+   * <tr>
+   *   <td> Opposite </td> 
+   *   <td> -x </td> 
+   *   <td> x of type Integer </td> 
+   *   <td> Integer</td>
+   *   <td> </td> 
+   *   <td> opposite of a scalar </td> 
+   *   <td> </td> 
+   *   <td> </td>
    * </tr><tr>
    * <td> multiplication </td> <td> x*y </td> <td> x ,yof type Integer </td> <td> Integer</td>
    * <td> </td> <td> multiplication of scalars </td> <td> </td> <td> </td>

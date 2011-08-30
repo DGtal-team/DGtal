@@ -105,9 +105,9 @@ DGtal::Trace::reset()
   myCurrentLevel = 0;
   myCurrentPrefix = "";
   while( !myKeywordStack.empty() )
-  {
-     myKeywordStack.pop();
-  }
+    {
+      myKeywordStack.pop();
+    }
 }
 
 /**
