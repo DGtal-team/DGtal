@@ -36,6 +36,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/RandomColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "Board/PSFonts.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -160,6 +161,11 @@ int main()
   HueShadeColorMap<int, 10> cmap_cyclic10( 0, 500 );
   addColorMapSample( "HueShade (10x)", cmap_cyclic10, 1, board );
 
+  RandomColorMap cmap_random(0,500, Color::Green, Color::Red);
+  cmap_random.addColor(Color::Red);
+  cmap_random.addColor(Color::Blue);
+  cmap_random.addColor(Color::Yellow);
+
   const int yellow = DGTAL_RGB2INT(255,255,0);
   const int red = DGTAL_RGB2INT(255,0,0);
   GradientColorMap<int, CMAP_CUSTOM, yellow, red> cmap_gradient( 0, 500 );
@@ -205,7 +211,8 @@ int main()
 		     GradientColorMap<int>( 0, 500, CMAP_WINTER ),
 		     1,
 		     board );
-  
+  addColorMapSample( "Random", cmap_random, 1, board );  
+
   board.saveEPS( "colormaps.eps" );
   
 #ifdef WITH_CAIRO

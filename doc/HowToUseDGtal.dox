@@ -29,6 +29,10 @@ and making sure that the dependencies are correct. Two main tools will be descri
 -# \ref HowToUseDGtal_CMAKE
 -# \ref HowToUseDGtal_QMAKE
 
+We recommend to use the @em cmake system (\ref HowToUseDGtal_CMAKE) since using
+a simple command, all dependencies used to build your installed
+DGtal version will be associated and linked to your project. 
+
 
 Let us consider the following helloworld project with the C++ file
 \em helloworld.cpp :
@@ -49,7 +53,7 @@ int main(int argc, char** argv)
 This simple example just use the "trace" mechanism in DGtal but it
 requires @em helloworld.cpp to be linked to DGtal.
 
-\section HowToUseDGtal_CMAKE Using cmake tools:
+\section HowToUseDGtal_CMAKE Using cmake tools
 
 To compile this file with cmake, you have a CMakeLists.txt file that
 looks like:
@@ -118,6 +122,7 @@ adding a definition transmitted to the compiler:
 DEFINES += WITH_VISU3D_QGLVIEWER
 @endcode
 
+
 Moreover you also have to specify that you need to link the part of
 DGtal containing the 3D features (and add if needed the link with \em
 qglviewer ):
@@ -126,6 +131,10 @@ qglviewer ):
 LIBS += -lDGtal  -lDGtal-visu3d  -framework qglviewer 
 @endcode
 
+
+@warning If you want to use other optional  DGtal dependencies (ITK,
+ImageMagick, ...), you  have to add all associated DEFINES flags and
+LIBS variables.
 
 
 

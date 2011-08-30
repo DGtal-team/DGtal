@@ -21,14 +21,14 @@
  * 
  * @brief
  *
- * Simple example of class DGtalCairo.
+ * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -49,19 +49,20 @@ int main( int argc, char** argv )
   Point p3( 2, 3, 4 );
   Domain domain( p1, p2 );
 
-  DGtalCairo viewer;
+  Board3DTo2D viewer;
 
   viewer << domain;  
   viewer << p1 << p2 << p3;
   
-  viewer << Cairo3dCameraPosition(2.500000, 2.500000, 16.078199)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+    viewer << CameraPosition(2.500000, 2.500000, 16.078199)
+	<< CameraDirection(0.000000, 0.000000, -1.000000)
+	<< CameraUpVector(0.000000, 1.000000, 0.000000);
 
-  //viewer << Cairo3dCameraZNearFar(4.578200, 22.578199);
+  //viewer << CameraZNearFar(4.578200, 22.578199);
 
-  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-1-points.png", DGtalCairo::CairoPNG, 600*2, 400*2);
+  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
+  viewer.saveCairo("dgtalCairo-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

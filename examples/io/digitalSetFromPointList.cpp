@@ -32,6 +32,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
+
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -60,7 +63,7 @@ int main( int argc, char** argv )
   vPos.push_back(2);
   vPos.push_back(1);
   vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
-  viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
+  viewer<< CustomColors3D(Color(255,0,0), Color(255,0,0)); 
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }

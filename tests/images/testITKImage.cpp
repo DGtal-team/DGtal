@@ -57,7 +57,7 @@ bool testITKImage()
 
   trace.beginBlock ( "ITK Image init..." );
 
-  typedef int Integer;
+  typedef DGtal::int32_t Integer;
   typedef SpaceND<3, Integer > Space3Type;
   typedef HyperRectDomain<Space3Type> Domain;
   typedef Domain::Point Point;
@@ -124,7 +124,7 @@ bool testITKMethod()
 
   trace.beginBlock ( "Test the use of a pure ITK method..." );
 
-  typedef short Integer;
+  typedef DGtal::int32_t Integer;
   typedef SpaceND<2, Integer > Space2Type;
   typedef HyperRectDomain<Space2Type> Domain;
   typedef Domain::Point Point;

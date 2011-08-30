@@ -34,8 +34,11 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
+
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 #include "DGtal/io/Color.h"
@@ -72,7 +75,7 @@ int main( int argc, char** argv )
     vRad.push_back(rand()%7);
   }
   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it ){
-    for(int i=0;i<nbSeeds; i++){
+    for(unsigned int i=0;i<nbSeeds; i++){
       if ( (*it - vCenters.at(i)  ).norm1() <= vRad.at(i) && domain.isInside(*it) &&
 	   domain.isInside(*it+Point(1,1,1)) && domain.isInside(*it-Point(1,1,1)) ){ 
 	diamond_set.insertNew( *it );
@@ -89,13 +92,14 @@ int main( int argc, char** argv )
   SurfelAdjacency<3> SAdj( true );
   vector<vector<SCell> > vectConnectedSCell;
   
+  
   //Here since the last argument is set to true, the resulting
   //SignedKhalimskySpaceND are signed in order to indicate the direction
   //of exterior. You can also get the SignefKhalimskySpaceND with default
   //sign:
 
   SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
-  // Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, true);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, true);
   
   
   QApplication application(argc,argv);
@@ -118,7 +122,7 @@ int main( int argc, char** argv )
   
   for(uint i=0; i< vectConnectedSCell.size();i++){
     DGtal::Color c= gradient(i);
-    viewer << CustomColors3D(QColor(250, 0,0), QColor(c.red(), 
+    viewer << CustomColors3D(Color(250, 0,0), Color(c.red(), 
 						      c.green(),
 						      c.blue()));
     
@@ -128,7 +132,7 @@ int main( int argc, char** argv )
   }
 
   
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 200,200, 200));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 200,200, 200));
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
   viewer << Viewer3D::updateDisplay;

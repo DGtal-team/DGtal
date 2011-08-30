@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "boost/concept_check.hpp"
 #include "YYY/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +52,7 @@ namespace YYY
   /**
    * Description of \b concept '\b XXX' <p>
    * @ingroup Concepts
-   * Aim:
+   * @brief Aim:
    * 
    * <p> Refinement of
    *
@@ -98,11 +97,6 @@ namespace YYY
   }; // end of concept XXX
   
 } // namespace YYY
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "YYY/ZZZ/XXX.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

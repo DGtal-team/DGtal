@@ -568,15 +568,15 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const
 {  
   ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(false);
+  display.createNewVoxelList(false);
   for (  ConstIterator it = this->begin(); 
 	 it != this->end();
 	 ++it )
     {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
 
 }
@@ -587,26 +587,26 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentViewer3D( Viewe
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithViewer3D *
-DGtal::DigitalSetBySTLVector<Domain>::defaultStyleViewer3D( std::string ) const
+DGtal::DrawableWithDisplay3D *
+DGtal::DigitalSetBySTLVector<Domain>::defaultStyleDisplay3D( std::string ) const
 {
-  return new DefaultDrawStyleViewer3D;
+  return new DefaultDrawStyleDisplay3D;
 }
 
 template <typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingDisplay3D( Display3D & display ) const
 {
   
   
   ASSERT(Domain::Space::dimension == 3);
-  viewer.createNewVoxelList(true);
+  display.createNewVoxelList(true);
   for (  ConstIterator it = this->begin(); 
 	 it != this->end();
 	 ++it )
     {
-      viewer.addVoxel((*it)[0], (*it)[1],(*it)[2], viewer.getFillColor());
+      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
 
 }
@@ -614,7 +614,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingViewer3D( Viewer3D & viewe
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridDisplay3D( Display3D & display ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -622,7 +622,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer 
 	it != this->end();
         ++it )
     {
-      viewer.addPoint((*it)[0],(*it)[1], (*it)[2], viewer.getFillColor());
+      display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
     }
 
 }
@@ -631,23 +631,23 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridViewer3D( Viewer3D & viewer 
 template<typename Domain>
 inline
 void
-DGtal::DigitalSetBySTLVector<Domain>::selfDrawViewer3D( Viewer3D & viewer ) const
+DGtal::DigitalSetBySTLVector<Domain>::selfDrawDisplay3D( Display3D & display ) const
 {
   ASSERT(Domain::Space::dimension == 3);
   
- std::string mode = viewer.getMode( this->styleName() );
+ std::string mode = display.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingViewer3D( viewer );
+    selfDrawAsPavingDisplay3D( display );
   else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentViewer3D( viewer );
+    selfDrawAsPavingTransparentDisplay3D( display );
   else if ( mode == "Grid" )
-    selfDrawAsGridViewer3D( viewer );
+    selfDrawAsGridDisplay3D( display );
   else if ( ( mode == "Both" ) )
     {
-      selfDrawAsPavingViewer3D(viewer);
-      selfDrawAsGridViewer3D( viewer );
+      selfDrawAsPavingDisplay3D(display);
+      selfDrawAsGridDisplay3D( display );
     }  
 }
 

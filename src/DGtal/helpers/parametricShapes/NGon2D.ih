@@ -18,6 +18,8 @@
  * @file NGon2D.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/12
  *
@@ -90,25 +92,27 @@ DGtal::NGon2D<T>::parameter( const RealPoint2D & pp ) const
 {
   RealPoint2D p( pp );
   p -= myCenter;
-  
-  double angle = 0.0;
-  if ( p[0] == 0.0 ) 
-    {
-      if ( p[1] >0 )
-        angle = M_PI/2.0; 
-      else 
-        angle = 1.5*M_PI; 
-    }
-  else if (  ( p[0] > 0.0 ) && (   p[1] >= 0.0 ) )
-    angle = atan(p[1]/p[0]);
-  else if (  ( p[0] > 0.0 ) && (   p[1] <= 0.0 ) )
-    angle = 2*M_PI + atan(p[1]/p[0]);
-  else if (  ( p[0] < 0.0 ) && (   p[1] >= 0.0 ) )
-    angle = atan(p[1]/p[0]) + M_PI;
-  else // (  ( p[0] < 0.0 ) && (   p[1] <= 0.0 ) )
-    angle = atan(p[1]/p[0]) + M_PI;
 
-  return angle;
+  double t = atan2( p[ 1 ], p[ 0 ] );
+  return ( t < 0.0 ) ? ( t + 2.0 * M_PI ) : t;
+  // double angle = 0.0;
+  // if ( p[0] == 0.0 ) 
+  //   {
+  //     if ( p[1] >0 )
+  //       angle = M_PI/2.0; 
+  //     else 
+  //       angle = 1.5*M_PI; 
+  //   }
+  // else if (  ( p[0] > 0.0 ) && (   p[1] >= 0.0 ) )
+  //   angle = atan(p[1]/p[0]);
+  // else if (  ( p[0] > 0.0 ) && (   p[1] <= 0.0 ) )
+  //   angle = 2*M_PI + atan(p[1]/p[0]);
+  // else if (  ( p[0] < 0.0 ) && (   p[1] >= 0.0 ) )
+  //   angle = atan(p[1]/p[0]) + M_PI;
+  // else // (  ( p[0] < 0.0 ) && (   p[1] <= 0.0 ) )
+  //   angle = atan(p[1]/p[0]) + M_PI;
+
+  // return angle;
 }
 
 /**
@@ -163,8 +167,11 @@ DGtal::NGon2D<T>::xp( const double t ) const
 {
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
   // TODO check if angle equals that of a vertex ?
+  double angle = t - myPhi; 
+  while ( angle < 0.0 )
+    angle += 2.0*M_PI;
   
-  unsigned int intervalle_lower = static_cast<unsigned int>( floor( ( t - myPhi )* myK / (2.0 * M_PI ) ) );
+  unsigned int intervalle_lower = static_cast<unsigned int>( floor( angle * myK / (2.0 * M_PI ) ) );
   unsigned int intervalle_upper = intervalle_lower == ( myK -1 ) ? 0 : intervalle_lower+1;
   //float dist = myRadius*sin ( M_PI / myK );
   RealPoint2D s1 ( myRadius*cos(myPhi + intervalle_lower*2.0*M_PI/myK),

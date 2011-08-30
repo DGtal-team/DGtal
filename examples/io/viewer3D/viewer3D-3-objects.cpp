@@ -31,6 +31,8 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -61,7 +63,7 @@ int main( int argc, char** argv )
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- viewer <<  CustomColors3D(QColor(250, 200,0, 100),QColor(250, 200,0, 25));
+ viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
  viewer << shape_set;  
 
  Object6_18 shape( dt6_18, shape_set );

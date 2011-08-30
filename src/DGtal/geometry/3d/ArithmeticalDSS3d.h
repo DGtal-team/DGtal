@@ -48,6 +48,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -268,23 +269,23 @@ namespace DGtal
 
     
  
-	#ifdef WITH_VISU3D_QGLVIEWER
 
+    
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithViewer3D* defaultStyleViewer3D( std::string mode = "" ) const;
+    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
 
     /**
      * Draw the object with QGLViewer
      * @param viewer the output where the object is drawn.
      */
-    void selfDrawViewer3D ( Viewer3D & viewer ) const;
-    void selfDrawAsPointsViewer3D( Viewer3D & viewer ) const;
-    void selfDrawAsBoundingBoxViewer3D( Viewer3D & viewer ) const;
+    void selfDrawDisplay3D ( Display3D & display ) const;
+    void selfDrawAsPointsDisplay3D( Display3D & display ) const;
+    void selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const;
  
- #endif
+
 
 
 

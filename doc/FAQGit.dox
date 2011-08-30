@@ -158,9 +158,12 @@ git branch
 @endcode
 
 Note also that the branch marked with a star is your 
-current local branch. At this point you should see: 
- - * master
- - cool-feature
+current local branch. At this point you should see
+
+@code
+ * master
+ cool-feature
+@endcode
 
 (the '*' indicates your current active branch).
 
@@ -263,7 +266,7 @@ Then you will work on the new tracked branch aBranch
 @note
 the option --track work only from git version 1.6.2 and later. But you can perform equivalent with the following command:
 @code 
-checkout -b [myBranchName] [aRemoteName]/[aBranch]
+git checkout -b [myBranchName] [aRemoteName]/[aBranch]
 @endcode 
 @endnote
 
@@ -355,7 +358,7 @@ all your local commits)
 Even it is very rare, conflit can appear when you try to apply a pull:
 
 @code 
->git pull mainRemote master
+>git pull upstream master
 
 remote: Counting objects: 1, done.
 remote: Total 1 (delta 0), reused 1 (delta 0)
@@ -379,8 +382,8 @@ To resolve the conflict you just have to apply the command:
 It will lunch simple tools like opendiff on MacOSX allowing to select the main file. After saving the merged file, you simply have to commit the new change:
 
 @code
-> git checkout -m "Merging GIT conflict! " -a
-> git pull mainRemote master
+> git commit -m "Merging GIT conflict! " -a
+> git pull upstream master
 @endcode
 
 

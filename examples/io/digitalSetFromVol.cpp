@@ -32,9 +32,13 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/Display3D.h"
+
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -56,7 +60,7 @@ int main( int argc, char** argv )
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   viewer << SetMode3D(image.domain().styleName(), "BoundingBox");
-  viewer << set3d << image.domain()  << Viewer3D::updateDisplay;
+  viewer << set3d << image.domain()  << Display3D::updateDisplay;
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////

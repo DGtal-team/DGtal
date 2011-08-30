@@ -47,6 +47,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/RealPointVector.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -99,19 +100,18 @@ Point4Int a= {2, 3 , -5 , 6};
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
  
-   //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
+    //Integer must be signed to characterize a ring.
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
 
   public:
-    ///Arithmetic ring induced by (+,-,*) and Integre numbers.
+    ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;
     ///Unsigned version of the Integers.
     typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
     
     ///Type used to represent sizes in the digital space.
     typedef UnsignedInteger Size;
-    
-    
+     
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
 

@@ -21,14 +21,17 @@
  * 
  * @brief
  *
- * Simple example of class DGtalCairo.
+ * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shapes.h"
@@ -45,7 +48,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  DGtalCairo viewer;
+  Board3DTo2D viewer;
 
   Point p1( 0, 0, 0 );
   Point p2( 20, 20, 20 );
@@ -54,17 +57,17 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
 
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
-  viewer << SetMode3DCairo( shape_set.styleName(), "Both" );
+  viewer << SetMode3D( shape_set.styleName(), "Both" );
   viewer << shape_set;
-  viewer << CustomColors3DCairo(QColor(250, 200,0, 100),QColor(250, 200,0, 20));
-  viewer << SetMode3DCairo( p1.styleName(), "Paving" );
+  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+  viewer << SetMode3D( p1.styleName(), "Paving" );
   
-  viewer << Cairo3dCameraPosition(10.000000, 10.000000, 41.682465)
-	<< Cairo3dCameraDirection(0.000000, 0.000000, -1.000000)
-	<< Cairo3dCameraUpVector(0.000000, 1.000000, 0.000000);
+  viewer << CameraPosition(10.000000, 10.000000, 41.682465)
+	 << CameraDirection(0.000000, 0.000000, -1.000000)
+	 << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-6.png", DGtalCairo::CairoPNG, 600, 400);
+  viewer.saveCairo("dgtalCairo-6.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
