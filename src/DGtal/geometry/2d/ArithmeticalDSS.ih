@@ -251,7 +251,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 			Ll = lastPoint;
 			myA += lastMove[1]; 
 			myB += lastMove[0]; 
-			myMu = myA*myUl[0] - myB*myUl[1]; 
+			myMu = getRemainder(myUl); 
 			myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 			myNbUpPat = 1;
 			myNbLowPat = 1;
@@ -281,7 +281,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 					//update
 					lastIt = it; 
 					//remainder
-					Integer r = myA*lastPoint[0] - myB*lastPoint[1];
+					Integer r = getRemainder(lastPoint);
 					if ( r < myMu) {	//on the left
 						Ul = lastPoint; 
 						Lf = Ll;
@@ -297,7 +297,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 						myNbUpPat = 0;
 						myNbLowPat = 1;
 					}
-					myMu = myA*myUl[0] - myB*myUl[1]; 
+					myMu = getRemainder(myUl); 
 					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 
 					mySteps.push_back(lastMove);
@@ -319,7 +319,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 		if (hasLessThanTwoSteps(lastMove)) {
 		
 			//remainder
-			Integer r = myA*lastPoint[0] - myB*lastPoint[1];
+			Integer r = getRemainder(lastPoint);
 				  
 			if ( (r < myMu-1)||(r > myMu+myOmega) )
 				return false; //strongly exterior
@@ -342,7 +342,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 					Lf = Ll;
 					myA = myUl[1] - myUf[1]; 
 					myB = myUl[0] - myUf[0]; 
-					myMu = myA*myUl[0] - myB*myUl[1];
+					myMu = getRemainder(myUl);
 					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 					myNbUpPat = 1;
 					myNbLowPat = 0;
@@ -351,7 +351,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 					Uf = Ul; 
 					myA = myLl[1] - myLf[1]; 
 					myB = myLl[0] - myLf[0]; 
-					myMu = myA*myUl[0] - myB*myUl[1];
+					myMu = getRemainder(myUl);
 					myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 					myNbUpPat = 0;
 					myNbLowPat = 1;
@@ -369,7 +369,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 }
 
-
+//Deprecated
 //--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -393,7 +393,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const
 
 }
 
-//Deprecated
+
 //--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -413,7 +413,7 @@ bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd()
 {
 
-  ConstIterator it(myF); -it;
+  ConstIterator it(myF); --it;
 	return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
 
 }
@@ -492,7 +492,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 				Ll = Lf + newMainVector*k*s;
 				myNbLowPat = k;
 				//mu, omega
-				myMu = myA*myUl[0] - myB*myUl[1];
+				myMu = getRemainder(myUl);
 				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 			} else {
 				Uf = Uf + Vector(myB,myA)*s;
@@ -522,7 +522,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 				Ul = Uf + newMainVector*k*s;
 				myNbUpPat = k;
 				//mu, omega
-				myMu = myA*myUl[0] - myB*myUl[1];
+				myMu = getRemainder(myUl);
 				myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
 			} else {
 				Lf = Lf + Vector(myB,myA)*s;
@@ -634,7 +634,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 		if (hasLessThanTwoSteps(lastMove)) {
 		
 			//remainder
-			Integer r = myA*lastPoint[0] - myB*lastPoint[1];
+			Integer r = getRemainder(lastPoint);
 				  
 			if ( (r < myMu-1)||(r > myMu+myOmega) )
 				return false; //strongly exterior
@@ -651,6 +651,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 
 }
 
+//--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -658,8 +659,30 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
 {
 
   ConstIterator it(myL); ++it;
-	Point lastPoint(*it);
-	Vector lastMove = lastPoint-Point(*myL);
+	return isExtendable(*it, (Point(*it) - Point(*myL)) ); 
+
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isOppositeEndExtendable()
+{
+
+  ConstIterator it(myF); --it;
+	return isExtendable(*it, (Point(*myF) - Point(*it)) ); 
+
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(
+   const Point & lastPoint, 
+	 const Vector & lastMove )
+{
+
 	//if the two last points 
   //are confounded or not connected
 	//return false
@@ -703,7 +726,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
 		if (hasLessThanTwoSteps(lastMove)) {
 		
 			//remainder
-			Integer r = myA*lastPoint[0] - myB*lastPoint[1];
+			Integer r = getRemainder(lastPoint);
 				  
 			if ( (r < myMu-1)||(r > myMu+myOmega) )
 				return false; //strongly exterior
@@ -726,21 +749,22 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
  * Computes the remainder of a point
  * (that does not necessarily belong to the DSS)
  * @param aPoint the point whose remainder is returned 
- * @return the remainder.
+ * @return myA*aPoint[0] - myB*aPoint[1].
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Point & aPoint) const
 {
+  //aPoint[0] and aPoint[1] need to be cast into Integer
 	return myA*aPoint[0]-myB*aPoint[1];
 }
 
 /**
  * Computes the remainder of a point
  * (that does not necessarily belong to the DSS)
- * @param it an iterator
- * @return the remainder.
+ * @param it an iterator on points
+ * @return the remainder of *it.
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -749,6 +773,36 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Cons
 {
 	return getRemainder(*it);
 }
+
+/**
+ * Computes the position of a point
+ * (that does not necessarily belong to the DSS)
+ * @param aPoint the point whose position is returned 
+ * @return myA*aPoint[0] + myB*aPoint[1].
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
+{
+  //aPoint[0] and aPoint[1] need to be cast into Integer
+	return myA*aPoint[0]+myB*aPoint[1];
+}
+
+/**
+ * Computes the position of a point
+ * (that does not necessarily belong to the DSS)
+ * @param it an iterator on points
+ * @return the position of *it.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TInteger
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const ConstIterator & it) const
+{
+	return getPosition(*it);
+}
+
 //-------------------------------------------------------------------------
 /**
  * Checks whether a point is in the DSL
@@ -790,9 +844,9 @@ inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & aPoint) const
 {
-	Integer s = myA*aPoint[0] + myB*aPoint[1];
-	Integer smin = myA*myF[0] + myB*myF[1];
-	Integer smax = myA*myL[0] + myB*myL[1];
+	Integer s = getPosition(aPoint);
+	Integer smin = getPosition(myF);
+	Integer smax = getPosition(myL);
 	return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
 }
 
@@ -842,55 +896,55 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getOmega() const {
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getUf() const {
 	return myUf;
 }
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getUl() const {
 	return myUl;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLf() const {
 	return myLf;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLl() const {
 	return myLl;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBackPoint() const {
 	return (*myF);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFrontPoint() const {
 	return (*myL);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFirstPoint() const {
 	return (*myF);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLastPoint() const {
 	return (*myL);
 }
@@ -920,8 +974,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
-  ConstIterator i(myL);
-	return ++i;
+  ConstIterator i(myL); ++i;
+	return i;
 }
 
 //-----------------------------------------------------------------
@@ -950,10 +1004,10 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
 	} else {
 
 		//remainders of leaning points
-		if (myA*myUf[0] - myB*myUf[1] != myMu) return false;
-		else if (myA*myUl[0] - myB*myUl[1] != myMu) return false;
-		else if (myA*myLf[0] - myB*myLf[1] != myMu+myOmega-1) return false;
-		else if (myA*myLl[0] - myB*myLl[1] != myMu+myOmega-1) return false;
+		if (getRemainder(myUf) != myMu) return false;
+		else if (getRemainder(myUl) != myMu) return false;
+		else if (getRemainder(myLf) != myMu+myOmega-1) return false;
+		else if (getRemainder(myLl) != myMu+myOmega-1) return false;
 		//number of patterns
 		else if ( (Vector(myB,myA)*myNbUpPat) != (myUl - myUf) ) return false;
 		else if ( (Vector(myB,myA)*myNbLowPat) != (myLl - myLf) ) return false;
@@ -971,7 +1025,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,double>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m ) const
 {
 	//casts
@@ -1002,7 +1056,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,double>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, double r ) const
 {
 	//casts
@@ -1032,7 +1086,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,double>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, const Point & p ) const
 {
 
@@ -1054,7 +1108,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
   PointD v = project( *myL );
   PointD u = project( *myF );
   v -= u;
-  return v.norm(DGtal::PointVector<2,double>::L_2);
+  return v.norm(PointD::L_2);
 }
 
 
@@ -1245,11 +1299,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::PointVector<2,TInteger>
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Vector
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::vectorFrom0ToOmega() const
 {
 	Vector v = mySteps.at(1) - mySteps.at(0);
-	if ( (myA*v[0] - myB*v[1]) == myOmega) {
+	if ( getRemainder(v) == myOmega) {
 		return v;
 	} else {
 		return ( mySteps.at(0) - mySteps.at(1) );
