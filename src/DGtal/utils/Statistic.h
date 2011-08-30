@@ -58,6 +58,7 @@ namespace DGtal
    *
    * Backported from ImaGene.
    *
+   * @see testStatistics.cpp
    */
   template <typename RealNumberType>
   class Statistic
