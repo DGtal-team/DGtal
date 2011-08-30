@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,7 +56,7 @@ bool testModuloComputer()
 
   
   ModuloComputer< int > modular(15);
-  typedef IntegerTraits< int >::UnsignedVersion myUnsignedInteger;
+  typedef NumberTraits< int >::UnsignedVersion myUnsignedInteger;
   myUnsignedInteger a;
   
   a = modular.cast( 2 );   //a contains the value 2

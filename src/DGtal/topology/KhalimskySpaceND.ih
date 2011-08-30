@@ -157,9 +157,9 @@ selfDraw( Board2D & board ) const
 {
   ASSERT( dim == 2 );
   float x = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
   float retract = 0.05f;
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
@@ -204,11 +204,11 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) co
     basicMode=true;
   }
   float x = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
   float z = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
   
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
@@ -263,11 +263,11 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
     basicMode=true;
   }
   float x = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
   float z = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
   
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
@@ -425,9 +425,9 @@ selfDraw( Board2D & board ) const
 {
   ASSERT( dim == 2 );
   float x = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
   float y = (float) 
-    ( IntegerTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
   float retract = 0.05f;
   bool xodd = ( myCoordinates[ 0 ] & 1 );
   bool yodd = ( myCoordinates[ 1 ] & 1 );
@@ -554,8 +554,8 @@ KhalimskySpaceND()
   Point low, high;
   for ( Dimension i = 0; i < dimension; ++i )
     {
-      low[ i ] = IntegerTraits< Integer >::min() / 2 + 1;
-      high[ i ] = IntegerTraits< Integer >::max() / 2 - 1;
+      low[ i ] = NumberTraits< Integer >::min() / 2 + 1;
+      high[ i ] = NumberTraits< Integer >::max() / 2 - 1;
     }
   init( low, high, true );
 }
@@ -571,14 +571,14 @@ init( const Point & lower,
   myIsClosed = closed;
   myLower = lower;
   myUpper = upper;
-  if ( IntegerTraits< Integer >::isBounded() == BOUNDED )
+  if ( NumberTraits< Integer >::isBounded() == BOUNDED )
     {
       for ( Dimension i = 0; i < dimension; ++i )
 	{
 	  if ( ( lower[ i ] 
-		 <= ( IntegerTraits< Integer >::min() / 2 ) )
+		 <= ( NumberTraits< Integer >::min() / 2 ) )
 	       || ( upper[ i ] 
-		    >= ( IntegerTraits< Integer >::max() / 2 ) ) )
+		    >= ( NumberTraits< Integer >::max() / 2 ) ) )
 	    return false;
 	}
     }
@@ -599,7 +599,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 size( Dimension k ) const
 {
   ASSERT( k < dimension );
-  return myUpper[ k ] + IntegerTraits<Integer>::ONE - myLower[ k ];
+  return myUpper[ k ] + NumberTraits<Integer>::ONE - myLower[ k ];
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -966,11 +966,11 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uTopology( const Cell & p ) const
 {
-  Integer i = IntegerTraits<Integer>::ZERO;
-  Integer j = IntegerTraits<Integer>::ONE;
+  Integer i = NumberTraits<Integer>::ZERO;
+  Integer j = NumberTraits<Integer>::ONE;
   for ( Dimension k = 0; k < DIM; ++k )
     {
-      if ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE )
+      if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
 	i |= j;
       j <<= 1;
     }
@@ -983,11 +983,11 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sTopology( const SCell & p ) const
 {
-  Integer i = IntegerTraits<Integer>::ZERO;
-  Integer j = IntegerTraits<Integer>::ONE;
+  Integer i = NumberTraits<Integer>::ZERO;
+  Integer j = NumberTraits<Integer>::ONE;
   for ( Dimension k = 0; k < DIM; ++k )
     {
-      if ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE )
+      if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
 	i |= j;
       j <<= 1;
     }
@@ -1000,9 +1000,9 @@ Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDim( const Cell & p ) const
 {
-  Integer i = IntegerTraits<Integer>::ZERO;
+  Integer i = NumberTraits<Integer>::ZERO;
   for ( Dimension k = 0; k < DIM; ++k )
-    if ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE )
+    if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
       ++i;
   return i;
 }
@@ -1013,9 +1013,9 @@ Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sDim( const SCell & p ) const
 {
-  Integer i = IntegerTraits<Integer>::ZERO;
+  Integer i = NumberTraits<Integer>::ZERO;
   for ( Dimension k = 0; k < DIM; ++k )
-    if ( p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE )
+    if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
       ++i;
   return i;
 }
@@ -1044,7 +1044,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsOpen( const Cell & p, Dimension k ) const
 {
-  return p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE;
+  return p.myCoordinates[ k ] & NumberTraits<Integer>::ONE;
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1053,7 +1053,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsOpen( const SCell & p, Dimension k ) const
 {
-  return p.myCoordinates[ k ] & IntegerTraits<Integer>::ONE;
+  return p.myCoordinates[ k ] & NumberTraits<Integer>::ONE;
 }
 
 //-----------------------------------------------------------------------------
@@ -1286,7 +1286,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uNext( Cell & p, const Cell & lower, const Cell & upper ) const
 {
-  Dimension k = IntegerTraits<Dimension>::ZERO;
+  Dimension k = NumberTraits<Dimension>::ZERO;
   if ( uCoord( p, k ) == uCoord( upper, k ) )
     {
       if ( p == upper ) return false;
@@ -1467,7 +1467,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sNext( SCell & p, const SCell & lower, const SCell & upper ) const
 {
-  Dimension k = IntegerTraits<Dimension>::ZERO;
+  Dimension k = NumberTraits<Dimension>::ZERO;
   if ( sCoord( p, k ) == sCoord( upper, k ) )
     {
       if ( p == upper ) return false;
