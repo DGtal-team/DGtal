@@ -191,28 +191,28 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 
   if (TSpace::dimension == 2)
   {
-    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
       aboard.drawLine(x,
-		      IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]) -
+		      NumberTraits<Integer>::castToInt64_t(myLowerBound[1]) -
 		      0.5,
 		      x, 
-		      IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]) +
+		      NumberTraits<Integer>::castToInt64_t(myUpperBound[1]) +
 		      0.5);
 
-    for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
-      aboard.drawLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]) -
+    for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	 y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+      aboard.drawLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0]) -
 		      0.5,
 		      y, 
-		      IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]) +
+		      NumberTraits<Integer>::castToInt64_t(myUpperBound[0]) +
 		      0.5,
 		      y);
 
-    for (int64_t x =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
-      for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+    for (int64_t x =  NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.fillCircle(x, y, 0.1);
   }
 }
@@ -323,49 +323,49 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridDisplay3D( Display3D & display) co
   if (TSpace::dimension == 3)
   {
     // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	display.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,display.getLineColor() );
+    for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+	display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
+		       x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,display.getLineColor() );
       }
-      for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	display.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  display.getLineColor());
+      for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  display.getLineColor());
       }
     }
     
     // Faces XZ
-    for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	 y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	display.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,display.getLineColor());
+    for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	 y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,display.getLineColor());
       }
-      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	display.addLine(IntegerTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       IntegerTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, display.getLineColor());
+      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(myLowerBound[2]);
+	   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+	display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+		       NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, display.getLineColor());
       }
     }
     
 
     // Faces YZ
-    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
-      for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	   y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	display.addLine(x, y ,IntegerTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,IntegerTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, display.getLineColor());
+      for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+		       x, y ,NumberTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, display.getLineColor());
       }
-      for (int64_t z =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	display.addLine(x, IntegerTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
-		       x, IntegerTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, display.getLineColor());
+      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(myLowerBound[2]);
+	   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+	display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
+		       x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, display.getLineColor());
       }
     }
     
@@ -384,13 +384,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsDisplay3D( Display3D & dis
   if (TSpace::dimension == 3)
   {
     // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+    for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
-	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
 	  display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
 
 	}
@@ -415,13 +415,13 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) 
   if (TSpace::dimension == 3)
     {
     // Face XY
-    for (int64_t z = IntegerTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-      for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+    for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
+	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
-	for (int64_t y =  IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+	for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+	     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
 	  display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
 
 	}
@@ -453,10 +453,10 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
   
   if (TSpace::dimension == 2)
   {
-    for (int64_t x = IntegerTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <= IntegerTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
-      for (int64_t y = IntegerTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	   y <= IntegerTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+	 x <= NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+	   y <= NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
   }
 }

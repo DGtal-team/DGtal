@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   RealPoint aRealPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aRealPoint[ i ] = IntegerTraits<Integer>::castToDouble( p[ i ] ) 
+    aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) 
       * myGridSteps[ i ];
   return aRealPoint;
 }

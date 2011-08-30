@@ -75,7 +75,7 @@ namespace DGtal
   public:
     typedef TInteger Integer;
     
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
     Point myCoordinates;
@@ -210,7 +210,7 @@ namespace DGtal
  
   public:
     typedef TInteger Integer;
-    typedef typename IntegerTraits<Integer>::UnsignedVersion UnsignedInteger;
+    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
     typedef PointVector< dim, Integer > Point;
 
     Point myCoordinates;
@@ -445,7 +445,7 @@ namespace DGtal
     typedef TInteger Integer;
     
     ///Type used to represent sizes in the digital space.
-    typedef typename IntegerTraits<Integer>::UnsignedVersion Size;
+    typedef typename NumberTraits<Integer>::UnsignedVersion Size;
       
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
