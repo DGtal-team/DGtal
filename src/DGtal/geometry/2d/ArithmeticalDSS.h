@@ -591,11 +591,11 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	// Set board style
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-	aBoard.setPenColor(Color::Red);
-	aBoard.setLineWidth(1);
-	aBoard.setFillColor(Color::None);
+        // Set board style
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+        aBoard.setPenColor(Color::Red);
+        aBoard.setLineWidth(1);
+        aBoard.setFillColor(Color::None);
       }
     };
     

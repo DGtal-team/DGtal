@@ -18,6 +18,7 @@
 
 /**
  * @file MLPLengthEstimator.h
+ * @brief Computes the length of a digital curve using its MLP.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -29,6 +30,8 @@
  * Header file for module MLPLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp, testL1LengthEstimator.cpp
  */
 
 #if defined(MLPLengthEstimator_RECURSES)

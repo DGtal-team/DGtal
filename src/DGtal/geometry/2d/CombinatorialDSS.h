@@ -101,6 +101,7 @@ namespace DGtal
 			typedef CombinatorialDSS<Integer> Self;
 
 			//2D points and 2D vectors
+      // \TODO : récupérer Point et Vector a partir de FreemanChain
 			typedef DGtal::PointVector<2,Integer> Point;
 			typedef DGtal::PointVector<2,Integer> Vector;
 

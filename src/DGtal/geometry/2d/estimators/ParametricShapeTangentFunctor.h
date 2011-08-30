@@ -18,6 +18,7 @@
 
 /**
  * @file ParametricShapeTangentFunctor.h
+ * @brief Computes the tangent vector at a given point of a parametric shape.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module ParametricShapeTangentFunctor.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
 
 #if defined(ParametricShapeTangentFunctor_RECURSES)
@@ -80,6 +83,8 @@ namespace DGtal
 
     /**
      * Constructor..
+     *
+     * @param aShape the input shape.
      */
     ParametricShapeTangentFunctor(ParametricShape *aShape): myShape(aShape) {};
     

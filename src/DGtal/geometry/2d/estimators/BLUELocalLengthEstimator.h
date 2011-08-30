@@ -18,6 +18,7 @@
 
 /**
  * @file BLUELocalLengthEstimator.h
+ * @brief Implementation of Best Linear Unbiased Two (BLUE) step length estimator.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module BLUELocalLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp
  */
 
 #if defined(BLUELocalLengthEstimator_RECURSES)

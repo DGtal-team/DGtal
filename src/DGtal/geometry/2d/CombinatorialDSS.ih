@@ -184,13 +184,13 @@ inline
 bool DGtal::CombinatorialDSS<TInteger>::extend(ConstIterator it)
 {
 	// Normal cases
-	if ( it.getPosition() == myLastLetter + 1) 
+	if ( (Index) it.getPosition() == myLastLetter + 1) 
 		return extend();
-	if ( it.getPosition() == myFirstLetter - 1) 
+	if ( (Index) it.getPosition() == myFirstLetter - 1) 
 		return extendOppositeEnd();
-	if ( it.getPosition() == (myLastLetter+1) % myFC->size() ) 
+	if ( (Index) it.getPosition() == (myLastLetter+1) % myFC->size() ) 
 		return extend();
-	if ( it.getPosition() == (myFirstLetter-1) % myFC->size() ) 
+	if ( (Index) it.getPosition() == (myFirstLetter-1) % myFC->size() ) 
 		return extendOppositeEnd();
 	ASSERT(false && "[CombinatorialDSS::extend(ConstIterator it)] iterator 'it' is not valid");
 }
@@ -477,7 +477,6 @@ bool DGtal::CombinatorialDSS<TInteger>::retractOppositeEnd()
 		// Got more than one repetition, it suffices to consider the next
 		// repetition of the main pattern with one less repetition.
 		//cout << "Case 3" << endl;
-		Size myOldMainPatternLength = mainPatternLength();
 		--myNbRepeat;
 		myNextAfter = myPatternEnd;
 

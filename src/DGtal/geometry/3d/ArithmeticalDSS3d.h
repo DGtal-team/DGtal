@@ -17,7 +17,9 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSS3d.h @author Tristan Roussillon (\c
+ * @file ArithmeticalDSS3d.h 
+ * @brief Dynamic recognition of a 3d-digital straight segment (DSS).
+ * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
@@ -27,6 +29,8 @@
  * Header file for module ArithmeticalDSS3d.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testArithDSS3d.cpp
  */
 
 #if defined(ArithmeticalDSS3d_RECURSES)
