@@ -30,10 +30,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Common.h"
-// Includes inline functions/methods if necessary.
-#if !defined(INLINE)
-#include "DGtal/base/Common.ih"
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -52,46 +48,6 @@ using namespace std;
 
 DGtal::TraceWriterTerm DGtal::traceWriterTerm(std::cerr);
 DGtal::Trace DGtal::trace(traceWriterTerm);
-
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
-
-/**
- * Destructor. 
- */
-DGtal::Common::~Common()
-{
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-void 
-DGtal::Common::selfDisplay( std::ostream & out ) const
-{
-  out << "[Common]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-bool 
-DGtal::Common::isValid() const
-{
-  return true;
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Internals - private :
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
