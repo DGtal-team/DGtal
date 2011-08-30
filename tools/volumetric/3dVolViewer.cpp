@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -97,8 +98,8 @@ int main( int argc, char** argv )
    
    Color c= gradient(val);
    if(val<=thresholdMax && val >=thresholdMin){
-     viewer <<  CustomColors3D(QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
-			       QColor((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
+     viewer <<  CustomColors3D(Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
+			       Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
      viewer << *it;     
    }     
  }

@@ -69,14 +69,16 @@ bool test_setVal ( experimental::ImageContainerByHashTree<Domain , T, DGtal::uin
       //count ++;
       container.setValue ( key, iRand ( 0, 100 ) );
       if ( checkAfterEachSet )
-        if ( !container.checkIntegrity() )
-          {
-            cerr << "test_set: failure in phase 1" << endl
-                 << "at key " << Bits::bitString ( key ) << endl;
-            return false;
-          }
-        else
-          cerr << "ok"<<endl;
+	{ 
+	  if ( !container.checkIntegrity() )
+	    {
+	      cerr << "test_set: failure in phase 1" << endl
+		   << "at key " << Bits::bitString ( key ) << endl;
+	      return false;
+	    }
+	  else
+	    cerr << "ok"<<endl;
+	}
     }
   cerr << "checking the container's validity..." << endl;
   if ( !container.checkIntegrity() )

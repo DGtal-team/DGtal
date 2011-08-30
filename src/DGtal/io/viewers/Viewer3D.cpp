@@ -1,4 +1,3 @@
-
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -30,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
+#include <QColor>
 // Includes inline functions/methods if necessary.
 #if !defined(INLINE)
 #include "DGtal/io/3dViewers/Viewer3D.ih"
@@ -92,19 +92,16 @@ DGtal::Viewer3D::drawWithNames(){
   for(unsigned int i=0; i<myPointSetList.size(); i++){
     glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
   }   
-
-
 }
 
 
 void
 DGtal::Viewer3D::draw()
-{
-
+{ 
   glPushMatrix();
   glMultMatrixd(manipulatedFrame()->matrix());
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++){
-    clippingPlaneGL cp = myClippingPlaneList.at(i);
+    clippingPlaneD3D cp = myClippingPlaneList.at(i);
     double eq [4];
     eq[0]=cp.a;
     eq[1]=cp.b;
@@ -130,6 +127,9 @@ DGtal::Viewer3D::draw()
   }   
  
   for(unsigned int i=0; i<myLineSetList.size(); i++){
+    if(myLineSetList.at(i).size()!=0){
+      glLineWidth((myLineSetList.at(i).at(0).width));
+    }
     glCallList(myListToAff+myVoxelSetList.size()+1+i);
   }
   
@@ -180,17 +180,19 @@ DGtal::Viewer3D::draw()
 
 
 
+
 void
 DGtal::Viewer3D::init(){
   myNbListe=0;
   createNewVoxelList(true);
-  vector<lineGL> listeLine;
+  vector<lineD3D> listeLine;
   myLineSetList.push_back(listeLine);
-  vector<pointGL> listePoint;
+  vector<pointD3D> listePoint;
   myPointSetList.push_back(listePoint);
-  myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 222, 50);
-  myDefaultBackgroundColor = backgroundColor ();
+  myCurrentFillColor = Color (220, 220, 220);
+  myCurrentLineColor = Color (22, 22, 222, 50);
+  myDefaultBackgroundColor = Color(backgroundColor().red(), backgroundColor().green(), 
+				    backgroundColor().blue());
   myIsBackgroundDefault=true;
   myBoundingPtLow[0]=numeric_limits<double>::max( );
   myBoundingPtLow[1]=numeric_limits<double>::max( );
@@ -200,10 +202,10 @@ DGtal::Viewer3D::init(){
   myBoundingPtUp[1]=numeric_limits<double>::min( );
   myBoundingPtUp[2]=numeric_limits<double>::min( );
   createNewVoxelList(true);
-  std::vector<voxelGL>  aKSVoxelList;
+  std::vector<voxelD3D>  aKSVoxelList;
   
   myCurrentfShiftVisuKSSurfels=0.0;
-  myDefaultColor= QColor(255, 255, 255);
+  myDefaultColor= Color(255, 255, 255);
   camera()->showEntireScene();
   
   setKeyDescription(Qt::Key_T, "Sort elements for display improvements");
@@ -213,7 +215,6 @@ DGtal::Viewer3D::init(){
 
   setMouseBindingDescription(Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list.");  
   setManipulatedFrame(new ManipulatedFrame());  
-
   
 }
 
@@ -270,6 +271,7 @@ DGtal::Viewer3D::postSelection(const QPoint& point)
 void
 DGtal::Viewer3D::updateList(bool updateBoundingBox)
 {
+  
   unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
@@ -291,7 +293,7 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
     myNbListe++;
     glPushName(myNbListe);  
     glBegin(GL_QUADS);
-      for (std::vector<voxelGL>::iterator s_it = myVoxelSetList.at(i).begin();
+      for (std::vector<voxelD3D>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it){
 	
@@ -349,7 +351,7 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
   
   glBegin(GL_QUADS);
   glEnable( GL_DEPTH_TEST );
-  for (std::vector<quadGL>::iterator s_it = myKSSurfelList.begin();
+  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it){
     
@@ -377,9 +379,11 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
     glDisable(GL_LIGHTING);
     glPushName(myNbListe);  
     glBegin(GL_LINES);      
-    for (std::vector<lineGL>::iterator s_it = myLineSetList.at(i).begin();
+    for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it){
+
+
 
 	glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
 	glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);
@@ -403,7 +407,7 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
     
     glPushName(myNbListe);  
     glBegin(GL_POINTS);      
-    for (std::vector<pointGL>::iterator s_it = myPointSetList.at(i).begin();
+    for (std::vector<pointD3D>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it){
 
@@ -419,7 +423,8 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
 
 
   if( updateBoundingBox){
-    setSceneBoundingBox(myBoundingPtLow, myBoundingPtUp);
+    setSceneBoundingBox(qglviewer::Vec(myBoundingPtLow[0],myBoundingPtLow[1],myBoundingPtLow[2]),
+			qglviewer::Vec(myBoundingPtUp[0], myBoundingPtUp[1], myBoundingPtUp[2]));
     showEntireScene();
   }  
 }
@@ -428,7 +433,7 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
 
 
 void
-DGtal::Viewer3D::glDrawGLLinel(lineGL aLinel){
+DGtal::Viewer3D::glDrawGLLinel(lineD3D aLinel){
   glPushMatrix();
   glTranslatef(aLinel.x1, aLinel.y1, aLinel.z1);
   Vec dir (aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
@@ -445,8 +450,9 @@ DGtal::Viewer3D::glDrawGLLinel(lineGL aLinel){
 
 
 
+
 void 
-DGtal::Viewer3D::glDrawGLPointel(pointGL pointel){
+DGtal::Viewer3D::glDrawGLPointel(pointD3D pointel){
  
  if(!pointel.isSigned){
    glPushMatrix();
@@ -614,3 +620,5 @@ DGtal::Viewer3D::helpString() const
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+

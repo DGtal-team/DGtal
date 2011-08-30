@@ -33,6 +33,8 @@
 #include <QImageReader>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/helpers/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -105,11 +107,11 @@ int main( int argc, char** argv )
   // Display by using two different list to manage OpenGL transparency.
 
   viewer << SetMode3D( shape_set.styleName(), "Paving" );
-  viewer << CustomColors3D(QColor(25,25,255, 255), QColor(25,25,255, 255));
+  viewer << CustomColors3D(Color(25,25,255, 255), Color(25,25,255, 255));
   viewer << S ; 
 
   viewer << SetMode3D( shape_set.styleName(), "PavingTransp" );
-  viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
+  viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
   viewer << shape_set;
 
   viewer<< Viewer3D::updateDisplay;

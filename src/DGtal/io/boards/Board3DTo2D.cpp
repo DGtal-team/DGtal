@@ -15,25 +15,22 @@
  **/
 
 /**
- * @file   DGtalCairo.cpp
+ * @file   Board3DTo2D.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 22 juin 2011
  * 
  * @brief
  *
- * Implementation of methods defined in DGtalCairo.h
+ * Implementation of methods defined in Board3DTo2D.h
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/boards/DGtalCairo.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
 #include <limits>
 
-// Includes inline functions/methods if necessary.
-#if !defined(INLINE)
-#include "DGtal/io/CairoViewers/DGtalCairo.ih"
-#endif
+
 
 // Cairo includes
 #include <cairo.h>
@@ -46,7 +43,7 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
-// class DGtalCairo
+// class Board3DTo2D
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,7 +52,7 @@ using namespace std;
 /*!
  * \brief Constructor.
  */
-DGtalCairo::DGtalCairo()
+DGtal::Board3DTo2D::Board3DTo2D()
 {
   init();
 }
@@ -68,9 +65,9 @@ DGtalCairo::DGtalCairo()
  * @param out the output stream where the object is written.
  */
 void
-DGtal::DGtalCairo::selfDisplay ( std::ostream & out ) const
+DGtal::Board3DTo2D::selfDisplay ( std::ostream & out ) const
 {
-    out << "[DGtalCairo]";
+    out << "[Board3DTo2D]";
 }
 
 /**
@@ -78,37 +75,11 @@ DGtal::DGtalCairo::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 bool
-DGtal::DGtalCairo::isValid() const
+DGtal::Board3DTo2D::isValid() const
 {
     return true;
 }
 
-/**
- * Calculate the cross product of two 3d vectors and return it.
- * @param dst destination vector.
- * @param srcA source vector A.
- * @param srcB source vector B.
- */
-static void cross (float dst[3], float srcA[3], float srcB[3])
-{
-    dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
-    dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
-    dst[2] = srcA[0]*srcB[1] - srcA[1]*srcB[0];
-}
-
-/**
- * Normalize the input 3d vector.
- * @param vec source & destination vector.
- */
-static void normalize (float vec[3])
-{
-    const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-    const float invLen = 1.f / (float) sqrt (squaredLen);
-
-    vec[0] *= invLen;
-    vec[1] *= invLen;
-    vec[2] *= invLen;
-}
 
 /**
  * Transpose a 4x4 matrix.
@@ -177,7 +148,7 @@ static void LookAtMt(float mat[16],
 /**
  * Precompute 4x4 projection matrix for 3D->2D projection.
  */
-void DGtal::DGtalCairo::precompute_projection_matrix()
+void DGtal::Board3DTo2D::precompute_projection_matrix()
 {
       // Projection: from qglviewer
       /*const float f = 1.0/tan(fieldOfView()/2.0);
@@ -224,7 +195,7 @@ void DGtal::DGtalCairo::precompute_projection_matrix()
  * @param x2d x destination projection position of the 2d point.
  * @param y2d y destination projection position of the 2d point.
  */
-void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+void DGtal::Board3DTo2D::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
       double v[4], vs[4];
       v[0]=x3d; v[1]=y3d; v[2]=z3d; v[3]=1.0;
@@ -257,10 +228,10 @@ void DGtal::DGtalCairo::project(double x3d, double y3d, double z3d, double &x2d,
  * @param height height of the image to save.
  */
 void
-DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, int height)
+DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, int height)
 {
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++)
-    trace.info() << "-> ClippingPlane not implemented in DGtalCairo" << std::endl;
+    trace.info() << "-> ClippingPlane not implemented in Board3DTo2D" << std::endl;
    
   Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = width; Viewport[3] = height;
   precompute_projection_matrix();
@@ -296,7 +267,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myPointSetList
   for(unsigned int i=0; i<myPointSetList.size(); i++)
   {
-    for (std::vector<point>::iterator s_it = myPointSetList.at(i).begin();
+    for (std::vector<pointD3D>::iterator s_it = myPointSetList.at(i).begin();
 	 s_it != myPointSetList.at(i).end();
 	 ++s_it)
 	{
@@ -319,37 +290,37 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//z-
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x+
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y+
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -359,7 +330,7 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myLineSetList
   for(unsigned int i=0; i<myLineSetList.size(); i++)
   {
-    for (std::vector<line>::iterator s_it = myLineSetList.at(i).begin();
+    for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
 	 s_it != myLineSetList.at(i).end();
 	 ++s_it)
 	{
@@ -388,14 +359,14 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   // myVoxelSetList
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
   {
-    for (std::vector<voxel>::iterator s_it = myVoxelSetList.at(i).begin();
+    for (std::vector<voxelD3D>::iterator s_it = myVoxelSetList.at(i).begin();
 	   s_it != myVoxelSetList.at(i).end();
 	   ++s_it)
 	{
 	  {
 	      cairo_save (cr);
 	      
-		if (myModes["DGtalCairo"]=="SolidMode")
+		if (myModes["Board3DTo2D"]=="SolidMode")
 		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
 		else
 		  cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
@@ -410,37 +381,37 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//z-
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x+
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//x-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y+
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 		//y-
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
 		project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
 		project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["DGtalCairo"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+		cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 	      
 	      cairo_restore (cr);
 	  }
@@ -454,44 +425,44 @@ DGtal::DGtalCairo::saveCairo(const char *filename, CairoType type, int width, in
   cairo_surface_destroy (surface);
   
   for(unsigned int i=0; i<myQuadList.size(); i++)
-    trace.info() << "-> Quad not YET implemented in DGtalCairo" << std::endl;
+    trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
   
   // Drawing all Khalimsky Space Cells 
   for(unsigned int i=0; i< myKSPointelList.size();i++){
-    trace.info() << "-> Khalimsky Pointel not YET implemented in DGtalCairo" << std::endl;
+    trace.info() << "-> Khalimsky Pointel not YET implemented in Board3DTo2D" << std::endl;
   }
   for(unsigned int i=0; i< myKSLinelList.size();i++){
-    trace.info() << "-> Khalimsky Linel not YET implemented in DGtalCairo" << std::endl;
+    trace.info() << "-> Khalimsky Linel not YET implemented in Board3DTo2D" << std::endl;
   }
   
   // from updateList
-  for (std::vector<quad>::iterator s_it = myKSSurfelList.begin();
+  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
        s_it != myKSSurfelList.end();
        ++s_it)
-	  trace.info() << "-> Khalimsky Surfel not YET implemented in DGtalCairo" << std::endl;
+	  trace.info() << "-> Khalimsky Surfel not YET implemented in Board3DTo2D" << std::endl;
 }
 
 /*!
  * \brief init function (should be in Constructor).
  */
 void
-DGtal::DGtalCairo::init()
+DGtal::Board3DTo2D::init()
 {
   createNewVoxelList(true);
   
-  vector<line> listeLine;
+  vector<lineD3D> listeLine;
   myLineSetList.push_back(listeLine);
   
-  vector<point> listePoint;
+  vector<pointD3D> listePoint;
   myPointSetList.push_back(listePoint);
   
-  myCurrentFillColor = QColor (220, 220, 220);
-  myCurrentLineColor = QColor (22, 22, 222, 50);
+  myCurrentFillColor = DGtal::Color (220, 220, 220);
+  myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
   
   /*createNewVoxelList(true);
-  std::vector<voxel> aKSVoxelList;*/
+  std::vector<voxelD3D> aKSVoxelList;*/
   
-  myDefaultColor= QColor(255, 255, 255);
+  myDefaultColor= DGtal::Color(255, 255, 255);
   
   //
   
@@ -504,11 +475,6 @@ DGtal::DGtalCairo::init()
   //ZNear = 4.578200;
   //ZFar = 22.578199;
   
-  myModes["DGtalCairo"]="SolidMode";
+  myModes["Board3DTo2D"]="SolidMode";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Internals - private :
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////

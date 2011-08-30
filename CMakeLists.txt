@@ -10,8 +10,20 @@ project (DGtal)
 cmake_minimum_required (VERSION 2.6) 
 
 # -----------------------------------------------------------------------------
-# Display some information
+# Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
+# Look for modules
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+SET(DGtal_VERSION_MAJOR 0)
+SET(DGtal_VERSION_MINOR 4)
+SET(DGtal_VERSION_PATCH "beta")
+SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
+SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
+SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
+
+message(STATUS "-------------------------------------------------------------------------------")
+MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
@@ -20,21 +32,6 @@ message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
 
-# -----------------------------------------------------------------------------
-# Define variables and cmake parameters
-# -----------------------------------------------------------------------------
-# Look for modules
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
-SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 3)
-SET(DGtal_VERSION_PATCH 1)
-SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
-SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
-SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
-
-MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
-message(STATUS "-------------------------------------------------------------------------------" )
 
 # -- Environement variables
 if (UNIX)
@@ -66,16 +63,16 @@ endforeach()
 # Doxygen doc target
 # -----------------------------------------------------------------------------
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
-INCLUDE("${CMAKE_MODULE_PATH}/doxygen.cmake")
-INCLUDE("${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake" OPTIONAL)
+INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
 # -----------------------------------------------------------------------------
 CONFIGURE_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake"
-  IMMEDIATE @ONLY)
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake
+  @ONLY)
 ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
@@ -106,41 +103,15 @@ else (BUILD_INLINE_FUNCTIONS)
 endif (BUILD_INLINE_FUNCTIONS)
 
 # -----------------------------------------------------------------------------
-# Check CPP0X
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
-
-# -----------------------------------------------------------------------------
-# Check Dependencies
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
-
-# -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
 
-# -----------------------------------------------------------------------------
-# CTest options
-# -----------------------------------------------------------------------------
-ENABLE_TESTING()
-include(CTest)
-if (BUILD_TESTING)
-  if (CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
-  endif (CMAKE_COMPILER_IS_GNUCXX)
-  if (CMAKE_COMPILER_IS_GNUCC)
-    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
-  endif (CMAKE_COMPILER_IS_GNUCC)
-  add_subdirectory (tests)
-endif (BUILD_TESTING)
-
-
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in" 
-  "${PROJECT_BINARY_DIR}/src/DGtal/base/Config.h" IMMEDIATE)
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
+  ${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -152,7 +123,32 @@ ADD_CUSTOM_TARGET(distclean
 # CPack Configurations
 #------------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-INCLUDE("${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake")
+INCLUDE(${CMAKE_MODULE_PATH}/DGtalCPackConfig.cmake)
+
+# -----------------------------------------------------------------------------
+# Check CPP0X
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
+
+# -----------------------------------------------------------------------------
+# Check Mandatory Dependencies
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
+
+# -----------------------------------------------------------------------------
+# Check Optional Dependencies
+# -----------------------------------------------------------------------------
+
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "DGtal Library optional configuration:")
+message(STATUS "   (to change these values, use ccmake, a graphical")
+message(STATUS "   cmake frontend, or define cmake commandline variables") 
+message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
+message(STATUS "-------------------------------------------------------------------------------")
+
+INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
+
+message(STATUS "-------------------------------------------------------------------------------")
 
 #------------------------------------------------------------------------------
 # Add subdirectories
@@ -175,4 +171,19 @@ ENDIF(BUILD_EXAMPLES)
 #--- Headers installation
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
-INCLUDE("${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake")
+INCLUDE(${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake)
+
+# -----------------------------------------------------------------------------
+# CTest options
+# -----------------------------------------------------------------------------
+ENABLE_TESTING()
+include(CTest)
+if (BUILD_TESTING)
+  if (CMAKE_COMPILER_IS_GNUCXX)
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+  endif (CMAKE_COMPILER_IS_GNUCXX)
+  if (CMAKE_COMPILER_IS_GNUCC)
+    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
+  endif (CMAKE_COMPILER_IS_GNUCC)
+  add_subdirectory (tests)
+endif (BUILD_TESTING)

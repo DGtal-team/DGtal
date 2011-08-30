@@ -13,7 +13,7 @@ SET(DGTAL_SRC ${DGTAL_SRC}
 
 if( WITH_CAIRO )
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/io/boards/DGtalCairo)
+		DGtal/io/boards/Board3DTo2D)
 endif( WITH_CAIRO )
 
 

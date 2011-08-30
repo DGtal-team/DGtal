@@ -367,15 +367,15 @@ namespace DGtal
             order to get the direction of shape exterior (default =false).
      *
      */
-    
-    /* template <typename DigitalSet >
+    template <typename PointPredicate >
     static 
     void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
 				   const KSpace & aKSpace,
 				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-				   const DigitalSet & aShape, bool forceOrientCellExterior=false );
+				   const PointPredicate & pp,
+				   bool forceOrientCellExterior=false );
 
-    */
+    
     
 
     /**
@@ -389,17 +389,16 @@ namespace DGtal
      * @param aKSpace any space.
      * @param aShape any digital set.
      */
-    /*     
-    template <typename DigitalSet >
+         
+    template <typename PointPredicate>
     static 
     void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  
-			     const KSpace & aKSpace,  
-			     const DigitalSet & aShape  );
+			     const KSpace & aKSpace, 
+			     const PointPredicate & pp  );
 
     
 
-    */
-
+    
     
     /**
        Creates a set of signed surfels whose elements represents a

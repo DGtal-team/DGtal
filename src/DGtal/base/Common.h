@@ -44,7 +44,6 @@
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include <QGLViewer/qglviewer.h>
-#include <QColor>
 #include <QGLWidget>
 #include <QKeyEvent>
 #endif
@@ -63,6 +62,11 @@
 #endif //win32
 #include <cmath>
 
+#if defined( WIN32 )
+#define secured_sprintf sprintf_s
+#else
+#define secured_sprintf snprintf
+#endif // defined( WIN32 )
 
 #include "DGtal/base/Config.h"
 #include "DGtal/utils/Trace.h"
@@ -95,48 +99,25 @@ namespace DGtal
 
   class Board2D;
 
-#ifdef WITH_VISU3D_QGLVIEWER 
-  class Viewer3D;
-#endif
-  
 
-#ifdef WITH_VISU3D_QGLVIEWER
+
+
+  class Display3D;
   /**
    * Interface that specifies that an object can draw itself on a
-   *  Viewer3D 
+   *  3DDisplay
    * (BK)
    */
-  struct DrawableWithViewer3D {
+  struct DrawableWithDisplay3D {
     /**
      * Operation to override. Does nothing by default.
      *
-     * @param board any object of type Board.
+     * @param display3D any object of type Display3D.
      */
-    virtual void selfDraw( Viewer3D &  ) const {}
+    virtual void selfDraw( Display3D &  ) const {}
   };
-#endif
-  
-#ifdef WITH_CAIRO 
-  class DGtalCairo;
-#endif
-  
 
-#ifdef WITH_CAIRO
-  /**
-   * Interface that specifies that an object can draw itself on a
-   *  DGtalCairo
-   * (MT)
-   */
-  struct DrawableWithDGtalCairo {
-    /**
-     * Operation to override. Does nothing by default.
-     *
-     * @param board any object of type Board.
-     */
-    virtual void selfDraw( DGtalCairo &  ) const {}
-  };
-#endif
-
+  
   
 
   /**
