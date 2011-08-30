@@ -138,20 +138,22 @@ namespace DGtal
      <td class=CComplexity>      </td>
      </tr>
      <tr> 
-     <td class=CName>             \t X should have constant \t ZERO  in \t NumberTraits. </td> 
-     <td class=CExpression>      NumberTraits<X>::ZERO </td>
-     <td class=CRequirements>    constant should be defined </td> 
-     <td class=CReturnType>      const \t X </td>
+     <td class=CName>             \t X should have a 0 (neutral
+     element for addition) </td> 
+     <td class=CExpression>      \t X( 0 ) </td>
+     <td class=CRequirements>    </td> 
+     <td class=CReturnType>      \t X </td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       the value 0</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
      <tr> 
-     <td class=CName>             \t X should have constant \t ONE in \t NumberTraits. </td> 
-     <td class=CExpression>      NumberTraits<X>::ONE </td>
-     <td class=CRequirements>    constant should be defined </td> 
-     <td class=CReturnType>      const \t X </td>
+     <td class=CName>             \t X should have  a 1 (neutral
+     element for multiplication)</td> 
+     <td class=CExpression>      \t X ( 1 )  </td>
+     <td class=CRequirements>     </td> 
+     <td class=CReturnType>      \t X </td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       the value 1</td> 
      <td class=CPostCondition>   </td> 
@@ -169,7 +171,8 @@ namespace DGtal
      @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
+  struct CCommutativeRing : boost::Assignable<T>, 
+    boost::EqualityComparable<T>, boost::LessThanComparable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -180,26 +183,10 @@ namespace DGtal
       ConceptUtils::sameType( c, T( -a ) );
       ConceptUtils::sameType( c, T( a-b ) );
       ConceptUtils::sameType( c, T( a*b ) );  
-      ConceptUtils::sameType( c, NumberTraits<T>::ONE );  
-      ConceptUtils::sameType( c, NumberTraits<T>::ZERO );  
+      ConceptUtils::sameType( c, T( 0 ) );  
+      ConceptUtils::sameType( c, T( 1 ) );  
 
-      // JOL: BOOST_CONCEPT cannot check values.
-      // static T two = NumberTraits<T>::ONE+NumberTraits<T>::ONE;
-      // static T three =  two+NumberTraits<T>::ONE;
-      
-      // BOOST_STATIC_ASSERT(NumberTraits<T>::ZERO  == 
-      // 			  three * NumberTraits<T>::ZERO );
-    
-      // BOOST_STATIC_ASSERT(three  == 
-      // 			  three + NumberTraits<T>::ZERO );
-
-      // BOOST_STATIC_ASSERT(NumberTraits<T>::ONE  == 
-      // 			  ((NumberTraits<T>::ONE+NumberTraits<T>::ONE)
-      // 			   - NumberTraits<T>::ONE ) );
-
-      // BOOST_STATIC_ASSERT(NumberTraits<T>::ONE  == 
-      // 			  NumberTraits<T>::ONE*NumberTraits<T>::ONE );
-    
+      ///The 0 and 1 neutral elements should be tested.
     }
     // ------------------------- Private Datas --------------------------------
   private:
@@ -209,51 +196,6 @@ namespace DGtal
     T a,b,c;
   
   };
-
-#ifdef WITH_GMP
-  template<>
-  struct CCommutativeRing<mpz_class>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_ASSERT((CSignedInteger<mpz_class>));
-
-    BOOST_CONCEPT_USAGE( CCommutativeRing )
-    {
-      //ConceptUtils::sameType( c, a+b );
-      //ConceptUtils::sameType( c, -a );
-      //ConceptUtils::sameType( c, a*b );  
-      ConceptUtils::sameType( c, NumberTraits<mpz_class>::ONE );  
-      ConceptUtils::sameType( c, NumberTraits<mpz_class>::ZERO );  
-
-      // JOL: BOOST_CONCEPT cannot check values.
-      // static mpz_class two = NumberTraits<mpz_class>::ONE+NumberTraits<mpz_class>::ONE;
-      // static mpz_class three =  two+NumberTraits<mpz_class>::ONE;
-      
-      // BOOST_STATIC_ASSERT(NumberTraits<mpz_class>::ZERO  == 
-      // 			  three * NumberTraits<mpz_class>::ZERO );
-    
-      // BOOST_STATIC_ASSERT(three  == 
-      // 			  three + NumberTraits<mpz_class>::ZERO );
-
-      // BOOST_STATIC_ASSERT(NumberTraits<mpz_class>::ONE  == 
-      // 			  ((NumberTraits<mpz_class>::ONE+NumberTraits<mpz_class>::ONE)
-      // 			   - NumberTraits<mpz_class>::ONE ) );
-
-      // BOOST_STATIC_ASSERT(NumberTraits<mpz_class>::ONE  == 
-      // 			  NumberTraits<mpz_class>::ONE*NumberTraits<mpz_class>::ONE );
-    
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    mpz_class a,b,c;
-    
-  }; // end of concept CCommutativeRing
-#endif
 } // namespace DGtal
 
 
