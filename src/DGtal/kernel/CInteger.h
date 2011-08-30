@@ -53,58 +53,75 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CInteger
   /**
-   * Description of \b concept '\b CInteger' <p>     
-   * @ingroup Concepts
-   *
-   * \brief Aim: The concept CInteger specifies what are the usual
-   * integer numbers, more precisely the ones that are representable
-   * on a computer.
-   *
-   * Generally, all the basic computer integer types are models of
-   * this concept. More elaborate integer types with variable sizes,
-   * for instance the big integers of GMP, are also models of this
-   * concept.
-   * 
-   * <p> Refinement of boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CInteger
-   * - \t x, \t y	: Object of type X
-   * - \t i, \t j	: basic integer type.
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table>
-   * <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> Construction from basic integer type</td>
-   * <td> X( i ) </td> <td> </td> <td> </td>
-   * <td> </td> <td> \c X represents the integer \c i</td> <td> </td> <td> </td>
-   * </tr>
-   * <tr> <td> Addition </td> <td> x+y </td>
-   * <td>  </td> <td> X </td>
-   * <td>  </td> <td> addition of two integers </td> 
-   * <td>  </td> <td>  </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br> 
-   * 
-   * short, int, unsigned int, long long, unsigned long long,
-   * uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
-   *
-   * <p> Notes <br>
-   *
-   * @todo Complete integer checking.
+     Description of \b concept '\b CInteger' <p>     
+     @ingroup Concepts
+    
+     \brief Aim: The concept CInteger specifies what are the usual
+     integer numbers, more precisely the ones that are representable
+     on a computer.
+    
+     Generally, all the basic computer integer types are models of
+     this concept. More elaborate integer types with variable sizes,
+     for instance the big integers of GMP, are also models of this
+     concept.
+     
+     <p> Refinement of boost::Assignable<T>,
+     boost::EqualityComparable<T>, boost::LessThanComparable<T>
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CInteger
+     - \t x, \t y	: Object of type X
+     - \t i, \t j	: basic integer type.
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table>
+     <tr> 
+     <td> \b Name </td> 
+     <td> \b Expression </td>
+     <td> \b Type requirements </td>
+     <td> \b Return type </td>
+     <td> \b Precondition </td> 
+     <td> \b Semantics </td> 
+     <td> \b Postcondition </td> 
+     <td> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td> Construction from basic integer type</td>
+     <td> X( i ) </td> <td> </td> <td> </td>
+     <td> </td> <td> \c X represents the integer \c i</td> <td> </td> <td> </td>
+     </tr>
+     <tr> <td> Addition </td> <td> x+y </td>
+     <td>  </td> <td> X </td>
+     <td>  </td> <td> addition of two integers </td> 
+     <td>  </td> <td>  </td>
+     </tr>
+     <tr> 
+     <td> \c X should be tagged in \c IntegerTraits for \c IsUnsigned.</td>
+     <td> typename IntegerTraits<X>::IsUnsigned </td> 
+     <td> TagTrue or TagFalse </td>
+     <td>  </td>
+     <td>  </td>
+     <td>  </td>
+     <td>  </td>
+     <td>  </td>
+     </tr>
+
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br> 
+     
+     short, int, unsigned int, long long, unsigned long long,
+     uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
+    
+     <p> Notes <br>
+    
+     @todo Complete integer checking.
    */
   template <typename T>
   struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>
@@ -122,13 +139,19 @@ namespace DGtal
       ConceptUtils::sameType( myX, IntegerTraits<T>::ZERO );
       ConceptUtils::sameType( myX, IntegerTraits<T>::ONE );
       
-      // @todo x+y with short is promoted to int. We should use some
+      // @note x-y with short is promoted to int. We should use some
+      // verification with possible promoting.
+      //
+      // @note T(x-y) is required (instead of 'x-y') because of
+      // gmpxx. Indeed, x+y returns an expression template in GMP and
+      // thus cannot be of type T.
+      ConceptUtils::sameType( myX, T(x-y) );
+      // @note x+y with short is promoted to int. We should use some
       // verification with possible promoting.
       //
       // @note T(x+y) is required (instead of 'x+y') because of
       // gmpxx. Indeed, x+y returns an expression template in GMP and
       // thus cannot be of type T.
-      ConceptUtils::sameType( myX, T(x-y) );
       ConceptUtils::sameType( myX, T(x+y) );
       
     }
@@ -137,7 +160,7 @@ namespace DGtal
   private:
     T myX;
     typename IntegerTraits<T>::IsUnsigned myIsUnsigned;
-    typename IntegerTraits<T>::IsUnsigned myIsSigned;
+    typename IntegerTraits<T>::IsSigned myIsSigned;
     typename IntegerTraits<T>::IsBounded myIsBounded;
     typename IntegerTraits<T>::SignedVersion mySignedVersion;
     typename IntegerTraits<T>::UnsignedVersion myUnsignedVersion;
