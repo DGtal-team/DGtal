@@ -10,14 +10,14 @@ SET(DGTAL_TESTS_SRC
 if( WITH_CAIRO )
   SET(DGTAL_TESTS_SRC
     ${DGTAL_TESTS_SRC}
-    dgtalCairo-0-demo-kernel-2
-    dgtalCairo-1-points
-    dgtalCairo-2-sets
-    dgtalCairo-2bis-sets
-    dgtalCairo-3-objects
-    dgtalCairo-4-modes
-    dgtalCairo-5-custom
-    dgtalCairo-6
+    dgtalBoard3DTo2D-0-demo-kernel-2
+    dgtalBoard3DTo2D-1-points
+    dgtalBoard3DTo2D-2-sets
+    dgtalBoard3DTo2D-2bis-sets
+    dgtalBoard3DTo2D-3-objects
+    dgtalBoard3DTo2D-4-modes
+    dgtalBoard3DTo2D-5-custom
+    dgtalBoard3DTo2D-6
 )
 endif ( WITH_CAIRO )
 
