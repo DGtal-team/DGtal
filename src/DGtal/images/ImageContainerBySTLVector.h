@@ -245,8 +245,6 @@ namespace DGtal
 	myShift = 1;
 	for (unsigned int k = 0; k < myDimension  ; k++)
 	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
-	
-	//trace.warning() <<"SpanIter("<<p<<" "<<aDim<<") Pos="<<myPos<<" shift="<<myShift<<std::endl;
       }
 
 

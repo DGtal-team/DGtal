@@ -65,7 +65,7 @@ ContourHelper::getMeanPoint(vector<Z2i::Point> contour){
  * @param object the object of class 'ContourHelper' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const ContourHelper & object )

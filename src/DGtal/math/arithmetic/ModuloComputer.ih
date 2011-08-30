@@ -58,7 +58,6 @@ DGtal::ModuloComputer<T>::ModuloComputer( UnsignedIntegerParamType  m )
 /**
  * Increment the value [i] modulo.
  * @param i any value between 0 and [k] (excluded).
- * @see k
  */
 template <typename T>
 inline
@@ -72,7 +71,6 @@ DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
 /**
  * Decrement the value [i] modulo.
  * @param i any value between 0 and [k] (excluded).
- * @see k
  */
 template <typename T>
 inline
@@ -87,7 +85,6 @@ DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
 /**
  * @param i any value between 0 and [k] (excluded).
  * @return the incremented value of [i] modulo [k].
- * @see k
  */
 template <typename T>
 inline
@@ -102,7 +99,6 @@ DGtal::ModuloComputer<T>::next( UnsignedIntegerParamType i ) const
 /**
  * @param i any value between 0 and [k] (excluded).
  * @return the decremented value of [i] modulo [k].
- * @see k
  */
 template <typename T>
 inline
@@ -116,7 +112,6 @@ DGtal::ModuloComputer<T>::previous( UnsignedIntegerParamType i ) const
 /**
  * @param i any integer value.
  * @return the value of [i] modulo [k].
- * @see k
  */
 template <typename T>
 inline
@@ -158,7 +153,6 @@ DGtal::ModuloComputer<T>::less( UnsignedIntegerParamType i, UnsignedIntegerParam
  * @param j any value between 0 and [k] (excluded).
  * @param i any value between 0 and [k] (excluded).
  * @return the value j - i, always positive. 
- * @see k
  */
 template <typename T>
 inline

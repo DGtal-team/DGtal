@@ -613,13 +613,6 @@ namespace DGtal
 
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-//#if defined(INLINE)
-//#include "DGtal/geometry/2d/SegmentComputerFunctor.ih"
-//#endif
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
