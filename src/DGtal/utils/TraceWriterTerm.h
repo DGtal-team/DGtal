@@ -52,15 +52,17 @@ namespace DGtal
   // class TraceWriterTerm
   /** 
    * Description of class 'TraceWriterTerm' <p>
-   * Aim: Implements trace prefix for color terminals
+   * Aim: @brief Implements trace prefix for color terminals
    *
    * \todo Detect if the terminal has color capabilities
+   * 
+   * @see testTrace.cpp
    */
+  // ----------------------- Standard services ------------------------------
   class TraceWriterTerm: public TraceWriter
   {
-    // ----------------------- Standard services ------------------------------
   public:
-    
+     
     /**
      * Constructor.
      * @param outputStream the current output Stream 
@@ -96,24 +98,24 @@ namespace DGtal
      * @return the prefix
      */
     std::string  prefixWarning() 
-      {
+    {
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-	return "\033[0m\033[35m";
+      return "\033[0m\033[35m";
 #else
-	return "";
+      return "";
 #endif
-      }
+    }
     
     /**
      * Create an Info Prefix
      * @return the prefix
      */
     std::string  prefixInfo()  
-      {
+    {
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-	return "\033[0m";
+      return "\033[0m";
 #else
-	return "";
+      return "";
 #endif
     }
 
@@ -122,39 +124,39 @@ namespace DGtal
      * @return the prefix
      */
     std::string  prefixError() 
-      {
+    {
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-	return "\033[0m\033[31m[ERR]";
+      return "\033[0m\033[31m[ERR]";
 #else
-	return "";
+      return "";
 #endif
-      }
+    }
     
     /**
      * Create an Emphase Prefix
      * @return the prefix
      */
     std::string  prefixEmphase() 
-      {
+    {
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-	return "\033[0m\033[1m";
+      return "\033[0m\033[1m";
 #else
-	return "";
+      return "";
 #endif
-      }
+    }
 
     /**
      * Create a Reset postfix
      * @return the postfix
      */
     std::string  postfixReset() 
-      {
+    {
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-	return "\033[0m";
+      return "\033[0m";
 #else
-	return "";
+      return "";
 #endif
-      }
+    }
    
   private:
 
