@@ -102,14 +102,6 @@ else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
     ADD_DEFINITIONS(-DINLINE=)
 endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
 
-# Version of INLINE functions with an option
-# OPTION(BUILD_INLINE_FUNCTIONS "Build inline functions." ON)
-# if (BUILD_INLINE_FUNCTIONS)
-#   ADD_DEFINITIONS(-DINLINE=inline)
-# else (BUILD_INLINE_FUNCTIONS)
-#   ADD_DEFINITIONS(-DINLINE="")
-# endif (BUILD_INLINE_FUNCTIONS)
-
 # -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
