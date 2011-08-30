@@ -81,7 +81,10 @@ namespace DGtal
    * adjacency relations are displayed.
    *
    * @tparam TDigitalTopology any realization of DigitalTopology.
-   * @tparam TDigitalSet any model of CDigitalSet.
+   * @tparam TDigitalSet any model of CDigitalSet.*
+   *
+   *  @see testObject.cpp
+   *  @see testObject-benchmark.cpp
    */
   template <typename TDigitalTopology, typename TDigitalSet>
   class Object

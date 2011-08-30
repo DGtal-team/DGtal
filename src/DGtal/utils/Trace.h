@@ -59,7 +59,7 @@ namespace DGtal
   // class Trace
   /** 
    * Description of class 'Trace' <p>
-   * Aim: implementation of basic methods to trace out messages with indentation levels.
+   * Aim: @brief ximplementation of basic methods to trace out messages with indentation levels.
    * 
    * Trace objects use a TraceWriter to switch between terminal and file outputs.
    * Methods postfixed with "Debug" contain no code if the compilation flag DEBUG is not set.
