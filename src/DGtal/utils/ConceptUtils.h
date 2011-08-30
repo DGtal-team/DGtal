@@ -86,14 +86,62 @@ public:
   static
   void sameType( const T & t1, const T & t2 );
 
+  /**
+     Type deduction will fail unless the argument type is exactly TagTrue.
+     @param tag the type to check.
+  */
   static
   void checkTrue( const TagTrue & tag );
 
+  /**
+     Type deduction will fail unless the argument type is exactly TagFalse.
+     @param tag the type to check.
+  */
   static
   void checkFalse( const TagFalse & tag );
 
+  /**
+     Type deduction will fail unless the argument type is exactly TagUnknown.
+     @param tag the type to check.
+  */
   static
   void checkUnknown( const TagUnknown & tag );
+
+  /**
+     Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
+     @param tag the type to check.
+  */
+  static
+  void checkTag( const TagUnknown & tag );
+
+  /**
+     Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
+     @param tag the type to check.
+  */
+  static
+  void checkTag( const TagTrue & tag );
+
+  /**
+     Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
+     @param tag the type to check.
+  */
+  static
+  void checkTag( const TagFalse & tag );
+
+  /**
+     Type deduction will fail unless the argument type is the tag TagTrue or TagFalse.
+     @param tag the type to check.
+  */
+  static
+  void checkTrueOrFalse( const TagFalse & tag );
+
+  /**
+     Type deduction will fail unless the argument type is the tag TagTrue or TagFalse.
+     @param tag the type to check.
+  */
+  static
+  void checkTrueOrFalse( const TagTrue & tag );
+
 
 }; // end of class ConceptUtils
 

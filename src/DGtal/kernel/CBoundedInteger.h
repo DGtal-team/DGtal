@@ -44,7 +44,8 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,8 +67,6 @@ namespace DGtal
    *
    * <p> Notation
    * - \t X : A type that is a model of CBoundedInteger
-   * - \t x, \t y	: Object of type X
-   * - \t i, \t j	: basic integer type.
    *
    * <p> Definitions
    *
@@ -79,14 +78,14 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> Construction from basic integer type</td>
-   * <td> X( i ) </td> <td> </td> <td> </td>
-   * <td> </td> <td> \c X represents the integer \c i</td> <td> </td> <td> </td>
-   * </tr>
-   * <tr> <td> Addition </td> <td> x+y </td>
-   * <td>  </td> <td> X </td>
-   * <td>  </td> <td> addition of two integers </td> 
-   * <td>  </td> <td>  </td>
+   * <td> \c X should be tagged \b true in \c NumberTraits for \c IsBounded.</td>
+   * <td> typename NumberTraits<X>::IsBounded </td> 
+   * <td> TagTrue </td>
+   * <td> </td>
+   * <td> </td> 
+   * <td> </td>
+   * <td> </td> 
+   * <td> </td>
    * </tr>
    * </table>
    *
@@ -99,10 +98,11 @@ namespace DGtal
    *
    * <p> Notes <br>
    *
-   * @todo Complete integer checking.
+   * @tparam T the type that is checked. T should be a model of
+   * CBoundedInteger.
    */
   template <typename T>
-  struct CBoundedInteger : CInteger<T>
+  struct CBoundedInteger : public CInteger<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -117,7 +117,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    typename IntegerTraits<T>::IsBounded myIsBounded;
+    typename NumberTraits<T>::IsBounded myIsBounded;
    
     // ------------------------- Internals ------------------------------------
   private:

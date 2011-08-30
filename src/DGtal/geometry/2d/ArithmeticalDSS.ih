@@ -1029,11 +1029,11 @@ typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m ) const
 {
 	//casts
-	double a = (double) IntegerTraits<TInteger>::castToInt64_t(myA);
-	double b = (double) IntegerTraits<TInteger>::castToInt64_t(myB);
-	double mu = (double) IntegerTraits<TInteger>::castToInt64_t(myMu);
-  double xm = (double) IntegerTraits<TInteger>::castToInt64_t(m[0]);
-  double ym = (double) IntegerTraits<TInteger>::castToInt64_t(m[1]);
+	double a = (double) NumberTraits<TInteger>::castToInt64_t(myA);
+	double b = (double) NumberTraits<TInteger>::castToInt64_t(myB);
+	double mu = (double) NumberTraits<TInteger>::castToInt64_t(myMu);
+  double xm = (double) NumberTraits<TInteger>::castToInt64_t(m[0]);
+  double ym = (double) NumberTraits<TInteger>::castToInt64_t(m[1]);
 
   double alpha = ( mu + mu + ( a >= 0 ? a : -a ) + b - 1 ) / 2.0f;
   double d2 = ( a * a + b * b );
@@ -1060,10 +1060,10 @@ typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, double r ) const
 {
 	//casts
-	double a = (double) IntegerTraits<TInteger>::castToInt64_t(myA);
-	double b = (double) IntegerTraits<TInteger>::castToInt64_t(myB);
-  double xm = (double) IntegerTraits<TInteger>::castToInt64_t(m[0]);
-  double ym = (double) IntegerTraits<TInteger>::castToInt64_t(m[1]);
+	double a = (double) NumberTraits<TInteger>::castToInt64_t(myA);
+	double b = (double) NumberTraits<TInteger>::castToInt64_t(myB);
+  double xm = (double) NumberTraits<TInteger>::castToInt64_t(m[0]);
+  double ym = (double) NumberTraits<TInteger>::castToInt64_t(m[1]);
 
   double d2 = ( a * a + b * b );
   double s = b * xm + a * ym;
@@ -1090,7 +1090,7 @@ typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, const Point & p ) const
 {
 
-  double r = (double) IntegerTraits<TInteger>::castToInt64_t(getRemainder(p));
+  double r = (double) NumberTraits<TInteger>::castToInt64_t(getRemainder(p));
 	return project(m,r);
 
 }
@@ -1167,8 +1167,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
 			vector<LibBoard::Point> contour;
 			for (ConstIterator i = myF; i != itend; ++i) {
 				Point p = *i;
-				double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
-				double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+				double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+				double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
 				contour.push_back(LibBoard::Point(xp,yp));
 			}
       aBoard.drawPolyline(contour);

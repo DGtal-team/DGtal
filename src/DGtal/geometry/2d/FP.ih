@@ -486,15 +486,15 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard)
 	typename Polygon::const_iterator i = myPolygon.begin();
 	for ( ;i != myPolygon.end();++i) {
 			Point p = (*i);
-			double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
-			double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+			double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+			double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
 			polyline.push_back(LibBoard::Point(xp,yp));
 	}
 
   if (myFlagIsClosed) {
 			Point p = (*myPolygon.begin());
-			double xp = IntegerTraits<TInteger>::castToInt64_t(p[0]);
-			double yp = IntegerTraits<TInteger>::castToInt64_t(p[1]);
+			double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+			double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
 			polyline.push_back(LibBoard::Point(xp,yp));
   }
   aBoard.drawPolyline(polyline);
