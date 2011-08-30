@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -56,6 +56,8 @@ namespace DGtal
    * Description of template class 'ModuloComputer' <p>
    *
    * \brief implements basic functions on modular arithmetic.
+   * 
+   * @tparam TInteger type of integer.
    *
    * Example:
    *
@@ -78,16 +80,16 @@ namespace DGtal
   class ModuloComputer
   {
   public:    
-    typedef typename IntegerTraits<TInteger>::SignedVersion Integer;
-    typedef typename IntegerTraits<Integer>::ParamType IntegerParamType;
+    typedef typename NumberTraits<TInteger>::SignedVersion Integer;
+    typedef typename NumberTraits<Integer>::ParamType IntegerParamType;
 
-    typedef typename IntegerTraits<TInteger>::UnsignedVersion UnsignedInteger;
-    typedef typename IntegerTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
+    typedef typename NumberTraits<TInteger>::UnsignedVersion UnsignedInteger;
+    typedef typename NumberTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
 	  
-	  /**
+    /**
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
      */
@@ -96,35 +98,30 @@ namespace DGtal
     /**
      * Increment the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
-     * @see k
      */
     void increment( UnsignedInteger & i ) const;
 
     /**
      * Decrement the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
-     * @see k
      */
     void decrement( UnsignedInteger  & i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the incremented value of [i] modulo [k].
-     * @see k
      */
-    UnsignedInteger  next( UnsignedIntegerParamType i ) const;
+    UnsignedInteger next( UnsignedIntegerParamType i ) const;
 
     /**
      * @param i any value between 0 and [k] (excluded).
      * @return the decremented value of [i] modulo [k].
-     * @see k
      */
     UnsignedInteger previous( UnsignedIntegerParamType i ) const;
 
     /**
      * @param i any integer value.
      * @return the value of [i] modulo [k].
-     * @see k
      */
     UnsignedInteger cast( IntegerParamType i ) const;
     
@@ -135,7 +132,6 @@ namespace DGtal
      * @param i any value between 0 and [k] (excluded).
      * @param j any value between 0 and [k] (excluded).
      * @return 'true' if [i] strictly precedes [j] in a window 'floor([k]/2)'.
-     * @see k
      */
     bool less( UnsignedIntegerParamType i, UnsignedIntegerParamType j ) const;
 
@@ -145,7 +141,6 @@ namespace DGtal
      * @param j any value between 0 and [k] (excluded).
      * @param i any value between 0 and [k] (excluded).
      * @return the value j - i, always positive. 
-     * @see k
      */
     UnsignedInteger posDiff( UnsignedIntegerParamType j, UnsignedIntegerParamType i ) const;
     

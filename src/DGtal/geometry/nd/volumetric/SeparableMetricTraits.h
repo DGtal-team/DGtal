@@ -43,7 +43,7 @@
 #include <iostream>
 #include <cmath>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CBoundedInteger.h"
 #include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ namespace DGtal
      */
     double getApproxValue( const InternalValue & aInternalValue ) const
     {
-      return std::pow( IntegerTraits<InternalValue>::castToDouble(aInternalValue),
+      return std::pow( NumberTraits<InternalValue>::castToDouble(aInternalValue),
 		      (double) 1.0 / p);
     }
 
@@ -113,7 +113,7 @@ namespace DGtal
      */
     InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
-      return std::pow( abs(IntegerTraits<Abscissa>::castToDouble(pos - ci)),
+      return std::pow( abs(NumberTraits<Abscissa>::castToDouble(pos - ci)),
 		       (double)p) + hi;
     }
 
@@ -202,7 +202,7 @@ namespace DGtal
 
     inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
-      return ( double ) sqrt ( IntegerTraits<InternalValue>::castToDouble(aInternalValue) );
+      return ( double ) sqrt ( NumberTraits<InternalValue>::castToDouble(aInternalValue) );
     }
 
     inline InternalValue F ( const Abscissa pos, 
@@ -280,9 +280,9 @@ namespace DGtal
 			  const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
-        return IntegerTraits<Abscissa>::max();
+        return NumberTraits<Abscissa>::max();
       if (hi > hj + j - i)
-        return IntegerTraits<Abscissa>::min();
+        return NumberTraits<Abscissa>::min();
       return (hj - hi + j + i) / 2;
     }
 
@@ -290,9 +290,9 @@ namespace DGtal
 				  const Abscissa j, const InternalValue hj ) const
     {
       if (hj <= hi - j + i)
-	return IntegerTraits<Abscissa>::max();
+	return NumberTraits<Abscissa>::max();
       if (hi < hj - j + i)
-        return IntegerTraits<Abscissa>::min();
+        return NumberTraits<Abscissa>::min();
       return (hi + i - hj + j ) / 2;
     }
     

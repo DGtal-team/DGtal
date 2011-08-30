@@ -59,7 +59,7 @@ namespace DGtal
   // class Trace
   /** 
    * Description of class 'Trace' <p>
-   * Aim: implementation of basic methods to trace out messages with indentation levels.
+   * Aim: @brief ximplementation of basic methods to trace out messages with indentation levels.
    * 
    * Trace objects use a TraceWriter to switch between terminal and file outputs.
    * Methods postfixed with "Debug" contain no code if the compilation flag DEBUG is not set.
@@ -110,27 +110,12 @@ namespace DGtal
     void beginBlock(const std::string &keyword = "");
 
     /**
-     * Define a new block to compute the ellapsed time only.
-     *
-     */
-    void beginClock();
-
-
-    /**
      * Leave a current block, decrease the indentation level and display the associate keyword
      *
      * @return  the ellapsed time in the block in milliseconds (Class Clock).
      */
     long endBlock();
  
-    /**
-     * Leave a current block.
-     *
-     * @return  the ellapsed time in the block in milliseconds (Class Clock).
-     */
-    long endClock();
-    
-
     /**
      * Create a string with an indentation prefix for a normal trace.
      * @return the cerr output stream with the prefix

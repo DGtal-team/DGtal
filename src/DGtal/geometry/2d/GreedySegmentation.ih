@@ -1,0 +1,509 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file GreedySegmentation.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/07/21
+ *
+ * Implementation of inline methods defined in GreedySegmentation.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// class GreedySegmentation::SegmentComputerIterator
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------- Main processings -----------------------
+
+/**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
+{
+  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
+  this->doesIntersectNext( it, itb, ite, Type() );
+}
+
+/**
+ * Specialization for iterators.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
+{
+		ConstIterator previousIt(it); 
+    if ( (it != itb)&&(it != ite) ) {
+      --previousIt;
+		  SegmentComputer tmpSegmentComputer;
+		  tmpSegmentComputer.init(previousIt);
+		  return tmpSegmentComputer.extend();
+    } else {
+      return false; 
+    }
+}
+
+/**
+ * Specialization for circulators
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+{
+		this->doesIntersectNext(it);
+}
+
+/**
+ * Checks if the current segment intersects the next one (if exists).
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
+{
+		ConstIterator previousIt(it); --previousIt;
+
+		SegmentComputer tmpSegmentComputer;
+		tmpSegmentComputer.init(previousIt);
+		return tmpSegmentComputer.extend();
+}
+
+ 
+/**
+ * Computes the longest possible segment from an iterator
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
+::longestSegment(const typename TSegmentComputer::ConstIterator& it)
+{
+
+  mySegmentComputer.init(it);
+
+	//while my segmentComputer can be extended
+  while ( (mySegmentComputer.end() != myS->myStop)
+	  &&(mySegmentComputer.extend()) ) {} 
+
+	//if the end is reached
+	if (mySegmentComputer.end() == myS->myStop) {
+
+    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+    myFlagIsLast = true; 
+
+    //last extension
+  	if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) { 
+      if (myS->myMode == "Truncate+1") {
+        mySegmentComputer.extend(); 
+      }
+      if (myS->myMode == "DoNotTruncate") {
+        while ( (mySegmentComputer.extend())
+             && (mySegmentComputer.end() != myS->myEnd) ) {} 
+      }
+    }
+
+	} else {
+  //otherwise
+		myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+  }
+
+}
+
+/**
+ * Goes to the next segment.
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
+{
+
+	if (myFlagIsLast) { //if the segmentComputer has reached the end
+
+    myFlagIsValid = false; 
+
+	} else { //otherwise
+
+	  myFlagIntersectPrevious = myFlagIntersectNext;
+
+    ConstIterator it( mySegmentComputer.end() ); 
+    if (myFlagIntersectPrevious) --it; 
+
+  	this->longestSegment(it);
+
+	}
+
+}
+
+// ------------------------- Standard services -----------------------
+
+/**
+ * Constructor.
+ * Nb: complexity in O(n).
+ *
+ */
+ template <typename TSegmentComputer>
+inline
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
+	const GreedySegmentation<TSegmentComputer> *s,
+	const TSegmentComputer& aSegmentComputer,
+  const bool& isValid )
+  : myS( s ), 
+		mySegmentComputer( aSegmentComputer ), 
+    myFlagIntersectNext( false ),
+		myFlagIntersectPrevious( false ),
+    myFlagIsValid( isValid ),
+    myFlagIsLast( false )
+{
+
+  if (myFlagIsValid) {
+
+	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+
+		  myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
+
+      //computation of the longest segment from myS->myStart
+		  this->longestSegment(myS->myStart);	
+
+    } else {
+      myFlagIsValid = false;
+    }
+
+  }
+}
+
+
+
+/**
+ * Copy constructor.
+ * @param other the iterator to clone.
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
+( const SegmentComputerIterator & other )
+  : myS( other.myS ), 
+		mySegmentComputer( other.mySegmentComputer ),
+		myFlagIntersectNext( other.myFlagIntersectNext ), 
+		myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
+    myFlagIsValid( other.myFlagIsValid ),
+    myFlagIsLast( other.myFlagIsLast )
+{
+}
+    
+/**
+ * Assignment.
+ * @param other the iterator to copy.
+ * @return a reference on 'this'.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
+( const SegmentComputerIterator & other )
+{
+  if ( this != &other )
+    {
+      myS = other.myS;
+      mySegmentComputer = other.mySegmentComputer;
+			myFlagIntersectNext = other.myFlagIntersectNext;
+			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
+			myFlagIsValid = other.myFlagIsValid;
+			myFlagIsLast = other.myFlagIsLast;
+    }
+  return *this;
+}
+    
+/**
+ * Destructor.
+ * Does nothing
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ------------------------- iteration services -------------------------
+    
+      
+/**
+ * @return the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+const TSegmentComputer&
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
+{
+  return mySegmentComputer;
+}
+
+/**
+ * @return the pointer to the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+const TSegmentComputer*
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
+{
+  return &mySegmentComputer;
+}
+
+/**
+ * @return the current segment.
+ */
+  template <typename TSegmentComputer>
+inline
+TSegmentComputer
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::get() const
+{
+  return mySegmentComputer;
+}
+
+/**
+ * Pre-increment.
+ * Goes to the next segment.
+ */
+
+  template <typename TSegmentComputer>
+inline
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator & 
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
+{
+  this->next();
+  return *this;
+}
+    
+
+/**
+ * Equality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions coincide.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
+( const SegmentComputerIterator & other ) const
+{
+
+ if ( isValid() ) 
+  return ( (other.isValid() ) && 
+( mySegmentComputer.begin() == other.mySegmentComputer.begin() ) &&
+( mySegmentComputer.end() == other.mySegmentComputer.end() ) );  
+ else 
+  return ( ! other.isValid() );
+}
+
+/**
+ * Inequality operator.
+ *
+ * @param aOther the iterator to compare with 
+ *
+ * @return 'true' if their current positions differs.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
+( const SegmentComputerIterator & other ) const
+{
+  return !(*this == other);
+}
+
+
+// ------------------------- accessors -------------------------
+  
+  template <typename TSegmentComputer>
+inline
+const bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
+{
+  return myFlagIntersectNext;
+}
+
+  template <typename TSegmentComputer>
+inline
+const bool
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
+{
+  return myFlagIntersectPrevious;
+}
+
+
+
+  template <typename TSegmentComputer>
+inline
+const typename TSegmentComputer::ConstIterator
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
+{
+  return mySegmentComputer.begin();
+}
+
+  template <typename TSegmentComputer>
+inline
+const typename TSegmentComputer::ConstIterator
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
+{
+  return mySegmentComputer.end();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// class GreedySegmentation
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+/**
+ * Constructor.
+ */
+  template <typename TSegmentComputer>
+DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
+(const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
+ : myBegin(itb),
+	 myEnd(ite),
+   myStart(itb),
+	 myStop(ite),
+	 mySegmentComputer(aSegmentComputer),
+   myMode("Truncate")
+{
+}
+
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::setSubRange
+(const ConstIterator& itb, const ConstIterator& ite)
+{
+  myStart = itb;
+	myStop = ite;
+  myMode = "Truncate";
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::setMode
+(const std::string& aMode)
+{
+  myMode = aMode; 
+}
+
+
+/**
+ * Destructor.
+ */
+  template <typename TSegmentComputer>
+inline
+DGtal::GreedySegmentation<TSegmentComputer>::~GreedySegmentation()
+{
+}
+
+/**
+ * ConstIterator service.
+ * @return an iterator pointing on the first segment
+ * of the digital curve.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::GreedySegmentation<TSegmentComputer>::begin() const
+{
+  return SegmentComputerIterator(this, mySegmentComputer, true);
+}
+
+/**
+ * ConstIterator service.
+ * @return an iterator pointing after the last segment
+ * of the digital curve.
+ */
+  template <typename TSegmentComputer>
+inline
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
+DGtal::GreedySegmentation<TSegmentComputer>::end() const
+{
+  return SegmentComputerIterator(this, mySegmentComputer, false);
+}
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GreedySegmentation]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+  template <typename TSegmentComputer>
+inline
+bool
+DGtal::GreedySegmentation<TSegmentComputer>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+  template <typename TSegmentComputer>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const GreedySegmentation<TSegmentComputer> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
