@@ -30,10 +30,6 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
 #include <QColor>
-// Includes inline functions/methods if necessary.
-#if !defined(INLINE)
-#include "DGtal/io/3dViewers/Viewer3D.ih"
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
