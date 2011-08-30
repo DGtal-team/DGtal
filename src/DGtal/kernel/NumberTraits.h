@@ -17,31 +17,32 @@
 #pragma once
 
 /**
- * @file IntegerTraits.h
+ * @file NumberTraits.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/03
  *
- * Header file for module IntegerTraits.cpp
+ * Header file for module NumberTraits.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(IntegerTraits_RECURSES)
-#error Recursive header files inclusion detected in IntegerTraits.h
-#else // defined(IntegerTraits_RECURSES)
+#if defined(NumberTraits_RECURSES)
+#error Recursive header files inclusion detected in NumberTraits.h
+#else // defined(NumberTraits_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IntegerTraits_RECURSES
+#define NumberTraits_RECURSES
 
-#if !defined IntegerTraits_h
+#if !defined NumberTraits_h
 /** Prevents repeated inclusion of headers. */
-#define IntegerTraits_h
+#define NumberTraits_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <limits>
+#include <cfloat>
 #include <boost/integer_traits.hpp>
 #include <boost/call_traits.hpp>
 #include "DGtal/base/Common.h"
@@ -59,9 +60,9 @@ namespace DGtal
 
 
 /////////////////////////////////////////////////////////////////////////////
-// template class IntegerTraits
+// template class NumberTraits
   /**
-   * Description of template class 'IntegerTraits' <p>
+   * Description of template class 'NumberTraits' <p>
    * \brief Aim: The traits class for all models of Cinteger.
    *
    * Since CInteger describes the concept Integer, this class is used
@@ -70,7 +71,7 @@ namespace DGtal
    * signed or not and what is signed/unsigned version.
    */
   template <typename T>
-  struct IntegerTraits
+  struct NumberTraits
   {
     // ----------------------- Associated types ------------------------------
     typedef TagUnknown IsBounded;
@@ -160,7 +161,7 @@ namespace DGtal
     }
 
 
-  }; // end of class IntegerTraits
+  }; // end of class NumberTraits
 
 
 
@@ -170,7 +171,7 @@ namespace DGtal
 //    * Specialization for <int>.
 //    */
 //   template <>
-//   struct IntegerTraits<int>
+//   struct NumberTraits<int>
 //   {
 //     typedef TagTrue IsBounded;
 //     typedef TagFalse IsUnsigned;
@@ -221,13 +222,13 @@ namespace DGtal
 //       return static_cast<double>(aT);
 //     }
 
-//   }; // end of class IntegerTraits<int>.
+//   }; // end of class NumberTraits<int>.
 
 //   /**
 //    * Specialization for <int>.
 //    */
 //   template <>
-//   struct IntegerTraits<unsigned int>
+//   struct NumberTraits<unsigned int>
 //   {
 //     typedef TagTrue IsBounded;
 //     typedef TagTrue IsUnsigned;
@@ -280,13 +281,13 @@ namespace DGtal
 //       return static_cast<double>(aT);
 //     }
 
-//   }; // end of class IntegerTraits<unsigned int>.
+//   }; // end of class NumberTraits<unsigned int>.
 
 //   /**
 //    * Specialization for <usigned char>.
 //    */
 //   template <>
-//   struct IntegerTraits<unsigned char>
+//   struct NumberTraits<unsigned char>
 //   {
 //     typedef TagTrue IsBounded;
 //     typedef TagTrue IsUnsigned;
@@ -339,13 +340,13 @@ namespace DGtal
 //       return static_cast<double>(aT);
 //     }
 
-//   }; // end of class IntegerTraits<unsigned char>.
+//   }; // end of class NumberTraits<unsigned char>.
 
 //   /**
 //    * Specialization for <long int>.
 //    */
 //   template <>
-//   struct IntegerTraits<long int>
+//   struct NumberTraits<long int>
 //   {
 //     typedef TagTrue IsBounded;
 //     typedef TagFalse IsUnsigned;
@@ -400,7 +401,7 @@ namespace DGtal
 //       return static_cast<double>(aT);
 //     }
 
-//   }; // end of class IntegerTraits<int>.
+//   }; // end of class NumberTraits<int>.
 
 
 
@@ -411,7 +412,7 @@ namespace DGtal
    * Specialization for <uint16_t>.
    */
   template <>
-  struct IntegerTraits<uint16_t>
+  struct NumberTraits<uint16_t>
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
@@ -464,13 +465,13 @@ namespace DGtal
       return static_cast<double>(aT);
     }
 
-  }; // end of class IntegerTraits<uint16_t>.
+  }; // end of class NumberTraits<uint16_t>.
 
   /**
    * Specialization for <int16_t>.
    */
   template <>
-  struct IntegerTraits<int16_t>
+  struct NumberTraits<int16_t>
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
@@ -522,14 +523,14 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<int16_t>.
+  }; // end of class NumberTraits<int16_t>.
  
 
   /**
    * Specialization for <uint8_t>.
    */
   template <>
-  struct IntegerTraits<uint8_t>
+  struct NumberTraits<uint8_t>
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
@@ -582,13 +583,13 @@ namespace DGtal
       return static_cast<double>(aT);
     }
 
-  }; // end of class IntegerTraits<uint8_t>.
+  }; // end of class NumberTraits<uint8_t>.
 
   /**
    * Specialization for <int8_t>.
    */
   template <>
-  struct IntegerTraits<int8_t>
+  struct NumberTraits<int8_t>
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
@@ -640,13 +641,13 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<int16_t>.
+  }; // end of class NumberTraits<int16_t>.
 
   /**
    * Specialization for <uint32_t>.
    */
   template <>
-  struct IntegerTraits<uint32_t>
+  struct NumberTraits<uint32_t>
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
@@ -694,13 +695,13 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<uint32_t>.
+  }; // end of class NumberTraits<uint32_t>.
 
   /**
    * Specialization for <int32_t>.
    */
   template <>
-  struct IntegerTraits<int32_t>
+  struct NumberTraits<int32_t>
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
@@ -752,13 +753,13 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<int32_t>.
+  }; // end of class NumberTraits<int32_t>.
 
   /**
    * Specialization for <uint64_t>.
    */
   template <>
-  struct IntegerTraits<uint64_t>
+  struct NumberTraits<uint64_t>
   {
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
@@ -810,13 +811,13 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<uint64_t>.
+  }; // end of class NumberTraits<uint64_t>.
 
   /**
    * Specialization for <int64_t>.
    */
   template <>
-  struct IntegerTraits<int64_t>
+  struct NumberTraits<int64_t>
   {
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
@@ -864,7 +865,169 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-  }; // end of class IntegerTraits<int64_t>.
+  }; // end of class NumberTraits<int64_t>.
+
+  /**
+   * Specialization for <float>.
+   */
+  template <>
+  struct NumberTraits<float>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef float SignedVersion;
+    typedef float UnsignedVersion;
+    typedef float ReturnType;
+    typedef boost::call_traits<float>::param_type ParamType;
+    static const float ZERO = 0.0f;
+    static const float ONE = 1.0f;
+    static ReturnType zero()
+    {
+      return 0.0f;
+    }
+    static ReturnType one()
+    {
+      return 1.0f;
+    }
+    static ReturnType min()
+    {
+      return FLT_MIN;
+    }
+    static ReturnType max()
+    {
+      return FLT_MAX;
+    }
+    static unsigned int digits()
+    {
+      return FLT_DIG;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const float & aT)
+    {
+      return static_cast<int64_t>( aT );
+    }
+    static double castToDouble(const float & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class NumberTraits<float>.
+
+  /**
+   * Specialization for <double>.
+   */
+  template <>
+  struct NumberTraits<double>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef double SignedVersion;
+    typedef double UnsignedVersion;
+    typedef double ReturnType;
+    typedef boost::call_traits<double>::param_type ParamType;
+    static const double ZERO = 0.0;
+    static const double ONE = 1.0;
+    static ReturnType zero()
+    {
+      return 0.0;
+    }
+    static ReturnType one()
+    {
+      return 1.0;
+    }
+    static ReturnType min()
+    {
+      return DBL_MIN;
+    }
+    static ReturnType max()
+    {
+      return DBL_MAX;
+    }
+    static unsigned int digits()
+    {
+      return DBL_DIG;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const double & aT)
+    {
+      return static_cast<int64_t>( aT );
+    }
+    static double castToDouble(const double & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class NumberTraits<double>.
+
+  /**
+   * Specialization for <long double>.
+   */
+  template <>
+  struct NumberTraits<long double>
+  {
+    typedef TagTrue IsBounded;
+    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef long double SignedVersion;
+    typedef long double UnsignedVersion;
+    typedef long double ReturnType;
+    typedef boost::call_traits<long double>::param_type ParamType;
+    static const long double ZERO = 0.0;
+    static const long double ONE = 1.0;
+    static ReturnType zero()
+    {
+      return 0.0;
+    }
+    static ReturnType one()
+    {
+      return 1.0;
+    }
+    static ReturnType min()
+    {
+      return LDBL_MIN;
+    }
+    static ReturnType max()
+    {
+      return LDBL_MAX;
+    }
+    static unsigned int digits()
+    {
+      return LDBL_DIG;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const long double & aT)
+    {
+      return static_cast<int64_t>( aT );
+    }
+    static double castToDouble(const long double & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class NumberTraits<long double>.
 
   
 #ifdef WITH_GMP
@@ -872,7 +1035,7 @@ namespace DGtal
    * Specialization for <mpz_class>.
    */
   template <>
-  struct IntegerTraits<mpz_class>
+  struct NumberTraits<mpz_class>
   {
     typedef TagFalse IsBounded;
     typedef TagFalse IsUnsigned;
@@ -882,8 +1045,8 @@ namespace DGtal
     typedef mpz_class UnsignedVersion;
     typedef mpz_class ReturnType;
     typedef boost::call_traits<int64_t>::param_type ParamType;
-    static mpz_class ZERO;//cf IntegerTraits.h
-    static mpz_class ONE;//cf IntegerTraits.h
+    static mpz_class ZERO;//cf NumberTraits.h
+    static mpz_class ONE;//cf NumberTraits.h
     static ReturnType zero()
     {
       return ZERO;
@@ -924,7 +1087,7 @@ namespace DGtal
     {
       return aT.get_d();
     }
-  }; // end of class IntegerTraits<mpz_class>.
+  }; // end of class NumberTraits<mpz_class>.
 #endif
 
 
@@ -947,12 +1110,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/IntegerTraits.ih"
+#include "DGtal/kernel/NumberTraits.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IntegerTraits_h
+#endif // !defined NumberTraits_h
 
-#undef IntegerTraits_RECURSES
-#endif // else defined(IntegerTraits_RECURSES)
+#undef NumberTraits_RECURSES
+#endif // else defined(NumberTraits_RECURSES)

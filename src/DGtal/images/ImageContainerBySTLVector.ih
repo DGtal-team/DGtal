@@ -109,9 +109,9 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
     val = this->operator()( (*it) );
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( IntegerTraits<typename D::Integer>::
+    board.drawRectangle( NumberTraits<typename D::Integer>::
 			 castToInt64_t((*it)[0]) - 0.5, 
-			 IntegerTraits<typename D::Integer>::
+			 NumberTraits<typename D::Integer>::
 			 castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
