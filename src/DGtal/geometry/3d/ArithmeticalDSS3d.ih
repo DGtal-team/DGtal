@@ -246,14 +246,14 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 		Integer mu1 = myXYalgo.getMu();
 		Integer mu2 = myXZalgo.getMu();
-		double y = (double) -IntegerTraits<TInteger>::castToInt64_t(mu1) / a1;
-		double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / a2;
+		double y = (double) -NumberTraits<TInteger>::castToInt64_t(mu1) / a1;
+		double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / a2;
 		intercept = PointD3d(0,y,z);
 
 		Integer omega1 = myXYalgo.getOmega()-1;
 		Integer omega2 = myXZalgo.getOmega()-1;
-		double ty = (double) -IntegerTraits<TInteger>::castToInt64_t(omega1) / a1;
-		double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / a2;
+		double ty = (double) -NumberTraits<TInteger>::castToInt64_t(omega1) / a1;
+		double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / a2;
 		thickness = PointD3d(0,ty,tz);
 
 	} else {                     
@@ -269,14 +269,14 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 			Integer mu1 = myXYalgo.getMu();
 			Integer mu2 = myYZalgo.getMu();
-			double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / b1;
-			double z = (double) -IntegerTraits<TInteger>::castToInt64_t(mu2) / b2;
+			double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
+			double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
 			intercept = PointD3d(x,0,z);
 
 			Integer omega1 = myXYalgo.getOmega()-1;
 			Integer omega2 = myYZalgo.getOmega()-1;
-			double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / b1;
-			double tz = (double) -IntegerTraits<TInteger>::castToInt64_t(omega2) / b2;
+			double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
+			double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
 			thickness = PointD3d(tx,0,tz);
 
 
@@ -293,14 +293,14 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 				Integer mu1 = myYZalgo.getMu();
 				Integer mu2 = myXZalgo.getMu();
-				double y = (double) IntegerTraits<TInteger>::castToInt64_t(mu1) / c2;
-				double x = (double) IntegerTraits<TInteger>::castToInt64_t(mu2) / c1;
+				double y = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / c2;
+				double x = (double) NumberTraits<TInteger>::castToInt64_t(mu2) / c1;
 				intercept = PointD3d(x,y,0);
 
 				Integer omega1 = myYZalgo.getOmega()-1;
 				Integer omega2 = myXZalgo.getOmega()-1;
-				double ty = (double) IntegerTraits<TInteger>::castToInt64_t(omega1) / c2;
-				double tx = (double) IntegerTraits<TInteger>::castToInt64_t(omega2) / c1;
+				double ty = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / c2;
+				double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega2) / c1;
 				thickness = PointD3d(tx,ty,0);
 
 			} else {//degenerated case
@@ -377,15 +377,15 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
     {
 			ConstIterator k = myF;
 			Point3d prevp = *k;
-			double xprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[0]);
-			double yprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[1]);
-			double zprevp = (double) IntegerTraits<TInteger>::castToInt64_t(prevp[2]);
+			double xprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[0]);
+			double yprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[1]);
+			double zprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[2]);
 			++k;
 			for ( ; k != end; ++k) {
 				Point3d p = *k;
-				double xp = (double) IntegerTraits<TInteger>::castToInt64_t(p[0]);
-				double yp = (double) IntegerTraits<TInteger>::castToInt64_t(p[1]);
-				double zp = (double) IntegerTraits<TInteger>::castToInt64_t(p[2]);
+				double xp = (double) NumberTraits<TInteger>::castToInt64_t(p[0]);
+				double yp = (double) NumberTraits<TInteger>::castToInt64_t(p[1]);
+				double zp = (double) NumberTraits<TInteger>::castToInt64_t(p[2]);
 				display.addLine(xprevp,yprevp,zprevp,
 											 xp,yp,zp,
 											 Color(0,250,0));
@@ -412,21 +412,21 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
 	//casting coordinates of v in double
 	VectorD3d u = VectorD3d(
-	(double) IntegerTraits<Integer>::castToInt64_t(v[0]), 
-	(double) IntegerTraits<Integer>::castToInt64_t(v[1]), 
-	(double) IntegerTraits<Integer>::castToInt64_t(v[2]) ); 
+	(double) NumberTraits<Integer>::castToInt64_t(v[0]), 
+	(double) NumberTraits<Integer>::castToInt64_t(v[1]), 
+	(double) NumberTraits<Integer>::castToInt64_t(v[2]) ); 
 	//L2 norm of u
 	double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
 
 	//first and last points
 	PointD3d f = PointD3d(
-	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[0]), 
-	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[1]), 
-	(double) IntegerTraits<Integer>::castToInt64_t((*myF)[2]) ); 
+	(double) NumberTraits<Integer>::castToInt64_t((*myF)[0]), 
+	(double) NumberTraits<Integer>::castToInt64_t((*myF)[1]), 
+	(double) NumberTraits<Integer>::castToInt64_t((*myF)[2]) ); 
 	PointD3d l = PointD3d(
-	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[0]), 
-	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[1]), 
-	(double) IntegerTraits<Integer>::castToInt64_t((*myL)[2]) ); 
+	(double) NumberTraits<Integer>::castToInt64_t((*myL)[0]), 
+	(double) NumberTraits<Integer>::castToInt64_t((*myL)[1]), 
+	(double) NumberTraits<Integer>::castToInt64_t((*myL)[2]) ); 
 
 	if (n != 0) {
 

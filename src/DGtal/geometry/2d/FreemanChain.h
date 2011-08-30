@@ -54,7 +54,7 @@
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 
 #include "DGtal/helpers/StdDefs.h"
 

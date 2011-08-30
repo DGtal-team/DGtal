@@ -246,9 +246,10 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
 
     /**
      * Default constructor.
-     * Default-initializes member [myCurrentIt].
+     * Default-initializes iterator members
+     * NB: not valid
      */
-    Circulator() : myCurrentIt() {}
+    Circulator() : myCurrentIt(), myBeginIt(), myEndIt(), myFlagIsValid(false) {}
 
 
     /**
@@ -263,7 +264,8 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     Circulator(const Iterator& i,
                const Iterator& itb, 
                const Iterator& ite) 
-     : myCurrentIt(i), myBeginIt(itb), myEndIt(ite) {}
+     : myCurrentIt(i), myBeginIt(itb), myEndIt(ite), myFlagIsValid(true) 
+    { if (myBeginIt == myEndIt) myFlagIsValid = false; }
 
     /**
      * Destructor.
@@ -275,7 +277,10 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
      * @param other the object to clone.
      */
     Circulator ( const Circulator & other )
-    : myCurrentIt(other.myCurrentIt), myBeginIt(other.myBeginIt), myEndIt(other.myEndIt) {}
+    : myCurrentIt(other.myCurrentIt), 
+      myBeginIt(other.myBeginIt), myEndIt(other.myEndIt), 
+      myFlagIsValid(other.myFlagIsValid)  
+    {}
 
     /**
      *  Copy of circulators that adapts other iterator types (not const / const).
@@ -283,14 +288,52 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     */
     template<typename other_Iterator>
     Circulator ( const Circulator<other_Iterator>& other )
-    : myCurrentIt(other.base()), myBeginIt(other.begin()), myEndIt(other.end()) {}
+    : myCurrentIt(other.base()), 
+      myBeginIt(other.begin()), myEndIt(other.end()), 
+      myFlagIsValid(other.isValid())  
+    {}
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Circulator & operator= ( const Circulator & other ) 
+    {
+      if ( this != &other )
+        {
+          myCurrentIt = other.myCurrentIt;
+          myBeginIt = other.myBeginIt;
+          myEndIt = other.myEndIt;
+          myFlagIsValid = other.myFlagIsValid;
+        }
+      return *this;
+    }
+
+    /**
+     * Assignment that adapts other iterator types (not const / const).
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    template<typename other_Iterator>
+    Circulator & operator= ( const Circulator<other_Iterator>& other )
+    {
+      if ( this != &other )
+        {
+          myCurrentIt = other.base();
+          myBeginIt = other.begin();
+          myEndIt = other.end();
+          myFlagIsValid = other.isValid();
+        }
+      return *this;
+    }
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const 
-    { return (myBeginIt != myEndIt) ; }
+    { return myFlagIsValid; }
 
 
     // ----------------------- Interface --------------------------------------
@@ -318,6 +361,7 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
      *  @return  *myCurrentIt.
     */
     reference operator*() const { 
+     //ASSERT( myCurrentIt != myEndIt ); //myCurrentIt == myEndIt when using reverse iterators on circulators
      ASSERT( isValid() ); 
      return *myCurrentIt; 
     }
@@ -326,6 +370,7 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
      *  @return  pointer to myCurrentIt
     */
     pointer operator->() const { 
+     //ASSERT( myCurrentIt != myEndIt ); //myCurrentIt == myEndIt when using reverse iterators on circulators
      ASSERT( isValid() ); 
      return myCurrentIt.operator->(); 
     }
@@ -380,16 +425,23 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     // ----------------------- Equality operators --------------------------------------
   public:
 
+    //'true' if their three underlying iterators are equal
+    //or if their underlying ranges are both empty,
+    //'false' otherwise
     bool operator==( const Self& other) const { 
-      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
-      return myCurrentIt == other.base(); 
+        return ( ( (myBeginIt == other.begin())
+                 &&(myEndIt == other.end())
+                 &&(myCurrentIt == other.base()) ) 
+               ||( (!isValid())&&(!other.isValid()) ) ); 
     }
     bool operator!=( const Self& other) const { return !(*this == other); }
 
     template<typename OtherIterator>
     bool operator==( const OtherIterator& other) const { 
-      ASSERT( (myBeginIt == other.begin())&&(myEndIt == other.end()) ); 
-      return myCurrentIt == other.base(); 
+        return ( ( (myBeginIt == other.begin())
+                 &&(myEndIt == other.end())
+                 &&(myCurrentIt == other.base()) ) 
+               ||( (!isValid())&&(!other.isValid()) ) ); 
     }
     template<typename OtherIterator>
     bool operator!=( const OtherIterator& other) const { return !(*this == other); }
@@ -442,6 +494,7 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     Iterator myCurrentIt; 
     Iterator myBeginIt; 
     Iterator myEndIt; 
+    bool myFlagIsValid; 
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -466,6 +519,19 @@ namespace detail {
 
   template< typename IC > 
   inline
+  bool isEmpty( const IC& itb, const IC& ite, IteratorType ) {
+    return itb == ite;
+  }
+
+  template< typename IC > 
+  inline
+  bool isEmpty( const IC& c1, const IC& c2, CirculatorType) {
+    IC c; 
+    return ( (c1 == c ) || ( c2 == c ) );  
+  }
+
+  template< typename IC > 
+  inline
   bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
     return itb != ite;
   }
@@ -473,11 +539,17 @@ namespace detail {
   template< typename IC > 
   inline
   bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
-    return ( ( c1.isValid() ) && ( c2.isValid() ) );
+    IC c; 
+    return ( (c1 != c ) && ( c2 != c ) );  
   }
 
 } 
 
+template< typename IC> 
+inline
+bool isEmpty( const IC& itb, const IC& ite ){
+  return detail::isEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
+}
 
 template< typename IC> 
 inline
