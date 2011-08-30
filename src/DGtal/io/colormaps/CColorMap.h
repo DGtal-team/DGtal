@@ -89,7 +89,11 @@ namespace DGtal
    * <p> Invariants <br>
    *
    * <p> Models <br>
-   *
+   *        GradientColorMap
+   *        HueShadeColorMap
+   *        ColorBrightnessColorMap 
+   *        GrayScaleColorMap
+   *        RandomColorMap
    * <p> Notes <br>
    */
   template <typename CMap>
