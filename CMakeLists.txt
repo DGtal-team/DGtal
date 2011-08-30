@@ -10,19 +10,11 @@ project (DGtal)
 
 cmake_minimum_required (VERSION 2.6) 
 
-
 # -----------------------------------------------------------------------------
-# Display some information
-# -----------------------------------------------------------------------------
-
-
-message(STATUS "-------------------------------------------------------------------------------")
-
-# -----------------------------------------------------------------------------
-# Define variables and cmake parameters
+# Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
 # Look for modules
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 4)
@@ -31,6 +23,7 @@ SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
 
+message(STATUS "-------------------------------------------------------------------------------")
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
