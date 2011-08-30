@@ -16,28 +16,12 @@ unsigned int nbPCell, nbLCell, nbSCell, nbMarksSCell;
 namespace Map3d
 {
 //******************************************************************************
-
 void CTopologicalMap::initDart(CDart* ADart,const CTriplet & ATriplet,
 			       CRegion* ARegion, CFace* AFace)
 {
   static_cast<CTopologicalDart*>(ADart)->init(ATriplet, ARegion, AFace);
 }
 //------------------------------------------------------------------------------
-
-CDart* CTopologicalMap::getDart(unsigned int Ai, unsigned int Aj) const
-{
-  // Il est nécessaire de caster en CTopologicalDart* pour que l'arithmétique
-  // sur les pointeurs soit correcte, et il est nécessaire de re-caster en
-  // CDart* (de manière implicite) pour que la signature de la fonction soit
-  // la même que dans la classe CMapBasic.
-  return (static_cast<CTopologicalDart*>(FTabsDarts[Ai])+Aj);
-}
-//------------------------------------------------------------------------------
-
-CDart* CTopologicalMap::newTabDarts()
-{ return new CTopologicalDart[FSizeDartArray]; }
-//------------------------------------------------------------------------------
-
 CTopologicalDart* CTopologicalMap::addMapDart( const CTriplet & ATriplet, 
 					       CRegion* ARegion, CFace* AFace )
 {

@@ -98,7 +98,7 @@ namespace DGtal
      * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
      * 4-connected freeman chains.
      */
-    INLINE OrderedAlphabet( char first, unsigned int nb );
+    OrderedAlphabet( char first, unsigned int nb );
 
     /**
      * @return the current ordered alphabet.

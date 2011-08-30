@@ -17,22 +17,18 @@ namespace Map3d
   class CTopologicalDart: public Dart<3,Refs>
   {
   public:
-    //******************************************************************************
-
     CTopologicalDart::CTopologicalDart() :
       CDart   (),
       FTriplet(),
       FRegion (NULL),
       FFace   (NULL)
     {}
-    //------------------------------------------------------------------------------
 
     void CTopologicalDart::init(const CTriplet & ATriplet, CRegion* ARegion)
     {
       FTriplet = ATriplet;
       FRegion  = ARegion;
     }
-    //------------------------------------------------------------------------------
 
     void CTopologicalDart::init(const CTriplet & ATriplet, CRegion* ARegion,
 				CFace* AFace)
@@ -41,15 +37,12 @@ namespace Map3d
       FRegion  = ARegion;
       FFace    = AFace;
     }  
-    //******************************************************************************
 
     CTriplet& CTopologicalDart::triplet()
     { return FTriplet; }
-    //******************************************************************************
 
     CRegion* CTopologicalDart::getRegion() const
     { return FRegion->find(); }
-    //------------------------------------------------------------------------------
 
     void CTopologicalDart::setRegion(CRegion* ARegion)
     {
@@ -57,11 +50,9 @@ namespace Map3d
   
       FRegion=ARegion->find();
     }
-    //******************************************************************************
 
     CFace* CTopologicalDart::getFace()
     { return FFace->find(); }
-    //------------------------------------------------------------------------------
 
     void CTopologicalDart::setFace(CFace* AFace)
     {
