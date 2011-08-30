@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file IntegerTraits.ih
+ * @file NumberTraits.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/03
  *
- * Implementation of inline methods defined in IntegerTraits.h
+ * Implementation of inline methods defined in NumberTraits.h
  *
  * This file is part of the DGtal library.
  */
@@ -45,8 +45,8 @@
  */
 template <typename T>
 inline
-typename DGtal::IntegerTraits<T>::ReturnType
-DGtal::IntegerTraits<T>::zero()
+typename DGtal::NumberTraits<T>::ReturnType
+DGtal::NumberTraits<T>::zero()
 {
 #if (defined(WIN32))
     return 0;
@@ -60,8 +60,8 @@ DGtal::IntegerTraits<T>::zero()
  */
 template <typename T>
 inline
-typename DGtal::IntegerTraits<T>::ReturnType
-DGtal::IntegerTraits<T>::one()
+typename DGtal::NumberTraits<T>::ReturnType
+DGtal::NumberTraits<T>::one()
 {
 #if (defined(WIN32))
     return 1;
@@ -76,8 +76,8 @@ DGtal::IntegerTraits<T>::one()
  */
 template <typename T>
 inline
-typename DGtal::IntegerTraits<T>::ReturnType
-DGtal::IntegerTraits<T>::min()
+typename DGtal::NumberTraits<T>::ReturnType
+DGtal::NumberTraits<T>::min()
 {
     return ONE;
 }
@@ -88,8 +88,8 @@ DGtal::IntegerTraits<T>::min()
  */
 template <typename T>
 inline
-typename DGtal::IntegerTraits<T>::ReturnType
-DGtal::IntegerTraits<T>::max()
+typename DGtal::NumberTraits<T>::ReturnType
+DGtal::NumberTraits<T>::max()
 {
     return ZERO;
 }
@@ -101,7 +101,7 @@ DGtal::IntegerTraits<T>::max()
 template <typename T>
 inline
 unsigned int
-DGtal::IntegerTraits<T>::digits()
+DGtal::NumberTraits<T>::digits()
 {
     return 0;
 }
@@ -112,7 +112,7 @@ DGtal::IntegerTraits<T>::digits()
 template <typename T>
 inline
 DGtal::BoundEnum
-DGtal::IntegerTraits<T>::isBounded()
+DGtal::NumberTraits<T>::isBounded()
 {
     return BOUND_UNKNOWN;
 }
@@ -123,7 +123,7 @@ DGtal::IntegerTraits<T>::isBounded()
 template <typename T>
 inline
 DGtal::SignEnum
-DGtal::IntegerTraits<T>::isSigned()
+DGtal::NumberTraits<T>::isSigned()
 {
     return SIGN_UNKNOWN;
 }

@@ -50,7 +50,7 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
 
 
@@ -120,7 +120,7 @@ namespace DGtal
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
 
     ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
-    typedef typename IntegerTraits<Integer>::IsBounded IsBounded;
+    typedef typename NumberTraits<Integer>::IsBounded IsBounded;
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;
