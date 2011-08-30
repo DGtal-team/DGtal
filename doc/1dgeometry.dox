@@ -96,19 +96,6 @@ Such a range is however considered as empty in STL algorithms.
 
 Range of linear and circular structures are illustrated below (normal values are depicted with 
 a small straight segment, whereas the past-the-end value is depicted with a cross). 
- 
- <table>
- <tr>
- <td>
- @image html linearRange.png  "linear structure" 
- @image latex linearRange.png  "linear structure" 
- </td>
- <td>
- @image html circularRange.png  "circular structure"
- @image latex circularRange.png  "circular structure" 
- </td>
- </tr>
- </table>
 
 
 Either an iterator or a circulator may have a reverse counterpart, ie. 

@@ -340,10 +340,29 @@ namespace DGtal
       void longestSegment(const ConstIterator& it);
       
       /**
+       * Checks if the current segment intersects the next one.
+       * @param it, end of the current segment
+       * @param itb, begin iterator of the underlying range
+       * @param ite, end iterator of the underlying range
+       * @return 'true' if it != itb and it != ite and
+       * --it and it form a valid segment, false otherwise
+       */
+      bool doesIntersectNext(const ConstIterator& it, 
+                       const ConstIterator& itb, const ConstIterator& ite);
+      bool doesIntersectNext(const ConstIterator& it, 
+                       const ConstIterator& itb, const ConstIterator& ite, IteratorType);
+      bool doesIntersectNext(const ConstIterator& it, 
+                       const ConstIterator& itb, const ConstIterator& ite, CirculatorType);
+
+      /**
        * Checks if the current segment intersects the next one (if exists).
-       * @param it a given iterator
+       * @param it, end of the current segment
+       * @return 'true' if --it and it form a valid segment, false otherwise
+       * NB: no verification
        */
       bool doesIntersectNext(const ConstIterator& it);
+
+
     };
 
 
