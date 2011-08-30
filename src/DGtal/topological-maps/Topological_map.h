@@ -44,6 +44,9 @@ namespace Map3d
   class CTopologicalMap: public CGAL::Combinatorial_map<3, Topological_dart_items>
   {
   public:
+    typedef CGAL::Combinatorial_map<3, Topological_dart_items> Base;
+    typedef CTopologicalMap                                    Self;
+    
     /// @name Constructeur et destructeur
     //@{
 
@@ -52,7 +55,7 @@ namespace Map3d
      *  les pointeurs sont vides.
      *  @param ASizeDartArray La taille de chaque tableau de brins
      */
-    CTopologicalMap(unsigned int ASizeDartArray = 5000);
+    CTopologicalMap();
     
     /**
      *  Constructeur avec une image en paramètre.

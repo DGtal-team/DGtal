@@ -1098,20 +1098,14 @@ const CCoordinate CTopologicalMap::getVoxelOut( const CTriplet & ATriplet )
   return AVertex;
 }
 //******************************************************************************
-INLINE
 const CCoordinate CTopologicalMap::getVoxelIn( CDart * ADart ) const
 { return getVoxelIn( normaliseTripletSurfel( getTriplet( ADart ) ) ); }
 //------------------------------------------------------------------------------
-INLINE
 const CCoordinate CTopologicalMap::getVoxelOut( CDart * ADart ) const
 { return getVoxelOut( normaliseTripletSurfel( getTriplet( ADart ) ) ); }
 //*****************************************************************************
-
 void CTopologicalMap::cleanMap()
 {
-  // TODO : Renommer la fonction en cleanMap et faire aussi le compactage
-  // des listes de brins.
-  // Faire un CDynamicCoverageAll spécial ? Ou un booléen du coverage existant ?
   for( CDynamicCoverageAll it( this ) ; it.cont() ; it++ )
     {
       setRegion( *it, getRegion(*it) );
@@ -1120,9 +1114,8 @@ void CTopologicalMap::cleanMap()
   cleanAllRegions();
   cleanAllFaces();
 }
-
 //******************************************************************************
-CTopologicalMap::CTopologicalMap(unsigned int ASizeDartArray) :
+CTopologicalMap::CTopologicalMap() :
   CMapGeneric       (ASizeDartArray),
   FFirstRegion      (NULL),
   FFirstFace        (NULL),
@@ -1132,8 +1125,7 @@ CTopologicalMap::CTopologicalMap(unsigned int ASizeDartArray) :
   empty();
 }
 //------------------------------------------------------------------------------
-CTopologicalMap::CTopologicalMap(CImage3D* AImage,
-				 unsigned int ASizeDartArray) :
+CTopologicalMap::CTopologicalMap(CImage3D* AImage) :
   CMapGeneric       (ASizeDartArray),
   FFirstRegion      (NULL),
   FFirstFace        (NULL),
