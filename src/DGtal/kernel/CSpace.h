@@ -48,7 +48,7 @@
 #include "DGtal/utils/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
-#include "DGtal/kernel/IntegerTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

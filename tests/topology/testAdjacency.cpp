@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -59,12 +60,9 @@ bool testMetricAdjacency()
   
   typedef SpaceND<3> Space3D;
   typedef Space3D::Point Point;
-  // typedef MetricAdjacency<Space3D,1> Adj6;
-  // typedef MetricAdjacency<Space3D,2> Adj18;
-  // typedef MetricAdjacency<Space3D,3> Adj26;
-  typedef Z3Adj6 Adj6;
-  typedef Z3Adj18 Adj18;
-  typedef Z3Adj26 Adj26;
+  typedef Z3i::Adj6 Adj6;
+  typedef Z3i::Adj18 Adj18;
+  typedef Z3i::Adj26 Adj26;
   Point p( 3, -5, 10 );
 
 

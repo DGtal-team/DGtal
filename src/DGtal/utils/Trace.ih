@@ -105,9 +105,9 @@ DGtal::Trace::reset()
   myCurrentLevel = 0;
   myCurrentPrefix = "";
   while( !myKeywordStack.empty() )
-  {
-     myKeywordStack.pop();
-  }
+    {
+      myKeywordStack.pop();
+    }
 }
 
 /**
@@ -133,21 +133,6 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   c->startClock();
   myClockStack.push(c);
 }
-
-/**
- * Enter a new block (timer only)
- *
- */
-inline
-void
-DGtal::Trace::beginClock()
-{
-  //Block timer start
-  Clock *c = new(Clock);
-  c->startClock();
-  myClockStack.push(c);
-}
-
 
  /**
   * Leave a current block, decrease the indentation level and display
@@ -177,24 +162,6 @@ DGtal::Trace::endBlock()
 			  << "] (" << tick<<" ms)"
 			  << myWriter.postfixReset()<< std::endl;
   myKeywordStack.pop();
-  myClockStack.pop();
-  delete localClock;
-  return tick;
-}
- /**
-  * Leave a current block (timer only)
-  * @return  the ellapsed time in the block in milliseconds (Class Clock).
-  *
-  */
-inline long
-DGtal::Trace::endClock()
-{
-  long tick;
-  Clock *localClock;
-
-  localClock =  myClockStack.top();
-  tick = localClock->stopClock();
-
   myClockStack.pop();
   delete localClock;
   return tick;

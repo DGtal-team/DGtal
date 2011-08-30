@@ -65,15 +65,28 @@ namespace YYY
    * <p> Definitions
    *
    * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
+   * <table> 
+   *  <tr> 
+   *    <td class=CName> \b Name </td> 
+   *    <td class=CExpression> \b Expression </td>
+   *    <td class=CRequirements> \b Type requirements </td> 
+   *    <td class=CReturnType> \b Return type </td>
+   *    <td class=CPrecondition> \b Precondition </td> 
+   *    <td class=CSemantics> \b Semantics </td> 
+   *    <td class=CPostCondition> \b Postcondition </td> 
+   *    <td class=CComplexity> \b Complexity </td>
+   *  </tr>
+   *  <tr> 
+   *    <td class=CName>            </td> 
+   *    <td class=CExpression>      </td>
+   *    <td class=CRequirements>    </td> 
+   *    <td class=CReturnType>      </td>
+   *    <td class=CPrecondition>    </td> 
+   *    <td class=CSemantics>       </td> 
+   *    <td class=CPostCondition>   </td> 
+   *    <td class=CComplexity>      </td>
+   *  </tr>
+   *
    * </table>
    *
    * <p> Invariants <br>
