@@ -18,6 +18,7 @@
 
 /**
  * @file L1LengthEstimator.h
+ * @brief Compute the length of a curve using the l_1 metric
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module L1LengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testL1LengthEstimator.cpp, testLengthEstimator.cpp
  */
 
 #if defined(L1LengthEstimator_RECURSES)

@@ -18,6 +18,7 @@
 
 /**
  * @file ParametricShapeArcLengthFunctor.h
+ * @brief Estimates the arc length of a paramtric curve.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module ParametricShapeArcLengthFunctor.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
 
 #if defined(ParametricShapeArcLengthFunctor_RECURSES)
@@ -85,6 +88,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * @param sShape the input shape.
      */
     ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
     
@@ -116,8 +120,6 @@ namespace DGtal
      * 
      * @param aFirstPoint
      * @param aSecondPoint
-     * @param nbSamples number of samples used to approximate the
-     * length (default= 1000 )
      * @return the estimated arc length
      */
     Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint)
