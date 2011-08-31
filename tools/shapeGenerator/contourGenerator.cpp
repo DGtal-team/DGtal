@@ -45,7 +45,6 @@
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Surfaces.h"
 
 
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
@@ -66,7 +65,7 @@
 #include "DGtal/geometry/2d/estimators/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 
 using namespace DGtal;
