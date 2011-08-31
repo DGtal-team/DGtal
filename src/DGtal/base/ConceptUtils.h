@@ -61,6 +61,14 @@ namespace DGtal
    */
   struct TagUnknown{};
 
+  template<typename T1, typename T2>
+  struct staticSameType
+  { static const int value = 0; };
+
+  template<typename T>
+  struct staticSameType<T,T>
+  { static const int value = 1; };
+  
 /////////////////////////////////////////////////////////////////////////////
 // class ConceptUtils
 /**
