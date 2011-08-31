@@ -60,7 +60,8 @@ namespace DGtal
   /**
    * Description of class 'SpaceND' <p>
    *
-   * Aim: SpaceND defines the fundamental structure of a Digital Space in ND.
+   * \brief Aim: SpaceND is a utility class that defines the
+   * fundamental structure of a Digital Space in ND.
    *
    * This class just defines fundamental types associated to a digital
    * space in dimension n. For instance, it specifies the type of a
@@ -128,6 +129,8 @@ Point4Int a= {2, 3 , -5 , 6};
 
     ///Type to denote the space itself.
     typedef SpaceND<dim, Integer> Space;
+    /// Defined for convenience (same as Space).
+    typedef Space Self;
 
     ///Copy of the type used for the  dimension.
     typedef DGtal::Dimension Dimension;
@@ -153,30 +156,6 @@ Point4Int a= {2, 3 , -5 , 6};
     // ----------------------- Standard services ------------------------------
   public:
 
-    /**
-     * @return the digital space of specified subdimension of this space.
-     */
-    template <Dimension subdimension>
-    static
-    typename Subspace<subdimension>::Type subspace()
-    {
-      ASSERT( subdimension <= dim );
-      return SpaceND<subdimension, Integer>();
-    }
-
-
-    /**
-     * @return the digital space of specified codimension of this space.
-     */
-    template <Dimension codimension>
-    static
-    typename Subcospace<codimension>::Type subcospace()
-    {
-      ASSERT( codimension <= dim );
-      return SpaceND < dim - codimension, Integer > ();
-    }
-
-
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -197,17 +176,18 @@ Point4Int a= {2, 3 , -5 , 6};
      * Forbidden by default.
      */
     SpaceND & operator=( const SpaceND & other );
-    
+
+  private:
     /**
      * Constructor
      *
      */
-    SpaceND() ;
+    SpaceND();
 
     /**
      * Destructor.
      */
-    ~SpaceND() ;
+    ~SpaceND();
 
 
     // ------------------------- Internals ------------------------------------
