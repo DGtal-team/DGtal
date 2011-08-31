@@ -18,6 +18,7 @@
 
 /**
  * @file StraightLine.h
+ * @brief Representation of a StraightLine uniquely defined by two 2D points.
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module StraightLine.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testHalfPlane.cpp
  */
 
 #if defined(StraightLine_RECURSES)
@@ -60,6 +63,8 @@ namespace DGtal
 	 * defined by two 2D points and that is able
    * to return for each 2D point of the domain
    * its signed distance to itself 
+   *
+   * @tparam TInteger a model for CInteger.
    */
   template <typename TInteger>
   class StraightLine
@@ -79,7 +84,7 @@ namespace DGtal
 
     /**
      * Constructor.
-		 * @param firstPoint, secondPoint, two points
+		 * @param firstPoint, secondPoint two points
      * that uniquely define the StraightLine
      */
     StraightLine(const Point& aFirstPoint, const Point& aSecondPoint);
