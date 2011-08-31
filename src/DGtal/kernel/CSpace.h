@@ -57,56 +57,84 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
-   * Description of \b concept '\b CSpace' <p>
-   * @ingroup Concepts
-   *
-   * \brief Aim: Defines the concept describing a digital space, ie a
-   * cartesian product of integer lines.
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CSpace
-   * - \t x, \t y	: Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   *
-   * <p> Notes <br>
+     Description of \b concept '\b CSpace' <p>
+     @ingroup Concepts
+    
+     \brief Aim: Defines the concept describing a digital space, ie a
+     cartesian product of integer lines.
+     
+     <p> Refinement of
+    
+     <p> Provided types :
+
+     - Space: the type itself.
+     - Integer: the type for the components or coordinates of the
+       space. Must be a model of CInteger.
+     - Point: the type for a point in this space.
+     - Vector: the type for a vector in this space.
+     - Dimension: the type for the dimension in this space. Must be a
+       model of CUnsignedInteger
+     - Size: the type for measuring distances or counting elements in
+       this space. Must be a model of CUnsignedInteger
+
+     <p> Notation
+     - \t X : A type that is a model of CSpace
+     - \t x, \t y	: Object of type X
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+
+     <table>
+     <tr> 
+     <td class=CName> \b Name </td> 
+     <td class=CExpression> \b Expression </td>
+     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CReturnType> \b Return type </td>
+     <td class=CPrecondition> \b Precondition </td> 
+     <td class=CSemantics> \b Semantics </td> 
+     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CComplexity> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t X should have a static \c dimension. </td>
+     <td class=CExpression>      \t x.dimension </td> 
+     <td class=CRequirements>    static member has type \t Dimension </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br>
+    
+     <p> Notes <br>
+
+     @tparam T the type that is checked. T should be a model of
+     CSpace.
+
    */
   template <typename T>
   struct CSpace
   {
     // ----------------------- Concept checks ------------------------------
   public:
+    typedef typename T::Space Space;
     typedef typename T::Integer Integer;
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    typedef typename T::Space Space;
     typedef typename T::Point Point;
     typedef typename T::Vector Vector;
     typedef typename T::Dimension Dimension;
     BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
     typedef typename T::Size Size;
+    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
     BOOST_CONCEPT_USAGE( CSpace )
     {
-      //Should have a static dimnesion.
+      //Should have a static dimension.
       ConceptUtils::sameType( myDim, T::dimension );
     }
 

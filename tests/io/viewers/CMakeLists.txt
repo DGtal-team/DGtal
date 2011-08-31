@@ -2,7 +2,7 @@
 ### Visu QGLViewer
 
 SET(QGLVIEWER_TESTS_SRC
-	test3dViewer
+	testViewer3D
 	testDisplayKSCell
    )
 
