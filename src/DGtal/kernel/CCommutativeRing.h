@@ -111,8 +111,8 @@ namespace DGtal
       ConceptUtils::sameType( c, IntegerTraits<Integer>::ONE );  
       ConceptUtils::sameType( c, IntegerTraits<Integer>::ZERO );  
 
-      static Integer two = IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE;
-      static Integer three =  two+IntegerTraits<Integer>::ONE;
+      static const Integer two = IntegerTraits<Integer>::ONE+IntegerTraits<Integer>::ONE;
+      static const Integer three =  two+IntegerTraits<Integer>::ONE;
       
       BOOST_STATIC_ASSERT(IntegerTraits<Integer>::ZERO  == 
 			  three * IntegerTraits<Integer>::ZERO );
