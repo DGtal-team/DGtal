@@ -61,8 +61,39 @@ namespace DGtal
    * Description of class 'ImageContainerBySTLVector' <p>
    *
    * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::vector. This class provides built-in iterators and fast SpanIterators
+   * using a std::vector. A linearization of nD points
+   * is used to build an index.
+   *
+   * @code
+  typedef DGtal::int64_t Integer;
+  typedef SpaceND<4, Integer > Space4Type;
+  typedef HyperRectDomain<Space4Type> Domain;
+  typedef Domain::Point Point;
+
+  //Default image selector = STLVector
+  typedef ImageSelector<Domain, int>::Type Image;
+
+  const Integer t[ ] = { 1, 2, 3 ,4};
+  const Integer t2[ ] = { 5, 5, 3 ,4};
+  const Integer t3[ ] = { 2, 2, 3 ,4};
+  Point a ( t );
+  Point b ( t2 );
+  Point c ( t3 );
+
+  trace.beginBlock ( "Image init" );
+  ///Domain characterized by points a and b
+  Image myImage ( a,b );
+  trace.info() << myImage << std::endl;
+
+  trace.endBlock();
+
+  //We set a value
+  myImage.setValue( c, 128 );
+   * @endcode
+   *
+   * This class provides built-in iterators and fast SpanIterators
    * to perform 1D scans.
+   *
    *
    * @see testImage.cpp
    * @see testImageContainerBenchmark.cpp

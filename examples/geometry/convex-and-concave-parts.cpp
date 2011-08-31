@@ -34,11 +34,11 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/MaximalSegments.h"
+#include "DGtal/geometry/2d/SaturatedSegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
 #include "ConfigExamples.h"
 
@@ -48,10 +48,90 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef FreemanChain<int> Sequence; 
-typedef Sequence::ConstIterator Iterator;
-typedef ArithmeticalDSS<Iterator,int,4> DSS4Computer;
-typedef MaximalSegments<DSS4Computer> Cover;
+typedef FreemanChain<int> Range; 
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Drawing a segmentation
+ */
+template <typename Iterator, typename Board>
+void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
+{
+  
+  typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
+
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string aStyleName = "ArithmeticalDSS/BoundingBox";
+
+  for (Iterator i(itb); i != ite; ++i) {
+	 	
+    //choose pen color
+    CustomPenColor* aPenColor;
+
+		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
+
+			aPenColor = new CustomPenColor( Color::Black );
+
+		} else {
+
+      //end points
+
+      PointIterator begin = i->begin();	--begin; 
+	    PointIterator end = i->end();
+
+	    //parameters
+	    int mu = i->getMu();
+	    int omega = i->getOmega();
+
+			//configurations
+			if ( (i->getRemainder(begin)<=mu-1)&&
+				   (i->getRemainder(end)<=mu-1) ) {                //concave
+				aPenColor = new CustomPenColor( Color::Green);
+			} else if ( (i->getRemainder(begin)>=mu+omega)&&
+					  (i->getRemainder(end)>=mu+omega) ) {           //convex
+				aPenColor = new CustomPenColor( Color::Blue );
+			} else if ( (i->getRemainder(begin)>=mu+omega)&&
+					  (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+				aPenColor = new CustomPenColor( Color::Yellow );
+			} else if ( (i->getRemainder(begin)<=mu-1)&&
+					  (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+				aPenColor = new CustomPenColor( Color::Yellow );
+			} else {                                                    //pb
+				aPenColor = new CustomPenColor( Color::Red );
+			}
+
+		}
+
+    // draw each segment
+    aBoard << CustomStyle( aStyleName, aPenColor )
+			     << *i; 
+  
+  } 
+
+}
+
+/**
+ * saturated segmentation of a range
+ */
+template <typename Iterator, typename Board>
+void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite, 
+                                 Board& aBoard)
+{
+  typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
+  typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
+	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
+
+  RecognitionAlgorithm algo;
+  Segmentation s(itb,ite,algo);
+  
+  typename Segmentation::SegmentComputerIterator i = s.begin();
+  typename Segmentation::SegmentComputerIterator end = s.end();
+
+  drawCCP<typename Segmentation::SegmentComputerIterator, Board>
+  (i,end,aBoard); 
+
+}
 
 
 int main( int argc, char** argv )
@@ -71,74 +151,17 @@ int main( int argc, char** argv )
 
   stringstream ss(stringstream::in | stringstream::out);
   ss << "0 0 " << codes << endl;
-  Sequence theContour( ss );
+  Range theContour( ss );
   
-  trace.info() << "FreemanChain: " << ss.str() << endl;
+  trace.info() << "Processing of " << ss.str() << endl;
 
   //Maximal Segments
-  DSS4Computer computer;
-  Cover theCover( theContour.begin(),theContour.end(),computer,true);
-
   Board2D aBoard;
   aBoard
 	 << SetMode( "PointVector", "Grid" )
 	 << theContour;
 
-  //For each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSS/BoundingBox";
-  for ( Cover::SegmentIterator i = theCover.begin();
-	i != theCover.end(); ++i ) {
-
-		//segment
-	  DSS4Computer segment(*i);
-
-    //choose pen color
-    CustomPenColor* aPenColor;
-
-		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
-
-			aPenColor = new CustomPenColor( Color::Black );
-
-		} else {
-	    //begin and end iterators
-	    //(back point on the first point)
-	    //(front point after the last point)
-	    Iterator front = i.getFront();
-	    Iterator back = i.getBack();	
-			if (back == theContour.begin()) {
-				back = theContour.end();
-			} 
-			--back;
-
-	    //parameters
-	    int mu = segment.getMu();
-	    int omega = segment.getOmega();
-
-			//configurations
-			if ( (segment.getRemainder(*back)<=mu-1)&&
-				   (segment.getRemainder(*front)<=mu-1) ) {                //concave
-				aPenColor = new CustomPenColor( Color::Green);
-			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
-					  (segment.getRemainder(*front)>=mu+omega) ) {           //convex
-				aPenColor = new CustomPenColor( Color::Blue );
-			} else if ( (segment.getRemainder(*back)>=mu+omega)&&
-					  (segment.getRemainder(*front)<=mu-1) ) {               //convex to concave
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else if ( (segment.getRemainder(*back)<=mu-1)&&
-					  (segment.getRemainder(*front)>=mu+omega) ) {           //concave to convex
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else {                                                    //pb
-				aPenColor = new CustomPenColor( Color::Red );
-			}
-
-		}
-
-    // draw each segment
-    aBoard << CustomStyle( aStyleName, aPenColor )
-			     << segment; 
-
-  }
+  segmentationIntoMaximalDSSs(theContour.begin(), theContour.end(), aBoard);
 
   aBoard.saveSVG("convex-and-concave-parts.svg");
 

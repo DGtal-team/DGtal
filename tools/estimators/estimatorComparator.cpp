@@ -42,11 +42,11 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/Clock.h"
+#include "DGtal/base/Clock.h"
 
 //shapes
-#include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 

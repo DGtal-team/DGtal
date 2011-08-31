@@ -37,7 +37,6 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/base/BasicTypes.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -55,12 +54,12 @@ int main()
   {
 
     typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Sequence;
-    typedef std::vector<Point>::iterator Iterator;
-    typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+    typedef std::vector<Point> Range;
+    typedef std::vector<Point>::const_iterator ConstIterator;
+    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
 
     // Input points
-    Sequence contour;
+    Range contour;
     contour.push_back(Point(0,0));
     contour.push_back(Point(1,0));
     contour.push_back(Point(1,1));
@@ -76,13 +75,9 @@ int main()
 		
     // Add points while it is possible
     DSS4 theDSS4;		
-    Iterator i = contour.begin();
-    theDSS4.init(i);
-    i++;
-    while ( (i!=contour.end())
-	    &&(theDSS4.extend(i)) ) {
-      i++;
-    }
+    theDSS4.init( contour.begin() );
+    while ( ( theDSS4.end() != contour.end() )
+	        &&( theDSS4.extend() ) ) {}
 
     // Output parameters
     cout << theDSS4 << endl;
@@ -109,12 +104,12 @@ int main()
   {
 
     typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Sequence;
-    typedef std::vector<Point>::iterator Iterator;
-    typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
+    typedef std::vector<Point> Range;
+    typedef std::vector<Point>::const_iterator ConstIterator;
+    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
 
     // Input points
-    std::vector<Point> boundary;
+    Range boundary;
     boundary.push_back(Point(0,0));
     boundary.push_back(Point(1,1));
     boundary.push_back(Point(2,1));
@@ -126,13 +121,10 @@ int main()
 
     // Add points while it is possible
     DSS8 theDSS8;		
-    Iterator i = boundary.begin();
-    theDSS8.init(i);
-    i++;
-    while ( (i!=boundary.end())
-	    &&(theDSS8.extend(i)) ) {
-      i++;
-    }
+    theDSS8.init( boundary.begin() );
+    while ( ( theDSS8.end() != boundary.end() )
+	        &&( theDSS8.extend() ) ) {}
+
 
     // Output parameters
     cout << theDSS8 << endl;

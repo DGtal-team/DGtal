@@ -69,7 +69,7 @@ namespace DGtal
      DigitalSet. With this approach, shapes can be defined implicitly.
 
      Essentially a backport from <a
-     href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TKSpace>
   class Surfaces
@@ -290,32 +290,34 @@ namespace DGtal
 
 
     /**
-       Extract all 4-connected contours as a vector containing the set
+       Extract all 4-connected contours as a vector containing the sequence
        of contour Points.  Each contour is represented by a vector of
        points defined by the sequence of pointels extracted from the
-       boundary surfels.
+       boundary surfels. Calls extractAll2DSCellContours.
        
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
-       @param aSCellContour2D (modified) a vector of contour represented
+       @param aVectPointContour2D (modified) a vector of contour represented
        by a vector of cells (which are all surfels), containing the
-       ordered list of the boundary component of [spelset].
+       ordered list of the boundary component of [pp].
        
        @param aKSpace any space.
 
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
-       @param aSurfelAdj the surfel adjacency chosen for the tracking.
+       @param aSAdj the surfel adjacency chosen for the tracking.
+
     */
     template <typename PointPredicate>
     static 
-    void extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointContour2D,
-				    const KSpace & aKSpace,
-				    const PointPredicate & pp,
-				    const SurfelAdjacency<2> &aSAdj );
+    void extractAllPointContours4C
+    ( std::vector< std::vector< Point > > & aVectPointContour2D,
+      const KSpace & aKSpace,
+      const PointPredicate & pp,
+      const SurfelAdjacency<2> &aSAdj );
 
     
 
@@ -343,53 +345,76 @@ namespace DGtal
     */
     template <typename PointPredicate>
     static 
-    void extractAll2DSCellContours( std::vector< std::vector<SCell> > & aVectSCellContour2D,
-				    const KSpace & aKSpace,
-				    const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-				    const PointPredicate & pp );
+    void extractAll2DSCellContours
+    ( std::vector< std::vector<SCell> > & aVectSCellContour2D,
+      const KSpace & aKSpace,
+      const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+      const PointPredicate & pp );
     
 
     /**
-     * Extract all surfel elements associated to each connected
-     * components of the given DigitalSet. The connected surfel set
-     * are given as result in a vector containing all components. The
-     * orientation of the resulting SCell indicates the exterior
-     * orientation according the positive axis.
-     *
-     @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
-     
-     @param aVectConnectedSCell (modified) a vector containing for
-     each connected components a vector of the set of connected SCells.
-     @param aKSpace any space.
-     @param aSurfelAdj the surfel adjacency chosen for the tracking.
-     @param aShape any digital set.
-     @param forceOrientCellExterior used to change the default Cell orientation in 
-            order to get the direction of shape exterior (default =false).
-     *
-     */
+       Extract all surfel elements associated to each connected
+       components of the given DigitalSet. The connected surfel set
+       are given as result in a vector containing all components. The
+       orientation of the resulting SCell indicates the exterior
+       orientation according the positive axis.
+       
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+
+       @param aVectConnectedSCell (modified) a vector containing for
+       each connected components a vector of the sequence of connected
+       SCells.
+       
+       @param aKSpace any space.
+       
+       @param aSurfelAdj the surfel adjacency chosen for the tracking.
+       
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape.
+       
+       @param forceOrientCellExterior if 'true', used to change the
+       default cell orientation in order to get the direction of shape
+       exterior (default =false). This is used only for displaying
+       cells with Viewer3D. This mechanism should evolve shortly.
+    */
     template <typename PointPredicate >
     static 
-    void extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
-				   const KSpace & aKSpace,
-				   const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-				   const PointPredicate & pp,
-				   bool forceOrientCellExterior=false );
+    void extractAllConnectedSCell
+    ( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+      const KSpace & aKSpace,
+      const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+      const PointPredicate & pp,
+      bool forceOrientCellExterior=false );
 
     
     
 
     /**
-     * Orient the SCell positively in the direction of the exterior of
-     * the DigitalSet @ref aShape. It simply check if the direct
-     * incident Cell in the first upper dimension (obtain with
-     * @ref sDirectIncident) belongs to the DigitalSet or not.
-     *
-     * @param aVectOfSCell (modified) a vector containing the SCell to
-     * be oriented positively in the direction of the exterior.
-     * @param aKSpace any space.
-     * @param aShape any digital set.
-     */
-         
+       Orient the SCell positively in the direction of the exterior of
+       the DigitalSet @ref aShape. It simply check if the direct
+       incident Cell in the first upper dimension (obtain with
+       @ref sDirectIncident) belongs to the DigitalSet or not.
+       
+       This method is used to change the default cell orientation in
+       order to get the direction of shape exterior (default
+       =false). This is used only for displaying cells with
+       Viewer3D. This mechanism should evolve shortly.
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+
+       @param aVectOfSCell (modified) a vector containing the SCell to
+       be oriented positively in the direction of the exterior.
+       
+       @param aKSpace any space.
+       
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape.
+       
+    */
     template <typename PointPredicate>
     static 
     void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  

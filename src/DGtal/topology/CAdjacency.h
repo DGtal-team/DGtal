@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "boost/concept_check.hpp"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 

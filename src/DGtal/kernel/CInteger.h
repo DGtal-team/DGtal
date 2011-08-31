@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ namespace DGtal
     
      <p> Notation
      - \t X : A type that is a model of CInteger
-     - \t x, \t y	: Object of type X
+     - \t x, \t y	: object of type X
      - \t i, \t j	: basic integer type.
     
      <p> Definitions

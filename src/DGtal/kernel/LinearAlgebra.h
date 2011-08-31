@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include <boost/type_traits.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,8 +53,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class LinearAlgebra
   /**
-   * Description of template class 'LinearAlgebra' <p>
-   * \brief Aim:
+   * Description of template class 'LinearAlgebra' <p> \brief Aim: A
+   * utility class that contains methods to perform integral linear
+   * algebra.
    */
   template <typename Space>
   struct LinearAlgebra

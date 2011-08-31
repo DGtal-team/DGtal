@@ -31,8 +31,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/io/writers/VolWriter.h"

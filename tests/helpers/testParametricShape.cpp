@@ -31,8 +31,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/parametricShapes/Ball2D.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/parametric/Ball2D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"

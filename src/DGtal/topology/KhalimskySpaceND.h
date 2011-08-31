@@ -461,10 +461,6 @@ namespace DGtal
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
     // static constants
-//     static const Dimension dimension = dim;
-//     static const Dimension DIM = dim;
-//     static const Sign POS = true;
-//     static const Sign NEG = false;
     static const Dimension dimension;
     static const Dimension DIM;
     static const Sign POS;
@@ -476,14 +472,6 @@ namespace DGtal
       typedef typename std::deque<CellType> Container;
       typedef typename std::deque<CellType>::iterator Iterator;
       typedef typename std::deque<CellType>::const_iterator ConstIterator;
-      // inline
-      // Iterator begin()            { return myCells.begin(); }
-      // inline
-      // Iterator end()              { return myCells.end(); }
-      // inline
-      // ConstIterator begin() const { return myCells.begin(); }
-      // inline
-      // ConstIterator end() const   { return myCells.end(); }
     };
 
     // Neighborhoods, Incident cells, Faces and Cofaces
