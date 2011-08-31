@@ -54,8 +54,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
-#include <boost/static_assert.hpp>
-
+#include <boost/iterator/iterator_concepts.hpp>
 
 #if ( (defined(WIN32)) )
 #define _USE_MATH_DEFINES

@@ -52,6 +52,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/base/CConstRange.h"
 
 
 
@@ -101,9 +102,8 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-
-
+    typedef HyperRectDomain<TSpace> Self;
+    
     // typedef TSpace DigitalSpace;
     // typedef TSpace Space;
     typedef TSpace Space;
@@ -127,6 +127,9 @@ namespace DGtal
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
   
     typedef IsWithinPointPredicate<Point> Predicate;
+
+    //    BOOST_CONCEPT_ASSERT(( CConstRange<Self> ));
+    BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
 
     /**
      * Default Constructor.
@@ -173,6 +176,8 @@ namespace DGtal
     {
       typedef typename Domain::ConstIterator        ConstIterator;
       typedef typename Domain::ReverseConstIterator ReverseConstIterator;
+      typedef ConstIterator        Iterator;
+      typedef ReverseConstIterator ReverseIterator;
       
       /**
        * ConstRange constructor from a given domain.
@@ -259,6 +264,8 @@ namespace DGtal
     const ConstIterator& end() const
     { return myRange.end(); }
 
+    BOOST_CONCEPT_ASSERT(( CConstRange<ConstRange> ));
+    
     /**
      * Description of class 'ConstSubRange' <p> \brief Aim:
      * range through some subdomain of all the points in the domain.
