@@ -37,8 +37,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 
 //shape and digitizer
-#include "DGtal/helpers/ShapeFactory.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Surfaces.h"
 

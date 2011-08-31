@@ -36,7 +36,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/Surfaces.h"
 #include "DGtal/io/Color.h"
 ///////////////////////////////////////////////////////////////////////////////

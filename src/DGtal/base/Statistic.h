@@ -292,7 +292,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
-#include "DGtal/utils/Statistic.ih"
+#include "DGtal/base/Statistic.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

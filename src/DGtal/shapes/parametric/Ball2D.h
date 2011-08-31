@@ -17,34 +17,32 @@
 #pragma once
 
 /**
- * @file AccFlower2D.h
+ * @file Ball2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/12
  *
- * Header file for module AccFlower2D.cpp
+ * Header file for module Ball2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(AccFlower2D_RECURSES)
-#error Recursive header files inclusion detected in AccFlower2D.h
-#else // defined(AccFlower2D_RECURSES)
+#if defined(Ball2D_RECURSES)
+#error Recursive header files inclusion detected in Ball2D.h
+#else // defined(Ball2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define AccFlower2D_RECURSES
+#define Ball2D_RECURSES
 
-#if !defined AccFlower2D_h
+#if !defined Ball2D_h
 /** Prevents repeated inclusion of headers. */
-#define AccFlower2D_h
+#define Ball2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/parametricShapes/StarShaped2D.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
 #include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -52,17 +50,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class AccFlower2D
+  // template class Ball2D
   /**
-   * Description of template class 'AccFlower2D' <p>
+   * Description of template class 'Ball2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any accelerated flower in the plane.
+   * represents any circle in the plane.
    *
-   * NB: A backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TSpace>
-  class AccFlower2D:  public StarShaped2D<TSpace>
+  class Ball2D:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -75,53 +71,32 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~AccFlower2D();
+    ~Ball2D();
     
     /**
      * Constructor. 
-     * @param x0 the x-coordinate of the flower center.
-     * @param y0 the y-coordinate of the flower center.
-     * @param r the radius of the flower.
-     * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
-     * @param phi the phase of the flower (in radian).
+     * @param x0 the x-coordinate of the circle center.
+     * @param y0 the y-coordinate of the circle center.
+     * @param r the radius of the circle.
      */
-    AccFlower2D( const double x0, const double y0, 
-	      const double r,
-	      const double smallr,
-	      const unsigned int k,
-	      const double phi);
+    Ball2D( const double x0, const double y0, const double r );
 
     /**
      * Constructor. 
-     * @param aPoint the flower center.
-     * @param r the radius of the flower.
-     * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
-     * @param phi the phase of the flower (in radian).
+     * @param aPoint the circle center.
+     * @param r the radius of the circle.
      */
-    AccFlower2D(const RealPoint2D &aPoint, 
-	     const double r,
-	     const double smallr,
-	     const unsigned int k,
-	     const double phi);
+    Ball2D(const RealPoint2D &aPoint, const double r);
 
     /**
      * Constructor. 
-     * @param aPoint the flower center.
-     * @param r the radius of the flower.
-     * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
-     * @param phi the phase of the flower (in radian).
+     * @param aPoint the circle center.
+     * @param r the radius of the circle.
      */
-    AccFlower2D(const Point &aPoint, 
-	     const double r,
-	     const double smallr,
-	     const unsigned int k,
-	     const double phi);
+    Ball2D(const Point &aPoint, const double r);
 
     
-    // ------------- Implementation of 'StarShaped' services ------------------
+  // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
     /**
@@ -130,7 +105,7 @@ namespace DGtal
      */
     Point getLowerBound() const
     {
-      return Point(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
+      return Point(myCenter[0] - myRadius, myCenter[1] - myRadius);
     }
 
     /**
@@ -139,7 +114,7 @@ namespace DGtal
      */
     Point getUpperBound() const
     {
-      return Point(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
+      return Point(myCenter[0] + myRadius, myCenter[1] + myRadius);
     }
 
     /**
@@ -187,34 +162,14 @@ namespace DGtal
   private:
 
     /**
-     * Center of the flower.
+     * Center of the circle.
      */
     RealPoint2D myCenter;
     
     /**
-     * Radius of the flower.
+     * Radius of the circle.
      */
     double myRadius;
-    
-    /**
-     * the variable small radius of the flower.
-     */
-    double myVarRadius;
-    
-    /**
-     * the number of flower extremeties.
-     */
-    unsigned int myK;
-    
-    /**
-     * The value 2*myK*Pi/(Pi^3)
-     */
-    double myKp;
-    
-    /**
-     * the phase of the flower (in radian).
-     */
-    double myPhi;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -239,7 +194,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    AccFlower2D();
+    Ball2D();
 
   private:
 
@@ -248,7 +203,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  AccFlower2D ( const AccFlower2D & other );
+    //  Ball2D ( const Ball2D & other );
 
     /**
      * Assignment.
@@ -256,35 +211,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    AccFlower2D & operator= ( const AccFlower2D & other );
+    Ball2D & operator= ( const Ball2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class AccFlower2D
+  }; // end of class Ball2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'AccFlower2D'.
+   * Overloads 'operator<<' for displaying objects of class 'Ball2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'AccFlower2D' to write.
+   * @param object the object of class 'Ball2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const AccFlower2D<T> & object );
+  operator<< ( std::ostream & out, const Ball2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/AccFlower2D.ih"
+#include "DGtal/shapes/parametric/Ball2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined AccFlower2D_h
+#endif // !defined Ball2D_h
 
-#undef AccFlower2D_RECURSES
-#endif // else defined(AccFlower2D_RECURSES)
+#undef Ball2D_RECURSES
+#endif // else defined(Ball2D_RECURSES)

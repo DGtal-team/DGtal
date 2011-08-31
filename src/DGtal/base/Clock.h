@@ -69,7 +69,7 @@ namespace DGtal
    * The following code snippet demonstrates how to use \p Clock
    *
    *  \code
-   *  #include <DGtal/utils/Clock.h>
+   *  #include <DGtal/base/Clock.h>
    *
    *   Clock c;
    *   long duration;
@@ -185,7 +185,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Inline methods
-#include "DGtal/utils/Clock.ih"
+#include "DGtal/base/Clock.ih"
 
 #endif // !defined Clock_h
 

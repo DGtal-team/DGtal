@@ -203,7 +203,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/implicitShapes/ImplicitHyperCube.ih"
+#include "DGtal/shapes/implicit/ImplicitHyperCube.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

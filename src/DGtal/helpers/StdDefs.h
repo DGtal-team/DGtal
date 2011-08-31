@@ -167,90 +167,9 @@ namespace DGtal
   } // namespace Z3i
 
   
-/////////////////////////////////////////////////////////////////////////////
-// class StdDefs
-/**
- * Description of class 'StdDefs' <p>
- * \brief Aim: For now, useless.
- */
-class StdDefs
-{
-    // ----------------------- Standard services ------------------------------
-public:
 
-    /**
-     * Destructor.
-     */
-    ~StdDefs();
-
-    // ----------------------- Interface --------------------------------------
-public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-private:
-    // ------------------------- Private Datas --------------------------------
-private:
-
-    // ------------------------- Hidden services ------------------------------
-protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    StdDefs();
-
-private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    StdDefs ( const StdDefs & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    StdDefs & operator= ( const StdDefs & other );
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of class StdDefs
-
-
-/**
- * Overloads 'operator<<' for displaying objects of class 'StdDefs'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'StdDefs' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const StdDefs & object );
-
-
+  
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/helpers/StdDefs.ih"
 
 
 //                                                                           //

@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ImplicitRoundedHyperCube.h
+ * @file ImplicitNorm1Ball.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for module ImplicitRoundedHyperCube.cpp
+ * Header file for module ImplicitNorm1Ball.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImplicitRoundedHyperCube_RECURSES)
-#error Recursive header files inclusion detected in ImplicitRoundedHyperCube.h
-#else // defined(ImplicitRoundedHyperCube_RECURSES)
+#if defined(ImplicitNorm1Ball_RECURSES)
+#error Recursive header files inclusion detected in ImplicitNorm1Ball.h
+#else // defined(ImplicitNorm1Ball_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImplicitRoundedHyperCube_RECURSES
+#define ImplicitNorm1Ball_RECURSES
 
-#if !defined ImplicitRoundedHyperCube_h
+#if !defined ImplicitNorm1Ball_h
 /** Prevents repeated inclusion of headers. */
-#define ImplicitRoundedHyperCube_h
+#define ImplicitNorm1Ball_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,18 +48,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'ImplicitRoundedHyperCube' <p>
-   * \brief Aim: model of CImplicitShape concept to create a rounded
-   * hypercube in  nD..
-   *
-   * Rounded hypercubes corresponds to balls for the @f$l_p@f$ norm.
+   * Description of template class 'ImplicitNorm1Ball' <p>
+   * \brief Aim: model of CImplicitShape concept to create a
+   * ball for the L_1 norm in  nD..
    *
    * @tparam TSpace the Digital space definition.
    */
   template <typename TSpace>
-  class ImplicitRoundedHyperCube
+  class ImplicitNorm1Ball
   {
 
   public:
@@ -69,25 +66,21 @@ namespace DGtal
     
    
     /** 
-     * Constructor. Contructs a rounded hypercube with center aCenter and width
+     * Constructor. Contructs a ball with center aCenter and width
      * aWidth.
      * 
      * @param aCenter the cube center. 
      * @param aHalfWidth the cube half-width.
      */
-    ImplicitRoundedHyperCube(const Point &aCenter,
-			     const Integer &aHalfWidth,
-			     const double aPower): 
-      myCenter(aCenter),
-      myHalfWidth(aHalfWidth),
-      myPower(aPower)
+    ImplicitNorm1Ball(const Point &aCenter, const Integer &aHalfWidth): myCenter(aCenter),
+								myHalfWidth(aHalfWidth)
     {};
     
     /** 
      * Destructor.
      * 
      */    
-    ~ImplicitRoundedHyperCube();
+    ~ImplicitNorm1Ball();
 
 
     // ----------------------- Interface --------------------------------------
@@ -104,14 +97,8 @@ namespace DGtal
     inline
     double operator()(const Point &aPoint) const
     {
-      Point dec = (aPoint - myCenter);
-      double partialpower=0;
-      for(Dimension i = 0; i < Point::dimension; ++i)
-	partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
-				  myPower);
-      
-      return std::pow(NumberTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
-	      partialpower;      
+      return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
+	(aPoint - myCenter ).norm(Point::L_1);
     }
 
     /** 
@@ -125,6 +112,7 @@ namespace DGtal
     {
       return this->operator()(aPoint) >0.0;
     }
+
 
     /** 
      * Returns the lower bound of the Shape bounding box.
@@ -170,14 +158,11 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
    
-    ///Cube center
+    ///Ball center
     Point myCenter;
 
-    ///Cube HalfWidth
+    ///Ball HalfWidth
     Integer myHalfWidth;
-
-    ///Cube Power 
-    double myPower;
    
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -186,7 +171,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    ImplicitRoundedHyperCube();
+    ImplicitNorm1Ball();
 
   private:
 
@@ -196,33 +181,33 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ImplicitRoundedHyperCube & operator= ( const ImplicitRoundedHyperCube & other );
+    ImplicitNorm1Ball & operator= ( const ImplicitNorm1Ball & other );
     
     
-  }; // end of class ImplicitRoundedHyperCube
+  }; // end of class ImplicitNorm1Ball
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImplicitRoundedHyperCube'.
+   * Overloads 'operator<<' for displaying objects of class 'ImplicitNorm1Ball'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImplicitRoundedHyperCube' to write.
+   * @param object the object of class 'ImplicitNorm1Ball' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const ImplicitRoundedHyperCube<T> & object );
+  operator<< ( std::ostream & out, const ImplicitNorm1Ball<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/implicitShapes/ImplicitRoundedHyperCube.ih"
+#include "DGtal/shapes/implicit/ImplicitNorm1Ball.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImplicitRoundedHyperCube_h
+#endif // !defined ImplicitNorm1Ball_h
 
-#undef ImplicitRoundedHyperCube_RECURSES
-#endif // else defined(ImplicitRoundedHyperCube_RECURSES)
+#undef ImplicitNorm1Ball_RECURSES
+#endif // else defined(ImplicitNorm1Ball_RECURSES)
