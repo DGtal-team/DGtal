@@ -54,7 +54,7 @@ bool testInteger()
   trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<unsigned int> ));
-  BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
+  // BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::uint16_t> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
 
