@@ -43,7 +43,7 @@
 #include "DGtal/topology/SurfelNeighborhood.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/Surfaces.h"
 #include "ConfigTest.h"
 

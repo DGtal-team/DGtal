@@ -42,15 +42,15 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/implicitShapes/ImplicitBall.h"
-#include "DGtal/helpers/implicitShapes/ImplicitNorm1Ball.h"
-#include "DGtal/helpers/implicitShapes/ImplicitHyperCube.h"
-#include "DGtal/helpers/implicitShapes/ImplicitRoundedHyperCube.h"
-#include "DGtal/helpers/parametricShapes/Ball2D.h"
-#include "DGtal/helpers/parametricShapes/Flower2D.h"
-#include "DGtal/helpers/parametricShapes/NGon2D.h"
-#include "DGtal/helpers/parametricShapes/AccFlower2D.h"
-#include "DGtal/helpers/parametricShapes/Ellipse2D.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
+#include "DGtal/shapes/implicit/ImplicitNorm1Ball.h"
+#include "DGtal/shapes/implicit/ImplicitHyperCube.h"
+#include "DGtal/shapes/implicit/ImplicitRoundedHyperCube.h"
+#include "DGtal/shapes/parametric/Ball2D.h"
+#include "DGtal/shapes/parametric/Flower2D.h"
+#include "DGtal/shapes/parametric/NGon2D.h"
+#include "DGtal/shapes/parametric/AccFlower2D.h"
+#include "DGtal/shapes/parametric/Ellipse2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
