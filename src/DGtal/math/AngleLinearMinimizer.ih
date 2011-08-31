@@ -44,6 +44,137 @@
 // Implementation of inline methods                                          //
 
 
+/**
+ * Sum of all the absolute displacements of the last optimisation step.
+ */
+double
+DGtal::AngleLinearMinimizer::sum() const
+{
+  return mySum;
+}
+
+/**
+ * Max of all the absolute displacements of the last optimisation step.
+ */
+double 
+DGtal::AngleLinearMinimizer::max() const
+{
+  return myMax;
+}
+
+
+/**
+ * Default constructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByRelaxation::AngleLinearMinimizerByRelaxation()
+{}
+
+
+/**
+ * Destructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByRelaxation::~AngleLinearMinimizerByRelaxation()
+{}
+
+
+/**
+ * Default constructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByGradientDescent::AngleLinearMinimizerByGradientDescent
+( double aStep )
+  : myStep( aStep )
+{}
+
+
+/**
+ * Destructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByGradientDescent::~AngleLinearMinimizerByGradientDescent()
+{}
+
+
+/**
+ * Default constructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::AngleLinearMinimizerByAdaptiveStepGradientDescent
+( double aStep )
+  : myStep( aStep )
+{}
+
+/**
+ * Destructor. Does nothing.
+ */
+DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::~AngleLinearMinimizerByAdaptiveStepGradientDescent()
+{}
+
+
+  
+/**
+ * @return a reference on the information structure of the [i]th value.
+ */
+DGtal::AngleLinearMinimizer::ValueInfo & 
+DGtal::AngleLinearMinimizer::rw( unsigned int i )
+{
+  ASSERT_LinearMinimizer( ( myValues != 0 ) && ( i < maxSize() ) );
+  return myValues[ i ];
+}
+
+
+/**
+ * @return a const reference on the information structure of the [i]th value.
+ */
+const DGtal::AngleLinearMinimizer::ValueInfo & 
+DGtal::AngleLinearMinimizer::ro( unsigned int i ) const
+{
+  ASSERT_LinearMinimizer( ( myValues != 0 ) && ( i < maxSize() ) );
+  return myValues[ i ];
+}
+
+
+/**
+ * @return the maximum number of values stored in the object.
+ */
+uint
+DGtal::AngleLinearMinimizer::maxSize() const
+{
+  return myMaxSize;
+}
+
+
+/**
+ * @return the number of values stored in the object.
+ */
+uint
+DGtal::AngleLinearMinimizer::size() const
+{
+  return mySize;
+}
+
+
+/**
+ * Specifies the exact number of valid values.
+ * @param nb any number below 'maxSize()'.
+ */
+void
+DGtal::LinearMinimizer::setSize( unsigned int nb )
+{
+  ASSERT_LinearMinimizer( nb <= maxSize() );
+  mySize = nb;
+}
+
+
+/**
+ * Specifies if the curve is open or not.
+ * @param is_curve_open when 'true' the curve is open and the last
+ * value does not depend on the first one, otherwise the curve is
+ * closed and the last value is linked to the first one.
+ */
+void
+DGtal::LinearMinimizer::setIsCurveOpen( bool isCurveOpen)
+{
+  myIsCurveOpen = isCurveOpen;
+}
+
 
 
 
