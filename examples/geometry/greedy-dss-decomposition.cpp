@@ -36,11 +36,11 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/GreedySegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -55,7 +55,7 @@ int main( )
 
   typedef FreemanChain<int> Contour4; 
   typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
-  typedef GreedyDecomposition<DSS4> Decomposition4;
+  typedef GreedySegmentation<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
   std::stringstream ss(stringstream::in | stringstream::out);
@@ -65,7 +65,7 @@ int main( )
   Contour4 theContour( ss );
 
   //Segmentation
-  Decomposition4 theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
+  Decomposition4 theDecomposition( theContour.begin(),theContour.end(),DSS4() );
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   Domain domain( p1, p2 );
@@ -77,7 +77,7 @@ int main( )
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
-  for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
+  for ( Decomposition4::SegmentComputerIterator i = theDecomposition.begin();
 	i != theDecomposition.end(); ++i ) 
     {
       DSS4 segment(*i);

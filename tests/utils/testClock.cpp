@@ -35,7 +35,7 @@
 #include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/Clock.h"
+#include "DGtal/base/Clock.h"
 
 using namespace DGtal;
 using namespace std;

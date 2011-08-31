@@ -44,6 +44,9 @@
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CInteger.h"
+
 #include "DGtal/base/Bits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +57,20 @@ namespace DGtal
   // template class Morton
   /**
    * Description of template class 'Morton' <p>
-   * \brief Aim: @todo
+   * @brief Aim: Implements the binary Morton code construction in nD.
+   *
+   * Given a point in nD @f$(x_1,\ldots, x_n)@f$, a Morton code
+   * consists in interleaving bits of @f$x_i@f$ coordinate values (plus a prefix
+   * for the HashTree construction.
+   *
+   * Main methods in this class are keyFromCoordinates to generate a
+   * key and CoordinatesFromKey to generate a point from a code.
+   *
+   * @tparam THashKey type to store the morton code (should have
+   * enough capacity to store the interleaved binary word).
+   * @tparam TPoint type of points. 
+   *
+   * @see testImageContainerByHashTree.cpp
    */
   template <typename THashKey, typename TPoint >
   class Morton
@@ -64,7 +80,9 @@ namespace DGtal
     typedef TPoint Point;
     typedef typename Point::Coordinate Coordinate;
     static const Dimension dimension = Point::dimension;    
-    
+
+    BOOST_CONCEPT_ASSERT(( CUnsignedInteger<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
 
     /**
      * Constructor
@@ -98,6 +116,7 @@ namespace DGtal
      * @param coordinates Will contain the resulting coordinates.
      */
     void coordinatesFromKey(const HashKey key, Point & coordinates) const;
+
     /**
      * Returns the parent key of a key passed in parameter.
      *
@@ -109,7 +128,8 @@ namespace DGtal
     }
 
     /**
-     * Computes the brother keys (ie the keys having the same parent) of the key passed in parameter.
+     * Computes the brother keys (ie the keys having the same parent)
+     * of the key passed in parameter.
      *
      * @param key The key.
      * @param result Will contain the resulting brother keys.
@@ -127,8 +147,9 @@ namespace DGtal
     
   private: 
     
-    boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myDilateMasks;
-    boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myContractMasks;
+    ///@todo Implements dilateMasks
+    //boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myDilateMasks;
+    //boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myContractMasks;
   };
 } // namespace DGtal
 

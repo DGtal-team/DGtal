@@ -204,7 +204,9 @@ namespace DGtal
     }
     // ------------------------- Specific methods -------------------------------
   
-
+    /**
+       Defines the possible norms. Names are explicit.
+    */
     enum NormType { L_2, L_1, L_infty };
     
     /**
@@ -262,7 +264,9 @@ namespace DGtal
       }
     };
 
-    
+    /**
+     * Default styles.
+     */
     struct DefaultDrawStyleGrid : public DrawableWithBoard2D
     {
       virtual void selfDraw( Board2D & aBoard ) const
@@ -316,6 +320,9 @@ namespace DGtal
 
     /**
      * Default drawing style object.
+
+     * @param mode the chosen display mode.
+
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;

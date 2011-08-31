@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
@@ -54,52 +54,57 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBoundedInteger
   /**
-   * Description of \b concept '\b CBoundedInteger' <p>     
-   * @ingroup Concepts
-   *
-   * \brief Aim: The concept CBoundedInteger specifies what are the bounded 
-   * integer numbers. Hence, it is a refinement of CInteger Concept
-   * ensuring that the numbers are bounded.
-   * 
-   * <p> Refinement of CInteger<T>
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CBoundedInteger
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table>
-   * <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> \c X should be tagged \b true in \c NumberTraits for \c IsBounded.</td>
-   * <td> typename NumberTraits<X>::IsBounded </td> 
-   * <td> TagTrue </td>
-   * <td> </td>
-   * <td> </td> 
-   * <td> </td>
-   * <td> </td> 
-   * <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br> 
-   * 
-   * short, int, unsigned int, long long, unsigned long long,
-   * uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
-   *
-   * <p> Notes <br>
-   *
-   * @tparam T the type that is checked. T should be a model of
-   * CBoundedInteger.
+     Description of \b concept '\b CBoundedInteger' <p>     
+     @ingroup Concepts
+    
+     \brief Aim: The concept CBoundedInteger specifies what are the bounded 
+     integer numbers. Hence, it is a refinement of CInteger Concept
+     ensuring that the numbers are bounded.
+     
+     <p> Refinement of CInteger<T>
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CBoundedInteger
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table>
+     <tr> 
+     <td class=CName> \b Name </td> 
+     <td class=CExpression> \b Expression </td>
+     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CReturnType> \b Return type </td>
+     <td class=CPrecondition> \b Precondition </td> 
+     <td class=CSemantics> \b Semantics </td> 
+     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CComplexity> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsBounded. </td>
+     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td> 
+     <td class=CRequirements>    TagTrue </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br> 
+     
+     short, int, unsigned int, long long, unsigned long long,
+     uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
+    
+     <p> Notes <br>
+    
+     @tparam T the type that is checked. T should be a model of
+     CBoundedInteger.
    */
   template <typename T>
   struct CBoundedInteger : public CInteger<T>

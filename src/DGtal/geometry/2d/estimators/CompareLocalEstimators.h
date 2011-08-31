@@ -43,7 +43,7 @@
 #include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/Statistic.h"
+#include "DGtal/base/Statistic.h"
 
 ///////////////
 namespace DGtal

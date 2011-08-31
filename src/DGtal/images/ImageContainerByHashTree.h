@@ -108,7 +108,15 @@ namespace DGtal
      *
      * The method isKeyValid(..) is provided to verify the validity of a
      * key. Note that using this security strongly affects performances.
-     */
+     *
+     * @tparam TDomain type of domains
+     * @tparam TValue type for image values
+     * @taparam THashKey  type to store Morton keys
+     * (default: DGtal::uint64_t)
+     * 
+     * @see testImageContainerByHashTree.cpp
+     *       
+     * */
     template < typename TDomain, typename TValue, typename THashKey = typename DGtal::uint64_t >
     class ImageContainerByHashTree
     {
