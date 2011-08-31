@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file StarShaped2D.h
+ * @file AccFlower2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,103 +25,139 @@
  *
  * @date 2011/04/12
  *
- * Header file for module StarShaped2D.cpp
+ * Header file for module AccFlower2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(StarShaped2D_RECURSES)
-#error Recursive header files inclusion detected in StarShaped2D.h
-#else // defined(StarShaped2D_RECURSES)
+#if defined(AccFlower2D_RECURSES)
+#error Recursive header files inclusion detected in AccFlower2D.h
+#else // defined(AccFlower2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define StarShaped2D_RECURSES
+#define AccFlower2D_RECURSES
 
-#if !defined StarShaped2D_h
+#if !defined AccFlower2D_h
 /** Prevents repeated inclusion of headers. */
-#define StarShaped2D_h
+#define AccFlower2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class StarShaped2D
+  // template class AccFlower2D
   /**
-   * Description of template class 'StarShaped2D' <p>
-   * 
-   * Aim: Abstract class that represents any star-shaped object in
-   * dimension 2. Such a shape as a center and any segment from this
-   * center to the shape boundary is included in the shape. These
-   * shapes can thus be parameterized by an angle 't' turning around
-   * the center.
+   * Description of template class 'AccFlower2D' <p>
+   * \brief Aim: Model of the concept StarShaped
+   * represents any accelerated flower in the plane.
    *
    * NB: A backport from <a
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TSpace>
-  class StarShaped2D
+  class AccFlower2D:  public StarShaped2D<TSpace>
   {
-   
+    // ----------------------- Standard services ------------------------------
   public:
+
     typedef TSpace Space;
     typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
-    
-    /**
-     * Constructor.
-     */
-    StarShaped2D()
-    {}
-
+    typedef typename Space::RealPoint RealPoint2D;
+    typedef typename Space::RealVector RealVector2D;
+   
     /**
      * Destructor.
      */
-    ~StarShaped2D();
+    ~AccFlower2D();
     
-    // ------------------------- Implemented services -------------------------
-  public:
     /**
-     * @return a point p such that 'isInside(p)' returns 'true'.
+     * Constructor. 
+     * @param x0 the x-coordinate of the flower center.
+     * @param y0 the y-coordinate of the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    virtual RealPoint interiorPoint() const
-    {
-      return center();
-    }
+    AccFlower2D( const double x0, const double y0, 
+	      const double r,
+	      const double smallr,
+	      const unsigned int k,
+	      const double phi);
 
-    // ------------------------- Abstract services ----------------------------
-  public:
+    /**
+     * Constructor. 
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
+     */
+    AccFlower2D(const RealPoint2D &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
+
+    /**
+     * Constructor. 
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
+     */
+    AccFlower2D(const Point &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
+
     
+    // ------------- Implementation of 'StarShaped' services ------------------
+  public:
+
     /**
      * @return the lower bound of the shape bounding box.
      *
      */
-    virtual Point getLowerBound() const = 0;
-    
+    Point getLowerBound() const
+    {
+      return Point(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
+    }
+
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    virtual Point getUpperBound() const = 0;
-    
+    Point getUpperBound() const
+    {
+      return Point(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
+    }
 
     /**
      * @return the center of the star-shaped object.
      */
-    virtual RealPoint center() const = 0;
-    
+    RealPoint2D center() const
+    {
+      return myCenter;
+    }
+   
     /**
      * @param p any point in the plane.
      *
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    virtual double parameter( const RealPoint & p ) const = 0;
+    double parameter( const RealPoint2D & p ) const;
+
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -129,7 +165,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    virtual RealPoint x( double t ) const = 0;
+    RealPoint2D x( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -137,70 +173,48 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    virtual RealPoint xp( double t ) const = 0;
+    RealVector2D xp( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    virtual RealPoint xpp( double t ) const = 0;
+    RealVector2D xpp( const double t ) const;
     
 
-    // ------------------------- star-shaped services -------------------------
-  public:
-
-
-    /**
-     * @param p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const RealPoint & p ) const;
+    // ------------------------- data ----------------------------
+  private:
 
     /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
+     * Center of the flower.
      */
-    bool isInside( const Point & p ) const;
-
+    RealPoint2D myCenter;
     
     /**
-     * @param t any angle between 0 and 2*Pi.
-     *
-     * @return the vector (x'(t),y'(t)) made unitary which is the unit
-     * tangent to the shape boundary.  
+     * Radius of the flower.
      */
-    RealPoint tangent( double t ) const;
-
+    double myRadius;
+    
     /**
-     * @param t any angle between 0 and 2*Pi.
-     *
-     * @return the vector (x''(t),y''(t)) made unitary which is the unit
-     * normal to the shape boundary looking inside the shape.  
+     * the variable small radius of the flower.
      */
-    RealPoint normal( double t ) const;
-
+    double myVarRadius;
+    
     /**
-     * @param t any angle between 0 and 2*Pi.
-     *
-     * @return the algebraic curvature at point (x(t),y(t)), positive
-     * is convex, negative is concave when shape is to the left and
-     * the shape boundary is followed counterclockwise.
+     * the number of flower extremeties.
      */
-    double curvature( double t ) const;
-
+    unsigned int myK;
+    
     /**
-     * @param t1 any angle between 0 and 2*Pi.
-     * @param t2 any angle between 0 and 2*Pi, further from [t1].
-     * @param nb the number of points used to estimate the arclength between x(t1) and x(t2).
-     * @return the estimated arclength.
+     * The value 2*myK*Pi/(Pi^3)
      */
-    double arclength( double t1, double t2, unsigned int nb ) const;
-
+    double myKp;
+    
+    /**
+     * the phase of the flower (in radian).
+     */
+    double myPhi;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -217,10 +231,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -229,7 +239,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    //StarShaped2D();
+    AccFlower2D();
 
   private:
 
@@ -238,7 +248,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //StarShaped2D ( const StarShaped2D & other );
+    //  AccFlower2D ( const AccFlower2D & other );
 
     /**
      * Assignment.
@@ -246,35 +256,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    StarShaped2D & operator= ( const StarShaped2D & other );
+    AccFlower2D & operator= ( const AccFlower2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class StarShaped2D
+  }; // end of class AccFlower2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'StarShaped2D'.
+   * Overloads 'operator<<' for displaying objects of class 'AccFlower2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'StarShaped2D' to write.
+   * @param object the object of class 'AccFlower2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const StarShaped2D<T> & object );
+  operator<< ( std::ostream & out, const AccFlower2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/StarShaped2D.ih"
+#include "DGtal/shapes/parametric/AccFlower2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined StarShaped2D_h
+#endif // !defined AccFlower2D_h
 
-#undef StarShaped2D_RECURSES
-#endif // else defined(StarShaped2D_RECURSES)
+#undef AccFlower2D_RECURSES
+#endif // else defined(AccFlower2D_RECURSES)

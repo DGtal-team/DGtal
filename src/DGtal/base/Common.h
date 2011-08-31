@@ -69,11 +69,11 @@
 #endif // defined( WIN32 )
 
 #include "DGtal/base/Config.h"
-#include "DGtal/utils/Trace.h"
-#include "DGtal/utils/TraceWriterTerm.h"
-#include "DGtal/utils/TraceWriterFile.h"
-#include "DGtal/utils/Assert.h"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/Trace.h"
+#include "DGtal/base/TraceWriterTerm.h"
+#include "DGtal/base/TraceWriterFile.h"
+#include "DGtal/base/Assert.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/GlobalFunctions.h"

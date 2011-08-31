@@ -15,66 +15,64 @@
  **/
 
 #pragma once
-/** 
- * @file TraceWriterTerm.h
+/**
+ * @file TraceWriterFile.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/02/17
  * 
- * Header file for module TraceWriterTerm.cpp
+ * Header file for module TraceWriterFile.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(TraceWriterTerm_RECURSES)
-#error Recursive header files inclusion detected in TraceWriterTerm.h
-#else // defined(TraceWriterTerm_RECURSES)
+#if defined(TraceWriterFile_RECURSES)
+#error Recursive header files inclusion detected in TraceWriterFile.h
+#else // defined(TraceWriterFile_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define TraceWriterTerm_RECURSES
+#define TraceWriterFile_RECURSES
 
-#if !defined TraceWriterTerm_h
+#if !defined TraceWriterFile_h
 /** Prevents repeated inclusion of headers. */
-#define TraceWriterTerm_h
-
+#define TraceWriterFile_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <string>
-#include "DGtal/utils/TraceWriter.h"
+#include "DGtal/base/TraceWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
 {
   
   /////////////////////////////////////////////////////////////////////////////
-  // class TraceWriterTerm
+  // class TraceWriterFile
   /** 
-   * Description of class 'TraceWriterTerm' <p>
-   * Aim: @brief Implements trace prefix for color terminals
-   *
-   * \todo Detect if the terminal has color capabilities
-   * 
-   * @see testTrace.cpp
+   * Description of class 'TraceWriterFile' <p>
+   * Aim: 
    */
-  // ----------------------- Standard services ------------------------------
-  class TraceWriterTerm: public TraceWriter
+  class TraceWriterFile: public TraceWriter
   {
+    // ----------------------- Standard services ------------------------------
   public:
-     
+
+    
     /**
      * Constructor.
      * @param outputStream the current output Stream 
      *
      */
-    TraceWriterTerm(std::ostream &aoutputStream=std::cerr) : TraceWriter(aoutputStream) {};
-    
+    TraceWriterFile(std::ostream &aoutputStream) : TraceWriter(aoutputStream) {};
+  
+
+
 
     /**
      * Destructor. 
      */
-    ~TraceWriterTerm() {};
+    ~TraceWriterFile() {};
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -91,72 +89,37 @@ namespace DGtal
      */
     bool isValid() const;
 
-    
-    /**
-     * Create a Wrarning Prefix
-     *
+
+     /**
+     * Create a Warning Prefix
      * @return the prefix
      */
-    std::string  prefixWarning() 
-    {
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-      return "\033[0m\033[35m";
-#else
-      return "";
-#endif
-    }
-    
+    std::string  prefixWarning() {return "[WRG]";}
+
     /**
      * Create an Info Prefix
      * @return the prefix
      */
-    std::string  prefixInfo()  
-    {
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-      return "\033[0m";
-#else
-      return "";
-#endif
-    }
-
+    std::string  prefixInfo()  {return "";}
+    
     /**
      * Create an Error Prefix
      * @return the prefix
      */
-    std::string  prefixError() 
-    {
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-      return "\033[0m\033[31m[ERR]";
-#else
-      return "";
-#endif
-    }
-    
+    std::string  prefixError() {return "[ERR]";}
+
     /**
      * Create an Emphase Prefix
      * @return the prefix
      */
-    std::string  prefixEmphase() 
-    {
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-      return "\033[0m\033[1m";
-#else
-      return "";
-#endif
-    }
-
+    std::string  prefixEmphase() {return "";}
+    
     /**
-     * Create a Reset postfix
-     * @return the postfix
+     * Create an Reset postfix
+     * @return the postix
      */
-    std::string  postfixReset() 
-    {
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-      return "\033[0m";
-#else
-      return "";
-#endif
-    }
+    std::string  postfixReset() {return "";}
+
    
   private:
 
@@ -165,7 +128,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    TraceWriterTerm( const TraceWriterTerm & other );
+    TraceWriterFile( const TraceWriterFile & other );
 
     /**
      * Assignment.
@@ -173,28 +136,29 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    TraceWriterTerm & operator=( const TraceWriterTerm & other );
- 
-  }; // end of class TraceWriterTerm
+    TraceWriterFile & operator=( const TraceWriterFile & other );
+  
+  }; // end of class TraceWriterFile
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'TraceWriterTerm'.
+   * Overloads 'operator<<' for displaying objects of class 'TraceWriterFile'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'TraceWriterTerm' to write.
+   * @param object the object of class 'TraceWriterFile' to write.
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<<( std::ostream & out, const TraceWriterTerm & object );
+  operator<<( std::ostream & out, const TraceWriterFile & object );
 
   
 } // namespace DGtal
 
 
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined TraceWriterTerm_h
+#endif // !defined TraceWriterFile_h
 
-#undef TraceWriterTerm_RECURSES
-#endif // else defined(TraceWriterTerm_RECURSES)
+#undef TraceWriterFile_RECURSES
+#endif // else defined(TraceWriterFile_RECURSES)

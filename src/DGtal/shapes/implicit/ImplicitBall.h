@@ -17,31 +17,32 @@
 #pragma once
 
 /**
- * @file ImplicitNorm1Ball.h
+ * @file ImplicitBall.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for module ImplicitNorm1Ball.cpp
+ * Header file for module ImplicitBall.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImplicitNorm1Ball_RECURSES)
-#error Recursive header files inclusion detected in ImplicitNorm1Ball.h
-#else // defined(ImplicitNorm1Ball_RECURSES)
+#if defined(ImplicitBall_RECURSES)
+#error Recursive header files inclusion detected in ImplicitBall.h
+#else // defined(ImplicitBall_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImplicitNorm1Ball_RECURSES
+#define ImplicitBall_RECURSES
 
-#if !defined ImplicitNorm1Ball_h
+#if !defined ImplicitBall_h
 /** Prevents repeated inclusion of headers. */
-#define ImplicitNorm1Ball_h
+#define ImplicitBall_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -49,95 +50,72 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'ImplicitNorm1Ball' <p>
-   * \brief Aim: model of CImplicitShape concept to create a
-   * ball for the L_1 norm in  nD..
+   * Description of template class 'ImplicitBall' <p>
+   * \brief Aim: model of CImplicitShape concept to create a ball in
+   * nD..
    *
    * @tparam TSpace the Digital space definition.
    */
+  
   template <typename TSpace>
-  class ImplicitNorm1Ball
+  class ImplicitBall
   {
 
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
+    typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
     
-   
+
     /** 
-     * Constructor. Contructs a ball with center aCenter and width
-     * aWidth.
+     * Constructor. Contructs a ball with center aCenter and radius
+     * aRadius.
      * 
-     * @param aCenter the cube center. 
-     * @param aHalfWidth the cube half-width.
+     * @param aCenter the ball center. 
+     * @param aRadius the ball radius.
      */
-    ImplicitNorm1Ball(const Point &aCenter, const Integer &aHalfWidth): myCenter(aCenter),
-								myHalfWidth(aHalfWidth)
+    ImplicitBall(const Point &aCenter, const Integer &aRadius): myCenter(aCenter),
+								myRadius(aRadius)
     {};
     
     /** 
      * Destructor.
      * 
      */    
-    ~ImplicitNorm1Ball();
+    ~ImplicitBall();
 
 
     // ----------------------- Interface --------------------------------------
   public:
     
-    /** 
-     * Operator() of the implicit function. Given a point, it returns
-     * the function value at p. In Shapes, positive values are used to
-     * construct a set.
-     * 
-     * @param aPoint the point to evalute the function at.
-     * @return the distance of aPoint to the ball center.
-     */
     inline
     double operator()(const Point &aPoint) const
     {
-      return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
-	(aPoint - myCenter ).norm(Point::L_1);
+      return NumberTraits<Integer>::castToDouble(myRadius) - 
+	(aPoint - myCenter ).norm();
     }
 
-    /** 
-     * Return true if the given point belongs to the shape.
-     * 
-     * @param aPoint the point to evalute the function at.
-     * @return true if aPoint belongs to the shape.
-     */
     inline
     bool isInside(const Point &aPoint) const
     {
-      return this->operator()(aPoint) >0.0;
+      return (this->operator()(aPoint) > 0.0);
     }
 
-
-    /** 
-     * Returns the lower bound of the Shape bounding box.
-     * 
-     * 
-     * @return the lower bound point.
-     */
     inline
     Point getLowerBound() const
     {
-      return (myCenter - Point::diagonal(myHalfWidth));
+      return (myCenter - Point::diagonal(myRadius));
     }
     
-    /** 
-     * Returns the upper bound of the Shape bounding box.
-     * 
-     * 
-     * @return the upper bound point.
-     */
     inline
     Point getUpperBound() const
     {
-      return (myCenter + Point::diagonal(myHalfWidth)); 
+      return (myCenter + Point::diagonal(myRadius)); 
     }
     
+
+
     // ----------------------- Interface --------------------------------------
   public:
     
@@ -161,8 +139,8 @@ namespace DGtal
     ///Ball center
     Point myCenter;
 
-    ///Ball HalfWidth
-    Integer myHalfWidth;
+    ///Ball Radius
+    Integer myRadius;
    
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -171,7 +149,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    ImplicitNorm1Ball();
+    ImplicitBall();
 
   private:
 
@@ -181,33 +159,33 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ImplicitNorm1Ball & operator= ( const ImplicitNorm1Ball & other );
+    ImplicitBall & operator= ( const ImplicitBall & other );
     
     
-  }; // end of class ImplicitNorm1Ball
+  }; // end of class ImplicitBall
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImplicitNorm1Ball'.
+   * Overloads 'operator<<' for displaying objects of class 'ImplicitBall'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImplicitNorm1Ball' to write.
+   * @param object the object of class 'ImplicitBall' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const ImplicitNorm1Ball<T> & object );
+  operator<< ( std::ostream & out, const ImplicitBall<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/implicitShapes/ImplicitNorm1Ball.ih"
+#include "DGtal/shapes/implicit/ImplicitBall.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImplicitNorm1Ball_h
+#endif // !defined ImplicitBall_h
 
-#undef ImplicitNorm1Ball_RECURSES
-#endif // else defined(ImplicitNorm1Ball_RECURSES)
+#undef ImplicitBall_RECURSES
+#endif // else defined(ImplicitBall_RECURSES)
