@@ -382,7 +382,13 @@ It also possible to remove the visualisation of the transparent clipping plane b
 \example viewer3D-6-clipping.cpp
 * 
 */
+/**
+\example dgtalCairo-1-points.cpp
+* 
+*/
  
+
+
 }
 
 
