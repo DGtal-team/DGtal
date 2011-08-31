@@ -6,7 +6,6 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testInteger
    testPointVector
    testRealPointVector
-   testSpaceND
    testMorton
    testHashTree
    testLinearAlgebra
