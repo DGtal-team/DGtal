@@ -138,7 +138,6 @@ namespace DGtal
     // typedef typename T::ConstRange ConstRange;
     typedef typename T::ConstIterator ConstIterator;
     typedef typename T::Predicate Predicate;
-    typedef typename T::IsBounded IsBounded;
 
     BOOST_CONCEPT_USAGE( CDomain )
     {
