@@ -55,38 +55,57 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUnsignedInteger
   /**
-   * Description of \b concept '\b CUnsignedInteger' <p>
-   * @ingroup Concepts
-   * Aim: Concept checking for Unsigned Integer. 
-   * 
-   * <p> Refinement of CInteger
-   *
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CUnsignedInteger
-   * - \t x, \t y	: Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   *
-   * <p> Notes <br>
+     Description of \b concept '\b CUnsignedInteger' <p>
+     @ingroup Concepts
+
+     @brief Aim: Concept checking for Unsigned Integer. 
+     
+     <p> Refinement of CInteger
+    
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CUnsignedInteger
+     - \t x, \t y	: Object of type X
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table>
+     <tr> 
+     <td class=CName> \b Name </td> 
+     <td class=CExpression> \b Expression </td>
+     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CReturnType> \b Return type </td>
+     <td class=CPrecondition> \b Precondition </td> 
+     <td class=CSemantics> \b Semantics </td> 
+     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CComplexity> \b Complexity </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsUnsigned. </td>
+     <td class=CExpression>      typename NumberTraits<X>::IsUnsigned </td> 
+     <td class=CRequirements>    TagTrue </td>
+     <td class=CReturnType>      </td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br>
+     unsigned short, unsigned int, unsigned long long, uint16_t, uint32_t, uint64_t.
+    
+     <p> Notes <br>
+
+
+     @tparam T the type that is checked. T should be a model of
+     CBoundedInteger.
+
    */
   template <typename T>
   struct CUnsignedInteger: CInteger<T>
