@@ -17,7 +17,9 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSS.h @author Tristan Roussillon (\c
+ * @file ArithmeticalDSS.h 
+ * @brief Dynamic recognition of arithmetical DSS.
+ * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
@@ -27,6 +29,8 @@
  * Header file for module ArithmeticalDSS.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testArithDSS.cpp
  */
 
 #if defined(ArithmeticalDSS_RECURSES)

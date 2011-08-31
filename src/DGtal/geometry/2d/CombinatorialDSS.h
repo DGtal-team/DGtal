@@ -18,6 +18,7 @@
 
 /**
  * @file CombinatorialDSS.h
+ * @brief Dynamical recognition of DSS on FreemanChain code. 
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -26,6 +27,8 @@
  * Header file for module CombinatorialDSS.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testCombinDSS.cpp
  */
 
 #if defined(CombinatorialDSS_RECURSES)
@@ -76,24 +79,20 @@ namespace DGtal
 	 * and the end point are upper leaning points (see Berstel, Lauve,
 	 * Reutenauer and Saliola [2008]).
 	 *
-	 * This class is templated by the typename 'TInteger', the type of the
-	 * coordinates of the points (satisfying CInteger).
-	 * 
+   * @tparam TInteger the type of scalars used for the coordinates of the
+   * points (satisfying CInteger) 
 	 */
 
 
 	template <typename TInteger>
 		class CombinatorialDSS  
-			//public ArithmeticalDSS<
-			//typename FreemanChain<TInteger>::ConstIterator,
-			//TInteger, 
-			//4>
 	{
 
 		// ----------------------- Types ------------------------------
 		public :
 			//Required type
-			typedef TInteger Integer;
+      BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+      typedef TInteger Integer;
 
 			//Required types
 			typedef FreemanChain<TInteger> FreemanChainCode;
@@ -101,7 +100,7 @@ namespace DGtal
 			typedef CombinatorialDSS<Integer> Self;
 
 			//2D points and 2D vectors
-      // \TODO : récupérer Point et Vector a partir de FreemanChain
+        // \TODO : récupérer Point et Vector a partir de FreemanChain
 			typedef DGtal::PointVector<2,Integer> Point;
 			typedef DGtal::PointVector<2,Integer> Vector;
 
@@ -255,10 +254,10 @@ namespace DGtal
 
 			/**
 			 * Computes the arithmetic description of the DSS.
-			 * @param (returns) 'a' from the equation 0 <= ax+by+mu < omega
-			 * @param (returns) 'b' from the equation 0 <= ax+by+mu < omega
-			 * @param (returns) 'mu' from the equation 0 <= ax+by+mu < omega
-			 * @param (returns) 'omega' from the equation 0 <= ax+by+mu < omega
+			 * @param (returns) 'a' from the equation mu <= ax-by < mu + omega
+			 * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
+			 * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
+			 * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
 			 */
 			void getArithmeticalDescription( Integer &a, Integer &b, Integer
 					&mu, Integer &omega) const;

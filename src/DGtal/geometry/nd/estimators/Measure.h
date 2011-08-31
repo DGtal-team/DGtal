@@ -18,6 +18,7 @@
 
 /**
  * @file Measure.h
+ * @brief Computes simple measure (in the Lesbegue sens) of a set.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module Measure.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testMeasureSet.cpp
  */
 
 #if defined(Measure_RECURSES)
