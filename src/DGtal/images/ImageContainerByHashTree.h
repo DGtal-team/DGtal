@@ -44,7 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CValue.h"
-#include "DGtal/kernel/domains/CBoundedDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
@@ -129,7 +129,7 @@ namespace DGtal
     public:
 
       BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
+      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
 				
       typedef THashKey HashKey;
       typedef TValue Value;

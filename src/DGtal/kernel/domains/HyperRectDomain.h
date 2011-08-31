@@ -119,9 +119,6 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
 
-    ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
-    typedef typename NumberTraits<Integer>::IsBounded IsBounded;
-
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;
     typedef myreverse_iterator<ConstIterator> ReverseConstIterator;

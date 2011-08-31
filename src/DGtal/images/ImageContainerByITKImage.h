@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CValue.h"
-#include "DGtal/kernel/domains/CBoundedDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
 
 #include <itkImage.h>
 #include <itkImageRegionConstIterator.h>
@@ -74,7 +74,7 @@ namespace DGtal
     public:
 
       BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CBoundedDomain<TDomain> ));
+      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
 
       typedef TValue Value;
       typedef TDomain Domain;
