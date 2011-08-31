@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include <boost/type_traits.hpp>
 //////////////////////////////////////////////////////////////////////////////
 

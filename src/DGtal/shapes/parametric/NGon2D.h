@@ -44,7 +44,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/parametricShapes/StarShaped2D.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
 #include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -259,7 +259,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/NGon2D.ih"
+#include "DGtal/shapes/parametric/NGon2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

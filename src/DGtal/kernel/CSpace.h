@@ -45,7 +45,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/ConceptUtils.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"

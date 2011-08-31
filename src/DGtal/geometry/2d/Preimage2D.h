@@ -43,7 +43,7 @@
 #include <iostream>
 #include <list>
 #include "DGtal/base/Common.h"
-#include "DGtal/utils/OpInSTLContainers.h"
+#include "DGtal/base/OpInSTLContainers.h"
 #include "DGtal/geometry/2d/Point2ShapePredicate.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////

@@ -33,8 +33,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/helpers/Shapes.h"
-#include "DGtal/helpers/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
 
 #include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
