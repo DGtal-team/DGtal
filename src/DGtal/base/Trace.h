@@ -44,10 +44,10 @@
 #include <string>
 #include <stack>
 
-#include "DGtal/utils/Clock.h"
-#include "DGtal/utils/Assert.h"
-#include "DGtal/utils/TraceWriter.h"
-#include "DGtal/utils/TraceWriterTerm.h"
+#include "DGtal/base/Clock.h"
+#include "DGtal/base/Assert.h"
+#include "DGtal/base/TraceWriter.h"
+#include "DGtal/base/TraceWriterTerm.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -222,7 +222,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions
-#include "DGtal/utils/Trace.ih"
+#include "DGtal/base/Trace.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -17,105 +17,139 @@
 #pragma once
 
 /**
- * @file ImplicitBall.h
+ * @file ImplicitRoundedHyperCube.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for module ImplicitBall.cpp
+ * Header file for module ImplicitRoundedHyperCube.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImplicitBall_RECURSES)
-#error Recursive header files inclusion detected in ImplicitBall.h
-#else // defined(ImplicitBall_RECURSES)
+#if defined(ImplicitRoundedHyperCube_RECURSES)
+#error Recursive header files inclusion detected in ImplicitRoundedHyperCube.h
+#else // defined(ImplicitRoundedHyperCube_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImplicitBall_RECURSES
+#define ImplicitRoundedHyperCube_RECURSES
 
-#if !defined ImplicitBall_h
+#if !defined ImplicitRoundedHyperCube_h
 /** Prevents repeated inclusion of headers. */
-#define ImplicitBall_h
+#define ImplicitRoundedHyperCube_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'ImplicitBall' <p>
-   * \brief Aim: model of CImplicitShape concept to create a ball in
-   * nD..
+   * Description of template class 'ImplicitRoundedHyperCube' <p>
+   * \brief Aim: model of CImplicitShape concept to create a rounded
+   * hypercube in  nD..
+   *
+   * Rounded hypercubes corresponds to balls for the @f$l_p@f$ norm.
    *
    * @tparam TSpace the Digital space definition.
    */
-  
   template <typename TSpace>
-  class ImplicitBall
+  class ImplicitRoundedHyperCube
   {
 
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
     
-
+   
     /** 
-     * Constructor. Contructs a ball with center aCenter and radius
-     * aRadius.
+     * Constructor. Contructs a rounded hypercube with center aCenter and width
+     * aWidth.
      * 
-     * @param aCenter the ball center. 
-     * @param aRadius the ball radius.
+     * @param aCenter the cube center. 
+     * @param aHalfWidth the cube half-width.
      */
-    ImplicitBall(const Point &aCenter, const Integer &aRadius): myCenter(aCenter),
-								myRadius(aRadius)
+    ImplicitRoundedHyperCube(const Point &aCenter,
+			     const Integer &aHalfWidth,
+			     const double aPower): 
+      myCenter(aCenter),
+      myHalfWidth(aHalfWidth),
+      myPower(aPower)
     {};
     
     /** 
      * Destructor.
      * 
      */    
-    ~ImplicitBall();
+    ~ImplicitRoundedHyperCube();
 
 
     // ----------------------- Interface --------------------------------------
   public:
     
+    /** 
+     * Operator() of the implicit function. Given a point, it returns
+     * the function value at p. In Shapes, positive values are used to
+     * construct a set.
+     * 
+     * @param aPoint the point to evalute the function at.
+     * @return the distance of aPoint to the ball center.
+     */
     inline
     double operator()(const Point &aPoint) const
     {
-      return NumberTraits<Integer>::castToDouble(myRadius) - 
-	(aPoint - myCenter ).norm();
+      Point dec = (aPoint - myCenter);
+      double partialpower=0;
+      for(Dimension i = 0; i < Point::dimension; ++i)
+	partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
+				  myPower);
+      
+      return std::pow(NumberTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
+	      partialpower;      
     }
 
+    /** 
+     * Return true if the given point belongs to the shape.
+     * 
+     * @param aPoint the point to evalute the function at.
+     * @return true if aPoint belongs to the shape.
+     */
     inline
     bool isInside(const Point &aPoint) const
     {
-      return (this->operator()(aPoint) > 0.0);
+      return this->operator()(aPoint) >0.0;
     }
 
+    /** 
+     * Returns the lower bound of the Shape bounding box.
+     * 
+     * 
+     * @return the lower bound point.
+     */
     inline
     Point getLowerBound() const
     {
-      return (myCenter - Point::diagonal(myRadius));
+      return (myCenter - Point::diagonal(myHalfWidth));
     }
     
+    /** 
+     * Returns the upper bound of the Shape bounding box.
+     * 
+     * 
+     * @return the upper bound point.
+     */
     inline
     Point getUpperBound() const
     {
-      return (myCenter + Point::diagonal(myRadius)); 
+      return (myCenter + Point::diagonal(myHalfWidth)); 
     }
     
-
-
     // ----------------------- Interface --------------------------------------
   public:
     
@@ -136,11 +170,14 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
    
-    ///Ball center
+    ///Cube center
     Point myCenter;
 
-    ///Ball Radius
-    Integer myRadius;
+    ///Cube HalfWidth
+    Integer myHalfWidth;
+
+    ///Cube Power 
+    double myPower;
    
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -149,7 +186,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    ImplicitBall();
+    ImplicitRoundedHyperCube();
 
   private:
 
@@ -159,33 +196,33 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ImplicitBall & operator= ( const ImplicitBall & other );
+    ImplicitRoundedHyperCube & operator= ( const ImplicitRoundedHyperCube & other );
     
     
-  }; // end of class ImplicitBall
+  }; // end of class ImplicitRoundedHyperCube
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImplicitBall'.
+   * Overloads 'operator<<' for displaying objects of class 'ImplicitRoundedHyperCube'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImplicitBall' to write.
+   * @param object the object of class 'ImplicitRoundedHyperCube' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const ImplicitBall<T> & object );
+  operator<< ( std::ostream & out, const ImplicitRoundedHyperCube<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/implicitShapes/ImplicitBall.ih"
+#include "DGtal/shapes/implicit/ImplicitRoundedHyperCube.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImplicitBall_h
+#endif // !defined ImplicitRoundedHyperCube_h
 
-#undef ImplicitBall_RECURSES
-#endif // else defined(ImplicitBall_RECURSES)
+#undef ImplicitRoundedHyperCube_RECURSES
+#endif // else defined(ImplicitRoundedHyperCube_RECURSES)

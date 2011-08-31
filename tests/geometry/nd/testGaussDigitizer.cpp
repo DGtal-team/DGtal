@@ -35,9 +35,9 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/parametricShapes/Ellipse2D.h"
-#include "DGtal/helpers/parametricShapes/Flower2D.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/parametric/Ellipse2D.h"
+#include "DGtal/shapes/parametric/Flower2D.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/Surfaces.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 ///////////////////////////////////////////////////////////////////////////////
