@@ -39,7 +39,8 @@ namespace DGtal
   template  <typename HashKey, typename Point >
   Morton<HashKey,Point>::Morton()
   {
-    myDilateMasks[0] = 25;
+    // @todo precomputation of the dilate masks
+    //myDilateMasks[0] = 25;
   }
 
 

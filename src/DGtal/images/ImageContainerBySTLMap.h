@@ -56,9 +56,11 @@ namespace DGtal
   // class ImageContainerBySTLMap
   /**
    * Description of class 'ImageContainerBySTLMap' <p>
-   * Aim:
-   * \todo Documentation
-   * @see test_Image.cpp
+   * Aim: Model of CImageContainer implementing the association Point<->Value
+   * using a std::map.
+   *
+   *
+   * @see testImage.cpp
    */
 
   template <typename Domain, typename Value>
@@ -78,7 +80,6 @@ namespace DGtal
     typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
     typedef typename map<Point,Value>::const_reverse_iterator
     ConstReverseIterator;
-
 
 
     /**
