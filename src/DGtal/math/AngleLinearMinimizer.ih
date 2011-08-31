@@ -1,0 +1,71 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file AngleLinearMinimizer.ih
+ 
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @author (backported by) Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2011/08/31
+ *
+ * Implementation of inline methods defined in AngleLinearMinimizer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'AngleLinearMinimizer'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'AngleLinearMinimizer' to write.
+ * @return the output stream after the writing.
+ */
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const AngleLinearMinimizer & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
