@@ -464,12 +464,13 @@ template <typename TKSpace>
 template <typename PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::
-extractAllConnectedSCell( std::vector< std::vector<SCell> > & aVectConnectedSCell,
-			  const KSpace & aKSpace,
-			  const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
-			  const PointPredicate & pp,
-			  bool forceOrientCellExterior){
-  
+extractAllConnectedSCell
+( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+  const KSpace & aKSpace,
+  const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
+  const PointPredicate & pp,
+  bool forceOrientCellExterior ) 
+{
   set<SCell> bdry;
 
   Cell low = aKSpace.uFirst(aKSpace.uSpel(aKSpace.lowerBound()));

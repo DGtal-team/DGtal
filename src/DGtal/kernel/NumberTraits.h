@@ -1032,13 +1032,15 @@ namespace DGtal
   
 #ifdef WITH_GMP
   /**
-   * Specialization for <mpz_class>.
+   * Specialization for <mpz_class>.  Note that mpz_class represents
+   * signed and unsigned arbitrary-size integers. Therefore both
+   * IsUnsigned and IsSigned are TagTrue.
    */
   template <>
   struct NumberTraits<mpz_class>
   {
     typedef TagFalse IsBounded;
-    typedef TagFalse IsUnsigned;
+    typedef TagTrue IsUnsigned;
     typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
     typedef mpz_class SignedVersion;
