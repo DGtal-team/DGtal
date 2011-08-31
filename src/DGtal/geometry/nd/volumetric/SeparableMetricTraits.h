@@ -18,6 +18,7 @@
 
 /**
  * @file SeparableMetricTraits.h
+ * @brief Basic functions associated to metrics used by separable volumetric algorithms.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module SeparableMetricTraits.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testDistanceTransformationND.cpp
  */
 
 #if defined(SeparableMetricTraits_RECURSES)

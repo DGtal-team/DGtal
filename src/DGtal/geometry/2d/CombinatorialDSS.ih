@@ -188,9 +188,9 @@ bool DGtal::CombinatorialDSS<TInteger>::extend(ConstIterator it)
 		return extend();
 	if ( (Index) it.getPosition() == myFirstLetter - 1) 
 		return extendOppositeEnd();
-	if ( (Index) it.getPosition() == (myLastLetter+1) % myFC->size() ) 
+	if ( (Index) it.getPosition() == (myLastLetter+1) % (Size) myFC->size() ) 
 		return extend();
-	if ( (Index) it.getPosition() == (myFirstLetter-1) % myFC->size() ) 
+	if ( (Index) it.getPosition() == (myFirstLetter-1) % (Size) myFC->size() ) 
 		return extendOppositeEnd();
 	ASSERT(false && "[CombinatorialDSS::extend(ConstIterator it)] iterator 'it' is not valid");
 }
@@ -203,6 +203,8 @@ template <typename TInteger>
 inline
 bool DGtal::CombinatorialDSS<TInteger>::extend()
 {
+  if (myLastPoint == *(myFC->end()))
+    return false;
 	Code letterRead = getCode( myLastLetter + 1 );
 	Code letterExpected = getCode( myNextAfter );
 
@@ -317,7 +319,7 @@ bool DGtal::CombinatorialDSS<TInteger>::extendOppositeEnd()
 		// The previous main pattern is now the left subpattern
 		Size myOldMainPatternLength = mainPatternLength();
 		Size myOldLeftPatternLength = myLeftPatternLength;
-		Size myOldRightPatternLength = myOldMainPatternLength - myOldLeftPatternLength;
+		//Size myOldRightPatternLength = myOldMainPatternLength - myOldLeftPatternLength;
 
 		myPatternBegin = myFirstLetter - 1;
 		myPatternEnd += (myNbRepeat-1) * myOldMainPatternLength;
@@ -776,12 +778,7 @@ template <typename TInteger>
 inline
 typename DGtal::CombinatorialDSS<TInteger>::Integer
 DGtal::CombinatorialDSS<TInteger>::getA() const
-{
-	Point p(0,0);
-	for (Index i=myPatternBegin; i <= myPatternEnd; ++i) 
-		p += FreemanChainCode::displacement( getCode( i ) );
-	return p.at(1);
-}
+{ }
 
 /**
  * @return the value of 'b' in the DSS equation
@@ -790,12 +787,8 @@ template <typename TInteger>
 inline
 typename DGtal::CombinatorialDSS<TInteger>::Integer
 DGtal::CombinatorialDSS<TInteger>::getB() const
-{
-	Point p(0,0);
-	for (Index i=myPatternBegin; i <= myPatternEnd; ++i) 
-		p += FreemanChainCode::displacement( getCode( i ) );
-	return p.at(0);
-}
+{ }
+	
 
 
 /**
@@ -830,11 +823,10 @@ DGtal::CombinatorialDSS<TInteger>::getUf() const
 
 
 /**
- * Computes the arithmetic description of the DSS.
- * @param 'a' from the arithmetical description 0 <= ax+by+mu < omega
- * @param 'b' from the arithmetical description 0 <= ax+by+mu < omega
- * @param 'mu' from the arithmetical description 0 <= ax+by+mu < omega
- * @param 'omega' from the arithmetical description 0 <= ax+by+mu < omega
+ * @param (returns) 'a' from the equation mu <= ax-by < mu + omega
+ * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
+ * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
+ * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
  */
 template <typename TInteger>
 inline
@@ -842,21 +834,21 @@ void DGtal::CombinatorialDSS<TInteger>::getArithmeticalDescription(
 		Integer &a, Integer &b, Integer &mu, Integer &omega ) const
 {
 	ConstIterator itBegin = begin();
-	while ( itBegin.getPosition() != myPatternBegin ) itBegin++;
+	while ( (Index) itBegin.getPosition() != myPatternBegin ) itBegin++;
 	ConstIterator itEnd = end();
-	while ( itEnd.getPosition() != myPatternEnd+1 ) itEnd--;
+	while ( (Index) itEnd.getPosition() != myPatternEnd+1 ) itEnd--;
 
 	ConstIterator it;
 	Size myRightPatternLenght = mainPatternLength() - myLeftPatternLength;
-	if ( myLeftPatternLength < myRightPatternLenght ) {
+	//if ( myLeftPatternLength > myRightPatternLenght ) {
 		it = itBegin;
-		for (int i=0; i<myLeftPatternLength; i++)
-			it++;
-	} else {
-		it = itEnd;
 		for (int i=0; i<myRightPatternLenght; i++)
-			it--;
-	}
+			it++;
+	//} else {
+	//	it = itEnd;
+	//	for (int i=0; i<myLeftPatternLength; i++)
+	//		it--;
+	//}
 	Point pb = *itBegin;
 	Point pe = *itEnd;
 	Point po = *it;
@@ -864,7 +856,9 @@ void DGtal::CombinatorialDSS<TInteger>::getArithmeticalDescription(
 	Vector v = pe - pb;
 	a = v.at(1);
 	b = v.at(0);
-	mu = -max ( v.dot(pb), v.dot(po) );
+  Integer r1 = a*pb.at(0) - b*pb.at(1);
+  Integer r2 = a*po.at(0) - b*po.at(1);
+  mu = min (r1, r2);
 	omega = ((a>0) ? a : -a) + ((b>0) ? b : -b );
 }
 
