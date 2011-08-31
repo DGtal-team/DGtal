@@ -51,6 +51,8 @@ bool testSimpleBoard()
 {
   unsigned int nbok = 0;
   unsigned int nb = 2;
+
+  trace.beginBlock ( "Testing class SimpleBoard" );
   
   Board2D board;
 

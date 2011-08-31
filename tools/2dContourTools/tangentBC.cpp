@@ -40,12 +40,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/RealPointVector.h"
-
-// #include "DGtal/shapes/ShapeFactory.h"
-// #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/ContourHelper.h"
-// #include "DGtal/helpers/Surfaces.h"
 
 //Grid curve
 #include "DGtal/geometry/2d/FreemanChain.h"

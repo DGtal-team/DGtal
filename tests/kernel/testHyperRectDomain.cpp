@@ -182,15 +182,11 @@ bool testIterator()
       it != myHyperRectDomain4D.range().end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
-  trace.endBlock();
-
   trace.emphase() << "Reverse Iterator 4d: ";
   for ( HyperRectDomain<TSpace4D>::ConstRange::ReverseConstIterator
 	  it = myHyperRectDomain4D.range().rbegin(),
 	  itend=myHyperRectDomain4D.range().rend(); it != itend; ++it )
     trace.info() << ( *it ) << std::endl;
-
-  trace.endBlock();
 
   
 #ifdef CPP0X_INITIALIZER_LIST
