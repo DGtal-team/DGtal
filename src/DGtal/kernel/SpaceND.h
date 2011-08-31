@@ -156,30 +156,6 @@ Point4Int a= {2, 3 , -5 , 6};
     // ----------------------- Standard services ------------------------------
   public:
 
-    /**
-     * @return the digital space of specified subdimension of this space.
-     */
-    template <Dimension subdimension>
-    static
-    typename Subspace<subdimension>::Type subspace()
-    {
-      ASSERT( subdimension <= dim );
-      return SpaceND<subdimension, Integer>();
-    }
-
-
-    /**
-     * @return the digital space of specified codimension of this space.
-     */
-    template <Dimension codimension>
-    static
-    typename Subcospace<codimension>::Type subcospace()
-    {
-      ASSERT( codimension <= dim );
-      return SpaceND < dim - codimension, Integer > ();
-    }
-
-
     // ----------------------- Interface --------------------------------------
   public:
 
