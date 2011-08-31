@@ -51,10 +51,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class BinomialConvolver
   /**
-     Description of template class 'BinomialConvolver' <p> \brief Aim:
-     This class represents a contour convolved by some binomial. It
-     computes first and second order derivatives so as to be able to
-     estimate tangent and curvature.
+     Description of template class 'BinomialConvolver'. <p>
+
+     @brief Aim: This class represents a 2D contour convolved by some
+     binomial. It computes first and second order derivatives so as to
+     be able to estimate tangent and curvature. In particular, it
+     smoothes digital contours but could be used for other kind of
+     contours.
      
      @tparam TConstIteratorOnPoints the type that represents an
      iterator in a sequence of points. Each component of Point must be
@@ -62,6 +65,8 @@ namespace DGtal
 
      @tparam TValue the type for storing the convolved versions of the
      contour (double as default).
+
+     @see testBinomialConvolver.cpp
   */
   template <typename TConstIteratorOnPoints, typename TValue = double>
   class BinomialConvolver

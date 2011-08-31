@@ -8,6 +8,7 @@ namespace DGtal {
    @page dgtal_topology Digital topology and digital objects
   
    @author Jacques-Olivier Lachaud
+   @author Bertrand Kerautret
   
   
    This part of the manual describes how to define digital
@@ -91,18 +92,12 @@ namespace DGtal {
    background. This is called the <b>digital Jordan theorem</b>
    (Rosenfeld). 
    
-   <table>
-   <tr>
-   <td>
    @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
    @image latex DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency" width=5cm
-   </td>
-   <td>
+
+
    @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
    @image latex DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" width=5cm
-   </td>
-   </tr>
-   </table>
   
    \subsection dgtal_topology_sec1s2 6-, 18- and 26- adjacencies in Z3
   
@@ -311,16 +306,13 @@ Viewer3D viewer;
  viewer << ClippingPlane(1,1,0,5, false)<< Viewer3D::updateDisplay;
 @endcode
  
- <TABLE> 
-<TR>
-<TD> @image html visuBorderExtraction.png  "Border extraction visualisation" 
-   @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm	</TD>
-<TD> @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
-   @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm	</TD>
- </TR>
-<TR>
-<TD>see example <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction.cpp</a> </TD> <TD> see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a></TD>
-</TR>
+@image html visuBorderExtraction.png  "Border extraction visualisation" 
+@image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm
+see example <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction.cpp</a>
+
+@image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
+@image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm
+see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a>
    
    \subsection dgtal_topology_sec3s4 Connectedness and connected components
   

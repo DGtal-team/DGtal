@@ -86,7 +86,12 @@ namespace DGtal
   public:
     
     /**
-     * Constructor.
+       Constructor.
+
+       @param aDomain the domain which restricts the given \a adjacency.
+
+       @param adjacency any adjacency whose range contains the given
+       domain \a aDomain.
      */
     DomainAdjacency( const Domain & aDomain, const Adjacency & adjacency );
 
