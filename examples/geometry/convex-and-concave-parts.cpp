@@ -49,7 +49,6 @@ using namespace Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef FreemanChain<int> Range; 
-typedef Range::ConstIterator Iterator;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -59,8 +58,8 @@ typedef Range::ConstIterator Iterator;
 template <typename Iterator, typename Board>
 void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
-
-	typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
+  
+  typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
 
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string aStyleName = "ArithmeticalDSS/BoundingBox";

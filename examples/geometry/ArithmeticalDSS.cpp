@@ -55,8 +55,8 @@ int main()
 
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator Iterator;
-    typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+    typedef std::vector<Point>::const_iterator ConstIterator;
+    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
 
     // Input points
     Range contour;
@@ -105,8 +105,8 @@ int main()
 
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator Iterator;
-    typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
+    typedef std::vector<Point>::const_iterator ConstIterator;
+    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
 
     // Input points
     Range boundary;
