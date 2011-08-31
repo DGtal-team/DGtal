@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file Ellipse2D.h
+ * @file Flower2D.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -25,26 +25,26 @@
  *
  * @date 2011/04/12
  *
- * Header file for module Ellipse2D.cpp
+ * Header file for module Flower2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Ellipse2D_RECURSES)
-#error Recursive header files inclusion detected in Ellipse2D.h
-#else // defined(Ellipse2D_RECURSES)
+#if defined(Flower2D_RECURSES)
+#error Recursive header files inclusion detected in Flower2D.h
+#else // defined(Flower2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Ellipse2D_RECURSES
+#define Flower2D_RECURSES
 
-#if !defined Ellipse2D_h
+#if !defined Flower2D_h
 /** Prevents repeated inclusion of headers. */
-#define Ellipse2D_h
+#define Flower2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/parametricShapes/StarShaped2D.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
 #include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -52,17 +52,17 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Ellipse2D
+  // template class Flower2D
   /**
-   * Description of template class 'Ellipse2D' <p>
+   * Description of template class 'Flower2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any ellipse in the plane.
+   * represents any flower with k-petals in the plane.
    *
    * NB: A backport from <a
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TSpace>
-  class Ellipse2D:  public StarShaped2D<TSpace>
+  class Flower2D:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -75,41 +75,53 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Ellipse2D();
+    ~Flower2D();
     
     /**
      * Constructor. 
-     * @param x0 the x-coordinate of the circle center.
-     * @param y0 the y-coordinate of the circle center.
-     * @param a1 the half big axis of the ellipse.
-     * @param a2 the half small axis of the ellipse.
-     * @param theta the orientation of the ellipse.
+     * @param x0 the x-coordinate of the flower center.
+     * @param y0 the y-coordinate of the flower center.
+     * @param r the radius of the flower.
+     * @param varRadius the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Ellipse2D( const double x0, const double y0, 
-	       const double a0, const double a1, const double theta);
+    Flower2D( const double x0, const double y0, 
+	      const double r,
+	      const double smallr,
+	      const unsigned int k,
+	      const double phi);
 
     /**
      * Constructor. 
-     * @param aPoint the circle center.
-     * @param a1 the half big axis of the ellipse.
-     * @param a2 the half small axis of the ellipse.
-     * @param theta the orientation of the ellipse.
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Ellipse2D(const RealPoint2D &aPoint,
-	      const double a0, const double a1, const double theta);
+    Flower2D(const RealPoint2D &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
 
     /**
      * Constructor. 
-     * @param aPoint the circle center.
-     * @param a1 the half big axis of the ellipse.
-     * @param a2 the half small axis of the ellipse.
-     * @param theta the orientation of the ellipse.
+     * @param aPoint the flower center.
+     * @param r the radius of the flower.
+     * @param smallr the variable small radius of the flower.
+     * @param k the number of flower extremeties.
+     * @param phi the phase of the flower (in radian).
      */
-    Ellipse2D(const Point &aPoint,
-	      const double a0, const double a1, const double theta);
+    Flower2D(const Point &aPoint, 
+	     const double r,
+	     const double smallr,
+	     const unsigned int k,
+	     const double phi);
 
     
-  // ------------- Implementation of 'StarShaped' services ------------------
+    // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
     /**
@@ -118,7 +130,7 @@ namespace DGtal
      */
     Point getLowerBound() const
     {
-      return Point(myCenter[0] - myAxis1, myCenter[1] - myAxis1);
+      return Point(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
     }
 
     /**
@@ -127,7 +139,7 @@ namespace DGtal
      */
     Point getUpperBound() const
     {
-      return Point(myCenter[0] + myAxis1, myCenter[1] + myAxis1);
+      return Point(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
     }
 
     /**
@@ -175,25 +187,29 @@ namespace DGtal
   private:
 
     /**
-     * Center of the circle.
+     * Center of the flower.
      */
     RealPoint2D myCenter;
     
     /**
-     * First axis.
+     * Radius of the flower.
      */
-    double myAxis1;
-
-
-    /**
-     * Second axis.
-     */
-    double myAxis2;
+    double myRadius;
     
     /**
-     * Orientation (radian).
+     * the variable small radius of the flower.
      */
-    double myTheta;
+    double myVarRadius;
+    
+    /**
+     * the number of flower extremeties.
+     */
+    unsigned int myK;
+    
+    /**
+     * the phase of the flower (in radian).
+     */
+    double myPhi;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -218,7 +234,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    Ellipse2D();
+    Flower2D();
 
   private:
 
@@ -227,7 +243,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  Ellipse2D ( const Ellipse2D & other );
+    //  Flower2D ( const Flower2D & other );
 
     /**
      * Assignment.
@@ -235,35 +251,35 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Ellipse2D & operator= ( const Ellipse2D & other );
+    Flower2D & operator= ( const Flower2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Ellipse2D
+  }; // end of class Flower2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Ellipse2D'.
+   * Overloads 'operator<<' for displaying objects of class 'Flower2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Ellipse2D' to write.
+   * @param object the object of class 'Flower2D' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Ellipse2D<T> & object );
+  operator<< ( std::ostream & out, const Flower2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/parametricShapes/Ellipse2D.ih"
+#include "DGtal/shapes/parametric/Flower2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Ellipse2D_h
+#endif // !defined Flower2D_h
 
-#undef Ellipse2D_RECURSES
-#endif // else defined(Ellipse2D_RECURSES)
+#undef Flower2D_RECURSES
+#endif // else defined(Flower2D_RECURSES)

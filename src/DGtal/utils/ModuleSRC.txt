@@ -1,5 +1,0 @@
-
-SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/utils/Clock
-		DGtal/utils/Trace)
-
