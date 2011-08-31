@@ -47,7 +47,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 

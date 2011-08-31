@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/helpers/CShape.h"
+#include "DGtal/shapes/CShape.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -225,7 +225,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/Shapes.ih"
+#include "DGtal/shapes/Shapes.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
