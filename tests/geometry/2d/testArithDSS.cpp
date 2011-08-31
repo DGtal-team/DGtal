@@ -88,15 +88,12 @@ bool testDSS4drawing()
   trace.beginBlock("Add points while it is possible and draw the result");
 
 		DSS4 theDSS4;	
-		Iterator i = contour.begin();	
-		theDSS4.init(i);
-		i++;
+		theDSS4.init( contour.begin() );
 		trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
-		while ( (i!=contour.end())
-					&&(theDSS4.extend(i)) ) {
-			i++;
-		}
+		while ( (theDSS4.end() != contour.end())
+					&&(theDSS4.extend()) ) {}
+
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
 		HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
@@ -107,10 +104,6 @@ bool testDSS4drawing()
   	board << SetMode(domain.styleName(), "Grid")
 				  << domain;		
     board << SetMode("PointVector", "Grid");
-
-//  	board << SetMode(theDSS4.styleName(), "Both") 
-//					<< theDSS4;
-//does not draw the default style
 
   	board << SetMode(theDSS4.styleName(), "Points") 
 					<< theDSS4;
@@ -149,17 +142,15 @@ bool testDSS8drawing()
   // Good Initialisation
   trace.beginBlock("Add points while it is possible and draw the result");
   DSS8 theDSS8;		
-	Iterator i = boundary.begin();
-	theDSS8.init(i);
-	i++;
+	theDSS8.init( boundary.begin() );
+
   trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
 	{
 
-		while ( (i!=boundary.end())
-					&&(theDSS8.extend(i)) ) {
-			i++;
-		}
+		while ( (theDSS8.end()!=boundary.end())
+					&&(theDSS8.extend()) ) {}
+
 	  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
 
@@ -173,12 +164,6 @@ bool testDSS8drawing()
   	board << SetMode(domain.styleName(), "Paving")
 				  << domain;		
     board << SetMode("PointVector", "Both");
-
-
-//  	board << SetMode(theDSS8.styleName(), "Both") 
-//					<< theDSS8;
-//does not work
-
 
   	board << SetMode(theDSS8.styleName(), "Points") 
 					<< theDSS8;
@@ -226,32 +211,29 @@ bool testExtendRetract()
 
 		std::deque<DSS4 > v1,v2;
   	DSS4 newDSS4;
-		Iterator i = contour.begin();
-		newDSS4.init(i);
+		newDSS4.init(contour.begin());
 	  v1.push_back(newDSS4);	 
-		i++;
 
 		//forward scan and store each DSS4
 		trace.info() << "forward scan" << std::endl;
 
-		while ( (i!=contour.end())
-					&&(newDSS4.extend(i)) ) {
+		while ( (newDSS4 != contour.end())
+					&&(newDSS4.extend()) ) {
 	  	v1.push_back(newDSS4);
-			i++;
 		}
 
 		//backward scan
 		trace.info() << "backward scan" << std::endl;
 
+    Iterator i(newDSS4.end()); 
 		i--; 
   	DSS4 reverseDSS4;
 		reverseDSS4.init(i);
 
-		Iterator j = i; j--;
-		while ( (j!=contour.begin())&&(reverseDSS4.extendOppositeEnd(j)) ) {
-			j--;
+		while ( (reverseDSS4.begin()!=contour.begin())
+          &&(reverseDSS4.extendOppositeEnd()) ) {
 		}
-		reverseDSS4.extendOppositeEnd(j);
+		reverseDSS4.extendOppositeEnd(contour.begin());
 
 		trace.info() << "removing" << std::endl;
 
@@ -315,13 +297,10 @@ bool testGMP()
 		contour.push_back(Point(1000000005,1000000002));
 
 		DSS4 theDSS4;
-		Iterator i = contour.begin();
-		theDSS4.init(i);
-		i++;
-		while (i != contour.end()) {
-			theDSS4.extend(i);
-			i++;
-		}
+		theDSS4.init( contour.begin() );
+		while ( (theDSS4.end() != contour.end())
+          &&(theDSS4.extend()) ) {}
+
 	  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
 		Coordinate mu;
@@ -361,70 +340,13 @@ bool testCorner()
 
 
 	DSS8 theDSS8;
-	Iterator i = boundary.begin();
-	theDSS8.init(i);
-	i++;
-	theDSS8.extend(i);
-	i++;
-	return ( !theDSS8.extend(i) );
+	theDSS8.init(boundary.begin());
+	theDSS8.extend();
+	return ( !theDSS8.extend() );
 
 }
 
 
-bool testSmartDSS()
-{
-
-	typedef PointVector<2,int> Point;
-	typedef std::vector<Point>::iterator Iterator;
-	typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
-
-	std::vector<Point> contour;
-	contour.push_back(Point(0,0));
-	contour.push_back(Point(1,0));
-	contour.push_back(Point(1,1));
-	contour.push_back(Point(2,1));
-	contour.push_back(Point(3,1));
-	contour.push_back(Point(3,2));
-	contour.push_back(Point(4,2));
-	contour.push_back(Point(5,2));
-	contour.push_back(Point(6,2));
-	contour.push_back(Point(6,3));
-	contour.push_back(Point(6,4));
-
-  
-  // Adding step
-  trace.beginBlock("extension");
-
-  DSS4 s;
-  s.init( contour.begin() );
-  while ( (s.end()!=contour.end())
-	  &&(s.extend()) ) {} 
-  
-  HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
-  
-  Board2D board;
-  board.setUnit(Board::UCentimeter);
-  
-  board << SetMode(domain.styleName(), "Grid")
-	<< domain;		
-  board << SetMode("PointVector", "Grid");
-  board << SetMode(s.styleName(), "Points") 
-	<< s;
-  board << SetMode(s.styleName(), "BoundingBox") 
-	<< s;
-  
-
-  board.saveEPS("DSS.eps");
-
- trace.info() << s << endl;
- for (DSS4::ConstIterator i = s.begin(); i != s.end(); ++i) {
-   trace.info() << *i << endl;
- }
-
-  trace.endBlock();
-  
-  return true;  
-}
 
 int main(int argc, char **argv)
 {
@@ -442,7 +364,6 @@ int main(int argc, char **argv)
 #ifdef WITH_GMP
 					&& testGMP()
 #endif
-         && testSmartDSS()
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
