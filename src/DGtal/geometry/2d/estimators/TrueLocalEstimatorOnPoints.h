@@ -18,6 +18,7 @@
 
 /**
  * @file TrueLocalEstimatorOnPoints.h
+ * @brief Computes the true quantity to each element of a range associated to a parametric shape.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module TrueLocalEstimatorOnPoints.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
 
 #if defined(TrueLocalEstimatorOnPoints_RECURSES)

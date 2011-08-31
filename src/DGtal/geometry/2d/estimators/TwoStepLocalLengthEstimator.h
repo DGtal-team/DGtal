@@ -26,6 +26,8 @@
  * Header file for module TwoStepLocalLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testL1LengthEstimator.cpp, testLengthEstimators.cpp
  */
 
 #if defined(TwoStepLocalLengthEstimator_RECURSES)
