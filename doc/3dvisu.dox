@@ -6,13 +6,15 @@
 namespace DGtal {
 
 /**
- * @page threeD_visu Viewer3D: a stream mechanism for displaying  3D DGtal objects 
+ * @page threeD_visu Display3D: a stream mechanism for displaying 3D DGtal objects 
  *
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
  * 
  * Table of contents:
- *  -# \ref DGtalGLV_VisualizeSimpleObject
+ *  -# \ref DGtalGLV_Display3D
+ *  -# \ref DGtalGLV_Viewer3D
+ *  -# \ref DGtalGLV_Boas3DTo2D
  *  -# \ref DGtalGLV_VisualizationDigitalSet
  *  -# \ref DGtalGLV_ModeEx 
  *  -# \ref DGtalGLV_Mode  
@@ -22,19 +24,33 @@ namespace DGtal {
  *  -# \ref DGtalGLV_Custom
  *  -# \ref DGtalGLV_CLipping 
  *
- * \section DGtalGLV_VisualizeSimpleObject Viewer3D: simple visualization based on libQGLViewer 
+ *
+  \section DGtalGLV_Display3D Display3D: a stream mechanism from abstract class Display3D
+
+  The semi abstract class Display3D defines the stream mechanism to
+  display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
+  ...). The class Viewer3D and Board2Dto3D implement two different
+  ways to display 3D objects. The first one (Viewer3D), permits an
+  interactive visualisation (based on OpenGL) and the second one
+  (Board2Dto3D) provides 3D visualisation from 2D vectorial display
+  (based on the CAIRO library).
+  
+
+
+ * \section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
+ *  The class Viewer3D inherits from the base class QGLViewer (which
+ *  is based on QGLwidget).  It permits to display simple 3D shapes.
+ *  LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library
+ *  based on QT allowing to access to simple 3D fonctionalities like
+ *  camera moving, mouse, keyboard interaction, clipping plane
+ *  .... etc.
+ *
  *  
- * First to use the Viewer3D stream,  you need to include the following hearders:
+ * First to use the Viewer3D stream, you need to include the following hearders:
  *
  * @code
- #include "DGtal/io/3dViewers/viewer3D.h"
-*  @endcode
-*
- *  LibQGLViewer  ( http://www.libqglviewer.com ) is a C++ library based on QT allowing to access 
- *  to simple 3D fonctionalities like camera moving, mouse, keyboard interaction, clipping plane 
- *  .... etc.   The class Viewer3D inherits from the base class QGLViewer (which is based on QGLwidget). 
- * It permits to display simple 3D shapes. 
- *
+ *  #include "DGtal/io/3dViewers/Viewer3D.h"
+ * @endcode
  *	
  * The following code snippet defines three points and a rectangular
  * domain in Z3. It then displays them in a Viewer3D object. The	
@@ -42,21 +58,18 @@ namespace DGtal {
  *
  *	
  * 
- * The first step to visualize 3D object with Viewer3D is to create a QApplication can be done as follows:
- *
- *
-*
-*
-* and then in the main():
-*
-* @code
+ * The first step to visualize 3D object with Viewer3D is to create a QApplication from the main(): 
+ @code
 using namespace DGtal;
 using namespace Z3i;
 
- QApplication application(argc,argv);
- Viewer3D viewer;
- viewer.show();
- 
+QApplication application(argc,argv);
+Viewer3D viewer;
+viewer.show();
+@endcode
+
+Then we can display some 3D primitives:
+@code
  Point p1( 0, 0, 0 );
  Point p2( 5, 5 ,5 );
  Point p3( 2, 3, 4 );
@@ -64,7 +77,7 @@ using namespace Z3i;
 
  viewer << domain;  
  viewer << p1 << p2 << p3; 
- viewer << << Viewer3D::updateDisplay;
+ viewer << Viewer3D::updateDisplay;
 
 
 * @endcode
@@ -74,11 +87,41 @@ using namespace Z3i;
 * \image html simple3dVisu1.png "Digital point visualization  with Viewer3D." 
 * \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
 *
-*
+@note Note that you can display the camera settings in the console
+(key C) which can be used in Board2Dto3D described in the following.
+
+
+ 
+\section DGtalGLV_Boas3DTo2D Static visualization from Board2Dto3D The
+same visualization can be obtain with the Board2Dto3D class. You just
+need to adapt the camera settings (see example:).
+
+@code
+Board3DTo2D viewer;
+viewer << domain;  
+viewer << p1 << p2 << p3;
+  
+viewer << CameraPosition(2.500000, 2.500000, 16.078199)
+       << CameraDirection(0.000000, 0.000000, -1.000000)
+       << CameraUpVector(0.000000, 1.000000, 0.000000);
+viewer << CameraZNearFar(4.578200, 22.578199);
+viewer.saveCairo("dgtalCairo-1-points.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
+@encode
+
+This example should provides a comparable visualization.
+
+
+
+
+
+
+
+
+
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *
 *
-* The Viewer3Dr class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
+* The Viewer3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
 *
 * @code

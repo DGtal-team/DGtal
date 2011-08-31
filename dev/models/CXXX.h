@@ -50,59 +50,77 @@ namespace YYY
   /////////////////////////////////////////////////////////////////////////////
   // class XXX
   /**
-   * Description of \b concept '\b XXX' <p>
-   * @ingroup Concepts
-   * @brief Aim:
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of XXX
-   * - \t x, \t y	: Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table> 
-   *  <tr> 
-   *    <td class=CName> \b Name </td> 
-   *    <td class=CExpression> \b Expression </td>
-   *    <td class=CRequirements> \b Type requirements </td> 
-   *    <td class=CReturnType> \b Return type </td>
-   *    <td class=CPrecondition> \b Precondition </td> 
-   *    <td class=CSemantics> \b Semantics </td> 
-   *    <td class=CPostCondition> \b Postcondition </td> 
-   *    <td class=CComplexity> \b Complexity </td>
-   *  </tr>
-   *  <tr> 
-   *    <td class=CName>            </td> 
-   *    <td class=CExpression>      </td>
-   *    <td class=CRequirements>    </td> 
-   *    <td class=CReturnType>      </td>
-   *    <td class=CPrecondition>    </td> 
-   *    <td class=CSemantics>       </td> 
-   *    <td class=CPostCondition>   </td> 
-   *    <td class=CComplexity>      </td>
-   *  </tr>
-   *
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   *
-   * <p> Notes <br>
+     Description of \b concept '\b XXX' <p>
+     @ingroup Concepts
+     @brief Aim:
+     
+     <p> Refinement of
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of XXX
+     - \t x, \t y : object of type X
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table> 
+      <tr> 
+        <td class=CName> \b Name </td> 
+        <td class=CExpression> \b Expression </td>
+        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CReturnType> \b Return type </td>
+        <td class=CPrecondition> \b Precondition </td> 
+        <td class=CSemantics> \b Semantics </td> 
+        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CComplexity> \b Complexity </td>
+      </tr>
+      <tr> 
+        <td class=CName>            </td> 
+        <td class=CExpression>      </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+    
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br>
+    
+     <p> Notes <br>
+
+     @tparam T the type that should be a model of XXX.
    */
-  template <typename T>
-  struct XXX
+  template <typename T> 
+  struct XXX // : CoarserConcept<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+    // 1. define first provided types (i.e. inner types), like
+    typedef typename T::InnerType InnerType;
+    // possibly check these types so as to satisfy a concept with
+    BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
+    // 2. then check the presence of static members, operators and methods with
+    BOOST_CONCEPT_USAGE( XXX )
+    {
+      // Static members of type A can be tested with
+      ConceptUtils::sameType( myA, T::staticMember );
+      // Method dummy should take parameter myA of type A and return
+      // something of type B
+      ConceptUtils::sameType( myB, myX.dummy( myA ) );
+      // look at CInteger.h for testing tags.
+    }
     // ------------------------- Private Datas --------------------------------
   private:
+    T myX; // only if T is default constructible.
+    A myA;
+    B myB;
     
     // ------------------------- Internals ------------------------------------
   private:
