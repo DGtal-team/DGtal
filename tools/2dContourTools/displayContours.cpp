@@ -35,8 +35,7 @@
 
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/helpers/Surfaces.h"
-#include "DGtal/helpers/ContourHelper.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 //image
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
