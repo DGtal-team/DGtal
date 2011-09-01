@@ -110,8 +110,8 @@ int main( int argc, char** argv )
   viewer << vox1 << vox2;
   
   viewer << CameraPosition(-2.9, 2.96, 2.64)
-	 << CameraDirection(0.6, -0.43, 0.65)
-	 << CameraUpVector(0.32, 0.900, 0.29);
+   << CameraDirection(0.6, -0.43, 0.65)
+   << CameraUpVector(0.32, 0.900, 0.29);
   viewer<< Viewer3D::updateDisplay;
   return application.exec();
  

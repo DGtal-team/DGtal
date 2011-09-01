@@ -67,7 +67,7 @@ bool testStatistics()
   nbok += (stat.min()==0)  ? 1 : 0; 
  
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -106,7 +106,7 @@ bool testStatisticsSaving()
   nbok += (stat.median()==88)  ? 1 : 0; 
  
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

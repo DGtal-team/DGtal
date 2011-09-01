@@ -142,16 +142,16 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighb
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
   for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
-	++it )
+  it != domain.end();
+  ++it )
     {
       if ( myDomain.isInside( *it ) )
-	{
-	  Vector v( p - *it );
-	  typename Vector::UnsignedComponent n1 = v.norm1();
-	  if ( n1 <= maxNorm1 )
-	    *out_it++ = *it;
-	}
+  {
+    Vector v( p - *it );
+    typename Vector::UnsignedComponent n1 = v.norm1();
+    if ( n1 <= maxNorm1 )
+      *out_it++ = *it;
+  }
     }
 }
 
@@ -180,16 +180,16 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProper
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
   for ( typename LocalDomain::ConstIterator it = domain.begin();
-	it != domain.end();
-	++it )
+  it != domain.end();
+  ++it )
     {
       if ( myDomain.isInside( *it ) )
-	{
-	  Vector v( p - *it );
-	  typename Vector::UnsignedComponent n1 = v.norm1();
-	  if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
-	    *out_it++ = *it;
-	}
+  {
+    Vector v( p - *it );
+    typename Vector::UnsignedComponent n1 = v.norm1();
+    if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
+      *out_it++ = *it;
+  }
     }
 }
 
@@ -232,8 +232,8 @@ template <typename Domain, Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::deprecated::operator<< ( std::ostream & out, 
-		    const DomainMetricAdjacency<Domain,maxNorm1,
-		    Domain::Space::dimension> & object )
+        const DomainMetricAdjacency<Domain,maxNorm1,
+        Domain::Space::dimension> & object )
 {
   object.selfDisplay( out );
   return out;

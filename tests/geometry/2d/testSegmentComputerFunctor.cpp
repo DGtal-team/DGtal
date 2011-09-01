@@ -66,15 +66,15 @@ bool testTangentFromDSS(
   trace.info() << "feeding segment computer " << endl;
 
   typename DSSComputer::ConstIterator i = begin;
-	DSSComputer dss;	
+  DSSComputer dss;  
 
   if (i != end) {
-	  dss.init(i);
+    dss.init(i);
     ++i;
-	  while ( (i!=end)
-				  &&(dss.extend(i)) ) {
-		  ++i;
-	  }
+    while ( (i!=end)
+          &&(dss.extend(i)) ) {
+      ++i;
+    }
   }
 
   trace.info() << dss << endl;
@@ -106,38 +106,38 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   //types
-	typedef PointVector<2,int> Point;
-	typedef std::vector<Point> Range;
-	typedef Range::iterator ConstIterator;
-	typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
-	typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
+  typedef PointVector<2,int> Point;
+  typedef std::vector<Point> Range;
+  typedef Range::iterator ConstIterator;
+  typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
+  typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
 
   //input points
-	Range curve4;
-	curve4.push_back(Point(0,0));
-	curve4.push_back(Point(1,0));
-	curve4.push_back(Point(1,1));
-	curve4.push_back(Point(2,1));
-	curve4.push_back(Point(3,1));
-	curve4.push_back(Point(3,2));
-	curve4.push_back(Point(4,2));
-	curve4.push_back(Point(5,2));
-	curve4.push_back(Point(6,2));
-	curve4.push_back(Point(6,3));
-	curve4.push_back(Point(7,3));
+  Range curve4;
+  curve4.push_back(Point(0,0));
+  curve4.push_back(Point(1,0));
+  curve4.push_back(Point(1,1));
+  curve4.push_back(Point(2,1));
+  curve4.push_back(Point(3,1));
+  curve4.push_back(Point(3,2));
+  curve4.push_back(Point(4,2));
+  curve4.push_back(Point(5,2));
+  curve4.push_back(Point(6,2));
+  curve4.push_back(Point(6,3));
+  curve4.push_back(Point(7,3));
 
-	Range curve8;
-	curve8.push_back(Point(0,0));
-	curve8.push_back(Point(1,1));
-	curve8.push_back(Point(2,1));
-	curve8.push_back(Point(3,2));
-	curve8.push_back(Point(4,2));
-	curve8.push_back(Point(5,2));
-	curve8.push_back(Point(6,3));
-	curve8.push_back(Point(7,3));
-	curve8.push_back(Point(8,4));
-	curve8.push_back(Point(9,4));
-	curve8.push_back(Point(10,5));
+  Range curve8;
+  curve8.push_back(Point(0,0));
+  curve8.push_back(Point(1,1));
+  curve8.push_back(Point(2,1));
+  curve8.push_back(Point(3,2));
+  curve8.push_back(Point(4,2));
+  curve8.push_back(Point(5,2));
+  curve8.push_back(Point(6,3));
+  curve8.push_back(Point(7,3));
+  curve8.push_back(Point(8,4));
+  curve8.push_back(Point(9,4));
+  curve8.push_back(Point(10,5));
 
   //tests
   bool res = testTangentFromDSS<DSS4>(curve4.begin(), curve4.end())

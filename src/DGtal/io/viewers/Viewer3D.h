@@ -207,7 +207,7 @@ protected:
   
   
   /**
-   * Draw a linel by using the 	[gluCylinder] primitive.
+   * Draw a linel by using the   [gluCylinder] primitive.
    * 
    *
    **/
@@ -217,7 +217,7 @@ protected:
  
  
   /**
-   * Draw a linel by using the 	[gluCSphere] primitive.
+   * Draw a linel by using the   [gluCSphere] primitive.
    * 
    *
    **/

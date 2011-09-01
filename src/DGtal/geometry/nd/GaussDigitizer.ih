@@ -67,7 +67,7 @@ inline
 void 
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
-	typename RealVector::Component gridStep )
+  typename RealVector::Component gridStep )
 {
   myGridSteps = RealVector::diagonal( gridStep );
   myLowerPoint = floor( xLow );
@@ -79,7 +79,7 @@ inline
 void 
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
-	const RealVector & aGridSteps )
+  const RealVector & aGridSteps )
 {
   myGridSteps = aGridSteps;
   myLowerPoint = floor( xLow );
@@ -249,7 +249,7 @@ template <typename TSpace, typename TEuclideanShape>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GaussDigitizer<TSpace,TEuclideanShape> & object )
+      const GaussDigitizer<TSpace,TEuclideanShape> & object )
 {
   object.selfDisplay( out );
   return out;

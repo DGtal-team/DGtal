@@ -55,7 +55,7 @@ int main()
 
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( myDomain.begin(),
-	      myDomain.end(),
-	      std::ostream_iterator<Point4D> ( std::cout, " " ) );
+        myDomain.end(),
+        std::ostream_iterator<Point4D> ( std::cout, " " ) );
 }
 /** @ingroup Tests **/

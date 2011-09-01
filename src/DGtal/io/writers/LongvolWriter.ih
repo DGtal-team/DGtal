@@ -42,7 +42,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage,
-				  const Value & minV, const Value & maxV) throw(DGtal::IOException)
+          const Value & minV, const Value & maxV) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   
@@ -77,15 +77,15 @@ LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage
       //We scan the domain instead of the image because we cannot
       //trust the image container Iterator
       for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-	  it!=itend;
-	  ++it)
-	{
-	  val = aImage( (*it) );
-	  col = colormap( val );
-	  longval = (DGtal::uint64_t) (((int)col.red()+(int)col.green() + (int)col.blue())/3);
-	  
-	  write_word(out,longval);
-	}
+    it!=itend;
+    ++it)
+  {
+    val = aImage( (*it) );
+    col = colormap( val );
+    longval = (DGtal::uint64_t) (((int)col.red()+(int)col.green() + (int)col.blue())/3);
+    
+    write_word(out,longval);
+  }
       
       out.close();
 

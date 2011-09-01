@@ -147,7 +147,7 @@ namespace DGtal
      */
     template <typename PointInputIterator>
     Expander( const Object & object,
-	      PointInputIterator b, PointInputIterator e );
+        PointInputIterator b, PointInputIterator e );
 
 
     // ----------------------- Expansion services ------------------------------

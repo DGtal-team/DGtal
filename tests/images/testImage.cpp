@@ -74,8 +74,8 @@ bool testSimpleImage()
 
   trace.beginBlock("Test of built-in iterators");
   for ( Image::ConstIterator it = myImage.begin();
-	it != myImage.end();
-	++it)
+  it != myImage.end();
+  ++it)
     trace.info() << myImage(it) <<" ";
   trace.info()<<std::endl;
   trace.endBlock();

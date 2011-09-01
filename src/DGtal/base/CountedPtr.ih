@@ -75,7 +75,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const CountedPtr<T> & object )
+      const CountedPtr<T> & object )
 {
   object.selfDisplay( out );
   return out;

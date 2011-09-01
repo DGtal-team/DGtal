@@ -60,7 +60,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(const ConstIterator& it)
 {
-	init(it);
+  init(it);
 }
 
 /**
@@ -72,15 +72,15 @@ inline
 void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
 
-	myF = it;
-	myL = it;
+  myF = it;
+  myL = it;
 
-	XYIteratorAdapter<TIterator> XYit(it); 
-	myXYalgo.init(XYit);
-	XZIteratorAdapter<TIterator> XZit(it); 
-	myXZalgo.init(XZit);
-	YZIteratorAdapter<TIterator> YZit(it); 
-	myYZalgo.init(YZit);
+  XYIteratorAdapter<TIterator> XYit(it); 
+  myXYalgo.init(XYit);
+  XZIteratorAdapter<TIterator> XZit(it); 
+  myXZalgo.init(XZit);
+  YZIteratorAdapter<TIterator> YZit(it); 
+  myYZalgo.init(YZit);
 }
 
 /**
@@ -91,9 +91,9 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
-			const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
-					myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
-					myF(other.myF), myL(other.myL) {}
+      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
+          myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
+          myF(other.myF), myL(other.myL) {}
 
 /**
  * Assignment.
@@ -105,14 +105,14 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
-			const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) {
-	myXYalgo = other.myXYalgo;
-	myXZalgo = other.myXZalgo; 
-	myYZalgo = other.myYZalgo;
-	myF = other.myF;
-	myL = other.myL;
+      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) {
+  myXYalgo = other.myXYalgo;
+  myXZalgo = other.myXZalgo; 
+  myYZalgo = other.myYZalgo;
+  myF = other.myF;
+  myL = other.myL;
 
-	return *this;
+  return *this;
 }
 
 /**
@@ -127,12 +127,12 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
-	const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
-	return (  (	myXYalgo == other.myXYalgo ) &&
-						(	myXZalgo == other.myXZalgo ) &&
-						(	myYZalgo == other.myYZalgo ) &&
-						(*myF == *other.myF) &&  
-						(*myL == *other.myL) );
+  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
+  return (  (  myXYalgo == other.myXYalgo ) &&
+            (  myXZalgo == other.myXZalgo ) &&
+            (  myYZalgo == other.myYZalgo ) &&
+            (*myF == *other.myF) &&  
+            (*myL == *other.myL) );
 }
 
 /**
@@ -145,8 +145,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
-				const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const {
-	return (!(*this == other));
+        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const {
+  return (!(*this == other));
 }
 
 
@@ -169,32 +169,32 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const ConstIte
 {
 
 //projection on xy-plane
-	XYIteratorAdapter<TIterator> XYit(it); 
-	bool XYflag = true;
-	if (myXYalgo.getFrontPoint() != *XYit) {
-		XYflag = myXYalgo.isExtendable(XYit);
-	}
+  XYIteratorAdapter<TIterator> XYit(it); 
+  bool XYflag = true;
+  if (myXYalgo.getFrontPoint() != *XYit) {
+    XYflag = myXYalgo.isExtendable(XYit);
+  }
 //projection on xz-plane
-	XZIteratorAdapter<TIterator> XZit(it); 
-	bool XZflag = true;
-	if (myXZalgo.getFrontPoint() != *XZit) {
-		XZflag = myXZalgo.isExtendable(XZit);
-	}
+  XZIteratorAdapter<TIterator> XZit(it); 
+  bool XZflag = true;
+  if (myXZalgo.getFrontPoint() != *XZit) {
+    XZflag = myXZalgo.isExtendable(XZit);
+  }
 //projection on yz-plane
-	YZIteratorAdapter<TIterator> YZit(it); 
-	bool YZflag = true;
-	if (myYZalgo.getFrontPoint() != *YZit) {
-		YZflag = myYZalgo.isExtendable(YZit);
-	}
+  YZIteratorAdapter<TIterator> YZit(it); 
+  bool YZflag = true;
+  if (myYZalgo.getFrontPoint() != *YZit) {
+    YZflag = myYZalgo.isExtendable(YZit);
+  }
 
 
-	if ( (XYflag)&&(XZflag)&&(YZflag) ) {
-		myXYalgo.extend(XYit);
-		myXZalgo.extend(XZit);
-		myYZalgo.extend(YZit);
-		myL = it;
-		return true;
-	} else return false;
+  if ( (XYflag)&&(XZflag)&&(YZflag) ) {
+    myXYalgo.extend(XYit);
+    myXZalgo.extend(XZit);
+    myYZalgo.extend(YZit);
+    myL = it;
+    return true;
+  } else return false;
 }
 
 
@@ -209,9 +209,9 @@ inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 {
-	return ( (myXYalgo.isValid())&&
-					 (myXZalgo.isValid())&&
-			 	   (myYZalgo.isValid()) );
+  return ( (myXYalgo.isValid())&&
+           (myXZalgo.isValid())&&
+            (myYZalgo.isValid()) );
 }
 
 
@@ -227,89 +227,89 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::getParameters(DGtal::PointVector<3,TInteger>& direction,
-									   DGtal::PointVector<3,double>& intercept,
-										 DGtal::PointVector<3,double>& thickness) const
+     ::getParameters(DGtal::PointVector<3,TInteger>& direction,
+                     DGtal::PointVector<3,double>& intercept,
+                     DGtal::PointVector<3,double>& thickness) const
 {
 
-	//let us take the pair of projection planes for which
-	//the common coordinate of the main vector cannot be 0
+  //let us take the pair of projection planes for which
+  //the common coordinate of the main vector cannot be 0
 
-	if (myXYalgo.getB() != 0) { //XY-plane, XZ-plane
+  if (myXYalgo.getB() != 0) { //XY-plane, XZ-plane
 
-		Integer a1 = myXYalgo.getB();
-		Integer b1 = myXYalgo.getA();
-		Integer a2 = myXZalgo.getB();
-		Integer c1 = myXZalgo.getA();
+    Integer a1 = myXYalgo.getB();
+    Integer b1 = myXYalgo.getA();
+    Integer a2 = myXZalgo.getB();
+    Integer c1 = myXZalgo.getA();
 
-		direction = Point3d(a1*a2,a2*b1,a1*c1);	
+    direction = Point3d(a1*a2,a2*b1,a1*c1);  
 
-		Integer mu1 = myXYalgo.getMu();
-		Integer mu2 = myXZalgo.getMu();
-		double y = (double) -NumberTraits<TInteger>::castToInt64_t(mu1) / a1;
-		double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / a2;
-		intercept = PointD3d(0,y,z);
+    Integer mu1 = myXYalgo.getMu();
+    Integer mu2 = myXZalgo.getMu();
+    double y = (double) -NumberTraits<TInteger>::castToInt64_t(mu1) / a1;
+    double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / a2;
+    intercept = PointD3d(0,y,z);
 
-		Integer omega1 = myXYalgo.getOmega()-1;
-		Integer omega2 = myXZalgo.getOmega()-1;
-		double ty = (double) -NumberTraits<TInteger>::castToInt64_t(omega1) / a1;
-		double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / a2;
-		thickness = PointD3d(0,ty,tz);
+    Integer omega1 = myXYalgo.getOmega()-1;
+    Integer omega2 = myXZalgo.getOmega()-1;
+    double ty = (double) -NumberTraits<TInteger>::castToInt64_t(omega1) / a1;
+    double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / a2;
+    thickness = PointD3d(0,ty,tz);
 
-	} else {                     
+  } else {                     
 
-		if (myXYalgo.getA() != 0) {//XY-plane, YZ-plane
+    if (myXYalgo.getA() != 0) {//XY-plane, YZ-plane
 
-			Integer a1 = myXYalgo.getB();
-			Integer b1 = myXYalgo.getA();
-			Integer b2 = myYZalgo.getB();
-			Integer c2 = myYZalgo.getA();
+      Integer a1 = myXYalgo.getB();
+      Integer b1 = myXYalgo.getA();
+      Integer b2 = myYZalgo.getB();
+      Integer c2 = myYZalgo.getA();
 
-			direction = Point3d(b1*a1,b1*b2,b2*c2);
+      direction = Point3d(b1*a1,b1*b2,b2*c2);
 
-			Integer mu1 = myXYalgo.getMu();
-			Integer mu2 = myYZalgo.getMu();
-			double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
-			double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
-			intercept = PointD3d(x,0,z);
+      Integer mu1 = myXYalgo.getMu();
+      Integer mu2 = myYZalgo.getMu();
+      double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
+      double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
+      intercept = PointD3d(x,0,z);
 
-			Integer omega1 = myXYalgo.getOmega()-1;
-			Integer omega2 = myYZalgo.getOmega()-1;
-			double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
-			double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
-			thickness = PointD3d(tx,0,tz);
+      Integer omega1 = myXYalgo.getOmega()-1;
+      Integer omega2 = myYZalgo.getOmega()-1;
+      double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
+      double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
+      thickness = PointD3d(tx,0,tz);
 
 
-		} else {                  
+    } else {                  
 
-			if (myYZalgo.getA() != 0) {//YZ-plane, XZ-plane
+      if (myYZalgo.getA() != 0) {//YZ-plane, XZ-plane
 
-				Integer b2 = myYZalgo.getB();
-				Integer c2 = myYZalgo.getA();
-				Integer a2 = myXZalgo.getB();
-				Integer c1 = myXZalgo.getA();
+        Integer b2 = myYZalgo.getB();
+        Integer c2 = myYZalgo.getA();
+        Integer a2 = myXZalgo.getB();
+        Integer c1 = myXZalgo.getA();
 
-				direction = Point3d(c2*a2,c1*b2,c1*c2);	
+        direction = Point3d(c2*a2,c1*b2,c1*c2);  
 
-				Integer mu1 = myYZalgo.getMu();
-				Integer mu2 = myXZalgo.getMu();
-				double y = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / c2;
-				double x = (double) NumberTraits<TInteger>::castToInt64_t(mu2) / c1;
-				intercept = PointD3d(x,y,0);
+        Integer mu1 = myYZalgo.getMu();
+        Integer mu2 = myXZalgo.getMu();
+        double y = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / c2;
+        double x = (double) NumberTraits<TInteger>::castToInt64_t(mu2) / c1;
+        intercept = PointD3d(x,y,0);
 
-				Integer omega1 = myYZalgo.getOmega()-1;
-				Integer omega2 = myXZalgo.getOmega()-1;
-				double ty = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / c2;
-				double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega2) / c1;
-				thickness = PointD3d(tx,ty,0);
+        Integer omega1 = myYZalgo.getOmega()-1;
+        Integer omega2 = myXZalgo.getOmega()-1;
+        double ty = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / c2;
+        double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega2) / c1;
+        thickness = PointD3d(tx,ty,0);
 
-			} else {//degenerated case
-				direction = Point3d(0,0,0);		
-				intercept = PointD3d(0,0,0);
-				thickness = PointD3d(0,0,0);		
-			}
-		} 
-	}
+      } else {//degenerated case
+        direction = Point3d(0,0,0);    
+        intercept = PointD3d(0,0,0);
+        thickness = PointD3d(0,0,0);    
+      }
+    } 
+  }
 
 }
 /**
@@ -338,11 +338,11 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::os
   
   out << "[ArithmeticalDSS3d]" <<  endl;
   out << "[XYprojection]" <<  endl;
-	out << myXYalgo <<  endl;
+  out << myXYalgo <<  endl;
   out << "[XZprojection]" <<  endl;
-	out << myXZalgo <<  endl;
+  out << myXZalgo <<  endl;
   out << "[YZprojection]" <<  endl;
-	out << myYZalgo <<  endl;
+  out << myYZalgo <<  endl;
   out << "[End ArithmeticalDSS3d]" <<  endl;
   
 }
@@ -360,7 +360,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsPointsDisplay3D( Display3D & display ) const
+     ::selfDrawAsPointsDisplay3D( Display3D & display ) const
 {
 
 
@@ -375,24 +375,24 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
   // Draw a linking polygonal line if the voxels are drawn as points. 
   if(display.getMode("PointVector")=="Grid")
     {
-			ConstIterator k = myF;
-			Point3d prevp = *k;
-			double xprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[0]);
-			double yprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[1]);
-			double zprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[2]);
-			++k;
-			for ( ; k != end; ++k) {
-				Point3d p = *k;
-				double xp = (double) NumberTraits<TInteger>::castToInt64_t(p[0]);
-				double yp = (double) NumberTraits<TInteger>::castToInt64_t(p[1]);
-				double zp = (double) NumberTraits<TInteger>::castToInt64_t(p[2]);
-				display.addLine(xprevp,yprevp,zprevp,
-											 xp,yp,zp,
-											 Color(0,250,0));
-				xprevp = xp;
-				yprevp = yp;
-				zprevp = zp;
-			}
+      ConstIterator k = myF;
+      Point3d prevp = *k;
+      double xprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[0]);
+      double yprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[1]);
+      double zprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[2]);
+      ++k;
+      for ( ; k != end; ++k) {
+        Point3d p = *k;
+        double xp = (double) NumberTraits<TInteger>::castToInt64_t(p[0]);
+        double yp = (double) NumberTraits<TInteger>::castToInt64_t(p[1]);
+        double zp = (double) NumberTraits<TInteger>::castToInt64_t(p[2]);
+        display.addLine(xprevp,yprevp,zprevp,
+                       xp,yp,zp,
+                       Color(0,250,0));
+        xprevp = xp;
+        yprevp = yp;
+        zprevp = zp;
+      }
     }
 
 }
@@ -401,125 +401,125 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const
+     ::selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const
 {
 
-	//get DSS parameters
-	Vector3d v; //direction vector
-	PointD3d mu; //intercept
-	PointD3d omega; //thickness
-	getParameters(v,mu,omega);
+  //get DSS parameters
+  Vector3d v; //direction vector
+  PointD3d mu; //intercept
+  PointD3d omega; //thickness
+  getParameters(v,mu,omega);
 
-	//casting coordinates of v in double
-	VectorD3d u = VectorD3d(
-	(double) NumberTraits<Integer>::castToInt64_t(v[0]), 
-	(double) NumberTraits<Integer>::castToInt64_t(v[1]), 
-	(double) NumberTraits<Integer>::castToInt64_t(v[2]) ); 
-	//L2 norm of u
-	double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+  //casting coordinates of v in double
+  VectorD3d u = VectorD3d(
+  (double) NumberTraits<Integer>::castToInt64_t(v[0]), 
+  (double) NumberTraits<Integer>::castToInt64_t(v[1]), 
+  (double) NumberTraits<Integer>::castToInt64_t(v[2]) ); 
+  //L2 norm of u
+  double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
 
-	//first and last points
-	PointD3d f = PointD3d(
-	(double) NumberTraits<Integer>::castToInt64_t((*myF)[0]), 
-	(double) NumberTraits<Integer>::castToInt64_t((*myF)[1]), 
-	(double) NumberTraits<Integer>::castToInt64_t((*myF)[2]) ); 
-	PointD3d l = PointD3d(
-	(double) NumberTraits<Integer>::castToInt64_t((*myL)[0]), 
-	(double) NumberTraits<Integer>::castToInt64_t((*myL)[1]), 
-	(double) NumberTraits<Integer>::castToInt64_t((*myL)[2]) ); 
+  //first and last points
+  PointD3d f = PointD3d(
+  (double) NumberTraits<Integer>::castToInt64_t((*myF)[0]), 
+  (double) NumberTraits<Integer>::castToInt64_t((*myF)[1]), 
+  (double) NumberTraits<Integer>::castToInt64_t((*myF)[2]) ); 
+  PointD3d l = PointD3d(
+  (double) NumberTraits<Integer>::castToInt64_t((*myL)[0]), 
+  (double) NumberTraits<Integer>::castToInt64_t((*myL)[1]), 
+  (double) NumberTraits<Integer>::castToInt64_t((*myL)[2]) ); 
 
-	if (n != 0) {
+  if (n != 0) {
 
-		//last coefficient of the normal plane to the DSS direction
-		//passing trough f and l
-		double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
-		double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
+    //last coefficient of the normal plane to the DSS direction
+    //passing trough f and l
+    double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
+    double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
 
-		//omega masks
-		PointD3d omega1, omega2;
-		if (omega[0] == 0) {
-			omega1 = PointD3d(0,omega[1],0);
-			omega2 = PointD3d(0,0,omega[2]);
-		} else {
-			if (omega[1] == 0) {
-				omega1 = PointD3d(omega[0],0,0);
-				omega2 = PointD3d(0,0,omega[2]);
-			} else {//omega[2] == 0
-				omega1 = PointD3d(omega[0],0,0);
-				omega2 = PointD3d(0,omega[1],0);
-			}
-		}
+    //omega masks
+    PointD3d omega1, omega2;
+    if (omega[0] == 0) {
+      omega1 = PointD3d(0,omega[1],0);
+      omega2 = PointD3d(0,0,omega[2]);
+    } else {
+      if (omega[1] == 0) {
+        omega1 = PointD3d(omega[0],0,0);
+        omega2 = PointD3d(0,0,omega[2]);
+      } else {//omega[2] == 0
+        omega1 = PointD3d(omega[0],0,0);
+        omega2 = PointD3d(0,omega[1],0);
+      }
+    }
 
-		double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
-		double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
-		double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
-		double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
+    double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
+    double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
+    double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
+    double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
 
-		//4 lines
-		PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
-														mu[1] - ( (m1+df)*u[1] )/n, 
-														mu[2] - ( (m1+df)*u[2] )/n ); 
+    //4 lines
+    PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n, 
+                            mu[1] - ( (m1+df)*u[1] )/n, 
+                            mu[2] - ( (m1+df)*u[2] )/n ); 
 
-		PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n, 
-														mu[1] - ( (m1+dl)*u[1] )/n, 
-														mu[2] - ( (m1+dl)*u[2] )/n ); 
+    PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n, 
+                            mu[1] - ( (m1+dl)*u[1] )/n, 
+                            mu[2] - ( (m1+dl)*u[2] )/n ); 
 
-			display.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
-										 Color(250,0,0));
+      display.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
+                     Color(250,0,0));
 
-		PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
-														(mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
-														(mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
+    PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
+                            (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
+                            (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
 
-		PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
-														(mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
-														(mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
+    PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
+                            (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
+                            (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
 
-			display.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
-										 Color(250,0,0));
+      display.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
+                     Color(250,0,0));
 
-		PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
-														(mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
-														(mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n ); 
+    PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
+                            (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
+                            (mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n ); 
 
-		PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n, 
-														(mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
-														(mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
+    PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n, 
+                            (mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n, 
+                            (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
 
-			display.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
-										 Color(250,0,0));
+      display.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
+                     Color(250,0,0));
 
-		PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
-														(mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
-														(mu[2]+omega[2]) - ( (m4+df)*u[2] )/n ); 
+    PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
+                            (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
+                            (mu[2]+omega[2]) - ( (m4+df)*u[2] )/n ); 
 
-		PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n, 
-														(mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
-														(mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
+    PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n, 
+                            (mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n, 
+                            (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
 
-			display.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
-										 Color(250,0,0));
+      display.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
+                     Color(250,0,0));
 
-		//two end facets
-		display.addQuad(pf[0],pf[1],pf[2],
-									 pf2[0],pf2[1],pf2[2],
-									 pf4[0],pf4[1],pf4[2],
-									 pf3[0],pf3[1],pf3[2],
-									 Color(250,0,0));
-		display.addQuad(pl[0],pl[1],pl[2],
-									 pl2[0],pl2[1],pl2[2],
-									 pl4[0],pl4[1],pl4[2],
-									 pl3[0],pl3[1],pl3[2],
-									 Color(250,0,0));
+    //two end facets
+    display.addQuad(pf[0],pf[1],pf[2],
+                   pf2[0],pf2[1],pf2[2],
+                   pf4[0],pf4[1],pf4[2],
+                   pf3[0],pf3[1],pf3[2],
+                   Color(250,0,0));
+    display.addQuad(pl[0],pl[1],pl[2],
+                   pl2[0],pl2[1],pl2[2],
+                   pl4[0],pl4[1],pl4[2],
+                   pl3[0],pl3[1],pl3[2],
+                   Color(250,0,0));
 
-	}
+  }
 
 /* else { //n == 0
 
-			display.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
-										 Color(250,0,0));
+      display.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
+                     Color(250,0,0));
 
-	}*/
+  }*/
 
 
 }
@@ -528,16 +528,16 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-		 ::selfDrawDisplay3D( Display3D & display ) const
+     ::selfDrawDisplay3D( Display3D & display ) const
 {
   std::string mode = display.getMode( styleName() );
   if ( mode == "BoundingBox" )
     selfDrawAsBoundingBoxDisplay3D( display );
   else if ( mode == "Points" )
-	  selfDrawAsPointsDisplay3D(display);
+    selfDrawAsPointsDisplay3D(display);
   else if ( ( mode == "" ) )
     {
-	  	selfDrawAsPointsDisplay3D(display);
+      selfDrawAsPointsDisplay3D(display);
     }
 
 }

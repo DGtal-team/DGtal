@@ -106,7 +106,7 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-			
+      
     typedef TValue Value;
     typedef TDomain Domain;
 
@@ -122,7 +122,7 @@ namespace DGtal
     typedef typename vector<Value>::const_iterator ConstIterator;
 
     ImageContainerBySTLVector(const Point &aPointA,
-			      const Point &aPointB );
+            const Point &aPointB );
 
     ~ImageContainerBySTLVector();
 
@@ -267,15 +267,15 @@ namespace DGtal
        * @param aMap pointer to the imageContainer
        */
       SpanIterator( const Point & p ,
-		    const Dimension aDim ,
-		    ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+        const Dimension aDim ,
+        ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
-	myPos = aMap->linearized(p);
+  myPos = aMap->linearized(p);
 
-	//We compute the myShift quantity
-	myShift = 1;
-	for (unsigned int k = 0; k < myDimension  ; k++)
-	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
+  //We compute the myShift quantity
+  myShift = 1;
+  for (unsigned int k = 0; k < myDimension  ; k++)
+    myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
       }
 
 
@@ -287,7 +287,7 @@ namespace DGtal
       inline 
       void setValue(const Value aVal)
       {
-	(*myMap)[ myPos ] = aVal;
+  (*myMap)[ myPos ] = aVal;
       }
 
       /**
@@ -298,7 +298,7 @@ namespace DGtal
       inline
       const Value & operator*() 
       {
-	return (*myMap)[ myPos ];
+  return (*myMap)[ myPos ];
       }
 
       /**
@@ -309,7 +309,7 @@ namespace DGtal
       inline
       bool operator== ( const SpanIterator &it ) const
       {
-	return ( myPos == it.myPos );
+  return ( myPos == it.myPos );
       }
 
       /**
@@ -320,7 +320,7 @@ namespace DGtal
       inline
       bool operator!= ( const SpanIterator &it ) const
       {
-	return ( myPos != it.myPos );
+  return ( myPos != it.myPos );
       }
 
       /**
@@ -330,7 +330,7 @@ namespace DGtal
       inline
       void next()
       {
-	myPos += myShift;
+  myPos += myShift;
       }
 
       /**
@@ -340,8 +340,8 @@ namespace DGtal
       inline
       void prev()
       {
-	ASSERT((long int) myPos - myShift > 0);
-	myPos -= myShift;
+  ASSERT((long int) myPos - myShift > 0);
+  myPos -= myShift;
       }
 
       /**
@@ -351,8 +351,8 @@ namespace DGtal
       inline
       SpanIterator &operator++()
       {
-	this->next();
-	return *this;
+  this->next();
+  return *this;
       }
 
       /**
@@ -362,9 +362,9 @@ namespace DGtal
       inline
       SpanIterator &operator++ ( int )
       {
-	SpanIterator tmp = *this;
-	++*this;
-	return tmp;
+  SpanIterator tmp = *this;
+  ++*this;
+  return tmp;
       }
 
       /**
@@ -374,8 +374,8 @@ namespace DGtal
       inline
       SpanIterator &operator--()
       {
-	this->prev();
-	return *this;
+  this->prev();
+  return *this;
       }
 
       /**
@@ -385,9 +385,9 @@ namespace DGtal
       inline
       SpanIterator &operator-- ( int )
       {
-	SpanIterator tmp = *this;
-	--*this;
-	return tmp;
+  SpanIterator tmp = *this;
+  --*this;
+  return tmp;
       }
 
     private:
@@ -483,8 +483,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColorRGBi(60, 60, 60);
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+  aBoard.setPenColorRGBi(60, 60, 60);
+  aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       }
     };
 

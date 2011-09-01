@@ -74,24 +74,24 @@ bool testSpanIterators()
     //We process a 1D slice
     trace.info()<<"Slice dim 0 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,0), itend = myImageV.spanEnd(c,0);
-	  it != itend;
-	  ++it)
+    it != itend;
+    ++it)
       trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
     
     //We process a 1D slice
     trace.info()<<"Slice dim 1 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
-	  it != itend;
-	  ++it)
+    it != itend;
+    ++it)
       trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
   
     //We process a 1D slice
     trace.info()<<"Slice dim 2 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,2), itend = myImageV.spanEnd(c,2);
-	  it != itend;
-	  ++it)
+    it != itend;
+    ++it)
       trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
   
@@ -99,15 +99,15 @@ bool testSpanIterators()
     //We process a 1D slice to set a value
     trace.info()<<"SetValue Slice dim 1 "<<endl;
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
-	  it != itend;
-	  ++it)
+    it != itend;
+    ++it)
       myImageV.setValue(it, 12);
     
     //We check the a 1D slice
     trace.info()<<"Check Slice dim 1 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
-	  it != itend;
-	  ++it)
+    it != itend;
+    ++it)
       trace.info() << myImageV(it)<<" ";
     trace.info() << endl;
   
