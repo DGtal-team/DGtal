@@ -50,9 +50,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetBoundary
   /**
-   * Description of template class 'DigitalSetBoundary' <p> \brief
-   * Aim: A model of DigitalSurfaceContainer which defines the digital
-   * surface as the boundary of a given digital set. 
+     Description of template class 'DigitalSetBoundary' <p> \brief
+     Aim: A model of DigitalSurfaceContainer which defines the digital
+     surface as the boundary of a given digital set. 
+     
+     @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
+     for the cellular grid space.
+     
+     @tparam TDigitalSet a model of CDigitalSet: the type chosen for
+     the set of digital points.
    */
   template <typename TKSpace, typename TDigitalSet>
   class DigitalSetBoundary
@@ -103,7 +109,7 @@ namespace DGtal
       /// @return the current surfel on which the tracker is.
       const Surfel & current() const;
       /// @return the orthogonal direction to the current surfel.
-      Direction orthDir() const;
+      Dimension orthDir() const;
 
       /**
 	 Moves the tracker to the given valid surfel.
@@ -128,7 +134,7 @@ namespace DGtal
 	 @return the move code (n=0-3). When 0: no adjacent surfel,
 	 otherwise 1-3: adjacent surfel is n-th follower.
       */
-      uint8 adjacent( Surfel & s, Direction d, bool pos );
+      uint8_t adjacent( Surfel & s, Dimension d, bool pos );
       
     private:
       /// a reference to the digital surface container on which is the
@@ -213,14 +219,21 @@ namespace DGtal
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalSetBoundary'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalSetBoundary' to write.
-   * @return the output stream after the writing.
+     Overloads 'operator<<' for displaying objects of class 'DigitalSetBoundary'.
+     @param out the output stream where the object is written.
+     @param object the object of class 'DigitalSetBoundary' to write.
+     @return the output stream after the writing.
+
+     @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
+     for the cellular grid space.
+     
+     @tparam TDigitalSet a model of CDigitalSet: the type chosen for
+     the set of digital points.
    */
-  template <typename T>
+  template <typename TKSpace, typename TDigitalSet>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetBoundary<T> & object );
+  operator<< ( std::ostream & out, 
+	       const DigitalSetBoundary<TKSpace, TDigitalSet> & object );
 
 } // namespace DGtal
 

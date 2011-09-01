@@ -57,6 +57,10 @@ namespace DGtal
      with adjacency relation between these cells.
 
      Proxy class to a DigitalSurfaceContainer.
+
+     @tparam TDigitalSurfaceContainer any model of
+     CDigitalSurfaceContainer: the concrete representation chosen for
+     the digital surface.
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -175,7 +179,7 @@ namespace DGtal
    * @param object the object of class 'DigitalSurface' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TDigitalSurfaceContainer>
   std::ostream&
   operator<< ( std::ostream & out, const DigitalSurface<T> & object );
 
