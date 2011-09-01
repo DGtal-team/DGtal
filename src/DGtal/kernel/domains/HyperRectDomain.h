@@ -42,8 +42,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/io/Display3D.h"
-
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -52,6 +50,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/Display3D.h"
 
 
 
