@@ -66,8 +66,8 @@ double domainIteratorScan(const Image &aImage, const Domain &aDomain)
   double timer;
 
   trace.beginBlock( "Domain iterator simple scan ..." );
-  for ( typename Domain::ConstIterator it = aDomain.range().begin(),
-      itend = aDomain.range().end(); it != itend; ++it)
+  for ( typename Domain::ConstIterator it = aDomain.begin(),
+      itend = aDomain.end(); it != itend; ++it)
     cpt += (long int) aImage( (*it) );
 
   timer =  trace.endBlock();

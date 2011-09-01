@@ -77,10 +77,10 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t X should have a static \c dimension. </td>
-     <td class=CExpression>      \t x.dimension </td> 
+     <td class=CName>            \t x should have a begin method. </td>
+     <td class=CExpression>      \t x.begin </td> 
      <td class=CRequirements>    static member has type \t Dimension </td>
-     <td class=CReturnType>      </td>
+     <td class=CReturnType>      ConstIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -94,8 +94,7 @@ namespace DGtal
     
      <p> Notes <br>
 
-     @tparam T the type that is checked. T should be a model of
-     CConstRange.
+     @tparam T the type that is checked. T should be a model of CConstRange.
 
    */
   template <typename T>
@@ -111,11 +110,10 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE(CConstRange)
     {
-      T r(i);
-      ConstIterator it=r.begin();
-      it=r.end();
-      ReverseConstIterator it2=r.rbegin();
-      it2=r.rend();
+      ConstIterator it=i.begin();
+      it=i.end();
+      ReverseConstIterator it2=i.rbegin();
+      it2=i.rend();
     };
 
   private:

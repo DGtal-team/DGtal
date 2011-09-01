@@ -56,14 +56,13 @@ namespace DGtal
     
      \brief Aim: Defines the concept describing a const range.
      
-     <p> Refinement of
+     <p> Refinement of CConstRange
     
      <p> Provided types :
 
-     - ConstIterator: the const iterator type, a model of const iterator
-          concept.
-     - ReverseConstIterator: the const reverse iterator type, a model of
-          const iterator concept.
+     - Iterator: the iterator type, a model of iterator concept.
+     - ReverseIterator: the reverse iterator type, a model of
+          iterator concept.
 
      <table>
      <tr> 
@@ -94,8 +93,7 @@ namespace DGtal
     
      <p> Notes <br>
 
-     @tparam T the type that is checked. T should be a model of
-     CRange.
+     @tparam T the type that is checked. T should be a model of CRange.
 
    */
   template <typename T>
@@ -111,11 +109,10 @@ namespace DGtal
  
     BOOST_CONCEPT_USAGE(CRange)
     {
-      T r(i);
-      Iterator it=r.begin();
-      it=r.end();
-      ReverseIterator it2=r.rbegin();
-      it2=r.rend();
+      Iterator it=i.begin();
+      it=i.end();
+      ReverseIterator it2=i.rbegin();
+      it2=i.rend();
     };
 
   private:
