@@ -65,47 +65,47 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
   string aStyleName = "ArithmeticalDSS/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
-	 	
+     
     //choose pen color
     CustomPenColor* aPenColor;
 
-		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
+    if ( !(i.intersectNext() && i.intersectPrevious()) ) {
 
-			aPenColor = new CustomPenColor( Color::Black );
+      aPenColor = new CustomPenColor( Color::Black );
 
-		} else {
+    } else {
 
       //end points
 
-      PointIterator begin = i->begin();	--begin; 
-	    PointIterator end = i->end();
+      PointIterator begin = i->begin();  --begin; 
+      PointIterator end = i->end();
 
-	    //parameters
-	    int mu = i->getMu();
-	    int omega = i->getOmega();
+      //parameters
+      int mu = i->getMu();
+      int omega = i->getOmega();
 
-			//configurations
-			if ( (i->getRemainder(begin)<=mu-1)&&
-				   (i->getRemainder(end)<=mu-1) ) {                //concave
-				aPenColor = new CustomPenColor( Color::Green);
-			} else if ( (i->getRemainder(begin)>=mu+omega)&&
-					  (i->getRemainder(end)>=mu+omega) ) {           //convex
-				aPenColor = new CustomPenColor( Color::Blue );
-			} else if ( (i->getRemainder(begin)>=mu+omega)&&
-					  (i->getRemainder(end)<=mu-1) ) {               //convex to concave
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else if ( (i->getRemainder(begin)<=mu-1)&&
-					  (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else {                                                    //pb
-				aPenColor = new CustomPenColor( Color::Red );
-			}
+      //configurations
+      if ( (i->getRemainder(begin)<=mu-1)&&
+           (i->getRemainder(end)<=mu-1) ) {                //concave
+        aPenColor = new CustomPenColor( Color::Green);
+      } else if ( (i->getRemainder(begin)>=mu+omega)&&
+            (i->getRemainder(end)>=mu+omega) ) {           //convex
+        aPenColor = new CustomPenColor( Color::Blue );
+      } else if ( (i->getRemainder(begin)>=mu+omega)&&
+            (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+        aPenColor = new CustomPenColor( Color::Yellow );
+      } else if ( (i->getRemainder(begin)<=mu-1)&&
+            (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+        aPenColor = new CustomPenColor( Color::Yellow );
+      } else {                                                    //pb
+        aPenColor = new CustomPenColor( Color::Red );
+      }
 
-		}
+    }
 
     // draw each segment
     aBoard << CustomStyle( aStyleName, aPenColor )
-			     << *i; 
+           << *i; 
   
   } 
 
@@ -120,7 +120,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
   typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
-	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
+  typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
@@ -145,9 +145,9 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
 
-	string codes; 
-	if (argc >= 2) codes = argv[1];
-	else codes = "0300303303033030303000010101011010110100000303303033030303000010101101010110100000333"; 
+  string codes; 
+  if (argc >= 2) codes = argv[1];
+  else codes = "0300303303033030303000010101011010110100000303303033030303000010101101010110100000333"; 
 
   stringstream ss(stringstream::in | stringstream::out);
   ss << "0 0 " << codes << endl;
@@ -158,8 +158,8 @@ int main( int argc, char** argv )
   //Maximal Segments
   Board2D aBoard;
   aBoard
-	 << SetMode( "PointVector", "Grid" )
-	 << theContour;
+   << SetMode( "PointVector", "Grid" )
+   << theContour;
 
   segmentationIntoMaximalDSSs(theContour.begin(), theContour.end(), aBoard);
 

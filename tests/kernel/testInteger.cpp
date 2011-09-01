@@ -66,32 +66,32 @@ bool testInteger()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
 
   trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min int16 = " << NumberTraits<DGtal::int16_t>::min()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - max int32 = " << NumberTraits<DGtal::int32_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min int32 = " << NumberTraits<DGtal::int32_t>::min()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - max int64 = " << NumberTraits<DGtal::int64_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min int64 = " << NumberTraits<DGtal::int64_t>::min()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - max uint16 = " << NumberTraits<DGtal::uint16_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min uint16 = " << NumberTraits<DGtal::uint16_t>::min()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - max uint32 = " << NumberTraits<DGtal::uint32_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min uint32 = " << NumberTraits<DGtal::uint32_t>::min()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - max uint64 = " << NumberTraits<DGtal::uint64_t>::max()
-	       << std::endl;
+         << std::endl;
   trace.info() << "  - min uint64 = " << NumberTraits<DGtal::uint64_t>::min()
-	       << std::endl;
+         << std::endl;
 
   trace.endBlock();
 
@@ -102,7 +102,7 @@ bool testInteger()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );
@@ -118,7 +118,7 @@ bool testInteger()
   //nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
 
 

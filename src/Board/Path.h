@@ -194,20 +194,20 @@ struct Path {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform ) const;
+     const TransformFIG & transform ) const;
   
   void flushSVGPoints( std::ostream & stream,
-		       const TransformSVG & transform ) const;
+           const TransformSVG & transform ) const;
 
   void flushSVGCommands( std::ostream & stream,
-			 const TransformSVG & transform ) const;
+       const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairoPoints( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;

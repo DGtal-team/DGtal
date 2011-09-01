@@ -134,7 +134,7 @@ namespace DGtal
      * @param t the fourth value.
      */
     RealPointVector( const Component & x, const Component & y, 
-		     const Component & z, const Component & t );
+         const Component & z, const Component & t );
 
 #ifdef CPP0X_INITIALIZER_LIST
     /**
@@ -150,7 +150,7 @@ namespace DGtal
      */
     template<typename Functor>
     RealPointVector( const Self& apoint1, const Self& apoint2,
-		     const Functor& f );
+         const Functor& f );
 
 
     /**
@@ -199,7 +199,7 @@ namespace DGtal
     Self & operator/= ( Component coeff )
     {
       for ( Dimension i = 0; i < dimension; ++i )
-	this->myArray[ i ] /= coeff;
+  this->myArray[ i ] /= coeff;
       return *this;
     }
     // ------------------------- Specific methods -------------------------------
@@ -243,7 +243,7 @@ namespace DGtal
     {
       double length=this->norm();
       for ( Dimension i = 0; i < dimension; ++i )
-	this->myArray[ i ] /= length;
+  this->myArray[ i ] /= length;
     }
   
 
@@ -257,10 +257,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi(220,220,220);
-	aBoard.setLineWidth(1);
+  aBoard.setPenColorRGBi(160,160,160);
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setFillColorRGBi(220,220,220);
+  aBoard.setLineWidth(1);
       }
     };
 
@@ -271,8 +271,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setPenColor(Color::Black);
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
 

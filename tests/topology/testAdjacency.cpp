@@ -75,26 +75,26 @@ bool testMetricAdjacency()
   nbok += neigh6.size() == 7 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Card(6-neigh): " << neigh6.size() 
-	       << "== 7 ?" << std::endl;
+         << "Card(6-neigh): " << neigh6.size() 
+         << "== 7 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   unsigned int nb_correct = 0;
   for ( unsigned int i = 0; i < neigh6.size(); ++i )
     {
       if ( Adj6::isProperlyAdjacentTo( p, neigh6[ i ] ) )
-	{
-	  trace.info() << neigh6[ i ] << "* " << std::endl;
-	  ++nb_correct;
-	}
+  {
+    trace.info() << neigh6[ i ] << "* " << std::endl;
+    ++nb_correct;
+  }
       else
-	trace.info() << neigh6[ i ] << "- " << std::endl;
+  trace.info() << neigh6[ i ] << "- " << std::endl;
     }
   trace.endBlock();
   nbok += nb_correct == 6 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Within, #proper adjacent : " << nb_correct
-	       << "== 6 ?" << std::endl;
+         << "Within, #proper adjacent : " << nb_correct
+         << "== 6 ?" << std::endl;
   trace.endBlock();
 
 
@@ -108,26 +108,26 @@ bool testMetricAdjacency()
   nbok += neigh18.size() == 19 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Card(18-neigh): " << neigh18.size() 
-	       << "== 19 ?" << std::endl;
+         << "Card(18-neigh): " << neigh18.size() 
+         << "== 19 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
   for ( unsigned int i = 0; i < neigh18.size(); ++i )
     {
       if ( Adj18::isProperlyAdjacentTo( p, neigh18[ i ] ) )
-	{
-	  trace.info() << neigh18[ i ] << "* " << std::endl;
-	  ++nb_correct;
-	}
+  {
+    trace.info() << neigh18[ i ] << "* " << std::endl;
+    ++nb_correct;
+  }
       else
-	trace.info() << neigh18[ i ] << "- " << std::endl;
+  trace.info() << neigh18[ i ] << "- " << std::endl;
     }
   trace.endBlock();
   nbok += nb_correct == 18 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Within, #proper adjacent : " << nb_correct
-	       << "== 18 ?" << std::endl;
+         << "Within, #proper adjacent : " << nb_correct
+         << "== 18 ?" << std::endl;
   trace.endBlock();
 
 
@@ -140,26 +140,26 @@ bool testMetricAdjacency()
   nbok += neigh26.size() == 27 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Card(26-neigh): " << neigh26.size() 
-	       << "== 27 ?" << std::endl;
+         << "Card(26-neigh): " << neigh26.size() 
+         << "== 27 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
   for ( unsigned int i = 0; i < neigh26.size(); ++i )
     {
       if ( Adj26::isProperlyAdjacentTo( p, neigh26[ i ] ) )
-	{
-	  trace.info() << neigh26[ i ] << "* " << std::endl;
-	  ++nb_correct;
-	}
+  {
+    trace.info() << neigh26[ i ] << "* " << std::endl;
+    ++nb_correct;
+  }
       else
-	trace.info() << neigh26[ i ] << "- " << std::endl;
+  trace.info() << neigh26[ i ] << "- " << std::endl;
     }
   trace.endBlock();
   nbok += nb_correct == 26 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Within, #proper adjacent : " << nb_correct
-	       << "== 26 ?" << std::endl;
+         << "Within, #proper adjacent : " << nb_correct
+         << "== 26 ?" << std::endl;
   trace.endBlock();
 
   return nbok == nb;

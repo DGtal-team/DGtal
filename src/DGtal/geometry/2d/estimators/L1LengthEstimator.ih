@@ -68,9 +68,9 @@ template <typename T>
 inline
 void
 DGtal::L1LengthEstimator<T>::init(const double h, 
-				  const ConstIterator& itb, 
-				  const ConstIterator& ite, 
-				  const bool& isClosed)
+          const ConstIterator& itb, 
+          const ConstIterator& ite, 
+          const bool& isClosed)
 {
   myH = h;
   myBeginIt = itb;
@@ -138,7 +138,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const L1LengthEstimator<T> & object )
+      const L1LengthEstimator<T> & object )
 {
   object.selfDisplay( out );
   return out;

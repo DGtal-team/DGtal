@@ -103,10 +103,10 @@ namespace DGtal
 
   
    // Add points while it is possible
-		DSS4 s;
-		s.init( contour.begin() );
+    DSS4 s;
+    s.init( contour.begin() );
     while ( (s.end()!=contour.end())
-					&&(s.extend()) ) {} 
+          &&(s.extend()) ) {} 
 
    // Output parameters
    cout << s << endl;
@@ -153,29 +153,29 @@ namespace DGtal
     {
       static TInt norm(const TInt& a, const TInt& b) 
       {
-	TInt x;
-	if (a>=0) x = a;
-	else x = -a;
-	TInt y;
-	if (b>=0) y = b;
-	else y = -b;
-	return (x>=y)?x:y;
+  TInt x;
+  if (a>=0) x = a;
+  else x = -a;
+  TInt y;
+  if (b>=0) y = b;
+  else y = -b;
+  return (x>=y)?x:y;
       }
       static TInt dualNorm(const TInt& a, const TInt& b) 
       {
-	if (a > 0) {
-	  if (b > 0) {
-	    return (a+b);
-	  } else {
-	    return (a-b);		
-	  }
-	} else {
-	  if (b > 0) {
-	    return (-a+b);						
-	  } else {
-	    return (-a-b);		
-	  }
-	}
+  if (a > 0) {
+    if (b > 0) {
+      return (a+b);
+    } else {
+      return (a-b);    
+    }
+  } else {
+    if (b > 0) {
+      return (-a+b);            
+    } else {
+      return (-a-b);    
+    }
+  }
       }
     };
 
@@ -185,30 +185,30 @@ namespace DGtal
     {
       static TInt norm(const TInt& a, const TInt& b) 
       {
-	if (a > 0) {
-	  if (b > 0) {
-	    return (a+b);
-	  } else {
-	    return (a-b);		
-	  }
-	} else {
-	  if (b > 0) {
-	    return (-a+b);						
-	  } else {
-	    return (-a-b);		
-	  }
-	}
+  if (a > 0) {
+    if (b > 0) {
+      return (a+b);
+    } else {
+      return (a-b);    
+    }
+  } else {
+    if (b > 0) {
+      return (-a+b);            
+    } else {
+      return (-a-b);    
+    }
+  }
       }
 
       static TInt dualNorm(const TInt& a, const TInt& b) 
       {
-	TInt x;
-	if (a>=0) x = a;
-	else x = -a;
-	TInt y;
-	if (b>=0) y = b;
-	else y = -b;
-	return (x>=y)?x:y;
+  TInt x;
+  if (a>=0) x = a;
+  else x = -a;
+  TInt y;
+  if (b>=0) y = b;
+  else y = -b;
+  return (x>=y)?x:y;
       }
 
     };
@@ -223,8 +223,8 @@ namespace DGtal
 
     //requiered types
     typedef TIterator ConstIterator;
-		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
+    typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
 
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
@@ -562,7 +562,7 @@ namespace DGtal
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool isExtendable( const Point & lastPoint, 
-		 const Vector & lastMove );
+     const Vector & lastMove );
 
     /**
      * Tests whether the union between a point 
@@ -579,10 +579,10 @@ namespace DGtal
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool extend( const ConstIterator & it, 
-		 ConstIterator & lastIt, 
-		 const Vector & lastMove,
-		 Point & Uf,	Point & Ul,
-		 Point & Lf,	Point & Ll );
+     ConstIterator & lastIt, 
+     const Vector & lastMove,
+     Point & Uf,  Point & Ul,
+     Point & Lf,  Point & Ll );
 
     /**
      * Removes the end point of a DSS
@@ -598,11 +598,11 @@ namespace DGtal
      * @return 'true'.
      */
     bool retract( ConstIterator & firstIt,
-		  ConstIterator & lastIt,
-		  ConstIterator & nextIt, 		  
-		  Point & Uf,	Point & Ul,
-		  Point & Lf,	Point & Ll,
-		  const Integer& s );
+      ConstIterator & lastIt,
+      ConstIterator & nextIt,       
+      Point & Uf,  Point & Ul,
+      Point & Lf,  Point & Ll,
+      const Integer& s );
 
 
     /**
@@ -647,7 +647,7 @@ namespace DGtal
     std::vector<Vector> mySteps;
 
     // ------------------------- Private Datas --------------------------------
-	
+  
   private:
 
 
@@ -744,11 +744,11 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	// Set board style
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineWidth(2);
-	aBoard.setFillColor(Color::None);
+  // Set board style
+  aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+  aBoard.setPenColor(Color::Black);
+  aBoard.setLineWidth(2);
+  aBoard.setFillColor(Color::None);
       }
     };
 

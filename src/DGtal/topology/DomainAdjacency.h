@@ -159,10 +159,10 @@ namespace DGtal
      * BinaryPointPredicate AND.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate>
+        typename PointPredicate>
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it,
-			    const PointPredicate & pred ) const;
+          OutputIterator & out_it,
+          const PointPredicate & pred ) const;
 
     /**
      * Outputs the whole neighborhood of point [p] (restricted to this
@@ -176,7 +176,7 @@ namespace DGtal
      */
     template <typename OutputIterator>
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it ) const;
+          OutputIterator & out_it ) const;
 
     /**
      * Outputs the whole neighborhood of point [p] (except p itself)
@@ -197,10 +197,10 @@ namespace DGtal
      * BinaryPointPredicate AND.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate>
+        typename PointPredicate>
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it,
-				  const PointPredicate & pred ) const;
+          OutputIterator & out_it,
+          const PointPredicate & pred ) const;
 
     /**
      * Outputs the whole neighborhood of point [p] (except p itself,
@@ -214,7 +214,7 @@ namespace DGtal
      */
     template <typename OutputIterator>
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it ) const;
+          OutputIterator & out_it ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -279,7 +279,7 @@ namespace DGtal
   template <typename TDomain, typename TAdjacency>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const DomainAdjacency<TDomain, TAdjacency> & object );
+         const DomainAdjacency<TDomain, TAdjacency> & object );
 
 } // namespace DGtal
 

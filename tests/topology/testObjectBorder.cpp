@@ -171,7 +171,7 @@ bool testObjectBorder()
   board.saveSVG("bubble-set.svg");
 
   board << DrawObjectAdjacencies()
-  //	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+  //  << DrawWithCustomStyle<SelfDrawStyleCustom>()
   << CustomStyle( "Object", new MyObjectStyleCustom )
   << bubbleBorder;
   board.saveSVG("bubble-object-border.svg");

@@ -40,7 +40,7 @@ using namespace DGtal;
   nbok += ( x ) ? 1 : 0; \
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
-	       << #x << std::endl;
+         << #x << std::endl;
 
 #define INBLOCK_TEST2(x,y) \
   nbok += ( x ) ? 1 : 0; \
@@ -65,69 +65,69 @@ bool testBasicBoolFunctions()
   nbok += trueBF0() == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true() == true" << std::endl;
+         << "true() == true" << std::endl;
 
   // false()
   nbok += falseBF0() == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "false() == false" << std::endl;
+         << "false() == false" << std::endl;
 
   // id( b )
   nbok += identityBF1( true ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "id(true) == true" << std::endl;
+         << "id(true) == true" << std::endl;
   nbok += identityBF1( false ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "id(false) == false" << std::endl;
+         << "id(false) == false" << std::endl;
 
   // not( b )
   nbok += notBF1( true ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "not(true) == false" << std::endl;
+         << "not(true) == false" << std::endl;
   nbok += notBF1( false ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "not(false) == true" << std::endl;
+         << "not(false) == true" << std::endl;
 
   // and( b1, b2 )
   nbok += andBF2( true, true ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "and( true, true ) == true" << std::endl;
+         << "and( true, true ) == true" << std::endl;
   nbok += andBF2( false, true ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "and( false, true ) == false" << std::endl;
+         << "and( false, true ) == false" << std::endl;
   nbok += andBF2( true, false ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "and( true, false ) == false" << std::endl;
+         << "and( true, false ) == false" << std::endl;
   nbok += andBF2( false, false ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "and( false, false ) == false" << std::endl;
+         << "and( false, false ) == false" << std::endl;
 
   // or( b1, b2 )
   nbok += orBF2( true, true ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "or( true, true ) == true" << std::endl;
+         << "or( true, true ) == true" << std::endl;
   nbok += orBF2( false, true ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "or( false, true ) == true" << std::endl;
+         << "or( false, true ) == true" << std::endl;
   nbok += orBF2( true, false ) == true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "or( true, false ) == true" << std::endl;
+         << "or( true, false ) == true" << std::endl;
   nbok += orBF2( false, false ) == false ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "or( false, false ) == true" << std::endl;
+         << "or( false, false ) == true" << std::endl;
 
   // xor( b1, b2 )
   INBLOCK_TEST2( xorBF2( true, true ) == false, "xor( true, true ) == false" );
@@ -137,13 +137,13 @@ bool testBasicBoolFunctions()
 
   // implies( b1, b2 )
   INBLOCK_TEST2( impliesBF2( true, true ) == true, 
-		 "implies( true, true ) == true" );
+     "implies( true, true ) == true" );
   INBLOCK_TEST2( impliesBF2( false, true ) == true, 
-		 "implies( false, true ) == true" );
+     "implies( false, true ) == true" );
   INBLOCK_TEST2( impliesBF2( true, false ) == false, 
-		 "implies( true, false ) == false" );
+     "implies( true, false ) == false" );
   INBLOCK_TEST2( impliesBF2( false, false ) == true, 
-		 "implies( false, false ) == true" );
+     "implies( false, false ) == true" );
   
   trace.endBlock();
   

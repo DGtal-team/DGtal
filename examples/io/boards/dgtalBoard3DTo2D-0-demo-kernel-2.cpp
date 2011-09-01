@@ -62,8 +62,8 @@ int main( int argc, char** argv )
   viewer << p1 << p2 << p3;
   
   viewer << CameraPosition(2.500000, 2.500000, 16.078199)
-	 << CameraDirection(0.000000, 0.000000, -1.000000)
-	 << CameraUpVector(0.000000, 1.000000, 0.000000);
+   << CameraDirection(0.000000, 0.000000, -1.000000)
+   << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);

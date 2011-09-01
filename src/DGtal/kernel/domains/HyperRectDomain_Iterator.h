@@ -50,18 +50,18 @@
 // Class allowing to build a reverse iterator of a given iterator.
 template<typename _Iterator>
 class myreverse_iterator
-	: public iterator<typename iterator_traits<_Iterator>::iterator_category,
-	typename iterator_traits<_Iterator>::value_type,
-	typename iterator_traits<_Iterator>::difference_type,
-	typename iterator_traits<_Iterator>::pointer,
-	typename iterator_traits<_Iterator>::reference>
+  : public iterator<typename iterator_traits<_Iterator>::iterator_category,
+  typename iterator_traits<_Iterator>::value_type,
+  typename iterator_traits<_Iterator>::difference_type,
+  typename iterator_traits<_Iterator>::pointer,
+  typename iterator_traits<_Iterator>::reference>
 {
 protected:
-	_Iterator current;
-	_Iterator prev;
+  _Iterator current;
+  _Iterator prev;
 
 public:
-  typedef _Iterator					       iterator_type;
+  typedef _Iterator                 iterator_type;
   typedef typename iterator_traits<_Iterator>::difference_type
       difference_type;
   typedef typename iterator_traits<_Iterator>::reference   reference;
@@ -210,17 +210,17 @@ namespace DGtal
     {
       ++myPoint[myCurrentPos];
       if (( myCurrentPos < TPoint::dimension - 1 ) &&
-	  ( myPoint[myCurrentPos] > myupper[myCurrentPos] ) )
+    ( myPoint[myCurrentPos] > myupper[myCurrentPos] ) )
         {
           do
-	    {
-	      myPoint[myCurrentPos] = mylower[myCurrentPos];
-	      myCurrentPos++;
-	      if ( myCurrentPos < TPoint::dimension )
-		++myPoint[myCurrentPos];
-	    }
+      {
+        myPoint[myCurrentPos] = mylower[myCurrentPos];
+        myCurrentPos++;
+        if ( myCurrentPos < TPoint::dimension )
+    ++myPoint[myCurrentPos];
+      }
           while (( myCurrentPos < TPoint::dimension - 1 ) &&
-		 ( myPoint[myCurrentPos]  >  myupper[ myCurrentPos ] ) );
+     ( myPoint[myCurrentPos]  >  myupper[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
     }
@@ -253,17 +253,17 @@ namespace DGtal
     {
       --myPoint[ myCurrentPos ];
       if (( myCurrentPos < TPoint::dimension - 1 ) &&
-	  ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) )
+    ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) )
         {
           do
-	    {
-	      myPoint[ myCurrentPos ] = myupper[ myCurrentPos ];
-	      ++myCurrentPos;
-	      if ( myCurrentPos < TPoint::dimension )
-		--myPoint[ myCurrentPos ];
-	    }
+      {
+        myPoint[ myCurrentPos ] = myupper[ myCurrentPos ];
+        ++myCurrentPos;
+        if ( myCurrentPos < TPoint::dimension )
+    --myPoint[ myCurrentPos ];
+      }
           while (( myCurrentPos < TPoint::dimension - 1 ) &&
-		 ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) );
+     ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) );
           myCurrentPos = 0;
         }
     }
@@ -315,8 +315,8 @@ namespace DGtal
 
 #ifdef CPP0X_INITIALIZER_LIST
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
-				const TPoint &upper,
-				std::initializer_list<Dimension> subDomain)
+        const TPoint &upper,
+        std::initializer_list<Dimension> subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
       ASSERT( lower <= upper );
@@ -334,8 +334,8 @@ namespace DGtal
     }
 #endif
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
-			     const TPoint &upper,
-			     const std::vector<Dimension> &subDomain)
+           const TPoint &upper,
+           const std::vector<Dimension> &subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
       ASSERT( lower <= upper );
@@ -392,20 +392,20 @@ namespace DGtal
       ++myPoint[ mySubDomain[myCurrentPos] ];
 
       if ( myCurrentPos < mySubDomain.size() - 1 &&
-	   myPoint[ mySubDomain[myCurrentPos] ] >
-	   myupper[ mySubDomain[myCurrentPos] ] )
+     myPoint[ mySubDomain[myCurrentPos] ] >
+     myupper[ mySubDomain[myCurrentPos] ] )
         {
           do
-	    {
-	      myPoint[ mySubDomain[myCurrentPos] ] =
-		mylower[ mySubDomain[myCurrentPos] ];
-	      ++myCurrentPos;
-	      if ( myCurrentPos < mySubDomain.size() )
-		++myPoint[ mySubDomain[myCurrentPos] ];
-	    }
+      {
+        myPoint[ mySubDomain[myCurrentPos] ] =
+    mylower[ mySubDomain[myCurrentPos] ];
+        ++myCurrentPos;
+        if ( myCurrentPos < mySubDomain.size() )
+    ++myPoint[ mySubDomain[myCurrentPos] ];
+      }
           while (( myCurrentPos < mySubDomain.size() - 1  ) &&
-		 ( myPoint[ mySubDomain[myCurrentPos] ]  >
-		   myupper[ mySubDomain[myCurrentPos] ] ) );
+     ( myPoint[ mySubDomain[myCurrentPos] ]  >
+       myupper[ mySubDomain[myCurrentPos] ] ) );
           myCurrentPos = 0;
         }
     }
@@ -444,16 +444,16 @@ namespace DGtal
             mylower[ mySubDomain[myCurrentPos] ] )
         {
           do
-	    {
-	      myPoint[ mySubDomain[myCurrentPos] ] =
-		myupper[ mySubDomain[myCurrentPos] ];
-	      ++myCurrentPos;
-	      if ( myCurrentPos < mySubDomain.size() )
-		--myPoint[ mySubDomain[myCurrentPos] ];
-	    }
+      {
+        myPoint[ mySubDomain[myCurrentPos] ] =
+    myupper[ mySubDomain[myCurrentPos] ];
+        ++myCurrentPos;
+        if ( myCurrentPos < mySubDomain.size() )
+    --myPoint[ mySubDomain[myCurrentPos] ];
+      }
           while (( myCurrentPos < mySubDomain.size() - 1 ) &&
-		 ( myPoint[ mySubDomain[myCurrentPos] ]  <
-		   mylower[ mySubDomain[myCurrentPos] ] ) );
+     ( myPoint[ mySubDomain[myCurrentPos] ]  <
+       mylower[ mySubDomain[myCurrentPos] ] ) );
           myCurrentPos = 0;
         }
     }

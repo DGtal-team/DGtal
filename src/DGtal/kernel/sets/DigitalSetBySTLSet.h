@@ -297,8 +297,8 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	aBoard.setFillColorRGBi(160,160,160);
-	aBoard.setPenColorRGBi(80,80,80);
+  aBoard.setFillColorRGBi(160,160,160);
+  aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
@@ -332,8 +332,8 @@ namespace DGtal
     {
        virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  display.myModes[ "DigitalSetBySTLSet" ] = "";
-	}
+    display.myModes[ "DigitalSetBySTLSet" ] = "";
+  }
 
     };
 

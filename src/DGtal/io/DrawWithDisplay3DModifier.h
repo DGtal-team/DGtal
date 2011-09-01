@@ -160,7 +160,7 @@ namespace DGtal
      * @param fillColor specifies the fill color.
      */
     CustomColors3D( const Color & penColor,
-		    const Color & fillColor )
+        const Color & fillColor )
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     

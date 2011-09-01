@@ -183,7 +183,7 @@ namespace DGtal
     std::list< HashKey > nodeList;
     while ( iterKey != 0 )
     {
-      //	cerr << "while(iter)..." << endl;
+      //  cerr << "while(iter)..." << endl;
       n = getNode ( iterKey );
       if ( n )
       {
@@ -195,7 +195,7 @@ namespace DGtal
             it != nodeList.end();
             it++ )
         {
-          //	cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
+          //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
           addNode ( tempVal, *it );
         }
         addNode ( value, key );
@@ -406,7 +406,7 @@ namespace DGtal
       myMorton.childrenKeys ( key, children );
       for ( unsigned int i = 0; i < N; ++i )
       {
-	recursiveRemoveNode ( children[i], nbRecursions );
+  recursiveRemoveNode ( children[i], nbRecursions );
       }
     }
   }
@@ -461,7 +461,7 @@ namespace DGtal
       coordinates[i] = 0;
       for ( unsigned int bitPos = 0; bitPos < ( sizeof ( HashKey ) << 3 ) / dim; ++bitPos )
       {
-	if ( key & Bits::mask ( bitPos*dim + i ) )
+  if ( key & Bits::mask ( bitPos*dim + i ) )
         {
           coordinates[i] |= Bits::mask<HashKey> ( bitPos );
         }
@@ -704,15 +704,15 @@ namespace DGtal
    * (I like the tragic sound of it)
    *
    * any way this shouldn't take long to implement, the stuff you need to persist is:
-   *     	- the depth of the tree
-   * 		- it's dimension
-   * 		- the position of the origin (Point myOrigin variable)
-   * 		- every existing key associated to its key (use the builtin iterator)
+   *       - the depth of the tree
+   *     - it's dimension
+   *     - the position of the origin (Point myOrigin variable)
+   *     - every existing key associated to its key (use the builtin iterator)
    *
-   *	The tricky stuff lies in how to serialize
-   * 		- the values (typename TValue),
-   * 		- the keys (ok easier but still can be of 8, 16, 32 and more likely 64 bit type)
-   * 		- the Point (may be in 1D,2D...etc.)
+   *  The tricky stuff lies in how to serialize
+   *     - the values (typename TValue),
+   *     - the keys (ok easier but still can be of 8, 16, 32 and more likely 64 bit type)
+   *     - the Point (may be in 1D,2D...etc.)
    *
    * have fun
    * Nicolas
@@ -835,7 +835,7 @@ namespace DGtal
       float result = 0;
       for ( unsigned int i = 0; i < N; ++i )
       {
-	result += blendChildren ( children[i] );
+  result += blendChildren ( children[i] );
       }
       return static_cast<Value> ( result / N );
     }

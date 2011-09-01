@@ -116,7 +116,7 @@ DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		    const Viewer3D & object )
+        const Viewer3D & object )
 {
     object.selfDisplay ( out );
     return out;
