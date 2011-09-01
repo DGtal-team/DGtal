@@ -42,15 +42,16 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Circulator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ConstAdapterIterator
+  // template class ConstIteratorAdapter
   /**
-   * Description of template class 'ConstAdapterIterator' <p>
+   * Description of template class 'ConstIteratorAdapter' <p>
    * \brief Aim: Any iterator (at least forward) can be adapted
    * so that operator* returns a modified element
    * @tparam TIterator the type of the iterator to adapt
@@ -58,16 +59,21 @@ namespace DGtal
    * the value type of TIterator into another type
    */
   template <typename TIterator, typename TModifier>
-  class ConstAdapterIterator : public TIterator
+  class ConstIteratorAdapter : public TIterator
   {
 
   //--------------- inner types --------------------------------
   public: 
     
-    typedef ConstAdapterIterator<TIterator, TModifier> Self;
+    typedef ConstIteratorAdapter<TIterator, TModifier> Self;
     typedef TIterator Iterator;
     typedef TModifier Modifier;
     typedef typename TModifier::Output Value; 
+    typedef Value* Pointer;
+    typedef const Value& Reference;
+  
+    typedef typename IteratorCirculatorTraits<Iterator>::Category Category;
+    typedef typename IteratorCirculatorTraits<Iterator>::Difference Difference;
 
   // ------------------------- Protected Datas ------------------------------
   protected:
@@ -82,18 +88,18 @@ namespace DGtal
       /**
        *  The default constructor default-initializes member @a myCurrentIt.
       */
-    ConstAdapterIterator() : myCurrentIt(), myBuffer { }
+    ConstIteratorAdapter() : myCurrentIt() { }
 
       /**
        *  Constructor.
       */
       explicit
-    ConstAdapterIterator(Iterator it) : myCurrentIt(it), myBuffer() { }
+    ConstIteratorAdapter(Iterator it) : myCurrentIt(it) { }
 
     /**
      *  Copy constructor.
      */
-    ConstAdapterIterator(const ConstAdapterIterator& aIt)
+    ConstIteratorAdapter(const ConstIteratorAdapter& aIt)
     : myCurrentIt(aIt.myCurrentIt), myBuffer(aIt.myBuffer()) { }
 
     /**
@@ -115,7 +121,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ConstIteratorAdapter();
+    ~ConstIteratorAdapter() {}
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -136,7 +142,7 @@ namespace DGtal
     /**
      *  @return the modified element pointed be @a myCurrentIt.
     */
-    Value operator*() const { 
+    Value operator*() { 
       myBuffer = Modifier::get(*myCurrentIt);
       return myBuffer; 
     }
@@ -144,7 +150,7 @@ namespace DGtal
     /**
      *  @return  pointer to the modified element stored in @a myBuffer.
     */
-    pointer operator->() const { 
+    Pointer operator->() const { 
       return &myBuffer; 
     }
 
@@ -190,30 +196,45 @@ namespace DGtal
         // ----------------------- Random access operators --------------------------------------
   public:
 
-    Self& operator+=( difference_type d ) {
+    Self& operator+=( Difference d ) {
       myCurrentIt += d;
       return *this;
     }
-    Self operator+( difference_type d) const {
+    Self operator+( Difference d) const {
       Self tmp = *this;
       return tmp += d;
     }
-    Self operator-( difference_type d) const {
+    Self operator-( Difference d) const {
       Self tmp = *this;
       return tmp += -d;
     }
-    Self& operator-=( difference_type d) { return operator+=( -d); }
+    Self& operator-=( Difference d) { return operator+=( -d); }
 
-    difference_type operator-( const Self& other) const {
+    Difference operator-( const Self& other) const {
       return myCurrentIt - other.myCurrentIt;
     }
-    reference operator[]( difference_type d) const {
+    Reference operator[]( Difference d) const {
       Self tmp = *this;
       tmp += d;
       return *tmp;
     }
 
-    // ----------------------- Comparisons operators and equality operators --------------------------------------
+    /**
+    *  Equality operator
+      */
+    bool operator==( const Self& other) const 
+    { 
+      return (myCurrentIt == other.myCurrentIt);
+    }
+        /**
+    *  Difference operator
+      */
+    bool operator!=( const Self& other) const 
+    { 
+      return !(*this == other); 
+    }
+    
+    // ----------------------- Comparisons operators --------------------------------------
     //not defined because of the inheritance 
 
     // ------------------------- Hidden services ------------------------------

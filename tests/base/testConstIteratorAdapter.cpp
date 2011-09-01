@@ -31,6 +31,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
+
+#include "DGtal/kernel/PointVector.h"
+
+
 #include "DGtal/base/Modifier.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 
@@ -76,8 +80,9 @@ bool testConstIteratorAdapter()
   
   trace.beginBlock ( "Testing block ..." );
 
-  for (Iterator it = r.begin(), Iterator itEnd = r.end(); 
-    it != itEnd; ++it) 
+  Iterator it = r.begin();
+  Iterator itEnd = r.end();
+  for ( ; it != itEnd; ++it) 
   {
     trace.info() << *it << endl; 
   }
@@ -93,7 +98,8 @@ bool testConstIteratorAdapter()
   
   trace.endBlock();
   
-  return nbok == nb;
+  //to compare with an already projected range
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

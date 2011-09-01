@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,7 +78,7 @@ namespace DGtal
    * Description of template class 'Point3dTo2dXY' <p>
    * \brief Aim:
    */
-  template <Point3, Point2>
+  template <typename Point3, typename Point2>
   class Point3dTo2dXY
   {
     
@@ -93,7 +94,7 @@ namespace DGtal
       
     static Output get(Input p) 
     {
-      Input tmp = *myIt;
+      Input tmp = p;
       return Output(tmp.at(0),tmp.at(1));
     }
   
@@ -105,7 +106,7 @@ namespace DGtal
    * Description of template class 'Point3dTo2dXZ' <p>
    * \brief Aim:
    */
-  template <Point3, Point2>
+  template <typename Point3, typename Point2>
   class Point3dTo2dXZ
   {
     
@@ -121,7 +122,7 @@ namespace DGtal
       
     static Output get(Input p) 
     {
-      Input tmp = *myIt;
+      Input tmp = p;
       return Output(tmp.at(0),tmp.at(2));
     }
   
@@ -133,7 +134,7 @@ namespace DGtal
    * Description of template class 'Point3dTo2dYZ' <p>
    * \brief Aim:
    */
-  template <Point3, Point2>
+  template <typename Point3, typename Point2>
   class Point3dTo2dYZ
   {
     
@@ -149,7 +150,7 @@ namespace DGtal
       
     static Output get(Input p) 
     {
-      Input tmp = *myIt;
+      Input tmp = p;
       return Output(tmp.at(1),tmp.at(2));
     }
   
@@ -161,7 +162,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/Modifier.ih"
+//#include "DGtal/base/Modifier.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
