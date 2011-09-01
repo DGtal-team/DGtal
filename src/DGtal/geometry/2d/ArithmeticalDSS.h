@@ -218,7 +218,7 @@ namespace DGtal
   public:
 
     //entier
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ));
     typedef TInteger Integer;
 
     //requiered types
@@ -229,6 +229,11 @@ namespace DGtal
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+
+    //Point should be 2D Point
+    //uncomment if CPointVector is written
+    //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
+    BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
     typedef DGtal::RealPointVector<2> PointD;  
 
