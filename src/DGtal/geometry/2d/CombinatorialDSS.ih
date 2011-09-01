@@ -214,14 +214,18 @@ bool DGtal::CombinatorialDSS<TInteger>::extend()
 	// Test if the new letter forms a longer prefix of the main pattern
 	// If the new letter is not what was expected, either the main pattern
 	// has to grow or either the DSS may not be extended.
-	if ( letterRead == letterExpected ) {
-		// Test if it is a complete repetition of the main pattern
-		if ( myNextAfter == myPatternEnd ) {
-			++myNbRepeat;
-			myNextAfter = myPatternBegin;
-		} else {
-			++myNextAfter;
-		}
+if ( letterRead == letterExpected ) 
+{
+// Test if it is a complete repetition of the main pattern
+if ( myNextAfter == myPatternEnd ) 
+{
+++myNbRepeat;
+myNextAfter = myPatternBegin;
+} 
+else 
+{
+++myNextAfter;
+}
 
 	} else if ( isTrivial() ) {
 		myLeftPatternLength = 1;
