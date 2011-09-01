@@ -93,7 +93,6 @@ namespace DGtal
    */
   template <typename Domain>
   struct CDigitalSet : 
-    boost::DefaultConstructible< Domain >,
     boost::CopyConstructible< Domain >, 
     boost::Assignable< Domain >
   {
