@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -83,15 +84,20 @@ bool testAngleLinearMinimizer()
 	 << " " << vi.min << " " << vi.max << endl ;
     currentPos+=vi.distToNext;    
   }
-
   nbok += (abs(1.59999-alm.ro(0).value)<0.00001) && (abs(1.6-alm.ro(1).value)<0.00001) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  
+ 
+  Board2D aBoard;
+  aBoard << alm;
+  aBoard.saveEPS("tmp.eps");
   trace.endBlock();
   return nbok == nb;
 }
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
