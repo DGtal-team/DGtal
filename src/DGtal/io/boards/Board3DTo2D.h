@@ -57,116 +57,119 @@ namespace DGtal
 {
 
 
-/////////////////////////////////////////////////////////////////////////////
-// class Board3DTo2D
-/**
- * Description of class 'Board3DTo2D' <p>
- * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
- */
+  /////////////////////////////////////////////////////////////////////////////
+  // class Board3DTo2D
+  /**
+   * Description of class 'Board3DTo2D' <p>
+   * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
+   */
   class Board3DTo2D : public Display3D
-{
-public:
-  /**
-   * Cairo type for save files.
-   */
-  enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
-  
-  /*!
-   * \brief Constructor.
-   */
-  Board3DTo2D();
-  
-  
-  ~Board3DTo2D(){};
-  
-
-  /**
-    * @return the style name used for drawing this object.
-    */
-  std::string styleName() const
   {
-    return "Board3DTo2D";
-  }
+  public:
+    /**
+     * Cairo type for save files.
+     */
+    enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
   
-  /**
-  * Set camera position.
-  * @param x x position.
-  * @param y y position.
-  * @param z z position.
-  */
-  void setCameraPosition(double x, double y, double z) { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+    /*!
+     * \brief Constructor.
+     */
+    Board3DTo2D();
   
-  /**
-  * Set camera direction.
-  * @param x x direction.
-  * @param y y direction.
-  * @param z z direction.
-  */
-  void setCameraDirection(double x, double y, double z) { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
   
-  /**
-  * Set camera up-vector.
-  * @param x x coordinate of up-vector.
-  * @param y y coordinate of up-vector.
-  * @param z z coordinate of up-vector.
-  */
-  void setCameraUpVector(double x, double y, double z) { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+    ~Board3DTo2D(){};
   
-  /**
-  * Set near and far distance.
-  * @param near near distance.
-  * @param far far distance.
-  */
-  void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
-  
-  /**
-  * Save a Cairo image.
-  * @param filename filename of the image to save.
-  * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
-  * @param width width of the image to save.
-  * @param height height of the image to save.
-  */
-  void saveCairo(const char *filename, CairoType type, int width, int height);
-  
-  /**
-   * The associated map type for storing possible modes used for
-   * displaying for digital objects.
-   */
-  //typedef std::map< std::string, std::string > ModeMapping;
 
- //  /**
-//    * The associated map type for storing the default styles of
-//    * digital objects.
-//    */
-//   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const
+    {
+      return "Board3DTo2D";
+    }
   
-  DGtal::Color myDefaultColor;	//!< default color
+    /**
+     * Set camera position.
+     * @param x x position.
+     * @param y y position.
+     * @param z z position.
+     */
+    void setCameraPosition(double x, double y, double z) 
+    { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+  
+    /**
+     * Set camera direction.
+     * @param x x direction.
+     * @param y y direction.
+     * @param z z direction.
+     */
+    void setCameraDirection(double x, double y, double z) 
+    { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
+  
+    /**
+     * Set camera up-vector.
+     * @param x x coordinate of up-vector.
+     * @param y y coordinate of up-vector.
+     * @param z z coordinate of up-vector.
+     */
+    void setCameraUpVector(double x, double y, double z) 
+    { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+  
+    /**
+     * Set near and far distance.
+     * @param near near distance.
+     * @param far far distance.
+     */
+    void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
+  
+    /**
+     * Save a Cairo image.
+     * @param filename filename of the image to save.
+     * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
+     * @param width width of the image to save.
+     * @param height height of the image to save.
+     */
+    void saveCairo(const char *filename, CairoType type, int width, int height);
+  
+    /**
+     * The associated map type for storing possible modes used for
+     * displaying for digital objects.
+     */
+    //typedef std::map< std::string, std::string > ModeMapping;
+
+    //  /**
+    //    * The associated map type for storing the default styles of
+    //    * digital objects.
+    //    */
+    //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
+  
+    DGtal::Color myDefaultColor;	//!< default color
 
   
 
  
-  /**
-   * Set the default color for future drawing.
-   *
-   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
-   *
-   **/  
-  Board3DTo2D & operator<<(const DGtal::Color & aColor);
+    /**
+     * Set the default color for future drawing.
+     *
+     * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+     *
+     **/  
+    Board3DTo2D & operator<<(const DGtal::Color & aColor);
 
 
 
-  /**
-   * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithDisplay3D, which requires for instance a
-   * method selfDraw( Board3DTo2D & ).
-   *
-   * @param object any drawable object.
-   * @return a reference on 'this'.
-   */
-  template <typename TDrawableWithDisplay3D>
-  Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
+    /**
+     * Draws the drawable [object] in this board. It should satisfy
+     * the concept CDrawableWithDisplay3D, which requires for instance a
+     * method selfDraw( Board3DTo2D & ).
+     *
+     * @param object any drawable object.
+     * @return a reference on 'this'.
+     */
+    template <typename TDrawableWithDisplay3D>
+    Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
-public:
+  public:
   
     /**
      * Writes/Displays the object on an output stream.
@@ -180,46 +183,46 @@ public:
      */
     bool isValid() const;
 
-public:
+  public:
   
 
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
  
   
   
-  /**
-   * Precompute 4x4 projection matrix for 3D->2D projection.
-   */
-  void precompute_projection_matrix();
+    /**
+     * Precompute 4x4 projection matrix for 3D->2D projection.
+     */
+    void precompute_projection_matrix();
   
-  /**
-  * Project a 3d point (3D->2D).
-  * @param x3d x position of the 3d point.
-  * @param y3d y position of the 3d point.
-  * @param z3d z position of the 3d point.
-  * @param x2d x destination projection position of the 2d point.
-  * @param y2d y destination projection position of the 2d point.
-  */
-  void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
+    /**
+     * Project a 3d point (3D->2D).
+     * @param x3d x position of the 3d point.
+     * @param y3d y position of the 3d point.
+     * @param z3d z position of the 3d point.
+     * @param x2d x destination projection position of the 2d point.
+     * @param y2d y destination projection position of the 2d point.
+     */
+    void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
   
-  int Viewport[4];		//!< 2D viewport
-  double matrix[16]; 		//!< projection matrix
+    int Viewport[4];		//!< 2D viewport
+    double matrix[16]; 		//!< projection matrix
       
-  double camera_position[3];	//!< camera position
-  double camera_direction[3];	//!< camera direction
-  double camera_upVector[3];	//!< camera up-vector
+    double camera_position[3];	//!< camera position
+    double camera_direction[3];	//!< camera direction
+    double camera_upVector[3];	//!< camera up-vector
   
-  double ZNear;			//!< znear distance
-  double ZFar;			//!< zfar distance
+    double ZNear;			//!< znear distance
+    double ZFar;			//!< zfar distance
   
-protected :
-  /*!
-   * \brief init function (should be in Constructor).
-  */
-  virtual void init();
+  protected :
+    /*!
+     * \brief init function (should be in Constructor).
+     */
+    virtual void init();
 
-private:
+  private:
 
   }; // end of class Board3DTo2D
   
@@ -227,14 +230,14 @@ private:
  
 
   
-/**
- * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Board3DTo2D' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const Board3DTo2D & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Board3DTo2D' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const Board3DTo2D & object );
 
 } // namespace DGtal
 

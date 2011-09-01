@@ -61,6 +61,8 @@ namespace DGtal
    *
    * @tparam TImage the Image type.
    * @tparam TColormap the type of the colormap to use in the export.
+   *
+   * @see testLongvol.cpp
    */
   template <typename TImage, typename TColormap>
   struct LongvolWriter
