@@ -43,7 +43,7 @@ std::bitset<dim> DGtal::setDimensionsIn( const Container &dimensions )
 {
   std::bitset<dim> t1; 
   for ( typename Container::const_iterator it=dimensions.begin(); 
-	it!=dimensions.end(); ++it )
+  it!=dimensions.end(); ++it )
     {
       ASSERT( *it<dim );
       t1.set(*it);
@@ -57,7 +57,7 @@ std::bitset<dim> DGtal::setDimensionsNotIn( const Container &dimensions )
 {
   std::bitset<dim> t1; t1.set();
   for ( typename Container::const_iterator it=dimensions.begin(); 
-	it!=dimensions.end(); ++it )
+  it!=dimensions.end(); ++it )
     {
       ASSERT( *it<dim );
       t1.reset(*it);
@@ -77,8 +77,8 @@ template<Dimension dim, typename TComponent>
 template<typename Functor>
 inline
 DGtal::PointVector<dim, TComponent>::PointVector(const Self& apoint1,
-						const Self& apoint2,
-						const Functor& f)
+            const Self& apoint2,
+            const Functor& f)
 {
   for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
@@ -112,8 +112,8 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x, const Com
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
-						 const Component & y,
-						 const Component & z )
+             const Component & y,
+             const Component & z )
 {
   ASSERT( dim >= 3 );
   myArray[ 0 ] = x;
@@ -126,9 +126,9 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
-						 const Component & y,
-						 const Component & z,
-						 const Component & t )
+             const Component & y,
+             const Component & z,
+             const Component & t )
 {
   ASSERT( dim >= 4 );
   myArray[ 0 ] = x;
@@ -528,7 +528,7 @@ template<Dimension dim, typename TComponent>
 inline
 double
 DGtal::PointVector<dim, TComponent>::norm (const
-					  typename Self::NormType aType ) const
+            typename Self::NormType aType ) const
 {
   double tmp = 0.0;
 
@@ -539,7 +539,7 @@ DGtal::PointVector<dim, TComponent>::norm (const
     case L_2:
       for ( Dimension i = 0; i < dimension; i++ )
         tmp += NumberTraits<Component>::castToDouble(at ( i )) *
-	  NumberTraits<Component>::castToDouble(at ( i ));
+    NumberTraits<Component>::castToDouble(at ( i ));
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
@@ -578,9 +578,9 @@ DGtal::PointVector<dim, TComponent>::normInfinity() const
   for ( Dimension i = 1; i < dimension; ++i )
     {
       UnsignedComponent tmp( ( myArray[ i ] >= 0 )
-			     ? myArray[ i ] : -myArray[ i ] );
+           ? myArray[ i ] : -myArray[ i ] );
       if ( tmp > val )
-	val = tmp;
+  val = tmp;
     }
   return val;
 }
@@ -643,7 +643,7 @@ DGtal::PointVector<dim,TComponent>::selfDrawAsPaving( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.drawRectangle( (float) NumberTraits<Component>::castToInt64_t(myArray[0]) - 0.5f, 
- 		       (float) NumberTraits<Component>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
+            (float) NumberTraits<Component>::castToInt64_t(myArray[1]) + 0.5f, 1, 1 );     
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -654,7 +654,7 @@ DGtal::PointVector<dim,TComponent>::selfDrawAsGrid( Board2D & board ) const
   ASSERT(dim == 2);
   board.setPenColor(Color::Black);
   board.fillCircle((float) NumberTraits<Component>::castToInt64_t(myArray[0]), 
-		   (float) NumberTraits<Component>::castToInt64_t(myArray[1]),0.1);
+       (float) NumberTraits<Component>::castToInt64_t(myArray[1]),0.1);
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -664,7 +664,7 @@ DGtal::PointVector<dim,TComponent>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
-	  ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
+    ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
 
   if ( mode == "Paving"  || ( mode == "" )  )
     selfDrawAsPaving( board );
@@ -681,13 +681,13 @@ template<Dimension dim, typename TComponent>
 inline
 void
 DGtal::PointVector<dim, TComponent>::selfDraw(Board2D & board,
-					     const Self &apoint) const
+               const Self &apoint) const
 {
   ASSERT(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-		  (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
-		  true);
+      (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
+      true);
 }
 
 
@@ -707,8 +707,8 @@ DGtal::PointVector<dim,TComponent>::selfDrawAsPavingDisplay3D( DGtal::Display3D 
 {
   ASSERT(dim == 3);
   display.addVoxel(NumberTraits<Component>::castToInt64_t(myArray[0]),
-		   NumberTraits<Component>::castToInt64_t(myArray[1]),
-		   NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
+       NumberTraits<Component>::castToInt64_t(myArray[1]),
+       NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor());
 }
 template<Dimension dim, typename TComponent>
 inline
@@ -717,8 +717,8 @@ DGtal::PointVector<dim,TComponent>::selfDrawAsPavingWiredDisplay3D( DGtal::Displ
 {
   ASSERT(dim == 3);
   display.addVoxel(NumberTraits<Component>::castToInt64_t(myArray[0]),
-		  NumberTraits<Component>::castToInt64_t(myArray[1]),
-		  NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor(),0.5, true);
+      NumberTraits<Component>::castToInt64_t(myArray[1]),
+      NumberTraits<Component>::castToInt64_t(myArray[2]), display.getFillColor(),0.5, true);
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -728,8 +728,8 @@ DGtal::PointVector<dim,TComponent>::selfDrawAsGridDisplay3D( Display3D & display
 {
   ASSERT(dim == 3);
   display.addPoint(NumberTraits<Component>::castToInt64_t(myArray[0]),
-		  NumberTraits<Component>::castToInt64_t(myArray[1]),
-  		  NumberTraits<Component>::castToInt64_t(myArray[2]),display.getLineColor());
+      NumberTraits<Component>::castToInt64_t(myArray[1]),
+        NumberTraits<Component>::castToInt64_t(myArray[2]),display.getLineColor());
 
 }
 
@@ -770,7 +770,7 @@ DGtal::PointVector<dim,TComponent>::selfDrawDisplay3D( Display3D & display,  con
   ASSERT(dim == 3);
   
   display.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-		 (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
+     (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
   
 }
 
@@ -780,7 +780,7 @@ template<Dimension dim, typename TComponent>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & out,
-		   const  PointVector<dim, TComponent>& object )
+       const  PointVector<dim, TComponent>& object )
 {
   object.selfDisplay( out );
   return out;

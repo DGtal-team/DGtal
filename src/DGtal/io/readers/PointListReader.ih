@@ -77,17 +77,17 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       unsigned int nbFound=0;
       TPoint p;
       while ( in_str.good()&& (nbFound<TPoint::dimension)){
-	bool isOK = (in_str >> val);
-	for(unsigned int j=0; j< TPoint::dimension; j++){
-	  if (isOK && (idx == aVectPosition.at(j)) ){
-	    nbFound++;
-	    p[j]=val;
-	  }
-	}
-	++idx;
+  bool isOK = (in_str >> val);
+  for(unsigned int j=0; j< TPoint::dimension; j++){
+    if (isOK && (idx == aVectPosition.at(j)) ){
+      nbFound++;
+      p[j]=val;
+    }
+  }
+  ++idx;
       }      
       if(nbFound==TPoint::dimension){
-	vectResult.push_back(p);
+  vectResult.push_back(p);
       }
     }
     getline(in, str );
@@ -122,14 +122,14 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
       istringstream in_str( str );
       double x=0.0, y=0.0;
       while ( in_str.good()){
-	bool isOK = (in_str >> x);
-	isOK = isOK &&  (in_str >>y);
-	if(isOK){
-	  TPoint p;
-	  p[0]=x;
-	  p[1]=y;
-	  aContour.push_back(p);
-	}
+  bool isOK = (in_str >> x);
+  isOK = isOK &&  (in_str >>y);
+  if(isOK){
+    TPoint p;
+    p[0]=x;
+    p[1]=y;
+    aContour.push_back(p);
+  }
       }
       vectResult.push_back(aContour);
     }
@@ -163,9 +163,9 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
       bool isOK = (in_str >> x0) && (in_str >> y0) && (in_str >> fcChain);
       FreemanChain< TInteger> fc(fcChain, x0, y0);
       if(isOK){
-	vectResult.push_back(fc);
+  vectResult.push_back(fc);
       }else{
-	cerr << "Ignoring entry invalid FreemanChain" << endl;
+  cerr << "Ignoring entry invalid FreemanChain" << endl;
       }
     }
     getline(infile, str );

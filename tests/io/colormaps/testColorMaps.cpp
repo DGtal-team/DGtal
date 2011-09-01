@@ -50,9 +50,9 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TColorMap>
 void addColorMapSample( const char * name,
-			const TColorMap & aColorMap, 
-			const typename TColorMap::Value step,
-			Board & board )
+      const TColorMap & aColorMap, 
+      const typename TColorMap::Value step,
+      Board & board )
 { 
   BOOST_CONCEPT_ASSERT(( CColorMap<TColorMap> ));
 
@@ -60,14 +60,14 @@ void addColorMapSample( const char * name,
   board.translate( 0, 15 );
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setPenColor(Color::Black);
-    board.setFont( LibBoard::Fonts::Courier, 12 );	// todo with Cairo
-    board.drawText( -150, 0, name );			// todo with Cairo
+    board.setFont( LibBoard::Fonts::Courier, 12 );  // todo with Cairo
+    board.drawText( -150, 0, name );      // todo with Cairo
     board.setPenColor(Color::None);
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
-			 10,
-			 static_cast<double>( step ),
-			 10 );
+       10,
+       static_cast<double>( step ),
+       10 );
   }
 } 
 
@@ -83,19 +83,19 @@ bool testGrayscaleColorMap()
     Color c0 = cmap(0);
     trace.info(); 
     cerr << int(c0.red())
-	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
+   << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
     nbok += ( c0 == Color::Black );
     
     Color c128 = cmap(128);
     trace.info(); 
     cerr << int(c128.red())
-	 << "," << int(c128.green()) << "," << int(c128.blue()) << std::endl;
+   << "," << int(c128.green()) << "," << int(c128.blue()) << std::endl;
     nbok += ( c128 == Color(128,128,128) );
     
     Color c255 = cmap(255);
     trace.info();
     cerr << int(c255.red())
-	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
+   << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
     nbok += ( c255 == Color::White );
   }
   trace.endBlock();
@@ -106,13 +106,13 @@ bool testGrayscaleColorMap()
     Color c0 = cmap(64);
     trace.info();
     cerr << int(c0.red())
-	 << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
+   << "," << int(c0.green()) << "," << int(c0.blue()) << std::endl;
     nbok += ( c0 == Color::Black );
 
     Color c255 = cmap(128);
     trace.info(); 
     cerr << int(c255.red())
-	 << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
+   << "," << int(c255.green()) << "," << int(c255.blue()) << std::endl;
     nbok += ( c255 == Color::White );    
   }
   trace.endBlock();
@@ -122,13 +122,13 @@ bool testGrayscaleColorMap()
     Color c = GrayscaleColorMap<unsigned char>::getColor(0,128,128);
     trace.info() << "Should be white: ";
     cerr << int(c.red())
-	 << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
+   << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
     nbok += (c == Color::White);
 
     c = GrayscaleColorMap<unsigned char>::getColor(0,128,64);
     trace.info() << "Should be around 127,127,127: ";
     cerr << int(c.red())
-	 << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
+   << "," << int(c.green()) << "," << int(c.blue()) << std::endl;
 
     trace.endBlock();
   }
@@ -196,21 +196,21 @@ int main()
   addColorMapSample( "Gradient (Jet)", jet_gradient, 1, board );
 
   addColorMapSample( "Gradient (Spring)",
-		     GradientColorMap<int,CMAP_SPRING>( 0, 500 ),
-		     1,
-		     board );
+         GradientColorMap<int,CMAP_SPRING>( 0, 500 ),
+         1,
+         board );
   addColorMapSample( "Gradient (Summer)",
-		     GradientColorMap<int>( 0, 500, CMAP_SUMMER ),
-		     1,
-		     board );
+         GradientColorMap<int>( 0, 500, CMAP_SUMMER ),
+         1,
+         board );
   addColorMapSample( "Gradient (Autumn)",
-		     GradientColorMap<int>( 0, 500, CMAP_AUTUMN ),
-		     1,
-		     board );
+         GradientColorMap<int>( 0, 500, CMAP_AUTUMN ),
+         1,
+         board );
   addColorMapSample( "Gradient (Winter)",
-		     GradientColorMap<int>( 0, 500, CMAP_WINTER ),
-		     1,
-		     board );
+         GradientColorMap<int>( 0, 500, CMAP_WINTER ),
+         1,
+         board );
   addColorMapSample( "Random", cmap_random, 1, board );  
 
   board.saveEPS( "colormaps.eps" );

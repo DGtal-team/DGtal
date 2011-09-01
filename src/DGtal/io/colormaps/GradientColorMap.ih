@@ -39,9 +39,9 @@
 // ----------------------- Standard services ------------------------------
 
 template < typename PValue,
-	   int PDefaultPreset,
-	   int PDefaultFirstColor,
-	   int PDefaultLastColor >
+     int PDefaultPreset,
+     int PDefaultFirstColor,
+     int PDefaultLastColor >
 inline
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::GradientColorMap
 ( const PValue & minV,
@@ -97,7 +97,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
     break;
   case CMAP_CUSTOM:
     if ( firstColor != Color::None
-	 && lastColor != Color::None ) {
+   && lastColor != Color::None ) {
       myColors.push_back( firstColor );
       myColors.push_back( lastColor );   
     }
@@ -106,9 +106,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::GradientColorMap
 ( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
@@ -117,18 +117,18 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::~GradientColorMap()
 {
 }
 
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> &
 GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator=
 ( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
@@ -146,9 +146,9 @@ GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::op
 
 
 template<typename PValue,
-	 int PDefaultPreset,
-	 int PDefaultFirstColor,
-	 int PDefaultLastColor >
+   int PDefaultPreset,
+   int PDefaultFirstColor,
+   int PDefaultLastColor >
 inline
 void
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::addColor
@@ -158,9 +158,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template<typename PValue,
-	 int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+   int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 void
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::clearColors()
@@ -169,9 +169,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template<typename PValue,
-	 int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+   int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 const PValue &
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::min() const
@@ -180,9 +180,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template<typename PValue,
-	 int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+   int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 const PValue &
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::max() const
@@ -191,18 +191,18 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template<typename PValue,
-	 int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+   int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator()
   ( const Value & value ) const
 {
   return GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::getColor( myColors,
-												   myMin,
-												   myMax,
-												   value );
+                           myMin,
+                           myMax,
+                           value );
 }
 
 /**
@@ -210,9 +210,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
  * @param out the output stream where the object is written.
  */
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 void
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::selfDisplay
@@ -224,9 +224,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   std::vector<Color>::iterator it = myColors.begin();
   while ( it != myColors.end() ) {
     out << " RGB(" 
-	<< it->red() << ","
-	<< it->green() << ","  
-	<< it->blue() << ") ";
+  << it->red() << ","
+  << it->green() << ","  
+  << it->blue() << ") ";
     ++it;
   }
   out << " ]";
@@ -237,9 +237,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 bool
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::isValid() const
@@ -248,9 +248,9 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 }
 
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::getColor
@@ -271,14 +271,14 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   scale = ( scale * intervals ) - (upper_index - 1);
 
   const unsigned char red = static_cast<unsigned char>( firstColor.red() +
-							scale * ( lastColor.red() - 
-								  firstColor.red() ));
+              scale * ( lastColor.red() - 
+                  firstColor.red() ));
   const unsigned char green = static_cast<unsigned char>( firstColor.green() +
-							  scale * ( lastColor.green() - 
-								    firstColor.green() ));
+                scale * ( lastColor.green() - 
+                    firstColor.green() ));
   const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
-							 scale * ( lastColor.blue() - 
-								   firstColor.blue() ));
+               scale * ( lastColor.blue() - 
+                   firstColor.blue() ));
   return Color( red, green, blue );
 }
 
@@ -286,13 +286,13 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 // Implementation of inline functions                                        //
 
 template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object )
+      const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object )
 {
   object.selfDisplay( out );
   return out;

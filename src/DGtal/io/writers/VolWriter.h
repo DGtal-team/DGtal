@@ -70,7 +70,7 @@ namespace DGtal
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
-			 typename TImage::Value>::value));
+       typename TImage::Value>::value));
     
     typedef TImage Image;
     typedef typename TImage::Value Value;
@@ -87,7 +87,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportVol(const std::string & filename, const Image &aImage, 
-			  const Value & minV, const Value & maxV) throw(DGtal::IOException);
+        const Value & minV, const Value & maxV) throw(DGtal::IOException);
     
   };
 }//namespace

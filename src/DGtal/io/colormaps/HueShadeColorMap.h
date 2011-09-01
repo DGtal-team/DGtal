@@ -104,8 +104,8 @@ namespace DGtal
      * @param cycles The number of cycles in the colormap.
      */
     HueShadeColorMap( const PValue & min,
-		      const PValue & max,
-		      const unsigned int cycles = DefaultCycles );
+          const PValue & max,
+          const unsigned int cycles = DefaultCycles );
     
     /** 
      * Computes the color associated with a value in a given range.
@@ -185,9 +185,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static Color getColor( const unsigned int cycles,
-				     const PValue & min,
-				     const PValue & max,
-				     const PValue & value );
+             const PValue & min,
+             const PValue & max,
+             const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
     private:
@@ -198,9 +198,9 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
     protected:
 
-    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;           /**< The lower bound of the value range.  */
-    unsigned int myCycles;	/**< The number of cycles in the color map. */
+    unsigned int myCycles;  /**< The number of cycles in the color map. */
     
     /**
      * Constructor.
@@ -223,7 +223,7 @@ namespace DGtal
      * @param v The value of the color in [0..1].
      */
     static void HSVtoRGB(double &r, double &g, double &b,
-			 double h, const double s, const double v);
+       double h, const double s, const double v);
 
 
     }; // end of class HueShadeColorMap

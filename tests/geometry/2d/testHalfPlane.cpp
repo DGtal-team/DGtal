@@ -50,7 +50,7 @@
 
 #include "DGtal/geometry/2d/StraightLine.h"
 #include "DGtal/geometry/2d/Point2ShapePredicate.h"
-	
+  
 
 using namespace DGtal;
 
@@ -64,81 +64,81 @@ int main(int , char **)
 
 
 
-	typedef int Coordinate;
-	typedef PointVector<2,Coordinate> Point;
-	typedef StraightLine<Coordinate> StraightLine;
+  typedef int Coordinate;
+  typedef PointVector<2,Coordinate> Point;
+  typedef StraightLine<Coordinate> StraightLine;
 
-	Point p(0,0);
-	Point q(5,2);
-	Point r1(2,0);
-	Point r2(0,2);
-	Point r3(10,4);
+  Point p(0,0);
+  Point q(5,2);
+  Point r1(2,0);
+  Point r2(0,2);
+  Point r3(10,4);
 
-	StraightLine line(p,q);
+  StraightLine line(p,q);
 
 
-	//halfplane upward oriented and closed 
+  //halfplane upward oriented and closed 
   typedef Point2ShapePredicate<StraightLine,true,true> UpClosedHalfPlane; 
-	//halfplane upward oriented and open 
+  //halfplane upward oriented and open 
   typedef Point2ShapePredicate<StraightLine,true,false> UpOpenHalfPlane; 
-	//halfplane downward oriented and closed 
+  //halfplane downward oriented and closed 
   typedef Point2ShapePredicate<StraightLine,false,true> DownClosedHalfPlane; 
 
   //Location
   trace.beginBlock("Creation of a halfplane and test some points");
 
-	std::string res;
+  std::string res;
 
   trace.info() << "created line:" << std::endl;
   trace.info() << line << std::endl;
 
   UpClosedHalfPlane hp(line);
   trace.info() << "created hp:" << std::endl;
-	trace.info() << hp << std::endl;
+  trace.info() << hp << std::endl;
 
   trace.info() << "Does " << r1 << " belongs to hp (no)?" << std::endl;
-	res = hp(r1)?"yes":"no";
+  res = hp(r1)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r2 << " belongs to hp (yes)?" << std::endl;
-	res = hp(r2)?"yes":"no";
+  res = hp(r2)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r3 << " belongs to hp (yes)?" << std::endl;
-	res = hp(r3)?"yes":"no";
+  res = hp(r3)?"yes":"no";
   trace.info() << res << std::endl;
 
 
   UpOpenHalfPlane hp2(line);
   trace.info() << "created h2:" << std::endl;
-	trace.info() << hp2 << std::endl;
+  trace.info() << hp2 << std::endl;
 
   trace.info() << "Does " << r1 << " belongs to hp2 (no)?" << std::endl;
-	res = hp2(r1)?"yes":"no";
+  res = hp2(r1)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r2 << " belongs to hp2 (yes)?" << std::endl;
-	res = hp2(r2)?"yes":"no";
+  res = hp2(r2)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r3 << " belongs to hp2 (no)?" << std::endl;
-	res = hp2(r3)?"yes":"no";
+  res = hp2(r3)?"yes":"no";
   trace.info() << res << std::endl;
 
   DownClosedHalfPlane hp3(line);
   trace.info() << "created h3:" << std::endl;
-	trace.info() << hp3 << std::endl;
+  trace.info() << hp3 << std::endl;
 
   trace.info() << "Does " << r1 << " belongs to hp3 (yes)?" << std::endl;
-	res = hp3(r1)?"yes":"no";
+  res = hp3(r1)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r2 << " belongs to hp3 (no)?" << std::endl;
-	res = hp3(r2)?"yes":"no";
+  res = hp3(r2)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.info() << "Does " << r3 << " belongs to hp3 (yes)?" << std::endl;
-	res = hp3(r3)?"yes":"no";
+  res = hp3(r3)?"yes":"no";
   trace.info() << res << std::endl;
 
   trace.endBlock();

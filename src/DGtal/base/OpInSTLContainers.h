@@ -61,55 +61,55 @@ namespace DGtal
    * methods of STL containers so that they not only 
    * work for the iterator type, but also for the reverse_iterator type.  
    * @code
-//  		anIterator = aContainer.erase(anIterator);
+//      anIterator = aContainer.erase(anIterator);
 //does not compile if anIterator has type 'std::reverse_iterator'
 //erase only takes parameter of type 'std::iterator'
-  			anIterator = 
-				DGtal::OpInSTLContainers<Container,Iterator>
-						 ::erase(aContainer, anIterator);
+        anIterator = 
+        DGtal::OpInSTLContainers<Container,Iterator>
+             ::erase(aContainer, anIterator);
    * @endcode
    * @see Preimage2D.ih
    */
 
-		//default (iterator type)
-		template <typename Container, typename Iterator>
-		struct OpInSTLContainers 
-		{
-			static Iterator erase(Container& aContainer,Iterator& anIterator) 
-			{
-				return aContainer.erase(anIterator);
-			}
+    //default (iterator type)
+    template <typename Container, typename Iterator>
+    struct OpInSTLContainers 
+    {
+      static Iterator erase(Container& aContainer,Iterator& anIterator) 
+      {
+        return aContainer.erase(anIterator);
+      }
 
-			static Iterator insert(Container& aContainer,Iterator& anIterator) 
-			{
-				return aContainer.insert(anIterator);
-			}
+      static Iterator insert(Container& aContainer,Iterator& anIterator) 
+      {
+        return aContainer.insert(anIterator);
+      }
 
-		};
+    };
 
-		//specialisation for reverse_iterator type
-		template <typename Container>
-		struct OpInSTLContainers<
-			Container, 
-			std::reverse_iterator<typename Container::iterator> > 
-		{
-			typedef std::reverse_iterator<typename Container::iterator> reverseIterator;
-			static reverseIterator erase(
-									Container& aContainer,
-									reverseIterator& anIterator) 
-			{
-				aContainer.erase((++anIterator).base());
-				return anIterator;
-			}
+    //specialisation for reverse_iterator type
+    template <typename Container>
+    struct OpInSTLContainers<
+      Container, 
+      std::reverse_iterator<typename Container::iterator> > 
+    {
+      typedef std::reverse_iterator<typename Container::iterator> reverseIterator;
+      static reverseIterator erase(
+                  Container& aContainer,
+                  reverseIterator& anIterator) 
+      {
+        aContainer.erase((++anIterator).base());
+        return anIterator;
+      }
 
-			static reverseIterator insert(
-									Container& aContainer,
-									reverseIterator& anIterator) 
-			{
-				aContainer.insert(anIterator.base());
-				return --anIterator;
-			}
-		};
+      static reverseIterator insert(
+                  Container& aContainer,
+                  reverseIterator& anIterator) 
+      {
+        aContainer.insert(anIterator.base());
+        return --anIterator;
+      }
+    };
 
 } // namespace DGtal
 

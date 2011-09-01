@@ -2,6 +2,6 @@
 ##
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/topology/SurfelAdjacency.cpp
-		)
-		
+    DGtal/topology/SurfelAdjacency.cpp
+    )
+    

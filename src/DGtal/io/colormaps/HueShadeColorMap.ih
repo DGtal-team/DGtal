@@ -155,8 +155,8 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
   double red, green, blue;
   HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
   return Color( static_cast<int>( red * 255), 
-		static_cast<int>( green * 255),
-		static_cast<int>( blue * 255) );
+    static_cast<int>( green * 255),
+    static_cast<int>( blue * 255) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -166,7 +166,7 @@ template <typename Value, int DefaultCycles>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const HueShadeColorMap<Value,DefaultCycles> & object )
+      const HueShadeColorMap<Value,DefaultCycles> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -213,7 +213,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB
   case 4:
     r = t;  g = p; b = v;
     break;
-  default:		// case 5:
+  default:    // case 5:
     r = v; g = p; b = q;
     break;
   }

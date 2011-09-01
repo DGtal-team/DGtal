@@ -100,8 +100,8 @@ namespace DGtal
      * @param closed true if the input range is closed.
      */
     void init( const double h, const ConstIterator& itb, 
-	       const ConstIterator& ite, 
-	       const bool& isClosed);
+         const ConstIterator& ite, 
+         const bool& isClosed);
     
 
     /** 

@@ -207,7 +207,7 @@ bool testDigitalSetDraw()
 
   trace.beginBlock ( "Creating disk( r=5.0 ) ..." );
   for ( Domain::ConstIterator it = domain.begin();
-	it != domain.end();
+  it != domain.end();
       ++it )
   {
     if ( (*it - c ).norm() < 5.0 )
@@ -247,12 +247,12 @@ bool testDigitalSetDomain()
 
   trace.beginBlock ( "Creating disk( r=50.0 ) ..." );
   for ( Domain::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
+  it != domain.end();
+  ++it )
     {
       if ( (*it - c ).norm() < 50.0 )
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
+  // insertNew is very important for vector container.
+  disk.insertNew( *it );
     }
   disk.erase( c );
   INBLOCK_TEST( disk.size() == 7824 );

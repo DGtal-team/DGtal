@@ -169,19 +169,19 @@ public:
 
 
   virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-		       double x3, double y3, double z3,  double x4, double y4, double z4, 
-		       DGtal::Color aColor);
+           double x3, double y3, double z3,  double x4, double y4, double z4, 
+           DGtal::Color aColor);
 
   
   virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
+           const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
   
 
   virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
-			double width=0.5,bool withWire=false);
+      double width=0.5,bool withWire=false);
   
   virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
-			double size=40);
+      double size=40);
   
   virtual DGtal::Color getFillColor();
    
@@ -190,20 +190,20 @@ public:
  
   
   virtual void addKSSurfel(double x, double y, double z, 
-		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-			   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
+       bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+         bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
   
   virtual void addKSVoxel(int x, int y, int z);
   
 
 
   virtual void addKSPointel(double x, double y, double z, double size=0.1,
-			    bool isSigned=false, bool signPos=true);
+          bool isSigned=false, bool signPos=true);
   
 
   virtual void addKSLinel(double x1, double y1, double z1,
-			  double x2, double y2, double z2,
-			  double width=0.02, bool isSigned=false, bool signPos=true);
+        double x2, double y2, double z2,
+        double width=0.02, bool isSigned=false, bool signPos=true);
   
    /**
    * Used to define update the scene bounding box when objects are added 

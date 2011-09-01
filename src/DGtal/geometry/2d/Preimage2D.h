@@ -115,35 +115,35 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-		typedef typename Shape::Coordinate Coordinate;
-		typedef DGtal::PointVector<2,Coordinate> Point;
-		typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename Shape::Coordinate Coordinate;
+    typedef DGtal::PointVector<2,Coordinate> Point;
+    typedef DGtal::PointVector<2,Coordinate> Vector;
 
-	private:
+  private:
 
-		//container of points
-		typedef std::list<Point> Container;
-		//Iterators on the container
-		typedef typename std::list<Point>::iterator ForwardIterator;
-		typedef typename std::list<Point>::reverse_iterator BackwardIterator;
-		typedef typename std::list<Point>::const_iterator ConstForwardIterator;
-		typedef typename std::list<Point>::const_reverse_iterator ConstBackwardIterator;
+    //container of points
+    typedef std::list<Point> Container;
+    //Iterators on the container
+    typedef typename std::list<Point>::iterator ForwardIterator;
+    typedef typename std::list<Point>::reverse_iterator BackwardIterator;
+    typedef typename std::list<Point>::const_iterator ConstForwardIterator;
+    typedef typename std::list<Point>::const_reverse_iterator ConstBackwardIterator;
 
-		//Predicates used to decide whether the preimage
+    //Predicates used to decide whether the preimage
     //has to be updated or not
-		typedef Point2ShapePredicate<Shape,false,true> 
-			PHullBackQHullFrontPred; 
-		typedef Point2ShapePredicate<Shape,true,true> 
-			QHullBackPHullFrontPred; 
-		//Predicates used to update the hulls
-		typedef Point2ShapePredicate<Shape,true,false> 
-			PHullUpdateForPAddingPred; 
-		typedef Point2ShapePredicate<Shape,false,false> 
-			QHullUpdateForQAddingPred; 
-		typedef Point2ShapePredicate<Shape,false,false> 
-			QHullUpdateForPAddingPred; 
-		typedef Point2ShapePredicate<Shape,true,false> 
-			PHullUpdateForQAddingPred; 
+    typedef Point2ShapePredicate<Shape,false,true> 
+      PHullBackQHullFrontPred; 
+    typedef Point2ShapePredicate<Shape,true,true> 
+      QHullBackPHullFrontPred; 
+    //Predicates used to update the hulls
+    typedef Point2ShapePredicate<Shape,true,false> 
+      PHullUpdateForPAddingPred; 
+    typedef Point2ShapePredicate<Shape,false,false> 
+      QHullUpdateForQAddingPred; 
+    typedef Point2ShapePredicate<Shape,false,false> 
+      QHullUpdateForPAddingPred; 
+    typedef Point2ShapePredicate<Shape,true,false> 
+      PHullUpdateForQAddingPred; 
 
     
 
@@ -164,16 +164,16 @@ namespace DGtal
     ~Preimage2D();
 
     /**
-		 * Updates the current preimage with 
+     * Updates the current preimage with 
      * the constraints involved by the two 
      * end points of a new segment
      * (adding to the front of the sequence of 
      * segments with respect to the scan orientaion
      * e.g. back => seg1 => ... segn => front) 
-		 * Nb: in O(n)
+     * Nb: in O(n)
      * @param aP, aQ, 
-		 * the two ends of the new straight segment 
-	   * assumed to lie on either side of the shapes. 
+     * the two ends of the new straight segment 
+     * assumed to lie on either side of the shapes. 
      * @return 'false' if the updated preimage is empty, 
      * 'true' otherwise.
      */
@@ -212,7 +212,7 @@ namespace DGtal
      */
     void selfDraw( LibBoard::Board & board ) const
       {
-				selfDraw<selfDrawStyle>(board);
+        selfDraw<selfDrawStyle>(board);
       }
 
 private:
@@ -227,7 +227,7 @@ private:
     {
       selfDrawStyle(LibBoard::Board & aBoard) 
       {
-				aBoard.setPenColor(Color::Red);
+        aBoard.setPenColor(Color::Red);
       }
     };
 
@@ -237,9 +237,9 @@ private:
     // ------------------------- Private Datas --------------------------------
   private:
 
-		//lists of the vertices of the preimage
+    //lists of the vertices of the preimage
     //coorresponding to the points Pi and Qi
-		Container myPHull, myQHull;
+    Container myPHull, myQHull;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -253,20 +253,20 @@ private:
   private:
 
     /**
-		 * Updates the current preimage
-		 * Nb: in O(n)
+     * Updates the current preimage
+     * Nb: in O(n)
      * @param 
      * aPoint a new vertex of the preimage,
      * aContainer the container to be updated,
      * anIterator an iterator to its front (resp. back)
      * anEndIterator an iterator pointing after its back 
-		 * (resp. before its front). 
+     * (resp. before its front). 
      */
-		template <typename Iterator, typename Predicate>
+    template <typename Iterator, typename Predicate>
     void update(const Point & aPoint, 
-								Container & aContainer,
-								Iterator & anIterator,
-								const Iterator & anEndIterator);
+                Container & aContainer,
+                Iterator & anIterator,
+                const Iterator & anEndIterator);
 
 
 

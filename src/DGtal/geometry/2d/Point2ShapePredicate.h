@@ -55,7 +55,7 @@ namespace DGtal
   /**
    * Description of template class 'Point2ShapePredicate' <p>
    * \brief Aim: Predicate returning true iff the point is in 
-	 * the 'interior' of the shape following the concept of 
+   * the 'interior' of the shape following the concept of 
    * CPointPredicate.
    *
    * The concept of shape considered here stands for a 
@@ -64,7 +64,7 @@ namespace DGtal
    * and able to return for any point the signed distance
    * to itself (negative in the interior, positive in the 
    * exterior) 
-	 * The orientation (which part is the 'interior'?)
+   * The orientation (which part is the 'interior'?)
    * and the closure (is the boundary included?) are
    * given by the two boolean template parameters 
    */
@@ -74,12 +74,12 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-		typedef typename Shape::Point Point;
-		typedef typename Shape::Coordinate Coordinate;
+    typedef typename Shape::Point Point;
+    typedef typename Shape::Coordinate Coordinate;
 
-		/**
+    /**
      * Constructor.
-		 * @param aShape any shape
+     * @param aShape any shape
      */
     Point2ShapePredicate(const Shape& aShape);
 
@@ -112,8 +112,8 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-		//the shape
-		Shape myS;
+    //the shape
+    Shape myS;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -128,56 +128,56 @@ namespace DGtal
 //////////////////////////////////////////////////////////////////////////////
 // policy classes for Point2ShapePredicate
 
-		template <typename T, bool b1, bool b2>
-		struct Point2ShapePredicateComparator {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less<T> c;
-				return c(q,t);
-			}
-		};
+    template <typename T, bool b1, bool b2>
+    struct Point2ShapePredicateComparator {
+      bool operator()(const T& q, 
+                       const T& t) const {
+        std::less<T> c;
+        return c(q,t);
+      }
+    };
 
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,false,false> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less<T> c;
-				return c(q,t);
-			}
-		};
+    template <typename T>
+    struct Point2ShapePredicateComparator<T,false,false> {
+      bool operator()(const T& q, 
+                       const T& t) const {
+        std::less<T> c;
+        return c(q,t);
+      }
+    };
 
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,false,true> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::less_equal<T> c;
-				return c(q,t);
-			}
-		};
+    template <typename T>
+    struct Point2ShapePredicateComparator<T,false,true> {
+      bool operator()(const T& q, 
+                       const T& t) const {
+        std::less_equal<T> c;
+        return c(q,t);
+      }
+    };
 
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,true,false> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::greater<T> c;
-				return c(q,t);
-			}
-		};
+    template <typename T>
+    struct Point2ShapePredicateComparator<T,true,false> {
+      bool operator()(const T& q, 
+                       const T& t) const {
+        std::greater<T> c;
+        return c(q,t);
+      }
+    };
 
-		template <typename T>
-		struct Point2ShapePredicateComparator<T,true,true> {
-			bool operator()(const T& q, 
-								 			const T& t) const {
-				std::greater_equal<T> c;
-				return c(q,t);
-			}
-		};
+    template <typename T>
+    struct Point2ShapePredicateComparator<T,true,true> {
+      bool operator()(const T& q, 
+                       const T& t) const {
+        std::greater_equal<T> c;
+        return c(q,t);
+      }
+    };
 
 template <typename Shape, bool isUpward, bool isClosed>
 inline
 std::ostream&
 operator<< ( std::ostream & out, 
-		  const Point2ShapePredicate<Shape,isUpward,isClosed> & object );
+      const Point2ShapePredicate<Shape,isUpward,isClosed> & object );
 
 } // namespace DGtal
 

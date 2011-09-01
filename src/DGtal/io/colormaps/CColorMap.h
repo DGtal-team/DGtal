@@ -65,7 +65,7 @@ namespace DGtal
    *
    * <p> Notation
    * - \t X : A type that is a model of CColorMap
-   * - \t x, \t y	: Object of type X
+   * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
    *

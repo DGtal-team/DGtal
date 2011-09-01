@@ -72,8 +72,8 @@ namespace DGtal
      * @param maxVal the maximum value (last value considered).
      */
     SimpleForegroundPredicate(const Image & aImage,
-			      const Value minVal, 
-			      const Value maxVal): 
+            const Value minVal, 
+            const Value maxVal): 
       myImage(new Image(aImage)), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 

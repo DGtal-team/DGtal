@@ -41,7 +41,7 @@
 template <typename Value>
 inline
 DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap( const Value & aMin,
-							const Value & aMax )
+              const Value & aMax )
   : myMin( aMin ), myMax( aMax )
 { }
 
@@ -131,8 +131,8 @@ template <typename Value>
 inline
 Color
 DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
-					       const Value & max,
-					       const Value & value )
+                 const Value & max,
+                 const Value & value )
 {
   double range = static_cast<double>( max - min );
   double scale = static_cast<double>( value - min );
@@ -147,7 +147,7 @@ template <typename Value>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GrayscaleColorMap<Value> & object )
+      const GrayscaleColorMap<Value> & object )
 {
   object.selfDisplay( out );
   return out;

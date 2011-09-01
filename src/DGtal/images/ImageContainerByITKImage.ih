@@ -224,8 +224,8 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValue>::selfDisplay ( std::ostream & out ) const
     {
       out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) 
-	  << "bytes lower=" << myLowerBound << " upper=" 
-	  << myUpperBound;
+    << "bytes lower=" << myLowerBound << " upper=" 
+    << myUpperBound;
     }
 
     /**

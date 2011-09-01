@@ -129,7 +129,7 @@ template <Dimension dim>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		    const SurfelAdjacency<dim> & object )
+        const SurfelAdjacency<dim> & object )
 {
     object.selfDisplay ( out );
     return out;

@@ -92,16 +92,16 @@ bool testBoard2DCustomStyle()
   board.setUnit(LibBoard::Board::UCentimeter);
   
   board << DrawDomainGrid()
-	<< domain 
-	<< mySet;
+  << domain 
+  << mySet;
   board.saveSVG("testcustom-prev.svg");
 
   board.clear();
 
   board << DrawDomainGrid()
-	<< domain 
-	<< CustomStyle( mySet.styleName(), new MyDrawStyleCustomGreen )
-	<< mySet;
+  << domain 
+  << CustomStyle( mySet.styleName(), new MyDrawStyleCustomGreen )
+  << mySet;
   board.saveSVG("testcustom-next.svg");
 
  

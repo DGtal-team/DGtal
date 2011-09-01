@@ -48,7 +48,7 @@ template <typename TDomain, typename TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::DomainAdjacency( const Domain & aDomain, 
-		   const Adjacency & adjacency )
+       const Adjacency & adjacency )
   : myPred( aDomain ), myAdjacency( adjacency )
 {
 }
@@ -107,8 +107,8 @@ inline
 void
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::writeNeighborhood( const Point & p, 
-		     OutputIterator & out_it,
-		     const PointPredicate & pred ) const
+         OutputIterator & out_it,
+         const PointPredicate & pred ) const
 {
   // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
   //   Predicate;
@@ -123,7 +123,7 @@ inline
 void 
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::writeNeighborhood( const Point & p, 
-		     OutputIterator & out_it ) const
+         OutputIterator & out_it ) const
 {
   myAdjacency.writeNeighborhood( p, out_it, myPred );
 }
@@ -134,8 +134,8 @@ inline
 void 
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::writeProperNeighborhood( const Point & p, 
-			   OutputIterator & out_it,
-			   const PointPredicate & pred ) const
+         OutputIterator & out_it,
+         const PointPredicate & pred ) const
 {
   // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
   //   Predicate;
@@ -150,7 +150,7 @@ inline
 void 
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::writeProperNeighborhood( const Point & p, 
-			   OutputIterator & out_it ) const
+         OutputIterator & out_it ) const
 {
   myAdjacency.writeProperNeighborhood( p, out_it, myPred );
 }
@@ -177,7 +177,7 @@ template <typename TDomain, typename TAdjacency>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DomainAdjacency<TDomain,TAdjacency> & object )
+      const DomainAdjacency<TDomain,TAdjacency> & object )
 {
   object.selfDisplay( out );
   return out;
