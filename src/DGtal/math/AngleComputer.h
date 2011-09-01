@@ -163,6 +163,8 @@ namespace DGtal
 
     
   };
+
+ 
   
 
 } // namespace DGtal

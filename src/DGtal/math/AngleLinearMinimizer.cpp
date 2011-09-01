@@ -54,7 +54,7 @@ DGtal::AngleLinearMinimizer::~AngleLinearMinimizer()
 }
 
 
-DGtal::AngleLinearMinimizer::LinearMinimizer()
+DGtal::AngleLinearMinimizer::AngleLinearMinimizer()
   : myValues( 0 )
 {
 }
@@ -68,8 +68,8 @@ DGtal::AngleLinearMinimizer::reset()
       delete[] myValues;
       myValues = 0;
     }
-  mSum = 0.0;
-  mMax = 0.0;
+  mySum = 0.0;
+  myMax = 0.0;
 }
 
 
@@ -79,7 +79,7 @@ DGtal::AngleLinearMinimizer::init( unsigned int nbMax )
   reset();
   myValues = new ValueInfo[ nbMax ];
   myMaxSize = nbMax;
-  mySize = nbmax;
+  mySize = nbMax;
   myIsCurveOpen = false;
 }
 
@@ -93,7 +93,7 @@ double
 DGtal::AngleLinearMinimizer::getEnergy( unsigned int i1, unsigned int i2 ) const
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
   double E = 0.0;
   for ( unsigned int i = mc.next( i1 ); i != i2; ) 
     {
@@ -113,7 +113,7 @@ double
 DGtal::AngleLinearMinimizer::getFormerEnergy( unsigned int i1, unsigned int i2 ) const
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
   double E = 0.0;
   for ( unsigned int i = mc.next( i1 ); i != i2; ) 
     {
@@ -134,7 +134,7 @@ std::vector<double>
 DGtal::AngleLinearMinimizer::getGradient() const
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
   
   vector<double> grad( size() );
   for ( unsigned int i = 0; i < size(); i++ ) 
@@ -143,7 +143,7 @@ DGtal::AngleLinearMinimizer::getGradient() const
       unsigned int inext = mc.next( i );
       const ValueInfo & vi = this->ro( i );
       double val = vi.value;
-      if ( mIsCurveOpen  && ( i == ( size() - 1 ) ) )
+      if ( myIsCurveOpen  && ( i == ( size() - 1 ) ) )
 	{ // free extremity to the front/right.
 	  const ValueInfo & viprev = this->ro( iprev );
 	  double valp = viprev.value; 
@@ -175,7 +175,7 @@ std::vector<double>
 DGtal::AngleLinearMinimizer::getFormerGradient() const
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
 
   vector<double> grad( size() );
   for ( unsigned int i = 0; i < size(); i++ ) 
@@ -184,13 +184,13 @@ DGtal::AngleLinearMinimizer::getFormerGradient() const
       unsigned int inext = mc.next( i );
       const ValueInfo & vi = this->ro( i );
       double val = vi.oldValue;
-      if ( mIsCurveOpen && ( i == ( size() - 1 ) ) )
+      if ( myIsCurveOpen && ( i == ( size() - 1 ) ) )
 	{ // free extremity to the front/right.
 	  const ValueInfo & viprev = this->ro( iprev );
 	  double valp = viprev.oldValue; 
 	  grad[ i ] = 2.0 * ac.deviation( val, valp ) / viprev.distToNext;
 	}
-      else if ( mIsCurveOpen && ( i ==  0 ) )
+      else if ( myIsCurveOpen && ( i ==  0 ) )
 	{ // free extremity to the back/left.
 	  const ValueInfo & vinext = this->ro( inext );
 	  double valn = vinext.oldValue;
@@ -220,9 +220,9 @@ DGtal::AngleLinearMinimizer::optimize()
 double 
 DGtal::AngleLinearMinimizer::optimize( unsigned int i1, unsigned int i2 )
 {
-  ASSERT_LinearMinimizer( size() > 2 );
-  Mathutils::AngleComputer ac;
-  Mathutils::ModuloComputer mc( size() );
+  ASSERT( size() > 2 );
+  AngleComputer ac;
+  ModuloComputer<unsigned int> mc( size() );
 
   unsigned int i = i1;
   // (I) first pass to work on old values.
@@ -236,21 +236,21 @@ DGtal::AngleLinearMinimizer::optimize( unsigned int i1, unsigned int i2 )
   while ( i != i2 );
   this->oneStep( i1, i2 );
   
-  mSum = 0.0;
-  mMax = 0.0;
+  mySum = 0.0;
+  myMax = 0.0;
   i = i1;
   do 
     {
       const ValueInfo & vi = this->ro( i );
       double diff = fabs( ac.deviation( vi.value, vi.oldValue ) );
-      if ( diff > mMax )
-	mMax = diff;
-      mSum += diff;
+      if ( diff > myMax )
+	myMax = diff;
+      mySum += diff;
       i = mc.next( i );
     }
   while ( i != i2 );
 
-  return mSum;
+  return mySum;
 }
 
 
@@ -264,8 +264,8 @@ DGtal::AngleLinearMinimizer::lastDelta() const
 void
 DGtal::AngleLinearMinimizer::oneStep( unsigned int i1, unsigned int i2 )
 {
-  Mathutils::AngleComputer ac;
-  Mathutils::ModuloComputer mc( size() );
+  AngleComputer ac;
+  ModuloComputer<unsigned int> mc( size() );
 
   double mid;
   unsigned int i = i1; 
@@ -317,7 +317,7 @@ void
 DGtal::AngleLinearMinimizerByRelaxation::oneStep( unsigned int i1, unsigned int i2 )
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
 
   double mid;
   unsigned int i = i1; 
@@ -374,7 +374,7 @@ void
 DGtal::AngleLinearMinimizerByGradientDescent::oneStep( unsigned int i1, unsigned int i2 )
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
 
   vector<double> grad ( getFormerGradient() );
   double mid;
@@ -423,7 +423,7 @@ void
 DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::oneStep( unsigned int i1, unsigned int i2 )
 {
   AngleComputer ac;
-  ModuloComputer mc( size() );
+  ModuloComputer<unsigned int> mc( size() );
   vector<double> grad ( getFormerGradient() );
   
   double mid;
