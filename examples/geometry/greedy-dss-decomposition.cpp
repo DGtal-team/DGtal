@@ -71,20 +71,20 @@ int main( )
   Domain domain( p1, p2 );
   Board2D aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
-	 << domain
-	 << SetMode( "PointVector", "Grid" )
-	 << theContour;
+   << domain
+   << SetMode( "PointVector", "Grid" )
+   << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentComputerIterator i = theDecomposition.begin();
-	i != theDecomposition.end(); ++i ) 
+  i != theDecomposition.end(); ++i ) 
     {
       DSS4 segment(*i);
       std::cout << segment << std::endl;
       aBoard << CustomStyle( styleName, 
-			     new CustomPenColor( Color::Blue ) )
-	     << segment; // draw each segment
+           new CustomPenColor( Color::Blue ) )
+       << segment; // draw each segment
       
     } 
   aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");

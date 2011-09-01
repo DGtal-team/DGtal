@@ -99,8 +99,8 @@ namespace DGtal
      */
     static 
     Quantity compare(FirstEstimator & aFirstEstimator,
-		     SecondEstimator & aSecondEstimator,
-		     const ConstIterator &it)
+         SecondEstimator & aSecondEstimator,
+         const ConstIterator &it)
     {
       ASSERT( aFirstEstimator.isValid());
       ASSERT( aSecondEstimator.isValid());
@@ -127,15 +127,15 @@ namespace DGtal
     static
     OutputStatistic
     compare(FirstEstimator & aFirstEstimator,
-	    SecondEstimator & aSecondEstimator,
-	    const ConstIterator & itb, 
-	    const ConstIterator & ite,
-	    const bool storeSamples = false)
+      SecondEstimator & aSecondEstimator,
+      const ConstIterator & itb, 
+      const ConstIterator & ite,
+      const bool storeSamples = false)
     {
       OutputStatistic stats(storeSamples);
       
       for(ConstIterator it = itb; it!= ite; ++it)
-	stats.addValue( compare(aFirstEstimator,aSecondEstimator,it));
+  stats.addValue( compare(aFirstEstimator,aSecondEstimator,it));
       
       stats.terminate();
       return stats;
@@ -159,8 +159,8 @@ namespace DGtal
     static 
     double 
     compareVectors(FirstEstimator & aFirstEstimator,
-		   SecondEstimator & aSecondEstimator,
-		   const ConstIterator &it)
+       SecondEstimator & aSecondEstimator,
+       const ConstIterator &it)
     {
       ASSERT( aFirstEstimator.isValid());
       ASSERT( aSecondEstimator.isValid());
@@ -169,9 +169,9 @@ namespace DGtal
       ASSERT( v1.norm() != 0.0 );
       ASSERT( v2.norm() != 0.0 );
       double ndot = (double) v1.dot(v2)
-	/ ( (double) ( v1.norm() * v2.norm() ) );
+  / ( (double) ( v1.norm() * v2.norm() ) );
       return ( ndot > 1.0 ) ? 0.0
-	: ( ndot < -1.0 ) ? M_PI : acos( ndot );
+  : ( ndot < -1.0 ) ? M_PI : acos( ndot );
       
     }
     
@@ -194,15 +194,15 @@ namespace DGtal
     static
     OutputVectorStatistic
     compareVectors(FirstEstimator & aFirstEstimator,
-		   SecondEstimator & aSecondEstimator,
-		   const ConstIterator & itb, 
-		   const ConstIterator & ite,
-		   const bool storeSamples = false)
+       SecondEstimator & aSecondEstimator,
+       const ConstIterator & itb, 
+       const ConstIterator & ite,
+       const bool storeSamples = false)
     {
       OutputVectorStatistic stats(storeSamples);
       
       for(ConstIterator it = itb; it!= ite; ++it)
-	stats.addValue( compareVectors(aFirstEstimator,aSecondEstimator,it));
+  stats.addValue( compareVectors(aFirstEstimator,aSecondEstimator,it));
       
       stats.terminate();
       return stats;

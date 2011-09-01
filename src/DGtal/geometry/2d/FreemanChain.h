@@ -121,7 +121,7 @@ namespace DGtal
     ///////////////////////////////////////////////////////////////////////////////
     // class FreemanChain::ConstIterator
     ///////////////////////////////////////////////////////////////////////////////
-	
+  
     // ------------------------- Standard services -----------------------
     
     /**
@@ -153,10 +153,10 @@ namespace DGtal
       PointI2  myXY;
 
 
-	
+  
 
-	
-	
+  
+  
 
       // ------------------------- Standard services -----------------------
     public:
@@ -165,12 +165,12 @@ namespace DGtal
        * Default Constructor.
        * The object is not valid.
        */
-	
+  
       ConstIterator()
-	: myFc( 0 ), myPos( 0 )
+  : myFc( 0 ), myPos( 0 )
       {
       }
-	
+  
       /**
        * Constructor.
        * Nb: complexity in O(n).
@@ -178,29 +178,29 @@ namespace DGtal
        * @param chain a Freeman chain,
        * @param n the position in [chain] (within 0 and chain.size()).
        */
-	
+  
       ConstIterator( const FreemanChain & aChain, unsigned int n =0)
-	: myFc( &aChain ), myPos( 0 )
+  : myFc( &aChain ), myPos( 0 )
       {
-	  
-	if ( n < myFc->chain.size() ) {
+    
+  if ( n < myFc->chain.size() ) {
 
-	  myXY.at(0)=aChain.x0;
-	  myXY.at(1)=aChain.y0;
+    myXY.at(0)=aChain.x0;
+    myXY.at(1)=aChain.y0;
 
-	  while ( myPos < n ) this->next();
+    while ( myPos < n ) this->next();
 
-	} else {// iterator end() 
-	  myXY.at(0)=aChain.xn;
-	  myXY.at(1)=aChain.yn;
+  } else {// iterator end() 
+    myXY.at(0)=aChain.xn;
+    myXY.at(1)=aChain.yn;
 
-	  myPos = myFc->chain.size()+1;
+    myPos = myFc->chain.size()+1;
 
-	}
+  }
 
       }
-	
-	
+  
+  
       /**
        * Constructor.
        * It is the user's responsability to make sure that the data's are
@@ -212,9 +212,9 @@ namespace DGtal
        * @param n the position in [chain] (within 0 and chain.size()).
        * @param XY the point corresponding to the 'n'-th position of 'chain'.
        */
-	
+  
       ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
-	: myFc( &aChain ), myPos( n ), myXY ( XY ) 
+  : myFc( &aChain ), myPos( n ), myXY ( XY ) 
       { 
       }
      
@@ -225,13 +225,13 @@ namespace DGtal
        * Copy constructor.
        * @param other the iterator to clone.
        */
-	
+  
       ConstIterator( const ConstIterator & aOther )
-	: myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
+  : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
       {
       }
-	
-	
+  
+  
 
 
     
@@ -240,54 +240,54 @@ namespace DGtal
        * @param other the iterator to copy.
        * @return a reference on 'this'.
        */
-	
+  
       ConstIterator& operator= ( const ConstIterator & other )
-      {	
-	if ( this != &other )
-	  {
-	    myFc = other.myFc;
-	    myPos = other.myPos;
-	    myXY = other.myXY;
-	  }
-	return *this;
+      {  
+  if ( this != &other )
+    {
+      myFc = other.myFc;
+      myPos = other.myPos;
+      myXY = other.myXY;
+    }
+  return *this;
       }
 
 
-	
+  
       /**
        * Destructor. Does nothing.
        */
-	
+  
       ~ConstIterator(){
       }
-	
-	
-	
+  
+  
+  
 
       // ------------------------- iteration services -------------------------
     public:
 
-	      
+        
       /**
        * @return the current coordinates.
        */
-	
+  
       PointI2 operator*() const
       {
-	return myXY;
+  return myXY;
       }
-	
+  
       /**
        * @return the current coordinates.
        */
-	
+  
       PointI2 get() const
       {
-	return myXY;
+  return myXY;
       }
-	
-		
-	
+  
+    
+  
       /**
        * Pre-increment.
        * Goes to the next point on the chain.
@@ -296,24 +296,24 @@ namespace DGtal
       ConstIterator& 
       operator++()
       {
-	this->next();
-	return *this;
+  this->next();
+  return *this;
       }
-	
+  
       /**
        * Post-increment.
        * Goes to the next point on the chain.
        */
-	
+  
       ConstIterator  operator++(int)
       {
 
-	ConstIterator tmp(*this);
-	this->next();
-	return tmp;
+  ConstIterator tmp(*this);
+  this->next();
+  return tmp;
       }
 
-	
+  
       /**
        * Goes to the next point on the chain.
        */
@@ -322,55 +322,55 @@ namespace DGtal
       next()
       {
 
-	if ( myPos < myFc->chain.size() )
-	  {
-	    switch ( myFc->code( myPos ) )
-	      {
-	      case 0: (myXY.at(0))++; break;
-	      case 1: (myXY.at(1))++; break;
-	      case 2: (myXY.at(0))--; break;
-	      case 3: (myXY.at(1))--; break;
-	      }
-	    ++myPos;
-	  } else ++myPos;
+  if ( myPos < myFc->chain.size() )
+    {
+      switch ( myFc->code( myPos ) )
+        {
+        case 0: (myXY.at(0))++; break;
+        case 1: (myXY.at(1))++; break;
+        case 2: (myXY.at(0))--; break;
+        case 3: (myXY.at(1))--; break;
+        }
+      ++myPos;
+    } else ++myPos;
 
       }
-		
+    
 
 
       /**
        * Goes to the next point on the chain as if on a loop.
        */
-	
+  
       void
       nextInLoop()
       {
-	if ( myPos < myFc->chain.size() )
-	  {
-	    switch ( myFc->code( myPos ) )
-	      {
-	      case 0: (myXY.at(0))++; break;
-	      case 1: (myXY.at(1))++; break;
-	      case 2: (myXY.at(0))--; break;
-	      case 3: (myXY.at(1))--; break;
-	      }
-	    myPos = ( myPos + 1 ) % myFc->chain.size();
-	  }
+  if ( myPos < myFc->chain.size() )
+    {
+      switch ( myFc->code( myPos ) )
+        {
+        case 0: (myXY.at(0))++; break;
+        case 1: (myXY.at(1))++; break;
+        case 2: (myXY.at(0))--; break;
+        case 3: (myXY.at(1))--; break;
+        }
+      myPos = ( myPos + 1 ) % myFc->chain.size();
+    }
       }
-	
-	
+  
+  
 
       /**
        * @return the current position (as an index in the Freeman chain).
        */
-	
+  
       unsigned int
       getPosition() const
       {
-	return myPos;
+  return myPos;
       }
-	
-	
+  
+  
       /**
        * @return the associated Freeman chain.
        */
@@ -378,10 +378,10 @@ namespace DGtal
       const FreemanChain * 
       getChain() const
       {
-	return myFc;
+  return myFc;
       }
-	
-	
+  
+  
 
         
 
@@ -389,63 +389,63 @@ namespace DGtal
        * @return the current Freeman code (specifies the movement to
        * the next point).
        */
-	
+  
       unsigned int 
       getCode() const
       {
-	ASSERT( myFc != 0 );
-	return myFc->code( myPos );
+  ASSERT( myFc != 0 );
+  return myFc->code( myPos );
       }
-	
+  
 
       /**
        * Pre-decrement.
        * Goes to the previous point on the chain.
        */
-	
+  
       ConstIterator&  operator--()
       {
-	this->previous();
-	return *this;
+  this->previous();
+  return *this;
       }
 
       /**
        * Post-decrement.
        * Goes to the previous point on the chain.
        */
-	
+  
       ConstIterator  operator--(int)
       {
 
-	ConstIterator tmp(*this);
-	this->previous();
-	return tmp;
+  ConstIterator tmp(*this);
+  this->previous();
+  return tmp;
       }
 
-	
+  
       /**
        * Goes to the previous point on the chain if possible.
        */
-	
+  
       void
       previous()
       {
 
-	if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
-	  --myPos;
-	  if (myPos < myFc->chain.size()) {
-	    switch ( myFc->code( myPos ) ) {
-	    case 0: (myXY.at(0))--; break;
-	    case 1: (myXY.at(1))--; break;
-	    case 2: (myXY.at(0))++; break;
-	    case 3: (myXY.at(1))++; break;
-	    }
-	  }
-	}
+  if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
+    --myPos;
+    if (myPos < myFc->chain.size()) {
+      switch ( myFc->code( myPos ) ) {
+      case 0: (myXY.at(0))--; break;
+      case 1: (myXY.at(1))--; break;
+      case 2: (myXY.at(0))++; break;
+      case 3: (myXY.at(1))++; break;
+      }
+    }
+  }
 
 
       }
-	
+  
 
 
       /**
@@ -455,15 +455,15 @@ namespace DGtal
       void
       previousInLoop()
       {
-	if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
-	else --myPos;
-	switch ( myFc->code( myPos ) )
-	  {
-	  case 0: (myXY.at(0))--; break;
-	  case 1: (myXY.at(1))--; break;
-	  case 2: (myXY.at(0))++; break;
-	  case 3: (myXY.at(1))++; break;
-	  }
+  if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
+  else --myPos;
+  switch ( myFc->code( myPos ) )
+    {
+    case 0: (myXY.at(0))--; break;
+    case 1: (myXY.at(1))--; break;
+    case 2: (myXY.at(0))++; break;
+    case 3: (myXY.at(1))++; break;
+    }
       }
 
 
@@ -485,8 +485,8 @@ namespace DGtal
       bool 
       operator== ( const ConstIterator & aOther ) const
       {
-	ASSERT( myFc == aOther.myFc );
-	return myPos == aOther.myPos;
+  ASSERT( myFc == aOther.myFc );
+  return myPos == aOther.myPos;
       }
 
 
@@ -504,8 +504,8 @@ namespace DGtal
       operator!=
       ( const ConstIterator & aOther ) const
       {
-	ASSERT( myFc == aOther.myFc );
-	return myPos != aOther.myPos;
+  ASSERT( myFc == aOther.myFc );
+  return myPos != aOther.myPos;
       }
 
       /**
@@ -522,8 +522,8 @@ namespace DGtal
       ( const ConstIterator & aOther ) const
       {
 
-	ASSERT( myFc == aOther.myFc );
-	return myPos < aOther.myPos;
+  ASSERT( myFc == aOther.myFc );
+  return myPos < aOther.myPos;
       }
 
     };
@@ -565,11 +565,11 @@ namespace DGtal
           if ( ! in.good() )
             return;
           if ( ( str.size() > 0 ) && ( str[ 0 ] != '#' ) )
-	    {
-	      istringstream str_in( str );
-	      str_in >> c.x0 >> c.y0 >> c.chain;
-	      return;
-	    }
+      {
+        istringstream str_in( str );
+        str_in >> c.x0 >> c.y0 >> c.chain;
+        return;
+      }
         }
 
     };
@@ -608,22 +608,22 @@ namespace DGtal
     {
       switch ( aQuadrant )
         {
-	        case '0':
-	          aZero = '0';
-	          aOne = '1';
-	          break;
-	        case '1':
-	          aZero = '1';
-	          aOne = '2';
-	          break;
-	        case '2':
-	          aZero = '2';
-	          aOne = '3';
-	          break;
-	        case '3':
-	          aZero = '3';
-	          aOne = '0';
-	          break;
+          case '0':
+            aZero = '0';
+            aOne = '1';
+            break;
+          case '1':
+            aZero = '1';
+            aOne = '2';
+            break;
+          case '2':
+            aZero = '2';
+            aOne = '3';
+            break;
+          case '3':
+            aZero = '3';
+            aOne = '0';
+            break;
         }
 
     };
@@ -700,9 +700,9 @@ namespace DGtal
      * @param pl_chain the input code of the 4-connected pointel contour.
      */
     static void pointel2pixel( FreemanChain & aPixChain,
-			       std::vector<unsigned int> & aPl2pix,
-			       std::vector<unsigned int> & aPix2pl,
-			       const FreemanChain & aPlChain )
+             std::vector<unsigned int> & aPl2pix,
+             std::vector<unsigned int> & aPix2pl,
+             const FreemanChain & aPlChain )
     {
       innerContour( aPixChain, aPl2pix, aPix2pl, aPlChain, true );
     };
@@ -735,10 +735,10 @@ namespace DGtal
      * its inside to the left.
      */
     static void innerContour( FreemanChain & aInnerChain,
-			      std::vector<unsigned int> & aOuter2inner,
-			      std::vector<unsigned int> & aInner2outer,
-			      const FreemanChain & aOuterChain,
-			      bool ccw = true )
+            std::vector<unsigned int> & aOuter2inner,
+            std::vector<unsigned int> & aInner2outer,
+            const FreemanChain & aOuterChain,
+            bool ccw = true )
     {
 
       unsigned int nb = aOuterChain.chain.size();
@@ -767,15 +767,15 @@ namespace DGtal
           // Check if contour is open.
           // cerr << "i=" << i << " code=" << aOuterChain.code( i ) << endl;
           switch ( movement( aOuterChain.code( i ),
-			     aOuterChain.code( ( i + 1 ) % nb ),
-			     ccw ) )
-	    {
+           aOuterChain.code( ( i + 1 ) % nb ),
+           ccw ) )
+      {
             case 0:
               // contour going in then out.
               aInnerChain.chain += aOuterChain.chain[ i ];
               aInnerChain.chain += ( ( ( (unsigned int) ( aOuterChain.chain[ i ] - '0' )
-					 + ( ccw ? 3 : 1 ) ) )
-				     % 4 ) + '0';
+           + ( ccw ? 3 : 1 ) ) )
+             % 4 ) + '0';
               aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
               aOuter2inner.push_back( j );
               aInner2outer.push_back( i );
@@ -806,22 +806,22 @@ namespace DGtal
               aInner2outer.push_back( i + 1 );
               j += 2;
               break;
-	    }
+      }
 
 
           // Advances along contour and check if it is a closed contour.
           it.next();
           if ( ( i == nb - 1 )
-	       && ( *it_begin != *it ) )
+         && ( *it_begin != *it ) )
             // freeman chain is *not* a closed loop.
-	    {
-	      aInnerChain.chain += aOuterChain.chain[ i ];
-	      aOuter2inner.push_back( j );
-	      aInner2outer.push_back( i );
-	      ++i;
-	      ++j;
-	      break;
-	    }
+      {
+        aInnerChain.chain += aOuterChain.chain[ i ];
+        aOuter2inner.push_back( j );
+        aInner2outer.push_back( i );
+        ++i;
+        ++j;
+        break;
+      }
         }
 
 
@@ -854,10 +854,10 @@ namespace DGtal
      * @todo This method is not implemented.
      */
     static void cleanContour( std::vector<FreemanChain> & aCleanCs,
-			      std::vector< std::pair<unsigned int, unsigned int> > & aC2clean,
-			      std::vector< std::vector<unsigned int> > & aClean2c,
-			      const FreemanChain & c,
-			      bool ccw = true )
+            std::vector< std::pair<unsigned int, unsigned int> > & aC2clean,
+            std::vector< std::vector<unsigned int> > & aClean2c,
+            const FreemanChain & c,
+            bool ccw = true )
     {
 
     }
@@ -884,17 +884,17 @@ namespace DGtal
      * @return 'true' if the contour add an interior, 'false' otherwise.
      */
     static bool cleanOuterSpikes( FreemanChain & aCleanC,
-				  std::vector<unsigned int> & aC2clean,
-				  std::vector<unsigned int> & aClean2c,
-				  const FreemanChain & c,
-				  bool ccw = true )
+          std::vector<unsigned int> & aC2clean,
+          std::vector<unsigned int> & aClean2c,
+          const FreemanChain & c,
+          bool ccw = true )
     {
       unsigned int nb = c.chain.size();
       if ( nb == 0 )
         {
           cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-	       << " cleanOuterSpikes: Empty input chain"
-	       << endl;
+         << " cleanOuterSpikes: Empty input chain"
+         << endl;
           return false;
         }
 
@@ -919,21 +919,21 @@ namespace DGtal
         {
           size_spike = 0;
           while ( movement( it.getCode(), itn.getCode(), ccw ) == 0 )
-	    {
-	      it.previousInLoop();
-	      itn.nextInLoop();
-	      mc.increment( i );
-	      size_spike += 2;
-	      if ( size_spike >= nb )
-		{
-		  cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		       << " Spike is longer than contour !"
-		       << " size_spike=" << size_spike
-		       << " nb=" << nb
-		       << endl;
-		  return false;
-		}
-	    }
+      {
+        it.previousInLoop();
+        itn.nextInLoop();
+        mc.increment( i );
+        size_spike += 2;
+        if ( size_spike >= nb )
+    {
+      cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+           << " Spike is longer than contour !"
+           << " size_spike=" << size_spike
+           << " nb=" << nb
+           << endl;
+      return false;
+    }
+      }
           mc.increment( i );
           it = itn;
           itn.nextInLoop();
@@ -953,13 +953,13 @@ namespace DGtal
         { // do nothing
           aCleanC.chain = c.chain;
           for ( unsigned int ni = 0; ni < nb; ++ni )
-	    {
-	      aC2clean.push_back( ni );
-	      aClean2c.push_back( ni );
-	    }
+      {
+        aC2clean.push_back( ni );
+        aClean2c.push_back( ni );
+      }
           if ( size_spike != 0 )
             cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		 << "No starting point found (only spikes !)" << endl;
+     << "No starting point found (only spikes !)" << endl;
 
           return size_spike == 0;
         }
@@ -978,72 +978,72 @@ namespace DGtal
           it.nextInLoop();
           mc.increment( i );
           // cerr << "- i=" << i << " (" << clean_code.back()
-          // 	   << it.getCode() << ") ";
+          //      << it.getCode() << ") ";
           size_spike = 0;
           unsigned int last_spike_idx = end_outer_spike.empty() ?
-	    start_idx :
-	    end_outer_spike.back();
+      start_idx :
+      end_outer_spike.back();
           j = i;
           while ( ( ! clean_code.empty() )
-		  && ( j != last_spike_idx )
-		  && ( movement( clean_code.back(), it.getCode(), ccw ) == 0 )
-		  && ( it != it_begin ) )
-	    {
-	      clean_code.pop_back();
-	      clean_idx.pop_back();
-	      mc.increment( i );
-	      mc.decrement( j );
-	      it.nextInLoop();
-	      itn.previousInLoop();
-	      size_spike += 2;
-	    }
+      && ( j != last_spike_idx )
+      && ( movement( clean_code.back(), it.getCode(), ccw ) == 0 )
+      && ( it != it_begin ) )
+      {
+        clean_code.pop_back();
+        clean_idx.pop_back();
+        mc.increment( i );
+        mc.decrement( j );
+        it.nextInLoop();
+        itn.previousInLoop();
+        size_spike += 2;
+      }
           // cerr << "i=" << i << " size_spike=" << size_spike
-          // 	   << " last_spike_idx=" << last_spike_idx
-          // 	   << endl;
+          //      << " last_spike_idx=" << last_spike_idx
+          //      << endl;
           if ( size_spike != 0 )
-	    {
-	      // There is a spike. Is it an outer one ?
-	      unsigned int previous_code = itn.getCode();
-	      unsigned int previous_idx = itn.getPosition();
-	      // JOL : do not
-	      // consider any more "cleaned contour" since we cannot go
-	      // further than the last spike.
-	      // unsigned int previous_code =
-	      //   clean_code.empty() ? itn.getCode() : clean_code.back();
-	      // unsigned int previous_idx =
-	      //   clean_code.empty() ? itn.getPosition() : clean_idx.back();
-	      itn = it;
-	      itn.previousInLoop();
-	      unsigned int move1 = movement( previous_code,
-					     ( itn.getCode() + 2 ) % 4, ccw );
-	      unsigned int move2 = movement( itn.getCode(), it.getCode() , ccw );
-	      bool return_spike = ( move1 == 0 ) || ( move2 == 0 );
-	      bool outer_spike = ( move1 == 3 ) || ( move2 == 3 );
-	      // 	  if ( return_spike )
-	      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] return spike."
-	      // 		 << endl;
-	      // 	  if ( ! ( ( outer_spike && ( move1 != 1 ) && ( move2 != 1 ) )
-	      // 		   || ( ! outer_spike && ( move1 != 3 ) && ( move2 != 3 ) ) ) )
-	      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] "
-	      // 		 << "Weird spike. Invalid contour (expected 3 3) ?"
-	      // 		 << " move1=" << move1
-	      // 		 << " move2=" << move2
-	      // 		 << " ccw=" << ccw
-	      // 		 << " start_idx=" << start_idx
-	      // 		 << " size_spike=" << size_spike
-	      // 		 << " it=" << it.getPosition()
-	      // 		 << " itp=" << previous_idx
-	      // 		 << endl
-	      // 		 << c.chain << endl;
-	      // Process waiting steps.
-	      if ( outer_spike || return_spike )
-		{
-		  begin_outer_spike.push_back( mc.next( previous_idx ) );
-		  end_outer_spike.push_back( i );
-		  // cout << " outer spike [" << begin_outer_spike.back()
-		  // 	   << "," << end_outer_spike.back() << "[  " << endl;
-		}
-	    }
+      {
+        // There is a spike. Is it an outer one ?
+        unsigned int previous_code = itn.getCode();
+        unsigned int previous_idx = itn.getPosition();
+        // JOL : do not
+        // consider any more "cleaned contour" since we cannot go
+        // further than the last spike.
+        // unsigned int previous_code =
+        //   clean_code.empty() ? itn.getCode() : clean_code.back();
+        // unsigned int previous_idx =
+        //   clean_code.empty() ? itn.getPosition() : clean_idx.back();
+        itn = it;
+        itn.previousInLoop();
+        unsigned int move1 = movement( previous_code,
+               ( itn.getCode() + 2 ) % 4, ccw );
+        unsigned int move2 = movement( itn.getCode(), it.getCode() , ccw );
+        bool return_spike = ( move1 == 0 ) || ( move2 == 0 );
+        bool outer_spike = ( move1 == 3 ) || ( move2 == 3 );
+        //     if ( return_spike )
+        //       cerr << "[DGtal::FreemanChain::cleanOuterSpikes] return spike."
+        //      << endl;
+        //     if ( ! ( ( outer_spike && ( move1 != 1 ) && ( move2 != 1 ) )
+        //        || ( ! outer_spike && ( move1 != 3 ) && ( move2 != 3 ) ) ) )
+        //       cerr << "[DGtal::FreemanChain::cleanOuterSpikes] "
+        //      << "Weird spike. Invalid contour (expected 3 3) ?"
+        //      << " move1=" << move1
+        //      << " move2=" << move2
+        //      << " ccw=" << ccw
+        //      << " start_idx=" << start_idx
+        //      << " size_spike=" << size_spike
+        //      << " it=" << it.getPosition()
+        //      << " itp=" << previous_idx
+        //      << endl
+        //      << c.chain << endl;
+        // Process waiting steps.
+        if ( outer_spike || return_spike )
+    {
+      begin_outer_spike.push_back( mc.next( previous_idx ) );
+      end_outer_spike.push_back( i );
+      // cout << " outer spike [" << begin_outer_spike.back()
+      //      << "," << end_outer_spike.back() << "[  " << endl;
+    }
+      }
         }
       while ( it != it_begin );
 
@@ -1057,47 +1057,47 @@ namespace DGtal
       while ( n < nb )
         {
           if ( ( k == nb_spikes ) || ( i != begin_outer_spike[ k ] ) )
-	    {
-	      aCleanC.chain.push_back( c.chain[ i ] );
-	      aC2clean[ i ] = j;
-	      aClean2c.push_back( i );
-	      mc.increment( i );
-	      ++j;
-	      ++n;
-	    }
+      {
+        aCleanC.chain.push_back( c.chain[ i ] );
+        aC2clean[ i ] = j;
+        aClean2c.push_back( i );
+        mc.increment( i );
+        ++j;
+        ++n;
+      }
           else
-	    {
-	      while ( i != end_outer_spike[ k ] )
-		{
-		  aC2clean[ i ] = j;
-		  mc.increment( i );
-		  ++n;
-		}
-	      ++k;
-	    }
+      {
+        while ( i != end_outer_spike[ k ] )
+    {
+      aC2clean[ i ] = j;
+      mc.increment( i );
+      ++n;
+    }
+        ++k;
+      }
         }
       for ( unsigned int ii = 0; ii < nb; ++ii )
-	if ( aC2clean[ ii ] >= aCleanC.chain.size() )
-	  { 
-	    if ( aC2clean[ ii ] == aCleanC.chain.size() )
-	      aC2clean[ ii ] = 0;
-	    else
-	      {
-		cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		     << "Bad correspondence for aC2clean[" << ii << "]"
-		     << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
-		     << endl;
-		aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
-	      }
-	  }
+  if ( aC2clean[ ii ] >= aCleanC.chain.size() )
+    { 
+      if ( aC2clean[ ii ] == aCleanC.chain.size() )
+        aC2clean[ ii ] = 0;
+      else
+        {
+    cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+         << "Bad correspondence for aC2clean[" << ii << "]"
+         << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
+         << endl;
+    aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
+        }
+    }
       
       for ( unsigned int jj = 0; j < aCleanC.chain.size(); ++jj )
-	if ( aClean2c[ jj ] >= nb )
+  if ( aClean2c[ jj ] >= nb )
           {
             cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		 << "Bad correspondence for aClean2c[" << jj << "]"
-		 << " = " << aClean2c[ jj ] << " >= " << nb
-		 << endl;
+     << "Bad correspondence for aClean2c[" << jj << "]"
+     << " = " << aClean2c[ jj ] << " >= " << nb
+     << endl;
             aClean2c[ jj ] = aClean2c[ jj ] % nb;
           }
 
@@ -1133,11 +1133,11 @@ namespace DGtal
     //      * 'true' otherwise.
     //      */
     //     static bool subsample( FreemanChain & aSubc,
-    // 			   std::vector<unsigned int> & aC2subc,
-    // 			   std::vector<unsigned int> & aSubc2c,
-    // 			   const FreemanChain & c,
-    // 			   unsigned int h, unsigned int v,
-    // 			   int x0, int y0 ){
+    //          std::vector<unsigned int> & aC2subc,
+    //          std::vector<unsigned int> & aSubc2c,
+    //          const FreemanChain & c,
+    //          unsigned int h, unsigned int v,
+    //          int x0, int y0 ){
     //       if ( ( h == 0 ) || ( v == 0 ) ) return false;
     //       FreemanChain<TInteger>::ConstIterator it = c.begin();
     //   unsigned int j = 0;
@@ -1168,17 +1168,17 @@ namespace DGtal
 
 
     //       if ( nXY != fXY )
-    // 	{
-    // 	  aSubc2c.push_back( i );
-    // 	  char code;
-    // 	  if ( nXY.at(0) > fXY.at(0) )       code = '0';
-    // 	  else if ( nXY.at(0) < fXY.at(0) )  code = '2';
-    // 	  else if ( nXY.at(1) > fXY.at(1) )  code = '1';
-    // 	  else                           code = '3';
-    // 	  aSubc.chain += code;
-    // 	  ++j;
-    // 	  fXY = nXY;
-    // 	}
+    //   {
+    //     aSubc2c.push_back( i );
+    //     char code;
+    //     if ( nXY.at(0) > fXY.at(0) )       code = '0';
+    //     else if ( nXY.at(0) < fXY.at(0) )  code = '2';
+    //     else if ( nXY.at(1) > fXY.at(1) )  code = '1';
+    //     else                           code = '3';
+    //     aSubc.chain += code;
+    //     ++j;
+    //     fXY = nXY;
+    //   }
     //     }
     // //   aC2subc.push_back( j );
     // //   it.nextInLoop();
@@ -1189,17 +1189,17 @@ namespace DGtal
     // //       Vector2i nxy( it.get() );
     // //       Vector2i nXY( ( nxy.x() - x0 ) / h, ( nxy.y() - y0 ) / v );
     // //       if ( nXY != fXY )
-    // // 	{
-    // // 	  char code;
-    // // 	  if ( nXY.x() > fXY.x() )       code = '0';
-    // // 	  else if ( nXY.x() < fXY.x() )  code = '2';
-    // // 	  else if ( nXY.y() > fXY.y() )  code = '1';
-    // // 	  else                           code = '3';
-    // // 	  aSubc.chain += code;
-    // // 	  aSubc2c.push_back( i - 1 );
-    // // 	  ++j;
-    // // 	  fXY = nXY;
-    // // 	}
+    // //   {
+    // //     char code;
+    // //     if ( nXY.x() > fXY.x() )       code = '0';
+    // //     else if ( nXY.x() < fXY.x() )  code = '2';
+    // //     else if ( nXY.y() > fXY.y() )  code = '1';
+    // //     else                           code = '3';
+    // //     aSubc.chain += code;
+    // //     aSubc2c.push_back( i - 1 );
+    // //     ++j;
+    // //     fXY = nXY;
+    // //   }
     // //       if ( i != nb ) aC2subc.push_back( j );
     // //       it.nextInLoop();
     // //     }
@@ -1317,7 +1317,7 @@ namespace DGtal
      * @param max_y (returns) the maximal y-coordinate.
      */
     void computeBoundingBox( TInteger & min_x, TInteger& min_y,
-			     TInteger& max_x, TInteger& max_y ) const
+           TInteger& max_x, TInteger& max_y ) const
     {
 
       min_x = max_x = x0;
@@ -1369,21 +1369,21 @@ namespace DGtal
       unsigned int code1 = it.getCode();
       it.next();
       while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-	it.next();
+  it.next();
       ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
       unsigned int  code2 = it.getCode();
       // find third letter c.
       while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 ) ) )
-	it.next();
+            || ( it.getCode() == code2 ) ) )
+  it.next();
       ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
       unsigned int code3 = it.getCode();
       // reorder a and b.
       it.previous();
       if ( it.getCode() != code2 )
-	swap( code1, code2 );
+  swap( code1, code2 );
       // find first a.
       do
         {
@@ -1396,7 +1396,7 @@ namespace DGtal
       char b_char = chain[ it.getPosition() ];
       // Reorder the alphabet to match the quadrant change.
       while ( A.order( b_char ) != 1 )
-	A.shiftLeft();
+  A.shiftLeft();
       if ( A.order( a_char ) == 0 )
         {
           A.reverse();
@@ -1404,8 +1404,8 @@ namespace DGtal
             A.shiftLeft();
         }
       ASSERT( ( A.order( b_char ) == 1 )
-	      && ( A.order( a_char ) == 2 )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+        && ( A.order( a_char ) == 2 )
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
       return it;
 
 
@@ -1441,24 +1441,24 @@ namespace DGtal
       uint8_t code1 = it.getCode();
       it.next();
       while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-	it.next();
+  it.next();
       ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
       uint8_t code2 = it.getCode();
       // find third letter c.
       while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 ) ) )
-	it.next();
+            || ( it.getCode() == code2 ) ) )
+  it.next();
       ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
       uint8_t code3 = it.getCode();
       // find fourth letter d.
       while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 )
-				    || ( it.getCode() == code3 ) ) )
-	it.next();
+            || ( it.getCode() == code2 )
+            || ( it.getCode() == code3 ) ) )
+  it.next();
       ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
       uint8_t  code4 = it.getCode();
       // define true c.
       it.previous();
@@ -1475,7 +1475,7 @@ namespace DGtal
       char b_char = chain[ it.getPosition() ];
       // Reorder the alphabet to match the quadrant change.
       while ( A.order( b_char ) != 1 )
-	A.shiftLeft();
+  A.shiftLeft();
       if ( A.order( a_char ) == 0 )
         {
           A.reverse();
@@ -1483,8 +1483,8 @@ namespace DGtal
             A.shiftLeft();
         }
       ASSERT( ( A.order( b_char ) == 1 )
-	      && ( A.order( a_char ) == 2 )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+        && ( A.order( a_char ) == 2 )
+        && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
       return it;
 
     }
@@ -1528,9 +1528,9 @@ namespace DGtal
           ++it;
         }
       if ( spos == *it_suiv )
-	return nb_ccw_turns / 4;
+  return nb_ccw_turns / 4;
       else
-	return 0;
+  return 0;
 
 
     }
@@ -1649,10 +1649,10 @@ namespace DGtal
             it != this->end();
             ++it )
         {
-	  PointI2 tmp = *it;
-	  //std::cout << it.get() << " " << it.getPosition() << std::endl;
+    PointI2 tmp = *it;
+    //std::cout << it.get() << " " << it.getPosition() << std::endl;
           xn = tmp.at(0);
-	  yn = tmp.at(1);
+    yn = tmp.at(1);
         }
     }
 
@@ -1668,8 +1668,8 @@ namespace DGtal
     {
       SelfDrawStyle(Board2D & aBoard)
       {
-	aBoard.setFillColor(Color::None);
-	aBoard.setPenColor(Color::Black);
+  aBoard.setFillColor(Color::None);
+  aBoard.setPenColor(Color::Black);
       }
     };
 
@@ -1677,9 +1677,9 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-       	
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+         
+  aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+  aBoard.setFillColor(Color::None);
       }
     };
 
@@ -1687,8 +1687,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+  aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+  aBoard.setFillColor(Color::None);
       }
     };
 
@@ -1696,8 +1696,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+  aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+  aBoard.setFillColor(Color::None);
       }
     };
 

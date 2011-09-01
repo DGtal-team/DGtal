@@ -159,7 +159,7 @@ bool testNorms()
 
 
   return ( ( aPoint.norm ( PointType::L_1 ) == 6 ) &&
-	   ( aPoint.norm ( PointType::L_infty ) == 3 ) );
+     ( aPoint.norm ( PointType::L_infty ) == 3 ) );
 
 }
 

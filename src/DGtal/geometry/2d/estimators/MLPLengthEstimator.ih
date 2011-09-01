@@ -151,7 +151,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const MLPLengthEstimator<T> & object )
+      const MLPLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
   return out;

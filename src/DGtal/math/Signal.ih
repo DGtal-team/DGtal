@@ -154,7 +154,7 @@ DGtal::SignalData<TValue>::SignalData
     {
       data = new TValue[ size + 1 ];
       for ( unsigned int i = 0; i <= size; ++i )
-	data[ i ] = other.data[ i ];
+  data[ i ] = other.data[ i ];
     }
   else
     data = 0;
@@ -174,24 +174,24 @@ DGtal::SignalData<TValue>::operator=
   if ( this != &other ) 
     {
       if ( other.data == 0 )
-	{
-	  if ( data != 0 )
-	    delete[] data;
-	  data = 0;
-	}
+  {
+    if ( data != 0 )
+      delete[] data;
+    data = 0;
+  }
       else
-	{
-	  if ( size < other.size ) 
-	    {
-	      delete[] data;
-	      data = new TValue[ other.size + 1 ];
-	    }
-	  size = other.size;
-	  zero = other.zero;
-	  periodic = other.periodic;
-	  for ( unsigned int i = 0; i <= size; ++i )
-	    data[ i ] = other.data[ i ];
-	}
+  {
+    if ( size < other.size ) 
+      {
+        delete[] data;
+        data = new TValue[ other.size + 1 ];
+      }
+    size = other.size;
+    zero = other.zero;
+    periodic = other.periodic;
+    for ( unsigned int i = 0; i <= size; ++i )
+      data[ i ] = other.data[ i ];
+  }
     }
   return *this;
 }
@@ -470,29 +470,29 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
   if ( Fd.periodic )
     {
       for ( int a = 0; a < (int) FGd.size; ++a )
-	{
-	  TValue sum = TValue( 0 );
-	  for ( unsigned int i = 0; i < Gd.size; ++i )
-	    {
-	      sum += this->operator[]( a - ( i - Gd.zero ) ) 
-		* Gd.data[ i ];
-	    }
-	  FG[ a ] = sum;
-	}
+  {
+    TValue sum = TValue( 0 );
+    for ( unsigned int i = 0; i < Gd.size; ++i )
+      {
+        sum += this->operator[]( a - ( i - Gd.zero ) ) 
+    * Gd.data[ i ];
+      }
+    FG[ a ] = sum;
+  }
     }
   else
     {
       for ( unsigned int a = 0; a < FGd.size; ++a )
-	{
-	  TValue sum = TValue( 0 );
-	  for ( unsigned int i = 0; i < Gd.size; ++i )
-	    {
-	      sum += this->operator[]( a - ( Fd.zero + Gd.zero ) 
-	       			       - ( i - Gd.zero ) ) 
-	       	* Gd.data[ i ];
-	    }
-	  FGd.data[ a ] = sum;
-	}
+  {
+    TValue sum = TValue( 0 );
+    for ( unsigned int i = 0; i < Gd.size; ++i )
+      {
+        sum += this->operator[]( a - ( Fd.zero + Gd.zero ) 
+                      - ( i - Gd.zero ) ) 
+           * Gd.data[ i ];
+      }
+    FGd.data[ a ] = sum;
+  }
     }
   return FG;
 }
@@ -580,7 +580,7 @@ DGtal::Signal<TValue>::selfDisplay ( std::ostream & out ) const
   out << "[Signal" << std::fixed << std::setprecision( 5 );
   for ( unsigned int i = 0; i < size(); ++i )
     out << " " << ( ( i == (unsigned int) m_data->zero ) ? "*" : "" )
-	<< m_data->data[ i ];
+  << m_data->data[ i ];
   out << " ]";
 }
 
@@ -605,7 +605,7 @@ template <typename TValue>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Signal<TValue> & object )
+      const Signal<TValue> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -65,8 +65,8 @@ int main( int argc, char** argv )
   viewer << shape_set;
   
   viewer << CameraPosition(5.000000, 5.000000, 29.893368)
-	<< CameraDirection(0.000000, 0.000000, -1.000000)
-	<< CameraUpVector(0.000000, 1.000000, 0.000000);
+  << CameraDirection(0.000000, 0.000000, -1.000000)
+  << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-2-sets.png", Board3DTo2D::CairoPNG, 600, 400);

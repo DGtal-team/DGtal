@@ -88,7 +88,7 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
     BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
-	  
+    
     /**
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
@@ -198,7 +198,7 @@ namespace DGtal
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const ModuloComputer<T> & object )
+         const ModuloComputer<T> & object )
   {
     object.selfDisplay( out );
     return out;

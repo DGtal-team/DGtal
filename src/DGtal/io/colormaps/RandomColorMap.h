@@ -88,7 +88,7 @@ public:
    **/
   
   RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex, 
-		 const Color &aFirstColor=Color::White, const Color &aLastColor=Color::Red);
+     const Color &aFirstColor=Color::White, const Color &aLastColor=Color::Red);
 
 
   //  RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex);
@@ -149,7 +149,7 @@ public:
 
     // ------------------------- Protected Datas ------------------------------
 protected:
-  unsigned int myMin;		/**< The lower bound of the value range.  */
+  unsigned int myMin;    /**< The lower bound of the value range.  */
   unsigned int myMax;            /**< The lower bound of the value range.  */
 
   

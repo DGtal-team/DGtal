@@ -181,8 +181,8 @@ namespace DGtal
      * @param e the index after the end in [w] (s<e).
      */
     void firstLyndonFactor( size_t & len, size_t & nb,
-			    const std::string & w, 
-			    index_t s, index_t e ) const;
+          const std::string & w, 
+          index_t s, index_t e ) const;
 
 
     /**
@@ -199,8 +199,8 @@ namespace DGtal
      * @param e the index after the end in [w] (s and e arbitrary).
      */
     void firstLyndonFactorMod( size_t & len, size_t & nb,
-			       const std::string & w, 
-			       index_t s, index_t e ) const;
+             const std::string & w, 
+             index_t s, index_t e ) const;
 
 
       /**
@@ -225,9 +225,9 @@ namespace DGtal
      * @param e the index after the end in [w] (s<e).
      */
     bool duvalPP( size_t & len, size_t & nb,
-		  const std::string & w, 
-		  index_t s, index_t e
-		  ) const;
+      const std::string & w, 
+      index_t s, index_t e
+      ) const;
 
     /**
      * Adaptation of Duval's algorithm to extract the first Lyndon factor
@@ -251,8 +251,8 @@ namespace DGtal
      * @param e the index after the end in [w] (s and e arbitrary).
      */
     bool duvalPPMod( size_t & len, size_t & nb,
-		    const std::string & w, 
-		    index_t s, index_t e ) const;
+        const std::string & w, 
+        index_t s, index_t e ) const;
     /**
      * Second version of the algorithm Duval++ (see OrderedAlphabet::duvalPP),
      * this one dynamically returns extra informations in order to compute
@@ -280,11 +280,11 @@ namespace DGtal
      * @param e the index after the end in [w] (s<e).
      */
     bool duvalPPtoDSS( size_t & len, size_t & nb,
-		  unsigned int & n1,  unsigned int & n2,
-		  unsigned int & Lf1, unsigned int & Lf2,
-		  const std::string & w, 
-		  index_t s, index_t e
-		  ) const;
+      unsigned int & n1,  unsigned int & n2,
+      unsigned int & Lf1, unsigned int & Lf2,
+      const std::string & w, 
+      index_t s, index_t e
+      ) const;
 
 
 
@@ -312,7 +312,7 @@ namespace DGtal
      * @return the number of letters of the extracted edge.
      */ 
     size_t nextEdge( size_t & nb_a1, size_t & nb_a2,
-		     std::string & w, index_t & s, bool & cvx );
+         std::string & w, index_t & s, bool & cvx );
 
 
     // ----------------------- Interface --------------------------------------

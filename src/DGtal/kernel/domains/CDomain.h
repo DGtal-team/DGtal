@@ -70,9 +70,9 @@ namespace DGtal
    * 
    * <p> Notation
    * - \t X : A type that is a model of CDomain
-   * - \t x	: Object of type X
-   * - \t p	: Object of type Point
-   * - \t range	: Object of type ConstRange
+   * - \t x  : Object of type X
+   * - \t p  : Object of type Point
+   * - \t range  : Object of type ConstRange
    *
    * <p> Definitions
    *

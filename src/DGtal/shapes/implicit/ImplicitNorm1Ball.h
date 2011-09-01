@@ -73,7 +73,7 @@ namespace DGtal
      * @param aHalfWidth the cube half-width.
      */
     ImplicitNorm1Ball(const Point &aCenter, const Integer &aHalfWidth): myCenter(aCenter),
-								myHalfWidth(aHalfWidth)
+                myHalfWidth(aHalfWidth)
     {};
     
     /** 
@@ -98,7 +98,7 @@ namespace DGtal
     double operator()(const Point &aPoint) const
     {
       return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
-	(aPoint - myCenter ).norm(Point::L_1);
+  (aPoint - myCenter ).norm(Point::L_1);
     }
 
     /** 

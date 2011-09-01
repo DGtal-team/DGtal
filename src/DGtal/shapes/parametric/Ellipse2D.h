@@ -86,7 +86,7 @@ namespace DGtal
      * @param theta the orientation of the ellipse.
      */
     Ellipse2D( const double x0, const double y0, 
-	       const double a0, const double a1, const double theta);
+         const double a0, const double a1, const double theta);
 
     /**
      * Constructor. 
@@ -96,7 +96,7 @@ namespace DGtal
      * @param theta the orientation of the ellipse.
      */
     Ellipse2D(const RealPoint2D &aPoint,
-	      const double a0, const double a1, const double theta);
+        const double a0, const double a1, const double theta);
 
     /**
      * Constructor. 
@@ -106,7 +106,7 @@ namespace DGtal
      * @param theta the orientation of the ellipse.
      */
     Ellipse2D(const Point &aPoint,
-	      const double a0, const double a1, const double theta);
+        const double a0, const double a1, const double theta);
 
     
   // ------------- Implementation of 'StarShaped' services ------------------

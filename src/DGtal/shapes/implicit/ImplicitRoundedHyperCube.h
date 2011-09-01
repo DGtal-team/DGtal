@@ -76,8 +76,8 @@ namespace DGtal
      * @param aHalfWidth the cube half-width.
      */
     ImplicitRoundedHyperCube(const Point &aCenter,
-			     const Integer &aHalfWidth,
-			     const double aPower): 
+           const Integer &aHalfWidth,
+           const double aPower): 
       myCenter(aCenter),
       myHalfWidth(aHalfWidth),
       myPower(aPower)
@@ -107,11 +107,11 @@ namespace DGtal
       Point dec = (aPoint - myCenter);
       double partialpower=0;
       for(Dimension i = 0; i < Point::dimension; ++i)
-	partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
-				  myPower);
+  partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), 
+          myPower);
       
       return std::pow(NumberTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
-	      partialpower;      
+        partialpower;      
     }
 
     /** 

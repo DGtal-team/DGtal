@@ -64,8 +64,8 @@ template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology( const ForegroundAdjacency & aKappa, 
-		   const BackgroundAdjacency & aLambda,
-		   DigitalTopologyProperties props )
+       const BackgroundAdjacency & aLambda,
+       DigitalTopologyProperties props )
   : myKappa( aKappa ), myLambda( aLambda ), 
     myProps( props )
 {
@@ -179,7 +179,7 @@ template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object )
+      const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object )
 {
   object.selfDisplay( out );
   return out;

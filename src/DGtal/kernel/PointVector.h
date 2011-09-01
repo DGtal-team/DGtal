@@ -209,7 +209,7 @@ namespace DGtal
      */
     template<typename Functor>
     PointVector( const Self& apoint1, const Self& apoint2,
-		 const Functor& f );
+     const Functor& f );
 
     /**
      * Destructor.
@@ -244,7 +244,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopy (const Self & pv,
-		       std::initializer_list<Dimension> dimensions);
+           std::initializer_list<Dimension> dimensions);
 
     /**
      * Inverse partial copy of a given PointVector. Only coordinates not 
@@ -256,7 +256,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopyInv (const Self & pv,
-			  std::initializer_list<Dimension> dimensions);
+        std::initializer_list<Dimension> dimensions);
 #endif
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
@@ -268,7 +268,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopy (const Self & pv,
-		       const std::vector<Dimension> &dimensions);
+           const std::vector<Dimension> &dimensions);
 
     /**
      * Partial copy of a given PointVector. Only coordinates not 
@@ -280,7 +280,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopyInv (const Self & pv,
-			  const std::vector<Dimension> &dimensions);
+        const std::vector<Dimension> &dimensions);
 
     /**
      * Partial equality.
@@ -290,7 +290,7 @@ namespace DGtal
      * @return true iff points are equal for given dimensions .
      */
     bool partialEqual ( const Self & pv,
-			const std::vector<Dimension> &dimensions )  const;
+      const std::vector<Dimension> &dimensions )  const;
 
     /**
      * Partial inverse equality.
@@ -300,7 +300,7 @@ namespace DGtal
      * @return true iff points are equal for dimensions not in dimensions.
      */
     bool partialEqualInv ( const Self & pv,
-			   const std::vector<Dimension> &dimensions )  const;
+         const std::vector<Dimension> &dimensions )  const;
     
     // ----------------------- Iterator services ------------------------------
   public:
@@ -624,10 +624,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi(220,220,220);
-	aBoard.setLineWidth(1);
+  aBoard.setPenColorRGBi(160,160,160);
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setFillColorRGBi(220,220,220);
+  aBoard.setLineWidth(1);
       }
     };
 
@@ -636,8 +636,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setPenColor(Color::Black);
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
 
@@ -772,7 +772,7 @@ namespace DGtal
   struct DrawPavingVoxel : public DrawableWithDisplay3D {
       void selfDrawDisplay3D( Display3D & viewer ) const
       {
-	viewer.myModes[ "PointVector" ] = "Paving";
+  viewer.myModes[ "PointVector" ] = "Paving";
       }
   };
   

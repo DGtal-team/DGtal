@@ -72,8 +72,8 @@ namespace DGtal
     
      <p> Notation
      - \t X : A type that is a model of CInteger
-     - \t x, \t y	: object of type X
-     - \t i, \t j	: basic integer type.
+     - \t x, \t y  : object of type X
+     - \t i, \t j  : basic integer type.
     
      <p> Definitions
     

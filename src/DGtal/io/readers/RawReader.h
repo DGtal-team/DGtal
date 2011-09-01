@@ -90,7 +90,7 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
 
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
-			 (ImageContainer::Domain::dimension == 3));
+       (ImageContainer::Domain::dimension == 3));
 
 
     /** 
@@ -102,7 +102,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw8(const std::string & filename,
-				     const Vector & extent) throw(DGtal::IOException);
+             const Vector & extent) throw(DGtal::IOException);
     
   }; // end of class RawReader
 
