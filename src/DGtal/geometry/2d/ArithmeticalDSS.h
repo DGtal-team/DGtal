@@ -136,7 +136,7 @@ namespace DGtal
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    */
-  template <typename TIterator, typename TInteger, int connectivity>
+  template <typename TIterator, typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, int connectivity = 8>
   class ArithmeticalDSS
   {
 
