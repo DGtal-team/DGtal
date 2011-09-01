@@ -20,6 +20,8 @@
  * @file ConceptUtils.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Guillaume Damiand
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/02
  *
@@ -61,29 +63,42 @@ namespace DGtal
    */
   struct TagUnknown{};
 
-  template<typename T1, typename T2>
-  struct staticSameType
-  { static const int value = 0; };
-
+  /**
+   * Define the negate of a tag: Negate<TagFalse>::value=TagTrue and
+   * Negate<TagFalse>::value=TagFalse.
+   */
   template<typename T>
-  struct staticSameType<T,T>
-  { static const int value = 1; };
+  struct Negate
+  { typedef TagUnknown type; };
+  template<>
+  struct Negate<TagTrue>
+  { typedef TagFalse type; };
+  template<>
+  struct Negate<TagFalse>
+  { typedef TagTrue type; };
   
 /////////////////////////////////////////////////////////////////////////////
-// class ConceptUtils
+// Namespace ConceptUtils
 /**
- * Description of class 'ConceptUtils' <p>
+ * Description of namespace 'ConceptUtils' <p>
  *
- * \brief Aim: This utility class gathers several static methods
- * useful for concept checks.
+ * \brief Aim: Gathers several functions useful for concept checks.
  *
- * This class, as well as its methods are not meant to be
- * realized. They are just used to check concepts.
  */
-class ConceptUtils
+namespace ConceptUtils
 {
-public:
+  /**
+   * Test if the two types T1 and T2 are equals.
+   * value = true if yes, false otherwise.
+   */
+  template<typename T1, typename T2>
+  struct SameType
+  { static const bool value = false; };
 
+  template<typename T>
+  struct SameType<T,T>
+  { static const bool value = true; };
+  
   /**
    * Type deduction will fail unless the arguments have the same type.
    *
@@ -91,67 +106,99 @@ public:
    * @param t2 some object of type T.
    */
   template <typename T>
-  static
   void sameType( const T & t1, const T & t2 );
 
+  /**
+   * Test if T is equal to TagTrue.
+   */
+  template<typename T>
+  struct CheckTrue
+  { static const bool value = false; };
+  template<>
+  struct CheckTrue<TagTrue>
+  { static const bool value = true; };
+
+  /**
+   * Test if T is equal to TagFalse.
+   */
+  template<typename T>
+  struct CheckFalse
+  { static const bool value = !CheckTrue<T>::value; };
+
+  /**
+   * Test if T is equal to TagUnknown.
+   */
+  template<typename T>
+  struct CheckUnknown
+  { static const bool value = false; };
+  template<>
+  struct CheckUnknown<TagUnknown>
+  { static const bool value = true; };  
+  
+  /**
+   * Test if T is equal to TagTrue or TagFalse.
+   */
+  template<typename T>
+  struct CheckTrueOrFalse
+  { static const bool value = CheckTrue<T>::value||CheckFalse<T>::value; };
+  
+  /**
+   * Test if T is a tag (ie equal to TagTrue or TagFalse, or TagUnknown)
+   */
+  template<typename T>
+  struct CheckTag
+  { static const bool value = CheckTrueOrFalse<T>::value||CheckUnknown<T>::value; };  
+  
   /**
      Type deduction will fail unless the argument type is exactly TagTrue.
      @param tag the type to check.
   */
-  static
   void checkTrue( const TagTrue & tag );
 
   /**
      Type deduction will fail unless the argument type is exactly TagFalse.
      @param tag the type to check.
   */
-  static
   void checkFalse( const TagFalse & tag );
 
   /**
      Type deduction will fail unless the argument type is exactly TagUnknown.
      @param tag the type to check.
   */
-  static
   void checkUnknown( const TagUnknown & tag );
 
   /**
      Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
      @param tag the type to check.
   */
-  static
   void checkTag( const TagUnknown & tag );
 
   /**
      Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
      @param tag the type to check.
   */
-  static
   void checkTag( const TagTrue & tag );
 
   /**
      Type deduction will fail unless the argument type is a tag (TagTrue, TagFalse or TagUnknown).
      @param tag the type to check.
   */
-  static
   void checkTag( const TagFalse & tag );
 
   /**
      Type deduction will fail unless the argument type is the tag TagTrue or TagFalse.
      @param tag the type to check.
   */
-  static
   void checkTrueOrFalse( const TagFalse & tag );
 
   /**
      Type deduction will fail unless the argument type is the tag TagTrue or TagFalse.
      @param tag the type to check.
   */
-  static
   void checkTrueOrFalse( const TagTrue & tag );
 
 
-}; // end of class ConceptUtils
+}; // end of namespace ConceptUtils
 
 } // namespace DGtal
 
