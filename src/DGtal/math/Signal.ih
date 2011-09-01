@@ -235,7 +235,7 @@ DGtal::Signal<TValue>::Signal()
 
 /**
  * Constructor.
- * @param size the size of the signal.
+ * @param asize the size of the signal.
  * @param z the index of the zero-th element.
  * @param periodic 'true' if the signal is periodic.
  * @param def the default value.
@@ -243,10 +243,10 @@ DGtal::Signal<TValue>::Signal()
 template <typename TValue>
 inline
 DGtal::Signal<TValue>::Signal
-( unsigned int size, int z, bool periodic, const TValue & def )
+( unsigned int asize, int z, bool periodic, const TValue & def )
   : m_data( new SignalData<TValue>() )
 {
-  m_data->init( size, z, periodic, def );
+  m_data->init( asize, z, periodic, def );
 }
 
 
@@ -261,11 +261,11 @@ DGtal::Signal<TValue>::Signal
 template <typename TValue>
 inline
 DGtal::Signal<TValue>::Signal
-( const TValue* t, unsigned int size, int z, bool periodic, 
+( const TValue* t, unsigned int asize, int z, bool periodic, 
   const TValue & def )
   : m_data( new SignalData<TValue>() )
 {
-  m_data->init( t, size, z, periodic, def );
+  m_data->init( t, asize, z, periodic, def );
 }
 
 
@@ -320,10 +320,10 @@ template <typename TValue>
 inline
 void
 DGtal::Signal<TValue>::init
-( unsigned int size, int z, bool periodic, const TValue & def )
+( unsigned int aSize, int z, bool periodic, const TValue & def )
 {
   m_data = CowPtr< SignalData<TValue> >(  new SignalData<TValue>() );
-  m_data->init( size, z, periodic, def );
+  m_data->init( aSize, z, periodic, def );
 }
 
 
@@ -339,11 +339,11 @@ template <typename TValue>
 inline
 void
 DGtal::Signal<TValue>::init
-( const TValue* t, unsigned int size, int z, bool periodic, 
+( const TValue* t, unsigned int aSize, int z, bool periodic, 
   const TValue & def )
 {
   m_data = CowPtr< SignalData<TValue> >( new SignalData<TValue>() );
-  m_data->init( t, size, z, periodic, def );
+  m_data->init( t, aSize, z, periodic, def );
 }
 
 
@@ -462,9 +462,9 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
   const SignalData<TValue>& Gd = *G.m_data;
 
   
-  unsigned int size = Fd.periodic ? Fd.size : Fd.size + Gd.size - 1;
+  unsigned int aSize = Fd.periodic ? Fd.size : Fd.size + Gd.size - 1;
   int zero = Fd.periodic ? Fd.zero : Fd.zero + Gd.zero;
-  Signal<TValue> FG( size, zero, Fd.periodic, Fd.defaut() );
+  Signal<TValue> FG( aSize, zero, Fd.periodic, Fd.defaut() );
   SignalData<TValue>& FGd = *FG.m_data;
 
   if ( Fd.periodic )

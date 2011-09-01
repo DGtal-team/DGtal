@@ -70,7 +70,7 @@ using namespace LibBoard;
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(LibBoard::Board & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
@@ -206,8 +206,8 @@ bool testDigitalSetDraw()
   Point c(  0, 0  );
 
   trace.beginBlock ( "Creating disk( r=5.0 ) ..." );
-  for ( Domain::ConstIterator it = domain.range().begin();
-	it != domain.range().end();
+  for ( Domain::ConstIterator it = domain.begin();
+	it != domain.end();
       ++it )
   {
     if ( (*it - c ).norm() < 5.0 )
@@ -246,8 +246,8 @@ bool testDigitalSetDomain()
   Point l(  49, 0  );
 
   trace.beginBlock ( "Creating disk( r=50.0 ) ..." );
-  for ( Domain::ConstIterator it = domain.range().begin(); 
-	it != domain.range().end();
+  for ( Domain::ConstIterator it = domain.begin(); 
+	it != domain.end();
 	++it )
     {
       if ( (*it - c ).norm() < 50.0 )

@@ -52,7 +52,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
   std::string inputFilename = examplesPath + "samples/circleR10modif.pgm"; 

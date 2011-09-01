@@ -202,9 +202,9 @@ void missingParam(std::string param)
 
 template <typename Shape, typename Space>
 bool
-lengthEstimators( const string & name,
-			Shape & aShape, 
-			double h )
+lengthEstimators( const string & /*name*/,
+		  Shape & aShape, 
+		  double h )
 {
   // Types
   typedef typename Space::Point Point;

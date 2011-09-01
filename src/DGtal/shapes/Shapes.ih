@@ -114,8 +114,8 @@ DGtal::Shapes<TDomain>::addNorm1Ball
   const Domain & domain = aSet.domain(); 
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
-  for ( typename LocalSpace::ConstIterator it = ballDomain.range().begin(); 
-	it != ballDomain.range().end(); 
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
+	it != ballDomain.end(); 
 	++it )
     {
       if ( domain.isInside( *it ) 

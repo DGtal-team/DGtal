@@ -250,7 +250,7 @@ namespace DGtal
 
     struct DefaultDrawStylePoints : public DrawableWithBoard2D
     {
-      virtual void selfDraw( Board2D & aBoard ) const
+      virtual void selfDraw( Board2D &  ) const
       {
       }
     };

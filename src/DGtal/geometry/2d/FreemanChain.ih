@@ -104,8 +104,8 @@ FreemanChain( const std::vector<Z2i::Point> vectPoints ){
     ptSuiv = vectPoints.at(i+1);
     int dx = ptSuiv[0] - pt[0]; 
     int dy = ptSuiv[1] - pt[1]; 
-    char code = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
-    oss << code;
+    char aCode = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
+    oss << aCode;
   }
   chain = oss.str();
 

@@ -138,7 +138,7 @@ bool testObjectBorder()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];
@@ -259,7 +259,7 @@ bool testBoard2D()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];

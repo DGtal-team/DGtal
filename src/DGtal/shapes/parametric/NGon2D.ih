@@ -196,7 +196,7 @@ DGtal::NGon2D<T>::xp( const double t ) const
 template <typename T>
 inline
 typename DGtal::NGon2D<T>::RealVector2D
-DGtal::NGon2D<T>::xpp( const double t ) const
+DGtal::NGon2D<T>::xpp( const double /*t*/ ) const
 {
   RealVector2D c(0,0);
   return c;

@@ -17,51 +17,54 @@
 #pragma once
 
 /**
- * @file XXX.h
- * @author AUTHOR (\c EMAIL )
- * INSTITUTION
+ * @file CDynamicSegmentComputer.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2000/??/??
+ * @date 2011/08/31
  *
- * Header file for concept XXX.cpp
+ * Header file for concept CDynamicSegmentComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(XXX_RECURSES)
-#error Recursive header files inclusion detected in XXX.h
-#else // defined(XXX_RECURSES)
+#if defined(CDynamicSegmentComputer_RECURSES)
+#error Recursive header files inclusion detected in CDynamicSegmentComputer.h
+#else // defined(CDynamicSegmentComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define XXX_RECURSES
+#define CDynamicSegmentComputer_RECURSES
 
-#if !defined XXX_h
+#if !defined CDynamicSegmentComputer_h
 /** Prevents repeated inclusion of headers. */
-#define XXX_h
+#define CDynamicSegmentComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "YYY/base/Common.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/geometry/CForwardSegmentComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace YYY
+namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class XXX
+  // class CDynamicSegmentComputer
   /**
-     Description of \b concept '\b XXX' <p>
+     Description of \b concept '\b CDynamicSegmentComputer' <p>
      @ingroup Concepts
-     @brief Aim:
+     @brief Aim: Defines the concept describing a dynamic segment computer,  
+    ie. a model of CSegment that can extend and retract itself 
+    (in the direction that is relative to the underlying iterator).  
      
-     <p> Refinement of
+     <p> Refinement of CForwardSegmentComputer 
     
-     <p> Associated types :
-    
+     <p> Associated types : the same as CForwardSegmentComputer
+  
      <p> Notation
-     - \t X : A type that is a model of XXX
-     - \t x, \t y : object of type X
-    
+     - \t X : A type that is a model of CDynamicSegmentComputer
+     - \t x : object of type X
+  
      <p> Definitions
     
      <p> Valid expressions and semantics <br>
@@ -77,16 +80,15 @@ namespace YYY
         <td class=CComplexity> \b Complexity </td>
       </tr>
       <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
+        <td class=CName> retraction  </td> 
+        <td class=CExpression> x.retract()     </td>
         <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
+        <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CSemantics> returns 'true' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise </td> 
+        <td class=CPostCondition>       </td> 
         <td class=CComplexity>      </td>
       </tr>
-    
      </table>
     
      <p> Invariants <br>
@@ -95,46 +97,34 @@ namespace YYY
     
      <p> Notes <br>
 
-     @tparam T the type that should be a model of XXX.
+     @tparam T the type that should be a model of CDynamicSegmentComputer.
    */
   template <typename T> 
-  struct XXX // : CoarserConcept<T>
+  struct CDynamicSegmentComputer : CForwardSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::InnerType InnerType;
-    // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-    // To test if two types A and Y are equals, use
-    BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( XXX )
+    // Methods
+    BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
     {
-      // Static members of type A can be tested with
-      ConceptUtils::sameType( myA, T::staticMember );
-      // Method dummy should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myB, myX.dummy( myA ) );
-      // look at CInteger.h for testing tags.
+      ConceptUtils::sameType( myB, myX.retract() );
     }
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // only if T is default constructible.
-    A myA;
-    B myB;
-    
+    bool myB; 
+  
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept XXX
+  }; // end of concept CDynamicSegmentComputer
   
-} // namespace YYY
+} // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined XXX_h
+#endif // !defined CDynamicSegmentComputer_h
 
-#undef XXX_RECURSES
-#endif // else defined(XXX_RECURSES)
+#undef CDynamicSegmentComputer_RECURSES
+#endif // else defined(CDynamicSegmentComputer_RECURSES)

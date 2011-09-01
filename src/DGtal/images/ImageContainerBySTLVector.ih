@@ -103,8 +103,8 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
   V val;
   D ldomain(myLowerBound, myUpperBound);
 
-  for (typename D::ConstIterator it =  ldomain.range().begin();
-       it != ldomain.range().end(); ++it)
+  for (typename D::ConstIterator it =  ldomain.begin();
+       it != ldomain.end(); ++it)
   {
     val = this->operator()( (*it) );
     c = colormap( val );

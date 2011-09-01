@@ -47,6 +47,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImageContainer.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
@@ -86,14 +87,14 @@ namespace DGtal
    *
    * @endcode  
    */
-  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::uint64_t >
+  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::int64_t >
   class DistanceTransformation
   {
 
   public:
     
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
-    BOOST_CONCEPT_ASSERT(( CInteger<IntegerLong> ));
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
     
 
     ///Type of resulting image
