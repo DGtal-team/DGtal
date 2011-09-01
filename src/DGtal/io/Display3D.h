@@ -116,7 +116,7 @@ public:
   * @param near near distance.
   * @param far far distance.
   */
-  virtual void setNearFar(double near, double far){};
+  virtual void setNearFar(double , double ){};
   
 
     

@@ -62,7 +62,7 @@ void
 DGtal::TwoStepLocalLengthEstimator<T>::init(const double h, 
 					    const ConstIterator& itb, 
 					    const ConstIterator& ite, 
-					    const bool& isClosed)
+					    const bool& )
 {
   myH = h;
   myBeginIt = itb;

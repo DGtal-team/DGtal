@@ -186,7 +186,7 @@ namespace DGtal
       /**
        * Begin and end iterators of the last maximal segment of the segmentation
        */
-		  ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
+      ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
 
       /**
        * A flag equal to TRUE if the current segment
@@ -394,8 +394,8 @@ namespace DGtal
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
     SaturatedSegmentation(const ConstIterator& itb, 
-												const ConstIterator& ite, 
-												const SegmentComputer& aSegmentComputer);
+			  const ConstIterator& ite, 
+			  const SegmentComputer& aSegmentComputer);
 
     /**
      * Init.
@@ -451,17 +451,17 @@ namespace DGtal
   private:
 
     //Begin and end iterators of the underlying range
-		ConstIterator myBegin, myEnd;
-
+    ConstIterator myBegin, myEnd;
+    
     //Begin and end iterators of the subrange to be segmented
-		ConstIterator myStart, myStop;
+    ConstIterator myStart, myStop;
 
     //Mode
     //"Frist", "MostCentered" (default), "Last"
     std::string myMode; 
 
     //SegmentComputer
-		SegmentComputer mySegmentComputer;
+    SegmentComputer mySegmentComputer;
 
     // ------------------------- Hidden services ------------------------------
 

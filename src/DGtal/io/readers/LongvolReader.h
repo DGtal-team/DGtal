@@ -116,10 +116,11 @@ namespace DGtal
      */
     template <typename Word>
     static
-    FILE* read_word( FILE* fin, Word& value )
+    FILE* read_word( FILE* fin, Word& aValue )
     {
-      for (unsigned size = 0, value = 0; size < sizeof( Word ); ++size)
-	value |= getc(fin) << (8 * size);
+      aValue = 0;
+      for (unsigned size = 0; size < sizeof( Word ); ++size)
+	aValue |= getc(fin) << (8 * size);
       return fin;
     }
 
