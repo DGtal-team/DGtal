@@ -294,11 +294,7 @@ namespace DGtal
       ConceptUtils::sameType( myX, T(x+y) );
       ConceptUtils::sameType( myX, T(x*y) );
       ConceptUtils::sameType( myX, T(x/y) );
-      ConceptUtils::sameType( myX, T(x%y) );
-      
-      ConceptUtils::checkTrueOrFalse( myIsUnsigned );
-      ConceptUtils::checkTrueOrFalse( myIsSigned );
-      ConceptUtils::checkTrueOrFalse( myIsBounded );
+      ConceptUtils::sameType( myX, T(x%y) );      
     }
       
     // ------------------------- Private Datas --------------------------------
@@ -311,6 +307,10 @@ namespace DGtal
     typename NumberTraits<T>::UnsignedVersion myUnsignedVersion;
     typename NumberTraits<T>::ReturnType myReturnType;
 
+    BOOST_STATIC_ASSERT(( ConceptUtils::CheckTrueOrFalse<typename NumberTraits<T>::IsUnsigned>::value ));
+    BOOST_STATIC_ASSERT(( ConceptUtils::CheckTrueOrFalse<typename NumberTraits<T>::IsSigned>::value ));
+    BOOST_STATIC_ASSERT(( ConceptUtils::CheckTrueOrFalse<typename NumberTraits<T>::IsBounded>::value ));
+    
     // ------------------------- Internals ------------------------------------
   private:
     

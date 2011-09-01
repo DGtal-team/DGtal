@@ -420,17 +420,6 @@ namespace DGtal
     }
   };
 
-  struct DefaultDrawStyleRealGrid3D : public DrawableWithDisplay3D {
-
-    virtual void selfDrawDisplay3D( DGtal::Display3D & display ) const
-    {
-      //aBoard.setPenColor(Color::Black);
-      //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-    }
-  };
-
-
-
   
   /// Operator <<
   template<DGtal::Dimension dim>
