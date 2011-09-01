@@ -126,7 +126,7 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
 
-    // 2. then check the presence of static members, operators and methods with
+    // Methods
     BOOST_CONCEPT_USAGE( CTrivialSegmentComputer )
     {
       typename T::ConstIterator i(myI);

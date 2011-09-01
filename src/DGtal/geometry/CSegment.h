@@ -122,9 +122,10 @@ namespace DGtal
     // Inner types
     typedef typename T::Self Self;
     typedef typename T::ConstIterator ConstIterator;
+    //Uncomment if all iterators have been cleaned
     //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<T> ));
 
-    // 2. then check the presence of static members, operators and methods with
+    // Methods
     BOOST_CONCEPT_USAGE( CSegment )
     {
       ConceptUtils::sameType( it, myX.begin() );
