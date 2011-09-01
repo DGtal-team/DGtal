@@ -71,7 +71,7 @@ namespace DGtal
      *
      */
     template <typename Domain, Dimension maxNorm1, 
-	      Dimension dimension = Domain::Space::dimension >
+        Dimension dimension = Domain::Space::dimension >
     class DomainMetricAdjacency
     {
       BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
@@ -147,7 +147,7 @@ namespace DGtal
        */
       template <typename OutputIterator>
       void writeProperNeighborhood( const Point & p, 
-				    OutputIterator & out_it ) const;
+            OutputIterator & out_it ) const;
 
       // ----------------------- Interface --------------------------------------
     public:
@@ -209,8 +209,8 @@ namespace DGtal
     template <typename Domain, Dimension maxNorm1>
     std::ostream&
     operator<< ( std::ostream & out, 
-		 const DomainMetricAdjacency< Domain, maxNorm1,
-		 Domain::Space::dimension > & object );
+     const DomainMetricAdjacency< Domain, maxNorm1,
+     Domain::Space::dimension > & object );
   } //deprecated
 } // namespace DGtal
 

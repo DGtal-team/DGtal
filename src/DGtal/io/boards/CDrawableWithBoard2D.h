@@ -72,8 +72,8 @@ namespace DGtal
    *
    * <p> Notation
    * - \t X : A type that is a model of CDrawableWithBoard2D
-   * - \t x, \t y	: Object of type X
-   * - \t m	: a string of characters
+   * - \t x, \t y  : Object of type X
+   * - \t m  : a string of characters
    *
    * <p> Definitions
    *

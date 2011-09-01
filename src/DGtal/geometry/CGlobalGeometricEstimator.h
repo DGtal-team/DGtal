@@ -61,7 +61,7 @@ namespace DGtal
    *
    * <p> Notation
    * - \t T : A type that is a model of CGlobalGeometricEstimator
-   * - \t x, \t y	: Object of type T
+   * - \t x, \t y  : Object of type T
    *
    * <p> Definitions
    *

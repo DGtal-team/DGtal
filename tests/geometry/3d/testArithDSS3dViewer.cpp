@@ -62,47 +62,47 @@ int main( int argc, char** argv )
 {
 
 
-	typedef PointVector<3,int> Point;
-	typedef std::vector<Point>::iterator Iterator;
-	typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
-	typedef GreedyDecomposition<SegmentComputer> Decomposition;
-//	typedef MaximalSegments<SegmentComputer> Decomposition;
+  typedef PointVector<3,int> Point;
+  typedef std::vector<Point>::iterator Iterator;
+  typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
+  typedef GreedyDecomposition<SegmentComputer> Decomposition;
+//  typedef MaximalSegments<SegmentComputer> Decomposition;
 
-	string inputFilename = examplesPath + "samples/sinus.dat"; 
-	vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
+  string inputFilename = examplesPath + "samples/sinus.dat"; 
+  vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
 
 
-	SegmentComputer algo;
-	Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
-	
-	///////////////////////////////////
-	//display	
-	bool flag = true;		
-	#ifdef WITH_VISU3D_QGLVIEWER
+  SegmentComputer algo;
+  Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
+  
+  ///////////////////////////////////
+  //display  
+  bool flag = true;    
+  #ifdef WITH_VISU3D_QGLVIEWER
 
-	QApplication application(argc,argv);
-	Viewer3D viewer;
-	viewer.show();
+  QApplication application(argc,argv);
+  Viewer3D viewer;
+  viewer.show();
 
-	Point p;
-	viewer  << SetMode3D(p.styleName(), "Grid");
+  Point p;
+  viewer  << SetMode3D(p.styleName(), "Grid");
 
-		unsigned int c = 0;
-		Decomposition::SegmentIterator i = theDecomposition.begin();
-		for ( ; i != theDecomposition.end(); ++i) {
-			SegmentComputer currentSegmentComputer(*i);
-		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "Points"); 
-			viewer << currentSegmentComputer;	
-		 	viewer << SetMode3D(currentSegmentComputer.styleName(), "BoundingBox"); 
-			viewer << currentSegmentComputer;	
-			//cerr << currentSegmentComputer << endl;
-			
-			c++;
-		} 
+    unsigned int c = 0;
+    Decomposition::SegmentIterator i = theDecomposition.begin();
+    for ( ; i != theDecomposition.end(); ++i) {
+      SegmentComputer currentSegmentComputer(*i);
+       viewer << SetMode3D(currentSegmentComputer.styleName(), "Points"); 
+      viewer << currentSegmentComputer;  
+       viewer << SetMode3D(currentSegmentComputer.styleName(), "BoundingBox"); 
+      viewer << currentSegmentComputer;  
+      //cerr << currentSegmentComputer << endl;
+      
+      c++;
+    } 
  
-	viewer << Viewer3D::updateDisplay;
-	flag = application.exec();
- 	#endif
-	return flag;
+  viewer << Viewer3D::updateDisplay;
+  flag = application.exec();
+   #endif
+  return flag;
 }
 

@@ -59,11 +59,11 @@ using namespace Z3i;
 
 
 void addAxis( DGtalInventor<Space> & inventor, 
-	      const Point & low,
-	      const Point & up,
-	      Dimension k, 
-	      const DGtal::Color & c1,
-	      const DGtal::Color & c2 )
+        const Point & low,
+        const Point & up,
+        Dimension k, 
+        const DGtal::Color & c1,
+        const DGtal::Color & c2 )
 {
   typedef DGtalInventor<Space>::Color Color;
   // @todo GradientColorMap seems to have a bug
@@ -81,8 +81,8 @@ void addAxis( DGtalInventor<Space> & inventor,
     }
 }
 void addBounds( DGtalInventor<Space> & inventor, 
-		const Point & low, 
-		const Point & up )
+    const Point & low, 
+    const Point & up )
 {
   typedef DGtalInventor<Space>::Color Color;
   Point p( low );
@@ -90,19 +90,19 @@ void addBounds( DGtalInventor<Space> & inventor,
     {
       Color c;
       for ( Dimension j = 0; j < 3; ++j )
-	{
-	  p[ j ] = ( i & ( 1 << j ) ) ? up[ j ] : low[ j ];
-	  c[ j ] = ( i & ( 1 << j ) ) ? 1.0 : 0.1 ;
-	}
+  {
+    p[ j ] = ( i & ( 1 << j ) ) ? up[ j ] : low[ j ];
+    c[ j ] = ( i & ( 1 << j ) ) ? 1.0 : 0.1 ;
+  }
       inventor.setDiffuseColor( c ); //Color( 0.1, 0.1, 0.1 ) );
       inventor.drawPoint( p );
     }
   // addAxis( inventor, low, up, 0, 
-  // 	   LibBoard::Color::Black, LibBoard::Color::Blue );
+  //      LibBoard::Color::Black, LibBoard::Color::Blue );
   // addAxis( inventor, low, up, 1, 
-  //  	   LibBoard::Color::Black, LibBoard::Color::Green );
+  //       LibBoard::Color::Black, LibBoard::Color::Green );
   // addAxis( inventor, low, up, 2, 
-  //  	   LibBoard::Color::Black, LibBoard::Color::Red );
+  //       LibBoard::Color::Black, LibBoard::Color::Red );
 }
 
 int main( int argc, char** argv )
@@ -122,24 +122,24 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
   SetPredicate<DigitalSet> shape_set_predicate( shape_set );
   for ( Domain::ConstIterator it = domain.begin(), itend = domain.end();
-	it != itend;   
-	++it )
+  it != itend;   
+  ++it )
     {
       if ( image( *it ) != 0 )
-	shape_set.insert( *it );
+  shape_set.insert( *it );
     }
 
   // find first surfel on the boundary (not nice).
   Point first;
   for ( Domain::ConstIterator it = domain.begin(), itend = domain.end();
-	it != itend;   
-	++it )
+  it != itend;   
+  ++it )
     {
       if ( image( *it ) != 0 )
-	{
-	  first = *it;
-	  break;
-	}
+  {
+    first = *it;
+    break;
+  }
     }
 
   // Builds Khalimsky space.
@@ -154,7 +154,7 @@ int main( int argc, char** argv )
   SCell surfel = K3.sIncident( intvoxel, 0, false );
   std::set<SCell> bdry;
   Surfaces<KSpace>::trackBoundary( bdry,
-				   K3, SAdj, shape_set_predicate, surfel );
+           K3, SAdj, shape_set_predicate, surfel );
 
   trace.info() << "tracking finished, size=" << bdry.size() << endl; 
 
@@ -163,17 +163,17 @@ int main( int argc, char** argv )
   typedef DGtalInventor<Space>::Color Color;
   addBounds( inventor, image.lowerBound(), image.upperBound() );
   for ( std::set<SCell>::const_iterator it = bdry.begin(), itend = bdry.end();
-	it != itend;
-	++it )
+  it != itend;
+  ++it )
     {
       inventor.setDiffuseColor( Color( 0.7, 0.7, 1.0 ) );
       inventor.drawCell( K3.sKCoords( *it ), 
-			 ! K3.sDirect( *it, K3.sOrthDir( *it ) ) );
+       ! K3.sDirect( *it, K3.sOrthDir( *it ) ) );
     }
   // start surfel is red.
   inventor.setDiffuseColor( Color( 1.0, 0.0, 0.0 ) );
   inventor.drawCell( K3.sKCoords( surfel ), 
-		     ! K3.sDirect( surfel, K3.sOrthDir( surfel ) ) );
+         ! K3.sDirect( surfel, K3.sOrthDir( surfel ) ) );
   inventor.generate( ivv.root() );
   // Qt will get the hand.
   ivv.show();

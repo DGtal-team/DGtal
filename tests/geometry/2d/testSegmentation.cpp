@@ -76,11 +76,11 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
 
   for (Iterator i(itb); i != ite; ++i) {
-	 	
+     
     typename Iterator::SegmentComputer segment(*i); 
 
     aBoard << SetMode(segment.styleName(), "BoundingBox" )
-					 << segment; // draw bounding box
+           << segment; // draw bounding box
   
   } 
 
@@ -93,53 +93,53 @@ template <typename Iterator, typename Board>
 void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
 
-	typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
+  typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
 
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string aStyleName = "ArithmeticalDSS/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
-	 	
+     
     //choose pen color
     CustomPenColor* aPenColor;
 
-		if ( !(i.intersectNext() && i.intersectPrevious()) ) {
+    if ( !(i.intersectNext() && i.intersectPrevious()) ) {
 
-			aPenColor = new CustomPenColor( Color::Black );
+      aPenColor = new CustomPenColor( Color::Black );
 
-		} else {
+    } else {
 
       //end points
 
-      PointIterator begin = i->begin();	--begin; 
-	    PointIterator end = i->end();
+      PointIterator begin = i->begin();  --begin; 
+      PointIterator end = i->end();
 
-	    //parameters
-	    int mu = i->getMu();
-	    int omega = i->getOmega();
+      //parameters
+      int mu = i->getMu();
+      int omega = i->getOmega();
 
-			//configurations
-			if ( (i->getRemainder(begin)<=mu-1)&&
-				   (i->getRemainder(end)<=mu-1) ) {                //concave
-				aPenColor = new CustomPenColor( Color::Green);
-			} else if ( (i->getRemainder(begin)>=mu+omega)&&
-					  (i->getRemainder(end)>=mu+omega) ) {           //convex
-				aPenColor = new CustomPenColor( Color::Blue );
-			} else if ( (i->getRemainder(begin)>=mu+omega)&&
-					  (i->getRemainder(end)<=mu-1) ) {               //convex to concave
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else if ( (i->getRemainder(begin)<=mu-1)&&
-					  (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
-				aPenColor = new CustomPenColor( Color::Yellow );
-			} else {                                                    //pb
-				aPenColor = new CustomPenColor( Color::Red );
-			}
+      //configurations
+      if ( (i->getRemainder(begin)<=mu-1)&&
+           (i->getRemainder(end)<=mu-1) ) {                //concave
+        aPenColor = new CustomPenColor( Color::Green);
+      } else if ( (i->getRemainder(begin)>=mu+omega)&&
+            (i->getRemainder(end)>=mu+omega) ) {           //convex
+        aPenColor = new CustomPenColor( Color::Blue );
+      } else if ( (i->getRemainder(begin)>=mu+omega)&&
+            (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+        aPenColor = new CustomPenColor( Color::Yellow );
+      } else if ( (i->getRemainder(begin)<=mu-1)&&
+            (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+        aPenColor = new CustomPenColor( Color::Yellow );
+      } else {                                                    //pb
+        aPenColor = new CustomPenColor( Color::Red );
+      }
 
-		}
+    }
 
     // draw each segment
     aBoard << CustomStyle( aStyleName, aPenColor )
-			     << *i; 
+           << *i; 
   
   } 
 
@@ -155,7 +155,7 @@ void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite,
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
   typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
-	typedef GreedySegmentation<RecognitionAlgorithm> Segmentation;
+  typedef GreedySegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
@@ -180,7 +180,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
   typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
-	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
+  typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
@@ -267,8 +267,8 @@ bool greedySegmentationVisualTest()
   typedef vector<PointVector<2,Coordinate> > Curve;  
   typedef Curve::const_iterator RAConstIterator;  
 
-	Curve vPts; 
-	vPts.assign ( fc.begin(), fc.end() ); 
+  Curve vPts; 
+  vPts.assign ( fc.begin(), fc.end() ); 
 
   RAConstIterator start = vPts.begin()+15;
   RAConstIterator stop = vPts.begin()+200;
@@ -535,7 +535,7 @@ trace.info() << *start2 << " " << *stop2 << endl;
 
 
 ////////////////////////////////////////////////////////////
-	return true;
+  return true;
 }
 
 
@@ -612,8 +612,8 @@ bool SaturatedSegmentationVisualTest()
   typedef vector<PointVector<2,Coordinate> > Curve;  
   typedef Curve::const_iterator RAConstIterator;  
 
-	Curve vPts; 
-	vPts.assign ( fc.begin(), fc.end() ); 
+  Curve vPts; 
+  vPts.assign ( fc.begin(), fc.end() ); 
 
   RAConstIterator start = vPts.begin()+190;
   RAConstIterator stop = vPts.begin()+400;
@@ -912,7 +912,7 @@ bool SaturatedSegmentationTest()
   Circulator<ConstIterator> c(vPts.begin(), vPts.begin(), vPts.end() ); 
 
   typedef ArithmeticalDSS<ConstCirculator,Coordinate,4> RecognitionAlgorithm;
-	typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
+  typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   trace.beginBlock("saturated Segmentation");
   trace.info() << filename << endl;

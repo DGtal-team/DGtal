@@ -39,11 +39,11 @@ namespace DGtal
    */
   template <int X, unsigned exponent> class POW
   {
-  public:	enum{ VALUE = X* POW<X, exponent-1>::VALUE};
+  public:  enum{ VALUE = X* POW<X, exponent-1>::VALUE};
   };
   template <int X > class POW<X, 1>
   {
-  public:	enum{ VALUE = X };
+  public:  enum{ VALUE = X };
   };
 
   /**
@@ -52,15 +52,15 @@ namespace DGtal
   template <int X>
   class LOG2
   {
-  public:	enum{ VALUE = 1 +  LOG2<X / 2>::VALUE};
+  public:  enum{ VALUE = 1 +  LOG2<X / 2>::VALUE};
   };
   template <> class LOG2<2>
   {
-  public:	enum{ VALUE = 1 };
+  public:  enum{ VALUE = 1 };
   };
   template <> class LOG2<1>
   {
-  public:	enum{ VALUE = 0 };
+  public:  enum{ VALUE = 0 };
   };
 
   struct Bits
@@ -91,22 +91,22 @@ namespace DGtal
       int i = min(sizeof(T)*8-1, nbBits-1);
 
       for(; i>=0; i--)
-	{
-	  T mask = ((T)1) << i; // if you take these parenthesis out,
-				// a mountain of incredible runtime
-				// errors will jump on you.(I warned
-				// ya !)
-	  if(value & mask)
-	    bitStr += "1" ;
-	  else
-	    bitStr += "0" ;
-	}
+  {
+    T mask = ((T)1) << i; // if you take these parenthesis out,
+        // a mountain of incredible runtime
+        // errors will jump on you.(I warned
+        // ya !)
+    if(value & mask)
+      bitStr += "1" ;
+    else
+      bitStr += "0" ;
+  }
       return bitStr;
     }
 
 
     // ---------------------------------------------------------------------
-    //	Other functions
+    //  Other functions
     // ---------------------------------------------------------------------
 
     /**

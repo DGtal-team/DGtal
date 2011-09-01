@@ -62,7 +62,7 @@ namespace DGtal
    * - \t SpanIterator: a 1D span iterator in the image (not yet tested).
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
-   * - \t x, \t y	: Object of type X
+   * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
    *

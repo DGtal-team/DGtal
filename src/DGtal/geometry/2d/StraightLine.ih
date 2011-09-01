@@ -55,10 +55,10 @@ DGtal::StraightLine<TInteger>::~StraightLine()
 template <typename TInteger>
 inline
 DGtal::StraightLine<TInteger>::StraightLine(
-				const Point& aFirstPoint, 
-				const Point& aSecondPoint):
-				myP(aFirstPoint),
-				myQ(aSecondPoint)
+        const Point& aFirstPoint, 
+        const Point& aSecondPoint):
+        myP(aFirstPoint),
+        myQ(aSecondPoint)
 {
 }
 
@@ -69,9 +69,9 @@ DGtal::StraightLine<TInteger>::StraightLine(
 template <typename TInteger>
 inline
 DGtal::StraightLine<TInteger>::StraightLine(
-				const StraightLine & other):
-				myP(other.myP),
-				myQ(other.myQ)
+        const StraightLine & other):
+        myP(other.myP),
+        myQ(other.myQ)
 {
 }
 
@@ -84,11 +84,11 @@ template <typename TInteger>
 inline
 DGtal::StraightLine<TInteger>&
 DGtal::StraightLine<TInteger>::operator=(
-				const StraightLine & other)
+        const StraightLine & other)
 {
-	myP = other.myP;
-	myQ = other.myQ;
-	return *this;
+  myP = other.myP;
+  myQ = other.myQ;
+  return *this;
 }
 
 
@@ -102,11 +102,11 @@ inline
 TInteger
 DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
 {
-	Vector pq = myQ - myP;
-	Vector pr = aP - myP;
-	//computation of det(pq, pr) 
-	//(= twice the parallelogram area)
-	return ((pq.at(0) * pr.at(1)) - (pq.at(1) * pr.at(0)));
+  Vector pq = myQ - myP;
+  Vector pr = aP - myP;
+  //computation of det(pq, pr) 
+  //(= twice the parallelogram area)
+  return ((pq.at(0) * pr.at(1)) - (pq.at(1) * pr.at(0)));
 }
 
 

@@ -111,11 +111,11 @@ int main( int argc, char** argv )
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
   if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP")) && not(vm.count("SFP"))&&
-				   not(vm.count("backgroundImage")) ) )
+           not(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
-		  << "\t displayContours [options] --FreemanChain  <fileName>  --imageName image.png "<<std::endl
-		  << general_opt << "\n";
+      << "\t displayContours [options] --FreemanChain  <fileName>  --imageName image.png "<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -161,95 +161,95 @@ int main( int argc, char** argv )
     vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
     //aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
     aBoard << CustomStyle( vectFc.at(0).styleName(), 
-			   new CustomColors( Color::Red  ,  Color::None ) );    
+         new CustomColors( Color::Red  ,  Color::None ) );    
     for(unsigned int i=0; i<vectFc.size(); i++){
       aBoard <<  vectFc.at(i) ;
 
       if(vm.count("withProcessing")){
-	std::string processingName = vm["withProcessing"].as<std::string>();
+  std::string processingName = vm["withProcessing"].as<std::string>();
 
-	vector<Z2i::Point> vPts(vectFc.at(i).size()+1); 
-	copy ( vectFc.at(i).begin(), vectFc.at(i).end(), vPts.begin() ); 
-	bool isClosed;
-	if ( vPts.at(0) == vPts.at(vPts.size()-1) ) { 
+  vector<Z2i::Point> vPts(vectFc.at(i).size()+1); 
+  copy ( vectFc.at(i).begin(), vectFc.at(i).end(), vPts.begin() ); 
+  bool isClosed;
+  if ( vPts.at(0) == vPts.at(vPts.size()-1) ) { 
           isClosed = true;
           vPts.pop_back(); 
-	} else isClosed = false;
+  } else isClosed = false;
 
-	if (processingName == "DSS") {
+  if (processingName == "DSS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
           typedef GreedyDecomposition<DSS4> Decomposition4;
 
           //Segmentation
-	  DSS4 computer;
+    DSS4 computer;
           Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
           for ( Decomposition4::SegmentIterator ii = theDecomposition.begin();
-		ii != theDecomposition.end(); ++ii ) 
+    ii != theDecomposition.end(); ++ii ) 
             {
-	      DSS4 segment(*ii);
-	      aBoard << CustomStyle( styleName, 
-				     new CustomPenColor( DGtal::Color::Gray ) ); 
-	      aBoard << segment; // draw each segment
+        DSS4 segment(*ii);
+        aBoard << CustomStyle( styleName, 
+             new CustomPenColor( DGtal::Color::Gray ) ); 
+        aBoard << segment; // draw each segment
             } 
 
-	} else if (processingName == "MS") {
+  } else if (processingName == "MS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
           typedef MaximalSegments<DSS4> Decomposition4;
 
           //Segmentation
-	  DSS4 computer;
+    DSS4 computer;
           Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
 
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
           for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-		i != theDecomposition.end(); ++i ) 
+    i != theDecomposition.end(); ++i ) 
             {
-	      DSS4 segment(*i);
-	      aBoard << CustomStyle( styleName, 
-				     new CustomPenColor( DGtal::Color::Black ) ); 
-	      aBoard << segment; // draw each segment
+        DSS4 segment(*i);
+        aBoard << CustomStyle( styleName, 
+             new CustomPenColor( DGtal::Color::Black ) ); 
+        aBoard << segment; // draw each segment
             } 
 
 
-	} else if (processingName == "FP") {
+  } else if (processingName == "FP") {
 
-	  typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
-	  FP theFP( vPts.begin(),vPts.end(),isClosed );
+    typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
+    FP theFP( vPts.begin(),vPts.end(),isClosed );
           aBoard << CustomStyle( theFP.styleName(), 
-				 new CustomPenColor( DGtal::Color::Black ) ); 
+         new CustomPenColor( DGtal::Color::Black ) ); 
           aBoard << theFP;
 
 
-	} else if (processingName == "MLP") {
+  } else if (processingName == "MLP") {
 
-	  typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
-	  FP theFP( vPts.begin(),vPts.end(),isClosed );
+    typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
+    FP theFP( vPts.begin(),vPts.end(),isClosed );
 
           vector<FP::RealPoint> v( theFP.size() );
           theFP.copyMLP( v.begin() );
 
           //polyline to draw
-	  vector<LibBoard::Point> polyline;
-	  vector<FP::RealPoint>::const_iterator i = v.begin();
-	  for ( ;i != v.end();++i) {
-	    FP::RealPoint p = (*i);
-	    polyline.push_back(LibBoard::Point(p[0],p[1]));
-	  }
+    vector<LibBoard::Point> polyline;
+    vector<FP::RealPoint>::const_iterator i = v.begin();
+    for ( ;i != v.end();++i) {
+      FP::RealPoint p = (*i);
+      polyline.push_back(LibBoard::Point(p[0],p[1]));
+    }
           if (isClosed) {
-	    FP::RealPoint p = (*v.begin());
-	    polyline.push_back(LibBoard::Point(p[0],p[1]));
+      FP::RealPoint p = (*v.begin());
+      polyline.push_back(LibBoard::Point(p[0],p[1]));
           }
           aBoard.setPenColor(DGtal::Color::Black);
           aBoard.drawPolyline(polyline);
 
-	}
+  }
 
       }
 
@@ -272,28 +272,28 @@ int main( int argc, char** argv )
     if(vm.count("SDP")){
       string fileName = vm["SDP"].as<string>();
       vector< Z2i::Point >  contour = 
-	PointListReader< Z2i::Point >::getPointsFromFile(fileName); 
+  PointListReader< Z2i::Point >::getPointsFromFile(fileName); 
       for(unsigned int j=0; j<contour.size(); j++){
-	LibBoard::Point pt((double)(contour.at(j)[0]),
-			   (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
-	contourPt.push_back(pt);
-	if(drawPoints){
-	  aBoard.fillCircle(pt.x, pt.y, pointSize);
-	}
+  LibBoard::Point pt((double)(contour.at(j)[0]),
+         (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
+  contourPt.push_back(pt);
+  if(drawPoints){
+    aBoard.fillCircle(pt.x, pt.y, pointSize);
+  }
       }
     }
  
     if(vm.count("SFP")){
       string fileName = vm["SFP"].as<string>();
       vector<  RealPointVector<2>  >  contour = 
-	PointListReader<  RealPointVector<2>  >::getPointsFromFile(fileName); 
+  PointListReader<  RealPointVector<2>  >::getPointsFromFile(fileName); 
       for(unsigned int j=0; j<contour.size(); j++){
-	LibBoard::Point pt((double)(contour.at(j)[0]),
-			   (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
-	contourPt.push_back(pt);
-	if(drawPoints){
-	  aBoard.fillCircle(pt.x, pt.y, pointSize);
-	}
+  LibBoard::Point pt((double)(contour.at(j)[0]),
+         (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));
+  contourPt.push_back(pt);
+  if(drawPoints){
+    aBoard.fillCircle(pt.x, pt.y, pointSize);
+  }
       }
     }
   
@@ -322,28 +322,28 @@ int main( int argc, char** argv )
       aBoard.saveFIG(outputFileName.c_str());
     } else
       if (vm.count("outputEPS")){
-	string outputFileName= vm["outputEPS"].as<string>();
-	aBoard.saveEPS(outputFileName.c_str());
+  string outputFileName= vm["outputEPS"].as<string>();
+  aBoard.saveEPS(outputFileName.c_str());
       }  
 #ifdef WITH_CAIRO
       else
-	if (vm.count("outputEPS")){
-	  string outputFileName= vm["outputEPS"].as<string>();
-	  aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoEPS );
-	} else 
-	  if (vm.count("outputPDF")){
-	    string outputFileName= vm["outputPDF"].as<string>();
-	    aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPDF );
-	  } else 
-	    if (vm.count("outputPNG")){
-	      string outputFileName= vm["outputPNG"].as<string>();
-	      aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPNG );
-	    }
+  if (vm.count("outputEPS")){
+    string outputFileName= vm["outputEPS"].as<string>();
+    aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoEPS );
+  } else 
+    if (vm.count("outputPDF")){
+      string outputFileName= vm["outputPDF"].as<string>();
+      aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPDF );
+    } else 
+      if (vm.count("outputPNG")){
+        string outputFileName= vm["outputPNG"].as<string>();
+        aBoard.saveCairo(outputFileName.c_str(),Board2D::CairoPNG );
+      }
 #endif
-	    else { //default output
-	      string outputFileName= "output.eps";
-	      aBoard.saveEPS(outputFileName.c_str());
-	    }
-	
+      else { //default output
+        string outputFileName= "output.eps";
+        aBoard.saveEPS(outputFileName.c_str());
+      }
+  
 }
 
