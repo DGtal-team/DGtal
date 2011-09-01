@@ -18,6 +18,7 @@
 
 /**
  * @file RosenProffittLocalLengthEstimator.h
+ * @brief Computes length using Rosen-Proffitt Length Estimator.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module RosenProffittLocalLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimators.cpp
  */
 
 #if defined(RosenProffittLocalLengthEstimator_RECURSES)

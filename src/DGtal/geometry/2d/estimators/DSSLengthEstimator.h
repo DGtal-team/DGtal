@@ -18,6 +18,9 @@
 
 /**
  * @file DSSLengthEstimator.h
+ * @brief Segments the digital curve into DSS and computes the length of the
+ * resulting polygon. 
+ *
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -29,6 +32,8 @@
  * Header file for module DSSLengthEstimator.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimator.cpp, testL1LengthEstimator.cpp
  */
 
 #if defined(DSSLengthEstimator_RECURSES)

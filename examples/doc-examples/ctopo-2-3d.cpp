@@ -34,7 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"

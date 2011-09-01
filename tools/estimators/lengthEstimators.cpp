@@ -52,7 +52,7 @@
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 #include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"

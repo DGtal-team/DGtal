@@ -38,7 +38,7 @@
 #include "DGtal/shapes/parametric/Ellipse2D.h"
 #include "DGtal/shapes/parametric/Flower2D.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 ///////////////////////////////////////////////////////////////////////////////
 

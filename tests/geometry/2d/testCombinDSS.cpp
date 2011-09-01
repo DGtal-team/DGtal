@@ -16,6 +16,7 @@
 
 /**
  * @file testCombinDSS.cpp
+ * @brief Tests for the class CombinatorialDSS
  * @ingroup Tests
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -25,13 +26,19 @@
  * Functions for testing class CombinDSS.
  *
  * This file is part of the DGtal library.
+ *
+ * @see CombiantorialDSS.h
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/CombinatorialDSS.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "ConfigTest.h"
+#include <time.h>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -42,128 +49,84 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
 /**
- * Builds a CombinatorialDSS and the corresponding ArithmeticalDSS and compares
- * bots
- *
- * Note : afterward, the iterator is positionned at the end of the DSS.
- *
- * @param it an iterator on a FreemanChain<int>
- * @param aAlph the corresponding OrderedAlphabet
- * @return 'true' if both DSS are equals, 'false' otherwise.
+ * Test exted and retract function on a complex chape
  */
-bool compareDSS(FreemanChain<int>::ConstIterator & it, const OrderedAlphabet & aAlph)
+bool testCombinatorialDSS() 
 {
-	CombinatorialDSS<int> CDSS;
-	CDSS.longestChristoffelPrefix(it, aAlph);
-	ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> ADSS(it);
-	do {
-		ADSS.extend(++it);
-	} while (it != CDSS.end());
-	return CDSS == ADSS;
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> ContourType; 
+  typedef ContourType::ConstIterator ConstIterator;
+  typedef CombinatorialDSS<Coordinate> CombinatorialDSS;
+
+  std::string filename = testPath + "samples/france.fc";
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  ContourType theContour(fst);
+
+
+  int nbRetract = 0;
+  CombinatorialDSS C(theContour.begin());
+  while ( *C.end() != *theContour.end() ) 
+  {
+    if ( ! C.extend() )  {
+      C.retract();
+      ++nbRetract;
+    }
+  }
+  return (nbRetract == 3485) ;
 }
-
-
+  
 
 /**
  * Builds CombinatorialDSS and ArithmeticalDSS in the fourth quadrants and
  * compares them, if both are equals, the test is passed.
  *
  */
-bool testCombinDSS()
+bool CompareToArithmetical()
 {
-
-	unsigned int nbok = 0;
-	unsigned int nb = 0;
-
-	trace.beginBlock ( "Testing DuvalPPtoDSS first quadrant" );
-	{
-		OrderedAlphabet A('0', 4);
-		A.shiftRight();
-		FreemanChain<int> chain( "001010010100011011101111", 10, 10);
-		FreemanChain<int>::ConstIterator it = chain.begin();
-		while (it.getPosition()+1 != chain.end().getPosition() ) {
-			nb++;
-			nbok += compareDSS(it, A) ? 1 : 0;
-			trace.info() << "(" << nbok << "/" << nb << ") "
-				<< "true == true" << std::endl;
-		}
-	}
-	trace.endBlock();
-
-	trace.beginBlock ( "Testing DuvalPPtoDSS second quadrant" );
-	{
-		OrderedAlphabet A('0', 4);
-		FreemanChain<int> chain( "1221112212121211221122", 10, 10);
-		FreemanChain<int>::ConstIterator it = chain.begin();
-		while (it.getPosition()+1 != chain.end().getPosition() ) {
-			nb++;
-			nbok += compareDSS(it, A) ? 1 : 0;
-			trace.info() << "(" << nbok << "/" << nb << ") "
-				<< "true == true" << std::endl;
-		}
-	}
-	trace.endBlock();
-
-	trace.beginBlock ( "Testing DuvalPPtoDSS third quadrant" );
-	{
-		OrderedAlphabet A('0', 4);
-		A.shiftLeft();
-		FreemanChain<int> chain( "2323222332232322323", 10, 10);
-		FreemanChain<int>::ConstIterator it = chain.begin();
-		while (it.getPosition()+1 != chain.end().getPosition() ) {
-			nb++;
-			nbok += compareDSS(it, A) ? 1 : 0;
-			trace.info() << "(" << nbok << "/" << nb << ") "
-				<< "true == true" << std::endl;
-		}
-	}
-	trace.endBlock();
-
-	trace.beginBlock ( "Testing DuvalPPtoDSS fourth quadrant" );
-	{
-		OrderedAlphabet A('0', 4);
-		A.shiftRight();
-		A.shiftRight();
-		FreemanChain<int> chain( "00003303003003003300", 20, 21);
-		FreemanChain<int>::ConstIterator it = chain.begin();
-		while (it.getPosition()+1 != chain.end().getPosition() ) {
-			nb++;
-			nbok += compareDSS(it, A) ? 1 : 0;
-			trace.info() << "(" << nbok << "/" << nb << ") "
-				<< "true == true" << std::endl;
-		}
-	}
-	trace.endBlock();
-	return nbok == nb;
-}
-
-bool testEquality()
-{
-	unsigned int nbok = 0;
-	unsigned int nb = 0;
-
-	CombinatorialDSS<int> CDSS1, CDSS2, CDSS3;
-	trace.beginBlock ( "Testing equality of Combinatorial DSS" );
-	{
-		OrderedAlphabet A('0', 4);
-		FreemanChain<int> chain1(   "11121112112", -1, 1);
-		FreemanChain<int> chain2( "1211121112112", 0, 0);
-
-		FreemanChain<int>::ConstIterator it1 = chain1.begin();
-		CDSS1.longestChristoffelPrefix( it1, A );
-
-		FreemanChain<int>::ConstIterator it2 = chain2.begin();
-		CDSS2.longestChristoffelPrefix( it2, A );
-		it2 = CDSS2.end();
-		CDSS3.longestChristoffelPrefix( it2, A );
-	}
-	nb++;
-	nbok += ( (CDSS1 != CDSS2 ) && ( CDSS1 == CDSS3 ) ) ? 1 : 0;
-	trace.info() << "(" << nbok << "/" << nb << ") "
-		<< "true == true" << std::endl;
-	trace.endBlock();
-	return nbok == nb;
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> ContourType; 
+  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> ReferenceType;
+  typedef CombinatorialDSS<Coordinate> TestedType;
+  std::string filename = testPath + "samples/manche.fc";
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  ContourType theContour(fst);
+  ContourType::ConstIterator it = theContour.begin();
+  for (int i=0; i<10; i++) it++;
+  CombinatorialDSS<int> C(it);
+  ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
+  A.extend(); 
+  int nbPts = 2;
+  bool a,c;
+  bool res = true;
+  while ( *C.end() != *theContour.end() ) {
+    double d = ((double) rand()) / ((double) RAND_MAX );
+    if ( (d < 0.15)  && (nbPts > 2) ) {
+      a = A.retract();
+      c = C.retract();
+      if (a && c) --nbPts;
+    }
+    else if ( (d < 0.30)  && (nbPts > 2) ) {
+      a = A.retractOppositeEnd();
+      c = C.retractOppositeEnd();
+      if (a && c) --nbPts;
+    }
+    else  {
+      a = A.extend();
+      c = C.extend();
+      if (a && c) ++nbPts;
+    }
+    if ( !C.isValid() || (a xor c) || (C != A) ) {
+      res = false;
+      break;
+    }
+  }
+  return res;
 }
 
 
@@ -173,17 +136,18 @@ bool testEquality()
 // Standard services - public :
 int main( int argc, char** argv )
 {
-	trace.beginBlock ( "Testing class CombinDSS" );
-	trace.info() << "Args:";
-	for ( int i = 0; i < argc; ++i )
-		trace.info() << " " << argv[ i ];
-	trace.info() << endl;
+  trace.beginBlock ( "Testing class CombinDSS" );
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
 
-	bool res = testCombinDSS() && testEquality(); // && ... other tests
-	trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-	trace.endBlock();
+  //bool res = testCombinDSS() && testEquality(); // && ... other tests
+  bool res = testCombinatorialDSS() && CompareToArithmetical();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
 
-	return res ? 0 : 1;
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

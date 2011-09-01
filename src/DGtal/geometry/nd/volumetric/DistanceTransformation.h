@@ -18,6 +18,7 @@
 
 /**
  * @file DistanceTransformation.h
+ * @brief Linear in time distance transformation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module DistanceTransformation.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testDistanceTransformation.cpp, testDistanceTransformationND.cpp, testReverseDT.cpp
  */
 
 #if defined(DistanceTransformation_RECURSES)

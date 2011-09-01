@@ -43,8 +43,8 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/helpers/Surfaces.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
