@@ -308,7 +308,8 @@ compareShapeEstimators( const string & name,
     double TBCCurv = c.stopClock();
 
     // Output
-    std::cout << "# Time-BCtangent = "<<TBCTan <<std::endl
+    std::cout << "# Shape = "<< name <<std::endl
+	      << "# Time-BCtangent = "<<TBCTan <<std::endl
 	      << "# Time-BCcurvature = "<<TBCCurv<<std::endl
 	      << "# Time-MStangent = "<<TMST<<std::endl
 	      << "# id x y tangentx tangenty curvature"

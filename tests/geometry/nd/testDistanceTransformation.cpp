@@ -200,7 +200,7 @@ bool testDistanceTransformationNeg()
 
   ImageLong result = dt.compute ( image );
   
-  DGtal::uint64_t maxv=0;
+  DGtal::int64_t maxv=0;
   for(ImageLong::Iterator it = result.begin(), itend = result.end();
       it != itend ; ++it)
     if (result(it) > maxv)

@@ -187,10 +187,10 @@ int main( int argc, char** argv )
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
-          for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-		i != theDecomposition.end(); ++i ) 
+          for ( Decomposition4::SegmentIterator ii = theDecomposition.begin();
+		ii != theDecomposition.end(); ++ii ) 
             {
-	      DSS4 segment(*i);
+	      DSS4 segment(*ii);
 	      aBoard << CustomStyle( styleName, 
 				     new CustomPenColor( DGtal::Color::Gray ) ); 
 	      aBoard << segment; // draw each segment
