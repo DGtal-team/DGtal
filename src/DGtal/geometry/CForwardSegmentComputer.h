@@ -57,9 +57,9 @@ namespace DGtal
     ie. a model of CSegment that can extend itself (in the direction that is relative to 
     the underlying iterator). 
      
-     <p> Refinement of CTrivialSegment 
+     <p> Refinement of CTrivialSegmentComputer 
     
-     <p> Associated types : the same as CTrivialSegment +
+     <p> Associated types : the same as CTrivialSegmentComputer +
     - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
     instead of Self::ConstIterator as the underlying iterator
   
@@ -109,7 +109,7 @@ namespace DGtal
   public:
     // Inner types
     typedef typename T::Reverse Reverse;
-    // 2. then check the presence of static members, operators and methods with
+    // Methods
     BOOST_CONCEPT_USAGE( CForwardSegmentComputer )
     {
       ConceptUtils::sameType( myRx, myX.getReverse() );
