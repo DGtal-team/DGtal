@@ -161,6 +161,32 @@ namespace DGtal
      */
     DigitalSetBoundary( const DigitalSet & aSet );
 
+    // --------- CDigitalSurfaceContainer realization -------------------------
+  public:
+
+    /// @return the cellular space in which lives the surface.
+    const KSpace & space() const;
+    /**
+       @param s any surfel of the space.
+       @return 'true' if @a s belongs to this digital surface.
+    */
+    bool isInside( const Surfel & s ) const;
+
+    /// @return an iterator pointing on the first surfel of the digital surface
+    /// (unspecified order).
+    SurfelConstIterator begin() const;
+
+    /// @return an iterator after the last surfel of the digital surface
+    /// (unspecified order).
+    SurfelConstIterator end() const;
+
+    /**
+       @param s any surfel of the space.
+       @pre 'isInside( s )'
+       @return a dyn. alloc. pointer on a tracker positionned at @a s.
+    */
+    DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 

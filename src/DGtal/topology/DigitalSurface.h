@@ -181,7 +181,8 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSurface<T> & object );
+  operator<< ( std::ostream & out, 
+	       const DigitalSurface<TDigitalSurfaceContainer> & object );
 
 } // namespace DGtal
 
