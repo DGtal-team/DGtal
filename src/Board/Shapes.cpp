@@ -61,7 +61,7 @@ cairo_line_join_t cairoLineJoin[] = {
 
 #define ARRAY_SIZE(A) (sizeof(A)/sizeof(A[0]))
 
-const double cairoSolidStyle[] = {}; const double cairoSolidStyle_offset = 0;
+const double cairoSolidStyle[] = {1, 0}; const double cairoSolidStyle_offset = 0;
 const double cairoDashStyle[] = {1, 1}; const double cairoDashStyle_offset = 0;
 const double cairoDotStyle[] = {1.5, 4.5}; const double cairoDotStyle_offset = 45;
 const double cairoDashDotStyle[] = {4.5, 2.3, 1.5, 2.3}; const double cairoDashDotStyle_offset = 0;

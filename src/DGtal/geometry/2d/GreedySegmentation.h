@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/CForwardSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +60,7 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer a model of CSegmentComputer
+   * @tparam TSegmentComputer, at least a model of CForwardSegmentComputer
    * (an online algorithm for the recognition of some segment). 
    *
    * In the short example below, a digital curve stored in a STL vector
@@ -147,6 +148,7 @@ namespace DGtal
 
 	public: 
 
+    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ) );
 		typedef TSegmentComputer SegmentComputer;
 		typedef typename SegmentComputer::ConstIterator ConstIterator;
 
@@ -196,16 +198,16 @@ namespace DGtal
       bool  myFlagIntersectPrevious;
 
       /**
-       * A flag equal to TRUE if *this has reached the end, FALSE otherwise 
-       */
-      bool  myFlagIsLast;
-
-      /**
        * A flag equal to TRUE if *this is valid, FALSE otherwise 
        */
       bool  myFlagIsValid;
 
+      /**
+       * A flag equal to TRUE if *this has reached the end, FALSE otherwise 
+       */
+      bool  myFlagIsLast;
 
+      
 
       // ------------------------- Standard services -----------------------
     public:

@@ -784,22 +784,7 @@ namespace DGtal
     }
   };
 
-  struct DefaultDrawStyleGrid3D : public DrawableWithDisplay3D {
-
-    virtual void selfDrawDisplay3D( Display3D & viewer ) const
-    {
-	//aBoard.setPenColor(Color::Black);
-	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-    };
-
-
-
-
-
-
-
-
+ 
 
   /// Operator <<
   template<Dimension dim, typename Component>

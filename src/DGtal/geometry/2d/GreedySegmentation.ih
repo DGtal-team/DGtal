@@ -50,7 +50,7 @@ bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
 {
   typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
-  this->doesIntersectNext( it, itb, ite, Type() );
+  return this->doesIntersectNext( it, itb, ite, Type() );
 }
 
 /**
@@ -62,14 +62,17 @@ bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
 {
 		ConstIterator previousIt(it); 
-    if ( (it != itb)&&(it != ite) ) {
-      --previousIt;
-		  SegmentComputer tmpSegmentComputer;
-		  tmpSegmentComputer.init(previousIt);
-		  return tmpSegmentComputer.extend();
-    } else {
-      return false; 
-    }
+    if ( (it != itb)&&(it != ite) ) 
+      {
+	--previousIt;
+	SegmentComputer tmpSegmentComputer;
+	tmpSegmentComputer.init(previousIt);
+	return tmpSegmentComputer.extend();
+      } 
+    else 
+      {
+	return false; 
+      }
 }
 
 /**
@@ -80,7 +83,7 @@ inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
 {
-		this->doesIntersectNext(it);
+  return this->doesIntersectNext(it);
 }
 
 /**
@@ -91,11 +94,11 @@ inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
-		ConstIterator previousIt(it); --previousIt;
-
-		SegmentComputer tmpSegmentComputer;
-		tmpSegmentComputer.init(previousIt);
-		return tmpSegmentComputer.extend();
+  ConstIterator previousIt(it); --previousIt;
+  
+  SegmentComputer tmpSegmentComputer;
+  tmpSegmentComputer.init(previousIt);
+  return tmpSegmentComputer.extend();
 }
 
  
@@ -177,30 +180,31 @@ inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
 	const GreedySegmentation<TSegmentComputer> *s,
 	const TSegmentComputer& aSegmentComputer,
-  const bool& isValid )
+  const bool& aIsValid )
   : myS( s ), 
-		mySegmentComputer( aSegmentComputer ), 
+    mySegmentComputer( aSegmentComputer ), 
     myFlagIntersectNext( false ),
-		myFlagIntersectPrevious( false ),
-    myFlagIsValid( isValid ),
+    myFlagIntersectPrevious( false ),
+    myFlagIsValid( aIsValid ),
     myFlagIsLast( false )
-{
-
-  if (myFlagIsValid) {
-
-	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
-
-		  myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
-
-      //computation of the longest segment from myS->myStart
-		  this->longestSegment(myS->myStart);	
-
-    } else {
-      myFlagIsValid = false;
-    }
-
-  }
-}
+ {
+   
+   if (myFlagIsValid)
+     {
+       if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
+	 
+	 myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
+	 
+	 //computation of the longest segment from myS->myStart
+	 this->longestSegment(myS->myStart);	
+	 
+       } 
+       else 
+	 {
+	   myFlagIsValid = false;
+	 }
+     }
+ }
 
 
 
@@ -213,14 +217,14 @@ inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
   : myS( other.myS ), 
-		mySegmentComputer( other.mySegmentComputer ),
-		myFlagIntersectNext( other.myFlagIntersectNext ), 
-		myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
-    myFlagIsValid( other.myFlagIsValid ),
-    myFlagIsLast( other.myFlagIsLast )
-{
-}
-    
+    mySegmentComputer( other.mySegmentComputer ),
+    myFlagIntersectNext( other.myFlagIntersectNext ), 
+    myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
+    myFlagIsLast( other.myFlagIsLast ),
+    myFlagIsValid( other.myFlagIsValid )
+  {
+  }
+
 /**
  * Assignment.
  * @param other the iterator to copy.
@@ -398,11 +402,11 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() cons
 DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
 (const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
  : myBegin(itb),
-	 myEnd(ite),
+   myEnd(ite),
    myStart(itb),
-	 myStop(ite),
-	 mySegmentComputer(aSegmentComputer),
-   myMode("Truncate")
+   myStop(ite),
+   myMode("Truncate"),
+   mySegmentComputer(aSegmentComputer)
 {
 }
 

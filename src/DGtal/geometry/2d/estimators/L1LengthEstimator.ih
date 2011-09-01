@@ -75,6 +75,7 @@ DGtal::L1LengthEstimator<T>::init(const double h,
   myH = h;
   myBeginIt = itb;
   myEndIt = ite;
+  myIsClosed = isClosed;
   myIsInitBefore = true;
 }
 

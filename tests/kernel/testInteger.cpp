@@ -54,7 +54,6 @@ bool testInteger()
   trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<unsigned int> ));
-  // BOOST_CONCEPT_ASSERT(( CInteger<long long int> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::uint16_t> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
 
@@ -116,9 +115,6 @@ bool testInteger()
   //nb++;
   trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;
   //nbok += (NumberTraits<long int>::digits() == 0) ? 0 : 1; 
-  //nb++;
-  trace.info() << "  - digits long long int = " << NumberTraits<long long int>::digits()<< std::endl;
-  //nbok += (NumberTraits<long long int>::digits() == 0) ? 0 : 1; 
   //nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") "

@@ -170,11 +170,12 @@ void maximalExtension(SC& s, const typename SC::ConstIterator& end, IteratorType
  * Specialization for Circulator type
  */
 template <typename SC>
-void maximalExtension(SC& s, const typename SC::ConstIterator& end, CirculatorType ) {
+void maximalExtension(SC& s, const typename SC::ConstIterator& /*end*/, CirculatorType ) 
+{
   //stop if the segment is the whole range
   const typename SC::ConstIterator newEnd( s.begin() ); 
   while ( (s.extend())
-       && (s.end() != newEnd) ) {}
+	  && (s.end() != newEnd) ) {}
 }
 /**
  * Calls s.extend() while possible

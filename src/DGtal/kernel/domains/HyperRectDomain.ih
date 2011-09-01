@@ -41,8 +41,13 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
   : myLowerBound(Point::zero),
     myUpperBound(Point::zero),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+		    myLowerBound,
+		    myUpperBound),
+    myIteratorEnd(myUpperBound,
+		  myLowerBound,
+		  myUpperBound)
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -51,8 +56,14 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
     myLowerBound(std::min(aPointA, aPointB)),
     myUpperBound(std::max(aPointA, aPointB)),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+		    myLowerBound,
+		    myUpperBound),
+    myIteratorEnd(myUpperBound,
+		  myLowerBound,
+		  myUpperBound)
+    
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -61,8 +72,13 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain
     myLowerBound(aDomain.lowerBound()),
     myUpperBound(aDomain.upperBound()),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+		    myLowerBound,
+		    myUpperBound),
+    myIteratorEnd(myUpperBound,
+		  myLowerBound,
+		  myUpperBound)
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -79,8 +95,10 @@ DGtal::HyperRectDomain<TSpace>::operator=
   {
     myLowerBound = other.myLowerBound;
     myUpperBound = other.myUpperBound;
-    myPredicate = other.myPredicate;
-    new(&myRange) ConstRange(*this);
+    myPredicate = other.myPredicate;    
+    new(&myIteratorBegin) ConstIterator(myLowerBound,myLowerBound,myUpperBound);
+    new(&myIteratorEnd) ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+    ++myIteratorEnd;
   }
   return *this;
 }

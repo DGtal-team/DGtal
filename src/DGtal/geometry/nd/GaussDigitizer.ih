@@ -79,9 +79,9 @@ inline
 void 
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
-	const RealVector & gridSteps )
+	const RealVector & aGridSteps )
 {
-  myGridSteps = gridSteps;
+  myGridSteps = aGridSteps;
   myLowerPoint = floor( xLow );
   myUpperPoint = ceil( xUp );
 }

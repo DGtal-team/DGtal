@@ -48,7 +48,7 @@
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 //Digitizer
 #include "DGtal/geometry/nd/GaussDigitizer.h"
@@ -308,7 +308,8 @@ compareShapeEstimators( const string & name,
     double TBCCurv = c.stopClock();
 
     // Output
-    std::cout << "# Time-BCtangent = "<<TBCTan <<std::endl
+    std::cout << "# Shape = "<< name <<std::endl
+	      << "# Time-BCtangent = "<<TBCTan <<std::endl
 	      << "# Time-BCcurvature = "<<TBCCurv<<std::endl
 	      << "# Time-MStangent = "<<TMST<<std::endl
 	      << "# id x y tangentx tangenty curvature"

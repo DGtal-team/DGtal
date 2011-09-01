@@ -83,12 +83,12 @@ namespace DGtal
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
    * <tr> 
-   * <td> Const Range \c begin</td> <td> it = x.range().begin() </td> 
+   * <td> Const Range \c begin</td> <td> it = x.begin() </td> 
    * <td> </td> <td> const ConstIterator &</td>
    * <td> </td> <td> return the iterator pointing on the first element of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
    * <tr> 
-   * <td> Const Range \c end</td> <td> it = x.range().end() </td> 
+   * <td> Const Range \c end</td> <td> it = x.end() </td> 
    * <td> </td> <td> const ConstIterator &</td>
    * <td> </td> <td> return the iterator pointing after the last element of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
@@ -138,7 +138,6 @@ namespace DGtal
     // typedef typename T::ConstRange ConstRange;
     typedef typename T::ConstIterator ConstIterator;
     typedef typename T::Predicate Predicate;
-    typedef typename T::IsBounded IsBounded;
 
     BOOST_CONCEPT_USAGE( CDomain )
     {
@@ -150,12 +149,10 @@ namespace DGtal
       ConceptUtils::sameType( myBool, myT.isInside( myP ) );
       // Domain should have a predicate() returning a Predicate.
       ConceptUtils::sameType( myPred, myT.predicate() );
-      // Domain should have a range() returning an range.
-      //      ConceptUtils::sameType( myRange, myT.range() );
       // Range should have a begin() returning an iterator.
-      // ConceptUtils::sameType( myIt, myT.range().begin() );
+      // ConceptUtils::sameType( myIt, myT.begin() );
       // Domain should have a end() returning an iterator.
-      // ConceptUtils::sameType( myIt, myT.range().end() );
+      // ConceptUtils::sameType( myIt, myT.end() );
     }
 
     // ------------------------- Private Datas --------------------------------

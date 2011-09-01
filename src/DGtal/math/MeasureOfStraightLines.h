@@ -276,9 +276,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
-#if defined(INLINE)
 #include "DGtal/math/MeasureOfStraightLines.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

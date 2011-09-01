@@ -18,6 +18,7 @@
 
 /**
  * @file DistanceTransformation.h
+ * @brief Linear in time distance transformation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,6 +27,8 @@
  * Header file for module DistanceTransformation.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testDistanceTransformation.cpp, testDistanceTransformationND.cpp, testReverseDT.cpp
  */
 
 #if defined(DistanceTransformation_RECURSES)
@@ -44,6 +47,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImageContainer.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
@@ -83,14 +87,14 @@ namespace DGtal
    *
    * @endcode  
    */
-  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::uint64_t >
+  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::int64_t >
   class DistanceTransformation
   {
 
   public:
     
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
-    BOOST_CONCEPT_ASSERT(( CInteger<IntegerLong> ));
+    BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
     
 
     ///Type of resulting image

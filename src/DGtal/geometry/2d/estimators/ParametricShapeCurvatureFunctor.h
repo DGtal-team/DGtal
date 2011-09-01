@@ -26,6 +26,8 @@
  * Header file for module ParametricShapeCurvatureFunctor.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testLengthEstimator.cpp, testTrueLocalEstimator.cpp
  */
 
 #if defined(ParametricShapeCurvatureFunctor_RECURSES)
@@ -84,6 +86,8 @@ namespace DGtal
 
     /**
      * Constructor.
+     *
+     * @param aShape the input shape.
      */
     ParametricShapeCurvatureFunctor(ParametricShape *aShape): myShape(aShape) {};
     

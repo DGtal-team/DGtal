@@ -261,7 +261,7 @@ namespace DGtal
   };
 
   /**
-   * Modifier class in a Board2D stream. Useful to choose your own
+   * @brief Modifier class in a Board2D stream. Useful to choose your own
    * mode for a given class. Realizes the concept
    * CDrawableWithBoard2D.
    */
@@ -285,7 +285,7 @@ namespace DGtal
   };
 
   /**
-   * Custom style class redefining the pen color and the fill
+   * @brief  Custom style class redefining the pen color and the fill
    * color. You may use Board2D::Color::None for transparent color.
    *
    \code
@@ -319,7 +319,7 @@ namespace DGtal
   };
 
   /**
-   * Custom style class redefining the pen color. You may use
+   * @brief Custom style class redefining the pen color. You may use
    * Board2D::Color::None for transparent color.
    *
    \code
@@ -349,7 +349,7 @@ namespace DGtal
   };
 
   /**
-   * Custom style class redefining the fill color. You may use
+   * @brief Custom style class redefining the fill color. You may use
    * Board2D::Color::None for transparent color.
    *
    \code
@@ -379,7 +379,7 @@ namespace DGtal
   };
 
   /**
-   * Custom style class redefining the pen attributes. You may use
+   * @brief Custom style class redefining the pen attributes. You may use
    * Board2D::Color::None for transparent color.
    *
    \code
