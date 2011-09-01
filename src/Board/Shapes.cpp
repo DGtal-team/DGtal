@@ -1429,6 +1429,32 @@ Arc::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Arc::flushPostscript( std::ostream & stream,
+		      const TransformEPS & transform ) const
+{
+  
+  stream << "\n% Arc\n";
+    if ( filled() ) {
+      stream << "gs "
+	     << transform.mapX( _center.x ) << " " << transform.mapY( _center.y ) << " "
+	     << transform.scale( _xRadius )<< " " << (_angle1*180/M_PI) << " "
+	     << (_angle2*180/M_PI) << " "<< "arc ";
+      stream << " " << _fillColor.postscript() << " srgb";
+      stream << " fill gr" << std::endl;
+    }
+
+    if ( _penColor != DGtal::Color::None ) {
+
+      stream << "gs "
+	     << transform.mapX( _center.x ) << " " << transform.mapY( _center.y ) << " "
+	     << transform.scale( _xRadius )<< " " << (_angle1*180/M_PI) << " "
+	     << (_angle2*180/M_PI) << " "<< "arc ";
+      _penColor.flushPostscript( stream );
+      stream << " stroke gr" << std::endl;
+    }
+}
+
 /*
  * Polyline
  */

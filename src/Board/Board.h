@@ -202,6 +202,21 @@ public:
 		     const Point & p3, 
 		     int depthValue = -1 );
 
+
+  /** 
+   * Draws an arc.
+   * 
+   * @param x First coordinate of the arc center. 
+   * @param y Second coordinate of the arc center.
+   * @param radius arc radius.
+   * @param angle1 first angle.
+   * @param angle2 second angle.
+   * @param neg 
+   * @param depthValue Depth of the arc.
+   */
+  void drawArc(double x, double y, double radius, double angle1, double angle2, 
+	       bool neg, int depthValue = -1 );
+  
   /** 
    * Draws a filled triangle.
    * 

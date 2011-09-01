@@ -181,6 +181,49 @@ DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
+inline
+std::string
+DGtal::AngleLinearMinimizer::styleName() const
+{
+  return "AngleLinearMinimizer";
+}
+
+inline
+void
+DGtal::AngleLinearMinimizer::selfDraw(DGtal::Board2D & board) const
+{
+  double distance=5.0;
+  board.setLineWidth(3.0);
+  board.setPenColor(Color(20,20,200));
+  for(int i=0; i< mySize; i++){
+    board.drawArc(0.0, 0.0, distance, myValues[i].min, myValues[i].max, false, 1);
+    board.drawDot(cos(myValues[i].value)*distance, sin(myValues[i].value)*distance );
+    distance+=myValues[i].distToNext;
+  }
+  distance=5.0;
+  double distanceNext;
+  for(int i=0; i< mySize-1; i++){
+    distanceNext= distance+ myValues[i].distToNext;
+    board.setPenColor(Color(200,20,20));
+    board.drawLine(cos(myValues[i].value)*distance, sin(myValues[i].value)*distance, 
+		   cos(myValues[i+1].value)*distanceNext, sin(myValues[i+1].value)*distanceNext);
+    distance=distanceNext;
+  }
+ 
+  
+}
+
+
+inline
+DGtal::DrawableWithBoard2D*
+DGtal::AngleLinearMinimizer::defaultStyle( std::string mode) const
+{
+  //only one style actually...
+  return new DefaultDrawStyleCircular;
+}
+
+
+
 /**
  * Overloads 'operator<<' for displaying objects of class 'AngleLinearMinimizer'.
  * @param out the output stream where the object is written.
