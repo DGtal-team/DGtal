@@ -93,7 +93,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
     //get the first and last points
     ConstIteratorOnPoints i = myBegin;
     ConstIteratorOnPoints j(i); ++j; 
-    for ( ; j != myEnd; ++i, ++j);
+    for ( ; j != myEnd ; ++i, ++j) {}
     //myH is the coordinates unit
     RealPoint p( *myBegin );
     p *= myH;
@@ -120,7 +120,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIt
     //get the first and last points
     ConstIteratorOnPoints i = itb;
     ConstIteratorOnPoints j(i); ++j; 
-    for ( ; j != ite; ++i, ++j);
+    for ( ; j != ite; ++i, ++j) {};
     //myH is the coordinates unit
     RealPoint p( *itb );
     p *= myH;

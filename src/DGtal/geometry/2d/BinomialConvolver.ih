@@ -99,23 +99,23 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   myH = h;
   myBegin = itb;
   myEnd = ite;
-  unsigned int size = 0;
+  unsigned int aSize = 0;
   for ( ConstIteratorOnPoints it = itb; it != ite; ++it )
     {
-      myMapIt2Idx[ it ] = size;
-      ++size;
+      myMapIt2Idx[ it ] = aSize;
+      ++aSize;
     }
-  myX.init( size, 0, isClosed, 0.0 );
-  myY.init( size, 0, isClosed, 0.0 );
-  size = 0;
-  for ( ConstIteratorOnPoints it = itb; it != ite; ++it, ++size )
+  myX.init( aSize, 0, isClosed, 0.0 );
+  myY.init( aSize, 0, isClosed, 0.0 );
+  aSize = 0;
+  for ( ConstIteratorOnPoints it = itb; it != ite; ++it, ++aSize )
     {
 /*      myX[ size ] = it->operator[]( 0 );
       myY[ size ] = it->operator[]( 1 );*/
 // TRIS ConstIterator may have no -> operator
       Point p(*it); 
-      myX[ size ] = p[0];
-      myY[ size ] = p[1];
+      myX[ aSize ] = p[0];
+      myY[ aSize ] = p[1];
     }
   Signal<double> G = Signal<double>::G2n( myN );
   myX = myX * G;
@@ -201,9 +201,9 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 /*      TValue x = it->operator[]( 0 );
       TValue y = it->operator[]( 1 );*/
 // TRIS ConstIterator may have no -> operator
-      Point p(*it); 
-      TValue x = p[0];
-      TValue y = p[1];
+      Point pp(*it); 
+      TValue x = pp[0];
+      TValue y = pp[1];
       if ( x < xmin ) xmin = x;
       if ( x > xmax ) xmax = x;
       if ( y < ymin ) ymin = y;

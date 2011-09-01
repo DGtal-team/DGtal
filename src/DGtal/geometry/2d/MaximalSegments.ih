@@ -468,15 +468,15 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator!=
  */
   template <typename TSegment>
 DGtal::MaximalSegments<TSegment>::MaximalSegments(
-  const typename TSegment::ConstIterator& begin, 
-  const typename TSegment::ConstIterator& end, 
+  const typename TSegment::ConstIterator& aBegin, 
+  const typename TSegment::ConstIterator& aEnd, 
 	const TSegment& aSegment, 
 	const bool& aFlag)
- : myBegin(begin),
-	 myEnd(end),
-	 myFirstMaximalSegmentBack(begin),
-	 mySegment(aSegment),
-	 isClosed(aFlag)
+  : myBegin(aBegin),
+    myEnd(aEnd),
+    myFirstMaximalSegmentBack(aBegin),
+    mySegment(aSegment),
+    isClosed(aFlag)
 {
 }
 
@@ -487,14 +487,14 @@ DGtal::MaximalSegments<TSegment>::MaximalSegments(
 inline
 void
 DGtal::MaximalSegments<TSegment>::init(
-  const typename TSegment::ConstIterator& begin, 
-  const typename TSegment::ConstIterator& end, 
+  const typename TSegment::ConstIterator& aBegin, 
+  const typename TSegment::ConstIterator& aEnd, 
 	const TSegment& aSegment, 
 	const bool& aFlag) {
 
- myBegin = begin;
- myEnd = end;
- myFirstMaximalSegmentBack = begin;
+ myBegin = aBegin;
+ myEnd = aEnd;
+ myFirstMaximalSegmentBack = aBegin;
  mySegment = aSegment;
  isClosed = aFlag;
 

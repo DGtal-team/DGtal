@@ -194,6 +194,7 @@ defined by the bounding box of the points a and b. Note that  type  Z2i::Domain 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
 @image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
 
+
 The HyperRectDomain class provides several methods such as HyperRectDomain::isInside to decide if a point is inside the domain or not.
 
 @code

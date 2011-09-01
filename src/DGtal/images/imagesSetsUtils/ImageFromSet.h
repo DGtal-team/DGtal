@@ -118,16 +118,15 @@ namespace DGtal
      * 
      * @tparam Set model of CDigitalSet
      * @param aImage an image
-     * @param aSet  an instance of Set to convert into an image
      * @param defaultValue the default value for points in the set
      * @param itBegin ConstIterator on the set to specify the first point
-     * to copy.
+     * to copy of a Set.
      * @param itEnd ConstIterator on the set to specify the last point
-     * to copy.
+     * to copy of a Set.
      */
     template<typename Set>
     static
-    void append(Image &aImage, const Set &aSet, const Value &defaultValue,
+    void append(Image &aImage, const Value &defaultValue,
 		typename Set::ConstIterator itBegin, 
 		typename Set::ConstIterator itEnd);
 
@@ -146,7 +145,7 @@ namespace DGtal
     static
     void append(Image &aImage, const Set &aSet, const Value &defaultValue)
     {
-      append(aImage,aSet,defaultValue,aSet.begin(),aSet.end());
+      append<Set>(aImage,defaultValue,aSet.begin(),aSet.end());
     }
   }   ; // end of class ImageFromSet
 
