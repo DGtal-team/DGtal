@@ -37,7 +37,7 @@
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/ContourHelper.h"
+#include "DGtal/geometry/helpers/ContourHelper.h"
 
 
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
@@ -49,7 +49,7 @@
 #include "DGtal/geometry/2d/FreemanChain.h"
 
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>

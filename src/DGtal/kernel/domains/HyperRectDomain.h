@@ -42,8 +42,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/io/Display3D.h"
-
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -53,6 +51,7 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstRange.h"
+#include "DGtal/io/Display3D.h"
 
 
 
@@ -118,9 +117,6 @@ namespace DGtal
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
-
-    ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
-    typedef typename NumberTraits<Integer>::IsBounded IsBounded;
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> ConstIterator;

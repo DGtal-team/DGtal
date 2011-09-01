@@ -46,7 +46,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CValue.h"
-#include "DGtal/kernel/domains/CBoundedDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

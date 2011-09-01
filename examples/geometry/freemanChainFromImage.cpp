@@ -44,7 +44,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"

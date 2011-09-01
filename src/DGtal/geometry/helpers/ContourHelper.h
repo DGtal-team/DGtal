@@ -53,7 +53,8 @@ namespace DGtal
 // class ContourHelper
 /**
  * Description of class 'ContourHelper' <p>
- * \brief Aim:
+ * \brief Aim: a helper class to process sequences of points.
+ * @todo Improve class.
  */
 class ContourHelper
 {
@@ -140,7 +141,7 @@ operator<< ( std::ostream & out, const ContourHelper & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/helpers/ContourHelper.ih"
+#include "DGtal/geometry/helpers/ContourHelper.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
