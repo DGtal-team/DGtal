@@ -83,7 +83,7 @@ bool testReverseDT()
   Z2i::Point a (2, 2 );
   Z2i::Point b ( 15, 15 );
 
-  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
+  typedef ImageSelector< Z2i::Domain,  int>::Type Image;
   Image image ( a, b );
   
   for ( unsigned k = 0; k < 49; k++ )
