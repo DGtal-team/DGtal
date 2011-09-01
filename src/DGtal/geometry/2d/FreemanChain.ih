@@ -32,7 +32,6 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -44,6 +43,630 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
+
+
+
+/**
+ * @param chain a Freeman chain,
+ * @param n the position in [chain] (within 0 and chain.size()).
+ */
+template <typename TInteger>
+inline
+  DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator( 
+      const FreemanChain & aChain, unsigned int n)
+  : myFc( &aChain ), myPos( 0 )
+{
+  if ( n < myFc->chain.size() ) 
+  {
+    myXY.at(0)=aChain.x0;
+    myXY.at(1)=aChain.y0;
+    while ( myPos < n ) this->next();
+  } 
+  else 
+  {// iterator end() 
+    myXY.at(0)=aChain.xn;
+    myXY.at(1)=aChain.yn;
+    myPos = myFc->chain.size()+1;
+  }
+}
+
+/**
+ * Assignment.
+ * @param other the iterator to copy.
+ * @return a reference on 'this'.
+ */
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger>::ConstIterator & 
+DGtal::FreemanChain<TInteger>::ConstIterator::operator= ( const ConstIterator & other )
+{	
+  if ( this != &other )
+  {
+    myFc = other.myFc;
+    myPos = other.myPos;
+    myXY = other.myXY;
+  }
+  return *this;
+}
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::ConstIterator::next()
+{
+  if ( myPos < myFc->chain.size() )
+  {
+    switch ( myFc->code( myPos ) )
+    {
+      case 0: (myXY.at(0))++; break;
+      case 1: (myXY.at(1))++; break;
+      case 2: (myXY.at(0))--; break;
+      case 3: (myXY.at(1))--; break;
+    }
+    ++myPos;
+  } else ++myPos;
+}
+
+
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::ConstIterator::nextInLoop()
+{
+  if ( myPos < myFc->chain.size() )
+  {
+    switch ( myFc->code( myPos ) )
+    {
+      case 0: (myXY.at(0))++; break;
+      case 1: (myXY.at(1))++; break;
+      case 2: (myXY.at(0))--; break;
+      case 3: (myXY.at(1))--; break;
+    }
+    myPos = ( myPos + 1 ) % myFc->chain.size();
+  }
+}
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::ConstIterator::previous()
+{
+  if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
+    --myPos;
+    if (myPos < myFc->chain.size()) {
+      switch ( myFc->code( myPos ) ) {
+        case 0: (myXY.at(0))--; break;
+        case 1: (myXY.at(1))--; break;
+        case 2: (myXY.at(0))++; break;
+        case 3: (myXY.at(1))++; break;
+      }
+    }
+  }
+}
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
+{
+  if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
+  else --myPos;
+  switch ( myFc->code( myPos ) )
+  {
+    case 0: (myXY.at(0))--; break;
+    case 1: (myXY.at(1))--; break;
+    case 2: (myXY.at(0))++; break;
+    case 3: (myXY.at(1))++; break;
+  }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Static services
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::read( std::istream & in, FreemanChain & c ) 
+{
+  string str;
+  while ( true )
+  {
+    getline( in, str );
+    if ( ! in.good() )
+      return;
+    if ( ( str.size() > 0 ) && ( str[ 0 ] != '#' ) )
+    {
+      istringstream str_in( str );
+      str_in >> c.x0 >> c.y0 >> c.chain;
+      return;
+    }
+  }
+}
+
+
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::getContourPoints(
+    const FreemanChain & fc, std::vector<PointI2> & aVContour) 
+{
+  aVContour.clear();
+  for ( ConstIterator it = fc.begin();
+      it != fc.end();
+      ++it )
+  {
+    aVContour.push_back(*it);
+  }
+}
+
+
+
+template <typename TInteger>
+void 
+DGtal::FreemanChain<TInteger>::movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
+  switch ( aCode )
+    {
+    case 0: aPoint.at(0)++; break;
+    case 1: aPoint.at(1)++; break;
+    case 2: aPoint.at(0)--; break;
+    case 3: aPoint.at(1)--; break;
+    }
+}
+
+// Depreciated
+//
+//template <typename TInteger>
+//void 
+//DGtal::FreemanChain<TInteger>::alphabet( char & aZero, char & aOne, char aQuadrant )
+//{
+//  switch ( aQuadrant )
+//    {
+//      case '0':
+//        aZero = '0';
+//        aOne = '1';
+//        break;
+//      case '1':
+//        aZero = '1';
+//        aOne = '2';
+//        break;
+//      case '2':
+//        aZero = '2';
+//        aOne = '3';
+//        break;
+//      case '3':
+//        aZero = '3';
+//        aOne = '0';
+//        break;
+//    }
+//
+//};
+
+
+
+template <typename TInteger>
+inline
+unsigned int DGtal::FreemanChain<TInteger>::movement( unsigned int aCode1,
+    unsigned int aCode2, bool ccw )
+{
+  unsigned int cfg = ( ccw ? 0 : 16 ) + ( aCode1 << 2 ) + aCode2;
+  static const unsigned int tbl[ 32 ] =
+  {
+    2, 1, 0, 3, 3, 2, 1, 0,
+    0, 3, 2, 1, 1, 0, 3, 2,
+    2, 3, 0, 1, 1, 2, 3, 0,
+    0, 1, 2, 3, 3, 0, 1, 2
+  };
+  return tbl[ cfg ];
+}
+
+template <typename TInteger>
+inline
+void
+DGtal::FreemanChain<TInteger>::displacement( int & dx, int & dy, unsigned int aCode )
+{
+  switch ( aCode ) 
+    {
+    case 0: dx = 1; dy = 0; break;
+    case 1: dx = 0; dy = 1; break;
+    case 2: dx = -1; dy = 0; break;
+    case 3: dx = 0; dy = -1; break;
+    }
+}
+
+
+template <typename TInteger>
+inline
+typename DGtal::PointVector<2,TInteger>
+DGtal::FreemanChain<TInteger>::displacement( unsigned int aCode )
+{
+#ifdef CPP0X_INITIALIZER_LIST  
+  switch ( aCode ) 
+  {
+    case 0:  return PointI2({1,0}); 
+    case 1:  return PointI2({0,1}); 
+    case 2:  return PointI2({-1,0});
+    case 3:  return PointI2({0,-1});
+  }
+  return  PointI2({0,0}); 
+#else
+  int t[2] = {0,0};
+
+  switch ( aCode ) 
+  {
+    case 0:  t[0]++; return PointI2( t ); 
+    case 1:  t[1]++; return PointI2( t ); 
+    case 2:  t[0]--; return PointI2( t );
+    case 3:  t[1]--; return PointI2( t );
+  }
+  return  PointI2( t ); 
+#endif //CPP0X_INITIALIZER_LIST
+}
+
+
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::innerContour( 
+    FreemanChain & aInnerChain,
+    std::vector<unsigned int> & aOuter2inner,
+    std::vector<unsigned int> & aInner2outer,
+    const FreemanChain & aOuterChain,
+    bool ccw )
+{
+  unsigned int nb = aOuterChain.chain.size();
+  unsigned int j = 0;
+  aOuter2inner.clear();
+  aOuter2inner.reserve( nb );
+  // aInnerChain.chain.reserve( nb + 4 );
+  aInnerChain.chain = "";
+  aInner2outer.clear();
+  aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
+  int dx0, dy0;
+  int dx1, dy1;
+  FreemanChain<TInteger>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
+  int turn = ccw ? 1 : 3;
+  FreemanChain<TInteger>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
+  dx0 += dx1;
+  dy0 += dy1;
+  aInnerChain.x0 = dx0 > 0 ? aOuterChain.x0 : aOuterChain.x0 - 1;
+  aInnerChain.y0 = dy0 > 0 ? aOuterChain.y0 : aOuterChain.y0 - 1;
+
+  typename FreemanChain<TInteger>::ConstIterator it_begin = aOuterChain.begin();
+  typename FreemanChain<TInteger>::ConstIterator it = it_begin;
+  it.next();
+  for ( unsigned int i = 0; i < nb; ++i )
+  {
+    // Check if contour is open.
+    // cerr << "i=" << i << " code=" << aOuterChain.code( i ) << endl;
+    switch ( movement( aOuterChain.code( i ), aOuterChain.code( ( i + 1 ) % nb ), ccw ) )
+    {
+      case 0:
+        // contour going in then out.
+        aInnerChain.chain += aOuterChain.chain[ i ];
+        aInnerChain.chain += ( ( ( (unsigned int) ( aOuterChain.chain[ i ] - '0' )
+                + ( ccw ? 3 : 1 ) ) )
+            % 4 ) + '0';
+        aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
+        aOuter2inner.push_back( j );
+        aInner2outer.push_back( i );
+        aInner2outer.push_back( i + 1 );
+        aInner2outer.push_back( i + 1 );
+        j += 3;
+        break;
+
+      case 1:
+        // contour turning toward its inside.
+        aOuter2inner.push_back( j );
+        break;
+
+      case 2:
+        // contour going straight ahead
+        aInnerChain.chain += aOuterChain.chain[ i ];
+        aOuter2inner.push_back( j );
+        aInner2outer.push_back( i );
+        ++j;
+        break;
+
+      case 3:
+        // contour turning toward its outside.
+        aInnerChain.chain += aOuterChain.chain[ i ];
+        aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
+        aOuter2inner.push_back( j );
+        aInner2outer.push_back( i );
+        aInner2outer.push_back( i + 1 );
+        j += 2;
+        break;
+    }
+
+    // Advances along contour and check if it is a closed contour.
+    it.next();
+    if ( ( i == nb - 1 )
+        && ( *it_begin != *it ) )
+      // freeman chain is *not* a closed loop.
+    {
+      aInnerChain.chain += aOuterChain.chain[ i ];
+      aOuter2inner.push_back( j );
+      aInner2outer.push_back( i );
+      ++i;
+      ++j;
+      break;
+    }
+  }
+}
+
+
+
+
+template <typename TInteger>
+inline
+bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes( 
+    FreemanChain & aCleanC,
+    std::vector<unsigned int> & aC2clean,
+    std::vector<unsigned int> & aClean2c,
+    const FreemanChain & c,
+    bool ccw )
+{
+  unsigned int nb = c.chain.size();
+  if ( nb == 0 )
+  {
+    cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+      << " cleanOuterSpikes: Empty input chain"
+      << endl;
+    return false;
+  }
+
+  ModuloComputer< DGtal::int32_t > mc( nb );
+  ModuloComputer< DGtal::int32_t >::UnsignedInteger i = 0;
+  ModuloComputer< DGtal::int32_t >::UnsignedInteger j = 0;
+  vector<unsigned int> c2cleanTMP;
+  aCleanC.chain.reserve( nb );
+  aCleanC.chain = "";
+  aC2clean.clear();
+  aClean2c.clear();
+  aC2clean.reserve( nb );
+  aClean2c.reserve( nb );
+  c2cleanTMP.reserve( nb );
+  typename FreemanChain<TInteger>::ConstIterator it = c.begin();
+  typename FreemanChain<TInteger>::ConstIterator itn = c.begin();
+  itn.nextInLoop();
+  // Find a consistent starting point.
+  unsigned int n;
+  unsigned int size_spike = 0;
+  for ( n = 0; n < nb; ++n )
+  {
+    size_spike = 0;
+    while ( movement( it.getCode(), itn.getCode(), ccw ) == 0 )
+    {
+      it.previousInLoop();
+      itn.nextInLoop();
+      mc.increment( i );
+      size_spike += 2;
+      if ( size_spike >= nb )
+      {
+        cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+          << " Spike is longer than contour !"
+          << " size_spike=" << size_spike
+          << " nb=" << nb
+          << endl;
+        return false;
+      }
+    }
+    mc.increment( i );
+    it = itn;
+    itn.nextInLoop();
+    if ( size_spike > 0 )
+      break;
+  }
+  unsigned int start_idx = it.getPosition();
+  i = start_idx;
+  // JOL : 2009/07/7, added starting coordinates
+  PointI2 P = *it;
+  aCleanC.x0 = P.at(0);
+  aCleanC.y0 = P.at(1);
+
+  // cerr << "Starting point is " << i << endl;
+  ASSERT( ( n < nb ) || ( i == 0 ) );
+  if ( ( n == nb ) )
+  { // do nothing
+    aCleanC.chain = c.chain;
+    for ( unsigned int ni = 0; ni < nb; ++ni )
+    {
+      aC2clean.push_back( ni );
+      aClean2c.push_back( ni );
+    }
+    if ( size_spike != 0 )
+      cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+        << "No starting point found (only spikes !)" << endl;
+
+    return size_spike == 0;
+  }
+  // Loops over all letters.
+  typename FreemanChain<TInteger>::ConstIterator it_begin = it;
+  deque<unsigned int> clean_code;
+  deque<unsigned int> clean_idx;
+  vector<unsigned int> begin_outer_spike;
+  vector<unsigned int> end_outer_spike;
+  // i follows iterator it.
+  do
+  {
+    clean_code.push_back( it.getCode() );
+    clean_idx.push_back( i );
+    itn = it;
+    it.nextInLoop();
+    mc.increment( i );
+    // cerr << "- i=" << i << " (" << clean_code.back()
+    // 	   << it.getCode() << ") ";
+    size_spike = 0;
+    unsigned int last_spike_idx = end_outer_spike.empty() ?
+      start_idx :
+      end_outer_spike.back();
+    j = i;
+    while ( ( ! clean_code.empty() )
+        && ( j != last_spike_idx )
+        && ( movement( clean_code.back(), it.getCode(), ccw ) == 0 )
+        && ( it != it_begin ) )
+    {
+      clean_code.pop_back();
+      clean_idx.pop_back();
+      mc.increment( i );
+      mc.decrement( j );
+      it.nextInLoop();
+      itn.previousInLoop();
+      size_spike += 2;
+    }
+    // cerr << "i=" << i << " size_spike=" << size_spike
+    // 	   << " last_spike_idx=" << last_spike_idx
+    // 	   << endl;
+    if ( size_spike != 0 )
+    {
+      // There is a spike. Is it an outer one ?
+      unsigned int previous_code = itn.getCode();
+      unsigned int previous_idx = itn.getPosition();
+      // JOL : do not
+      // consider any more "cleaned contour" since we cannot go
+      // further than the last spike.
+      // unsigned int previous_code =
+      //   clean_code.empty() ? itn.getCode() : clean_code.back();
+      // unsigned int previous_idx =
+      //   clean_code.empty() ? itn.getPosition() : clean_idx.back();
+      itn = it;
+      itn.previousInLoop();
+      unsigned int move1 = movement( previous_code,
+          ( itn.getCode() + 2 ) % 4, ccw );
+      unsigned int move2 = movement( itn.getCode(), it.getCode() , ccw );
+      bool return_spike = ( move1 == 0 ) || ( move2 == 0 );
+      bool outer_spike = ( move1 == 3 ) || ( move2 == 3 );
+      // 	  if ( return_spike )
+      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] return spike."
+      // 		 << endl;
+      // 	  if ( ! ( ( outer_spike && ( move1 != 1 ) && ( move2 != 1 ) )
+      // 		   || ( ! outer_spike && ( move1 != 3 ) && ( move2 != 3 ) ) ) )
+      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] "
+      // 		 << "Weird spike. Invalid contour (expected 3 3) ?"
+      // 		 << " move1=" << move1
+      // 		 << " move2=" << move2
+      // 		 << " ccw=" << ccw
+      // 		 << " start_idx=" << start_idx
+      // 		 << " size_spike=" << size_spike
+      // 		 << " it=" << it.getPosition()
+      // 		 << " itp=" << previous_idx
+      // 		 << endl
+      // 		 << c.chain << endl;
+      // Process waiting steps.
+      if ( outer_spike || return_spike )
+      {
+        begin_outer_spike.push_back( mc.next( previous_idx ) );
+        end_outer_spike.push_back( i );
+        // cout << " outer spike [" << begin_outer_spike.back()
+        // 	   << "," << end_outer_spike.back() << "[  " << endl;
+      }
+    }
+  }
+  while ( it != it_begin );
+
+  // Once outer spikes are known, we can create the new contour.
+  aC2clean.resize( nb );
+  i = start_idx % nb;
+  j = 0;
+  unsigned int nb_spikes = begin_outer_spike.size();
+  unsigned int k = 0;
+  n = 0;
+  while ( n < nb )
+  {
+    if ( ( k == nb_spikes ) || ( i != begin_outer_spike[ k ] ) )
+    {
+      aCleanC.chain.push_back( c.chain[ i ] );
+      aC2clean[ i ] = j;
+      aClean2c.push_back( i );
+      mc.increment( i );
+      ++j;
+      ++n;
+    }
+    else
+    {
+      while ( i != end_outer_spike[ k ] )
+      {
+        aC2clean[ i ] = j;
+        mc.increment( i );
+        ++n;
+      }
+      ++k;
+    }
+  }
+  for ( unsigned int ii = 0; ii < nb; ++ii )
+    if ( aC2clean[ ii ] >= aCleanC.chain.size() )
+    { 
+      if ( aC2clean[ ii ] == aCleanC.chain.size() )
+        aC2clean[ ii ] = 0;
+      else
+      {
+        cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+          << "Bad correspondence for aC2clean[" << ii << "]"
+          << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
+          << endl;
+        aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
+      }
+    }
+
+  for ( unsigned int jj = 0; j < aCleanC.chain.size(); ++jj )
+    if ( aClean2c[ jj ] >= nb )
+    {
+      cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+        << "Bad correspondence for aClean2c[" << jj << "]"
+        << " = " << aClean2c[ jj ] << " >= " << nb
+        << endl;
+      aClean2c[ jj ] = aClean2c[ jj ] % nb;
+    }
+
+
+
+  return true;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+template <typename TInteger>
+inline
+unsigned int
+DGtal::FreemanChain<TInteger>::turnedCode( unsigned int aCode, bool ccw )
+{
+  if ( ccw ) return ( aCode + 1 ) & 0x3;
+  else       return ( aCode - 1 ) & 0x3;
+}
+
+
+
 
 /**
  * Constructor.
@@ -281,98 +904,6 @@ DGtal::FreemanChain<TInteger>::previous( unsigned int aPos ) const
   else --aPos;
   return aPos;
 }
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Staic services
-
-/**
- * Returns the displacement vector of a Freeman code.
- *
- * @param dx (returns) the x-displacement.
- * @param dy (returns) the x-displacement.
- * @param aCode the code.
- */
-template <typename TInteger>
-inline
-void
-DGtal::FreemanChain<TInteger>::displacement( int & dx, int & dy, unsigned int aCode )
-{
-  switch ( aCode ) 
-    {
-    case 0: dx = 1; dy = 0; break;
-    case 1: dx = 0; dy = 1; break;
-    case 2: dx = -1; dy = 0; break;
-    case 3: dx = 0; dy = -1; break;
-    }
-}
-
-/**
- * @param aCode a Freeman code (between 0-3).
- * Returns the displacement vector of the Freeman code.
- */
-template <typename TInteger>
-inline
-typename DGtal::PointVector<2,TInteger>
-DGtal::FreemanChain<TInteger>::displacement( unsigned int aCode )
-{
-  
-#ifdef CPP0X_INITIALIZER_LIST  
-  switch ( aCode ) 
-    {
-    case 0:  return PointI2({1,0}); 
-    case 1:  return PointI2({0,1}); 
-    case 2:  return PointI2({-1,0});
-    case 3:  return PointI2({0,-1});
-    }
-  return  PointI2({0,0}); 
-#else
-   int t[2] = {0,0};
-  
-  switch ( aCode ) 
-    {
-    case 0:  t[0]++; return PointI2( t ); 
-    case 1:  t[1]++; return PointI2( t ); 
-    case 2:  t[0]--; return PointI2( t );
-    case 3:  t[1]--; return PointI2( t );
-    }
-  return  PointI2( t ); 
-#endif //CPP0X_INITIALIZER_LIST
-}
-
-
-
-
-
-/**
- * @param aCode any Freeman code
- * @param ccw when 'true' turns counterclockwise, otherwise turns clockwise.
- *
- * @return the turned code.
- */
-template <typename TInteger>
-inline
-unsigned int
-DGtal::FreemanChain<TInteger>::turnedCode( unsigned int aCode, bool ccw )
-{
-  if ( ccw ) return ( aCode + 1 ) & 0x3;
-  else       return ( aCode - 1 ) & 0x3;
-}
-
-
-
-template <typename TInteger>
-void 
-DGtal::FreemanChain<TInteger>::movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
-  switch ( aCode )
-    {
-    case 0: aPoint.at(0)++; break;
-    case 1: aPoint.at(1)++; break;
-    case 2: aPoint.at(0)--; break;
-    case 3: aPoint.at(1)--; break;
-    }
-}
-
 
 
 

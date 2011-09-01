@@ -42,19 +42,23 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <iterator>
-#include <cstddef>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/OrderedAlphabet.h"
-#include "DGtal/base/BasicTypes.h"
-#include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/kernel/NumberTraits.h"
+
+// Previously included...
+//
+//#include <cstddef>
+//#include "DGtal/base/Common.h"
+//#include "DGtal/base/BasicTypes.h"
+//#include "DGtal/io/Color.h"
+//#include "DGtal/kernel/NumberTraits.h"
 
 #include "DGtal/helpers/StdDefs.h"
 
@@ -76,7 +80,8 @@ namespace DGtal
    * Example :
    * @code 
    
-   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+   // A Freeman chain code is a string composed by the coordinates of the first
+   // pixel, and the list of elementary displacements. 
    std::stringstream ss (stringstream::in | stringstream::out);
    ss << "0 0 00001111222233" << endl;
    
@@ -95,7 +100,6 @@ namespace DGtal
    Board2D::Board aBoard;
    aBoard.setUnit(Board::UMillimeter);
    fc.selfDraw(aBoard);
-   
 
    * @endcode
    */
@@ -106,14 +110,9 @@ namespace DGtal
 
   public :
 
-
-    //BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef PointVector<2, Integer> PointI2;
-
-
-
-
 
     // ------------------------- iterator ------------------------------
   public:
@@ -122,424 +121,256 @@ namespace DGtal
     // class FreemanChain::ConstIterator
     ///////////////////////////////////////////////////////////////////////////////
 	
-    // ------------------------- Standard services -----------------------
     
     /**
      * This class represents an iterator on the freeman chain, storing
      * the current coordinate.
      */
-    
-    class ConstIterator : 
-      public std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2>
+
+    class ConstIterator : public 
+      std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2> 
     {
 
-    public:
+      // ------------------------- Private data -----------------------
 
-      // ------------------------- data -----------------------
-    private:
-      /**
-       * The Freeman chain visited by the iterator.
-       */
-      const FreemanChain* myFc;
+      private:
 
-      /**
-       * The current position in the word.
-       */
-      unsigned int myPos;
+        /// The Freeman chain visited by the iterator.
+        const FreemanChain* myFc;
 
-      /**
-       * The current coordinates of the iterator.
-       */
-      PointI2  myXY;
+        /// The current position in the word.
+        unsigned int myPos;
 
+        ///The current coordinates of the iterator.
+        PointI2  myXY;
 
-	
+        // ------------------------- Standard services -----------------------
+      public:
 
-	
-	
+        /**
+         * Default Constructor.
+         * The object is not valid.
+         */
+        ConstIterator()
+          : myFc( 0 ), myPos( 0 )
+        { }
 
-      // ------------------------- Standard services -----------------------
-    public:
-
-      /**
-       * Default Constructor.
-       * The object is not valid.
-       */
-	
-      ConstIterator()
-	: myFc( 0 ), myPos( 0 )
-      {
-      }
-	
-      /**
-       * Constructor.
-       * Nb: complexity in O(n).
-       *
-       * @param chain a Freeman chain,
-       * @param n the position in [chain] (within 0 and chain.size()).
-       */
-	
-      ConstIterator( const FreemanChain & aChain, unsigned int n =0)
-	: myFc( &aChain ), myPos( 0 )
-      {
-	  
-	if ( n < myFc->chain.size() ) {
-
-	  myXY.at(0)=aChain.x0;
-	  myXY.at(1)=aChain.y0;
-
-	  while ( myPos < n ) this->next();
-
-	} else {// iterator end() 
-	  myXY.at(0)=aChain.xn;
-	  myXY.at(1)=aChain.yn;
-
-	  myPos = myFc->chain.size()+1;
-
-	}
-
-      }
-	
-	
-      /**
-       * Constructor.
-       * It is the user's responsability to make sure that the data's are
-       * consistent. No verification is performed.
-       *
-       * Nb: complexity in O(1).
-       *
-       * @param chain a Freeman chain,
-       * @param n the position in [chain] (within 0 and chain.size()).
-       * @param XY the point corresponding to the 'n'-th position of 'chain'.
-       */
-	
-      ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
-	: myFc( &aChain ), myPos( n ), myXY ( XY ) 
-      { 
-      }
-     
-
-     
-
-      /**
-       * Copy constructor.
-       * @param other the iterator to clone.
-       */
-	
-      ConstIterator( const ConstIterator & aOther )
-	: myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
-      {
-      }
-	
-	
+        /**
+         * Constructor.
+         * Nb: complexity in O(n).
+         *
+         * @param chain a Freeman chain,
+         * @param n the position in [chain] (within 0 and chain.size()).
+         */
+        ConstIterator( const FreemanChain & aChain, unsigned int n =0);
 
 
-    
-      /**
-       * Assignment.
-       * @param other the iterator to copy.
-       * @return a reference on 'this'.
-       */
-	
-      ConstIterator& operator= ( const ConstIterator & other )
-      {	
-	if ( this != &other )
-	  {
-	    myFc = other.myFc;
-	    myPos = other.myPos;
-	    myXY = other.myXY;
-	  }
-	return *this;
-      }
+        /**
+         * Constructor.
+         * It is the user's responsability to make sure that the data's are
+         * consistent. No verification is performed.
+         *
+         * Nb: complexity in O(1).
+         *
+         * @param chain a Freeman chain,
+         * @param n the position in [chain] (within 0 and chain.size()).
+         * @param XY the point corresponding to the 'n'-th position of 'chain'.
+         */
+        ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
+          : myFc( &aChain ), myPos( n ), myXY ( XY ) 
+        { }
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+        ConstIterator( const ConstIterator & aOther )
+          : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
+        { } 
+
+        /**
+         * Assignment.
+         * @param other the iterator to copy.
+         * @return a reference on 'this'.
+         */
+        ConstIterator& operator= ( const ConstIterator & other );
+
+        /**
+         * Destructor. Does nothing.
+         */
+        ~ConstIterator()
+        { }
+
+        // ------------------------- iteration services -------------------------
+      public:
 
 
-	
-      /**
-       * Destructor. Does nothing.
-       */
-	
-      ~ConstIterator(){
-      }
-	
-	
-	
+        /**
+         * @return the current coordinates.
+         */
+        PointI2 operator*() const
+        {
+          return myXY;
+        }
 
-      // ------------------------- iteration services -------------------------
-    public:
+        /**
+         * @return the current coordinates.
+         */
+        PointI2 get() const
+        {
+          return myXY;
+        }
 
-	      
-      /**
-       * @return the current coordinates.
-       */
-	
-      PointI2 operator*() const
-      {
-	return myXY;
-      }
-	
-      /**
-       * @return the current coordinates.
-       */
-	
-      PointI2 get() const
-      {
-	return myXY;
-      }
-	
-		
-	
-      /**
-       * Pre-increment.
-       * Goes to the next point on the chain.
-       */
+        /**
+         * Pre-increment.
+         * Goes to the next point on the chain.
+         */
+        ConstIterator& operator++()
+        {
+          this->next();
+          return *this;
+        }
 
-      ConstIterator& 
-      operator++()
-      {
-	this->next();
-	return *this;
-      }
-	
-      /**
-       * Post-increment.
-       * Goes to the next point on the chain.
-       */
-	
-      ConstIterator  operator++(int)
-      {
-
-	ConstIterator tmp(*this);
-	this->next();
-	return tmp;
-      }
-
-	
-      /**
-       * Goes to the next point on the chain.
-       */
-
-      void 
-      next()
-      {
-
-	if ( myPos < myFc->chain.size() )
-	  {
-	    switch ( myFc->code( myPos ) )
-	      {
-	      case 0: (myXY.at(0))++; break;
-	      case 1: (myXY.at(1))++; break;
-	      case 2: (myXY.at(0))--; break;
-	      case 3: (myXY.at(1))--; break;
-	      }
-	    ++myPos;
-	  } else ++myPos;
-
-      }
-		
+        /**
+         * Post-increment.
+         * Goes to the next point on the chain.
+         */
+        ConstIterator operator++(int)
+        {
+          ConstIterator tmp(*this);
+          this->next();
+          return tmp;
+        }
 
 
-      /**
-       * Goes to the next point on the chain as if on a loop.
-       */
-	
-      void
-      nextInLoop()
-      {
-	if ( myPos < myFc->chain.size() )
-	  {
-	    switch ( myFc->code( myPos ) )
-	      {
-	      case 0: (myXY.at(0))++; break;
-	      case 1: (myXY.at(1))++; break;
-	      case 2: (myXY.at(0))--; break;
-	      case 3: (myXY.at(1))--; break;
-	      }
-	    myPos = ( myPos + 1 ) % myFc->chain.size();
-	  }
-      }
-	
-	
+        /**
+         * Goes to the next point on the chain.
+         */
+        void next();
 
-      /**
-       * @return the current position (as an index in the Freeman chain).
-       */
-	
-      unsigned int
-      getPosition() const
-      {
-	return myPos;
-      }
-	
-	
-      /**
-       * @return the associated Freeman chain.
-       */
+        /**
+         * Goes to the next point on the chain as if on a loop.
+         */
+        void nextInLoop();
 
-      const FreemanChain * 
-      getChain() const
-      {
-	return myFc;
-      }
-	
-	
-
-        
-
-      /**
-       * @return the current Freeman code (specifies the movement to
-       * the next point).
-       */
-	
-      unsigned int 
-      getCode() const
-      {
-	ASSERT( myFc != 0 );
-	return myFc->code( myPos );
-      }
-	
-
-      /**
-       * Pre-decrement.
-       * Goes to the previous point on the chain.
-       */
-	
-      ConstIterator&  operator--()
-      {
-	this->previous();
-	return *this;
-      }
-
-      /**
-       * Post-decrement.
-       * Goes to the previous point on the chain.
-       */
-	
-      ConstIterator  operator--(int)
-      {
-
-	ConstIterator tmp(*this);
-	this->previous();
-	return tmp;
-      }
-
-	
-      /**
-       * Goes to the previous point on the chain if possible.
-       */
-	
-      void
-      previous()
-      {
-
-	if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
-	  --myPos;
-	  if (myPos < myFc->chain.size()) {
-	    switch ( myFc->code( myPos ) ) {
-	    case 0: (myXY.at(0))--; break;
-	    case 1: (myXY.at(1))--; break;
-	    case 2: (myXY.at(0))++; break;
-	    case 3: (myXY.at(1))++; break;
-	    }
-	  }
-	}
+        /**
+         * @return the current position (as an index in the Freeman chain).
+         */
+        unsigned int getPosition() const
+        {
+          return myPos;
+        }
 
 
-      }
-	
+        /**
+         * @return the associated Freeman chain.
+         */
+        const FreemanChain * getChain() const
+        {
+          return myFc;
+        }
+
+        /**
+         * @return the current Freeman code (specifies the movement to the next
+         * point).
+         */
+        unsigned int getCode() const
+        {
+          ASSERT( myFc != 0 );
+          return myFc->code( myPos );
+        }
 
 
-      /**
-       * Goes to the previous point on the chain as if on a loop.
-       */
+        /**
+         * Pre-decrement.
+         * Goes to the previous point on the chain.
+         */
+        ConstIterator& operator--()
+        {
+          this->previous();
+          return *this;
+        }
 
-      void
-      previousInLoop()
-      {
-	if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
-	else --myPos;
-	switch ( myFc->code( myPos ) )
-	  {
-	  case 0: (myXY.at(0))--; break;
-	  case 1: (myXY.at(1))--; break;
-	  case 2: (myXY.at(0))++; break;
-	  case 3: (myXY.at(1))++; break;
-	  }
-      }
+        /**
+         * Post-decrement.
+         * Goes to the previous point on the chain.
+         */
+        ConstIterator operator--(int)
+        {
+          ConstIterator tmp(*this);
+          this->previous();
+          return tmp;
+        }
+
+
+        /**
+         * Goes to the previous point on the chain if possible.
+         */
+        void previous();
+
+
+        /**
+         * Goes to the previous point on the chain as if on a loop.
+         */
+        void previousInLoop();
+
+
+        /**
+         * Equality operator.
+         *
+         * @param aOther the iterator to compare with (must be defined on
+         * the same chain).
+         *
+         * @return 'true' if their current positions coincide.
+         */
+        bool operator== ( const ConstIterator & aOther ) const
+        {
+          ASSERT( myFc == aOther.myFc );
+          return myPos == aOther.myPos;
+        }
 
 
 
+        /**
+         * Inequality operator.
+         *
+         * @param aOther the iterator to compare with (must be defined on
+         * the same chain).
+         *
+         * @return 'true' if their current positions differs.
+         */
+        bool operator!= ( const ConstIterator & aOther ) const
+        {
+          ASSERT( myFc == aOther.myFc );
+          return myPos != aOther.myPos;
+        }
 
-
-
-
-
-      /**
-       * Equality operator.
-       *
-       * @param aOther the iterator to compare with (must be defined on
-       * the same chain).
-       *
-       * @return 'true' if their current positions coincide.
-       */
-
-      bool 
-      operator== ( const ConstIterator & aOther ) const
-      {
-	ASSERT( myFc == aOther.myFc );
-	return myPos == aOther.myPos;
-      }
-
-
-
-      /**
-       * Inequality operator.
-       *
-       * @param aOther the iterator to compare with (must be defined on
-       * the same chain).
-       *
-       * @return 'true' if their current positions differs.
-       */
-
-      bool 
-      operator!=
-      ( const ConstIterator & aOther ) const
-      {
-	ASSERT( myFc == aOther.myFc );
-	return myPos != aOther.myPos;
-      }
-
-      /**
-       * Inferior operator.
-       *
-       * @param aOther the iterator to compare with (must be defined on
-       * the same chain).
-       *
-       * @return 'true' if the current position of 'this' is before
-       * the current position of [aOther].
-       */
-
-      bool  operator<
-      ( const ConstIterator & aOther ) const
-      {
-
-	ASSERT( myFc == aOther.myFc );
-	return myPos < aOther.myPos;
-      }
+        /**
+         * Inferior operator.
+         *
+         * @param aOther the iterator to compare with (must be defined on
+         * the same chain).
+         *
+         * @return 'true' if the current position of 'this' is before
+         * the current position of [aOther].
+         */
+        bool operator< ( const ConstIterator & aOther ) const 
+        {
+          ASSERT( myFc == aOther.myFc );
+          return myPos < aOther.myPos;
+        }
 
     };
 
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // class FreemanChain::ConstIterator
-    ///////////////////////////////////////////////////////////////////////////////
 
 
 
-
-////////////////////////////////////////////////////////////////////////////////
-    // ------------------------- static services ------------------------------
   public:
 
+
+    // ------------------------- Static services -----------------------
+    
     /**
      * Outputs the chain [c] to the stream [out].
      * @param out any output stream,
@@ -556,24 +387,7 @@ namespace DGtal
      * @param in any input stream,
      * @param c (returns) the Freeman chain.
      */
-    static void read( std::istream & in, FreemanChain & c )
-    {
-      string str;
-      while ( true )
-        {
-          getline( in, str );
-          if ( ! in.good() )
-            return;
-          if ( ( str.size() > 0 ) && ( str[ 0 ] != '#' ) )
-	    {
-	      istringstream str_in( str );
-	      str_in >> c.x0 >> c.y0 >> c.chain;
-	      return;
-	    }
-        }
-
-    };
-
+    static void read( std::istream & in, FreemanChain & c );
 
     /**
      * Return a vector containing all the interger points of the freemanchain.
@@ -581,52 +395,28 @@ namespace DGtal
      * @param fc the FreemanChain
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
-    static void getContourPoints(const FreemanChain & fc, std::vector<PointI2> & aVContour)
-    {
-      aVContour.clear();
-      for ( typename FreemanChain<TInteger>::ConstIterator it = fc.begin();
-            it != fc.end();
-            ++it )
-        {
-          aVContour.push_back(*it);
-        }
-    }
-
-
-
-
-
-    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
+    static void getContourPoints(const FreemanChain & fc, 
+        std::vector<PointI2> & aVContour );
 
 
     /**
-     * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
-     * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
-     * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
+     * Translate a point by the displacement given a code from a FreemanChain
+     *
+     * @param aPoint the point to translate
+     * @param aCode  a FreemanChain code
      */
-    static void alphabet( char & aZero, char & aOne, char aQuadrant )
-    {
-      switch ( aQuadrant )
-        {
-	        case '0':
-	          aZero = '0';
-	          aOne = '1';
-	          break;
-	        case '1':
-	          aZero = '1';
-	          aOne = '2';
-	          break;
-	        case '2':
-	          aZero = '2';
-	          aOne = '3';
-	          break;
-	        case '3':
-	          aZero = '3';
-	          aOne = '0';
-	          break;
-        }
+    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
 
-    };
+
+    // Deprecated
+    //
+    // /**
+    //  * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
+    //  * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
+    //  * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
+    //  */
+    // static void alphabet( char & aZero, char & aOne, char aQuadrant )
+
 
     /**
      * Given two consecutive moves on a Freeman chain code, this
@@ -639,19 +429,9 @@ namespace DGtal
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
      */
-    static unsigned int movement( unsigned int aCode1, unsigned int aCode2, bool ccw = true )
-    {
-      unsigned int cfg = ( ccw ? 0 : 16 ) + ( aCode1 << 2 ) + aCode2;
-      static const unsigned int tbl[ 32 ] =
-        {
-          2, 1, 0, 3, 3, 2, 1, 0,
-          0, 3, 2, 1, 1, 0, 3, 2,
-          2, 3, 0, 1, 1, 2, 3, 0,
-          0, 1, 2, 3, 3, 0, 1, 2
-        };
-      return tbl[ cfg ];
+    static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
+        bool ccw = true ); 
 
-    }
 
     /**
      * Returns the displacement vector of a Freeman code.
@@ -662,11 +442,13 @@ namespace DGtal
      */
     static void displacement( int & dx, int & dy, unsigned int aCode );
 
+
     /**
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
     static PointI2 displacement( unsigned int aCode );
+
 
     /**
      * @param aCode any Freeman code.
@@ -677,6 +459,7 @@ namespace DGtal
      * @return the turned code.
      */
     static unsigned int turnedCode( unsigned int aCode, bool ccw = true );
+
 
     /**
      * From the Freeman chain [pl_chain] representing a pointel
@@ -738,94 +521,7 @@ namespace DGtal
 			      std::vector<unsigned int> & aOuter2inner,
 			      std::vector<unsigned int> & aInner2outer,
 			      const FreemanChain & aOuterChain,
-			      bool ccw = true )
-    {
-
-      unsigned int nb = aOuterChain.chain.size();
-      unsigned int j = 0;
-      aOuter2inner.clear();
-      aOuter2inner.reserve( nb );
-      // aInnerChain.chain.reserve( nb + 4 );
-      aInnerChain.chain = "";
-      aInner2outer.clear();
-      aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
-      int dx0, dy0;
-      int dx1, dy1;
-      FreemanChain<TInteger>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
-      int turn = ccw ? 1 : 3;
-      FreemanChain<TInteger>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
-      dx0 += dx1;
-      dy0 += dy1;
-      aInnerChain.x0 = dx0 > 0 ? aOuterChain.x0 : aOuterChain.x0 - 1;
-      aInnerChain.y0 = dy0 > 0 ? aOuterChain.y0 : aOuterChain.y0 - 1;
-
-      typename FreemanChain<TInteger>::ConstIterator it_begin = aOuterChain.begin();
-      typename FreemanChain<TInteger>::ConstIterator it = it_begin;
-      it.next();
-      for ( unsigned int i = 0; i < nb; ++i )
-        {
-          // Check if contour is open.
-          // cerr << "i=" << i << " code=" << aOuterChain.code( i ) << endl;
-          switch ( movement( aOuterChain.code( i ),
-			     aOuterChain.code( ( i + 1 ) % nb ),
-			     ccw ) )
-	    {
-            case 0:
-              // contour going in then out.
-              aInnerChain.chain += aOuterChain.chain[ i ];
-              aInnerChain.chain += ( ( ( (unsigned int) ( aOuterChain.chain[ i ] - '0' )
-					 + ( ccw ? 3 : 1 ) ) )
-				     % 4 ) + '0';
-              aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
-              aOuter2inner.push_back( j );
-              aInner2outer.push_back( i );
-              aInner2outer.push_back( i + 1 );
-              aInner2outer.push_back( i + 1 );
-              j += 3;
-              break;
-
-            case 1:
-              // contour turning toward its inside.
-              aOuter2inner.push_back( j );
-              break;
-
-            case 2:
-              // contour going straight ahead
-              aInnerChain.chain += aOuterChain.chain[ i ];
-              aOuter2inner.push_back( j );
-              aInner2outer.push_back( i );
-              ++j;
-              break;
-
-            case 3:
-              // contour turning toward its outside.
-              aInnerChain.chain += aOuterChain.chain[ i ];
-              aInnerChain.chain += aOuterChain.chain[ ( i + 1 ) % nb ];
-              aOuter2inner.push_back( j );
-              aInner2outer.push_back( i );
-              aInner2outer.push_back( i + 1 );
-              j += 2;
-              break;
-	    }
-
-
-          // Advances along contour and check if it is a closed contour.
-          it.next();
-          if ( ( i == nb - 1 )
-	       && ( *it_begin != *it ) )
-            // freeman chain is *not* a closed loop.
-	    {
-	      aInnerChain.chain += aOuterChain.chain[ i ];
-	      aOuter2inner.push_back( j );
-	      aInner2outer.push_back( i );
-	      ++i;
-	      ++j;
-	      break;
-	    }
-        }
-
-
-    }
+			      bool ccw = true );
 
     /**
      * Reads the 4-connected contour [c] so that meaningless back and
@@ -859,8 +555,9 @@ namespace DGtal
 			      const FreemanChain & c,
 			      bool ccw = true )
     {
-
+      // \TODO not implemented yet.
     }
+
     /**
      * Removes outer spikes along a 4-connected contour, meaning steps
      * "02", "13", "20" or "31", which point outside the shape. The
@@ -887,224 +584,9 @@ namespace DGtal
 				  std::vector<unsigned int> & aC2clean,
 				  std::vector<unsigned int> & aClean2c,
 				  const FreemanChain & c,
-				  bool ccw = true )
-    {
-      unsigned int nb = c.chain.size();
-      if ( nb == 0 )
-        {
-          cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-	       << " cleanOuterSpikes: Empty input chain"
-	       << endl;
-          return false;
-        }
+				  bool ccw = true );
+    
 
-      ModuloComputer< DGtal::int32_t > mc( nb );
-      ModuloComputer< DGtal::int32_t >::UnsignedInteger i = 0;
-      ModuloComputer< DGtal::int32_t >::UnsignedInteger j = 0;
-      vector<unsigned int> c2cleanTMP;
-      aCleanC.chain.reserve( nb );
-      aCleanC.chain = "";
-      aC2clean.clear();
-      aClean2c.clear();
-      aC2clean.reserve( nb );
-      aClean2c.reserve( nb );
-      c2cleanTMP.reserve( nb );
-      typename FreemanChain<TInteger>::ConstIterator it = c.begin();
-      typename FreemanChain<TInteger>::ConstIterator itn = c.begin();
-      itn.nextInLoop();
-      // Find a consistent starting point.
-      unsigned int n;
-      unsigned int size_spike = 0;
-      for ( n = 0; n < nb; ++n )
-        {
-          size_spike = 0;
-          while ( movement( it.getCode(), itn.getCode(), ccw ) == 0 )
-	    {
-	      it.previousInLoop();
-	      itn.nextInLoop();
-	      mc.increment( i );
-	      size_spike += 2;
-	      if ( size_spike >= nb )
-		{
-		  cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		       << " Spike is longer than contour !"
-		       << " size_spike=" << size_spike
-		       << " nb=" << nb
-		       << endl;
-		  return false;
-		}
-	    }
-          mc.increment( i );
-          it = itn;
-          itn.nextInLoop();
-          if ( size_spike > 0 )
-            break;
-        }
-      unsigned int start_idx = it.getPosition();
-      i = start_idx;
-      // JOL : 2009/07/7, added starting coordinates
-      PointI2 P = *it;
-      aCleanC.x0 = P.at(0);
-      aCleanC.y0 = P.at(1);
-
-      // cerr << "Starting point is " << i << endl;
-      ASSERT( ( n < nb ) || ( i == 0 ) );
-      if ( ( n == nb ) )
-        { // do nothing
-          aCleanC.chain = c.chain;
-          for ( unsigned int ni = 0; ni < nb; ++ni )
-	    {
-	      aC2clean.push_back( ni );
-	      aClean2c.push_back( ni );
-	    }
-          if ( size_spike != 0 )
-            cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		 << "No starting point found (only spikes !)" << endl;
-
-          return size_spike == 0;
-        }
-      // Loops over all letters.
-      typename FreemanChain<TInteger>::ConstIterator it_begin = it;
-      deque<unsigned int> clean_code;
-      deque<unsigned int> clean_idx;
-      vector<unsigned int> begin_outer_spike;
-      vector<unsigned int> end_outer_spike;
-      // i follows iterator it.
-      do
-        {
-          clean_code.push_back( it.getCode() );
-          clean_idx.push_back( i );
-          itn = it;
-          it.nextInLoop();
-          mc.increment( i );
-          // cerr << "- i=" << i << " (" << clean_code.back()
-          // 	   << it.getCode() << ") ";
-          size_spike = 0;
-          unsigned int last_spike_idx = end_outer_spike.empty() ?
-	    start_idx :
-	    end_outer_spike.back();
-          j = i;
-          while ( ( ! clean_code.empty() )
-		  && ( j != last_spike_idx )
-		  && ( movement( clean_code.back(), it.getCode(), ccw ) == 0 )
-		  && ( it != it_begin ) )
-	    {
-	      clean_code.pop_back();
-	      clean_idx.pop_back();
-	      mc.increment( i );
-	      mc.decrement( j );
-	      it.nextInLoop();
-	      itn.previousInLoop();
-	      size_spike += 2;
-	    }
-          // cerr << "i=" << i << " size_spike=" << size_spike
-          // 	   << " last_spike_idx=" << last_spike_idx
-          // 	   << endl;
-          if ( size_spike != 0 )
-	    {
-	      // There is a spike. Is it an outer one ?
-	      unsigned int previous_code = itn.getCode();
-	      unsigned int previous_idx = itn.getPosition();
-	      // JOL : do not
-	      // consider any more "cleaned contour" since we cannot go
-	      // further than the last spike.
-	      // unsigned int previous_code =
-	      //   clean_code.empty() ? itn.getCode() : clean_code.back();
-	      // unsigned int previous_idx =
-	      //   clean_code.empty() ? itn.getPosition() : clean_idx.back();
-	      itn = it;
-	      itn.previousInLoop();
-	      unsigned int move1 = movement( previous_code,
-					     ( itn.getCode() + 2 ) % 4, ccw );
-	      unsigned int move2 = movement( itn.getCode(), it.getCode() , ccw );
-	      bool return_spike = ( move1 == 0 ) || ( move2 == 0 );
-	      bool outer_spike = ( move1 == 3 ) || ( move2 == 3 );
-	      // 	  if ( return_spike )
-	      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] return spike."
-	      // 		 << endl;
-	      // 	  if ( ! ( ( outer_spike && ( move1 != 1 ) && ( move2 != 1 ) )
-	      // 		   || ( ! outer_spike && ( move1 != 3 ) && ( move2 != 3 ) ) ) )
-	      // 	    cerr << "[DGtal::FreemanChain::cleanOuterSpikes] "
-	      // 		 << "Weird spike. Invalid contour (expected 3 3) ?"
-	      // 		 << " move1=" << move1
-	      // 		 << " move2=" << move2
-	      // 		 << " ccw=" << ccw
-	      // 		 << " start_idx=" << start_idx
-	      // 		 << " size_spike=" << size_spike
-	      // 		 << " it=" << it.getPosition()
-	      // 		 << " itp=" << previous_idx
-	      // 		 << endl
-	      // 		 << c.chain << endl;
-	      // Process waiting steps.
-	      if ( outer_spike || return_spike )
-		{
-		  begin_outer_spike.push_back( mc.next( previous_idx ) );
-		  end_outer_spike.push_back( i );
-		  // cout << " outer spike [" << begin_outer_spike.back()
-		  // 	   << "," << end_outer_spike.back() << "[  " << endl;
-		}
-	    }
-        }
-      while ( it != it_begin );
-
-      // Once outer spikes are known, we can create the new contour.
-      aC2clean.resize( nb );
-      i = start_idx % nb;
-      j = 0;
-      unsigned int nb_spikes = begin_outer_spike.size();
-      unsigned int k = 0;
-      n = 0;
-      while ( n < nb )
-        {
-          if ( ( k == nb_spikes ) || ( i != begin_outer_spike[ k ] ) )
-	    {
-	      aCleanC.chain.push_back( c.chain[ i ] );
-	      aC2clean[ i ] = j;
-	      aClean2c.push_back( i );
-	      mc.increment( i );
-	      ++j;
-	      ++n;
-	    }
-          else
-	    {
-	      while ( i != end_outer_spike[ k ] )
-		{
-		  aC2clean[ i ] = j;
-		  mc.increment( i );
-		  ++n;
-		}
-	      ++k;
-	    }
-        }
-      for ( unsigned int ii = 0; ii < nb; ++ii )
-	if ( aC2clean[ ii ] >= aCleanC.chain.size() )
-	  { 
-	    if ( aC2clean[ ii ] == aCleanC.chain.size() )
-	      aC2clean[ ii ] = 0;
-	    else
-	      {
-		cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		     << "Bad correspondence for aC2clean[" << ii << "]"
-		     << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
-		     << endl;
-		aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
-	      }
-	  }
-      
-      for ( unsigned int jj = 0; j < aCleanC.chain.size(); ++jj )
-	if ( aClean2c[ jj ] >= nb )
-          {
-            cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-		 << "Bad correspondence for aClean2c[" << jj << "]"
-		 << " = " << aClean2c[ jj ] << " >= " << nb
-		 << endl;
-            aClean2c[ jj ] = aClean2c[ jj ] % nb;
-          }
-
-
-
-      return true;
-    };
 
     //     /**
     //      * Given a Freeman chain [c] coding a 4-connected pixel loop, computes
@@ -1215,9 +697,6 @@ namespace DGtal
     //   return nbsub != 0;
 
     //     }
-
-
-
 
 
 
