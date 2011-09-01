@@ -756,8 +756,8 @@ inline
 TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Point & aPoint) const
 {
-  //aPoint[0] and aPoint[1] need to be cast into Integer
-	return myA*aPoint[0]-myB*aPoint[1];
+	return myA * static_cast<Integer>(aPoint[0])
+  - myB * static_cast<Integer>(aPoint[1]);
 }
 
 /**
@@ -785,8 +785,8 @@ inline
 TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
 {
-  //aPoint[0] and aPoint[1] need to be cast into Integer
-	return myA*aPoint[0]+myB*aPoint[1];
+	return myA * static_cast<Integer>(aPoint[0])
+  + myB * static_cast<Integer>(aPoint[1]);
 }
 
 /**
