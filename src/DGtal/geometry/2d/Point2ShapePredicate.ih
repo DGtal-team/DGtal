@@ -55,8 +55,8 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::~Point2ShapePredicate()
 template <typename Shape, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
-				const Shape& aShape):
-				myS(aShape)
+        const Shape& aShape):
+        myS(aShape)
 {
 }
 
@@ -67,8 +67,8 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
 template <typename Shape, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
-				const Point2ShapePredicate & other):
-				myS(other.myS)
+        const Point2ShapePredicate & other):
+        myS(other.myS)
 {
 }
 
@@ -87,12 +87,12 @@ bool
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ::operator()(const Point& aPoint) const
 {
-	DGtal::Point2ShapePredicateComparator<
-		typename Shape::Coordinate,
-		isUpward,
-		isClosed> theComparator;
+  DGtal::Point2ShapePredicateComparator<
+    typename Shape::Coordinate,
+    isUpward,
+    isClosed> theComparator;
 
-	return theComparator(myS.signedDistance(aPoint),0);
+  return theComparator(myS.signedDistance(aPoint),0);
 }
 
 
@@ -112,10 +112,10 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 {
   out << "[Point2ShapePredicate] :\n";
   out << myS << "\n";
-	std::string orientation = (isUpward)?
-					"upward oriented":"downward oriented";
-	std::string closure = (isClosed)?
-					"closed":"open";
+  std::string orientation = (isUpward)?
+          "upward oriented":"downward oriented";
+  std::string closure = (isClosed)?
+          "closed":"open";
   out << "(" << orientation << ", " << closure << ")\n";
  
 }
@@ -127,7 +127,7 @@ template <typename Shape, bool isUpward, bool isClosed>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Point2ShapePredicate<Shape,isUpward,isClosed> & object )
+      const Point2ShapePredicate<Shape,isUpward,isClosed> & object )
 {
   object.selfDisplay( out );
   return out;

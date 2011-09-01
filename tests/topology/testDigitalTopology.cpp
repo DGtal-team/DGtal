@@ -62,13 +62,13 @@ bool testDigitalTopologyZ2()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << dt << std::endl;
+         << dt << std::endl;
   typedef DT48::ReverseTopology DT84;
   DT84 opp_dt = dt.reverseTopology();
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << opp_dt << std::endl;
+         << opp_dt << std::endl;
   trace.endBlock();
 
   // should not compile

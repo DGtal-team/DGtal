@@ -5,10 +5,10 @@ SET(DGTAL_EXAMPLES_SRC
 
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-	homotopicThinning3D
-	3dBorderExtraction
-	3dBorderExtractionImg
-	3dKSSurfaceExtraction
+  homotopicThinning3D
+  3dBorderExtraction
+  3dBorderExtractionImg
+  3dKSSurfaceExtraction
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})

@@ -173,11 +173,11 @@ int main( int argc, char** argv )
    
    if(resultL1(*it)<=30 ){
      viewer << CustomColors3D(Color((float)(c.red()), 
-				    (float)(c.green()),
-				    (float)(c.blue(),205)), 
-			      Color((float)(c.red()), 
-				    (float)(c.green()),
-				    (float)(c.blue()),205));
+            (float)(c.green()),
+            (float)(c.blue(),205)), 
+            Color((float)(c.red()), 
+            (float)(c.green()),
+            (float)(c.blue()),205));
      viewer << *it ;
    }     
  }

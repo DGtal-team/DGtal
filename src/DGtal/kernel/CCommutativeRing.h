@@ -71,7 +71,7 @@ namespace DGtal
     
      <p> Notation
      - \t X : A type that is a model of CCommutativeRing
-     - \t x, \t y	: Object of type Integer
+     - \t x, \t y  : Object of type Integer
     
      <p> Definitions
     

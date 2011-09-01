@@ -53,37 +53,37 @@
  template <typename TSegment>
 inline
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator ( 
-	const GreedyDecomposition<TSegment> *aDec,
-	const typename TSegment::ConstIterator& aBack, 
-	const TSegment& aSegment)
+  const GreedyDecomposition<TSegment> *aDec,
+  const typename TSegment::ConstIterator& aBack, 
+  const TSegment& aSegment)
   : myDec( aDec ), 
-		myFront( aBack ), 
-		myBack( aBack ),
-		mySegment( aSegment ), 
+    myFront( aBack ), 
+    myBack( aBack ),
+    mySegment( aSegment ), 
     myFlagIntersectNext(false),
-		myFlagIntersectPrevious(false)
+    myFlagIntersectPrevious(false)
 {
-	if (myBack != myDec->myEnd) {   //if at least one element
+  if (myBack != myDec->myEnd) {   //if at least one element
 
-		++myFront;
-		if (myFront == myDec->myEnd) {//if only one element
-			
-			mySegment.init(myBack);	
+    ++myFront;
+    if (myFront == myDec->myEnd) {//if only one element
+      
+      mySegment.init(myBack);  
 
-		} else {                      //if strictly more than one element
+    } else {                      //if strictly more than one element
 
-			if (myDec->isClosed) { //if processed as closed
+      if (myDec->isClosed) { //if processed as closed
         //check is the first and last element form a valid segment
-				Iterator tmpIt = myDec->myEnd; --tmpIt;
-				Segment tmpSegment; tmpSegment.init(tmpIt);
-				myFlagIntersectPrevious = tmpSegment.extend(myDec->myBegin);
-			} else {              //if processed as open
-				myFlagIntersectPrevious = false;
+        Iterator tmpIt = myDec->myEnd; --tmpIt;
+        Segment tmpSegment; tmpSegment.init(tmpIt);
+        myFlagIntersectPrevious = tmpSegment.extend(myDec->myBegin);
+      } else {              //if processed as open
+        myFlagIntersectPrevious = false;
       }
       //computation of the longest segment from myBack
-			this->longestSegment();	
-	
-		}
+      this->longestSegment();  
+  
+    }
 
   }
 }
@@ -99,11 +99,11 @@ inline
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator
 ( const SegmentIterator & aOther )
   : myDec( aOther.myDec ), 
-		myFront( aOther.myFront ), 
-		myBack( aOther.myBack ),
-		mySegment( aOther.mySegment ),
-		myFlagIntersectNext( aOther.myFlagIntersectNext ), 
-		myFlagIntersectPrevious( aOther.myFlagIntersectPrevious )  
+    myFront( aOther.myFront ), 
+    myBack( aOther.myBack ),
+    mySegment( aOther.mySegment ),
+    myFlagIntersectNext( aOther.myFlagIntersectNext ), 
+    myFlagIntersectPrevious( aOther.myFlagIntersectPrevious )  
 {
 }
     
@@ -124,8 +124,8 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator=
       myFront = other.myFront;
       myBack = other.myBack;
       mySegment = other.mySegment;
-			myFlagIntersectNext = other.myFlagIntersectNext;
-			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
+      myFlagIntersectNext = other.myFlagIntersectNext;
+      myFlagIntersectPrevious = other.myFlagIntersectPrevious;
     }
   return *this;
 }
@@ -212,10 +212,10 @@ inline
 bool
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
 {
-		Segment tmpSegment;
-		Iterator previousIt = it; --previousIt;
-		tmpSegment.init(previousIt);
-		return tmpSegment.extend(it);
+    Segment tmpSegment;
+    Iterator previousIt = it; --previousIt;
+    tmpSegment.init(previousIt);
+    return tmpSegment.extend(it);
 }
 
 /**
@@ -228,26 +228,26 @@ void
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::longestSegment()
 {
 
-	  mySegment.init(myBack);
+    mySegment.init(myBack);
 
-		//while my segment can be extended at the front
-		while ( (myFront != myDec->myEnd) && 
-						(mySegment.extend(myFront)) ) {
-			++myFront;
-		}
+    //while my segment can be extended at the front
+    while ( (myFront != myDec->myEnd) && 
+            (mySegment.extend(myFront)) ) {
+      ++myFront;
+    }
 
-		//if the end of the sequence is reached
-		if (myFront == myDec->myEnd) {
-			//if the sequence is processed as a closed one
-			//the first element of the sequence is added if possible
-			if (myDec->isClosed) {
-				myFlagIntersectNext = mySegment.extend(myDec->myBegin);
-			} else {
-				myFlagIntersectNext = false;
+    //if the end of the sequence is reached
+    if (myFront == myDec->myEnd) {
+      //if the sequence is processed as a closed one
+      //the first element of the sequence is added if possible
+      if (myDec->isClosed) {
+        myFlagIntersectNext = mySegment.extend(myDec->myBegin);
+      } else {
+        myFlagIntersectNext = false;
       } 
-		} else {
+    } else {
     //otherwise
-			myFlagIntersectNext = doesIntersectNext(myFront);
+      myFlagIntersectNext = doesIntersectNext(myFront);
     }
 
 }
@@ -262,11 +262,11 @@ void
 DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
 {
 
-	if (myFront != myDec->myEnd) { //if not the end
+  if (myFront != myDec->myEnd) { //if not the end
 
-		myBack = myFront;
+    myBack = myFront;
 
-	  myFlagIntersectPrevious = myFlagIntersectNext;
+    myFlagIntersectPrevious = myFlagIntersectNext;
 
     if (myFlagIntersectPrevious) {
       --myBack; 
@@ -274,11 +274,11 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
       ++myFront;
     }
 
-  	this->longestSegment();
+    this->longestSegment();
 
-	} else { //if the front of the segment is at the end of the sequence
-		myBack = myDec->myEnd;
-	}
+  } else { //if the front of the segment is at the end of the sequence
+    myBack = myDec->myEnd;
+  }
 }
 
 
@@ -357,9 +357,9 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator!=
 DGtal::GreedyDecomposition<TSegment>::GreedyDecomposition
 (const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
  : myBegin(aBegin),
-	 myEnd(aEnd),
-	 mySegment(aSegment),
-	 isClosed(aFlag)
+   myEnd(aEnd),
+   mySegment(aSegment),
+   isClosed(aFlag)
 {
 }
 
@@ -375,9 +375,9 @@ DGtal::GreedyDecomposition<TSegment>::init
 (const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
 {
   myBegin = aBegin;
-	myEnd = aEnd;
-	mySegment = aSegment;
-	isClosed = aFlag;
+  myEnd = aEnd;
+  mySegment = aSegment;
+  isClosed = aFlag;
 }
 
 /**
@@ -449,7 +449,7 @@ DGtal::GreedyDecomposition<TSegment>::isValid() const
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GreedyDecomposition<TSegment> & object )
+      const GreedyDecomposition<TSegment> & object )
 {
   object.selfDisplay( out );
   return out;

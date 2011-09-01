@@ -59,7 +59,7 @@ using namespace LibBoard;
   nbok += ( x ) ? 1 : 0; \
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
-	       << #x << std::endl;
+         << #x << std::endl;
 
 #define INBLOCK_TEST2(x,y) \
   nbok += ( x ) ? 1 : 0; \
@@ -120,12 +120,12 @@ bool testObject()
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
   for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
+  it != domain.end();
+  ++it )
     {
       if ( (*it - c ).norm() < radius ) // 450.0
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
+  // insertNew is very important for vector container.
+  disk.insertNew( *it );
     }
   trace.endBlock();
 
@@ -134,13 +134,13 @@ bool testObject()
   nbok += disk_object.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk (r=450.0) " << disk_object << std::endl;
+         << "Disk (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
   ObjectType disk_object2( disk_object );
   nbok += disk_object2.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk2 (r=450.0) " << disk_object2 << std::endl;
+         << "Disk2 (r=450.0) " << disk_object2 << std::endl;
   trace.info() << "  size=" << disk_object2.size() << std::endl;
   trace.endBlock();
 
@@ -148,15 +148,15 @@ bool testObject()
   trace.info() << "Removing center point in Disk." << std::endl;
   disk_object.pointSet().erase( c );
   disk_object2.pointSet().insert( c );
-	nbok += disk_object.size() == 7824 ? 1 : 0;
+  nbok += disk_object.size() == 7824 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk - c (r=450.0) " << disk_object << std::endl;
+         << "Disk - c (r=450.0) " << disk_object << std::endl;
   trace.info() << "  size=" << disk_object.size() << std::endl;
-	nbok += disk_object2.size() == 7825 ? 1 : 0;
+  nbok += disk_object2.size() == 7825 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Disk2 + c (r=450.0) " << disk_object2 << std::endl;
+         << "Disk2 + c (r=450.0) " << disk_object2 << std::endl;
   trace.info() << "  size=" << disk_object2.size() << std::endl;
   trace.endBlock();
 
@@ -165,60 +165,60 @@ bool testObject()
   nbok += neigh.size() == 4 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N_4(Disk, c).size() = " << neigh.size() 
-	       << " == 4" << std::endl;
+         << "N_4(Disk, c).size() = " << neigh.size() 
+         << " == 4" << std::endl;
   neigh = disk_object.properNeighborhood( l );
   nbok += neigh.size() == 3 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N*_4(Disk, " << l << ").size() = " << neigh.size()
-	       << " == 3" << std::endl;
+         << "N*_4(Disk, " << l << ").size() = " << neigh.size()
+         << " == 3" << std::endl;
   Size size = disk_object.properNeighborhoodSize( l );
   nbok += size == 3 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "#N*_4(Disk, " << l << ") = " << size
-	       << " == 3" << std::endl;
+         << "#N*_4(Disk, " << l << ") = " << size
+         << " == 3" << std::endl;
 
   neigh = disk_object2.neighborhood( c );
   nbok += neigh.size() == 5 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "N_4(Disk2, c).size() = " << neigh.size() 
-	       << " == 5" << std::endl;
+         << "N_4(Disk2, c).size() = " << neigh.size() 
+         << " == 5" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing set converters ..." );
   DigitalSetConverter<SmallSet>::assign
     ( neigh.pointSet(), disk_object.pointSet() );
-		nbok += neigh.size() == 7824 ? 1 : 0;
+    nbok += neigh.size() == 7824 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "neigh = disk_object, size() = " << neigh.size() 
-	       << " == 636100" << std::endl;
+         << "neigh = disk_object, size() = " << neigh.size() 
+         << " == 636100" << std::endl;
   SmallObjectType neigh2 = disk_object2.neighborhood( c );
   DigitalSetConverter<SmallSet>::assign
     ( neigh.pointSet(), neigh2.pointSet() );
   nbok += neigh.size() == 5 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "neigh = N_4(Disk2, c), size() = " << neigh.size() 
-	       << " == 5" << std::endl;
+         << "neigh = N_4(Disk2, c), size() = " << neigh.size() 
+         << " == 5" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing border extraction ..." );
   ObjectType bdisk = disk_object.border();
-	nbok += bdisk.size() == 400 ? 1 : 0;
+  nbok += bdisk.size() == 400 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Border(Disk, c), size() = " << bdisk.size() 
-	       << " == 3372" << std::endl;
+         << "Border(Disk, c), size() = " << bdisk.size() 
+         << " == 3372" << std::endl;
   ObjectType bdisk2 = disk_object2.border();
   nbok += bdisk2.size() == 392 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Border(Disk2, c), size() = " << bdisk2.size() 
-	       << " == 3364" << std::endl;
+         << "Border(Disk2, c), size() = " << bdisk2.size() 
+         << " == 3364" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing expansion by layers on the boundary ..." );
@@ -229,8 +229,8 @@ bool testObject()
       nbok += expander.layer().size() <= 2 ? 1 : 0; 
       nb++;
       trace.info() << "(" << nbok << "/" << nb << ") "
-		   << "expander.layer.size() <= 2 " 
-		   << expander << std::endl;
+       << "expander.layer.size() <= 2 " 
+       << expander << std::endl;
       expander.nextLayer();
     }
   trace.endBlock();
@@ -245,8 +245,8 @@ bool testObject()
   nbok += expander2.distance() <= sqrt(2.0)*radius ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "expander.distance() = " << expander2.distance()
-	       << " <= " << sqrt(2.0)*radius << std::endl;
+         << "expander.distance() = " << expander2.distance()
+         << " <= " << sqrt(2.0)*radius << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -303,10 +303,10 @@ bool testObject3D()
   *inserter++ = diamond_clone;
   
   for (  vector<ObjectType>::const_iterator it = objects.begin();
-	 it != objects.end();
-	 ++it )
+   it != objects.end();
+   ++it )
     trace.info() << "- objects[" << (it - objects.begin() ) << "]" 
-		 << " = " << *it << endl;
+     << " = " << *it << endl;
 
   INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 2 ) );
   INBLOCK_TEST( objects[ 0 ].size() == 125671 );
@@ -331,10 +331,10 @@ bool testObject3D()
   INBLOCK_TEST( nbc1 == 3 );
   trace.endBlock();
   for (  vector<ObjectType>::const_iterator it = objects2.begin();
-	 it != objects2.end();
-	 ++it )
+   it != objects2.end();
+   ++it )
     trace.info() << "- objects2[" << (it - objects2.begin() ) << "]" 
-		 << " = " << *it << endl;
+     << " = " << *it << endl;
   INBLOCK_TEST( objects2[ 0 ].size() == objects2[ 1 ].size() );
   INBLOCK_TEST( objects2[ 2 ].size() == objects2[ 3 ].size() );
   INBLOCK_TEST( objects2[ 0 ].size() == 15848 );
@@ -399,11 +399,11 @@ bool testSimplePoints3D()
 
   trace.beginBlock ( "Simple points ..." );
   for ( DigitalSet::ConstIterator it = diamond.pointSet().begin();
-	it != diamond.pointSet().end();
-	++it )
+  it != diamond.pointSet().end();
+  ++it )
     trace.info() << "- " << *it 
-		 << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
-		 << endl;
+     << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
+     << endl;
   trace.endBlock();
   
 
@@ -463,12 +463,12 @@ bool testDraw()
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
   for ( DomainType::ConstIterator it = domain.begin(); 
-	it != domain.end();
-	++it )
+  it != domain.end();
+  ++it )
     {
       if ( (*it - c ).norm() < radius ) // 450.0
-	// insertNew is very important for vector container.
-	disk.insertNew( *it );
+  // insertNew is very important for vector container.
+  disk.insertNew( *it );
     }
   trace.endBlock();
 
@@ -574,11 +574,11 @@ bool testSimplePoints2D()
   Board2D board;
   board.setUnit(Board::UCentimeter);
   board << SetMode( domain.styleName(), "Paving" ) // DrawDomainPaving()
-	<< domain;
+  << domain;
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
   board2 << SetMode( domain.styleName(), "Grid" ) // DrawDomainGrid()
-	 << domain;
+   << domain;
 
   // Greedy thinning.
   DGtal::uint64_t nb_simple;
@@ -589,23 +589,23 @@ bool testSimplePoints2D()
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
       for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-	if ( shape.isSimple( *it ) )
-	  Q.push( it );
+  if ( shape.isSimple( *it ) )
+    Q.push( it );
       nb_simple = 0;
       while ( ! Q.empty() )
-	{
-	  DigitalSet::Iterator it = Q.front();
-	  Q.pop();
-	  if ( shape.isSimple( *it ) )
-	    {
-	      board << CustomStyle( it->styleName(), 
-	       			    new MyDrawStyleCustomFillColor
-	       			    ( cmap_grad( layer ) ) )
-		    << *it;
-	      S.erase( *it );
-	      ++nb_simple;
-	    }
-	}
+  {
+    DigitalSet::Iterator it = Q.front();
+    Q.pop();
+    if ( shape.isSimple( *it ) )
+      {
+        board << CustomStyle( it->styleName(), 
+                   new MyDrawStyleCustomFillColor
+                   ( cmap_grad( layer ) ) )
+        << *it;
+        S.erase( *it );
+        ++nb_simple;
+      }
+  }
       ++layer;
     }
   while ( nb_simple != 0 );
@@ -619,35 +619,35 @@ bool testSimplePoints2D()
       DigitalSet & S = shape2.pointSet();
       std::queue<DigitalSet::Iterator> Q;
       for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-	if ( shape2.isSimple( *it ) )
-	  Q.push( it );
+  if ( shape2.isSimple( *it ) )
+    Q.push( it );
       nb_simple = 0;
       while ( ! Q.empty() )
-	{
-	  DigitalSet::Iterator it = Q.front();
-	  Q.pop();
-	  if ( shape2.isSimple( *it ) )
-	    {
-	      board2 << CustomStyle( it->styleName(), 
-	      			     new MyDrawStyleCustomFillColor
-				     ( cmap_grad( layer ) ) )
-		     << *it;
-	      S.erase( *it );
-	      ++nb_simple;
-	    }
-	}
+  {
+    DigitalSet::Iterator it = Q.front();
+    Q.pop();
+    if ( shape2.isSimple( *it ) )
+      {
+        board2 << CustomStyle( it->styleName(), 
+                   new MyDrawStyleCustomFillColor
+             ( cmap_grad( layer ) ) )
+         << *it;
+        S.erase( *it );
+        ++nb_simple;
+      }
+  }
       ++layer;
     }
   while ( nb_simple != 0 );
   trace.endBlock();
   
-  board	<< CustomStyle( shape.styleName(), new MyDrawStyleCustomRed )
-	<< shape;
+  board  << CustomStyle( shape.styleName(), new MyDrawStyleCustomRed )
+  << shape;
   board.saveSVG( "shape-thinning-4-8.svg");
   board.clear();
 
   board2 << CustomStyle( shape2.styleName(), new MyDrawStyleCustomRed )
-	 << shape2;
+   << shape2;
   board2.saveSVG( "shape-thinning-8-4.svg");
   board2.clear();
   

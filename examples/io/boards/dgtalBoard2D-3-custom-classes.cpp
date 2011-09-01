@@ -57,16 +57,16 @@ int main()
   
   Board2D board;
   board << domain 
-	<< CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
-	<< p1
-	<< CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
-	<< p2
-	<< CustomStyle( p3.styleName(), 
-			new CustomPen( blue, dblue, 6.0, 
-				       Board2D::Shape::SolidStyle,
-				       Board2D::Shape::RoundCap,
-				       Board2D::Shape::RoundJoin ) )
-	<< p3;
+  << CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
+  << p1
+  << CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
+  << p2
+  << CustomStyle( p3.styleName(), 
+      new CustomPen( blue, dblue, 6.0, 
+               Board2D::Shape::SolidStyle,
+               Board2D::Shape::RoundCap,
+               Board2D::Shape::RoundJoin ) )
+  << p3;
   board.saveSVG("dgtalboard-3-custom-classes.svg");
   board.saveEPS("dgtalboard-3-custom-classes.eps");
 

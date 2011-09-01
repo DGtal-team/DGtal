@@ -86,8 +86,8 @@ DGtal::DigitalSetBySTLVector<Domain>::operator=
 ( const DigitalSetBySTLVector & other )
 {
   ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
-	  && ( myDomain.upperBound() >= other.myDomain.upperBound() )
-	  && "This domain should include the domain of the other set in case of assignment." );
+    && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+    && "This domain should include the domain of the other set in case of assignment." );
   myVector = other.myVector;
   return *this;
 }
@@ -261,7 +261,7 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::erase( Iterator first, Iterator last )
 {
   while ( ( last != end() ) 
-	  && ( first != last ) )
+    && ( first != last ) )
     {
       *first++ = myVector.back();
       myVector.pop_back();
@@ -378,8 +378,8 @@ DGtal::DigitalSetBySTLVector<Domain>
       std::vector<Point> new_vector;
       new_vector.reserve( size() + other.size() );
       std::set_union( begin(), end(), other.begin(), other.end(), 
-		      std::back_insert_iterator< std::vector<Point> >
-		      ( new_vector ) );
+          std::back_insert_iterator< std::vector<Point> >
+          ( new_vector ) );
       myVector.swap( new_vector );
     }
   return *this;
@@ -428,8 +428,8 @@ DGtal::DigitalSetBySTLVector<Domain>::assignFromComplement
   typename Domain::ConstIterator itEnd = myDomain.end();
   while ( itPoint != itEnd ) {
     if ( std::find( other_set.begin(),
-		    other_set.end(),
-		    *itPoint ) == other_set.end() ) {
+        other_set.end(),
+        *itPoint ) == other_set.end() ) {
       insert( *itPoint );
     }
     ++itPoint;
@@ -456,8 +456,8 @@ DGtal::DigitalSetBySTLVector<Domain>::computeBoundingBox
       ConstIterator it_end = end();
       upper = lower = *it;
       for ( ; it != end(); ++it )
-	if ( it->isLower( lower ) ) lower = *it;
-	else if ( it->isUpper( upper ) ) upper = *it;
+  if ( it->isLower( lower ) ) lower = *it;
+  else if ( it->isUpper( upper ) ) upper = *it;
     }
   else
     {
@@ -533,7 +533,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw( Board2D & board ) const
   if (Domain::dimension == 2)
     {
       for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
-	board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+  board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
     }
   else
     ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
@@ -550,7 +550,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
     {
       Functor applystyle(aBoard);
       for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
-	aBoard.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+  aBoard.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
     }
   else
     ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
@@ -573,8 +573,8 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingTransparentDisplay3D( Disp
   ASSERT(Domain::Space::dimension == 3);
   display.createNewVoxelList(false);
   for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
+   it != this->end();
+   ++it )
     {
       display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
@@ -603,8 +603,8 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsPavingDisplay3D( Display3D & dis
   ASSERT(Domain::Space::dimension == 3);
   display.createNewVoxelList(true);
   for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
+   it != this->end();
+   ++it )
     {
       display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
@@ -619,7 +619,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawAsGridDisplay3D( Display3D & displ
   ASSERT(Domain::Space::dimension == 3);
   
   for ( ConstIterator it = this->begin(); 
-	it != this->end();
+  it != this->end();
         ++it )
     {
       display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
@@ -661,7 +661,7 @@ template <typename Domain>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const DigitalSetBySTLVector<Domain> & object )
+        const DigitalSetBySTLVector<Domain> & object )
 {
   object.selfDisplay( out );
   return out;

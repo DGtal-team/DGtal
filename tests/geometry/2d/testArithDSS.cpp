@@ -87,12 +87,12 @@ bool testDSS4drawing()
   // Adding step
   trace.beginBlock("Add points while it is possible and draw the result");
 
-  DSS4 theDSS4;	
+  DSS4 theDSS4;  
   theDSS4.init( contour.begin() );
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
   while ( (theDSS4.end() != contour.end())
-	  &&(theDSS4.extend()) ) {}
+    &&(theDSS4.extend()) ) {}
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
@@ -100,18 +100,18 @@ bool testDSS4drawing()
 
   Board2D board;
   board.setUnit(Board::UCentimeter);
-		
+    
   board << SetMode(domain.styleName(), "Grid")
-	<< domain;		
+  << domain;    
   board << SetMode("PointVector", "Grid");
 
   board << SetMode(theDSS4.styleName(), "Points") 
-	<< theDSS4;
+  << theDSS4;
   board << SetMode(theDSS4.styleName(), "BoundingBox") 
-	<< theDSS4;
-		
+  << theDSS4;
+    
   board.saveSVG("DSS4.svg");
-	
+  
 
   trace.endBlock();
 
@@ -141,7 +141,7 @@ bool testDSS8drawing()
 
   // Good Initialisation
   trace.beginBlock("Add points while it is possible and draw the result");
-  DSS8 theDSS8;		
+  DSS8 theDSS8;    
   theDSS8.init( boundary.begin() );
 
   trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
@@ -149,28 +149,28 @@ bool testDSS8drawing()
   {
 
     while ( (theDSS8.end()!=boundary.end())
-	    &&(theDSS8.extend()) ) {}
+      &&(theDSS8.extend()) ) {}
 
     trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
 
     HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
-		
+    
     Board2D board;
     board.setUnit(Board::UCentimeter);
-		
+    
 
     board << SetMode(domain.styleName(), "Paving")
-	  << domain;		
+    << domain;    
     board << SetMode("PointVector", "Both");
 
     board << SetMode(theDSS8.styleName(), "Points") 
-	  << theDSS8;
+    << theDSS8;
     board << SetMode(theDSS8.styleName(), "BoundingBox") 
-	  << theDSS8;
-		
-		
+    << theDSS8;
+    
+    
     board.saveSVG("DSS8.svg");
 
   }
@@ -212,13 +212,13 @@ bool testExtendRetract()
   std::deque<DSS4 > v1,v2;
   DSS4 newDSS4;
   newDSS4.init(contour.begin());
-  v1.push_back(newDSS4);	 
+  v1.push_back(newDSS4);   
 
   //forward scan and store each DSS4
   trace.info() << "forward scan" << std::endl;
 
   while ( (newDSS4 != contour.end())
-	  &&(newDSS4.extend()) ) {
+    &&(newDSS4.extend()) ) {
     v1.push_back(newDSS4);
   }
 
@@ -241,8 +241,8 @@ bool testExtendRetract()
   v2.push_front(reverseDSS4);
   while (reverseDSS4.retractOppositeEnd()) {
     v2.push_front(reverseDSS4);
-  }		
-		
+  }    
+    
 
   //comparison
   trace.info() << "comparison" << std::endl;
@@ -287,7 +287,7 @@ bool testGMP()
   trace.beginBlock("Add some points of big coordinates");
 
   std::vector<Point> contour;
-  contour.push_back(Point(1000000000,1000000000));	
+  contour.push_back(Point(1000000000,1000000000));  
   contour.push_back(Point(1000000001,1000000000));
   contour.push_back(Point(1000000002,1000000000));
   contour.push_back(Point(1000000003,1000000000));

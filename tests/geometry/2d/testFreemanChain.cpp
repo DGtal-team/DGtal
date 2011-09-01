@@ -61,9 +61,9 @@ bool testFreemanChainIterator(const std::string& code)
 
 
   typedef int Coordinate;
-	typedef FreemanChain<Coordinate> Sequence;
+  typedef FreemanChain<Coordinate> Sequence;
   typedef Sequence::ConstIterator SequenceIterator;
-	typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
+  typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
   
   trace.beginBlock ( "Testing FreemanChain Iterator" );
   
@@ -75,20 +75,20 @@ bool testFreemanChainIterator(const std::string& code)
  
 trace.info()<< "<" << endl;  
   for (SequenceIterator i = seq.begin(); i != seq.end(); ++i) {
-		trace.info()<< *i << " "  << i.getPosition() << " "; 
-	}
-		trace.info()<< endl; 
+    trace.info()<< *i << " "  << i.getPosition() << " "; 
+  }
+    trace.info()<< endl; 
 
 trace.info()<< ">" << endl;  
   
 
   for (ReverseIterator ri(seq.end()); ri != ReverseIterator(seq.begin()); ++ri) {
-		trace.info()<< *ri << " "; 
-	}
-		trace.info()<< endl; 
+    trace.info()<< *ri << " "; 
+  }
+    trace.info()<< endl; 
 
   trace.endBlock();
-	return true;
+  return true;
 }
 
 
@@ -111,13 +111,13 @@ bool testFreemanChain(const string& code)
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << code << endl; 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Reading FreemanChain" << std::endl;
+         << "Reading FreemanChain" << std::endl;
   
   
   trace.info() << "isClosed():" << fc.isClosed()<< endl;
   nbok += 1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test is Closed" << std::endl;
+         << "Test is Closed" << std::endl;
   
   
   int minX, maxX, minY, maxY;
@@ -125,7 +125,7 @@ bool testFreemanChain(const string& code)
   trace.info()<< "Freeman chain bounding box: " << minX << " " << minY << " " << maxX << " " << maxY << endl ; 
   nbok += 1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test chain bounding box" << std::endl;
+         << "Test chain bounding box" << std::endl;
   
   
   vector<FreemanChain<int>::PointI2> aContourPointVector; 
@@ -138,7 +138,7 @@ bool testFreemanChain(const string& code)
   trace.info()<< endl;
   nbok+=1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test extracting list of contour point" << std::endl;
+         << "Test extracting list of contour point" << std::endl;
       
   trace.endBlock();
 
@@ -208,7 +208,7 @@ int main( int argc, char** argv )
   
 
   bool res = testFreemanChainIterator(chain)
-							&& testFreemanChain(chain);
+              && testFreemanChain(chain);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
 

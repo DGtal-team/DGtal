@@ -55,7 +55,7 @@ int main()
   std::vector<TSpace::Dimension> v(2); v[0]=2; v[1]=1;
   TSpace::Point c(3,1,1);
   for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
-	 it = domain.subRange(v, c).rbegin(), itend =  domain.subRange(v, c).rend();
+   it = domain.subRange(v, c).rbegin(), itend =  domain.subRange(v, c).rend();
        it != itend; 
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
@@ -66,7 +66,7 @@ int main()
   trace.beginBlock ( "Example range with CPP0X initializer list" );
   
   for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
-	 it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
+   it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
        it != itend; 
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
@@ -78,7 +78,7 @@ int main()
   domain2=domain;
 
   for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
-	 it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
+   it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
        it != itend; 
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
