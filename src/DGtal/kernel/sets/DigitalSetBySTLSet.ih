@@ -374,8 +374,8 @@ DGtal::DigitalSetBySTLSet<Domain>::assignFromComplement
 ( const DigitalSetBySTLSet<Domain> & other_set )
 {
   clear();
-  typename Domain::ConstIterator itPoint = myDomain.range().begin();
-  typename Domain::ConstIterator itEnd = myDomain.range().end();
+  typename Domain::ConstIterator itPoint = myDomain.begin();
+  typename Domain::ConstIterator itEnd = myDomain.end();
   while ( itPoint != itEnd ) {
     if ( other_set.find( *itPoint ) == other_set.end() ) {
       insert( *itPoint );
