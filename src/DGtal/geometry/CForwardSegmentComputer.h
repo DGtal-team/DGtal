@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/CTrivialSegmentComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -102,21 +103,21 @@ namespace DGtal
      @tparam T the type that should be a model of CForwardSegmentComputer.
    */
   template <typename T> 
-  struct CForwardSegmentComputer : CSegment
+  struct CForwardSegmentComputer : CTrivialSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     // Inner types
     typedef typename T::Reverse Reverse;
-    BOOST_CONCEPT_ASSERT(( CConcept< Reverse > ));
     // 2. then check the presence of static members, operators and methods with
     BOOST_CONCEPT_USAGE( CForwardSegmentComputer )
     {
-      ConceptUtils::sameType( Reverse, myX.getReverse() );
+      ConceptUtils::sameType( myRx, myX.getReverse() );
     }
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // only if T is default constructible.
+    Reverse myRx; 
   
     // ------------------------- Internals ------------------------------------
   private:

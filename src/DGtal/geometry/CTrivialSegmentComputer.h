@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/CSegment.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -120,7 +121,7 @@ namespace DGtal
      @tparam T the type that should be a model of CTrivialSegmentComputer.
    */
   template <typename T> 
-  struct CTrivialSegmentComputer : CSegment
+  struct CTrivialSegmentComputer : CSegment<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -128,15 +129,17 @@ namespace DGtal
     // 2. then check the presence of static members, operators and methods with
     BOOST_CONCEPT_USAGE( CTrivialSegmentComputer )
     {
-      ConceptUtils::sameType( void, myX.init(i) );
-      ConceptUtils::sameType( b, myX.isExtendable() );
-      ConceptUtils::sameType( b, myX.extend() );
+      typename T::ConstIterator i(myI);
+      myX.init(myI);
+
+      ConceptUtils::sameType( myB, myX.isExtendable() );
+      ConceptUtils::sameType( myB, myX.extend() );
     }
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // only if T is default constructible.
-    typename T::ConstIterator i;
-    bool b; 
+    typename T::ConstIterator myI;
+    bool myB; 
     
     // ------------------------- Internals ------------------------------------
   private:

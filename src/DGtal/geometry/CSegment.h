@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "boost/concept_check.hpp"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -104,7 +106,8 @@ namespace DGtal
      </table>
     
      <p> Invariants <br>
-    
+     The range [x.begin(),x.end()) is valid and not empty    
+
      <p> Models <br>
     
      <p> Notes <br>
@@ -118,9 +121,8 @@ namespace DGtal
   public:
     // Inner types
     typedef typename T::Self Self;
-    BOOST_CONCEPT_ASSERT(( CConcept< Self > ));
     typedef typename T::ConstIterator ConstIterator;
-    BOOST_CONCEPT_ASSERT(( CConcept< ConstIterator > ));
+    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<T> ));
 
     // 2. then check the presence of static members, operators and methods with
     BOOST_CONCEPT_USAGE( CSegment )
