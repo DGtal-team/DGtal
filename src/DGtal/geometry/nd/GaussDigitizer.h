@@ -18,6 +18,7 @@
 
 /**
  * @file GaussDigitizer.h
+ * @brief Computes the Gauss digitization of some Euclidean shape.
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -26,6 +27,8 @@
  * Header file for module GaussDigitizer.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testGaussDigitizer.cpp, testTrueLocalEstimator.cpp, testLengthEstimators.cpp
  */
 
 #if defined(GaussDigitizer_RECURSES)

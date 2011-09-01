@@ -191,7 +191,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     count = 0;
     unsigned char val;
-    typename T::Domain::ConstIterator it = domain.range().begin();
+    typename T::Domain::ConstIterator it = domain.begin();
     long int total = sx * sy * sz;
 
     while (( count < total ) && ( fin ) )

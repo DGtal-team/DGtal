@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
+#include "DGtal/geometry/CForwardSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +62,7 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer a model of CSegmentComputer
+   * @tparam TSegmentComputer, at least a model of CForwardSegmentComputer
    * (an online algorithm for the recognition of some segment). 
    *
    * In the short example below, a digital curve stored in a STL vector
@@ -140,6 +141,7 @@ namespace DGtal
 
 	public: 
 
+    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ));
 		typedef TSegmentComputer SegmentComputer;
 		typedef typename SegmentComputer::ConstIterator ConstIterator;
 
@@ -186,7 +188,7 @@ namespace DGtal
       /**
        * Begin and end iterators of the last maximal segment of the segmentation
        */
-		  ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
+      ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
 
       /**
        * A flag equal to TRUE if the current segment
@@ -394,8 +396,8 @@ namespace DGtal
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
     SaturatedSegmentation(const ConstIterator& itb, 
-												const ConstIterator& ite, 
-												const SegmentComputer& aSegmentComputer);
+			  const ConstIterator& ite, 
+			  const SegmentComputer& aSegmentComputer);
 
     /**
      * Init.
@@ -451,17 +453,17 @@ namespace DGtal
   private:
 
     //Begin and end iterators of the underlying range
-		ConstIterator myBegin, myEnd;
-
+    ConstIterator myBegin, myEnd;
+    
     //Begin and end iterators of the subrange to be segmented
-		ConstIterator myStart, myStop;
+    ConstIterator myStart, myStop;
 
     //Mode
     //"Frist", "MostCentered" (default), "Last"
     std::string myMode; 
 
     //SegmentComputer
-		SegmentComputer mySegmentComputer;
+    SegmentComputer mySegmentComputer;
 
     // ------------------------- Hidden services ------------------------------
 

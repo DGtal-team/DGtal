@@ -18,10 +18,12 @@
 
 /**
  * @file SegmentComputerFunctor.h
+ * @brief Computes tangent, tangent angle, curvature from DSS.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
+ *
  *
  *
  * @date 2011/06/28
@@ -29,6 +31,8 @@
  * Header file for module SegmentComputerFunctor.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testSegmentComputerFunctor.cpp
  */
 
 #if defined(SegmentComputerFunctor_RECURSES)
@@ -66,6 +70,7 @@ namespace DGtal
    * Description of class 'TangentFromDSSFunctor' <p> Aim: 
    * computes the normalized tangent vector of a DSS 
    *
+   * @tparam DSSComputer a model for concept CSegmentComputer.
    */
 
   template <typename DSSComputer>
@@ -95,7 +100,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    TangentFromDSSFunctor( const TangentFromDSSFunctor & other ) {};
+    TangentFromDSSFunctor( const TangentFromDSSFunctor &  ) {};
 
 
 
@@ -112,11 +117,11 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& , 
                       const DSSComputer& aDSS, 
-                      const double& h = 1,
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false) const {
+                      const double& = 1 ,
+                      const bool& = false ,
+                      const bool& = false) const {
 
       double x = NumberTraits<typename DSSComputer::Integer>
       ::castToDouble( aDSS.getB() ); 
@@ -160,6 +165,7 @@ namespace DGtal
    * getA() and getB() methods returning the components of the main
    * direction vector of a segment 
    *
+   * @tparam DSSComputer a model for concept CSegmentComputer.
    */
 
   template <typename DSSComputer>
@@ -208,11 +214,11 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& , 
                       const DSSComputer& aDSS, 
-                      const double& h = 1, 
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false ) const {
+                      const double& = 1/*h = 1*/, 
+                      const bool& = false/*isExtendableAtBack = false*/,
+                      const bool& = false/*isExtendableAtFront = false*/) const {
 
       Value a = (Value) NumberTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getA());      
@@ -259,6 +265,7 @@ namespace DGtal
    *  "Discrete Curvature Based on Osculating Circle Estimation", 
    * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
    *
+   * @tparam DSSComputer a model for concept CSegmentComputer.
    */
 
   template <typename DSSComputer>
@@ -287,7 +294,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & other ) {};
+    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & /*other*/ ) {};
 
 
 
@@ -435,6 +442,7 @@ namespace DGtal
    *  "Discrete Curvature Based on Osculating Circle Estimation", 
    * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
    *
+   * @tparam DSSComputer a model for concept CSegmentComputer.
    */
 
   template <typename DSSComputer>
@@ -463,7 +471,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & other ) {};
+    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & /*other*/ ) {};
 
 
 
@@ -480,7 +488,7 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& /*aPoint*/, 
                       const DSSComputer& aDSS, 
                       const double& h = 1, 
                       const bool& isExtendableAtBack = false,

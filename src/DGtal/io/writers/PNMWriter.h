@@ -82,6 +82,8 @@ namespace DGtal
    * @tparam TColormap the type of the colormap to use in the export.
    *
    * @todo check if a magick number exists for PGM3D/PPM3D.
+   *
+   * @see testPNMRawWriter.cpp
    */
   template <typename TImage, typename TColormap>
   struct PNMWriter

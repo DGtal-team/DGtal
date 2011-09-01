@@ -42,8 +42,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/io/Display3D.h"
-
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -52,11 +50,8 @@
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
-
-
-
-
-
+#include "DGtal/base/CConstRange.h"
+#include "DGtal/io/Display3D.h"
 
 namespace DGtal
 {
@@ -98,12 +93,13 @@ namespace DGtal
   template<typename TSpace>
   class HyperRectDomain
   {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+
     // ----------------------- Standard services ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-
-
+    typedef HyperRectDomain<TSpace> Self;
+    
     // typedef TSpace DigitalSpace;
     // typedef TSpace Space;
     typedef TSpace Space;
@@ -119,13 +115,12 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
 
-    ///Tag type to detect if the arithmetic (and thus the domain) is bounded or not.
-    typedef typename NumberTraits<Integer>::IsBounded IsBounded;
-
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point> ConstIterator;
-    typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
-  
+    typedef HyperRectDomain_Iterator<Point> Iterator;
+    typedef myreverse_iterator<Iterator> ReverseIterator;
+    typedef Iterator ConstIterator;
+    typedef ReverseIterator ReverseConstIterator;
+    
     typedef IsWithinPointPredicate<Point> Predicate;
 
     /**
@@ -162,103 +157,56 @@ namespace DGtal
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
-    /**
-     * Description of class 'ConstRange' <p> \brief Aim:
-     * range through all the points in the domain.
-     * Defines a constructor taking a domain in parameter,
-     * begin and end methods returning ConstIterator, and
-     * rbegin and rend methods returning ReverseConstIterator.
+    /*
+     * begin method.
+     * @return ConstIterator on the beginning of the range.
      */
-    struct ConstRange 
-    {
-      typedef typename Domain::ConstIterator        ConstIterator;
-      typedef typename Domain::ReverseConstIterator ReverseConstIterator;
-      
-      /**
-       * ConstRange constructor from a given domain.
-       * @param domain the domain.
-       */
-      ConstRange(const HyperRectDomain<TSpace>& domain)
-	: myDomain(domain),
-	  myIteratorBegin(domain.myLowerBound,
-			  domain.myLowerBound,
-			  domain.myUpperBound),
-	  myIteratorEnd(domain.myUpperBound,
-			domain.myLowerBound,
-			domain.myUpperBound)
-      { ++myIteratorEnd; }
-
-      /*
-       * begin method.
-       * @return ConstIterator on the beginning of the range.
-       */
-      const ConstIterator& begin() const
-      { return myIteratorBegin; }
-
-      /*
-       * begin method from a given point.
-       * @param aPoint the initial point.
-       * @return a ConstIterator initialized to aPoint.
-       * @pre aPoint must belong to the range.
-       */
-      ConstIterator begin(const Point& aPoint) const
-      { ASSERT(myDomain.isInside(aPoint));
-	return ConstIterator(aPoint, 
-			     myDomain.myLowerBound, myDomain.myUpperBound); }
-
-      /*
-       * end method.
-       * @return ConstIterator on the end of the range.
-       */
-      const ConstIterator& end() const
-      { return myIteratorEnd; }
-
+    const ConstIterator& begin() const
+    { return myIteratorBegin; }
+    
+    /*
+     * begin method from a given point.
+     * @param aPoint the initial point.
+     * @return a ConstIterator initialized to aPoint.
+     * @pre aPoint must belong to the range.
+     */
+    ConstIterator begin(const Point& aPoint) const
+    { ASSERT(isInside(aPoint));
+      return ConstIterator(aPoint, 
+			   myLowerBound, myUpperBound); }
+    
+    /*
+     * end method.
+     * @return ConstIterator on the end of the range.
+     */
+    const ConstIterator& end() const
+    { return myIteratorEnd; }
+    
       /*
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
-      ReverseConstIterator rbegin() const
-      { return ReverseConstIterator(end()); }
-
-      /*
-       * reverse begin method from a given point.
-       * @param aPoint the initial point.
-       * @return a ConstIterator initialized to aPoint.
-       * @pre aPoint must belong to the range.
+    ReverseConstIterator rbegin() const
+    { return ReverseConstIterator(end()); }
+    
+    /*
+     * reverse begin method from a given point.
+     * @param aPoint the initial point.
+     * @return a ConstIterator initialized to aPoint.
+     * @pre aPoint must belong to the range.
+     */
+    ReverseConstIterator rbegin(const Point& aPoint) const
+    {  ASSERT(isInside(aPoint));
+      ConstIterator it(begin(aPoint)); ++it;
+      return ReverseConstIterator(it); }
+    
+    /*
+     * reverse end method.
+     * @return ConstIterator on the end of the reverse range.
        */
-      ReverseConstIterator rbegin(const Point& aPoint) const
-      {  ASSERT(myDomain.isInside(aPoint));
-	ConstIterator it(begin(aPoint)); ++it;
-	return ReverseConstIterator(it); }
-
-      /*
-       * reverse end method.
-       * @return ConstIterator on the end of the reverse range.
-       */
-      ReverseConstIterator rend() const
-      { return ReverseConstIterator(begin()); }
-
-    private:
-      /// Domain associated to the range.
-      const HyperRectDomain<TSpace>& myDomain;
-      /// Begin iterator
-      ConstIterator myIteratorBegin;
-      /// End iterator
-      ConstIterator myIteratorEnd;
-    };
-
-    /// @return a range through the whole domain.
-    const ConstRange& range() const
-    { return myRange; }
-
-    /// @return a begin iterator on the domain 
-    const ConstIterator& begin() const
-    { return myRange.begin(); }
-
-    /// @return an end iterator on the domain 
-    const ConstIterator& end() const
-    { return myRange.end(); }
-
+    ReverseConstIterator rend() const
+    { return ReverseConstIterator(begin()); }
+    
     /**
      * Description of class 'ConstSubRange' <p> \brief Aim:
      * range through some subdomain of all the points in the domain.
@@ -689,11 +637,11 @@ namespace DGtal
     /// "IsInside" predicate.
     Predicate myPredicate;
 
-    /// Range
-    ConstRange myRange;
+    /// Begin iterator
+    ConstIterator myIteratorBegin;
+    /// End iterator
+    ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
-
-
 
 
 
@@ -718,9 +666,6 @@ namespace DGtal
       display.myModes[ "HyperRectDomain" ] = "Grid";
     }
   };
-
-
-
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.

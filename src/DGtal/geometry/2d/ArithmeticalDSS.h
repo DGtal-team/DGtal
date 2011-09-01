@@ -17,7 +17,9 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSS.h @author Tristan Roussillon (\c
+ * @file ArithmeticalDSS.h 
+ * @brief Dynamic recognition of arithmetical DSS.
+ * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
@@ -27,6 +29,8 @@
  * Header file for module ArithmeticalDSS.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testArithDSS.cpp
  */
 
 #if defined(ArithmeticalDSS_RECURSES)
@@ -132,7 +136,7 @@ namespace DGtal
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    */
-  template <typename TIterator, typename TInteger, int connectivity>
+  template <typename TIterator, typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, int connectivity = 8>
   class ArithmeticalDSS
   {
 
@@ -214,7 +218,7 @@ namespace DGtal
   public:
 
     //entier
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ));
     typedef TInteger Integer;
 
     //requiered types
@@ -225,6 +229,11 @@ namespace DGtal
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+
+    //Point should be 2D Point
+    //uncomment if CPointVector is written
+    //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
+    BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
     typedef DGtal::RealPointVector<2> PointD;  
 
@@ -720,11 +729,11 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	// Set board style
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-	aBoard.setPenColor(Color::Red);
-	aBoard.setLineWidth(1);
-	aBoard.setFillColor(Color::None);
+        // Set board style
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+        aBoard.setPenColor(Color::Red);
+        aBoard.setLineWidth(1);
+        aBoard.setFillColor(Color::None);
       }
     };
     

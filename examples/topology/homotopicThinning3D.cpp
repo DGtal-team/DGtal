@@ -35,7 +35,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/helpers/Shapes.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////

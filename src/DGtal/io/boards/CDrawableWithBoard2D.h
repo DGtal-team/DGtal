@@ -120,7 +120,6 @@ namespace DGtal
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
-      ///@todo FIXME: si on décommente ça plante
       myT.selfDraw( myB );
     }
 
@@ -128,8 +127,6 @@ namespace DGtal
   private:
     T myT;
     DrawableWithBoard2D *myD;
-
-    ///@todo FIXME: si on décommente ça plante
     Board2D myB;
     std::string myS;
     
