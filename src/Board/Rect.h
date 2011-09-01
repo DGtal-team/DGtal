@@ -25,10 +25,10 @@ namespace LibBoard {
  */
 struct Rect {
   
-  double left;			/**< Coordinate of the left side. */
-  double top;			/**< Coordinate of the upper side. */
-  double width;			/**< Width of the rectangle. */
-  double height;		/**< Height of the rectangle. */
+  double left;      /**< Coordinate of the left side. */
+  double top;      /**< Coordinate of the upper side. */
+  double width;      /**< Width of the rectangle. */
+  double height;    /**< Height of the rectangle. */
   
   /** 
    * Rect constructor.

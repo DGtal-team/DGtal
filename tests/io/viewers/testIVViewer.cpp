@@ -60,7 +60,7 @@ bool testIVViewerSimpleWdw( int argc, char** argv )
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -104,14 +104,14 @@ bool testIVViewer( int argc, char** argv )
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 14, 5, 2 ), 12 );
   inventor.setDiffuseColor( Color( 0.7, 0.7, 0.7 ) );
   for ( DigitalSet::ConstIterator it = shape_set.begin(); 
-	it != shape_set.end();
-	++it )
+  it != shape_set.end();
+  ++it )
     {
       const Point & p = *it;
       if ( ( p[ 0 ] < 0 ) || ( p[ 1 ] < 0 ) ||( p[ 2 ] < 0 ) )
-	inventor.setDiffuseColor( Color( 0.7, 0.7, 1.0 ) );
+  inventor.setDiffuseColor( Color( 0.7, 0.7, 1.0 ) );
       else
-	inventor.setDiffuseColor( Color( 1.0, 1.0, 0.7 ) );
+  inventor.setDiffuseColor( Color( 1.0, 1.0, 0.7 ) );
       inventor.drawPoint( *it );
     }
   inventor.generate( ivv.root() );
@@ -120,7 +120,7 @@ bool testIVViewer( int argc, char** argv )
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

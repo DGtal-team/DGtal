@@ -98,7 +98,7 @@ namespace DGtal
      * @param backgroundColor A color for the drawing's background.
      */
     Board2D( const Color & backgroundColor 
-		= Color::None );
+    = Color::None );
 
     /** 
      * Copy constructor.
@@ -307,7 +307,7 @@ namespace DGtal
      * @param fillColor specifies the fill color.
      */
     CustomColors( const Color & penColor,
-		  const Color & fillColor )
+      const Color & fillColor )
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
@@ -398,7 +398,7 @@ namespace DGtal
     Board2D::Shape::LineStyle myLineStyle; /**< The line style (solid, dashed, etc.). */
     Board2D::Shape::LineCap myLineCap; /**< The linecap attribute. (The way line terminates.) */
     Board2D::Shape::LineJoin myLineJoin; /**< The linejoin attribute. (The shape of line junctions.) */
-    int myDepth;    		/**< The depth of the shape. */
+    int myDepth;        /**< The depth of the shape. */
 
     /**
      * Constructor.
@@ -418,14 +418,14 @@ namespace DGtal
      *
      */
     CustomPen( const Color & penColor,
-	       const Color & fillColor,
-	       double lineWidth = 1.0,
-	       Board2D::Shape::LineStyle lineStyle = Board2D::Shape::SolidStyle,
-	       Board2D::Shape::LineCap lineCap = Board2D::Shape::ButtCap,
-	       Board2D::Shape::LineJoin lineJoin = Board2D::Shape::MiterJoin )
+         const Color & fillColor,
+         double lineWidth = 1.0,
+         Board2D::Shape::LineStyle lineStyle = Board2D::Shape::SolidStyle,
+         Board2D::Shape::LineCap lineCap = Board2D::Shape::ButtCap,
+         Board2D::Shape::LineJoin lineJoin = Board2D::Shape::MiterJoin )
       : myPenColor( penColor ), myFillColor( fillColor ),
-	myLineWidth( lineWidth ), 
-	myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
+  myLineWidth( lineWidth ), 
+  myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
     
     virtual void selfDraw( Board2D & aboard) const

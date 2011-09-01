@@ -50,7 +50,7 @@
 
 namespace DGtal
 {
-	
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class SaturatedSegmentation
   /**
@@ -75,29 +75,29 @@ namespace DGtal
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
-	typedef SaturatedSegmentation<SegmentComputer> Segmentation;
+  typedef SaturatedSegmentation<SegmentComputer> Segmentation;
 
-	//input points
-	Range curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+  //input points
+  Range curve;
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(7,2));
+  curve.push_back(Point(8,1));
+  curve.push_back(Point(9,1));
 
   //Segmentation
-	SegmentComputer recognitionAlgorithm;
+  SegmentComputer recognitionAlgorithm;
   Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
-				 
+         
   Segmentation::SegmentComputerIterator i = theSegmentation.begin();
   Segmentation::SegmentComputerIterator end = theSegmentation.end();
   for ( ; i != end; ++i) {
-		SegmentComputer current(*i);
-		trace.info() << current << std::endl;	//standard output
+    SegmentComputer current(*i);
+    trace.info() << current << std::endl;  //standard output
   } 
 
    * @endcode
@@ -139,16 +139,16 @@ namespace DGtal
   class SaturatedSegmentation
   {
 
-	public: 
+  public: 
 
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ));
-		typedef TSegmentComputer SegmentComputer;
-		typedef typename SegmentComputer::ConstIterator ConstIterator;
+    typedef TSegmentComputer SegmentComputer;
+    typedef typename SegmentComputer::ConstIterator ConstIterator;
 
-	private: 
+  private: 
 
-		typedef typename TSegmentComputer::Reverse ReverseSegmentComputer;
-		typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
+    typedef typename TSegmentComputer::Reverse ReverseSegmentComputer;
+    typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -165,19 +165,19 @@ namespace DGtal
     class SegmentComputerIterator
     {
 
-			   // ------------------------- inner Types -----------------------
+         // ------------------------- inner Types -----------------------
 
     public: 
-		  typedef typename SaturatedSegmentation::SegmentComputer SegmentComputer;
-		  typedef typename SegmentComputer::ConstIterator ConstIterator;
+      typedef typename SaturatedSegmentation::SegmentComputer SegmentComputer;
+      typedef typename SegmentComputer::ConstIterator ConstIterator;
 
-			   // ------------------------- data -----------------------
+         // ------------------------- data -----------------------
     private:
 
       /**
        * Pointer to the segmentation
        */
-			const SaturatedSegmentation<TSegmentComputer> *myS;
+      const SaturatedSegmentation<TSegmentComputer> *myS;
 
       /**
        * The current segment
@@ -220,7 +220,7 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class SaturatedSegmentation<TSegmentComputer>;
-			   
+         
 
 
       /**
@@ -232,7 +232,7 @@ namespace DGtal
        * @param aFlag, 'true' to build a valid object, 'false' otherwise
        */
       SegmentComputerIterator( const SaturatedSegmentation<TSegmentComputer> *aSegmentation,
-				 const TSegmentComputer& aSegmentComputer,
+         const TSegmentComputer& aSegmentComputer,
          const bool& aFlag );
 
 
@@ -309,13 +309,13 @@ namespace DGtal
 
       /**
        * @return TRUE if the current segment intersects
-			 * the next one, FALSE otherwise.
+       * the next one, FALSE otherwise.
        */
       const bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
-			 * the previous one, FALSE otherwise.
+       * the previous one, FALSE otherwise.
        */
       const bool intersectPrevious() const;
 
@@ -331,7 +331,7 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-			private: 
+      private: 
 
       
 
@@ -385,7 +385,7 @@ namespace DGtal
 
     /**
      * Default constructor.
-		 * Nb: not valid
+     * Nb: not valid
      */
     SaturatedSegmentation() {};
 
@@ -396,17 +396,17 @@ namespace DGtal
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
     SaturatedSegmentation(const ConstIterator& itb, 
-			  const ConstIterator& ite, 
-			  const SegmentComputer& aSegmentComputer);
+        const ConstIterator& ite, 
+        const SegmentComputer& aSegmentComputer);
 
     /**
      * Init.
      * @param itb, begin iterator the range to processed
      * @param ite, end iterator the range to processed
-		 * Nb: must be a valid range included in the underlying range.
+     * Nb: must be a valid range included in the underlying range.
      */
     void setSubRange(const ConstIterator& itb, 
-							       const ConstIterator& ite);
+                     const ConstIterator& ite);
 
 
     /**

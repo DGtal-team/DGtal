@@ -22,8 +22,8 @@ if (  WITH_VISU3D_QGLVIEWER )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME}
-    	                   ${Boost_LIBRARIES}
-		            ${DGtalLibDependencies})   
+                         ${Boost_LIBRARIES}
+                ${DGtalLibDependencies})   
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )

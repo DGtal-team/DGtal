@@ -171,7 +171,7 @@ namespace DGtal
      * Constructor from lower bound and upper bound.
      */
     IsWithinPointPredicate( const Point & lowerBound,
-			    const Point & upperBound );
+          const Point & upperBound );
 
     /**
      * @param p any point.
@@ -243,8 +243,8 @@ namespace DGtal
        and pred2.
      */
     BinaryPointPredicate( const PointPredicate1 & pred1,
-			  const PointPredicate2 & pred2,
-			  const BoolFunction2 & boolFunctor );
+        const PointPredicate2 & pred2,
+        const BoolFunction2 & boolFunctor );
 
     /**
      * @param p any point.

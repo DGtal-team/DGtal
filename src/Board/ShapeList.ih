@@ -31,7 +31,7 @@ ShapeList::last( const unsigned int position )
     return dynamic_cast<T&>( *(*it) );
   } else {
     error << "Trying to access an element that does not exist (" 
-	<< position << "/" << _shapes.size() << ").\n";
+  << position << "/" << _shapes.size() << ").\n";
     throw -1;
   }
 }

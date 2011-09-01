@@ -136,7 +136,7 @@ bool testSimpleExpander()
   //Border=4 Filling=4
   board.clear();
   board <<  DrawDomainGrid()  << domain;
-	board <<  DrawObjectAdjacencies() << house4;
+  board <<  DrawObjectAdjacencies() << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
   {
@@ -268,18 +268,18 @@ bool testLayers()
   board <<  DrawObjectAdjacencies() << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   board << CustomStyle( expander.core().styleName(), 
-			new CustomFillColor( cmap_grad( 0 ) ) )
-	<< expander.core();
+      new CustomFillColor( cmap_grad( 0 ) ) )
+  << expander.core();
   while (!expander.finished())
     {
       for ( ObjectExpander::ConstIterator it = expander.begin();
-	    it != expander.end();
-	    ++it )
-	std::cout << " " << *it;
+      it != expander.end();
+      ++it )
+  std::cout << " " << *it;
       board << CustomStyle( expander.layer().styleName(), 
-			    new CustomFillColor
-			    ( cmap_grad( expander.distance() ) ) )
-	    << expander.layer();
+          new CustomFillColor
+          ( cmap_grad( expander.distance() ) ) )
+      << expander.layer();
       
       expander.nextLayer();
     }
@@ -291,19 +291,19 @@ bool testLayers()
   board << DrawObjectAdjacencies() << house4;
   ObjectExpander expander8(houseCompl8, Point(0, 0));
   board << CustomStyle( expander.core().styleName(), 
-			new CustomFillColor( cmap_grad( 0 ) ) )
-	<< expander8.core();
+      new CustomFillColor( cmap_grad( 0 ) ) )
+  << expander8.core();
   while (!expander8.finished())
     {
       for ( ObjectExpander::ConstIterator it = expander8.begin();
-	    it != expander8.end();
-	    ++it )
-	std::cout << " " << *it;
+      it != expander8.end();
+      ++it )
+  std::cout << " " << *it;
       
       board << CustomStyle( expander8.layer().styleName(), 
-			    new CustomFillColor
-			    ( cmap_grad( expander8.distance() ) ) )
-	    << expander8.layer();
+          new CustomFillColor
+          ( cmap_grad( expander8.distance() ) ) )
+      << expander8.layer();
       expander8.nextLayer();
     }
   board.saveSVG("house-layers4-8.svg");

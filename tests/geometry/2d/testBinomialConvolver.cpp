@@ -81,18 +81,18 @@ bool testBinomialConvolver()
       MyBinomialConvolver bcc( n );
       bcc.init( 1.0, points.begin(), points.end(), true );
       for ( unsigned int i = 0; i < 8; ++i )
-      	std::cout << i
-      		  << " " << bcc.x( i ).first
-      		  << " " << bcc.x( i ).second
-      		  << " " << bcc.tangent( i ).first
-      		  << " " << bcc.tangent( i ).second
-      		  << " " << bcc.curvature( i )
-      		  << std::endl;
+        std::cout << i
+            << " " << bcc.x( i ).first
+            << " " << bcc.x( i ).second
+            << " " << bcc.tangent( i ).first
+            << " " << bcc.tangent( i ).second
+            << " " << bcc.curvature( i )
+            << std::endl;
     }
   unsigned int n = MyBinomialConvolver::suggestedSize( 1.0, points.begin(), points.end() );
   trace.info() << "Binomial convolver suggested n=" 
-	       << n
-	       << std::endl;
+         << n
+         << std::endl;
 
   typedef TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
     TangentBCFct;
@@ -103,17 +103,17 @@ bool testBinomialConvolver()
   tgtEstimator.init( 1.0, points.begin(), points.end(), true );
   curvEstimator.init( 1.0, points.begin(), points.end(), true );
   for ( ConstIteratorOnPoints it = points.begin(), it_end = points.end();
-	it != it_end; ++it )
+  it != it_end; ++it )
     {
       std::cout << *it 
-		<< " " << tgtEstimator.eval( it ) 
-		<< " " << curvEstimator.eval( it ) 
-		<< std::endl;
+    << " " << tgtEstimator.eval( it ) 
+    << " " << curvEstimator.eval( it ) 
+    << std::endl;
     }
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

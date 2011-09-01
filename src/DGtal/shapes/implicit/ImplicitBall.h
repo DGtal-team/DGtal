@@ -76,7 +76,7 @@ namespace DGtal
      * @param aRadius the ball radius.
      */
     ImplicitBall(const Point &aCenter, const Integer &aRadius): myCenter(aCenter),
-								myRadius(aRadius)
+                myRadius(aRadius)
     {};
     
     /** 
@@ -93,7 +93,7 @@ namespace DGtal
     double operator()(const Point &aPoint) const
     {
       return NumberTraits<Integer>::castToDouble(myRadius) - 
-	(aPoint - myCenter ).norm();
+  (aPoint - myCenter ).norm();
     }
 
     inline

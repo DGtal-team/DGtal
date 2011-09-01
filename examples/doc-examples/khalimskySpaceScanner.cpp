@@ -86,7 +86,7 @@ int main( int argc, char** argv )
      }
      // Drawing the scan arrows
      boardScan1.setPenColor( Color( 30, 30, 200 ));
-     shift =   K.uCoords(p)-K.uCoords(prec);	
+     shift =   K.uCoords(p)-K.uCoords(prec);  
      shift.selfDraw(boardScan1, K.uCoords(prec) );
      prec=p;     
    }
@@ -102,18 +102,18 @@ int main( int argc, char** argv )
  for (q = K.uGetMax(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
    for ( q = K.uGetMin(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
         { 
-	  boardScan2 << q;
-	  if(firstq){
-	    firstq=false;
-	    precq=q;
-	 continue;
-	  }
-	  // Drawing the scan arrows
-	  shiftq =   K.uCoords(q)-K.uCoords(precq);	
-	  boardScan2.setPenColor( Color( 30, 30, 200 ));
-	  shiftq.selfDraw(boardScan2, K.uCoords(precq) );
-	  precq=q;       
-	}
+    boardScan2 << q;
+    if(firstq){
+      firstq=false;
+      precq=q;
+   continue;
+    }
+    // Drawing the scan arrows
+    shiftq =   K.uCoords(q)-K.uCoords(precq);  
+    boardScan2.setPenColor( Color( 30, 30, 200 ));
+    shiftq.selfDraw(boardScan2, K.uCoords(precq) );
+    precq=q;       
+  }
   
  
  boardScan1.saveSVG("khalimskySpaceScanner1.svg");

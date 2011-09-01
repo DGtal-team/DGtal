@@ -63,7 +63,7 @@ namespace DGtal
    *
    * <p> Notation
    * - \t X : A type that is a model of CSeparableMetric
-   * - \t x, \t y	: Object of type X
+   * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
    *
@@ -92,17 +92,17 @@ namespace DGtal
     typedef typename T::InternalValue InternalValue;
     typedef typename T::Value Value;
     typedef typename T::Abscissa Abscissa;
-		
+    
     // ----------------------- Concept checks ------------------------------
   public:
     BOOST_CONCEPT_USAGE( CSeparableMetric )
     {
       //SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValue) returing an InternalValue
       ConceptUtils::sameType( h, myT.F(a,a,h) );
-      //SeparableMetric  model should have a Sep(Abscissa,InternalValue, Abscissa,InternalValue) returing an Value	
+      //SeparableMetric  model should have a Sep(Abscissa,InternalValue, Abscissa,InternalValue) returing an Value  
       ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
     }
-		
+    
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -111,8 +111,8 @@ namespace DGtal
     T myT;
     Abscissa a;
     InternalValue h;
-		
-			
+    
+      
   }; // end of concept CSeparableMetric
   
 } // namespace DGtal

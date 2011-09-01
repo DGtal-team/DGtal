@@ -46,11 +46,11 @@
 template <typename Shape>
 inline
 DGtal::Preimage2D<Shape>::Preimage2D(
-	const Point & firstPoint, 
-	const Point & secondPoint)
+  const Point & firstPoint, 
+  const Point & secondPoint)
 {
-	myPHull.push_front(firstPoint);
-	myQHull.push_front(secondPoint);
+  myPHull.push_front(firstPoint);
+  myQHull.push_front(secondPoint);
 }
 
 
@@ -82,62 +82,62 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::addFront(
-		const Point & aP, 
-		const Point & aQ)
+    const Point & aP, 
+    const Point & aQ)
 {
 
-	bool isEmpty = false;
+  bool isEmpty = false;
 
-	//predicates definition from critical shapes
-	BackwardIterator PHullBack = myPHull.rbegin();
-	ForwardIterator QHullFront = myQHull.begin();
-	PHullBackQHullFrontPred p1( Shape(*PHullBack, *QHullFront) );
+  //predicates definition from critical shapes
+  BackwardIterator PHullBack = myPHull.rbegin();
+  ForwardIterator QHullFront = myQHull.begin();
+  PHullBackQHullFrontPred p1( Shape(*PHullBack, *QHullFront) );
 
-	BackwardIterator QHullBack = myQHull.rbegin();
-	ForwardIterator PHullFront = myPHull.begin();
-	QHullBackPHullFrontPred p2( Shape(*QHullBack, *PHullFront) );
+  BackwardIterator QHullBack = myQHull.rbegin();
+  ForwardIterator PHullFront = myPHull.begin();
+  QHullBackPHullFrontPred p2( Shape(*QHullBack, *PHullFront) );
 
-	//constraint involved by aP
-	if ( p1(aP) ) {
-		if ( p2(aP) ) {
+  //constraint involved by aP
+  if ( p1(aP) ) {
+    if ( p2(aP) ) {
 
-			//update PHull
-			update<ForwardIterator,PHullUpdateForPAddingPred>
-				(aP, myPHull, PHullFront, myPHull.end());
+      //update PHull
+      update<ForwardIterator,PHullUpdateForPAddingPred>
+        (aP, myPHull, PHullFront, myPHull.end());
 
-			//add aP to myPHull
-			if (aP != *myPHull.begin()) myPHull.push_front(aP);
+      //add aP to myPHull
+      if (aP != *myPHull.begin()) myPHull.push_front(aP);
 
-			//update myQHull
-			update<BackwardIterator,QHullUpdateForPAddingPred>
-				(aP, myQHull, QHullBack, myQHull.rend());
+      //update myQHull
+      update<BackwardIterator,QHullUpdateForPAddingPred>
+        (aP, myQHull, QHullBack, myQHull.rend());
 
 
-		} //else nothing to do
+    } //else nothing to do
 
-		//constraint involved by aQ
-		if ( p2(aQ) ) {
-			if ( p1(aQ) ) {
+    //constraint involved by aQ
+    if ( p2(aQ) ) {
+      if ( p1(aQ) ) {
 
-				//update myQHull
-				update<ForwardIterator,QHullUpdateForQAddingPred>
-					(aQ, myQHull, QHullFront, myQHull.end());
+        //update myQHull
+        update<ForwardIterator,QHullUpdateForQAddingPred>
+          (aQ, myQHull, QHullFront, myQHull.end());
 
-				//add aQ to myQHull
-				if (aQ != *myQHull.begin()) myQHull.push_front(aQ);
+        //add aQ to myQHull
+        if (aQ != *myQHull.begin()) myQHull.push_front(aQ);
 
-				//update myPHull
+        //update myPHull
 
-				update<BackwardIterator,PHullUpdateForQAddingPred>
-					(aQ, myPHull, PHullBack, myPHull.rend());
+        update<BackwardIterator,PHullUpdateForQAddingPred>
+          (aQ, myPHull, PHullBack, myPHull.rend());
 
-			} //else nothing to do
+      } //else nothing to do
 
-		} else isEmpty = true;
+    } else isEmpty = true;
 
-	} else isEmpty = true;
+  } else isEmpty = true;
 
-	return (!isEmpty);
+  return (!isEmpty);
 }
 
 template <typename Shape>
@@ -145,44 +145,44 @@ template <typename Iterator, typename Predicate>
 inline
 void
 DGtal::Preimage2D<Shape>::update(
-		const Point & aPoint,
-		Container & aContainer,
-		Iterator & anIterator,
-		const Iterator & anEndIterator)
+    const Point & aPoint,
+    Container & aContainer,
+    Iterator & anIterator,
+    const Iterator & anEndIterator)
 {
 
-	Point p, q;
-	q = *anIterator;
-	anIterator++;
-	if (anIterator != anEndIterator) {
-		p = *anIterator;
-		Predicate pred( Shape(p,q) );
-			std::cerr << pred << std::endl;
+  Point p, q;
+  q = *anIterator;
+  anIterator++;
+  if (anIterator != anEndIterator) {
+    p = *anIterator;
+    Predicate pred( Shape(p,q) );
+      std::cerr << pred << std::endl;
 
 
-		while ( (anIterator != anEndIterator) && 
-						(pred(aPoint)) ) {
+    while ( (anIterator != anEndIterator) && 
+            (pred(aPoint)) ) {
 
-			//deletion
-			anIterator--;
-			std::cerr << "ERASE " << (*anIterator) << std::endl;
-//  		anIterator = aContainer.erase(anIterator);
+      //deletion
+      anIterator--;
+      std::cerr << "ERASE " << (*anIterator) << std::endl;
+//      anIterator = aContainer.erase(anIterator);
 //does not compile if type 'Iterator' is the type ' ::reverse_iterator'
 //erase only takes parameter of type ' ::iterator'
 
-			anIterator = 
-				DGtal::OpInSTLContainers<Container,Iterator>
-						 ::erase(aContainer, anIterator);
+      anIterator = 
+        DGtal::OpInSTLContainers<Container,Iterator>
+             ::erase(aContainer, anIterator);
 
-			//update of pred
-			q = p;	
-			anIterator++;
-			if (anIterator != anEndIterator) {
-				p = *anIterator;
-				pred = Predicate( Shape(p,q) );
-			}
-		}	
-	}
+      //update of pred
+      q = p;  
+      anIterator++;
+      if (anIterator != anEndIterator) {
+        p = *anIterator;
+        pred = Predicate( Shape(p,q) );
+      }
+    }  
+  }
 
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -200,35 +200,35 @@ void
 DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
 {
 
-	ConstForwardIterator i = myPHull.begin();
-	Point pt(*i);
-	++i;
-	while ( i != myPHull.end() ) {
-		Shape s(pt, *i);
-		s.selfDraw<Functor>(aBoard);
-		pt = Point(*i);
-		++i;
-	}
+  ConstForwardIterator i = myPHull.begin();
+  Point pt(*i);
+  ++i;
+  while ( i != myPHull.end() ) {
+    Shape s(pt, *i);
+    s.selfDraw<Functor>(aBoard);
+    pt = Point(*i);
+    ++i;
+  }
 
-	i = myQHull.begin();
-	pt = Point(*i);
-	++i;
-	while ( i != myQHull.end() ) {
-		Shape s(pt, *i);
-		s.selfDraw<Functor>(aBoard);
-		pt = Point(*i);
-		++i;
-	}
+  i = myQHull.begin();
+  pt = Point(*i);
+  ++i;
+  while ( i != myQHull.end() ) {
+    Shape s(pt, *i);
+    s.selfDraw<Functor>(aBoard);
+    pt = Point(*i);
+    ++i;
+  }
 
-	Point Pf(*myPHull.begin());
-	Point Pl(*myPHull.rbegin());
-	Point Qf(*myQHull.begin());
-	Point Ql(*myQHull.rbegin());
+  Point Pf(*myPHull.begin());
+  Point Pl(*myPHull.rbegin());
+  Point Qf(*myQHull.begin());
+  Point Ql(*myQHull.rbegin());
 
-	Shape s1(Pf, Ql);
-	s1.selfDraw<Functor>(aBoard);
-	Shape s2(Qf, Pl);
-	s2.selfDraw<Functor>(aBoard);
+  Shape s1(Pf, Ql);
+  s1.selfDraw<Functor>(aBoard);
+  Shape s2(Qf, Pl);
+  s2.selfDraw<Functor>(aBoard);
 
 }
 
@@ -244,16 +244,16 @@ DGtal::Preimage2D<Shape>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Preimage2D]\n";
   out << "first part: \n";
-	for (ConstForwardIterator i = myPHull.begin(); 
-			 i != myPHull.end(); ++i) {
-	  out << *i << ", ";
-	}
+  for (ConstForwardIterator i = myPHull.begin(); 
+       i != myPHull.end(); ++i) {
+    out << *i << ", ";
+  }
   out << "\n";
   out << "second part: \n";
-	for (ConstForwardIterator i = myQHull.begin(); 
-			 i != myQHull.end(); ++i) {
-	  out << *i << ", ";
-	}
+  for (ConstForwardIterator i = myQHull.begin(); 
+       i != myQHull.end(); ++i) {
+    out << *i << ", ";
+  }
   out << "\n";
 }
 
@@ -278,7 +278,7 @@ template <typename Shape>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Preimage2D<Shape> & object )
+      const Preimage2D<Shape> & object )
 {
   object.selfDisplay( out );
   return out;
