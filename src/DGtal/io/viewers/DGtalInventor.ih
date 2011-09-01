@@ -148,14 +148,14 @@ DGtal::DGtalInventor<TSpace>::drawCell
     {
       Point p( c );
       for ( typename Point::Iterator it = p.begin(); it != p.end(); ++it )
-	if ( *it & 0x1 )
-	  {
-	    --(*it);
-	    drawCell( p, false, n );
-	    *it += 2;
-	    drawCell( p, true, n );
-	    --(*it);
-	  }
+  if ( *it & 0x1 )
+    {
+      --(*it);
+      drawCell( p, false, n );
+      *it += 2;
+      drawCell( p, true, n );
+      --(*it);
+    }
     }
   else
     {
@@ -271,82 +271,82 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
       SbVec3f uv2;
       SbVec3f n;
       while ( ip != ip_end )
-	{
-	  unsigned int d = 0;
-	  Point c = ip->first;
-	  bool orient = ip->second;
-	  Point e;
-	  Dimension dirs[ 2 ];
-	  for ( Dimension i = 0; i < c.dimension; ++i )
-	    {
-	      if ( c[ i ] & 0x1 ) 
-		dirs[ d++ ] = i;
-	      e[ i ] = c[ i ] >> 1;
-	    }
-	  
-	  // creating face coordinates
-	  myLattice.immerse( e, *xyz );
-	  uv1.setValue( *xyz );
-	  uv2.setValue( *xyz );
-	  ++xyz;
-	  e[ dirs[ 0 ] ] ++;
-	  myLattice.immerse( e, *xyz );
-	  uv1 -= SbVec3f( *xyz );
-	  ++xyz;
-	  e[ dirs[ 1 ] ] ++;
-	  myLattice.immerse( e, *xyz );
-	  ++xyz;
-	  e[ dirs[ 0 ] ] --;
-	  myLattice.immerse( e, *xyz );
-	  uv2 -= SbVec3f( *xyz );
-	  ++xyz;
-	  indices[ idx ] = 4; 
+  {
+    unsigned int d = 0;
+    Point c = ip->first;
+    bool orient = ip->second;
+    Point e;
+    Dimension dirs[ 2 ];
+    for ( Dimension i = 0; i < c.dimension; ++i )
+      {
+        if ( c[ i ] & 0x1 ) 
+    dirs[ d++ ] = i;
+        e[ i ] = c[ i ] >> 1;
+      }
+    
+    // creating face coordinates
+    myLattice.immerse( e, *xyz );
+    uv1.setValue( *xyz );
+    uv2.setValue( *xyz );
+    ++xyz;
+    e[ dirs[ 0 ] ] ++;
+    myLattice.immerse( e, *xyz );
+    uv1 -= SbVec3f( *xyz );
+    ++xyz;
+    e[ dirs[ 1 ] ] ++;
+    myLattice.immerse( e, *xyz );
+    ++xyz;
+    e[ dirs[ 0 ] ] --;
+    myLattice.immerse( e, *xyz );
+    uv2 -= SbVec3f( *xyz );
+    ++xyz;
+    indices[ idx ] = 4; 
 
-	  // retracts( xyz - 4, 4 );
+    // retracts( xyz - 4, 4 );
 
-	  // Creating face normals
-	  itn = myNormals.find( c );
-	  n = uv1.cross( uv2 );
-	  if ( orient )
-	    {
-	      if ( n[ 0 ] < 0.0 ) n[ 0 ] = -n[ 0 ];
-	      if ( n[ 1 ] < 0.0 ) n[ 1 ] = -n[ 1 ];
-	      if ( n[ 2 ] < 0.0 ) n[ 2 ] = -n[ 2 ];
-	    }
-	  else
-	    {
-	      if ( n[ 0 ] > 0.0 ) n[ 0 ] = -n[ 0 ];
-	      if ( n[ 1 ] > 0.0 ) n[ 1 ] = -n[ 1 ];
-	      if ( n[ 2 ] > 0.0 ) n[ 2 ] = -n[ 2 ];
-	    }
-	  if ( itn != myNormals.end() )
-	    {
-	      n = itn->second;
-	      double dot = uv1[0]*n[0]+uv1[1]*n[1]+uv1[2]*n[2];
-	      if ( dot < 0.0 )
-		{
-		  vec3* xyz1 = xyz - 3;
-		  vec3* xyz2 = xyz - 1;
-		  std::swap( (*xyz1)[0], (*xyz2)[0] );
-		  std::swap( (*xyz1)[1], (*xyz2)[1] );
-		  std::swap( (*xyz1)[2], (*xyz2)[2] );
-		}
-	    }
-	  n.getValue( normals[ idx ][ 0 ], 
-		      normals[ idx ][ 1 ],
-		      normals[ idx ][ 2 ] );
-	  
-	  // Creating face colors
-	  itc = myColors.find( c );
-	  if ( itc != myColors.end() )
-	    n = itc->second;
-	  n.getValue( colors[ idx ][ 0 ], 
-		      colors[ idx ][ 1 ],
-		      colors[ idx ][ 2 ] );
-	  
-	  ++idx;
-	  ++ip;
-	}
+    // Creating face normals
+    itn = myNormals.find( c );
+    n = uv1.cross( uv2 );
+    if ( orient )
+      {
+        if ( n[ 0 ] < 0.0 ) n[ 0 ] = -n[ 0 ];
+        if ( n[ 1 ] < 0.0 ) n[ 1 ] = -n[ 1 ];
+        if ( n[ 2 ] < 0.0 ) n[ 2 ] = -n[ 2 ];
+      }
+    else
+      {
+        if ( n[ 0 ] > 0.0 ) n[ 0 ] = -n[ 0 ];
+        if ( n[ 1 ] > 0.0 ) n[ 1 ] = -n[ 1 ];
+        if ( n[ 2 ] > 0.0 ) n[ 2 ] = -n[ 2 ];
+      }
+    if ( itn != myNormals.end() )
+      {
+        n = itn->second;
+        double dot = uv1[0]*n[0]+uv1[1]*n[1]+uv1[2]*n[2];
+        if ( dot < 0.0 )
+    {
+      vec3* xyz1 = xyz - 3;
+      vec3* xyz2 = xyz - 1;
+      std::swap( (*xyz1)[0], (*xyz2)[0] );
+      std::swap( (*xyz1)[1], (*xyz2)[1] );
+      std::swap( (*xyz1)[2], (*xyz2)[2] );
+    }
+      }
+    n.getValue( normals[ idx ][ 0 ], 
+          normals[ idx ][ 1 ],
+          normals[ idx ][ 2 ] );
+    
+    // Creating face colors
+    itc = myColors.find( c );
+    if ( itc != myColors.end() )
+      n = itc->second;
+    n.getValue( colors[ idx ][ 0 ], 
+          colors[ idx ][ 1 ],
+          colors[ idx ][ 2 ] );
+    
+    ++idx;
+    ++ip;
+  }
       // Coordinates
       myCoords->point.setValues( 0, nb_vtx, coords );
       node_squares->addChild( myCoords ); 
@@ -387,7 +387,7 @@ template <typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DGtalInventor<TSpace> & object )
+      const DGtalInventor<TSpace> & object )
 {
   object.selfDisplay( out );
   return out;

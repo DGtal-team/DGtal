@@ -52,8 +52,8 @@ namespace DGtal
    * Possible properties of digital topologies.
    */
   enum DigitalTopologyProperties { UNKNOWN_DT = 0, 
-				   NOT_JORDAN_DT = 1,
-				   JORDAN_DT = 2 };
+           NOT_JORDAN_DT = 1,
+           JORDAN_DT = 2 };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalTopology
@@ -124,8 +124,8 @@ namespace DGtal
      * topology, default is UNKNOWN.
      */
     DigitalTopology( const ForegroundAdjacency & aKappa, 
-		     const BackgroundAdjacency & aLambda,
-		     DigitalTopologyProperties props = UNKNOWN_DT );
+         const BackgroundAdjacency & aLambda,
+         DigitalTopologyProperties props = UNKNOWN_DT );
 
     /**
      * Destructor.
@@ -232,7 +232,7 @@ namespace DGtal
   template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object );
+         const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object );
 
 } // namespace DGtal
 

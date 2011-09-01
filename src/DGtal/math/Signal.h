@@ -74,7 +74,7 @@ namespace DGtal
      * @param def the default value.
      */
     void init( unsigned int s, int z = 0, bool p = false, 
-	       const Value & def = Value( 0 ) );
+         const Value & def = Value( 0 ) );
 
     /**
      * Initializer.
@@ -86,7 +86,7 @@ namespace DGtal
      * @param def the default value.
      */
     void init( const Value* t, unsigned int size, int z = 0, bool p = false, 
-	       const Value & def = Value( 0 )  );
+         const Value & def = Value( 0 )  );
     
     /** 
      * Constructor.  
@@ -97,7 +97,7 @@ namespace DGtal
      * @param def the default value.
      */
     SignalData( unsigned int s, int z = 0, bool p = false, 
-		const Value & def = Value( 0 ) );
+    const Value & def = Value( 0 ) );
     
     /**
      * Constructor.
@@ -108,7 +108,7 @@ namespace DGtal
      * @param def the default value.
      */
     SignalData( const Value* t, unsigned int size, int z = 0, bool p = false, 
-		const Value & def = Value( 0 )  );
+    const Value & def = Value( 0 )  );
     
     /** 
      * Destructor.
@@ -153,36 +153,36 @@ namespace DGtal
   public:
     typedef TValue Value;
     /** 
-	@return the gaussian signal of order 2 (binomial signal of
-	order 2 / 4).
+  @return the gaussian signal of order 2 (binomial signal of
+  order 2 / 4).
 
-	TValue must be able to represent real values.
+  TValue must be able to represent real values.
     */
     static Signal<TValue> G2();
 
     /** 
-	@return the binomial signal of order 2.
+  @return the binomial signal of order 2.
     */
     static Signal<TValue> H2();
     
     /** 
-	@return the right difference signal.
+  @return the right difference signal.
     */
     static Signal<TValue> Delta();
     
     /** 
-	@return the gaussian signal of order 2n (binomial signal of
-	order 2n / 2^n).
+  @return the gaussian signal of order 2n (binomial signal of
+  order 2n / 2^n).
     */
     static Signal<TValue> G2n( unsigned int n );
 
     /** 
-	@return the binomial signal of order 2n.
+  @return the binomial signal of order 2n.
     */
     static Signal<TValue> H2n( unsigned int n );
     
     /** 
-	@return the differential operator with binomial weights of order 2n.
+  @return the differential operator with binomial weights of order 2n.
     */
     static Signal<TValue> D2n( unsigned int n );
 
@@ -208,7 +208,7 @@ namespace DGtal
        @param def the default value.
     */
     Signal( unsigned int size, int z, bool periodic, 
-	    const TValue & def = TValue( 0 )  );
+      const TValue & def = TValue( 0 )  );
     
     /**
        Constructor.
@@ -219,7 +219,7 @@ namespace DGtal
        @param def the default value.
     */
     Signal( const TValue* t, unsigned int size, int z, bool periodic, 
-	    const TValue & def = TValue( 0 )  );
+      const TValue & def = TValue( 0 )  );
     
     /**
        Copy constructor.
@@ -244,7 +244,7 @@ namespace DGtal
      * @param def the default value.
      */
     void init( unsigned int s, int z = 0, bool p = false, 
-	       const TValue & def = TValue( 0 ) );
+         const TValue & def = TValue( 0 ) );
 
     /**
      * Initializer.
@@ -256,7 +256,7 @@ namespace DGtal
      * @param def the default value.
      */
     void init( const TValue* t, unsigned int size, int z = 0, bool p = false, 
-	       const TValue & def = TValue( 0 )  );
+         const TValue & def = TValue( 0 )  );
  
 
     /**
@@ -268,7 +268,7 @@ namespace DGtal
   public:
     
     /** 
-	Protected rw access to value. If index is out of bound, return
+  Protected rw access to value. If index is out of bound, return
         0 if not periodic or the correct value otherwise.
         
         @param i the index in the signal .
@@ -278,25 +278,25 @@ namespace DGtal
     TValue & operator[]( int i );
     
     /** 
-	Protected ro access to value. If index is out of bound, return 0
-	if not periodic or the correct value otherwise.
-	
+  Protected ro access to value. If index is out of bound, return 0
+  if not periodic or the correct value otherwise.
+  
         @param i the index in the signal .
-	
+  
         @return the i-th value in the signal.
     */      
     const TValue & operator[]( int i ) const;
     
     /** 
-	The signal becomes a constant signal of value [val].
-	
+  The signal becomes a constant signal of value [val].
+  
         @param val the value of the whole signal.
     */      
     void setAll( const TValue & val = TValue( 0 ) );
     
     
     /** 
-	External product of a signal by a scalar value.
+  External product of a signal by a scalar value.
         
         @param l the external value.
         
@@ -305,11 +305,11 @@ namespace DGtal
     void multiply( const TValue & val );
 
     /** 
-	Convolution product of two signals (F = this).
+  Convolution product of two signals (F = this).
         F*G( a ) = sum F(a-i)G(i) 
-	
+  
         @param G the second signal (not periodic)
-	
+  
         @return the signal that is the convolution of F and G, of type
         F. The returned signal is periodic iff Fis periodic.
     */
@@ -335,7 +335,7 @@ namespace DGtal
   private:
       
       /**
-	 the array that stores the data.
+   the array that stores the data.
       */
     CowPtr< SignalData<TValue> > m_data;
       

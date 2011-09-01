@@ -102,11 +102,11 @@ namespace DGtal
      * @param max The upper bound of the value range.
      */
     ColorBrightnessColorMap( const PValue & min,
-			     const PValue & max,
-			     const Color color
-			     = Color( DGTAL_RED_COMPONENT( PDefaultColor ),
-						DGTAL_GREEN_COMPONENT( PDefaultColor ),
-						DGTAL_BLUE_COMPONENT( PDefaultColor ) ) );
+           const PValue & max,
+           const Color color
+           = Color( DGTAL_RED_COMPONENT( PDefaultColor ),
+            DGTAL_GREEN_COMPONENT( PDefaultColor ),
+            DGTAL_BLUE_COMPONENT( PDefaultColor ) ) );
     
     /** 
      * Computes the color associated with a value in a given range.
@@ -178,9 +178,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static Color getColor( const Color color,
-				     const PValue & min,
-				     const PValue & max,
-				     const PValue & value );
+             const PValue & min,
+             const PValue & max,
+             const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -191,9 +191,9 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;            /**< The lower bound of the value range.  */
-    Color myColor;	/**< The color of the upper bound value. */
+    Color myColor;  /**< The color of the upper bound value. */
     
     /**
      * Constructor.
@@ -215,7 +215,7 @@ namespace DGtal
      * @param v The value of the color in [0..1].
      */
     static void HSVtoRGB( double & r, double & g, double & b,
-			  double h, const double s, const double v);
+        double h, const double s, const double v);
 
     /** 
      * Converts a color from the RGB space to the HSV (Hue,Saturation,Value) space.
@@ -228,9 +228,9 @@ namespace DGtal
      * @param b The blue component.
      */
     static void RGBtoHSV( double & h, double & s, double & v,
-			  const unsigned char r,
-			  const unsigned char g,
-			  const unsigned char b );
+        const unsigned char r,
+        const unsigned char g,
+        const unsigned char b );
 
   }; // end of class ColorBrightnessColorMap
 

@@ -85,9 +85,9 @@ namespace DGtal
    T operator() (const T &x) const
     {
       if (x < 0)
-	return -x;
+  return -x;
       else 
-	return x;
+  return x;
     }
   };
 }

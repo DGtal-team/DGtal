@@ -51,7 +51,7 @@ using namespace DGtal;
 template <typename Space, typename Shape>
 bool
 testDigitization( const Shape & aShape, double h,
-		  const string & fileName )
+      const string & fileName )
 {
   typedef typename Space::Point Point;
   typedef typename Space::RealPoint RealPoint;
@@ -97,18 +97,18 @@ testDigitization( const Shape & aShape, double h,
   Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.styleName(), "Paving" )
-  	<< domain << aSet;
+    << domain << aSet;
 
   board << SetMode( gridcurve.styleName(), "Edges" )
-	<< CustomStyle( bel.styleName(), 
-			new CustomColors( DGtal::Color( 0, 0, 0 ),
-					  DGtal::Color( 0, 192, 0 ) ) )
-	<< gridcurve;
+  << CustomStyle( bel.styleName(), 
+      new CustomColors( DGtal::Color( 0, 0, 0 ),
+            DGtal::Color( 0, 192, 0 ) ) )
+  << gridcurve;
   board << SetMode( gridcurve.styleName(), "Points" )
-	<< CustomStyle( bel.styleName(), 
-			new CustomColors( DGtal::Color( 255, 0, 0 ),
-					  DGtal::Color( 200, 0, 0 ) ) )
-	<< gridcurve;
+  << CustomStyle( bel.styleName(), 
+      new CustomColors( DGtal::Color( 255, 0, 0 ),
+            DGtal::Color( 200, 0, 0 ) ) )
+  << gridcurve;
 
   board.saveEPS( ( fileName + ".eps" ).c_str() );
   board.saveSVG( ( fileName + ".svg" ).c_str() );
@@ -152,7 +152,7 @@ bool testGaussDigitizer()
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

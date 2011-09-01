@@ -81,7 +81,7 @@ template <typename TPoint>
 inline
 DGtal::IsWithinPointPredicate<TPoint>
 ::IsWithinPointPredicate( const Point & lowerBound,
-			  const Point & upperBound )
+        const Point & upperBound )
   : myLowerBound( lowerBound ), myUpperBound( upperBound )
 {}
 //------------------------------------------------------------------------------
@@ -119,8 +119,8 @@ template <typename TPointPredicate1, typename TPointPredicate2>
 inline
 DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2>
 ::BinaryPointPredicate( const PointPredicate1 & pred1,
-			const PointPredicate2 & pred2,
-			const BoolFunction2 & boolFunctor )
+      const PointPredicate2 & pred2,
+      const BoolFunction2 & boolFunctor )
   : myPred1( pred1 ), myPred2( pred2 ), myBoolFunctor( boolFunctor )
 {
 }

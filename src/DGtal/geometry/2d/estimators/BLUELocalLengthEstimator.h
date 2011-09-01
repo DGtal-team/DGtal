@@ -97,9 +97,9 @@ namespace DGtal
     {
       out << "[BLUELocalLengthEstimator]";
       if (this->myIsInitBefore) 
-	out <<" myH="<< this->myH;
+  out <<" myH="<< this->myH;
       else
-	out<< " not initialized";
+  out<< " not initialized";
   }
 
     

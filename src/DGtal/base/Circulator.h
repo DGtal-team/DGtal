@@ -207,9 +207,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
    *  to the first (resp. last) iterator of a given range. 
    *  For instance, the pre-increment operator does:  
    *  @code
-	      ++myCurrentIt;
+        ++myCurrentIt;
         if (myCurrentIt == myEndIt) myCurrentIt = myBeginIt;
-	      return *this;
+        return *this;
    *  @endcode
    * whereas the pre-decrement operator does (if at least bidirectionnal): 
    *  @code
@@ -225,9 +225,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
   {
 
     // ----------------------- Types ------------------------------
-	public:
+  public:
 
-      typedef TIterator					                                  Iterator;
+      typedef TIterator                                            Iterator;
       typedef Circulator<TIterator>                               Self;
 
       typedef typename CirculatorTagTraits<
@@ -385,9 +385,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
       Self& operator++()
       {
         ASSERT( isValid() ); 
-	      ++myCurrentIt;
+        ++myCurrentIt;
         if (myCurrentIt == myEndIt) myCurrentIt = myBeginIt;
-	      return *this;
+        return *this;
       }
 
       /**
@@ -395,9 +395,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
       */
       Self operator++(int)
       {
-	      Self tmp = *this;
-	      operator++(); 
-	      return tmp;
+        Self tmp = *this;
+        operator++(); 
+        return tmp;
       }
 
 
@@ -409,7 +409,7 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
         ASSERT( isValid() ); 
         if (myCurrentIt == myBeginIt) myCurrentIt = myEndIt;
         --myCurrentIt;
-	      return *this;
+        return *this;
       }
 
       /**
@@ -417,9 +417,9 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
       */
       Self operator--(int)
       {
-	      Self tmp = *this;
-	      operator--(); 
-	      return tmp;
+        Self tmp = *this;
+        operator--(); 
+        return tmp;
       }
 
     // ----------------------- Equality operators --------------------------------------

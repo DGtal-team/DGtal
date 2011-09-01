@@ -42,7 +42,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV)
+        const Value & minV, const Value & maxV)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -84,7 +84,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV,  bool saveASCII)
+        const Value & minV, const Value & maxV,  bool saveASCII)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -120,10 +120,10 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
       val = aImage( (*it) );
       col = colormap( val );
       if(saveASCII){
-	out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
+  out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
 
       }else{
-	out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
+  out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
       }
     }
   out.close(); 
@@ -135,7 +135,7 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
-			    const Value & minV, const Value & maxV)
+          const Value & minV, const Value & maxV)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -177,7 +177,7 @@ PNMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV)
+        const Value & minV, const Value & maxV)
 {
   ///@todo  the Value of I should match with the one in C
 

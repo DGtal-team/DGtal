@@ -104,10 +104,10 @@ DGtal::Statistic<RealNumberType>::operator=
       myStoreSamples = other.myStoreSamples;
       myIsTerminated=other.myIsTerminated;
       if(myStoreSamples){
-	myValues=  std::vector<RealNumberType> ();
-	for(unsigned int i=0; i<other.myValues.size(); i++){
-	  myValues.push_back(other.myValues.at(i));
-	}
+  myValues=  std::vector<RealNumberType> ();
+  for(unsigned int i=0; i<other.myValues.size(); i++){
+    myValues.push_back(other.myValues.at(i));
+  }
       }
       
     }
@@ -131,9 +131,9 @@ DGtal::Statistic<RealNumberType>::operator+=
   if ( other.mySamples != 0 )
     {
       if ( ( mySamples == 0 ) || ( other.myMin < myMin ) )
-	myMin = other.myMin;
+  myMin = other.myMin;
       if ( ( mySamples == 0 ) || ( other.myMax > myMax ) )
-	myMax = other.myMax;
+  myMax = other.myMax;
     }
   mySamples += other.mySamples;
   myExp += other.myExp;
@@ -268,7 +268,7 @@ DGtal::Statistic<RealNumberType>::median()
   }
   else{
     nth_element( myValues.begin(), myValues.begin()+(myValues.size()/2), 
-		 myValues.end());
+     myValues.end());
     return *(myValues.begin()+(myValues.size()/2));
   }
 }
@@ -384,13 +384,13 @@ DGtal::Statistic<RealNumberType>::selfDisplay
 ( std::ostream& thatStream ) const
 {
   thatStream << "[Statistic "
-	     << " nb=" << samples()
-	     << " exp=" << mean()
-	     << " var=" << variance()
-	     << " uvar=" << unbiasedVariance()
-	     << " min=" << min()
-	     << " max=" << max()
-	     << "]";
+       << " nb=" << samples()
+       << " exp=" << mean()
+       << " var=" << variance()
+       << " uvar=" << unbiasedVariance()
+       << " min=" << min()
+       << " max=" << max()
+       << "]";
 }
 
 /**
@@ -419,7 +419,7 @@ template <typename RealNumberType>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & thatStream, 
-		   const Statistic<RealNumberType> & that_object_to_display )
+       const Statistic<RealNumberType> & that_object_to_display )
 {
   that_object_to_display.selfDisplay( thatStream );
   return thatStream;

@@ -210,9 +210,9 @@ inline
 unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnSpelSet( SCell & adj_surfel,
-		      const SpelSet & obj, 
-		      Dimension track_dir,
-		      bool pos ) const
+          const SpelSet & obj, 
+          Dimension track_dir,
+          bool pos ) const
 {
     // Check that [m_surfel] is a bel.
   ASSERT( mySpace != 0 );
@@ -230,18 +230,18 @@ getAdjacentOnSpelSet( SCell & adj_surfel,
     { // interior to exterior
       // Check first next bel.
       if ( obj.find( mySpace->unsigns( innerAdjacentSpel( track_dir, pos ) ) )
-	   == obj.end() )
-	{
-	  adj_surfel = follower1( track_dir, pos );
-	  return 1;
-	}
+     == obj.end() )
+  {
+    adj_surfel = follower1( track_dir, pos );
+    return 1;
+  }
       // Check second next bel.
       if ( obj.find( mySpace->unsigns( outerAdjacentSpel( track_dir, pos ) ) )
-	   == obj.end() )
-	{
-	  adj_surfel = follower2( track_dir, pos ); 
-	  return 2;
-	}
+     == obj.end() )
+  {
+    adj_surfel = follower2( track_dir, pos ); 
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower3( track_dir, pos ); 
       return 3;
@@ -250,18 +250,18 @@ getAdjacentOnSpelSet( SCell & adj_surfel,
     { // exterior to interior
       // Check first next bel.
       if ( obj.find( mySpace->unsigns( outerAdjacentSpel( track_dir, pos ) ) )
-	   != obj.end() )
-	{
-	  adj_surfel = follower3( track_dir, pos );
-	  return 3;
-	}
+     != obj.end() )
+  {
+    adj_surfel = follower3( track_dir, pos );
+    return 3;
+  }
       // Check second next bel.
       if ( obj.find( mySpace->unsigns( innerAdjacentSpel( track_dir, pos ) ) )
-	   != obj.end() )
-	{
-	  adj_surfel = follower2( track_dir, pos );
-	  return 2;
-	}
+     != obj.end() )
+  {
+    adj_surfel = follower2( track_dir, pos );
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower1( track_dir, pos );
       return 1;
@@ -274,9 +274,9 @@ inline
 unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnDigitalSet( SCell & adj_surfel,
-			 const DigitalSet & obj, 
-			 Dimension track_dir,
-			 bool pos ) const
+       const DigitalSet & obj, 
+       Dimension track_dir,
+       bool pos ) const
 {
     // Check that [m_surfel] is a bel.
   ASSERT( mySpace != 0 );
@@ -296,18 +296,18 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
     { // interior to exterior
       // Check first next bel.
       if ( obj.find( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) )
-	   == obj.end() )
-	{
-	  adj_surfel = follower1( track_dir, pos );
-	  return 1;
-	}
+     == obj.end() )
+  {
+    adj_surfel = follower1( track_dir, pos );
+    return 1;
+  }
       // Check second next bel.
       if ( obj.find( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) )
-	   == obj.end() )
-	{
-	  adj_surfel = follower2( track_dir, pos ); 
-	  return 2;
-	}
+     == obj.end() )
+  {
+    adj_surfel = follower2( track_dir, pos ); 
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower3( track_dir, pos ); 
       return 3;
@@ -316,18 +316,18 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
     { // exterior to interior
       // Check first next bel.
       if ( obj.find( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) )
-	   != obj.end() )
-	{
-	  adj_surfel = follower3( track_dir, pos );
-	  return 3;
-	}
+     != obj.end() )
+  {
+    adj_surfel = follower3( track_dir, pos );
+    return 3;
+  }
       // Check second next bel.
       if ( obj.find( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) )
-	   != obj.end() )
-	{
-	  adj_surfel = follower2( track_dir, pos );
-	  return 2;
-	}
+     != obj.end() )
+  {
+    adj_surfel = follower2( track_dir, pos );
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower1( track_dir, pos );
       return 1;
@@ -341,9 +341,9 @@ template <typename PointPredicate>
 unsigned int 
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnPointPredicate( SCell & adj_surfel,
-			     const PointPredicate & pp, 
-			     Dimension track_dir,
-			     bool pos ) const
+           const PointPredicate & pp, 
+           Dimension track_dir,
+           bool pos ) const
 {
   BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
 
@@ -365,16 +365,16 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
     { // interior to exterior
       // Check first next bel.
       if ( ! pp( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) ) )
-	{
-	  adj_surfel = follower1( track_dir, pos );
-	  return 1;
-	}
+  {
+    adj_surfel = follower1( track_dir, pos );
+    return 1;
+  }
       // Check second next bel.
       if ( ! pp( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) ) )
-	{
-	  adj_surfel = follower2( track_dir, pos ); 
-	  return 2;
-	}
+  {
+    adj_surfel = follower2( track_dir, pos ); 
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower3( track_dir, pos ); 
       return 3;
@@ -383,16 +383,16 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
     { // exterior to interior
       // Check first next bel.
       if ( pp( mySpace->sCoords( outerAdjacentSpel( track_dir, pos ) ) ) )
-	{
-	  adj_surfel = follower3( track_dir, pos );
-	  return 3;
-	}
+  {
+    adj_surfel = follower3( track_dir, pos );
+    return 3;
+  }
       // Check second next bel.
       if ( pp( mySpace->sCoords( innerAdjacentSpel( track_dir, pos ) ) ) )
-	{
-	  adj_surfel = follower2( track_dir, pos );
-	  return 2;
-	}
+  {
+    adj_surfel = follower2( track_dir, pos );
+    return 2;
+  }
       // The third one is then the right one.
       adj_surfel = follower1( track_dir, pos );
       return 1;
@@ -426,7 +426,7 @@ template <typename TKSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const SurfelNeighborhood<TKSpace> & object )
+      const SurfelNeighborhood<TKSpace> & object )
 {
   object.selfDisplay( out );
   return out;

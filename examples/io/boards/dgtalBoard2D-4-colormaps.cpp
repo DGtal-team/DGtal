@@ -68,20 +68,20 @@ int main()
   // Creating board.
   Board2D board;
   board << SetMode( domain.styleName(), "Paving" )
-	<< domain
-	<< SetMode( p1.styleName(), "Paving" );
+  << domain
+  << SetMode( p1.styleName(), "Paving" );
   // This is the name of the style for a Point in mode "Paving".
   string specificStyle =  p1.styleName() + "/Paving";
   for ( DigitalSet::ConstIterator it = shape_set.begin();
-	it != shape_set.end();
-	++it )
+  it != shape_set.end();
+  ++it )
     {
       unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
       // specific color depending on the distance to point c1.
       board << CustomStyle( specificStyle,
-			    new CustomColors( Color::Black,
-					      cmap_grad( d ) ) )
-	    << *it;
+          new CustomColors( Color::Black,
+                cmap_grad( d ) ) )
+      << *it;
     }
   board.saveSVG( "dgtalboard-4-colormaps.svg");
   board.saveEPS( "dgtalboard-4-colormaps.eps");

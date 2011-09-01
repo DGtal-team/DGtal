@@ -78,7 +78,7 @@ namespace DGtal
     Color( const unsigned int rgb, unsigned char alpha = 255 );
   
     Color( unsigned char aRedValue, unsigned char  aGreenValue, unsigned char  aBlueValue,
-	   unsigned char aAlphaValue = 255 )
+     unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
   
     Color( unsigned char aGrayValue, unsigned char aAlphaValue = 255 )
@@ -88,14 +88,14 @@ namespace DGtal
       : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
     { 
       if ( aValidColor ) {
-	myRed = myGreen = myBlue = 0;
+  myRed = myGreen = myBlue = 0;
       }
     }
     
     Color& setRGBi( const unsigned char aRedValue,
-		   const unsigned char aGreenValue,
-		   const unsigned char aBlueValue,
-		   const unsigned char aAlphaValue );
+       const unsigned char aGreenValue,
+       const unsigned char aBlueValue,
+       const unsigned char aAlphaValue );
 
     
     void red( const unsigned char aRedValue );
@@ -132,9 +132,9 @@ namespace DGtal
 
 
     Color & setRGBf( float red, 
-		     float green,
-		     float blue,
-		     float alpha = 1.0 );
+         float green,
+         float blue,
+         float alpha = 1.0 );
   
     bool operator==( const Color & aColor ) const;
 
@@ -197,10 +197,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    int myRed;			/**< The red component. */
-    int myGreen;		/**< The green component. */
-    int myBlue;			/**< The blue component. */
-    int myAlpha;		/**< The opacity. */
+    int myRed;      /**< The red component. */
+    int myGreen;    /**< The green component. */
+    int myBlue;      /**< The blue component. */
+    int myAlpha;    /**< The opacity. */
     // ------------------------- Hidden services ------------------------------
   protected:
 

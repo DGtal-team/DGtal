@@ -110,7 +110,7 @@ namespace DGtal
        adjacent digital points) identical in every direction.
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
-	       typename RealVector::Component gridStep );
+         typename RealVector::Component gridStep );
 
     /**
        Initializes the digital bounds of the digitizer so as to cover
@@ -124,7 +124,7 @@ namespace DGtal
        @param gridSteps the grid steps in each direction.
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
-	       const RealVector & gridSteps );
+         const RealVector & gridSteps );
 
     /**
        @return the domain chosen for the digitizer.
@@ -269,7 +269,7 @@ namespace DGtal
   template <typename TSpace, typename TEuclideanShape>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const GaussDigitizer<TSpace,TEuclideanShape> & object );
+         const GaussDigitizer<TSpace,TEuclideanShape> & object );
 
 } // namespace DGtal
 

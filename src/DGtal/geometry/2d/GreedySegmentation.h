@@ -48,7 +48,7 @@
 
 namespace DGtal
 {
-	
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedySegmentation
   /**
@@ -73,29 +73,29 @@ namespace DGtal
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
-	typedef GreedySegmentation<SegmentComputer> Segmentation;
+  typedef GreedySegmentation<SegmentComputer> Segmentation;
 
-	//input points
-	Range curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+  //input points
+  Range curve;
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(7,2));
+  curve.push_back(Point(8,1));
+  curve.push_back(Point(9,1));
 
   //Segmentation
-	SegmentComputer recognitionAlgorithm;
+  SegmentComputer recognitionAlgorithm;
   Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
-				 
+         
   Segmentation::SegmentComputerIterator i = theSegmentation.begin();
   Segmentation::SegmentComputerIterator end = theSegmentation.end();
   for ( ; i != end; ++i) {
-		SegmentComputer current(*i);
-		trace.info() << current << std::endl;	//standard output
+    SegmentComputer current(*i);
+    trace.info() << current << std::endl;  //standard output
   } 
 
    * @endcode
@@ -105,7 +105,7 @@ namespace DGtal
    * iterator of the STL vector:   
    * @code 
 ...
-	typedef Range::const_reverse_iterator ConstReverseIterator;
+  typedef Range::const_reverse_iterator ConstReverseIterator;
 ...
   Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
 ...
@@ -146,11 +146,11 @@ namespace DGtal
   class GreedySegmentation
   {
 
-	public: 
+  public: 
 
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ) );
-		typedef TSegmentComputer SegmentComputer;
-		typedef typename SegmentComputer::ConstIterator ConstIterator;
+    typedef TSegmentComputer SegmentComputer;
+    typedef typename SegmentComputer::ConstIterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -163,19 +163,19 @@ namespace DGtal
     class SegmentComputerIterator
     {
 
-			   // ------------------------- inner Types -----------------------
+         // ------------------------- inner Types -----------------------
 
     public: 
-		  typedef typename GreedySegmentation::SegmentComputer SegmentComputer;
-		  typedef typename SegmentComputer::ConstIterator ConstIterator;
+      typedef typename GreedySegmentation::SegmentComputer SegmentComputer;
+      typedef typename SegmentComputer::ConstIterator ConstIterator;
 
-			   // ------------------------- data -----------------------
+         // ------------------------- data -----------------------
     private:
 
       /**
        * Pointer to the segmentation
        */
-			const GreedySegmentation<TSegmentComputer> *myS;
+      const GreedySegmentation<TSegmentComputer> *myS;
 
       /**
        * The current segment
@@ -212,7 +212,7 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class GreedySegmentation<TSegmentComputer>;
-			   
+         
 
 
       /**
@@ -224,7 +224,7 @@ namespace DGtal
        * @param aFlag, 'true' to build a valid object, 'false' otherwise
        */
       SegmentComputerIterator( const GreedySegmentation<TSegmentComputer> *aSegmentation,
-				 const TSegmentComputer& aSegmentComputer,
+         const TSegmentComputer& aSegmentComputer,
          const bool& aFlag );
 
 
@@ -310,13 +310,13 @@ namespace DGtal
 
       /**
        * @return TRUE if the current segment intersects
-			 * the next one, FALSE otherwise.
+       * the next one, FALSE otherwise.
        */
       const bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
-			 * the previous one, FALSE otherwise.
+       * the previous one, FALSE otherwise.
        */
       const bool intersectPrevious() const;
 
@@ -332,7 +332,7 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-			private: 
+      private: 
 
       /**
        * Computes the longest possible segment from [it]
@@ -373,7 +373,7 @@ namespace DGtal
 
     /**
      * Default constructor.
-		 * Nb: not valid
+     * Nb: not valid
      */
     GreedySegmentation() {};
 
@@ -384,17 +384,17 @@ namespace DGtal
      * @param aSegmentComputer, an online segment recognition algorithm. 
      */
     GreedySegmentation(const ConstIterator& itb, 
-												const ConstIterator& ite, 
-												const SegmentComputer& aSegmentComputer);
+                        const ConstIterator& ite, 
+                        const SegmentComputer& aSegmentComputer);
 
     /**
      * Init.
      * @param itb, begin iterator the range to processed
      * @param ite, end iterator the range to processed
-		 * Nb: must be a valid range included in the underlying range.
+     * Nb: must be a valid range included in the underlying range.
      */
     void setSubRange(const ConstIterator& itb, 
-							       const ConstIterator& ite);
+                     const ConstIterator& ite);
 
 
     /**
@@ -441,10 +441,10 @@ namespace DGtal
   private:
 
     //Begin and end iterators of the underlying range
-		ConstIterator myBegin, myEnd;
+    ConstIterator myBegin, myEnd;
 
     //Begin and end iterators of the subrange to be segmented
-		ConstIterator myStart, myStop;
+    ConstIterator myStart, myStop;
 
     //Mode
     //eiter "Truncate" (default), 
@@ -452,7 +452,7 @@ namespace DGtal
     std::string myMode; 
 
     //SegmentComputer
-		SegmentComputer mySegmentComputer;
+    SegmentComputer mySegmentComputer;
 
     // ------------------------- Hidden services ------------------------------
 

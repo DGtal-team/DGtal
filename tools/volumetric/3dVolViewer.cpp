@@ -67,8 +67,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       std::cout << "Usage: " << argv[0] << " [input-file]\n"
-		<< "Display volume file as a voxel set by using QGLviewer"
-		<< general_opt << "\n";
+    << "Display volume file as a voxel set by using QGLviewer"
+    << general_opt << "\n";
       return 0;
     }
   
@@ -104,7 +104,7 @@ int main( int argc, char** argv )
     Color c= gradient(val);
     if(val<=thresholdMax && val >=thresholdMin){
       viewer <<  CustomColors3D(Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp),
-				Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
+        Color((float)(c.red()), (float)(c.green()),(float)(c.blue()), transp));     
       viewer << *it;     
     }     
   }
