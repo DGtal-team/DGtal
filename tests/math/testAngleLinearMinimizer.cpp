@@ -45,32 +45,49 @@ using namespace DGtal;
  */
 bool testAngleLinearMinimizer()
 {
-  unsigned int nbok = 1;
+  unsigned int nbok = 0;
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing AngleLinearMinimizer ." );
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
    
   AngleLinearMinimizer alm;
-  alm.setSize(10);
-  double valDec [10] = {0.2, 0.3, -0.2, -0.2, -0.1, 0.0, 0.0, 0.0,  0.0, 1.0};
-  double valDecMin [10] = {-1, -2, -1, -0.2, -0.1, -1.0, -1.2, -0.5,  -0.3, -0.4};
-  double valDecMax [10] = {0.2, 0.3, 0.2, 1.2, 1.1, 2.0, 0.5, 0.2,  0.1, 0.8};
+  alm.init(10);
+  alm.setIsCurveOpen(true);
+  double valDec [10] = {0.8, 0.3, -0.2, -0.2, -0.1, -0.3, -3.0, -6.0,  -7.0, -8.0};
+  double valDecMin [10] = {-0.5, -0.2, -0.5, -0.2, -0.1, -1.0, -1.2, -0.5,  -0.3, -0.2};
+  double valDecMax [10] = {0.9, 0.3, 0.2, 1.2, 0.4, 1.0, 0.5, 0.2,  0.1, 0.3};
+
   for(unsigned int i=0; i<10; i++){
-    AngleLinearMinimizer::ValueInfo vi;
+    AngleLinearMinimizer::ValueInfo &vi= alm.rw(i);
     double val = i + valDec[i];
     vi.value = val;
     vi.oldValue = val;
     vi.min = val + valDecMin[i];
     vi.max = val + valDecMax[i];
     vi.distToNext = 4.0;    
+    alm.rw(i)=vi;
   }
-  
-  while(alm.optimize()>0.00001){
+  double diff=1.0;
+  while(diff >0.00001){
+    diff= alm.optimize();
+    cerr << "sum of displacements " << diff << endl; 
   }
+  cout << "# index distPos valInit valOpt valMin valMax  " << endl;
+  double currentPos=0.0;
+  cout << -1 << " "<< -4 << " " << 9+valDec[9]  <<  " " << alm.ro(9).value
+       << " " << alm.ro(9).min << " " << alm.ro(9).max << endl ;
+      
+  for(unsigned int i=0; i<10; i++){
+    AngleLinearMinimizer::ValueInfo vi= alm.ro(i);
+    cout << i << " "<< currentPos << " " << i+ valDec[i] <<  " " << vi.value
+	 << " " << vi.min << " " << vi.max << endl ;
+    currentPos+=vi.distToNext;    
+  }
+
+  nbok += (abs(1.59999-alm.ro(0).value)<0.00001) && (abs(1.6-alm.ro(1).value)<0.00001) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
   
   trace.endBlock();
   return nbok == nb;
