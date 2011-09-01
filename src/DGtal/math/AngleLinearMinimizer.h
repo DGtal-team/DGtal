@@ -22,7 +22,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @author (backported by) Bertrand Kerautret (\c kerautre@loria.fr )
+ * @author (backported from ImaGene by) Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/08/31
@@ -46,6 +46,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/AngleComputer.h" 
+#include "DGtal/math/arithmetic/ModuloComputer.h" 
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,7 +76,7 @@ class AngleLinearMinimizer
     /**
      * The old value. Useful during optimization. 
      */
-    double old_value; 
+    double oldValue; 
     
     /**
      * The lower bound for the value.
@@ -88,7 +91,7 @@ class AngleLinearMinimizer
     /**
      * This is the distance between this value and the next one.
      */
-    double dist_to_next;
+    double distToNext;
     
   };
   
@@ -174,12 +177,14 @@ public:
    * @param i2 the value after the last to be optimized (between 0 and 'size()-1') 
    * @return the former energy of the system.
    */
-  double getFormerEnergy( unsigned int i1, unsigned int i2 ) const;
-
+  double getFormerEnergy( unsigned int i1, unsigned int i2 ) const;  
+  
+  
   /**
    * @return the energy gradient computed at the current position.
    */
   std::vector<double> getGradient() const;
+
 
   /**
    * @return the energy gradient computed at the former position.
@@ -197,6 +202,7 @@ public:
    */
   double optimize();
   
+  
   /**
    * Move each value on the straight line joining its neighboring
    * values while maintaining the value between its bounds.  The
@@ -210,12 +216,14 @@ public:
    * @see oneStep
    */
   double optimize( uint i1, uint i2 );
-
-
+  
+  
   /**
    * Sum of all the absolute displacements of the last optimisation step.
    */
   INLINE double sum() const;
+
+
 
   /**
    * Max of all the absolute displacements of the last optimisation step.
@@ -381,9 +389,9 @@ public:
   public:
     /**
      * Writes/Displays the object on an output stream.
-     * @param that_stream the output stream where the object is written.
+     * @param aStream the output stream where the object is written.
      */
-    virtual void selfDisplay( std::ostream & that_stream ) const;
+    virtual void selfDisplay( std::ostream & aStream ) const;
 
   };
   
@@ -439,9 +447,9 @@ public:
   public:
     /**
      * Writes/Displays the object on an output stream.
-     * @param that_stream the output stream where the object is written.
+     * @param aStream the output stream where the object is written.
      */
-    virtual void selfDisplay( std::ostream & that_stream ) const;
+    virtual void selfDisplay( std::ostream & aStream ) const;
 
   };
 
@@ -497,9 +505,9 @@ public:
   public:
     /**
      * Writes/Displays the object on an output stream.
-     * @param that_stream the output stream where the object is written.
+     * @param aStream the output stream where the object is written.
      */
-    virtual void selfDisplay( std::ostream & that_stream ) const;
+    virtual void selfDisplay( std::ostream & aStream ) const;
 
   };
   
