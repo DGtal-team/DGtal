@@ -62,7 +62,8 @@ namespace DGtal
  */
 class AngleLinearMinimizer
 {
-
+  
+public:
   /**
    * Stores the information linked to the value to optimize.
    */
@@ -317,7 +318,7 @@ private:
 
   
   
-    // ------------------------- Hidden services ------------------------------
+  // ------------------------- Hidden services ------------------------------
 
   
 
@@ -413,12 +414,12 @@ public:
     /**
      * Default constructor. Does nothing.
      */
-    INLINE LinearMinimizerByGradientDescent( double step = 0.1 );
+    INLINE AngleLinearMinimizerByGradientDescent( double step = 0.1 );
 
     /**
      * Destructor. Does nothing.
      */
-    INLINE virtual ~LinearMinimizerByGradientDescent();
+    INLINE virtual ~AngleLinearMinimizerByGradientDescent();
 
   protected:
     
@@ -471,12 +472,12 @@ public:
     /**
      * Default constructor. Does nothing.
      */
-    INLINE LinearMinimizerByAdaptiveStepGradientDescent( double step = 0.1 );
+    INLINE AngleLinearMinimizerByAdaptiveStepGradientDescent( double step = 0.1 );
 
     /**
      * Destructor. Does nothing.
      */
-    INLINE virtual ~LinearMinimizerByAdaptiveStepGradientDescent();
+    INLINE virtual ~AngleLinearMinimizerByAdaptiveStepGradientDescent();
 
   protected:
     

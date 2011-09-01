@@ -52,8 +52,8 @@
 float 
 DGtal::AngleComputer::cast( float i )
 {
-  while ( i < 0.0f ) i += two_pi_f;
-  while ( i > two_pi_f ) i -= two_pi_f;
+  while ( i < 0.0f ) i += (float) (M_PI*2.0);
+  while ( i > (double)(M_PI*2.0) ) i -= (float)(M_PI*2.0);
   return i;
 }
 
@@ -87,7 +87,7 @@ DGtal::AngleComputer::less( float i, float j )
 float 
 DGtal::AngleComputer::posDiff( float j, float i )
 {
-  return ( i <= j ) ? j - i : j + two_pi_f - i;
+  return ( i <= j ) ? j - i : j + (float)(M_PI*2.0) - i;
 }
 
 /**
@@ -139,8 +139,8 @@ DGtal::AngleComputer::max( float i, float j )
 double 
 DGtal::AngleComputer::cast( double i )
 {
-  while ( i < 0.0 ) i += two_pi_d;
-  while ( i > two_pi_d ) i -= two_pi_d;
+  while ( i < 0.0 ) i += (float)(M_PI*2.0);
+  while ( i > (float)(M_PI*2.0) ) i -= (float)(M_PI*2.0);
   return i;
 }
 
@@ -174,7 +174,7 @@ DGtal::AngleComputer::less( double i, double j )
 double 
 DGtal::AngleComputer::posDiff( double j, double i )
 {
-  return ( i <= j ) ? j - i : j + two_pi_d - i;
+  return ( i <= j ) ? j - i : j + (float)(M_PI*2.0) - i;
 }
 
 /**
@@ -218,23 +218,7 @@ DGtal::AngleComputer::max( double i, double j )
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'AngleComputer'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'AngleComputer' to write.
- * @return the output stream after the writing.
- */
-inline
-std::ostream&
-DGtal::operator<< ( std::ostream & out,
-                  const AngleComputer & object )
-{
-    object.selfDisplay ( out );
-    return out;
-}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

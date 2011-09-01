@@ -115,7 +115,7 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::~AngleLinearMinimizerB
 DGtal::AngleLinearMinimizer::ValueInfo & 
 DGtal::AngleLinearMinimizer::rw( unsigned int i )
 {
-  ASSERT_LinearMinimizer( ( myValues != 0 ) && ( i < maxSize() ) );
+  ASSERT( ( myValues != 0 ) && ( i < maxSize() ) );
   return myValues[ i ];
 }
 
@@ -126,7 +126,7 @@ DGtal::AngleLinearMinimizer::rw( unsigned int i )
 const DGtal::AngleLinearMinimizer::ValueInfo & 
 DGtal::AngleLinearMinimizer::ro( unsigned int i ) const
 {
-  ASSERT_LinearMinimizer( ( myValues != 0 ) && ( i < maxSize() ) );
+  ASSERT( ( myValues != 0 ) && ( i < maxSize() ) );
   return myValues[ i ];
 }
 
@@ -156,9 +156,9 @@ DGtal::AngleLinearMinimizer::size() const
  * @param nb any number below 'maxSize()'.
  */
 void
-DGtal::LinearMinimizer::setSize( unsigned int nb )
+DGtal::AngleLinearMinimizer::setSize( unsigned int nb )
 {
-  ASSERT_LinearMinimizer( nb <= maxSize() );
+  ASSERT( nb <= maxSize() );
   mySize = nb;
 }
 
@@ -170,7 +170,7 @@ DGtal::LinearMinimizer::setSize( unsigned int nb )
  * closed and the last value is linked to the first one.
  */
 void
-DGtal::LinearMinimizer::setIsCurveOpen( bool isCurveOpen)
+DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
 {
   myIsCurveOpen = isCurveOpen;
 }
