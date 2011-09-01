@@ -70,7 +70,7 @@ using namespace LibBoard;
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(LibBoard::Board & aboard) const
+  void selfDraw(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
