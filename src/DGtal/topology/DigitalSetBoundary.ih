@@ -41,9 +41,9 @@
 /**
  * Destructor.
  */
-template <typename T>
+template <typename TKSpace, typename TDigitalSet>
 inline
-DGtal::DigitalSetBoundary<T>::~DigitalSetBoundary()
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::~DigitalSetBoundary()
 {
 }
 
@@ -54,10 +54,10 @@ DGtal::DigitalSetBoundary<T>::~DigitalSetBoundary()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename TKSpace, typename TDigitalSet>
 inline
 void
-DGtal::DigitalSetBoundary<T>::selfDisplay ( std::ostream & out ) const
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::selfDisplay ( std::ostream & out ) const
 {
   out << "[DigitalSetBoundary]";
 }
@@ -66,10 +66,10 @@ DGtal::DigitalSetBoundary<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename TKSpace, typename TDigitalSet>
 inline
 bool
-DGtal::DigitalSetBoundary<T>::isValid() const
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::isValid() const
 {
     return true;
 }
@@ -79,11 +79,11 @@ DGtal::DigitalSetBoundary<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <typename TKSpace, typename TDigitalSet>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DigitalSetBoundary<T> & object )
+		  const DigitalSetBoundary<TKSpace,TDigitalSet> & object )
 {
   object.selfDisplay( out );
   return out;
