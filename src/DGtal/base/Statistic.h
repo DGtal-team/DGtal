@@ -284,7 +284,7 @@ namespace DGtal
   template <typename RealNumberType>
   std::ostream&
   operator<<( std::ostream & thatStream, 
-	      const Statistic<RealNumberType> & that_object_to_display );
+        const Statistic<RealNumberType> & that_object_to_display );
   
   
 } // namespace DGtal

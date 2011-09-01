@@ -81,15 +81,15 @@ bool testMagickReader()
   nbok += img.isValid() ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "img.isValid() == true"
-	       << std::endl;
+         << "img.isValid() == true"
+         << std::endl;
 
   nbok += img.extent() == Image::Vector( 64, 64 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "img.extent() = " << img.extent() 
-	       << "( == {64,64} )"
-	       << std::endl;
+         << "img.extent() = " << img.extent() 
+         << "( == {64,64} )"
+         << std::endl;
 
   Board2D board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;

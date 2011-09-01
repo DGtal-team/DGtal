@@ -72,7 +72,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
-			 typename TImage::Value>::value));
+       typename TImage::Value>::value));
     
     typedef TImage Image;
     typedef typename TImage::Value Value;
@@ -90,7 +90,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportLongvol(const std::string & filename, const Image &aImage, 
-			      const Value & minV, const Value & maxV) 
+            const Value & minV, const Value & maxV) 
       throw(DGtal::IOException);
   
 
@@ -109,7 +109,7 @@ namespace DGtal
     ostream& write_word( ostream& outs, Word value )
     {
       for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-	outs.put( static_cast <char> (value & 0xFF) );
+  outs.put( static_cast <char> (value & 0xFF) );
       return outs;
     }
     

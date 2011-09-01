@@ -204,7 +204,7 @@ DGtal::Display3D::addPoint(double x, double y, double z ,const DGtal::Color &aCo
 inline
 void
 DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
-			 const DGtal::Color & aColor, double width){
+       const DGtal::Color & aColor, double width){
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   lineD3D l;
@@ -235,9 +235,9 @@ DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2
 inline
 void
 DGtal::Display3D::addQuad(double x1, double y1, double z1,  double x2,
-			  double y2, double z2,
-			  double x3, double y3, double z3,  
-			  double x4, double y4, double z4, DGtal::Color aColor){
+        double y2, double z2,
+        double x3, double y3, double z3,  
+        double x4, double y4, double z4, DGtal::Color aColor){
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   updateBoundingBox(x3, y3, z3);
@@ -280,8 +280,8 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,  double x2,
 inline
 void
 DGtal::Display3D::addKSSurfel(double x, double y, double z, 
-			      bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-			      bool isOriented, bool isOrientedPositively, bool basicMode ){
+            bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+            bool isOriented, bool isOrientedPositively, bool basicMode ){
   updateBoundingBox(x, y, z);
   float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
@@ -469,7 +469,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
 inline
 void 
 DGtal::Display3D::addKSPointel(double x, double y, double z,
-			       double size, bool isSigned, bool signPos){
+             double size, bool isSigned, bool signPos){
   updateBoundingBox(x, y, z);
   pointD3D pt;
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
@@ -508,8 +508,8 @@ DGtal::Display3D::addKSVoxel(int x, int y, int z){
 inline
 void
 DGtal::Display3D::addKSLinel(double x1, double y1, double z1,
-				  double x2, double y2, double z2,
-				  double width,  bool isSigned, bool signPos){
+          double x2, double y2, double z2,
+          double width,  bool isSigned, bool signPos){
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   lineD3D l;
@@ -543,58 +543,58 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
     cp.a=a; cp.b=b; cp.c=c; cp.d=d;
     myClippingPlaneList.push_back(cp);
     if(drawPlane){
-      double x1,x2,x3,x4;	
+      double x1,x2,x3,x4;  
       double y1,y2,y3,y4;
       double z1,z2,z3,z4;
       double norm = sqrt(a*a+b*b+c*c);
       double dec=0.1;
       // Z dominant projection of the upper face
       if(abs(c)>=abs(b) && abs(c) >= abs(a)){
-	x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
-	z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
-	x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
-	z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
-	x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
-	z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
-	x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
-	z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;     
-	if(c>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
-	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
-	}
-	
+  x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
+  z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
+  x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
+  z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
+  x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
+  z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
+  x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
+  z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;     
+  if(c>0){
+    addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
+  }else{
+    addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
+  }
+  
       }// Y dominant projection of the upper face
       else   if(abs(b)>=abs(c) && abs(b) >= abs(a)){
-	x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
-	y1=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
-	x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
-	y2=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
-	x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
-	y3=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
-	x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
-	y4=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
-	if(b>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
-	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
-	}
+  x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+  y1=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
+  x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
+  y2=  b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
+  x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+  y3=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
+  x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
+  y4=  b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
+  if(b>0){
+    addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
+  }else{
+    addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
+  }
       }// X dominant projection of the upper face
       else   if(abs(a)>=abs(c) && abs(a) >= abs(b)){
-	y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
-	x1=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
-	y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
-	x2=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
-	y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
-	x3=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
-	y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
-	x4=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
-	
-	if(a>0){
-	  addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
-	}else{
-	  addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
-	}
+  y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+  x1=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
+  y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
+  x2=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
+  y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+  x3=  a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
+  y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
+  x4=  a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
+  
+  if(a>0){
+    addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1, DGtal::Color(205,0,0, 30));       
+  }else{
+    addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4 , DGtal::Color(205,0,0, 30));       
+  }
       }
       
     }

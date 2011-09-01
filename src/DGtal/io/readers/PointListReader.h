@@ -98,7 +98,7 @@ namespace DGtal
      **/
     static std::vector< TPoint>  
     getPointsFromInputStream (std::istream &in, 
-			      std::vector<unsigned int> aVectPosition=std::vector<unsigned int>());
+            std::vector<unsigned int> aVectPosition=std::vector<unsigned int>());
   
 
     /** 
@@ -113,7 +113,7 @@ namespace DGtal
      **/
     static std::vector< TPoint>  
     getPointsFromFile (const std::string &filename, 
-		       std::vector<unsigned int>  aVectPosition=std::vector<unsigned int>());
+           std::vector<unsigned int>  aVectPosition=std::vector<unsigned int>());
   
 
 

@@ -86,8 +86,8 @@ DGtal::DigitalSetBySTLSet<Domain> &
 DGtal::DigitalSetBySTLSet<Domain>::operator= ( const DigitalSetBySTLSet<Domain> & other )
 {
   ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
-	  && ( myDomain.upperBound() >= other.myDomain.upperBound() )
-	  && "This domain should include the domain of the other set in case of assignment." );
+    && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+    && "This domain should include the domain of the other set in case of assignment." );
   mySet = other.mySet;
   return *this;
 }
@@ -325,12 +325,12 @@ DGtal::DigitalSetBySTLSet<Domain>
     {
       Iterator it_dst = end();
       for ( ConstIterator it_src = aSet.begin();
-	    it_src != aSet.end();
-	    ++it_src )
-	{
-	  // Use hint it_dst to go faster.
-	  it_dst = mySet.insert( it_dst, *it_src );
-	}
+      it_src != aSet.end();
+      ++it_src )
+  {
+    // Use hint it_dst to go faster.
+    it_dst = mySet.insert( it_dst, *it_src );
+  }
     }
   return *this;
 }
@@ -493,8 +493,8 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentDisplay3D( Display
   ASSERT(Domain::Space::dimension == 3);
   display.createNewVoxelList(false);
   for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
+   it != this->end();
+   ++it )
     {
       display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
@@ -510,8 +510,8 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingDisplay3D( Display3D & displa
   ASSERT(Domain::Space::dimension == 3);
   display.createNewVoxelList(true);
   for (  ConstIterator it = this->begin(); 
-	 it != this->end();
-	 ++it )
+   it != this->end();
+   ++it )
     {
       display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
     }
@@ -525,7 +525,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridDisplay3D( Display3D & display 
 {
   ASSERT(Domain::Space::dimension == 3);
   for ( ConstIterator it = this->begin(); 
-	it != this->end();
+  it != this->end();
         ++it )
     {
       display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());

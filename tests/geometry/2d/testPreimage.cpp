@@ -133,7 +133,7 @@ int main()
   bInf.push_back(Point(8, 12));
   bInf.push_back(Point(9, 13));
 
-	bSup.push_back(Point(4, 13));
+  bSup.push_back(Point(4, 13));
   bSup.push_back(Point(5, 12));
   bSup.push_back(Point(6, 13));
   bSup.push_back(Point(7, 14));
@@ -144,7 +144,7 @@ int main()
   trace.beginBlock("test limit case");
 
   {
-		Board board;
+    Board board;
     board.setUnit(Board::UCentimeter);
 
     int i = 0;

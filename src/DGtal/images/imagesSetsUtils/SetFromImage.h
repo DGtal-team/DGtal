@@ -83,9 +83,9 @@ namespace DGtal
     template<typename Image, typename ForegroundPredicate>
     static
     void append(Set &aSet, 
-		const ForegroundPredicate &isForeground,
-		typename Image::Domain::ConstIterator itBegin, 
-		typename Image::Domain::ConstIterator itEnd);
+    const ForegroundPredicate &isForeground,
+    typename Image::Domain::ConstIterator itBegin, 
+    typename Image::Domain::ConstIterator itEnd);
   
     /** 
      * Append an Image value set  to an existing Set (maybe empty).
@@ -103,10 +103,10 @@ namespace DGtal
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage,
-		const typename Image::Value minVal,
-		const typename Image::Value maxVal,
-		typename Image::Domain::ConstIterator itBegin, 
-		typename Image::Domain::ConstIterator itEnd)
+    const typename Image::Value minVal,
+    const typename Image::Value maxVal,
+    typename Image::Domain::ConstIterator itBegin, 
+    typename Image::Domain::ConstIterator itEnd)
     {
       SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
@@ -148,8 +148,8 @@ namespace DGtal
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage, 
-		const typename Image::Value minVal,
-		const typename Image::Value maxVal)
+    const typename Image::Value minVal,
+    const typename Image::Value maxVal)
     {
       SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);

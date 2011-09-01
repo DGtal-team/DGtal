@@ -136,22 +136,22 @@ namespace DGtal
     {
       bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
       {
-	return (aImage(aPoint) != 0);
+  return (aImage(aPoint) != 0);
       }
 
       bool operator()(const Image &aImage, const typename Image::Iterator &it) const
       {
-	return (aImage(it) != 0);
+  return (aImage(it) != 0);
       }
 
       bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
       {
-	return (aImage(it) != 0);
+  return (aImage(it) != 0);
       }
 
       bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
       {
-	return (aImage(it) != 0);
+  return (aImage(it) != 0);
       }
 
     };
@@ -244,9 +244,9 @@ b     * @param aImage the input image
      */
     template <typename ForegroundPredicate>
     void computeFirstStep1D (const Image & aImage, 
-			     OutputImage & output, 
-			     const Point &startingPoint, 
-			     const ForegroundPredicate &predicate) const;
+           OutputImage & output, 
+           const Point &startingPoint, 
+           const ForegroundPredicate &predicate) const;
 
     /** 
      *  Compute the other steps of the separable distance transformation.
@@ -255,7 +255,7 @@ b     * @param aImage the input image
      * intermediate) step 
      * @param output the output image 
      * @param dim the dimension to process
-     */		
+     */    
     void computeOtherSteps(const OutputImage & inputImage, OutputImage & output, const Dimension dim)const;
 
     /** 
@@ -269,8 +269,8 @@ b     * @param aImage the input image
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeOtherStep1D (const OutputImage & input, OutputImage & output, 
-			     const Point &row, const Size dim, 
-			     Abscissa s[], Abscissa t[]) const;
+           const Point &row, const Size dim, 
+           Abscissa s[], Abscissa t[]) const;
 
 
     // ------------------- Private members ------------------------

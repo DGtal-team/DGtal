@@ -65,7 +65,7 @@ namespace DGtal
   {
 
     // ----------------------- Types ------------------------------
-	public:
+  public:
 
     typedef typename SegmentComputer::ConstIterator ConstIterator;
     typedef typename Functor::Value Quantity;
@@ -138,17 +138,17 @@ namespace DGtal
   private:
 
     /** grid step */
-		double myH; 
+    double myH; 
     /** 'true' is the initialization has been done, 'false' otherwise */
     bool myFlagIsInit;
     /** 'true' if the range is viewed as closed, 'false' otherwise */ 
-		bool myFlagIsClosed;
+    bool myFlagIsClosed;
     /** segmentComputer used to decompose the range */ 
     SegmentComputer mySC; 
     /** functor estimating the quantity from a point and a segmentComputer */ 
     Functor myFunctor;
     /** begin and end iterators */ 
-		ConstIterator myBegin,myEnd;
+    ConstIterator myBegin,myEnd;
     /** range of maximal segments */ 
     MaximalSegments<SegmentComputer> myMSRange; 
 

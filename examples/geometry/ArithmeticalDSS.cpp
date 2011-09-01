@@ -72,31 +72,31 @@ int main()
     contour.push_back(Point(6,3));
     contour.push_back(Point(6,4));
 
-		
+    
     // Add points while it is possible
-    DSS4 theDSS4;		
+    DSS4 theDSS4;    
     theDSS4.init( contour.begin() );
     while ( ( theDSS4.end() != contour.end() )
-	        &&( theDSS4.extend() ) ) {}
+          &&( theDSS4.extend() ) ) {}
 
     // Output parameters
     cout << theDSS4 << endl;
 
     // Draw the grid
     Board2D board;
-	
+  
     Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Grid")
-	  << domain;		
+    << domain;    
 
     // Draw the points of the DSS
     board << SetMode("PointVector", "Grid")
-	  << SetMode(theDSS4.styleName(), "Points") 
-	  << theDSS4;
+    << SetMode(theDSS4.styleName(), "Points") 
+    << theDSS4;
     // Draw the bounding box
     board << SetMode(theDSS4.styleName(), "BoundingBox") 
-	  << theDSS4;
-	
+    << theDSS4;
+  
     board.saveSVG("DSS4.svg");
   }
 
@@ -120,10 +120,10 @@ int main()
     boundary.push_back(Point(6,4));
 
     // Add points while it is possible
-    DSS8 theDSS8;		
+    DSS8 theDSS8;    
     theDSS8.init( boundary.begin() );
     while ( ( theDSS8.end() != boundary.end() )
-	        &&( theDSS8.extend() ) ) {}
+          &&( theDSS8.extend() ) ) {}
 
 
     // Output parameters
@@ -133,18 +133,18 @@ int main()
     Board2D board;
     Domain domain( Point(0,0), Point(8,8) );
     board << SetMode(domain.styleName(), "Paving")
-	  << domain;		
-	
+    << domain;    
+  
     //Draw the points of the DSS
     board << SetMode("PointVector", "Both");
     board << SetMode(theDSS8.styleName(), "Points") 
-	  << theDSS8;
+    << theDSS8;
 
     //Draw the bounding box of the DSS
     board << SetMode(theDSS8.styleName(), "BoundingBox") 
-	  << theDSS8;
-		
-		
+    << theDSS8;
+    
+    
     board.saveSVG("DSS8.svg");
 
   }

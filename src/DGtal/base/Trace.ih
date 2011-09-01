@@ -120,15 +120,15 @@ void
 DGtal::Trace::beginBlock(const std::string &keyword)
 {
   myWriter.outputStream()<< myCurrentPrefix 
-			 << myWriter.prefixEmphase()
-			 << "New Block ["<<keyword << "]"
-			 << myWriter.postfixReset()
-			 <<std::endl;
+       << myWriter.prefixEmphase()
+       << "New Block ["<<keyword << "]"
+       << myWriter.postfixReset()
+       <<std::endl;
   myCurrentLevel++;
   myCurrentPrefix += TRACE_PATTERN;
   myKeywordStack.push(keyword);
 
-	//Block timer start
+  //Block timer start
   Clock *c = new(Clock);
   c->startClock();
   myClockStack.push(c);
@@ -157,10 +157,10 @@ DGtal::Trace::endBlock()
   tick = localClock->stopClock();
 
   myWriter.outputStream() << myCurrentPrefix 
-			  << myWriter.prefixEmphase() 
-			  << "EndBlock [" << myKeywordStack.top()
-			  << "] (" << tick<<" ms)"
-			  << myWriter.postfixReset()<< std::endl;
+        << myWriter.prefixEmphase() 
+        << "EndBlock [" << myKeywordStack.top()
+        << "] (" << tick<<" ms)"
+        << myWriter.postfixReset()<< std::endl;
   myKeywordStack.pop();
   myClockStack.pop();
   delete localClock;
@@ -229,7 +229,7 @@ DGtal::Trace::info() const
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
-		 const Trace & object )
+     const Trace & object )
 {
   object.selfDisplay( out );
   return out;

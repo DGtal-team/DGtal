@@ -328,57 +328,57 @@ namespace DGtal
       //(back point on the first point)
       //(front point after the last point)
       ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();	
+      ConstIterator back = aDSS.getBack();  
 
       if (isExtendableAtBack) {
         if (isExtendableAtFront) {
 
-			    --back;
+          --back;
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
-				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
-					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1)&&
+               (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+                (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                  //inflection
 
         } else {
 
-			    --back;
+          --back;
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                 //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                 //inflection
 
         }
       } else if (isExtendableAtFront) {
 
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
 
@@ -505,57 +505,57 @@ namespace DGtal
       //(back point on the first point)
       //(front point after the last point)
       ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();	
+      ConstIterator back = aDSS.getBack();  
 
       if (isExtendableAtBack) {
         if (isExtendableAtFront) {
 
-			    --back;
+          --back;
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
-				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
-					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1)&&
+               (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+                (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                  //inflection
 
         } else {
 
-			    --back;
+          --back;
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                 //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                 //inflection
 
         }
       } else if (isExtendableAtFront) {
 
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
 

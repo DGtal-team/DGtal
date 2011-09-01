@@ -80,12 +80,12 @@ DGtal::Shapes<TDomain>::removeNorm1Ball
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
   for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
-	++it )
+  it != ballDomain.end(); 
+  ++it )
     {
       if ( domain.isInside( *it ) 
-	   && ( (*it - aCenter ).norm1() <= aRadius ) )
-	aSet.erase( *it );
+     && ( (*it - aCenter ).norm1() <= aRadius ) )
+  aSet.erase( *it );
     }
 }
 /**
@@ -115,12 +115,12 @@ DGtal::Shapes<TDomain>::addNorm1Ball
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
   for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
-	++it )
+  it != ballDomain.end(); 
+  ++it )
     {
       if ( domain.isInside( *it ) 
-	   && ( (*it - aCenter ).norm1() <= aRadius ) )
-	aSet.insert( *it );
+     && ( (*it - aCenter ).norm1() <= aRadius ) )
+  aSet.insert( *it );
     }
 }
 
@@ -152,12 +152,12 @@ DGtal::Shapes<TDomain>::removeNorm2Ball
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
   for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
-	++it )
+  it != ballDomain.end(); 
+  ++it )
     {
       if ( domain.isInside( *it ) 
-	   && ( (*it - aCenter ).norm() <= aRadius ) )
-	aSet.erase( *it );
+     && ( (*it - aCenter ).norm() <= aRadius ) )
+  aSet.erase( *it );
     }
 }
 
@@ -189,12 +189,12 @@ DGtal::Shapes<TDomain>::addNorm2Ball
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
   for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
-	++it )
+  it != ballDomain.end(); 
+  ++it )
     {
       if ( domain.isInside( *it ) 
-	   && ( (*it - aCenter ).norm() <= aRadius ) )
-	aSet.insert( *it );
+     && ( (*it - aCenter ).norm() <= aRadius ) )
+  aSet.insert( *it );
     }
 }
 
@@ -202,7 +202,7 @@ template <typename TDomain>
 template <typename TDigitalSet, typename ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::shaper( TDigitalSet & aSet,
-					const ShapeFunctor & aFunctor)
+          const ShapeFunctor & aFunctor)
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   
@@ -214,11 +214,11 @@ DGtal::Shapes<TDomain>::shaper( TDigitalSet & aSet,
 
   LocalSpace implicitDomain( pLow, pUpp );
   for ( typename LocalSpace::ConstIterator it = implicitDomain.begin(); 
-	it != implicitDomain.end(); 
-	++it )
+  it != implicitDomain.end(); 
+  ++it )
     {
       if ( aFunctor.isInside( *it ) )
-	aSet.insert( *it );
+  aSet.insert( *it );
     }
 }
 
@@ -261,7 +261,7 @@ template <typename TDomain>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Shapes<TDomain> & object )
+      const Shapes<TDomain> & object )
 {
   object.selfDisplay( out );
   return out;

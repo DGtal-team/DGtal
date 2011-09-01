@@ -83,7 +83,7 @@ bool testHashTree()
   nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -133,18 +133,18 @@ bool testGetSetVal()
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
       {
-	if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(32.0,3.0))
-	  {
-	    myImage.setValue(a, 30);
-	    myImageV.setValue(a,30);
-	  }
+  if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(32.0,3.0))
+    {
+      myImage.setValue(a, 30);
+      myImageV.setValue(a,30);
+    }
 
-	else
-	  if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(64.0,3.0))
-	    {
-	      myImage.setValue(a, 10);	
-	      myImageV.setValue(a,10);
-	    }
+  else
+    if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(64.0,3.0))
+      {
+        myImage.setValue(a, 10);  
+        myImageV.setValue(a,10);
+      }
       }
   trace.endBlock();
   
@@ -154,11 +154,11 @@ bool testGetSetVal()
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
       {
-	if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
-	  result = result && (myImage(a) == 30);
-	else
-	  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-	    result = result && (myImage(a) == 10);	    
+  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
+    result = result && (myImage(a) == 30);
+  else
+    if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
+      result = result && (myImage(a) == 10);      
       }
   trace.endBlock();
   
@@ -186,11 +186,11 @@ bool testGetSetVal()
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
       {
-	if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
-	  myImage2.setValue(a, 30);
-	else
-	  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-	    myImage2.setValue(a, 10);	
+  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
+    myImage2.setValue(a, 30);
+  else
+    if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
+      myImage2.setValue(a, 10);  
       }
   trace.endBlock();
   
@@ -200,11 +200,11 @@ bool testGetSetVal()
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
       {
-	if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
-	  result = result && (myImage2(a) == 30);
-	else
-	  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-	    result = result && (myImage2(a) == 10);	    
+  if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(32,3.0))
+    result = result && (myImage2(a) == 30);
+  else
+    if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
+      result = result && (myImage2(a) == 10);      
       }
   trace.endBlock();
   
@@ -216,7 +216,7 @@ bool testGetSetVal()
   nb++;
   
   trace.warning() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
 
 
   return nbok == nb;
