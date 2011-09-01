@@ -1,8 +1,0 @@
-## Sources associated to the module math
-##
-
-SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/math/MeasureOfStraightLines
-		DGtal/math/arithmetic/ModuloComputer
-		)
-
