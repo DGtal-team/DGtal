@@ -41,7 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/SurfelAdjacency.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,27 +65,17 @@ namespace DGtal
   template <typename TKSpace, typename TDigitalSet>
   class DigitalSetBoundary
   {
-    // ----------------------- public types ------------------------------
   public:
-    typedef DigitalSetBoundary<TKSpace,TDigitalSet> Self;
-    typedef TDigitalSet DigitalSet;
-    typedef TKSpace KSpace;
-    typedef typename KSpace::SCell Surfel;
-    typedef typename std::vector<Surfel> SurfelStorage;
-    typedef typename SurfelStorage::const_iterator SurfelConstIterator;
-    typedef typename KSpace::Space Space;
-    typedef typename DigitalSet::Domain Domain;
-    typedef typename DigitalSet::Point Point;
 
     /**
-       A model of DigitalSurfaceTracker for DigitalSetBoundary.
+       A model of CDigitalSurfaceTracker for DigitalSetBoundary.
     */
     class Tracker
     {
     public:
       typedef Tracker Self;
-      typedef DigitalSetBoundary<KSpace,DigitalSet> DigitalSurfaceContainer;
-      typedef DigitalSurfaceContainer::Surfel Surfel;
+      typedef DigitalSetBoundary<TKSpace,TDigitalSet> DigitalSurfaceContainer;
+      typedef typename DigitalSurfaceContainer::Surfel Surfel;
     public:
 
       /**
@@ -91,7 +83,8 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( const DigitalSurfaceContainer & aSurface, const Surfel & s );
+      Tracker( const DigitalSurfaceContainer & aSurface, 
+               const Surfel & s );
 
       /**
 	 Copy constructor.
@@ -145,7 +138,24 @@ namespace DGtal
 
     };
 
+    // ----------------------- associated types ------------------------------
+  public:
+    typedef DigitalSetBoundary<TKSpace,TDigitalSet> Self;
+    typedef TDigitalSet DigitalSet;
+    typedef TKSpace KSpace;
+    typedef typename KSpace::SCell Surfel;
+    typedef typename std::vector<Surfel> SurfelStorage;
+    typedef typename SurfelStorage::const_iterator SurfelConstIterator;
+    typedef typename KSpace::Space Space;
+    typedef typename DigitalSet::Domain Domain;
+    typedef typename DigitalSet::Point Point;
     typedef Tracker DigitalSurfaceTracker;
+
+    // ----------------------- other types ------------------------------
+  public:
+    typedef SurfelAdjacency<KSpace::dimension> Adjacency;
+    typedef typename KSpace::Cell Cell;
+    typedef typename KSpace::SCell SCell;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -156,10 +166,21 @@ namespace DGtal
     ~DigitalSetBoundary();
 
     /**
-     * Constructor from digital set.
-     * @param aSet a set of points that is duplicated in 'this'.
-     */
-    DigitalSetBoundary( const DigitalSet & aSet );
+       Constructor from digital set.
+       @param aKSpace a cellular grid space (referenced).
+       @param aSet a set of points that is duplicated in 'this'.
+       
+       @param adj the surfel adjacency (default is interior to
+       exterior adjacency ).
+      */
+    DigitalSetBoundary( const KSpace & aKSpace,
+                        const DigitalSet & aSet,
+                        const Adjacency & adj = Adjacency( true ) );
+
+    /// accessor to surfel adjacency.
+    const Adjacency & surfelAdjacency() const;
+    /// mutator to surfel adjacency.
+    Adjacency & surfelAdjacency();
 
     // --------- CDigitalSurfaceContainer realization -------------------------
   public:
@@ -210,6 +231,8 @@ namespace DGtal
     const KSpace & myKSpace;
     /// a smart pointer to some digital set.
     DigitalSet myDigitalSet;
+    /// the surfel adjacency used to determine neighbors. 
+    Adjacency mySurfelAdjacency;
     /// a vector storing all the surfels of the boundary.
     SurfelStorage mySurfels;
 

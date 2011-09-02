@@ -480,15 +480,16 @@ namespace DGtal
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
-       @param aLowerBound and @param aUpperBound Cell giving the
+       @param aLowerBound and @param aUpperBound points giving the
        bounds of the extracted boundary.
     */
     template <typename CellSet, typename PointPredicate >
     static 
     void uMakeBoundary( CellSet & aBoundary,
-      const KSpace & aKSpace,
-      const PointPredicate & pp,
-      const Cell aLowerBound, const Cell aUpperBound  );
+                        const KSpace & aKSpace,
+                        const PointPredicate & pp,
+                        const Point & aLowerBound, 
+                        const Point & aUpperBound  );
     
     /**
        Creates a set of signed surfels whose elements represents all the
@@ -508,15 +509,80 @@ namespace DGtal
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
-       @param aLowerBound and @param aUpperBound Cell giving the
+       @param aLowerBound and @param aUpperBound points giving the
        bounds of the extracted boundary.
     */
     template <typename SCellSet, typename PointPredicate >
     static 
     void sMakeBoundary( SCellSet & aBoundary,
-      const KSpace & aKSpace,
-      const PointPredicate & pp,
-      const Cell aLowerBound, const Cell aUpperBound  );
+                        const KSpace & aKSpace,
+                        const PointPredicate & pp,
+                        const Point & aLowerBound, 
+                        const Point & aUpperBound  );
+
+    /**
+       Writes on the output iterator @a out_it the unsigned surfels
+       whose elements represents all the boundary elements of a
+       digital shape described by the predicate [pp].
+       
+       @tparam OutputIterator any output iterator (like
+       std::back_insert_iterator< std::vector<Cell> >).
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+       
+       @param out_it any output iterator for writing the cells.
+       
+       @param aKSpace any space.
+
+       @param aSurfelAdj the surfel adjacency chosen for the tracking.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape.
+
+       @param aLowerBound and @param aUpperBound points giving the
+       bounds of the extracted boundary.
+    */
+    template <typename OutputIterator, typename PointPredicate >
+    static 
+    void uWriteBoundary( OutputIterator & out_it,
+                         const KSpace & aKSpace,
+                         const PointPredicate & pp,
+                         const Point & aLowerBound, 
+                         const Point & aUpperBound  );
+    
+    /**
+       Writes on the output iterator @a out_it the signed surfels
+       whose elements represents all the boundary elements of a
+       digital shape described by the predicate [pp].
+       
+       @tparam OutputIterator any output iterator (like
+       std::back_insert_iterator< std::vector<SCell> >).
+
+       @tparam PointPredicate a model of CPointPredicate describing
+       the inside of a digital shape, meaning a functor taking a Point
+       and returning 'true' whenever the point belongs to the shape.
+       
+       @param out_it any output iterator for writing the signed cells.
+       
+       @param aKSpace any space.
+
+       @param aSurfelAdj the surfel adjacency chosen for the tracking.
+
+       @param pp an instance of a model of CPointPredicate, for
+       instance a SetPredicate for a digital set representing a shape.
+
+       @param aLowerBound and @param aUpperBound points giving the
+       bounds of the extracted boundary.
+    */
+    template <typename OutputIterator, typename PointPredicate >
+    static 
+    void sWriteBoundary( OutputIterator & out_it,
+                         const KSpace & aKSpace,
+                         const PointPredicate & pp,
+                         const Point & aLowerBound, 
+                         const Point & aUpperBound  );
     
 
     

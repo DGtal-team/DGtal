@@ -29,6 +29,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <iterator>
+#include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -38,13 +41,112 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
+//-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::~DigitalSetBoundary()
 {
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
+( const KSpace & aKSpace, 
+  const DigitalSet & aSet,
+  const Adjacency & adj )
+  : myKSpace( aKSpace ), myDigitalSet( aSet ), mySurfelAdjacency( adj )
+{
+  computeSurfels();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+const 
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency & 
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency() const
+{
+  return mySurfelAdjacency;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency & 
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency()
+{
+  return mySurfelAdjacency;
+}
+
+//-----------------------------------------------------------------------------
+// --------- CDigitalSurfaceContainer realization -------------------------
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+const typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::KSpace & 
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::space() const
+{
+  return myKSpace;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+bool
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::isInside
+( const Surfel & s ) const
+{
+  Dimension k = myKSpace.sOrthDir( s );
+  // checks if the surfel is on the space boundary.
+  if ( myKSpace.sIsMax( s, k ) || myKSpace.sIsMin( s, k ) )
+    return false;
+  SCell spel1 = myKSpace.sIncident( s, k, true ); 
+  SCell spel2 = myKSpace.sIncident( s, k, false ); 
+  Point p1 = myKSpace.sCoords( spel1 );
+  Point p2 = myKSpace.sCoords( spel2 );
+  bool p1_in_set = myDigitalSet.find( p1 ) != myDigitalSet.end();
+  bool p2_in_set = myDigitalSet.find( p2 ) != myDigitalSet.end();
+  return p1_in_set ? ( ! p2_in_set ) : p2_in_set;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::SurfelConstIterator
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::begin() const
+{
+  return mySurfels.begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::SurfelConstIterator
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::end() const
+{
+  return mySurfels.end();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSurfaceTracker* 
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::newTracker
+( const Surfel & s ) const
+{
+  return new Tracker( *this, s );
+}
+
+// ------------------------- Hidden services ------------------------------
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+void
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::computeSurfels()
+{
+  SetPredicate<DigitalSet> isInSet( myDigitalSet );
+  mySurfels.clear();
+  std::back_insert_iterator<SurfelStorage> output_it =
+    std::back_inserter( mySurfels );
+  Surfaces<KSpace>::sWriteBoundary( output_it,
+                                    myKSpace,
+                                    isInSet,
+                                    myKSpace.lowerBound(), 
+                                    myKSpace.upperBound() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +173,7 @@ inline
 bool
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::isValid() const
 {
-    return true;
+  return true;
 }
 
 
