@@ -163,9 +163,9 @@ DGtal::OrderedAlphabet::firstLyndonFactor
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-	++i;
+  ++i;
       else 
-	i = s;
+  i = s;
       ++j;
     }
   len = (size_t) j - i;
@@ -199,9 +199,9 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-	mc.increment( i );
+  mc.increment( i );
       else 
-	i = s;
+  i = s;
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -221,7 +221,7 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
  * @param e the index after the end in [w] (s<e).
  */
 bool DGtal::OrderedAlphabet::duvalPP( size_t & len, size_t & nb, 
-		const std::string & w, index_t s, index_t e) const
+    const std::string & w, index_t s, index_t e) const
 {
   ASSERT( ( order( w[ s ] ) == 1 ) || ( order( w[ s ] ) == 2 ) );
   index_t i = s;
@@ -230,25 +230,25 @@ bool DGtal::OrderedAlphabet::duvalPP( size_t & len, size_t & nb,
   index_t q = s+1;
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
   {
-	  if ( equal( w[ i ], w[ j ] ) )
-	  {
-		  if ( j == q ) 
-			  q += (p-s+1);
-		  ++i;
-	  }
-	  else
-	  {
-		  if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) )
-		  {
-			  len = j-s; nb = 0;
-			  return false;
-		  }
-		  index_t tmp = p; 
-		  p = q;
-		  q += q - tmp;
-		  i = s;
-	  }
-	  ++j;
+    if ( equal( w[ i ], w[ j ] ) )
+    {
+      if ( j == q ) 
+        q += (p-s+1);
+      ++i;
+    }
+    else
+    {
+      if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) )
+      {
+        len = j-s; nb = 0;
+        return false;
+      }
+      index_t tmp = p; 
+      p = q;
+      q += q - tmp;
+      i = s;
+    }
+    ++j;
   }
   len = (size_t) j - i;
   nb = ( (size_t) (j-s) ) / len;
@@ -286,72 +286,72 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
   index_t s, index_t e
   ) const
 {
-	ASSERT( ( order( w[ s ] ) == 1 ) || ( order( w[ s ] ) == 2 ) );
-	index_t i = s;
-	index_t j = s+1;
-	index_t p = s;
-	index_t q = s+1;
-	unsigned int slope1 = (order( w[ i ] ) == 1) ? 1 : 0;
-	unsigned int slope2 = (order( w[ i ] ) == 2) ? 1 : 0;
-	lf1 = n1 = slope1;
-	lf2 = n2 = slope2;
-	nb = 1;
-	//cerr << "input : " << w << endl;
-	bool convex = true;
-	while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
+  ASSERT( ( order( w[ s ] ) == 1 ) || ( order( w[ s ] ) == 2 ) );
+  index_t i = s;
+  index_t j = s+1;
+  index_t p = s;
+  index_t q = s+1;
+  unsigned int slope1 = (order( w[ i ] ) == 1) ? 1 : 0;
+  unsigned int slope2 = (order( w[ i ] ) == 2) ? 1 : 0;
+  lf1 = n1 = slope1;
+  lf2 = n2 = slope2;
+  nb = 1;
+  //cerr << "input : " << w << endl;
+  bool convex = true;
+  while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
 
-		//cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
-		//	<< q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
-		//	<< " lf1=" << lf1 << " lf2=" << lf2 << endl;
+    //cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
+    //  << q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
+    //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;
 
-		//This 'if/else if' is added to compute the vector defined by
-		//the Christoffel word, this is usefull in order to compute the
-		//leaning points.
-		if (order( w[ j ] ) == 1)
-			++slope1;
-		else if (order( w[ j ] ) == 2)
-			++slope2;
+    //This 'if/else if' is added to compute the vector defined by
+    //the Christoffel word, this is usefull in order to compute the
+    //leaning points.
+    if (order( w[ j ] ) == 1)
+      ++slope1;
+    else if (order( w[ j ] ) == 2)
+      ++slope2;
 
-		if ( equal( w[ i ], w[ j ] ) ) {
-			if ( j == q ) {
-				q += (p-s+1);
+    if ( equal( w[ i ], w[ j ] ) ) {
+      if ( j == q ) {
+        q += (p-s+1);
 
-			//A repetition is read when j==s+(nb+1)*(p-s+1)-1
-			} 
-			if ( j == nb * (p-s+1) + p ) {
-				++nb;
-			}
-			++i;
-		} else {
-			if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) ) {
-				convex = false;
-				break;
-			}
-			index_t tmp = p; 
-			p = q;
-			q += q - tmp;
-			i = s;
+      //A repetition is read when j==s+(nb+1)*(p-s+1)-1
+      } 
+      if ( j == nb * (p-s+1) + p ) {
+        ++nb;
+      }
+      ++i;
+    } else {
+      if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) ) {
+        convex = false;
+        break;
+      }
+      index_t tmp = p; 
+      p = q;
+      q += q - tmp;
+      i = s;
 
-			// Extra information to compute the leaning points
-			lf1 = lf1 + (nb-1)*n1;
-			lf2 = lf2 + (nb-1)*n2;
-			n1 = slope1;
-			n2 = slope2;
-			nb = 1;
-		}
-		++j;
-	}
-	len = (size_t) j - i;
-	//cerr << "Termine" << endl;
-	//cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
-	//	<< q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
-	//	<< " lf1=" << lf1 << " lf2=" << lf2 << endl;
+      // Extra information to compute the leaning points
+      lf1 = lf1 + (nb-1)*n1;
+      lf2 = lf2 + (nb-1)*n2;
+      n1 = slope1;
+      n2 = slope2;
+      nb = 1;
+    }
+    ++j;
+  }
+  len = (size_t) j - i;
+  //cerr << "Termine" << endl;
+  //cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
+  //  << q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
+  //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;
 
-	if ( nb != (size_t) (j-s) / len)
-		cout << "ASSERT(" << nb << " == (" << j << "-" << s << ") / "<<len << ")" << endl;
-	ASSERT( nb == (size_t) (j-s) / len);
-	//nb = (size_t) (j-s) / len;
-	return true;
+  if ( nb != (size_t) (j-s) / len)
+    cout << "ASSERT(" << nb << " == (" << j << "-" << s << ") / "<<len << ")" << endl;
+  ASSERT( nb == (size_t) (j-s) / len);
+  //nb = (size_t) (j-s) / len;
+  return true;
 }
 
 
@@ -379,8 +379,8 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
  */
 bool 
 DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
-				       const std::string & w, 
-				       index_t s, index_t e ) const
+               const std::string & w, 
+               index_t s, index_t e ) const
 {
   ASSERT( ( order( w[ s ] ) == 1 )
           || ( order( w[ s ] ) == 2 ) );
@@ -394,23 +394,23 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
     {
       // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
       if ( equal( w[ i ], w[ j ] ) )
-	{
-	  if ( j == mc.cast( s + q - 1 ) )
-	    q += p;
-	  mc.increment( i );
-	}
+  {
+    if ( j == mc.cast( s + q - 1 ) )
+      q += p;
+    mc.increment( i );
+  }
       else 
-	{
-	  if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
-	    {
-	      len = j; nb = 0;
-	      return false;
-	    }
-	  unsigned int tmp = p; 
-	  p = q;
-	  q += q - tmp;
-	  i = s;
-	}
+  {
+    if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
+      {
+        len = j; nb = 0;
+        return false;
+      }
+    unsigned int tmp = p; 
+    p = q;
+    q += q - tmp;
+    i = s;
+  }
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -471,10 +471,10 @@ DGtal::OrderedAlphabet::isValid() const
  */ 
 DGtal::OrderedAlphabet::size_t
 DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
-				    size_t & nb_a2,
-				    std::string & w,
-				    index_t & s,
-				    bool & cvx )
+            size_t & nb_a2,
+            std::string & w,
+            index_t & s,
+            bool & cvx )
 {
   ModuloComputer< Integer > mc( w.size() );
   size_t l;
@@ -518,18 +518,18 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
       index_t ss = s;
       s = mc.cast( s + l );
       while ( len != 0 )
-	{
-	  if ( w[ ss ] == a2 ) ++nb_a2;
-	  mc.increment( ss );
-	  --len;
-	}
+  {
+    if ( w[ ss ] == a2 ) ++nb_a2;
+    mc.increment( ss );
+    --len;
+  }
       nb_a1 -= nb_a2;
       nb_a1 *= nb;
       nb_a2 *= nb;
     }
   return l;
 }
-				    
+            
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :

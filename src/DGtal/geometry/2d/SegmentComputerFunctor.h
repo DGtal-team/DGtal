@@ -100,7 +100,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    TangentFromDSSFunctor( const TangentFromDSSFunctor & other ) {};
+    TangentFromDSSFunctor( const TangentFromDSSFunctor &  ) {};
 
 
 
@@ -117,11 +117,11 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& , 
                       const DSSComputer& aDSS, 
-                      const double& h = 1,
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false) const {
+                      const double& = 1 ,
+                      const bool& = false ,
+                      const bool& = false) const {
 
       double x = NumberTraits<typename DSSComputer::Integer>
       ::castToDouble( aDSS.getB() ); 
@@ -214,11 +214,11 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& , 
                       const DSSComputer& aDSS, 
-                      const double& h = 1, 
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false ) const {
+                      const double& = 1/*h = 1*/, 
+                      const bool& = false/*isExtendableAtBack = false*/,
+                      const bool& = false/*isExtendableAtFront = false*/) const {
 
       Value a = (Value) NumberTraits<typename DSSComputer::Integer>
                         ::castToInt64_t(aDSS.getA());      
@@ -294,7 +294,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & other ) {};
+    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & /*other*/ ) {};
 
 
 
@@ -328,57 +328,57 @@ namespace DGtal
       //(back point on the first point)
       //(front point after the last point)
       ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();	
+      ConstIterator back = aDSS.getBack();  
 
       if (isExtendableAtBack) {
         if (isExtendableAtFront) {
 
-			    --back;
+          --back;
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
-				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
-					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1)&&
+               (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+                (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                  //inflection
 
         } else {
 
-			    --back;
+          --back;
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                 //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                 //inflection
 
         }
       } else if (isExtendableAtFront) {
 
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS) )/h; 
+          } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
 
@@ -471,7 +471,7 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & other ) {};
+    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & /*other*/ ) {};
 
 
 
@@ -488,7 +488,7 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& /*aPoint*/, 
                       const DSSComputer& aDSS, 
                       const double& h = 1, 
                       const bool& isExtendableAtBack = false,
@@ -505,57 +505,57 @@ namespace DGtal
       //(back point on the first point)
       //(front point after the last point)
       ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();	
+      ConstIterator back = aDSS.getBack();  
 
       if (isExtendableAtBack) {
         if (isExtendableAtFront) {
 
-			    --back;
+          --back;
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1)&&
-				       (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
-					      (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1)&&
+               (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
+                (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                  //inflection
 
         } else {
 
-			    --back;
+          --back;
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                 //inflection
+          //cases
+          if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                 //inflection
 
         }
       } else if (isExtendableAtFront) {
 
           ++front; 
 
-	        //parameters
-	        Integer mu = aDSS.getMu();
-	        Integer omega = aDSS.getOmega();
+          //parameters
+          Integer mu = aDSS.getMu();
+          Integer omega = aDSS.getOmega();
 
-			    //cases
-			    if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-				    k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-				    k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
-			    } //else                                                  //inflection
+          //cases
+          if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
+            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
+            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+          } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
 

@@ -67,7 +67,7 @@ bool testPNMReader()
   
   board.saveEPS( "testPNMReader.eps");
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();  
   return nbok == nb;
 }

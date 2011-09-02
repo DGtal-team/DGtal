@@ -83,7 +83,7 @@ bool testImagesSetsUtilities()
 
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -136,13 +136,13 @@ bool testSetFromImage()
   trace.info()<< "Size=" << setFromImg.size();
   
   Image setImage = ImageFromSet<Image>::create(setFromImg, 1,
-					       false, 
- 					       setFromImg.begin(), 
- 					       setFromImg.end());
+                 false, 
+                  setFromImg.begin(), 
+                  setFromImg.end());
   
   trace.info() << "Image at 0,12:" << setImage(Point(0,12))<< endl;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

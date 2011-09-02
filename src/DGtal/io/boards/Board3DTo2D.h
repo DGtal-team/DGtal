@@ -143,7 +143,7 @@ namespace DGtal
     //    */
     //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
-    DGtal::Color myDefaultColor;	//!< default color
+    DGtal::Color myDefaultColor;  //!< default color
 
   
 
@@ -206,15 +206,15 @@ namespace DGtal
      */
     void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
   
-    int Viewport[4];		//!< 2D viewport
-    double matrix[16]; 		//!< projection matrix
+    int Viewport[4];    //!< 2D viewport
+    double matrix[16];     //!< projection matrix
       
-    double camera_position[3];	//!< camera position
-    double camera_direction[3];	//!< camera direction
-    double camera_upVector[3];	//!< camera up-vector
+    double camera_position[3];  //!< camera position
+    double camera_direction[3];  //!< camera direction
+    double camera_upVector[3];  //!< camera up-vector
   
-    double ZNear;			//!< znear distance
-    double ZFar;			//!< zfar distance
+    double ZNear;      //!< znear distance
+    double ZFar;      //!< zfar distance
   
   protected :
     /*!

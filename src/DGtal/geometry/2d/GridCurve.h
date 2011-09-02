@@ -250,7 +250,7 @@ namespace DGtal
 
     struct DefaultDrawStylePoints : public DrawableWithBoard2D
     {
-      virtual void selfDraw( Board2D & aBoard ) const
+      virtual void selfDraw( Board2D &  ) const
       {
       }
     };
@@ -259,8 +259,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	      aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	      aBoard.setFillColor( DGtal::Color::None);
+        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+        aBoard.setFillColor( DGtal::Color::None);
       }
     };
 
@@ -291,48 +291,48 @@ namespace DGtal
        /**
          * Default Constructor.
          */
-	
+  
         SCellsRange(){}
 
        /**
          * Constructor.
          */
-	
+  
         SCellsRange( const Storage& aStorage ): myData(&aStorage){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
-	
+  
         SCellsRange( const SCellsRange & aOther )
-	      : myData( aOther.myData ){}
+        : myData( aOther.myData ){}
       
         /**
          * Assignment.
          * @param other the iterator to copy.
          * @return a reference on 'this'.
          */
-	
+  
         SCellsRange& operator= ( const SCellsRange & other )
-        {	
-	        if ( this != &other )
-	          {
+        {  
+          if ( this != &other )
+            {
               myData = other.myData;
-	          }
-	        return *this;
+            }
+          return *this;
         }
 
         /**
          * Destructor. Does nothing.
          */
-	
+  
         ~SCellsRange() {}
 
         /**
          * @return the size of the range
          */
-	
+  
         typename Storage::size_type size() const {
           return myData->size();
         }
@@ -379,11 +379,11 @@ namespace DGtal
 
     };
 
-	
+  
     ///////////////////////////////////////////////////////////////////////////////
     // end of class SCellsRange
     ///////////////////////////////////////////////////////////////////////////////
-	
+  
   /**
    * Accessor of a range of 0-cells
    * @return SCellsRange
@@ -447,7 +447,7 @@ namespace DGtal
           /**
            * Default Constructor.
            */
-	        ConstIterator() {}
+          ConstIterator() {}
 
           /**
            * Constructor.
@@ -459,30 +459,30 @@ namespace DGtal
            * Copy constructor.
            * @param other the iterator to clone.
            */
-	
+  
           ConstIterator( const ConstIterator & aOther )
             : myC(aOther.myC),myIt(aOther.myIt) {}
-	        
+          
           /**
            * Assignment.
            * @param other the iterator to copy.
            * @return a reference on 'this'.
            */
-	
+  
           ConstIterator& operator= ( const ConstIterator & other )
-          {	
-	          if ( this != &other )
-	            {
-	              myIt = other.myIt;
+          {  
+            if ( this != &other )
+              {
+                myIt = other.myIt;
                 myC = other.myC;
-	            }
-	          return *this;
+              }
+            return *this;
           }
 
           /**
            * Destructor. Does nothing.
            */
-	
+  
           ~ConstIterator(){}
 
           // ------------------------- iteration services -------------------------
@@ -491,10 +491,10 @@ namespace DGtal
           /**
            * @return the current coordinates.
            */
-	
+  
           Point operator*() const
           {
-	          return Point( myC->myK.sCoords(*myIt) );
+            return Point( myC->myK.sCoords(*myIt) );
           }
 
           /**
@@ -503,40 +503,40 @@ namespace DGtal
 
           ConstIterator& operator++()
           {
-	          ++myIt;
-	          return *this;
+            ++myIt;
+            return *this;
           }
-	
+  
           /**
            * Post-increment.
            */
-	
+  
           ConstIterator  operator++(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt++;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt++;
+            return tmp;
           }
 
           /**
            * Pre-decrement.
            */
-	
+  
           ConstIterator&  operator--()
           {
-	          --myIt;
-	          return *this;
+            --myIt;
+            return *this;
           }
 
           /**
            * Post-decrement.
            */
-	
+  
           ConstIterator  operator--(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt--;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt--;
+            return tmp;
           }
 
           /**
@@ -547,7 +547,7 @@ namespace DGtal
 
           bool operator == ( const ConstIterator & aOther ) const
           {
-	          return myIt == aOther.myIt;
+            return myIt == aOther.myIt;
           }
 
           /**
@@ -558,7 +558,7 @@ namespace DGtal
 
           bool operator < ( const ConstIterator & aOther ) const
           {
-	          return myIt < aOther.myIt;
+            return myIt < aOther.myIt;
           }
 
           /**
@@ -569,7 +569,7 @@ namespace DGtal
 
           bool operator!= ( const ConstIterator & aOther ) const
           {
-	          return myIt != aOther.myIt;
+            return myIt != aOther.myIt;
           }
 
         };
@@ -585,48 +585,48 @@ namespace DGtal
        /**
          * Default Constructor.
          */
-	
+  
         PointsRange(){}
 
        /**
          * Constructor.
          */
-	
+  
         PointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
-	
+  
         PointsRange( const PointsRange & aOther )
-	      : myC( aOther.myC ){}
+        : myC( aOther.myC ){}
       
         /**
          * Assignment.
          * @param other the iterator to copy.
          * @return a reference on 'this'.
          */
-	
+  
         PointsRange& operator= ( const PointsRange & other )
-        {	
-	        if ( this != &other )
-	          {
+        {  
+          if ( this != &other )
+            {
               myC = other.myC;
-	          }
-	        return *this;
+            }
+          return *this;
         }
 
         /**
          * Destructor. Does nothing.
          */
-	
+  
         ~PointsRange() {}
 
         /**
          * @return the size of the range
          */
-	
+  
         typename Storage::size_type size() const {
           return myC->my0SCells.size();
         }
@@ -731,7 +731,7 @@ namespace DGtal
           /**
            * Default Constructor.
            */
-	        ConstIterator() {}
+          ConstIterator() {}
 
           /**
            * Constructor.
@@ -743,30 +743,30 @@ namespace DGtal
            * Copy constructor.
            * @param other the iterator to clone.
            */
-	
+  
           ConstIterator( const ConstIterator & aOther )
             : myC(aOther.myC),myIt(aOther.myIt) {}
-	        
+          
           /**
            * Assignment.
            * @param other the iterator to copy.
            * @return a reference on 'this'.
            */
-	
+  
           ConstIterator& operator= ( const ConstIterator & other )
-          {	
-	          if ( this != &other )
-	            {
-	              myIt = other.myIt;
+          {  
+            if ( this != &other )
+              {
+                myIt = other.myIt;
                 myC = other.myC;
-	            }
-	          return *this;
+              }
+            return *this;
           }
 
           /**
            * Destructor. Does nothing.
            */
-	
+  
           ~ConstIterator(){}
 
           // ------------------------- iteration services -------------------------
@@ -775,12 +775,12 @@ namespace DGtal
           /**
            * @return the current coordinates.
            */
-	
+  
           Point operator*() const
           {
             Point p( myC->myK.sKCoords(*myIt) );
             p /= 2;
-	          return p;
+            return p;
           }
 
           /**
@@ -789,40 +789,40 @@ namespace DGtal
 
           ConstIterator& operator++()
           {
-	          ++myIt;
-	          return *this;
+            ++myIt;
+            return *this;
           }
-	
+  
           /**
            * Post-increment.
            */
-	
+  
           ConstIterator  operator++(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt++;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt++;
+            return tmp;
           }
 
           /**
            * Pre-decrement.
            */
-	
+  
           ConstIterator&  operator--()
           {
-	          --myIt;
-	          return *this;
+            --myIt;
+            return *this;
           }
 
           /**
            * Post-decrement.
            */
-	
+  
           ConstIterator  operator--(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt--;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt--;
+            return tmp;
           }
 
           /**
@@ -833,7 +833,7 @@ namespace DGtal
 
           bool operator == ( const ConstIterator & aOther ) const
           {
-	          return myIt == aOther.myIt;
+            return myIt == aOther.myIt;
           }
 
           /**
@@ -844,7 +844,7 @@ namespace DGtal
 
           bool operator!= ( const ConstIterator & aOther ) const
           {
-	          return myIt != aOther.myIt;
+            return myIt != aOther.myIt;
           }
 
         };
@@ -860,48 +860,48 @@ namespace DGtal
        /**
          * Default Constructor.
          */
-	
+  
         MidPointsRange(){}
 
        /**
          * Constructor.
          */
-	
+  
         MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
-	
+  
         MidPointsRange( const MidPointsRange & aOther )
-	      : myC( aOther.myC ){}
+        : myC( aOther.myC ){}
       
         /**
          * Assignment.
          * @param other the iterator to copy.
          * @return a reference on 'this'.
          */
-	
+  
         MidPointsRange& operator= ( const MidPointsRange & other )
-        {	
-	        if ( this != &other )
-	          {
+        {  
+          if ( this != &other )
+            {
               myC = other.myC;
-	          }
-	        return *this;
+            }
+          return *this;
         }
 
         /**
          * Destructor. Does nothing.
          */
-	
+  
         ~MidPointsRange() {}
 
         /**
          * @return the size of the range
          */
-	
+  
         typename Storage::size_type size() const {
           return myC->my1SCells.size();
         }
@@ -1012,7 +1012,7 @@ namespace DGtal
           /**
            * Default Constructor.
            */
-	        ConstIterator() {}
+          ConstIterator() {}
 
           /**
            * Constructor.
@@ -1024,30 +1024,30 @@ namespace DGtal
            * Copy constructor.
            * @param other the iterator to clone.
            */
-	
+  
           ConstIterator( const ConstIterator & aOther )
             : myC(aOther.myC),myIt(aOther.myIt) {}
-	        
+          
           /**
            * Assignment.
            * @param other the iterator to copy.
            * @return a reference on 'this'.
            */
-	
+  
           ConstIterator& operator= ( const ConstIterator & other )
-          {	
-	          if ( this != &other )
-	            {
-	              myIt = other.myIt;
+          {  
+            if ( this != &other )
+              {
+                myIt = other.myIt;
                 myC = other.myC; 
-	            }
-	          return *this;
+              }
+            return *this;
           }
 
           /**
            * Destructor. Does nothing.
            */
-	
+  
           ~ConstIterator(){}
 
           // ------------------------- iteration services -------------------------
@@ -1056,7 +1056,7 @@ namespace DGtal
           /**
            * @return the current coordinates.
            */
-	
+  
           Arrow operator*() const
           {
             ASSERT(myC);
@@ -1077,40 +1077,40 @@ namespace DGtal
 
           ConstIterator& operator++()
           {
-	          ++myIt;
-	          return *this;
+            ++myIt;
+            return *this;
           }
-	
+  
           /**
            * Post-increment.
            */
-	
+  
           ConstIterator  operator++(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt++;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt++;
+            return tmp;
           }
 
           /**
            * Pre-decrement.
            */
-	
+  
           ConstIterator&  operator--()
           {
-	          --myIt;
-	          return *this;
+            --myIt;
+            return *this;
           }
 
           /**
            * Post-decrement.
            */
-	
+  
           ConstIterator  operator--(int)
           {
-	          ConstIterator tmp(*this);
-	          myIt--;
-	          return tmp;
+            ConstIterator tmp(*this);
+            myIt--;
+            return tmp;
           }
 
           /**
@@ -1121,7 +1121,7 @@ namespace DGtal
 
           bool operator == ( const ConstIterator & aOther ) const
           {
-	          return myIt == aOther.myIt;
+            return myIt == aOther.myIt;
           }
 
           /**
@@ -1132,7 +1132,7 @@ namespace DGtal
 
           bool operator!= ( const ConstIterator & aOther ) const
           {
-	          return myIt != aOther.myIt;
+            return myIt != aOther.myIt;
           }
 
         };
@@ -1148,48 +1148,48 @@ namespace DGtal
        /**
          * Default Constructor.
          */
-	
+  
         ArrowsRange(){}
 
        /**
          * Constructor.
          */
-	
+  
         ArrowsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
         /**
          * Copy constructor.
          * @param other the iterator to clone.
          */
-	
+  
         ArrowsRange( const ArrowsRange & aOther )
-	      : myC( aOther.myC ){}
+        : myC( aOther.myC ){}
       
         /**
          * Assignment.
          * @param other the iterator to copy.
          * @return a reference on 'this'.
          */
-	
+  
         ArrowsRange& operator= ( const ArrowsRange & other )
-        {	
-	        if ( this != &other )
-	          {
+        {  
+          if ( this != &other )
+            {
               myC = other.myC;
-	          }
-	        return *this;
+            }
+          return *this;
         }
 
         /**
          * Destructor. Does nothing.
          */
-	
+  
         ~ArrowsRange() {}
 
         /**
          * @return the size of the range
          */
-	
+  
         typename Storage::size_type size() const {
           return myC->my1SCells.size();
         }

@@ -71,6 +71,7 @@ bool testCombinatorialDSS()
   int nbRetract = 0;
   CombinatorialDSS C(theContour.begin());
   while ( *C.end() != *theContour.end() ) 
+  //while ( C.end() != theContour.end() ) 
   {
     if ( ! C.extend() )  {
       C.retract();
@@ -105,6 +106,7 @@ bool CompareToArithmetical()
   bool a,c;
   bool res = true;
   while ( *C.end() != *theContour.end() ) {
+  //while ( C.end() != theContour.end() ) {
     double d = ((double) rand()) / ((double) RAND_MAX );
     if ( (d < 0.15)  && (nbPts > 2) ) {
       a = A.retract();

@@ -35,8 +35,8 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -69,8 +69,8 @@ int main( int argc, char** argv )
   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
       if ( ((*it - c ).norm() <= 25) && ((*it - c ).norm() >= 18)
-	   && ( (((*it)[0] <= 3)&& ((*it)[0] >= -3))|| (((*it)[1] <= 3)&& ((*it)[1] >= -3)))){
-	shape_set.insertNew( *it );
+     && ( (((*it)[0] <= 3)&& ((*it)[0] >= -3))|| (((*it)[1] <= 3)&& ((*it)[1] >= -3)))){
+  shape_set.insertNew( *it );
       }
     }
   trace.warning() << "  [Done]";
@@ -84,20 +84,20 @@ int main( int argc, char** argv )
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
       for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-	if ( shape.isSimple( *it ) )
-	  Q.push( it );
+  if ( shape.isSimple( *it ) )
+    Q.push( it );
       nb_simple = 0;
       while ( ! Q.empty() )
-	{
-	  DigitalSet::Iterator it = Q.front();
-	  Q.pop();
-	  if ( shape.isSimple( *it ) )
-	    {
-	      cerr << "point simple " << (*it) << endl; 
-	      S.erase( *it );
-	      ++nb_simple;
-	    }
-	}
+  {
+    DigitalSet::Iterator it = Q.front();
+    Q.pop();
+    if ( shape.isSimple( *it ) )
+      {
+        cerr << "point simple " << (*it) << endl; 
+        S.erase( *it );
+        ++nb_simple;
+      }
+  }
       ++layer;
     }
   while ( nb_simple != 0 );

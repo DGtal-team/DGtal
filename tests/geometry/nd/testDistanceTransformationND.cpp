@@ -91,26 +91,26 @@ bool testDistanceTransformND()
   
   //We check the result
   bool res=true;
-  for(Domain::ConstIterator itDom = domain.range().begin(), itDomend = domain.range().end();
+  for(Domain::ConstIterator itDom = domain.begin(), itDomend = domain.end();
       itDom != itDomend; ++itDom)
     {
       //distance from the point to the seed
       d = (*itDom) - c;
       ImageLong::Value norm2=0;
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
-	norm2+= (*itd)*(*itd);
+  norm2+= (*itd)*(*itd);
 
        if ( result( (*itDom) ) != norm2)
-	{
-	  trace.error()<<"Error at "<<(*itDom)
-		       << ": expected="<<norm2<<" and computed="<<result(*itDom)<<endl;
-	res=false;
-	}
+  {
+    trace.error()<<"Error at "<<(*itDom)
+           << ": expected="<<norm2<<" and computed="<<result(*itDom)<<endl;
+  res=false;
+  }
     }
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

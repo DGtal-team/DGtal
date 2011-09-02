@@ -54,59 +54,59 @@
 namespace DGtal
 {
 
-	/////////////////////////////////////////////////////////////////////////////
-	// template class adapterDSS,
-	// which is a tool class for FP
-	template <typename ArithmeticalDSS>
-	class Adapter 
-	{
-		protected:
-			ArithmeticalDSS* myDSS;
-		public:
-			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
-			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
-	};
+  /////////////////////////////////////////////////////////////////////////////
+  // template class adapterDSS,
+  // which is a tool class for FP
+  template <typename ArithmeticalDSS>
+  class Adapter 
+  {
+    protected:
+      ArithmeticalDSS* myDSS;
+    public:
+      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
+  };
 
-	template <typename ArithmeticalDSS>
-	class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
-	{
-		public:
-			//constructor
-			Adapter4ConvexPart(ArithmeticalDSS& aDSS)
-			{
-				this->myDSS = &aDSS;
-			}
-			//accessors
-			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
-			{
-				return this->myDSS->getUf();
-			}
-			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
-			{
-				return this->myDSS->getUl();
-			}
-	};
+  template <typename ArithmeticalDSS>
+  class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
+  {
+    public:
+      //constructor
+      Adapter4ConvexPart(ArithmeticalDSS& aDSS)
+      {
+        this->myDSS = &aDSS;
+      }
+      //accessors
+      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
+      {
+        return this->myDSS->getUf();
+      }
+      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
+      {
+        return this->myDSS->getUl();
+      }
+  };
 
-	template <typename ArithmeticalDSS>
-	class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
-	{
-		public:
-			//constructor
-			Adapter4ConcavePart(ArithmeticalDSS& aDSS)
-			{
-				this->myDSS = &aDSS;
-			}
-			//accessors
-			virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
-			{
-				return this->myDSS->getLf();
-			}
-			virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
-			{
-				return this->myDSS->getLl();
-			}
-	};
-	/////////////////////////////////////////////////////////////////////////////
+  template <typename ArithmeticalDSS>
+  class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
+  {
+    public:
+      //constructor
+      Adapter4ConcavePart(ArithmeticalDSS& aDSS)
+      {
+        this->myDSS = &aDSS;
+      }
+      //accessors
+      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
+      {
+        return this->myDSS->getLf();
+      }
+      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
+      {
+        return this->myDSS->getLl();
+      }
+  };
+  /////////////////////////////////////////////////////////////////////////////
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ namespace DGtal
   {
 
     // ----------------------- Types ------------------------------
-	public:
+  public:
 
 
   BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
@@ -134,7 +134,7 @@ namespace DGtal
   typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
   typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
 
-	typedef std::list<Point> Polygon;
+  typedef std::list<Point> Polygon;
 
 
 
@@ -192,12 +192,12 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-		//each vertex of the FP is stored in this list
-		Polygon myPolygon; 
+    //each vertex of the FP is stored in this list
+    Polygon myPolygon; 
 
-		//TRUE if the list has to be consider as circular
+    //TRUE if the list has to be consider as circular
     //FALSE otherwise
-		bool myFlagIsClosed;
+    bool myFlagIsClosed;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -276,12 +276,12 @@ namespace DGtal
     {
         virtual void selfDraw(Board2D & aBoard) const
         {
-				// Set board style
-				aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-				aBoard.setPenColor(Color::Red);
-				aBoard.setLineWidth(2);
-				aBoard.setFillColor(Color::None);
-			  }
+        // Set board style
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+        aBoard.setPenColor(Color::Red);
+        aBoard.setLineWidth(2);
+        aBoard.setFillColor(Color::None);
+        }
     };
 
       /*

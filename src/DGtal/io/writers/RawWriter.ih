@@ -42,7 +42,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV)
+        const Value & minV, const Value & maxV)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -56,7 +56,7 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
   out.open(filename.c_str(), ios_base::binary);
 
   //We scan the domain 
-  for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
+  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it)
     {

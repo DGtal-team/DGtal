@@ -112,7 +112,11 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
+    typedef FreemanChain<Integer> Self;
     typedef PointVector<2, Integer> PointI2;
+    typedef PointVector<2, Integer> VectorI2;
+    typedef unsigned int Size;
+    typedef unsigned int Index;
 
     // ------------------------- iterator ------------------------------
   public:
@@ -120,11 +124,11 @@ namespace DGtal
     ///////////////////////////////////////////////////////////////////////////////
     // class FreemanChain::ConstIterator
     ///////////////////////////////////////////////////////////////////////////////
-	
+  
     
     /**
-     * This class represents an iterator on the freeman chain, storing
-     * the current coordinate.
+     * This class represents an iterator on points defined by freeman chain,
+     * storing the current coordinate.
      */
 
     class ConstIterator : public 
@@ -139,7 +143,7 @@ namespace DGtal
         const FreemanChain* myFc;
 
         /// The current position in the word.
-        unsigned int myPos;
+        Index myPos;
 
         ///The current coordinates of the iterator.
         PointI2  myXY;
@@ -152,7 +156,7 @@ namespace DGtal
          * The object is not valid.
          */
         ConstIterator()
-          : myFc( 0 ), myPos( 0 )
+          : myFc( NULL ), myPos( 0 )
         { }
 
         /**
@@ -162,7 +166,7 @@ namespace DGtal
          * @param chain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          */
-        ConstIterator( const FreemanChain & aChain, unsigned int n =0);
+        ConstIterator( const FreemanChain & aChain, Index n =0);
 
 
         /**
@@ -176,7 +180,7 @@ namespace DGtal
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
-        ConstIterator( const FreemanChain & aChain, unsigned int n, const PointI2 & XY)
+        ConstIterator( const FreemanChain & aChain, Index n, const PointI2 & XY)
           : myFc( &aChain ), myPos( n ), myXY ( XY ) 
         { }
 
@@ -256,7 +260,7 @@ namespace DGtal
         /**
          * @return the current position (as an index in the Freeman chain).
          */
-        unsigned int getPosition() const
+        Index getPosition() const
         {
           return myPos;
         }
@@ -330,7 +334,6 @@ namespace DGtal
         }
 
 
-
         /**
          * Inequality operator.
          *
@@ -363,14 +366,384 @@ namespace DGtal
     };
 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // class FreemanChain::ConstCharIterator
+    ///////////////////////////////////////////////////////////////////////////////
+  
+    
+    /**
+     * This class represents an iterator on the symbols of the freeman chain.
+     *
+     * The ConstCharIterator inherits from std::string::const_iterator which is
+     * a random access iterator.
+     */
+
+    class ConstCharIterator : public std::string::const_iterator
+    {
+
+      // ------------------------- Private data -----------------------
+
+      private:
+
+        /// The Freeman chain visited by the iterator.
+        const FreemanChain* myFc;
+
+        typedef std::string::const_iterator parent;
+
+        // ------------------------- Standard services -----------------------
+      public:
+
+        /**
+         * Default constructor
+         * Not valid.
+         */
+        ConstCharIterator () :
+          myFc( NULL ) { }
+
+        /**
+         * Constructor.
+         *
+         * @param chain a Freeman chain,
+         * @param n the position in [chain] (within 0 and chain.size()).
+         */
+        ConstCharIterator( const FreemanChain & aFC, Index n = 0) ;
+
+        /**
+         * Copy constructor.
+         * @param other the iterator to clone.
+         */
+        ConstCharIterator( const ConstCharIterator & other );
+
+        /**
+         * Initilization from a ConstIterator. If the ConstIterator points on
+         * the i-th point of the curve defined by the FreemanChain then the
+         * CharIterator is initialized on the i-th letter, i.e. '*this' is the
+         * code of the step that starts at '*other'.  
+         * @param other the iterator
+         * on points
+         */
+        ConstCharIterator( const ConstIterator & other );
+
+
+        /**
+         * Destructor. Does nothing.
+         */
+        ~ConstCharIterator()
+        { }
+
+
+        const FreemanChain * getChain() const
+        {
+          return myFc;
+        }
+
+    };
 
 
 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // ----------------------- Standard services ------------------------------
+    
   public:
+
+    /**
+     * Destructor.
+     */
+    ~FreemanChain()
+    { }
+
+    /**
+     * Constructor.
+     * @param s the chain code.
+     * @param x the x-coordinate of the first point.
+     * @param y the y-coordinate of the first point.
+     */
+    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
+
+
+    /**
+     * Constructor.
+     * @param vectorPoints the vector containing all the points. 
+     */
+    FreemanChain( const std::vector<PointI2> vectPoints);
+    
+    
+    /**
+     * Constructor.
+     * @param in any input stream,
+     */
+    FreemanChain(std::istream & in );
+
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    FreemanChain( const FreemanChain & other );
+
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    FreemanChain & operator=( const FreemanChain & other );
+
+
+    /**
+     * Comparaison operator
+     * @param, other the object to compare to.
+     * @return 'true' both FreemanChain are equals, 'false' otherwise.
+     */
+    bool operator==( const FreemanChain & other) const
+    {
+      return (chain == other.chain) && ( x0 == other.x0 ) && ( y0 == other.y0 )
+        && ( xn == other.xn ) && ( yn == other.yn );
+    }
+
+    /**
+     * Comparaison operator
+     * @param, other the object to compare to.
+     * @return 'true' both FreemanChain are different, 'false' otherwise.
+     */
+    bool operator!=( const FreemanChain & other) const
+    {
+      return  (*this) != other;
+    }
+
+
+    /**
+     * @param pos a position in the chain code.
+     * @return the code at position [pos].
+     *
+     * Note, it is assumed that 0 <= pos < this->size()
+     */
+    unsigned int code( Index pos ) const;
+
+
+    /**
+     * @return the length of the Freeman chain code.
+     */
+    Size size() const;
+
+
+    /**
+     * Returns the subchain of the chain starting at position 'pos' and has 'n'
+     * letters long.  
+     *
+     * @param pos position of a character in the current FreemanChain object to
+     * be used as starting character for the subchain.  
+     * @param n length of the subchain.
+     *
+     * @return the subchain starting at 'pos' having 'n' letters long.
+     */
+    FreemanChain subChain( Index pos, Size n ) const;
+
+
+    /**
+     * Concatenation services.
+     *
+     * Note: the starting point of 'other' is not considered.
+     *
+     * @param other the chain to concatenate at the end of this.
+     * @return the concatenation of this and other.
+     */
+    FreemanChain operator+(const FreemanChain& other) const;
+
+
+    /**
+     * Concatenation services.
+     *
+     * Note: the starting point of 'other' is not considered.
+     *
+     * @param other the chain to concatenate at the end of this.
+     * @return a reference to this.
+     */
+    FreemanChain& operator+=(const FreemanChain& other);
+
+
+    /**
+     * Computes a bounding box for the Freeman chain code.
+     *
+     * @param min_x (returns) the minimal x-coordinate.
+     * @param min_y (returns) the minimal y-coordinate.
+     * @param max_x (returns) the maximal x-coordinate.
+     * @param max_y (returns) the maximal y-coordinate.
+     */
+    void computeBoundingBox( TInteger & min_x, TInteger& min_y,
+           TInteger& max_x, TInteger& max_y ) const;
+
+    /**
+     * Finds a quadrant change in 'this' Freeman chain and returns the
+     * position as an iterator. A quadrant change is some
+     <code>
+     abb..bc
+     |
+     iterator
+     <endcode>
+     *
+     * The alphabet is possibly re-ordered so that a > b > c.
+     *
+     * @param A (possibly updated) a Freeman chain alphabet, possibly
+     * re-ordered so that a > b > c.
+     *
+     * @return an iterator on 'this' that points on the first letter b.
+     */
+    //BK
+    typename Self::ConstIterator 
+      findQuadrantChange( OrderedAlphabet & A ) const;
+
+    /**
+     * Finds a quadrant change in 'this' Freeman chain and returns the
+     * position as an iterator. A quadrant change is some
+     <code>
+     (abc)*bc...cd
+     |
+     iterator
+     <endcode>
+     *
+     * This quadrant change also guarantees that is not a place where a
+     * convexity change occurs in the combinatorial MLP algorithm.
+     *
+     * The alphabet is possibly re-ordered so that b > c > d > a.
+     *
+     * @param A (possibly updated) a Freeman chain alphabet, possibly
+     * re-ordered so that b > c > d > a.
+     *
+     * @return an iterator on 'this' that points on the first letter c.
+     */
+    //BK
+    typename Self::ConstIterator
+      findQuadrantChange4( OrderedAlphabet & A ) const ;
+
+
+    /**
+     * This method takes O(n) operations. It determines if the FreemanChain
+     * corresponds to a closed contour, and if this is the case, determines how
+     * many counterclockwise loops the contour has done. Of course, it the
+     * contour has done clockwise loops, then the given number is accordingly
+     * negative.
+     *
+     * @return the number of counterclockwise loops, or '0' if the contour
+     * is open or invalid.
+     */
+    int isClosed() const ;
+
+
+    /**
+     * Computes the point where starts the step at position 'pos' of the
+     * FreemanChain. If 'pos' is equal to the length of the FreemanChain then
+     * the last point is returned.
+     *
+     * Note: for a chain of length 'n' the computation time in O( min( pos, n-pos ) ).
+     *
+     * @param pos the position of the point in the FreemanChain
+     * @return the point at position 'pos'.
+     */
+    PointI2 getPoint ( Index pos ) const;
+    
+
+    /**
+     * @return the starting point of the FreemanChain.
+     */
+    PointI2 firstPoint ( ) const
+    {
+      return *(begin());
+    }
+
+
+    /**
+     * @return the starting point of the FreemanChain.
+     */
+    PointI2 lastPoint ( ) const
+    {
+      return *(end());
+    }
+
+
+    /**
+     * @return the vector given by displacement from the first point to the
+     * last point.
+     */
+    VectorI2 totalDisplacement() const
+    {
+      return lastPoint() -  firstPoint();
+    }
+   
+
+    /**
+     * Add one symbol at the end of the FreemanChain
+     * @return reference to this.
+     */
+    FreemanChain & extend(char code);
+
+    /**
+     * Removes 'n' symbols at the end of the FreemanChain.
+     * @return reference to this.
+     */
+    FreemanChain & retract(Size n = 1);
+
+    
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // ----------------------- Iteration services ------------------------------
+    
+    /**
+     * Iterator service on points.
+     * @return an iterator pointing on the first point of the chain.
+     */
+    ConstIterator begin() const;
+
+
+    /**
+     * Iterator service on points.
+     * @return an iterator pointing after the last point of the chain.
+     */
+    ConstIterator end() const;
+
+    /**
+     * Iterator service on codes.
+     * @return an iterator pointing on the first point of the chain.
+     */
+    ConstCharIterator cbegin() const;
+
+
+    /**
+     * Iterator service on codes.
+     * @return an iterator pointing after the last point of the chain.
+     */
+    ConstCharIterator cend() const;
+
+
+    /**
+     * Returns the next position in the chain code. The path coded by the chain
+     * code is assumed to be closed so that the position after the last letter
+     * is the first one.  
+     * @param pos a position in the chain code.
+     * @return the next position.
+     */
+    Index next( Index pos ) const;
+
+
+    /**
+     * Returns the previous position in the chain code. The path coded by the
+     * chain code is assumed to be closed so that the position before the first
+     * letter is the first last one.  
+     * @param pos a position in the chain code.
+     * @return the previous position.
+     */
+    Index previous( Index pos ) const;
 
 
     // ------------------------- Static services -----------------------
     
+  public:
+
     /**
      * Outputs the chain [c] to the stream [out].
      * @param out any output stream,
@@ -388,6 +761,7 @@ namespace DGtal
      * @param c (returns) the Freeman chain.
      */
     static void read( std::istream & in, FreemanChain & c );
+
 
     /**
      * Return a vector containing all the interger points of the freemanchain.
@@ -483,9 +857,9 @@ namespace DGtal
      * @param pl_chain the input code of the 4-connected pointel contour.
      */
     static void pointel2pixel( FreemanChain & aPixChain,
-			       std::vector<unsigned int> & aPl2pix,
-			       std::vector<unsigned int> & aPix2pl,
-			       const FreemanChain & aPlChain )
+             std::vector<unsigned int> & aPl2pix,
+             std::vector<unsigned int> & aPix2pl,
+             const FreemanChain & aPlChain )
     {
       innerContour( aPixChain, aPl2pix, aPix2pl, aPlChain, true );
     };
@@ -518,10 +892,10 @@ namespace DGtal
      * its inside to the left.
      */
     static void innerContour( FreemanChain & aInnerChain,
-			      std::vector<unsigned int> & aOuter2inner,
-			      std::vector<unsigned int> & aInner2outer,
-			      const FreemanChain & aOuterChain,
-			      bool ccw = true );
+            std::vector<unsigned int> & aOuter2inner,
+            std::vector<unsigned int> & aInner2outer,
+            const FreemanChain & aOuterChain,
+            bool ccw = true );
 
     /**
      * Reads the 4-connected contour [c] so that meaningless back and
@@ -550,10 +924,10 @@ namespace DGtal
      * @todo This method is not implemented.
      */
     static void cleanContour( std::vector<FreemanChain> & aCleanCs,
-			      std::vector< std::pair<unsigned int, unsigned int> > & aC2clean,
-			      std::vector< std::vector<unsigned int> > & aClean2c,
-			      const FreemanChain & c,
-			      bool ccw = true )
+            std::vector< std::pair<unsigned int, unsigned int> > & aC2clean,
+            std::vector< std::vector<unsigned int> > & aClean2c,
+            const FreemanChain & c,
+            bool ccw = true )
     {
       // \TODO not implemented yet.
     }
@@ -581,500 +955,80 @@ namespace DGtal
      * @return 'true' if the contour add an interior, 'false' otherwise.
      */
     static bool cleanOuterSpikes( FreemanChain & aCleanC,
-				  std::vector<unsigned int> & aC2clean,
-				  std::vector<unsigned int> & aClean2c,
-				  const FreemanChain & c,
-				  bool ccw = true );
+          std::vector<unsigned int> & aC2clean,
+          std::vector<unsigned int> & aClean2c,
+          const FreemanChain & c,
+          bool ccw = true );
     
 
-
-    //     /**
-    //      * Given a Freeman chain [c] coding a 4-connected pixel loop, computes
-    //      * its subsampling by the transformation:
-    //      * X = ( x - x0 ) div h,
-    //      * Y = ( y - y0 ) div v.
-    //      *
-    //      * @param aSubc (output) the subsampled Freeman chain code (may
-    //      * contain spikes)
-    //      *
-    //      * @param aC2subc (output) the mapping associating an element to
-    //      * its subsampled element.
-    //      *
-    //      * @param aSubc2c (output) the inverse mapping associating a
-    //      * subsampled element to its element. More precisely, subc2c[ j ]
-    //      * is the last pointel to be in j.
-    //      *
-    //      * @param c the input chain code.
-    //      *
-    //      * @param h the subsampling along x
-    //      * @param v the subsampling along y
-    //      * @param x0 the x-origin of the frame (X,Y) in (x,y)
-    //      * @param y0 the y-origin of the frame (X,Y) in (x,y)
-    //      *
-    //      * @return 'false' if initial contour was empty or if [subc] is empty,
-    //      * 'true' otherwise.
-    //      */
-    //     static bool subsample( FreemanChain & aSubc,
-    // 			   std::vector<unsigned int> & aC2subc,
-    // 			   std::vector<unsigned int> & aSubc2c,
-    // 			   const FreemanChain & c,
-    // 			   unsigned int h, unsigned int v,
-    // 			   int x0, int y0 ){
-    //       if ( ( h == 0 ) || ( v == 0 ) ) return false;
-    //       FreemanChain<TInteger>::ConstIterator it = c.begin();
-    //   unsigned int j = 0;
-    //   unsigned int nb = c.chain.size();
-    //   if ( nb == 0 ) return false;
-
-    //   PointI2 fxy( it.get() );
-    //   PointI2 fXY;
-    //   fXY.at(0)= ( fxy.at(0) - x0 ) / h;
-    //   fXY.at(1)= ( fxy.at(1) - y0 ) / v;
-
-
-    //   aSubc.x0 = fXY.at(0);
-    //   aSubc.y0 = fXY.at(1);
-    //   aC2subc.clear();
-    //   aC2subc.reserve( nb );
-    //   aSubc2c.clear();
-    //   aSubc2c.reserve( nb );
-
-    //   for ( unsigned int i = 0; i < nb; ++i )
-    //     {
-    //       aC2subc.push_back( j );
-    //       it.nextInLoop();
-    //       PointI2 nxy( it.get() );
-    //       PointI2 nXY;
-    //       nXY.at(0)= ( nxy.at(0) - x0 ) / h;
-    //       nXY.at(1)= ( nxy.at(1) - y0 ) / v;
-
-
-    //       if ( nXY != fXY )
-    // 	{
-    // 	  aSubc2c.push_back( i );
-    // 	  char code;
-    // 	  if ( nXY.at(0) > fXY.at(0) )       code = '0';
-    // 	  else if ( nXY.at(0) < fXY.at(0) )  code = '2';
-    // 	  else if ( nXY.at(1) > fXY.at(1) )  code = '1';
-    // 	  else                           code = '3';
-    // 	  aSubc.chain += code;
-    // 	  ++j;
-    // 	  fXY = nXY;
-    // 	}
-    //     }
-    // //   aC2subc.push_back( j );
-    // //   it.nextInLoop();
-    // //   for ( unsigned int i = 1; i <= nb; ++i )
-    // //     {
-    // //       // JOL
-    // //       //aC2subc.push_back( j );
-    // //       Vector2i nxy( it.get() );
-    // //       Vector2i nXY( ( nxy.x() - x0 ) / h, ( nxy.y() - y0 ) / v );
-    // //       if ( nXY != fXY )
-    // // 	{
-    // // 	  char code;
-    // // 	  if ( nXY.x() > fXY.x() )       code = '0';
-    // // 	  else if ( nXY.x() < fXY.x() )  code = '2';
-    // // 	  else if ( nXY.y() > fXY.y() )  code = '1';
-    // // 	  else                           code = '3';
-    // // 	  aSubc.chain += code;
-    // // 	  aSubc2c.push_back( i - 1 );
-    // // 	  ++j;
-    // // 	  fXY = nXY;
-    // // 	}
-    // //       if ( i != nb ) aC2subc.push_back( j );
-    // //       it.nextInLoop();
-    // //     }
-    // //   // TODO : enhance this.
-    //   unsigned int nbsub =  aSubc.chain.size();
-    //   // Last correspondence may be in fact to 0 instead of nbsub.
-    //   if ( nbsub != 0 )
-    //     for ( unsigned int i = 0; i < nb; ++i )
-    //       if ( aC2subc[ i ] >= nbsub ) aC2subc[ i ] -= nbsub;
-
-
-    //   ASSERT( aC2subc.size() == nb );
-    //   return nbsub != 0;
-
-    //     }
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Destructor.
-     */
-    ~FreemanChain()
-    {
-    };
-
-    /**
-     * Constructor.
-     * @param s the chain code.
-     * @param x the x-coordinate of the first point.
-     * @param y the y-coordinate of the first point.
-     */
-    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
-
-
-    /**
-     * Constructor.
-     * @param vectorPoints the vector containing all the points. 
-     */
-    FreemanChain( const std::vector<Z2i::Point> vectPoints);
-    
-    
-    
-    /**
-     * Constructor.
-     * @param in any input stream,
-     */
-    FreemanChain(std::istream & in );
-
-
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    FreemanChain( const FreemanChain & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-    FreemanChain & operator=( const FreemanChain & other );
-
-
-    /**
-     * Iterator service.
-     * @return an iterator pointing on the first point of the chain.
-     */
-    ConstIterator begin() const;
-
-    /**
-     * Iterator service.
-     * @return an iterator pointing after the last point of the chain.
-     */
-    ConstIterator end() const;
-
-    /**
-     * @param pos a position in the chain code.
-     * @return the code at position [pos].
-     */
-    unsigned int code( unsigned int pos ) const;
-
-    /**
-     * @param pos a position in the chain code.
-     * @return the next position.
-     */
-    unsigned int next( unsigned int pos ) const;
-
-    /**
-     * @param pos a position in the chain code.
-     * @return the previous position.
-     */
-    unsigned int previous( unsigned int pos ) const;
-
-    /**
-     * @return the length of the Freeman chain code.
-     */
-    unsigned int size() const;
-
-
-
-    /**
-     * Computes a bounding box for the Freeman chain code.
-     *
-     * @param min_x (returns) the minimal x-coordinate.
-     * @param min_y (returns) the minimal y-coordinate.
-     * @param max_x (returns) the maximal x-coordinate.
-     * @param max_y (returns) the maximal y-coordinate.
-     */
-    void computeBoundingBox( TInteger & min_x, TInteger& min_y,
-			     TInteger& max_x, TInteger& max_y ) const
-    {
-
-      min_x = max_x = x0;
-      min_y = max_y = y0;
-      for ( typename FreemanChain<TInteger>::ConstIterator it = begin();
-            it != end();
-            ++it )
-        {
-          PointI2 p( *it );
-          if ( p.at(0) < min_x )
-            min_x = p.at(0);
-          else
-            if ( p.at(0) > max_x )
-              max_x = p.at(0);
-          if ( p.at(1) < min_y )
-            min_y = p.at(1);
-          else
-            if ( p.at(1) > max_y )
-              max_y = p.at(1);
-        }
-
-    }
-
-    /**
-     * Finds a quadrant change in 'this' Freeman chain and returns the
-     * position as an iterator. A quadrant change is some
-     <code>
-     abb..bc
-     |
-     iterator
-     <endcode>
-     *
-     * The alphabet is possibly re-ordered so that a > b > c.
-     *
-     * @param A (possibly updated) a Freeman chain alphabet, possibly
-     * re-ordered so that a > b > c.
-     *
-     * @return an iterator on 'this' that points on the first letter b.
-     */
-
-
-    //BK
-    typename FreemanChain<TInteger>::ConstIterator
-    findQuadrantChange( OrderedAlphabet & A ) const
-    {
-      typename FreemanChain<TInteger>::ConstIterator it = begin();
-      typename FreemanChain<TInteger>::ConstIterator it_end = end();
-      // find first letters a and b.
-      unsigned int code1 = it.getCode();
-      it.next();
-      while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-	it.next();
-      ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
-      unsigned int  code2 = it.getCode();
-      // find third letter c.
-      while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 ) ) )
-	it.next();
-      ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-      unsigned int code3 = it.getCode();
-      // reorder a and b.
-      it.previous();
-      if ( it.getCode() != code2 )
-	swap( code1, code2 );
-      // find first a.
-      do
-        {
-          it.previous();
-        }
-      while ( it.getCode() == code2 );
-      char a_char = chain[ it.getPosition() ];
-      // the next is the first b.
-      it.next();
-      char b_char = chain[ it.getPosition() ];
-      // Reorder the alphabet to match the quadrant change.
-      while ( A.order( b_char ) != 1 )
-	A.shiftLeft();
-      if ( A.order( a_char ) == 0 )
-        {
-          A.reverse();
-          while ( A.order( b_char ) != 1 )
-            A.shiftLeft();
-        }
-      ASSERT( ( A.order( b_char ) == 1 )
-	      && ( A.order( a_char ) == 2 )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
-      return it;
-
-
-    }
-
-    /**
-     * Finds a quadrant change in 'this' Freeman chain and returns the
-     * position as an iterator. A quadrant change is some
-     <code>
-     (abc)*bc...cd
-     |
-     iterator
-     <endcode>
-     *
-     * This quadrant change also guarantees that is not a place where a
-     * convexity change occurs in the combinatorial MLP algorithm.
-     *
-     * The alphabet is possibly re-ordered so that b > c > d > a.
-     *
-     * @param A (possibly updated) a Freeman chain alphabet, possibly
-     * re-ordered so that b > c > d > a.
-     *
-     * @return an iterator on 'this' that points on the first letter c.
-     */
-
-    //BK
-    typename FreemanChain<TInteger>::ConstIterator
-    findQuadrantChange4( OrderedAlphabet & A ) const
-    {
-      typename FreemanChain<TInteger>::ConstIterator it = begin();
-      typename FreemanChain<TInteger>::ConstIterator it_end = end();
-      // find first letters a and b.
-      uint8_t code1 = it.getCode();
-      it.next();
-      while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-	it.next();
-      ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
-      uint8_t code2 = it.getCode();
-      // find third letter c.
-      while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 ) ) )
-	it.next();
-      ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-      uint8_t code3 = it.getCode();
-      // find fourth letter d.
-      while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-				    || ( it.getCode() == code2 )
-				    || ( it.getCode() == code3 ) ) )
-	it.next();
-      ASSERT( ( it != it_end )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
-      uint8_t  code4 = it.getCode();
-      // define true c.
-      it.previous();
-      code3 = it.getCode();
-      // find first b.
-      do
-        {
-          it.previous();
-        }
-      while ( it.getCode() == code3 );
-      char a_char = chain[ it.getPosition() ];
-      // the next is the first c.
-      it.next();
-      char b_char = chain[ it.getPosition() ];
-      // Reorder the alphabet to match the quadrant change.
-      while ( A.order( b_char ) != 1 )
-	A.shiftLeft();
-      if ( A.order( a_char ) == 0 )
-        {
-          A.reverse();
-          while ( A.order( b_char ) != 1 )
-            A.shiftLeft();
-        }
-      ASSERT( ( A.order( b_char ) == 1 )
-	      && ( A.order( a_char ) == 2 )
-	      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
-      return it;
-
-    }
-
-
-
-    /**
-     * This method takes O(n) operations and works only for Freeman
-     * chains whose successive codes are between +1/-1. It determines
-     * if the FreemanChain corresponds to a closed contour, and if
-     * this is the case, determines how many counterclockwise loops the
-     * contour has done. Of course, it the contour has done
-     * clockwise loops, then the given number is accordingly
-     * negative.
-     *
-     * @return the number of counterclockwise loops, or '0' if the contour
-     * is open or invalid.
-     */
-    int isClosed() const
-    {
-      typename FreemanChain<TInteger>::ConstIterator it = this->begin();
-      typename FreemanChain<TInteger>::ConstIterator it_end = this->end();
-      --it_end;
-      typename FreemanChain<TInteger>::ConstIterator it_suiv = it;
-      PointI2 spos = *it;
-      int nb_ccw_turns = 0;
-      while ( it != it_end )
-        {
-          int code1 = it.getCode();
-          it_suiv.nextInLoop();
-          int code2 = it_suiv.getCode();
-          uint8_t diff = ( code2 - code1 + 4 ) % 4;
-          if ( diff == 1 )
-            ++nb_ccw_turns;
-          else
-            if ( diff == 3 )
-              --nb_ccw_turns;
-            else
-              if ( diff == 2 )
-                return 0;
-          ++it;
-        }
-      if ( spos == *it_suiv )
-	return nb_ccw_turns / 4;
-      else
-	return 0;
-
-
-    }
 
 
     // ----------------------- Interface --------------------------------------
+    
   public:
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const
-    {
-      out << "[FreemanChain]";
-    };
+    void selfDisplay ( std::ostream & out ) const ;
+
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const
-    {
-      return true;
-    };
+    bool isValid() const ;
+
+
+
+    // ----------------------- Drawing services --------------------------------
 
   public:
-
 
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-    
+ 
+
     /**
      * @return the style name used for drawing this object.
      */
     std::string styleName() const;
+
     
     /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-       @tparam Functor a Functor to specialize the Board style
-    */
+     * Draw the object on a Board2D board
+     * @param board the output board where the object is drawn.
+     * @tparam Functor a Functor to specialize the Board style
+     */
     template<typename Functor>
     void selfDraw(Board2D & board ) const;
+
     
     /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
+     * Draw the object on a Board2D board
+     * @param board the output board where the object is drawn.
+     */
     void selfDraw(Board2D & board ) const; 
+
+
     /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
+     * Draw the object on a Board2D board
+     * @param board the output board where the object is drawn.
+     */
     void selfDrawAsGrid(Board2D & board ) const;
 
      
     /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
+     * Draw the object on a Board2D board
+     * @param board the output board where the object is drawn.
+     */
     void selfDrawAsInterGrid(Board2D & board ) const;
+
+
     // ------------------------- Public Datas ------------------------------
 
   public:
@@ -1104,51 +1058,37 @@ namespace DGtal
     Integer yn;
 
     
-
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-
-
-
     // ------------------------- Internals ------------------------------------
+    
+
+  private:
 
     /**
-     * Computes the coordinates of the last point
+     * Default constructor
+     * Not valid.
+     */
+    FreemanChain() {};
+
+    /**
+     * Computes the coordinates of the last point.
      * nb: in O(n)
      */
-    void computeLastPoint() {
-      for ( typename FreemanChain<TInteger>::ConstIterator it = this->begin();
-            it != this->end();
-            ++it )
-        {
-	  PointI2 tmp = *it;
-	  //std::cout << it.get() << " " << it.getPosition() << std::endl;
-          xn = tmp.at(0);
-	  yn = tmp.at(1);
-        }
-    }
+    void computeLastPoint();
 
-  private:
+  public:
+
 
     /**
      * Default Style Functor for selfDraw methods
      *
      * @param aBoard
      */
-
     struct SelfDrawStyle
     {
       SelfDrawStyle(Board2D & aBoard)
       {
-	aBoard.setFillColor(Color::None);
-	aBoard.setPenColor(Color::Black);
+        aBoard.setFillColor(Color::None);
+        aBoard.setPenColor(Color::Black);
       }
     };
 
@@ -1156,9 +1096,9 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-       	
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+
+        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+        aBoard.setFillColor(Color::None);
       }
     };
 
@@ -1166,24 +1106,19 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+        aBoard.setFillColor(Color::None);
       }
     };
 
-  struct DefaultDrawStyleInterGrid : public DrawableWithBoard2D
+    struct DefaultDrawStyleInterGrid : public DrawableWithBoard2D
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-	aBoard.setFillColor(Color::None);
+        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
+        aBoard.setFillColor(Color::None);
       }
     };
-
-
-
-
-
 
   }; // end of class FreemanChain
 
@@ -1197,8 +1132,8 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template<typename TInteger>
-  std::ostream&
-  operator<< ( std::ostream & out, const FreemanChain<TInteger> & object );
+    std::ostream&
+    operator<< ( std::ostream & out, const FreemanChain<TInteger> & object );
 
 
 } // namespace DGtal

@@ -72,7 +72,7 @@ bool testDGtalGMP()
   nbok += (abs(c)==4444) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -123,8 +123,8 @@ bool testGMPSpace()
   Domain domain( p1, p2 );
   Board2D aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
-	 << domain
-	 << theContour
+   << domain
+   << theContour
    << segment;
 
   aBoard.saveSVG("testgmpcontour.svg");
@@ -133,7 +133,7 @@ bool testGMPSpace()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

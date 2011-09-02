@@ -86,7 +86,7 @@ namespace DGtal
      * @param phi the phase of the ngon (radian).
      */
     NGon2D( const double x0, const double y0, const double r ,
-	    const unsigned int k, const double phi );
+      const unsigned int k, const double phi );
 
     /**
      * Constructor. 
@@ -96,7 +96,7 @@ namespace DGtal
      * @param phi the phase of the ngon (radian).
      */
     NGon2D(const RealPoint2D &aPoint, const double r,
-	   const   unsigned int k, const double phi);
+     const   unsigned int k, const double phi);
 
     /**
      * Constructor. 
@@ -106,7 +106,7 @@ namespace DGtal
      * @param phi the phase of the ngon (radian).
      */
     NGon2D(const Point &aPoint, const double r,
-	   const  unsigned int k, const double phi);
+     const  unsigned int k, const double phi);
 
     
   // ------------- Implementation of 'StarShaped' services ------------------

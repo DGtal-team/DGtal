@@ -109,8 +109,8 @@ namespace DGtal
     template <typename PointPredicate>
     static
     SCell findABel( const KSpace & K,
-		    const PointPredicate & pp,
-		    unsigned int nbtries = 1000 ) throw (DGtal::InputException);
+        const PointPredicate & pp,
+        unsigned int nbtries = 1000 ) throw (DGtal::InputException);
     /**
        Find a bel in some digital set given two hints (one point
        inside, one point outside).
@@ -139,8 +139,8 @@ namespace DGtal
     template <typename PointPredicate>
     static
     SCell findABel( const KSpace & K,
-		    const PointPredicate & pp,
-		    Point x1, Point x2 );
+        const PointPredicate & pp,
+        Point x1, Point x2 );
 
     /**
        Creates a set of signed surfels whose elements represents a
@@ -171,10 +171,10 @@ namespace DGtal
     template <typename SCellSet, typename PointPredicate >
     static 
     void trackBoundary( SCellSet & surface,
-			const KSpace & K,
-			const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			const PointPredicate & pp,
-			const SCell & start_surfel );
+      const KSpace & K,
+      const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+      const PointPredicate & pp,
+      const SCell & start_surfel );
 
 
     /**
@@ -207,10 +207,10 @@ namespace DGtal
     template <typename PointPredicate >
     static 
     void track2DBoundary( std::vector<SCell> & aSCellContour2D,
-			  const KSpace & K,
-			  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			  const PointPredicate & pp,
-			  const SCell & start_surfel );
+        const KSpace & K,
+        const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+        const PointPredicate & pp,
+        const SCell & start_surfel );
 
 
 
@@ -251,11 +251,11 @@ namespace DGtal
     template <typename PointPredicate>
     static 
     void track2DBoundary( std::vector<SCell> & aSCellContour2D,
-			  const KSpace & K, 
-			  const Dimension & trackDir,
-			  const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			  const PointPredicate & pp,
-			  const SCell & start_surfel );
+        const KSpace & K, 
+        const Dimension & trackDir,
+        const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+        const PointPredicate & pp,
+        const SCell & start_surfel );
 
     /**
        This method is only 2D.
@@ -283,10 +283,10 @@ namespace DGtal
     static
     void 
     track2DBoundaryPoints( std::vector<Point> & aVectorOfPoints,
-			   const KSpace & K, 
-			   const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			   const PointPredicate & pp,
-			   const SCell & start_surfel );
+         const KSpace & K, 
+         const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+         const PointPredicate & pp,
+         const SCell & start_surfel );
 
 
     /**
@@ -418,8 +418,8 @@ namespace DGtal
     template <typename PointPredicate>
     static 
     void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  
-			     const KSpace & aKSpace, 
-			     const PointPredicate & pp  );
+           const KSpace & aKSpace, 
+           const PointPredicate & pp  );
 
     
 
@@ -457,10 +457,10 @@ namespace DGtal
     template <typename SCellSet, typename PointPredicate >
     static 
     void trackClosedBoundary( SCellSet & surface,
-			      const KSpace & K,
-			      const SurfelAdjacency<KSpace::dimension> & surfel_adj,
-			      const PointPredicate & pp,
-			      const SCell & start_surfel );
+            const KSpace & K,
+            const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+            const PointPredicate & pp,
+            const SCell & start_surfel );
     
     /**
        Creates a set of unsigned surfels whose elements represents all the
@@ -486,9 +486,9 @@ namespace DGtal
     template <typename CellSet, typename PointPredicate >
     static 
     void uMakeBoundary( CellSet & aBoundary,
-			const KSpace & aKSpace,
-			const PointPredicate & pp,
-			const Cell aLowerBound, const Cell aUpperBound  );
+      const KSpace & aKSpace,
+      const PointPredicate & pp,
+      const Cell aLowerBound, const Cell aUpperBound  );
     
     /**
        Creates a set of signed surfels whose elements represents all the
@@ -514,9 +514,9 @@ namespace DGtal
     template <typename SCellSet, typename PointPredicate >
     static 
     void sMakeBoundary( SCellSet & aBoundary,
-			const KSpace & aKSpace,
-			const PointPredicate & pp,
-			const Cell aLowerBound, const Cell aUpperBound  );
+      const KSpace & aKSpace,
+      const PointPredicate & pp,
+      const Cell aLowerBound, const Cell aUpperBound  );
     
 
     

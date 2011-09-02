@@ -109,7 +109,7 @@ DGtal::GridCurve<KSpace>::initFromVector( const std::vector<Point>& aVectorOfPoi
       Vector v = *j - p;
 
       if (v.norm(Vector::L_1) != 1) { //disconnected !
-	      throw ConnectivityException(); 
+        throw ConnectivityException(); 
       }
 
       my0SCells.push_back( PointTo0SCell(p) );
@@ -284,7 +284,7 @@ DGtal::GridCurve<KSpace>::selfDraw(Board2D & aBoard) const
 {
   std::string mode = aBoard.getMode( this->styleName() );
   ASSERT( (mode=="Points" || mode=="" || mode=="Edges") ||
-	  ("DGtal::GridCurve<KSpace>::selfDraw: Unknown mode "+mode)==""  );
+    ("DGtal::GridCurve<KSpace>::selfDraw: Unknown mode "+mode)==""  );
   
   if ( mode == "Points"  || ( mode == "" )  )
     selfDrawPoints( aBoard );

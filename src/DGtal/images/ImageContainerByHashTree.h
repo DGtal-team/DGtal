@@ -130,7 +130,7 @@ namespace DGtal
 
       BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
       BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-				
+        
       typedef THashKey HashKey;
       typedef TValue Value;
       typedef TDomain Domain;
@@ -161,13 +161,13 @@ namespace DGtal
        * a default value at the root (key = 1)
        */
       ImageContainerByHashTree(const unsigned int hashKeySize,
-			       const unsigned int depth,
-			       const Value defaultValue);
+             const unsigned int depth,
+             const Value defaultValue);
 
       ImageContainerByHashTree(const unsigned int hashKeySize,
-			       const Point & p1,
-			       const Point & p2,
-			       const Value defaultValue);
+             const Point & p1,
+             const Point & p2,
+             const Value defaultValue);
 
       ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& toCopy);
 
@@ -265,7 +265,7 @@ namespace DGtal
        */
       inline unsigned int getSpanSize() const
       {
-	return mySpanSize;
+  return mySpanSize;
       }
 
       /**
@@ -274,7 +274,7 @@ namespace DGtal
        */
       inline unsigned int getDepth() const
       {
-	return myTreeDepth;
+  return myTreeDepth;
       }
 
       /**
@@ -338,13 +338,13 @@ namespace DGtal
        * Prints informations about the state of the container without
        * displaying the data:
        *
-       * 		- Nunber of elements in the tree.
-       * 		- Amount of unused disk space due to blanks in the hash table.
-       * 		- The dimmension.
-       * 		- The number of bits of the HashKey.
-       * 		- The size of the image.
-       * 		- The average and the maximum amount of collisions.
-       * 		- The total memory usage.
+       *     - Nunber of elements in the tree.
+       *     - Amount of unused disk space due to blanks in the hash table.
+       *     - The dimmension.
+       *     - The number of bits of the HashKey.
+       *     - The size of the image.
+       *     - The average and the maximum amount of collisions.
+       *     - The total memory usage.
        */
       void printInfo(std::ostream& out) const;
 
@@ -382,53 +382,53 @@ namespace DGtal
       class Iterator
       {
       public:
-	Iterator(Node** data, unsigned int position, unsigned int arraySize)
-	{
-	  myArraySize = arraySize;
-	  myContainerData = data;
-	  myNode = data[0];
-	  myCurrentCell = position;
-	  while ((!myNode) && (myCurrentCell < myArraySize))
-	    {
-	      myNode = myContainerData[++myCurrentCell];
-	    }
-	}
-	bool isAtEnd()const
-	{
-	  return myCurrentCell >= myArraySize;
-	}
-	Value& operator*()
-	{
-	  return myNode->getObject();
-	}
-	bool operator ++ ()
-	{
-	  return next();
-	}
-	bool operator == (const Iterator& it)
-	{
-	  if (isAtEnd() && it.isAtEnd())
-	    return true;
-	  else
-	    return (myNode == it.myNode);
-	}
-	bool operator != (const Iterator& it)
-	{
-	  if (isAtEnd() && it.isAtEnd())
-	    return false;
-	  else
-	    return (myNode != it.myNode);
-	}
-	inline HashKey getKey() const
-	{
-	  return myNode->getKey();
-	}
-	bool next();
+  Iterator(Node** data, unsigned int position, unsigned int arraySize)
+  {
+    myArraySize = arraySize;
+    myContainerData = data;
+    myNode = data[0];
+    myCurrentCell = position;
+    while ((!myNode) && (myCurrentCell < myArraySize))
+      {
+        myNode = myContainerData[++myCurrentCell];
+      }
+  }
+  bool isAtEnd()const
+  {
+    return myCurrentCell >= myArraySize;
+  }
+  Value& operator*()
+  {
+    return myNode->getObject();
+  }
+  bool operator ++ ()
+  {
+    return next();
+  }
+  bool operator == (const Iterator& it)
+  {
+    if (isAtEnd() && it.isAtEnd())
+      return true;
+    else
+      return (myNode == it.myNode);
+  }
+  bool operator != (const Iterator& it)
+  {
+    if (isAtEnd() && it.isAtEnd())
+      return false;
+    else
+      return (myNode != it.myNode);
+  }
+  inline HashKey getKey() const
+  {
+    return myNode->getKey();
+  }
+  bool next();
       protected:
-	Node* myNode;
-	unsigned int myCurrentCell;
-	unsigned int myArraySize;
-	Node** myContainerData;
+  Node* myNode;
+  unsigned int myCurrentCell;
+  unsigned int myArraySize;
+  Node** myContainerData;
       };
 
       /**
@@ -436,7 +436,7 @@ namespace DGtal
        */
       Iterator begin()
       {
-	return Iterator(myData, 0, myArraySize);
+  return Iterator(myData, 0, myArraySize);
       }
 
       /**
@@ -444,25 +444,25 @@ namespace DGtal
        */
       Iterator end()
       {
-	return Iterator(myData, myArraySize, myArraySize);
+  return Iterator(myData, myArraySize, myArraySize);
       }
 
       void selfDisplay(std::ostream & out);
 
       bool isValid() const
       {
-	return checkIntegrity();
+  return checkIntegrity();
       }
 
       // ------------- realization CDrawableWithBoard2D --------------------
     private:
       struct DefaultDrawStyle : public DrawableWithBoard2D
       {
-	virtual void selfDraw(Board2D & aboard)
-	{
-	  aboard.setPenColorRGBi(60, 60, 60);
-	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
-	}
+  virtual void selfDraw(Board2D & aboard)
+  {
+    aboard.setPenColorRGBi(60, 60, 60);
+    aboard.setLineStyle(Board2D::Shape::SolidStyle);
+  }
       };
 
     public:
@@ -487,7 +487,7 @@ namespace DGtal
        */
       template<typename Colormap>
       void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
-				
+        
     protected:
 
       template <typename C>
@@ -505,32 +505,32 @@ namespace DGtal
       class Node
       {
       public:
-	Node(Value object, HashKey key)
-	{
-	  myData = object;
-	  myKey = key;
-	}
-	inline Node* getNext()
-	{
-	  return myNext;
-	}
-	inline void setNext(Node* next)
-	{
-	  myNext = next;
-	}
-	inline HashKey getKey()
-	{
-	  return myKey;
-	}
-	inline Value& getObject()
-	{
-	  return myData;
-	}
-	~Node() { }
+  Node(Value object, HashKey key)
+  {
+    myData = object;
+    myKey = key;
+  }
+  inline Node* getNext()
+  {
+    return myNext;
+  }
+  inline void setNext(Node* next)
+  {
+    myNext = next;
+  }
+  inline HashKey getKey()
+  {
+    return myKey;
+  }
+  inline Value& getObject()
+  {
+    return myData;
+  }
+  ~Node() { }
       protected:
-	HashKey myKey;
-	Node* myNext;
-	Value myData;
+  HashKey myKey;
+  Node* myNext;
+  Value myData;
       };// -----------------------------------------------------------
 
 
@@ -541,11 +541,11 @@ namespace DGtal
          */
       template <int X, unsigned int exponent> struct POW
       {
-	enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
+  enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
       };
       template <int X > struct POW<X, 1>
       {
-	enum { VALUE = X };
+  enum { VALUE = X };
       };
 
       /**
@@ -562,18 +562,18 @@ namespace DGtal
        */
       Node* addNode(const Value object, const HashKey key)
       {
-	Node* n = getNode(key);
-	if (n)
+  Node* n = getNode(key);
+  if (n)
           {
             n->getObject() = object;
             //n->setObject(object);
             return n;
           }
-	n = new Node(object, key);
-	HashKey key2 = getIntermediateKey(key);
-	n->setNext(myData[key2]);
-	myData[key2] = n;
-	return n;
+  n = new Node(object, key);
+  HashKey key2 = getIntermediateKey(key);
+  n->setNext(myData[key2]);
+  myData[key2] = n;
+  return n;
       }
 
       /**
@@ -583,16 +583,16 @@ namespace DGtal
        * @param key The key.
        * @return the pointer to the node corresponding to the key.
        */
-      inline Node* getNode(const HashKey key)	const	// very used !!
+      inline Node* getNode(const HashKey key)  const  // very used !!
       {
-	Node* iter = myData[getIntermediateKey(key)];
-	while (iter != 0)
+  Node* iter = myData[getIntermediateKey(key)];
+  while (iter != 0)
           {
             if (iter->getKey() == key)
               return iter;
             iter = iter->getNext();
           }
-	return 0;
+  return 0;
       }
 
       /**
