@@ -123,6 +123,17 @@ bool testModifier()
     nb++;
   }  
   
+   //scell 2 code
+  {
+    typedef KhalimskySpaceND<2> K2;
+    K2 theKSpace; 
+    K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
+    char aCode = SCellToCode<K2>::get( theKSpace, s );
+    trace.info() << s << aCode <<std::endl;  
+    nbok += ( aCode == '3' ) ? 1 : 0; 
+    nb++;
+  }
+  
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
   
