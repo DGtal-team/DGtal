@@ -75,6 +75,19 @@ bool testModifier()
     nb++;
   }  
 
+    //scell 2 arrow
+  {
+    typedef KhalimskySpaceND<2> K2;
+    K2 theKSpace; 
+    K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
+    std::pair<K2::Point, K2::Vector> aArrow = SCellToArrow<K2>::get( theKSpace, s );
+    trace.info() << s << aArrow.first << aArrow.second <<std::endl;  
+    K2::Point p(0,1); 
+    K2::Vector v(0,-1); 
+    nbok += ( ((aArrow.first == p) && (aArrow.second == v)) ) ? 1 : 0; 
+    nb++;
+  }  
+  
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
   
