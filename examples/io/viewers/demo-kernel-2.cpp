@@ -36,9 +36,6 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
