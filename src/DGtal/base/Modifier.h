@@ -255,11 +255,102 @@ namespace DGtal
       Point p( k.sCoords( pointel ) );   //integer coordinates
       //displacement vector
       Vector v( k.sKCoords( s ) - k.sKCoords( pointel ) );
-      return std::pair<Point,Vector>(p,v);
+      return std::make_pair<Point,Vector>(p,v);
     }
       
   }; // end of class SCellToArrow
 
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToInnerPoint
+  /**
+   * Description of template class 'SCellToInnerPoint' <p>
+   * \brief Aim: transforms a scell into a point
+   * basically a linel into the indirect incident pixel center
+   * @tparam KSpace, the 2d Khalimsky space 
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   */
+  template <typename KSpace>
+  class SCellToInnerPoint
+  {
+    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
+    
+    public: 
+      
+    typedef typename KSpace::Point Output;
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      Input pixel( k.sIndirectIncident( s, *k.sOrthDirs( s ) ) );
+      return Output( k.sCoords( pixel ) ); //integer coordinates
+    }
+      
+  }; // end of class SCellToInnerPoint
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToOuterPoint
+  /**
+   * Description of template class 'SCellToOuterPoint' <p>
+   * \brief Aim: transforms a scell into a point, 
+   * basically a linel into the direct incident pixel center
+   * @tparam KSpace, the 2d Khalimsky space 
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   */
+  template <typename KSpace>
+  class SCellToOuterPoint
+  {
+    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
+    
+    public: 
+      
+    typedef typename KSpace::Point Output;
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      Input pixel( k.sDirectIncident( s, *k.sOrthDirs( s ) ) );
+      return Output( k.sCoords( pixel ) ); //integer coordinates
+    }
+      
+  }; // end of class SCellToOuterPoint
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToIncidentPoints
+  /**
+   * Description of template class 'SCellToIncidentPoints' <p>
+   * \brief Aim: transforms a scell into a pair of points,  
+   * which are the centers of the two incident pixels
+   * @tparam KSpace, the 2d Khalimsky space 
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   */
+  template <typename KSpace>
+  class SCellToIncidentPoints
+  {
+    
+    public: 
+      
+    typedef typename KSpace::Point Point;
+    typedef std::pair<Point,Point> Output;
+
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      //inner point
+      Input innerPixel( k.sIndirectIncident( s, *k.sOrthDirs( s ) ) );
+      //outer point
+      Input outerPixel( k.sDirectIncident( s, *k.sOrthDirs( s ) ) );
+
+      return std::make_pair<Point,Point>(k.sCoords( innerPixel ),k.sCoords( outerPixel ));
+    }
+      
+  }; // end of class SCellToArrow
   
 } // namespace DGtal
 
