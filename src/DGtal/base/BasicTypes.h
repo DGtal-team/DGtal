@@ -46,22 +46,39 @@
 #include <iostream>
 #include <boost/cstdint.hpp>
 #include "DGtal/base/Common.h"
+
+#ifdef WITH_GMP
+#include <gmpxx.h>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 
 
 namespace DGtal
 {
-  
+  ///unsigned 8-bit integer.
   typedef boost::uint8_t uint8_t;
+  ///unsigned 16-bit integer.
   typedef boost::uint16_t uint16_t;
+  ///unsigned 32-bit integer.
   typedef boost::uint32_t uint32_t;
+  ///unsigned 64-bit integer.
   typedef boost::uint64_t uint64_t;
   
+  ///signed 8-bit integer.  
   typedef boost::int8_t int8_t;
+  ///signed 16-bit integer.
   typedef boost::int16_t int16_t;
+  ///signed 32-bit integer.
   typedef boost::int32_t int32_t;
+  ///signed 94-bit integer.
   typedef boost::int64_t int64_t;
+  
+#ifdef WITH_GMP
+  #define WITH_BIGINTEGER
+  ///Multi-precision integer with GMP implementation.
+  typedef mpz_class BigInteger;
+#endif
 
 } // namespace DGtal
 

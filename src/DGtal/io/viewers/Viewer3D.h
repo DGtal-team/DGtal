@@ -44,7 +44,6 @@
 #include <vector>
 #include <algorithm>
 
-
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
 #include <QKeyEvent>
@@ -64,24 +63,54 @@ namespace DGtal
 
 
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////
 // class Viewer3D
 /**
  * Description of class 'Viewer3D' <p>
- * \brief Aim:
+ * \brief Aim: Display 3D
+ * primitive (like PointVector, DigitalSetBySTLSet, Object ...). This
+ * class uses the libQGLViewer library (<a
+ * href="http://www.libqglviewer.com">http://www.libqglviewer.com </a>). It inherits of the
+ * class Display3D and permits to display object using a simple
+ * stream mechanism of "<<". 
+ *
+ * For instance you can display objects as follows:
+ *
+ * @code
+ * #include <QtGui/qapplication.h>
+ * #include "DGtal/helpers/StdDefs.h"
+ * #include "DGtal/io/viewers/Viewer3D.h"
+ * ...
+ * using namespace Z3i;
+ * ... 
+ *  
+ * Point p1( 0, 0, 0 );
+ * Point p2( 5, 5 ,5 );
+ * Point p3( 2, 3, 4 );
+ * Domain domain( p1, p2 );
+ * Viewer3D viewer;
+ * viewer.show();
+ * viewer << domain;  
+ * viewer << p1 << p2 << p3;
+ * viewer<< Viewer3D::updateDisplay;
+ * return application.exec();
+ *  
+ * @endcode
+ *
+ *
+ * @see Display3D, Board3DTo2D
  */
   class Viewer3D : public QGLViewer, public Display3D
 {
     // ----------------------- Standard services ------------------------------
 public:
 
-
+  /**
+   * Constructor
+   */
 
   Viewer3D():QGLViewer(), Display3D(){
-   
+    
   };
 
 

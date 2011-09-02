@@ -266,7 +266,7 @@ unsigned int nbok = 0;
   
   trace.warning() << result << endl;
  
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();
   it != itend; ++it)
     if ( (*it) > maxv)
@@ -398,12 +398,12 @@ bool testDistanceTransformation3D()
   Domain dom(a, b);
 
   for (Domain::ConstIterator it = dom.begin(),
-   itend = dom.end(); it != itend; ++it)
-  {
-    if ( ((*it) - c).norm() < 7)
-      image.setValue ( *it, 128 );
-  }
-
+	 itend = dom.end(); it != itend; ++it)
+    {
+      if ( ((*it) - c).norm() < 7)
+	image.setValue ( *it, 128 );
+    }
+  
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
@@ -511,7 +511,7 @@ bool testChessboard()
   DT1::OutputImage result1 = dt1.compute ( image );
   DT2::OutputImage result2 = dt2.compute (image);
 
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);

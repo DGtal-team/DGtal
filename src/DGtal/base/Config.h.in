@@ -83,12 +83,18 @@ the digital geometry community.
 Main participants: D. Coeurjolly (LIRIS, Lyon), G. Damiand (LIRIS,
 Lyon), S. Fourey (GREYC, Caen), B. Kerautret (LORIA, Nancy),
 J.-O. Lachaud (LAMA, Chambéry), L. Provot (LORIA, Nancy),
-T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, Lyon).
+T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble),
+M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
+
+
+@section package_description DGtal Packages
+
+  - \ref IntroductionPackage
+  - \ref KernelPackage
 
 
  * @section manuals_dgtal DGtal user-guides
  *
- * - \ref DGtalKernel
  *
  * - Topology Package
  *   - \ref dgtal_topology 
@@ -106,14 +112,12 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, 
  *  - \ref Tools3dVolViewer
  *
  * - Miscellaneous
- *  - \ref HowToUseDGtal
  *  - \ref dgtalITK
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake
  * - \ref FAQGit
  *
- * @section examples_sec_dgtal Code examples
  *
  *
  * @section links_sec_dgtal Links
@@ -123,17 +127,9 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, 
  *  <li> LibBoard section page   </li>
  * </ul>
  *
- * @defgroup Concepts DGtal concepts
- * @defgroup Tests DGtal test files
- * @defgroup Examples DGtal examples
+ * @defgroup Concepts DGtal Concepts
+ * @defgroup Archetypes DGtal Archetypes
+ * @defgroup Tests DGtal Test Files
+ * @defgroup Examples DGtal Examples
  *
- * @example DSS.cpp
- *  Illustration of DSS recognition and segmentation on a Freeman contour.  
- *
- * @example distancetransform2D.cpp
- * An example file named distancetransform2D. The aim of this example
- * is to demonstrate the distance transformation package of the DGtal
- * library. Using a simple random seed example, we compute the
- * distance transformation (linear in time algorithm) using the L1,
- * Linfinity and L2 metrics.
  */
