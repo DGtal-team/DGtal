@@ -35,7 +35,6 @@
 #include "DGtal/shapes/ShapeFactory.h"
 
 #include "DGtal/geometry/nd/estimators/Measure.h"
-#include "DGtal/geometry/CGlobalGeometricEstimator.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +48,6 @@ using namespace DGtal;
 bool testConcept()
 {
   
-  BOOST_CONCEPT_ASSERT((CGlobalGeometricEstimator< Measure< Z3i::DigitalSet> >));
   return true;
 }
 
