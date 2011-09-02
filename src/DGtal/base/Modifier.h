@@ -41,6 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <utility>
+
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/RealPointVector.h"
@@ -221,6 +224,41 @@ namespace DGtal
     } 
       
   }; // end of class SCellToPoint
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToArrow
+  /**
+   * Description of template class 'SCellToArrow' <p>
+   * \brief Aim: transforms a scell into an arrow, 
+   * ie. a pair point-vector
+   * @tparam KSpace, the Khalimsky space 
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   */
+  template <typename KSpace>
+  class SCellToArrow
+  {
+    
+    public: 
+      
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Vector Vector;
+    typedef std::pair<Point,Vector> Output;
+
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      //starting point of the arrow
+      Input pointel( k.sIndirectIncident( s, *k.sDirs( s ) ) );
+      Point p( k.sCoords( pointel ) );   //integer coordinates
+      //displacement vector
+      Vector v( k.sKCoords( s ) - k.sKCoords( pointel ) );
+      return std::pair<Point,Vector>(p,v);
+    }
+      
+  }; // end of class SCellToArrow
 
   
 } // namespace DGtal
