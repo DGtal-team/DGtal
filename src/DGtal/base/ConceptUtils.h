@@ -198,7 +198,7 @@ namespace ConceptUtils
   void checkTrueOrFalse( const TagTrue & tag );
 
 
-}; // end of namespace ConceptUtils
+} // end of namespace ConceptUtils
 
 } // namespace DGtal
 
