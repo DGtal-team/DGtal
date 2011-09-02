@@ -48,10 +48,6 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
-
 using namespace DGtal;
 using namespace std;
 using namespace LibBoard;
@@ -267,17 +263,17 @@ bool testExtendRetract()
 }
 
 
-#ifdef WITH_GMP
+#ifdef WITH_BIGINTEGER
 /**
  * Test for 4-connected points
  *
  */
-bool testGMP()
+bool testBIGINTEGER()
 {
   bool flag = false;
 
 
-  typedef mpz_class Coordinate;
+  typedef DGtal::BigInteger Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef ArithmeticalDSS<Iterator,Coordinate,4> DSS4;  
@@ -361,8 +357,8 @@ int main(int argc, char **argv)
     && testDSS8drawing()
     && testExtendRetract()
     && testCorner()
-#ifdef WITH_GMP
-    && testGMP()
+#ifdef WITH_BIGINTEGER
+    && testBIGINTEGER()
 #endif
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

@@ -75,6 +75,7 @@ namespace DGtal
   typedef boost::int64_t int64_t;
   
 #ifdef WITH_GMP
+  #define WITH_BIGINTEGER
   ///Multi-precision integer with GMP implementation.
   typedef mpz_class BigInteger;
 #endif
