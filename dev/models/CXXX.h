@@ -92,7 +92,9 @@ namespace YYY
      <p> Invariants <br>
     
      <p> Models <br>
-    
+
+     A dummy model (for concept checking) is CXXXArchetype.
+
      <p> Notes <br>
 
      @tparam T the type that should be a model of XXX.
