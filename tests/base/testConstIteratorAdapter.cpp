@@ -53,7 +53,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testConstIteratorAdapter()
+bool testProjection()
 {
 
   bool flag1 = true; 
@@ -160,7 +160,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testConstIteratorAdapter(); // && ... other tests
+  bool res = testProjection()
+  ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
    testOrderedAlphabet
    testCirculator
    testConstIteratorAdapter
+   testModifier
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
