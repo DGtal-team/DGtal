@@ -35,9 +35,6 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,8 +50,8 @@ int main()
   typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
   typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace8;
 
-#ifdef WITH_GMP
-  typedef DGtal::SpaceND<3, mpz_class> MySpaceGMP;
+#ifdef WITH_BIGINTEGER
+  typedef DGtal::SpaceND<3, DGtal::BigInteger> MySpaceBIGINTEGER;
 #endif
 
   typedef DGtal::Z2i::Space MySpace; 

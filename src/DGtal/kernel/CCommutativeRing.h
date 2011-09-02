@@ -47,9 +47,6 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

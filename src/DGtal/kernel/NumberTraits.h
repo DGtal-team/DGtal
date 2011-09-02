@@ -47,9 +47,6 @@
 #include <boost/call_traits.hpp>
 #include "DGtal/base/Common.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -798,7 +795,7 @@ namespace DGtal
   const long double NumberTraits<long double>::ZERO = 0.0;
  
 
-#ifdef WITH_GMP
+#ifdef WITH_BIGINTEGER
   /**
    * Specialization for <DGtal::BigInteger>. 
    * Note that DGtal::BigInteger represents
