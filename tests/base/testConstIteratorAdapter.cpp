@@ -38,6 +38,9 @@
 #include "DGtal/base/Modifier.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 
+#include <boost/concept_check.hpp>
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,53 +56,98 @@ using namespace DGtal;
 bool testConstIteratorAdapter()
 {
 
-  typedef PointVector<3,int> Point;
-  typedef PointVector<2,int> Point2d;
-  typedef std::vector<Point>::iterator Iterator;
-  typedef Point3dTo2dXZ<Point,Point2d> Modifier; 
+  bool flag1 = true; 
+  bool flag2 = true; 
   
-  //range of 3d points
-  std::vector<Point> r;
-  r.push_back(Point(0,0,0));
-  r.push_back(Point(1,0,0));
-  r.push_back(Point(2,0,0));
-  r.push_back(Point(2,1,0));
-  r.push_back(Point(2,1,1));
-  r.push_back(Point(3,1,1));
-  r.push_back(Point(4,1,1));
-  r.push_back(Point(4,2,1));
-  r.push_back(Point(4,2,2));
-  r.push_back(Point(5,2,2));
-  r.push_back(Point(6,2,2));
-  r.push_back(Point(6,3,2));
-  r.push_back(Point(6,3,3));
-  r.push_back(Point(6,4,3));
-  r.push_back(Point(6,4,4));
-  r.push_back(Point(6,5,4));
-
+  typedef PointVector<3,int> Point3;
+  typedef PointVector<2,int> Point2;
+  typedef std::vector<Point3>::iterator Iterator3;
+  typedef std::vector<Point2>::iterator Iterator2;
+  typedef Point3dTo2dXY<int> Modifier; 
+  
+  typedef ConstIteratorAdapter<Iterator3,Modifier> Adapter; 
+  BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<Iterator3> ));
+  BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
+  //BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Adapter> ));
+  
+  //range of 3d Points
+  std::vector<Point3> r;
+  r.push_back(Point3(0,0,0));
+  r.push_back(Point3(1,0,0));
+  r.push_back(Point3(2,0,0));
+  r.push_back(Point3(2,1,0));
+  r.push_back(Point3(2,1,1));
+  r.push_back(Point3(3,1,1));
+  r.push_back(Point3(4,1,1));
+  r.push_back(Point3(4,2,1));
+  r.push_back(Point3(4,2,2));
+  r.push_back(Point3(5,2,2));
+  r.push_back(Point3(6,2,2));
+  r.push_back(Point3(6,3,2));
+  r.push_back(Point3(6,3,3));
+  r.push_back(Point3(6,4,3));
+  r.push_back(Point3(6,4,4));
+  r.push_back(Point3(6,5,4));
+  
+  //true projection
+  std::vector<Point2> rtrue;
+  rtrue.push_back(Point2(0,0));
+  rtrue.push_back(Point2(1,0));
+  rtrue.push_back(Point2(2,0));
+  rtrue.push_back(Point2(2,1));
+  rtrue.push_back(Point2(2,1));
+  rtrue.push_back(Point2(3,1));
+  rtrue.push_back(Point2(4,1));
+  rtrue.push_back(Point2(4,2));
+  rtrue.push_back(Point2(4,2));
+  rtrue.push_back(Point2(5,2));
+  rtrue.push_back(Point2(6,2));
+  rtrue.push_back(Point2(6,3));
+  rtrue.push_back(Point2(6,3));
+  rtrue.push_back(Point2(6,4));
+  rtrue.push_back(Point2(6,4));
+  rtrue.push_back(Point2(6,5));
   
   trace.beginBlock ( "Testing block ..." );
 
-  Iterator it = r.begin();
-  Iterator itEnd = r.end();
-  for ( ; it != itEnd; ++it) 
-  {
-    trace.info() << *it << endl; 
-  }
+    //display
+    trace.info() << "3d points " << endl; 
+/*
+    Iterator3 it = r.begin();
+    Iterator3 itEnd = r.end();
+    for ( ; it != itEnd; ++it) 
+    {
+      trace.info() << *it; 
+    }
+    trace.info()  << endl;
+*/
+    trace.info() << "2d points after projection (XY)" << endl; 
+    
+    Adapter aitBegin(r.begin());
+    Adapter ait = aitBegin;    
+    Adapter aitEnd(r.end()); 
+/*
+    for ( ; ait != aitEnd; ++ait) 
+    {
+      trace.info() << *ait;  
+    }
+    trace.info()  << endl;
+*/
+    //comparison
+    flag1 = std::equal( rtrue.begin(), rtrue.end(), aitBegin ); 
 
-  trace.info() << "Projection (XY)" << endl; 
-  
-  ConstIteratorAdapter<Iterator,Modifier> ait(r.begin()); 
-  ConstIteratorAdapter<Iterator,Modifier> aitEnd(r.end()); 
-  for ( ; ait != aitEnd; ++ait) 
-  {
-    trace.info() << *ait << endl; 
-  }
-  
+    //random acces
+    ait = aitBegin + 3;
+//    ait = 1 + ait; 
+    trace.info() << "some random access operators" << endl; 
+    trace.info() << *aitBegin << *ait << (aitBegin < ait) << endl; 
+    if (aitBegin < ait) flag2 = true;
+    else flag2 = false; 
+    
   trace.endBlock();
-  
-  //to compare with an already projected range
-  return true;
+
+    
+  return flag1 && flag2;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

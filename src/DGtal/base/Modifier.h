@@ -42,53 +42,37 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Modifier
-  
-  template <typename T1, typename T2>
-  class Modifier
-  {
-
-    public:
-
-    typedef T1 Input; 
-    typedef T2 Output; 
-
-    public:
-      
-    static Output get(Input x) 
-    {
-      
-    }
-  
-  }; 
-  */
-
   
   /////////////////////////////////////////////////////////////////////////////
   // template class Point3dTo2dXY
   /**
    * Description of template class 'Point3dTo2dXY' <p>
-   * \brief Aim:
+   * \brief Aim: transforms a 3d point into a 2d point
+   * due to a projection on the xy-plane
+   * @tparam Coordinate the type for the coordinates of the points
+   * @code
+  PointVector<3,int> a3dPoint; 
+  PointVector<2,int> a2dPoint; 
+  ...
+  a2dPoint = Point3dTo2dXY<int>::get(a3dPoint); 
+   * @endcode
+   * @see ConstIteratorAdapter
    */
-  template <typename Point3, typename Point2>
+  template <typename Coordinate>
   class Point3dTo2dXY
   {
-    
-    BOOST_STATIC_ASSERT( Point3::dimension == 3 ); 
-    BOOST_STATIC_ASSERT( Point2::dimension == 2 ); 
-    
+        
     public: 
       
-    typedef Point3 Input; 
-    typedef Point2 Output; 
+    typedef PointVector<3,Coordinate> Input; 
+    typedef PointVector<2,Coordinate> Output; 
     
     public:
       
@@ -104,19 +88,25 @@ namespace DGtal
   // template class Point3dTo2dXZ
   /**
    * Description of template class 'Point3dTo2dXZ' <p>
-   * \brief Aim:
+   * \brief Aim: transforms a 3d point into a 2d point
+   * due to a projection on the xz-plane
+   * @tparam Coordinate the type for the coordinates of the points
+   * @code
+  PointVector<3,int> a3dPoint; 
+  PointVector<2,int> a2dPoint; 
+  ...
+  a2dPoint = Point3dTo2dXZ<int>::get(a3dPoint); 
+   * @endcode
+   * @see ConstIteratorAdapter
    */
-  template <typename Point3, typename Point2>
+  template <typename Coordinate>
   class Point3dTo2dXZ
   {
-    
-    BOOST_STATIC_ASSERT( Point3::dimension == 3 ); 
-    BOOST_STATIC_ASSERT( Point2::dimension == 2 ); 
 
     public: 
       
-    typedef Point3 Input; 
-    typedef Point2 Output; 
+    typedef PointVector<3,Coordinate> Input; 
+    typedef PointVector<2,Coordinate> Output; 
     
     public:
       
@@ -132,19 +122,25 @@ namespace DGtal
   // template class Point3dTo2dYZ
   /**
    * Description of template class 'Point3dTo2dYZ' <p>
-   * \brief Aim:
+   * \brief Aim: transforms a 3d point into a 2d point
+   * due to a projection on the yz-plane
+   * @tparam Coordinate the type for the coordinates of the points
+   * @code
+  PointVector<3,int> a3dPoint; 
+  PointVector<2,int> a2dPoint; 
+  ...
+  a2dPoint = Point3dTo2dYZ<int>::get(a3dPoint); 
+   * @endcode
+   * @see ConstIteratorAdapter
    */
-  template <typename Point3, typename Point2>
+  template <typename Coordinate>
   class Point3dTo2dYZ
   {
     
-    BOOST_STATIC_ASSERT( Point3::dimension == 3 ); 
-    BOOST_STATIC_ASSERT( Point2::dimension == 2 ); 
-
     public: 
       
-    typedef Point3 Input; 
-    typedef Point2 Output; 
+    typedef PointVector<3,Coordinate> Input; 
+    typedef PointVector<2,Coordinate> Output; 
     
     public:
       

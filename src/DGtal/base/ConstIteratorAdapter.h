@@ -53,13 +53,15 @@ namespace DGtal
   /**
    * Description of template class 'ConstIteratorAdapter' <p>
    * \brief Aim: Any iterator (at least forward) can be adapted
-   * so that operator* returns a modified element
+   * so that operator* returns a modified element of a given type
    * @tparam TIterator the type of the iterator to adapt
    * @tparam TModifier the type of the object that transform
    * the value type of TIterator into another type
+   * @see Modifier.h
    */
   template <typename TIterator, typename TModifier>
-  class ConstIteratorAdapter : public TIterator
+  class ConstIteratorAdapter //: public TIterator
+
   {
 
   //--------------- inner types --------------------------------
@@ -68,17 +70,17 @@ namespace DGtal
     typedef ConstIteratorAdapter<TIterator, TModifier> Self;
     typedef TIterator Iterator;
     typedef TModifier Modifier;
-    typedef typename TModifier::Output Value; 
-    typedef Value* Pointer;
-    typedef const Value& Reference;
+    typedef typename TModifier::Output value_type; 
+    typedef value_type* pointer;
+    typedef value_type reference;
   
-    typedef typename IteratorCirculatorTraits<Iterator>::Category Category;
-    typedef typename IteratorCirculatorTraits<Iterator>::Difference Difference;
-
+    typedef typename iterator_traits<TIterator>::difference_type difference_type;
+    typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
+  
   // ------------------------- Protected Datas ------------------------------
   protected:
     Iterator myCurrentIt;
-    Value myBuffer;
+    value_type myBuffer;
   
   // ------------------------- Private Datas --------------------------------
   private:
@@ -100,7 +102,7 @@ namespace DGtal
      *  Copy constructor.
      */
     ConstIteratorAdapter(const ConstIteratorAdapter& aIt)
-    : myCurrentIt(aIt.myCurrentIt), myBuffer(aIt.myBuffer()) { }
+    : myCurrentIt(aIt.myCurrentIt), myBuffer(aIt.myBuffer) { }
 
     /**
      * Assignment.
@@ -142,7 +144,7 @@ namespace DGtal
     /**
      *  @return the modified element pointed be @a myCurrentIt.
     */
-    Value operator*() { 
+    reference operator*() { 
       myBuffer = Modifier::get(*myCurrentIt);
       return myBuffer; 
     }
@@ -150,8 +152,8 @@ namespace DGtal
     /**
      *  @return  pointer to the modified element stored in @a myBuffer.
     */
-    Pointer operator->() const { 
-      return &myBuffer; 
+    pointer operator->() const { 
+      return &operator*(); 
     }
 
     /**
@@ -196,24 +198,24 @@ namespace DGtal
         // ----------------------- Random access operators --------------------------------------
   public:
 
-    Self& operator+=( Difference d ) {
+    Self& operator+=( difference_type d ) {
       myCurrentIt += d;
       return *this;
     }
-    Self operator+( Difference d) const {
+    Self operator+( difference_type d) const {
       Self tmp = *this;
       return tmp += d;
     }
-    Self operator-( Difference d) const {
+    Self operator-( difference_type d) const {
       Self tmp = *this;
       return tmp += -d;
     }
-    Self& operator-=( Difference d) { return operator+=( -d); }
+    Self& operator-=( difference_type d) { return operator+=( -d); }
 
-    Difference operator-( const Self& other) const {
+    difference_type operator-( const Self& other) const {
       return myCurrentIt - other.myCurrentIt;
     }
-    Reference operator[]( Difference d) const {
+    reference operator[]( difference_type d) const {
       Self tmp = *this;
       tmp += d;
       return *tmp;
@@ -227,7 +229,7 @@ namespace DGtal
       return (myCurrentIt == other.myCurrentIt);
     }
         /**
-    *  Difference operator
+    *  difference_type operator
       */
     bool operator!=( const Self& other) const 
     { 
@@ -235,8 +237,35 @@ namespace DGtal
     }
     
     // ----------------------- Comparisons operators --------------------------------------
-    //not defined because of the inheritance 
-
+    /**
+    *  Less operator
+      */
+    bool operator<( const Self& other) const 
+    { 
+      return (myCurrentIt < other.myCurrentIt);
+    }
+        /**
+    *  Less or equal operator
+      */
+    bool operator<=( const Self& other) const 
+    { 
+      return (myCurrentIt <= other.myCurrentIt);
+    }
+            /**
+    *  Greater
+      */
+    bool operator>( const Self& other) const 
+    { 
+      return (myCurrentIt > other.myCurrentIt);
+    }
+        /**
+    *  Greater or equal operator
+      */
+    bool operator>=( const Self& other) const 
+    { 
+      return (myCurrentIt >= other.myCurrentIt);
+    }
+    
     // ------------------------- Hidden services ------------------------------
 
 
@@ -244,7 +273,16 @@ namespace DGtal
   private:
 
   }; // end of class ConstIteratorAdapter
-
+/*
+    template <typename TIterator, typename TModifier >
+    friend ConstIteratorAdapter<TIterator,TModifier> operator+( 
+      difference_type d, 
+      ConstIteratorAdapter<TIterator,TModifier> & object ) const 
+    {
+      ConstIteratorAdapter<TIterator,TModifier> tmp = other;
+      return tmp += d;
+    }
+    */
 } // namespace DGtal
 
 
