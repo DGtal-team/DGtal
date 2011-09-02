@@ -1,7 +1,7 @@
 ### Tests without visualisation
 
 SET(GEO3D_TESTS_SRC
-#	testArithDSS3d
+	testArithDSS3d
 	)
 
 FOREACH(FILE ${GEO3D_TESTS_SRC})
