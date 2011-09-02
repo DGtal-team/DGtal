@@ -397,8 +397,8 @@ bool testDistanceTransformation3D()
   Point c(8, 8, 8);
   Domain dom(a, b);
 
-  for (Domain::ConstIterator it = dom.range().begin(),
-	 itend = dom.range().end(); it != itend; ++it)
+  for (Domain::ConstIterator it = dom.begin(),
+	 itend = dom.end(); it != itend; ++it)
     {
       if ( ((*it) - c).norm() < 7)
 	image.setValue ( *it, 128 );
