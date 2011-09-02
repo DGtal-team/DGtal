@@ -136,6 +136,9 @@ namespace DGtal
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
+    ///True if the contour is closed.
+    bool myIsClosed;
+
     
   private:
 

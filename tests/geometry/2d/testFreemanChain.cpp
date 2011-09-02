@@ -52,43 +52,123 @@ typedef SpaceND<2> Space2Type;
 typedef HyperRectDomain<Space2Type> Domain2D;
 typedef Space2Type::Point Point;
 
+
+/**
+ * Test Constructors
+ */
+bool testConstructors() 
+{
+  typedef FreemanChain<int> FreemanChain;
+  typedef FreemanChain::ConstIterator Iterator;
+
+  trace.beginBlock ( "Testing FreemanChain constructors" );
+
+  trace.info() << "Constructor from string and coordintes" << endl;
+  std::string s = "00001030003222321222";
+  FreemanChain c1(s, -42, 12);
+
+  trace.info() << "Constructor from point vector" << endl;
+  std::vector<Z2i::Point> myVector;
+  for (Iterator i = c1.begin(); i != c1.end(); i++)
+    myVector.push_back(*i);
+//  myVector.push_back(*c1.end());
+  FreemanChain c2(myVector);
+
+  trace.info() << "Constructor from input stream" << endl;
+  std::stringstream ss;
+  ss << "-42 12 " << s << "\n";
+  FreemanChain c3(ss);
+
+  trace.info() << "Copy constructor" << endl;
+  FreemanChain c4(c1);
+
+  trace.info() << "Copy operator" << endl;
+  FreemanChain c5("0123" , 0, 0);
+  FreemanChain c6(c5);
+
+  c5 = c1;
+
+  cout << "c1 " << c1 << endl;
+  cout << "c2 " << c2 << endl;
+  cout << "c3 " << c3 << endl;
+  cout << "c4 " << c4 << endl;
+  cout << "c5 " << c5 << endl;
+  cout << "c6 " << c6 << endl;
+
+  bool res = (
+         (c1 == c2) && (c1 == c3) && (c1 == c4)// && (c1 == c5) && (c1 != c6)
+//      && (c2 == c1) && (c2 == c3) && (c2 == c4) && (c2 == c5) && (c2 != c6)
+//      && (c3 == c1) && (c3 == c2) && (c3 == c4) && (c3 == c5) && (c3 != c6)
+//      && (c4 == c1) && (c4 == c2) && (c4 == c3) && (c4 == c5) && (c4 != c6)
+//      && (c5 == c1) && (c5 == c2) && (c5 == c3) && (c5 == c4) && (c4 != c6)
+//      && (c6 != c1) && (c6 != c2) && (c6 != c3) && (c6 != c4) && (c6 != c5)
+      );
+  cout << "yep" << endl;
+  trace.endBlock();
+  return res;
+}
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
 /**
  * test reverse iterator
- *
  */
 bool testFreemanChainIterator(const std::string& code)
 {
-
-
   typedef int Coordinate;
-	typedef FreemanChain<Coordinate> Sequence;
+  typedef FreemanChain<Coordinate> Sequence;
+  typedef Sequence::PointI2 Point;
   typedef Sequence::ConstIterator SequenceIterator;
-	typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
-  
+  typedef Sequence::ConstCharIterator CharIterator;
+  typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
+   
   trace.beginBlock ( "Testing FreemanChain Iterator" );
-  
+
   std::stringstream ss;
   ss << code << std::endl;
   Sequence seq(ss);
 
   trace.info()<< "Freeman chain set to " << code << endl;   
- 
-trace.info()<< "<" << endl;  
-  for (SequenceIterator i = seq.begin(); i != seq.end(); ++i) {
-		trace.info()<< *i << " "  << i.getPosition() << " "; 
-	}
-		trace.info()<< endl; 
+  trace.info()<< seq << endl;
+  trace.info()<< "Iterates on points." << endl;
+  std::stack<Point> myStack;
 
-trace.info()<< ">" << endl;  
-  
+  int nbPts = 0;
+  for (SequenceIterator i = seq.begin(); i != seq.end(); ++i) 
+  {
+    myStack.push(*i);
+    nbPts++;
+  }
 
-  for (ReverseIterator ri(seq.end()); ri != ReverseIterator(seq.begin()); ++ri) {
-		trace.info()<< *ri << " "; 
-	}
-		trace.info()<< endl; 
-
+  trace.info()<< "Test reverse iterator." << endl;
+  bool samePoints = true;
+  for (ReverseIterator ri(seq.end()); 
+      ri != ReverseIterator(seq.begin());
+      ++ri) 
+  {
+    if ( !myStack.empty() && ( *ri == myStack.top() ) )
+    {
+      myStack.pop();
+    } 
+    else
+    {
+      samePoints = false;
+      break;
+    }
+  }
   trace.endBlock();
-	return true;
+  return myStack.empty() && samePoints && ( nbPts == seq.size() + 1);
 }
 
 
@@ -111,13 +191,13 @@ bool testFreemanChain(const string& code)
   nbok += 1;   
   trace.info()<< "Freeman chain set to " << code << endl; 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Reading FreemanChain" << std::endl;
+         << "Reading FreemanChain" << std::endl;
   
   
   trace.info() << "isClosed():" << fc.isClosed()<< endl;
   nbok += 1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test is Closed" << std::endl;
+         << "Test is Closed" << std::endl;
   
   
   int minX, maxX, minY, maxY;
@@ -125,7 +205,7 @@ bool testFreemanChain(const string& code)
   trace.info()<< "Freeman chain bounding box: " << minX << " " << minY << " " << maxX << " " << maxY << endl ; 
   nbok += 1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test chain bounding box" << std::endl;
+         << "Test chain bounding box" << std::endl;
   
   
   vector<FreemanChain<int>::PointI2> aContourPointVector; 
@@ -138,7 +218,7 @@ bool testFreemanChain(const string& code)
   trace.info()<< endl;
   nbok+=1;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Test extracting list of contour point" << std::endl;
+         << "Test extracting list of contour point" << std::endl;
       
   trace.endBlock();
 
@@ -204,13 +284,14 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  std::string chain = "0 0 0000111122223333";
+  std::string chain = "0 0 000011112222333";
   
-
-  bool res = testFreemanChainIterator(chain)
-							&& testFreemanChain(chain);
+  bool res = testConstructors();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
+
+  res = testFreemanChainIterator(chain) && testFreemanChain(chain);
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
   std::string filename = testPath + "samples/contourS.fc";
   std::cout << filename << std::endl;

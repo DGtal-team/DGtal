@@ -65,13 +65,13 @@ bool testParametricShape()
   Z2i::DigitalSet set(domain);
   
   Shapes<Z2i::Domain>::shaper( set,
-			       Ball2D<Z2i::Space>( cc, 10));
+             Ball2D<Z2i::Space>( cc, 10));
   
   Z2i::Point lower,upper;
   set.computeBoundingBox(lower,upper);
 
   trace.info()<<"Generated set: "<<set<<" lowerBound="<<lower
-	      <<" upperBound="<<upper<<std::endl;
+        <<" upperBound="<<upper<<std::endl;
 
   board << set;
   board.saveSVG("parametricball.svg");
@@ -79,7 +79,7 @@ bool testParametricShape()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

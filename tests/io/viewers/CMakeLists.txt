@@ -2,8 +2,8 @@
 ### Visu QGLViewer
 
 SET(QGLVIEWER_TESTS_SRC
-	testViewer3D
-	testDisplayKSCell
+  testViewer3D
+  testDisplayKSCell
    )
 
 if (  WITH_VISU3D_QGLVIEWER )

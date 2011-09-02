@@ -55,8 +55,8 @@ DGtal::DigitalSetConverter<OutputDigitalSet>
 ::assign( OutputDigitalSet & output, const InputDigitalSet & input )
 {
 //   std::cerr << "Dgtal::DigitalSetConverter::assign<OutputDigitalSet,InputDigitalSet>"  << std::endl
-// 	    << "output = " << output << std::endl
-// 	    << "input  = " << input << std::endl;
+//       << "output = " << output << std::endl
+//       << "input  = " << input << std::endl;
   output.clear();
   output.insertNew( input.begin(), input.end() );
 }
@@ -76,8 +76,8 @@ DGtal::DigitalSetConverter<OutputDigitalSet>
 ( OutputDigitalSet & output, const OutputDigitalSet & input )
 {
 //   std::cerr << "Dgtal::DigitalSetConverter::assign<OutputDigitalSet,OutputDigitalSet>" << std::endl
-// 	    << "output = " << output << std::endl
-// 	    << "input  = " << input << std::endl;
+//       << "output = " << output << std::endl
+//       << "input  = " << input << std::endl;
   output = input;
 }
 

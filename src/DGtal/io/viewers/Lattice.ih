@@ -128,7 +128,7 @@ DGtal::Lattice<TSpace>::Lattice ( const Lattice<Space> & other )
   for ( Dimension i = 0; i < myN; i++ )
     {
       for ( Dimension j = 0; j < myM; j++ )
-	myV[ m*i + j ] = other.myV[ m*i + j ];
+  myV[ m*i + j ] = other.myV[ m*i + j ];
     }
 }
 
@@ -145,29 +145,29 @@ DGtal::Lattice<TSpace>::operator= ( const Lattice<Space> & other )
   if ( this != &other )
     {
       if ( ( other.myM != myM ) || ( other.myN != myN ) )
-	{
-	  if ( myX0 != 0 ) delete[] myX0;
-	  if ( myV != 0 ) delete[] myV;
-	  myN = other.myN;
-	  myM = other.myM;
-	  if ( ( myN == 0 ) || ( myM == 0 ) ) 
-	    {
-	      myX0 =0;
-	      myV = 0;
-	    }
-	  else
-	    {
-	      myX0 = new double[ myM ];
-	      myV = new double[ myM * myN ];
-	    }
-	}
+  {
+    if ( myX0 != 0 ) delete[] myX0;
+    if ( myV != 0 ) delete[] myV;
+    myN = other.myN;
+    myM = other.myM;
+    if ( ( myN == 0 ) || ( myM == 0 ) ) 
+      {
+        myX0 =0;
+        myV = 0;
+      }
+    else
+      {
+        myX0 = new double[ myM ];
+        myV = new double[ myM * myN ];
+      }
+  }
       for ( Dimension j = 0; j < myM; j++ )
-	myX0[ j ] = other.myX0[ j ];
+  myX0[ j ] = other.myX0[ j ];
       for ( Dimension i = 0; i < myN; i++ )
-	{
-	  for ( Dimension j = 0; j < myM; j++ )
-	    myV[ m*i + j ] = other.myV[ m*i + j ];
-	}
+  {
+    for ( Dimension j = 0; j < myM; j++ )
+      myV[ m*i + j ] = other.myV[ m*i + j ];
+  }
     }
   return *this;
 }
@@ -201,7 +201,7 @@ DGtal::Lattice<TSpace>::init( Dimension aN, Dimension aM, double dh )
   for ( Dimension i = 0; i < aN; i++ )
     {
       for ( Dimension j = 0; j < aM; j++ )
-	myV[ aM*i + j ] = ( j == ( i % aM ) ) ? dh : 0.0;  
+  myV[ aM*i + j ] = ( j == ( i % aM ) ) ? dh : 0.0;  
     }
 }
 
@@ -267,10 +267,10 @@ DGtal::Lattice<TSpace>::immerse( const Integer* p, double* x ) const
     {
       Integer pi = p[ i ];
       for ( Dimension j = 0; j < myM; j++ )
-	{
-	  x[ j ] += (*off_v) * pi;
-	  ++off_v;
-	}
+  {
+    x[ j ] += (*off_v) * pi;
+    ++off_v;
+  }
     }  
 }
 
@@ -293,10 +293,10 @@ DGtal::Lattice<TSpace>::immerse( const Point & p, double* x ) const
     {
       Integer pi = p[ i ];
       for ( Dimension j = 0; j < myM; j++ )
-	{
-	  x[ j ] += (*off_v) * pi;
-	  ++off_v;
-	}
+  {
+    x[ j ] += (*off_v) * pi;
+    ++off_v;
+  }
     }  
 }
 
@@ -319,10 +319,10 @@ DGtal::Lattice<TSpace>::immerse( const Integer* p, float* x ) const
     {
       Integer pi = p[ i ];
       for ( Dimension j = 0; j < myM; j++ )
-	{
-	  x[ j ] += (float) ((*off_v) * pi);
-	  ++off_v;
-	}
+  {
+    x[ j ] += (float) ((*off_v) * pi);
+    ++off_v;
+  }
     }  
 }
 
@@ -345,10 +345,10 @@ DGtal::Lattice<TSpace>::immerse( const Point & p, float* x ) const
     {
       Integer pi = p[ i ];
       for ( Dimension j = 0; j < myM; j++ )
-	{
-	  x[ j ] += (float) ((*off_v) * pi);
-	  ++off_v;
-	}
+  {
+    x[ j ] += (float) ((*off_v) * pi);
+    ++off_v;
+  }
     }  
 }
 
@@ -360,7 +360,7 @@ template <typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Lattice<TSpace> & object )
+      const Lattice<TSpace> & object )
 {
   object.selfDisplay( out );
   return out;

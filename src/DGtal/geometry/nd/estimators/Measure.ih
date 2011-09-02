@@ -123,7 +123,7 @@ template < typename TSet>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Measure<TSet> & object )
+      const Measure<TSet> & object )
 {
   object.selfDisplay( out );
   return out;

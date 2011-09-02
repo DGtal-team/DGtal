@@ -69,7 +69,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   int fieldcount = 0;
 
   // Read the file line by line until ".\n" is found
-  for (	char *line = fgets( buf, 128, fin );
+  for (  char *line = fgets( buf, 128, fin );
         line && strcmp( line, ".\n" ) != 0 ;
         line = fgets( line, 128, fin ), ++linecount
       )
@@ -191,7 +191,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
     count = 0;
     unsigned char val;
-    typename T::Domain::ConstIterator it = domain.range().begin();
+    typename T::Domain::ConstIterator it = domain.begin();
     long int total = sx * sy * sz;
 
     while (( count < total ) && ( fin ) )

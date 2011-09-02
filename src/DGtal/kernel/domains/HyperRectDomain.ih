@@ -41,18 +41,29 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
   : myLowerBound(Point::zero),
     myUpperBound(Point::zero),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+        myLowerBound,
+        myUpperBound),
+    myIteratorEnd(myUpperBound,
+      myLowerBound,
+      myUpperBound)
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
-						  const Point &aPointB ) :
+              const Point &aPointB ) :
     myLowerBound(std::min(aPointA, aPointB)),
     myUpperBound(std::max(aPointA, aPointB)),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+        myLowerBound,
+        myUpperBound),
+    myIteratorEnd(myUpperBound,
+      myLowerBound,
+      myUpperBound)
+    
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -61,8 +72,13 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain
     myLowerBound(aDomain.lowerBound()),
     myUpperBound(aDomain.upperBound()),
     myPredicate( myLowerBound, myUpperBound ),
-    myRange(*this)
-{}
+    myIteratorBegin(myLowerBound,
+        myLowerBound,
+        myUpperBound),
+    myIteratorEnd(myUpperBound,
+      myLowerBound,
+      myUpperBound)
+{ ++myIteratorEnd; }
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -79,8 +95,10 @@ DGtal::HyperRectDomain<TSpace>::operator=
   {
     myLowerBound = other.myLowerBound;
     myUpperBound = other.myUpperBound;
-    myPredicate = other.myPredicate;
-    new(&myRange) ConstRange(*this);
+    myPredicate = other.myPredicate;    
+    new(&myIteratorBegin) ConstIterator(myLowerBound,myLowerBound,myUpperBound);
+    new(&myIteratorEnd) ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+    ++myIteratorEnd;
   }
   return *this;
 }
@@ -170,7 +188,7 @@ DGtal::HyperRectDomain<TSpace>::selfDraw( Board2D & board ) const
 {
   std::string mode = board.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
-	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
+   ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   if ( ( mode == "" ) || ( mode == "Grid" ) )
     selfDrawAsGrid( board );
@@ -192,27 +210,27 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
   if (TSpace::dimension == 2)
   {
     for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
       aboard.drawLine(x,
-		      NumberTraits<Integer>::castToInt64_t(myLowerBound[1]) -
-		      0.5,
-		      x, 
-		      NumberTraits<Integer>::castToInt64_t(myUpperBound[1]) +
-		      0.5);
+          NumberTraits<Integer>::castToInt64_t(myLowerBound[1]) -
+          0.5,
+          x, 
+          NumberTraits<Integer>::castToInt64_t(myUpperBound[1]) +
+          0.5);
 
     for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	 y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
       aboard.drawLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0]) -
-		      0.5,
-		      y, 
-		      NumberTraits<Integer>::castToInt64_t(myUpperBound[0]) +
-		      0.5,
-		      y);
+          0.5,
+          y, 
+          NumberTraits<Integer>::castToInt64_t(myUpperBound[0]) +
+          0.5,
+          y);
 
     for (int64_t x =  NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
       for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.fillCircle(x, y, 0.1);
   }
 }
@@ -228,8 +246,8 @@ DGtal::HyperRectDomain<TSpace>::selfDrawDisplay3D( Display3D & display ) const
 {
   std::string mode = display.getMode( this->styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
-	  mode=="BoundingBox")||
-	 ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
+    mode=="BoundingBox")||
+   ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
   
   if (  mode == "BoundingBox"  ){
@@ -271,43 +289,43 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsBoundingBoxDisplay3D( Display3D & disp
     {
       //Z upper face
       display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
-		     colDef);
+         myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+         myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myUpperBound[2]+(0.5+shiftSize),
+         colDef);
       //Z lower face
       display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
-		     colDef);
+         myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize), myLowerBound[2]-(0.5+shiftSize),
+         colDef);
       
       //Y upper face
       display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     colDef);
+         myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+         colDef);
       //Y lower face
       display.addQuad(myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     colDef);
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         colDef);
       
       // X upper face
       display.addQuad(myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
-		     colDef);
+         myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+         myUpperBound[0]+(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         myUpperBound[0]+(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),         
+         colDef);
       
       //  X lower face
       display.addQuad(myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),		     
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
-		     myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
-		     colDef);
+         myLowerBound[0]-(0.5+shiftSize), myUpperBound[1]+(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),         
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myLowerBound[2]-(0.5+shiftSize),
+         myLowerBound[0]-(0.5+shiftSize), myLowerBound[1]-(0.5+shiftSize),myUpperBound[2]+(0.5+shiftSize),
+         colDef);
       
     }  
 }
@@ -324,48 +342,48 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGridDisplay3D( Display3D & display) co
   {
     // Face XY
     for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
-		       x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,display.getLineColor() );
+     x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+  display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5,z,
+           x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5,z,display.getLineColor() );
       }
       for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  display.getLineColor());
+     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+  display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+           NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y,z,  display.getLineColor());
       }
     }
     
     // Faces XZ
     for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	 y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
-	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,display.getLineColor());
+     x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+  display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+           x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])+0.5,display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
-		       NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, display.getLineColor());
+     z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+  display.addLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0])-0.5,y ,z,
+           NumberTraits<Integer>::castToInt64_t(myUpperBound[0])+0.5,y, z, display.getLineColor());
       }
     }
     
 
     // Faces YZ
     for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
-		       x, y ,NumberTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, display.getLineColor());
+     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+  display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(myLowerBound[2])-0.5,
+           x, y ,NumberTraits<Integer>::castToInt64_t(myUpperBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(myLowerBound[2]);
-	   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
-	display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
-		       x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, display.getLineColor());
+     z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+  display.addLine(x, NumberTraits<Integer>::castToInt64_t(myLowerBound[1])-0.5 ,z,
+           x, NumberTraits<Integer>::castToInt64_t(myUpperBound[1])+0.5, z, display.getLineColor());
       }
     }
     
@@ -385,15 +403,15 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingPointsDisplay3D( Display3D & dis
   {
     // Face XY
     for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+     x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
-	for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
+  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+       y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+    display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
 
-	}
+  }
       }
     }
     
@@ -416,15 +434,15 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) 
     {
     // Face XY
     for (int64_t z = NumberTraits<Integer>::castToInt64_t(myLowerBound[2]); 
-	 z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
+   z <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[2]); z++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
+     x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++){
       
-	for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-	     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
-	  display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
+  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
+       y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++){
+    display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
 
-	}
+  }
       }
     }
     
@@ -454,9 +472,9 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
   if (TSpace::dimension == 2)
   {
     for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-	 x <= NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+   x <= NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-	   y <= NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+     y <= NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
         aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
   }
 }

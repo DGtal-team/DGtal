@@ -138,7 +138,7 @@ bool testObjectBorder()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];
@@ -171,7 +171,7 @@ bool testObjectBorder()
   board.saveSVG("bubble-set.svg");
 
   board << DrawObjectAdjacencies()
-  //	<< DrawWithCustomStyle<SelfDrawStyleCustom>()
+  //  << DrawWithCustomStyle<SelfDrawStyleCustom>()
   << CustomStyle( "Object", new MyObjectStyleCustom )
   << bubbleBorder;
   board.saveSVG("bubble-object-border.svg");
@@ -259,7 +259,7 @@ bool testBoard2D()
 
   //We construct a simple 3-bubbles set
   DigitalSet bubble_set( domain );
-  for ( DomainConstIterator it = domain.range().begin(); it != domain.range().end(); ++it )
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
   {
     int x = (*it)[0];
     int y = (*it)[1];

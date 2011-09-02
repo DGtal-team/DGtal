@@ -87,64 +87,64 @@ DGtal::FP<TIterator,TInteger,connectivity>
 //std::cerr << "first DSS" << std::endl;
 //std::cerr << currentDSS << std::endl;
 
-	while (i != end) {
+  while (i != end) {
 
-		//store the last leaning point 
-		//if the first and last leaning points 
-		//of the MS are not confounded
-		if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
-			myPolygon.push_back(adapter->lastLeaningPoint());
-		}
+    //store the last leaning point 
+    //if the first and last leaning points 
+    //of the MS are not confounded
+    if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
+      myPolygon.push_back(adapter->lastLeaningPoint());
+    }
 
-		//removing step
-		while (!currentDSS.isExtendable(i)) {
-			//remove a point from the back
-			if ( currentDSS.retract() ) {
-				//store the last leaning point
-				if (adapter->lastLeaningPoint() != myPolygon.back()) {
-					myPolygon.push_back(adapter->lastLeaningPoint());
-				}
-			} else {
-				//disconnected digital curve
-				throw InputException();
-			}
-		}
+    //removing step
+    while (!currentDSS.isExtendable(i)) {
+      //remove a point from the back
+      if ( currentDSS.retract() ) {
+        //store the last leaning point
+        if (adapter->lastLeaningPoint() != myPolygon.back()) {
+          myPolygon.push_back(adapter->lastLeaningPoint());
+        }
+      } else {
+        //disconnected digital curve
+        throw InputException();
+      }
+    }
 
-		//remove the last leaning point 
-		//if the first and last leaning points 
-		//of the current DSS are not confounded
-		if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
-			myPolygon.pop_back();
-		}		
+    //remove the last leaning point 
+    //if the first and last leaning points 
+    //of the current DSS are not confounded
+    if (adapter->firstLeaningPoint() != adapter->lastLeaningPoint()) {
+      myPolygon.pop_back();
+    }    
 
-		//adding step
-		while ( (i != end)&&(currentDSS.extend(i)) ) {
-			//store the first leaning point
-			if (adapter->firstLeaningPoint() != myPolygon.back()) {
-				myPolygon.push_back(adapter->firstLeaningPoint());
-			}
-			++i; //move forward
-		}
+    //adding step
+    while ( (i != end)&&(currentDSS.extend(i)) ) {
+      //store the first leaning point
+      if (adapter->firstLeaningPoint() != myPolygon.back()) {
+        myPolygon.push_back(adapter->firstLeaningPoint());
+      }
+      ++i; //move forward
+    }
 
-		//transition step
-		if (i != end) {
+    //transition step
+    if (i != end) {
 
-			if ( (isConvex)&&( currentDSS.getRemainder(i) < 
-											  (currentDSS.getMu()) ) ) {
-				//from convex to concave
-				isConvex = false;
-				delete (adapter);
-				adapter = new Adapter4ConcavePart<DSS>(currentDSS);
-			} else if ( (!isConvex)&&( currentDSS.getRemainder(i) >= 
-											          (currentDSS.getMu()+currentDSS.getOmega()) ) ) {
-				//from concave to convex
-				isConvex = true;
-				delete (adapter);
-				adapter = new Adapter4ConvexPart<DSS>(currentDSS);
-			}
-		}
+      if ( (isConvex)&&( currentDSS.getRemainder(i) < 
+                        (currentDSS.getMu()) ) ) {
+        //from convex to concave
+        isConvex = false;
+        delete (adapter);
+        adapter = new Adapter4ConcavePart<DSS>(currentDSS);
+      } else if ( (!isConvex)&&( currentDSS.getRemainder(i) >= 
+                                (currentDSS.getMu()+currentDSS.getOmega()) ) ) {
+        //from concave to convex
+        isConvex = true;
+        delete (adapter);
+        adapter = new Adapter4ConvexPart<DSS>(currentDSS);
+      }
+    }
 
-	}
+  }
 
 //std::cerr << "last DSS" << std::endl;
 //std::cerr << currentDSS << std::endl;
@@ -153,7 +153,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
   while (currentDSS.retract()) {
     //store the last leaning point
     if (adapter->lastLeaningPoint() != myPolygon.back()) {
-	    myPolygon.push_back(adapter->lastLeaningPoint());
+      myPolygon.push_back(adapter->lastLeaningPoint());
     }
   }
 
@@ -166,47 +166,47 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::FP<TIterator,TInteger,connectivity>::FP(
   const TIterator& itb, 
-	const TIterator& ite, 
+  const TIterator& ite, 
   const bool& isClosed ) throw( InputException ) 
  : myFlagIsClosed( isClosed ) 
 {
 
-	TIterator i = itb;
-	if (i != ite) {
+  TIterator i = itb;
+  if (i != ite) {
 
     if (myFlagIsClosed) { /////////////////////////// closed
       //first maximal DSS
       Circulator<TIterator> citb(i,itb,ite);
-  		DSSComputerInLoop firstMS(citb); //init
+      DSSComputerInLoop firstMS(citb); //init
 
       //backward extension
       Circulator<TIterator> back( citb );
       do {
-  		  --back; 
-		  } while (firstMS.extendOppositeEnd(back));
+        --back; 
+      } while (firstMS.extendOppositeEnd(back));
       //forward extension
       Circulator<TIterator> front( citb );
       do {
-  		  ++front; 
-		  } while (firstMS.extend(front));
+        ++front; 
+      } while (firstMS.extend(front));
 
       //local convexity
-  		bool isConvexAtFront; 
-  	  Adapter<DSSComputerInLoop>* adapterAtFront;   
+      bool isConvexAtFront; 
+      Adapter<DSSComputerInLoop>* adapterAtFront;   
 
       isConvexAtFront = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
                                                                 (firstMS,adapterAtFront,front);
 
-  		bool isConvexAtBack; 
-  	  Adapter<DSSComputerInLoop>* adapterAtBack;  
+      bool isConvexAtBack; 
+      Adapter<DSSComputerInLoop>* adapterAtBack;  
 
       isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
                                                                 (firstMS,adapterAtBack,back);
 
       //first point 
-		  if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
-			  myPolygon.push_back(adapterAtFront->lastLeaningPoint());
-		  }
+      if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
+        myPolygon.push_back(adapterAtFront->lastLeaningPoint());
+      }
 
       //set end iterator
       typename DSSComputerInLoop::Point leaningPoint; 
@@ -231,54 +231,54 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
       myPolygon.pop_back();
     
     } else { /////////////////////////////////////// open 
-		  //list of successive upper (U) and lower (L)
+      //list of successive upper (U) and lower (L)
       // leaning points. 
-		  std::list<Point> vTmpU, vTmpL;
-		  vTmpU.push_back(*i);
-		  vTmpL.push_back(*i);
+      std::list<Point> vTmpU, vTmpL;
+      vTmpU.push_back(*i);
+      vTmpL.push_back(*i);
 
-		  //longest DSS
-		  DSSComputer longestDSS(i); //longest DSS
-		  ++i; //move forward
-		  while ( (i != ite)&&(longestDSS.extend(i)) ) {
-			  //store the first upper leaning point
-			  if (longestDSS.getUf() != vTmpU.back()) {
-				  vTmpU.push_back(longestDSS.getUf());
-			  }
-			  //store the first lower leaning point
-			  if (longestDSS.getLf() != vTmpL.back()) {
-				  vTmpL.push_back(longestDSS.getLf());
-			  }
-			  ++i; //move forward
-		  }
+      //longest DSS
+      DSSComputer longestDSS(i); //longest DSS
+      ++i; //move forward
+      while ( (i != ite)&&(longestDSS.extend(i)) ) {
+        //store the first upper leaning point
+        if (longestDSS.getUf() != vTmpU.back()) {
+          vTmpU.push_back(longestDSS.getUf());
+        }
+        //store the first lower leaning point
+        if (longestDSS.getLf() != vTmpL.back()) {
+          vTmpL.push_back(longestDSS.getLf());
+        }
+        ++i; //move forward
+      }
 
-  		bool isConvex; //TRUE if longestDSS begins a convex part, FALSE otherwise
-  	  Adapter<DSSComputer>* adapter; //adapter for the current DSS
+      bool isConvex; //TRUE if longestDSS begins a convex part, FALSE otherwise
+      Adapter<DSSComputer>* adapter; //adapter for the current DSS
 
-		  if (i != ite) {
+      if (i != ite) {
 
         isConvex = initConvexityConcavity<DSSComputer,Adapter<DSSComputer> >
                                                        (longestDSS,adapter,i);
   
         if (isConvex) myPolygon = vTmpU;
-				else myPolygon = vTmpL;
+        else myPolygon = vTmpL;
 
         //call main algo
         mainAlgorithm<DSSComputer,Adapter<DSSComputer> >
                            (longestDSS,adapter,isConvex,i,ite);
-      	delete (adapter);
+        delete (adapter);
 
-		  } else {
-			  //the part is assumed to be convex
-			  //if it is straight
-			  myPolygon = vTmpU;
-			  isConvex = true;
-			  adapter = new Adapter4ConvexPart<DSSComputer>(longestDSS);
-		  }
+      } else {
+        //the part is assumed to be convex
+        //if it is straight
+        myPolygon = vTmpU;
+        isConvex = true;
+        adapter = new Adapter4ConvexPart<DSSComputer>(longestDSS);
+      }
 
     } //end closed/open test
 
-	} //end itb == ite test
+  } //end itb == ite test
 
 }
 
@@ -407,44 +407,44 @@ DGtal::RealPointVector<2>
 DGtal::FP<TIterator,TInteger,connectivity>
    ::getRealPoint (const Point& a,const Point& b, const Point& c) const {
 
-	RealVector shift;
+  RealVector shift;
 
-	Vector e1 = b - a; //previous edge
-	Vector e2 = c - b; //next edge
+  Vector e1 = b - a; //previous edge
+  Vector e2 = c - b; //next edge
 
-	if ( (e1[0]*e2[1]-e1[1]*e2[0]) <= 0 ) {
+  if ( (e1[0]*e2[1]-e1[1]*e2[0]) <= 0 ) {
 
-		//convex turn
-		if ( (quadrant(e1,1))&&(quadrant(e2,1)) ) {
-			shift = RealVector(0.5,-0.5);
-		} else if ( (quadrant(e1,2))&&(quadrant(e2,2)) ) {
-			shift = RealVector(-0.5,-0.5);
-		} else if ( (quadrant(e1,3))&&(quadrant(e2,3)) ) {
-			shift = RealVector(-0.5,0.5);
-		} else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
-			shift = RealVector(0.5,0.5);
-		} else {
+    //convex turn
+    if ( (quadrant(e1,1))&&(quadrant(e2,1)) ) {
+      shift = RealVector(0.5,-0.5);
+    } else if ( (quadrant(e1,2))&&(quadrant(e2,2)) ) {
+      shift = RealVector(-0.5,-0.5);
+    } else if ( (quadrant(e1,3))&&(quadrant(e2,3)) ) {
+      shift = RealVector(-0.5,0.5);
+    } else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
+      shift = RealVector(0.5,0.5);
+    } else {
       ASSERT(false && "DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon" );
-		}
+    }
 
-	} else {
+  } else {
 
-		//concave turn
-		if ( (quadrant(e1,1))&&(quadrant(e2,1)) ) {
-			shift = RealVector(-0.5,0.5);
-		} else if ( (quadrant(e1,2))&&(quadrant(e2,2)) ) {
-			shift = RealVector(0.5,0.5);
-		} else if ( (quadrant(e1,3))&&(quadrant(e2,3)) ) {
-			shift = RealVector(0.5,-0.5);
-		} else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
-			shift = RealVector(-0.5,-0.5);
-		} else {
+    //concave turn
+    if ( (quadrant(e1,1))&&(quadrant(e2,1)) ) {
+      shift = RealVector(-0.5,0.5);
+    } else if ( (quadrant(e1,2))&&(quadrant(e2,2)) ) {
+      shift = RealVector(0.5,0.5);
+    } else if ( (quadrant(e1,3))&&(quadrant(e2,3)) ) {
+      shift = RealVector(0.5,-0.5);
+    } else if ( (quadrant(e1,4))&&(quadrant(e2,4)) ) {
+      shift = RealVector(-0.5,-0.5);
+    } else {
       ASSERT(false && "DGtal::FP<TIterator,TInteger,connectivity>::getRealPoint: not valid polygon" );
-		}
+    }
 
-	} 
+  } 
 
-	return ( RealPoint(b) + shift );
+  return ( RealPoint(b) + shift );
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -453,19 +453,19 @@ bool
 DGtal::FP<TIterator,TInteger,connectivity>
    ::quadrant (const Vector& v, const int& q) const {
 
-	if (q == 1) {
-		return ( (v[0]>=0)&&(v[1]>=0) );
-	} else if (q == 2) {
-		return ( (v[0]>=0)&&(v[1]<=0) );
-	} else if (q == 3) {
-		return ( (v[0]<=0)&&(v[1]<=0) );
-	} else if (q == 4) {
-		return ( (v[0]<=0)&&(v[1]>=0) );
-	} else {
-	  ASSERT(false && 
-		 "DGtal::FP<TIterator,TInteger,connectivity>::quadrant: quadrant number should be 0,1,2 or 3"  );
-	  return false;
-	}
+  if (q == 1) {
+    return ( (v[0]>=0)&&(v[1]>=0) );
+  } else if (q == 2) {
+    return ( (v[0]>=0)&&(v[1]<=0) );
+  } else if (q == 3) {
+    return ( (v[0]<=0)&&(v[1]<=0) );
+  } else if (q == 4) {
+    return ( (v[0]<=0)&&(v[1]>=0) );
+  } else {
+    ASSERT(false && 
+     "DGtal::FP<TIterator,TInteger,connectivity>::quadrant: quadrant number should be 0,1,2 or 3"  );
+    return false;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -481,21 +481,21 @@ void
 DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard) const
 {
   //polyline to draw
-	vector<LibBoard::Point> polyline;
+  vector<LibBoard::Point> polyline;
 
-	typename Polygon::const_iterator i = myPolygon.begin();
-	for ( ;i != myPolygon.end();++i) {
-			Point p = (*i);
-			double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-			double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-			polyline.push_back(LibBoard::Point(xp,yp));
-	}
+  typename Polygon::const_iterator i = myPolygon.begin();
+  for ( ;i != myPolygon.end();++i) {
+      Point p = (*i);
+      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      polyline.push_back(LibBoard::Point(xp,yp));
+  }
 
   if (myFlagIsClosed) {
-			Point p = (*myPolygon.begin());
-			double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-			double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-			polyline.push_back(LibBoard::Point(xp,yp));
+      Point p = (*myPolygon.begin());
+      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      polyline.push_back(LibBoard::Point(xp,yp));
   }
   aBoard.drawPolyline(polyline);
 
@@ -508,9 +508,9 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard)
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard2D*
-DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
+DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string  ) const
 {
-	return new DefaultDrawStyle;
+  return new DefaultDrawStyle;
 }
 
 /**
@@ -559,11 +559,11 @@ void
 DGtal::FP<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
 {
   out << "[FP]" << endl;
-	typename Polygon::const_iterator i = myPolygon.begin();
-	for ( ;i != myPolygon.end();++i)
-	{
-		out << "\t " << (*i) << endl;
-	}							
+  typename Polygon::const_iterator i = myPolygon.begin();
+  for ( ;i != myPolygon.end();++i)
+  {
+    out << "\t " << (*i) << endl;
+  }              
   out << "[end FP]" << endl;
 }
 
@@ -578,7 +578,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const FP<TIterator,TInteger,connectivity> & object )
+      const FP<TIterator,TInteger,connectivity> & object )
 {
   object.selfDisplay( out );
   return out;

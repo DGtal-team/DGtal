@@ -71,9 +71,9 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
     {
       trace.info()<< "Tangent using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
-		  << "\t tangentBC [options] --FreemanChain  <fileName> "<<std::endl
-		  << general_opt << "\n"
-		  << "NB: the file may contain several freeman chains." << "\n";
+      << "\t tangentBC [options] --FreemanChain  <fileName> "<<std::endl
+      << general_opt << "\n"
+      << "NB: the file may contain several freeman chains." << "\n";
       return 0;
     }
   
@@ -111,31 +111,31 @@ int main( int argc, char** argv )
       std::cout << "# mask size = " << 
       MyBinomialConvolver::suggestedSize( h, vectPts.begin(), vectPts.end() ) << std::endl;
       typedef 
-	TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
-	TangentBCFct;
+  TangentFromBinomialConvolverFunctor< MyBinomialConvolver, RealPoint >
+  TangentBCFct;
       BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> 
-	BCTangentEstimator;
+  BCTangentEstimator;
 
       BCTangentEstimator.init( h, vectPts.begin(), vectPts.end(), isClosed );
 
       vector<RealPoint> tangents( vectPts.size() ); 
       BCTangentEstimator.eval( vectPts.begin(), vectPts.end(), 
-			       tangents.begin() ); 
+             tangents.begin() ); 
 
       // Output
       cout << "# id tangent.x tangent.y angle(atan2(y,x))" << endl;  
       unsigned int j = 0;
       for ( ConstIteratorOnPoints 
-	      it = vectPts.begin(), it_end = vectPts.end();
-	    it != it_end; ++it, ++j ) 
-	{
-	  double x = tangents[ j ][ 0 ];
-	  double y = tangents[ j ][ 1 ];
-	  cout << j << setprecision( 15 )
-	       << " " << x << " " << y 
-	       << " " << atan2( y, x )
-	       << endl;
-	}
+        it = vectPts.begin(), it_end = vectPts.end();
+      it != it_end; ++it, ++j ) 
+  {
+    double x = tangents[ j ][ 0 ];
+    double y = tangents[ j ][ 1 ];
+    cout << j << setprecision( 15 )
+         << " " << x << " " << y 
+         << " " << atan2( y, x )
+         << endl;
+  }
 
     }
 

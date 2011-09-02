@@ -85,17 +85,17 @@ int main( int argc, char** argv )
   
   // Extracting all boundary surfels which are connected to the initial boundary Cell.
   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
-					ks,SAdj, set3dPredicate, aCell );
+          ks,SAdj, set3dPredicate, aCell );
     
   // Extract the bondary contour associated to the initial surfel in its first direction
   Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
- 					  ks, *(ks.sDirs( aCell )), SAdj, 
-					  set3dPredicate, aCell );
+             ks, *(ks.sDirs( aCell )), SAdj, 
+            set3dPredicate, aCell );
   
   // Extract the bondary contour associated to the initial surfel in its second direction
   Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell2,
- 					  ks, *(++(ks.sDirs( aCell ))), SAdj, 
-					  set3dPredicate, aCell );  
+             ks, *(++(ks.sDirs( aCell ))), SAdj, 
+            set3dPredicate, aCell );  
   
   
   // Displaying all the surfels in transparent mode

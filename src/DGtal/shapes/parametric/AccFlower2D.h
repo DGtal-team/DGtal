@@ -87,10 +87,10 @@ namespace DGtal
      * @param phi the phase of the flower (in radian).
      */
     AccFlower2D( const double x0, const double y0, 
-	      const double r,
-	      const double smallr,
-	      const unsigned int k,
-	      const double phi);
+        const double r,
+        const double smallr,
+        const unsigned int k,
+        const double phi);
 
     /**
      * Constructor. 
@@ -101,10 +101,10 @@ namespace DGtal
      * @param phi the phase of the flower (in radian).
      */
     AccFlower2D(const RealPoint2D &aPoint, 
-	     const double r,
-	     const double smallr,
-	     const unsigned int k,
-	     const double phi);
+       const double r,
+       const double smallr,
+       const unsigned int k,
+       const double phi);
 
     /**
      * Constructor. 
@@ -115,10 +115,10 @@ namespace DGtal
      * @param phi the phase of the flower (in radian).
      */
     AccFlower2D(const Point &aPoint, 
-	     const double r,
-	     const double smallr,
-	     const unsigned int k,
-	     const double phi);
+       const double r,
+       const double smallr,
+       const unsigned int k,
+       const double phi);
 
     
     // ------------- Implementation of 'StarShaped' services ------------------
