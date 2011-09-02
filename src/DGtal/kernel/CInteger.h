@@ -258,7 +258,7 @@ namespace DGtal
      
      short, int, unsigned int, long long, unsigned long long,
      uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t,
-     mpz_class
+     DGtal::BigInteger
     
      <p> Notes <br>
     

@@ -164,7 +164,7 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
-       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, mpz_class
+       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
      <p> Notes <br>
    
@@ -179,6 +179,8 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CCommutativeRing )
     {
+      ConceptUtils::sameType( c, T( 25 ) );
+      ConceptUtils::sameType( c, T( -25 ) );
       ConceptUtils::sameType( c, T( a+b ) );
       ConceptUtils::sameType( c, T( -a ) );
       ConceptUtils::sameType( c, T( a-b ) );
@@ -187,10 +189,7 @@ namespace DGtal
       ConceptUtils::sameType( c, T( 1 ) );  
 
       ///The 0 and 1 neutral elements should be tested.
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
+    }   
     // ------------------------- Internals ------------------------------------
   private:
     T a,b,c;

@@ -53,7 +53,8 @@ namespace DGtal
   /**
    * Description of \b concept '\b CGlobalGeometricEstimator' <p>
    * @ingroup Concepts
-   * Aim: Speicify the concept of global geometric estimator. 
+   * Aim: Specify the concept of global geometric estimator. A global
+   * geometric estimator.
    * 
    * <p> Refinement of
    *
@@ -78,9 +79,15 @@ namespace DGtal
    * h and a given set</td> <td> </td> <td> O(1) </td>
    * </tr>
     * <tr> 
-   * <td> eval</td> <td> x.eval()</td><td></td><td>a value of type T::Quantity</td>
-   * <td>T.init(h,aSet) should have been called before </td> <td>Evaluate the  global estimator specified during
-   * the init()</td> <td> </td> <td> Algorithm dependent </td>
+   * <td> eval</td> 
+   * <td> x.eval()</td>
+   * <td></td>
+   * <td>a value of type T::Quantity</td>
+   * <td>T.init(h,aSet) should have been called before </td>
+   * <td>Evaluate the  global estimator specified during
+   * the init()</td> 
+   * <td> </td> 
+   * <td> Algorithm dependent </td>
    * </tr>
    * </table>
    *
@@ -114,7 +121,6 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     T aGlobalEstimator;
-    //   Set aSet;
     double aH;
     Quantity aQuantity;
     
