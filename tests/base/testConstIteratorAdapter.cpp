@@ -66,9 +66,8 @@ bool testConstIteratorAdapter()
   typedef Point3dTo2dXY<int> Modifier; 
   
   typedef ConstIteratorAdapter<Iterator3,Modifier> Adapter; 
-  BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<Iterator3> ));
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
-  //BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Adapter> ));
+  BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Adapter> ));
   
   //range of 3d Points
   std::vector<Point3> r;
@@ -138,7 +137,7 @@ bool testConstIteratorAdapter()
 
     //random acces
     ait = aitBegin + 3;
-//    ait = 1 + ait; 
+    ait = 2 + ait; 
     trace.info() << "some random access operators" << endl; 
     trace.info() << *aitBegin << *ait << (aitBegin < ait) << endl; 
     if (aitBegin < ait) flag2 = true;
