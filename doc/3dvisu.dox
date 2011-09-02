@@ -29,10 +29,10 @@ namespace DGtal {
 
   The semi abstract class Display3D defines the stream mechanism to
   display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
-  ...). The class Viewer3D and Board2Dto3D implement two different
+  ...). The class Viewer3D and Board3DTo2D implement two different
   ways to display 3D objects. The first one (Viewer3D), permits an
   interactive visualisation (based on OpenGL) and the second one
-  (Board2Dto3D) provides 3D visualisation from 2D vectorial display
+  (Board3DTo2D) provides 3D visualisation from 2D vectorial display
   (based on the CAIRO library).
   
 

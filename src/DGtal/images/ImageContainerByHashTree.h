@@ -145,7 +145,8 @@ namespace DGtal
       static const HashKey ROOT_KEY = static_cast<HashKey>(1);
 
       /**
-       * The constructor.
+       * The constructor from a \a hashKeySize, a @a depth and a 
+       * @a defaultValue.
        *
        * @param hashKeySize Number of bit of the hash key. This
        * parameter is important as it influences the amount of
@@ -161,14 +162,38 @@ namespace DGtal
        * a default value at the root (key = 1)
        */
       ImageContainerByHashTree(const unsigned int hashKeySize,
-             const unsigned int depth,
-             const Value defaultValue);
+			       const unsigned int depth,
+			       const Value defaultValue);
 
+      /**
+       * The constructor from  a \a hashKeySize,  a 
+       * @a defaultValue and a pair of points. In this case, the depth
+       * of the tree is given by the logarithm of the domain size
+       * defined by the two points. 
+       *
+       * @param hashKeySize Number of bit of the hash key. This
+       * parameter is important as it influences the amount of
+       * collisions in the hash table. A value K creates an array of
+       * length 2^K with potential unused cells so a compromise between
+       * speed and memory usage is to be done here.
+       *
+       * @param p1 First point of the image bounding box.
+       * @param p1 Second point of the image bounding box.
+       * 
+       * @param defaultValue In order for the tree to be valid it needs
+       * a default value at the root (key = 1)
+       */
       ImageContainerByHashTree(const unsigned int hashKeySize,
-             const Point & p1,
-             const Point & p2,
-             const Value defaultValue);
+			       const Point & p1,
+			       const Point & p2,
+			       const Value defaultValue);
 
+
+      /** 
+       * Copy contructor.
+       * 
+       * @param toCopy ImageContainer to copy.
+       */      
       ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& toCopy);
 
 
@@ -215,11 +240,11 @@ namespace DGtal
 
 
       /**
-       * Returns the value corresponding to a key making the assomption
+       * Returns the value corresponding to a key making the assumption
        * that the key is at same depth or deeper than the leaf we are
        * looking for.
-       * @param key The key
-       * @return the value
+       * @param key The key.
+       * @return the value.
        */
       Value upwardGet(const HashKey key) const ;
 
@@ -265,18 +290,18 @@ namespace DGtal
        */
       inline unsigned int getSpanSize() const
       {
-  return mySpanSize;
+	return mySpanSize;
       }
-
+      
       /**
        *  Returns the tree's depth.
        * @return the depth
        */
       inline unsigned int getDepth() const
       {
-  return myTreeDepth;
+	return myTreeDepth;
       }
-
+      
       /**
        *  Returns true if the key is valid.  A key is valid if the the
        * most important bit that is equal to 1 is at a position of the
@@ -286,7 +311,7 @@ namespace DGtal
        * @return the boolean result
        */
       bool isKeyValid(HashKey key) const;
-
+      
       /**
        * Checks recursively that the sub-tree starting with key is
        * valid.  A tree is valid if there's one (and only one) leaf for
@@ -297,33 +322,30 @@ namespace DGtal
       bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 
       int myDebugCounter; //debug
-
+      
       //stuff that might be moved out of the class for reusability
       HashKey getKey(const Point & aPoint) const;
-
+      
       unsigned int getKeyDepth(HashKey key) const;
-
+      
       int* getCoordinatesFromKey(HashKey key) const;
-
-      /**
-       * Save the container into a stream.
-       */
-      void save(std::ostream& out);
-
-      /**
-       * Load the container from a stream.
-       */
-      void load(std::istream& in);
-
-      /**
+      
+      /*
        * Prints in the state of the container as a tree. (Calls
        * printTree)
+       * 
+       * @param out output stream.  
+       * @param displayKeys  boolean to decide if keys are displayed .
        */
       void printState(std::ostream& out, bool displayKeys = false) const;
 
       /**
        * Prints the sub-tree starting with the node corresponding to
        * key.
+       *
+       * @param key root of the subtree to display
+       * @param out output stream.  
+       * @param displayKeys  boolean to decide if keys are displayed .
        */
       void printTree(HashKey key, std::ostream& out, bool displayKeys) const;
 
@@ -331,7 +353,10 @@ namespace DGtal
        * Prints the state of the container in a way that displays the
        * hash table and every node as it is stored in memory instead of
        * the usual tree representation.
-       */
+       *
+       * @param out output stream.
+       * @param nbBits 
+       **/
       void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
 
       /**
@@ -345,6 +370,8 @@ namespace DGtal
        *     - The size of the image.
        *     - The average and the maximum amount of collisions.
        *     - The total memory usage.
+       *
+       * @param out output stream.
        */
       void printInfo(std::ostream& out) const;
 
@@ -365,8 +392,10 @@ namespace DGtal
       unsigned int getMaxCollisions() const;
 
       /**
-       * Returns the number of elements for a givent key of the hash
+       * Returns the number of elements for a given key of the hash
        * table.
+       *
+       * @param intermediateKey a hashtree key.
        */
       unsigned int getNbNodes(unsigned int intermediateKey) const;
 
@@ -377,58 +406,63 @@ namespace DGtal
 
 
       // -------------------------------------------------------------
-      //  Iterator inner-class
-      // -------------------------------------------------------------
+      /*  Iterator inner-class
+      *
+      *  @brief Buil-in iterator on an HashTree. This iterator visits
+      *  all node in the tree.
+      *
+      * -------------------------------------------------------------
+      */
       class Iterator
       {
       public:
-  Iterator(Node** data, unsigned int position, unsigned int arraySize)
-  {
-    myArraySize = arraySize;
-    myContainerData = data;
-    myNode = data[0];
-    myCurrentCell = position;
-    while ((!myNode) && (myCurrentCell < myArraySize))
-      {
-        myNode = myContainerData[++myCurrentCell];
-      }
-  }
-  bool isAtEnd()const
-  {
-    return myCurrentCell >= myArraySize;
-  }
-  Value& operator*()
-  {
-    return myNode->getObject();
-  }
-  bool operator ++ ()
-  {
-    return next();
-  }
-  bool operator == (const Iterator& it)
-  {
-    if (isAtEnd() && it.isAtEnd())
-      return true;
-    else
-      return (myNode == it.myNode);
-  }
-  bool operator != (const Iterator& it)
-  {
-    if (isAtEnd() && it.isAtEnd())
-      return false;
-    else
-      return (myNode != it.myNode);
-  }
-  inline HashKey getKey() const
-  {
-    return myNode->getKey();
-  }
-  bool next();
+	Iterator(Node** data, unsigned int position, unsigned int arraySize)
+	{
+	  myArraySize = arraySize;
+	  myContainerData = data;
+	  myNode = data[0];
+	  myCurrentCell = position;
+	  while ((!myNode) && (myCurrentCell < myArraySize))
+	    {
+	      myNode = myContainerData[++myCurrentCell];
+	    }
+	}
+	bool isAtEnd()const
+	{
+	  return myCurrentCell >= myArraySize;
+	}
+	Value& operator*()
+	{
+	  return myNode->getObject();
+	}
+	bool operator ++ ()
+	{
+	  return next();
+	}
+	bool operator == (const Iterator& it)
+	{
+	  if (isAtEnd() && it.isAtEnd())
+	    return true;
+	  else
+	    return (myNode == it.myNode);
+	}
+	bool operator != (const Iterator& it)
+	{
+	  if (isAtEnd() && it.isAtEnd())
+	    return false;
+	  else
+	    return (myNode != it.myNode);
+	}
+	inline HashKey getKey() const
+	{
+	  return myNode->getKey();
+	}
+	bool next();
       protected:
-  Node* myNode;
-  unsigned int myCurrentCell;
-  unsigned int myArraySize;
-  Node** myContainerData;
+	Node* myNode;
+	unsigned int myCurrentCell;
+	unsigned int myArraySize;
+	Node** myContainerData;
       };
 
       /**
@@ -436,7 +470,7 @@ namespace DGtal
        */
       Iterator begin()
       {
-  return Iterator(myData, 0, myArraySize);
+	return Iterator(myData, 0, myArraySize);
       }
 
       /**
@@ -444,25 +478,25 @@ namespace DGtal
        */
       Iterator end()
       {
-  return Iterator(myData, myArraySize, myArraySize);
+	return Iterator(myData, myArraySize, myArraySize);
       }
 
       void selfDisplay(std::ostream & out);
 
       bool isValid() const
       {
-  return checkIntegrity();
+	return checkIntegrity();
       }
 
       // ------------- realization CDrawableWithBoard2D --------------------
     private:
       struct DefaultDrawStyle : public DrawableWithBoard2D
       {
-  virtual void selfDraw(Board2D & aboard)
-  {
-    aboard.setPenColorRGBi(60, 60, 60);
-    aboard.setLineStyle(Board2D::Shape::SolidStyle);
-  }
+	virtual void selfDraw(Board2D & aboard)
+	{
+	  aboard.setPenColorRGBi(60, 60, 60);
+	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
+	}
       };
 
     public:
@@ -497,7 +531,7 @@ namespace DGtal
 
       // -------------------------------------------------------------
       /**
-       * @class ImageContainerByHashTree::Node
+       * @class Node
        *
        * An internal class that corresponds to a node of a linked list (as the hashTable points to linked
        * lists to handle collisions). Each element in the container is placed in a Node.
@@ -505,32 +539,60 @@ namespace DGtal
       class Node
       {
       public:
-  Node(Value object, HashKey key)
-  {
-    myData = object;
-    myKey = key;
-  }
-  inline Node* getNext()
-  {
-    return myNext;
-  }
-  inline void setNext(Node* next)
-  {
-    myNext = next;
-  }
-  inline HashKey getKey()
-  {
-    return myKey;
-  }
-  inline Value& getObject()
-  {
-    return myData;
-  }
-  ~Node() { }
+
+	/** 
+	 * Construtctor: create pair (@a aValue, @a key)
+	 * 
+	 * @param aValue  First value
+	 * @param key     key in the hashtree 
+	 */
+	Node(Value aValue, HashKey key)
+	{
+	  myData = aValue;
+	  myKey = key;
+	}
+
+	/** 
+	 * @return the next pair (aValue, key) in the list.
+	 */
+	inline Node* getNext()
+	{
+	  return myNext;
+	}
+
+
+	/** 
+	 * Insert the pair (value,key)  @a next in the node list 
+	 * 
+	 * @param next a pointer to a pair (value,key) (Node).
+	 */	
+	inline void setNext(Node* next)
+	{
+	  myNext = next;
+	}
+
+	/** 
+	 * 
+	 * @return the key associated to a Node. 
+	 */
+	inline HashKey getKey()
+	{
+	  return myKey;
+	}
+	
+	/** 
+	 * 
+	 * @return the object (aValue) associated to a Node.
+	 */
+	inline Value& getObject()
+	{
+	  return myData;
+	}
+	~Node() { }
       protected:
-  HashKey myKey;
-  Node* myNext;
-  Value myData;
+	HashKey myKey;
+	Node* myNext;
+	Value myData;
       };// -----------------------------------------------------------
 
 
@@ -541,39 +603,46 @@ namespace DGtal
          */
       template <int X, unsigned int exponent> struct POW
       {
-  enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
+	enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
       };
       template <int X > struct POW<X, 1>
       {
-  enum { VALUE = X };
+	enum { VALUE = X };
       };
-
+      
       /**
        * This is part of the hash function. It is called whenever a key
        * is accessed.  The mask used to compute the result is
        * precomputed in the constructor for efficiency.
+       *
+       * @param key a node in the hashtree.
        */
       inline HashKey getIntermediateKey(const HashKey key) const;
 
 
       /**
        * Add a Node to the tree.  This method is very used when writing
-       * in the tree (set method).
+       * in the tree (set method). As detailed in the inner class
+       * Node, nodes are pairs (value,key)
+       *
+       * @param object a object (value)
+       * @param key a hashtree key
+       * @return a pointer to the node list.
        */
       Node* addNode(const Value object, const HashKey key)
       {
-  Node* n = getNode(key);
-  if (n)
+	Node* n = getNode(key);
+	if (n)
           {
             n->getObject() = object;
             //n->setObject(object);
             return n;
           }
-  n = new Node(object, key);
-  HashKey key2 = getIntermediateKey(key);
-  n->setNext(myData[key2]);
-  myData[key2] = n;
-  return n;
+	n = new Node(object, key);
+	HashKey key2 = getIntermediateKey(key);
+	n->setNext(myData[key2]);
+	myData[key2] = n;
+	return n;
       }
 
       /**
@@ -585,14 +654,14 @@ namespace DGtal
        */
       inline Node* getNode(const HashKey key)  const  // very used !!
       {
-  Node* iter = myData[getIntermediateKey(key)];
-  while (iter != 0)
+	Node* iter = myData[getIntermediateKey(key)];
+	while (iter != 0)
           {
             if (iter->getKey() == key)
               return iter;
             iter = iter->getNext();
           }
-  return 0;
+	return 0;
       }
 
       /**
