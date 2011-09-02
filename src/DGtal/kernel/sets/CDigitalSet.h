@@ -54,55 +54,119 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
+  /////////////////////////////////////////////////////////////////////////////
+  // class CDigitalSet
   /**
-   * Description of \b concept '\b CDigitalSet' <p> Aim: Represents a
-   * set of points within the given domain. This set of points is
-   * modifiable by the user.
-   * 
-   * <p> Refinement of  boost::DefaultConstructible, 
-   * boost::CopyConstructible, boost::Assignable
-   *
-   * @todo add boost::Container ?
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CDigitalSet
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   *
-   * <p> Notes <br>
-   * @ingroup Concepts
+     Description of \b concept '\b CDigitalSet' <p>
+     @ingroup Concepts
+
+     @brief Aim: Represents a set of points within the given
+     domain. This set of points is modifiable by the user.
+     
+     <p> Refinement of boost::CopyConstructible, boost::Assignable
+
+     @todo add boost::Container ? Not for now, since coding style do
+     not match with STL (e.g. Iterator instead of iterator).
+    
+     <p> Associated types :
+    
+     <p> Notation
+     - \t X : A type that is a model of CDigitalSet
+     - \t x, \t y : object of type X
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table> 
+      <tr> 
+        <td class=CName> \b Name </td> 
+        <td class=CExpression> \b Expression </td>
+        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CReturnType> \b Return type </td>
+        <td class=CPrecondition> \b Precondition </td> 
+        <td class=CSemantics> \b Semantics </td> 
+        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CComplexity> \b Complexity </td>
+      </tr>
+      <tr> 
+        <td class=CName>            </td> 
+        <td class=CExpression>      </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+    
+     </table>
+    
+     <p> Invariants <br>
+    
+     <p> Models <br>
+    
+     <p> Notes <br>
+
+     @tparam T the type that should be a model of CDigitalSet.
    */
-  template <typename Domain>
-  struct CDigitalSet : 
-    boost::DefaultConstructible< Domain >,
-    boost::CopyConstructible< Domain >, 
-    boost::Assignable< Domain >
+  template <typename T> 
+  struct CDigitalSet :
+    boost::CopyConstructible< T >, 
+    boost::Assignable< T >
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+    // 1. define first provided types (i.e. inner types), like
+    typedef typename T::Domain Domain;
+    typedef typename T::Point Point;
+    typedef typename T::Size Size;
+    typedef typename T::Iterator Iterator;
+    typedef typename T::ConstIterator ConstIterator;
+    // curiously, does not work.
+    // BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< Iterator > ));
+    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Iterator > ));
+    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< ConstIterator > ));
+
+    // To test if two types A and Y are equals, use
+    // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
+
+    // 2. then check the presence of data members, operators and methods with
+    BOOST_CONCEPT_USAGE( CDigitalSet )
+    {
+      ConceptUtils::sameType( myDomain, myX.domain() );
+      ConceptUtils::sameType( mySize, myX.size() );
+      ConceptUtils::sameType( myBool, myX.empty() );
+      myX.insert( myPoint );
+      // template <typename PointInputIterator>
+      //   BOOST_CONCEPT_REQUIRES
+      //   ( ((boost::InputIterator<PointInputIterator>)),
+      //     (void) )
+      //   myX.insert( PointInputIterator, PointInputIterator );
+      myX.insertNew( myPoint );
+      ConceptUtils::sameType( mySize, myX.erase( myPoint ) );
+      myX.erase( myIterator );
+      myX.erase( myIterator, myIterator );
+      myX.clear();
+      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
+      ConceptUtils::sameType( myConstIterator, myX.begin() );
+      ConceptUtils::sameType( myConstIterator, myX.end() );
+      ConceptUtils::sameType( myIterator, myX.begin() );
+      ConceptUtils::sameType( myIterator, myX.end() );
+      ConceptUtils::sameType( myX, myX.operator+=( myX ) );
+      ConceptUtils::sameType( myX, myX.computeComplement() );
+      myX.assignFromComplement( myX );
+      myX.computeBoundingBox( myPoint, myPoint );
+      // look at CInteger.h for testing tags.
+    }
     // ------------------------- Private Datas --------------------------------
   private:
-    
+    T myX; // only if T is default constructible.
+    Domain myDomain;
+    Size mySize;
+    bool myBool;
+    Point myPoint;
+    Iterator myIterator;
+    ConstIterator myConstIterator;
     // ------------------------- Internals ------------------------------------
   private:
     
