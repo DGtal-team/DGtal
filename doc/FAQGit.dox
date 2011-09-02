@@ -67,7 +67,7 @@ In the meantime, you can also update your account settings
 Before going into details on git and git-commands, let's fork the initial DGtal repository. 
 So, once you're logged in on github
 
-  - go to  https://github.com/dcoeurjo/DGtal
+  - go to  https://github.com/DGtal-team/DGtal
   - click on the "Fork" button.
   - once the fork is finished, you'll have your own copy of DGtal
 with the following path: https://github.com/yourlogin/DGtal
@@ -88,7 +88,7 @@ git clone git@github.com:yourlogin/DGtal.git
 In order to easily access to the initial DGtal repository, 
 you can set it as a remote repository, called "upstream": 
 @code
-git remote add upstream git@github.com:dcoeurjo/DGtal.git
+git remote add upstream git@github.com:DGtal-team/DGtal.git
 @endcode
 
 Git remotes are great because they allows to have multiple pull/push
@@ -290,9 +290,9 @@ by using this particular syntax:
 @code
  	svn checkout https://liris.cnrs.fr/dgtal/trunk
 	<==>
-	git clone git@github.com:dcoeurjo/DGtal
+	git clone git@github.com:DGtal-team/DGtal
 or
-	git clone https://dcoeurjo@github.com/dcoeurjo/DGtal
+	git clone https://DGtal-team@github.com/DGtal-team/DGtal
 @endcode
 the clone will "clone" the repository with all its branches (default one
 "master" <==> "trunk" in SVN)
@@ -363,7 +363,7 @@ Even it is very rare, conflit can appear when you try to apply a pull:
 remote: Counting objects: 1, done.
 remote: Total 1 (delta 0), reused 1 (delta 0)
 Unpacking objects: 100% (1/1), done.
-From github.com:dcoeurjo/DGtal
+From github.com:DGtal-team/DGtal
  * branch            master     -> FETCH_HEAD
 Auto-merging doc/cellular-topology.dox
 CONFLICT (content): Merge conflict in doc/cellular-topology.dox
