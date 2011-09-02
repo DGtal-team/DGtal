@@ -58,6 +58,8 @@ namespace DGtal
 
      Proxy class to a DigitalSurfaceContainer.
 
+     @todo Should be a model of CSinglePassConstRange
+
      @tparam TDigitalSurfaceContainer any model of
      CDigitalSurfaceContainer: the concrete representation chosen for
      the digital surface.

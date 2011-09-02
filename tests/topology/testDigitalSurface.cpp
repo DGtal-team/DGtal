@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -49,11 +50,28 @@ bool testDigitalSurface()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ..." );
-  
-  
-  nbok += true ? 1 : 0; 
+  trace.beginBlock ( "Testing block ... DigitalSetBoundary" );
+  using namespace Z2i;
+  typedef DigitalSetBoundary<KSpace,DigitalSet> Boundary;
+  typedef Boundary::SurfelConstIterator ConstIterator;
+  Point p1( -10, -10 );
+  Point p2( 10, 10 );
+  Domain domain( p1, p2 );
+  DigitalSet dig_set( domain );
+  Shapes<Domain>::addNorm2Ball( dig_set, Point( 0, 0 ), 5 );
+  Shapes<Domain>::removeNorm2Ball( dig_set, Point( 0, 0 ), 1 );
+  KSpace K;
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
   nb++;
+  Boundary boundary( K, dig_set );
+  unsigned int nbsurfels = 0;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      ++nbsurfels;
+    }
+  trace.info() << nbsurfels << " surfels found." << std::endl;
+  nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
