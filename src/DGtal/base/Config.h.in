@@ -86,6 +86,11 @@ J.-O. Lachaud (LAMA, Chambéry), L. Provot (LORIA, Nancy),
 T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, Lyon).
 
 
+@section package_description DGtal Packages
+
+  - \ref KernelPackage
+
+
  * @section manuals_dgtal DGtal user-guides
  *
  * - \ref DGtalKernel
@@ -123,9 +128,10 @@ T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble), M. Tola (LIRIS, 
  *  <li> LibBoard section page   </li>
  * </ul>
  *
- * @defgroup Concepts DGtal concepts
- * @defgroup Tests DGtal test files
- * @defgroup Examples DGtal examples
+ * @defgroup Concepts DGtal Concepts
+ * @defgroup Archetypes DGtal Archetypes
+ * @defgroup Tests DGtal Test Files
+ * @defgroup Examples DGtal Examples
  *
  * @example DSS.cpp
  *  Illustration of DSS recognition and segmentation on a Freeman contour.  
