@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/RealPointVector.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +77,7 @@ namespace DGtal
     
     public:
       
-    static Output get(Input p) 
+    static Output get(const Input& p) 
     {
       Input tmp = p;
       return Output(tmp.at(0),tmp.at(1));
@@ -110,7 +111,7 @@ namespace DGtal
     
     public:
       
-    static Output get(Input p) 
+    static Output get(const Input& p) 
     {
       Input tmp = p;
       return Output(tmp.at(0),tmp.at(2));
@@ -144,13 +145,82 @@ namespace DGtal
     
     public:
       
-    static Output get(Input p) 
+    static Output get(const Input& p) 
     {
       Input tmp = p;
       return Output(tmp.at(1),tmp.at(2));
     }
   
   }; // end of class Point3dTo2dYZ
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToPoint
+  /**
+   * Description of template class 'SCellToPoint' <p>
+   * \brief Aim: transforms a scell into a point
+   * @tparam KSpace, the Khalimsky space 
+   * @code 
+  KSpace aKSpace;
+  KSpace::SCell aSCell; 
+  KSpace::Space::Point aPoint; 
+  ...
+  aPoint = SCellToPoint<KSpace>::get(aKSpace, aSCell); 
+   * @endcode
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   */
+  template <typename KSpace>
+  class SCellToPoint
+  {
+    
+    public: 
+      
+    typedef typename KSpace::Space::Point Output;
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      return Output( k.sCoords(s) );
+    }
+      
+  }; // end of class SCellToPoint
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToMidPoint
+  /**
+   * Description of template class 'SCellToMidPoint' <p>
+   * \brief Aim: transforms a scell into a real point
+   * (the coordinates are divided by 2)
+   * @tparam KSpace, the Khalimsky space 
+   * @code 
+  KSpace aKSpace;
+  KSpace::SCell aSCell; 
+  RealPointVector<typename KSpace::dimension> aPoint; 
+  ...
+  aPoint = SCellToMidPoint<KSpace>::get(aKSpace, aSCell); 
+   * @endcode
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector RealPointVector
+   */
+  template <typename KSpace>
+  class SCellToMidPoint
+  {
+    
+    public: 
+      
+    typedef RealPointVector<KSpace::dimension> Output;
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      Output o( k.sKCoords(s) );
+      o /= 2;
+      return o;
+    } 
+      
+  }; // end of class SCellToPoint
 
   
 } // namespace DGtal
