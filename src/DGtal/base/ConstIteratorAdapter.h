@@ -144,16 +144,16 @@ namespace DGtal
     /**
      *  @return the modified element pointed be @a myCurrentIt.
     */
-    reference operator*() { 
-      myBuffer = Modifier::get(*myCurrentIt);
-      return myBuffer; 
+    reference operator*() const { 
+      return Modifier::get(*myCurrentIt); 
     }
 
     /**
      *  @return  pointer to the modified element stored in @a myBuffer.
     */
-    pointer operator->() const { 
-      return &operator*(); 
+    pointer operator->() {
+      myBuffer = Modifier::get(*myCurrentIt);
+      return &myBuffer; 
     }
 
     /**
