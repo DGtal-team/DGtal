@@ -273,16 +273,16 @@ namespace DGtal
   private:
 
   }; // end of class ConstIteratorAdapter
-/*
-    template <typename TIterator, typename TModifier >
-    friend ConstIteratorAdapter<TIterator,TModifier> operator+( 
-      difference_type d, 
-      ConstIteratorAdapter<TIterator,TModifier> & object ) const 
-    {
-      ConstIteratorAdapter<TIterator,TModifier> tmp = other;
-      return tmp += d;
-    }
-    */
+
+  template <typename TIterator, typename TModifier >
+  ConstIteratorAdapter<TIterator,TModifier> operator+( 
+    typename iterator_traits<TIterator>::difference_type d, 
+    ConstIteratorAdapter<TIterator,TModifier> & object )
+  {
+    ConstIteratorAdapter<TIterator,TModifier> tmp = object;
+    return tmp += d;
+  }
+
 } // namespace DGtal
 
 
