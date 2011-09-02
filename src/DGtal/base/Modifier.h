@@ -350,7 +350,46 @@ namespace DGtal
       return std::make_pair<Point,Point>(k.sCoords( innerPixel ),k.sCoords( outerPixel ));
     }
       
+  }; // end of class SCellToIncidentPoints
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SCellToCode
+  /**
+   * Description of template class 'SCellToArrow' <p>
+   * \brief Aim: transforms a 2d scell, basically a linel, 
+    * into a code (0,1,2 or 3), 
+   * @tparam KSpace, the 2d Khalimsky space 
+   * @see ConstIteratorAdapter KhalimskySpaceND
+   */
+  template <typename KSpace>
+  class SCellToCode
+  {
+    
+    public: 
+      
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Vector Vector;
+    typedef char Output;
+
+    typedef typename KSpace::SCell Input;
+    
+    public:
+      
+    static Output get(const KSpace& k, const Input& s) 
+    {
+      //starting point of the arrow
+      Input pointel( k.sIndirectIncident( s, *k.sDirs( s ) ) );
+      Point p( k.sCoords( pointel ) );   //integer coordinates
+      //displacement vector
+      Vector v( k.sKCoords( s ) - k.sKCoords( pointel ) );
+      if (v == Vector(1,0)) return '0'; 
+      else if (v == Vector(0,1)) return '1';
+      else if (v == Vector(-1,0)) return '2';
+      else if (v == Vector(0,-1)) return '3';
+    }
+      
   }; // end of class SCellToArrow
+
   
 } // namespace DGtal
 
