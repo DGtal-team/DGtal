@@ -44,6 +44,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/SurfelNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,11 +74,16 @@ namespace DGtal
     class Tracker
     {
     public:
+      // -------------------- associated types --------------------
       typedef Tracker Self;
       typedef DigitalSetBoundary<TKSpace,TDigitalSet> DigitalSurfaceContainer;
       typedef typename DigitalSurfaceContainer::Surfel Surfel;
-    public:
 
+      // -------------------- inner types --------------------
+      typedef TKSpace KSpace;
+      typedef SurfelNeighborhood<KSpace> Neighborhood;
+
+    public:
       /**
 	 Constructor from surface container and surfel.
 	 @param aSurface the container describing the surface.
@@ -98,7 +104,7 @@ namespace DGtal
       ~Tracker();
 
       /// @return the surface container that the Tracker is tracking.
-      DigitalSurfaceContainer & surface() const;
+      const DigitalSurfaceContainer & surface() const;
       /// @return the current surfel on which the tracker is.
       const Surfel & current() const;
       /// @return the orthogonal direction to the current surfel.
@@ -132,9 +138,10 @@ namespace DGtal
     private:
       /// a reference to the digital surface container on which is the
       /// tracker.
-      DigitalSurfaceContainer & mySurface;
-      /// the current surfel.
-      Surfel mySurfel;
+      const DigitalSurfaceContainer & mySurface;
+      /// the current surfel neighborhood, the object that holds the
+      /// necessary information for determining neighbors.
+      Neighborhood myNeighborhood;
 
     };
 
@@ -166,6 +173,12 @@ namespace DGtal
     ~DigitalSetBoundary();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    DigitalSetBoundary ( const DigitalSetBoundary & other );
+
+    /**
        Constructor from digital set.
        @param aKSpace a cellular grid space (referenced).
        @param aSet a set of points that is duplicated in 'this'.
@@ -181,6 +194,8 @@ namespace DGtal
     const Adjacency & surfelAdjacency() const;
     /// mutator to surfel adjacency.
     Adjacency & surfelAdjacency();
+    /// accessor to digital set
+    const DigitalSet & digitalSet() const;
 
     // --------- CDigitalSurfaceContainer realization -------------------------
   public:
@@ -245,13 +260,6 @@ namespace DGtal
 
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DigitalSetBoundary ( const DigitalSetBoundary & other );
 
     /**
      * Assignment.
