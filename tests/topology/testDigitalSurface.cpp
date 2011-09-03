@@ -54,6 +54,8 @@ bool testDigitalSurface()
   using namespace Z2i;
   typedef DigitalSetBoundary<KSpace,DigitalSet> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
+  typedef Boundary::Tracker Tracker;
+  typedef Boundary::Surfel Surfel;
   Point p1( -10, -10 );
   Point p2( 10, 10 );
   Domain domain( p1, p2 );
@@ -63,6 +65,8 @@ bool testDigitalSurface()
   KSpace K;
   nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
   nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
   Boundary boundary( K, dig_set );
   unsigned int nbsurfels = 0;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
@@ -73,7 +77,28 @@ bool testDigitalSurface()
   trace.info() << nbsurfels << " surfels found." << std::endl;
   nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << "nbsurfels == (12 + 44 )" << std::endl;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      Tracker* ptrTracker = boundary.newTracker( *it );
+      Surfel s = ptrTracker->current();
+      Dimension trackDir = * K.sDirs( s );
+      Surfel s1, s2;
+      unsigned int m1 = ptrTracker->adjacent( s1, trackDir, true ); 
+      unsigned int m2 = ptrTracker->adjacent( s2, trackDir, false ); 
+      trace.info() << "s = " << s << std::endl;
+      trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
+      trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
+      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "boundary.isInside( s1 )" << std::endl;
+      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "boundary.isInside( s2 )" << std::endl;
+      delete ptrTracker;
+    }
+
   trace.endBlock();
   
   return nbok == nb;
