@@ -53,6 +53,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CRange.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -89,12 +90,24 @@ namespace DGtal
    * instance, adding two points has no meaning, but will be
    * authorized by the compiler.
    *
-   * @tparam dim static constant of type DGtal::uint32_t that
+   * @tparam dim static constant of type DGtal::Dimension that
    * specifies the static  dimension of the space and thus the number
    * of elements  of the Point or Vector.
-   * @tparam Ring speficies the ring number type used as
-   * type of PointVector elements (Coordinate for Point and Component
-   * for Vector).
+   * @tparam TEuclideanRing speficies the number type assoicated to an
+   * Euclidean domain (or Euclidean ring) algebraic structure
+   * (commutative unitary ring with no zero divisors and with a division
+   * operator but not necessarily an inverse for the multiplication
+   * operator). This type is used to represent PointVector elements
+   * (Coordinate for Point and Component for Vector) and define
+   * operations on Point or Vectors.
+   *
+   * If TEuclideanRing is a Integer type (built-in integers,
+   * BigIntegers, ...), the "/" operator on Points corresponds to
+   * component by component Euclidean division. 
+   *
+   * If TEuclideanRing is a double, the "/" operator on Points
+   * correspond to the classical division on real numbers (x*1/x = 1).
+   * 
    *
    * The default less than operator is the one of the lexicographic
    * ordering, starting from dimension 0 to N-1.
@@ -125,15 +138,21 @@ namespace DGtal
    * @tparam TComponent the ring used to specify the arithmetic computations.
    *
    */
-  template < DGtal::Dimension dim, typename TComponent >
+  template < DGtal::Dimension dim, typename TEuclideanRing >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
+    
+    BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
 
-    typedef TComponent Component;
-    typedef PointVector<dim, Component> Self;
+    ///Self type
+    typedef PointVector<dim, TEuclideanRing> Self;
 
+    ///Type for Vector elements
+    typedef TEuclideanRing Component;
+  
+    ///Type for Point elements
     typedef Component Coordinate;
 
     ///Unsigned version of the components.
