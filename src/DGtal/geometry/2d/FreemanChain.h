@@ -509,7 +509,7 @@ namespace DGtal
      */
     bool operator!=( const FreemanChain & other) const
     {
-      return  (*this) != other;
+      return  !( (*this) == other );
     }
 
 

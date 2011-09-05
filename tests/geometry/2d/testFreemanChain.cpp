@@ -88,22 +88,21 @@ bool testConstructors()
 
   c5 = c1;
 
-  cout << "c1 " << c1 << endl;
-  cout << "c2 " << c2 << endl;
-  cout << "c3 " << c3 << endl;
-  cout << "c4 " << c4 << endl;
-  cout << "c5 " << c5 << endl;
-  cout << "c6 " << c6 << endl;
+  trace.info() << "c1 = " << c1 << endl;
+  trace.info() << "c2 = " << c2 << endl;
+  trace.info() << "c3 = " << c3 << endl;
+  trace.info() << "c4 = " << c4 << endl;
+  trace.info() << "c5 = " << c5 << endl;
+  trace.info() << "c6 = " << c6 << endl;
 
   bool res = (
-         (c1 == c2) && (c1 == c3) && (c1 == c4)// && (c1 == c5) && (c1 != c6)
-//      && (c2 == c1) && (c2 == c3) && (c2 == c4) && (c2 == c5) && (c2 != c6)
-//      && (c3 == c1) && (c3 == c2) && (c3 == c4) && (c3 == c5) && (c3 != c6)
-//      && (c4 == c1) && (c4 == c2) && (c4 == c3) && (c4 == c5) && (c4 != c6)
-//      && (c5 == c1) && (c5 == c2) && (c5 == c3) && (c5 == c4) && (c4 != c6)
-//      && (c6 != c1) && (c6 != c2) && (c6 != c3) && (c6 != c4) && (c6 != c5)
+         (c1 == c2) && (c1 == c3) && (c1 == c4) && (c1 == c5) && (c1 != c6)
+      && (c2 == c1) && (c2 == c3) && (c2 == c4) && (c2 == c5) && (c2 != c6)
+      && (c3 == c1) && (c3 == c2) && (c3 == c4) && (c3 == c5) && (c3 != c6)
+      && (c4 == c1) && (c4 == c2) && (c4 == c3) && (c4 == c5) && (c4 != c6)
+      && (c5 == c1) && (c5 == c2) && (c5 == c3) && (c5 == c4) && (c4 != c6)
+      && (c6 != c1) && (c6 != c2) && (c6 != c3) && (c6 != c4) && (c6 != c5)
       );
-  cout << "yep" << endl;
   trace.endBlock();
   return res;
 }
