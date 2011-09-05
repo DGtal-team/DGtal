@@ -71,7 +71,7 @@ bool testConstructors()
   std::vector<Z2i::Point> myVector;
   for (Iterator i = c1.begin(); i != c1.end(); i++)
     myVector.push_back(*i);
-//  myVector.push_back(*c1.end());
+  //myVector.push_back(*c1.end());
   FreemanChain c2(myVector);
 
   trace.info() << "Constructor from input stream" << endl;
@@ -109,42 +109,139 @@ bool testConstructors()
 
 
 
+/**
+ * Test public services
+ */
+bool testPublicSercives()
+{
+  typedef FreemanChain<int> FreemanChain;
+  typedef FreemanChain::PointI2 Point;
+  typedef FreemanChain::VectorI2 Vector;
+  typedef FreemanChain::ConstIterator Iterator;
 
+  trace.beginBlock ( "Testing public sercives" );
+    
+  FreemanChain fc("000103000322232122", 0, 0);
+  int nbOk = 0;
 
-   
+  // unsigned int code( Index pos ) const;
+  bool test = ( fc.code(5) == 3 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 1 " << ((test) ? "passed" : "failed" ) << endl;
 
+  // Size size() const;
+  test = ( fc.size() == 18 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 2 " << ((test) ? "passed" : "failed" ) << endl;
 
+  // FreemanChain subChain( Index pos, Size n ) const;
+  test = ( fc.subChain(3, 3) == FreemanChain("103", 3, 0) );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 3 " << ((test) ? "passed" : "failed" ) << endl;
 
+  // FreemanChain operator+(const FreemanChain& other) const;
+  // FreemanChain operator+=(const FreemanChain& other) const;
+  FreemanChain fcA("001",0,0);
+  FreemanChain fcB("001",0,0);
+  FreemanChain fcC("003",0,0);
+  fcB += fcC + fcB;
+  test = ( fcB == FreemanChain("001003001", 0, 0) ) && 
+    ( fcB.totalDisplacement() == fcA.totalDisplacement()*2 + fcC.totalDisplacement() );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 4 " << ((test) ? "passed" : "failed" ) << endl;
 
+  // void computeBoundingBox( TInteger & min_x, TInteger& min_y,
+  //        TInteger& max_x, TInteger& max_y ) const;
+  int min_x, min_y, max_x, max_y;
+  fc.computeBoundingBox( min_x, min_y, max_x, max_y );
+  test = ( (min_x == 0) && (min_y == -2) && (max_x == 7) && (max_y == 1) );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 5 " << ((test) ? "passed" : "failed" ) << endl;
+
+  //  typename Self::ConstIterator 
+  //    findQuadrantChange( OrderedAlphabet & A ) const;
+  OrderedAlphabet oa( '0', 4 );
+  Iterator it = fc.findQuadrantChange( oa );
+  test = ( it.getPosition() == 4 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
+
+  //  typename Self::ConstIterator 
+  //    findQuadrantChange4( OrderedAlphabet & A ) const;
+  it = fc.findQuadrantChange4( oa );
+  test = ( it.getPosition() == 9 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // int isClosed() const ;
+  test = ( ! fc.isClosed() && ( fc + FreemanChain("21") ).isClosed() );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // PointI2 getPoint ( Index pos ) const;
+  it = fc.begin();
+  test = true;
+  for (int i=0; i <= fc.size(); ++i, ++it)
+  {
+    test = ( fc.getPoint(i) == *it );
+    if (!test) break;
+  }
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // PointI2 firstPoint ( ) const
+  // PointI2 lastPoint ( ) const
+  test = ( ( fc.subChain(4,3).firstPoint() == Point(3,1) ) && 
+      ( fc.subChain(4,3).lastPoint() == Point(5,0) ) );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 10 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // FreemanChain & extend(char code);
+  // FreemanChain & retract(char code);
+  fcA = fc;
+  fcA.extend('2');
+  fcB = fcA.extend('1');
+  test = ( (fcB == fc + FreemanChain("21",0,0) ) &&  fcA.isClosed() 
+          && ( fcB.retract().retract() == fc ) ); 
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 11 " << ((test) ? "passed" : "failed" ) << endl;
+
+  trace.endBlock();
+  
+  return ( nbOk == 11);
+  
+}
 
 
 
 
 /**
- * test reverse iterator
+ * test iterators
  */
-bool testFreemanChainIterator(const std::string& code)
+bool testIterators()
 {
   typedef int Coordinate;
-  typedef FreemanChain<Coordinate> Sequence;
-  typedef Sequence::PointI2 Point;
-  typedef Sequence::ConstIterator SequenceIterator;
-  typedef Sequence::ConstCharIterator CharIterator;
-  typedef std::reverse_iterator<SequenceIterator> ReverseIterator;
+  typedef FreemanChain<Coordinate> FreemanChain;
+  typedef FreemanChain::PointI2 Point;
+  typedef FreemanChain::ConstIterator PointIterator;
+  typedef FreemanChain::ConstCharIterator CharIterator;
+  typedef std::reverse_iterator<PointIterator> ReverseIterator;
    
   trace.beginBlock ( "Testing FreemanChain Iterator" );
 
   std::stringstream ss;
-  ss << code << std::endl;
-  Sequence seq(ss);
+  std::string myString = "0 0 000011112222333";
+  ss << myString << std::endl;
+  FreemanChain seq(ss);
 
-  trace.info()<< "Freeman chain set to " << code << endl;   
+  trace.info()<< "Freeman chain set to " << myString << endl;   
   trace.info()<< seq << endl;
+
   trace.info()<< "Iterates on points." << endl;
   std::stack<Point> myStack;
 
   int nbPts = 0;
-  for (SequenceIterator i = seq.begin(); i != seq.end(); ++i) 
+  for (PointIterator i = seq.begin(); i != seq.end(); ++i) 
   {
     myStack.push(*i);
     nbPts++;
@@ -172,8 +269,134 @@ bool testFreemanChainIterator(const std::string& code)
 
 
 /**
+ * Test static services
+ */
+bool testStaticServices()
+{
+  typedef FreemanChain<int> FreemanChain;
+  typedef FreemanChain::PointI2 Point;
+  typedef FreemanChain::VectorI2 Vector;
+  typedef FreemanChain::ConstIterator Iterator;
+  typedef std::vector<unsigned int> numVector;
+  bool test = false;
+  int nbOk = 0;
+
+  trace.beginBlock ( "Testing static services" );
+
+  //  static void write( std::ostream & out, const FreemanChain & c )
+  //  static void read( std::istream & in, FreemanChain & c );
+  std::string s1("0001");
+  int x0 = -1;
+  int y0 = -1;
+  stringstream ss1, ss2;
+  ss1 << x0 << " " << y0 << " " << s1 << std::endl;;
+  FreemanChain f;
+  FreemanChain::read(ss1, f);
+  FreemanChain::write(ss2, f);
+  int x, y;
+  std::string s2;
+  ss2 >> x >> y >> s2;
+  test = (x == x0) && (y == y0) && (s1 == s2);
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 1 " << ((test) ? "passed" : "failed" ) << endl;
+
+  //  static void getContourPoints(const FreemanChain & fc, 
+  //      std::vector<PointI2> & aVContour );
+  Point p0, p1(-1,-1), p2(0,-1), p3(1,-1), p4(2,-1), p5(2,0);
+  vector<Point> pointVecRef, pointVecTest; 
+  pointVecRef.push_back(p1);
+  pointVecRef.push_back(p2);
+  pointVecRef.push_back(p3);
+  pointVecRef.push_back(p4);
+  pointVecRef.push_back(p5);
+  FreemanChain::getContourPoints( f, pointVecTest );
+  test = pointVecRef == pointVecTest;
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 2 " << ((test) ? "passed" : "failed" ) << endl;
+
+
+  // static void movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
+  Point P0(10,10), P1(10,10), P2(10,10), P3(10,10); 
+  FreemanChain::movePointFromFC( P0, 0); FreemanChain::movePointFromFC( P1, 1);
+  FreemanChain::movePointFromFC( P2, 2); FreemanChain::movePointFromFC( P3, 3);
+  test = ( P0 == Point(11,10) ) && ( P1 == Point(10,11) ) &&
+    (P2 == Point(9,10) ) && ( P3 == Point(10,9) ) ;
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 3 " << ((test) ? "passed" : "failed" ) << endl;
+
+  //  static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
+  //      bool ccw = true ); 
+  test = ( FreemanChain::movement ( 0 , 0 , 1 ) == 2 ) &&
+         ( FreemanChain::movement ( 0 , 1 , 1 ) == 1 ) &&
+         ( FreemanChain::movement ( 0 , 2 , 1 ) == 0 ) &&
+         ( FreemanChain::movement ( 0 , 3 , 1 ) == 3 ) &&
+         ( FreemanChain::movement ( 0 , 0 , 0 ) == 2 ) &&
+         ( FreemanChain::movement ( 0 , 1 , 0 ) == 3 ) &&
+         ( FreemanChain::movement ( 0 , 2 , 0 ) == 0 ) &&
+         ( FreemanChain::movement ( 0 , 3 , 0 ) == 1 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 4 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // static void displacement( int & dx, int & dy, unsigned int aCode );
+  // static PointI2 displacement( unsigned int aCode );
+  int X[4], Y[4];
+  FreemanChain::displacement( X[0] , Y[0], 0);
+  FreemanChain::displacement( X[1] , Y[1], 1);
+  FreemanChain::displacement( X[2] , Y[2], 2);
+  FreemanChain::displacement( X[3] , Y[3], 3);
+
+  p0 = FreemanChain::displacement(  0);
+  p1 = FreemanChain::displacement(  1);
+  p2 = FreemanChain::displacement(  2);
+  p3 = FreemanChain::displacement(  3);
+
+  test = (X[0] ==  1) && (Y[0] ==  0) && (p0 == Point( 1, 0)) &&
+         (X[1] ==  0) && (Y[1] ==  1) && (p1 == Point( 0, 1)) &&
+         (X[2] == -1) && (Y[2] ==  0) && (p2 == Point(-1, 0)) &&
+         (X[3] ==  0) && (Y[3] == -1) && (p3 == Point( 0,-1)) ;
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 5 " << ((test) ? "passed" : "failed" ) << endl;
+
+
+  // static void pointel2pixel( FreemanChain & aPixChain,
+  //     std::vector<unsigned int> & aPl2pix,
+  //     std::vector<unsigned int> & aPix2pl,
+  //     const FreemanChain & aPlChain )
+  f = FreemanChain("000112321233", 0, 0);
+  numVector pl2pix, pix2pl;
+  FreemanChain pixChain;
+  FreemanChain::pointel2pixel( pixChain, pl2pix, pix2pl, f );
+  numVector pl2pixExected = {0,1,2,2,3,3,3,5,7,7,7,8};
+  numVector pix2plExected = {0,1,3,6,7,7,8,10};
+  test = ( pixChain == FreemanChain("00132213", 0, 0) ) && 
+         ( pl2pix == pl2pixExected ) && 
+         ( pix2pl == pix2plExected );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
+
+
+  //  static void innerContour( FreemanChain & aInnerChain,
+  //          std::vector<unsigned int> & aOuter2inner,
+  //          std::vector<unsigned int> & aInner2outer,
+  //          const FreemanChain & aOuterChain,
+  //          bool ccw = true );
+  FreemanChain innerChain;
+  numVector outer2inner, inner2outer;
+  FreemanChain::innerContour ( innerChain, outer2inner, inner2outer, f, true);
+  cout << innerChain << endl;
+  //cout << outer2inner << endl;
+
+
+
+  trace.endBlock();
+
+  return test;
+}
+
+
+
+/**
  * Example of a test. To be completed.
- *
  */
 bool testFreemanChain(const string& code)
 {
@@ -283,19 +506,20 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  std::string chain = "0 0 000011112222333";
   
-  bool res = testConstructors();
+  bool res = 
+    testConstructors() &&  
+    testPublicSercives() &&
+    testIterators() &&
+    testStaticServices() ;
+
+  //res = PtestFreemanChainIterator(chain) && testFreemanChain(chain);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
-
-  res = testFreemanChainIterator(chain) && testFreemanChain(chain);
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-
-  std::string filename = testPath + "samples/contourS.fc";
-  std::cout << filename << std::endl;
-  testDisplayFreemanChain(filename);
-  trace.endBlock();
+  //std::string filename = testPath + "samples/contourS.fc";
+  //std::cout << filename << std::endl;
+  //testDisplayFreemanChain(filename);
+  //trace.endBlock();
   
   return res ? 0 : 1;
 }

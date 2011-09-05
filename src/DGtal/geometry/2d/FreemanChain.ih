@@ -32,13 +32,13 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
 
-/**
- * @param chain a Freeman chain,
- * @param n the position in [chain] (within 0 and chain.size()).
- */
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Iterator on points
+
+
 template <typename TInteger>
 inline
   DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator( 
@@ -121,15 +121,17 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::ConstIterator::previous()
 {
-  if ( (myPos <= myFc->chain.size()+1) && (myPos > 0) ) {
-    --myPos;
-    if (myPos < myFc->chain.size()) {
-      switch ( myFc->code( myPos ) ) {
+  --myPos;
+  if ( myPos == myFc->chain.size() )
+    myXY = myFc->lastPoint();
+  else if ( (myPos <= myFc->chain.size()) && (myPos >= 0) ) 
+  {
+      switch ( myFc->code( myPos ) ) 
+      {
         case 0: (myXY.at(0))--; break;
         case 1: (myXY.at(1))--; break;
         case 2: (myXY.at(0))++; break;
         case 3: (myXY.at(1))++; break;
-      }
     }
   }
 }
@@ -149,6 +151,12 @@ void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
     case 3: (myXY.at(1))++; break;
   }
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Iterator on codes
+
 
 
 template <typename TInteger>
@@ -197,6 +205,490 @@ DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator (
   myFc = aOther.getChain();
   (*this) += aOther.getPosition();
 }
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+
+/**
+ * Constructor.
+ * @param s the chain code.
+ * @param x the x-coordinate of the first point.
+ * @param y the y-coordinate of the first point.
+ */
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
+  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
+{
+  DGtal::FreemanChain<TInteger>::computeLastPoint();
+}
+
+
+/**
+ * Constructor.
+ */
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::
+FreemanChain( const std::vector<PointI2> vectPoints )
+{
+  ostringstream oss;
+  x0=vectPoints.at(0)[0];
+  y0=vectPoints.at(0)[1];
+  xn=vectPoints.at(vectPoints.size()-1)[0];
+  yn=vectPoints.at(vectPoints.size()-1)[1];
+  
+  Z2i::Point pt;
+  Z2i::Point ptSuiv;
+  for(unsigned int i=0; i< vectPoints.size()-1; i++){
+    pt = vectPoints.at(i);
+    ptSuiv = vectPoints.at(i+1);
+    int dx = ptSuiv[0] - pt[0]; 
+    int dy = ptSuiv[1] - pt[1]; 
+    char aCode = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
+    oss << aCode;
+  }
+  chain = oss.str();
+}
+
+
+
+/**
+ * Constructor.
+ * @param in any input stream,
+ */
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
+  read(in, *this);
+  computeLastPoint();
+}
+
+
+/**
+ * Copy constructor.
+ * @param other the object to clone.
+ */
+template <typename TInteger>
+DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
+  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), 
+    xn( aOther.xn), yn( aOther.yn)
+{ }
+
+
+
+
+/**
+ * Assignment.
+ * @param aOther the object to copy.
+ * @return a reference on 'this'.
+ */
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger> & 
+DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther )
+{
+  if ( this != &aOther )
+    {
+      chain = aOther.chain;
+      x0 = aOther.x0;
+      y0 = aOther.y0;
+      xn = aOther.xn;
+      yn = aOther.yn;
+    }
+  return *this;
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Iterators services
+
+
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator 
+DGtal::FreemanChain<TInteger>::begin() const
+{
+  return ConstIterator( *this, 0 );
+}
+
+
+template <typename TInteger>
+typename DGtal::FreemanChain<TInteger>::ConstIterator 
+DGtal::FreemanChain<TInteger>::end() const
+{
+  PointI2 p(0,0); // *(end()) is invalid
+  return ConstIterator( *this, chain.size() + 1, p );
+}
+
+
+/**
+ * @param pos a position in the chain code.
+ * @return the next position.
+ */ 
+template <typename TInteger>
+unsigned int
+DGtal::FreemanChain<TInteger>::next( unsigned int aPos ) const
+{
+  ++aPos;
+  if ( aPos >= chain.size() )
+    aPos = 0;
+  return aPos;
+}
+
+/**
+ * @param pos a position in the chain code.
+ * @return the previous position.
+ */ 
+template <typename TInteger>
+unsigned int
+DGtal::FreemanChain<TInteger>::previous( unsigned int aPos ) const
+{
+  if ( aPos == 0 ) aPos = chain.size() - 1;
+  else --aPos;
+  return aPos;
+}
+
+/**
+ * @param aPos a position in the chain code.
+ * @return the code at position [aPos].
+ */ 
+template <typename TInteger>
+unsigned int
+DGtal::FreemanChain<TInteger>::code( unsigned int aPos ) const
+{
+  ASSERT( aPos < chain.size() );
+  return chain[ aPos ] - '0';
+}
+
+
+/**
+ * @return the length of the Freeman chain code.
+ */
+template <typename TInteger>
+unsigned int
+DGtal::FreemanChain<TInteger>::size() const
+{
+  return chain.size();
+}
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::computeBoundingBox( TInteger & min_x,
+    TInteger& min_y, TInteger& max_x, TInteger& max_y ) const
+{
+  min_x = max_x = x0;
+  min_y = max_y = y0;
+  for ( ConstIterator it = begin();
+      it != end();
+      ++it )
+  {
+    PointI2 p( *it );
+    if ( p.at(0) < min_x )
+      min_x = p.at(0);
+    else
+      if ( p.at(0) > max_x )
+        max_x = p.at(0);
+    if ( p.at(1) < min_y )
+      min_y = p.at(1);
+    else
+      if ( p.at(1) > max_y )
+        max_y = p.at(1);
+  }
+}
+
+
+template <typename TInteger>
+inline
+typename FreemanChain<TInteger>::ConstIterator
+DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
+{
+  ConstIterator it = begin();
+  ConstIterator it_end = end();
+  // find first letters a and b.
+  unsigned int code1 = it.getCode();
+  it.next();
+  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
+    it.next();
+  ASSERT( ( it != it_end )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+  unsigned int  code2 = it.getCode();
+  // find third letter c.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+        || ( it.getCode() == code2 ) ) )
+    it.next();
+  ASSERT( ( it != it_end )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+  unsigned int code3 = it.getCode();
+  // reorder a and b.
+  it.previous();
+  if ( it.getCode() != code2 )
+    swap( code1, code2 );
+  // find first a.
+  do
+  {
+    it.previous();
+  }
+  while ( it.getCode() == code2 );
+  char a_char = chain[ it.getPosition() ];
+  // the next is the first b.
+  it.next();
+  char b_char = chain[ it.getPosition() ];
+  // Reorder the alphabet to match the quadrant change.
+  while ( A.order( b_char ) != 1 )
+    A.shiftLeft();
+  if ( A.order( a_char ) == 0 )
+  {
+    A.reverse();
+    while ( A.order( b_char ) != 1 )
+      A.shiftLeft();
+  }
+  ASSERT( ( A.order( b_char ) == 1 )
+      && ( A.order( a_char ) == 2 )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+  return it;
+}
+
+
+template <typename TInteger>
+inline
+typename FreemanChain<TInteger>::ConstIterator
+DGtal::FreemanChain<TInteger>::findQuadrantChange4( OrderedAlphabet & A ) const
+{
+  ConstIterator it = begin();
+  ConstIterator it_end = end();
+  // find first letters a and b.
+  uint8_t code1 = it.getCode();
+  it.next();
+  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
+    it.next();
+  ASSERT( ( it != it_end )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
+  uint8_t code2 = it.getCode();
+  // find third letter c.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+        || ( it.getCode() == code2 ) ) )
+    it.next();
+  ASSERT( ( it != it_end )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
+  uint8_t code3 = it.getCode();
+  // find fourth letter d.
+  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
+        || ( it.getCode() == code2 )
+        || ( it.getCode() == code3 ) ) )
+    it.next();
+  ASSERT( ( it != it_end )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
+  uint8_t  code4 = it.getCode();
+  // define true c.
+  it.previous();
+  code3 = it.getCode();
+  // find first b.
+  do
+  {
+    it.previous();
+  }
+  while ( it.getCode() == code3 );
+  char a_char = chain[ it.getPosition() ];
+  // the next is the first c.
+  it.next();
+  char b_char = chain[ it.getPosition() ];
+  // Reorder the alphabet to match the quadrant change.
+  while ( A.order( b_char ) != 1 )
+    A.shiftLeft();
+  if ( A.order( a_char ) == 0 )
+  {
+    A.reverse();
+    while ( A.order( b_char ) != 1 )
+      A.shiftLeft();
+  }
+  ASSERT( ( A.order( b_char ) == 1 )
+      && ( A.order( a_char ) == 2 )
+      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
+  return it;
+}
+
+
+template <typename TInteger>
+inline
+int DGtal::FreemanChain<TInteger>::isClosed() const
+{
+  return (x0 == xn) && (y0 == yn);
+}
+
+
+template <typename TInteger>
+inline
+int DGtal::FreemanChain<TInteger>::ccwLoops() const
+{
+  ConstIterator it = this->begin();
+  ConstIterator it_end = this->end();
+  --it_end;
+  ConstIterator it_suiv = it;
+  PointI2 spos = *it;
+  int nb_ccw_turns = 0;
+  while ( it != it_end )
+  {
+    int code1 = it.getCode();
+    it_suiv.nextInLoop();
+    int code2 = it_suiv.getCode();
+    uint8_t diff = ( code2 - code1 + 4 ) % 4;
+    if ( diff == 1 )
+      ++nb_ccw_turns;
+    else
+      if ( diff == 3 )
+        --nb_ccw_turns;
+      else
+        if ( diff == 2 )
+          return 0;
+    ++it;
+  }
+  if ( spos == *it_suiv )
+    return nb_ccw_turns / 4;
+  else
+    return 0;
+}
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger>
+DGtal::FreemanChain<TInteger>::subChain(Index pos, Size n) const
+{
+  Self newChain;
+  PointI2 startPoint = getPoint(pos);
+  PointI2 endPoint = getPoint(pos+n);
+  newChain.chain = chain.substr(pos,n);
+  newChain.x0 = startPoint.at(0);
+  newChain.y0 = startPoint.at(1);
+  newChain.xn = endPoint.at(0);
+  newChain.yn = endPoint.at(1);
+  return newChain;
+}
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger>
+DGtal::FreemanChain<TInteger>::operator+(const Self& aOther) const
+{
+  Self newChain;
+  newChain.chain = chain + aOther.chain;
+  newChain.x0 = x0;
+  newChain.y0 = y0;
+  PointI2 newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
+  newChain.xn = newLastPoint.at(0);
+  newChain.yn = newLastPoint.at(1);
+  return newChain;
+}
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger>&
+DGtal::FreemanChain<TInteger>::operator+=(const Self& aOther) 
+{
+  chain += aOther.chain;
+  PointI2 newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
+  xn = newLastPoint.at(0);
+  yn = newLastPoint.at(1);
+  return *this;
+}
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger>::PointI2 
+DGtal::FreemanChain<TInteger>::getPoint(Index aPos) const
+{
+  ConstIterator it;
+  Size n = this->size();
+  if ( aPos < n / 2 ) {
+    it = begin();
+    for (int i=0; i<aPos; ++i) 
+      it++;
+  }
+  else 
+  {
+    it = end();
+    it--;
+    n = n-aPos;
+    for (int i=0; i<n; ++i) {
+      it--;
+    }
+  }
+  return *it;
+}
+
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger> &
+DGtal::FreemanChain<TInteger>::extend(char aCode)
+{
+  chain += std::string( &aCode, 1);
+  int dx, dy;
+  displacement( dx, dy, aCode - '0' );
+  xn += dx;
+  yn += dy;
+  return *this;
+}
+
+
+
+
+
+template <typename TInteger>
+inline
+typename DGtal::FreemanChain<TInteger> &
+DGtal::FreemanChain<TInteger>::retract(Size n)
+{
+  ConstIterator it = end();
+  for (int i=0; i<=n; ++i)
+    it--;
+  xn = (*it).at(0);
+  yn = (*it).at(1);
+  Size mySize = size();
+  ASSERT( (n <= mySize) && "Tried to shorten a FreemanChain by more then its length");
+  chain.resize( mySize - n );
+  return *this;
+}
+
+
+
+
+// ----------------------- Interface --------------------------------------
+
+
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::selfDisplay ( std::ostream & out ) const
+{
+  out << x0 << " " << y0 << " "  << chain;
+};
+
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TInteger>
+inline
+bool DGtal::FreemanChain<TInteger>::isValid () const
+{
+  return true;
+}
+
+
+
+
 
 
 
@@ -786,476 +1278,6 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 //   ASSERT( aC2subc.size() == nb );
 //   return nbsub != 0;
 //     }
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Standard services ------------------------------
-
-
-
-/**
- * Constructor.
- * @param s the chain code.
- * @param x the x-coordinate of the first point.
- * @param y the y-coordinate of the first point.
- */
-template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
-  : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
-{
-  DGtal::FreemanChain<TInteger>::computeLastPoint();
-}
-
-
-/**
- * Constructor.
- */
-template <typename TInteger>
-DGtal::FreemanChain<TInteger>::
-FreemanChain( const std::vector<PointI2> vectPoints )
-{
-  ostringstream oss;
-  x0=vectPoints.at(0)[0];
-  y0=vectPoints.at(0)[1];
-  xn=vectPoints.at(vectPoints.size()-1)[0];
-  yn=vectPoints.at(vectPoints.size()-1)[1];
-  
-  Z2i::Point pt;
-  Z2i::Point ptSuiv;
-  for(unsigned int i=0; i< vectPoints.size()-1; i++){
-    pt = vectPoints.at(i);
-    ptSuiv = vectPoints.at(i+1);
-    int dx = ptSuiv[0] - pt[0]; 
-    int dy = ptSuiv[1] - pt[1]; 
-    char aCode = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
-    oss << aCode;
-  }
-  chain = oss.str();
-}
-
-
-
-/**
- * Constructor.
- * @param in any input stream,
- */
-template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
-  read(in, *this);
-  computeLastPoint();
-}
-
-/**
- * Copy constructor.
- * @param other the object to clone.
- */
-template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
-  : chain( aOther.chain ), x0( aOther.x0 ), y0( aOther.y0 ), 
-    xn( aOther.xn), yn( aOther.yn)
-{ }
-
-
-
-
-/**
- * Assignment.
- * @param aOther the object to copy.
- * @return a reference on 'this'.
- */
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger> & 
-DGtal::FreemanChain<TInteger>::operator=( const FreemanChain<TInteger> & aOther )
-{
-  if ( this != &aOther )
-    {
-      chain = aOther.chain;
-      x0 = aOther.x0;
-      y0 = aOther.y0;
-      xn = aOther.xn;
-      yn = aOther.yn;
-    }
-  return *this;
-}
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Iterators services
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstIterator 
-DGtal::FreemanChain<TInteger>::begin() const
-{
-  return ConstIterator( *this, 0 );
-}
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstIterator 
-DGtal::FreemanChain<TInteger>::end() const
-{
-  return ConstIterator( *this, chain.size() );
-}
-
-
-/**
- * @param pos a position in the chain code.
- * @return the next position.
- */ 
-template <typename TInteger>
-unsigned int
-DGtal::FreemanChain<TInteger>::next( unsigned int aPos ) const
-{
-  ++aPos;
-  if ( aPos >= chain.size() )
-    aPos = 0;
-  return aPos;
-}
-
-/**
- * @param pos a position in the chain code.
- * @return the previous position.
- */ 
-template <typename TInteger>
-unsigned int
-DGtal::FreemanChain<TInteger>::previous( unsigned int aPos ) const
-{
-  if ( aPos == 0 ) aPos = chain.size() - 1;
-  else --aPos;
-  return aPos;
-}
-
-/**
- * @param aPos a position in the chain code.
- * @return the code at position [aPos].
- */ 
-template <typename TInteger>
-unsigned int
-DGtal::FreemanChain<TInteger>::code( unsigned int aPos ) const
-{
-  ASSERT( aPos < chain.size() );
-  return chain[ aPos ] - '0';
-}
-
-
-/**
- * @return the length of the Freeman chain code.
- */
-template <typename TInteger>
-unsigned int
-DGtal::FreemanChain<TInteger>::size() const
-{
-  return chain.size();
-}
-
-
-template <typename TInteger>
-inline
-void DGtal::FreemanChain<TInteger>::computeBoundingBox( TInteger & min_x,
-    TInteger& min_y, TInteger& max_x, TInteger& max_y ) const
-{
-  min_x = max_x = x0;
-  min_y = max_y = y0;
-  for ( ConstIterator it = begin();
-      it != end();
-      ++it )
-  {
-    PointI2 p( *it );
-    if ( p.at(0) < min_x )
-      min_x = p.at(0);
-    else
-      if ( p.at(0) > max_x )
-        max_x = p.at(0);
-    if ( p.at(1) < min_y )
-      min_y = p.at(1);
-    else
-      if ( p.at(1) > max_y )
-        max_y = p.at(1);
-  }
-}
-
-
-template <typename TInteger>
-inline
-typename FreemanChain<TInteger>::ConstIterator
-DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
-{
-  ConstIterator it = begin();
-  ConstIterator it_end = end();
-  // find first letters a and b.
-  unsigned int code1 = it.getCode();
-  it.next();
-  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-    it.next();
-  ASSERT( ( it != it_end )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
-  unsigned int  code2 = it.getCode();
-  // find third letter c.
-  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-        || ( it.getCode() == code2 ) ) )
-    it.next();
-  ASSERT( ( it != it_end )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-  unsigned int code3 = it.getCode();
-  // reorder a and b.
-  it.previous();
-  if ( it.getCode() != code2 )
-    swap( code1, code2 );
-  // find first a.
-  do
-  {
-    it.previous();
-  }
-  while ( it.getCode() == code2 );
-  char a_char = chain[ it.getPosition() ];
-  // the next is the first b.
-  it.next();
-  char b_char = chain[ it.getPosition() ];
-  // Reorder the alphabet to match the quadrant change.
-  while ( A.order( b_char ) != 1 )
-    A.shiftLeft();
-  if ( A.order( a_char ) == 0 )
-  {
-    A.reverse();
-    while ( A.order( b_char ) != 1 )
-      A.shiftLeft();
-  }
-  ASSERT( ( A.order( b_char ) == 1 )
-      && ( A.order( a_char ) == 2 )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
-  return it;
-}
-
-
-template <typename TInteger>
-inline
-typename FreemanChain<TInteger>::ConstIterator
-DGtal::FreemanChain<TInteger>::findQuadrantChange4( OrderedAlphabet & A ) const
-{
-  ConstIterator it = begin();
-  ConstIterator it_end = end();
-  // find first letters a and b.
-  uint8_t code1 = it.getCode();
-  it.next();
-  while ( ( it != it_end ) && ( it.getCode() == code1 ) )
-    it.next();
-  ASSERT( ( it != it_end )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 1-letter freeman chain." );
-  uint8_t code2 = it.getCode();
-  // find third letter c.
-  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-        || ( it.getCode() == code2 ) ) )
-    it.next();
-  ASSERT( ( it != it_end )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-  uint8_t code3 = it.getCode();
-  // find fourth letter d.
-  while ( ( it != it_end ) && ( ( it.getCode() == code1 )
-        || ( it.getCode() == code2 )
-        || ( it.getCode() == code3 ) ) )
-    it.next();
-  ASSERT( ( it != it_end )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
-  uint8_t  code4 = it.getCode();
-  // define true c.
-  it.previous();
-  code3 = it.getCode();
-  // find first b.
-  do
-  {
-    it.previous();
-  }
-  while ( it.getCode() == code3 );
-  char a_char = chain[ it.getPosition() ];
-  // the next is the first c.
-  it.next();
-  char b_char = chain[ it.getPosition() ];
-  // Reorder the alphabet to match the quadrant change.
-  while ( A.order( b_char ) != 1 )
-    A.shiftLeft();
-  if ( A.order( a_char ) == 0 )
-  {
-    A.reverse();
-    while ( A.order( b_char ) != 1 )
-      A.shiftLeft();
-  }
-  ASSERT( ( A.order( b_char ) == 1 )
-      && ( A.order( a_char ) == 2 )
-      && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] Internal error: invalid Quadrant change found." );
-  return it;
-}
-
-
-template <typename TInteger>
-inline
-int DGtal::FreemanChain<TInteger>::isClosed() const
-{
-  ConstIterator it = this->begin();
-  ConstIterator it_end = this->end();
-  --it_end;
-  ConstIterator it_suiv = it;
-  PointI2 spos = *it;
-  int nb_ccw_turns = 0;
-  while ( it != it_end )
-  {
-    int code1 = it.getCode();
-    it_suiv.nextInLoop();
-    int code2 = it_suiv.getCode();
-    uint8_t diff = ( code2 - code1 + 4 ) % 4;
-    if ( diff == 1 )
-      ++nb_ccw_turns;
-    else
-      if ( diff == 3 )
-        --nb_ccw_turns;
-      else
-        if ( diff == 2 )
-          return 0;
-    ++it;
-  }
-  if ( spos == *it_suiv )
-    return nb_ccw_turns / 4;
-  else
-    return 0;
-}
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger>
-DGtal::FreemanChain<TInteger>::subChain(Index pos, Size n) const
-{
-  Self newChain;
-  PointI2 startPoint = getPoint(pos);
-  PointI2 endPoint = getPoint(pos+n);
-  newChain.chain = chain.substr(pos,n);
-  newChain.x0 = startPoint.at(0);
-  newChain.y0 = startPoint.at(1);
-  newChain.xn = endPoint.at(0);
-  newChain.yn = endPoint.at(1);
-  return newChain;
-}
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger>
-DGtal::FreemanChain<TInteger>::operator+(const Self& aOther) const
-{
-  Self newChain;
-  newChain.chain = chain + aOther.chain;
-  newChain.x0 = x0;
-  newChain.y0 = y0;
-  PointI2 lastPoint = lastPoint() + ( aOther.lastPoint() - aOther.fisrtPoint() );
-  newChain.xn = lastPoint.at(0);
-  newChain.yn = lastPoint.at(1);
-  return newChain;
-}
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger>&
-DGtal::FreemanChain<TInteger>::operator+=(const Self& aOther) 
-{
-  chain += aOther.chain;
-  PointI2 lastPoint = lastPoint() + ( aOther.lastPoint() - aOther.fisrtPoint() );
-  xn = lastPoint.at(0);
-  yn = lastPoint.at(1);
-  return *this;
-}
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger>::PointI2 
-DGtal::FreemanChain<TInteger>::getPoint(Index aPos) const
-{
-  ConstIterator it;
-  Size n = this->size();
-  if ( aPos < n / 2 ) {
-    it = begin();
-    for (int i=0; i<aPos; ++i) 
-      it++;
-  }
-  else if ( aPos <= n )
-  {
-    it = end();
-    for (int i=n; i>=aPos; --i)
-      it--;
-  }
-  return *it;
-}
-
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger> &
-DGtal::FreemanChain<TInteger>::extend(char aCode)
-{
-  chain += std::string( aCode );
-  PointI2 p = lastPoint();
-  xn += p.at(0);
-  yn += p.at(1);
-  return *this;
-}
-
-
-
-
-
-template <typename TInteger>
-inline
-typename DGtal::FreemanChain<TInteger> &
-DGtal::FreemanChain<TInteger>::retract(Size n)
-{
-  ConstIterator it = end();
-  for (int i=0; i<n; ++i)
-    it--;
-  xn = (*it).at(0);
-  yn = (*it).at(1);
-  Size mySize = size();
-  ASSERT2( n < mySize , "Tried to shorten a FreemanChain by more then its length");
-  chain.resize( mySize );
-  return *this;
-}
-
-
-
-
-// ----------------------- Interface --------------------------------------
-
-
-template <typename TInteger>
-inline
-void DGtal::FreemanChain<TInteger>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[FreemanChain] (" << x0 << "," << y0 << ") " << chain << " (" << xn << "," << yn << ")";
-};
-
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename TInteger>
-inline
-bool DGtal::FreemanChain<TInteger>::isValid () const
-{
-  return true;
-}
-
-
-
-
-
-
-
 
 
 
