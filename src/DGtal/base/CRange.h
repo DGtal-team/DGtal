@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
+#include "DGtal/base/CConstRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,6 +91,7 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
+      PointVector, 
     
      <p> Notes <br>
 

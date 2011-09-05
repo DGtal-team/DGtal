@@ -43,7 +43,7 @@
 #include <iostream>
 #include <list>
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/RealPointVector.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/Exceptions.h"
@@ -124,18 +124,19 @@ namespace DGtal
   public:
 
 
-  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-
-  typedef DGtal::PointVector<2,TInteger> Point;
-  typedef DGtal::RealPointVector<2> RealPoint;
-  typedef DGtal::PointVector<2,TInteger> Vector;
-  typedef DGtal::RealPointVector<2> RealVector;
-
-  typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
-  typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
-
-  typedef std::list<Point> Polygon;
-
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    
+    typedef DGtal::PointVector<2,TInteger> Point;
+    typedef DGtal::PointVector<2,TInteger> Vector;
+    
+    typedef DGtal::PointVector<2, double> RealPoint;
+    typedef DGtal::PointVector<2, double> RealVector;
+    
+    typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
+    typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
+    
+    typedef std::list<Point> Polygon;
+    
 
 
     // ----------------------- Standard services ------------------------------
