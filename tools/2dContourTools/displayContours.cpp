@@ -45,7 +45,6 @@
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/RealPointVector.h"
 
 #ifdef WITH_MAGICK
 #include "DGtal/io/readers/MagickReader.h"
@@ -53,7 +52,6 @@
 
 
 //contour
-#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
 //processing
@@ -285,8 +283,8 @@ int main( int argc, char** argv )
  
     if(vm.count("SFP")){
       string fileName = vm["SFP"].as<string>();
-      vector<  RealPointVector<2>  >  contour = 
-  PointListReader<  RealPointVector<2>  >::getPointsFromFile(fileName); 
+      vector< PointVector<2,double>  >  contour = 
+	PointListReader<  PointVector<2,double>  >::getPointsFromFile(fileName); 
       for(unsigned int j=0; j<contour.size(); j++){
   LibBoard::Point pt((double)(contour.at(j)[0]),
          (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));

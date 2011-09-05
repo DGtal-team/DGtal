@@ -81,7 +81,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+  DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& /*itb*/, const ConstIterator& /*ite*/, CirculatorType )
 {
   return this->doesIntersectNext(it);
 }
