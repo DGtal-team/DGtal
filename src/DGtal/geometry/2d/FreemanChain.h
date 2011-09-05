@@ -619,6 +619,15 @@ namespace DGtal
 
 
     /**
+     * Test if the FreemanChain ends at the same point it starts. Take (1)
+     * operation since the last point has been stored at initialization.
+     *
+     * @return 'true' if the path is closed, 'false' otherwise.
+     */
+    int isClosed() const ;
+
+
+    /**
      * This method takes O(n) operations. It determines if the FreemanChain
      * corresponds to a closed contour, and if this is the case, determines how
      * many counterclockwise loops the contour has done. Of course, it the
@@ -628,7 +637,7 @@ namespace DGtal
      * @return the number of counterclockwise loops, or '0' if the contour
      * is open or invalid.
      */
-    int isClosed() const ;
+    int ccwLoops() const ;
 
 
     /**
@@ -649,7 +658,7 @@ namespace DGtal
      */
     PointI2 firstPoint ( ) const
     {
-      return *(begin());
+      return PointI2(x0,y0);
     }
 
 
@@ -658,7 +667,7 @@ namespace DGtal
      */
     PointI2 lastPoint ( ) const
     {
-      return *(end());
+      return PointI2(xn,yn);
     }
 
 
@@ -825,6 +834,7 @@ namespace DGtal
 
 
     /**
+     * Computes the code obtain from another one after a rotation by pi/2.
      * @param aCode any Freeman code.
      *
      * @param ccw when 'true' turns counterclockwise (or left),
@@ -1067,7 +1077,7 @@ namespace DGtal
      * Default constructor
      * Not valid.
      */
-    FreemanChain() {};
+   // FreemanChain() {};
 
     /**
      * Computes the coordinates of the last point.
