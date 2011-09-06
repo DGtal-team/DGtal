@@ -55,7 +55,7 @@ namespace DGtal
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring with a division operator. 
      
-     <p> Refinement of CEuclideanRing<T>
+     <p> Refinement of CCommutativeRing<T>
 
      <p> Associated types :
     

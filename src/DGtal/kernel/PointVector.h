@@ -133,9 +133,6 @@ namespace DGtal
    * PointVector is a model of CRange.
    * 
    * @see testPointVector.cpp
-
-   * @tparam dim the dimension of the space (i.e. the number of components or of coordinates)
-   * @tparam TComponent the ring used to specify the arithmetic computations.
    *
    */
   template < DGtal::Dimension dim, typename TEuclideanRing >
