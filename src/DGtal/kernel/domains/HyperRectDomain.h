@@ -50,12 +50,8 @@
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/base/CConstRange.h"
 #include "DGtal/io/Display3D.h"
-
-
-
-
-
 
 namespace DGtal
 {
@@ -97,12 +93,13 @@ namespace DGtal
   template<typename TSpace>
   class HyperRectDomain
   {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+
     // ----------------------- Standard services ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-
-
+    typedef HyperRectDomain<TSpace> Self;
+    
     // typedef TSpace DigitalSpace;
     // typedef TSpace Space;
     typedef TSpace Space;
@@ -119,9 +116,11 @@ namespace DGtal
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
 
     ///Typedef of domain iterators
-    typedef HyperRectDomain_Iterator<Point> ConstIterator;
-    typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
-  
+    typedef HyperRectDomain_Iterator<Point> Iterator;
+    typedef myreverse_iterator<Iterator> ReverseIterator;
+    typedef Iterator ConstIterator;
+    typedef ReverseIterator ReverseConstIterator;
+    
     typedef IsWithinPointPredicate<Point> Predicate;
 
     /**
@@ -158,103 +157,56 @@ namespace DGtal
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
-    /**
-     * Description of class 'ConstRange' <p> \brief Aim:
-     * range through all the points in the domain.
-     * Defines a constructor taking a domain in parameter,
-     * begin and end methods returning ConstIterator, and
-     * rbegin and rend methods returning ReverseConstIterator.
+    /*
+     * begin method.
+     * @return ConstIterator on the beginning of the range.
      */
-    struct ConstRange 
-    {
-      typedef typename Domain::ConstIterator        ConstIterator;
-      typedef typename Domain::ReverseConstIterator ReverseConstIterator;
-      
-      /**
-       * ConstRange constructor from a given domain.
-       * @param domain the domain.
-       */
-      ConstRange(const HyperRectDomain<TSpace>& domain)
-	: myDomain(domain),
-	  myIteratorBegin(domain.myLowerBound,
-			  domain.myLowerBound,
-			  domain.myUpperBound),
-	  myIteratorEnd(domain.myUpperBound,
-			domain.myLowerBound,
-			domain.myUpperBound)
-      { ++myIteratorEnd; }
-
-      /*
-       * begin method.
-       * @return ConstIterator on the beginning of the range.
-       */
-      const ConstIterator& begin() const
-      { return myIteratorBegin; }
-
-      /*
-       * begin method from a given point.
-       * @param aPoint the initial point.
-       * @return a ConstIterator initialized to aPoint.
-       * @pre aPoint must belong to the range.
-       */
-      ConstIterator begin(const Point& aPoint) const
-      { ASSERT(myDomain.isInside(aPoint));
-	return ConstIterator(aPoint, 
-			     myDomain.myLowerBound, myDomain.myUpperBound); }
-
-      /*
-       * end method.
-       * @return ConstIterator on the end of the range.
-       */
-      const ConstIterator& end() const
-      { return myIteratorEnd; }
-
+    const ConstIterator& begin() const
+    { return myIteratorBegin; }
+    
+    /*
+     * begin method from a given point.
+     * @param aPoint the initial point.
+     * @return a ConstIterator initialized to aPoint.
+     * @pre aPoint must belong to the range.
+     */
+    ConstIterator begin(const Point& aPoint) const
+    { ASSERT(isInside(aPoint));
+      return ConstIterator(aPoint, 
+         myLowerBound, myUpperBound); }
+    
+    /*
+     * end method.
+     * @return ConstIterator on the end of the range.
+     */
+    const ConstIterator& end() const
+    { return myIteratorEnd; }
+    
       /*
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
-      ReverseConstIterator rbegin() const
-      { return ReverseConstIterator(end()); }
-
-      /*
-       * reverse begin method from a given point.
-       * @param aPoint the initial point.
-       * @return a ConstIterator initialized to aPoint.
-       * @pre aPoint must belong to the range.
+    ReverseConstIterator rbegin() const
+    { return ReverseConstIterator(end()); }
+    
+    /*
+     * reverse begin method from a given point.
+     * @param aPoint the initial point.
+     * @return a ConstIterator initialized to aPoint.
+     * @pre aPoint must belong to the range.
+     */
+    ReverseConstIterator rbegin(const Point& aPoint) const
+    {  ASSERT(isInside(aPoint));
+      ConstIterator it(begin(aPoint)); ++it;
+      return ReverseConstIterator(it); }
+    
+    /*
+     * reverse end method.
+     * @return ConstIterator on the end of the reverse range.
        */
-      ReverseConstIterator rbegin(const Point& aPoint) const
-      {  ASSERT(myDomain.isInside(aPoint));
-	ConstIterator it(begin(aPoint)); ++it;
-	return ReverseConstIterator(it); }
-
-      /*
-       * reverse end method.
-       * @return ConstIterator on the end of the reverse range.
-       */
-      ReverseConstIterator rend() const
-      { return ReverseConstIterator(begin()); }
-
-    private:
-      /// Domain associated to the range.
-      const HyperRectDomain<TSpace>& myDomain;
-      /// Begin iterator
-      ConstIterator myIteratorBegin;
-      /// End iterator
-      ConstIterator myIteratorEnd;
-    };
-
-    /// @return a range through the whole domain.
-    const ConstRange& range() const
-    { return myRange; }
-
-    /// @return a begin iterator on the domain 
-    const ConstIterator& begin() const
-    { return myRange.begin(); }
-
-    /// @return an end iterator on the domain 
-    const ConstIterator& end() const
-    { return myRange.end(); }
-
+    ReverseConstIterator rend() const
+    { return ReverseConstIterator(begin()); }
+    
     /**
      * Description of class 'ConstSubRange' <p> \brief Aim:
      * range through some subdomain of all the points in the domain.
@@ -277,17 +229,17 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    const std::vector<Dimension> & permutation,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
+        const std::vector<Dimension> & permutation,
+        const Point & startingPoint)
+  : myLowerBound(domain.myLowerBound),
+    myUpperBound(domain.myUpperBound),
+    myStartingPoint(startingPoint)
       {
-	myPermutation.reserve( permutation.size() );
-	std::copy(permutation.begin(),permutation.end(),
-		  std::back_inserter(myPermutation));
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+  myPermutation.reserve( permutation.size() );
+  std::copy(permutation.begin(),permutation.end(),
+      std::back_inserter(myPermutation));
+  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 
 #ifdef CPP0X_INITIALIZER_LIST
@@ -300,20 +252,20 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    std::initializer_list<Dimension> permutation,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
+        std::initializer_list<Dimension> permutation,
+        const Point & startingPoint)
+  : myLowerBound(domain.myLowerBound),
+    myUpperBound(domain.myUpperBound),
+    myStartingPoint(startingPoint)
       {
-	myPermutation.reserve( permutation.size() );
-	for ( const unsigned int *c = permutation.begin();
-	      c != permutation.end(); ++c )
-	  {
-	    myPermutation.push_back( *c );
-	  }
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+  myPermutation.reserve( permutation.size() );
+  for ( const unsigned int *c = permutation.begin();
+        c != permutation.end(); ++c )
+    {
+      myPermutation.push_back( *c );
+    }
+  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 #endif
 
@@ -325,15 +277,15 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
+        Dimension adim,
+        const Point & startingPoint)
+  : myLowerBound(domain.myLowerBound),
+    myUpperBound(domain.myUpperBound),
+    myStartingPoint(startingPoint)
       {
-	myPermutation.push_back( adim );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+  myPermutation.push_back( adim );
+  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /**
@@ -345,16 +297,16 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim1, Dimension adim2,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
+        Dimension adim1, Dimension adim2,
+        const Point & startingPoint)
+  : myLowerBound(domain.myLowerBound),
+    myUpperBound(domain.myUpperBound),
+    myStartingPoint(startingPoint)
       {
-	myPermutation.push_back( adim1 );
-	myPermutation.push_back( adim2 );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+  myPermutation.push_back( adim1 );
+  myPermutation.push_back( adim2 );
+  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /**
@@ -367,17 +319,17 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim1, Dimension adim2, Dimension adim3,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
+        Dimension adim1, Dimension adim2, Dimension adim3,
+        const Point & startingPoint)
+  : myLowerBound(domain.myLowerBound),
+    myUpperBound(domain.myUpperBound),
+    myStartingPoint(startingPoint)
       {
-	myPermutation.push_back( adim1 );
-	myPermutation.push_back( adim2 );
-	myPermutation.push_back( adim3 );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+  myPermutation.push_back( adim1 );
+  myPermutation.push_back( adim2 );
+  myPermutation.push_back( adim3 );
+  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /*
@@ -385,8 +337,8 @@ namespace DGtal
        * @return ConstIterator on the beginning of the range.
        */
       ConstIterator begin() const
-      {	return ConstIterator(myLowerBound, myLowerBound,
-			     myUpperBound, myPermutation); }
+      {  return ConstIterator(myLowerBound, myLowerBound,
+           myUpperBound, myPermutation); }
       
       /*
        * begin method from a given point.
@@ -396,10 +348,10 @@ namespace DGtal
        */
       ConstIterator begin(const Point& aPoint) const
       { 
-	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
-	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
-	return ConstIterator(aPoint, myLowerBound,
-			     myUpperBound, myPermutation);
+  ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
+  ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
+  return ConstIterator(aPoint, myLowerBound,
+           myUpperBound, myPermutation);
       }
 
       /*
@@ -408,10 +360,10 @@ namespace DGtal
        */
       ConstIterator end() const
       {
-	ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
-					 myUpperBound, myPermutation);
-	++it;
-	return it;
+  ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
+           myUpperBound, myPermutation);
+  ++it;
+  return it;
       }
 
       /*
@@ -429,7 +381,7 @@ namespace DGtal
        */
       ReverseConstIterator rbegin(const Point& aPoint) const
       { ConstIterator it(begin(aPoint)); ++it;
-	return ReverseConstIterator(it); }
+  return ReverseConstIterator(it); }
 
       /*
        * reverse end method.
@@ -467,7 +419,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(const std::vector<Dimension> & permutation,
-			   const Point & startingPoint) const
+         const Point & startingPoint) const
     { return ConstSubRange(*this, permutation, startingPoint); }
     
     /**
@@ -478,7 +430,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim,
-			   const Point & startingPoint) const
+         const Point & startingPoint) const
     { return ConstSubRange(*this, adim, startingPoint); }
     
     /**
@@ -490,7 +442,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2,
-			   const Point & startingPoint) const
+         const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, startingPoint); }
     
     /**
@@ -503,7 +455,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3,
-			   const Point & startingPoint) const
+         const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
     
 #ifdef CPP0X_INITIALIZER_LIST
@@ -525,7 +477,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation,
-			   const Point & startingPoint)
+         const Point & startingPoint)
     { return ConstSubRange(*this, permutation, startingPoint); }
 #endif
     
@@ -539,7 +491,7 @@ namespace DGtal
     {
       Point p;
       for(typename Point::Iterator it=p.begin(), itend=p.end();
-	  it != itend; ++it)
+    it != itend; ++it)
         (*it) = 1;
 
       return (myUpperBound - myLowerBound) + p;
@@ -685,11 +637,11 @@ namespace DGtal
     /// "IsInside" predicate.
     Predicate myPredicate;
 
-    /// Range
-    ConstRange myRange;
+    /// Begin iterator
+    ConstIterator myIteratorBegin;
+    /// End iterator
+    ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
-
-
 
 
 
@@ -714,9 +666,6 @@ namespace DGtal
       display.myModes[ "HyperRectDomain" ] = "Grid";
     }
   };
-
-
-
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.

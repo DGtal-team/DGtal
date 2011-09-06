@@ -91,16 +91,16 @@ DGtal::Ball2D<T>::parameter( const RealPoint2D & pp ) const
   if ( p.at( 0 ) >= p.at( 1 ) )
     {
       if ( p.at( 0 ) >= -p.at( 1 ) )
-	angle = atan( p.at( 1 ) / p.at( 0 ) );
+  angle = atan( p.at( 1 ) / p.at( 0 ) );
       else
-	angle = 1.5* M_PI + atan( - p.at( 0 ) / p.at( 1 ) );
+  angle = 1.5* M_PI + atan( - p.at( 0 ) / p.at( 1 ) );
     }
   else // ( p.at( 0 ) >= p.at( 1 ) )
     {
       if ( p.at( 0 ) >= -p.at( 1 ) )
-	angle = 0.5*M_PI - atan( p.at( 0 ) / p.at( 1 ) );
+  angle = 0.5*M_PI - atan( p.at( 0 ) / p.at( 1 ) );
       else
-	angle = M_PI + atan( p.at( 1 ) / p.at( 0 ) );
+  angle = M_PI + atan( p.at( 1 ) / p.at( 0 ) );
     }
   angle = ( angle < 0.0 ) ? angle + 2*M_PI : angle;
   return angle;
@@ -189,7 +189,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Ball2D<T> & object )
+      const Ball2D<T> & object )
 {
   object.selfDisplay( out );
   return out;

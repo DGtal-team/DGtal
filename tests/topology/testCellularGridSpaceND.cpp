@@ -73,7 +73,7 @@ bool testCellularGridSpaceND()
   nbok += space_ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "K.init( low, high )" << std::endl;
+         << "K.init( low, high )" << std::endl;
   trace.info() << "K.dim()=" << K.dimension << endl;
   int spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
   Point kp( spel );
@@ -82,7 +82,7 @@ bool testCellularGridSpaceND()
   Cell clow = K.uCell( low, kp );
   Cell chigh = K.uCell( high, kp );
   trace.info() << c1 << clow << chigh 
-	       << " topo(c1)=" << K.uTopology( c1 ) << " dirs=";
+         << " topo(c1)=" << K.uTopology( c1 ) << " dirs=";
   for ( DirIterator q = K.uDirs( clow ); q != 0; ++q )
     trace.info() << " " << *q;
   trace.info() << endl;
@@ -102,23 +102,23 @@ bool testCellularGridSpaceND()
   nbok += nbelems == exp_nbelems ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << nbelems << " scanned elements == "
-	       << exp_nbelems << " space size."
-	       << std::endl;
+         << nbelems << " scanned elements == "
+         << exp_nbelems << " space size."
+         << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Testing neighborhoods in KSpace..." );
   Cells N = K.uNeighborhood( center );
   nbok += N.size() == ( K.dimension*2 + 1 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << N.size() << "(neighborhood size) == "
-	       << ( K.dimension*2 + 1 ) << "(2*dim()+1)" << endl;
+         << N.size() << "(neighborhood size) == "
+         << ( K.dimension*2 + 1 ) << "(2*dim()+1)" << endl;
   Cells Np = K.uProperNeighborhood( center );
   nbok += Np.size() == ( K.dimension*2 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << Np.size() << "(proper neighborhood size) == "
-	       << ( K.dimension*2 ) << "(2*dim())" << endl;
+         << Np.size() << "(proper neighborhood size) == "
+         << ( K.dimension*2 ) << "(2*dim())" << endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing faces in KSpace..." );
@@ -126,8 +126,8 @@ bool testCellularGridSpaceND()
   nbok += Nf.size() == round( std::pow( 3.0 ,(int) K.dimension ) - 1 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << Nf.size() << "(faces size) == "
-	       << round( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
+         << Nf.size() << "(faces size) == "
+         << round( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
   trace.endBlock();
   
   trace.beginBlock ( "Testing block Incidence in KSpace..." );
@@ -135,54 +135,54 @@ bool testCellularGridSpaceND()
   for ( DirIterator q1 = K.sDirs( sspel ); q1 != 0; ++q1 )
     for ( DirIterator q2 = K.sDirs( sspel ); q2 != 0; ++q2 )
       {
-	if ( *q1 != *q2 )
-	  {
-	    SCell s0 = K.sIncident( sspel, *q1, true );
-	    SCell s1 = K.sIncident( sspel, *q2, true );
-	    SCell l10 = K.sIncident( s0, *q2, true );
-	    SCell l01 = K.sIncident( s1, *q1, true );
-	    trace.info() << "D+_" << *q2 << "(D+_" << *q1 << "(V))=" << l10 
-			 << " D+_" << *q1 << "(D+_" << *q2 << "(V))=" << l01
-			 << endl;
-	    nbok += l10 == K.sOpp( l01 ) ? 1 : 0; 
-	    nb++;
-	  }
+  if ( *q1 != *q2 )
+    {
+      SCell s0 = K.sIncident( sspel, *q1, true );
+      SCell s1 = K.sIncident( sspel, *q2, true );
+      SCell l10 = K.sIncident( s0, *q2, true );
+      SCell l01 = K.sIncident( s1, *q1, true );
+      trace.info() << "D+_" << *q2 << "(D+_" << *q1 << "(V))=" << l10 
+       << " D+_" << *q1 << "(D+_" << *q2 << "(V))=" << l01
+       << endl;
+      nbok += l10 == K.sOpp( l01 ) ? 1 : 0; 
+      nb++;
+    }
       }
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "anti-commutativity of incidence operators." << std::endl;
+         << "anti-commutativity of incidence operators." << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing direct Incidence in KSpace..." );
   for ( DirIterator q1 = K.sDirs( sspel ); q1 != 0; ++q1 )
     for ( DirIterator q2 = K.sDirs( sspel ); q2 != 0; ++q2 )
       {
-	if ( *q1 != *q2 )
-	  {
-	    SCell s0 = K.sDirectIncident( sspel, *q1 );
-	    SCell l10 = K.sDirectIncident( s0, *q2 );
-	    SCell s1 = K.sDirectIncident( sspel, *q2 );
-	    SCell l01 = K.sDirectIncident( s1, *q1 );
-	    trace.info() << "Dd_" << *q2 << "(Dd_" << *q1 << "(V))=" << l10 
-			 << " Dd_" << *q1 << "(Dd_" << *q2 << "(V))=" << l01
-			 << endl;
-	    nbok += l10 != l01 ? 1 : 0; 
-	    nbok += K.sSign( s0 ) == K.POS ? 1 : 0;
-	    nbok += K.sSign( s1 ) == K.POS ? 1 : 0;
-	    nbok += K.sSign( l10 ) == K.POS ? 1 : 0;
-	    nbok += K.sSign( l01 ) == K.POS ? 1 : 0;
-	    nbok += s0 == K.sIncident( sspel, *q1, K.sDirect( sspel, *q1 ) )
-	      ? 1 : 0;
-	    nbok += s1 == K.sIncident( sspel, *q2, K.sDirect( sspel, *q2 ) )
-	      ? 1 : 0;
-	    nbok += l10 == K.sIncident( s0, *q2, K.sDirect( s0, *q2 ) )
-	      ? 1 : 0;
-	    nbok += l01 == K.sIncident( s1, *q1, K.sDirect( s1, *q1 ) )
-	      ? 1 : 0;
-	    nb += 9;
-	  }
+  if ( *q1 != *q2 )
+    {
+      SCell s0 = K.sDirectIncident( sspel, *q1 );
+      SCell l10 = K.sDirectIncident( s0, *q2 );
+      SCell s1 = K.sDirectIncident( sspel, *q2 );
+      SCell l01 = K.sDirectIncident( s1, *q1 );
+      trace.info() << "Dd_" << *q2 << "(Dd_" << *q1 << "(V))=" << l10 
+       << " Dd_" << *q1 << "(Dd_" << *q2 << "(V))=" << l01
+       << endl;
+      nbok += l10 != l01 ? 1 : 0; 
+      nbok += K.sSign( s0 ) == K.POS ? 1 : 0;
+      nbok += K.sSign( s1 ) == K.POS ? 1 : 0;
+      nbok += K.sSign( l10 ) == K.POS ? 1 : 0;
+      nbok += K.sSign( l01 ) == K.POS ? 1 : 0;
+      nbok += s0 == K.sIncident( sspel, *q1, K.sDirect( sspel, *q1 ) )
+        ? 1 : 0;
+      nbok += s1 == K.sIncident( sspel, *q2, K.sDirect( sspel, *q2 ) )
+        ? 1 : 0;
+      nbok += l10 == K.sIncident( s0, *q2, K.sDirect( s0, *q2 ) )
+        ? 1 : 0;
+      nbok += l01 == K.sIncident( s1, *q1, K.sDirect( s1, *q1 ) )
+        ? 1 : 0;
+      nb += 9;
+    }
       }
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "correctness of direct and indirect orientations." << std::endl;
+         << "correctness of direct and indirect orientations." << std::endl;
   
   trace.endBlock();
   
@@ -214,7 +214,7 @@ bool testSurfelAdjacency()
   nbok += space_ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "K.init( low, high )" << std::endl;
+         << "K.init( low, high )" << std::endl;
   trace.info() << "K.dim()=" << K.dimension << endl;
   trace.endBlock();
   trace.beginBlock ( "Testing surfel adjacency ..." );
@@ -222,8 +222,8 @@ bool testSurfelAdjacency()
   for ( Dimension i = 0; i < K.dimension; ++i )
     for ( Dimension j = 0; j < K.dimension; ++j )
       if ( i != j )
-	trace.info() << "(" << i << "," << j << ")=" 
-		     << ( SAdj.getAdjacency( i, j ) ? "i2e" : "e2i" );
+  trace.info() << "(" << i << "," << j << ")=" 
+         << ( SAdj.getAdjacency( i, j ) ? "i2e" : "e2i" );
   trace.info() << endl;
   trace.endBlock();
 
@@ -236,19 +236,19 @@ bool testSurfelAdjacency()
       SCell surfel = K.sIncident( sspel, k, true );
       SCell innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
       trace.info() << "spel=" << sspel << " surfel=" << surfel
-		   << " innerspel=" << innerspel << endl;
+       << " innerspel=" << innerspel << endl;
       nbok += sspel == innerspel ? 1 : 0; 
       nb++;
       trace.info() << "(" << nbok << "/" << nb << ") "
-		   << "spel == innerspel" << std::endl;
+       << "spel == innerspel" << std::endl;
       surfel = K.sIncident( sspel, k, false );
       innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
       trace.info() << "spel=" << sspel << " surfel=" << surfel
-		   << " innerspel=" << innerspel << endl;
+       << " innerspel=" << innerspel << endl;
       nbok += sspel == innerspel ? 1 : 0; 
       nb++;
       trace.info() << "(" << nbok << "/" << nb << ") "
-		   << "spel == innerspel" << std::endl;
+       << "spel == innerspel" << std::endl;
     }
   trace.endBlock();
 
@@ -286,24 +286,24 @@ bool testSurfelAdjacency()
   // surfel = Surfaces<KSpace>::findABel( K, shape_set );
 
   Surfaces<KSpace>::trackBoundary( bdry,
-				   K, SAdj, shape_set_predicate, surfel );
+           K, SAdj, shape_set_predicate, surfel );
   trace.info() << "tracking finished, size=" << bdry.size() 
-	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+         << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "bdry.size() == ( 2*K.dimension*(2*K.dimension-1) )"
-	       << std::endl;
+         << "bdry.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+         << std::endl;
   std::set<SCell> bdry_direct;
   Surfaces<KSpace>::trackClosedBoundary( bdry_direct,
-					 K, SAdj, shape_set_predicate, surfel );
+           K, SAdj, shape_set_predicate, surfel );
   trace.info() << "fast direct tracking finished, size=" << bdry_direct.size() 
-	       << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
+         << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) )"
-	       << std::endl;
+         << "bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) )"
+         << std::endl;
   
   trace.endBlock();
   if ( K.dimension == 2 )
@@ -311,10 +311,10 @@ bool testSurfelAdjacency()
       Board2D board;
       board.setUnit( LibBoard::Board::UCentimeter );
       board << SetMode( domain.styleName(), "Paving" )
-	    << domain;
+      << domain;
       for ( typename std::set<SCell>::const_iterator it = bdry_direct.begin(),
-	      it_end = bdry_direct.end(); it != it_end; ++it )
-	board << *it;
+        it_end = bdry_direct.end(); it != it_end; ++it )
+  board << *it;
       board.saveEPS( "cells-2.eps" );
       board.saveSVG( "cells-2.svg" );
     }
@@ -346,25 +346,25 @@ bool testCellDrawOnBoard()
   Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.styleName(), "Paving" )
-	<< domain;
+  << domain;
   int spel[ 2 ] = { 1, 1 }; // pixel 0,0
   Point kp( spel );
   Cell uspel = K.uCell( kp );
   board << uspel 
-	<< low << high
-	<< K.uIncident( uspel, 0, false )
-	<< K.uIncident( uspel, 1, false );
+  << low << high
+  << K.uIncident( uspel, 0, false )
+  << K.uIncident( uspel, 1, false );
   int spel2[ 2 ] = { 5, 1 }; // pixel 2,0
   Point kp2( spel2 );
   SCell sspel2 = K.sCell( kp2, K.POS );
   board << CustomStyle( sspel2.styleName(), 
-			new CustomPen( Color( 200, 0, 0 ), 
-				       Color( 255, 100, 100 ),
-				       2.0, 
-				       Board2D::Shape::SolidStyle ) )
-	<< sspel2 
-    	<< K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) )
-	<< K.sIncident( sspel2, 1, K.sDirect( sspel2, 0 ) );
+      new CustomPen( Color( 200, 0, 0 ), 
+               Color( 255, 100, 100 ),
+               2.0, 
+               Board2D::Shape::SolidStyle ) )
+  << sspel2 
+      << K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) )
+  << K.sIncident( sspel2, 1, K.sDirect( sspel2, 0 ) );
   board.saveEPS( "cells-1.eps" );
   board.saveSVG( "cells-1.svg" );
   trace.endBlock();
@@ -373,17 +373,17 @@ bool testCellDrawOnBoard()
   SCell slinel0 = K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) );
   SCell spointel01 = K.sIncident( slinel0, 1, K.sDirect( slinel0, 1 ) );
   board << CustomStyle( sspel2.styleName(), 
-			new CustomColors( Color( 200, 0, 0 ), 
-					  Color( 255, 100, 100 ) ) )
-	<< sspel2
-	<< CustomStyle( slinel0.styleName(), 
-			new CustomColors( Color( 0, 200, 0 ), 
-					  Color( 100, 255, 100 ) ) )
-	<< slinel0
-	<< CustomStyle( spointel01.styleName(), 
-			new CustomColors( Color( 0, 0, 200 ), 
-					  Color( 100, 100, 255 ) ) )
-	<< spointel01;
+      new CustomColors( Color( 200, 0, 0 ), 
+            Color( 255, 100, 100 ) ) )
+  << sspel2
+  << CustomStyle( slinel0.styleName(), 
+      new CustomColors( Color( 0, 200, 0 ), 
+            Color( 100, 255, 100 ) ) )
+  << slinel0
+  << CustomStyle( spointel01.styleName(), 
+      new CustomColors( Color( 0, 0, 200 ), 
+            Color( 100, 100, 255 ) ) )
+  << spointel01;
   board.saveEPS( "cells-3.eps" );
   board.saveSVG( "cells-3.svg" );
   

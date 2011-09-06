@@ -149,12 +149,12 @@ void displayList()
   trace.emphase()<<"2D Shapes:"<<std::endl;
   for(unsigned int i=0; i<shapes2D.size(); ++i)
     trace.info()<<"\t"<<shapes2D[i]<<"\t"
-		<<shapesDesc[i]<<std::endl
-		<<"\t\tRequired parameter(s): "
-		<< shapesParam1[i]<<" "
-      		<< shapesParam2[i]<<" "
-      		<< shapesParam3[i]<<" "
-      		<< shapesParam4[i]<<std::endl;
+    <<shapesDesc[i]<<std::endl
+    <<"\t\tRequired parameter(s): "
+    << shapesParam1[i]<<" "
+          << shapesParam2[i]<<" "
+          << shapesParam3[i]<<" "
+          << shapesParam4[i]<<std::endl;
   
 }
 
@@ -189,7 +189,7 @@ unsigned int checkAndReturnIndex(const std::string &shapeName)
 template <typename Estimator, typename ConstIterator>
 std::vector<typename Estimator::Quantity>
 estimateQuantity( Estimator & estimator, 
-		  ConstIterator it, ConstIterator it_end )
+      ConstIterator it, ConstIterator it_end )
 {
   std::vector<typename Estimator::Quantity> values;
   for ( ; it != it_end; ++it )
@@ -202,8 +202,8 @@ estimateQuantity( Estimator & estimator,
 template <typename Space, typename Shape>
 bool
 compareShapeEstimators( const string & name,
-			Shape & aShape, 
-			double h )
+      Shape & aShape, 
+      double h )
 {
   // Types
   typedef typename Space::Point Point;
@@ -231,7 +231,7 @@ compareShapeEstimators( const string & name,
   if ( ! ok )
     {
       std::cerr << "[compareShapeEstimators]"
-		<< " error in creating KSpace." << std::endl;
+    << " error in creating KSpace." << std::endl;
       return false;
     }
   try {
@@ -308,36 +308,37 @@ compareShapeEstimators( const string & name,
     double TBCCurv = c.stopClock();
 
     // Output
-    std::cout << "# Time-BCtangent = "<<TBCTan <<std::endl
-	      << "# Time-BCcurvature = "<<TBCCurv<<std::endl
-	      << "# Time-MStangent = "<<TMST<<std::endl
-	      << "# id x y tangentx tangenty curvature"
-	      << " BCtangentx BCtangenty BCcurvature"
-	      << " MStangentx MStangenty"
-	      << std::endl;  
+    std::cout << "# Shape = "<< name <<std::endl
+        << "# Time-BCtangent = "<<TBCTan <<std::endl
+        << "# Time-BCcurvature = "<<TBCCurv<<std::endl
+        << "# Time-MStangent = "<<TMST<<std::endl
+        << "# id x y tangentx tangenty curvature"
+        << " BCtangentx BCtangenty BCcurvature"
+        << " MStangentx MStangenty"
+        << std::endl;  
     unsigned int i = 0;
     for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
-	  it != it_end; ++it, ++i )
+    it != it_end; ++it, ++i )
       {
-	Point p = *it;
-	std::cout << i << setprecision( 15 )
-		  << " " << p[ 0 ] << " " << p[ 1 ] 
-		  << " " << trueTangents[ i ][ 0 ]
-		  << " " << trueTangents[ i ][ 1 ]
-		  << " " << trueCurvatures[ i ]
-		  << " " << BCTangents[ i ][ 0 ]
-		  << " " << BCTangents[ i ][ 1 ]
-		  << " " << BCCurvatures[ i ]
-		  << " " << MSTangents[ i ][ 0 ]
-		  << " " << MSTangents[ i ][ 1 ]
-		  << std::endl;
+  Point p = *it;
+  std::cout << i << setprecision( 15 )
+      << " " << p[ 0 ] << " " << p[ 1 ] 
+      << " " << trueTangents[ i ][ 0 ]
+      << " " << trueTangents[ i ][ 1 ]
+      << " " << trueCurvatures[ i ]
+      << " " << BCTangents[ i ][ 0 ]
+      << " " << BCTangents[ i ][ 1 ]
+      << " " << BCCurvatures[ i ]
+      << " " << MSTangents[ i ][ 0 ]
+      << " " << MSTangents[ i ][ 1 ]
+      << std::endl;
       }
     return true;
   }    
   catch ( InputException e )
     {
       std::cerr << "[compareShapeEstimators]"
-		<< " error in finding a bel." << std::endl;
+    << " error in finding a bel." << std::endl;
       return false;
     }
 }
@@ -386,8 +387,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Compare local estimators on implicit shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
-		  << "\testimatorComparator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
-		  << general_opt << "\n";
+      << "\testimatorComparator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -415,7 +416,7 @@ int main( int argc, char** argv )
   typedef Space::RealPoint RealPoint;
 
   RealPoint center( vm["center_x"].as<double>(),
-		    vm["center_y"].as<double>() );
+        vm["center_y"].as<double>() );
   double h = vm["gridstep"].as<double>();
   if (id ==0)
     {

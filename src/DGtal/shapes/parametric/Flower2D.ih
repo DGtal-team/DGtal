@@ -52,8 +52,8 @@ DGtal::Flower2D<T>::~Flower2D()
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const double x0, const double y0,
-			     const double radius, const double varRadius,
-			     const unsigned int k, const double phi)
+           const double radius, const double varRadius,
+           const unsigned int k, const double phi)
   : myCenter(x0,y0), myRadius(radius), myVarRadius(varRadius), myK(k),myPhi(phi)
 {}
 
@@ -61,8 +61,8 @@ DGtal::Flower2D<T>::Flower2D(const double x0, const double y0,
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const RealPoint2D &aPoint, const double radius,
-			     const double varRadius,
-			     const unsigned int k, const double phi)
+           const double varRadius,
+           const unsigned int k, const double phi)
   : myCenter(aPoint), myRadius(radius), myVarRadius(varRadius), 
     myK(k), myPhi(phi)
 {}
@@ -70,8 +70,8 @@ DGtal::Flower2D<T>::Flower2D(const RealPoint2D &aPoint, const double radius,
 template <typename T>
 inline
 DGtal::Flower2D<T>::Flower2D(const Point &aPoint, const double radius,
-			     const double varRadius,
-			     const unsigned int k, const double phi)
+           const double varRadius,
+           const unsigned int k, const double phi)
   : myRadius(radius),myVarRadius(varRadius),myK(k),myPhi(phi)
 {
   myCenter = aPoint;
@@ -102,16 +102,16 @@ DGtal::Flower2D<T>::parameter( const RealPoint2D & pp ) const
   if ( p.at( 0 ) >= p.at( 1 ) )
     {
       if ( p.at( 0 ) >= -p.at( 1 ) )
-	angle = atan( p.at( 1 ) / p.at( 0 ) );
+  angle = atan( p.at( 1 ) / p.at( 0 ) );
       else
-	angle = 1.5* M_PI + atan( - p.at( 0 ) / p.at( 1 ) );
+  angle = 1.5* M_PI + atan( - p.at( 0 ) / p.at( 1 ) );
     }
   else // ( p.at( 0 ) >= p.at( 1 ) )
     {
       if ( p.at( 0 ) >= -p.at( 1 ) )
-	angle = 0.5*M_PI - atan( p.at( 0 ) / p.at( 1 ) );
+  angle = 0.5*M_PI - atan( p.at( 0 ) / p.at( 1 ) );
       else
-	angle = M_PI + atan( p.at( 1 ) / p.at( 0 ) );
+  angle = M_PI + atan( p.at( 1 ) / p.at( 0 ) );
     }
   angle = ( angle < 0.0 ) ? angle + 2*M_PI : angle;
 */
@@ -168,7 +168,7 @@ DGtal::Flower2D<T>::xpp( const double t ) const
   double rp = - myVarRadius * sin( myK * t + myPhi ) * myK;
   double rpp = - myVarRadius * cos( myK * t + myPhi ) * myK * myK;
   RealVector2D c(rpp * cos( t ) - 2 * rp * sin( t ) - r * cos( t ),
-		 rpp * sin( t ) + 2 * rp * cos( t ) - r * sin( t ) );
+     rpp * sin( t ) + 2 * rp * cos( t ) - r * sin( t ) );
   return c;
 }
 
@@ -210,7 +210,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Flower2D<T> & object )
+      const Flower2D<T> & object )
 {
   object.selfDisplay( out );
   return out;

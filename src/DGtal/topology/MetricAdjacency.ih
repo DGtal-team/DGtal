@@ -128,14 +128,14 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
-	it != domain.range().end();
-	++it )
+  for ( typename LocalDomain::ConstIterator it = domain.begin();
+  it != domain.end();
+  ++it )
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
       if ( ( n1 <= maxNorm1 ) && ( pred( *it ) ) )
-	*out_it++ = *it;
+  *out_it++ = *it;
     }
 }
 
@@ -164,14 +164,14 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
-	it != domain.range().end();
-	++it )
+  for ( typename LocalDomain::ConstIterator it = domain.begin();
+  it != domain.end();
+  ++it )
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
       if ( n1 <= maxNorm1 )
-	*out_it++ = *it;
+  *out_it++ = *it;
     }
 }
 
@@ -190,14 +190,14 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
-	it != domain.range().end();
-	++it )
+  for ( typename LocalDomain::ConstIterator it = domain.begin();
+  it != domain.end();
+  ++it )
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
       if ( ( n1 <= maxNorm1 ) && ( n1 != 0 )  && ( pred( *it ) ) )
-	*out_it++ = *it;
+  *out_it++ = *it;
     }
 }
 
@@ -216,14 +216,14 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
     ++(*it);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.range().begin();
-	it != domain.range().end();
-	++it )
+  for ( typename LocalDomain::ConstIterator it = domain.begin();
+  it != domain.end();
+  ++it )
     {
       Vector v( p - *it );
       typename Vector::UnsignedComponent n1 = v.norm1();
       if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
-	*out_it++ = *it;
+  *out_it++ = *it;
     }
 }
 
@@ -266,8 +266,8 @@ template <typename TSpace, Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const MetricAdjacency<TSpace,maxNorm1,
-		    TSpace::dimension> & object )
+        const MetricAdjacency<TSpace,maxNorm1,
+        TSpace::dimension> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -315,10 +315,10 @@ namespace DGtal {
     {
       Vector v( p2 - p1 );
       if ( v.normInfinity() <= 1 )
-	{
-	  typename Vector::UnsignedComponent n1 = v.norm1();
-	  return ( n1 <= 2 ) && ( n1 != 0 );
-	}
+  {
+    typename Vector::UnsignedComponent n1 = v.norm1();
+    return ( n1 <= 2 ) && ( n1 != 0 );
+  }
       return false;
     }
 
@@ -345,8 +345,8 @@ namespace DGtal {
     inline
     static
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it,
-			    const PointPredicate & pred )
+          OutputIterator & out_it,
+          const PointPredicate & pred )
     {
       Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
       if ( pred( q ) ) *out_it++ = q;
@@ -366,7 +366,7 @@ namespace DGtal {
     inline
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it )
+          OutputIterator & out_it )
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
@@ -384,8 +384,8 @@ namespace DGtal {
     inline
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it,
-				  const PointPredicate & pred )
+          OutputIterator & out_it,
+          const PointPredicate & pred )
     {
       //      std::cerr << "Z2_8.writeProperNeighborhood(,,Pred)" << std::endl;
 
@@ -409,7 +409,7 @@ namespace DGtal {
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z2*"
-	  << " n1<=2*" << " ]";
+    << " n1<=2*" << " ]";
     }
   
     static
@@ -482,8 +482,8 @@ namespace DGtal {
     inline
     static
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it,
-			    const PointPredicate & pred )
+          OutputIterator & out_it,
+          const PointPredicate & pred )
     {
       Point q( p[ 0 ], p[ 1 ] - 1 );
       if ( pred( q ) ) *out_it++ = q;
@@ -499,7 +499,7 @@ namespace DGtal {
     inline
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it )
+          OutputIterator & out_it )
     {
       Integer x = p[ 0 ];
       Integer y = p[ 1 ];
@@ -513,8 +513,8 @@ namespace DGtal {
     inline
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it,
-				  const PointPredicate & pred )
+          OutputIterator & out_it,
+          const PointPredicate & pred )
     {
       // std::cerr << "Z2_4.writeProperNeighborhood(,,Pred)" << std::endl;
       Point q( p[ 0 ], p[ 1 ] - 1 );
@@ -533,7 +533,7 @@ namespace DGtal {
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z2*"
-	  << " n1<=2*" << " ]";
+    << " n1<=2*" << " ]";
     }
   
     static

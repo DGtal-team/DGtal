@@ -101,7 +101,7 @@ namespace DGtal
        * @param aPointB one of the image bound (lower or upper point). 
        */
       ImageContainerByITKImage(const Point &aPointA,
-			       const Point &aPointB );
+             const Point &aPointB );
 
       /**
        * Constructor.
@@ -110,8 +110,8 @@ namespace DGtal
        * @param aRef a reference to an ITKImage
        */
       ImageContainerByITKImage(const Point &aPointA,
-			       const Point &aPointB,
-			       ITKImagePointer &aRef);
+             const Point &aPointB,
+             ITKImagePointer &aRef);
 
       /**
        * Destructor.
@@ -171,7 +171,7 @@ namespace DGtal
        */
       Domain domain() const
       {
-	return Domain(myLowerBound, myUpperBound);
+  return Domain(myLowerBound, myUpperBound);
       }
     
       /**
@@ -180,7 +180,7 @@ namespace DGtal
        */
       Point extent() const
       {
-	return myUpperBound - myLowerBound;
+  return myUpperBound - myLowerBound;
       }
 
 
@@ -189,7 +189,7 @@ namespace DGtal
        */
       ITKImagePointer getImagePointer() const
       {
-	return myITKImagePointer;
+  return myITKImagePointer;
       }
 
       // ------------------------- stream ------------------------------
@@ -213,7 +213,7 @@ namespace DGtal
        **/
       ConstIterator begin() const
       {
-	return myConstItBegin;
+  return myConstItBegin;
       }
 
       /**
@@ -222,7 +222,7 @@ namespace DGtal
        **/
       Iterator begin()
       {
-	return myItBegin;
+  return myItBegin;
       }
 
       /**
@@ -237,7 +237,7 @@ namespace DGtal
        **/
       const ConstIterator end() const
       {
-	return myConstItEnd;
+  return myConstItEnd;
       }
 
       /**
@@ -246,7 +246,7 @@ namespace DGtal
        **/
       Iterator end()
       {
-	return myItEnd;
+  return myItEnd;
       }
 
       /**

@@ -49,18 +49,18 @@
 inline
 DGtal::MeasureOfStraightLines::MeasureOfStraightLines()
 {
-   ///Default value
-   myEpsilon = 0.0005;
- }
+  ///Default value
+  myEpsilon = 0.0005;
+}
 
 
- /**
-   * Destructor.
-   */
+/**
+ * Destructor.
+ */
 inline
 DGtal::MeasureOfStraightLines:: ~MeasureOfStraightLines()
- {
- }
+{
+}
 
 /**
  * Writes/Displays the object on an output stream.
@@ -227,7 +227,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidSquare_b ( double x1, double y1,
 
 inline
 int
-DGtal::MeasureOfStraightLines::sign ( double a )
+DGtal::MeasureOfStraightLines::sign ( const double a )
 {
   if ( a>=0 )
     return 1;

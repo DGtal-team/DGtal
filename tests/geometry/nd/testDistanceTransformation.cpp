@@ -114,8 +114,8 @@ bool testDistanceTransformation()
   board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
-	      image.end(),
-	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+        image.end(),
+        std::ostream_iterator<unsigned int> ( std::cout, " " ) );
   
   
   
@@ -171,10 +171,10 @@ bool testDistanceTransformationNeg()
   for(int y=-10; y<=10;y++) 
     for(int x=-10; x<=10;x++)
       {
-	if ((abs(x)<7) && (abs(y)<5))
-	  image.setValue(Point(x,y),1);
-	else
-	  image.setValue(Point(x,y),0);
+  if ((abs(x)<7) && (abs(y)<5))
+    image.setValue(Point(x,y),1);
+  else
+    image.setValue(Point(x,y),0);
       }
   
   DistanceTransformation<Image, 2> dt;
@@ -191,16 +191,16 @@ bool testDistanceTransformationNeg()
   for(int y=-10; y<=10;y++) 
     {
       for(int x=-10; x<=10;x++)
-	{
-	  std::cout<<image(Point(x,y))<<"  ";
-	}
+  {
+    std::cout<<image(Point(x,y))<<"  ";
+  }
       std::cout<<std::endl;
     }
   
 
   ImageLong result = dt.compute ( image );
   
-  DGtal::uint64_t maxv=0;
+  DGtal::int64_t maxv=0;
   for(ImageLong::Iterator it = result.begin(), itend = result.end();
       it != itend ; ++it)
     if (result(it) > maxv)
@@ -209,9 +209,9 @@ bool testDistanceTransformationNeg()
   for(int y=-10; y<=10;y++) 
     {
       for(int x=-10; x<=10;x++)
-	{
-	  std::cout<<result(Point(x,y))<<"  ";
-	}
+  {
+    std::cout<<result(Point(x,y))<<"  ";
+  }
       std::cout<<std::endl;
     }
   
@@ -266,9 +266,9 @@ unsigned int nbok = 0;
   
   trace.warning() << result << endl;
  
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();
-	it != itend; ++it)
+  it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
@@ -278,7 +278,7 @@ unsigned int nbok = 0;
   board.clear();
   maxv = 0;
   for ( ImageLong::Iterator it = result0.begin(), itend = result0.end();
-	it != itend; ++it)
+  it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
@@ -288,7 +288,7 @@ unsigned int nbok = 0;
   board.clear();
   maxv = 0;
   for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();
-	it != itend; ++it)
+  it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
@@ -397,13 +397,13 @@ bool testDistanceTransformation3D()
   Point c(8, 8, 8);
   Domain dom(a, b);
 
-  for (Domain::ConstIterator it = dom.range().begin(),
-	 itend = dom.range().end(); it != itend; ++it)
-  {
-    if ( ((*it) - c).norm() < 7)
-      image.setValue ( *it, 128 );
-  }
-
+  for (Domain::ConstIterator it = dom.begin(),
+	 itend = dom.end(); it != itend; ++it)
+    {
+      if ( ((*it) - c).norm() < 7)
+	image.setValue ( *it, 128 );
+    }
+  
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
@@ -511,7 +511,7 @@ bool testChessboard()
   DT1::OutputImage result1 = dt1.compute ( image );
   DT2::OutputImage result2 = dt2.compute (image);
 
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -543,10 +543,10 @@ bool testChessboard()
   trace.info()<< "max  L1"<<endl;
   maxv = 0;
   for ( DT1::OutputImage::Iterator it2 = result1.begin(), itend = result1.end();
-	it2 != itend; ++it2)
+  it2 != itend; ++it2)
     {
       if ( result1(it2) > maxv)
-	maxv = (*it2);
+  maxv = (*it2);
     }
 
   trace.info()<< "Exporting to SVG L1"<<endl;
@@ -558,10 +558,10 @@ bool testChessboard()
   trace.info()<< "max  Leuc"<<endl;
   maxv = 0;
   for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
-	it != itend; ++it)
+  it != itend; ++it)
     {
       if ( result2(it) > maxv)
-	maxv = (*it);
+  maxv = (*it);
     }
 
   trace.info()<< "Exporting to SVG L2"<<endl;

@@ -7,13 +7,13 @@ SET(GEO3D_TESTS_SRC
 FOREACH(FILE ${GEO3D_TESTS_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} ${LIBDGTAL_NAME})
-	add_test(${FILE} ${FILE})
+  add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
 
 ### Test with QGLViewer
 SET(GEO3D_TESTS_WITH_QGLVIEWER_SRC
-#	testArithDSS3dViewer
+#  testArithDSS3dViewer
    )
 
 if (  WITH_VISU3D_QGLVIEWER )

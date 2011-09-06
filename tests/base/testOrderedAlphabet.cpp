@@ -129,10 +129,10 @@ bool testDuvalPPMod( const OrderedAlphabet & alphabet,
     {
       s1 << "C(";
       for ( unsigned int i = 0; i < len; ++i )
-	{
-	  s1 << input[ s ];
-	  s = s + 1 % input.size();
-	}
+  {
+    s1 << input[ s ];
+    s = s + 1 % input.size();
+  }
       s1  << ")^" << nb;
     }
   else s1 << "NC(" << len << ")";

@@ -41,9 +41,9 @@ template <typename Set>
 inline
 Image 
 DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
-				   const bool addBorder,
-				   typename Set::ConstIterator itBegin, 
-				   typename Set::ConstIterator itEnd)
+           const bool addBorder,
+           typename Set::ConstIterator itBegin, 
+           typename Set::ConstIterator itEnd)
 {
   // BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
  
@@ -56,7 +56,7 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
   aSet.computeBoundingBox(lower,upper);
 
   Image image(lower - dec ,upper + dec);
-  append(image,aSet,defaultValue, itBegin, itEnd);
+  append<Set>(image,defaultValue, itBegin, itEnd);
   
   return image;
   
@@ -67,9 +67,9 @@ template<typename Image>
 template<typename Set>
 inline
 void 
-DGtal::ImageFromSet<Image>::append(Image &aImage, const Set &aSet, const Value &defaultValue,
-				   typename Set::ConstIterator itBegin, 
-				   typename Set::ConstIterator itEnd)
+DGtal::ImageFromSet<Image>::append(Image &aImage, const Value &defaultValue,
+           typename Set::ConstIterator itBegin, 
+           typename Set::ConstIterator itEnd)
 {
   // BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
  

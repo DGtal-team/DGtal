@@ -109,11 +109,11 @@ DGtal::DigitalSetDomain<TDigitalSet>
 ::isInside( const Point & p ) const
 {
   // std::cerr << "isInside: p=" << p
-  // 	    << " lower=" << myLowerBound
-  // 	    << " islower=" << p.isLower( myUpperBound )
-  // 	    << " upper=" << myUpperBound
-  // 	    << " isupper=" << p.isUpper( myLowerBound )
-  // 	    << std::endl;
+  //       << " lower=" << myLowerBound
+  //       << " islower=" << p.isLower( myUpperBound )
+  //       << " upper=" << myUpperBound
+  //       << " isupper=" << p.isUpper( myLowerBound )
+  //       << std::endl;
   return p.isLower( myUpperBound )
     && p.isUpper( myLowerBound )
     && myPredicate( p ); // mySet.find( p ) != end();
@@ -149,7 +149,7 @@ template <typename TDigitalSet>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DigitalSetDomain<TDigitalSet> & object )
+      const DigitalSetDomain<TDigitalSet> & object )
 {
   object.selfDisplay( out );
   return out;

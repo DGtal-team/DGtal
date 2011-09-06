@@ -35,7 +35,6 @@
 #include "DGtal/shapes/ShapeFactory.h"
 
 #include "DGtal/geometry/nd/estimators/Measure.h"
-#include "DGtal/geometry/CGlobalGeometricEstimator.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +48,6 @@ using namespace DGtal;
 bool testConcept()
 {
   
-  BOOST_CONCEPT_ASSERT((CGlobalGeometricEstimator< Measure< Z3i::DigitalSet> >));
   return true;
 }
 
@@ -74,7 +72,7 @@ bool testMeasure()
   Z3i::DigitalSet set(domain);
   
   Shapes<Z3i::Domain>::shaper( set,
-			       ImplicitBall<Z3i::Space>( c, 10));
+             ImplicitBall<Z3i::Space>( c, 10));
   
   Measure< Z3i::DigitalSet> measure;
 
@@ -93,7 +91,7 @@ bool testMeasure()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;

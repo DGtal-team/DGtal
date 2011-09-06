@@ -163,18 +163,19 @@ template <typename SC>
 void maximalExtension(SC& s, const typename SC::ConstIterator& end, IteratorType ) {
   //stop if s.end() == end
   while ( (s.end() != end)
-	     && (s.extend()) ) {}
+       && (s.extend()) ) {}
 }
 
 /**
  * Specialization for Circulator type
  */
 template <typename SC>
-void maximalExtension(SC& s, const typename SC::ConstIterator& end, CirculatorType ) {
+void maximalExtension(SC& s, const typename SC::ConstIterator& /*end*/, CirculatorType ) 
+{
   //stop if the segment is the whole range
   const typename SC::ConstIterator newEnd( s.begin() ); 
   while ( (s.extend())
-       && (s.end() != newEnd) ) {}
+    && (s.end() != newEnd) ) {}
 }
 /**
  * Calls s.extend() while possible
@@ -196,7 +197,7 @@ template <typename SC>
 void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, IteratorType ) {
   //extend one more time if s.begin() == begin
   while ( (s.begin() != begin)
-	     && (s.extendOppositeEnd()) ) {}
+       && (s.extendOppositeEnd()) ) {}
   if (s.begin() == begin) s.extendOppositeEnd();
 }
 
@@ -413,14 +414,14 @@ void firstMaximalSegment(SC& s,
   if ( isNotEmpty<ConstIterator>(i,end) ) {
 
     //backward extension
-	  ConstIterator it( i ); ++it; 
+    ConstIterator it( i ); ++it; 
     ConstReverseIterator rit( it );
     ConstReverseIterator rend( begin );
-	  ReverseSegmentComputer r( s.getReverse() ); 
+    ReverseSegmentComputer r( s.getReverse() ); 
     longestSegment(r, rit, rend);
 
-	  //forward extension
-	  ConstIterator it2( r.end().base() );
+    //forward extension
+    ConstIterator it2( r.end().base() );
     longestSegment(s, it2, end);
 
   }
@@ -634,7 +635,7 @@ void mostCenteredMaximalSegment(SC& s,
   const typename SC::ConstIterator& begin, 
   const typename SC::ConstIterator& end ) 
 {
- 	mostCenteredMaximalSegment<SC>(s, i, begin, end, 
+   mostCenteredMaximalSegment<SC>(s, i, begin, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
 
@@ -659,8 +660,8 @@ void lastMaximalSegment(SC& s,
   typedef typename SC::Reverse ReverseSegmentComputer; 
   typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator; 
 
-	//forward extension
-	ConstIterator j( i );
+  //forward extension
+  ConstIterator j( i );
   longestSegment(s, j, end);
 
   //backward extension
@@ -740,7 +741,7 @@ void lastMaximalSegment(SC& s,
   const typename SC::ConstIterator& begin, 
   const typename SC::ConstIterator& end ) 
 {
- 	lastMaximalSegment<SC>(s, i, begin, end, 
+   lastMaximalSegment<SC>(s, i, begin, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
 
@@ -833,7 +834,7 @@ template <typename SC>
 void nextMaximalSegment(SC& s, 
   const typename SC::ConstIterator& end ) 
 {
- 	nextMaximalSegment<SC>(s, end, 
+   nextMaximalSegment<SC>(s, end, 
 typename DGtal::SegmentComputerTraits<SC>::Category() );
 }
 

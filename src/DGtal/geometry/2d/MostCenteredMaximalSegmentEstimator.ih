@@ -222,9 +222,9 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
 
     if (it == myEnd) 
       {
-	cerr << "[DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::eval(const ConstIterator& it)]"
-	     << " ERROR. Iterator is invalid (==myEnd)." << endl;
-	return typename Functor::Value();
+  cerr << "[DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>::eval(const ConstIterator& it)]"
+       << " ERROR. Iterator is invalid (==myEnd)." << endl;
+  return typename Functor::Value();
       }
     else {
       std::vector<Quantity> v(1); 

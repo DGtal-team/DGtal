@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page DGtalKernel Introduction to DGtal Kernel 
+@page moduleSpacePointVectorDomain Digital Spaces, Points, Vectors and Domains
 @author David Coeurjolly
 @author Guillaume Damiand
 
@@ -71,11 +71,14 @@ For example, digital spaces can be defined as follows:
 {...}
 typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
 typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace64;
-typedef DGtal::SpaceND<3, mpz_class> MySpaceGMP;
+
+#ifdef WITH_BIGINTEGER
+typedef DGtal::SpaceND<3, DGtal::Integer MySpaceBigInteger;
+#endif
 @endcode
 
-In the latter example, we construct a digital space using the GMP
-arbitrary precision integers.
+In the latter example, we construct a digital space using multiprecision intergers (implemented using the  GMP
+arbitrary precision library).
 
 However, if we try:
 @code
@@ -92,7 +95,7 @@ define a DGtal space.
 
 Using the shortcuts provides in StdDefs.h, the types defined in the
 namespace  DGtal::Z2i correspond to a digital space in dimension 2
-based on unsigned int (uint32_t). Hence, we can simple define MySpace
+based on  int (int32_t). Hence, we can simple define MySpace
 as:
 
 @code
@@ -193,6 +196,7 @@ defined by the bounding box of the points a and b. Note that  type  Z2i::Domain 
 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
 @image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
+
 
 The HyperRectDomain class provides several methods such as HyperRectDomain::isInside to decide if a point is inside the domain or not.
 

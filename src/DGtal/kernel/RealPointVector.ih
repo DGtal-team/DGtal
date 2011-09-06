@@ -50,8 +50,8 @@ template<Dimension dim>
 template<typename Functor>
 inline
 DGtal::RealPointVector<dim>::RealPointVector(const Self& apoint1,
-					     const Self& apoint2,
-					     const Functor& f): 
+               const Self& apoint2,
+               const Functor& f): 
   DGtal::PointVector<dim,double>(apoint1,apoint2,f)
 {
 }
@@ -74,8 +74,8 @@ DGtal::RealPointVector<dim>::RealPointVector( const Component & x, const Compone
 template<Dimension dim>
 inline
 DGtal::RealPointVector<dim>::RealPointVector( const Component & x,
-					      const Component & y,
-					      const Component & z ): 
+                const Component & y,
+                const Component & z ): 
   DGtal::PointVector<dim,double>(x,y,z)
 {
 }
@@ -84,9 +84,9 @@ DGtal::RealPointVector<dim>::RealPointVector( const Component & x,
 template<Dimension dim>
 inline
 DGtal::RealPointVector<dim>::RealPointVector( const Component & x,
-					      const Component & y,
-					      const Component & z,
-					      const Component & t ):
+                const Component & y,
+                const Component & z,
+                const Component & t ):
   DGtal::PointVector<dim,double>(x,y,z,t)
 {
 }
@@ -153,7 +153,7 @@ template<Dimension dim>
 inline
 double
 DGtal::RealPointVector<dim>::norm (const
-				   typename Self::NormType aType ) const
+           typename Self::NormType aType ) const
 {
   double tmp = 0.0;
 
@@ -164,7 +164,7 @@ DGtal::RealPointVector<dim>::norm (const
     case L_2:
       for ( Dimension i = 0; i < dimension; i++ )
         tmp += this->at ( i ) *
-	  this->at ( i );
+    this->at ( i );
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
@@ -203,9 +203,9 @@ DGtal::RealPointVector<dim>::normInfinity() const
   for ( Dimension i = 1; i < dimension; ++i )
     {
       double tmp( ( this->myArray[ i ] >= 0 )
-		  ? this->myArray[ i ] : -this->myArray[ i ] );
+      ? this->myArray[ i ] : -this->myArray[ i ] );
       if ( tmp > val )
-	val = tmp;
+  val = tmp;
     }
   return val;
 }
@@ -239,7 +239,7 @@ DGtal::RealPointVector<dim>::selfDrawAsPaving( Board2D & board ) const
 {
   ASSERT(dim == 2);
   board.drawRectangle( (float) this->myArray[0] - 0.5f, 
- 		       (float) this->myArray[1] + 0.5f, 1, 1 );     
+            (float) this->myArray[1] + 0.5f, 1, 1 );     
 }
 //------------------------------------------------------------------------------
 template<Dimension dim>
@@ -250,7 +250,7 @@ DGtal::RealPointVector<dim>::selfDrawAsGrid( Board2D & board ) const
   ASSERT(dim == 2);
   board.setPenColor(Color::Black);
   board.fillCircle((float) this->myArray[0], 
-		   (float) this->myArray[1],0.1);
+       (float) this->myArray[1],0.1);
 }
 
 //------------------------------------------------------------------------------
@@ -258,13 +258,13 @@ template<Dimension dim>
 inline
 void
 DGtal::RealPointVector<dim>::selfDraw(Board2D & board,
-				      const Self &apoint) const
+              const Self &apoint) const
 {
   ASSERT(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-		  (float) apoint[0] + this->myArray[0], (float)apoint[1] + this->myArray[1],
-		  true);
+      (float) apoint[0] + this->myArray[0], (float)apoint[1] + this->myArray[1],
+      true);
 }
 
 
@@ -284,8 +284,8 @@ DGtal::RealPointVector<dim>::selfDrawAsPavingDisplay3D( DGtal::Display3D & displ
 {
   ASSERT(dim == 3);
   display.addVoxel(this->myArray[0],
-		  this->myArray[1],
-		   this->myArray[2], display.getFillColor());
+      this->myArray[1],
+       this->myArray[2], display.getFillColor());
 }
 //------------------------------------------------------------------------------
 template<Dimension dim>
@@ -295,8 +295,8 @@ DGtal::RealPointVector<dim>::selfDrawAsGridDisplay3D( DGtal::Display3D & display
 {
   ASSERT(dim == 3);
   display.addPoint(this->myArray[0],
-		  this->myArray[1],
-		   this->myArray[2],display.getLineColor());
+      this->myArray[1],
+       this->myArray[2],display.getLineColor());
 
 }
 
@@ -335,9 +335,9 @@ DGtal::RealPointVector<dim>::selfDrawDisplay3D( Display3D & display3d,  const Se
   ASSERT(dim == 3);
   
   display3d.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-		    (float) aPoint[0] + this->myArray[0], 
-		    (float)aPoint[1] + this->myArray[1], 
-		    (float) aPoint[2] + this->myArray[2]);
+        (float) aPoint[0] + this->myArray[0], 
+        (float)aPoint[1] + this->myArray[1], 
+        (float) aPoint[2] + this->myArray[2]);
   
 }
 
@@ -349,7 +349,7 @@ template<Dimension dim>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & out,
-		   const  RealPointVector<dim>& object )
+       const  RealPointVector<dim>& object )
 {
   object.selfDisplay( out );
   return out;

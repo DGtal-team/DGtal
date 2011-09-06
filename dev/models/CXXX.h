@@ -106,7 +106,9 @@ namespace YYY
     typedef typename T::InnerType InnerType;
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-    // 2. then check the presence of static members, operators and methods with
+    // To test if two types A and Y are equals, use
+    BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
+    // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( XXX )
     {
       // Static members of type A can be tested with

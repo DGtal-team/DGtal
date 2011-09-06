@@ -96,6 +96,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d (
     myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
     myF(other.myF), myL(other.myL) {}
 
+
 /**
  * Assignment.
  * @param other the object to copy.
@@ -106,7 +107,9 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
-    const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) {
+    const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) 
+{
+
   myXYalgo = other.myXYalgo;
   myXZalgo = other.myXZalgo; 
   myYZalgo = other.myYZalgo;
@@ -128,7 +131,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
-  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
+  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const 
+{
   return (  (	myXYalgo == other.myXYalgo ) &&
             (	myXZalgo == other.myXZalgo ) &&
             (	myYZalgo == other.myYZalgo ) &&
@@ -146,7 +150,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
-        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const {
+        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const 
+{
   return (!(*this == other));
 }
 
@@ -211,8 +216,8 @@ bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 {
   return ( (myXYalgo.isValid())&&
-              (myXZalgo.isValid())&&
-              (myYZalgo.isValid()) );
+           (myXZalgo.isValid())&&
+           (myYZalgo.isValid()) );
 }
 
 
@@ -233,8 +238,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
                                   PointD3d& thickness) const
 {
 
-	//let us take the pair of projection planes for which
-	//the common coordinate of the main vector cannot be 0
+  //let us take the pair of projection planes for which
+  //the common coordinate of the main vector cannot be 0
 
   if (myXYalgo.getB() != 0) { //XY-plane, XZ-plane
 
@@ -279,7 +284,6 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
     double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
     double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
     thickness = PointD3d(tx,0,tz);
-
 
     } else {                  
 
@@ -471,6 +475,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
     PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
                             (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
                             (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
+
 
     PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
                             (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 

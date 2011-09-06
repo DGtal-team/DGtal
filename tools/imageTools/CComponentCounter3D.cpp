@@ -69,44 +69,44 @@ void CCCounter(Rank& r, Parent& p, const Image& elements, const unsigned int con
       e !=elements.domain().end(); ++e)
     {
       if ( elements.domain().isInside(*e+decx) &&  
-	   (elements(*e) == elements(*e+decx)))
- 	dsets.union_set(*e,*e+decx);
+     (elements(*e) == elements(*e+decx)))
+   dsets.union_set(*e,*e+decx);
       
       if ( elements.domain().isInside(*e+decy) &&  
-	   (elements(*e) == elements(*e+decy)))
-	dsets.union_set(*e,*e+decy);
+     (elements(*e) == elements(*e+decy)))
+  dsets.union_set(*e,*e+decy);
       
       if ( elements.domain().isInside(*e+decz) &&  
-	   (elements(*e) == elements(*e+decz)))
-	dsets.union_set(*e,*e+decz);
+     (elements(*e) == elements(*e+decz)))
+  dsets.union_set(*e,*e+decz);
 
       if (connectivity > 6)
-	{
-	  if ( elements.domain().isInside(*e+decx+decy) &&  
-	       (elements(*e) == elements(*e+decx+decy)))
-	    dsets.union_set(*e,*e+decx+decy);
+  {
+    if ( elements.domain().isInside(*e+decx+decy) &&  
+         (elements(*e) == elements(*e+decx+decy)))
+      dsets.union_set(*e,*e+decx+decy);
       
-	  if ( elements.domain().isInside(*e+decx+decz) &&  
-	       (elements(*e) == elements(*e+decx+decz)))
-	    dsets.union_set(*e,*e+decx+decz);
-	
-	  if ( elements.domain().isInside(*e+decy+decz) &&  
-	       (elements(*e) == elements(*e+decy+decz)))
-	    dsets.union_set(*e,*e+decy+decz);
-	
-	  if (connectivity == 26)
-	    if ( elements.domain().isInside(*e+decy+decz+decx) &&  
-		 (elements(*e) == elements(*e+decy+decz+decx)))
-	      dsets.union_set(*e,*e+decy+decz+decx);
-	  
-	}
+    if ( elements.domain().isInside(*e+decx+decz) &&  
+         (elements(*e) == elements(*e+decx+decz)))
+      dsets.union_set(*e,*e+decx+decz);
+  
+    if ( elements.domain().isInside(*e+decy+decz) &&  
+         (elements(*e) == elements(*e+decy+decz)))
+      dsets.union_set(*e,*e+decy+decz);
+  
+    if (connectivity == 26)
+      if ( elements.domain().isInside(*e+decy+decz+decx) &&  
+     (elements(*e) == elements(*e+decy+decz+decx)))
+        dsets.union_set(*e,*e+decy+decz+decx);
+    
+  }
       
     }
   trace.endBlock();
   std::cout << "Number of disjoint "<<connectivity<<"-components = "
-	       <<dsets.count_sets(elements.domain().begin(),
-				  elements.domain().end())
-	       << std::endl;
+         <<dsets.count_sets(elements.domain().begin(),
+          elements.domain().end())
+         << std::endl;
 }
 
 
@@ -126,8 +126,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       std::cout << "Usage: " << argv[0] << " [input-file]\n"
-		<< "Count the number of connected component (same values) in a  volume (Vol) file image\n"
-		<< general_opt << "\n";
+    << "Count the number of connected component (same values) in a  volume (Vol) file image\n"
+    << general_opt << "\n";
       return 0;
     }
  string inputFilename = vm["input-file"].as<std::string>();

@@ -152,12 +152,12 @@ void displayList()
   trace.emphase()<<"2D Shapes:"<<std::endl;
   for(unsigned int i=0; i<shapes2D.size(); ++i)
     trace.info()<<"\t"<<shapes2D[i]<<"\t"
-		<<shapesDesc[i]<<std::endl
-		<<"\t\tRequired parameter(s): "
-		<< shapesParam1[i]<<" "
-      		<< shapesParam2[i]<<" "
-      		<< shapesParam3[i]<<" "
-      		<< shapesParam4[i]<<std::endl;
+    <<shapesDesc[i]<<std::endl
+    <<"\t\tRequired parameter(s): "
+    << shapesParam1[i]<<" "
+          << shapesParam2[i]<<" "
+          << shapesParam3[i]<<" "
+          << shapesParam4[i]<<std::endl;
   
 }
 
@@ -202,9 +202,9 @@ void missingParam(std::string param)
 
 template <typename Shape, typename Space>
 bool
-lengthEstimators( const string & name,
-			Shape & aShape, 
-			double h )
+lengthEstimators( const string & /*name*/,
+      Shape & aShape, 
+      double h )
 {
   // Types
   typedef typename Space::Point Point;
@@ -230,7 +230,7 @@ lengthEstimators( const string & name,
   if ( ! ok )
     {
       std::cerr << "[lengthEstimators]"
-		<< " error in creating KSpace." << std::endl;
+    << " error in creating KSpace." << std::endl;
       return false;
     }
   try {
@@ -300,25 +300,25 @@ lengthEstimators( const string & name,
     Tfp = c.stopClock();
 
     cout << setprecision( 15 ) << h << " " << rp.size() << " " << trueValue 
-	 << " " << l1
-	 << " " << blue
-	 << " " << rosen
-	 << " " << dss
-	 << " " << mlp	 
-	 << " " << fp
-      	 << " " << Tl1
-	 << " " << Tblue
-	 << " " << Trosen
-	 << " " << Tdss
-	 << " " << Tmlp
-	 << " " << Tfp     
-	 << endl;
+   << " " << l1
+   << " " << blue
+   << " " << rosen
+   << " " << dss
+   << " " << mlp   
+   << " " << fp
+         << " " << Tl1
+   << " " << Tblue
+   << " " << Trosen
+   << " " << Tdss
+   << " " << Tmlp
+   << " " << Tfp     
+   << endl;
     return true;
   }    
   catch ( InputException e )
     {
       std::cerr << "[lengthEstimators]"
-		<< " error in finding a bel." << std::endl;
+    << " error in finding a bel." << std::endl;
       return false;
     }
 }
@@ -352,8 +352,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Generate multigrid length estimations of paramteric shapes using DGtal library. It will output length estimations (and timings) using several algorithms for decreasing grid steps." <<std::endl << "Basic usage: "<<std::endl
-		  << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
-		  << general_opt << "\n";
+      << "\tLengthEstimators [options] --shape <shapeName>"<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -398,89 +398,89 @@ int main( int argc, char** argv )
     else
       if (id ==1)
         {
-	  if (not(vm.count("width"))) missingParam("--width");
-	  double width = vm["width"].as<double>();
-	
-	  ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
-	
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
+    if (not(vm.count("width"))) missingParam("--width");
+    double width = vm["width"].as<double>();
+  
+    ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
+  
+          trace.error()<< "Not available.";
+          trace.info()<<std::endl;
         }
       else
         if (id ==2)
-	  {
-	    if (not(vm.count("power"))) missingParam("--power");
-	    if (not(vm.count("radius"))) missingParam("--radius");
-	    double radius = vm["radius"].as<double>();
-	    double power = vm["power"].as<double>();
-	    
-	    ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
+    {
+      if (not(vm.count("power"))) missingParam("--power");
+      if (not(vm.count("radius"))) missingParam("--radius");
+      double radius = vm["radius"].as<double>();
+      double power = vm["power"].as<double>();
+      
+      ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
 
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
-	  }
+          trace.error()<< "Not available.";
+          trace.info()<<std::endl;
+    }
         else
-	  if (id ==3)
-	    {
-	      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-	      if (not(vm.count("radius"))) missingParam("--radius");
-	      if (not(vm.count("k"))) missingParam("--k");
-	      if (not(vm.count("phi"))) missingParam("--phi");
-	      double radius = vm["radius"].as<double>();
-	      double varsmallradius = vm["varsmallradius"].as<double>();
-	      unsigned int k = vm["k"].as<unsigned int>();
-	      double phi = vm["phi"].as<double>();
-	      
-	      Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
+    if (id ==3)
+      {
+        if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+        if (not(vm.count("radius"))) missingParam("--radius");
+        if (not(vm.count("k"))) missingParam("--k");
+        if (not(vm.count("phi"))) missingParam("--phi");
+        double radius = vm["radius"].as<double>();
+        double varsmallradius = vm["varsmallradius"].as<double>();
+        unsigned int k = vm["k"].as<unsigned int>();
+        double phi = vm["phi"].as<double>();
+        
+        Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
 
         lengthEstimators<Flower2D<Z2i::Space>,Z2i::Space>("flower",flower,h); 
-	    }
-	  else
-	    if (id ==4)
-	      {
-	        if (not(vm.count("radius"))) missingParam("--radius");
-	        if (not(vm.count("k"))) missingParam("--k");
-	        if (not(vm.count("phi"))) missingParam("--phi");
-	        double radius = vm["radius"].as<double>();
-	        unsigned int k = vm["k"].as<unsigned int>();
-	        double phi = vm["phi"].as<double>();
-	        
-	        NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
+      }
+    else
+      if (id ==4)
+        {
+          if (not(vm.count("radius"))) missingParam("--radius");
+          if (not(vm.count("k"))) missingParam("--k");
+          if (not(vm.count("phi"))) missingParam("--phi");
+          double radius = vm["radius"].as<double>();
+          unsigned int k = vm["k"].as<unsigned int>();
+          double phi = vm["phi"].as<double>();
+          
+          NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
 
           lengthEstimators<NGon2D<Z2i::Space>,Z2i::Space>("NGon",object,h); 
 
-	      }
-	    else
-	      if (id ==5)
-	        {
-		  if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-		  if (not(vm.count("radius"))) missingParam("--radius");
-		  if (not(vm.count("k"))) missingParam("--k");
-		  if (not(vm.count("phi"))) missingParam("--phi");
-		  double radius = vm["radius"].as<double>();
-		  double varsmallradius = vm["varsmallradius"].as<double>();
-		  unsigned int k = vm["k"].as<unsigned int>();
-		  double phi = vm["phi"].as<double>();
-	        
-		  AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
+        }
+      else
+        if (id ==5)
+          {
+      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+      if (not(vm.count("radius"))) missingParam("--radius");
+      if (not(vm.count("k"))) missingParam("--k");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double radius = vm["radius"].as<double>();
+      double varsmallradius = vm["varsmallradius"].as<double>();
+      unsigned int k = vm["k"].as<unsigned int>();
+      double phi = vm["phi"].as<double>();
+          
+      AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
           lengthEstimators<AccFlower2D<Z2i::Space>,Z2i::Space>("accFlower",flower,h); 
 
-	        } 
-	      else
-	        //if (id ==6)
-	        {
-		  if (not(vm.count("axis1"))) missingParam("--axis1");
-		  if (not(vm.count("axis2"))) missingParam("--axis2");
-		  if (not(vm.count("phi"))) missingParam("--phi");
-		  double a1 = vm["axis1"].as<double>();
-		  double a2 = vm["axis2"].as<double>();
-		  double phi = vm["phi"].as<double>();
-	        
-		  Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
+          } 
+        else
+          //if (id ==6)
+          {
+      if (not(vm.count("axis1"))) missingParam("--axis1");
+      if (not(vm.count("axis2"))) missingParam("--axis2");
+      if (not(vm.count("phi"))) missingParam("--phi");
+      double a1 = vm["axis1"].as<double>();
+      double a2 = vm["axis2"].as<double>();
+      double phi = vm["phi"].as<double>();
+          
+      Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
 
           lengthEstimators<Ellipse2D<Z2i::Space>,Z2i::Space>("Ellipse",ell,h); 
 
-	        } 
+          } 
 
     h = h * step;
   }

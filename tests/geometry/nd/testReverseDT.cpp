@@ -83,7 +83,7 @@ bool testReverseDT()
   Z2i::Point a (2, 2 );
   Z2i::Point b ( 15, 15 );
 
-  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
+  typedef ImageSelector< Z2i::Domain,  int>::Type Image;
   Image image ( a, b );
   
   for ( unsigned k = 0; k < 49; k++ )
@@ -149,7 +149,7 @@ bool testReverseDT()
   nbok += ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -229,7 +229,7 @@ bool testReverseDTL1()
   nbok += ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -293,7 +293,7 @@ bool testReverseDTL1simple()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -363,7 +363,7 @@ bool testReverseDTSet()
 
   trace.warning()<<"REDT:"<<endl;
   for(Set::ConstIterator it2 = reconstruction.begin(), 
-	itend2 = reconstruction.end();
+  itend2 = reconstruction.end();
       it2!=itend2;
       ++it2)
     trace.info() << (*it2) << " ";
@@ -374,7 +374,7 @@ bool testReverseDTSet()
   nbok += ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   
