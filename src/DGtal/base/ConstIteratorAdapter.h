@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/Circulator.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -52,12 +53,20 @@ namespace DGtal
   // template class ConstIteratorAdapter
   /**
    * Description of template class 'ConstIteratorAdapter' <p>
-   * \brief Aim: Any iterator (at least forward) can be adapted
+   * \brief Any iterator (at least forward) can be adapted
    * so that operator* returns a modified element of a given type
    * instead the element pointed to by the iterator. 
    * @tparam TIterator the type of the iterator to adapt
    * @tparam TModifier the type of the object that transforms
    * the pointed element into an element of another type
+   *
+   *NB: The dereference operator should be used to get the modified element or to access
+   * to its members. The indirection operator has been implemented for completeness sake, 
+   * but each time the operator is called, it stores the modified element into a buffer. As a 
+   * consequence, the indirection operator can be used without extra costs only if: 
+   * - one want to access to only one member of the modified element 
+   * - in a method that is not const. 
+   *
    * @see Modifier.h
    */
   template <typename TIterator, typename TModifier>
@@ -71,18 +80,20 @@ namespace DGtal
     typedef ConstIteratorAdapter<TIterator, TModifier> Self;
     typedef TIterator Iterator;
     typedef TModifier Modifier;
+  
     typedef typename TModifier::Output value_type; 
     typedef value_type* pointer;
     typedef value_type reference;
-  
     typedef typename iterator_traits<TIterator>::difference_type difference_type;
     typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
+  
+    typedef CountedPtr<value_type> BufferPtr; 
   
   // ------------------------- Protected Datas ------------------------------
   protected:
     Iterator myCurrentIt;
     Modifier myModifier; 
-    value_type myBuffer;
+    BufferPtr myBuffer;
   
   // ------------------------- Private Datas --------------------------------
   private:
@@ -90,17 +101,16 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
       /**
-       *  The default constructor default-initializes 
-       * member @a myCurrentIt and @a myModifier.
+       *  The default constructor default-initializes the members
       */
-    ConstIteratorAdapter() : myCurrentIt(), myModifier() { }
+    ConstIteratorAdapter() : myCurrentIt(), myModifier(), myBuffer() { }
 
       /**
        *  Standard constructor.
        * @param it an iterator to adapt
       */
       explicit
-    ConstIteratorAdapter(Iterator it) : myCurrentIt(it), myModifier() { }
+    ConstIteratorAdapter(Iterator it) : myCurrentIt(it) { }
     
      /**
        *  Constructor.
@@ -167,8 +177,8 @@ namespace DGtal
      *  @return  pointer to the modified element stored in @a myBuffer.
     */
     pointer operator->() {
-      myBuffer = myModifier.get(*myCurrentIt);
-      return &myBuffer; 
+      myBuffer = BufferPtr( new value_type( myModifier.get(*myCurrentIt) ) );
+      return myBuffer.operator->(); 
     }
 
     /**
