@@ -278,7 +278,8 @@ namespace DGtal
          * @return the current Freeman code (specifies the movement to the next
          * point).
          */
-        unsigned int getCode() const
+        //unsigned int getCode() const
+        char getCode() const
         {
           ASSERT( myFc != 0 );
           return myFc->code( myPos );
@@ -519,7 +520,8 @@ namespace DGtal
      *
      * Note, it is assumed that 0 <= pos < this->size()
      */
-    unsigned int code( Index pos ) const;
+    //unsigned int code( Index pos ) const;
+    char code( Index pos ) const;
 
 
     /**
@@ -788,7 +790,8 @@ namespace DGtal
      * @param aPoint the point to translate
      * @param aCode  a FreemanChain code
      */
-    static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
+    //static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
+    static void movePointFromFC(PointI2 & aPoint, char aCode );
 
 
     // Deprecated
@@ -811,9 +814,22 @@ namespace DGtal
      * @param aCode2 the code of the second step as an integer in 0..3.
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
+     * @return the type of movement given by aCode1 and aCode2.
      */
-    static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
+    //static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
+    //    bool ccw = true ); 
+    static char movement( char aCode1, char aCode2,
         bool ccw = true ); 
+
+    /**
+     * Increment (or decrement if negative) the code by 'n'. 
+     * '0' + 1 = '1', '1' + 1 = '2', ... , '3' + 1 = '0'
+     * @param code the initial code.
+     * @param n the number to add/remove to the code
+     * @return 'code' increment 'n' times.
+     */
+    static char addToCode( char code, int n);
+
 
 
     /**
@@ -823,14 +839,16 @@ namespace DGtal
      * @param dy (returns) the y-displacement.
      * @param aCode the code.
      */
-    static void displacement( int & dx, int & dy, unsigned int aCode );
+    // static void displacement( int & dx, int & dy, unsigned int aCode );
+    static void displacement( int & dx, int & dy, char aCode );
 
 
     /**
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-    static PointI2 displacement( unsigned int aCode );
+    // static PointI2 displacement( unsigned int aCode );
+    static PointI2 displacement( char aCode );
 
 
     /**
@@ -842,7 +860,8 @@ namespace DGtal
      *
      * @return the turned code.
      */
-    static unsigned int turnedCode( unsigned int aCode, bool ccw = true );
+    // static unsigned int turnedCode( unsigned int aCode, bool ccw = true );
+    static char turnedCode( char aCode, bool ccw = true );
 
 
     /**
