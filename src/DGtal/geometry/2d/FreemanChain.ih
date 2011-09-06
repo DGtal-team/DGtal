@@ -1009,10 +1009,13 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
   }
   unsigned int start_idx = it.getPosition();
   i = start_idx;
-  // JOL : 2009/07/7, added starting coordinates
+  // JOL : 2009/07/07, added starting coordinates
+  // XP  : 2011/09/06, added ending coordinates
   PointI2 P = *it;
   aCleanC.x0 = P.at(0);
   aCleanC.y0 = P.at(1);
+  aCleanC.xn = P.at(0);
+  aCleanC.yn = P.at(1);
 
   // cerr << "Starting point is " << i << endl;
   ASSERT( ( n < nb ) || ( i == 0 ) );
