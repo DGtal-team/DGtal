@@ -427,7 +427,6 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
     it.next();
   ASSERT( ( it != it_end )
       && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 2-letters Freeman chain." );
-  char code3 = it.getCode();
   // reorder a and b.
   it.previous();
   if ( it.getCode() != code2 )
@@ -487,7 +486,6 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange4( OrderedAlphabet & A ) const
     it.next();
   ASSERT( ( it != it_end )
       && "[DGtal::FreemanChain::findQuadrantChange( OrderedAlphabet & A ) const] 3-letters Freeman chain." );
-  uint8_t  code4 = it.getCode();
   // define true c.
   it.previous();
   code3 = it.getCode();
@@ -613,7 +611,7 @@ DGtal::FreemanChain<TInteger>::getPoint(Index aPos) const
   Size n = this->size();
   if ( aPos < n / 2 ) {
     it = begin();
-    for (int i=0; i<aPos; ++i) 
+    for (unsigned int i=0; i<aPos; ++i) 
       it++;
   }
   else 
@@ -621,7 +619,7 @@ DGtal::FreemanChain<TInteger>::getPoint(Index aPos) const
     it = end();
     it--;
     n = n-aPos;
-    for (int i=0; i<n; ++i) {
+    for (unsigned int i=0; i<n; ++i) {
       it--;
     }
   }
@@ -654,7 +652,7 @@ typename DGtal::FreemanChain<TInteger> &
 DGtal::FreemanChain<TInteger>::retract(Size n)
 {
   ConstIterator it = end();
-  for (int i=0; i<=n; ++i)
+  for (unsigned int i=0; i<=n; ++i)
     it--;
   xn = (*it).at(0);
   yn = (*it).at(1);
@@ -1394,7 +1392,7 @@ void
 DGtal::FreemanChain<TInteger>::computeLastPoint() 
 {
   ConstIterator it = this->begin();
-  for (int i=0; i < chain.size(); ++i)
+  for (unsigned int i=0; i < chain.size(); ++i)
     it++;
   xn = (*it).at(0);
   yn = (*it).at(1);
