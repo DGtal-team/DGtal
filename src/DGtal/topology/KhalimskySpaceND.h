@@ -487,10 +487,23 @@ namespace DGtal
     ~KhalimskySpaceND();
 
     /**
-     * Constructor.
+     * Default onstructor.
      */
     KhalimskySpaceND();
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    KhalimskySpaceND ( const KhalimskySpaceND & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other );
+    
     /**
      * Specifies the upper and lower bounds for the maximal cells in
      * this space.
@@ -1503,20 +1516,7 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    KhalimskySpaceND ( const KhalimskySpaceND & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other );
 
     // ------------------------- Internals ------------------------------------
   private:
