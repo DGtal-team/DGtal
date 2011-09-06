@@ -43,7 +43,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/base/Circulator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,9 +62,8 @@ namespace DGtal
    * NB: The dereference operator should be used to get the modified element or to access
    * to its members. The indirection operator has been implemented for completeness sake, 
    * but each time the operator is called, it stores the modified element into a buffer. As a 
-   * consequence, the indirection operator can be used without extra costs only if: 
-   * - one want to access to only one member of the modified element 
-   * - in a method that is not const. 
+   * consequence, the indirection operator can be used without extra costs only if one want 
+   * to access to only one member of the modified element. 
    *
    * @see Modifier.h
    */
@@ -83,7 +81,7 @@ namespace DGtal
   
     typedef typename TModifier::Output value_type; 
     typedef value_type* pointer;
-    typedef value_type reference;
+    typedef value_type& reference;
     typedef typename iterator_traits<TIterator>::difference_type difference_type;
     typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
   
@@ -93,7 +91,7 @@ namespace DGtal
   protected:
     Iterator myCurrentIt;
     Modifier myModifier; 
-    BufferPtr myBuffer;
+    BufferPtr myBufferPtr;
   
   // ------------------------- Private Datas --------------------------------
   private:
@@ -103,14 +101,16 @@ namespace DGtal
       /**
        *  The default constructor default-initializes the members
       */
-    ConstIteratorAdapter() : myCurrentIt(), myModifier(), myBuffer() { }
+    ConstIteratorAdapter() 
+    : myCurrentIt(), myModifier(), myBufferPtr() { }
 
       /**
        *  Standard constructor.
        * @param it an iterator to adapt
       */
       explicit
-    ConstIteratorAdapter(Iterator it) : myCurrentIt(it) { }
+    ConstIteratorAdapter(Iterator it) 
+    : myCurrentIt(it), myModifier(), myBufferPtr(new value_type()) { }
     
      /**
        *  Constructor.
@@ -119,14 +119,15 @@ namespace DGtal
        * the pointed element into an element of another type
       */
       explicit
-    ConstIteratorAdapter(Iterator it, Modifier m) : myCurrentIt(it), myModifier(m) { }
+    ConstIteratorAdapter(Iterator it, Modifier m) 
+    : myCurrentIt(it), myModifier(m), myBufferPtr(new value_type(m.get(*it))) { }
 
     /**
      *  Copy constructor.
      * @param other an iterator adapter
      */
     ConstIteratorAdapter(const ConstIteratorAdapter& other)
-    : myCurrentIt(other.myCurrentIt), myModifier(other.myModifier), myBuffer(other.myBuffer) { }
+    : myCurrentIt(other.myCurrentIt), myModifier(other.myModifier), myBufferPtr(other.myBufferPtr) { }
 
     /**
      * Assignment.
@@ -140,7 +141,7 @@ namespace DGtal
         {
           myCurrentIt = other.myCurrentIt;
           myModifier = other.myModifier;
-          myBuffer = other.myBuffer;
+          myBufferPtr = other.myBufferPtr;
         }
       return *this;
     }
@@ -169,16 +170,21 @@ namespace DGtal
     /**
      *  @return the modified element pointed be @a myCurrentIt.
     */
-    reference operator*() const { 
-      return myModifier.get(*myCurrentIt); 
+    reference operator*() const 
+    { 
+      BufferPtr aLocalBufferPtr = myBufferPtr; 
+      *aLocalBufferPtr = myModifier.get(*myCurrentIt); //hack to write in the buffer in a const method
+      return myBufferPtr.operator*(); 
     }
 
     /**
-     *  @return  pointer to the modified element stored in @a myBuffer.
+     *  @return  pointer to the modified element stored in @a myBufferPtr.
     */
-    pointer operator->() {
-      myBuffer = BufferPtr( new value_type( myModifier.get(*myCurrentIt) ) );
-      return myBuffer.operator->(); 
+    pointer operator->() const
+    {
+      BufferPtr aLocalBufferPtr = myBufferPtr; 
+      *aLocalBufferPtr = myModifier.get(*myCurrentIt); //hack to write in the buffer in a const method
+      return myBufferPtr.operator->(); 
     }
 
     /**

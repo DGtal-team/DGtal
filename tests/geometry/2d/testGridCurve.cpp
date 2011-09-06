@@ -46,6 +46,7 @@
 #include "DGtal/topology/SurfelNeighborhood.h"
 
 
+#include "DGtal/base/Circulator.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
 #include "DGtal/io/boards/Board2D.h"
@@ -202,12 +203,16 @@ bool testRange(const Range &aRange)
   trace.info() << endl;
   trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
+  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
+  std::vector<Value> v1,v2,v3,v4; 
+  
 {
   trace.info() << "Forward" << endl;
   typename Range::ConstIterator i = aRange.begin();
   typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
-    cout << *i << endl;
+    //cout << *i << endl;
+    v1.push_back(*i); 
   }
 }
 {
@@ -215,11 +220,44 @@ bool testRange(const Range &aRange)
   typename Range::ConstReverseIterator i = aRange.rbegin();
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
-    cout << *i << endl;
+    //cout << *i << endl;
+    v2.push_back(*i); 
   }
 }
- 
-  return true;
+{
+  trace.info() << "Circulator" << endl;
+  typename Range::ConstCirculator c = aRange.c();
+  typename Range::ConstCirculator cend = aRange.c();
+  if (isNotEmpty(c,cend)) 
+  {
+    do 
+    {
+      //cout << *c << endl;
+      v3.push_back(*c);
+      c++;
+    } while (c!=cend); 
+  }
+}
+
+{
+  trace.info() << "Reverse Circulator" << endl;
+  typename Range::ConstReverseCirculator c = aRange.rc();
+  typename Range::ConstReverseCirculator cend = aRange.rc();
+  if (isNotEmpty(c,cend)) 
+  {
+    do 
+    {
+      //cout << *c << endl;
+      v4.push_back(*c);
+      c++;
+    } while (c!=cend); 
+  }
+}
+
+  return ( std::equal(v1.begin(),v1.end(),v3.begin())
+          && std::equal(v2.begin(),v2.end(),v4.begin())
+          && std::equal(v1.begin(),v1.end(),v2.rbegin())
+          && std::equal(v3.begin(),v3.end(),v4.rbegin()) );
 }
 
 template <typename Range>
@@ -242,7 +280,7 @@ bool testPairsRange(const Range &aRange)
   typename Range::ConstReverseIterator i = aRange.rbegin();
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
-    cout << (*i).first << " " << (*i).second << endl;
+    cout << i->first << " " << i->second << endl;
   }
 }
  

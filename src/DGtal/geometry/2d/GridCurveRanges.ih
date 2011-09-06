@@ -49,6 +49,8 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename GridCurve::Storage::const_iterator ConstIterator;
   typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   /**
    * Default Constructor.
@@ -132,6 +134,22 @@ public:
     return myData->rend();
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( myData->begin(), myData->begin(), myData->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
+  
 };
 
 
@@ -163,6 +181,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -249,6 +270,22 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
+  
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -280,6 +317,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -366,6 +406,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -397,6 +452,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -483,6 +541,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -512,6 +585,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -598,6 +674,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -627,6 +718,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -713,6 +807,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -742,6 +851,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -828,6 +940,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -857,6 +984,9 @@ public:
 
   typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -943,6 +1073,21 @@ public:
     return ConstReverseIterator(this->begin());
   }
 
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
+
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////

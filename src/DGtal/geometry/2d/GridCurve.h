@@ -56,6 +56,7 @@
 
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/base/Modifier.h"
+#include "DGtal/base/Circulator.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
