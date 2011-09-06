@@ -125,13 +125,12 @@ bool testProjection()
     Adapter aitBegin(r.begin());
     Adapter ait = aitBegin;    
     Adapter aitEnd(r.end()); 
-/*
+
     for ( ; ait != aitEnd; ++ait) 
     {
-      trace.info() << *ait;  
+      trace.info() << *ait << "(" << ait->operator[](0) << ", " << ait->operator[](1) << ")" << endl;
     }
-    trace.info()  << endl;
-*/
+
     //comparison
     flag1 = std::equal( rtrue.begin(), rtrue.end(), aitBegin ); 
 
