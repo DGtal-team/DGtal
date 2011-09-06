@@ -125,7 +125,7 @@ bool testPublicSercives()
   int nbOk = 0;
 
   // unsigned int code( Index pos ) const;
-  bool test = ( fc.code(5) == 3 );
+  bool test = ( fc.code(5) == '3' );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 1 " << ((test) ? "passed" : "failed" ) << endl;
 
@@ -178,6 +178,17 @@ bool testPublicSercives()
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
 
+
+  // int ccwLoops() const;
+  test = ( FreemanChain("0001212323", 12, 21).ccwLoops() == 1 ) &&
+         ( FreemanChain("0003232121", 12, 21).ccwLoops() == -1 ) &&
+         ( FreemanChain("000323212", 12, 21).ccwLoops() == 0 ) &&
+         ( FreemanChain("012301230123", 12, 21).ccwLoops() == 3 );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
+
+
+
   // PointI2 getPoint ( Index pos ) const;
   it = fc.begin();
   test = true;
@@ -187,14 +198,14 @@ bool testPublicSercives()
     if (!test) break;
   }
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 10 " << ((test) ? "passed" : "failed" ) << endl;
 
   // PointI2 firstPoint ( ) const
   // PointI2 lastPoint ( ) const
   test = ( ( fc.subChain(4,3).firstPoint() == Point(3,1) ) && 
       ( fc.subChain(4,3).lastPoint() == Point(5,0) ) );
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 10 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 11 " << ((test) ? "passed" : "failed" ) << endl;
 
   // FreemanChain & extend(char code);
   // FreemanChain & retract(char code);
@@ -204,11 +215,11 @@ bool testPublicSercives()
   test = ( (fcB == fc + FreemanChain("21",0,0) ) &&  fcA.isClosed() 
           && ( fcB.retract().retract() == fc ) ); 
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 11 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 12 " << ((test) ? "passed" : "failed" ) << endl;
 
   trace.endBlock();
   
-  return ( nbOk == 11);
+  return ( nbOk == 12);
   
 }
 
@@ -317,45 +328,68 @@ bool testStaticServices()
 
   // static void movePointFromFC(PointI2 & aPoint, unsigned int aCode )
   Point P0(10,10), P1(10,10), P2(10,10), P3(10,10); 
-  FreemanChain::movePointFromFC( P0, 0); FreemanChain::movePointFromFC( P1, 1);
-  FreemanChain::movePointFromFC( P2, 2); FreemanChain::movePointFromFC( P3, 3);
+  FreemanChain::movePointFromFC( P0, '0'); FreemanChain::movePointFromFC( P1, '1');
+  FreemanChain::movePointFromFC( P2, '2'); FreemanChain::movePointFromFC( P3, '3');
   test = ( P0 == Point(11,10) ) && ( P1 == Point(10,11) ) &&
     (P2 == Point(9,10) ) && ( P3 == Point(10,9) ) ;
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 3 " << ((test) ? "passed" : "failed" ) << endl;
 
+
   //  static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
   //      bool ccw = true ); 
-  test = ( FreemanChain::movement ( 0 , 0 , 1 ) == 2 ) &&
-         ( FreemanChain::movement ( 0 , 1 , 1 ) == 1 ) &&
-         ( FreemanChain::movement ( 0 , 2 , 1 ) == 0 ) &&
-         ( FreemanChain::movement ( 0 , 3 , 1 ) == 3 ) &&
-         ( FreemanChain::movement ( 0 , 0 , 0 ) == 2 ) &&
-         ( FreemanChain::movement ( 0 , 1 , 0 ) == 3 ) &&
-         ( FreemanChain::movement ( 0 , 2 , 0 ) == 0 ) &&
-         ( FreemanChain::movement ( 0 , 3 , 0 ) == 1 );
+  test = ( FreemanChain::movement ( '0' , '0' , true ) == '2' ) &&
+         ( FreemanChain::movement ( '0' , '1' , true ) == '1' ) &&
+         ( FreemanChain::movement ( '0' , '2' , true ) == '0' ) &&
+         ( FreemanChain::movement ( '0' , '3' , true ) == '3' ) &&
+         ( FreemanChain::movement ( '0' , '0' , false ) == '2' ) &&
+         ( FreemanChain::movement ( '0' , '1' , false ) == '3' ) &&
+         ( FreemanChain::movement ( '0' , '2' , false ) == '0' ) &&
+         ( FreemanChain::movement ( '0' , '3' , false ) == '1' );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 4 " << ((test) ? "passed" : "failed" ) << endl;
+
+  // static char addToCode( char code, int n);
+  test = ( FreemanChain::addToCode( '0' , 1 ) == '1' ) &&
+         ( FreemanChain::addToCode( '1' , 1 ) == '2' ) &&
+         ( FreemanChain::addToCode( '2' , 1 ) == '3' ) &&
+         ( FreemanChain::addToCode( '3' , 1 ) == '0' ) &&
+         ( FreemanChain::addToCode( '0' , -1 ) == '3' ) &&
+         ( FreemanChain::addToCode( '1' , -1 ) == '0' ) &&
+         ( FreemanChain::addToCode( '2' , -1 ) == '1' ) &&
+         ( FreemanChain::addToCode( '3' , -1 ) == '2' ) &&
+         ( FreemanChain::addToCode( '1' , 0 ) == '1' ) &&
+         ( FreemanChain::addToCode( '1' , 2 ) == '3' ) &&
+         ( FreemanChain::addToCode( '1' , 3 ) == '0' ) &&
+         ( FreemanChain::addToCode( '1' , 4 ) == '1' ) &&
+         ( FreemanChain::addToCode( '1' , 5 ) == '2' ) &&
+         ( FreemanChain::addToCode( '1' , -2 ) == '3' ) &&
+         ( FreemanChain::addToCode( '1' , -3 ) == '2' ) &&
+         ( FreemanChain::addToCode( '1' , -4 ) == '1' ) &&
+         ( FreemanChain::addToCode( '1' , -5 ) == '0' );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 5 " << ((test) ? "passed" : "failed" ) << endl;
+
 
   // static void displacement( int & dx, int & dy, unsigned int aCode );
   // static PointI2 displacement( unsigned int aCode );
   int X[4], Y[4];
-  FreemanChain::displacement( X[0] , Y[0], 0);
-  FreemanChain::displacement( X[1] , Y[1], 1);
-  FreemanChain::displacement( X[2] , Y[2], 2);
-  FreemanChain::displacement( X[3] , Y[3], 3);
+  FreemanChain::displacement( X[0] , Y[0], '0');
+  FreemanChain::displacement( X[1] , Y[1], '1');
+  FreemanChain::displacement( X[2] , Y[2], '2');
+  FreemanChain::displacement( X[3] , Y[3], '3');
 
-  p0 = FreemanChain::displacement(  0);
-  p1 = FreemanChain::displacement(  1);
-  p2 = FreemanChain::displacement(  2);
-  p3 = FreemanChain::displacement(  3);
+  p0 = FreemanChain::displacement( '0' );
+  p1 = FreemanChain::displacement( '1' );
+  p2 = FreemanChain::displacement( '2' );
+  p3 = FreemanChain::displacement( '3' );
 
   test = (X[0] ==  1) && (Y[0] ==  0) && (p0 == Point( 1, 0)) &&
          (X[1] ==  0) && (Y[1] ==  1) && (p1 == Point( 0, 1)) &&
          (X[2] == -1) && (Y[2] ==  0) && (p2 == Point(-1, 0)) &&
          (X[3] ==  0) && (Y[3] == -1) && (p3 == Point( 0,-1)) ;
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 5 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
 
 
   // static void pointel2pixel( FreemanChain & aPixChain,
@@ -372,7 +406,7 @@ bool testStaticServices()
          ( pl2pix == pl2pixExected ) && 
          ( pix2pl == pix2plExected );
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
 
 
   //  static void innerContour( FreemanChain & aInnerChain,
@@ -390,7 +424,7 @@ bool testStaticServices()
          ( outer2inner == outer2innerExpected ) && 
          ( inner2outer == inner2outerExpected );
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
 
 
   //  static bool cleanOuterSpikes( FreemanChain & aCleanC,
@@ -407,9 +441,8 @@ bool testStaticServices()
   numVector clean2cExpected = {9,10,13,14,15,0,1,2,3,4,5,6,7,8};
   test = cleaned && (cleanC == cleanCExpected) && (c2clean == c2cleanExpected) 
     && (clean2c == clean2cExpected);
-
   nbOk += (test) ? 1 : 0;
-  trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
+  trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
 
   trace.endBlock();
   return test;
@@ -432,7 +465,10 @@ bool testDisplay()
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
-  FreemanChain fc("000001111122222333300011", 0, 0);  
+  fstream fst;
+  fst.open (testPath + "samples/contourS.fc", ios::in);
+  FreemanChain fc(fst);  
+
   aBoard.setPenColor(Color::Red);
   
   //aBoard << DrawPavingPixel();
@@ -440,19 +476,19 @@ bool testDisplay()
   aBoard << fc;
   
   std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
-  LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
-  image.shiftDepth(1);
+  LibBoard::Image image( 0, 84, 185, 85, filenameImage, 20 ); 
+  image.shiftDepth(500);
   LibBoard::Board & board = aBoard;
   board << image;
   
-  aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000);
+  aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000 );
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
   
 #ifdef WITH_CAIRO
   aBoard.saveCairo("testDisplayFC-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.png", Board2D::CairoPNG, Board::BoundingBox, 5000);
-  aBoard.saveCairo("testDisplayFC-cairo.ps", Board2D::CairoPS, Board::BoundingBox, 5000);
+  aBoard.saveCairo("testDisplayFC-cairo.ps",  Board2D::CairoPS,  Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.svg", Board2D::CairoSVG, Board::BoundingBox, 5000);
 #endif
   
