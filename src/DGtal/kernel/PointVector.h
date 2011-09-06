@@ -49,13 +49,14 @@
 #include <algorithm>
 #include <boost/array.hpp>
 
+
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicTypes.h"
+#include "DGtal/base/CRange.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CEuclideanRing.h"
+
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/CCommutativeRing.h"
-
 #include "DGtal/io/Display3D.h"
 
 
@@ -89,12 +90,24 @@ namespace DGtal
    * instance, adding two points has no meaning, but will be
    * authorized by the compiler.
    *
-   * @tparam dim static constant of type DGtal::uint32_t that
+   * @tparam dim static constant of type DGtal::Dimension that
    * specifies the static  dimension of the space and thus the number
    * of elements  of the Point or Vector.
-   * @tparam Ring speficies the ring number type used as
-   * type of PointVector elements (Coordinate for Point and Component
-   * for Vector).
+   * @tparam TEuclideanRing speficies the number type assoicated to an
+   * Euclidean domain (or Euclidean ring) algebraic structure
+   * (commutative unitary ring with no zero divisors and with a division
+   * operator but not necessarily an inverse for the multiplication
+   * operator). This type is used to represent PointVector elements
+   * (Coordinate for Point and Component for Vector) and define
+   * operations on Point or Vectors.
+   *
+   * If TEuclideanRing is a Integer type (built-in integers,
+   * BigIntegers, ...), the "/" operator on Points corresponds to
+   * component by component Euclidean division. 
+   *
+   * If TEuclideanRing is a double, the "/" operator on Points
+   * correspond to the classical division on real numbers (x*1/x = 1).
+   * 
    *
    * The default less than operator is the one of the lexicographic
    * ordering, starting from dimension 0 to N-1.
@@ -117,27 +130,29 @@ namespace DGtal
    * ...
    * @endcode
    *
+   * PointVector is a model of CRange.
+   * 
    * @see testPointVector.cpp
-
-   * @tparam dim the dimension of the space (i.e. the number of components or of coordinates)
-   * @tparam TComponent the ring used to specify the arithmetic computations (default type = int).
    *
    */
-  template < DGtal::Dimension dim, typename TComponent >
+  template < DGtal::Dimension dim, typename TEuclideanRing >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
+    
+    BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
 
-    typedef TComponent Component;
+    ///Self type
+    typedef PointVector<dim, TEuclideanRing> Self;
 
-    //Ring must be a model of the concept CRing.
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing<Component> ) );
-
-    typedef PointVector<dim, Component> Self;
+    ///Type for Vector elements
+    typedef TEuclideanRing Component;
+  
+    ///Type for Point elements
     typedef Component Coordinate;
 
-    // JOL need it in various norm().
+    ///Unsigned version of the components.
     typedef typename NumberTraits<Component>::UnsignedVersion UnsignedComponent;
     
     ///Copy of the dimension type
@@ -152,7 +167,9 @@ namespace DGtal
      **/
     typedef typename boost::array<Component, dimension>::iterator Iterator;
     typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
-    
+    typedef typename boost::array<Component, dimension>::reverse_iterator ReverseIterator;
+    typedef typename boost::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
+  
     /**
      * Constructor.
      */
@@ -209,7 +226,7 @@ namespace DGtal
      */
     template<typename Functor>
     PointVector( const Self& apoint1, const Self& apoint2,
-     const Functor& f );
+		 const Functor& f );
 
     /**
      * Destructor.
@@ -223,6 +240,14 @@ namespace DGtal
      * @param other the object to clone.
      */
     PointVector( const Self & other );
+
+    /**
+     * Copy constructor from another component PointVector.
+     * A static cast is used to cast the values during the copy.
+     * @param other the object to clone.
+     */
+    template <typename OtherComponent>
+    PointVector( const PointVector<dim,OtherComponent> & other );
 
     /**
      * Assignement Operator
@@ -244,7 +269,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopy (const Self & pv,
-           std::initializer_list<Dimension> dimensions);
+		       std::initializer_list<Dimension> dimensions);
 
     /**
      * Inverse partial copy of a given PointVector. Only coordinates not 
@@ -256,7 +281,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopyInv (const Self & pv,
-        std::initializer_list<Dimension> dimensions);
+			  std::initializer_list<Dimension> dimensions);
 #endif
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
@@ -268,7 +293,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopy (const Self & pv,
-           const std::vector<Dimension> &dimensions);
+		       const std::vector<Dimension> &dimensions);
 
     /**
      * Partial copy of a given PointVector. Only coordinates not 
@@ -280,7 +305,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self& partialCopyInv (const Self & pv,
-        const std::vector<Dimension> &dimensions);
+			  const std::vector<Dimension> &dimensions);
 
     /**
      * Partial equality.
@@ -290,7 +315,7 @@ namespace DGtal
      * @return true iff points are equal for given dimensions .
      */
     bool partialEqual ( const Self & pv,
-      const std::vector<Dimension> &dimensions )  const;
+			const std::vector<Dimension> &dimensions )  const;
 
     /**
      * Partial inverse equality.
@@ -300,7 +325,7 @@ namespace DGtal
      * @return true iff points are equal for dimensions not in dimensions.
      */
     bool partialEqualInv ( const Self & pv,
-         const std::vector<Dimension> &dimensions )  const;
+			   const std::vector<Dimension> &dimensions )  const;
     
     // ----------------------- Iterator services ------------------------------
   public:
@@ -331,6 +356,34 @@ namespace DGtal
      * @return a ConstIterator on the last element of a Point/Vector.
      **/
     ConstIterator end() const;
+
+    /**
+     * PointVector rbegin() reverse iterator.
+     *
+     * @return a ReverseIterator on the first element of a Point/Vector.
+     **/
+    ReverseIterator rbegin();
+
+    /**
+     * PointVector rend() reverse iterator.
+     *
+     * @return a ReverseIterator on the last element of a Point/Vector.
+     **/
+    ReverseIterator rend();
+
+    /**
+     * PointVector rbegin() const reverse iterator.
+     *
+     * @return an ConstReverseIterator on the first element of a Point/Vector.
+     **/
+    ConstReverseIterator rbegin() const;
+    
+    /**
+     * PointVector rend() const reverse iterator.
+     *
+     * @return a ConstReverseIterator on the last element of a Point/Vector.
+     **/
+    ConstReverseIterator rend() const;
 
     // ----------------------- Array services ------------------------------
   public:
@@ -494,6 +547,43 @@ namespace DGtal
      */
     Self operator- ( const Self & v ) const;
 
+    
+    /**
+     * Division operator with assignement.
+     *
+     * @param v is the Point that gets divided to @a *this.
+     * @return a reference on 'this'.
+     */
+    Self & operator/= ( const Self & v );
+
+    /**
+     * Division operator.
+     *
+     * @param v is the Point that gets divided to @a *this.
+     * @return the component division of *this by v.
+     */
+    Self  operator/ ( const Self & v ) const ;
+  
+    /**
+     * Divides @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get divided by.
+     * @return a reference on 'this'.
+     */
+    Self & operator/= ( const Component coeff );
+   
+    /**
+     * Assignment operator from PointVector with different component
+     * type.
+     * A static cast is used to cast the values during the copy.
+     *
+     * @param v is the Point that gets divided to @a *this.
+     * @return a reference on 'this'.
+     */
+    template<typename AnotherComponent>
+    Self & operator= ( const PointVector<dim,AnotherComponent> & v );
+  
+    
     /**
      * Resets all the values to zero.
      */
@@ -598,6 +688,16 @@ namespace DGtal
      */
     UnsignedComponent normInfinity() const;
 
+
+    /** 
+     * Compute the normalization of a given vector (*this) and return
+     * a unitary vector on double.
+     * 
+     * @return a unitary vector with double as coordiante type. 
+     */
+    PointVector<dim, double> getNormalized() const;
+    
+
     // ------------------------- Standard vectors ------------------------------
   public:
 
@@ -624,10 +724,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-  aBoard.setPenColorRGBi(160,160,160);
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-  aBoard.setFillColorRGBi(220,220,220);
-  aBoard.setLineWidth(1);
+	aBoard.setPenColorRGBi(160,160,160);
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+	aBoard.setFillColorRGBi(220,220,220);
+	aBoard.setLineWidth(1);
       }
     };
 
@@ -636,8 +736,8 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-  aBoard.setPenColor(Color::Black);
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+	aBoard.setPenColor(Color::Black);
+	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
 
@@ -770,10 +870,10 @@ namespace DGtal
 
 
   struct DrawPavingVoxel : public DrawableWithDisplay3D {
-      void selfDrawDisplay3D( Display3D & viewer ) const
-      {
-  viewer.myModes[ "PointVector" ] = "Paving";
-      }
+    void selfDrawDisplay3D( Display3D & viewer ) const
+    {
+      viewer.myModes[ "PointVector" ] = "Paving";
+    }
   };
   
   

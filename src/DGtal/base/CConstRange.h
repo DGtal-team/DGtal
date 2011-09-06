@@ -62,7 +62,7 @@ namespace DGtal
 
      - ConstIterator: the const iterator type, a model of const iterator
           concept.
-     - ReverseConstIterator: the const reverse iterator type, a model of
+     - ConstReverseIterator: the const reverse iterator type, a model of
           const iterator concept.
 
      <table>
@@ -103,16 +103,16 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ConstIterator ConstIterator;
-    typedef typename T::ReverseConstIterator ReverseConstIterator;
+    typedef typename T::ConstReverseIterator ConstReverseIterator;
 
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseConstIterator> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
 
     BOOST_CONCEPT_USAGE(CConstRange)
     {
       ConstIterator it=i.begin();
       it=i.end();
-      ReverseConstIterator it2=i.rbegin();
+      ConstReverseIterator it2=i.rbegin();
       it2=i.rend();
     };
 
