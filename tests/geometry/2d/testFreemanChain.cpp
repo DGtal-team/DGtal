@@ -315,7 +315,7 @@ bool testStaticServices()
   trace.info() << "Test 2 " << ((test) ? "passed" : "failed" ) << endl;
 
 
-  // static void movePointFromFC(PointI2 & aPoint, unsigned int aCode ){
+  // static void movePointFromFC(PointI2 & aPoint, unsigned int aCode )
   Point P0(10,10), P1(10,10), P2(10,10), P3(10,10); 
   FreemanChain::movePointFromFC( P0, 0); FreemanChain::movePointFromFC( P1, 1);
   FreemanChain::movePointFromFC( P2, 2); FreemanChain::movePointFromFC( P3, 3);
@@ -383,94 +383,61 @@ bool testStaticServices()
   FreemanChain innerChain;
   numVector outer2inner, inner2outer;
   FreemanChain::innerContour ( innerChain, outer2inner, inner2outer, f, true);
-  cout << innerChain << endl;
-  //cout << outer2inner << endl;
+  FreemanChain innerChainExpected("00132213", 0, 0);
+  numVector outer2innerExpected = {0,1,2,2,3,3,3,5,7,7,7,8};
+  numVector inner2outerExpected = {0,1,3,6,7,7,8,10};
+  test = ( innerChain == innerChainExpected ) && 
+         ( outer2inner == outer2innerExpected ) && 
+         ( inner2outer == inner2outerExpected );
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
 
 
+  //  static bool cleanOuterSpikes( FreemanChain & aCleanC,
+  //        std::vector<unsigned int> & aC2clean,
+  //        std::vector<unsigned int> & aClean2c,
+  //        const FreemanChain & c,
+  //        bool ccw = true );
+  FreemanChain c( "0000112312213233", 0, 0 );
+  numVector c2clean, clean2c;
+  FreemanChain cleanC;
+  bool cleaned = FreemanChain::cleanOuterSpikes( cleanC, c2clean, clean2c, c, true );
+  FreemanChain cleanCExpected("22233000011231", 3, 2);
+  numVector c2cleanExpected = {5,6,7,8,9,10,11,12,13,0,1,2,2,2,3,4};
+  numVector clean2cExpected = {9,10,13,14,15,0,1,2,3,4,5,6,7,8};
+  test = cleaned && (cleanC == cleanCExpected) && (c2clean == c2cleanExpected) 
+    && (clean2c == clean2cExpected);
+
+  nbOk += (test) ? 1 : 0;
+  trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
 
   trace.endBlock();
-
   return test;
 }
 
 
 
 /**
- * Example of a test. To be completed.
- */
-bool testFreemanChain(const string& code)
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 4;
-  
-  
-  trace.beginBlock ( "Testing FreemanChain " );
-  
-  std::stringstream ss;
-  ss << code << std::endl;
-  FreemanChain<int> fc(ss);  
-
-  nbok += 1;   
-  trace.info()<< "Freeman chain set to " << code << endl; 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Reading FreemanChain" << std::endl;
-  
-  
-  trace.info() << "isClosed():" << fc.isClosed()<< endl;
-  nbok += 1;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Test is Closed" << std::endl;
-  
-  
-  int minX, maxX, minY, maxY;
-  fc.computeBoundingBox(minX, minY, maxX, maxY);  
-  trace.info()<< "Freeman chain bounding box: " << minX << " " << minY << " " << maxX << " " << maxY << endl ; 
-  nbok += 1;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Test chain bounding box" << std::endl;
-  
-  
-  vector<FreemanChain<int>::PointI2> aContourPointVector; 
-  fc.getContourPoints(fc, aContourPointVector);
-  trace.info() << "List of point: ";
-  for (unsigned int i =0; i < aContourPointVector.size(); i++){
-    trace.info()<< "(" << aContourPointVector.at(i).at(0) << "," << aContourPointVector.at(i).at(1) << ")";
-  }
-  
-  trace.info()<< endl;
-  nbok+=1;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Test extracting list of contour point" << std::endl;
-      
-  trace.endBlock();
-
-  return nbok == nb;
-}
-
-
-
-
-
-
-
-/**
- * Example of a test. To be completed.
+ * testDisplay
  *
  */
-bool testDisplayFreemanChain(const string &file)
+bool testDisplay()
 {
+  typedef FreemanChain<int> FreemanChain;
+  //typedef FreemanChain::PointI2 Point;
+  //typedef FreemanChain::VectorI2 Vector;
+  //typedef FreemanChain::ConstIterator Iterator;
+  //typedef std::vector<unsigned int> numVector;
+
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
-  fstream fst;
-  fst.open (file.c_str(), ios::in);
-  FreemanChain<int> fc(fst);  
+  FreemanChain fc("000001111122222333300011", 0, 0);  
   aBoard.setPenColor(Color::Red);
   
   //aBoard << DrawPavingPixel();
   
   aBoard << fc;
-  fst.close();
   
   std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
   LibBoard::Image image(0,84, 185, 85, filenameImage, 20); 
@@ -511,7 +478,8 @@ int main( int argc, char** argv )
     testConstructors() &&  
     testPublicSercives() &&
     testIterators() &&
-    testStaticServices() ;
+    testStaticServices() &&
+    testDisplay();
 
   //res = PtestFreemanChainIterator(chain) && testFreemanChain(chain);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
