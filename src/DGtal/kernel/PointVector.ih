@@ -310,7 +310,7 @@ DGtal::PointVector<dim, TComponent>::operator= ( const DGtal::PointVector<dim,Co
 {
   for ( Dimension i = 0; i < dimension; ++i )
     {
-      this->myArray[ i ] = static_cast<Component2>(v[ i ]);
+      this->myArray[ i ] = static_cast<Component>(v[ i ]);
     }
   return *this;
 }
