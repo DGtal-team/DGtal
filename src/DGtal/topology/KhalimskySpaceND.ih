@@ -562,6 +562,31 @@ KhalimskySpaceND()
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
+DGtal::KhalimskySpaceND< dim, TInteger>::
+KhalimskySpaceND( const KhalimskySpaceND & other )
+ : myLower(other.myLower), myUpper(other.myUpper),
+   myCellLower(other.myCellLower), myCellUpper(other.myCellUpper),
+   myIsClosed(other.myIsClosed) { }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+DGtal::KhalimskySpaceND< dim, TInteger> &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+operator= ( const KhalimskySpaceND & other ) 
+{
+  if ( this != &other )
+    {
+      myLower = other.myLower;
+      myUpper = other.myUpper;
+      myCellLower = other.myCellLower;
+      myCellUpper = other.myCellUpper;
+      myIsClosed = other.myIsClosed;
+    }
+  return *this;  
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
 bool 
 DGtal::KhalimskySpaceND< dim, TInteger>::
 init( const Point & lower,

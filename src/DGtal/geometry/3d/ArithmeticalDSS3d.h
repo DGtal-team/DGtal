@@ -53,6 +53,9 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/base/ConstIteratorAdapter.h"
+#include "DGtal/base/Modifier.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -66,9 +69,7 @@ namespace DGtal
    * Description of class 'ArithmeticalDSS3d' <p>
    * \brief Aim:
    * Dynamic recognition of a 3d-digital straight segment (DSS)
-   * \todo
 
-   * @endcode
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class ArithmeticalDSS3d
@@ -93,74 +94,30 @@ namespace DGtal
 
 
     //points and vectors
-    typedef DGtal::PointVector<2,Integer> Point2d;
-    typedef DGtal::PointVector<2,Integer> Vector2d;
-    typedef DGtal::PointVector<3,Integer> Point3d;
-    typedef DGtal::PointVector<3,Integer> Vector3d;
-    typedef DGtal::PointVector<2,double> PointD2d;
-    typedef DGtal::PointVector<3,double> PointD3d;
-    typedef DGtal::PointVector<3,double> VectorD3d;  
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
+    typedef typename Point3d::Coordinate Coordinate; 
 
-
-    //////////////////////////////////////////////////////////////////////////////
+    typedef DGtal::PointVector<2,Coordinate> Point2d;
+    typedef DGtal::PointVector<2,Coordinate> Vector2d;
+    
+    typedef DGtal::RealPointVector<2> PointD2d; 
+    typedef DGtal::RealPointVector<3> PointD3d;
+    typedef DGtal::RealPointVector<3> VectorD3d;
+        
     // adapters for iterator
-    template <typename TIt>
-    class XYIteratorAdapter 
-    {
-      protected:
-        TIt myIt;
-      public:
-        //constructors
-        XYIteratorAdapter() {}
-        XYIteratorAdapter(const TIt& it):myIt(it) {}
-        //dereference operator
-        Point2d operator*() const {
-          Point3d tmp = *myIt;
-          return Point2d(tmp.at(0),tmp.at(1));
-        }
-    };
-    template <typename TIt>
-    class XZIteratorAdapter
-    {
-      protected:
-        TIt myIt;
-      public:
-        //constructors
-        XZIteratorAdapter() {}
-        XZIteratorAdapter(const TIt& it):myIt(it) {}
-        //dereference operator
-        Point2d operator*() const {
-          Point3d tmp = *myIt;
-          return Point2d(tmp.at(0),tmp.at(2));
-        }
-    };
-    template <typename TIt>
-    class YZIteratorAdapter 
-    {
-      protected:
-        TIt myIt;
-      public:
-        //constructors
-        YZIteratorAdapter() {}
-        YZIteratorAdapter(const TIt& it):myIt(it) {}
-        //dereference operator
-        Point2d operator*() const {
-          Point3d tmp = *myIt;
-          return Point2d(tmp.at(1),tmp.at(2));
-        }
-    };
-
+    typedef Point3dTo2dXY<Coordinate> XYModifier;
+    typedef Point3dTo2dXZ<Coordinate> XZModifier;
+    typedef Point3dTo2dYZ<Coordinate> YZModifier;
+    typedef ConstIteratorAdapter<ConstIterator,XYModifier> XYIteratorAdapter; 
+    typedef ConstIteratorAdapter<ConstIterator,XZModifier> XZIteratorAdapter; 
+    typedef ConstIteratorAdapter<ConstIterator,YZModifier> YZIteratorAdapter; 
+    
 
     //2d-arithmeticalDSS recognition algorithms
-    typedef DGtal::ArithmeticalDSS<XYIteratorAdapter<TIterator>,
-                                    TInteger,
-                                    connectivity> XYArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<XZIteratorAdapter<TIterator>,
-                                    TInteger,
-                                    connectivity> XZArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<YZIteratorAdapter<TIterator>,
-                                    TInteger,
-                                    connectivity> YZArithmeticalDSS;
+    typedef DGtal::ArithmeticalDSS<XYIteratorAdapter,TInteger,connectivity> XYArithmeticalDSS;
+    typedef DGtal::ArithmeticalDSS<XZIteratorAdapter,TInteger,connectivity> XZArithmeticalDSS;
+    typedef DGtal::ArithmeticalDSS<YZIteratorAdapter,TInteger,connectivity> YZArithmeticalDSS;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -174,13 +131,13 @@ namespace DGtal
 
     /**
      * Constructor with initialisation
-     * @param it an iterator on a sequence of points
+     * @param it an iterator
      */
     ArithmeticalDSS3d(const ConstIterator& it);
 
     /**
      * Initialisation.
-     * @param it an iterator on a sequence of points
+     * @param it an iterator
      */
     void init(const ConstIterator& it);
 
@@ -241,15 +198,15 @@ namespace DGtal
     // ------------------------- Accessors ------------------------------
 
     /**
-     * Computes the parameters 
-     * (direction, intercept, thickness)
-     * of the DSS
-     * @param direction
-     * @param intercept
-     * @param thickness
-     */
+      * Computes the parameters 
+      * (direction, intercept, thickness)
+      * of the DSS
+      * @param direction
+      * @param intercept
+      * @param thickness
+      */
     void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
-  
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -300,14 +257,14 @@ namespace DGtal
 
     //2d-arithmeticalDSS recognition algorithms
     XYArithmeticalDSS myXYalgo;
-    XZArithmeticalDSS myXZalgo;    
-    YZArithmeticalDSS myYZalgo;  
+    XZArithmeticalDSS myXZalgo;
+    YZArithmeticalDSS myYZalgo;
 
     //first (at the front) and last (at the back) points of the DSS
-    ConstIterator myF, myL;  
+    ConstIterator myF, myL;
 
     // ------------------------- Private Datas --------------------------------
-  
+
   private:
 
 
