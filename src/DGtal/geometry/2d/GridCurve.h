@@ -62,7 +62,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-
 namespace DGtal
 {
 
@@ -701,7 +700,7 @@ namespace DGtal
       // ------------------------- inner types --------------------------------
     public: 
 
-      typedef typename DGtal::RealPointVector<GridCurve::Point::dimension> Point; 
+      typedef typename DGtal::PointVector<GridCurve::Point::dimension, double> Point; 
 
       typedef typename GridCurve::Storage Storage; 
       typedef typename GridCurve::Storage::const_iterator ConstIteratorOn1SCells; 

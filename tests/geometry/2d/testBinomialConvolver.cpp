@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/RealPointVector.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/2d/BinomialConvolver.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -50,7 +50,7 @@ bool testBinomialConvolver()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing block ..." );
-  typedef RealPointVector<2> RealPoint;
+  typedef PointVector<2, double> RealPoint;
   std::vector< RealPoint > points;
 #ifdef CPP0X_INITIALIZER_LIST
   points.push_back( RealPoint( { 0.0, 0.0 } ) ); 
