@@ -205,6 +205,10 @@ namespace DGtal
     public:
       
      /**
+       *  Default constructor.
+      */
+    SCellToPoint() { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -275,6 +279,10 @@ namespace DGtal
     public:
       
      /**
+       *  Default constructor.
+      */
+    SCellToMidPoint() { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -340,7 +348,12 @@ namespace DGtal
     KSpace myK;   
     
     public:
-      
+     
+     /**
+       *  Default constructor.
+      */
+    SCellToArrow() { }
+    
      /**
        *  Constructor.
        * @param aK a Khalimsky space
@@ -411,6 +424,10 @@ namespace DGtal
     public:
       
      /**
+       *  Default constructor.
+      */
+    SCellToInnerPoint() { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -474,6 +491,10 @@ namespace DGtal
     
     public:
       
+     /**
+       *  Default constructor.
+      */
+    SCellToOuterPoint() { }
      /**
        *  Constructor.
        * @param aK a Khalimsky space
@@ -541,6 +562,10 @@ namespace DGtal
     
     public:
       
+     /**
+       *  Default constructor.
+      */
+    SCellToIncidentPoints() { }
      /**
        *  Constructor.
        * @param aK a Khalimsky space
@@ -611,6 +636,10 @@ namespace DGtal
     
     public:
       
+     /**
+       *  Default constructor.
+      */
+    SCellToCode() { }
      /**
        *  Constructor.
        * @param aK a Khalimsky space

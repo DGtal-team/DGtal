@@ -223,11 +223,11 @@ bool testRange(const Range &aRange)
 }
 
 template <typename Range>
-bool testArrowsRange(const Range &aRange)
+bool testPairsRange(const Range &aRange)
 {
 
   trace.info() << endl;
-  trace.info() << "Testing ArrowsRange (" << aRange.size() << " elts)" << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " pairs)" << endl;
   
 {
   trace.info() << "Forward" << endl;
@@ -296,7 +296,11 @@ int main( int argc, char** argv )
     && testRange<GridCurve::SCellsRange>(c.get1SCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
-    && testArrowsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testPairsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange())
+    && testRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange())
+    && testPairsRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange())
+    && testRange<GridCurve::CodesRange>(c.getCodesRange())
 ;
 
 //////////////////////
