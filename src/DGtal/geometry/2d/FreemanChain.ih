@@ -881,7 +881,6 @@ DGtal::FreemanChain<TInteger>::turnedCode( char aCode, bool ccw )
 
 
 template <typename TInteger>
-inline
 void DGtal::FreemanChain<TInteger>::innerContour( 
     FreemanChain & aInnerChain,
     std::vector<unsigned int> & aOuter2inner,
@@ -976,7 +975,6 @@ void DGtal::FreemanChain<TInteger>::innerContour(
 
 
 template <typename TInteger>
-inline
 bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes( 
     FreemanChain & aCleanC,
     std::vector<unsigned int> & aC2clean,
