@@ -121,17 +121,24 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::ConstIterator::previous()
 {
-  --myPos;
-  if ( myPos == myFc->chain.size() )
-    myXY = myFc->lastPoint();
-  else if ( (myPos <= myFc->chain.size()) && (myPos >= 0) ) 
+  if ( myPos == myFc->chain.size() + 1 ) 
   {
+    myXY = myFc->lastPoint();
+    --myPos;
+  } 
+  else 
+  {
+    if ( myPos >= 1 )
+    --myPos;
+    if ( myPos < myFc->chain.size() )  
+    {
       switch ( myFc->code( myPos ) ) 
       {
         case '0': (myXY.at(0))--; break;
         case '1': (myXY.at(1))--; break;
         case '2': (myXY.at(0))++; break;
         case '3': (myXY.at(1))++; break;
+      }
     }
   }
 }
@@ -673,7 +680,7 @@ inline
 void DGtal::FreemanChain<TInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << x0 << " " << y0 << " "  << chain;
-};
+}
 
 
 /**
@@ -1191,7 +1198,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
       aClean2c[ jj ] = aClean2c[ jj ] % nb;
     }
   return true;
-};
+}
 
 
 
