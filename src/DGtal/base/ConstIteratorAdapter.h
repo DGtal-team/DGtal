@@ -60,7 +60,7 @@ namespace DGtal
    * @tparam TModifier the type of the object that transforms
    * the pointed element into an element of another type
    *
-   *NB: The dereference operator should be used to get the modified element or to access
+   * NB: The dereference operator should be used to get the modified element or to access
    * to its members. The indirection operator has been implemented for completeness sake, 
    * but each time the operator is called, it stores the modified element into a buffer. As a 
    * consequence, the indirection operator can be used without extra costs only if: 
