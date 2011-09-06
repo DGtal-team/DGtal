@@ -147,17 +147,36 @@ namespace DGtal
       myX.erase( myIterator );
       myX.erase( myIterator, myIterator );
       myX.clear();
-      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
-      ConceptUtils::sameType( myConstIterator, myX.begin() );
-      ConceptUtils::sameType( myConstIterator, myX.end() );
       ConceptUtils::sameType( myIterator, myX.begin() );
       ConceptUtils::sameType( myIterator, myX.end() );
       ConceptUtils::sameType( myX, myX.operator+=( myX ) );
       ConceptUtils::sameType( myX, myX.computeComplement() );
       myX.assignFromComplement( myX );
       myX.computeBoundingBox( myPoint, myPoint );
+      checkConstConstraints();
+      checkNonConstConstraints();
       // look at CInteger.h for testing tags.
     }
+    /**
+       This method checks const methods when a non-const version exist.
+    */
+    void checkConstConstraints() const
+    {
+      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
+      ConceptUtils::sameType( myConstIterator, myX.begin() );
+      ConceptUtils::sameType( myConstIterator, myX.end() );
+    }
+
+    /**
+       This method checks non-const methods when a const version exist.
+    */
+    void checkNonConstConstraints()
+    {
+      ConceptUtils::sameType( myIterator, myX.find( myPoint ) );
+      ConceptUtils::sameType( myIterator, myX.begin() );
+      ConceptUtils::sameType( myIterator, myX.end() );
+    }
+
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // only if T is default constructible.
