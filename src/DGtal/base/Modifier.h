@@ -64,8 +64,9 @@ namespace DGtal
    * @code
   PointVector<3,int> a3dPoint; 
   PointVector<2,int> a2dPoint; 
+  Point3dTo2dXY<int> m; 
   ...
-  a2dPoint = Point3dTo2dXY<int>::get(a3dPoint); 
+  a2dPoint = m.get(a3dPoint); 
    * @endcode
    * @see ConstIteratorAdapter
    */
@@ -80,7 +81,12 @@ namespace DGtal
     
     public:
       
-    static Output get(const Input& p) 
+    /**
+     * Get a 2d point from a 3d point
+     * @param p a 3d point
+     * @return the projected 2d point.
+     */
+    Output get(const Input& p) const
     {
       Input tmp = p;
       return Output(tmp.at(0),tmp.at(1));
@@ -98,8 +104,9 @@ namespace DGtal
    * @code
   PointVector<3,int> a3dPoint; 
   PointVector<2,int> a2dPoint; 
+  Point3dTo2dXZ<int> m; 
   ...
-  a2dPoint = Point3dTo2dXZ<int>::get(a3dPoint); 
+  a2dPoint = m.get(a3dPoint); 
    * @endcode
    * @see ConstIteratorAdapter
    */
@@ -114,7 +121,12 @@ namespace DGtal
     
     public:
       
-    static Output get(const Input& p) 
+    /**
+     * Get a 2d point from a 3d point
+     * @param p a 3d point
+     * @return the projected 2d point.
+     */
+    Output get(const Input& p) const
     {
       Input tmp = p;
       return Output(tmp.at(0),tmp.at(2));
@@ -132,8 +144,9 @@ namespace DGtal
    * @code
   PointVector<3,int> a3dPoint; 
   PointVector<2,int> a2dPoint; 
+  Point3dTo2dYZ<int> m; 
   ...
-  a2dPoint = Point3dTo2dYZ<int>::get(a3dPoint); 
+  a2dPoint = m.get(a3dPoint); 
    * @endcode
    * @see ConstIteratorAdapter
    */
@@ -148,7 +161,12 @@ namespace DGtal
     
     public:
       
-    static Output get(const Input& p) 
+    /**
+     * Get a 2d point from a 3d point
+     * @param p a 3d point
+     * @return the projected 2d point.
+     */
+    Output get(const Input& p) const
     {
       Input tmp = p;
       return Output(tmp.at(1),tmp.at(2));

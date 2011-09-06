@@ -54,9 +54,10 @@ namespace DGtal
    * Description of template class 'ConstIteratorAdapter' <p>
    * \brief Aim: Any iterator (at least forward) can be adapted
    * so that operator* returns a modified element of a given type
+   * instead the element pointed to by the iterator. 
    * @tparam TIterator the type of the iterator to adapt
-   * @tparam TModifier the type of the object that transform
-   * the value type of TIterator into another type
+   * @tparam TModifier the type of the object that transforms
+   * the pointed element into an element of another type
    * @see Modifier.h
    */
   template <typename TIterator, typename TModifier>
@@ -80,6 +81,7 @@ namespace DGtal
   // ------------------------- Protected Datas ------------------------------
   protected:
     Iterator myCurrentIt;
+    Modifier myModifier; 
     value_type myBuffer;
   
   // ------------------------- Private Datas --------------------------------
@@ -88,21 +90,33 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
       /**
-       *  The default constructor default-initializes member @a myCurrentIt.
+       *  The default constructor default-initializes 
+       * member @a myCurrentIt and @a myModifier.
       */
-    ConstIteratorAdapter() : myCurrentIt() { }
+    ConstIteratorAdapter() : myCurrentIt(), myModifier() { }
 
       /**
-       *  Constructor.
+       *  Standard constructor.
+       * @param it an iterator to adapt
       */
       explicit
-    ConstIteratorAdapter(Iterator it) : myCurrentIt(it) { }
+    ConstIteratorAdapter(Iterator it) : myCurrentIt(it), myModifier() { }
+    
+     /**
+       *  Constructor.
+       * @param it an iterator to adapt
+       * @param m the modifier that transforms
+       * the pointed element into an element of another type
+      */
+      explicit
+    ConstIteratorAdapter(Iterator it, Modifier m) : myCurrentIt(it), myModifier(m) { }
 
     /**
      *  Copy constructor.
+     * @param other an iterator adapter
      */
-    ConstIteratorAdapter(const ConstIteratorAdapter& aIt)
-    : myCurrentIt(aIt.myCurrentIt), myBuffer(aIt.myBuffer) { }
+    ConstIteratorAdapter(const ConstIteratorAdapter& other)
+    : myCurrentIt(other.myCurrentIt), myModifier(other.myModifier), myBuffer(other.myBuffer) { }
 
     /**
      * Assignment.
@@ -115,6 +129,7 @@ namespace DGtal
       if ( this != &other )
         {
           myCurrentIt = other.myCurrentIt;
+          myModifier = other.myModifier;
           myBuffer = other.myBuffer;
         }
       return *this;
@@ -145,14 +160,14 @@ namespace DGtal
      *  @return the modified element pointed be @a myCurrentIt.
     */
     reference operator*() const { 
-      return Modifier::get(*myCurrentIt); 
+      return myModifier.get(*myCurrentIt); 
     }
 
     /**
      *  @return  pointer to the modified element stored in @a myBuffer.
     */
     pointer operator->() {
-      myBuffer = Modifier::get(*myCurrentIt);
+      myBuffer = myModifier.get(*myCurrentIt);
       return &myBuffer; 
     }
 
