@@ -11,9 +11,9 @@ source ${SCRIPTS_DIR}/common.sh
 
 if test \( "$#" != "3" \) -a \( "$#" != "2" \);
 then 
-    echo "usage: $0 concept_name subdir [namespace]" ;
+    echo "usage: $0 archetype_name subdir [namespace]" ;
     echo "       - creates one C++ skeleton file (.h) designed"
-    echo "         for a concept [concept_name]. Modules are expected to be in a"
+    echo "         for an archetype [archetype_name]. Modules are expected to be in a"
     echo "         directory of the form: namespace/subdir/module_name."
     echo "       - defaut namespace is ${namespace}."
     exit 1
@@ -52,9 +52,9 @@ einstitution="s@INSTITUTION@${institution}@g"
 #     institution=${INSTITUTION}
 # fi
 
-if test ! -r "${MODELS_DIR}/CXXX.h"; then
-    echo "Missing model CXXX.h in ${MODELS_DIR}."
+if test ! -r "${MODELS_DIR}/CXXXArchetype.h"; then
+    echo "Missing model CXXXArchetype.h in ${MODELS_DIR}."
     exit 2
 fi
 
-cat "${MODELS_DIR}/CXXX.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
+cat "${MODELS_DIR}/CXXXArchetype.h" | sed -e "${enspace}" -e "${esubdir}" -e "${ename}" -e "${etoday}" -e "${eauthor}" -e "${eemail}" -e "${einstitution}" > "${INCLUDE_DIR}/$2/$1.h"
