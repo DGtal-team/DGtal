@@ -58,8 +58,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
+    SCellToPoint<K3> m(theKSpace); 
     K3::SCell s = theKSpace.sPointel( K3::Point(3,3,4) );
-    K3::Point aPoint = SCellToPoint<K3>::get( theKSpace, s );
+    K3::Point aPoint = m.get( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0; 
     nb++;
@@ -68,8 +69,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToMidPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    RealPointVector<K2::dimension> aPoint = SCellToMidPoint<K2>::get( theKSpace, s );
+    RealPointVector<K2::dimension> aPoint = m.get( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == RealPointVector<K2::dimension>(0,0.5) ) ? 1 : 0; 
     nb++;
@@ -79,8 +81,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToArrow<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    std::pair<K2::Point, K2::Vector> aArrow = SCellToArrow<K2>::get( theKSpace, s );
+    std::pair<K2::Point, K2::Vector> aArrow = m.get( s );
     trace.info() << s << aArrow.first << aArrow.second <<std::endl;  
     K2::Point p(0,1); 
     K2::Vector v(0,-1); 
@@ -92,8 +95,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToInnerPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    K2::Point aPoint = SCellToInnerPoint<K2>::get( theKSpace, s );
+    K2::Point aPoint = m.get( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K2::Point(-1,0) ) ? 1 : 0; 
     nb++;
@@ -103,8 +107,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToOuterPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    K2::Point aPoint = SCellToOuterPoint<K2>::get( theKSpace, s );
+    K2::Point aPoint = m.get( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K2::Point(0,0) ) ? 1 : 0; 
     nb++;
@@ -114,8 +119,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToIncidentPoints<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    std::pair<K2::Point, K2::Point> aPair = SCellToIncidentPoints<K2>::get( theKSpace, s );
+    std::pair<K2::Point, K2::Point> aPair = m.get( s );
     trace.info() << s << aPair.first << aPair.second <<std::endl;  
     K2::Point p1(-1,0); 
     K2::Point p2(0,0); 
@@ -127,8 +133,9 @@ bool testModifier()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
+    SCellToCode<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    char aCode = SCellToCode<K2>::get( theKSpace, s );
+    char aCode = m.get( s );
     trace.info() << s << aCode <<std::endl;  
     nbok += ( aCode == '3' ) ? 1 : 0; 
     nb++;

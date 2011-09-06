@@ -183,9 +183,10 @@ namespace DGtal
    * @code 
   KSpace aKSpace;
   KSpace::SCell aSCell; 
-  KSpace::Space::Point aPoint; 
+  KSpace::Point aPoint; 
+  SCellToPoint<KSpace> m(aKSpace);
   ...
-  aPoint = SCellToPoint<KSpace>::get(aKSpace, aSCell); 
+  aPoint = m.get(aSCell); 
    * @endcode
    * @see ConstIteratorAdapter KhalimskySpaceND PointVector
    */
@@ -193,16 +194,51 @@ namespace DGtal
   class SCellToPoint
   {
     
+    private: 
+    KSpace myK; 
+    
     public: 
       
-    typedef typename KSpace::Space::Point Output;
+    typedef typename KSpace::Point Output;
     typedef typename KSpace::SCell Input;
     
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToPoint(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToPoint modifier
+     */
+    SCellToPoint(const SCellToPoint& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToPoint & operator= ( const SCellToPoint & other ) 
     {
-      return Output( k.sCoords(s) );
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+    
+    /**
+     * Get a point (with integer coordinates) from a scell (with khalimsky coordinates)
+     * @param s a scell
+     * @return the corresponding point.
+     */
+    Output get(const Input& s) const
+    {
+      return Output( myK.sCoords(s) );
     }
       
   }; // end of class SCellToPoint
@@ -218,8 +254,9 @@ namespace DGtal
   KSpace aKSpace;
   KSpace::SCell aSCell; 
   RealPointVector<typename KSpace::dimension> aPoint; 
+  SCellToMidPoint<KSpace> m(aKSpace); 
   ...
-  aPoint = SCellToMidPoint<KSpace>::get(aKSpace, aSCell); 
+  aPoint = m.get(aSCell); 
    * @endcode
    * @see ConstIteratorAdapter KhalimskySpaceND PointVector RealPointVector
    */
@@ -232,25 +269,60 @@ namespace DGtal
     typedef RealPointVector<KSpace::dimension> Output;
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToMidPoint(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToMidPoint modifier
+     */
+    SCellToMidPoint(const SCellToMidPoint& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToMidPoint & operator= ( const SCellToMidPoint & other ) 
     {
-      Output o( k.sKCoords(s) );
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+    
+    /**
+     * Get a real point (double coordinates) from a scell (khalimsky coordinates)
+     * @param s a scell
+     * @return the corresponding point.
+     */
+    Output get(const Input& s) const
+    {
+      Output o( myK.sKCoords(s) );
       o /= 2;
       return o;
     } 
       
-  }; // end of class SCellToPoint
+  }; // end of class SCellToMidPoint
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToArrow
   /**
    * Description of template class 'SCellToArrow' <p>
-   * \brief Aim: transforms a scell into an arrow, 
+   * \brief Aim: transforms a signed cell into an arrow, 
    * ie. a pair point-vector
    * @tparam KSpace, the Khalimsky space 
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   * @see SCellToPoint ConstIteratorAdapter KhalimskySpaceND PointVector
    */
   template <typename KSpace>
   class SCellToArrow
@@ -264,15 +336,51 @@ namespace DGtal
 
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToArrow(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToArrow modifier
+     */
+    SCellToArrow(const SCellToArrow& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToArrow & operator= ( const SCellToArrow & other ) 
+    {
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+      
+    /**
+     * Get an arrow, ie a pair point-vector in integer coordinates
+     * from a scell in khalimsky coordinates
+     * @param s a scell
+     * @return the corresponding point.
+     */
+    Output get(const Input& s) const
     {
       //starting point of the arrow
-      Input pointel( k.sIndirectIncident( s, *k.sDirs( s ) ) );
-      Point p( k.sCoords( pointel ) );   //integer coordinates
+      Input pointel( myK.sIndirectIncident( s, *myK.sDirs( s ) ) );
+      Point p( myK.sCoords( pointel ) );   //integer coordinates
       //displacement vector
-      Vector v( k.sKCoords( s ) - k.sKCoords( pointel ) );
+      Vector v( myK.sKCoords( s ) - myK.sKCoords( pointel ) );
       return std::make_pair<Point,Vector>(p,v);
     }
       
@@ -282,10 +390,10 @@ namespace DGtal
   // template class SCellToInnerPoint
   /**
    * Description of template class 'SCellToInnerPoint' <p>
-   * \brief Aim: transforms a scell into a point
+   * \brief Aim: transforms a signed cell into a point,
    * basically a linel into the indirect incident pixel center
    * @tparam KSpace, the 2d Khalimsky space 
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   * @see SCellToPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
    */
   template <typename KSpace>
   class SCellToInnerPoint
@@ -297,12 +405,47 @@ namespace DGtal
     typedef typename KSpace::Point Output;
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToInnerPoint(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToInnerPoint modifier
+     */
+    SCellToInnerPoint(const SCellToInnerPoint& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToInnerPoint & operator= ( const SCellToInnerPoint & other ) 
     {
-      Input pixel( k.sIndirectIncident( s, *k.sOrthDirs( s ) ) );
-      return Output( k.sCoords( pixel ) ); //integer coordinates
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+      
+    /**
+     * Get a point (integer coordinates) from a scell (khalimsky coordinates)
+     * @param s a linel
+     * @return the inner pixel center
+     */
+    Output get(const Input& s) const
+    {
+      Input pixel( myK.sIndirectIncident( s, *myK.sOrthDirs( s ) ) );
+      return Output( myK.sCoords( pixel ) ); //integer coordinates
     }
       
   }; // end of class SCellToInnerPoint
@@ -311,10 +454,10 @@ namespace DGtal
   // template class SCellToOuterPoint
   /**
    * Description of template class 'SCellToOuterPoint' <p>
-   * \brief Aim: transforms a scell into a point, 
+   * \brief Aim: transforms a sigend cell into a point, 
    * basically a linel into the direct incident pixel center
    * @tparam KSpace, the 2d Khalimsky space 
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   * @see SCellToPoint SCellToInnerPoint ConstIteratorAdapter KhalimskySpaceND PointVector
    */
   template <typename KSpace>
   class SCellToOuterPoint
@@ -326,12 +469,47 @@ namespace DGtal
     typedef typename KSpace::Point Output;
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToOuterPoint(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToOuterPoint modifier
+     */
+    SCellToOuterPoint(const SCellToOuterPoint& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToOuterPoint & operator= ( const SCellToOuterPoint & other ) 
     {
-      Input pixel( k.sDirectIncident( s, *k.sOrthDirs( s ) ) );
-      return Output( k.sCoords( pixel ) ); //integer coordinates
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+      
+    /**
+     * Get a point (integer coordinates) from a scell (khalimsky coordinates)
+     * @param s a linel
+     * @return the outer pixel center
+     */
+    Output get(const Input& s) const
+    {
+      Input pixel( myK.sDirectIncident( s, *myK.sOrthDirs( s ) ) );
+      return Output( myK.sCoords( pixel ) ); //integer coordinates
     }
       
   }; // end of class SCellToOuterPoint
@@ -340,14 +518,16 @@ namespace DGtal
   // template class SCellToIncidentPoints
   /**
    * Description of template class 'SCellToIncidentPoints' <p>
-   * \brief Aim: transforms a scell into a pair of points,  
+   * \brief Aim: transforms a linel into a pair of points,  
    * which are the centers of the two incident pixels
    * @tparam KSpace, the 2d Khalimsky space 
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
+   * @see SCellToInnerPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
    */
   template <typename KSpace>
   class SCellToIncidentPoints
   {
+    
+    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
     
     public: 
       
@@ -356,16 +536,51 @@ namespace DGtal
 
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToIncidentPoints(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToIncidentPoints modifier
+     */
+    SCellToIncidentPoints(const SCellToIncidentPoints& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToIncidentPoints & operator= ( const SCellToIncidentPoints & other ) 
+    {
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+      
+    /**
+     * Get a pair of point (integer coordinates) from a scell (khalimsky coordinates)
+     * @param s a linel
+     * @return the inner and outer pixels centers
+     */
+    Output get(const Input& s) const
     {
       //inner point
-      Input innerPixel( k.sIndirectIncident( s, *k.sOrthDirs( s ) ) );
+      Input innerPixel( myK.sIndirectIncident( s, *myK.sOrthDirs( s ) ) );
       //outer point
-      Input outerPixel( k.sDirectIncident( s, *k.sOrthDirs( s ) ) );
+      Input outerPixel( myK.sDirectIncident( s, *myK.sOrthDirs( s ) ) );
 
-      return std::make_pair<Point,Point>(k.sCoords( innerPixel ),k.sCoords( outerPixel ));
+      return std::make_pair<Point,Point>(myK.sCoords( innerPixel ),myK.sCoords( outerPixel ));
     }
       
   }; // end of class SCellToIncidentPoints
@@ -373,7 +588,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToCode
   /**
-   * Description of template class 'SCellToArrow' <p>
+   * Description of template class 'SCellToCode' <p>
    * \brief Aim: transforms a 2d scell, basically a linel, 
     * into a code (0,1,2 or 3), 
    * @tparam KSpace, the 2d Khalimsky space 
@@ -391,15 +606,50 @@ namespace DGtal
 
     typedef typename KSpace::SCell Input;
     
+    private: 
+    KSpace myK;   
+    
     public:
       
-    static Output get(const KSpace& k, const Input& s) 
+     /**
+       *  Constructor.
+       * @param aK a Khalimsky space
+      */
+    SCellToCode(KSpace aK) : myK(aK) { }
+
+    /**
+     *  Copy constructor.
+     * @param other any SCellToCode modifier
+     */
+    SCellToCode(const SCellToCode& other)
+    : myK(other.myK) { }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SCellToCode & operator= ( const SCellToCode & other ) 
+    {
+      if ( this != &other )
+      {
+        myK = other.myK; 
+      }
+      return *this;
+    }
+      
+    /**
+     * Get a code from a linel
+     * @param s a linel
+     * @return the corresponding code
+     */
+    Output get(const Input& s) const
     {
       //starting point of the arrow
-      Input pointel( k.sIndirectIncident( s, *k.sDirs( s ) ) );
-      Point p( k.sCoords( pointel ) );   //integer coordinates
+      Input pointel( myK.sIndirectIncident( s, *myK.sDirs( s ) ) );
+      Point p( myK.sCoords( pointel ) );   //integer coordinates
       //displacement vector
-      Vector v( k.sKCoords( s ) - k.sKCoords( pointel ) );
+      Vector v( myK.sKCoords( s ) - myK.sKCoords( pointel ) );
       if (v == Vector(1,0)) return '0'; 
       else if (v == Vector(0,1)) return '1';
       else if (v == Vector(-1,0)) return '2';
