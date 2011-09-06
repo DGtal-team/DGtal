@@ -92,7 +92,7 @@ bool testDigitalSetBoardSnippet()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
 
   SpecificSet mySet( domain );
 
@@ -135,7 +135,7 @@ bool testDigitalSetBoardSnippet()
 template < typename DigitalSetType >
 bool testDigitalSet( const typename DigitalSetType::Domain & domain )
 {
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
 
   typedef typename DigitalSetType::Domain Domain;
   typedef typename Domain::Point Point;
@@ -212,7 +212,7 @@ bool testDigitalSetDraw()
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
   SpecificSet disk( domain );
   Point c(  0, 0  );
 
@@ -252,7 +252,7 @@ bool testDigitalSetDomain()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
 
   SpecificSet disk( domain );
   Point c(  0, 0  );
