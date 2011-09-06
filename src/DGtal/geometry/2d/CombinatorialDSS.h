@@ -105,7 +105,7 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Vector;
 
 
-      typedef unsigned int Code;
+      typedef char Code;
       typedef int Size;
       typedef int Index;
 
