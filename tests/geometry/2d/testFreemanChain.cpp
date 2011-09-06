@@ -192,7 +192,7 @@ bool testPublicSercives()
   // PointI2 getPoint ( Index pos ) const;
   it = fc.begin();
   test = true;
-  for (int i=0; i <= fc.size(); ++i, ++it)
+  for (unsigned int i=0; i <= fc.size(); ++i, ++it)
   {
     test = ( fc.getPoint(i) == *it );
     if (!test) break;
@@ -251,7 +251,7 @@ bool testIterators()
   trace.info()<< "Iterates on points." << endl;
   std::stack<Point> myStack;
 
-  int nbPts = 0;
+  unsigned int nbPts = 0;
   for (PointIterator i = seq.begin(); i != seq.end(); ++i) 
   {
     myStack.push(*i);
@@ -400,11 +400,18 @@ bool testStaticServices()
   numVector pl2pix, pix2pl;
   FreemanChain pixChain;
   FreemanChain::pointel2pixel( pixChain, pl2pix, pix2pl, f );
-  numVector pl2pixExected = {0,1,2,2,3,3,3,5,7,7,7,8};
-  numVector pix2plExected = {0,1,3,6,7,7,8,10};
+  numVector pl2pixExpected;
+  pl2pixExpected.push_back( 0 ); pl2pixExpected.push_back( 1 ); pl2pixExpected.push_back( 2 );
+  pl2pixExpected.push_back( 2 ); pl2pixExpected.push_back( 3 ); pl2pixExpected.push_back( 3 );
+  pl2pixExpected.push_back( 3 ); pl2pixExpected.push_back( 5 ); pl2pixExpected.push_back( 7 );
+  pl2pixExpected.push_back( 7 ); pl2pixExpected.push_back( 7 ); pl2pixExpected.push_back( 8 );
+  numVector pix2plExpected;
+  pix2plExpected.push_back( 0 ); pix2plExpected.push_back( 1 ); pix2plExpected.push_back( 3 );
+  pix2plExpected.push_back( 6 ); pix2plExpected.push_back( 7 ); pix2plExpected.push_back( 7 );
+  pix2plExpected.push_back( 8 ); pix2plExpected.push_back( 10 ); 
   test = ( pixChain == FreemanChain("00132213", 0, 0) ) && 
-         ( pl2pix == pl2pixExected ) && 
-         ( pix2pl == pix2plExected );
+         ( pl2pix == pl2pixExpected ) && 
+         ( pix2pl == pix2plExpected );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
 
@@ -417,12 +424,9 @@ bool testStaticServices()
   FreemanChain innerChain;
   numVector outer2inner, inner2outer;
   FreemanChain::innerContour ( innerChain, outer2inner, inner2outer, f, true);
-  FreemanChain innerChainExpected("00132213", 0, 0);
-  numVector outer2innerExpected = {0,1,2,2,3,3,3,5,7,7,7,8};
-  numVector inner2outerExpected = {0,1,3,6,7,7,8,10};
-  test = ( innerChain == innerChainExpected ) && 
-         ( outer2inner == outer2innerExpected ) && 
-         ( inner2outer == inner2outerExpected );
+  test = ( innerChain == FreemanChain("00132213", 0, 0 ) ) && 
+         ( outer2inner == pl2pixExpected ) && 
+         ( inner2outer == pix2plExpected );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
 
@@ -437,8 +441,19 @@ bool testStaticServices()
   FreemanChain cleanC;
   bool cleaned = FreemanChain::cleanOuterSpikes( cleanC, c2clean, clean2c, c, true );
   FreemanChain cleanCExpected("22233000011231", 3, 2);
-  numVector c2cleanExpected = {5,6,7,8,9,10,11,12,13,0,1,2,2,2,3,4};
-  numVector clean2cExpected = {9,10,13,14,15,0,1,2,3,4,5,6,7,8};
+  numVector c2cleanExpected; 
+  c2cleanExpected.push_back( 5 ); c2cleanExpected.push_back( 6 ); c2cleanExpected.push_back( 7 );
+  c2cleanExpected.push_back( 8 ); c2cleanExpected.push_back( 9 ); c2cleanExpected.push_back(10 );
+  c2cleanExpected.push_back(11 ); c2cleanExpected.push_back(12 ); c2cleanExpected.push_back(13 );
+  c2cleanExpected.push_back( 0 ); c2cleanExpected.push_back( 1 ); c2cleanExpected.push_back( 2 );
+  c2cleanExpected.push_back( 2 ); c2cleanExpected.push_back( 2 ); c2cleanExpected.push_back( 3 );
+  c2cleanExpected.push_back( 4 );
+  numVector clean2cExpected;
+  clean2cExpected.push_back( 9 ); clean2cExpected.push_back(10 ); clean2cExpected.push_back(13 ); 
+  clean2cExpected.push_back(14 ); clean2cExpected.push_back(15 ); clean2cExpected.push_back( 0 ); 
+  clean2cExpected.push_back( 1 ); clean2cExpected.push_back( 2 ); clean2cExpected.push_back( 3 ); 
+  clean2cExpected.push_back( 4 ); clean2cExpected.push_back( 5 ); clean2cExpected.push_back( 6 ); 
+  clean2cExpected.push_back( 7 ); clean2cExpected.push_back( 8 );
   test = cleaned && (cleanC == cleanCExpected) && (c2clean == c2cleanExpected) 
     && (clean2c == clean2cExpected);
   nbOk += (test) ? 1 : 0;
@@ -466,7 +481,7 @@ bool testDisplay()
   aBoard.setUnit(Board::UCentimeter);
   
   fstream fst;
-  fst.open (testPath + "samples/contourS.fc", ios::in);
+  fst.open ((testPath + "samples/contourS.fc").c_str() , ios::in);
   FreemanChain fc(fst);  
 
   aBoard.setPenColor(Color::Red);
