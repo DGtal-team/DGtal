@@ -52,9 +52,9 @@ DGtal::Color::Color( const unsigned int rgb, unsigned char aAlphaValue )
 
 Color &
 DGtal::Color::setRGBf( float aRedValue,
-		       float aGreenValue,
-		       float aBlueValue,
-		       float aAlphaValue  ) {
+           float aGreenValue,
+           float aBlueValue,
+           float aAlphaValue  ) {
   if ( aRedValue > 1.0f ) aRedValue = 1.0f;
   if ( aRedValue < 0.0f ) aRedValue = 0.0f;
   myRed = static_cast<unsigned char>( 255 * aRedValue );
@@ -100,9 +100,9 @@ DGtal::Color::operator<( const Color & aColor ) const
       return true;
     if ( myGreen == aColor.myGreen ) { 
       if ( myBlue < aColor.myBlue )
-	return true;
+  return true;
       if ( myBlue == aColor.myBlue )
-	return myAlpha < aColor.myAlpha;
+  return myAlpha < aColor.myAlpha;
     }
   }
   return false;
@@ -113,8 +113,8 @@ void
 DGtal::Color::flushPostscript( std::ostream & stream ) const
 {
   stream << ((double)myRed/255.0) << " "
-	 << ((double)myGreen/255.0) << " "
-	 << ((double)myBlue/255.0) << " srgb\n";
+   << ((double)myGreen/255.0) << " "
+   << ((double)myBlue/255.0) << " srgb\n";
 }
 
 string

@@ -58,15 +58,15 @@ namespace DGtal
 
   // ----------------------- Related enumerations -----------------------------
   enum ColorGradientPreset { CMAP_CUSTOM = 0,
-			     CMAP_GRAYSCALE,
-			     CMAP_SPRING,
-			     CMAP_SUMMER,
-			     CMAP_AUTUMN,
-			     CMAP_WINTER,
-			     CMAP_COOL,
-			     CMAP_COPPER,
-			     CMAP_HOT,
-			     CMAP_JET };
+           CMAP_GRAYSCALE,
+           CMAP_SPRING,
+           CMAP_SUMMER,
+           CMAP_AUTUMN,
+           CMAP_WINTER,
+           CMAP_COOL,
+           CMAP_COPPER,
+           CMAP_HOT,
+           CMAP_JET };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class GradientColorMap
@@ -135,22 +135,22 @@ namespace DGtal
      * @param lastColor  The "right" color of the gradient if preset is CMAP_CUSTOM.
      */
     GradientColorMap( const PValue & min,
-		      const PValue & max,
-		      const ColorGradientPreset preset
-		      = static_cast<ColorGradientPreset>( PDefaultPreset ),
-		      const Color firstColor
-		      = 
-		      ( PDefaultFirstColor == -1 ) ? Color::None :
-		      Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
-				    DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
-				    DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
-		      const Color lastColor
-		      = 
-		      ( PDefaultFirstColor == -1 ) ? Color::None :
-		      Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
-				    DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
-				    DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
-		      );
+          const PValue & max,
+          const ColorGradientPreset preset
+          = static_cast<ColorGradientPreset>( PDefaultPreset ),
+          const Color firstColor
+          = 
+          ( PDefaultFirstColor == -1 ) ? Color::None :
+          Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
+            DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
+            DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
+          const Color lastColor
+          = 
+          ( PDefaultFirstColor == -1 ) ? Color::None :
+          Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
+            DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
+            DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
+          );
     
     /** 
      * Computes the color associated with a value in a given range.
@@ -234,9 +234,9 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static Color getColor( const std::vector<Color> & colors,
-				     const PValue & min,
-				     const PValue & max,
-				     const PValue & value );
+             const PValue & min,
+             const PValue & max,
+             const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -247,9 +247,9 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;           /**< The lower bound of the value range.  */
-    std::vector<Color> myColors;	/**< The gradients boundary colors. */
+    std::vector<Color> myColors;  /**< The gradients boundary colors. */
     
     /**
      * Constructor.
@@ -270,9 +270,9 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename PValue,
-	  int PDefaultPreset,
-	  int PDefaultFirstColor,
-	  int PDefaultLastColor >
+    int PDefaultPreset,
+    int PDefaultFirstColor,
+    int PDefaultLastColor >
   std::ostream&
   operator<< ( std::ostream & out, const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object );
   

@@ -82,10 +82,10 @@ namespace DGtal
      */
     template<typename Image, typename ForegroundPredicate>
     static
-    void append(Set &aSet, const Image &aImage, 
-		const ForegroundPredicate &isForeground,
-		typename Image::Domain::ConstIterator itBegin, 
-		typename Image::Domain::ConstIterator itEnd);
+    void append(Set &aSet, 
+    const ForegroundPredicate &isForeground,
+    typename Image::Domain::ConstIterator itBegin, 
+    typename Image::Domain::ConstIterator itEnd);
   
     /** 
      * Append an Image value set  to an existing Set (maybe empty).
@@ -94,7 +94,6 @@ namespace DGtal
      * of values in ]minVal,maxVal].
      *
      * @param aSet the set (maybe empty) to which points are added.
-     * @param aImage image to convert to a Set.
      * @param minVal minimum value of the thresholding
      * @param maxVal maximum value of the thresholding
      * @param itBegin starting point in the input image Domain.
@@ -103,15 +102,15 @@ namespace DGtal
      */
     template<typename Image>
     static
-    void append(Set &aSet, const Image &aImage, 
-		const typename Image::Value minVal,
-		const typename Image::Value maxVal,
-		typename Image::Domain::ConstIterator itBegin, 
-		typename Image::Domain::ConstIterator itEnd)
+    void append(Set &aSet, const Image &aImage,
+    const typename Image::Value minVal,
+    const typename Image::Value maxVal,
+    typename Image::Domain::ConstIterator itBegin, 
+    typename Image::Domain::ConstIterator itEnd)
     {
       SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
-      append(aSet, aImage, isForeground,itBegin,itEnd);
+      append(aSet, isForeground,itBegin,itEnd);
     }
 
     /** 
@@ -130,7 +129,7 @@ namespace DGtal
     {
       typename Image::Domain domain=aImage.domain();
 
-      append(aSet,aImage,isForeground,domain.begin(),domain.end());
+      append<Image,ForegroundPredicate>(aSet,isForeground,domain.begin(),domain.end());
     }
 
     /** 
@@ -149,8 +148,8 @@ namespace DGtal
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage, 
-		const typename Image::Value minVal,
-		const typename Image::Value maxVal)
+    const typename Image::Value minVal,
+    const typename Image::Value maxVal)
     {
       SimpleForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);

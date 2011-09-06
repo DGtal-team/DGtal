@@ -57,7 +57,7 @@ namespace DGtal
    * Description of template class 'RosenProffittLocalLengthEstimator' <p>
    * \brief Aim: Rosen-Proffitt Length Estimator.
    *
-   * @note 	T. J. Ellis and D. Proffitt and D. Rosen and W. Rutkowski
+   * @note   T. J. Ellis and D. Proffitt and D. Rosen and W. Rutkowski
    * Measurement of the lengths of digitized curved lines
    * Computer Graphics and Image Processing, Vol. 10, pp. 333-347, August 1979
    * 
@@ -82,7 +82,7 @@ namespace DGtal
      */
     RosenProffittLocalLengthEstimator():
       TwoStepLocalLengthEstimator<TConstIterator>(M_PI*(sqrt(2)+1)/8,
-						  M_PI*(sqrt(2)+2)/16)
+              M_PI*(sqrt(2)+2)/16)
     {}
     
     
@@ -98,9 +98,9 @@ namespace DGtal
     {
       out << "[RosenProffittLocalLengthEstimator]";
       if (this->myIsInitBefore) 
-	out <<" myH="<< this->myH;
+  out <<" myH="<< this->myH;
       else
-	out<< " not initialized";
+  out<< " not initialized";
   }
 
     

@@ -26,8 +26,8 @@ namespace LibBoard {
  */
 struct Point {
 
-  double x;			/**< The point's first coordinate */
-  double y;			/**< The point's second coordinate */
+  double x;      /**< The point's first coordinate */
+  double y;      /**< The point's second coordinate */
 
   /** 
    * Point constructor.

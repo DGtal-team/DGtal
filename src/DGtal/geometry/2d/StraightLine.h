@@ -60,7 +60,7 @@ namespace DGtal
   /**
    * Description of template class 'StraightLine' <p>
    * \brief Aim: Represents a StraightLine uniquely
-	 * defined by two 2D points and that is able
+   * defined by two 2D points and that is able
    * to return for each 2D point of the domain
    * its signed distance to itself 
    *
@@ -71,20 +71,20 @@ namespace DGtal
   {
 
     // ----------------------- associated types ------------------------------
-	public:
+  public:
 
-		//2D point and 2D vector
-	  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-		typedef TInteger Coordinate;
-		typedef DGtal::PointVector<2,Coordinate> Point;
-		typedef DGtal::PointVector<2,Coordinate> Vector;
+    //2D point and 2D vector
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    typedef TInteger Coordinate;
+    typedef DGtal::PointVector<2,Coordinate> Point;
+    typedef DGtal::PointVector<2,Coordinate> Vector;
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor.
-		 * @param firstPoint, secondPoint two points
+     * @param firstPoint, secondPoint two points
      * that uniquely define the StraightLine
      */
     StraightLine(const Point& aFirstPoint, const Point& aSecondPoint);
@@ -149,7 +149,7 @@ namespace DGtal
      */
     void selfDraw( LibBoard::Board & board ) const
       {
-				selfDraw<selfDrawStyle>(board);
+        selfDraw<selfDrawStyle>(board);
       }
 
 private:
@@ -164,7 +164,7 @@ private:
     {
       selfDrawStyle(LibBoard::Board & aBoard) 
       {
-	aBoard.setPenColor(Color::Red);
+  aBoard.setPenColor(Color::Red);
       }
     };
 
@@ -172,8 +172,8 @@ private:
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-		//the two points that uniquely define the StraightLine
-		Point myP, myQ;
+    //the two points that uniquely define the StraightLine
+    Point myP, myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -191,15 +191,15 @@ private:
   }; // end of class StraightLine
 
 
-	template <typename TInteger>
-	inline
-	std::ostream&
-	operator<< ( std::ostream & out, 
-				const StraightLine<TInteger> & object )
-	{
-		object.selfDisplay( out );
-		return out;
-	}
+  template <typename TInteger>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, 
+        const StraightLine<TInteger> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
 
 } // namespace DGtal

@@ -36,7 +36,7 @@ Point
 Path::center() const {
   Rect bbox = boundingBox();
   return Point( bbox.left + bbox.width/2.0, 
-		bbox.top  - bbox.height/2.0 );
+    bbox.top  - bbox.height/2.0 );
 }
 
 Path &
@@ -152,7 +152,7 @@ Path::scaleAll( double s )
 
 void
 Path::flushPostscript( std::ostream & stream,
-		       const TransformEPS & transform ) const
+           const TransformEPS & transform ) const
 {
   if ( _points.empty() )
     return;
@@ -171,7 +171,7 @@ Path::flushPostscript( std::ostream & stream,
 
 void
 Path::flushFIG( std::ostream & stream,
-		const TransformFIG & transform ) const
+    const TransformFIG & transform ) const
 {
   if ( _points.empty() )
     return;
@@ -180,18 +180,18 @@ Path::flushFIG( std::ostream & stream,
   std::vector<Point>::const_iterator end = _points.end();
   while ( i != end ) {
     stream << " " << static_cast<int>( transform.mapX( i->x ) )
-	   << " " << static_cast<int>( transform.mapY( i->y ) );
+     << " " << static_cast<int>( transform.mapY( i->y ) );
     ++i;
   }
   if ( _closed ) { 
     stream << " " << static_cast<int>( transform.mapX( _points.begin()->x ) )
-	   << " " << static_cast<int>( transform.mapY( _points.begin()->y ) );
+     << " " << static_cast<int>( transform.mapY( _points.begin()->y ) );
   }  
 }
 
 void
 Path::flushSVGCommands( std::ostream & stream,
-			const TransformSVG & transform ) const
+      const TransformSVG & transform ) const
 {
   if ( _points.empty() )
     return;
@@ -213,7 +213,7 @@ Path::flushSVGCommands( std::ostream & stream,
 
 void
 Path::flushSVGPoints( std::ostream & stream,
-		      const TransformSVG & transform ) const
+          const TransformSVG & transform ) const
 {
   if ( _points.empty() )
     return;
@@ -233,7 +233,7 @@ Path::flushSVGPoints( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Path::flushCairoPoints( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
   if ( _points.empty() )
     return;

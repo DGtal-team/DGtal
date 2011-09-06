@@ -89,7 +89,7 @@ template <typename PointInputIterator>
 inline
 DGtal::Expander<TObject>
 ::Expander( const Object & object,
-	    PointInputIterator b, PointInputIterator e )
+      PointInputIterator b, PointInputIterator e )
   : myEmbeddingDomain( object.pointSet().domain() ),
     myObject( object ),
     myObjectDomain( object.pointSet() ),
@@ -188,30 +188,31 @@ DGtal::Expander<TObject>
   VectorInserter vinserter( v );
   
   // const ObjectDomainPredicate & objectPred = myObjectDomain.predicate();
+  typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
   typedef BinaryPointPredicate< ObjectDomainPredicate, 
     NotInCoreDomainPredicate > CombinedPredicate;
 
   CombinedPredicate cPred( myObjectDomain.predicate(), 
-			   myNotInCorePred,
-			   andBF2 );
+                           myNotInCorePred,
+                           andBF2 );
   // Computes the 1-neighborhood of the core.
   for ( ; p != pEnd; ++p )
     {
       myObjectAdjacency.writeProperNeighborhood
-	( *p, inserter, cPred );
+        ( *p, inserter, cPred );
       // std::cerr << *p;
       // for ( unsigned int i = 0; i < v.size(); ++i )
-      // 	{
-      // 	  std::cerr << " " << v[ i ];
-      // 	  newLayer.insert( v[ i ] );
-      // 	}
+      //   {
+      //     std::cerr << " " << v[ i ];
+      //     newLayer.insert( v[ i ] );
+      //   }
       // std::cerr << std::endl;
       // v.clear();
     }
   // std::cerr << "Core.size=" << myCore.size() 
-  // 	    << " prevLayer.size=" << src.size()
-  // 	    << " nextLayer.size=" << newLayer.size()
-  // 	    << std::endl;
+  //       << " prevLayer.size=" << src.size()
+  //       << " nextLayer.size=" << newLayer.size()
+  //       << std::endl;
   // Termination test.
   if ( newLayer.empty() )
     myFinished = true;
@@ -312,7 +313,7 @@ template <typename TObject>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Expander<TObject> & object )
+      const Expander<TObject> & object )
 {
   object.selfDisplay( out );
   return out;

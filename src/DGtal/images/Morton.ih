@@ -129,7 +129,7 @@ namespace DGtal
           coordinates[i] = 0;
           for ( std::size_t bitPos = 0; bitPos < ( sizeof ( HashKey ) <<3 ) /dimension; ++bitPos )
             {
-	      if ( akey & Bits::mask<HashKey> ( bitPos*dimension+i ) )
+        if ( akey & Bits::mask<HashKey> ( bitPos*dimension+i ) )
                 {
                   coordinates[i] |= Bits::mask<HashKey> ( bitPos );
                 }
@@ -137,4 +137,4 @@ namespace DGtal
         }
     }
 
-};
+}

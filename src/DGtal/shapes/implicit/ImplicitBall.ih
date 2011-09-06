@@ -83,7 +83,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ImplicitBall<T> & object )
+      const ImplicitBall<T> & object )
 {
   object.selfDisplay( out );
   return out;

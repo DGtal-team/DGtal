@@ -51,7 +51,7 @@ using namespace DGtal;
   nbok += ( x ) ? 1 : 0; \
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
-	       << #x << std::endl;
+         << #x << std::endl;
 
 #define INBLOCK_TEST2(x,y) \
   nbok += ( x ) ? 1 : 0; \
@@ -112,23 +112,23 @@ bool testExpander()
   ostringstream sstr;
   sstr << "Creating 3D ball( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainConstIterator it = domain.range().begin(); 
-	it != domain.range().end();
-	++it )
+  for ( DomainConstIterator it = domain.begin(); 
+  it != domain.end();
+  ++it )
     {
       if ( (*it - c ).norm() < radius )
-	// insertNew is very important for vector container.
-	ball_set.insertNew( *it );
+  // insertNew is very important for vector container.
+  ball_set.insertNew( *it );
     }
   trace.endBlock();
 
   trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
   ObjectType ball( dt6_18, ball_set );
   ObjectType ball2( ball );
-	INBLOCK_TEST( ball.size() == 4139 );
+  INBLOCK_TEST( ball.size() == 4139 );
   trace.info() << "ball.size() = " << ball.size() 
-	       << " 4/3*pi*r^3 = " << ( 4.0*M_PI*radius*radius*radius/3.0 )
-	       << endl;
+         << " 4/3*pi*r^3 = " << ( 4.0*M_PI*radius*radius*radius/3.0 )
+         << endl;
   trace.info() << "ball  = " << ball << endl;
   trace.info() << "ball2 = " << ball2 << endl;
   trace.endBlock();
@@ -138,8 +138,8 @@ bool testExpander()
   INBLOCK_TEST( sphere.size() == 1434 );
   trace.info() << sphere << endl;
   trace.info() << "sphere.size() = " << sphere.size()
-	       << " 4*pi*r^2 = " << ( 4.0*M_PI*radius*radius )
-	       << endl;
+         << " 4*pi*r^2 = " << ( 4.0*M_PI*radius*radius )
+         << endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing expansion by layers in the ball from center..." );
@@ -152,8 +152,8 @@ bool testExpander()
   nbok += expander.distance() <= sqrt(3.0)*radius ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "expander.distance() = " << expander.distance()
-	       << " <= " << sqrt(3.0)*radius << std::endl;
+         << "expander.distance() = " << expander.distance()
+         << " <= " << sqrt(3.0)*radius << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing expansion by layers on the sphere from a point ..." );
@@ -166,8 +166,8 @@ bool testExpander()
   nbok += expander2.distance() <= sqrt(2.0)*M_PI*radius ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "expander2.distance() = " << expander2.distance()
-	       << " <= " << sqrt(2.0)*M_PI*radius << std::endl;
+         << "expander2.distance() = " << expander2.distance()
+         << " <= " << sqrt(2.0)*M_PI*radius << std::endl;
   trace.endBlock();
 
   

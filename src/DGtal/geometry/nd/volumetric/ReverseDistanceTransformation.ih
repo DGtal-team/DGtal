@@ -45,7 +45,7 @@
 template <typename I, DGtal::uint32_t p, typename IntShort>
 inline
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::ReverseDistanceTransformation(const IntShort defaultForeground, 
-										    const IntShort defaultBackground):
+                        const IntShort defaultBackground):
   myForegroundValue(defaultForeground),
   myBackgroundValue(defaultBackground)
 {
@@ -113,18 +113,18 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(Set &a
   bool isSwap = reconstructionInternal(aImage,output,swap);
   
   for(typename I::Domain::ConstIterator it=domain.begin(),
-	itend = domain.end();
+  itend = domain.end();
       it != itend;
       ++it)
     if (isSwap)
       {
-	if ( output(*it)  > 0)
-	  aSet.insertNew((*it) + myDisplacementVector);
+  if ( output(*it)  > 0)
+    aSet.insertNew((*it) + myDisplacementVector);
       }
     else
       {
-	if ( swap(*it)  > 0)
-	  aSet.insertNew((*it)  + myDisplacementVector);
+  if ( swap(*it)  > 0)
+    aSet.insertNew((*it)  + myDisplacementVector);
       }
 }
 
@@ -149,9 +149,9 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(con
   for ( Dimension dim = 0; dim < I::dimension ; dim++ )
     {
       if ( isSwap )
-	computeSteps ( output, swap, dim );
+  computeSteps ( output, swap, dim );
       else
-	computeSteps ( swap, output, dim );
+  computeSteps ( swap, output, dim );
 
       isSwap = !isSwap;
     }
@@ -171,7 +171,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::castValues(const I &input)
   OutputImage output(myLowerBoundCopy, myUpperBoundCopy);
   typename OutputImage::Iterator ito = output.begin();
   for(typename I::ConstIterator it=input.begin(),
-	itend = input.end();
+  itend = input.end();
       it != itend;
       ++it,++ito)
     if ( input(it)  > 0)
@@ -187,8 +187,8 @@ template <typename I, DGtal::uint32_t p, typename IntShort>
 inline
 void
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & input, 
-								     I &output,
-								     const Dimension dim) const
+                     I &output,
+                     const Dimension dim) const
 {
   std::string title = "RDT dimension " +  boost::lexical_cast<string>( dim ); ;
   trace.beginBlock ( title );
@@ -217,7 +217,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
   
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
-	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
+   itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
     {
       computeSteps1D ( input, output, (*it), dim, s, t );
     }
@@ -234,11 +234,11 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps ( const I & i
 template <typename I, DGtal::uint32_t p, typename IntShort>
 void
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I & input,
-								       I & output,
-								       const Point &startingPoint,
-								       const Size dim,
-								       Integer s[],
-								       Integer t[] ) const
+                       I & output,
+                       const Point &startingPoint,
+                       const Size dim,
+                       Integer s[],
+                       Integer t[] ) const
 {
   Coordinate w;
   Coordinate q = 0;
@@ -251,15 +251,15 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
   //init of the stack structure
   pU[dim] = myLowerBoundCopy[dim];
   while ((pU[dim] <= myUpperBoundCopy[dim]) 
-	 && (input ( pU ) == 0))
+   && (input ( pU ) == 0))
     pU[dim] ++;
 
   if ( pU[dim] > myUpperBoundCopy[dim] )
     {
       for(typename I::SpanIterator it= output.spanBegin(startingPoint,dim),
-	    itend=output.spanEnd(startingPoint,dim); 
-	  it != itend; ++it)
-	output.setValue(it, 0);
+      itend=output.spanEnd(startingPoint,dim); 
+    it != itend; ++it)
+  output.setValue(it, 0);
       return;
     }
   
@@ -274,44 +274,44 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
     {
       pU[ dim ] = u;
       if ( input( pU ) == 0 )
-	{
-	  //trace.info() << "Ctd " << pU ;
-	  continue;
-	}
+  {
+    //trace.info() << "Ctd " << pU ;
+    continue;
+  }
     
       while ( ( q >= 0 ) &&
-	      ( myMetric.reversedF ( t[q], s[q], input ( sQ ) ) <
-		myMetric.reversedF ( t[q], u, input ( pU ) ) ) )
-	{
-	  q--;
-	  ///@todo optimize the test here
-	  if (q>=0)
-	    sQ[dim] = s[q];
-	}
+        ( myMetric.reversedF ( t[q], s[q], input ( sQ ) ) <
+    myMetric.reversedF ( t[q], u, input ( pU ) ) ) )
+  {
+    q--;
+    ///@todo optimize the test here
+    if (q>=0)
+      sQ[dim] = s[q];
+  }
 
       if ( q < 0 )
-	{
-	  q = 0;
-	  s[0] = u;
-	  t[0] = myLowerBoundCopy[dim];
-	  sQ[dim] = u;
-	}
+  {
+    q = 0;
+    s[0] = u;
+    t[0] = myLowerBoundCopy[dim];
+    sQ[dim] = u;
+  }
       else
-	{
-	  sQ[dim] = s[q];
-	  w = 1 + myMetric.reversedSep ( s[q],
-					 input ( sQ ),
-					 u,
-					 input ( pU ) );
+  {
+    sQ[dim] = s[q];
+    w = 1 + myMetric.reversedSep ( s[q],
+           input ( sQ ),
+           u,
+           input ( pU ) );
 
-	  if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
-	    {
-	      q++;
-	      s[q] = u;
-	      sQ[dim] = u;
-	      t[q] = w;
-	    }
-	}
+    if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
+      {
+        q++;
+        s[q] = u;
+        sQ[dim] = u;
+        t[q] = w;
+      }
+  }
     }
 
   Point last = startingPoint;
@@ -324,15 +324,15 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
        last[dim]-- )
     {    
       if (myMetric.reversedF ( last[dim] , s[q], input ( sQ )) > 0 )
-    	output.setValue ( last, myMetric.reversedF ( last[dim] , s[q], input ( sQ ) ) );
+      output.setValue ( last, myMetric.reversedF ( last[dim] , s[q], input ( sQ ) ) );
       else
-	output.setValue ( last, 0 );
+  output.setValue ( last, 0 );
     
       if (( last[dim] == t[q] ) && (q > 0))
-	{
-	  q--;
-	  sQ[dim] = s[q];
-	}
+  {
+    q--;
+    sQ[dim] = s[q];
+  }
     }
 }
 

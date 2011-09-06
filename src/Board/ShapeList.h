@@ -74,18 +74,18 @@ struct ShapeList : public Shape {
   void scaleAll( double s );
   
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;
@@ -165,8 +165,8 @@ protected:
 
   void addShape( const Shape & shape, double scaleFactor );
 
-  std::vector<Shape*> _shapes;	/**< The vector of shapes. */
-  int _nextDepth;		/**< The depth of the next figure to be added.  */
+  std::vector<Shape*> _shapes;  /**< The vector of shapes. */
+  int _nextDepth;    /**< The depth of the next figure to be added.  */
 
   /** 
    * Free the memory used by the shapes in the shape vector.
@@ -225,7 +225,7 @@ struct Group : public ShapeList {
    * @param height 
    */
   void setClippingRectangle(  float x, float y, 
-			      float width, float height );
+            float width, float height );
 
   /** 
    * Define a clipping path for the group.
@@ -243,18 +243,18 @@ struct Group : public ShapeList {
 
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Group & operator=( const Group & other );

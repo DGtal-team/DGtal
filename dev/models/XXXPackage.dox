@@ -15,31 +15,49 @@
  **/
 
 /**
- * @file XXX.ih
+ * @file XXX.dox
  * @author AUTHOR (\c EMAIL )
  * INSTITUTION
  *
  * @date 2000/??/??
  *
- * Implementation of inline methods defined for concept XXX in XXX.h
+ * Documentation file for feature XXX
  *
  * This file is part of the DGtal library.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page XXXPackage Documentation of the XXX package
+   
+@author AUTHOR
+@author AUTHOR
+@author AUTHOR
 
-//////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
-//////////////////////////////////////////////////////////////////////////////
+@b LICENSE: LGPL
+
+
+@b Package @b Overview
+
+....Package short Description......
+
+
+@b Modules
+ - \ref moduleXXX1
+ - \ref moduleXXX2  
+ - \ref moduleXXX3
+
+
+ @b Related @b documentation @b pages
+ - \ref PageRef
 
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
+*/
 
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
-
+}

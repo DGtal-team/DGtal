@@ -42,7 +42,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
-			  const Value & minV, const Value & maxV) throw(DGtal::IOException)
+        const Value & minV, const Value & maxV) throw(DGtal::IOException)
 {
  DGtal::IOException dgtalio;
   
@@ -71,14 +71,14 @@ VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
 
       //We scan the domain instead of the image because we cannot
       //trust the image container Iterator
-      for(typename I::Domain::ConstIterator it = domain.range().begin(), itend=domain.range().end();
-	  it!=itend;
-	  ++it)
-	{
-	  val = aImage( (*it) );
-	  col = colormap( val );
-	  out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
-	}
+      for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+    it!=itend;
+    ++it)
+  {
+    val = aImage( (*it) );
+    col = colormap( val );
+    out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
+  }
   
       out.close(); 
 

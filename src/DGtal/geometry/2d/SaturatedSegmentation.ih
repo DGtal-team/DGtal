@@ -53,24 +53,26 @@ bool
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
 {
   typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
-  this->doesIntersectNext( it, itb, ite, Type() );
+  return this->doesIntersectNext( it, itb, ite, Type() );
 }
 
 /**
  * Specialization for iterators.
  */
-  template <typename TSegmentComputer>
+template <typename TSegmentComputer>
 inline
 bool
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
 {
-		ConstIterator previousIt(it); 
-    if ( (it != itb)&&(it != ite) ) {
-      --previousIt;
-		  SegmentComputer tmpSegmentComputer;
-		  tmpSegmentComputer.init(previousIt);
-		  return tmpSegmentComputer.extend();
-    } else {
+  ConstIterator previousIt(it); 
+  if ( (it != itb)&&(it != ite) ) {
+    --previousIt;
+    SegmentComputer tmpSegmentComputer;
+    tmpSegmentComputer.init(previousIt);
+    return tmpSegmentComputer.extend();
+  } 
+  else 
+    {
       return false; 
     }
 }
@@ -81,9 +83,12 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
   template <typename TSegmentComputer>
 inline
 bool
-DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, CirculatorType )
+DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, 
+                         const ConstIterator& /*itb*/, 
+                         const ConstIterator& /*ite*/, 
+                         CirculatorType )
 {
-		this->doesIntersectNext(it);
+  return this->doesIntersectNext(it);
 }
 
 /**
@@ -94,11 +99,11 @@ inline
 bool
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
-		ConstIterator previousIt(it); --previousIt;
+    ConstIterator previousIt(it); --previousIt;
 
-		SegmentComputer tmpSegmentComputer;
-		tmpSegmentComputer.init(previousIt);
-		return tmpSegmentComputer.extend();
+    SegmentComputer tmpSegmentComputer;
+    tmpSegmentComputer.init(previousIt);
+    return tmpSegmentComputer.extend();
 }
 
 /**
@@ -178,27 +183,27 @@ void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMaximalSegment()
 {
 
-	if ( myFlagIsLast ) { //if end
+  if ( myFlagIsLast ) { //if end
 
     myFlagIsValid = false; 
 
-	} else { //otherwise
+  } else { //otherwise
 
-	  myFlagIntersectPrevious = myFlagIntersectNext;
+    myFlagIntersectPrevious = myFlagIntersectNext;
 
-  	DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd );
+    DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd );
 
     if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
        &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
 
-	    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+      myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
       myFlagIsLast = true; 
       
     } else {                                                     //otherwise
-	    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+      myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
     }
 
-	}
+  }
 
 }
 
@@ -216,40 +221,42 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMax
  template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
-	const SaturatedSegmentation<TSegmentComputer> *s,
-	const TSegmentComputer& aSegmentComputer,
-  const bool& isValid )
+  const SaturatedSegmentation<TSegmentComputer> *s,
+  const TSegmentComputer& aSegmentComputer,
+  const bool& aIsValid )
   : myS( s ), 
-		mySegmentComputer( aSegmentComputer ), 
+    mySegmentComputer( aSegmentComputer ), 
     myFlagIntersectNext( false ),
-		myFlagIntersectPrevious( false ),
+    myFlagIntersectPrevious( false ),
     myFlagIsLast( false ),
-    myFlagIsValid( isValid )
-{
+    myFlagIsValid( aIsValid )
+ {
 
-  if (myFlagIsValid) {
-	  if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) { //if at least one element
+   if (myFlagIsValid) {
+     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) { //if at least one element
 
-      this->initLastMaximalSegment(); 
-      this->initFirstMaximalSegment(); 
+       this->initLastMaximalSegment(); 
+       this->initFirstMaximalSegment(); 
 
-		  myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
+       myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
-	    if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
-         &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
+       if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
+      &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
 
-		    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
-        myFlagIsLast = true; 
+   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+   myFlagIsLast = true; 
         
-	    } else {                                                     //otherwise
-		    myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
-      }
+       } else {                                                     //otherwise
+   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+       }
  
-    } else {
-      myFlagIsValid = false;
-    }
-  }
-}
+     } 
+     else 
+       {
+   myFlagIsValid = false;
+       }
+   }
+ }
 
 
 
@@ -262,13 +269,13 @@ inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
   : myS( other.myS ), 
-		mySegmentComputer( other.mySegmentComputer ),
-		myFlagIntersectNext( other.myFlagIntersectNext ), 
-		myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
+    mySegmentComputer( other.mySegmentComputer ),
+    myFlagIntersectNext( other.myFlagIntersectNext ), 
+    myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
     myFlagIsLast( other.myFlagIsLast ),
-    myFlagIsValid( other.myFlagIsValid ),
     myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ),
-    myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd )
+    myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd ),
+    myFlagIsValid( other.myFlagIsValid )
 {
 }
     
@@ -287,10 +294,10 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
     {
       myS = other.myS;
       mySegmentComputer = other.mySegmentComputer;
-			myFlagIntersectNext = other.myFlagIntersectNext;
-			myFlagIntersectPrevious = other.myFlagIntersectPrevious;
-			myFlagIsValid = other.myFlagIsValid;
-			myFlagIsLast = other.myFlagIsLast;
+      myFlagIntersectNext = other.myFlagIntersectNext;
+      myFlagIntersectPrevious = other.myFlagIntersectPrevious;
+      myFlagIsValid = other.myFlagIsValid;
+      myFlagIsLast = other.myFlagIsLast;
       myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ); 
       myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd );
     }
@@ -453,11 +460,11 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() c
 DGtal::SaturatedSegmentation<TSegmentComputer>::SaturatedSegmentation
 (const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
  : myBegin(itb),
-	 myEnd(ite),
+   myEnd(ite),
    myStart(itb),
-	 myStop(ite),
-	 mySegmentComputer(aSegmentComputer),
-   myMode("MostCentered")
+   myStop(ite),
+   myMode("MostCentered"),
+   mySegmentComputer(aSegmentComputer)
 {
 }
 
@@ -469,7 +476,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::setSubRange
 (const ConstIterator& itb, const ConstIterator& ite)
 {
   myStart = itb;
-	myStop = ite;
+  myStop = ite;
   myMode = "MostCentered";
 }
 
@@ -552,7 +559,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::isValid() const
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const SaturatedSegmentation<TSegmentComputer> & object )
+      const SaturatedSegmentation<TSegmentComputer> & object )
 {
   object.selfDisplay( out );
   return out;

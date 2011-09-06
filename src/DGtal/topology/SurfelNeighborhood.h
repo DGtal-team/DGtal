@@ -110,8 +110,8 @@ namespace DGtal
        @param aSurfel any signed surfel of [space] ((n-1)-cell).
     */
     void init( const KSpace* space, 
-	       const SurfelAdjacency<KSpace::dimension>* adj,
-	       const SCell & aSurfel );
+         const SurfelAdjacency<KSpace::dimension>* adj,
+         const SCell & aSurfel );
 
     /**
        Sets the neighborhood to the given [surfel].
@@ -214,9 +214,9 @@ namespace DGtal
     */
     template <typename SpelSet>
     unsigned int getAdjacentOnSpelSet( SCell & adj_surfel,
-				       const SpelSet & obj, 
-				       Dimension track_dir,
-				       bool pos ) const;
+               const SpelSet & obj, 
+               Dimension track_dir,
+               bool pos ) const;
 
     /**
        Go to the next direct or indirect adjacent bel on the boundary
@@ -239,9 +239,9 @@ namespace DGtal
     */
     template <typename DigitalSet>
     unsigned int getAdjacentOnDigitalSet( SCell & adj_surfel,
-					  const DigitalSet & obj, 
-					  Dimension track_dir,
-					  bool pos ) const;
+            const DigitalSet & obj, 
+            Dimension track_dir,
+            bool pos ) const;
 
     /**
        Go to the next direct or indirect adjacent bel on the boundary
@@ -270,9 +270,9 @@ namespace DGtal
     */
     template <typename PointPredicate>
     unsigned int getAdjacentOnPointPredicate( SCell & adj_surfel,
-					      const PointPredicate & pp, 
-					      Dimension track_dir,
-					      bool pos ) const;
+                const PointPredicate & pp, 
+                Dimension track_dir,
+                bool pos ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -303,7 +303,7 @@ namespace DGtal
     /** The orthogonal direction to [mySurfel]. @see mySurfel */
     Dimension myOrthDir;
     /** The direct orientation in the orthogonal direction wrt [mySurfel].
-	@see m_surfel */
+  @see m_surfel */
     bool myOrthDirect;
  
     // ------------------------- Hidden services ------------------------------

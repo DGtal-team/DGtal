@@ -47,9 +47,6 @@
 #include <boost/call_traits.hpp>
 #include "DGtal/base/Common.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -163,250 +160,6 @@ namespace DGtal
 
   }; // end of class NumberTraits
 
-
-
-// #if ( defined(WIN32)  )
-// /// On VS2008, unsigned int and uint??_t are different
-//   /**
-//    * Specialization for <int>.
-//    */
-//   template <>
-//   struct NumberTraits<int>
-//   {
-//     typedef TagTrue IsBounded;
-//     typedef TagFalse IsUnsigned;
-//     typedef TagTrue IsSigned;
-//     typedef TagTrue IsSpecialized;
-//     typedef int SignedVersion;
-//     typedef unsigned int UnsignedVersion;
-//     typedef int ReturnType;
-//     typedef boost::call_traits<int>::param_type ParamType;
-//     static const int ZERO = 0;
-//     static const int ONE = 1;
-//     static ReturnType zero()
-//     {
-//       return 0;
-//     }
-//     static ReturnType one()
-//     {
-//       return 1;
-//     }
-//     static ReturnType min()
-//     {
-//       return boost::integer_traits<int>::const_min;
-//     }
-//     static ReturnType max()
-//     {
-//       return boost::integer_traits<int>::const_max;
-//     }
-//     static unsigned int digits()
-//     {
-//       return boost::integer_traits<int>::digits;
-//     }
-//     static BoundEnum isBounded()
-//     {
-//       return BOUNDED;
-//     }
-//     static SignEnum isSigned()
-//     {
-//       return SIGNED;
-//     }
-   
-//     static DGtal::int64_t castToInt64_t(const int & aT)
-//     {
-//       return static_cast<DGtal::int64_t>(aT);
-//     }
-
-//     static double castToDouble(const int & aT)
-//     {
-//       return static_cast<double>(aT);
-//     }
-
-//   }; // end of class NumberTraits<int>.
-
-//   /**
-//    * Specialization for <int>.
-//    */
-//   template <>
-//   struct NumberTraits<unsigned int>
-//   {
-//     typedef TagTrue IsBounded;
-//     typedef TagTrue IsUnsigned;
-//     typedef TagFalse isSigned;
-//     typedef TagTrue IsSpecialized;
-//     typedef int SignedVersion;
-//     typedef unsigned int UnsignedVersion;
-//     typedef int ReturnType;
-//     typedef boost::call_traits<unsigned int>::param_type ParamType;
-//     static const unsigned int ZERO = 0;
-//     static const unsigned int ONE = 1;
-//     static ReturnType zero()
-//     {
-//       return 0;
-//     }
-//     static ReturnType one()
-//     {
-//       return 1;
-//     }
-//     static ReturnType min()
-//     {
-//       return boost::integer_traits<unsigned int>::const_min;
-//     }
-//     static ReturnType max()
-//     {
-//       return boost::integer_traits<unsigned int>::const_max;
-//     }
-//     static unsigned int digits()
-//     {
-//       return boost::integer_traits<unsigned int>::digits;
-//     }
-//     static BoundEnum isBounded()
-//     {
-//       return BOUNDED;
-//     }
-//     static SignEnum isSigned()
-//     {
-//       return UNSIGNED;
-//     }
-//     static DGtal::int64_t castToInt64_t(const unsigned int & aT)
-//     {
-//       return static_cast<DGtal::int64_t>(aT);
-//     }
-//     /**
-//      * Cast method to double (for I/O or board export uses
-//      * only).
-//      */
-//     static double castToDouble(const unsigned int & aT)
-//     {
-//       return static_cast<double>(aT);
-//     }
-
-//   }; // end of class NumberTraits<unsigned int>.
-
-//   /**
-//    * Specialization for <usigned char>.
-//    */
-//   template <>
-//   struct NumberTraits<unsigned char>
-//   {
-//     typedef TagTrue IsBounded;
-//     typedef TagTrue IsUnsigned;
-//     typedef TagFalse IsSigned;
-//     typedef TagTrue IsSpecialized;
-//     typedef char SignedVersion;
-//     typedef unsigned char UnsignedVersion;
-//     typedef unsigned char ReturnType;
-//     typedef boost::call_traits<unsigned char>::param_type ParamType;
-//     static const unsigned char ZERO = 0;
-//     static const unsigned char ONE = 1;
-//     static ReturnType zero()
-//     {
-//       return 0;
-//     }
-//     static ReturnType one()
-//     {
-//       return 1;
-//     }
-//     static ReturnType min()
-//     {
-//       return boost::integer_traits<unsigned char>::const_min;
-//     }
-//     static ReturnType max()
-//     {
-//       return boost::integer_traits<unsigned char>::const_max;
-//     }
-//     static unsigned int digits()
-//     {
-//       return boost::integer_traits<unsigned char>::digits;
-//     }
-//     static BoundEnum isBounded()
-//     {
-//       return BOUNDED;
-//     }
-//     static SignEnum isSigned()
-//     {
-//       return UNSIGNED;
-//     }
-//     static DGtal::int64_t castToInt64_t(const unsigned char & aT)
-//     {
-//       return static_cast<DGtal::int64_t>(aT);
-//     }
-//     /**
-//      * Cast method to double (for I/O or board export uses
-//      * only).
-//      */
-//     static double castToDouble(const unsigned char & aT)
-//     {
-//       return static_cast<double>(aT);
-//     }
-
-//   }; // end of class NumberTraits<unsigned char>.
-
-//   /**
-//    * Specialization for <long int>.
-//    */
-//   template <>
-//   struct NumberTraits<long int>
-//   {
-//     typedef TagTrue IsBounded;
-//     typedef TagFalse IsUnsigned;
-//     typedef TagTrue IsSigned;
-//     typedef TagTrue IsSpecialized;
-//     typedef long int SignedVersion;
-//     typedef unsigned long int UnsignedVersion;
-//     typedef long int ReturnType;
-//     typedef boost::call_traits<long int>::param_type ParamType;
-//     static const long int ZERO = 0;
-//     static const long int ONE = 1;
-//     static ReturnType zero()
-//     {
-//       return 0;
-//     }
-//     static ReturnType one()
-//     {
-//       return 1;
-//     }
-//     static ReturnType min()
-//     {
-//       return boost::integer_traits<long int>::const_min;
-//     }
-//     static ReturnType max()
-//     {
-//       return boost::integer_traits<long int>::const_max;
-//     }
-//     static unsigned int digits()
-//     {
-//       return boost::integer_traits<long int>::digits;
-//     }
-//     static BoundEnum isBounded()
-//     {
-//       return BOUNDED;
-//     }
-//     static SignEnum isSigned()
-//     {
-//       return SIGNED;
-//     }
-   
-//     static DGtal::int64_t castToInt64_t(const long int & aT)
-//     {
-//       return static_cast<DGtal::int64_t>(aT);
-//     }
-
-//     /**
-//      * Cast method to double (for I/O or board export uses
-//      * only).
-//      */
-//     static double castToDouble(const long int & aT)
-//     {
-//       return static_cast<double>(aT);
-//     }
-
-//   }; // end of class NumberTraits<int>.
-
-
-
-// #endif //WIN32
-  
   
   /**
    * Specialization for <uint16_t>.
@@ -881,8 +634,8 @@ namespace DGtal
     typedef float UnsignedVersion;
     typedef float ReturnType;
     typedef boost::call_traits<float>::param_type ParamType;
-    static const float ZERO = 0.0f;
-    static const float ONE = 1.0f;
+    static const float ZERO;
+    static const float ONE;
     static ReturnType zero()
     {
       return 0.0f;
@@ -921,6 +674,10 @@ namespace DGtal
     }
   }; // end of class NumberTraits<float>.
 
+  const float NumberTraits<float>::ONE = 1.0f;
+  const float NumberTraits<float>::ZERO = 0.0f;
+  
+
   /**
    * Specialization for <double>.
    */
@@ -935,8 +692,8 @@ namespace DGtal
     typedef double UnsignedVersion;
     typedef double ReturnType;
     typedef boost::call_traits<double>::param_type ParamType;
-    static const double ZERO = 0.0;
-    static const double ONE = 1.0;
+    static const double ZERO;
+    static const double ONE;
     static ReturnType zero()
     {
       return 0.0;
@@ -975,6 +732,10 @@ namespace DGtal
     }
   }; // end of class NumberTraits<double>.
 
+  const double NumberTraits<double>::ONE = 1.0;
+  const double NumberTraits<double>::ZERO = 0.0;
+ 
+
   /**
    * Specialization for <long double>.
    */
@@ -989,8 +750,8 @@ namespace DGtal
     typedef long double UnsignedVersion;
     typedef long double ReturnType;
     typedef boost::call_traits<long double>::param_type ParamType;
-    static const long double ZERO = 0.0;
-    static const long double ONE = 1.0;
+    static const long double ZERO;
+    static const long double ONE;
     static ReturnType zero()
     {
       return 0.0;
@@ -1030,25 +791,30 @@ namespace DGtal
   }; // end of class NumberTraits<long double>.
 
   
-#ifdef WITH_GMP
+  const long double NumberTraits<long double>::ONE = 1.0;
+  const long double NumberTraits<long double>::ZERO = 0.0;
+ 
+
+#ifdef WITH_BIGINTEGER
   /**
-   * Specialization for <mpz_class>.  Note that mpz_class represents
+   * Specialization for <DGtal::BigInteger>. 
+   * Note that DGtal::BigInteger represents
    * signed and unsigned arbitrary-size integers. Therefore both
    * IsUnsigned and IsSigned are TagTrue.
    */
   template <>
-  struct NumberTraits<mpz_class>
+  struct NumberTraits<DGtal::BigInteger>
   {
     typedef TagFalse IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
-    typedef mpz_class SignedVersion;
-    typedef mpz_class UnsignedVersion;
-    typedef mpz_class ReturnType;
+    typedef DGtal::BigInteger SignedVersion;
+    typedef DGtal::BigInteger UnsignedVersion;
+    typedef DGtal::BigInteger ReturnType;
     typedef boost::call_traits<int64_t>::param_type ParamType;
-    static mpz_class ZERO;//cf NumberTraits.h
-    static mpz_class ONE;//cf NumberTraits.h
+    static DGtal::BigInteger ZERO;//cf NumberTraits.h
+    static DGtal::BigInteger ONE;//cf NumberTraits.h
     static ReturnType zero()
     {
       return ZERO;
@@ -1081,15 +847,15 @@ namespace DGtal
     {
       return SIGNED;
     }
-    static DGtal::int64_t castToInt64_t(const mpz_class & aT)
+    static DGtal::int64_t castToInt64_t(const DGtal::BigInteger & aT)
     {
       return aT.get_si();
     }
-    static double castToDouble(const mpz_class & aT)
+    static double castToDouble(const DGtal::BigInteger & aT)
     {
       return aT.get_d();
     }
-  }; // end of class NumberTraits<mpz_class>.
+  }; // end of class NumberTraits<DGtal::BigInteger>.
 #endif
 
 

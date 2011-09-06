@@ -93,8 +93,8 @@ template<typename Colormap>
 inline
 void
 DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
-						 const V &minV,
-						 const V &maxV ) const
+             const V &minV,
+             const V &maxV ) const
 {
   ASSERT(D::dimension == 2);
 
@@ -103,16 +103,16 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
   V val;
   D ldomain(myLowerBound, myUpperBound);
 
-  for (typename D::ConstIterator it =  ldomain.range().begin();
-       it != ldomain.range().end(); ++it)
+  for (typename D::ConstIterator it =  ldomain.begin();
+       it != ldomain.end(); ++it)
   {
     val = this->operator()( (*it) );
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename D::Integer>::
-			 castToInt64_t((*it)[0]) - 0.5, 
-			 NumberTraits<typename D::Integer>::
-			 castToInt64_t((*it)[1]) + 0.5, 1, 1);
+       castToInt64_t((*it)[0]) - 0.5, 
+       NumberTraits<typename D::Integer>::
+       castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
 //------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ inline
 std::string
 DGtal::ImageContainerBySTLVector<D, V>::styleName() const
 {
-	return "ImageContainerBySTLVector";
+  return "ImageContainerBySTLVector";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
