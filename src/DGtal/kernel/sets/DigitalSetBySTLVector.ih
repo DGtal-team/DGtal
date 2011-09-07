@@ -404,7 +404,7 @@ DGtal::DigitalSetBySTLVector<Domain>::computeComplement() const
   typename Domain::ConstIterator itEnd = myDomain.end();
   while ( itPoint != itEnd ) {
     if ( std::find( begin(), end(), *itPoint ) == end() ) {
-      set.push_back( *itPoint );
+      set.myVector.push_back( *itPoint );
     }
     ++itPoint;
   }
