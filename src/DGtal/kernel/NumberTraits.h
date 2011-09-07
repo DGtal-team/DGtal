@@ -677,8 +677,6 @@ namespace DGtal
     }
   }; // end of class NumberTraits<float>.
 
-  const float NumberTraits<float>::ONE = 1.0f;
-  const float NumberTraits<float>::ZERO = 0.0f;
   
 
   /**
@@ -735,9 +733,6 @@ namespace DGtal
     }
   }; // end of class NumberTraits<double>.
 
-  const double NumberTraits<double>::ONE = 1.0;
-  const double NumberTraits<double>::ZERO = 0.0;
- 
 
   /**
    * Specialization for <long double>.
@@ -794,9 +789,6 @@ namespace DGtal
   }; // end of class NumberTraits<long double>.
 
   
-  const long double NumberTraits<long double>::ONE = 1.0;
-  const long double NumberTraits<long double>::ZERO = 0.0;
- 
 
 #ifdef WITH_GMP
   /**
