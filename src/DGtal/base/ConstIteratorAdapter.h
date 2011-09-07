@@ -120,7 +120,7 @@ namespace DGtal
       */
       explicit
     ConstIteratorAdapter(Iterator it, Modifier m) 
-    : myCurrentIt(it), myModifier(m), myBufferPtr(new value_type(m.get(*it))) { }
+    : myCurrentIt(it), myModifier(m), myBufferPtr(new value_type()) { }
 
     /**
      *  Copy constructor.
