@@ -623,6 +623,8 @@ namespace DGtal
   class SCellToCode
   {
     
+    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
+
     public: 
       
     typedef typename KSpace::Point Point;
@@ -683,6 +685,7 @@ namespace DGtal
       else if (v == Vector(0,1)) return '1';
       else if (v == Vector(-1,0)) return '2';
       else if (v == Vector(0,-1)) return '3';
+      else return 'e'; //e for error!
     }
       
   }; // end of class SCellToArrow

@@ -55,17 +55,17 @@ struct CirculatorType {};
   //tags dedicated for circulators only
 struct forward_circulator_tag 
 {
-  operator std::forward_iterator_tag() {}
+  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
 };
 struct bidirectional_circulator_tag 
 {
-  operator std::forward_iterator_tag() {}
-  operator std::bidirectional_iterator_tag() {}
+  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
+  operator std::bidirectional_iterator_tag() { return std::bidirectional_iterator_tag(); }
 };
 struct random_access_circulator_tag 
 {
-  operator std::forward_iterator_tag() {}
-  operator std::bidirectional_iterator_tag() {}
+  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
+  operator std::bidirectional_iterator_tag() { return std::bidirectional_iterator_tag(); }
 };
 
   //tags valid for both iterator or circulator

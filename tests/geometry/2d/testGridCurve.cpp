@@ -40,16 +40,13 @@
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/SurfelNeighborhood.h"
-
-
-#include "DGtal/base/Circulator.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
 #include "DGtal/io/boards/Board2D.h"
+
+#include "DGtal/base/CRange.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "ConfigTest.h"
 
@@ -318,6 +315,14 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   return true;
 }
 
+template <typename Range>
+void testRangeConceptChecking()
+{
+    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Range> ));
+    //BOOST_CONCEPT_ASSERT(( CConstRange<Range> ));
+    //pb ConstReverseIterator or ReverseConstIterator ?
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -351,6 +356,15 @@ int main( int argc, char** argv )
 
 /////////// ranges test
   typedef GridCurve<K2> GridCurve;
+
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::PointsRange>();
+testRangeConceptChecking<GridCurve::MidPointsRange>();
+testRangeConceptChecking<GridCurve::ArrowsRange>();
+testRangeConceptChecking<GridCurve::InnerPointsRange>();
+testRangeConceptChecking<GridCurve::OuterPointsRange>();
+testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 
   //reading grid curve
   GridCurve c; 
@@ -393,6 +407,7 @@ int main( int argc, char** argv )
     && testDrawRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange(),"OuterPoints","Grid")
     && testDrawRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange(),"IncidentPoints","Grid")
 ;
+
 //////////////////////
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
