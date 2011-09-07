@@ -243,10 +243,7 @@ inline
 DGtal::DrawableWithBoard2D*
 DGtal::GridCurve<TKSpace>::defaultStyle( std::string mode ) const
 {
-  if ( ( mode == "" ) || ( mode == "Points" ) ) 
-    return new DefaultDrawStylePoints;
-  else 
-    return new DefaultDrawStyleEdges;  
+  return new DefaultDrawStyle;
 }
 //------------------------------------------------------------------------------
 template <typename TKSpace>
@@ -262,32 +259,9 @@ inline
 void 
 DGtal::GridCurve<TKSpace>::selfDraw(Board2D & aBoard) const
 {
-  std::string mode = aBoard.getMode( this->styleName() );
-  ASSERT( (mode=="Points" || mode=="" || mode=="Edges") ||
-	  ("DGtal::GridCurve<TKSpace>::selfDraw: Unknown mode "+mode)==""  );
-  
-  if ( mode == "Points"  || ( mode == "" )  )
-    selfDrawPoints( aBoard );
-  else if ( mode == "Edges" )
-    selfDrawEdges( aBoard );
-  
-}
-//------------------------------------------------------------------------------
-template <typename TKSpace>
-inline
-void 
-DGtal::GridCurve<TKSpace>::selfDrawPoints(Board2D & aBoard) const
-{
   for(unsigned int i=0; i< my0SCells.size(); i++){
     aBoard << my0SCells.at(i);
   }
-}
-//------------------------------------------------------------------------------
-template <typename TKSpace>
-inline
-void 
-DGtal::GridCurve<TKSpace>::selfDrawEdges(Board2D & aBoard) const
-{
   for(unsigned int i=0; i< my1SCells.size(); i++){
     aBoard << my1SCells.at(i);
   }

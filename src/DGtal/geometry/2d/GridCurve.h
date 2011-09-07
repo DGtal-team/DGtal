@@ -205,7 +205,6 @@ namespace DGtal
     // ------------------------- Drawing services --------------------------------
   public: 
 
-
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
@@ -222,17 +221,6 @@ namespace DGtal
        @param board the output board where the object is drawn.
     */
     void selfDraw(Board2D & board ) const;
-    
-    /**
-       Draw the points on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDrawPoints(Board2D & board ) const; 
-    /**
-       Draw the grid edges on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDrawEdges(Board2D & board ) const;
 
   private: 
 
@@ -253,22 +241,6 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-      }
-    };
-
-    struct DefaultDrawStylePoints : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D &  ) const
-      {
-      }
-    };
-
-    struct DefaultDrawStyleEdges : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor( DGtal::Color::None);
       }
     };
 
