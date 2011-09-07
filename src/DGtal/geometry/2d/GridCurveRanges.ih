@@ -126,6 +126,36 @@ public:
     return out;
   }
   
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "SCellsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      aBoard << *it;
+    }
+  }
+
   // ------------------------- private data --------------------------------
 private: 
   const typename GridCurve::Storage* myData;
@@ -293,6 +323,37 @@ public:
     return out;
   }
   
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "PointsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      aBoard << SetMode(it->styleName(),"Grid")
+                  << *it;
+    }
+  }
+
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -458,6 +519,39 @@ public:
   {
     object.selfDisplay( out );
     return out;
+  }
+  
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "MidPointsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      typename IteratorCirculatorTraits<ConstIterator>::Value p(*it); 
+      double s = 0.1; 
+      aBoard.drawLine( p[0]-s, p[1]-s, p[0]+s, p[1]+s ); 
+      aBoard.drawLine( p[0]-s, p[1]+s, p[0]+s, p[1]-s ); 
+    }
   }
   
   // ------------------------- private data --------------------------------
@@ -633,6 +727,43 @@ public:
     return out;
   }
   
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "ArrowsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+      typename Modifier::Vector shift( pair.second );
+      aBoard << CustomStyle( shift.styleName(), 
+             new CustomPen( Color::Black, Color::Black, 1.0, 
+                                       Board2D::Shape::SolidStyle,
+                                       Board2D::Shape::RoundCap,
+                                       Board2D::Shape::RoundJoin ) );       
+      shift.selfDraw( aBoard, pair.first );
+    }
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -798,7 +929,40 @@ public:
     object.selfDisplay( out );
     return out;
   }
-  
+
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "InnerPointsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      aBoard << SetMode( it->styleName(), "Both" )
+                  << CustomStyle( it->styleName(), 
+                new CustomFillColor( Color::Blue ) )
+                  << *it;
+    }
+  }
+
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -961,6 +1125,39 @@ public:
   {
     object.selfDisplay( out );
     return out;
+  }
+  
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "OuterPointsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      aBoard << SetMode( it->styleName(), "Both" )
+                  << CustomStyle( it->styleName(), 
+                new CustomFillColor( Color::Green ) )
+                  << *it;
+    }
   }
   
   // ------------------------- private data --------------------------------
@@ -1131,6 +1328,43 @@ public:
   {
     object.selfDisplay( out );
     return out;
+  }
+  
+  /**
+   * Default drawing style object.
+   * @param mode the drawing mode
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+   /**
+   * @return the style name used for drawing this object.
+   */
+  std::string styleName() const
+  {
+    return "IncidentPointsRange";
+  }
+  /**
+     Draw the object on a Board2D board
+     @param board the output board where the object is drawn.
+  */
+  void selfDraw(Board2D & aBoard) const
+  {
+    ConstIterator it ( this->begin() ); 
+    ConstIterator itEnd ( this->end() ); 
+    for( ; it != itEnd; ++it)
+    {
+      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+      aBoard << SetMode( pair.first.styleName(), "Both" )
+                  << CustomStyle( pair.first.styleName(), 
+                new CustomFillColor( Color::Blue ) )
+                  << pair.first 
+                  << CustomStyle( pair.second.styleName(), 
+                new CustomFillColor( Color::Green ) )
+                  << pair.second; 
+    }
   }
   
   // ------------------------- private data --------------------------------
