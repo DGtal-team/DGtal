@@ -222,27 +222,6 @@ namespace DGtal
     */
     void selfDraw(Board2D & board ) const;
 
-  private: 
-
-    /**
-     * Default Style Functor for selfDraw methods
-     *
-     * @param aBoard
-     */
-
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(Board2D & aBoard)
-      {
-      }
-    };
-
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-      }
-    };
 
     // ------------------------- inner classes --------------------------------
 
