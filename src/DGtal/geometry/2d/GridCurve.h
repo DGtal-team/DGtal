@@ -90,13 +90,15 @@ namespace DGtal
    * @endcode
    */
 
-  template <typename KSpace>
+  template <typename TKSpace>
   class GridCurve
   {
 
   public: 
-    typedef typename KSpace::Space::Point Point;
-    typedef typename KSpace::Space::Point Vector;
+    typedef TKSpace KSpace; 
+  
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Point Vector;
 
     typedef typename KSpace::SCell SCell;
     typedef typename std::vector<SCell> Storage;
@@ -346,20 +348,6 @@ namespace DGtal
     typename GridCurve::CodesRange getCodesRange() const {
       return CodesRange(this);
     } 
-    //TODO
-    /**
-
-     * set my0SCells,my1SCells private 
-     and put GridCurve as a friend class in the ConstIterator classes
-
-     * bounding box init for myK (in nd) ?
-     and/or passing myK in the constructor
-
-     * isClosed/isOpen 
-
-     * drawing: shift pb with dgtalboard in 2d / QGLviewer in 3d
-
-     */
 
   }; // end of class GridCurve
 
@@ -372,9 +360,9 @@ namespace DGtal
    * @param object the object of class 'GridCurve' to write.
    * @return the output stream after the writing.
    */
-  template<typename KSpace>
+  template<typename TKSpace>
   std::ostream&
-  operator<< ( std::ostream & out, const GridCurve<KSpace> & object );
+  operator<< ( std::ostream & out, const GridCurve<TKSpace> & object );
 
 
 } // namespace DGtal
