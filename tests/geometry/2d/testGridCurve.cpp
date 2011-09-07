@@ -291,6 +291,33 @@ bool testDisplayRange(const Range &aRange)
   return true;
 }
 
+template <typename Range>
+bool testDrawRange(const Range &aRange, const string &aName, const string& aDomainMode)
+{
+
+  std::stringstream s; 
+  s << aName << "Range.eps"; 
+  
+  trace.info() << endl;
+  trace.info() << "Drawing " << s.str() << " (" << aRange.size() << " elts)" << endl;
+  
+  //board
+  Board2D aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  //displaying domain
+  PointVector<2,int> low(-1,-1);
+  PointVector<2,int> up(3,3);
+  if (aDomainMode == "Paving") up = PointVector<2,int>(4,4);
+  HyperRectDomain< SpaceND<2,int> > aDomain( low,up );
+  aBoard << SetMode(aDomain.styleName(), aDomainMode) << aDomain; 
+  //displaying range
+  aBoard << aRange; 
+  //save
+  aBoard.saveEPS( s.str().c_str(), Board::BoundingBox, 5000 );
+  
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -356,6 +383,16 @@ int main( int argc, char** argv )
     && testDisplayRange<GridCurve::CodesRange>(c.getCodesRange())
 ;
 
+  res = res 
+    && testDrawRange<GridCurve::SCellsRange>(c.get0SCellsRange(),"0cells","Grid")
+    && testDrawRange<GridCurve::SCellsRange>(c.get1SCellsRange(),"1cells","Grid")
+    && testDrawRange<GridCurve::PointsRange>(c.getPointsRange(),"Points","Paving")
+    && testDrawRange<GridCurve::MidPointsRange>(c.getMidPointsRange(),"MidPoints","Paving")
+    && testDrawRange<GridCurve::ArrowsRange>(c.getArrowsRange(),"Arrows","Paving")
+    && testDrawRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange(),"InnerPoints","Grid")
+    && testDrawRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange(),"OuterPoints","Grid")
+    && testDrawRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange(),"IncidentPoints","Grid")
+;
 //////////////////////
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
