@@ -246,7 +246,7 @@ inline
 DGtal::DrawableWithBoard2D*
 DGtal::GridCurve<TKSpace>::defaultStyle( std::string mode ) const
 {
-  return new DefaultDrawStyle;
+  return new DrawableWithBoard2D; 
 }
 //------------------------------------------------------------------------------
 template <typename TKSpace>
