@@ -230,7 +230,7 @@ DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator (
  * @param y the y-coordinate of the first point.
  */
 template <typename TInteger>
-DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, int x, int y )
+DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, TInteger x, TInteger y )
   : chain( s ), x0( x ), y0( y ), xn( x ), yn( y )
 {
   DGtal::FreemanChain<TInteger>::computeLastPoint();
