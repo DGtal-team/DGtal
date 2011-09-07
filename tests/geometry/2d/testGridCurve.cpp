@@ -175,18 +175,11 @@ bool testDrawGridCurve(const string &filename)
   //displaying it
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
-  aBoard << SetMode(c.styleName(), "Edges") << c;
-  
-  aBoard.saveEPS( "GridCurveEdges.eps", Board::BoundingBox, 5000 );
-
-  aBoard << SetMode(c.styleName(), "Points") << c;
-
-  aBoard.saveEPS( "GridCurveBoth.eps", Board::BoundingBox, 5000 );
-
+  aBoard << c; 
+  aBoard.saveEPS( "GridCurve.eps", Board::BoundingBox, 5000 );
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("GridCurveBoth-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
 #endif
-  
 
   return true;
 }
