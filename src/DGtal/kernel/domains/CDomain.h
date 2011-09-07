@@ -63,7 +63,8 @@ namespace DGtal
    * - Domain : the type itself of the CDomain model.
    * - Space : the embedding digital space.
    * - Point : the point type of the space
-   * - SizeType : the type used for counting elements of the space.
+   * - Size : the type used for counting elements of the space.
+   * - Dimension : the type used for indexing the dimension.
    * - Vector : the vector type of the space
    * - Predicate : the type of the predicate returning true for exactly the points of this domain.  
    * 

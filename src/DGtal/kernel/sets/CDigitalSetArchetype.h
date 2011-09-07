@@ -15,32 +15,30 @@
  **/
 
 #pragma once
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
 
 /**
- * @file DigitalSetBySTLSet.h
+ * @file CDigitalSetArchetype.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et
- * Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
- *
  * @date 2010/07/01
  *
- * Header file for module DigitalSetBySTLSet.cpp
+ * Header file for module CDigitalSetArchetype.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DigitalSetBySTLSet_RECURSES)
-#error Recursive header files inclusion detected in DigitalSetBySTLSet.h
-#else // defined(DigitalSetBySTLSet_RECURSES)
+#if defined(CDigitalSetArchetype_RECURSES)
+#error Recursive header files inclusion detected in CDigitalSetArchetype.h
+#else // defined(CDigitalSetArchetype_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DigitalSetBySTLSet_RECURSES
+#define CDigitalSetArchetype_RECURSES
 
-#if !defined DigitalSetBySTLSet_h
+#if !defined CDigitalSetArchetype_h
 /** Prevents repeated inclusion of headers. */
-#define DigitalSetBySTLSet_h
+#define CDigitalSetArchetype_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,37 +46,33 @@
 #include <set>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
-
-#include "DGtal/io/Display3D.h"
-
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class DigitalSetBySTLSet
+  // template class CDigitalSetArchetype
   /**
-    Description of template class 'DigitalSetBySTLSet' <p>
+    Description of template class 'CDigitalSetArchetype' <p>
 
-    \brief Aim: A container class for storing sets of digital points
-    within some given domain.
+    @ingroup Archetypes
+    @brief Aim: The archetype of a container class for storing sets of
+    digital points within some given domain.
 
-    This is the most versatile implementation for a set of point, and
-    is essentially a wrapper to std::set<Point>. It added the notion
-    of domain.
-
-    Model of CDigitalSet.
+    Archetype of CDigitalSet.
    */
   template <typename TDomain>
-  class DigitalSetBySTLSet
+  class CDigitalSetArchetype
   {
   public:
     typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
-    typedef typename std::set<Point>::iterator Iterator;
-    typedef typename std::set<Point>::const_iterator ConstIterator;
+    //typedef boost::bidirectional_iterator_archetype<Point> Iterator;
+    typedef CBidirectionalIteratorArchetype<Point> Iterator;
+    typedef Iterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -86,7 +80,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~DigitalSetBySTLSet();
+    ~CDigitalSetArchetype() {}
 
     /**
      * Constructor.
@@ -94,25 +88,26 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLSet( const Domain & d );
+    CDigitalSetArchetype( const Domain & d ) {}
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    DigitalSetBySTLSet ( const DigitalSetBySTLSet & other );
+    CDigitalSetArchetype ( const CDigitalSetArchetype & other ) {}
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    DigitalSetBySTLSet & operator= ( const DigitalSetBySTLSet & other );
+    CDigitalSetArchetype & operator= ( const CDigitalSetArchetype & other ) 
+    { return *this; }
 
     /**
      * @return the embedding domain.
      */
-    const Domain & domain() const;
+    const Domain & domain() const { return DummyObject<Domain>::get(); }
 
     // ----------------------- Standard Set services --------------------------
   public:
@@ -120,12 +115,12 @@ namespace DGtal
     /**
      * @return the number of elements in the set.
      */
-    Size size() const;
+    Size size() const { return 0; }
 
     /**
      * @return 'true' iff the set is empty (no element).
      */
-    bool empty() const;
+    bool empty() const { return true; }
      
     /**
      * Adds point [p] to this set.
@@ -133,7 +128,7 @@ namespace DGtal
      * @param p any digital point.
      * @pre p should belong to the associated domain.
      */
-    void insert( const Point & p );
+    void insert( const Point & p ) {}
 
     /**
      * Adds the collection of points specified by the two iterators to
@@ -144,7 +139,7 @@ namespace DGtal
      * @pre all points should belong to the associated domain.
      */
     template <typename PointInputIterator>
-    void insert( PointInputIterator first, PointInputIterator last );
+    void insert( PointInputIterator first, PointInputIterator last ) {}
 
     /**
      * Adds point [p] to this set if the point is not already in the
@@ -155,7 +150,7 @@ namespace DGtal
      * @pre p should belong to the associated domain.
      * @pre p should not belong to this.
      */
-    void insertNew( const Point & p );
+    void insertNew( const Point & p ) {}
 
     /**
      * Adds the collection of points specified by the two iterators to
@@ -168,7 +163,7 @@ namespace DGtal
      * @pre each point should not belong to this.
      */
     template <typename PointInputIterator>
-    void insertNew( PointInputIterator first, PointInputIterator last );
+    void insertNew( PointInputIterator first, PointInputIterator last ) {}
 
     /**
      * Removes point [p] from the set.
@@ -176,7 +171,7 @@ namespace DGtal
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
-    Size erase( const Point & p );
+    Size erase( const Point & p ) { return 0; }
 
     /**
      * Removes the point pointed by [it] from the set.
@@ -184,7 +179,7 @@ namespace DGtal
      * @param it an iterator on this set.
      * Note: generally faster than giving just the point.
      */
-    void erase( Iterator it );
+    void erase( Iterator it ) {}
 
     /**
      * Removes the collection of points specified by the two iterators from
@@ -193,51 +188,58 @@ namespace DGtal
      * @param first the start point in this set.
      * @param last the last point in this set.
      */
-    void erase( Iterator first, Iterator last );
+    void erase( Iterator first, Iterator last ) {}
 
     /**
      * Clears the set.
      * @post this set is empty.
      */
-    void clear();
+    void clear() {}
 
     /**
      * @param p any digital point.
      */
-    ConstIterator find( const Point & p ) const;
+    ConstIterator find( const Point & p ) const 
+    { return DummyObject<ConstIterator>::get(); }
 
     /**
      * @param p any digital point.
      * @return an iterator pointing on [p] if found, otherwise end().
      */
-    Iterator find( const Point & p );
+    Iterator find( const Point & p )
+    { return DummyObject<Iterator>::get(); }
 
     /**
      * @return a const iterator on the first element in this set.
      */
-    ConstIterator begin() const;
+    ConstIterator begin() const
+    { return DummyObject<ConstIterator>::get(); }
 
     /**
      * @return a const iterator on the element after the last in this set.
      */
-    ConstIterator end() const;
+    ConstIterator end() const
+    { return DummyObject<ConstIterator>::get(); }
 
     /**
      * @return an iterator on the first element in this set.
      */
-    Iterator begin();
+    Iterator begin()
+    { return DummyObject<Iterator>::get(); }
 
     /**
      * @return a iterator on the element after the last in this set.
      */
-    Iterator end();
+    Iterator end()
+    { return DummyObject<Iterator>::get(); }
 
     /**
      * set union to left.
      * @param aSet any other set.
      */
-    DigitalSetBySTLSet<Domain> & operator+=
-    ( const DigitalSetBySTLSet<Domain> & aSet );
+    CDigitalSetArchetype<Domain> & operator+=
+    ( const CDigitalSetArchetype<Domain> & aSet )
+    { return *this; }
 
     // ----------------------- Other Set services -----------------------------
   public:
@@ -247,7 +249,8 @@ namespace DGtal
      *
      * NB: be aware of the overhead cost when returning the object.
      */
-    DigitalSetBySTLSet<Domain> computeComplement() const; 
+    CDigitalSetArchetype<Domain> computeComplement() const
+    { return *this; }
 
     /**
      * Builds the complement in the domain of the set [other_set] in
@@ -255,7 +258,8 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-    void assignFromComplement( const DigitalSetBySTLSet<Domain> & other_set ); 
+    void assignFromComplement( const CDigitalSetArchetype<Domain> & other_set )
+    {}
     
     /**
      * Computes the bounding box of this set.
@@ -265,7 +269,7 @@ namespace DGtal
      * @param upper the last point of the bounding box (highest in all
      * directions).
      */
-    void computeBoundingBox( Point & lower, Point & upper ) const;
+    void computeBoundingBox( Point & lower, Point & upper ) const {}
 
 
     // ----------------------- Interface --------------------------------------
@@ -275,137 +279,26 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const {}
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
-    /**
-     * The associated domain;
-     */
-    const Domain & myDomain;
-
-    /**
-     * The container storing the points of the set.
-     */
-    std::set<Point> mySet;
+    bool isValid() const { return true; }
 
 
-  public:
-    /** 
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-  aBoard.setFillColorRGBi(160,160,160);
-  aBoard.setPenColorRGBi(80,80,80);
-      }
-    };
-
-    // --------------- CDrawableWithBoard2D realization ---------------------
-  public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object. 
-     */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-
-    /**
-     * @return the style name used for drawing this object.
-     */
-    std::string styleName() const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(Board2D & board ) const;
-
-
-
-
-     /** 
-     * Default style.
-     */
-    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
-    {
-       virtual void selfDrawDisplay3D(Display3D & display) const
-        {
-    display.myModes[ "DigitalSetBySTLSet" ] = "";
-  }
-
-    };
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-  DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawDisplay3D(  Display3D & display ) const;
-    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
-    void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
-    
-    
-
-
-
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Default Constructor.
-     * Forbidden since a Domain is necessary for defining a set.
-     */
-    DigitalSetBySTLSet();
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-
-  }; // end of class DigitalSetBySTLSet
-
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalSetBySTLSet'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalSetBySTLSet' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename Domain>
-  std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetBySTLSet<Domain> & object );
+  }; // end of class CDigitalSetArchetype
 
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/sets/DigitalSetBySTLSet.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DigitalSetBySTLSet_h
+#endif // !defined CDigitalSetArchetype_h
 
-#undef DigitalSetBySTLSet_RECURSES
-#endif // else defined(DigitalSetBySTLSet_RECURSES)
+#undef CDigitalSetArchetype_RECURSES
+#endif // else defined(CDigitalSetArchetype_RECURSES)
+
+
