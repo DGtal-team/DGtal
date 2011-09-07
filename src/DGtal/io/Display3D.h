@@ -325,7 +325,7 @@ namespace DGtal
      *
      **/
   
-    void updateBoundingBox(int x, int y, int z);
+    void updateBoundingBox(double x, double y, double z);
   
 
   
