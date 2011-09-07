@@ -158,7 +158,7 @@ bool testExceptions(const string &filename)
  * Display
  *
  */
-bool testDisplay(const string &filename)
+bool testDrawGridCurve(const string &filename)
 {
 
   GridCurve<KhalimskySpaceND<2> > c; //grid curve
@@ -287,6 +287,16 @@ bool testPairsRange(const Range &aRange)
   return true;
 }
 
+template <typename Range>
+bool testDisplayRange(const Range &aRange)
+{
+
+  trace.info() << endl;
+  trace.info() << "Displaying Range (" << aRange.size() << " elts)" << endl;
+  trace.info() << aRange << endl;
+  
+  return true;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -315,7 +325,7 @@ int main( int argc, char** argv )
     && testExceptions(sinus3D)
     && testExceptions(polyg2D)
     && testExceptions(emptyFile)
-    && testDisplay(sinus2D4)
+    && testDrawGridCurve(sinus2D4)
     && testIsOpen(sinus2D4,true)
     && testIsOpen(square,false); 
 
@@ -339,6 +349,18 @@ int main( int argc, char** argv )
     && testRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange())
     && testPairsRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange())
     && testRange<GridCurve::CodesRange>(c.getCodesRange())
+;
+
+  res = res 
+    && testDisplayRange<GridCurve::SCellsRange>(c.get0SCellsRange())
+    && testDisplayRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testDisplayRange<GridCurve::PointsRange>(c.getPointsRange())
+    && testDisplayRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
+    && testDisplayRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testDisplayRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange())
+    && testDisplayRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange())
+    && testDisplayRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange())
+    && testDisplayRange<GridCurve::CodesRange>(c.getCodesRange())
 ;
 
 //////////////////////

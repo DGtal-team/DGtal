@@ -95,6 +95,37 @@ public:
     return myData->size();
   }
 
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[SCellsRange]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, ", ") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'SCellsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'SCellsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const SCellsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
 private: 
   const typename GridCurve::Storage* myData;
@@ -149,7 +180,7 @@ public:
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
   }
-  
+
 };
 
 
@@ -230,7 +261,38 @@ public:
   {
     return myC->my0SCells.size();
   }
-
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[PointsRange]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, ", ") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'PointsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'PointsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const PointsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -285,7 +347,7 @@ public:
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
   }
-  
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -366,7 +428,38 @@ public:
   {
     return myC->my1SCells.size();
   }
-
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[MidPointsRange]" << std::endl; 
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, ", ") ); 
+    out << std::endl; 
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'MidPointsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'MidPointsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const MidPointsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -421,6 +514,7 @@ public:
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
   }
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -502,6 +596,43 @@ public:
     return myC->my1SCells.size();
   }
 
+    /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    ConstIterator it( this->begin() ); 
+    ConstIterator itEnd( this->end() ); 
+    out << "[ArrowsRange]" << std::endl; 
+    out << "\t"; 
+    for ( ; it != itEnd; ++it) 
+    {
+      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+      out << pair.first << pair.second << ", "; 
+    }
+    out << std::endl; 
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ArrowsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ArrowsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const ArrowsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -556,6 +687,7 @@ public:
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
   }
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -635,6 +767,38 @@ public:
     return myC->my1SCells.size();
   }
 
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[InnerPointsRange]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, ", ") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'InnerPointsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'InnerPointsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const InnerPointsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -768,6 +932,37 @@ public:
     return myC->my1SCells.size();
   }
 
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[OuterPointsRange]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, ", ") );
+    out << std::endl;
+  }
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'OuterPointsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'OuterPointsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const OuterPointsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -901,6 +1096,43 @@ public:
     return myC->my1SCells.size();
   }
 
+    /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    ConstIterator it( this->begin() ); 
+    ConstIterator itEnd( this->end() ); 
+    out << "[IncidentPointsRange]" << std::endl; 
+    out << "\t"; 
+    for ( ; it != itEnd; ++it) 
+    {
+      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+      out << pair.first << pair.second << ", "; 
+    }
+    out << std::endl; 
+  }
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'IncidentPointsRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'IncidentPointsRange' to write.
+   * @return the output stream after the writing.
+   */
+  friend ostream& operator <<(ostream & out, const IncidentPointsRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
@@ -1034,6 +1266,37 @@ public:
     return myC->my1SCells.size();
   }
 
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[CodesRange]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, "") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'CodesRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'CodesRange' to write.
+   * @return the output stream after the writing.
+   */
+    friend ostream& operator <<(ostream & out, const CodesRange & object)
+    {
+      object.selfDisplay( out );
+      return out;
+    }
   // ------------------------- private data --------------------------------
   private: 
     const GridCurve* myC;
