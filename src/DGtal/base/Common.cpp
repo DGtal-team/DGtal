@@ -45,9 +45,10 @@ using namespace std;
 /** DGtal Global variables
 *
 **/
-
-DGtal::TraceWriterTerm DGtal::traceWriterTerm(std::cerr);
-DGtal::Trace DGtal::trace(traceWriterTerm);
-
+namespace DGtal
+{
+  TraceWriterTerm traceWriterTerm(std::cerr);
+  Trace trace(traceWriterTerm);
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
