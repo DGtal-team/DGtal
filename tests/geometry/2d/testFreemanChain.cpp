@@ -63,7 +63,7 @@ bool testConstructors()
 
   trace.beginBlock ( "Testing FreemanChain constructors" );
 
-  trace.info() << "Constructor from string and coordintes" << endl;
+  trace.info() << "Constructor from string and coordinates" << endl;
   std::string s = "00001030003222321222";
   FreemanChain c1(s, -42, 12);
 
@@ -71,7 +71,6 @@ bool testConstructors()
   std::vector<Z2i::Point> myVector;
   for (Iterator i = c1.begin(); i != c1.end(); i++)
     myVector.push_back(*i);
-  //myVector.push_back(*c1.end());
   FreemanChain c2(myVector);
 
   trace.info() << "Constructor from input stream" << endl;

@@ -51,15 +51,6 @@
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/boards/Board2D.h"
-
-// Previously included...
-//
-//#include <cstddef>
-//#include "DGtal/base/Common.h"
-//#include "DGtal/base/BasicTypes.h"
-//#include "DGtal/io/Color.h"
-//#include "DGtal/kernel/NumberTraits.h"
-
 #include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -212,7 +203,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        PointI2 operator*() const
+        const PointI2& operator*() const
         {
           return myXY;
         }
@@ -220,7 +211,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        PointI2 get() const
+        const PointI2& get() const
         {
           return myXY;
         }
@@ -460,7 +451,7 @@ namespace DGtal
      * @param x the x-coordinate of the first point.
      * @param y the y-coordinate of the first point.
      */
-    FreemanChain( const std::string & s = "", int x = 0, int y = 0 );
+    FreemanChain( const std::string & s = "", TInteger x = 0, TInteger y = 0 );
 
 
     /**
