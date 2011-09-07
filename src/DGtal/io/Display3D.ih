@@ -635,7 +635,7 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
 
 inline
 void
-DGtal::Display3D::updateBoundingBox(int x, int y, int z)
+DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 {
   if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
   if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
