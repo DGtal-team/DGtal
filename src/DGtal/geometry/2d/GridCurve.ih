@@ -228,12 +228,15 @@ DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
   out << "#0-cell 1-cell" << std::endl;
   typename Storage::const_iterator i0 = my0SCells.begin();
   typename Storage::const_iterator i1 = my1SCells.begin();
-  while (i1 != my1SCells.end()) {
-    Point p = myK.sKCoords(*i0); 
-    Point l = myK.sKCoords(*i1); 
-    out << p << " " << l << std::endl;
+  while (i1 != my1SCells.end()) 
+  {
+    out << *i0 << *i1<< std::endl;
     ++i1;
     ++i0;
+  }
+  if (i0 != my0SCells.end())
+  {
+    out << *i0 << std::endl;
   }
 }
 //------------------------------------------------------------------------------
