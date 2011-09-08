@@ -44,9 +44,11 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal::deprecated
+namespace DGtal
 {
-  
+  namespace deprecated 
+  {
+    
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
@@ -418,6 +420,7 @@ namespace DGtal::deprecated
   std::ostream&
   operator<< ( std::ostream & out, const GreedyDecomposition<Segment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 
