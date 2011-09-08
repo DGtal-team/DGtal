@@ -325,7 +325,7 @@ namespace DGtal
      *
      **/
   
-    void updateBoundingBox(int x, int y, int z);
+    void updateBoundingBox(double x, double y, double z);
   
 
   
@@ -589,13 +589,13 @@ namespace DGtal
    * @param srcA source vector A.
    * @param srcB source vector B.
    */
-  static void cross (float dst[3], float srcA[3], float srcB[3]);
+  static void cross (double dst[3], double srcA[3], double srcB[3]);
 
   /**
    * Normalize the input 3d vector.
    * @param vec source & destination vector.
    */
-  static void normalize (float vec[3]);
+  static void normalize (double vec[3]);
 
 
   /**

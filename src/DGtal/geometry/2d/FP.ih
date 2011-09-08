@@ -403,7 +403,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::copyMLP(OutputIterator result) const
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::RealPointVector<2>
+DGtal::PointVector<2,double>
 DGtal::FP<TIterator,TInteger,connectivity>
    ::getRealPoint (const Point& a,const Point& b, const Point& c) const {
 

@@ -48,8 +48,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cmath>
-
-#include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -80,7 +78,7 @@ namespace DGtal
   public: 
 
     // ----------------------- inner type ------------------------------
-    typedef DGtal::RealPointVector<2> RealVector;
+    typedef DGtal::PointVector<2,double> RealVector;
     typedef RealVector Value;
 
     // ----------------------- Standard services ------------------------------
