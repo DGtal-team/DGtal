@@ -177,7 +177,7 @@ int main( int argc, char** argv )
   if (processingName == "DSS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
-          typedef GreedyDecomposition<DSS4> Decomposition4;
+          typedef deprecated::GreedyDecomposition<DSS4> Decomposition4;
 
           //Segmentation
     DSS4 computer;
