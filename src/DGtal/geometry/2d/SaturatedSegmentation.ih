@@ -44,9 +44,7 @@
 // ------------------------- Some processings -----------------------
 //////////////////////////////////////////////////////////////////////////////
 
-/**
- * Checks if the current segment intersects the next one (if exists).
- */
+
   template <typename TSegmentComputer>
 inline
 bool
@@ -56,9 +54,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
   return this->doesIntersectNext( it, itb, ite, Type() );
 }
 
-/**
- * Specialization for iterators.
- */
+
 template <typename TSegmentComputer>
 inline
 bool
@@ -77,9 +73,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
     }
 }
 
-/**
- * Specialization for circulators
- */
   template <typename TSegmentComputer>
 inline
 bool
@@ -91,9 +84,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
   return this->doesIntersectNext(it);
 }
 
-/**
- * Checks if the current segment intersects the next one (if exists).
- */
+
   template <typename TSegmentComputer>
 inline
 bool
@@ -106,9 +97,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
     return tmpSegmentComputer.extend();
 }
 
-/**
- * Computes the first maximal segment of the segmentation.
- */
+
   template <typename TSegmentComputer>
 inline
 void
@@ -126,9 +115,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFir
   }
 }
 
-/**
- * Computes the last maximal segment of the segmentation.
- */
+
   template <typename TSegmentComputer>
 inline
 void
@@ -174,9 +161,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
 }
 
 
-/**
- * Goes to the next segment.
- */
+
   template <typename TSegmentComputer>
 inline
 void
@@ -213,11 +198,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::nextMax
 // ------------------------- Standard services -----------------------
 //////////////////////////////////////////////////////////////////////////////
 
-/**
- * Constructor.
- * Nb: complexity in O(n).
- *
- */
+
  template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
@@ -261,12 +242,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
    }
  }
 
-
-
-/**
- * Copy constructor.
- * @param other the iterator to clone.
- */
   template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
@@ -282,11 +257,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
 {
 }
     
-/**
- * Assignment.
- * @param other the iterator to copy.
- * @return a reference on 'this'.
- */
+
   template <typename TSegmentComputer>
 inline
 typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
@@ -307,10 +278,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
   return *this;
 }
     
-/**
- * Destructor.
- * Does nothing
- */
+
   template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
@@ -321,10 +289,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::~Segmen
 // ------------------------- iteration services -------------------------
 //////////////////////////////////////////////////////////////////////////////
     
-      
-/**
- * @return the current segment.
- */
+
   template <typename TSegmentComputer>
 inline
 const TSegmentComputer&
@@ -333,9 +298,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
   return mySegmentComputer;
 }
 
-/**
- * @return the pointer to the current segment.
- */
+
   template <typename TSegmentComputer>
 inline
 const TSegmentComputer*
@@ -344,9 +307,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
   return &mySegmentComputer;
 }
 
-/**
- * @return the current segment.
- */
+
   template <typename TSegmentComputer>
 inline
 TSegmentComputer
@@ -355,10 +316,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::get() c
   return mySegmentComputer;
 }
 
-/**
- * Pre-increment.
- * Goes to the next segment.
- */
 
   template <typename TSegmentComputer>
 inline
@@ -370,13 +327,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
 }
     
 
-/**
- * Equality operator.
- *
- * @param aOther the iterator to compare with 
- *
- * @return 'true' if their current positions coincide.
- */
   template <typename TSegmentComputer>
 inline
 bool
@@ -392,13 +342,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
 
 }
 
-/**
- * Inequality operator.
- *
- * @param aOther the iterator to compare with 
- *
- * @return 'true' if their current positions differs.
- */
   template <typename TSegmentComputer>
 inline
 bool
@@ -456,9 +399,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() c
 // Interface - public :
 
 
-/**
- * Constructor.
- */
   template <typename TSegmentComputer>
 DGtal::SaturatedSegmentation<TSegmentComputer>::SaturatedSegmentation
 (const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
@@ -493,20 +433,13 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::setMode
 }
 
 
-/**
- * Destructor.
- */
   template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::~SaturatedSegmentation()
 {
 }
 
-/**
- * ConstIterator service.
- * @return an iterator pointing on the first segment
- * of the digital curve.
- */
+
   template <typename TSegmentComputer>
 inline
 typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator 
@@ -515,11 +448,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::begin() const
   return SegmentComputerIterator(this, mySegmentComputer, true);
 }
 
-/**
- * ConstIterator service.
- * @return an iterator pointing after the last segment
- * of the digital curve.
- */
+
   template <typename TSegmentComputer>
 inline
 typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator 
@@ -529,10 +458,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::end() const
 }
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
+
   template <typename TSegmentComputer>
 inline
 void
@@ -541,10 +467,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out
   out << "[SaturatedSegmentation]";
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
+
   template <typename TSegmentComputer>
 inline
 bool
