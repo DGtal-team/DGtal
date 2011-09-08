@@ -62,7 +62,7 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer, at least a model of CForwardSegmentComputer
+   * @tparam TSegmentComputer at least a model of CForwardSegmentComputer
    * (an online algorithm for the recognition of a given class of segments). 
    *
    * In the short example below, a digital curve stored in a STL vector
@@ -193,10 +193,14 @@ namespace DGtal
       bool  myFlagIsValid;
     
       /**
-       * Begin and end iterators of the last maximal segment of the segmentation
+       * Begin iterator of the last maximal segment of the segmentation
        */
-      ConstIterator myLastMaximalSegmentBegin, myLastMaximalSegmentEnd;
-
+      ConstIterator myLastMaximalSegmentBegin;
+      /**
+       * End iterator of the last maximal segment of the segmentation
+       */
+      ConstIterator myLastMaximalSegmentEnd;
+      
       /**
        * A flag equal to TRUE if the current segment
        * intersects the next one, FALSE otherwise 
@@ -227,11 +231,11 @@ namespace DGtal
 
       /**
        * Constructor.
+       * 
        * Nb: complexity in O(n).
-       *
-       * @param aSegmentation, the object that knows the range bounds
-       * @param aSegmentComputer, an online segment recognition algorithm
-       * @param aFlag, 'true' to build a valid object, 'false' otherwise
+       * @param aSegmentation  the object that knows the range bounds
+       * @param aSegmentComputer  an online segment recognition algorithm
+       * @param aFlag  'true' to build a valid object, 'false' otherwise
        */
       SegmentComputerIterator( const SaturatedSegmentation<TSegmentComputer> *aSegmentation,
          const TSegmentComputer& aSegmentComputer,
@@ -283,6 +287,7 @@ namespace DGtal
       /**
        * Pre-increment.
        * Goes to the next maximal segment (if possible).
+        *
        * Nb: complexity in O(n).
        */
       SegmentComputerIterator& operator++();
@@ -335,9 +340,9 @@ namespace DGtal
 
       /**
        * Checks if the current segment intersects the next one.
-       * @param it, end of the current segment
-       * @param itb, begin iterator of the underlying range
-       * @param ite, end iterator of the underlying range
+       * @param it  end of the current segment
+       * @param itb  begin iterator of the underlying range
+       * @param ite  end iterator of the underlying range
        * @return 'true' if it != itb and it != ite and
        * --it and it form a valid segment, false otherwise
        */
@@ -350,8 +355,9 @@ namespace DGtal
 
       /**
        * Checks if the current segment intersects the next one (if exists).
-       * @param it, end of the current segment
+       * @param it  end of the current segment
        * @return 'true' if --it and it form a valid segment, false otherwise
+       *
        * NB: no verification
        */
       bool doesIntersectNext(const ConstIterator& it);
@@ -383,15 +389,16 @@ namespace DGtal
 
     /**
      * Default constructor.
+     *
      * Nb: not valid
      */
     SaturatedSegmentation() {};
 
     /**
      * Constructor.
-     * @param itb, begin iterator of the underlying range
-     * @param ite, end iterator of the underlying range
-     * @param aSegmentComputer, an online segment recognition algorithm. 
+     * @param itb  begin iterator of the underlying range
+     * @param ite  end iterator of the underlying range
+     * @param aSegmentComputer  an online segment recognition algorithm. 
      */
     SaturatedSegmentation(const ConstIterator& itb, 
         const ConstIterator& ite, 
@@ -399,8 +406,9 @@ namespace DGtal
 
     /**
      * Set a subrange to process
-     * @param itb, begin iterator the range to processed
-     * @param ite, end iterator the range to processed
+     * @param itb  begin iterator the range to processed
+     * @param ite  end iterator the range to processed
+     * 
      * Nb: must be a valid range included in the underlying range.
      */
     void setSubRange(const ConstIterator& itb, 
@@ -451,15 +459,25 @@ namespace DGtal
   private:
 
     /**
-     * Begin and end iterators of the underlying range
+     * Begin iterator of the underlying range
      */
-    ConstIterator myBegin, myEnd;
+    ConstIterator myBegin;
     
     /**
-     * Begin and end iterators of the subrange to segment
+     * End iterator of the underlying range
      */
-    ConstIterator myStart, myStop;
+    ConstIterator myEnd;
+  
+    /**
+     * Begin iterator of the subrange to segment
+     */
+    ConstIterator myStart;
 
+    /**
+     * End iterator of the subrange to segment
+     */
+    ConstIterator myStop;
+  
     /**
      * Mode: either "Frist", "MostCentered" (default), "Last"
      */
