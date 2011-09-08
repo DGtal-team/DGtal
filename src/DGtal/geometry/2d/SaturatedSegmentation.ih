@@ -226,14 +226,15 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
   const bool& aIsValid )
   : myS( s ), 
     mySegmentComputer( aSegmentComputer ), 
+    myFlagIsValid( aIsValid ),
     myFlagIntersectNext( false ),
     myFlagIntersectPrevious( false ),
-    myFlagIsLast( false ),
-    myFlagIsValid( aIsValid )
+    myFlagIsLast( false )
  {
 
    if (myFlagIsValid) {
-     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) { //if at least one element
+     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) 
+      { //if at least one element
 
        this->initLastMaximalSegment(); 
        this->initFirstMaximalSegment(); 
@@ -241,20 +242,22 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
        myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
        if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
-      &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) { //if only one segment
+      &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) 
+       {         //if only one segment
 
-   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
-   myFlagIsLast = true; 
+         myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+         myFlagIsLast = true; 
         
-       } else {                                                     //otherwise
-   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+       } else  //otherwise
+       {
+          myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
        }
  
      } 
      else 
-       {
-   myFlagIsValid = false;
-       }
+      {
+        myFlagIsValid = false;
+      }
    }
  }
 
@@ -270,12 +273,12 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
 ( const SegmentComputerIterator & other )
   : myS( other.myS ), 
     mySegmentComputer( other.mySegmentComputer ),
+     myFlagIsValid( other.myFlagIsValid ),
+     myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ),
+    myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd ),
     myFlagIntersectNext( other.myFlagIntersectNext ), 
     myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
-    myFlagIsLast( other.myFlagIsLast ),
-    myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ),
-    myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd ),
-    myFlagIsValid( other.myFlagIsValid )
+    myFlagIsLast( other.myFlagIsLast )
 {
 }
     
@@ -294,12 +297,12 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
     {
       myS = other.myS;
       mySegmentComputer = other.mySegmentComputer;
-      myFlagIntersectNext = other.myFlagIntersectNext;
-      myFlagIntersectPrevious = other.myFlagIntersectPrevious;
       myFlagIsValid = other.myFlagIsValid;
-      myFlagIsLast = other.myFlagIsLast;
       myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ); 
       myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd );
+      myFlagIntersectNext = other.myFlagIntersectNext;
+      myFlagIntersectPrevious = other.myFlagIntersectPrevious;
+      myFlagIsLast = other.myFlagIsLast;
     }
   return *this;
 }

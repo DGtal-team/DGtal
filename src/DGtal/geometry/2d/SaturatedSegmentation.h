@@ -23,7 +23,7 @@
  *
  * @date 2011/07/21
  *
- * Header file for module SaturatedSegmentation.cpp
+ * @brief Header file for module SaturatedSegmentation.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -63,7 +63,7 @@ namespace DGtal
    * This class is a model of CSegmentation.
    * 
    * @tparam TSegmentComputer, at least a model of CForwardSegmentComputer
-   * (an online algorithm for the recognition of some segment). 
+   * (an online algorithm for the recognition of a given class of segments). 
    *
    * In the short example below, a digital curve stored in a STL vector
    * is decomposed into maximal 8-connected DSSs whose parameters are sent to 
@@ -121,7 +121,8 @@ namespace DGtal
    * Several processing modes are therefore available: 
    * - "First", 
    * - "MostCentered" (default), 
-   * - "Last", 
+   * - "Last"
+   *
    * The mode i indicates that the segmentation begins with 
    * the i maximal segment passing through the first element
    * and ends with the i maximal segment passing through the 
@@ -133,6 +134,8 @@ namespace DGtal
   theSegmentation.setMode("First");
    * @endcode  
    * Note that the default mode will be used for any unknown modes.  
+   * 
+   * @see testSegmentation.cpp
    */
 
   template <typename TSegmentComputer>
@@ -184,7 +187,11 @@ namespace DGtal
        */
       SegmentComputer  mySegmentComputer;
       
-
+      /**
+       * A flag equal to TRUE if *this is valid, FALSE otherwise 
+       */
+      bool  myFlagIsValid;
+    
       /**
        * Begin and end iterators of the last maximal segment of the segmentation
        */
@@ -209,11 +216,6 @@ namespace DGtal
        * FALSE otherwise 
        */
       bool  myFlagIsLast;
-
-      /**
-       * A flag equal to TRUE if *this is valid, FALSE otherwise 
-       */
-      bool  myFlagIsValid;
 
 
 
@@ -264,7 +266,7 @@ namespace DGtal
     public:
       
       /**
-       * @return the current segment
+       * @return a constant reference to the current segment
        */
       const SegmentComputer& operator*() const;
 
@@ -274,7 +276,7 @@ namespace DGtal
       SegmentComputer get() const;
 
       /**
-       * @return the pointer to the current segment
+       * @return a constant pointer to the current segment
        */
       const SegmentComputer* operator->() const;
 
@@ -287,9 +289,7 @@ namespace DGtal
       
       /**
        * Equality operator.
-       *
        * @param aOther the iterator to compare with 
-       *
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
        */
@@ -297,9 +297,7 @@ namespace DGtal
 
       /**
        * Inequality operator.
-       *
        * @param aOther the iterator to compare with 
-       *
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
        */
@@ -400,7 +398,7 @@ namespace DGtal
         const SegmentComputer& aSegmentComputer);
 
     /**
-     * Init.
+     * Set a subrange to process
      * @param itb, begin iterator the range to processed
      * @param ite, end iterator the range to processed
      * Nb: must be a valid range included in the underlying range.
@@ -452,17 +450,24 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    //Begin and end iterators of the underlying range
+    /**
+     * Begin and end iterators of the underlying range
+     */
     ConstIterator myBegin, myEnd;
     
-    //Begin and end iterators of the subrange to be segmented
+    /**
+     * Begin and end iterators of the subrange to segment
+     */
     ConstIterator myStart, myStop;
 
-    //Mode
-    //"Frist", "MostCentered" (default), "Last"
+    /**
+     * Mode: either "Frist", "MostCentered" (default), "Last"
+     */
     std::string myMode; 
 
-    //SegmentComputer
+    /**
+     * the segment computer.
+     */
     SegmentComputer mySegmentComputer;
 
     // ------------------------- Hidden services ------------------------------
