@@ -197,7 +197,7 @@ int main( int argc, char** argv )
   } else if (processingName == "MS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
-          typedef MaximalSegments<DSS4> Decomposition4;
+          typedef deprecated::MaximalSegments<DSS4> Decomposition4;
 
           //Segmentation
     DSS4 computer;

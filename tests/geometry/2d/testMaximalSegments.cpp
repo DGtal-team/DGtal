@@ -55,6 +55,7 @@
 
 
 using namespace DGtal;
+using namespace DGtal::deprecated;
 using namespace std;
 using namespace LibBoard;
 

@@ -70,7 +70,7 @@ namespace DGtal
     typedef typename SegmentComputer::ConstIterator ConstIterator;
     typedef typename Functor::Value Quantity;
 
-    typedef typename MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 
+    typedef typename deprecated::MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -150,7 +150,7 @@ namespace DGtal
     /** begin and end iterators */ 
     ConstIterator myBegin,myEnd;
     /** range of maximal segments */ 
-    MaximalSegments<SegmentComputer> myMSRange; 
+    deprecated::MaximalSegments<SegmentComputer> myMSRange; 
 
     // ------------------------- Internal services ------------------------------
 
