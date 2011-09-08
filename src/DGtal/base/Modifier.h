@@ -46,7 +46,6 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/RealPointVector.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -257,12 +256,12 @@ namespace DGtal
    * @code 
   KSpace aKSpace;
   KSpace::SCell aSCell; 
-  RealPointVector<typename KSpace::dimension> aPoint; 
+  PointVector<typename KSpace::dimension,double> aPoint; 
   SCellToMidPoint<KSpace> m(aKSpace); 
   ...
   aPoint = m.get(aSCell); 
    * @endcode
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector RealPointVector
+   * @see ConstIteratorAdapter KhalimskySpaceND PointVector 
    */
   template <typename KSpace>
   class SCellToMidPoint
@@ -270,7 +269,7 @@ namespace DGtal
     
     public: 
       
-    typedef RealPointVector<KSpace::dimension> Output;
+    typedef PointVector<KSpace::dimension,double> Output;
     typedef typename KSpace::SCell Input;
     
     private: 

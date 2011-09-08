@@ -17,55 +17,56 @@
 #pragma once
 
 /**
- * @file CRange.h
- * @author Guillaume Damiand
+ * @file CEuclideanRing.h
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/08/31
- *
- * Header file for concept CRange
+ * @date 2011/09/05
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CRange_RECURSES)
-#error Recursive header files inclusion detected in CRange.h
-#else // defined(CRange_RECURSES)
+#if defined(CEuclideanRing_RECURSES)
+#error Recursive header files inclusion detected in CEuclideanRing.h
+#else // defined(CEuclideanRing_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CRange_RECURSES
+#define CEuclideanRing_RECURSES
 
-#if !defined CRange_h
+#if !defined CEuclideanRing_h
 /** Prevents repeated inclusion of headers. */
-#define CRange_h
+#define CEuclideanRing_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/ConceptUtils.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CRange
+  // class CEuclideanRing
   /**
-     Description of \b concept '\b CRange' <p>
+     Description of \b concept '\b CEuclideanRing' <p>
      @ingroup Concepts
     
-     \brief Aim: Defines the concept describing a const range.
+     @brief Aim: Defines the mathematical concept equivalent to a
+     unitary commutative ring with a division operator. 
      
-     <p> Refinement of CConstRange
+     <p> Refinement of CCommutativeRing<T>
+
+     <p> Associated types :
     
-     <p> Provided types :
-
-     - Iterator: the iterator type, a model of iterator concept.
-     - ReverseIterator: the reverse iterator type, a model of
-          iterator concept.
-
-     <table>
+     <p> Notation
+     - \t X : A type that is a model of CEuclideanRing
+     - \t x, \t y  : Object of type Integer
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table> 
      <tr> 
      <td class=CName> \b Name </td> 
      <td class=CExpression> \b Expression </td>
@@ -77,12 +78,12 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t X should have a static \c dimension. </td>
-     <td class=CExpression>      \t x.dimension </td> 
-     <td class=CRequirements>    static member has type \t Dimension </td>
-     <td class=CReturnType>      </td>
+     <td class=CName>            Division </td>
+     <td class=CExpression>      \t x / \t y </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      \t X</td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
+     <td class=CSemantics>       Euclidean division of two numbers </td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -91,44 +92,34 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
-      PointVector, 
+       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
      <p> Notes <br>
-
-     @tparam T the type that is checked. T should be a model of CRange.
-
+   
+     @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CRange : public CConstRange<T>
+  struct CEuclideanRing : CCommutativeRing<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Iterator Iterator;
-    typedef typename T::ReverseIterator ReverseIterator;
 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
- 
-    BOOST_CONCEPT_USAGE(CRange)
+    BOOST_CONCEPT_USAGE( CEuclideanRing )
     {
-      Iterator it=i.begin();
-      it=i.end();
-      ReverseIterator it2=i.rbegin();
-      it2=i.rend();
-    };
-
+      ConceptUtils::sameType( c, T( a/b ) );
+    }   
+    // ------------------------- Internals ------------------------------------
   private:
-    T i;
-  }; // end of concept CRange
+    T a,b,c;
   
+  };
 } // namespace DGtal
-
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CRange_h
+#endif // !defined CEuclideanRing_h
 
-#undef CRange_RECURSES
-#endif // else defined(CRange_RECURSES)
+#undef CEuclideanRing_RECURSES
+#endif // else defined(CEuclideanRing_RECURSES)

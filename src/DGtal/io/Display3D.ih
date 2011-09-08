@@ -53,7 +53,7 @@
  * @param srcB source vector B.
  */
 static inline 
-void DGtal::cross (float dst[3], float srcA[3], float srcB[3])
+void DGtal::cross (double dst[3], double srcA[3], double srcB[3])
 {
   dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
   dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
@@ -66,10 +66,10 @@ void DGtal::cross (float dst[3], float srcA[3], float srcB[3])
  */
 static inline  
 void 
-DGtal::normalize (float vec[3])
+DGtal::normalize (double vec[3])
 {
-  const float squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-  const float invLen = 1.f / (float) sqrt (squaredLen);
+  const double squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
+  const double invLen = 1.0 /  sqrt (squaredLen);
 
   vec[0] *= invLen;
   vec[1] *= invLen;
@@ -296,8 +296,8 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
 			      bool isSigned, bool aSign, bool basicMode )
 {
   updateBoundingBox(x, y, z);
-  float retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
-  float width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
+  double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
+  double width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   if(basicMode){
     width=0.0;
     retract=0.0;
@@ -383,7 +383,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     {
       //main up face
       quadD3D qFaceUp;
-      float normaleUp [3];
+      double normaleUp [3];
       normaleUp[0] = dx!=0.0? 1.0:0.0;
       normaleUp[1] = dy!=0.0 ? 1.0:0.0;
       normaleUp[2] = dz!=0.0? 1.0:0.0;
@@ -414,7 +414,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     
       //small face 1
       quadD3D qFace1;
-      float vF1[3]; float v1 [3]; float n1 [3]; 
+      double vF1[3]; double v1 [3]; double n1 [3]; 
       vF1[0] = x2-x1; vF1[1] = y2-y1; vF1[2] = z2-z1;
       v1[0] = x5-x1; v1[1] = y5-y1; v1[2] = z5-z1;
     
@@ -431,7 +431,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
   
       //small face 2
       quadD3D qFace2;
-      float vF2[3]; float v2 [3]; float n2[3];
+      double vF2[3]; double v2 [3]; double n2[3];
       vF2[0]= x3-x2; vF2[1]=y3-y2; vF2[2]= z3-z2;
       v2[0]= x6-x2; v2[1]= y6-y2; v2[2]=z6-z2;
       cross(n2, v2, vF2);
@@ -449,7 +449,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
   
       //small face 3
       quadD3D qFace3;
-      float vF3[3]; float v3 [3]; float n3[3];
+      double vF3[3]; double v3 [3]; double n3[3];
       vF3[0]= x4-x3; vF3[1]=y4-y3; vF3[2]= z4-z3;
       v3[0]= x7-x3; v3[1]= y7-y3; v3[2]=z7-z3;
       cross(n3, v3, vF3);
@@ -465,7 +465,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
    
       //small face 4
       quadD3D qFace4;
-      float vF4[3]; float v4 [3]; float n4[3];
+      double vF4[3]; double v4 [3]; double n4[3];
       vF4[0]= x1-x4; vF4[1]=y1-y4; vF4[2]= z1-z4;
       v4[0]= x5-x4; v4[1]= y5-y4; v4[2]=z5-z4;
       cross(n4, v4, vF4);
@@ -635,7 +635,7 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
 
 inline
 void
-DGtal::Display3D::updateBoundingBox(int x, int y, int z)
+DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 {
   if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
   if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;

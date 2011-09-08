@@ -86,7 +86,7 @@ DGtal::Board3DTo2D::isValid() const
  * @param tmat destination matrix.
  * @param mat source matrix.
  */
-static void TransposeMt(float tmat[16], float mat[16])
+static void TransposeMt(double tmat[16], double mat[16])
 {
     tmat[0] = mat[0]; tmat[1] = mat[4]; tmat[2] = mat[8]; tmat[3] = mat[12];
     tmat[4] = mat[1]; tmat[5] = mat[5]; tmat[6] = mat[9]; tmat[7] = mat[13];
@@ -100,7 +100,7 @@ static void TransposeMt(float tmat[16], float mat[16])
  * @param mat source matrix.
  * @param b source vector.
  */
-static void MulMt(float v[4], float mat[16], float b[4])
+static void MulMt(double v[4], double mat[16], double b[4])
 {
     v[0] = mat[0] * b[0] + mat[1] * b[1] + mat[2] * b[2] + mat[3] * b[3];
     v[1] = mat[4] * b[0] + mat[5] * b[1] + mat[6] * b[2] + mat[7] * b[3];
@@ -121,25 +121,25 @@ static void MulMt(float v[4], float mat[16], float b[4])
  * @param upy y coordinate of up-vector.
  * @param upz z coordinate of up-vector.
  */
-static void LookAtMt(float mat[16],
-         float eyex, float eyey, float eyez,
-          float dirx, float diry, float dirz,
-          float upx, float upy, float upz)
+static void LookAtMt(double mat[16],
+         double eyex, double eyey, double eyez,
+          double dirx, double diry, double dirz,
+          double upx, double upy, double upz)
 {
-    float up[3]; up[0]= upx; up[1]= upy; up[2]= upz;
+    double up[3]; up[0]= upx; up[1]= upy; up[2]= upz;
     
-    float z[3]; z[0]= -dirx; z[1]= -diry; z[2]= -dirz; normalize(z);
-    float x[3]; cross (x, up, z); normalize(x);
-    float y[3]; cross (y, z, x); normalize(y);
+    double z[3]; z[0]= -dirx; z[1]= -diry; z[2]= -dirz; normalize(z);
+    double x[3]; cross (x, up, z); normalize(x);
+    double y[3]; cross (y, z, x); normalize(y);
     
-    float m[16];
+    double m[16];
     m[0] = x[0]; m[1] = x[1]; m[2] = x[2]; m[3] = 0;
     m[4] = y[0]; m[5] = y[1]; m[6] = y[2]; m[7] = 0;
     m[8] = z[0]; m[9] = z[1]; m[10] = z[2]; m[11] = 0;
     m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
       
-    float e[4]; e[0]= -eyex; e[1]= -eyey; e[2]= -eyez; e[3]= 1;
-    float eyePrime[4]; MulMt(eyePrime, m, e);
+    double e[4]; e[0]= -eyex; e[1]= -eyey; e[2]= -eyez; e[3]= 1;
+    double eyePrime[4]; MulMt(eyePrime, m, e);
     
     TransposeMt(mat, m);
     mat[12] = eyePrime[0]; mat[13] = eyePrime[1]; mat[14] = eyePrime[2];
@@ -151,7 +151,7 @@ static void LookAtMt(float mat[16],
 void DGtal::Board3DTo2D::precompute_projection_matrix()
 {
       // Projection: from qglviewer
-      /*const float f = 1.0/tan(fieldOfView()/2.0);
+      /*const double f = 1.0/tan(fieldOfView()/2.0);
       projectionMatrix_[0]  = f/aspectRatio();
       projectionMatrix_[5]  = f;
       projectionMatrix_[10] = (ZNear + ZFar) / (ZNear - ZFar);
@@ -169,7 +169,7 @@ void DGtal::Board3DTo2D::precompute_projection_matrix()
             0.00, 0.00, (ZNear + ZFar) / (ZNear - ZFar), -1.00, 
             0.00, 0.00, 2.0 * ZNear * ZFar / (ZNear - ZFar), 0.00 };
       
-      float Modelview[16];
+      double Modelview[16];
       LookAtMt(Modelview,
     camera_position[0], camera_position[1], camera_position[2],
     camera_direction[0], camera_direction[1], camera_direction[2],
