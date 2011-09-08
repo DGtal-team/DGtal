@@ -71,9 +71,9 @@ bool testModifier()
     K2 theKSpace; 
     SCellToMidPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    RealPointVector<K2::dimension> aPoint = m.get( s );
+    PointVector<K2::dimension,double> aPoint = m.get( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == RealPointVector<K2::dimension>(0,0.5) ) ? 1 : 0; 
+    nbok += ( aPoint == PointVector<K2::dimension,double>(0,0.5) ) ? 1 : 0; 
     nb++;
   }  
 

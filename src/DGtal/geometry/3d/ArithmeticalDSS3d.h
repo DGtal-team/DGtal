@@ -101,9 +101,9 @@ namespace DGtal
     typedef DGtal::PointVector<2,Coordinate> Point2d;
     typedef DGtal::PointVector<2,Coordinate> Vector2d;
     
-    typedef DGtal::RealPointVector<2> PointD2d; 
-    typedef DGtal::RealPointVector<3> PointD3d;
-    typedef DGtal::RealPointVector<3> VectorD3d;
+    typedef DGtal::PointVector<2,double> PointD2d; 
+    typedef DGtal::PointVector<3,double> PointD3d;
+    typedef DGtal::PointVector<3,double> VectorD3d;
         
     // adapters for iterator
     typedef Point3dTo2dXY<Coordinate> XYModifier;
