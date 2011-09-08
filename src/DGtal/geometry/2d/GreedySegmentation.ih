@@ -183,28 +183,29 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
   const bool& aIsValid )
   : myS( s ), 
     mySegmentComputer( aSegmentComputer ), 
+    myFlagIsValid( aIsValid ),
     myFlagIntersectNext( false ),
     myFlagIntersectPrevious( false ),
-    myFlagIsValid( aIsValid ),
     myFlagIsLast( false )
- {
-   
-   if (myFlagIsValid)
-     {
-       if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) {   //if at least one element
-   
-   myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
-   
-   //computation of the longest segment from myS->myStart
-   this->longestSegment(myS->myStart);  
-   
-       } 
-       else 
+{
+ 
+ if (myFlagIsValid)
    {
-     myFlagIsValid = false;
+     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) 
+       {   //if at least one element
+ 
+         myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
+         
+         //computation of the longest segment from myS->myStart
+         this->longestSegment(myS->myStart);  
+ 
+        } 
+      else 
+       {
+         myFlagIsValid = false;
+       }
    }
-     }
- }
+}
 
 
 
@@ -218,12 +219,12 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 ( const SegmentComputerIterator & other )
   : myS( other.myS ), 
     mySegmentComputer( other.mySegmentComputer ),
+    myFlagIsValid( other.myFlagIsValid ),
     myFlagIntersectNext( other.myFlagIntersectNext ), 
     myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
-    myFlagIsLast( other.myFlagIsLast ),
-    myFlagIsValid( other.myFlagIsValid )
-  {
-  }
+    myFlagIsLast( other.myFlagIsLast )
+{
+}
 
 /**
  * Assignment.
@@ -240,9 +241,9 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
     {
       myS = other.myS;
       mySegmentComputer = other.mySegmentComputer;
+      myFlagIsValid = other.myFlagIsValid;
       myFlagIntersectNext = other.myFlagIntersectNext;
       myFlagIntersectPrevious = other.myFlagIntersectPrevious;
-      myFlagIsValid = other.myFlagIsValid;
       myFlagIsLast = other.myFlagIsLast;
     }
   return *this;
@@ -489,7 +490,7 @@ inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::isValid() const
 {
-    return true;
+  return true;
 }
 
 
