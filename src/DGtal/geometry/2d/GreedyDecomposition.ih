@@ -52,7 +52,7 @@
  */
  template <typename TSegment>
 inline
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator ( 
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator ( 
   const GreedyDecomposition<TSegment> *aDec,
   const typename TSegment::ConstIterator& aBack, 
   const TSegment& aSegment)
@@ -96,7 +96,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator (
  */
   template <typename TSegment>
 inline
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator
 ( const SegmentIterator & aOther )
   : myDec( aOther.myDec ), 
     myFront( aOther.myFront ), 
@@ -114,8 +114,8 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator
  */
   template <typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator& 
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator=
+typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator& 
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator=
 ( const SegmentIterator & other )
 {
   if ( this != &other )
@@ -136,7 +136,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator=
  */
   template <typename TSegment>
 inline
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::~SegmentIterator()
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::~SegmentIterator()
 {
 }
 
@@ -150,7 +150,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::~SegmentIterator()
   template <typename TSegment>
 inline
 TSegment
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator*() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator*() const
 {
   return mySegment;
 }
@@ -161,7 +161,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator*() const
   template <typename TSegment>
 inline
 TSegment
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::get() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::get() const
 {
   return mySegment;
 }
@@ -173,8 +173,8 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::get() const
 
   template <typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<TSegment>::SegmentIterator & 
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator++()
+typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator & 
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator++()
 {
   this->next();
   return *this;
@@ -187,7 +187,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator++()
   template <typename TSegment>
 inline
 const bool
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::intersectNext() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::intersectNext() const
 {
   return myFlagIntersectNext;
 }
@@ -199,7 +199,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::intersectNext() const
   template <typename TSegment>
 inline
 const bool
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::intersectPrevious() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;
 }
@@ -210,7 +210,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::intersectPrevious() const
   template <typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
 {
     Segment tmpSegment;
     Iterator previousIt = it; --previousIt;
@@ -225,7 +225,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersectNext(const I
   template <typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::longestSegment()
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::longestSegment()
 {
 
     mySegment.init(myBack);
@@ -259,7 +259,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::longestSegment()
   template <typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::next()
 {
 
   if (myFront != myDec->myEnd) { //if not the end
@@ -289,7 +289,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::next()
   template <typename TSegment>
 inline
 const typename TSegment::ConstIterator
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
 }
@@ -301,7 +301,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getFront() const
   template <typename TSegment>
 inline
 const typename TSegment::ConstIterator
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getBack() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
 }
@@ -317,7 +317,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::getBack() const
   template <typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator==
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator==
 ( const SegmentIterator & aOther ) const
 {
   return ( (myFront == aOther.myFront)&&(myBack == aOther.myBack) );
@@ -333,7 +333,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator==
   template <typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator!=
+DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator!=
 ( const SegmentIterator & aOther ) const
 {
   return ( (myFront != aOther.myFront)||(myBack != aOther.myBack) );
@@ -354,7 +354,7 @@ DGtal::GreedyDecomposition<TSegment>::SegmentIterator::operator!=
  * @param aEnd, end iterator on a digital curve
  */
   template <typename TSegment>
-DGtal::GreedyDecomposition<TSegment>::GreedyDecomposition
+DGtal::deprecated::GreedyDecomposition<TSegment>::GreedyDecomposition
 (const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
  : myBegin(aBegin),
    myEnd(aEnd),
@@ -371,7 +371,7 @@ DGtal::GreedyDecomposition<TSegment>::GreedyDecomposition
   template <typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<TSegment>::init
+DGtal::deprecated::GreedyDecomposition<TSegment>::init
 (const Iterator& aBegin, const Iterator& aEnd, const Segment& aSegment, const bool& aFlag)
 {
   myBegin = aBegin;
@@ -385,7 +385,7 @@ DGtal::GreedyDecomposition<TSegment>::init
  */
   template <typename TSegment>
 inline
-DGtal::GreedyDecomposition<TSegment>::~GreedyDecomposition()
+DGtal::deprecated::GreedyDecomposition<TSegment>::~GreedyDecomposition()
 {
 }
 
@@ -396,8 +396,8 @@ DGtal::GreedyDecomposition<TSegment>::~GreedyDecomposition()
  */
   template <typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<TSegment>::SegmentIterator 
-DGtal::GreedyDecomposition<TSegment>::begin() const
+typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator 
+DGtal::deprecated::GreedyDecomposition<TSegment>::begin() const
 {
   return SegmentIterator(this, myBegin, mySegment);
 }
@@ -409,8 +409,8 @@ DGtal::GreedyDecomposition<TSegment>::begin() const
  */
   template <typename TSegment>
 inline
-typename DGtal::GreedyDecomposition<TSegment>::SegmentIterator 
-DGtal::GreedyDecomposition<TSegment>::end() const
+typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator 
+DGtal::deprecated::GreedyDecomposition<TSegment>::end() const
 {
   return SegmentIterator(this, myEnd, mySegment);
 }
@@ -423,7 +423,7 @@ DGtal::GreedyDecomposition<TSegment>::end() const
   template <typename TSegment>
 inline
 void
-DGtal::GreedyDecomposition<TSegment>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::GreedyDecomposition<TSegment>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GreedyDecomposition]";
 }
@@ -435,7 +435,7 @@ DGtal::GreedyDecomposition<TSegment>::selfDisplay ( std::ostream & out ) const
   template <typename TSegment>
 inline
 bool
-DGtal::GreedyDecomposition<TSegment>::isValid() const
+DGtal::deprecated::GreedyDecomposition<TSegment>::isValid() const
 {
     return true;
 }
@@ -448,7 +448,7 @@ DGtal::GreedyDecomposition<TSegment>::isValid() const
   template <typename TSegment>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::deprecated::operator<< ( std::ostream & out, 
       const GreedyDecomposition<TSegment> & object )
 {
   object.selfDisplay( out );
