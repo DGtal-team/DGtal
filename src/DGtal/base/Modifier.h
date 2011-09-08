@@ -394,7 +394,7 @@ namespace DGtal
       Point p( myK.sCoords( pointel ) );   //integer coordinates
       //displacement vector
       Vector v( myK.sKCoords( s ) - myK.sKCoords( pointel ) );
-      return std::make_pair<Point,Vector>(p,v);
+      return Output(p,v);
     }
       
   }; // end of class SCellToArrow
@@ -605,7 +605,7 @@ namespace DGtal
       //outer point
       Input outerPixel( myK.sDirectIncident( s, *myK.sOrthDirs( s ) ) );
 
-      return std::make_pair<Point,Point>(myK.sCoords( innerPixel ),myK.sCoords( outerPixel ));
+      return Output(myK.sCoords( innerPixel ),myK.sCoords( outerPixel ));
     }
       
   }; // end of class SCellToIncidentPoints
