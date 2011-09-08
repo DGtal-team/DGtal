@@ -52,11 +52,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
-   * \TODO update doc
+   * @warning This class is deprecated since GreedySegmentation has been created. 
+   * This class is used in @href testDecomposition.cpp @href DSSLengthEstimator.ih and @href displayContours.cpp, 
+   * but GreedySegmentation will be preferred in the future. 
+   *
    * Description of template class 'GreedyDecomposition' <p>
    * \brief Aim: Computes the greedy decomposition of a sequence 
    * into segments (the last element of a given segment is the first one
    * one of the next segment).
+    
    * This class is a model of CDecomposition.
    * 
    * This class is templated by 'TSegment', a model of CSegmentComputer
