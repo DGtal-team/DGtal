@@ -45,6 +45,7 @@ using namespace DGtal;
 using namespace Z2i; 
 
 ///////////////////////////////////////////////////////////////////////////////
+//! [GridCurveGenericFunctionDisplayAll]
 template <typename CI>
 void displayAll( const CI& ciBegin, const CI& ciEnd ) 
 {
@@ -58,6 +59,7 @@ void displayAll( const CI& ciBegin, const CI& ciEnd )
     } while (i != ciEnd); 
   }    
 }
+//! [GridCurveGenericFunctionDisplayAll]
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
@@ -70,32 +72,37 @@ int main( int argc, char** argv )
 
   string square = examplesPath + "samples/smallSquare.dat";
   
+  //! [GridCurveDeclaration]
   Curve c1,c2; 
+  //! [GridCurveDeclaration]
   
   trace.emphase() << "Input" << endl;
   trace.info() << "\t from a data file " << endl;
   {
+    //! [GridCurveFromDataFile]
     fstream inputStream;
     inputStream.open (square.c_str(), ios::in);
     c1.initFromVectorStream(inputStream);
     inputStream.close();
+    //! [GridCurveFromDataFile]
   }
   trace.info() << "\t from a digital set " << endl;
   {
-   // domain
-   Point lowerBound( -50, -50 );
-   Point upperBound( 50, 50 );
-   Domain domain( lowerBound, upperBound );
-    
-   // digital set: diamond of radius 30 centered at the origin
-   Point o( 0, 0 );
-   DigitalSet set( domain );
-   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
-   {
+    // domain
+    Point lowerBound( -50, -50 );
+    Point upperBound( 50, 50 );
+    Domain domain( lowerBound, upperBound );
+
+    // digital set: diamond of radius 30 centered at the origin
+    Point o( 0, 0 );
+    DigitalSet set( domain );
+    for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
+    {
      if ( (*it - o ).norm1() <= 30 ) set.insertNew( *it );
-   }
+    }
     
-    vector<Point> boundaryPoints;                              //boundary points to retrieve
+    //! [GridCurveFromDigitalSet]
+    vector<Point> boundaryPoints;                                //boundary points to retrieve
     K2 ks; ks.init( lowerBound, upperBound, true );   //Khalimsky space 
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
     SetPredicate<DigitalSet> predicate( set );             //predicate
@@ -104,6 +111,7 @@ int main( int argc, char** argv )
     SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
     Surfaces<KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, s );
     c2.initFromVector( boundaryPoints );
+    //! [GridCurveFromDigitalSet]
   }
   
 // @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
@@ -129,7 +137,7 @@ int main( int argc, char** argv )
     aBoard.saveEPS( "myGridCurve.eps", Board2D::BoundingBox, 5000 );
   }
   
-  // @TODO trace.info() << "\t into a FreemanChain " << endl; 
+// @TODO trace.info() << "\t into a FreemanChain " << endl; 
   
   trace.emphase() << "Ranges Ouput" << endl;
   {

@@ -26,7 +26,7 @@
  *
  * @date 2011/06/27
  *
- * Header file for module GridCurve.cpp
+ * @brief Header file for module GridCurve.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -74,18 +74,31 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'GridCurve' <p> Aim: describes an
+   * Description of class 'GridCurve' <p> @brief Aim: describes an
    * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
    * in any dimension, closed or open. For instance, the
-   * topological boundary of a  simply connected digital set is a
-   * closed grid curve. This object provides several ranges, such as
-   * PointsRange used to get the (integer) coordinates of the pointels
-   * of the grid curve. 
+   * topological boundary of a simply connected digital set is a
+   * closed grid curve in 2d. 
+   * 
+   * @tparam TKSpace Khalimsky space
    *
-   * Example :
-   * @code 
+    Using the namespace Z2i, you can instanciate a grid curve as follows:
+   @snippet gridcurve2d.cpp GridCurveDeclaration
 
-   * @endcode
+   * This object provides IO services. 
+   * For instance, you can read a grid curve from a data file, 
+   * which contains the coordinates of the points... 
+    @snippet gridcurve2d.cpp GridCurveFromDataFile
+   * 
+   * or build it from a digital set (merely called 'set') as follows: 
+    @snippet gridcurve2d.cpp GridCurveFromDigitalSet
+   *
+   * Moreover, this object provides several ranges: 
+   *
+   * Each range provides some (circular)iterator services: 
+   * 
+   * 
+   * @see gridcurve2d.cpp testGridCurve.cpp
    */
 
   template <typename TKSpace>
