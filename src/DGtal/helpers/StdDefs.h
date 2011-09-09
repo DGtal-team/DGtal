@@ -51,7 +51,7 @@
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/2d/GridCurve.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -102,6 +102,8 @@ namespace DGtal
     static const Adj8 adj8;
     static const DT4_8 dt4_8 = DT4_8( adj4, adj8, JORDAN_DT );
     static const DT8_4 dt8_4 = DT8_4( adj8, adj4, JORDAN_DT );
+
+    typedef GridCurve<K2> GridCurve; 
   } // namespace Z2i
 
   /**
