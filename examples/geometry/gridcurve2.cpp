@@ -51,7 +51,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   std::string square = examplesPath + "samples/smallSquare.dat";
-  GridCurve c; 
+  Curve c; 
   
   trace.emphase() << "Input" << endl;
   trace.info() << "\t from a data file " << endl;
