@@ -51,7 +51,6 @@
 #include <utility>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/base/ConstIteratorAdapter.h"
