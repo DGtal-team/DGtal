@@ -46,12 +46,15 @@
 
 namespace DGtal
 {
-  
+  namespace deprecated
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MaximalSegments
   /**
-   * \TODO update doc
-   *
+   * @warning This class is deprecated since SaturatedSegmentation has been created. 
+   * This class is however used now in @href testMaximalSegments.cpp , 
+   * @href MostCenteredMaximalSegmentEstimator.h and @href displayContours.cpp
+   * 
    * Description of template class 'MaximalSegments' <p>
    * \brief Aim: Computes the set of maximal segments of a sequence.
    * Maximal segments are segments that cannot be included in other segments. 
@@ -470,6 +473,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const MaximalSegments<TSegment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 
