@@ -45,8 +45,21 @@ using namespace DGtal;
 using namespace Z2i; 
 
 ///////////////////////////////////////////////////////////////////////////////
+template <typename CI>
+void displayAll( const CI& ciBegin, const CI& ciEnd ) 
+{
+  if ( isNotEmpty(ciBegin, ciEnd) ) 
+  { //if the range is not empty
+    CI i( ciBegin); 
+    do 
+    {
+      trace.info() << *i << endl;
+      i++;
+    } while (i != ciEnd); 
+  }    
+}
 
-
+///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example for 2d gridcurves" );
@@ -155,6 +168,44 @@ int main( int argc, char** argv )
   }
   
   trace.emphase() << "Ranges Iterators" << endl;
+  {
+    typedef Curve::PointsRange Range; 
+    Range r = c1.getPointsRange(); 
+    
+    trace.info() << "\t iterate over the range" << endl;
+    Range::ConstIterator it = r.begin(); 
+    Range::ConstIterator itEnd = r.end(); 
+    for ( ; it != itEnd; ++it)
+    {
+      trace.info() << *it << endl;
+    }
+      
+    trace.info() << "\t iterate over the range in the reverse way" << endl;
+    Range::ConstReverseIterator rit = r.rbegin(); 
+    Range::ConstReverseIterator ritEnd = r.rend(); 
+    for ( ; rit != ritEnd; ++rit) 
+    {
+      trace.info() << *rit << endl;
+    }
+      
+    trace.info() << "\t iterate over the range in a circular way" << endl;
+    Range::ConstCirculator c = r.c();
+    //set the starting element wherever you want... 
+    for (unsigned i = 0; i < 20; ++i) ++c; 
+    //... and circulate
+    Range::ConstCirculator cend( c );
+    do 
+    {
+      trace.info() << *c << endl;
+      c++;
+    } while (c!=cend);      
+    
+    trace.info() << "\t Generic function working with any (circular)iterator" << endl;
+    displayAll<Range::ConstIterator>(r.begin(),r.end()); 
+    displayAll<Range::ConstReverseIterator>(r.rbegin(),r.rend()); 
+    displayAll<Range::ConstCirculator>(r.c(),r.c()); 
+    
+  }
   
   trace.endBlock();
   return 0;
