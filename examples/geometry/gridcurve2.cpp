@@ -120,7 +120,38 @@ int main( int argc, char** argv )
   
   trace.emphase() << "Ranges Ouput" << endl;
   {
-    
+    Board2D aBoard;
+    aBoard.setUnit(Board2D::UCentimeter);
+
+    Point low(-1,-1);
+    Point up(3,3);
+    Domain aDomain( low,up );
+
+    {//1cellsRange
+      Curve::SCellsRange r = c1.get1SCellsRange(); 
+      
+      trace.info() << r << endl;
+      
+      aBoard << SetMode(aDomain.styleName(), "Grid") << aDomain; 
+      aBoard << r; 
+      aBoard.saveEPS( "My1CellsRange.eps", Board2D::BoundingBox, 5000 );
+      aBoard.clear(); 
+    }
+    {//IncientPointsRange
+      Curve::IncidentPointsRange r = c1.getIncidentPointsRange(); 
+      
+      trace.info() << r << endl;
+      
+      aBoard << SetMode(aDomain.styleName(), "Grid") << aDomain; 
+      aBoard << r; 
+      aBoard.saveEPS( "MyIncidentPointsRange.eps", Board2D::BoundingBox, 5000 );
+      aBoard.clear(); 
+    }
+    {//CodesRange
+      Curve::CodesRange r = c1.getCodesRange(); 
+      
+      trace.info() << r << endl;
+    }
   }
   
   trace.emphase() << "Ranges Iterators" << endl;
