@@ -34,7 +34,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/GreedySegmentation.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
@@ -100,15 +100,15 @@ bool testBIGINTEGERSpace()
 
   typedef FreemanChain<Coordinate> Contour; 
   typedef ArithmeticalDSS<Contour::ConstIterator,Coordinate,4> DSS4;  
-  typedef GreedyDecomposition<DSS4> Decomposition;
+  typedef GreedySegmentation<DSS4> Decomposition;
  
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   Contour theContour( ss );
   //Segmentation
-  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
-  Decomposition::SegmentIterator i = theDecomposition.begin();
+  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4() );
+  Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   DSS4 segment(*i); 
 
   Point p1( 0, 0 );
