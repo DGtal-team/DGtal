@@ -31,9 +31,13 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/example/ConfigExamples.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "ConfigExamples.h"
 
 #include "DGtal/geometry/2d/GridCurve.h"
+
+#include "DGtal/topology/helpers/Surfaces.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -41,6 +45,24 @@ using namespace DGtal;
 using namespace Z2i; 
 
 ///////////////////////////////////////////////////////////////////////////////
+
+ DigitalSet getDiamondSet( ) 
+ {
+ 
+   Point p1( -50, -50 );
+   Point p2( 50, 50 );
+   Domain domain( p1, p2 );
+   // diamond of radius 30 centered at the origin
+   Point c( 0, 0 );
+   DigitalSet aSet( domain );
+   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
+   {
+     if ( (*it - c ).norm1() <= 30 ) aSet.insertNew( *it );
+   }
+
+   return aSet; 
+ }
+
 
 int main( int argc, char** argv )
 {
@@ -50,23 +72,51 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  std::string square = examplesPath + "samples/smallSquare.dat";
-  Curve c; 
+  string square = examplesPath + "samples/smallSquare.dat";
+  Curve c1,c2; 
   
   trace.emphase() << "Input" << endl;
   trace.info() << "\t from a data file " << endl;
   {
     fstream inputStream;
     inputStream.open (square.c_str(), ios::in);
-    c.initFromVectorStream(inputStream);
+    c1.initFromVectorStream(inputStream);
     inputStream.close();
   }
-  trace.info() << "\t from a points vector " << endl;
+  trace.info() << "\t from a digital set " << endl;
+  {
+   // domain
+   Point lowerBound( -50, -50 );
+   Point upperBound( 50, 50 );
+   Domain domain( lowerBound, upperBound );
+    
+   // digital set: diamond of radius 30 centered at the origin
+   Point c( 0, 0 );
+   DigitalSet set( domain );
+   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
+   {
+     if ( (*it - c ).norm1() <= 30 ) set.insertNew( *it );
+   }
+    
+    vector<Point> boundaryPoints;                              //boundary points to retrieve
+    K2 ks; ks.init( lowerBound, upperBound, true );   //Khalimsky space 
+    SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
+    SetPredicate<DigitalSet> predicate( set );             //predicate
+
+    //tracking and init grid curve
+    SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
+    Surfaces<KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, s );
+    c1.initFromVector( boundaryPoints );
+  }
+  
 // @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
 
 
   trace.emphase() << "Output" << endl;
   trace.info() << "\t standard output " << endl;
+  {
+    trace.info() << c1 << std::endl;
+  }
   trace.info() << "\t into a data file " << endl;
   trace.info() << "\t into a vector graphics file " << endl;
   // @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
