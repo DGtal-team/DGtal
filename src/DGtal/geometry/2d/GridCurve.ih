@@ -80,6 +80,9 @@ bool
 DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) 
 {
 
+  my0SCells.clear(); 
+  my1SCells.clear(); 
+  
   //create sequence of grid points and grid edges
   typename std::vector<Point>::const_iterator i, j; 
 

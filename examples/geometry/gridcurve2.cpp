@@ -46,23 +46,6 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
- DigitalSet getDiamondSet( ) 
- {
- 
-   Point p1( -50, -50 );
-   Point p2( 50, 50 );
-   Domain domain( p1, p2 );
-   // diamond of radius 30 centered at the origin
-   Point c( 0, 0 );
-   DigitalSet aSet( domain );
-   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
-   {
-     if ( (*it - c ).norm1() <= 30 ) aSet.insertNew( *it );
-   }
-
-   return aSet; 
- }
-
 
 int main( int argc, char** argv )
 {
@@ -73,6 +56,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   string square = examplesPath + "samples/smallSquare.dat";
+  
   Curve c1,c2; 
   
   trace.emphase() << "Input" << endl;
@@ -91,11 +75,11 @@ int main( int argc, char** argv )
    Domain domain( lowerBound, upperBound );
     
    // digital set: diamond of radius 30 centered at the origin
-   Point c( 0, 0 );
+   Point o( 0, 0 );
    DigitalSet set( domain );
    for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
    {
-     if ( (*it - c ).norm1() <= 30 ) set.insertNew( *it );
+     if ( (*it - o ).norm1() <= 30 ) set.insertNew( *it );
    }
     
     vector<Point> boundaryPoints;                              //boundary points to retrieve
@@ -106,7 +90,7 @@ int main( int argc, char** argv )
     //tracking and init grid curve
     SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
     Surfaces<KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, s );
-    c1.initFromVector( boundaryPoints );
+    c2.initFromVector( boundaryPoints );
   }
   
 // @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
@@ -118,10 +102,26 @@ int main( int argc, char** argv )
     trace.info() << c1 << std::endl;
   }
   trace.info() << "\t into a data file " << endl;
+  {
+    ofstream outputStream("myGridCurve.dat"); 
+    if (outputStream.is_open()) 
+      c2.writeVectorToStream(outputStream);
+    outputStream.close();
+  }
   trace.info() << "\t into a vector graphics file " << endl;
-  // @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
+  {
+    Board2D aBoard;
+    aBoard.setUnit(Board2D::UCentimeter);
+    aBoard << c2; 
+    aBoard.saveEPS( "myGridCurve.eps", Board2D::BoundingBox, 5000 );
+  }
+  
+  // @TODO trace.info() << "\t into a FreemanChain " << endl; 
   
   trace.emphase() << "Ranges Ouput" << endl;
+  {
+    
+  }
   
   trace.emphase() << "Ranges Iterators" << endl;
   
