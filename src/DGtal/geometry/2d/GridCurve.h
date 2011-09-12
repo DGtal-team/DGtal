@@ -73,33 +73,97 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of class 'GridCurve' <p> @brief Aim: describes an
-   * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
-   * in any dimension, closed or open. For instance, the
-   * topological boundary of a simply connected digital set is a
-   * closed grid curve in 2d. 
-   * 
-   * @tparam TKSpace Khalimsky space
-   *
+    /**
+    * @brief Aim: describes an
+    * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
+    * in any dimension, closed or open. For instance, the
+    * topological boundary of a simply connected digital set is a
+    * closed grid curve in 2d. 
+  
+    * Note that an open grid curve always begins and ends with a 0-cell
+    * so that the number of 0-cells is equal to the number of 1-cells plus one.  
+    * A closed gird curve always begins with 0-cell too, but always ends
+    * with a 1-cell, so that is has as many 0-cells as 1-cells. 
+    * 
+    * @tparam TKSpace Khalimsky space
+    *
     Using the namespace Z2i, you can instanciate a grid curve as follows:
-   @snippet gridcurve2d.cpp GridCurveDeclaration
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveDeclaration
 
-   * This object provides IO services. 
-   * For instance, you can read a grid curve from a data file, 
-   * which contains the coordinates of the points... 
-    @snippet gridcurve2d.cpp GridCurveFromDataFile
-   * 
-   * or build it from a digital set (merely called 'set') as follows: 
-    @snippet gridcurve2d.cpp GridCurveFromDigitalSet
-   *
-   * Moreover, this object provides several ranges: 
-   *
-   * Each range provides some (circular)iterator services: 
-   * 
-   * 
-   * @see gridcurve2d.cpp testGridCurve.cpp
-   */
+    * This object provides IO services. 
+    * For instance, you can read a grid curve from a data file, 
+    * which contains the (digital) coordinates of the pointels (0-cells): 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDataFile
+    * Note that if the first and last pointel of the file have the same coordinates (i)
+    * or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
+    * as closed. In case (i), the last pointel is removed, whereas in case (ii), a 1-cell is added. 
+    * 
+    * You can also build a grid curve from the contour of a digital set as follows: 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDigitalSet
+    *
+    * To save a grid curve in a data file, GridCurve provides a special method:
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveToDataFile
+    
+    * The stream mechanism is used to display the true content of the grid curve: 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveStandardOutput
+
+    * To draw the grid curve in a vector graphics file, Board2D may be used:
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveToGraphics
+    * See @ref dgtalboard.dox to learn more about the 2d drawing mechanism
+    * used in DGtal. 
+
+    * Moreover, this object provides several ranges as nested types: 
+    *
+    - in nd:   
+        - SCellsRange to iterate over the (signed) cells (0-cells or 1-cells),
+        - PointsRange to iterate over the 0-cells viewed as integer points,
+        - MidPointsRange to iterate over the midpoint of the 1-cells,
+        - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
+        (the point stands for the starting point of the arrow, the vector gives
+        the orientation or the arrow). 
+    - in 2d: 
+        - InnerPointsRange to iterate over the 2-cells, viewed as integer points, 
+        that are <em>directly</em> incident to the (signed) 1-cells,
+        - OuterPointsRange to iterate over the 2-cells, viewed as integer points, 
+        that are <em>indirectly</em> incident to the (signed) 1-cells,
+        - IncidentPointsRange to iterate over the pairs of 2-cells 
+        that are incident to the 1-cells (both inner points and outer points),
+        - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}
+    *
+    * You get an access to these nine ranges through the following methods: 
+
+    - get0SCellsRange()
+    - get1SCellsRange()
+    - getPointsRange()
+    - getMidPointsRange()
+    - getArrowsRange()
+    - getInnerPointsRange()
+    - getOuterPointsRange()
+    - getIncidentPointsRange()
+    - getCodesRange()
+    
+    * Each range has the following inner types: 
+
+     - ConstIterator
+     - ConstReverseIterator
+     - ConstCirculator
+     - ConstReverseCirculator
+
+    * And each range provides these (circular)iterator services: 
+
+     - begin() : begin ConstIterator
+     - end() : end ConstIterator
+     - rbegin() : begin ConstReverseIterator
+     - rend() : end ConstReverseIterator
+     - c() : ConstCirculator
+     - rc() : ConstReverseCirculator
+    * 
+    * IO ranges
+    *
+    * Iteration
+    *
+    * @see exampleGridCurve2d.cpp testGridCurve.cpp
+    */
 
   template <typename TKSpace>
   class GridCurve

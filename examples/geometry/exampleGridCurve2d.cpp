@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file gridcurve.cpp
+ * @file exampleGridCurve2d.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -102,10 +102,10 @@ int main( int argc, char** argv )
     }
     
     //! [GridCurveFromDigitalSet]
-    vector<Point> boundaryPoints;                                //boundary points to retrieve
+    vector<Point> boundaryPoints;                              //boundary points to retrieve
     K2 ks; ks.init( lowerBound, upperBound, true );   //Khalimsky space 
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
-    SetPredicate<DigitalSet> predicate( set );             //predicate
+    SetPredicate<DigitalSet> predicate( set );             //predicate from the digital set
 
     //tracking and init grid curve
     SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
@@ -120,21 +120,27 @@ int main( int argc, char** argv )
   trace.emphase() << "Output" << endl;
   trace.info() << "\t standard output " << endl;
   {
+    //! [GridCurveStandardOutput]
     trace.info() << c1 << std::endl;
+    //! [GridCurveStandardOutput]
   }
   trace.info() << "\t into a data file " << endl;
   {
+    //! [GridCurveToDataFile]
     ofstream outputStream("myGridCurve.dat"); 
     if (outputStream.is_open()) 
       c2.writeVectorToStream(outputStream);
     outputStream.close();
+    //! [GridCurveToDataFile]
   }
   trace.info() << "\t into a vector graphics file " << endl;
   {
+    //! [GridCurveToGraphics]
     Board2D aBoard;
     aBoard.setUnit(Board2D::UCentimeter);
     aBoard << c2; 
     aBoard.saveEPS( "myGridCurve.eps", Board2D::BoundingBox, 5000 );
+    //! [GridCurveToGraphics]
   }
   
 // @TODO trace.info() << "\t into a FreemanChain " << endl; 
@@ -177,7 +183,7 @@ int main( int argc, char** argv )
   
   trace.emphase() << "Ranges Iterators" << endl;
   {
-    typedef Curve::PointsRange Range; 
+    typedef Curve::CodesRange Range; 
     Range r = c1.getPointsRange(); 
     
     trace.info() << "\t iterate over the range" << endl;
