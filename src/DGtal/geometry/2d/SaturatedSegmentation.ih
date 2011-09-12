@@ -357,7 +357,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
 
   template <typename TSegmentComputer>
 inline
-const bool
+bool
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
 {
   return myFlagIntersectNext;
@@ -365,7 +365,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::interse
 
   template <typename TSegmentComputer>
 inline
-const bool
+bool
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;

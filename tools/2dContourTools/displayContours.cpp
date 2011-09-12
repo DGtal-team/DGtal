@@ -185,10 +185,10 @@ int main( int argc, char** argv )
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
-          for ( Decomposition4::SegmentIterator ii = theDecomposition.begin();
-    ii != theDecomposition.end(); ++ii ) 
+          for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
+    it != theDecomposition.end(); ++it ) 
             {
-        DSS4 segment(*ii);
+        DSS4 segment(*it);
         aBoard << CustomStyle( styleName, 
              new CustomPenColor( DGtal::Color::Gray ) ); 
         aBoard << segment; // draw each segment
@@ -206,10 +206,10 @@ int main( int argc, char** argv )
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
-          for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-    i != theDecomposition.end(); ++i ) 
+          for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
+    it != theDecomposition.end(); ++it ) 
             {
-        DSS4 segment(*i);
+        DSS4 segment(*it);
         aBoard << CustomStyle( styleName, 
              new CustomPenColor( DGtal::Color::Black ) ); 
         aBoard << segment; // draw each segment
@@ -235,9 +235,9 @@ int main( int argc, char** argv )
 
           //polyline to draw
     vector<LibBoard::Point> polyline;
-    vector<FP::RealPoint>::const_iterator i = v.begin();
-    for ( ;i != v.end();++i) {
-      FP::RealPoint p = (*i);
+    vector<FP::RealPoint>::const_iterator it = v.begin();
+    for ( ;it != v.end();++it) {
+      FP::RealPoint p = (*it);
       polyline.push_back(LibBoard::Point(p[0],p[1]));
     }
           if (isClosed) {
