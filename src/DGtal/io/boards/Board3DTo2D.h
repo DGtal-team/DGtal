@@ -61,7 +61,7 @@ namespace DGtal
   // class Board3DTo2D
   /**
    * Description of class 'Board3DTo2D' <p>
-   * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with 3D->2D projection.
+   * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with Cairo with 3D->2D projection.
    */
   class Board3DTo2D : public Display3D
   {
@@ -126,10 +126,10 @@ namespace DGtal
      * Save a Cairo image.
      * @param filename filename of the image to save.
      * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
-     * @param width width of the image to save.
-     * @param height height of the image to save.
+     * @param bWidth width of the image to save.
+     * @param bHeight height of the image to save.
      */
-    void saveCairo(const char *filename, CairoType type, int width, int height);
+    void saveCairo(const char *filename, CairoType type, int bWidth, int bHeight);
   
     /**
      * The associated map type for storing possible modes used for
