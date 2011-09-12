@@ -252,13 +252,13 @@ namespace DGtal
        * @return TRUE if the current segment intersects
        * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
        * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return an iterator of a digital curve
