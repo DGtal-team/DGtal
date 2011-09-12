@@ -405,7 +405,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::getBack() const
  */
   template <typename TSegment>
 inline
-const bool
+bool
 DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::intersectNext() const
 {
   return myFlagIntersectNext;
@@ -417,7 +417,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::intersectNext() c
  */
   template <typename TSegment>
 inline
-const bool
+bool
 DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;
