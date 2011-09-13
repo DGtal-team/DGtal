@@ -21,7 +21,8 @@
  * 
  * @brief
  *
- * Implementation of methods defined in Board3DTo2D.h
+ * Class for PDF, PNG, PS, EPS, SVG export drawings with Cairo with 3D->2D projection
+ * This is the implementation of methods defined in Board3DTo2D.h
  *
  * This file is part of the DGtal library.
  */
@@ -224,16 +225,16 @@ void DGtal::Board3DTo2D::project(double x3d, double y3d, double z3d, double &x2d
  * Save a Cairo image.
  * @param filename filename of the image to save.
  * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
- * @param width width of the image to save.
- * @param height height of the image to save.
+ * @param bWidth width of the image to save.
+ * @param bHeight height of the image to save.
  */
 void
-DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, int height)
+DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, int bHeight)
 {
   for(unsigned int i =0; i< myClippingPlaneList.size(); i++)
     trace.info() << "-> ClippingPlane not implemented in Board3DTo2D" << std::endl;
    
-  Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = width; Viewport[3] = height;
+  Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = bWidth; Viewport[3] = bHeight;
   precompute_projection_matrix();
   
   cairo_surface_t *surface;
@@ -418,28 +419,122 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int width, i
   }
   }
   
+  for(unsigned int i=0; i<myQuadList.size(); i++)
+    trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
+  
+  // Drawing all Khalimsky Space Cells 
+  
+  // KSSurfel (from updateList)
+  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
+       s_it != myKSSurfelList.end();
+       ++s_it)
+  {
+    {
+      cairo_save (cr);
+
+      if (myModes["Board3DTo2D"]=="SolidMode")
+	cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*3.75)); // *3.75 arbitraire
+      else
+	cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
+	
+      cairo_set_line_width (cr, 1.); // arbitraire car non set
+
+      double x1, y1, x2, y2, x3, y3, x4, y4;
+
+      project((*s_it).x1,  (*s_it).y1, (*s_it).z1, x1, y1);
+      project((*s_it).x2,  (*s_it).y2, (*s_it).z2, x2, y2);
+      project((*s_it).x3,  (*s_it).y3, (*s_it).z3, x3, y3);
+      project((*s_it).x4,  (*s_it).y4, (*s_it).z4, x4, y4);
+      cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+
+      cairo_restore (cr);
+    }
+  }
+  
+  // KSLinel
+  for(unsigned int i=0; i< myKSLinelList.size();i++)
+  {
+    //if (!myKSLinelList.at(i).isSigned) // for the moment, same for Signed or NonSigned
+    {
+      {
+        cairo_save (cr);
+        
+	cairo_set_source_rgba (cr, myKSLinelList.at(i).R/255.0, myKSLinelList.at(i).G/255.0, myKSLinelList.at(i).B/255.0, myKSLinelList.at(i).T/255.0);
+	cairo_set_line_width (cr, 4.); // arbitraire car non set
+	
+	double x1, y1, x2, y2;
+	
+	project(myKSLinelList.at(i).x1,  myKSLinelList.at(i).y1, myKSLinelList.at(i).z1, x1, y1);
+	project(myKSLinelList.at(i).x2,  myKSLinelList.at(i).y2, myKSLinelList.at(i).z2, x2, y2);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_close_path (cr); cairo_stroke (cr);
+	    
+	cairo_restore (cr);
+      }
+    }
+  }
+  
+  // KSPointel
+  for(unsigned int i=0; i< myKSPointelList.size();i++)
+  {
+    //if (!myKSPointelList.at(i).isSigned) // for the moment, same for Signed or NonSigned
+    {
+      {
+        cairo_save (cr);
+        
+	cairo_set_source_rgba (cr, myKSPointelList.at(i).R/255.0, myKSPointelList.at(i).G/255.0, myKSPointelList.at(i).B/255.0, myKSPointelList.at(i).T/255.0);
+	cairo_set_line_width (cr, 1.); // arbitraire car non set
+	
+	double x1, y1, x2, y2, x3, y3, x4, y4;
+	//double width=myKSPointelList.at(i).size/120.; // arbitraire
+	double width=0.04; // arbitraire
+	
+	//z+
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x1, y1);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x2, y2);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x3, y3);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	//z-
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x1, y1);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x2, y2);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x3, y3);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	//x+
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x1, y1);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x2, y2);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x3, y3);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	//x-
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x1, y1);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x2, y2);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x3, y3);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	//y+
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x1, y1);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z+width, x2, y2);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x3, y3);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y+width, myKSPointelList.at(i).z-width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	//y-
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x1, y1);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z+width, x2, y2);
+	project(myKSPointelList.at(i).x+width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x3, y3);
+	project(myKSPointelList.at(i).x-width,  myKSPointelList.at(i).y-width, myKSPointelList.at(i).z-width, x4, y4);
+	cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+	    
+	cairo_restore (cr);
+      }
+    }
+  }
+  
   if (type==CairoPNG)
     cairo_surface_write_to_png (surface, filename);
       
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
-  
-  for(unsigned int i=0; i<myQuadList.size(); i++)
-    trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
-  
-  // Drawing all Khalimsky Space Cells 
-  for(unsigned int i=0; i< myKSPointelList.size();i++){
-    trace.info() << "-> Khalimsky Pointel not YET implemented in Board3DTo2D" << std::endl;
-  }
-  for(unsigned int i=0; i< myKSLinelList.size();i++){
-    trace.info() << "-> Khalimsky Linel not YET implemented in Board3DTo2D" << std::endl;
-  }
-  
-  // from updateList
-  for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
-       s_it != myKSSurfelList.end();
-       ++s_it)
-    trace.info() << "-> Khalimsky Surfel not YET implemented in Board3DTo2D" << std::endl;
 }
 
 /*!
