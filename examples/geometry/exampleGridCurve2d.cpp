@@ -54,9 +54,10 @@ void displayAll( const CI& ciBegin, const CI& ciEnd )
     CI i( ciBegin); 
     do 
     {
-      trace.info() << *i << endl;
+      trace.info() << *i;
       i++;
-    } while (i != ciEnd); 
+    } while (i != ciEnd);
+    trace.info() << endl;    
   }    
 }
 //! [GridCurveGenericFunctionDisplayAll]
@@ -164,7 +165,8 @@ int main( int argc, char** argv )
       aBoard.saveEPS( "My1CellsRange.eps", Board2D::BoundingBox, 5000 );
       aBoard.clear(); 
     }
-    {//IncientPointsRange
+    {//IncidentPointsRange
+      //! [GridCurveIncidentPointsRangeIO]
       Curve::IncidentPointsRange r = c1.getIncidentPointsRange(); 
       
       trace.info() << r << endl;
@@ -172,6 +174,7 @@ int main( int argc, char** argv )
       aBoard << SetMode(aDomain.styleName(), "Grid") << aDomain; 
       aBoard << r; 
       aBoard.saveEPS( "MyIncidentPointsRange.eps", Board2D::BoundingBox, 5000 );
+      //! [GridCurveIncidentPointsRangeIO]
       aBoard.clear(); 
     }
     {//CodesRange
@@ -184,23 +187,26 @@ int main( int argc, char** argv )
   trace.emphase() << "Ranges Iterators" << endl;
   {
     typedef Curve::CodesRange Range; 
-    Range r = c1.getPointsRange(); 
+    Range r = c1.getCodesRange(); 
     
+    //! [GridCurveRangeIterators]
     trace.info() << "\t iterate over the range" << endl;
     Range::ConstIterator it = r.begin(); 
     Range::ConstIterator itEnd = r.end(); 
     for ( ; it != itEnd; ++it)
     {
-      trace.info() << *it << endl;
+      trace.info() << *it;
     }
-      
+    trace.info() << endl;
+    
     trace.info() << "\t iterate over the range in the reverse way" << endl;
     Range::ConstReverseIterator rit = r.rbegin(); 
     Range::ConstReverseIterator ritEnd = r.rend(); 
     for ( ; rit != ritEnd; ++rit) 
     {
-      trace.info() << *rit << endl;
+      trace.info() << *rit;
     }
+    trace.info() << endl;
       
     trace.info() << "\t iterate over the range in a circular way" << endl;
     Range::ConstCirculator c = r.c();
@@ -210,9 +216,11 @@ int main( int argc, char** argv )
     Range::ConstCirculator cend( c );
     do 
     {
-      trace.info() << *c << endl;
+      trace.info() << *c;
       c++;
-    } while (c!=cend);      
+    } while (c!=cend);
+    trace.info() << endl;
+    //! [GridCurveRangeIterators]    
     
     trace.info() << "\t Generic function working with any (circular)iterator" << endl;
     displayAll<Range::ConstIterator>(r.begin(),r.end()); 

@@ -4,7 +4,7 @@ SET(DGTAL_EXAMPLES_SRC
   ArithmeticalDSS
   convex-and-concave-parts
   freemanChainFromImage
-  gridcurve2
+  exampleGridCurve2d
 )
 
 
