@@ -2064,8 +2064,8 @@ GouraudTriangle::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-GouraudTriangle::flushCairo( cairo_t *cr,
-     const TransformCairo & transform ) const
+GouraudTriangle::flushCairo( cairo_t */*cr*/,
+			     const TransformCairo & /*transform*/ ) const
 {
 }
 #endif
@@ -2283,8 +2283,8 @@ Text::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Text::flushCairo( cairo_t *cr,
-     const TransformCairo & transform ) const
+Text::flushCairo( cairo_t */*cr*/,
+		  const TransformCairo & /*transform*/ ) const
 {
 }
 #endif

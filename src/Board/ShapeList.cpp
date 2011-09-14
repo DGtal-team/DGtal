@@ -633,8 +633,8 @@ Group::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Group::flushCairo( cairo_t *cr,
-     const TransformCairo & transform ) const
+Group::flushCairo( cairo_t */*cr*/,
+		   const TransformCairo & /*transform*/ ) const
 {
     //todo
     //ShapeList::flushCairo( cr, transform );
