@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-1-points.cpp
+ * @file   dgtalBoard3DTo2D-1-points.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -62,7 +62,6 @@ int main( int argc, char** argv )
 
   viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
-
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-5-custom.cpp
+ * @file   dgtalBoard3DTo2D-5-custom.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -61,7 +61,7 @@ int main( int argc, char** argv )
   viewer << SetMode3D( p1.styleName(), "PavingWired" );
   viewer << p1 << p2 << p3;
 
-  //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
+  //viewer << SetMode3D( p1.styleName(), "Grid" );
   viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
   viewer << SetMode3D( p1.styleName(), "Both" );

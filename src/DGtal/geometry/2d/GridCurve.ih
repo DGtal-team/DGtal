@@ -227,7 +227,7 @@ DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
 template <typename TKSpace>
 inline
 DGtal::DrawableWithBoard2D*
-DGtal::GridCurve<TKSpace>::defaultStyle( std::string mode ) const
+DGtal::GridCurve<TKSpace>::defaultStyle( std::string /*mode*/ ) const
 {
   return new DrawableWithBoard2D; 
 }

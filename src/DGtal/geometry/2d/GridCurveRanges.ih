@@ -133,10 +133,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -338,10 +346,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -544,10 +560,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -757,10 +781,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -970,10 +1002,18 @@ public:
 
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -1177,10 +1217,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
@@ -1390,10 +1438,18 @@ public:
   
   /**
    * Default drawing style object.
+   * @return the dyn. alloc. default style for this object.
+   */
+  DGtal::DrawableWithBoard2D* defaultStyle( ) const
+  {
+    return new DrawableWithBoard2D; 
+  }
+  /**
+   * Default drawing style object.
    * @param mode the drawing mode
    * @return the dyn. alloc. default style for this object.
    */
-  DGtal::DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const
+  DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
   }
