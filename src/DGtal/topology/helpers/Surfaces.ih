@@ -107,30 +107,34 @@ findABel
   ASSERT( val_v1 != pp( x2 ) );
   // (2) Find two candidates on the same axis.
   Dimension d = 0;
+  bool alreadyOnSameAxis = true;
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
       if ( x1[ i ] != x2[ i ] )
-  {
-    for ( Dimension j = i + 1; j < K.dimension; ++j )
-      {
-        if ( x1[ j ] != x2[ j ] )
-    {
-      Integer c = x2[ j ];
-      x2[ j ] = x1[ j ];
-      bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
-      if ( val_v2 != val_v1 )
-        { // v2 is updated.
-          d = i;
-        }
-      else
-        { // v1 is updated.
-          x1 = x2;
-          x2[ j ] = c;
-          d = j;
-        }
-    } // if ( x1[ j ] != x2[ j ] )
-      } // for ( Dimension j = i + 1; j < K.dimension; ++j )
-  } // if ( x1[ i ] != x2[ i ] )
+        {
+          for ( Dimension j = i + 1; j < K.dimension; ++j )
+            {
+              if ( x1[ j ] != x2[ j ] )
+              {
+                alreadyOnSameAxis = false;
+                Integer c = x2[ j ];
+                x2[ j ] = x1[ j ];
+                bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
+                if ( val_v2 != val_v1 )
+                  { // v2 is updated.
+                    d = i;
+                  }
+                else
+                  { // v1 is updated.
+                    x1 = x2;
+                    x2[ j ] = c;
+                    d = j;
+                  }
+              } // if ( x1[ j ] != x2[ j ] )
+            } // for ( Dimension j = i + 1; j < K.dimension; ++j )
+          if ( alreadyOnSameAxis )
+            d = i;
+        } // if ( x1[ i ] != x2[ i ] )
     } // for ( Dimension i = 0; i < K.dimension; ++i )
 
   // (3) Check result.
