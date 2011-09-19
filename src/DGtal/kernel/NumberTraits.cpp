@@ -15,24 +15,25 @@
  **/
 
 /** 
- * @file Common.cpp
+ * @file NumberTraits.cpp
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2009/12/10
+ * @date 2011/09/10
  * 
- * Implementation of methods defined in Common.h 
+ * Implementation of methods defined in NumberTraits.h 
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+
+using namespace std;
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,9 +43,17 @@
 /** DGtal Global variables
 *
 **/
+namespace DGtal
+{
+  //Constant definitions in NumberTraits specializations.
+  const float NumberTraits<float>::ONE = 1.0f;
+  const float NumberTraits<float>::ZERO = 0.0f;
 
-DGtal::TraceWriterTerm DGtal::traceWriterTerm(std::cerr);
-DGtal::Trace DGtal::trace(traceWriterTerm);
+  const double NumberTraits<double>::ONE = 1.0;
+  const double NumberTraits<double>::ZERO = 0.0;
+ 
+  const long double NumberTraits<long double>::ONE = 1.0;
+  const long double NumberTraits<long double>::ZERO = 0.0;
+ 
 
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+}

@@ -121,10 +121,10 @@ int main( int argc, char** argv )
  
   
   for(uint i=0; i< vectConnectedSCell.size();i++){
-    DGtal::Color c= gradient(i);
-    viewer << CustomColors3D(Color(250, 0,0), Color(c.red(), 
-                  c.green(),
-                  c.blue()));
+    DGtal::Color col= gradient(i);
+    viewer << CustomColors3D(Color(250, 0,0), Color(col.red(), 
+						    col.green(),
+						    col.blue()));
     
     for(uint j=0; j< vectConnectedSCell.at(i).size();j++){
       viewer << vectConnectedSCell.at(i).at(j);
