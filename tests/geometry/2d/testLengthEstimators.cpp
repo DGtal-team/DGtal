@@ -68,7 +68,7 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing Length Estimator classes.
@@ -78,6 +78,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 {
 
   // Types
+  typedef SpaceND<2,int> Space;  
   typedef Ball2D<Space> Shape;
   typedef Space::Point Point;
   typedef Space::RealPoint RealPoint;
@@ -172,7 +173,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   return true;
 }
 
-
+/*
 bool testDisplay(double radius, double h)
 {
 
@@ -287,7 +288,7 @@ bool testDisplay(double radius, double h)
   return true;
 }
 
-
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -305,7 +306,7 @@ int main( int argc, char** argv )
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)
     && testLengthEstimatorsOnBall(r,0.001)
-    && testDisplay(r,0.9);
+    //&& testDisplay(r,0.9);
 ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

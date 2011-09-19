@@ -250,8 +250,8 @@ FreemanChain( const std::vector<PointI2> vectPoints )
   xn=vectPoints.at(vectPoints.size()-1)[0];
   yn=vectPoints.at(vectPoints.size()-1)[1];
   
-  Z2i::Point pt;
-  Z2i::Point ptSuiv;
+  PointI2 pt;
+  PointI2 ptSuiv;
   for(unsigned int i=0; i< vectPoints.size()-1; i++){
     pt = vectPoints.at(i);
     ptSuiv = vectPoints.at(i+1);

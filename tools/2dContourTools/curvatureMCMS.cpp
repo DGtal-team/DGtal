@@ -43,6 +43,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //Estimators
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
