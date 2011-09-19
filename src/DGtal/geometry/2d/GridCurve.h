@@ -26,7 +26,7 @@
  *
  * @date 2011/06/27
  *
- * Header file for module GridCurve.cpp
+ * @brief Header file for module GridCurve.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -51,7 +51,6 @@
 #include <utility>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/PointListReader.h"
 
 #include "DGtal/base/ConstIteratorAdapter.h"
@@ -74,20 +73,102 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of class 'GridCurve' <p> Aim: describes an
-   * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
-   * in any dimension, closed or open. For instance, the
-   * topological boundary of a  simply connected digital set is a
-   * closed grid curve. This object provides several ranges, such as
-   * PointsRange used to get the (integer) coordinates of the pointels
-   * of the grid curve. 
-   *
-   * Example :
-   * @code 
+    /**
+    * @brief Aim: describes an
+    * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
+    * in any dimension, closed or open. For instance, the
+    * topological boundary of a simply connected digital set is a
+    * closed grid curve in 2d. 
+  
+    * Note that an open grid curve always begins and ends with a 0-cell
+    * so that the number of 0-cells is equal to the number of 1-cells plus one.  
+    * A closed gird curve always begins with a 0-cell too, but always ends
+    * with a 1-cell, so that is has as many 0-cells as 1-cells. 
+    * 
+    * @tparam TKSpace Khalimsky space
+    
+    Using the namespace Z2i, defined in StdDefs.h, you can instanciate a grid curve as follows:
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveDeclaration
 
-   * @endcode
-   */
+     This object provides several IO services. 
+     For instance, you can read a grid curve from a data file, 
+     which contains the (digital) coordinates of the 0-cells (pointels): 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDataFile
+     Note that if the first and last 0-cells of the file have the same coordinates (i)
+     or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
+     as closed. In case (i), the last 0-cell is removed, whereas in case (ii), a 1-cell is added. 
+     
+     You can also build a grid curve from the contour of a digital set as follows: 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDigitalSet
+    
+     To save a grid curve in a data file, GridCurve provides the special method writeVectorToStream():
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveToDataFile
+    
+     The stream mechanism is used to display the true content of the grid curve: 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveStandardOutput
+
+     In 2d, the grid curve can be drawn in a vector graphics file as follows:
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveToGraphics
+     See @ref dgtal_dgtalboard to learn more about the 2d drawing mechanism
+     used in DGtal. 
+
+     Moreover, this object provides several ranges as nested types: 
+    
+    - in nd:
+        - SCellsRange to iterate over the (signed) cells (0-cells or 1-cells),
+        - PointsRange to iterate over the 0-cells viewed as integer points,
+        - MidPointsRange to iterate over the midpoint of the 1-cells,
+        - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
+        (the point stands for the starting point of the arrow, the vector gives
+        the orientation or the arrow). 
+    - in 2d: 
+        - InnerPointsRange to iterate over the 2-cells, viewed as integer points, 
+        that are <em>directly</em> incident to the (signed) 1-cells,
+        - OuterPointsRange to iterate over the 2-cells, viewed as integer points, 
+        that are <em>indirectly</em> incident to the (signed) 1-cells,
+        - IncidentPointsRange to iterate over the pairs of 2-cells 
+        that are incident to the 1-cells (both inner points and outer points),
+        - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}
+    
+     You can get an access to these nine ranges through the following methods: 
+
+    - get0SCellsRange()
+    - get1SCellsRange()
+    - getPointsRange()
+    - getMidPointsRange()
+    - getArrowsRange()
+    - getInnerPointsRange()
+    - getOuterPointsRange()
+    - getIncidentPointsRange()
+    - getCodesRange()
+    
+    Each range can be displayed in the standard output or can be drawn
+    (except CodesRange) in a vector graphics file as shown in the 
+    following snippet: 
+    @snippet geometry/exampleGridCurve2d.cpp GridCurveIncidentPointsRangeIO
+    
+     Moreover, each range has the following inner types: 
+
+     - ConstIterator
+     - ConstReverseIterator
+     - ConstCirculator
+     - ConstReverseCirculator
+
+     And each range provides these (circular)iterator services: 
+
+     - begin() : begin ConstIterator
+     - end() : end ConstIterator
+     - rbegin() : begin ConstReverseIterator
+     - rend() : end ConstReverseIterator
+     - c() : ConstCirculator
+     - rc() : ConstReverseCirculator
+     
+     You can use these services to iterate over the elements of a given range
+     as follows: 
+     @snippet geometry/exampleGridCurve2d.cpp GridCurveRangeIterators
+         
+    * @see exampleGridCurve2d.cpp testGridCurve.cpp
+    */
 
   template <typename TKSpace>
   class GridCurve
@@ -116,6 +197,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * @param aKSpace the Khalimsky space where the grid curve lies. 
      */
     GridCurve(const KSpace& aKSpace) : myK(aKSpace) {};
 
@@ -139,7 +221,7 @@ namespace DGtal
 
 
     /**
-     * Outputs the grid curve to the stream [out].
+     * Outputs the grid curve to the stream @a out.
      * @param out any output stream,
      */
     void writeVectorToStream( std::ostream & out );
@@ -183,9 +265,17 @@ namespace DGtal
      
     // ------------------------- private Datas --------------------------------
   private:
+    /**
+     * Khalimsky space
+     */
     KSpace myK;
-
+    /**
+     * list of 0-cells
+     */
     Storage my0SCells; 
+    /**
+     * list of 1-cells
+     */
     Storage my1SCells; 
 
     // ------------------------- Public Datas --------------------------------
@@ -196,8 +286,14 @@ namespace DGtal
     // ------------------------- Internal --------------------------------
   private:
 
-    //conversion methods
+    /**
+     * @return the signed 0-cell associated to a point of integer coordinates 
+     */
     SCell PointTo0SCell(const Point& aPoint);
+    /**
+     * @return the signed 1-cell associated to a pair point - shift vector, 
+     * both of integer coordinates 
+     */
     SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
     
 
@@ -231,69 +327,70 @@ namespace DGtal
     #include "DGtal/geometry/2d/GridCurveRanges.ih"
 
     /**
-     * Accessor of a range of 0-cells
-     * @return SCellsRange
+     * Accessor to the range of signed 0-cells
+     * @return an instance of SCellsRange
      */
     typename GridCurve::SCellsRange get0SCellsRange() const {
       return SCellsRange(my0SCells);
     } 
 
     /**
-     * Accessor of a range of 1-cells
-     * @return SCellsRange
+     * Accessor to the range of signed 1-cells
+     * @return an instance of SCellsRange
      */
     typename GridCurve::SCellsRange get1SCellsRange() const {
       return SCellsRange(my1SCells);
     } 
 
     /**
-     * Accessor of the range of the integer coordinates of the pointels
-     * @return PointsRange
+     * Accessor to the range of the points of integer coordinates,
+     * which are associated to 0-cells of the grid curve 
+     * @return an instance of PointsRange
      */
     typename GridCurve::PointsRange getPointsRange() const {
       return PointsRange(this);
     } 
 
     /**
-     * Accessor of the range of the (real coordinates of the) midpoints of each 1-cell
-     * @return MidPointsRange
+     * Accessor to the range of the (real coordinates of the) midpoints of each 1-cell
+     * @return an instance of MidPointsRange
      */
     typename GridCurve::MidPointsRange getMidPointsRange() const {
       return MidPointsRange(this);
     } 
 
     /**
-     * Range of the pair of point and displacement vector
-     * (integer coordinates) associated to the 1-cells 
-     * @return ArrowsRange
+     * Accessor to the range of the pairs point - shift vector
+     * (of integer coordinates) associated to the 1-cells of the grid curve 
+     * @return an instance of ArrowsRange
      */
     typename GridCurve::ArrowsRange getArrowsRange() const {
       return ArrowsRange(this);
     } 
 
     /**
-     * @return InnerPointsRange
+     * @return an instance of InnerPointsRange
      */
     typename GridCurve::InnerPointsRange getInnerPointsRange() const {
       return InnerPointsRange(this);
     } 
 
     /**
-     * @return OuterPointsRange
+     * @return an instance of OuterPointsRange
      */
     typename GridCurve::OuterPointsRange getOuterPointsRange() const {
       return OuterPointsRange(this);
     } 
 
     /**
-     * @return IncidentPointsRange
+     * @return an instance of IncidentPointsRange
      */
     typename GridCurve::IncidentPointsRange getIncidentPointsRange() const {
       return IncidentPointsRange(this);
     } 
 
     /**
-     * @return CodesRange
+     * @return an instance of CodesRange
      */
     typename GridCurve::CodesRange getCodesRange() const {
       return CodesRange(this);
