@@ -24,7 +24,7 @@
  *
  * @date 2011/06/27
  *
- * Implementation of inline methods defined in GridCurve.h
+ * @brief Implementation of inline methods defined in GridCurve.h
  *
  * This file is part of the DGtal library.
  */
@@ -70,10 +70,7 @@ DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector
   return myK.sIncident( pointel,d,(aVector[d]>0)?myK.POS:myK.NEG );
 }
 
-/**
- * Init.
- * @param aVectorOfPoints the vector containing the sequence of grid points. 
- */
+
 template <typename TKSpace>
 inline
 bool
@@ -116,10 +113,6 @@ DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPo
   return true;
 }
 
-/**
- * Init.
- * @param in any input stream,
- */
 template <typename TKSpace>
 inline
 bool
@@ -139,10 +132,6 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
   }
 }
 
-/**
- * Outputs the grid curve to the stream [out].
- * @param out any output stream,
- */
 template <typename TKSpace>
 inline
 void
@@ -159,21 +148,12 @@ DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out )
   }  
 }
 
-/**
- * Copy constructor.
- * @param other the object to clone.
- */
 template <typename TKSpace>
 DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
   : myK( aOther.myK ), my0SCells( aOther.my0SCells ), my1SCells( aOther.my1SCells )
 {
 }
 
-/**
- * Assignment.
- * @param aOther the object to copy.
- * @return a reference on 'this'.
- */
 template <typename TKSpace>
 typename DGtal::GridCurve<TKSpace> & 
 DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
@@ -283,12 +263,6 @@ DGtal::GridCurve<TKSpace>::selfDraw(Board2D & aBoard) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'GridCurve'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'GridCurve' to write.
- * @return the output stream after the writing.
- */
 template <typename TKSpace>
 inline
 std::ostream&
@@ -298,9 +272,6 @@ DGtal::operator<< ( std::ostream & out,
   aObject.selfDisplay ( out );
   return out;
 }
-
-
-
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

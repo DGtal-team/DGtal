@@ -197,6 +197,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * @param aKSpace the Khalimsky space where the grid curve lies. 
      */
     GridCurve(const KSpace& aKSpace) : myK(aKSpace) {};
 
@@ -220,7 +221,7 @@ namespace DGtal
 
 
     /**
-     * Outputs the grid curve to the stream [out].
+     * Outputs the grid curve to the stream @a out.
      * @param out any output stream,
      */
     void writeVectorToStream( std::ostream & out );
@@ -264,9 +265,17 @@ namespace DGtal
      
     // ------------------------- private Datas --------------------------------
   private:
+    /**
+     * Khalimsky space
+     */
     KSpace myK;
-
+    /**
+     * list of 0-cells
+     */
     Storage my0SCells; 
+    /**
+     * list of 1-cells
+     */
     Storage my1SCells; 
 
     // ------------------------- Public Datas --------------------------------
@@ -277,8 +286,14 @@ namespace DGtal
     // ------------------------- Internal --------------------------------
   private:
 
-    //conversion methods
+    /**
+     * @return the signed 0-cell associated to a point of integer coordinates 
+     */
     SCell PointTo0SCell(const Point& aPoint);
+    /**
+     * @return the signed 1-cell associated to a pair point - shift vector, 
+     * both of integer coordinates 
+     */
     SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
     
 
@@ -312,69 +327,70 @@ namespace DGtal
     #include "DGtal/geometry/2d/GridCurveRanges.ih"
 
     /**
-     * Accessor of a range of 0-cells
-     * @return SCellsRange
+     * Accessor to the range of signed 0-cells
+     * @return an instance of SCellsRange
      */
     typename GridCurve::SCellsRange get0SCellsRange() const {
       return SCellsRange(my0SCells);
     } 
 
     /**
-     * Accessor of a range of 1-cells
-     * @return SCellsRange
+     * Accessor to the range of signed 1-cells
+     * @return an instance of SCellsRange
      */
     typename GridCurve::SCellsRange get1SCellsRange() const {
       return SCellsRange(my1SCells);
     } 
 
     /**
-     * Accessor of the range of the integer coordinates of the pointels
-     * @return PointsRange
+     * Accessor to the range of the points of integer coordinates,
+     * which are associated to 0-cells of the grid curve 
+     * @return an instance of PointsRange
      */
     typename GridCurve::PointsRange getPointsRange() const {
       return PointsRange(this);
     } 
 
     /**
-     * Accessor of the range of the (real coordinates of the) midpoints of each 1-cell
-     * @return MidPointsRange
+     * Accessor to the range of the (real coordinates of the) midpoints of each 1-cell
+     * @return an instance of MidPointsRange
      */
     typename GridCurve::MidPointsRange getMidPointsRange() const {
       return MidPointsRange(this);
     } 
 
     /**
-     * Range of the pair of point and displacement vector
-     * (integer coordinates) associated to the 1-cells 
-     * @return ArrowsRange
+     * Accessor to the range of the pairs point - shift vector
+     * (of integer coordinates) associated to the 1-cells of the grid curve 
+     * @return an instance of ArrowsRange
      */
     typename GridCurve::ArrowsRange getArrowsRange() const {
       return ArrowsRange(this);
     } 
 
     /**
-     * @return InnerPointsRange
+     * @return an instance of InnerPointsRange
      */
     typename GridCurve::InnerPointsRange getInnerPointsRange() const {
       return InnerPointsRange(this);
     } 
 
     /**
-     * @return OuterPointsRange
+     * @return an instance of OuterPointsRange
      */
     typename GridCurve::OuterPointsRange getOuterPointsRange() const {
       return OuterPointsRange(this);
     } 
 
     /**
-     * @return IncidentPointsRange
+     * @return an instance of IncidentPointsRange
      */
     typename GridCurve::IncidentPointsRange getIncidentPointsRange() const {
       return IncidentPointsRange(this);
     } 
 
     /**
-     * @return CodesRange
+     * @return an instance of CodesRange
      */
     typename GridCurve::CodesRange getCodesRange() const {
       return CodesRange(this);
