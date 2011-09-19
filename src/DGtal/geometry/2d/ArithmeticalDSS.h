@@ -280,7 +280,8 @@ Steps:
   public:
      
     /**
-     * Deprecated
+     * @deprecated
+     * @see isExtendable()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -306,7 +307,8 @@ Steps:
     bool isOppositeEndExtendable();
 
     /**
-     * Deprecated
+     * @deprecated
+     * @see extend()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -320,7 +322,8 @@ Steps:
     bool extend(const ConstIterator & itf);
 
     /**
-     * Deprecated
+     * @deprecated
+     * @see extendOppositeEnd()
      *
      * Tests whether the union between a point 
      * (adding to the back of the DSS 
@@ -427,14 +430,16 @@ Steps:
      */
     Point getLastPoint() const;
     /**
-     * Deprecated
+     * @deprecated
+     * @see begin() end()
      *
      * Accessor to the iterator at the back of the DSS
      * @return iterator.
      */
     ConstIterator getBack() const;
     /**
-     * Deprecated
+     * @deprecated
+     * @see begin() end()
      *
      * Accessor to the iterator at the front of the DSS
      * @return iterator.
@@ -613,7 +618,6 @@ Steps:
     Point myUf, myUl, myLf, myLl;
 
     //first (at the front) and last (at the back) points of the DSS
-    //Deprecated or to be redefinied (myBackIt, myFrontIt) ?
     ConstIterator myF, myL;
 
     //steps of the DSS 
