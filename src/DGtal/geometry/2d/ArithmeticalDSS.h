@@ -18,7 +18,6 @@
 
 /**
  * @file ArithmeticalDSS.h 
- * @brief Dynamic recognition of arithmetical DSS.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -26,11 +25,11 @@
  *
  * @date 2010/07/01
  *
- * Header file for module ArithmeticalDSS.cpp
+ * @brief Header file for module ArithmeticalDSS.cpp
  *
  * This file is part of the DGtal library.
  *
- * @see testArithDSS.cpp
+ * @see ArithmeticalDSS.cpp testArithDSS.cpp
  */
 
 #if defined(ArithmeticalDSS_RECURSES)
@@ -81,52 +80,24 @@ namespace DGtal
    *
    *
    * Here is a short example of how to use this class:
-   * @code 
-
-   //type definitions: 
-   typedef PointVector<2,int> Point;
-   typedef std::vector<Point> Range;
-   typedef Range::const_iterator ConstIterator;
-   typedef ArithmeticalDSS<ConstIterator, int, 4> DSS4;
-
-   // Input points
-   Range contour;
-   contour.push_back(Point(0,0));
-   contour.push_back(Point(1,0));
-   contour.push_back(Point(2,0));
-   contour.push_back(Point(3,0));
-   contour.push_back(Point(3,1));
-   contour.push_back(Point(4,1));
-   contour.push_back(Point(5,1));
-   contour.push_back(Point(5,2));
-
-  
-   // Add points while it is possible
-   DSS4 s;
-   s.init( contour.begin() );
-   while ( (s.end()!=contour.end())
-   &&(s.extend()) ) {} 
-
-   // Output parameters
-   cout << s << endl;
-
-   //You must get:
-   //[ArithmeticalDSS]
-   //Parameters (a,b,mu,omega)=(2, 5, 0, 7)
-   //Number of upper patterns: 1
-   //Number of lower patterns: 0
-   //First point [PointVector] {0, 0} Last point [PointVector] {5, 2}
-   //Leaning points:
-   //   Uf [PointVector] {0, 0}
-   //   Ul [PointVector] {5, 2}
-   //   Lf [PointVector] {3, 0}
-   //   Ll [PointVector] {3, 0}
-   //Steps:
-   //   [PointVector] {1, 0}
-   //   [PointVector] {0, 1}
-   //[End ArithmeticalDSS]
-
-   * @endcode
+   * @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+   *
+   * You must get: 
+   *
+[ArithmeticalDSS]
+Parameters (a,b,mu,omega)=(2, 5, -4, 7)
+Number of upper patterns: 0
+Number of lower patterns: 1
+First point [PointVector] {0, 0} Last point [PointVector] {6, 3}
+Leaning points:
+   Uf [PointVector] {3, 2}
+   Ul [PointVector] {3, 2}
+   Lf [PointVector] {1, 0}
+   Ll [PointVector] {6, 2}
+Steps:
+   [PointVector] {1, 0}
+   [PointVector] {0, 1}
+[End ArithmeticalDSS]
    *
    * @tparam 'TIterator', type ConstIterator on 2D points, 
    * @tparam 'TInteger', type of scalars used for the DSS parameters 
@@ -134,6 +105,8 @@ namespace DGtal
    * @tparam 'connectivity', an integer equal to 
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
+   *
+   * @see ArithmeticalDSS.cpp testArithDSS.cpp 
    */
   template <typename TIterator, 
 	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
@@ -758,6 +731,7 @@ namespace DGtal
     
     /**
      * Default drawing style object.
+     * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
