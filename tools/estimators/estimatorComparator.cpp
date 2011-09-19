@@ -65,7 +65,7 @@
 #include "DGtal/geometry/2d/BinomialConvolver.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
-
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 
 using namespace DGtal;
 

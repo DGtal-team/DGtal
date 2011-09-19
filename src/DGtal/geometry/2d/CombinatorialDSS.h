@@ -46,6 +46,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/base/OrderedAlphabet.h"
 //////////////////////////////////////////////////////////////////////////////
 

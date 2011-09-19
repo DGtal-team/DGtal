@@ -36,9 +36,13 @@
 
 
 /**
- * This class is a model of CRange and thus provides a ConstIterator to scan 
- * the Khalimsky coordinates of the d-cells of a grid curve 
- */
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the signed d-cells of a grid curve.
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 
 
 class SCellsRange
@@ -59,6 +63,7 @@ public:
 
   /**
    * Constructor.
+   * @param aStorage a range of cells.
    */
   SCellsRange( const Storage& aStorage ): myData(&aStorage){}
 
@@ -166,6 +171,9 @@ public:
 
   // ------------------------- private data --------------------------------
 private: 
+  /**
+   * Pointer to the range of cells.
+   */
   const typename GridCurve::Storage* myData;
 
   // ------------------------- iterator services --------------------------------
@@ -213,7 +221,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -231,10 +239,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells of a grid curve viewed as digital points
- */
-
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the 0-cells of a grid curve,
+* viewed as points of integer coordinates. 
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class PointsRange
 {
 
@@ -263,6 +275,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   PointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -371,7 +384,10 @@ public:
   }
 
   // ------------------------- private data --------------------------------
-  private: 
+  private:
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */    
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -419,7 +435,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -437,10 +453,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return their midpoint in real coordinates
- */
-
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the signed 1-cells of a grid curve, 
+* viewed as points of half-integer coordinates. 
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class MidPointsRange
 {
 
@@ -469,6 +489,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -580,6 +601,9 @@ public:
   
   // ------------------------- private data --------------------------------
   private: 
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -627,7 +651,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -644,11 +668,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return the integer coordinates of the associated 
- * point and displacement vector
- */
-
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the signed 1-cells of a grid curve,
+* viewed as pairs (point - shift vector), both in integer coordinates.
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class ArrowsRange
 {
 
@@ -677,6 +704,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   ArrowsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -798,6 +826,9 @@ public:
   
   // ------------------------- private data --------------------------------
   private: 
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -845,7 +876,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -862,9 +893,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return the (center of the direct incident pixel
- */
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the 2-cells (viewed as points
+* of integer coordinates) that are directly incident to the
+* signed 1-cells of a 2d grid curve.
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class InnerPointsRange
 {
 
@@ -893,6 +930,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   InnerPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -1005,6 +1043,9 @@ public:
 
   // ------------------------- private data --------------------------------
   private: 
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -1052,7 +1093,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -1068,9 +1109,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return the center of the indirect incident pixel
- */
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the 2-cells (viewed as points
+* of integer coordinates) that are indirectly incident to the
+* signed 1-cells of a 2d grid curve.
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class OuterPointsRange
 {
 
@@ -1099,6 +1146,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   OuterPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -1209,7 +1257,10 @@ public:
   }
   
   // ------------------------- private data --------------------------------
-  private: 
+  private:
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */    
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -1257,7 +1308,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -1273,9 +1324,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return the center of the indirect incident pixel
- */
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the two 2-cells (viewed as points
+* of integer coordinates) that are (directly and indirectly) 
+* incident to the signed 1-cells of a 2d grid curve.
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class IncidentPointsRange
 {
 
@@ -1304,6 +1361,7 @@ public:
 
   /**
    * Constructor.
+   * @param aGridCurve a grid curve.
    */
   IncidentPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
 
@@ -1425,6 +1483,9 @@ public:
   
   // ------------------------- private data --------------------------------
   private: 
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -1472,7 +1533,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );
@@ -1488,9 +1549,18 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * This class is a model of CRange and provides a ConstIterator to scan 
- * the 1-cells and return the center of the indirect incident pixel
- */
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the 1-cells of a 2d grid curve,
+* viewed as chain codes: 
+* - 0 for a shift to the right
+* - 2 for a shift to the left
+* - 1 for a shift to the up
+* - 3 for a shift to the bottom
+* 
+* (Included in GridCurve.h)
+*
+* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+*/
 class CodesRange
 {
 
@@ -1588,7 +1658,10 @@ public:
       return out;
     }
   // ------------------------- private data --------------------------------
-  private: 
+  private:
+  /**
+   * Private member @a myC is a pointer to any grid curve
+   */    
     const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
@@ -1636,7 +1709,7 @@ public:
 
   /**
    * Circulator service.
-   * @return a circulator
+   * @return a reverse circulator
    */
   ConstReverseCirculator rc() const {
     return ConstReverseCirculator( this->c() );

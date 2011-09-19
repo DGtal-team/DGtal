@@ -51,7 +51,7 @@
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/helpers/StdDefs.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
