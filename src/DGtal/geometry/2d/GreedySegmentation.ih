@@ -299,7 +299,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
   
   template <typename TSegmentComputer>
 inline
-const bool
+bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
 {
   return myFlagIntersectNext;
@@ -307,7 +307,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectN
 
   template <typename TSegmentComputer>
 inline
-const bool
+bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;
