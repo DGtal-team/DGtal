@@ -23,7 +23,7 @@
  *
  * @date 2011/01/26
  *
- * Header file for module FP.cpp
+ * @brief Header file for module FP.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -115,6 +115,36 @@ namespace DGtal
    * Description of template class 'FP' <p>
    * \brief Aim:Computes the faithful polygon (FP)
    * of a range of 4/8-connected 2D Points. 
+   * 
+   * The FP has several properties: 
+   *  - its vertices are points of the underlying digital curve, thus with integer coordinates, 
+   *  - it respects the convex and concave parts of the underlying digital curve,
+   *  - it is reversible, 
+   *  - it is unique for digital curves that are not digital straight segments,
+   *  - it is closed to the minimum length polygon (MLP) (and converges toward the MLP
+   * as the resolution tends to the infinity) for closed digital curves.  
+   *
+   * @note T. ROUSSILLON and I. SIVIGNON, 
+   * AFaithful polygonal representation of the convex and concave parts of a digital curve, 
+   * Pattern Recognition, Volume 44, Issues 10-11, October-November 2011, Pages 2693-2700. 
+   *
+   * Usage:
+   * @code
+   //r is a range of 4-connected 2D points
+   FP<ConstIterator, Integer, 4> theFP( r .begin(), r.end() );
+   * @endcode
+   *
+   * Once the FP is computed, copyFP() is a way of geting its vertices. 
+   * In the same way, copyMLP() is a way of getting the vertices of the MLP. 
+   * 
+   * @tparam 'TIterator'  type ConstIterator on 2D points, 
+   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
+   * (satisfying CInteger) 
+   * @tparam 'connectivity'  an integer equal to 
+   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
+   * (Any other integers act as 8). 
+   *
+   * @see testFP.cpp
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class FP
