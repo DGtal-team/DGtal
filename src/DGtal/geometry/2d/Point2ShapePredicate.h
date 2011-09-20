@@ -79,9 +79,9 @@ namespace DGtal
   
   /**
      * Constructor.
-     * @param aShape any shape
+     * @param aSurface any Surface
      */
-    Point2ShapePredicate(const Shape& aShape);
+    Point2ShapePredicate(const Surface& aSurface);
 
     /**
      * Copy constructor.
@@ -91,7 +91,7 @@ namespace DGtal
 
    /**
      * @param p any point.
-     * @return true iff p is in the interior of the shape.
+     * @return true iff @a p is in the interior of the shape.
      */
     bool operator()( const Point & p ) const;
 
@@ -112,8 +112,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the shape
-    Shape myS;
+    /**
+     * The surface with respect to the points have to be located
+     */
+    TSurface myS;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -173,11 +175,17 @@ namespace DGtal
       }
     };
 
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Point2ShapePredicate'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Point2ShapePredicate' to write.
+ * @return the output stream after the writing.
+ */
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 operator<< ( std::ostream & out, 
-      const Point2ShapePredicate<Shape,isUpward,isClosed> & object );
+      const Point2ShapePredicate<TSurface,isUpward,isClosed> & object );
 
 } // namespace DGtal
 
