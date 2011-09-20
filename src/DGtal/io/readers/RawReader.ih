@@ -53,7 +53,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
       
   firstPoint = T::Point::zero;
   lastPoint = extent;
-  long int size=1;
+  unsigned int size=1;
   for(unsigned int i=0; i < T::Domain::dimension; i++)
     {
       size *= lastPoint[i];      
