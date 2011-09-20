@@ -42,7 +42,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );

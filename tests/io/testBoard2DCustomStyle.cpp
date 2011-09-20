@@ -50,7 +50,7 @@ using namespace DGtal;
  */
 struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
-  virtual void selfDraw( LibBoard::Board & aBoard ) const
+  virtual void selfDraw( DGtal::Board2D & aBoard ) const
    {
      aBoard.setFillColorRGBi(0,160,0);
      aBoard.setPenColorRGBi(80,0,0);
