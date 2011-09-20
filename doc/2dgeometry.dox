@@ -262,7 +262,7 @@ but actually five concepts that form a hierarchy: the first one can only
 extend itself in one direction, while others define additional functionality. 
 The five concepts that are actually used in segmentation algorithms are 
 CTrivialSegmentComputer, CForwardSegmentComputer, CBidirectionalSegmentComputer, 
-CDynamicSegmentComputer and CDynamicBidrectionalSegmentComputer. 
+CDynamicSegmentComputer and CDynamicBidirectionalSegmentComputer. 
 
  @image html segmentComputersHierarchy.png  "Hierarchy"
  @image latex segmentComputersHierarchy.png  "Hierarchy"
@@ -328,53 +328,17 @@ Finally, the concept CDynamicBidirectionalSegmentComputer is a refinement of bot
 CBidirectionalSegmentComputer and CDynamicSegmentComputer. 
 
 
-A model of CSegmentComputer is the class ArithmeticalDSS, 
+A model of CDynamicBidirectionalSegmentComputer is the class ArithmeticalDSS, 
 devoted to the dynamic recognition of DSSs, 
- defined as a sequence of connected points (x,y)
+ defined as a sequence of connected points @f$ (x,y) @f$
  such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
  (see Debled and Reveilles, 1995).
 
  Here is a short example of how to use this class in the 4-connected case:
- @code 
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
-
-    Range contour; 
-    ... //feed range
-		
-    // Add points while it is possible
-    DSS4 theDSS4;		
-    theDSS4.init( contour.begin() );
-    while ( ( theDSS4.end() != contour.end() )
-	        &&( theDSS4.extend() ) ) {}
-
-    // Output parameters
-    cout << theDSS4 << endl;
- @endcode
+ @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
- @code 
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
-
-    Range boundary;
-    ... //feed range
-
-    // Add points while it is possible
-    DSS8 theDSS8;		
-    theDSS8.init( boundary.begin() );
-    while ( ( theDSS8.end() != boundary.end() )
-	        &&( theDSS8.extend() ) ) {}
-
-
-    // Output parameters
-    cout << theDSS8 << endl;
-
- @endcode
+ @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
 
  These snippets are drawn from ArithmeticalDSS.cpp. 
  
