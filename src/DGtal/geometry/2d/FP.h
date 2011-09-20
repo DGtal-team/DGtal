@@ -112,7 +112,6 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class FP
   /**
-   * Description of template class 'FP' <p>
    * \brief Aim:Computes the faithful polygon (FP)
    * of a range of 4/8-connected 2D Points. 
    * 
@@ -174,8 +173,15 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param itb begin iterator
-     * @param ite end iterator
+     * @param itb  begin iterator
+     * @param ite  end iterator
+     */
+    FP(const TIterator& itb, const TIterator& ite) throw( InputException ) ;
+  
+    /**
+     * Constructor.
+     * @param itb  begin iterator
+     * @param ite  end iterator
      * @param isClosed 'true' if the range has to be considered as circular, 
      * 'false' otherwise. 
      */
@@ -223,11 +229,15 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    //each vertex of the FP is stored in this list
+    /*
+    * list where each vertex of the FP is stored
+    */
     Polygon myPolygon; 
 
-    //TRUE if the list has to be consider as circular
-    //FALSE otherwise
+    /*
+    * bool equal to 'true' if the list has to be consider as circular
+    * 'false' otherwise
+    */
     bool myFlagIsClosed;
 
     // ------------------------- Hidden services ------------------------------
@@ -238,11 +248,12 @@ namespace DGtal
   private:
 
     /**
-     * @param [aDSS] a DSS lying on a range
-     * @param [anAdapter] an Adapter to [aDSS] for convex part
-     * if 'true' is returned, for concave part otherwise
-     * @param [i] an iterator pointing after the front of [aDSS] 
-     * @return 'true' if [aDSS] begins a convex part, 'false' otherwise
+     * A DSS adapter is chosen according to the local convexity/concavity
+     * @param aDSS a DSS lying on the range to process
+     * @param anAdapter an Adapter to @a aDSS for convex part
+     * when 'true' is returned, for concave part otherwise
+     * @param i an iterator pointing after the front of @a aDSS 
+     * @return 'true' if @a aDSS begins a convex part, 'false' otherwise
      */
     template<typename DSS, typename Adapter>
     bool initConvexityConcavity( DSS &aDSS,  
@@ -250,11 +261,12 @@ namespace DGtal
                                  const typename DSS::ConstIterator& i );
 
     /**
-     * @param [currentDSS] a DSS lying on a range
-     * @param [adapter] an Adapter to [currentDSS]
-     * @param [isConvex], 'true' if [currentDSS] is in a convex part, 'false' otherwise
-     * @param [i] an iterator pointing after the front of [currentDSS] 
-     * @param the algorithm stops when [i] == [end]
+     * Main algorithm
+     * @param currentDSS a DSS lying on the range to process
+     * @param adapter an Adapter to @a currentDSS
+     * @param isConvex, 'true' if @a currentDSS is in a convex part, 'false' otherwise
+     * @param i an iterator pointing after the front of @a currentDSS 
+     * @param end iterator used to stop the algorithm (when @a i == @a end )
      */
     template<typename DSS, typename Adapter>
     void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
@@ -264,7 +276,7 @@ namespace DGtal
 
 
     /**
-     * gets a MLP vertex from three consecutive vertices of the FP.
+     * Gets a MLP vertex from three consecutive vertices of the FP.
      * @param a previous vertex of the FP
      * @param b current vertex of the FP
      * @param c next vertex of the FP
@@ -274,9 +286,10 @@ namespace DGtal
     RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
 
     /**
-     * @param v any Vector
+     * Returns the quadrant number of a vector
+     * @param v any ector
      * @param q a quandrant number (0,1,2 or 3)
-     * @return 'true' if [v] lies in quadrant number [q], 'false' otherwise
+     * @return 'true' if @a v lies in quadrant number @a q, 'false' otherwise
      */
 
     bool quadrant (const Vector& v, const int& q) const;
@@ -305,6 +318,10 @@ namespace DGtal
      */
     struct DefaultDrawStyle : public DrawableWithBoard2D
     {
+        /**
+         * Drawing method.
+         * @param board the output board where the object is drawn.
+         */
         virtual void selfDraw(Board2D & aBoard) const
         {
         // Set board style
@@ -315,7 +332,7 @@ namespace DGtal
         }
     };
 
-      /*
+    /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -327,6 +344,7 @@ namespace DGtal
     
     /**
      * Default drawing style object.
+     * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
@@ -345,7 +363,7 @@ namespace DGtal
 
 
     /**
-     * Draw the FP on a LiBoard board
+     * Draw the FP on a board
      * @param board the output board where the object is drawn.
      */
     void selfDrawAsPolygon( Board2D & board ) const;
