@@ -21,14 +21,14 @@ include(Board/ModuleSRC.txt)
 # The extension is already found. Any number of sources could be listed here.
 
 IF (BUILD_SHARED_LIBS)
-  add_library (${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
-  target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+  add_library (DGtal SHARED ${DGTAL_SRC} ${BOARD_SRC})
+  target_link_libraries( DGtal ${DGtalLibDependencies} )
 ELSE(BUILD_SHARED_LIBS)
-  add_library (${LIBDGTAL_NAME} STATIC ${DGTAL_SRC} ${BOARD_SRC})
-  target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+  add_library (DGtal STATIC ${DGTAL_SRC} ${BOARD_SRC})
+  target_link_libraries(DGtal ${DGtalLibDependencies} )
 ENDIF(BUILD_SHARED_LIBS)
 
-install(TARGETS ${LIBDGTAL_NAME}
+install(TARGETS DGtal
   # IMPORTANT: Add the DGtal library to the "export-set"
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
@@ -37,19 +37,14 @@ install(TARGETS ${LIBDGTAL_NAME}
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
+add_library ( DGtalIO SHARED ${DGTALIO_SRC})
+target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
 
-if ( WITH_VISU3D )
-  add_library ( ${LIBDGTALVISU3D_NAME} SHARED ${DGTALIV_SRC} ${DGTALQGLV_SRC} )
-  target_link_libraries( ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
-  
-  install(TARGETS ${LIBDGTALVISU3D_NAME}
-    # IMPORTANT: Add the DGtalVisu library to the "export-set"
-    EXPORT DGtalLibraryDepends
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
-    COMPONENT dev)
-  
-endif( WITH_VISU3D )
-
+install(TARGETS DGtalIO
+  # IMPORTANT: Add the DGtalVisu library to the "export-set"
+  EXPORT DGtalLibraryDepends
+  RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
+  LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+  # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+  COMPONENT dev)
 

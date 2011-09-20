@@ -77,12 +77,6 @@ ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
 # -----------------------------------------------------------------------------
-# Defines some variables
-# -----------------------------------------------------------------------------
-set ( LIBDGTAL_NAME "DGtal" )
-set ( LIBDGTALVISU3D_NAME "DGtal-visu3d" )
-
-# -----------------------------------------------------------------------------
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
