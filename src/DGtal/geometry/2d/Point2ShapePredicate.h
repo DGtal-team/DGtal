@@ -60,23 +60,22 @@ namespace DGtal
    *
    * @tparam TSurface  a type that is a model of COrientableHypersurface.
    * Must separate the space in two disjoints parts (the 'interior' and the 'exterior')
-   * and must be able to return for any given point the signed distance to itself 
-   * (of type TSurface::Distance) by a method called signedDistance() 
-   * (negative in the interior, positive in the exterior, null on the shape). 
-   * @tparam isUpward a bool for the orientation ('true' means that the interior 
+   * and must be able to return for any given point (of type TSurface::Point) 
+   * the signed distance to itself (of type TSurface::Distance) by a method called signedDistance() 
+   * @tparam isUpward  a bool for the orientation ('true' means that the interior 
    * is the set of points of positive distance)
-   * @tparam isClosed a bool for the closure ('true' means that the surface is included)
+   * @tparam isClosed  a bool for the closure ('true' means that the surface is included)
    *  
    * @see testHalfPlane.cpp
    */
-  template <typename Shape, bool isUpward, bool isClosed>
+  template <typename TSurface, bool isUpward, bool isClosed>
   class Point2ShapePredicate
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef typename Shape::Point Point;
-    typedef typename Shape::Distance Distance; 
+    typedef typename TSurface::Point Point;
+    typedef typename TSurface::Distance Distance; 
   
   /**
      * Constructor.
@@ -174,7 +173,7 @@ namespace DGtal
       }
     };
 
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 operator<< ( std::ostream & out, 

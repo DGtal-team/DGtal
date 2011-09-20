@@ -41,7 +41,7 @@
 /**
  * Destructor.
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::~Point2ShapePredicate()
 {
@@ -52,7 +52,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::~Point2ShapePredicate()
  * @param firstPoint, secondPoint, two points
  * that uniquely define the Point2ShapePredicate
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
         const Shape& aShape):
@@ -64,7 +64,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
         const Point2ShapePredicate & other):
@@ -81,7 +81,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
  * @return 'true' if [aPoint] belongs to the Point2ShapePredicate
  * 'false' otherwise.
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 bool
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
@@ -104,7 +104,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 void
 DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
@@ -123,7 +123,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
