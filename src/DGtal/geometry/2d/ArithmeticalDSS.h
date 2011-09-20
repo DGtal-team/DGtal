@@ -76,7 +76,7 @@ namespace DGtal
    * International Journal of Pattern Recognition and Artificial
    * Intelligence, Volume 9, N. 6, December 1995. 
    *
-   * This class is a model of the concept CSegmentComputer. 
+   * This class is a model of the concept CDynamicBidirectionalSegmentComputer. 
    *
    *
    * Here is a short example of how to use this class:
@@ -84,6 +84,7 @@ namespace DGtal
    *
    * You must get: 
    *
+   * @code
 [ArithmeticalDSS]
 Parameters (a,b,mu,omega)=(2, 5, -4, 7)
 Number of upper patterns: 0
@@ -98,11 +99,12 @@ Steps:
    [PointVector] {1, 0}
    [PointVector] {0, 1}
 [End ArithmeticalDSS]
+   * @endcode
    *
-   * @tparam 'TIterator', type ConstIterator on 2D points, 
-   * @tparam 'TInteger', type of scalars used for the DSS parameters 
+   * @tparam 'TIterator'  type ConstIterator on 2D points, 
+   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
    * (satisfying CInteger) 
-   * @tparam 'connectivity', an integer equal to 
+   * @tparam 'connectivity'  an integer equal to 
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *
@@ -610,20 +612,67 @@ Steps:
   protected:
 
     //parameters of the DSS
-    Integer myA, myB, myMu, myOmega;
+    /**
+    * y-component of the direction vector
+    */
+    Integer myA;
+    /**
+    * x-component of the direction vector
+    */
+    Integer myB;
+    /**
+    * Intercept
+    */
+    Integer myMu;
+    /**
+    * Thickness
+    */
+    Integer myOmega;
+
     //number of upper and lower patterns
-    Integer myNbUpPat, myNbLowPat; 
-
+    /**
+    * Number of upper patterns ( @a myUf = @a myNbUpPat . ( @a myB , @a myA ) + @a myUl )
+    */
+    Integer myNbUpPat;
+    /**
+    * Number of lower patterns ( @a myLf = @a myNbLowPat . ( @a myB , @a myA ) + @a myLl )
+    */
+    Integer myNbLowPat; 
+    
     //leaning points
-    Point myUf, myUl, myLf, myLl;
+    /**
+    * First upper leaning point ( of remainder @a myMu )
+    */
+    Point myUf;
+    /**
+    * Last upper leaning point ( of remainder @a myMu )
+    */
+    Point myUl;
+    /**
+    * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLf;
+    /**
+    * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLl;
+  
 
-    //first (at the front) and last (at the back) points of the DSS
-    ConstIterator myF, myL;
+    //Iterators to the first (at the back) and last (at the front) points of the DSS
+    /**
+    * ConstIterator pointing to the back of the DSS
+    */
+    ConstIterator myF;
+    /**
+    * ConstIterator pointing to the front of the DSS
+    */
+    ConstIterator myL;
 
-    //steps of the DSS 
-    //e.g. right and up in the first octant
+    /**
+    * Steps of the DSS (eg. right and up in the first octant)
+    */
     std::vector<Vector> mySteps;
-
+    
     // ------------------------- Private Datas --------------------------------
   
   private:
