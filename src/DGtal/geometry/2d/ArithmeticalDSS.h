@@ -111,8 +111,8 @@ Steps:
    * @see ArithmeticalDSS.cpp testArithDSS.cpp 
    */
   template <typename TIterator, 
-	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
-	    int connectivity = 8>
+    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
+    int connectivity = 8>
   class ArithmeticalDSS
   {
 
@@ -372,23 +372,19 @@ Steps:
 
     // ------------------------- Accessors ------------------------------
     /**
-     * myA accessor
-     * @return an Integer of value myA.
+     * @return an Integer of value @a myA.
      */
     Integer getA() const;
     /**
-     * myB accessor
-     * @return an Integer of value myB.
+     * @return an Integer of value @a myB.
      */
     Integer getB() const;
     /**
-     * myMu accessor
-     * @return an Integer of value myMu.
+     * @return an Integer of value @a myMu.
      */
     Integer getMu() const;
     /**
-     * myOmega accessor
-     * @return an Integer of value myOmega.
+     * @return an Integer of value @a myOmega.
      */
     Integer getOmega() const;
     /**
@@ -412,23 +408,25 @@ Steps:
      */
     Point getLl() const;
     /**
+     * @deprecated
      * Accessor to the first added point to the DSS
-     * @return point.
+     * @return the first point of the DSS.
      */
     Point getBackPoint() const;
     /**
+     * @deprecated
      * Accessor to the last added point to the DSS
-     * @return point.
+     * @return the last point of the DSS.
      */
     Point getFrontPoint() const;
     /**
      * Accessor to the first added point to the DSS
-     * @return point.
+     * @return the first point of the DSS.
      */
     Point getFirstPoint() const;
     /**
      * Accessor to the last added point to the DSS
-     * @return point.
+     * @return the last point of the DSS.
      */
     Point getLastPoint() const;
     /**
@@ -436,7 +434,7 @@ Steps:
      * @see begin() end()
      *
      * Accessor to the iterator at the back of the DSS
-     * @return iterator.
+     * @return iterator pointing to the back of the DSS.
      */
     ConstIterator getBack() const;
     /**
@@ -444,7 +442,7 @@ Steps:
      * @see begin() end()
      *
      * Accessor to the iterator at the front of the DSS
-     * @return iterator.
+     * @return iterator pointing to the front of the DSS.
      */
     ConstIterator getFront() const;
     /**
@@ -471,7 +469,7 @@ Steps:
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
      * @param it an iterator on points
-     * @return the remainder of *it.
+     * @return the remainder of @a *it.
      */
     Integer getRemainder(const ConstIterator & it) const;
 
@@ -479,7 +477,7 @@ Steps:
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
      * @param aPoint the point whose remainder is returned 
-     * @return myA*aPoint[0] - myB*aPoint[1].
+     * @return @a myA * @a aPoint[0] - @a myB * @a aPoint[1].
      */
     Integer getRemainder( const Point& aPoint ) const;
 
@@ -487,7 +485,7 @@ Steps:
      * Computes the position of a point
      * (that does not necessarily belong to the DSS)
      * @param it an iterator on points
-     * @return the position of *it.
+     * @return the position of @a *it.
      */
     Integer getPosition(const ConstIterator & it) const;
 
@@ -495,13 +493,13 @@ Steps:
      * Computes the position of a point
      * (that does not necessarily belong to the DSS)
      * @param aPoint the point whose position is returned 
-     * @return myA*aPoint[0] + myB*aPoint[1].
+     * @return @a myA * @a aPoint[0] + @a myB * @a aPoint[1].
      */
     Integer getPosition( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
+     * of parameters ( @a myA, @a myB, @a myMu, @a myOmega )
      * @param aPoint the point to be checked 
      * @return 'true' if yes, 'false' otherwise
      */
@@ -509,7 +507,7 @@ Steps:
 
     /**
      * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
+     * of parameters ( @a myA, @a myB, @a myMu, @a myOmega )
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
@@ -534,64 +532,70 @@ Steps:
   private:
 
     /**
-     * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
+     * Tests whether the union between @a lastPoint 
+     * and the DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param lastPoint, the new point
-     * @param lastMove, end shift vector of the DSS  
+     *
+     * @param lastPoint  the point to add
+     * @param lastMove  shift vector to the point to add
+     *
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool isExtendable( const Point & lastPoint, 
-		       const Vector & lastMove );
+                                   const Vector & lastMove );
 
     /**
      * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
+     * (pointing to by @a it) and the DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param it an iterator on a sequence of points
-     * @param lastIt, an iterator pointing at the end of the DSS 
-     * @param lastMove, end shift vector of the DSS  
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
+     *
+     * @param it  an iterator on a 2D point
+     * @param lastIt  an iterator pointing to the end of the DSS 
+     * @param lastMove  shift vector to the point pointed to by @a it
+     * @param Uf  first upper leaning point  
+     * @param Ul  last upper leaning point 
+     * @param Lf  first lower leaning point  
+     * @param Ll  last lower leaning point 
+     * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool extend( const ConstIterator & it, 
-		 ConstIterator & lastIt, 
-		 const Vector & lastMove,
-		 Point & Uf,  Point & Ul,
-		 Point & Lf,  Point & Ll );
+                          ConstIterator & lastIt, 
+                          const Vector & lastMove,
+                          Point & Uf,  Point & Ul,
+                          Point & Lf,  Point & Ll );
 
     /**
      * Removes the end point of a DSS
-     * (pointing by firstIt)
-     * @param firstIt, an iterator pointing at the end of the DSS 
-     * @param lastIt, an iterator pointing at the other end of the DSS 
-     * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
-     * @param s, a signed integer equal to 1 or -1
+     * (pointing to by @a firstIt)
+     *
+     * @param firstIt  an iterator pointing to the end of the DSS 
+     * @param lastIt  an iterator pointing to the other end of the DSS 
+     * @param nextIt  an iterator pointing to the point of the DSS close to the one pointing to by @a firstIt
+     * @param Uf  first upper leaning point  
+     * @param Ul  last upper leaning point 
+     * @param Lf  first lower leaning point  
+     * @param Ll  last lower leaning point 
+     * @param s  a signed integer equal to 1 or -1
+     *
      * @return 'true'.
      */
     bool retract( ConstIterator & firstIt,
-		  ConstIterator & lastIt,
-		  ConstIterator & nextIt,       
-		  Point & Uf,  Point & Ul,
-		  Point & Lf,  Point & Ll,
-		  const Integer& s );
+                        ConstIterator & lastIt,
+                        ConstIterator & nextIt,       
+                        Point & Uf,  Point & Ul,
+                        Point & Lf,  Point & Ll,
+                        const Integer& s );
 
 
     /**
      * Checks whether the DSS has less or more
-     * than two displacement vectors (steps)
+     * than two shift vectors (steps)
      * between two consecutive points
      * (must be called only in the main stage)
-     * @param aStep, the last displacement vector. 
+     * @param aStep  the last shift vector. 
      * @return 'true' if less or equal, 'false' otherwise.
      */
     bool hasLessThanTwoSteps(const Vector& aStep) const;
@@ -600,7 +604,7 @@ Steps:
     /**
      * Returns the 2D vector 
      * starting at a point of remainder 0
-     * and pointing at the closer point of
+     * and pointing to the closer point of
      * remainder omega
      * @return the 2D vector.
      */
@@ -682,32 +686,31 @@ Steps:
 
   public:
     /**
-     * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
-     * @param m any point expressed in the local reference frame (may not be part of the segment).
+     * Projects the point @a m onto the straight line of slope ( @a myA / @a myB) 
+     * and intercept @a myMu + ( @a myOmega - 1 )/2 ).
+     * @param m any point (may not be part of the DSS).
      * @return the projected point.
      */
     PointD project( const Point & m ) const;
 
     /**
-     * Projects the point [m] onto the straight line whose points have
-     * remainder [r].
+     * Projects the point @a m onto the straight line whose points have
+     * remainder @a r.
      *
-     * @param m any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param m any point (may not be part of the DSS).
      *
      * @param r the remainder (may not be an integer).
+     *
      * @return the projected point.
      */
     PointD project( const Point & m, double r ) const;
     
     /**
-     * Projects the point [m] onto the straight line going through point [p].
+     * Projects the point @a m onto the straight line going through point @a p.
      *
-     * @param m any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param m any point (may not be part of the DSS).
      *
-     * @param p any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param p any point (may not be part of the DSS).
      *
      * @return the projected point.
      */
@@ -728,19 +731,17 @@ Steps:
 
     
     /**
-     * Draw the digital points of the DSS linked into a 
-     * polygonal line on a LiBoard board
+     * Draw the digital points of the DSS 
+     * (possibly linked into a polygonal line) on a board
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
      */
     
     void selfDrawAsDigitalPoints( Board2D & board ) const;
     
     
     /**
-     * Draw the bounding box of the DSS on a LiBoard board
+     * Draw the bounding box of the DSS on a board
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
      */
     void selfDrawAsBoundingBox( Board2D & board ) const;
     
@@ -750,10 +751,14 @@ Steps:
   private:
 
     /**
-     * Default style.
+     * Default style for the bounding box mode.
      */
     struct DefaultDrawStyleBB : public DrawableWithBoard2D
     {
+      /**
+       * Draw the DSS on a board
+       * @param board the output board where the object is drawn.
+       */
       virtual void selfDraw(Board2D & aBoard) const
       {
         // Set board style
@@ -765,17 +770,21 @@ Steps:
     };
     
     /**
-     * Default style.
+     * Default style for the points mode.
      */
     struct DefaultDrawStylePoints : public DrawableWithBoard2D
     {
+      /**
+       * Draw the DSS on a board
+       * @param board the output board where the object is drawn.
+       */
       virtual void selfDraw(Board2D & aBoard) const
       {
-	// Set board style
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineWidth(2);
-	aBoard.setFillColor(Color::None);
+        // Set board style
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+        aBoard.setPenColor(Color::Black);
+        aBoard.setLineWidth(2);
+        aBoard.setFillColor(Color::None);
       }
     };
 
@@ -795,10 +804,8 @@ Steps:
     std::string styleName() const;
 
     /**
-     * Draw the DSS on a LiBoard board as its bounding box and the
+     * Draw the DSS on a board as its bounding box and the
      * polyline of its points 
-     * @see BoundingBoxDraw
-     * @see DigitalPointsDraw
      * @param board the output board where the object is drawn.
      *
      */
