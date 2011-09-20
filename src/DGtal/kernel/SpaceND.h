@@ -49,7 +49,6 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/RealPointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -95,7 +94,7 @@ Point4Int a= {2, 3 , -5 , 6};
    **/
 
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+       typename TInteger = DGtal::int32_t >
   class SpaceND
   {
     //Integer must be a model of the concept CInteger.
@@ -115,17 +114,17 @@ Point4Int a= {2, 3 , -5 , 6};
      
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
-
+  
     ///Vectors in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Vector;
-
-    ///Point with "double" as  coordinate type with the same dimension
-    ///as SpaceND.
-    typedef RealPointVector<dim> RealPoint;
     
     ///Point with "double" as  coordinate type with the same dimension
     ///as SpaceND.
-    typedef RealPointVector<dim> RealVector;
+    typedef PointVector<dim, double> RealPoint;
+    
+    ///Point with "double" as  coordinate type with the same dimension
+    ///as SpaceND.
+    typedef PointVector<dim, double> RealVector;
 
     ///Type to denote the space itself.
     typedef SpaceND<dim, Integer> Space;

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-2-sets.cpp
+ * @file   dgtalBoard3DTo2D-2bis-sets.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -65,8 +65,8 @@ int main( int argc, char** argv )
   viewer << shape_set;
   
   viewer << CameraPosition(5.000000, 5.000000, 15)
-	 << CameraDirection(0.000000, 0.000000, -1.000000)
-	 << CameraUpVector(0.000000, 1.000000, 0.000000);
+   << CameraDirection(0.000000, 0.000000, -1.000000)
+   << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   viewer.saveCairo("dgtalCairo-2bis-sets-wireframe.png", Board3DTo2D::CairoPNG, 600, 400);
 }

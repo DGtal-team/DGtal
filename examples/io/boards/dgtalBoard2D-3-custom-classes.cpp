@@ -15,7 +15,7 @@
  **/
 //LICENSE-END
 /**
- * @file dgtalboard-3-custom-classes.cpp
+ * @file dgtalBoard2D-3-custom-classes.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -57,16 +57,16 @@ int main()
   
   Board2D board;
   board << domain 
-	<< CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
-	<< p1
-	<< CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
-	<< p2
-	<< CustomStyle( p3.styleName(), 
-			new CustomPen( blue, dblue, 6.0, 
-				       Board2D::Shape::SolidStyle,
-				       Board2D::Shape::RoundCap,
-				       Board2D::Shape::RoundJoin ) )
-	<< p3;
+  << CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
+  << p1
+  << CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
+  << p2
+  << CustomStyle( p3.styleName(), 
+      new CustomPen( blue, dblue, 6.0, 
+               Board2D::Shape::SolidStyle,
+               Board2D::Shape::RoundCap,
+               Board2D::Shape::RoundJoin ) )
+  << p3;
   board.saveSVG("dgtalboard-3-custom-classes.svg");
   board.saveEPS("dgtalboard-3-custom-classes.eps");
 

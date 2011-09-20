@@ -150,12 +150,12 @@ void displayList()
   trace.emphase()<<"2D Shapes:"<<std::endl;
   for(unsigned int i=0; i<shapes2D.size(); ++i)
     trace.info()<<"\t"<<shapes2D[i]<<"\t"
-		<<shapesDesc[i]<<std::endl
-		<<"\t\tRequired parameter(s): "
-		<< shapesParam1[i]<<" "
-      		<< shapesParam2[i]<<" "
-      		<< shapesParam3[i]<<" "
-      		<< shapesParam4[i]<<std::endl;
+    <<shapesDesc[i]<<std::endl
+    <<"\t\tRequired parameter(s): "
+    << shapesParam1[i]<<" "
+          << shapesParam2[i]<<" "
+          << shapesParam3[i]<<" "
+          << shapesParam4[i]<<std::endl;
   
 }
 
@@ -188,7 +188,7 @@ unsigned int checkAndReturnIndex(const std::string &shapeName)
 template <typename Estimator, typename ConstIterator>
 std::vector<typename Estimator::Quantity>
 estimateQuantity( Estimator & estimator, 
-		  ConstIterator it, ConstIterator it_end )
+      ConstIterator it, ConstIterator it_end )
 {
   std::vector<typename Estimator::Quantity> values;
   for ( ; it != it_end; ++it )
@@ -234,10 +234,10 @@ estimateGeometry(Shape& s,
 template <typename Space, typename Shape>
 bool
 generateContour( 
-		 Shape & aShape, 
-		 double h,
-		 const std::string & outputFormat,
-		 const std::string & outputFileName  )
+     Shape & aShape, 
+     double h,
+     const std::string & outputFormat,
+     const std::string & outputFileName  )
 {
   // Types
   typedef typename Space::Point Point;
@@ -264,7 +264,7 @@ generateContour(
   if ( ! ok )
     {
       std::cerr << "[generateContour]"
-		<< " error in creating KSpace." << std::endl;
+    << " error in creating KSpace." << std::endl;
       return false;
     }
   try {
@@ -278,45 +278,45 @@ generateContour(
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
     // gridcurve contains the digital boundary to analyze.
-	  Range r = gridcurve.getPointsRange(); //building range
+    Range r = gridcurve.getPointsRange(); //building range
 
     if ( outputFormat == "pts" )
       {
 
-	for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
-	      it != it_end; ++it )
-	  {
-	    Point p = *it;
-	    std::cout << p[ 0 ] << " " << p[ 1 ] << std::endl;
-	  }
-	return true;
+  for ( ConstIteratorOnPoints it = r.begin(), it_end = r.end();
+        it != it_end; ++it )
+    {
+      Point p = *it;
+      std::cout << p[ 0 ] << " " << p[ 1 ] << std::endl;
+    }
+  return true;
       }
     else if ( outputFormat == "fc" )
       {
-	ConstIteratorOnPoints it = r.begin();
-	Point p = *it++;
-	std::cout << p[ 0 ] << " " << p[ 1 ] << " ";
-	for ( ConstIteratorOnPoints it_end = r.end(); it != it_end; ++it )
-	  {
-	    Point p2 = *it;
-	    Vector v = p2 - p;
-	    if ( v.at( 0 ) == 1 ) std::cout << '0';
-	    if ( v.at( 1 ) == 1 ) std::cout << '1';
-	    if ( v.at( 0 ) == -1 ) std::cout << '2';
-	    if ( v.at( 1 ) == -1 ) std::cout << '3';
-	    p = p2;
-	  }
-	// close freemanchain if necessary.
-	Point p2= *(r.begin());
-	Vector v = p2 - p;
-	if ( v.norm1() == 1 )
-	  {
-	    if ( v.at( 0 ) == 1 ) std::cout << '0';
-	    if ( v.at( 1 ) == 1 ) std::cout << '1';
-	    if ( v.at( 0 ) == -1 ) std::cout << '2';
-	    if ( v.at( 1 ) == -1 ) std::cout << '3';
-	  }
-	std::cout << std::endl;
+  ConstIteratorOnPoints it = r.begin();
+  Point p = *it++;
+  std::cout << p[ 0 ] << " " << p[ 1 ] << " ";
+  for ( ConstIteratorOnPoints it_end = r.end(); it != it_end; ++it )
+    {
+      Point p2 = *it;
+      Vector v = p2 - p;
+      if ( v.at( 0 ) == 1 ) std::cout << '0';
+      if ( v.at( 1 ) == 1 ) std::cout << '1';
+      if ( v.at( 0 ) == -1 ) std::cout << '2';
+      if ( v.at( 1 ) == -1 ) std::cout << '3';
+      p = p2;
+    }
+  // close freemanchain if necessary.
+  Point p2= *(r.begin());
+  Vector v = p2 - p;
+  if ( v.norm1() == 1 )
+    {
+      if ( v.at( 0 ) == 1 ) std::cout << '0';
+      if ( v.at( 1 ) == 1 ) std::cout << '1';
+      if ( v.at( 0 ) == -1 ) std::cout << '2';
+      if ( v.at( 1 ) == -1 ) std::cout << '3';
+    }
+  std::cout << std::endl;
       } 
 
     // write geometry of the shape
@@ -325,9 +325,9 @@ generateContour(
   ofstream outstream(s.str().c_str()); //output stream
   if (!outstream.is_open()) return false;
   else {
-	  outstream << "# " << outputFileName << std::endl;  
-	  outstream << "# Pointel (x,y), Midpoint of the following linel (x',y')" << std::endl;  
-	  outstream << "# id x y tangentx tangenty curvaturexy" 
+    outstream << "# " << outputFileName << std::endl;  
+    outstream << "# Pointel (x,y), Midpoint of the following linel (x',y')" << std::endl;  
+    outstream << "# id x y tangentx tangenty curvaturexy" 
     << " x' y' tangentx' tangenty' curvaturex'y'" << std::endl; 
 
     vector<RealPoint> truePoints, truePoints2; 
@@ -343,7 +343,7 @@ generateContour(
     
     unsigned int n = r.size(); 
     for (unsigned int i = 0; i < n; ++i ) {
-  	  outstream << setprecision( 15 ) << i 
+      outstream << setprecision( 15 ) << i 
       << " " << truePoints[ i ][ 0 ]
       << " " << truePoints[ i ][ 1 ]
       << " " << trueTangents[ i ][ 0 ]
@@ -366,7 +366,7 @@ generateContour(
   catch ( InputException e )
     {
       std::cerr << "[generateContour]"
-		<< " error in finding a bel." << std::endl;
+    << " error in finding a bel." << std::endl;
       return false;
     }
   return true;
@@ -417,8 +417,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
-		  << "\tcontourGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
-		  << general_opt << "\n";
+      << "\tcontourGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -450,7 +450,7 @@ int main( int argc, char** argv )
   typedef Space::RealPoint RealPoint;
 
   RealPoint center( vm["center_x"].as<double>(),
-		    vm["center_y"].as<double>() );
+        vm["center_y"].as<double>() );
   double h = vm["gridstep"].as<double>();
   if (id ==0)
     {
@@ -464,8 +464,8 @@ int main( int argc, char** argv )
       if (not(vm.count("width"))) missingParam("--width");
       double width = vm["width"].as<double>();
       ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl; 
+          trace.error()<< "Not available.";
+          trace.info()<<std::endl; 
     }
   else if (id ==2)
     {
@@ -474,8 +474,8 @@ int main( int argc, char** argv )
       double radius = vm["radius"].as<double>();
       double power = vm["power"].as<double>();
       ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
-	        trace.error()<< "Not available.";
-	        trace.info()<<std::endl;
+          trace.error()<< "Not available.";
+          trace.info()<<std::endl;
     }
   else if (id ==3)
     {

@@ -111,7 +111,7 @@ bool testMorton()
     trace.info() << "Compiler trick"<<endl;
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   trace.warning() << "Log2(64)=" <<LOG2<64>::VALUE<<endl;

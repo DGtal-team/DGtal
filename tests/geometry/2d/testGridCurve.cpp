@@ -40,15 +40,13 @@
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/SurfelNeighborhood.h"
-
-
 #include "DGtal/geometry/2d/GridCurve.h"
 
 #include "DGtal/io/boards/Board2D.h"
+
+#include "DGtal/base/CRange.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "ConfigTest.h"
 
@@ -157,7 +155,7 @@ bool testExceptions(const string &filename)
  * Display
  *
  */
-bool testDisplay(const string &filename)
+bool testDrawGridCurve(const string &filename)
 {
 
   GridCurve<KhalimskySpaceND<2> > c; //grid curve
@@ -174,18 +172,11 @@ bool testDisplay(const string &filename)
   //displaying it
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
-  aBoard << SetMode(c.styleName(), "Edges") << c;
-  
-  aBoard.saveEPS( "GridCurveEdges.eps", Board::BoundingBox, 5000 );
-
-  aBoard << SetMode(c.styleName(), "Points") << c;
-
-  aBoard.saveEPS( "GridCurveBoth.eps", Board::BoundingBox, 5000 );
-
+  aBoard << c; 
+  aBoard.saveEPS( "GridCurve.eps", Board::BoundingBox, 5000 );
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("GridCurveBoth-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
 #endif
-  
 
   return true;
 }
@@ -202,12 +193,16 @@ bool testRange(const Range &aRange)
   trace.info() << endl;
   trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
+  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
+  std::vector<Value> v1,v2,v3,v4; 
+  
 {
   trace.info() << "Forward" << endl;
   typename Range::ConstIterator i = aRange.begin();
   typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
-    cout << *i << endl;
+    //cout << *i << endl;
+    v1.push_back(*i); 
   }
 }
 {
@@ -215,19 +210,52 @@ bool testRange(const Range &aRange)
   typename Range::ConstReverseIterator i = aRange.rbegin();
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
-    cout << *i << endl;
+    //cout << *i << endl;
+    v2.push_back(*i); 
   }
 }
- 
-  return true;
+{
+  trace.info() << "Circulator" << endl;
+  typename Range::ConstCirculator c = aRange.c();
+  typename Range::ConstCirculator cend = aRange.c();
+  if (isNotEmpty(c,cend)) 
+  {
+    do 
+    {
+      //cout << *c << endl;
+      v3.push_back(*c);
+      c++;
+    } while (c!=cend); 
+  }
+}
+
+{
+  trace.info() << "Reverse Circulator" << endl;
+  typename Range::ConstReverseCirculator c = aRange.rc();
+  typename Range::ConstReverseCirculator cend = aRange.rc();
+  if (isNotEmpty(c,cend)) 
+  {
+    do 
+    {
+      //cout << *c << endl;
+      v4.push_back(*c);
+      c++;
+    } while (c!=cend); 
+  }
+}
+
+  return ( std::equal(v1.begin(),v1.end(),v3.begin())
+          && std::equal(v2.begin(),v2.end(),v4.begin())
+          && std::equal(v1.begin(),v1.end(),v2.rbegin())
+          && std::equal(v3.begin(),v3.end(),v4.rbegin()) );
 }
 
 template <typename Range>
-bool testArrowsRange(const Range &aRange)
+bool testPairsRange(const Range &aRange)
 {
 
   trace.info() << endl;
-  trace.info() << "Testing ArrowsRange (" << aRange.size() << " elts)" << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " pairs)" << endl;
   
 {
   trace.info() << "Forward" << endl;
@@ -242,13 +270,58 @@ bool testArrowsRange(const Range &aRange)
   typename Range::ConstReverseIterator i = aRange.rbegin();
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
-    cout << (*i).first << " " << (*i).second << endl;
+    cout << i->first << " " << i->second << endl;
   }
 }
  
   return true;
 }
 
+template <typename Range>
+bool testDisplayRange(const Range &aRange)
+{
+
+  trace.info() << endl;
+  trace.info() << "Displaying Range (" << aRange.size() << " elts)" << endl;
+  trace.info() << aRange << endl;
+  
+  return true;
+}
+
+template <typename Range>
+bool testDrawRange(const Range &aRange, const string &aName, const string& aDomainMode)
+{
+
+  std::stringstream s; 
+  s << aName << "Range.eps"; 
+  
+  trace.info() << endl;
+  trace.info() << "Drawing " << s.str() << " (" << aRange.size() << " elts)" << endl;
+  
+  //board
+  Board2D aBoard;
+  aBoard.setUnit(Board::UCentimeter);
+  //displaying domain
+  PointVector<2,int> low(-1,-1);
+  PointVector<2,int> up(3,3);
+  if (aDomainMode == "Paving") up = PointVector<2,int>(4,4);
+  HyperRectDomain< SpaceND<2,int> > aDomain( low,up );
+  aBoard << SetMode(aDomain.styleName(), aDomainMode) << aDomain; 
+  //displaying range
+  aBoard << aRange; 
+  //save
+  aBoard.saveEPS( s.str().c_str(), Board::BoundingBox, 5000 );
+  
+  return true;
+}
+
+template <typename Range>
+void testRangeConceptChecking()
+{
+    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Range> ));
+    //BOOST_CONCEPT_ASSERT(( CConstRange<Range> ));
+    //pb ConstReverseIterator or ReverseConstIterator ?
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -277,12 +350,21 @@ int main( int argc, char** argv )
     && testExceptions(sinus3D)
     && testExceptions(polyg2D)
     && testExceptions(emptyFile)
-    && testDisplay(sinus2D4)
+    && testDrawGridCurve(sinus2D4)
     && testIsOpen(sinus2D4,true)
     && testIsOpen(square,false); 
 
 /////////// ranges test
   typedef GridCurve<K2> GridCurve;
+
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::PointsRange>();
+testRangeConceptChecking<GridCurve::MidPointsRange>();
+testRangeConceptChecking<GridCurve::ArrowsRange>();
+testRangeConceptChecking<GridCurve::InnerPointsRange>();
+testRangeConceptChecking<GridCurve::OuterPointsRange>();
+testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 
   //reading grid curve
   GridCurve c; 
@@ -296,7 +378,34 @@ int main( int argc, char** argv )
     && testRange<GridCurve::SCellsRange>(c.get1SCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
-    && testArrowsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testPairsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange())
+    && testRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange())
+    && testPairsRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange())
+    && testRange<GridCurve::CodesRange>(c.getCodesRange())
+;
+
+  res = res 
+    && testDisplayRange<GridCurve::SCellsRange>(c.get0SCellsRange())
+    && testDisplayRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testDisplayRange<GridCurve::PointsRange>(c.getPointsRange())
+    && testDisplayRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
+    && testDisplayRange<GridCurve::ArrowsRange>(c.getArrowsRange())
+    && testDisplayRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange())
+    && testDisplayRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange())
+    && testDisplayRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange())
+    && testDisplayRange<GridCurve::CodesRange>(c.getCodesRange())
+;
+
+  res = res 
+    && testDrawRange<GridCurve::SCellsRange>(c.get0SCellsRange(),"0cells","Grid")
+    && testDrawRange<GridCurve::SCellsRange>(c.get1SCellsRange(),"1cells","Grid")
+    && testDrawRange<GridCurve::PointsRange>(c.getPointsRange(),"Points","Paving")
+    && testDrawRange<GridCurve::MidPointsRange>(c.getMidPointsRange(),"MidPoints","Paving")
+    && testDrawRange<GridCurve::ArrowsRange>(c.getArrowsRange(),"Arrows","Paving")
+    && testDrawRange<GridCurve::InnerPointsRange>(c.getInnerPointsRange(),"InnerPoints","Grid")
+    && testDrawRange<GridCurve::OuterPointsRange>(c.getOuterPointsRange(),"OuterPoints","Grid")
+    && testDrawRange<GridCurve::IncidentPointsRange>(c.getIncidentPointsRange(),"IncidentPoints","Grid")
 ;
 
 //////////////////////

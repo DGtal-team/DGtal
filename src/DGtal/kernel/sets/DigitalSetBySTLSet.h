@@ -59,8 +59,16 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetBySTLSet
   /**
-   * Description of template class 'DigitalSetBySTLSet' <p>
-   * \brief Aim:
+    Description of template class 'DigitalSetBySTLSet' <p>
+
+    \brief Aim: A container class for storing sets of digital points
+    within some given domain.
+
+    This is the most versatile implementation for a set of point, and
+    is essentially a wrapper to std::set<Point>. It added the notion
+    of domain.
+
+    Model of CDigitalSet.
    */
   template <typename TDomain>
   class DigitalSetBySTLSet
@@ -297,8 +305,8 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	aBoard.setFillColorRGBi(160,160,160);
-	aBoard.setPenColorRGBi(80,80,80);
+  aBoard.setFillColorRGBi(160,160,160);
+  aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
@@ -332,8 +340,8 @@ namespace DGtal
     {
        virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  display.myModes[ "DigitalSetBySTLSet" ] = "";
-	}
+    display.myModes[ "DigitalSetBySTLSet" ] = "";
+  }
 
     };
 

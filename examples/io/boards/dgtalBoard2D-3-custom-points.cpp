@@ -15,7 +15,7 @@
  **/
 //LICENSE-END
 /**
- * @file dgtalboard-3-custom-points.cpp
+ * @file dgtalBoard2D-3-custom-points.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -45,7 +45,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
   Color myPenColor;
   Color myFillColor;
   MyDrawStyleCustomColor( const Color & penColor,
-			  const Color & fillColor )
+        const Color & fillColor )
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
@@ -74,12 +74,12 @@ int main()
   
   Board2D board;
   board << domain 
-	<< CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
-	<< p1
-	<< CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
-	<< p2
-	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
-	<< p3;
+  << CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
+  << p1
+  << CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+  << p2
+  << CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+  << p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
   board.saveEPS("dgtalboard-3-custom-points.eps");
 

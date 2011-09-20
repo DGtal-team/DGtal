@@ -52,7 +52,7 @@ DGtal::Ellipse2D<T>::~Ellipse2D()
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const double x0, const double y0,
-			       const double a0, const double a1, const double theta)
+             const double a0, const double a1, const double theta)
   : myCenter(x0,y0), myAxis1(a0),myAxis2(a1),myTheta(theta)
 {}
 
@@ -60,14 +60,14 @@ DGtal::Ellipse2D<T>::Ellipse2D(const double x0, const double y0,
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const RealPoint2D &aPoint,
-			       const double a0, const double a1, const double theta)
+             const double a0, const double a1, const double theta)
   : myCenter(aPoint), myAxis1(a0),myAxis2(a1),myTheta(theta)
 {}
 
 template <typename T>
 inline
 DGtal::Ellipse2D<T>::Ellipse2D(const Point &aPoint,
-			       const double a0, const double a1, const double theta) 
+             const double a0, const double a1, const double theta) 
   : myAxis1(a0),myAxis2(a1),myTheta(theta)
 {
   myCenter = aPoint;
@@ -131,7 +131,7 @@ DGtal::Ellipse2D<T>::x( double t ) const
   double rho = myAxis2 / sqrt( 1.0 - ((a2-b2)/a2)*costth*costth);
     //myAxis2*myAxis1 / sqrt( a2 - (a2-b2)*costth*costth);
   RealPoint2D v( rho*cost, 
-		 rho*sint );
+     rho*sint );
   v += myCenter;
   return v;
 }
@@ -189,10 +189,10 @@ DGtal::Ellipse2D<T>::xpp( const double t ) const
   double rhodd = a*b*(b2-a2)
     / std::pow( a2*sintth*sintth + b2*costth*costth, 2.5 )
     * ( (costth*costth - sintth*sintth) * (a2*sintth*sintth + b2*costth*costth)
-	+ 3.0*(b2-a2)*sintth*sintth*costth*costth );
+  + 3.0*(b2-a2)*sintth*sintth*costth*costth );
   
   RealPoint2D v( rhodd*cost - 2.0*rhod*sint - rho*cost, 
-		 rhodd*sint + 2.0*rhod*cost - rho*sint );
+     rhodd*sint + 2.0*rhod*cost - rho*sint );
   return v;
 }
 
@@ -234,7 +234,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Ellipse2D<T> & object )
+      const Ellipse2D<T> & object )
 {
   object.selfDisplay( out );
   return out;

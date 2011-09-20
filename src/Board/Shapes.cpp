@@ -23,7 +23,7 @@
 #include <assert.h>
 
 #ifndef M_PI
-#define M_PI		3.14159265358979323846	/* pi */
+#define M_PI    3.14159265358979323846  /* pi */
 #endif
 
 namespace {
@@ -111,8 +111,8 @@ Shape::svgProperties( const TransformSVG & transform ) const
         << _penColor.svgAlpha( " stroke" );
     } else  {
         str << " fill=\"" << _fillColor.svg() << '"'
-// 	<< " stroke=\"" << _fillColor.svg() << '"'
-// 	<< " stroke-width=\"0.5px\""
+//   << " stroke=\"" << _fillColor.svg() << '"'
+//   << " stroke-width=\"0.5px\""
         << " stroke=\"none\""
         << " stroke-width=\"0\""
         << " style=\"stroke-linecap:round;stroke-linejoin:round;"
@@ -142,20 +142,20 @@ Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
     switch (type)
     {
       case SolidStyle:
-	cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset); break;
+  cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset); break;
       case DashStyle:
-	cairo_set_dash (cr, cairoDashStyle, ARRAY_SIZE(cairoDashStyle), cairoDashStyle_offset); break;
+  cairo_set_dash (cr, cairoDashStyle, ARRAY_SIZE(cairoDashStyle), cairoDashStyle_offset); break;
       case DotStyle:
-	cairo_set_dash (cr, cairoDotStyle, ARRAY_SIZE(cairoDotStyle), cairoDotStyle_offset); break;
+  cairo_set_dash (cr, cairoDotStyle, ARRAY_SIZE(cairoDotStyle), cairoDotStyle_offset); break;
       case DashDotStyle:
-	cairo_set_dash (cr, cairoDashDotStyle, ARRAY_SIZE(cairoDashDotStyle), cairoDashDotStyle_offset); break;
+  cairo_set_dash (cr, cairoDashDotStyle, ARRAY_SIZE(cairoDashDotStyle), cairoDashDotStyle_offset); break;
       case DashDotDotStyle:
-	cairo_set_dash (cr, cairoDashDotDotStyle, ARRAY_SIZE(cairoDashDotDotStyle), cairoDashDotDotStyle_offset); break;
+  cairo_set_dash (cr, cairoDashDotDotStyle, ARRAY_SIZE(cairoDashDotDotStyle), cairoDashDotDotStyle_offset); break;
       case DashDotDotDotStyle:
-	cairo_set_dash (cr, cairoDashDotDotDotStyle, ARRAY_SIZE(cairoDashDotDotDotStyle), cairoDashDotDotDotStyle_offset); break;
-	
+  cairo_set_dash (cr, cairoDashDotDotDotStyle, ARRAY_SIZE(cairoDashDotDotDotStyle), cairoDashDotDotDotStyle_offset); break;
+  
       default: // SolidStyle
-	cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset);
+  cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset);
     }
 }
 #endif
@@ -316,7 +316,7 @@ Dot::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Dot::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     cairo_save (cr);
     
@@ -607,8 +607,8 @@ Image::flushFIG( std::ostream & stream,
   stream << "0 ";
   // Depth
   stream << transform.mapDepth( _depth ) << " "
-      	 << "-1 -1 0.000 0 0 -1 0 0 5" << std::endl <<" 0 "     
-	 << _filename << std::endl;
+         << "-1 -1 0.000 0 0 -1 0 0 5" << std::endl <<" 0 "     
+   << _filename << std::endl;
   _path.flushFIG( stream, transform );
   stream << std::endl;
 }
@@ -617,16 +617,16 @@ Image::flushFIG( std::ostream & stream,
 
 void
 Image::flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const
+     const TransformSVG & transform ) const
 {
 
   stream << "<image x=\"" << transform.mapX( _path[0].x ) << '"'
-	 << " y=\"" << transform.mapY( _path[0].y )  << '"'
-	 << " width=\"" << transform.scale( (_path[1] - _path[0]).norm() ) << '"'
-	 << " height=\"" << transform.scale( (_path[0] - _path[3]).norm() ) << '"'
-	 << "  xlink:href=\""<< _filename << "\" >"  << std::endl
-	 << " <title>My image</title>"<<std::endl
-    	 << " </image>" << std::endl;
+   << " y=\"" << transform.mapY( _path[0].y )  << '"'
+   << " width=\"" << transform.scale( (_path[1] - _path[0]).norm() ) << '"'
+   << " height=\"" << transform.scale( (_path[0] - _path[3]).norm() ) << '"'
+   << "  xlink:href=\""<< _filename << "\" >"  << std::endl
+   << " <title>My image</title>"<<std::endl
+       << " </image>" << std::endl;
 
 
 }
@@ -634,7 +634,7 @@ Image::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Image::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
   int w, h;
   cairo_surface_t *image;
@@ -868,7 +868,7 @@ Arrow::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Arrow::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     double dx = _x1 - _x2;
     double dy = _y1 - _y2;
@@ -911,24 +911,24 @@ Arrow::flushCairo( cairo_t *cr,
 
       if ( filled() )
       {
-	if ( _penColor != DGtal::Color::None )
-	  cairo_fill_preserve (cr);
-	else
-	  cairo_fill (cr);
+  if ( _penColor != DGtal::Color::None )
+    cairo_fill_preserve (cr);
+  else
+    cairo_fill (cr);
       }
       
       //
       
       if ( _penColor != DGtal::Color::None )
       {
-	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-	
-	cairo_set_line_width (cr, _lineWidth);
-	cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
-	cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
-	setCairoDashStyle (cr, SolidStyle);
+  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  
+  cairo_set_line_width (cr, _lineWidth);
+  cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
+  cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
+  setCairoDashStyle (cr, SolidStyle);
 
-	cairo_stroke (cr);
+  cairo_stroke (cr);
       }
     
     cairo_restore (cr);
@@ -1155,7 +1155,7 @@ Ellipse::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Ellipse::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
   cairo_save (cr);
 
@@ -1173,9 +1173,9 @@ Ellipse::flushCairo( cairo_t *cr,
     if ( filled() )
     {
       if ( _penColor != DGtal::Color::None )
-	cairo_fill_preserve (cr);
+  cairo_fill_preserve (cr);
       else
-	cairo_fill (cr);
+  cairo_fill (cr);
     }
     
     //
@@ -1338,7 +1338,7 @@ Circle::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Circle::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     if ( ! _circle )
         Ellipse::flushCairo( cr, transform );
@@ -1346,31 +1346,31 @@ Circle::flushCairo( cairo_t *cr,
     {
       cairo_save (cr);
 
-	cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-	  
-	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
-	
-	if ( filled() )
-	{
-	  if ( _penColor != DGtal::Color::None )
-	    cairo_fill_preserve (cr);
-	  else
-	    cairo_fill (cr);
-	}
-	
-	//
-	
-	if ( _penColor != DGtal::Color::None )
-	{
-	  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+    
+  cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
+  
+  if ( filled() )
+  {
+    if ( _penColor != DGtal::Color::None )
+      cairo_fill_preserve (cr);
+    else
+      cairo_fill (cr);
+  }
+  
+  //
+  
+  if ( _penColor != DGtal::Color::None )
+  {
+    cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
       
-	  cairo_set_line_width (cr, _lineWidth);
-	  cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
-	  cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
-	  setCairoDashStyle (cr, _lineStyle);
+    cairo_set_line_width (cr, _lineWidth);
+    cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+    cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+    setCairoDashStyle (cr, _lineStyle);
 
-	  cairo_stroke (cr);
-	}
+    cairo_stroke (cr);
+  }
       
       cairo_restore (cr);
     }
@@ -1392,37 +1392,37 @@ Arc::name() const
 #ifdef WITH_CAIRO
 void
 Arc::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     cairo_save (cr);
 
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
 
       if (_negative)
-	cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+  cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
       else
-	cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+  cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
       
       if ( filled() )
       {
-	if ( _penColor != DGtal::Color::None )
-	  cairo_fill_preserve (cr);
-	else
-	  cairo_fill (cr);
+  if ( _penColor != DGtal::Color::None )
+    cairo_fill_preserve (cr);
+  else
+    cairo_fill (cr);
       }
       
       //
       
       if ( _penColor != DGtal::Color::None )
       {
-	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
     
-	cairo_set_line_width (cr, _lineWidth);
-	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
-	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
-	setCairoDashStyle (cr, _lineStyle);
+  cairo_set_line_width (cr, _lineWidth);
+  cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+  cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+  setCairoDashStyle (cr, _lineStyle);
 
-	cairo_stroke (cr);
+  cairo_stroke (cr);
       }
     
     cairo_restore (cr);
@@ -1566,7 +1566,7 @@ Polyline::flushPostscript( std::ostream & stream,
         _path.flushPostscript( stream, transform );
         stream << " ";
         _fillColor.flushPostscript( stream );
-	stream << " " << postscriptProperties();
+  stream << " " << postscriptProperties();
         stream << " fill" << std::endl;
     }
     if ( _penColor != DGtal::Color::None ) {
@@ -1630,7 +1630,7 @@ Polyline::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Polyline::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     if ( _path.empty() )
         return;
@@ -1638,31 +1638,31 @@ Polyline::flushCairo( cairo_t *cr,
     cairo_save (cr);
     
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-	
+  
       _path.flushCairoPoints( cr, transform );
       if ( _path.closed() )
-	cairo_close_path (cr);
+  cairo_close_path (cr);
       
       if ( filled() )
       {
-	if ( _penColor != DGtal::Color::None )
-	  cairo_fill_preserve (cr);
-	else
-	  cairo_fill (cr);
+  if ( _penColor != DGtal::Color::None )
+    cairo_fill_preserve (cr);
+  else
+    cairo_fill (cr);
       }
       
       //
       
       if ( _penColor != DGtal::Color::None )
       {
-	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-	
-	cairo_set_line_width (cr, _lineWidth);
-	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
-	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
-	setCairoDashStyle (cr, _lineStyle);
+  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  
+  cairo_set_line_width (cr, _lineWidth);
+  cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+  cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+  setCairoDashStyle (cr, _lineStyle);
 
-	cairo_stroke (cr);
+  cairo_stroke (cr);
       }
     
     cairo_restore (cr);
@@ -1814,7 +1814,7 @@ Rectangle::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 Rectangle::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     {
         double x1 = _path[1].x - _path[0].x;
@@ -1830,43 +1830,43 @@ Rectangle::flushCairo( cairo_t *cr,
     cairo_save (cr);
     
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-	
+  
       if ( _path[0].y == _path[1].y )
-	cairo_rectangle (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ), transform.scale( _path[1].x - _path[0].x ), transform.scale( _path[0].y - _path[3].y ));
+  cairo_rectangle (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ), transform.scale( _path[1].x - _path[0].x ), transform.scale( _path[0].y - _path[3].y ));
       else
       {
-	Point v = _path[1] - _path[0];
+  Point v = _path[1] - _path[0];
         v /= v.norm();
         double angle = ( _path[1].y > _path[0].y ) ? acos( v * Point(1,0) ) : -acos( v * Point( 1, 0 ) );
-	
-	// tr
-	cairo_translate (cr, transform.mapX( _path[0].x )+transform.scale( _path[1].x - _path[0].x )/2., transform.mapY( _path[0].y )+transform.scale( _path[0].y - _path[3].y )/2.);
-	cairo_rotate (cr, angle);
-	// tr
-	
-	cairo_rectangle (cr, -transform.scale( _path[1].x - _path[0].x )/2., -transform.scale( _path[0].y - _path[3].y )/2., transform.scale( (_path[1] - _path[0]).norm() ), transform.scale( (_path[0] - _path[3]).norm() ));
+  
+  // tr
+  cairo_translate (cr, transform.mapX( _path[0].x )+transform.scale( _path[1].x - _path[0].x )/2., transform.mapY( _path[0].y )+transform.scale( _path[0].y - _path[3].y )/2.);
+  cairo_rotate (cr, angle);
+  // tr
+  
+  cairo_rectangle (cr, -transform.scale( _path[1].x - _path[0].x )/2., -transform.scale( _path[0].y - _path[3].y )/2., transform.scale( (_path[1] - _path[0]).norm() ), transform.scale( (_path[0] - _path[3]).norm() ));
       }
       
       if ( filled() )
       {
-	if ( _penColor != DGtal::Color::None )
-	  cairo_fill_preserve (cr);
-	else
-	  cairo_fill (cr);
+  if ( _penColor != DGtal::Color::None )
+    cairo_fill_preserve (cr);
+  else
+    cairo_fill (cr);
       }
       
       //
       
       if ( _penColor != DGtal::Color::None )
       {
-	cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-	
-	cairo_set_line_width (cr, _lineWidth);
-	cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
-	cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
-	setCairoDashStyle (cr, _lineStyle);
+  cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+  
+  cairo_set_line_width (cr, _lineWidth);
+  cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+  cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+  setCairoDashStyle (cr, _lineStyle);
 
-	cairo_stroke (cr);
+  cairo_stroke (cr);
       }
     
     cairo_restore (cr);
@@ -1910,7 +1910,7 @@ GouraudTriangle::GouraudTriangle( const Point & p0, float brightness0,
                                   int depthValue )
         : Polyline( std::vector<Point>(), true, DGtal::Color::None, DGtal::Color::None,
                     0.0f, SolidStyle, ButtCap, MiterJoin, depthValue ),
-	  _color0( fill ), _color1( fill ), _color2( fill ), _subdivisions( subdivisions )
+    _color0( fill ), _color1( fill ), _color2( fill ), _subdivisions( subdivisions )
 {
     _path << p0;
     _path << p1;
@@ -2039,16 +2039,16 @@ GouraudTriangle::flushFIG( std::ostream & stream,
 //   const Point & p2 = _points[2];
 //   Point p01( 0.5*(p0.x+p1.x), 0.5*(p0.y+p1.y) );
 //   DGtal::Color c01( (_color0.red() + _color1.red())/2,
-// 	     (_color0.green() + _color1.green())/2,
-// 	     (_color0.blue() + _color1.blue())/2 );
+//        (_color0.green() + _color1.green())/2,
+//        (_color0.blue() + _color1.blue())/2 );
 //   Point p12( 0.5*(p1.x+p2.x), 0.5*(p1.y+p2.y) );
 //   DGtal::Color c12( (_color1.red() + _color2.red())/2,
-// 	     (_color1.green() + _color2.green())/2,
-// 	     (_color1.blue() + _color2.blue())/2 );
+//        (_color1.green() + _color2.green())/2,
+//        (_color1.blue() + _color2.blue())/2 );
 //   Point p20( 0.5*(p2.x+p0.x), 0.5*(p2.y+p0.y) );
 //   DGtal::Color c20( (_color2.red() + _color0.red())/2,
-// 	     (_color2.green() + _color0.green())/2,
-// 	     (_color2.blue() + _color0.blue())/2 );
+//        (_color2.green() + _color0.green())/2,
+//        (_color2.blue() + _color0.blue())/2 );
 //   GouraudTriangle( p0, _color0, p20, c20, p01, c01, _subdivisions - 1, _depth ).flushFIG( stream, transform, colormap );
 //   GouraudTriangle( p1, _color1, p01, c01, p12, c12, _subdivisions - 1, _depth ).flushFIG( stream, transform, colormap );
 //   GouraudTriangle( p2, _color2, p20, c20, p12, c12, _subdivisions - 1, _depth ).flushFIG( stream, transform, colormap );
@@ -2090,8 +2090,8 @@ GouraudTriangle::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-GouraudTriangle::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+GouraudTriangle::flushCairo( cairo_t */*cr*/,
+			     const TransformCairo & /*transform*/ ) const
 {
 }
 #endif
@@ -2309,8 +2309,8 @@ Text::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Text::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+Text::flushCairo( cairo_t */*cr*/,
+		  const TransformCairo & /*transform*/ ) const
 {
 }
 #endif

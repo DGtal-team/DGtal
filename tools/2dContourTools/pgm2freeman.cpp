@@ -90,8 +90,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Extract FreemanChains from thresholded image" <<std::endl << "Basic usage: "<<std::endl
-		  << "\t image2freeman [options] --image <imageName> -min 128 -max 255 > contours.fc"<<std::endl
-		  << general_opt << "\n";
+      << "\t image2freeman [options] --image <imageName> -min 128 -max 255 > contours.fc"<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -165,28 +165,28 @@ int main( int argc, char** argv )
     trace.info() << "DGtal set imported from thresholds ["<<  min << "," << max << "]" << endl;
     Z2i::KSpace ks;
     if(! ks.init( image.domain().lowerBound(), 
-		  image.domain().upperBound(), true )){
+      image.domain().upperBound(), true )){
       trace.error() << "Problem in KSpace initialisation"<< endl;
     }
     SurfelAdjacency<2> sAdj( true );
   
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						      ks, set2dPredicate, sAdj );  
-    for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
-      if(vectContoursBdryPointels.at(i).size()>minSize){
-	if(select){
-	  Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(i));
-	  unsigned int distance = (unsigned int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
-				    (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
-	  if(distance<=selectDistanceMax){
-	    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
-	    cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
-	  }
-	}else{
-	  FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
-	  cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
-	}
+                  ks, set2dPredicate, sAdj );  
+    for(unsigned int k=0; k<vectContoursBdryPointels.size(); k++){
+      if(vectContoursBdryPointels.at(k).size()>minSize){
+  if(select){
+    Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(k));
+    unsigned int distance = (unsigned int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
+            (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
+    if(distance<=selectDistanceMax){
+      FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(k));    
+      cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+    }
+  }else{
+    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(k));    
+    cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+  }
       }
 
     }
@@ -196,6 +196,6 @@ int main( int argc, char** argv )
   }
 
     
-	
+  
 }
 

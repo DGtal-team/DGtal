@@ -46,12 +46,15 @@
 
 namespace DGtal
 {
-	
+  namespace deprecated
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MaximalSegments
   /**
-   * \TODO update doc
-   *
+   * @warning This class is deprecated since SaturatedSegmentation has been created. 
+   * This class is however used now in @href testMaximalSegments.cpp , 
+   * @href MostCenteredMaximalSegmentEstimator.h and @href displayContours.cpp
+   * 
    * Description of template class 'MaximalSegments' <p>
    * \brief Aim: Computes the set of maximal segments of a sequence.
    * Maximal segments are segments that cannot be included in other segments. 
@@ -76,28 +79,28 @@ namespace DGtal
   typedef std::vector<Point> Sequence;
   typedef Sequence::iterator Iterator;
   typedef ArithmeticalDSS<Iterator,int,8> DSSComputer;
-	typedef MaximalSegments<DSS> Cover;
+  typedef MaximalSegments<DSS> Cover;
 
-	//sequence of input points
-	Sequence curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+  //sequence of input points
+  Sequence curve;
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(7,2));
+  curve.push_back(Point(8,1));
+  curve.push_back(Point(9,1));
 
   //Segmentation
-	DSSComputer algo;
+  DSSComputer algo;
   Cover theCover(curve.begin(), curve.end(), algo, false);
-				 
+         
   Cover::SegmentIterator i = theCover.begin();
   for ( ; i != theCover.end(); ++i) {
-		DSS currentSegment(*i);
-		trace.info() << currentSegment << std::endl;	//standard output
+    DSS currentSegment(*i);
+    trace.info() << currentSegment << std::endl;  //standard output
   } 
 
    * @endcode
@@ -106,12 +109,12 @@ namespace DGtal
   class MaximalSegments
   {
 
-	public: 
+  public: 
 
-		typedef TSegment Segment;
-		typedef	typename TSegment::Reverse ReverseSegment;
-		typedef typename TSegment::ConstIterator Iterator;		
-		typedef typename ReverseSegment::ConstIterator ReverseIterator;
+    typedef TSegment Segment;
+    typedef  typename TSegment::Reverse ReverseSegment;
+    typedef typename TSegment::ConstIterator Iterator;    
+    typedef typename ReverseSegment::ConstIterator ReverseIterator;
 
 
     // ----------------------- Standard services ------------------------------
@@ -127,14 +130,14 @@ namespace DGtal
     {
 
 
-			   // ------------------------- private data -----------------------
+         // ------------------------- private data -----------------------
     private:
-			
+      
 
       /**
        * Pointer to the cover of maximal segments
        */
-	MaximalSegments<TSegment> *myCov;
+  MaximalSegments<TSegment> *myCov;
 
       /**
        * An iterator of the sequence
@@ -180,7 +183,7 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class MaximalSegments<TSegment>;
-			   
+         
       /**
        * Constructor.
        * Nb: complexity in O(n).
@@ -189,8 +192,8 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       SegmentIterator( MaximalSegments<TSegment> *aCov,
-										 const typename TSegment::ConstIterator& aBack,
-										 const TSegment& aSegment);
+                     const typename TSegment::ConstIterator& aBack,
+                     const TSegment& aSegment);
 
 
       /**
@@ -233,15 +236,15 @@ namespace DGtal
       
       /**
        * @return TRUE if the current segment intersects
-			 * the next one, FALSE otherwise.
+       * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
-			 * the previous one, FALSE otherwise.
+       * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return an iterator of a sequence
@@ -279,7 +282,7 @@ namespace DGtal
 
       // ------------------------- hidden services -------------------------
  
-			private: 
+      private: 
 
       /**
        * Extension of the segment along the sequence while it is possible.
@@ -288,7 +291,7 @@ namespace DGtal
        * @param end an iterator after the end of the sequence
        * Nb: complexity in O(n).
        */
-			template <typename TypeSegment, typename TypeIterator>
+      template <typename TypeSegment, typename TypeIterator>
       void extension(TypeSegment& aSeg, TypeIterator& it, const TypeIterator& end);
 
       /**
@@ -297,7 +300,7 @@ namespace DGtal
        * @param it an iterator on a sequence
        * Nb: complexity in O(n).
        */
-			template <typename TypeSegment, typename TypeIterator>
+      template <typename TypeSegment, typename TypeIterator>
       void extension(TypeSegment& aSeg, TypeIterator& it);
 
       /**
@@ -308,7 +311,7 @@ namespace DGtal
        * @param end an iterator after the end of the sequence
        * Nb: complexity in O(n).
        */
-			template <typename TypeSegment, typename TypeIterator>
+      template <typename TypeSegment, typename TypeIterator>
       void extensionInLoop(TypeSegment& aSeg, TypeIterator& it, 
                            const TypeIterator& begin, const TypeIterator& end);
 
@@ -346,7 +349,7 @@ namespace DGtal
 
     /**
      * Constructor.
-		 * Nb: The sequence is processed as a closed one by default.
+     * Nb: The sequence is processed as a closed one by default.
      * @param begin, begin iterator on a sequence
      * @param end, end iterator on a sequence
      * @param aSegment, a segment computer
@@ -360,7 +363,7 @@ namespace DGtal
 
     /**
      * Init.
-		 * Nb: The sequence is processed as a closed one by default.
+     * Nb: The sequence is processed as a closed one by default.
      * @param begin, begin iterator on a sequence
      * @param end, end iterator on a sequence
      * @param aSegment, a segment computer
@@ -411,29 +414,29 @@ namespace DGtal
     /**
      * begin iterator (pointing at the first element)
      */
-		Iterator myBegin;
+    Iterator myBegin;
 
     /**
      * end iterator (pointing after the last element)
      */
-		Iterator myEnd;
+    Iterator myEnd;
 
     /**
      * back iterator (first element) 
      * of the first maximal segment
      */
-		Iterator myFirstMaximalSegmentBack;
+    Iterator myFirstMaximalSegmentBack;
 
     /**
      * a segment Computer
      */
-		Segment mySegment;
+    Segment mySegment;
 
     /**
      * boolean equal to TRUE if the sequence
      * has to be processed as closed, FALSE otherwise
      */
-		bool isClosed;
+    bool isClosed;
 
 
     // ------------------------- Hidden services ------------------------------
@@ -470,6 +473,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const MaximalSegments<TSegment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 

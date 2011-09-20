@@ -72,8 +72,8 @@ namespace DGtal
     
      <p> Notation
      - \t X : A type that is a model of CInteger
-     - \t x, \t y	: object of type X
-     - \t i, \t j	: basic integer type.
+     - \t x, \t y  : object of type X
+     - \t i, \t j  : basic integer type.
     
      <p> Definitions
     
@@ -258,7 +258,7 @@ namespace DGtal
      
      short, int, unsigned int, long long, unsigned long long,
      uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t,
-     mpz_class
+     DGtal::BigInteger
     
      <p> Notes <br>
     

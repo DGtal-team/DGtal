@@ -63,7 +63,7 @@ namespace DGtal
      Khalimsky coordinates.
    */
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+       typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
 
@@ -131,10 +131,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColorRGBi( 50, 50, 50 );
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi( 80, 80, 80 );
-	aBoard.setLineWidth( 1 );
+  aBoard.setPenColorRGBi( 50, 50, 50 );
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setFillColorRGBi( 80, 80, 80 );
+  aBoard.setLineWidth( 1 );
       }
     };
 
@@ -155,7 +155,7 @@ namespace DGtal
       virtual void selfDrawDisplay3D( Display3D & display ) const
       {
 
-	//aBoard.setPenColor(Color::Black);
+  //aBoard.setPenColor(Color::Black);
       //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
       
@@ -190,17 +190,17 @@ namespace DGtal
   }; 
 
   template < Dimension dim,
-	     typename TInteger >
+       typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
-	      const KhalimskyCell< dim, TInteger > & object );
+        const KhalimskyCell< dim, TInteger > & object );
 
   /**
      @brief Represents a signed cell in a cellular grid space by its
      Khalimsky coordinates and a boolean value.
    */
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+       typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
     //Integer must be a model of the concept CInteger.
@@ -268,10 +268,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-	aBoard.setPenColorRGBi( 50, 50, 50 );
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi( 80, 80, 80 );
-	aBoard.setLineWidth( 1 );
+  aBoard.setPenColorRGBi( 50, 50, 50 );
+  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  aBoard.setFillColorRGBi( 80, 80, 80 );
+  aBoard.setLineWidth( 1 );
       }
     };
 
@@ -290,8 +290,8 @@ namespace DGtal
     struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
       virtual void selfDrawDisplay3D( Display3D & display ) const
       {
-	//aBoard.setPenColor(Color::Black);
-	//aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+  //aBoard.setPenColor(Color::Black);
+  //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
   
@@ -321,10 +321,10 @@ namespace DGtal
   }; 
 
   template < Dimension dim,
-	     typename TInteger >
+       typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
-	      const SignedKhalimskyCell< dim, TInteger > & object );
+        const SignedKhalimskyCell< dim, TInteger > & object );
 
   /**
      @bried This class is useful for looping on all "interesting" coordinates of a
@@ -336,12 +336,12 @@ namespace DGtal
      for ( q = ks.uDirs( p ); q != 0; ++q ) 
      { 
         KSpace::Dimension dir = *q;
-	...
+  ...
      } 
      @endcode
    */
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+       typename TInteger = DGtal::int32_t >
   class CellDirectionIterator 
   {
   public:
@@ -404,7 +404,7 @@ namespace DGtal
     /** the cell. */
     Cell myCell;
     /** If 'true', returns open coordinates, otherwise returns closed
-	coordinates. */
+  coordinates. */
     bool myOpen;
 
   private:
@@ -432,7 +432,7 @@ namespace DGtal
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+       typename TInteger = DGtal::int32_t >
   class KhalimskySpaceND
   {
     //Integer must be a model of the concept CInteger.
@@ -487,10 +487,23 @@ namespace DGtal
     ~KhalimskySpaceND();
 
     /**
-     * Constructor.
+     * Default onstructor.
      */
     KhalimskySpaceND();
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    KhalimskySpaceND ( const KhalimskySpaceND & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other );
+    
     /**
      * Specifies the upper and lower bounds for the maximal cells in
      * this space.
@@ -503,8 +516,8 @@ namespace DGtal
      * are representable with these integers).
      */
     bool init( const Point & lower,
-	       const Point & upper,
-	       bool closed );
+         const Point & upper,
+         bool closed );
 
     // ------------------------- Basic services ------------------------------
   public:
@@ -842,7 +855,7 @@ namespace DGtal
      for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
      { 
         KSpace::Dimension dir = *q;
-	...
+  ...
      } 
      @endcode
      
@@ -864,7 +877,7 @@ namespace DGtal
      for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
      { 
         KSpace::Dimension dir = *q;
-	...
+  ...
      } 
      @endcode
      
@@ -886,7 +899,7 @@ namespace DGtal
      for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
      { 
         KSpace::Dimension dir = *q;
-	...
+  ...
      } 
      @endcode
      
@@ -908,7 +921,7 @@ namespace DGtal
      for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
      { 
         KSpace::Dimension dir = *q;
-	...
+  ...
      } 
      @endcode
      
@@ -1503,20 +1516,7 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    KhalimskySpaceND ( const KhalimskySpaceND & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -1531,10 +1531,10 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template < Dimension dim,
-	     typename TInteger >
+       typename TInteger >
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const KhalimskySpaceND<dim, TInteger > & object );
+         const KhalimskySpaceND<dim, TInteger > & object );
 
 } // namespace DGtal
 

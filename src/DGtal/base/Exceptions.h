@@ -63,7 +63,7 @@ namespace DGtal
    */ 
   class InputException: public exception
   {
-		public:
+    public:
     virtual const char* what() const throw()
     {
       return "DGtal bad input error";
@@ -75,7 +75,7 @@ namespace DGtal
    */ 
   class ConnectivityException: public exception
   {
-		public:
+    public:
     virtual const char* what() const throw()
     {
       return "DGtal bad connectivity error";

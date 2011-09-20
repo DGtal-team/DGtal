@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-1-points.cpp
+ * @file   dgtalBoard3DTo2D-1-points.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -55,14 +55,13 @@ int main( int argc, char** argv )
   viewer << p1 << p2 << p3;
   
     viewer << CameraPosition(2.500000, 2.500000, 16.078199)
-	<< CameraDirection(0.000000, 0.000000, -1.000000)
-	<< CameraUpVector(0.000000, 1.000000, 0.000000);
+  << CameraDirection(0.000000, 0.000000, -1.000000)
+  << CameraUpVector(0.000000, 1.000000, 0.000000);
 
   //viewer << CameraZNearFar(4.578200, 22.578199);
 
   viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
-
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

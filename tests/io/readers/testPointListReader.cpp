@@ -61,7 +61,7 @@ bool testPointListReader()
   vectPos.push_back(1);
   vectPos.push_back(2);
   vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,
-										 vectPos);
+                     vectPos);
   for(unsigned int k=0;k < vectPoints.size(); k++){
     trace.info() << " pt: "<< vectPoints.at(k)<< endl;
   }

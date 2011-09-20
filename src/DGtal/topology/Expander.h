@@ -101,20 +101,14 @@ namespace DGtal
     typedef typename Object::Size Size;
     typedef typename Object::Point Point;
     typedef typename Object::Domain Domain;
-    typedef typename Object::SmallSet SmallSet;
     typedef typename Object::DigitalSet DigitalSet;
-    typedef typename Object::DigitalTopology DigitalTopology;
     typedef typename Object::ForegroundAdjacency ForegroundAdjacency;
     typedef typename Domain::Space Space;
-    typedef typename DigitalSet::Iterator Iterator;
     typedef typename DigitalSet::ConstIterator ConstIterator;
     typedef DigitalSetDomain<DigitalSet> ObjectDomain;
     typedef DigitalSetDomain<DigitalSet> CoreDomain;
-    typedef typename DigitalSetSelector< Domain, SMALL_DS + HIGH_ITER_DS >::Type NeighborhoodSet;
     typedef DomainAdjacency< ObjectDomain, ForegroundAdjacency> ObjectAdjacency;
-    typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
     typedef typename CoreDomain::Predicate InCoreDomainPredicate; 
-    //typedef DomainPredicate< CoreDomain > InCoreDomainPredicate;
     typedef NotPointPredicate< InCoreDomainPredicate > NotInCoreDomainPredicate;
 
     // ----------------------- Standard services ------------------------------
@@ -147,7 +141,7 @@ namespace DGtal
      */
     template <typename PointInputIterator>
     Expander( const Object & object,
-	      PointInputIterator b, PointInputIterator e );
+        PointInputIterator b, PointInputIterator e );
 
 
     // ----------------------- Expansion services ------------------------------

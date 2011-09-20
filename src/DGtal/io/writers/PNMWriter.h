@@ -93,10 +93,10 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
 
     BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
-			 (TImage::Domain::dimension == 3));
+       (TImage::Domain::dimension == 3));
 
     BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
-			 typename TImage::Value>::value));
+       typename TImage::Value>::value));
     
     typedef TImage Image;
     typedef typename TImage::Value Value;
@@ -115,7 +115,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPPM(const std::string & filename, const Image &aImage, 
-			  const Value & minV, const Value & maxV);
+        const Value & minV, const Value & maxV);
 
     /** 
      * Export an Image with PPM3Dformat. The colormap specified
@@ -130,7 +130,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPPM3D(const std::string & filename, const Image &aImage, 
-			    const Value & minV, const Value & maxV);
+          const Value & minV, const Value & maxV);
 
 
     /** 
@@ -149,7 +149,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
-			  const Value & minV, const Value & maxV,  bool saveASCII=false);
+        const Value & minV, const Value & maxV,  bool saveASCII=false);
   
 
     /** 
@@ -165,7 +165,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM3D(const std::string & filename, const Image &aImage, 
-			    const Value & minV, const Value & maxV);
+          const Value & minV, const Value & maxV);
     
   };
 }//namespace

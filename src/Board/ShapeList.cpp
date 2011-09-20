@@ -345,7 +345,7 @@ ShapeList::flushSVG( std::ostream & stream,
 #ifdef WITH_CAIRO
 void
 ShapeList::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+     const TransformCairo & transform ) const
 {
     std::vector< Shape* > shapes = _shapes;
     stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
@@ -633,8 +633,8 @@ Group::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Group::flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const
+Group::flushCairo( cairo_t */*cr*/,
+		   const TransformCairo & /*transform*/ ) const
 {
     //todo
     //ShapeList::flushCairo( cr, transform );

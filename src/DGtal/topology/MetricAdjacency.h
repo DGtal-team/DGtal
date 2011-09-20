@@ -73,7 +73,7 @@ namespace DGtal
    * @see testAdjacency.cpp
    */
   template <typename TSpace, Dimension maxNorm1, 
-	    Dimension dimension = TSpace::dimension >
+      Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
@@ -138,11 +138,11 @@ namespace DGtal
      * @param pred the predicate.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate>
+        typename PointPredicate>
     static
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it,
-			    const PointPredicate & pred );
+          OutputIterator & out_it,
+          const PointPredicate & pred );
 
 
     /**
@@ -158,7 +158,7 @@ namespace DGtal
     template <typename OutputIterator>
     static
     void writeNeighborhood( const Point & p, 
-			    OutputIterator & out_it );
+          OutputIterator & out_it );
 
     /**
      * Outputs the whole neighborhood of point [p] (except p itself)
@@ -174,11 +174,11 @@ namespace DGtal
      * @param pred the predicate.
      */
     template <typename OutputIterator, 
-	      typename PointPredicate >
+        typename PointPredicate >
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it,
-				  const PointPredicate & pred );
+          OutputIterator & out_it,
+          const PointPredicate & pred );
 
     /**
      * Outputs the whole neighborhood of point [p] (except p itself)
@@ -193,7 +193,7 @@ namespace DGtal
     template <typename OutputIterator>
     static
     void writeProperNeighborhood( const Point & p, 
-				  OutputIterator & out_it );
+          OutputIterator & out_it );
     
     // ----------------------- Interface --------------------------------------
   public:
@@ -252,8 +252,8 @@ namespace DGtal
   template <typename TSpace, Dimension maxNorm1>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const MetricAdjacency< TSpace,maxNorm1,
-	       TSpace::dimension > & object );
+         const MetricAdjacency< TSpace,maxNorm1,
+         TSpace::dimension > & object );
 
 } // namespace DGtal
 

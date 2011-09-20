@@ -71,15 +71,15 @@ int main( int argc, char** argv )
   vector<uint> vRad;
   for(uint i=0;i<nbSeeds; i++){
     vCenters.push_back(Point(rand()%p2[0], rand()%p2[1], 
-			    rand()%p2[2]));
+          rand()%p2[2]));
     vRad.push_back(rand()%7);
   }
   for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it ){
     for(unsigned int i=0;i<nbSeeds; i++){
       if ( (*it - vCenters.at(i)  ).norm1() <= vRad.at(i) && domain.isInside(*it) &&
-	   domain.isInside(*it+Point(1,1,1)) && domain.isInside(*it-Point(1,1,1)) ){ 
-	diamond_set.insertNew( *it );
-	break;
+     domain.isInside(*it+Point(1,1,1)) && domain.isInside(*it-Point(1,1,1)) ){ 
+  diamond_set.insertNew( *it );
+  break;
       }
     }
   }
@@ -121,10 +121,10 @@ int main( int argc, char** argv )
  
   
   for(uint i=0; i< vectConnectedSCell.size();i++){
-    DGtal::Color c= gradient(i);
-    viewer << CustomColors3D(Color(250, 0,0), Color(c.red(), 
-						      c.green(),
-						      c.blue()));
+    DGtal::Color col= gradient(i);
+    viewer << CustomColors3D(Color(250, 0,0), Color(col.red(), 
+						    col.green(),
+						    col.blue()));
     
     for(uint j=0; j< vectConnectedSCell.at(i).size();j++){
       viewer << vectConnectedSCell.at(i).at(j);

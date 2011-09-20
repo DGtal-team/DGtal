@@ -98,10 +98,10 @@ namespace DGtal
      * @param isClosed true if the input range is closed.
      */
     TrueLocalEstimatorOnPoints(const double h, 
-			       const ConstIterator& itb, 
-			       const ConstIterator& ite,
-			       ParametricShape* aShape,
-			       const bool isClosed);
+             const ConstIterator& itb, 
+             const ConstIterator& ite,
+             ParametricShape* aShape,
+             const bool isClosed);
     
     /**
      * Destructor.
@@ -120,10 +120,10 @@ namespace DGtal
      * @param isClosed true if the input range is viewed as closed.
      */
     void init(const double h, 
-	      const ConstIterator& itb, 
-	      const ConstIterator& ite,
-	      ParametricShape* aShape,
-	      const bool isClosed);
+        const ConstIterator& itb, 
+        const ConstIterator& ite,
+        ParametricShape* aShape,
+        const bool isClosed);
     
     /**
      * @return the estimated quantity at *it
@@ -136,7 +136,7 @@ namespace DGtal
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, 
-			const ConstIterator& ite, 
+      const ConstIterator& ite, 
                         OutputIterator result); 
 
 

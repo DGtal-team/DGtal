@@ -45,7 +45,7 @@
 
 inline 
 DGtal::RandomColorMap::RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex, 
-				      const Color &aFirstColor, const Color &aLastColor)
+              const Color &aFirstColor, const Color &aLastColor)
 {
   myMin = aFirstIndex;
   myMax  = aLastIndex;
