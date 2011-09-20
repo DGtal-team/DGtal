@@ -12,7 +12,7 @@ if (  WITH_VISU3D_QGLVIEWER )
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME}
+    target_link_libraries ( ${FILE} DGtalIO DGtal
                             ${DGtalLibDependencies})   
   ENDFOREACH(FILE)
 
