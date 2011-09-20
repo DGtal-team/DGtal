@@ -56,8 +56,6 @@ namespace DGtal
    * \brief Aim: Predicate returning 'true' iff a given point is in 
    * the 'interior' of a given shape, 'false' otherwise
    *
-   * This class is a model of CPointPredicate.
-   *
    * @tparam TSurface  a type that is a model of COrientableHypersurface.
    * Must separate the space in two disjoints parts (the 'interior' and the 'exterior')
    * and must be able to return for any given point (of type TSurface::Point) 
@@ -65,7 +63,32 @@ namespace DGtal
    * @tparam isUpward  a bool for the orientation ('true' means that the interior 
    * is the set of points of positive distance)
    * @tparam isClosed  a bool for the closure ('true' means that the surface is included)
-   *  
+   *
+   * For instance, in 2d, you can define four shapes from one straight line of equation @f$ y = ax + b @f$:
+   - the set @f$ \{(x,y) | y > ax + b \} @f$  
+   -  @f$ \{(x,y) | y \geq ax + b \} @f$ 
+   -  @f$ \{(x,y) | y < ax + b \} @f$ 
+   -  @f$ \{(x,y) | y \leq ax + b \} @f$
+   *
+   * The second set can be defined as follows: 
+   * @snippet geometry/2d/testHalfPlane.cpp HalfPlaneTypedefUpClosed
+   *
+   * Then, you can create and use your half-plane as shown below:
+   * @snippet geometry/2d/testHalfPlane.cpp HalfPlaneUsage
+   * 
+   * You should get: 
+   @code
+  [Point2ShapePredicate] :
+[StraightLine] passing through:
+[PointVector] {0, 0}[PointVector] {5, 2}
+(upward oriented, closed)
+
+  Does [PointVector] {2, 0} belongs to hp (no)?
+  no
+   @endcode
+   *
+   * This class is a model of CPointPredicate.
+   *
    * @see testHalfPlane.cpp
    */
   template <typename TSurface, bool isUpward, bool isClosed>
@@ -81,7 +104,7 @@ namespace DGtal
      * Constructor.
      * @param aSurface any Surface
      */
-    Point2ShapePredicate(const Surface& aSurface);
+    Point2ShapePredicate(const TSurface& aSurface);
 
     /**
      * Copy constructor.
@@ -134,7 +157,7 @@ namespace DGtal
 /**
  * \brief Aim: A small struct with an operator 
  * that compares two values according to two 
- * bool template parameter.
+ * bool template parameters.
  *
  * @tparam T  type for a signed quantity that is comparable
  * @tparam b1  a bool for the comparison sign ('true' for >, 'false' for <)
