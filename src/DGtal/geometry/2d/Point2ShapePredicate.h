@@ -129,51 +129,124 @@ namespace DGtal
 
 //////////////////////////////////////////////////////////////////////////////
 // policy classes for Point2ShapePredicate
+/////////////////////////////////////////////////////////////////////////////
+// template class Point2ShapePredicateComparator
+/**
+ * \brief Aim: A small struct with an operator 
+ * that compares two values according to two 
+ * bool template parameter.
+ *
+ * @tparam T  type for a signed quantity that is comparable
+ * @tparam b1  a bool for the comparison sign ('true' for >, 'false' for <)
+ * @tparam b2  a bool for the equality ('true' for a large inequality, 'false' for a strict inequality)
+ *
+ * NB: only specialized versions should be used.
+ * 
+ * @see Point2ShapePredicate
+ */
+template <typename T, bool b1, bool b2>
+struct Point2ShapePredicateComparator {
+  /**
+  * Compares two values.
+  * @param q  left value.
+  * @param t  right value.
+  * @return 'true' if @a q < @a t, 'false' otherwise
+  */
+  bool operator()(const T& q, 
+                   const T& t) const {
+    std::less<T> c;
+    return c(q,t);
+  }
+};
 
-    template <typename T, bool b1, bool b2>
-    struct Point2ShapePredicateComparator {
-      bool operator()(const T& q, 
-                       const T& t) const {
-        std::less<T> c;
-        return c(q,t);
-      }
-    };
-
-    template <typename T>
-    struct Point2ShapePredicateComparator<T,false,false> {
-      bool operator()(const T& q, 
-                       const T& t) const {
-        std::less<T> c;
-        return c(q,t);
-      }
-    };
-
-    template <typename T>
-    struct Point2ShapePredicateComparator<T,false,true> {
-      bool operator()(const T& q, 
-                       const T& t) const {
-        std::less_equal<T> c;
-        return c(q,t);
-      }
-    };
-
-    template <typename T>
-    struct Point2ShapePredicateComparator<T,true,false> {
-      bool operator()(const T& q, 
-                       const T& t) const {
-        std::greater<T> c;
-        return c(q,t);
-      }
-    };
-
-    template <typename T>
-    struct Point2ShapePredicateComparator<T,true,true> {
-      bool operator()(const T& q, 
-                       const T& t) const {
-        std::greater_equal<T> c;
-        return c(q,t);
-      }
-    };
+/**
+ * \brief Aim: A small struct with an operator 
+ * that compares two values (<).
+ *
+ * @tparam T  type for a signed quantity that is comparable
+ *  
+ * @see Point2ShapePredicate
+ */
+template <typename T>
+struct Point2ShapePredicateComparator<T,false,false> {
+  /**
+  * Compares two values.
+  * @param q  left value.
+  * @param t  right value.
+  * @return 'true' if @a q < @a t, 'false' otherwise
+  */
+  bool operator()(const T& q, 
+                   const T& t) const {
+    std::less<T> c;
+    return c(q,t);
+  }
+};
+/**
+ * \brief Aim: A small struct with an operator 
+ * that compares two values (<=).
+ *
+ * @tparam T  type for a signed quantity that is comparable
+ *  
+ * @see Point2ShapePredicate
+ */
+template <typename T>
+struct Point2ShapePredicateComparator<T,false,true> {
+  /**
+  * Compares two values.
+  * @param q  left value.
+  * @param t  right value.
+  * @return 'true' if @a q <= @a t, 'false' otherwise
+  */
+  bool operator()(const T& q, 
+                   const T& t) const {
+    std::less_equal<T> c;
+    return c(q,t);
+  }
+};
+/**
+ * \brief Aim: A small struct with an operator 
+ * that compares two values (>).
+ *
+ * @tparam T  type for a signed quantity that is comparable
+ *  
+ * @see Point2ShapePredicate
+ */
+template <typename T>
+struct Point2ShapePredicateComparator<T,true,false> {
+  /**
+  * Compares two values.
+  * @param q  left value.
+  * @param t  right value.
+  * @return 'true' if @a q > @a t, 'false' otherwise
+  */
+  bool operator()(const T& q, 
+                   const T& t) const {
+    std::greater<T> c;
+    return c(q,t);
+  }
+};
+/**
+ * \brief Aim: A small struct with an operator 
+ * that compares two values (>=).
+ *
+ * @tparam T  type for a signed quantity that is comparable
+ *  
+ * @see Point2ShapePredicate
+ */
+template <typename T>
+struct Point2ShapePredicateComparator<T,true,true> {
+  /**
+  * Compares two values.
+  * @param q  left value.
+  * @param t  right value.
+  * @return 'true' if @a q >= @a t, 'false' otherwise
+  */
+  bool operator()(const T& q, 
+                   const T& t) const {
+    std::greater_equal<T> c;
+    return c(q,t);
+  }
+};
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'Point2ShapePredicate'.
