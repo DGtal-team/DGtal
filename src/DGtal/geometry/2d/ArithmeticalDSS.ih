@@ -42,10 +42,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-/**
- * Default constructor.
- * not valid
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()
@@ -63,9 +60,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()
   myNbLowPat = 0;
 }
 
-/**
- * Constructor with initialisation
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS(const ConstIterator& it)
@@ -73,10 +68,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS(const C
   init(it);
 }
 
-/**
- * Initialisation.
- * @param it an iterator on a sequence of points
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
@@ -101,11 +92,6 @@ void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIt
 
 }
 
-/**
- * Copy constructor.
- * @param other the object to clone.
- * Forbidden by default.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS ( 
@@ -119,11 +105,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS (
   mySteps = other.mySteps;
 }
 
-/**
- * Assignment.
- * @param other the object to copy.
- * @return a reference on 'this'.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> &
@@ -158,14 +139,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
   return Reverse(); 
 }
 
-/**
- * Equality operator.
- * @param other the object to compare with.
- * @return 'true' either if the points perfectly match
- * or if the first points match to the last ones
- * (same DSS scanned in the conversed way) 
- * and 'false' otherwise
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -187,12 +160,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator==(
             (*myL == *other.myF) ) );
 }
 
-/**
- * Difference operator.
- * @param other the object to compare with.
- * @return 'false' if equal
- * 'true' otherwise
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -202,22 +169,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=(
 }
 
 
-/**
- * Tests whether the union between a point 
- * (adding to one of the end of the DSS 
- * with respect to the scan orientaion) 
- * and a DSS is a DSS. 
- * Computes the parameters of the new DSS 
- * with the adding point if true.
- * @param it, an iterator pointing at a point
- * @param lastIt, an iterator pointing at the end of the DSS 
- * @param lastMove, move vector  
- * @param Uf, first upper leaning point  
- * @param Ul, last upper leaning point 
- * @param Lf, first lower leaning point  
- * @param Ll, last lower leaning point 
- * @return 'true' if the union is a DSS, 'false' otherwise.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -420,19 +371,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd()
 
 //--------------------------------------------------------------------
 
-/**
- * Removes the end point of a DSS
- * (pointing by firstIt)
- * @param firstIt, an iterator pointing at the end of the DSS 
- * @param lastIt, an iterator pointing at the other end of the DSS 
- * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
- * @param Uf, first upper leaning point  
- * @param Ul, last upper leaning point 
- * @param Lf, first lower leaning point  
- * @param Ll, last lower leaning point 
- * @param s, a signed integer equal to 1 or -1
- * @return 'true'.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
@@ -745,12 +683,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(
 
 
 //-------------------------------------------------------------------------
-/**
- * Computes the remainder of a point
- * (that does not necessarily belong to the DSS)
- * @param aPoint the point whose remainder is returned 
- * @return myA*aPoint[0] - myB*aPoint[1].
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
@@ -760,12 +692,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Poin
   - myB * static_cast<Integer>(aPoint[1]);
 }
 
-/**
- * Computes the remainder of a point
- * (that does not necessarily belong to the DSS)
- * @param it an iterator on points
- * @return the remainder of *it.
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
@@ -774,12 +701,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Cons
   return getRemainder(*it);
 }
 
-/**
- * Computes the position of a point
- * (that does not necessarily belong to the DSS)
- * @param aPoint the point whose position is returned 
- * @return myA*aPoint[0] + myB*aPoint[1].
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
@@ -789,12 +711,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point
   + myB * static_cast<Integer>(aPoint[1]);
 }
 
-/**
- * Computes the position of a point
- * (that does not necessarily belong to the DSS)
- * @param it an iterator on points
- * @return the position of *it.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
@@ -803,13 +719,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Const
   return getPosition(*it);
 }
 
-//-------------------------------------------------------------------------
-/**
- * Checks whether a point is in the DSL
- * of parameters (myA,myB,myMu,myOmega)
- * @param aPoint the point to be checked
- * @return 'true' if yes, 'false' otherwise
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -819,12 +729,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const Point & a
   return ( (r >= myMu)&&(r < myMu+myOmega) );
 }
 
-/**
- * Checks whether a point is in the DSL
- * of parameters (myA,myB,myMu,myOmega)
- * @param it an iterator to the point to be checked
- * @return 'true' if yes, 'false' otherwise
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -834,11 +739,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const ConstIter
 }
 
 //-------------------------------------------------------------------------
-/**
- * Checks whether a point belongs to the DSS or not
- * @param aPoint the point to be checked
- * @return 'true' if yes, 'false' otherwise
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -850,11 +750,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & a
   return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
 }
 
-/**
- * Checks whether a point belongs to the DSS or not
- * @param it an iterator to the point to be checked
- * @return 'true' if yes, 'false' otherwise
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -979,11 +875,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
 }
 
 //-----------------------------------------------------------------
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -1018,11 +909,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
 }
 
 
-/**
- * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
- * @param m any point expressed in the local reference frame (may not be part of the segment).
- * @return the projected point.
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
@@ -1043,17 +930,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
   return PointD( xp, yp );
 }
 
-/**
- * Projects the point [m] onto the straight line whose points have
- * remainder [r].
- *
- * @param m any point expressed in the local reference frame (may not
- * be part of the segment).
- *
- * @param r the remainder (may not be an integer).
- * @return the projected point.
- */
-
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
@@ -1073,17 +949,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
   return PointD( xp, yp );
 }
 
-/**
- * Projects the point [m] onto the straight line going through point [p].
- *
- * @param m any point expressed in the local reference frame (may not
- * be part of the segment).
- *
- * @param p any point expressed in the local reference frame (may not
- * be part of the segment).
- *
- * @return the projected point.
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
@@ -1095,11 +961,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
 
 }
 
-/**
- * Defined as: norm( project(myL) - project(myF) )
- * @return the projected length of the segment.
- * @see projectRegularly
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 double
@@ -1112,12 +973,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
 }
 
 
-
-
-/**
- * Draw the bounding box of the DSS on a LiBoard board
- * @param board the output board where the object is drawn.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
@@ -1148,10 +1003,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsBoundingBox( 
 
 }
 
-/**
- * Draw the retrieved digital points of the DSS on a LiBoard board
- * @param board the output board where the object is drawn.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
@@ -1185,10 +1036,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
 
 
 
-/**
- * Default drawing style object.
- * @return the dyn. alloc. default style for this object.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard2D*
@@ -1200,9 +1047,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::stri
     return new DefaultDrawStylePoints;
 }
 
-/**
- * @return the style name used for drawing this object.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
@@ -1211,10 +1055,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::styleName() const
   return "ArithmeticalDSS";
 }
 
-/**
- * Draw the object on a LibBoard board.
- * @param board the output board where the object is drawn.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
@@ -1235,13 +1075,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( Board2D & boa
 
 }
 
-
-
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
@@ -1267,15 +1100,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
 }
 
 //-------------------------------------------------------------------------
-
-/**
- * Checks whether the DSS has less or more
- * than two displacement vectors (steps)
- * between two consecutive points
- * (must be called only in the main stage)
- * @param aStep, the last displacement vector. 
- * @return 'true' if less or equal, 'false' otherwise.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -1291,12 +1115,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
 
 }
 
-/**
- * Returns the 2D vector 
- * starting at a point of remainder 0
- * and pointing at a point of remainder omega
- * @return the 2D vector.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Vector
