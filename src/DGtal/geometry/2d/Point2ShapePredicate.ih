@@ -88,7 +88,7 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ::operator()(const Point& aPoint) const
 {
   DGtal::Point2ShapePredicateComparator<
-    typename Shape::Coordinate,
+    Distance,
     isUpward,
     isClosed> theComparator;
 
