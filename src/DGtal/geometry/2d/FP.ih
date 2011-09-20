@@ -38,13 +38,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * @param [aDSS] a DSS lying on a range
- * @param [anAdapter] an Adapter to [aDSS] for convex part
- * if 'true' is returned, for concave part otherwise
- * @param [i] an iterator pointing after the front of [aDSS] 
- * @return 'true' if [aDSS] begins a convex part, 'false' otherwise
- */
+
 template <typename TIterator, typename TInteger, int connectivity>
 template<typename DSS, typename Adapter>
 inline
@@ -65,13 +59,6 @@ DGtal::FP<TIterator,TInteger,connectivity>
   return flag;
 }
 
-/**
- * @param [aDSS] a DSS lying on a range
- * @param [anAdapter] an Adapter to [aDSS]
- * @param [isConvex], 'true' if [aDSS] is in a convex part, 'false' otherwise
- * @param [i] an iterator pointing after the front of [aDSS] 
- * @param the algorithm stops when [i] == [end]
- */
 template <typename TIterator, typename TInteger, int connectivity>
 template<typename DSS, typename Adapter>
 inline
@@ -169,9 +156,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
   FP(itb, ite, false);
 }
   
-/**
- * Constructor.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::FP<TIterator,TInteger,connectivity>::FP(
@@ -292,9 +276,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
 
 }
 
-/**
- * Destructor.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::FP<TIterator,TInteger,connectivity>::~FP()
@@ -304,10 +285,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::~FP()
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
@@ -316,9 +293,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::isValid() const
     return true;
 }
 
-/**
- * @return number of FP vertices
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename FP<TIterator,TInteger,connectivity>::Polygon::size_type
@@ -327,11 +301,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::size() const
     return myPolygon.size();
 }
 
-
-/**
- * @return the vertices of the FP
- * NB: O(n)
- */
 
 template <typename TIterator, typename TInteger, int connectivity>
 template <typename OutputIterator>
@@ -344,11 +313,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::copyFP(OutputIterator result) const 
   }
   return result;
 }
-
-/**
- * @return the vertices of the MLP
- * NB: O(n)
- */
 
 template <typename TIterator, typename TInteger, int connectivity>
 template <typename OutputIterator>
@@ -401,16 +365,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::copyMLP(OutputIterator result) const
   return result;
 }
 
-
-
-/**
- * gets a MLP vertex from three consecutive vertices of the FP.
- * @param a previous vertex of the FP
- * @param b current vertex of the FP
- * @param c next vertex of the FP
- * @return vertex of the MLP, which is 
- * the tranlated of b by (+- 0.5, +- 0.5)
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::PointVector<2,double>
@@ -481,10 +435,6 @@ DGtal::FP<TIterator,TInteger,connectivity>
 ///////////////////////////////////////////////////////////////////////////////
 // Display :
 
-/**
- * Draw the bounding box of the DSS on a LiBoard board
- * @param board the output board where the object is drawn.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
@@ -511,10 +461,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard)
 
 }
 
-/**
- * Default drawing style object.
- * @return the dyn. alloc. default style for this object.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard2D*
@@ -523,9 +469,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string  ) const
   return new DefaultDrawStyle;
 }
 
-/**
- * @return the style name used for drawing this object.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
@@ -534,10 +477,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::styleName() const
   return "FP";
 }
 
-/**
- * Draw the object on a LibBoard board.
- * @param board the output board where the object is drawn.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
@@ -559,10 +498,6 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
   
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void

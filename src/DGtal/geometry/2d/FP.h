@@ -55,52 +55,118 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class adapterDSS,
-  // which is a tool class for FP
-  template <typename ArithmeticalDSS>
+  /**
+   * \brief Aim: abstract adapter for ArithmeticalDSS.
+   * Has 2 virtual methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * @see Adapter4ConvexPart Adapter4ConcavePart
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   */
+   template <typename ArithmeticalDSS>
   class Adapter 
   {
     protected:
+      /**
+       *  A pointer to an instance of ArithmeticalDSS
+       */
       ArithmeticalDSS* myDSS;
     public:
+      /**
+       *  @return the first upper or lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+      /**
+       *  @return the last upper or lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
   };
 
+  /**
+   * \brief Aim: adapter for ArithmeticalDSS used by FP in convex parts.
+   * Has 2 methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * that respectively return the first and last upper leaning point 
+   * of the underlying instance of ArithmeticalDSS. 
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   * @see Adapter FP
+   */
   template <typename ArithmeticalDSS>
   class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
   {
     public:
-      //constructor
+      /**
+       *  Constructor
+       * @param aDSS
+       */
       Adapter4ConvexPart(ArithmeticalDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
-      //accessors
+      /**
+       *  @return the first upper leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getUf();
       }
+      /**
+       *  @return the last upper leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getUl();
       }
   };
 
+  /**
+   * \brief Aim: adapter for ArithmeticalDSS used by FP in concave parts.
+   * Has 2 methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * that respectively return the first and last lower leaning point 
+   * of the underlying instance of ArithmeticalDSS. 
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   * @see Adapter FP
+   */
   template <typename ArithmeticalDSS>
   class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
   {
     public:
-      //constructor
+      /**
+       *  Constructor
+       * @param aDSS
+       */
       Adapter4ConcavePart(ArithmeticalDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
-      //accessors
+      /**
+       *  @return the first lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getLf();
       }
+      /**
+       *  @return the last lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getLl();
@@ -112,10 +178,10 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class FP
   /**
-   * \brief Aim:Computes the faithful polygon (FP)
+   * \brief Aim: Computes the faithful polygon (FP)
    * of a range of 4/8-connected 2D Points. 
    * 
-   * The FP has several properties: 
+   * The FP has several interesting properties: 
    *  - its vertices are points of the underlying digital curve, thus with integer coordinates, 
    *  - it respects the convex and concave parts of the underlying digital curve,
    *  - it is reversible, 
@@ -123,8 +189,15 @@ namespace DGtal
    *  - it is closed to the minimum length polygon (MLP) (and converges toward the MLP
    * as the resolution tends to the infinity) for closed digital curves.  
    *
+   * It is computed in the course of the maximal digital straight segments computation,
+   * because in convex parts (resp. concave parts), the first and last upper (resp. lower) 
+   * leaning points of segments that are maximal at the front or at the back are also
+   * vertices of the FP.
+   * 
+   * @see ArithmeticalDSS Adapter Adapter4ConvexPart Adapter4ConcavePart
+   *
    * @note T. ROUSSILLON and I. SIVIGNON, 
-   * AFaithful polygonal representation of the convex and concave parts of a digital curve, 
+   * Faithful polygonal representation of the convex and concave parts of a digital curve, 
    * Pattern Recognition, Volume 44, Issues 10-11, October-November 2011, Pages 2693-2700. 
    *
    * Usage:
@@ -281,7 +354,7 @@ namespace DGtal
      * @param b current vertex of the FP
      * @param c next vertex of the FP
      * @return vertex of the MLP, which is 
-     * the tranlated of b by (+- 0.5, +- 0.5)
+     * the tranlated of @a b by (+- 0.5, +- 0.5)
      */
     RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
 
