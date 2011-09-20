@@ -34,13 +34,9 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/2d/GreedySegmentation.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,20 +44,20 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class DGtalGMP.
+// Functions for testing class DGtalBIGINTEGER.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testDGtalGMP()
+bool testDGtalBIGINTEGER()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "GMP linking test..." );
+  trace.beginBlock ( "BIGINTEGER linking test..." );
  
-  mpz_class a, b, c;
+  DGtal::BigInteger a, b, c;
   
   a = 1234;
   b = "-5678";
@@ -72,7 +68,7 @@ bool testDGtalGMP()
   nbok += (abs(c)==4444) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -83,20 +79,20 @@ bool testDGtalGMP()
  * Example of a test. To be completed.
  *
  */
-bool testGMPSpace()
+bool testBIGINTEGERSpace()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "GMP Space test..." );
+  trace.beginBlock ( "BIGINTEGER Space test..." );
    
   //This space is weird...
-  typedef SpaceND<2, mpz_class> Space2;
+  typedef SpaceND<2, DGtal::BigInteger> Space2;
   typedef Space2::Point Point;
   typedef Space2::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2> Domain;
 
-  mpz_class a, b, c;
+  DGtal::BigInteger a, b, c;
   
   a = 1234;
   b = "-5678";
@@ -104,15 +100,15 @@ bool testGMPSpace()
 
   typedef FreemanChain<Coordinate> Contour; 
   typedef ArithmeticalDSS<Contour::ConstIterator,Coordinate,4> DSS4;  
-  typedef GreedyDecomposition<DSS4> Decomposition;
+  typedef GreedySegmentation<DSS4> Decomposition;
  
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   Contour theContour( ss );
   //Segmentation
-  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4(),true );
-  Decomposition::SegmentIterator i = theDecomposition.begin();
+  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4() );
+  Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   DSS4 segment(*i); 
 
   Point p1( 0, 0 );
@@ -123,8 +119,8 @@ bool testGMPSpace()
   Domain domain( p1, p2 );
   Board2D aBoard;
   aBoard << SetMode( domain.styleName(), "Grid" )
-	 << domain
-	 << theContour
+   << domain
+   << theContour
    << segment;
 
   aBoard.saveSVG("testgmpcontour.svg");
@@ -133,7 +129,7 @@ bool testGMPSpace()
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -144,13 +140,13 @@ bool testGMPSpace()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class DGtalGMP" );
+  trace.beginBlock ( "Testing class DGtalBIGINTEGER" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDGtalGMP() && testGMPSpace(); // && ... other tests
+  bool res = testDGtalBIGINTEGER() && testBIGINTEGERSpace(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

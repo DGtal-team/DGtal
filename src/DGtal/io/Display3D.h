@@ -56,174 +56,289 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class Display3D
-/**
- * Description of class 'Display3D' <p>
- * \brief Aim:
- */
-class Display3D
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // class Display3D
+  /**
+   * Description of class 'Display3D' <p>
+   * \brief Aim:   This semi abstract class  defines the stream mechanism to
+   display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
+   ...). The class Viewer3D and Board3DTo2D implement two different
+   ways to display 3D objects. The first one (Viewer3D), permits an
+   interactive visualisation (based on @i OpenGL ) and the second one
+   (Board3DTo2D) provides 3D visualisation from 2D vectorial display
+   (based on the CAIRO library)
+ 
+   @see Viewer3D, Board2Dto3D
+  
+  */
+  class Display3D
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     /**
      * Destructor.
      */
- 
-  
-  virtual ~Display3D(){};
+    virtual ~Display3D(){};
 
 
-protected:  
-  Display3D(){};
+  protected:  
+    Display3D(){};
 
     // ----------------------- Interface --------------------------------------
-public:
-  enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+  public:
+    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
   
  
-  virtual void setFillColor(DGtal::Color aColor);
-  virtual void setLineColor(DGtal::Color aColor);
+
+    /**
+     * Used to set the current fill color
+     * @param aColor the fill color.
+     **/ 
+    virtual void setFillColor(DGtal::Color aColor);
+
+
+    /**
+     * Used to set the line fill color
+     * @param aColor the line color.
+     **/ 
+    virtual void setLineColor(DGtal::Color aColor);
+
+    
+    /**
+     * Used to get the fill color
+     * @return the current fill color.
+     **/ 
+    
+    virtual DGtal::Color getFillColor();
    
-  /**
-   * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
-   * A maximal of five clipping plane can be added.
-   *
-   * @param a, b, c, d : plane equation.
-   **/
+    /**
+     * Used to get the line color
+     * @return the current line color.
+     **/ 
+    
+    virtual DGtal::Color getLineColor();
+
+   
   
-  virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
+    /**
+     * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
+     * A maximal of five clipping plane can be added.
+     *
+     * @param a, b, c, d : plane equation.
+     **/
   
-   /**
-  * Set camera up-vector.
-  * @param x x coordinate of up-vector.
-  * @param y y coordinate of up-vector.
-  * @param z z coordinate of up-vector.
-  */
-  virtual void setCameraUpVector(double , double , double ){}; 
+    virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
   
-  /**
-  * Set camera position.
-  * @param x x position.
-  * @param y y position.
-  * @param z z position.
-  */
-  virtual void setCameraPosition(double , double , double ) {  };
   
-  /**
-  * Set near and far distance.
-  * @param near near distance.
-  * @param far far distance.
-  */
-  virtual void setNearFar(double , double ){};
+    /**
+     * Set camera up-vector.
+     * @param x x coordinate of up-vector.
+     * @param y y coordinate of up-vector.
+     * @param z z coordinate of up-vector.
+     */
+    virtual void setCameraUpVector(double , double , double ){}; 
+  
+    /**
+     * Set camera position.
+     * @param x x position.
+     * @param y y position.
+     * @param z z position.
+     */
+    virtual void setCameraPosition(double , double , double ) {  };
+  
+    /**
+     * Set near and far distance.
+     * @param near near distance.
+     * @param far far distance.
+     */
+    virtual void setNearFar(double , double ){};
   
 
     
-  /**
-  * Set camera direction.
-  * @param x x direction.
-  * @param y y direction.
-  * @param z z direction.
-  */
-  virtual void setCameraDirection(double , double , double ) { };
+    /**
+     * Set camera direction.
+     * @param x x direction.
+     * @param y y direction.
+     * @param z z direction.
+     */
+    virtual void setCameraDirection(double , double , double ) { };
 
   
   
-  /**
-   * @param objectName the name of the object (generally obtained
-   * with a 'object.styleName()').
-   *
-   * @return the current mode for the given object name or "" if no
-   * specific mode has been set.
-   */
-  virtual std::string getMode( const std::string & objectName ) const;
+    /**
+     * @param objectName the name of the object (generally obtained
+     * with a 'object.styleName()').
+     *
+     * @return the current mode for the given object name or "" if no
+     * specific mode has been set.
+     */
+    virtual std::string getMode( const std::string & objectName ) const;
   
-   /**
-    * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * 
+     **/  
 
-  virtual void createNewLineList();
-  
-
-  /**
-   * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-  
-  virtual void createNewPointList();
-
-
-  /**
-   * Used to create a new list containing new 3D objects
-   * (useful to use transparency between different objects).
-   * 
-   **/  
-
-  virtual void createNewVoxelList(bool depthTest=true);
-
-
-
-
-  virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-		       double x3, double y3, double z3,  double x4, double y4, double z4, 
-		       DGtal::Color aColor);
-
-  
-  virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
-		       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
+    virtual void createNewLineList();
   
 
-  virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
-			double width=0.5,bool withWire=false);
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * 
+     **/  
   
-  virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
-			double size=40);
+    virtual void createNewPointList();
+
+
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * 
+     **/  
+
+    virtual void createNewVoxelList(bool depthTest=true);
+
   
-  virtual DGtal::Color getFillColor();
+    /**
+     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
+     * @param x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4 the four coordinates of the quad.
+     * @param aColor the quad color.
+     */
+    
+    virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
+			 double x3, double y3, double z3,  double x4, double y4, double z4, 
+			 DGtal::Color aColor);
+  
+
+    /**
+     * Method to add a line to the current display.
+     * @param x1, y1, z1, x2, y2, z2  the two extremty line points.
+     * @param color the line color.
+     * @param with the line width
+     *
+     */
+    
+    virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, 
+			 const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
+  
+
+    /**
+     * Method to add specific voxel. It includes several modes to
+     * display the voxel with and without the wire visualisation.
+     *
+     * @param x, y, z  the voxel center.
+     * @param color the voxel color.
+     * @param width the voxel width.
+     * @param widthWire if true add the wire representation.
+     */
+
+    virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
+			  double width=0.5,bool withWire=false);
+    
+
+    /**
+     * Method to add a point to the current display.
+     * @param x, y, z  the point.
+     * @param color the point color.
+     * @param with the point width
+     *
+     */
+    
+    virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
+			  double size=40);
    
-  virtual DGtal::Color getLineColor();
+  
+    
+    /**
+     * Specific to display a KSSurfel from Kahlimsky space. The display can
+     * take into accounts the sign of the cell.
+     *
+     * @param x,y,z the surfel center.
+     * @param xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
+     *                                     the x-axis, y-axis or z-axis.
+     * @param sizeShiftFactor set the distance between the display of the surfel and potential KSVoxel.
+     * @param isSigned to specify if we want to display an signed or unsigned Cell.
+     * @param aSign if @ref isSigned is true it will be used to apply a different displays 
+     *                             according this boolean  parameter 
+     *                              (if @param aSign=true oriented in the direct axis orientation).
+     * @param basicMode if true, a basic mode to display KSSurfel are used (i.e just a simple surfel face).  
+     * 
+     */
+    
+    virtual void addKSSurfel(double x, double y, double z, 
+			     bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+			     bool isSigned= false, bool aSign=true, bool basicMode=false);
+    
+    /**
+     * Add a KSVoxel from the Kahlimsky space.
+     * 
+     * @param x, y, z the center of the KSVoxel.
+     * 
+     */
+    
+    virtual void addKSVoxel(int x, int y, int z);
+  
+    
+    /**
+     * Add a KSPoint from the Kahlimsky space.
+     * 
+     * @param x, y, z the center of the KSVoxel.
+     * @param size the point size (default= 0.1)
+     * @param isSigned to specify if we want to display an signed or unsigned Cell point.
+     * @param aSign if @ref isSigned is true it will be used to apply a different displays 
+     *                             according this boolean  parameter 
+     *                              (if @param aSign=true display a cross else, display a small cylinder.).     
+     */
+    
+    virtual void addKSPointel(double x, double y, double z, double size=0.1,
+			      bool isSigned=false, bool aSign=true);
+  
 
- 
-  
-  virtual void addKSSurfel(double x, double y, double z, 
-		   bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
-			   bool isOriented= false, bool isOrientedPositively=true, bool basicMode=false);
-  
-  virtual void addKSVoxel(int x, int y, int z);
+    
+    /**
+     * Add a KSLinel from the Kahlimsky space. If the KSlinel is
+     * signed its display will difffers acoording its sign (display as
+     * a cone) else it will be displayed as simple cylinder.
+     * 
+     * @param x1, y1, z1 first point of the extremity point of the KSLinel.
+     * @param x2, y2, z2 second point of the extremity point of the KSLinel.
+
+     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
+     * @param isSigned to specify if we want to display an signed or unsigned Cell Linel.
+     * @param aSign if @ref isSigned is true it will add the KSLinel reprensented by a cone oriented in 
+     *              the direct axis orientation.   
+     * 
+     */
+    
+    virtual void addKSLinel(double x1, double y1, double z1,
+			    double x2, double y2, double z2,
+			    double width=0.02, bool isSigned=false, bool aSign=true);
   
 
-
-  virtual void addKSPointel(double x, double y, double z, double size=0.1,
-			    bool isSigned=false, bool signPos=true);
+    /**
+     * Used to update the scene bounding box when objects are added. 
+     *
+     * @param x, y, z the coordinates to be taken into accounts. 
+     *
+     **/
   
-
-  virtual void addKSLinel(double x1, double y1, double z1,
-			  double x2, double y2, double z2,
-			  double width=0.02, bool isSigned=false, bool signPos=true);
-  
-   /**
-   * Used to define update the scene bounding box when objects are added 
-   *
-   **/
-  
-  void updateBoundingBox(int x, int y, int z);
+    void updateBoundingBox(double x, double y, double z);
   
 
   
-  /**
-   * Draws the drawable [object] in this board. It should satisfy
-   * the concept CDrawableWithViewer3D, which requires for instance a
-   * method selfDraw( Viewer3D & ).
-   *
-   * @param object any drawable object.
-   * @return a reference on 'this'.
-   */
-  template <typename TDrawableWithDisplay3D>
-  Display3D & operator<<( const  TDrawableWithDisplay3D & object );
+    /**
+     * Draws the drawable [object] in this board. It should satisfy
+     * the concept CDrawableWithViewer3D, which requires for instance a
+     * method selfDraw( Viewer3D & ).
+     *
+     * @param object any drawable object.
+     * @return a reference on 'this'.
+     */
+    template <typename TDrawableWithDisplay3D>
+    Display3D & operator<<( const  TDrawableWithDisplay3D & object );
   
 
 
@@ -240,29 +355,29 @@ public:
      */
     bool isValid() const;
   
-  /**
-   * The associated map type for storing possible modes used for
-   * displaying for digital objects.
-   */
-  typedef std::map< std::string, std::string > ModeMapping;
+    /**
+     * The associated map type for storing possible modes used for
+     * displaying for digital objects.
+     */
+    typedef std::map< std::string, std::string > ModeMapping;
   
   
   
-  /**
-   * The associated map type for storing the default styles of
-   * digital objects.
-   */
-  typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
+    /**
+     * The associated map type for storing the default styles of
+     * digital objects.
+     */
+    typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
   
 
 
 
     // ------------------------- Protected Datas ------------------------------
-public:
+  public:
   
     
-  ModeMapping myModes;  
-      /**
+    ModeMapping myModes;  
+    /**
      * For instance, may associate a new style object T1 to the class
      * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
      *
@@ -276,98 +391,166 @@ public:
   
   
   
-  double  myBoundingPtUp [3];
-  double  myBoundingPtLow [3];
+    double  myBoundingPtUp [3];
+    double  myBoundingPtLow [3];
 
   
   
 
-  
-private:
+ 
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
-protected:
 
-  struct lineD3D{
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double width;
-    unsigned int R,G,B,T;
-    bool isSigned;
-    bool signPos;
-  };
+  protected:
+
+
+    /// Structure used to display KSPoint in 3D
+    /// @see addKSPointel 
+    ///
     
-  struct voxelD3D{
-    int x, y,z;
-    unsigned int R,G,B,T;
-    double width;
-  };
+    struct pointD3D{
+      double  x, y,z;
+      unsigned int R,G,B,T;
+      bool isSigned;
+      bool signPos;
+      double size;
+    };
+
+
+    /// Structure used to display KSLine in 3D
+    /// @see addKSLinel 
+    ///
+    
   
-  struct pointD3D{
-    double  x, y,z;
-    unsigned int R,G,B,T;
-    bool isSigned;
-    bool signPos;
-    double size;
-  };
-  
-  struct clippingPlaneD3D{
-    double a,b,c,d;
-  };
-
-  struct  quadD3D{
-    double x1,y1,z1;
-    double x2,y2,z2;
-    double x3,y3,z3;
-    double x4,y4,z4;    
-    double nx, ny, nz;
-    unsigned int R,G,B,T;
-  };
+    struct lineD3D{
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double width;
+      unsigned int R,G,B,T;
+      bool isSigned;
+      bool signPos;
+    };
+    
 
 
-protected:
-  DGtal::Color myCurrentFillColor;
-  DGtal::Color myCurrentLineColor;
+    /**
+     * Defines the 3D voxel.
+     */
 
-  double myCurrentfShiftVisuKSSurfels;
-
-  // Used to represent all the list used in the display.
-  std::vector< std::vector<voxelD3D> > myVoxelSetList;
-
-   //!< Used to represent all the list of line primitive
-  std::vector< std::vector<lineD3D> > myLineSetList;
+    struct voxelD3D{      
+      ///  The center coordinate of the voxel.
+      ///
+      int x, y,z;
+      
+      ///  The display color of the voxel.
+      ///
+      unsigned int R,G,B,T;
+      
+      /// The width of a voxel face 
+      ///
+      double width;
+    };
   
   
-  //!< Used to represent all the list of point primitive
-  std::vector< std::vector<pointD3D> > myPointSetList;
+    /**
+     * Used to define clipping planes (it uses the quadD3D structure)
+     * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
+     **/ 
+  
+    struct clippingPlaneD3D{
+      double a,b,c,d;
+    };
 
-// Represent all the clipping planes added to the scene (of maxSize=5).
-  std::vector< clippingPlaneD3D > myClippingPlaneList;
+  
+    /**
+     * This structure is used to display clipping planes and the
+     * components of the myKSSurfelList (allowing to set normal and
+     * color).
+     * @see Display3D, Viewer3D, Board3DTo2D
+     **/ 
+
+    struct  quadD3D{
+      double x1,y1,z1;
+      double x2,y2,z2;
+      double x3,y3,z3;
+      double x4,y4,z4;    
+      double nx, ny, nz;
+      unsigned int R,G,B,T;
+    };
+
+
+  protected:
+
+
+    DGtal::Color myCurrentFillColor;
+
+    DGtal::Color myCurrentLineColor;
+
+
+    /// Used to specialized visualisation with KS surfels/voxels.
+    ///
+
+    double myCurrentfShiftVisuKSSurfels;
+
+  
+    /// Used to represent all the list used in the display.
+    /// 
+
+    std::vector< std::vector<voxelD3D> > myVoxelSetList;
+  
+  
+    /// Used to represent all the list of line primitive
+    ///
+  
+    std::vector< std::vector<lineD3D> > myLineSetList;
+  
+  
+    /// Used to represent all the list of point primitive
+    /// 
+  
+    std::vector< std::vector<pointD3D> > myPointSetList;
+
+  
+    /// Represent all the clipping planes added to the scene (of maxSize=5).
+    ///
+
+    std::vector< clippingPlaneD3D > myClippingPlaneList;
  
   
-  // For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< quadD3D > myKSSurfelList;
-  
+ 
+    /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+    ///
 
-  // For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< pointD3D > myKSPointelList;
-
-
-  // For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-  std::vector< lineD3D > myKSLinelList;
+    std::vector< quadD3D > myKSSurfelList;
   
   
-  // Represent all the drawed planes
-  std::vector< quadD3D > myQuadList;
+    /// For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
+    ///
+
+    std::vector< pointD3D > myKSPointelList;
 
 
-  //Used to define if GL_TEST_DEPTH is used. 
-  std::vector<bool> myListVoxelDepthTest;
+    /// For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
+    ///
+
+    std::vector< lineD3D > myKSLinelList;
+  
+  
+    /// Represent all the drawed planes
+    ///
+
+    std::vector< quadD3D > myQuadList;
+
+
+    /// Used to define if GL_TEST_DEPTH is used. 
+    ///
+  
+    std::vector<bool> myListVoxelDepthTest;
 
 
 
-  // ------------------------- Hidden services ------------------------------
+    // ------------------------- Hidden services ------------------------------
 
     /**
      * Constructor.
@@ -375,7 +558,7 @@ protected:
      */
 
 
-private:
+  private:
 
     /**
      * Copy constructor.
@@ -383,7 +566,7 @@ private:
      * Forbidden by default.
      */
     Display3D ( const Display3D & other );
-
+  
     /**
      * Assignment.
      * @param other the object to copy.
@@ -391,38 +574,38 @@ private:
      * Forbidden by default.
      */
     Display3D & operator= ( const Display3D & other );
-
+  
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
 
 
   
-}; // end of class Display3D
+  }; // end of class Display3D
 
-/**
- * Calculate the cross product of two 3d vectors and return it.
- * @param dst destination vector.
- * @param srcA source vector A.
- * @param srcB source vector B.
- */
-  static void cross (float dst[3], float srcA[3], float srcB[3]);
+  /**
+   * Calculate the cross product of two 3d vectors and return it.
+   * @param dst destination vector.
+   * @param srcA source vector A.
+   * @param srcB source vector B.
+   */
+  static void cross (double dst[3], double srcA[3], double srcB[3]);
 
-/**
- * Normalize the input 3d vector.
- * @param vec source & destination vector.
- */
-  static void normalize (float vec[3]);
+  /**
+   * Normalize the input 3d vector.
+   * @param vec source & destination vector.
+   */
+  static void normalize (double vec[3]);
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Display3D'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Display3D' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const Display3D & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Display3D'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Display3D' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const Display3D & object );
 
 
 

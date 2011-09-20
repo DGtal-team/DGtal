@@ -53,11 +53,11 @@ struct Shape {
   enum LineCap { ButtCap = 0, RoundCap, SquareCap };
   enum LineJoin { MiterJoin = 0, RoundJoin, BevelJoin };
   enum LineStyle { SolidStyle = 0,
-		   DashStyle, 
-		   DotStyle,
-		   DashDotStyle,
-		   DashDotDotStyle,
-		   DashDotDotDotStyle };
+       DashStyle, 
+       DotStyle,
+       DashDotStyle,
+       DashDotDotStyle,
+       DashDotDotDotStyle };
 
   /** 
    * Shape constructor.
@@ -68,11 +68,11 @@ struct Shape {
    * @param depth The depth of the shape.
    */
   inline Shape( DGtal::Color penColor, DGtal::Color fillColor,
-		double lineWidth, 
-		LineStyle style,
-		const LineCap cap,
-		const LineJoin join,
-		int depth );
+    double lineWidth, 
+    LineStyle style,
+    const LineCap cap,
+    const LineJoin join,
+    int depth );
   
   /** 
    * Shape destructor.
@@ -222,7 +222,7 @@ struct Shape {
    * @param transform A 2D transform to be applied.
    */
   virtual void flushPostscript( std::ostream & stream,
-				const TransformEPS & transform ) const = 0;
+        const TransformEPS & transform ) const = 0;
 
   /** 
    * Writes the FIG code of the shape in a stream according
@@ -232,8 +232,8 @@ struct Shape {
    * @param transform A 2D transform to be applied.
    */
   virtual void flushFIG( std::ostream & stream,
-			 const TransformFIG & transform,
-			 std::map<DGtal::Color,int> & colormap ) const = 0;
+       const TransformFIG & transform,
+       std::map<DGtal::Color,int> & colormap ) const = 0;
 
   /** 
    * Writes the SVG code of the shape in a stream according
@@ -243,7 +243,7 @@ struct Shape {
    * @param transform A 2D transform to be applied.
    */
   virtual void flushSVG( std::ostream & stream,
-			 const TransformSVG & transform ) const = 0;
+       const TransformSVG & transform ) const = 0;
 
 #ifdef WITH_CAIRO
   /** 
@@ -254,7 +254,7 @@ struct Shape {
    * @param transform A 2D transform to be applied.
    */
   virtual void flushCairo( cairo_t *cr,
-			 const TransformCairo & transform ) const = 0;
+       const TransformCairo & transform ) const = 0;
 #endif
 
   inline int depth() const;
@@ -272,13 +272,13 @@ private:
   
 protected:
 
-  int _depth;    		/**< The depth of the shape. */
-  DGtal::Color _penColor;		/**< The color of the shape. */
-  DGtal::Color _fillColor;		/**< The color of the shape. */
-  double _lineWidth;	/**< The line thickness. */
-  LineStyle _lineStyle;	/**< The line style (solid, dashed, etc.). */
-  LineCap _lineCap;		/**< The linecap attribute. (The way line terminates.) */
-  LineJoin _lineJoin;	/**< The linejoin attribute. (The shape of line junctions.) */
+  int _depth;        /**< The depth of the shape. */
+  DGtal::Color _penColor;    /**< The color of the shape. */
+  DGtal::Color _fillColor;    /**< The color of the shape. */
+  double _lineWidth;  /**< The line thickness. */
+  LineStyle _lineStyle;  /**< The line style (solid, dashed, etc.). */
+  LineCap _lineCap;    /**< The linecap attribute. (The way line terminates.) */
+  LineJoin _lineJoin;  /**< The linejoin attribute. (The shape of line junctions.) */
 
   /** 
    * Return a string of the svg properties lineWidth, opacity, penColor, fillColor,
@@ -371,9 +371,9 @@ Shape::rotateDeg( double angle )
 struct Dot : public Shape { 
   
   inline Dot( double x, double y,
-	      DGtal::Color color, 
-	      double lineWidth,
-	      int depth = -1 );
+        DGtal::Color color, 
+        double lineWidth,
+        int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -469,18 +469,18 @@ struct Dot : public Shape {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
-	
+     const TransformSVG & transform ) const;
+  
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
   
   Rect boundingBox() const;
@@ -491,8 +491,8 @@ private:
   static const std::string _name; /**< The generic name of the shape. */
 
 protected:
-  double _x;			/**< First coordinate of the dot. */
-  double _y;			/**< Second coordinate of the dot. */
+  double _x;      /**< First coordinate of the dot. */
+  double _y;      /**< Second coordinate of the dot. */
 };
 
 /**
@@ -513,12 +513,12 @@ struct Line : public Shape {
    * @param depth The depth of the line.
    */
   inline Line( double x1, double y1, double x2, double y2, 
-	       DGtal::Color color, 
-	       double lineWidth,
-	       const LineStyle style = SolidStyle,
-	       const LineCap cap = ButtCap,
-	       const LineJoin join = MiterJoin,
-	       int depth = -1 );
+         DGtal::Color color, 
+         double lineWidth,
+         const LineStyle style = SolidStyle,
+         const LineCap cap = ButtCap,
+         const LineJoin join = MiterJoin,
+         int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -589,18 +589,18 @@ struct Line : public Shape {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;
@@ -611,10 +611,10 @@ private:
   static const std::string _name; /**< The generic name of the shape. */
 
 protected:
-  double _x1;			/**< First coordinate of the start point. */
-  double _y1;			/**< Second coordinate of the start point. */
-  double _x2; 			/**< First coordinate of the end point. */
-  double _y2;			/**< Second coordinate of the end point. */
+  double _x1;      /**< First coordinate of the start point. */
+  double _y1;      /**< Second coordinate of the start point. */
+  double _x2;       /**< First coordinate of the end point. */
+  double _y2;      /**< Second coordinate of the end point. */
 };
 
 
@@ -639,12 +639,12 @@ struct Arrow : public Line {
    * @param depth The depth of the line.
    */
   inline Arrow( double x1, double y1, double x2, double y2,
-		DGtal::Color penColor, DGtal::Color fillColor,
-		double lineWidth, 
-		const LineStyle style = SolidStyle,
-		const LineCap cap = ButtCap,
-		const LineJoin join = MiterJoin,
-		int depth = -1 );
+    DGtal::Color penColor, DGtal::Color fillColor,
+    double lineWidth, 
+    const LineStyle style = SolidStyle,
+    const LineCap cap = ButtCap,
+    const LineJoin join = MiterJoin,
+    int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -695,17 +695,17 @@ struct Arrow : public Line {
   Arrow scaled( double s ) const;
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Arrow * clone() const;
@@ -720,29 +720,29 @@ private:
  */
 struct Polyline : public Shape { 
   inline Polyline( const std::vector<Point> & points, 
-		   bool closed,
-		   DGtal::Color penColor, DGtal::Color fillColor,
-		   double lineWidth,
-		   const LineStyle lineStyle = SolidStyle,
-		   const LineCap cap = ButtCap,
-		   const LineJoin join = MiterJoin,
-		   int depth = -1 );
+       bool closed,
+       DGtal::Color penColor, DGtal::Color fillColor,
+       double lineWidth,
+       const LineStyle lineStyle = SolidStyle,
+       const LineCap cap = ButtCap,
+       const LineJoin join = MiterJoin,
+       int depth = -1 );
 
   inline Polyline( const Path & path, 
-		   DGtal::Color penColor, DGtal::Color fillColor,
-		   double lineWidth,
-		   const LineStyle lineStyle = SolidStyle,
-		   const LineCap cap = ButtCap,
-		   const LineJoin join = MiterJoin,
-		   int depth = -1 );
+       DGtal::Color penColor, DGtal::Color fillColor,
+       double lineWidth,
+       const LineStyle lineStyle = SolidStyle,
+       const LineCap cap = ButtCap,
+       const LineJoin join = MiterJoin,
+       int depth = -1 );
 
   inline Polyline( bool closed, DGtal::Color penColor, DGtal::Color fillColor,
-		   double lineWidth,
-		   const LineStyle lineStyle = SolidStyle,
-		   const LineCap cap = ButtCap,
-		   const LineJoin join = MiterJoin,
-		   int depth = -1 );
-	    
+       double lineWidth,
+       const LineStyle lineStyle = SolidStyle,
+       const LineCap cap = ButtCap,
+       const LineJoin join = MiterJoin,
+       int depth = -1 );
+      
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
@@ -833,18 +833,18 @@ struct Polyline : public Shape {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
 
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;
@@ -865,20 +865,20 @@ protected:
 struct Rectangle : public Polyline {
 
   inline Rectangle( double x, double y, double width, double height,
-	     DGtal::Color penColor, DGtal::Color fillColor,
-	     double lineWidth, 
-	     const LineStyle style = SolidStyle,
-	     const LineCap cap = ButtCap,
-	     const LineJoin join = MiterJoin,
-		    int depth = -1 );
+       DGtal::Color penColor, DGtal::Color fillColor,
+       double lineWidth, 
+       const LineStyle style = SolidStyle,
+       const LineCap cap = ButtCap,
+       const LineJoin join = MiterJoin,
+        int depth = -1 );
 
   inline Rectangle( const Rect & rect,
-		    DGtal::Color penColor, DGtal::Color fillColor,
-		    double lineWidth,
-		    const LineStyle style = SolidStyle,
-		    const LineCap cap = ButtCap,
-		    const LineJoin join = MiterJoin,
-		    int depth = -1 );
+        DGtal::Color penColor, DGtal::Color fillColor,
+        double lineWidth,
+        const LineStyle style = SolidStyle,
+        const LineCap cap = ButtCap,
+        const LineJoin join = MiterJoin,
+        int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -947,15 +947,15 @@ struct Rectangle : public Polyline {
   void scaleAll( double s );
 
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rectangle * clone() const;
@@ -988,7 +988,7 @@ struct Image : public Rectangle {
    */
   
   inline Image( double x0, double y0, double width, double height, 
-		std::string fileName, int depthValue, double alpha=1.0 );
+    std::string fileName, int depthValue, double alpha=1.0 );
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
@@ -999,15 +999,15 @@ struct Image : public Rectangle {
   Image * clone() const;
   
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
-		 
+     const TransformSVG & transform ) const;
+     
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
 
@@ -1015,8 +1015,8 @@ private:
   static const std::string _name; /**< The generic name of the shape. */
 
 protected:
-  double _x0;			/**< First coordinate of the bottom left point. */
-  double _y0;			/**< Second coordinate of the bottom left point. */
+  double _x0;      /**< First coordinate of the bottom left point. */
+  double _y0;      /**< Second coordinate of the bottom left point. */
   double _width;
   double _height;
   std::string _filename;
@@ -1032,13 +1032,13 @@ protected:
 struct Triangle : public Polyline {
 
   Triangle( const Point & p1, const Point & p2, const Point & p3,
-	    DGtal::Color pen,
-	    DGtal::Color fill,
-	    double lineWidth,
-	    const LineStyle style = SolidStyle,
-	    const LineCap cap = ButtCap,
-	    const LineJoin join = MiterJoin,
-	    int depthValue = -1 )
+      DGtal::Color pen,
+      DGtal::Color fill,
+      double lineWidth,
+      const LineStyle style = SolidStyle,
+      const LineCap cap = ButtCap,
+      const LineJoin join = MiterJoin,
+      int depthValue = -1 )
     : Polyline( std::vector<Point>(), true, pen, fill, lineWidth, style, cap, join, depthValue ) {
     _path << p1;
     _path << p2;
@@ -1046,15 +1046,15 @@ struct Triangle : public Polyline {
   }
 
   Triangle( const double x1, const double y1, 
-	    const double x2, const double y2, 
-	    const double x3, const double y3,
-	    DGtal::Color pen,
-	    DGtal::Color fill,
-	    double lineWidth,
-	    const LineStyle style = SolidStyle,
-	    const LineCap cap = ButtCap,
-	    const LineJoin join = MiterJoin,
-	    int depthValue = -1 )
+      const double x2, const double y2, 
+      const double x3, const double y3,
+      DGtal::Color pen,
+      DGtal::Color fill,
+      double lineWidth,
+      const LineStyle style = SolidStyle,
+      const LineCap cap = ButtCap,
+      const LineJoin join = MiterJoin,
+      int depthValue = -1 )
     : Polyline( std::vector<Point>(), true, pen, fill, lineWidth, style, cap, join, depthValue ) {
     _path << Point( x1, y1 );
     _path << Point( x2, y2 );
@@ -1109,17 +1109,17 @@ struct GouraudTriangle : public Polyline {
 
 
   GouraudTriangle( const Point & p0, const DGtal::Color & color0,
-		   const Point & p1, const DGtal::Color & color1,
-		   const Point & p2, const DGtal::Color & color2,
-		   int subdivisions,
-		   int depth = -1 );
+       const Point & p1, const DGtal::Color & color1,
+       const Point & p2, const DGtal::Color & color2,
+       int subdivisions,
+       int depth = -1 );
 
   GouraudTriangle( const Point & p0, float brightness0,
-		   const Point & p1, float brightness1,
-		   const Point & p2, float brightness2,
-		   const DGtal::Color & fillColor,
-		   int subdivisions,
-		   int depth = -1 );
+       const Point & p1, float brightness1,
+       const Point & p2, float brightness2,
+       const DGtal::Color & fillColor,
+       int subdivisions,
+       int depth = -1 );
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
@@ -1176,7 +1176,7 @@ struct GouraudTriangle : public Polyline {
    * @param transform 
    */
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
 
   /** 
    * Sends the Triangle to a FIG file format stream.
@@ -1191,15 +1191,15 @@ struct GouraudTriangle : public Polyline {
    * @param colormap 
    */
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   GouraudTriangle * clone() const;
@@ -1221,13 +1221,13 @@ protected:
 struct Ellipse : public Shape {
   
   Ellipse( double x, double y, 
-	   double xRadius, double yRadius, 
-	   DGtal::Color pen, DGtal::Color fill,
-	   double lineWidth,
-	   const LineStyle lineStyle = SolidStyle,
-	   int depthValue = -1 )
+     double xRadius, double yRadius, 
+     DGtal::Color pen, DGtal::Color fill,
+     double lineWidth,
+     const LineStyle lineStyle = SolidStyle,
+     int depthValue = -1 )
     : Shape( pen, fill,
-	     lineWidth, lineStyle, ButtCap, MiterJoin, depthValue ),
+       lineWidth, lineStyle, ButtCap, MiterJoin, depthValue ),
       _center( x, y ), _xRadius( xRadius ), _yRadius( yRadius ),
       _angle( 0.0 ),
       _circle( false ) {
@@ -1304,18 +1304,18 @@ struct Ellipse : public Shape {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
 
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;
@@ -1340,10 +1340,10 @@ protected:
 struct Circle : public Ellipse {
 
   Circle( double x, double y, double radius, 
-	  DGtal::Color pen, DGtal::Color fill,
-	  double lineWidth,
-	  const LineStyle style = SolidStyle,
-	  int depthValue = -1 )
+    DGtal::Color pen, DGtal::Color fill,
+    double lineWidth,
+    const LineStyle style = SolidStyle,
+    int depthValue = -1 )
     : Ellipse( x, y, radius, radius, pen, fill, lineWidth, style, depthValue )
   { _circle = true; }
 
@@ -1385,11 +1385,11 @@ struct Circle : public Ellipse {
   void scaleAll( double s );
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Circle * clone() const;
@@ -1405,10 +1405,10 @@ private:
 struct Arc : public Circle {
 
   Arc( double x, double y, double radius, double angle1, double angle2, bool negative,
-	  DGtal::Color pen, DGtal::Color fill,
-	  double lineWidth,
-	  const LineStyle style = SolidStyle,
-	  int depthValue = -1 )
+    DGtal::Color pen, DGtal::Color fill,
+    double lineWidth,
+    const LineStyle style = SolidStyle,
+    int depthValue = -1 )
     : Circle( x, y, radius, pen, fill, lineWidth, style, depthValue )
   { _angle1 = angle1; _angle2 = angle2; _negative = negative; }
   void
@@ -1424,7 +1424,7 @@ struct Arc : public Circle {
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
 private:
@@ -1456,11 +1456,11 @@ struct Text : public Shape {
    * @return 
    */
   Text( double x, double y,
-	const std::string & text,
-	const Fonts::Font font,
-	double size,
-	DGtal::Color color = DGtal::Color::Black,
-	int depthValue = -1 )
+  const std::string & text,
+  const Fonts::Font font,
+  double size,
+  DGtal::Color color = DGtal::Color::Black,
+  int depthValue = -1 )
     : Shape( color, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ), _text( text ), _font( font ),
       _angle( 0.0 ), _size( size ),
@@ -1482,12 +1482,12 @@ struct Text : public Shape {
    * @return 
    */
   Text( double x, double y,
-	const std::string & text,
-	const Fonts::Font font,
-	const std::string & svgFont,
-	double size,
-	DGtal::Color color = DGtal::Color::Black,
-	int depthValue = -1 )
+  const std::string & text,
+  const Fonts::Font font,
+  const std::string & svgFont,
+  double size,
+  DGtal::Color color = DGtal::Color::Black,
+  int depthValue = -1 )
     : Shape( color, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
       _position( x, y ),
       _text( text ), _font( font ), _svgFont( svgFont ),
@@ -1533,18 +1533,18 @@ struct Text : public Shape {
   void scaleAll( double s );
 
   void flushPostscript( std::ostream & stream,
-			const TransformEPS & transform ) const;
+      const TransformEPS & transform ) const;
 
   void flushFIG( std::ostream & stream,
-		 const TransformFIG & transform,
-		 std::map<DGtal::Color,int> & colormap ) const;
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
 
   void flushSVG( std::ostream & stream,
-		 const TransformSVG & transform ) const;
+     const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
-		 const TransformCairo & transform ) const;
+     const TransformCairo & transform ) const;
 #endif
 
   Rect boundingBox() const;

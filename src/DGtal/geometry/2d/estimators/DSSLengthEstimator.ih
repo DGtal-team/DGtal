@@ -79,10 +79,10 @@ DGtal::DSSLengthEstimator<T>::init(const double h,
 
   //segments into DSS
   DSSComputer computer; 
-  GreedyDecomposition<DSSComputer> decomposition ( itb, ite, computer, isClosed ); 
+  deprecated::GreedyDecomposition<DSSComputer> decomposition ( itb, ite, computer, isClosed ); 
 
   //computes the resulting polygonal representation
-  typename GreedyDecomposition<DSSComputer>::SegmentIterator segIt = decomposition.begin(); 
+  typename deprecated::GreedyDecomposition<DSSComputer>::SegmentIterator segIt = decomposition.begin(); 
   for ( ; segIt != decomposition.end(); ++segIt ) {
     myRep.push_back( *segIt.getBack() );
   } 
@@ -157,7 +157,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const DSSLengthEstimator<T> & object )
+      const DSSLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
   return out;

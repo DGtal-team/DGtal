@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-4-modes.cpp
+ * @file   dgtalBoard3DTo2D-4-modes.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -57,16 +57,16 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  //viewer << SetMode3DCairo( p1.styleName(), "Grid" );
+  //viewer << SetMode3D( p1.styleName(), "Grid" );
 
   viewer << p1 << p2 << p3 << p4 << p5 << p6 << p0;
 
-  //viewer << SetMode3DCairo(domain.styleName(), "PavingGrids");
+  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
   viewer << domain;
   
   viewer << CameraPosition(0.500000, 0.500000, 11.274194)
-	 << CameraDirection(0.000000, 0.000000, -1.000000)
-	 << CameraUpVector(0.000000, 1.000000, 0.000000);
+   << CameraDirection(0.000000, 0.000000, -1.000000)
+   << CameraUpVector(0.000000, 1.000000, 0.000000);
   
   //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);

@@ -95,7 +95,7 @@ namespace DGtal
      * @param max The upper bound of the value range.
      */
     GrayscaleColorMap( const PValue & min,
-		       const PValue & max );
+           const PValue & max );
 
 
     /** 
@@ -167,8 +167,8 @@ namespace DGtal
      * position of [value] within the range [min]..[max]. 
      */
     static Color getColor( const PValue & min,
-				     const PValue & max,
-				     const PValue & value );
+             const PValue & max,
+             const PValue & value );
     
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -179,7 +179,7 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    PValue myMin;		/**< The lower bound of the value range.  */
+    PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;            /**< The lower bound of the value range.  */
 
     /**

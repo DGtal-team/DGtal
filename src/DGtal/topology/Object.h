@@ -352,7 +352,7 @@ namespace DGtal
          resized during insertion.
         
          @code
-	 typedef ... MyObject;
+   typedef ... MyObject;
          vector<MyObject> objects;
          objects[ 0 ] = ... some object;
          ...
@@ -535,7 +535,7 @@ namespace DGtal
     {
         virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  display.myModes[ "Object" ] = "";
+    display.myModes[ "Object" ] = "";
          }
       };
 

@@ -56,7 +56,7 @@ namespace DGtal
    * efficiency. For multiple variables, sample storage and others,
    * see Statistics class.
    *
-   * Backported from ImaGene.
+   * Backported from  \cite ImaGene . \cite Lachaud03b
    *
    * @see testStatistics.cpp
    */
@@ -284,7 +284,7 @@ namespace DGtal
   template <typename RealNumberType>
   std::ostream&
   operator<<( std::ostream & thatStream, 
-	      const Statistic<RealNumberType> & that_object_to_display );
+        const Statistic<RealNumberType> & that_object_to_display );
   
   
 } // namespace DGtal

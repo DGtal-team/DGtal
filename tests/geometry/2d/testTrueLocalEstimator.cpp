@@ -124,12 +124,12 @@ bool testTrueLocalEstimator(const std::string &filename)
 template <typename Shape>
 bool 
 testTrueLocalEstimatorOnShapeDigitization( const string & name,
-					   Shape & aShape, double h )
+             Shape & aShape, double h )
 {
   using namespace Z2i;
 
   trace.beginBlock ( ( "Testing TrueLocalEstimator on digitization of "
-		       + name ). c_str() );
+           + name ). c_str() );
   
   // Creates a digitizer on the window (xLow, xUp).
   typedef Space::RealPoint RealPoint;
@@ -149,7 +149,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   if ( ! ok )
     {
       std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-		<< " error in creating KSpace." << std::endl;
+    << " error in creating KSpace." << std::endl;
     }
   else
     try {
@@ -171,19 +171,19 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
-	    it != ite; ++it, ++i )
-	{
-	  RealPoint x = *it;
-	  double kappa = curvatureEstimator.eval( it );
-	  std::cout << i << " " << x.at( 0 ) << " " << x.at( 1 ) 
-		    << " " << kappa << std::endl;
-	}
+      it != ite; ++it, ++i )
+  {
+    RealPoint x = *it;
+    double kappa = curvatureEstimator.eval( it );
+    std::cout << i << " " << x.at( 0 ) << " " << x.at( 1 ) 
+        << " " << kappa << std::endl;
+  }
     }    
     catch ( InputException e )
       {
-	std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-		  << " error in finding a bel." << std::endl;
-	ok = false;
+  std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+      << " error in finding a bel." << std::endl;
+  ok = false;
       }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
@@ -196,7 +196,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
   using namespace Z2i;
 
   trace.beginBlock ( ( "Testing CompareEstimator on digitization of "
-		       + name ). c_str() );
+           + name ). c_str() );
   
   // Creates a digitizer on the window (xLow, xUp).
   typedef Space::RealPoint RealPoint;
@@ -216,7 +216,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
   if ( ! ok )
     {
       std::cerr << "[testCompareEstimators]"
-		<< " error in creating KSpace." << std::endl;
+    << " error in creating KSpace." << std::endl;
     }
   else
     try {
@@ -239,10 +239,10 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       TrueCurvature curvatureEstimatorBis;
 
       typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
-	SegmentComputer;
+  SegmentComputer;
       typedef TangentFromDSSFunctor<SegmentComputer> Functor;
       typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
-	MSTangentEstimator;
+  MSTangentEstimator;
 
       SegmentComputer sc;
       Functor f; 
@@ -268,22 +268,22 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
 
      
       trace.info()<< "Comparison at "<< *it <<" = "
-		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
-		  << " : tan "
-		  << ComparatorTan::compareVectors( tang1, tang2, r.begin())
-		  <<std::endl;
+      << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
+      << " : tan "
+      << ComparatorTan::compareVectors( tang1, tang2, r.begin())
+      <<std::endl;
       
       typename Comparator::OutputStatistic error=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
-								       r.begin(),
-								       r.end());
+                       r.begin(),
+                       r.end());
       
       trace.info()<< "Nb samples= "<< error.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error.mean()<<std::endl;
       trace.info()<< "Error max= "<< error.max()<<std::endl;
       
       typename ComparatorTan::OutputVectorStatistic error2=ComparatorTan::compareVectors(tang1, tang2, 
-											 r.begin(),
-											 r.end());
+                       r.begin(),
+                       r.end());
       
       trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
@@ -293,9 +293,9 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
      }    
     catch ( InputException e )
       {
-	std::cerr << "[testCompareEstimator]"
-		  << " error in finding a bel." << std::endl;
-	ok = false;
+  std::cerr << "[testCompareEstimator]"
+      << " error in finding a bel." << std::endl;
+  ok = false;
       }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -55,6 +55,7 @@
 
 
 using namespace DGtal;
+using namespace DGtal::deprecated;
 using namespace std;
 using namespace LibBoard;
 
@@ -75,7 +76,7 @@ bool testDec4()
 
   typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> PrimitiveType;
   
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
 
   std::string filename = testPath + "samples/manche.fc";
@@ -87,33 +88,33 @@ bool testDec4()
 
   //Segmentation
   trace.beginBlock("Segmentation of a chain code into DSS");
-	PrimitiveType computer;
+  PrimitiveType computer;
   DecompositionType theDecomposition(theContour.begin(), theContour.end(), computer, false);
   
-	// Draw the grid
+  // Draw the grid
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   
   aBoard << SetMode("PointVector", "Grid")
-				 << theContour;
+         << theContour;
   
   //for each segment
-	unsigned int compteur = 0;
+  unsigned int compteur = 0;
   DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-		
-		compteur++;
+    
+    compteur++;
     PrimitiveType segment(*i); 
-    trace.info() << segment << std::endl;	//standard output
+    trace.info() << segment << std::endl;  //standard output
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
-					 << segment; // draw each segment  
+           << segment; // draw each segment  
   
   } 
 
   aBoard.saveSVG("segmentationDSS4.svg");
 
   trace.endBlock();
-	return (compteur==91);
+  return (compteur==91);
 }
 
 /**
@@ -129,55 +130,55 @@ bool testDec8()
   typedef std::vector<Point> ContourType;
   typedef ArithmeticalDSS<ContourType::iterator,Coordinate,8> PrimitiveType;
   
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
-	curve.push_back(Point(0,0));
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,3));
-	curve.push_back(Point(6,4));
-	curve.push_back(Point(7,4));
-	curve.push_back(Point(8,4));
-	curve.push_back(Point(9,3));
-	curve.push_back(Point(10,2));
-	curve.push_back(Point(11,2));
+  std::vector<Point> curve;
+  curve.push_back(Point(0,0));
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,3));
+  curve.push_back(Point(6,4));
+  curve.push_back(Point(7,4));
+  curve.push_back(Point(8,4));
+  curve.push_back(Point(9,3));
+  curve.push_back(Point(10,2));
+  curve.push_back(Point(11,2));
 
   //Segmentation
   trace.beginBlock("Segmentation of a 8-connected digital curve into DSS");
-	PrimitiveType computer;
+  PrimitiveType computer;
   DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
   
-	// Draw the pixels
+  // Draw the pixels
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
-	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
-  	aBoard << (*it);
-	}
-				 
+  for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+    aBoard << (*it);
+  }
+         
 
   //for each segment
-	unsigned int compteur = 0;
+  unsigned int compteur = 0;
   DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
-		compteur++;
+    compteur++;
     trace.info() << "Segment " << compteur << std::endl;
-    PrimitiveType segment(*i); 		
-		trace.info() << segment << std::endl;	//standard output
+    PrimitiveType segment(*i);     
+    trace.info() << segment << std::endl;  //standard output
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
-					 << segment; // draw each segment    
+           << segment; // draw each segment    
   } 
 
   aBoard.saveSVG("segmentationDSS8.svg");
 
   trace.endBlock();
 
-	return (compteur==4);
+  return (compteur==4);
 }
 
 /**
@@ -193,60 +194,60 @@ bool testDisconnectedCurve()
   typedef std::vector<Point> ContourType;
   typedef ArithmeticalDSS<ContourType::iterator,Coordinate,4> PrimitiveType;
   
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;	
-	curve.push_back(Point(-1,-1));
-	curve.push_back(Point(0,0));
-	curve.push_back(Point(1,0));
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(6,3));
-	curve.push_back(Point(6,4));
-	curve.push_back(Point(7,4));
-	curve.push_back(Point(8,4));
-	curve.push_back(Point(9,3));
-	curve.push_back(Point(9,2));
-	curve.push_back(Point(10,2));
-	curve.push_back(Point(11,2));
+  std::vector<Point> curve;  
+  curve.push_back(Point(-1,-1));
+  curve.push_back(Point(0,0));
+  curve.push_back(Point(1,0));
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(6,3));
+  curve.push_back(Point(6,4));
+  curve.push_back(Point(7,4));
+  curve.push_back(Point(8,4));
+  curve.push_back(Point(9,3));
+  curve.push_back(Point(9,2));
+  curve.push_back(Point(10,2));
+  curve.push_back(Point(11,2));
 
   //Segmentation
   trace.beginBlock("Segmentation of disconnected digital curve");
-	PrimitiveType computer;
+  PrimitiveType computer;
   DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
   
-	// Draw the pixels
+  // Draw the pixels
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
-	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
-  	aBoard << (*it);
-	}
-				 
+  for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+    aBoard << (*it);
+  }
+         
 
   //for each segment
-	unsigned int compteur = 0;
+  unsigned int compteur = 0;
   DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
-		compteur++;
+    compteur++;
     trace.info() << "Segment " << compteur << std::endl;
     trace.info() << i.intersectPrevious() << " - " << i.intersectNext() << std::endl;
-    PrimitiveType segment(*i); 		
-		trace.info() << segment << std::endl;	//standard output
+    PrimitiveType segment(*i);     
+    trace.info() << segment << std::endl;  //standard output
     aBoard << SetMode( segment.styleName(), "BoundingBox" )
-					 << segment; // draw each segment    
+           << segment; // draw each segment    
   } 
 
   aBoard.saveSVG("specialCase.svg");
 
   trace.endBlock();
 
-	return (compteur==5);
+  return (compteur==5);
 
 }
 
@@ -272,23 +273,23 @@ bool testClosedCurvesProcessedAsClosed()
   Contour4 theContour( ss );
 
   //Segmentation
-	DSS4 computer;
+  DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,true );
 
   Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
-	 			 << theContour;
+          << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-	i != theDecomposition.end(); ++i ) 
+  i != theDecomposition.end(); ++i ) 
     {
 
-			DSS4 segment(*i);
-			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( Color::Blue ) )
-						 << segment; // draw each segment
+      DSS4 segment(*i);
+      aBoard << CustomStyle( styleName, 
+                             new CustomPenColor( Color::Blue ) )
+             << segment; // draw each segment
 
     } 
   aBoard.saveSVG("testClosedCurvesProcessedAsClosed.svg");
@@ -319,23 +320,23 @@ bool testClosedCurvesProcessedAsOpen()
   Contour4 theContour( ss );
 
   //Segmentation
-	DSS4 computer;
+  DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,false );
 
   Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
-	 			 << theContour;
+          << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-	i != theDecomposition.end(); ++i ) 
+  i != theDecomposition.end(); ++i ) 
     {
 
-			DSS4 segment(*i);
-			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( Color::Blue ) )
-						 << segment; // draw each segment
+      DSS4 segment(*i);
+      aBoard << CustomStyle( styleName, 
+                             new CustomPenColor( Color::Blue ) )
+             << segment; // draw each segment
 
     } 
   aBoard.saveSVG("testClosedCurvesProcessedAsOpen.svg");
@@ -366,23 +367,23 @@ bool testOpenCurvesProcessedAsClosed()
   Contour4 theContour( ss );
 
   //Segmentation
-	DSS4 computer;
+  DSS4 computer;
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),computer,true );
 
   Board2D aBoard;
   aBoard << SetMode( "PointVector", "Grid" )
-	 			 << theContour;
+          << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-	i != theDecomposition.end(); ++i ) 
+  i != theDecomposition.end(); ++i ) 
     {
 
-			DSS4 segment(*i);
-			aBoard << CustomStyle( styleName, 
-												     new CustomPenColor( Color::Blue ) )
-						 << segment; // draw each segment
+      DSS4 segment(*i);
+      aBoard << CustomStyle( styleName, 
+                             new CustomPenColor( Color::Blue ) )
+             << segment; // draw each segment
 
     } 
   aBoard.saveSVG("testOpenCurvesProcessedAsClosed.svg");
@@ -401,24 +402,24 @@ bool testNoPoint()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
-	try {
+  std::vector<Point> curve;
+  try {
 
-		trace.beginBlock("Digital curve having no point");
-		PrimitiveType computer;
-		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
+    trace.beginBlock("Digital curve having no point");
+    PrimitiveType computer;
+    DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
-																				   i != theDecomposition.end(); ++i ) 
-			{				} 
-		trace.endBlock();
+    for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
+                                           i != theDecomposition.end(); ++i ) 
+      {        } 
+    trace.endBlock();
 
-		return true;
-	} catch (std::exception e) {
-		return false;
-	}
+    return true;
+  } catch (std::exception e) {
+    return false;
+  }
 
 
 }
@@ -433,35 +434,35 @@ bool testOnePoint()
   typedef PointVector<2,Coordinate> Point;
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
-	curve.push_back(Point(5,5));
-	try {
+  std::vector<Point> curve;
+  curve.push_back(Point(5,5));
+  try {
 
-		trace.beginBlock("Digital curve having one point");
-		PrimitiveType computer;
-		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
+    trace.beginBlock("Digital curve having one point");
+    PrimitiveType computer;
+    DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		Board2D aBoard;
-		aBoard << curve.at(0);
-		//for each segment
-		aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
-																				i != theDecomposition.end(); ++i ) 
-			{
-				PrimitiveType primitive(*i);
-				trace.info() << primitive << endl;
-				aBoard << primitive; 
-				
-			} 
-		aBoard.saveSVG("testOnePoint.svg");
-		trace.endBlock();
+    Board2D aBoard;
+    aBoard << curve.at(0);
+    //for each segment
+    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+    for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
+                                        i != theDecomposition.end(); ++i ) 
+      {
+        PrimitiveType primitive(*i);
+        trace.info() << primitive << endl;
+        aBoard << primitive; 
+        
+      } 
+    aBoard.saveSVG("testOnePoint.svg");
+    trace.endBlock();
 
-		return true;
-	} catch (std::exception e) {
-		return false;
-	}
+    return true;
+  } catch (std::exception e) {
+    return false;
+  }
 
 
 }
@@ -475,27 +476,27 @@ bool testTwoEndIterators()
   typedef PointVector<2,Coordinate> Point;
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
-	curve.push_back(Point(5,5));
+  std::vector<Point> curve;
+  curve.push_back(Point(5,5));
 
-	try {
+  try {
 
-		trace.beginBlock("Two end iterators");
-		PrimitiveType computer;
-		DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
+    trace.beginBlock("Two end iterators");
+    PrimitiveType computer;
+    DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-		for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
-																				   i != theDecomposition.end(); ++i ) 
-			{				} 
+    for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
+                                           i != theDecomposition.end(); ++i ) 
+      {        } 
 
-		trace.endBlock();
+    trace.endBlock();
 
-		return true;
-	} catch (std::exception e) {
-		return false;
-	}
+    return true;
+  } catch (std::exception e) {
+    return false;
+  }
 
 
 }
@@ -511,48 +512,48 @@ bool testOneDSS()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
-	curve.push_back(Point(0,0));
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,3));
-	curve.push_back(Point(7,3));
+  std::vector<Point> curve;
+  curve.push_back(Point(0,0));
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,3));
+  curve.push_back(Point(7,3));
 
   //Segmentation
   trace.beginBlock("Segmentation of one DSS");
-	PrimitiveType computer;
-	DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
+  PrimitiveType computer;
+  DecompositionType theDecomposition(curve.begin(), curve.end(), computer, false);
 
-	// Draw the pixels
+  // Draw the pixels
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
-	for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
-  	aBoard << (*it);
-	}
-				 
+  for (std::vector<Point>::iterator it = curve.begin(); it != curve.end(); ++it) {
+    aBoard << (*it);
+  }
+         
   //for each segment
-	unsigned int compteur = 0;
+  unsigned int compteur = 0;
   DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
-		++compteur;
-    PrimitiveType segment(*i); 		
-		trace.info() << segment << std::endl;	//standard output
+    ++compteur;
+    PrimitiveType segment(*i);     
+    trace.info() << segment << std::endl;  //standard output
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
-					 << segment; // draw each segment    
+           << segment; // draw each segment    
   } 
 
   aBoard.saveSVG("oneDSS.svg");
 
   trace.endBlock();
 
-	return (compteur==1);
+  return (compteur==1);
 }
 
 /**
@@ -567,9 +568,9 @@ bool testDec8Reverse()
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
   typedef ArithmeticalDSS<ContourType::reverse_iterator,Coordinate,8> PrimitiveType;
-	typedef GreedyDecomposition<PrimitiveType> DecompositionType;
+  typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
-	std::vector<Point> curve;
+  std::vector<Point> curve;
 curve.push_back(Point(1,1));                    //input elements
 curve.push_back(Point(2,1));
 curve.push_back(Point(3,2));
@@ -582,36 +583,36 @@ curve.push_back(Point(9,1));
 
   //Segmentation
   trace.beginBlock("Segmentation of a 8-connected digital curve into DSS");
-	PrimitiveType computer;
+  PrimitiveType computer;
   DecompositionType theDecomposition(curve.rbegin(), curve.rend(), computer, false);
   
-	// Draw the pixels
+  // Draw the pixels
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
   aBoard << SetMode("PointVector", "Both");
-	for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
-  	aBoard << (*it);
-	}
-				 
+  for (ContourType::iterator it = curve.begin(); it != curve.end(); ++it) {
+    aBoard << (*it);
+  }
+         
 
   //for each segment
-	unsigned int compteur = 0;
+  unsigned int compteur = 0;
   DecompositionType::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
 
-		compteur++;
+    compteur++;
     trace.info() << "Segment " << compteur << std::endl;
-    PrimitiveType segment(*i); 		
-		trace.info() << segment << std::endl;	//standard output
+    PrimitiveType segment(*i);     
+    trace.info() << segment << std::endl;  //standard output
     aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
-					 << segment; // draw each segment    
+           << segment; // draw each segment    
   } 
 
   aBoard.saveSVG("right_left.svg");
 
   trace.endBlock();
 
-	return (compteur==2);
+  return (compteur==2);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -628,16 +629,16 @@ int main(int argc, char **argv)
   trace.info() << endl;
 
   bool res = testDec4()
-					&& testDec8() 
-					&& testDisconnectedCurve()
-					&& testClosedCurvesProcessedAsClosed()
-					&& testClosedCurvesProcessedAsOpen()
-					&& testOpenCurvesProcessedAsClosed()
-					&& testNoPoint()
-					&& testOnePoint()
-					&& testTwoEndIterators()
-					&& testOneDSS()
-					&& testDec8Reverse();
+          && testDec8() 
+          && testDisconnectedCurve()
+          && testClosedCurvesProcessedAsClosed()
+          && testClosedCurvesProcessedAsOpen()
+          && testOpenCurvesProcessedAsClosed()
+          && testNoPoint()
+          && testOnePoint()
+          && testTwoEndIterators()
+          && testOneDSS()
+          && testDec8Reverse();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

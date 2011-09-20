@@ -170,11 +170,14 @@ bool testNorms()
   trace.info() << "aPoint l_2 norm="<<aPoint.norm() <<endl;
   trace.info() << "aPoint l_1 norm="<<aPoint.norm ( PointType::L_1 ) <<endl;
   trace.info() << "aPoint l_infty norm="<<aPoint.norm ( PointType::L_infty ) <<endl;
+
+  trace.info() << "Normalization="<<aPoint.getNormalized () <<endl;
+
   trace.endBlock();
 
 
   return ( ( aPoint.norm ( PointType::L_1 ) == 6 ) &&
-	   ( aPoint.norm ( PointType::L_infty ) == 3 ) );
+     ( aPoint.norm ( PointType::L_infty ) == 3 ) );
 
 }
 
@@ -261,12 +264,12 @@ bool testIntegerNorms()
   nbok += p.norm1() == 8 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "L1(p2-p1): "<< p.norm1() << "( == 8 ?)" << std::endl;
+         << "L1(p2-p1): "<< p.norm1() << "( == 8 ?)" << std::endl;
   nbok += p.normInfinity() == 4 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Linfty(p2-p1): "<< p.normInfinity()  << "( == 4 ?)"
-	       << std::endl;
+         << "Linfty(p2-p1): "<< p.normInfinity()  << "( == 4 ?)"
+         << std::endl;
   trace.endBlock();
 
   return nbok == nb;

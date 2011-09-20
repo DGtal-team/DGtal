@@ -315,8 +315,8 @@ namespace DGtal
     {
       SelfDrawStyle(Board2D & aBoard) 
       {
-	aBoard.setFillColorRGBi(160,160,160);
-	aBoard.setPenColorRGBi(80,80,80);
+  aBoard.setFillColorRGBi(160,160,160);
+  aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
@@ -328,8 +328,8 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-	aBoard.setFillColorRGBi(160,160,160);
-	aBoard.setPenColorRGBi(80,80,80);
+  aBoard.setFillColorRGBi(160,160,160);
+  aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
@@ -364,8 +364,8 @@ namespace DGtal
     {
        virtual void selfDrawDisplay3D(Display3D & display) const
         {
-	  display.myModes[ "DigitalSetBySTLVector" ] = "";
-	}
+    display.myModes[ "DigitalSetBySTLVector" ] = "";
+  }
 
     };
 
@@ -422,7 +422,7 @@ namespace DGtal
   template <typename Domain>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const DigitalSetBySTLVector<Domain> & object );
+         const DigitalSetBySTLVector<Domain> & object );
 
 } // namespace DGtal
 

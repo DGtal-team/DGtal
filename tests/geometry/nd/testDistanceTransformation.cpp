@@ -32,8 +32,6 @@
 #include <iomanip>
 #include "DGtal/base/Common.h"
 
-
-#include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
@@ -62,13 +60,13 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
   ext = input.extent();
 
   for (unsigned int k = 0 ; k < nb; k++)
-  {
-    for (unsigned int dim = 0; dim < Image::dimension; dim++)
     {
-      p[dim] = rand() % (ext[dim]) +  low[dim];
+      for (unsigned int dim = 0; dim < Image::dimension; dim++)
+	{
+	  p[dim] = rand() % (ext[dim]) +  low[dim];
+	}
+      input.setValue(p, value);
     }
-    input.setValue(p, value);
-  }
 }
 
 
@@ -95,11 +93,11 @@ bool testDistanceTransformation()
   Image image ( a, b );
 
   for ( unsigned k = 0; k < 49; k++ )
-  {
-    a[0] = ( k / 7 ) + 5;
-    a[1] = ( k % 7 ) + 5;
-    image.setValue ( a, 128 );
-  }
+    {
+      a[0] = ( k / 7 ) + 5;
+      a[1] = ( k % 7 ) + 5;
+      image.setValue ( a, 128 );
+    }
 
 
 
@@ -125,14 +123,14 @@ bool testDistanceTransformation()
   //We just iterate on the Domain points and print out the point coordinates.
   ImageLong::ConstIterator it = result.begin();
   for (unsigned int y = 2; y < 16; y++)
-  {
-    for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << result(it) << " ";
-      ++it;
+      for (unsigned int x = 2; x < 16; x++)
+	{
+	  std::cout << result(it) << " ";
+	  ++it;
+	}
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
-  }
 
 
 
@@ -234,7 +232,7 @@ bool testDistanceTransformationNeg()
 
 bool testDTFromSet()
 {
-unsigned int nbok = 0;
+  unsigned int nbok = 0;
   unsigned int nb = 0;
 
   trace.beginBlock ( "Testing the whole DT computation from a Set" );
@@ -266,7 +264,7 @@ unsigned int nbok = 0;
   
   trace.warning() << result << endl;
  
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();
 	it != itend; ++it)
     if ( (*it) > maxv)
@@ -342,21 +340,21 @@ bool testDistanceTransformationBorder()
 
   ImageLong result = dt.compute ( image );
 
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
 
   ImageLong::ConstIterator it = result.begin();
   for (unsigned int y = 0; y < 33; y++)
-  {
-    for (unsigned int x = 0; x < 33; x++)
     {
-      std::cout << std::setw(4) << result(it) << " ";
-      ++it;
+      for (unsigned int x = 0; x < 33; x++)
+	{
+	  std::cout << std::setw(4) << result(it) << " ";
+	  ++it;
+	}
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
-  }
 
   trace.warning() << result << "MaxV = " << maxv << endl;
 
@@ -399,11 +397,11 @@ bool testDistanceTransformation3D()
 
   for (Domain::ConstIterator it = dom.begin(),
 	 itend = dom.end(); it != itend; ++it)
-  {
-    if ( ((*it) - c).norm() < 7)
-      image.setValue ( *it, 128 );
-  }
-
+    {
+      if ( ((*it) - c).norm() < 7)
+	image.setValue ( *it, 128 );
+    }
+  
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
@@ -413,14 +411,14 @@ bool testDistanceTransformation3D()
 
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
-  {
-    for (unsigned int x = 0; x < 16; x++)
     {
-      Point p(x, y, 8);
-      std::cout << result(p) << "   ";
+      for (unsigned int x = 0; x < 16; x++)
+	{
+	  Point p(x, y, 8);
+	  std::cout << result(p) << "   ";
+	}
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
-  }
 
 
   trace.warning() << result << endl;
@@ -511,24 +509,24 @@ bool testChessboard()
   DT1::OutputImage result1 = dt1.compute ( image );
   DT2::OutputImage result2 = dt2.compute (image);
 
-  DGtal::uint64_t maxv = 0;
+  DGtal::int64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
 
-  DT::OutputImage::ConstIterator it = result.begin();
+  //DT::OutputImage::ConstIterator it = result.begin();
 
   trace.warning() << result << "MaxV = " << maxv << endl;
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
-  {
-    for (unsigned int x = 0; x < 16; x++)
     {
-      Point p(x, y);
-      std::cout << std::setw(4) << result(p) << " ";
+      for (unsigned int x = 0; x < 16; x++)
+	{
+	  Point p(x, y);
+	  std::cout << std::setw(4) << result(p) << " ";
+	}
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
-  }
 
   trace.info()<< "Exporting to SVG"<<endl;
 
@@ -542,19 +540,20 @@ bool testChessboard()
 
   trace.info()<< "max  L1"<<endl;
   maxv = 0;
-  for ( DT1::OutputImage::Iterator it2 = result1.begin(), itend = result1.end();
+  for ( DT1::OutputImage::Iterator it2 = result1.begin(), 
+	  itend = result1.end();
 	it2 != itend; ++it2)
     {
       if ( result1(it2) > maxv)
 	maxv = (*it2);
     }
-
+  
   trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
   result1.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-l1.svg" );
   trace.info()<< "done"<<endl;
-
+  
   trace.info()<< "max  Leuc"<<endl;
   maxv = 0;
   for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
@@ -563,7 +562,7 @@ bool testChessboard()
       if ( result2(it) > maxv)
 	maxv = (*it);
     }
-
+  
   trace.info()<< "Exporting to SVG L2"<<endl;
   board.clear();
   result2.selfDraw<Hue> ( board, 0, maxv + 1);

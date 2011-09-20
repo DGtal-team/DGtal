@@ -38,9 +38,9 @@ public:
   virtual double scale( double x ) const;
   virtual double rounded( double x ) const;
   virtual void setBoundingBox( const Rect & rect,
-			       const double pageWidth,
-			       const double pageHeight,
-			       const double margin ) = 0;
+             const double pageWidth,
+             const double pageHeight,
+             const double margin ) = 0;
 
   static inline double round( const double & x );
 
@@ -60,9 +60,9 @@ struct TransformEPS : public Transform {
 public:
   double mapY( double y ) const;
   void setBoundingBox( const Rect & rect,
-		       const double pageWidth,
-		       const double pageHeight,
-		       const double margin );
+           const double pageWidth,
+           const double pageHeight,
+           const double margin );
 };
 
 /**
@@ -77,9 +77,9 @@ public:
   double mapY( double y ) const;
   int mapWidth( double width ) const; 
   void setBoundingBox( const Rect & rect,
-		       const double pageWidth,
-		       const double pageHeight,
-		       const double margin );
+           const double pageWidth,
+           const double pageHeight,
+           const double margin );
   void setDepthRange( const ShapeList & shapes );
   int mapDepth( int depth ) const;
 private:
@@ -98,9 +98,9 @@ public:
   double mapY( double y ) const;
   double mapWidth( double width ) const; 
   void setBoundingBox( const Rect & rect,
-		       const double pageWidth,
-		       const double pageHeight,
-		       const double margin );
+           const double pageWidth,
+           const double pageHeight,
+           const double margin );
 };
 
 #ifdef WITH_CAIRO
@@ -115,9 +115,9 @@ public:
   double mapY( double y ) const;
   double mapWidth( double width ) const; 
   void setBoundingBox( const Rect & rect,
-		       const double pageWidth,
-		       const double pageHeight,
-		       const double margin );
+           const double pageWidth,
+           const double pageHeight,
+           const double margin );
 };
 #endif
 

@@ -47,9 +47,6 @@
 #include <boost/call_traits.hpp>
 #include "DGtal/base/Common.h"
 
-#ifdef WITH_GMP
-#include <gmpxx.h>
-#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -677,7 +674,6 @@ namespace DGtal
     }
   }; // end of class NumberTraits<float>.
 
-  
 
   /**
    * Specialization for <double>.
@@ -723,7 +719,7 @@ namespace DGtal
     {
       return SIGNED;
     }
-   static DGtal::int64_t castToInt64_t(const double & aT)
+    static DGtal::int64_t castToInt64_t(const double & aT)
     {
       return static_cast<int64_t>( aT );
     }
@@ -790,25 +786,26 @@ namespace DGtal
 
   
 
-#ifdef WITH_GMP
+#ifdef WITH_BIGINTEGER
   /**
-   * Specialization for <mpz_class>.  Note that mpz_class represents
+   * Specialization for <DGtal::BigInteger>. 
+   * Note that DGtal::BigInteger represents
    * signed and unsigned arbitrary-size integers. Therefore both
    * IsUnsigned and IsSigned are TagTrue.
    */
   template <>
-  struct NumberTraits<mpz_class>
+  struct NumberTraits<DGtal::BigInteger>
   {
     typedef TagFalse IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSigned;
     typedef TagTrue IsSpecialized;
-    typedef mpz_class SignedVersion;
-    typedef mpz_class UnsignedVersion;
-    typedef mpz_class ReturnType;
+    typedef DGtal::BigInteger SignedVersion;
+    typedef DGtal::BigInteger UnsignedVersion;
+    typedef DGtal::BigInteger ReturnType;
     typedef boost::call_traits<int64_t>::param_type ParamType;
-    static mpz_class ZERO;//cf NumberTraits.h
-    static mpz_class ONE;//cf NumberTraits.h
+    static DGtal::BigInteger ZERO;//cf NumberTraits.h
+    static DGtal::BigInteger ONE;//cf NumberTraits.h
     static ReturnType zero()
     {
       return ZERO;
@@ -841,15 +838,15 @@ namespace DGtal
     {
       return SIGNED;
     }
-    static DGtal::int64_t castToInt64_t(const mpz_class & aT)
+    static DGtal::int64_t castToInt64_t(const DGtal::BigInteger & aT)
     {
       return aT.get_si();
     }
-    static double castToDouble(const mpz_class & aT)
+    static double castToDouble(const DGtal::BigInteger & aT)
     {
       return aT.get_d();
     }
-  }; // end of class NumberTraits<mpz_class>.
+  }; // end of class NumberTraits<DGtal::BigInteger>.
 #endif
 
 

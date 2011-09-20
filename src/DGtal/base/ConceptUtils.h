@@ -76,7 +76,17 @@ namespace DGtal
   template<>
   struct Negate<TagFalse>
   { typedef TagTrue type; };
-  
+
+  /**
+     This is a helper class that provides a way to get a reference to
+     an object. Calls boost::static_object. Used only for defining
+     archetypes. Write DummyObject<X>::get() to get a reference to a
+     dummy static object of type X.
+  */
+  template <class T>
+  struct DummyObject : public boost::static_object<T>
+  {};
+
 /////////////////////////////////////////////////////////////////////////////
 // Namespace ConceptUtils
 /**
@@ -198,7 +208,7 @@ namespace ConceptUtils
   void checkTrueOrFalse( const TagTrue & tag );
 
 
-}; // end of namespace ConceptUtils
+} // end of namespace ConceptUtils
 
 } // namespace DGtal
 

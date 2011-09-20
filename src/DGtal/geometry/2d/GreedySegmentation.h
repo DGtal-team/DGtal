@@ -23,7 +23,7 @@
  *
  * @date 2011/07/21
  *
- * Header file for module GreedySegmentation.cpp
+ * @brief Header file for module GreedySegmentation.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -48,7 +48,7 @@
 
 namespace DGtal
 {
-	
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedySegmentation
   /**
@@ -60,8 +60,8 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer, at least a model of CForwardSegmentComputer
-   * (an online algorithm for the recognition of some segment). 
+   * @tparam TSegmentComputer at least a model of CForwardSegmentComputer
+   * (an online algorithm for the recognition of a given class of segments). 
    *
    * In the short example below, a digital curve stored in a STL vector
    * is decomposed into 8-connected DSSs whose parameters are sent to 
@@ -73,29 +73,29 @@ namespace DGtal
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
-	typedef GreedySegmentation<SegmentComputer> Segmentation;
+  typedef GreedySegmentation<SegmentComputer> Segmentation;
 
-	//input points
-	Range curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+  //input points
+  Range curve;
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(7,2));
+  curve.push_back(Point(8,1));
+  curve.push_back(Point(9,1));
 
   //Segmentation
-	SegmentComputer recognitionAlgorithm;
+  SegmentComputer recognitionAlgorithm;
   Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
-				 
+         
   Segmentation::SegmentComputerIterator i = theSegmentation.begin();
   Segmentation::SegmentComputerIterator end = theSegmentation.end();
   for ( ; i != end; ++i) {
-		SegmentComputer current(*i);
-		trace.info() << current << std::endl;	//standard output
+    SegmentComputer current(*i);
+    trace.info() << current << std::endl;  //standard output
   } 
 
    * @endcode
@@ -105,7 +105,7 @@ namespace DGtal
    * iterator of the STL vector:   
    * @code 
 ...
-	typedef Range::const_reverse_iterator ConstReverseIterator;
+  typedef Range::const_reverse_iterator ConstReverseIterator;
 ...
   Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
 ...
@@ -133,6 +133,7 @@ namespace DGtal
    * - "DoNotTruncate", the last segment is extended as far as 
    * possible, provided that curve.end() is not reached. 
    *
+   *
    * In order to set a mode (before getting a SegmentComputerIterator),
    * use the setMode() method as follow: 
    * @code 
@@ -140,49 +141,57 @@ namespace DGtal
    * @endcode  
    * Note that the default mode will be used for any unknown modes.  
    *
+   * @see testSegmentation.cpp 
    */
 
   template <typename TSegmentComputer>
   class GreedySegmentation
   {
 
-	public: 
+  public: 
 
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ) );
-		typedef TSegmentComputer SegmentComputer;
-		typedef typename SegmentComputer::ConstIterator ConstIterator;
+    typedef TSegmentComputer SegmentComputer;
+    typedef typename SegmentComputer::ConstIterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
 
 
 
-    /**
-     * This class is an iterator storing the current 'SegmentComputer'.
-     */
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SegmentComputerIterator
+  /**
+   * Description of template class 'SaturatedSegmentation::SegmentComputerIterator'
+   *  <p> \brief Aim: Specific iterator to visit all the segments of a greedy segmentation. 
+   */
     class SegmentComputerIterator
     {
 
-			   // ------------------------- inner Types -----------------------
+         // ------------------------- inner Types -----------------------
 
     public: 
-		  typedef typename GreedySegmentation::SegmentComputer SegmentComputer;
-		  typedef typename SegmentComputer::ConstIterator ConstIterator;
+      typedef typename GreedySegmentation::SegmentComputer SegmentComputer;
+      typedef typename SegmentComputer::ConstIterator ConstIterator;
 
-			   // ------------------------- data -----------------------
+         // ------------------------- data -----------------------
     private:
 
       /**
        * Pointer to the segmentation
        */
-			const GreedySegmentation<TSegmentComputer> *myS;
+      const GreedySegmentation<TSegmentComputer> *myS;
 
       /**
        * The current segment
        */
       SegmentComputer  mySegmentComputer;
       
-
+      /**
+       * A flag equal to TRUE if *this is valid, FALSE otherwise 
+       */
+      bool  myFlagIsValid;
+    
       /**
        * A flag equal to TRUE if the current segment
        * intersects the next one, FALSE otherwise 
@@ -198,11 +207,6 @@ namespace DGtal
       bool  myFlagIntersectPrevious;
 
       /**
-       * A flag equal to TRUE if *this is valid, FALSE otherwise 
-       */
-      bool  myFlagIsValid;
-
-      /**
        * A flag equal to TRUE if *this has reached the end, FALSE otherwise 
        */
       bool  myFlagIsLast;
@@ -212,19 +216,20 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class GreedySegmentation<TSegmentComputer>;
-			   
+         
 
 
       /**
        * Constructor.
+        *
        * Nb: complexity in O(n).
        *
-       * @param aSegmentation, the object that knows the range bounds
-       * @param aSegmentComputer, an online segment recognition algorithm
-       * @param aFlag, 'true' to build a valid object, 'false' otherwise
+       * @param aSegmentation  the object that knows the range bounds
+       * @param aSegmentComputer  an online segment recognition algorithm
+       * @param aFlag  'true' to build a valid object, 'false' otherwise
        */
       SegmentComputerIterator( const GreedySegmentation<TSegmentComputer> *aSegmentation,
-				 const TSegmentComputer& aSegmentComputer,
+         const TSegmentComputer& aSegmentComputer,
          const bool& aFlag );
 
 
@@ -256,7 +261,7 @@ namespace DGtal
     public:
       
       /**
-       * @return the current segment
+       * @return a constant reference to the current segment
        */
       const SegmentComputer& operator*() const;
 
@@ -268,19 +273,21 @@ namespace DGtal
 
 
       /**
-       * @return the pointer to the current segment
+       * @return a constant pointer to the current segment
        */
       const SegmentComputer* operator->() const;
 
       /**
        * Pre-increment.
        * Goes to the next segment (if possible).
+        *
        * Nb: complexity in O(n).
        */
       SegmentComputerIterator& operator++();
       
       /**
        * Goes to the next segment (if possible).
+        *
        * Nb: complexity in O(n).
        */
       void next();
@@ -288,9 +295,7 @@ namespace DGtal
 
       /**
        * Equality operator.
-       *
        * @param aOther the iterator to compare with 
-       *
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
        */
@@ -298,9 +303,7 @@ namespace DGtal
 
       /**
        * Inequality operator.
-       *
        * @param aOther the iterator to compare with 
-       *
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
        */
@@ -310,15 +313,15 @@ namespace DGtal
 
       /**
        * @return TRUE if the current segment intersects
-			 * the next one, FALSE otherwise.
+       * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
-			 * the previous one, FALSE otherwise.
+       * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return begin iterator on the segment.
@@ -332,20 +335,21 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-			private: 
+      private: 
 
       /**
        * Computes the longest possible segment from [it]
-       * @param it, a given iterator
+       * @param it  a given iterator
+       *
        * Nb: complexity in O(n).
        */
       void longestSegment(const ConstIterator& it);
       
       /**
        * Checks if the current segment intersects the next one.
-       * @param it, end of the current segment
-       * @param itb, begin iterator of the underlying range
-       * @param ite, end iterator of the underlying range
+       * @param it  end of the current segment
+       * @param itb  begin iterator of the underlying range
+       * @param ite  end iterator of the underlying range
        * @return 'true' if it != itb and it != ite and
        * --it and it form a valid segment, false otherwise
        */
@@ -358,8 +362,9 @@ namespace DGtal
 
       /**
        * Checks if the current segment intersects the next one (if exists).
-       * @param it, end of the current segment
+       * @param it  end of the current segment
        * @return 'true' if --it and it form a valid segment, false otherwise
+        *
        * NB: no verification
        */
       bool doesIntersectNext(const ConstIterator& it);
@@ -373,28 +378,30 @@ namespace DGtal
 
     /**
      * Default constructor.
-		 * Nb: not valid
+     *
+     * Nb: not valid
      */
     GreedySegmentation() {};
 
     /**
      * Constructor.
-     * @param itb, begin iterator of the underlying range
-     * @param ite, end iterator of the underlying range
-     * @param aSegmentComputer, an online segment recognition algorithm. 
+     * @param itb  begin iterator of the underlying range
+     * @param ite  end iterator of the underlying range
+     * @param aSegmentComputer  an online segment recognition algorithm. 
      */
     GreedySegmentation(const ConstIterator& itb, 
-												const ConstIterator& ite, 
-												const SegmentComputer& aSegmentComputer);
+                        const ConstIterator& ite, 
+                        const SegmentComputer& aSegmentComputer);
 
     /**
-     * Init.
-     * @param itb, begin iterator the range to processed
-     * @param ite, end iterator the range to processed
-		 * Nb: must be a valid range included in the underlying range.
+     * Set a sub-range to process.
+     * @param itb  begin iterator the range to processed
+     * @param ite  end iterator the range to processed
+      *
+     * Nb: must be a valid range included in the underlying range.
      */
     void setSubRange(const ConstIterator& itb, 
-							       const ConstIterator& ite);
+                     const ConstIterator& ite);
 
 
     /**
@@ -412,13 +419,13 @@ namespace DGtal
 
     /**
      * ConstIterator service.
-     * @return an iterator pointing on the first segment of a digital curve.
+     * @return an iterator pointing on the first segment.
      */
     typename GreedySegmentation::SegmentComputerIterator begin() const;
 
     /**
      * ConstIterator service.
-     * @return an iterator pointing after the last segment of a digital curve.
+     * @return an iterator pointing after the last segment.
      */
     typename GreedySegmentation::SegmentComputerIterator end() const;
 
@@ -440,19 +447,35 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    //Begin and end iterators of the underlying range
-		ConstIterator myBegin, myEnd;
+    /**
+     * Begin iterator of the underlying range
+     */
+    ConstIterator myBegin;
+    
+    /**
+     * End iterator of the underlying range
+     */
+    ConstIterator myEnd;
+  
+    /**
+     * Begin iterator of the subrange to segment
+     */
+    ConstIterator myStart;
 
-    //Begin and end iterators of the subrange to be segmented
-		ConstIterator myStart, myStop;
-
-    //Mode
-    //eiter "Truncate" (default), 
-    //"Truncate+1", or "DoNotTruncate". 
+    /**
+     * End iterator of the subrange to segment
+     */
+    ConstIterator myStop;
+  
+    /**
+     * Mode: either "Truncate" (default), "Truncate+1", or "DoNotTruncate".
+     */
     std::string myMode; 
 
-    //SegmentComputer
-		SegmentComputer mySegmentComputer;
+    /**
+     * the segment computer.
+     */
+    SegmentComputer mySegmentComputer;
 
     // ------------------------- Hidden services ------------------------------
 

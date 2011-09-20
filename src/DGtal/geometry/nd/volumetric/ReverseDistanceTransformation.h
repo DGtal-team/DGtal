@@ -106,7 +106,7 @@ namespace DGtal
      * grid points
      */
     ReverseDistanceTransformation(const IntegerShort defaultForeground = NumberTraits< IntegerShort >::ONE, 
-				  const IntegerShort defaultBackground = NumberTraits< IntegerShort >::ZERO);
+          const IntegerShort defaultBackground = NumberTraits< IntegerShort >::ZERO);
 
     /**
      * Default destructor
@@ -174,10 +174,10 @@ namespace DGtal
      * intermediate) step 
      * @param output the output image 
      * @param dim the dimension to process
-     */		
+     */    
     void computeSteps(const Image & inputImage, 
-		      Image & output, 
-		      const Dimension dim)const;
+          Image & output, 
+          const Dimension dim)const;
 
     /** 
      * Compute the 1D DT associated to the steps except the first one.
@@ -188,10 +188,10 @@ namespace DGtal
      * @param dim the dimension to process
      */
     void computeSteps1D (const Image & input, 
-			 Image & output, 
-			 const Point &startingPoint, 
-			 const Size dim, 
-			 Integer s[], Integer t[]) const;
+       Image & output, 
+       const Point &startingPoint, 
+       const Size dim, 
+       Integer s[], Integer t[]) const;
 
 
     // ------------------- Private members ------------------------

@@ -43,6 +43,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //Estimators
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
@@ -81,8 +82,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
     {
       trace.info()<< "Curvature using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
-		  << "\t curvatureMCMS [options] --FreemanChain  <fileName> "<<std::endl
-		  << general_opt << "\n";
+      << "\t curvatureMCMS [options] --FreemanChain  <fileName> "<<std::endl
+      << general_opt << "\n";
       return 0;
     }
   
@@ -137,10 +138,10 @@ int main( int argc, char** argv )
       cout << "# id curvatureFromLength curvatureFromLengthAndWidth" << endl;  
       unsigned int j = 0;
       for ( ConstIteratorOnPoints it = vectPts.begin(), it_end = vectPts.end();
-	    it != it_end; ++it, ++j ) {
-	       cout << j << setprecision( 15 )
-	       << " " << curvatures1[ j ]
-	       << " " << curvatures2[ j ] << endl;
+      it != it_end; ++it, ++j ) {
+         cout << j << setprecision( 15 )
+         << " " << curvatures1[ j ]
+         << " " << curvatures2[ j ] << endl;
       }
 
    }

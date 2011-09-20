@@ -48,35 +48,35 @@ Board::setLineJoin( Shape::LineJoin join )
 inline
 void
 Board::fillGouraudTriangle( const double x1, const double y1,
-			    const DGtal::Color & color1,
-			    const double x2, const double y2, 
-			    const DGtal::Color & color2,
-			    const double x3, const double y3,
-			    const DGtal::Color & color3,
-			    unsigned char divisions,
-			    int depthValue /* = -1 */ )
+          const DGtal::Color & color1,
+          const double x2, const double y2, 
+          const DGtal::Color & color2,
+          const double x3, const double y3,
+          const DGtal::Color & color3,
+          unsigned char divisions,
+          int depthValue /* = -1 */ )
 {
   fillGouraudTriangle( Point( x1, y1 ), color1,
-		       Point( x2, y2 ), color2,
-		       Point( x3, y3 ), color3,
-		       divisions, depthValue );		       
+           Point( x2, y2 ), color2,
+           Point( x3, y3 ), color3,
+           divisions, depthValue );           
 }
 
 inline
 void
 Board::fillGouraudTriangle( const double x1, const double y1,
-			    const float brightness1,
-			    const double x2, const double y2, 
-			    const float brightness2,
-			    const double x3, const double y3,
-			    const float brightness3,
-			    unsigned char divisions,
-			    int depthValue /* = -1 */ )
+          const float brightness1,
+          const double x2, const double y2, 
+          const float brightness2,
+          const double x3, const double y3,
+          const float brightness3,
+          unsigned char divisions,
+          int depthValue /* = -1 */ )
 {
   fillGouraudTriangle( Point( x1, y1 ), brightness1,
-		       Point( x2, y2 ), brightness2,
-		       Point( x3, y3 ), brightness3,
-		       divisions, depthValue );
+           Point( x2, y2 ), brightness2,
+           Point( x3, y3 ), brightness3,
+           divisions, depthValue );
 }
 
 } // namespace LibBoard

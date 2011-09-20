@@ -112,8 +112,8 @@ namespace DGtal
     */
     static
     unsigned int suggestedSize( const double h, 
-				const ConstIteratorOnPoints& itb, 
-				const ConstIteratorOnPoints& ite );
+        const ConstIteratorOnPoints& itb, 
+        const ConstIteratorOnPoints& ite );
 
     /**
        Initializes the convolver with some sequence of points.
@@ -125,9 +125,9 @@ namespace DGtal
        The object is then valid.
     */
     void init( const double h, 
-	       const ConstIteratorOnPoints& itb, 
-	       const ConstIteratorOnPoints& ite,
-	       const bool isClosed );
+         const ConstIteratorOnPoints& itb, 
+         const ConstIteratorOnPoints& ite,
+         const bool isClosed );
 
     /**
        Given a valid iterator [it], return the corresponding index
@@ -272,7 +272,7 @@ namespace DGtal
        @return the tangent vector at position [it].
      */
     Value operator()( const BinomialConvolver & bc,
-		      const ConstIteratorOnPoints & it ) const;
+          const ConstIteratorOnPoints & it ) const;
 
   };
 
@@ -303,7 +303,7 @@ namespace DGtal
        @return the tangent vector at position [it].
      */
     Value operator()( const BinomialConvolver & bc,
-		      const ConstIteratorOnPoints & it ) const;
+          const ConstIteratorOnPoints & it ) const;
 
   };
 
@@ -329,8 +329,8 @@ namespace DGtal
     typedef Value Quantity;
 
     BinomialConvolverEstimator( unsigned int n = 0,
-				const BinomialConvolverFunctor & f
-				= BinomialConvolverFunctor() );
+        const BinomialConvolverFunctor & f
+        = BinomialConvolverFunctor() );
 
     /**
      * Initialisation.
@@ -340,9 +340,9 @@ namespace DGtal
      * @param isClosed true if the input range is viewed as closed.
      */
     void init( const double h, 
-	       const ConstIterator & itb, 
-	       const ConstIterator & ite,
-	       const bool isClosed);
+         const ConstIterator & itb, 
+         const ConstIterator & ite,
+         const bool isClosed);
     
     /**
      * @return the estimated quantity at *it
@@ -355,8 +355,8 @@ namespace DGtal
      */
     template <typename OutputIterator>
     OutputIterator eval( const ConstIterator& itb, 
-			 const ConstIterator& ite, 
-			 OutputIterator result ); 
+       const ConstIterator& ite, 
+       OutputIterator result ); 
 
 
 
@@ -375,7 +375,7 @@ namespace DGtal
   template <typename TConstIteratorOnPoints, typename TValue >
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const BinomialConvolver<TConstIteratorOnPoints,TValue> & object );
+         const BinomialConvolver<TConstIteratorOnPoints,TValue> & object );
 
 } // namespace DGtal
 

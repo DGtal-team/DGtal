@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file dgtalboard-2-sets.cpp
+ * @file dgtalBoard2D-2-sets.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -71,8 +71,8 @@ int main( )
   // Object with couple (4,8) of adjacency.
   Object4_8 shape( dt4_8, shape_set );
   board << domain // display domain
-	<< SetMode( shape.styleName(), "DrawAdjacencies" )
-	<< shape; // and object with mode "DrawAdjacencies"
+  << SetMode( shape.styleName(), "DrawAdjacencies" )
+  << shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
   board.saveEPS( "dgtalboard-2-sets-2.eps");
  
@@ -88,8 +88,8 @@ int main( )
   // Object with couple (8,4) of adjacency.
   Object8_4 shape2( dt8_4, shape_set );
   board << domain // display domain
-	<< SetMode( shape2.styleName(), "DrawAdjacencies" )
-	<< shape2; // and object with mode "DrawAdjacencies"
+  << SetMode( shape2.styleName(), "DrawAdjacencies" )
+  << shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
   board.saveEPS( "dgtalboard-2-sets-3.eps");
 

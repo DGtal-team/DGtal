@@ -14,21 +14,30 @@ include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
+include(DGtal/kernel/ModuleSRC.txt)
+
 include(Board/ModuleSRC.txt)
 
 
 
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
-add_library ( ${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
-target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+
+IF (BUILD_SHARED_LIBS)
+  add_library (${LIBDGTAL_NAME} SHARED ${DGTAL_SRC} ${BOARD_SRC})
+  target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+ELSE(BUILD_SHARED_LIBS)
+  add_library (${LIBDGTAL_NAME} STATIC ${DGTAL_SRC} ${BOARD_SRC})
+  target_link_libraries( ${LIBDGTAL_NAME} ${DGtalLibDependencies} )
+ENDIF(BUILD_SHARED_LIBS)
 
 install(TARGETS ${LIBDGTAL_NAME}
   # IMPORTANT: Add the DGtal library to the "export-set"
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+ #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
 

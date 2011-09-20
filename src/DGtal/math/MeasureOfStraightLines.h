@@ -52,7 +52,7 @@ namespace DGtal
    * Description of class 'MeasureOfStraightLines' <p>
    * Aim: 
    *
-   * The aim of this class is to compute the measure in the Lebesgues
+   * @brief The aim of this class is to compute the measure in the Lebesgues
    * sense of the set of straight lines associated to domains defined
    * as polygons in the (a,b)-parameter space. This parameter space
    * maps the line $ax-y+b=0$ to the point $(a,b)$.
@@ -198,10 +198,10 @@ namespace DGtal
      * Compute the measure associated to an edge (a0,b0)-(a1,b1)
      * It returns the measure of the triangle defined by the origin and the edge.
      *
-     * @param a0
-     * @param b0
-     * @param a1
-     * @param b1
+     * @param a0 abscissa first point.
+     * @param b0 ordinate of the first point.
+     * @param a1 abscissa of the second point.
+     * @param b1 ordinate of the second point.
      * @return the measure
      */
     double computeMeasureEdge ( double a0,double b0, double a1, double b1 );
@@ -210,10 +210,10 @@ namespace DGtal
      * Compute the abscissa of the centroid associated to an edge (a0,b0)-(a1,b1)
      * It returns the measure of the triangle defined by the origin and the edge.
      *
-     * @param a0
-     * @param b0
-     * @param a1
-     * @param b1
+     * @param a0 abscissa first point.
+     * @param b0 ordinate of the first point.
+     * @param a1 abscissa of the second point.
+     * @param b1 ordinate of the second point.
      * @return the measure
      */
     double computeCentroidEdge_a ( double a0,double b0, double a1, double b1 );
@@ -222,10 +222,10 @@ namespace DGtal
      * Compute the ordinate of the centroid associated to an edge (a0,b0)-(a1,b1)
      * It returns the measure of the triangle defined by the origin and the edge.
      *
-     * @param a0
-     * @param b0
-     * @param a1
-     * @param b1
+     * @param a0 abscissa first point.
+     * @param b0 ordinate of the first point.
+     * @param a1 abscissa of the second point.
+     * @param b1 ordinate of the second point.
      * @return the measure
      */  
     double computeCentroidEdge_b ( double a0,double b0, double a1, double b1 );
@@ -233,28 +233,44 @@ namespace DGtal
     /**
      * Approximate  the centroid on 'b' on the triangle (0,0)-(a0,b0)-(a1,b1) 
      * (internal function)
+     *
+     *
+     * @param a0 abscissa first point.
+     * @param b0 ordinate of the first point.
+     * @param a1 abscissa of the second point.
+     * @param b1 ordinate of the second point.
      **/
     double __computeCentroidTriApprox_b ( double a0, double b0,double a1,double b1 );
     
     /**
     * Approximate  the centroid on 'b' on the trapezioid  (a0,0)-(a0,b0)-(a1,b1)-(a1,0)
     * (internal function)
+    *
+    * @param a0 abscissa first point.
+    * @param b0 ordinate of the first point.
+    * @param a1 abscissa of the second point.
+    * @param b1 ordinate of the second point.
     **/
     double  __computeCentroidEdgeApprox_b ( double a0, double b0,double a1,double b1 );
 
 
     /**
     * Compute the centroid on 'b' on the rectangular domain with vertices (x1,,y1) - (x2,y2)
-    * PRECONDITION: y1<y2
+    * @pre  y1<y2
     *
+    * @param x1 abscissa first point.
+    * @param y1 ordinate of the first point.
+    * @param x2 abscissa of the second point.
+    * @param y2 ordinate of the second point.
     **/
     double __computeCentroidSquare_b ( double x1, double y1, double x2,double y2 );
 
 
     /**
+     * @param a a value
      * @return the sign of a number (1 or -1)
      **/
-    int sign ( double a );
+    int sign ( const double a );
      
 
 

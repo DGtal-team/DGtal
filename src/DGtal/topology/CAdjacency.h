@@ -75,7 +75,7 @@ namespace DGtal
    *
    * <p> Notations
    * - \c Adj : A type that is a model of CAdjacency
-   * - \c adj	: Object of type Adj.
+   * - \c adj  : Object of type Adj.
    * - \c p1, \c p2 : an object of type \ref Point.
    * <p> Definitions
    *
@@ -147,7 +147,7 @@ namespace DGtal
       ConceptUtils::sameType( myBool, myAdj.isAdjacentTo( myP1, myP2 ) );
       // check isProperlyAdjacentTo
       ConceptUtils::sameType( myBool, 
-			      myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
+            myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
       // Check writeNeighborhood
       myAdj.writeNeighborhood( myP1, myInserter );
       // Check writeProperNeighborhood

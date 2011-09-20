@@ -50,7 +50,6 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -103,10 +102,10 @@ namespace DGtal
 
   
    // Add points while it is possible
-		DSS4 s;
-		s.init( contour.begin() );
-    while ( (s.end()!=contour.end())
-					&&(s.extend()) ) {} 
+   DSS4 s;
+   s.init( contour.begin() );
+   while ( (s.end()!=contour.end())
+   &&(s.extend()) ) {} 
 
    // Output parameters
    cout << s << endl;
@@ -136,7 +135,9 @@ namespace DGtal
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    */
-  template <typename TIterator, typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, int connectivity = 8>
+  template <typename TIterator, 
+	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
+	    int connectivity = 8>
   class ArithmeticalDSS
   {
 
@@ -167,13 +168,13 @@ namespace DGtal
 	  if (b > 0) {
 	    return (a+b);
 	  } else {
-	    return (a-b);		
+	    return (a-b);    
 	  }
 	} else {
 	  if (b > 0) {
-	    return (-a+b);						
+	    return (-a+b);            
 	  } else {
-	    return (-a-b);		
+	    return (-a-b);    
 	  }
 	}
       }
@@ -189,13 +190,13 @@ namespace DGtal
 	  if (b > 0) {
 	    return (a+b);
 	  } else {
-	    return (a-b);		
+	    return (a-b);    
 	  }
 	} else {
 	  if (b > 0) {
-	    return (-a+b);						
+	    return (-a+b);            
 	  } else {
-	    return (-a-b);		
+	    return (-a-b);    
 	  }
 	}
       }
@@ -223,8 +224,8 @@ namespace DGtal
 
     //requiered types
     typedef TIterator ConstIterator;
-		typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-		typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
+    typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
 
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
@@ -235,7 +236,7 @@ namespace DGtal
     //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
-    typedef DGtal::RealPointVector<2> PointD;  
+    typedef DGtal::PointVector<2,double> PointD;  
 
 
     // ----------------------- Standard services ------------------------------
@@ -562,7 +563,7 @@ namespace DGtal
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool isExtendable( const Point & lastPoint, 
-		 const Vector & lastMove );
+		       const Vector & lastMove );
 
     /**
      * Tests whether the union between a point 
@@ -581,8 +582,8 @@ namespace DGtal
     bool extend( const ConstIterator & it, 
 		 ConstIterator & lastIt, 
 		 const Vector & lastMove,
-		 Point & Uf,	Point & Ul,
-		 Point & Lf,	Point & Ll );
+		 Point & Uf,  Point & Ul,
+		 Point & Lf,  Point & Ll );
 
     /**
      * Removes the end point of a DSS
@@ -599,9 +600,9 @@ namespace DGtal
      */
     bool retract( ConstIterator & firstIt,
 		  ConstIterator & lastIt,
-		  ConstIterator & nextIt, 		  
-		  Point & Uf,	Point & Ul,
-		  Point & Lf,	Point & Ll,
+		  ConstIterator & nextIt,       
+		  Point & Uf,  Point & Ul,
+		  Point & Lf,  Point & Ll,
 		  const Integer& s );
 
 
@@ -647,7 +648,7 @@ namespace DGtal
     std::vector<Vector> mySteps;
 
     // ------------------------- Private Datas --------------------------------
-	
+  
   private:
 
 
@@ -780,41 +781,41 @@ namespace DGtal
   }; // end of class ArithmeticalDSS
 
 
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawDSSBoundingBox : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
-    }
-  };
- 
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawDSSPoints : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "ArithmeticalDSS" ] = "Points";
-    }
-  };
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'ArithmeticalDSS' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename TIterator, typename TInteger, int connectivity>
-  std::ostream&
-  operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivity> & object )
+/**
+ * Modifier class in a Board2D stream. Realizes the concept
+ * CDrawableWithBoard2D.
+ */
+struct DrawDSSBoundingBox : public DrawWithBoardModifier {
+  void selfDraw( Board2D & board ) const
   {
-    object.selfDisplay( out);
-    return out;
+    board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
   }
+};
+ 
+/**
+ * Modifier class in a Board2D stream. Realizes the concept
+ * CDrawableWithBoard2D.
+ */
+struct DrawDSSPoints : public DrawWithBoardModifier {
+  void selfDraw( Board2D & board ) const
+  {
+    board.myModes[ "ArithmeticalDSS" ] = "Points";
+  }
+};
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'ArithmeticalDSS' to write.
+ * @return the output stream after the writing.
+ */
+template <typename TIterator, typename TInteger, int connectivity>
+std::ostream&
+operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivity> & object )
+{
+  object.selfDisplay( out);
+  return out;
+}
 
 
 } // namespace DGtal

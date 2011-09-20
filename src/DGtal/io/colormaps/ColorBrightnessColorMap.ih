@@ -136,22 +136,22 @@ template <typename PValue, int PDefaultColor>
 inline
 Color
 DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color color,
-						     const PValue & min,
-						     const PValue & max,
-						     const PValue & value )
+                 const PValue & min,
+                 const PValue & max,
+                 const PValue & value )
 {
   double h=0.0,s,v;
   ColorBrightnessColorMap<PValue,PDefaultColor>::RGBtoHSV( h, s, v,
-						color.red(),
-						color.green(),
-						color.blue() );
+            color.red(),
+            color.green(),
+            color.blue() );
   const double range = static_cast<double>( max - min );
   const double scale = static_cast<double>( value - min ) / range;
   double red, green, blue;
   ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
   return Color( static_cast<int>( red * 255), 
-			  static_cast<int>( green * 255),
-			  static_cast<int>( blue * 255) );
+        static_cast<int>( green * 255),
+        static_cast<int>( blue * 255) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ template <typename PValue, int PDefaultColor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ColorBrightnessColorMap<PValue,PDefaultColor> & object )
+      const ColorBrightnessColorMap<PValue,PDefaultColor> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -208,7 +208,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB
   case 4:
     r = t;  g = p; b = v;
     break;
-  default:		// case 5:
+  default:    // case 5:
     r = v; g = p; b = q;
     break;
   }

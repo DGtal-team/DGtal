@@ -46,15 +46,21 @@
 
 namespace DGtal
 {
-	
+  namespace deprecated 
+  {
+    
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
-   * \TODO update doc
+   * @warning This class is deprecated since GreedySegmentation has been created. 
+   * This class is used in @href testDecomposition.cpp @href DSSLengthEstimator.ih and @href displayContours.cpp, 
+   * but GreedySegmentation will be preferred in the future. 
+   *
    * Description of template class 'GreedyDecomposition' <p>
    * \brief Aim: Computes the greedy decomposition of a sequence 
    * into segments (the last element of a given segment is the first one
    * one of the next segment).
+    
    * This class is a model of CDecomposition.
    * 
    * This class is templated by 'TSegment', a model of CSegmentComputer
@@ -77,28 +83,28 @@ namespace DGtal
   typedef std::vector<Point> Sequence;
   typedef Sequence::const_iterator ConstIterator;
   typedef ArithmeticalDSS<ConstIterator,int,8> DSS;
-	typedef GreedyDecomposition<DSS> Decomposition;
+  typedef GreedyDecomposition<DSS> Decomposition;
 
-	//sequence of input points
-	Sequence curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+  //sequence of input points
+  Sequence curve;
+  curve.push_back(Point(1,1));
+  curve.push_back(Point(2,1));
+  curve.push_back(Point(3,2));
+  curve.push_back(Point(4,2));
+  curve.push_back(Point(5,2));
+  curve.push_back(Point(6,2));
+  curve.push_back(Point(7,2));
+  curve.push_back(Point(8,1));
+  curve.push_back(Point(9,1));
 
   //Segmentation
-	DSS dssRecognition;
+  DSS dssRecognition;
   Decomposition theDecomposition(curve.begin(), curve.end(), dssRecognition, false);
-				 
+         
   Decomposition::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
-		DSS currentSegment(*i);
-		trace.info() << currentSegment << std::endl;	//standard output
+    DSS currentSegment(*i);
+    trace.info() << currentSegment << std::endl;  //standard output
   } 
 
    * @endcode
@@ -108,7 +114,7 @@ namespace DGtal
    * iterator of the STL vector:   
    * @code 
 ...
-	typedef Sequence::const_reverse_iterator ConstReverseIterator;
+  typedef Sequence::const_reverse_iterator ConstReverseIterator;
 ...
   Decomposition theDecomposition(curve.rbegin(), curve.rend(), dssRecognition, false);
 ...
@@ -119,10 +125,10 @@ namespace DGtal
   class GreedyDecomposition
   {
 
-	public: 
+  public: 
 
-		typedef TSegment Segment;
-		typedef typename Segment::ConstIterator Iterator;
+    typedef TSegment Segment;
+    typedef typename Segment::ConstIterator Iterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -135,14 +141,14 @@ namespace DGtal
      */
     class SegmentIterator
     {
-      	   
-			   // ------------------------- data -----------------------
+           
+         // ------------------------- data -----------------------
     private:
 
       /**
        * Pointer to the decomposition
        */
-			const GreedyDecomposition<TSegment> *myDec;
+      const GreedyDecomposition<TSegment> *myDec;
 
 
       /**
@@ -183,7 +189,7 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class GreedyDecomposition<TSegment>;
-			   
+         
 
 
       /**
@@ -194,8 +200,8 @@ namespace DGtal
        * @param aBack an iterator at the back of the first segment
        */
       SegmentIterator( const GreedyDecomposition<TSegment> *aDec,
-		     const typename TSegment::ConstIterator& aBack,
-				 const TSegment& aSegment);
+         const typename TSegment::ConstIterator& aBack,
+         const TSegment& aSegment);
 
 
       /**
@@ -244,15 +250,15 @@ namespace DGtal
 
       /**
        * @return TRUE if the current segment intersects
-			 * the next one, FALSE otherwise.
+       * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
-			 * the previous one, FALSE otherwise.
+       * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return an iterator of a digital curve
@@ -288,7 +294,7 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-			private: 
+      private: 
 
       /**
        * Computes the longest possible segment from 
@@ -310,13 +316,13 @@ namespace DGtal
 
     /**
      * Default constructor.
-		 * Nb: not valid
+     * Nb: not valid
      */
     GreedyDecomposition() {};
 
     /**
      * Constructor.
-		 * Nb: The digital curve is decompose as a closed one by default.
+     * Nb: The digital curve is decompose as a closed one by default.
      * @param aBegin, begin iterator on a digital curve
      * @param aEnd, end iterator on a digital curve
      * @param aSegment, a segment computer
@@ -324,13 +330,13 @@ namespace DGtal
      * curve as a closed one, FALSE otherwise
      */
     GreedyDecomposition(const Iterator& aBegin, 
-												const Iterator& aEnd, 
-												const Segment& aSegment, 
-												const bool& aFlag);
+                        const Iterator& aEnd, 
+                        const Segment& aSegment, 
+                        const bool& aFlag);
 
     /**
      * Init.
-		 * Nb: The digital curve is decompose as a closed one by default.
+     * Nb: The digital curve is decompose as a closed one by default.
      * @param aBegin, begin iterator on a digital curve
      * @param aEnd, end iterator on a digital curve
      * @param aSegment, a segment computer
@@ -338,9 +344,9 @@ namespace DGtal
      * curve as a closed one, FALSE otherwise
      */
     void init(const Iterator& aBegin, 
-							const Iterator& aEnd, 
-							const Segment& aSegment, 
-							const bool& aFlag);
+              const Iterator& aEnd, 
+              const Segment& aSegment, 
+              const bool& aFlag);
 
 
     /**
@@ -378,11 +384,11 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-		Iterator myBegin, myEnd;
+    Iterator myBegin, myEnd;
 
-		Segment mySegment;
+    Segment mySegment;
 
-		bool isClosed;
+    bool isClosed;
 
     // ------------------------- Hidden services ------------------------------
 
@@ -418,6 +424,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const GreedyDecomposition<Segment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 

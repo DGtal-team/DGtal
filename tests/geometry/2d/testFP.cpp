@@ -53,15 +53,15 @@ void
 drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, Board2D & aBoard) 
 {
   //polyline to draw
-	vector<LibBoard::Point> polyline;
+  vector<LibBoard::Point> polyline;
 
-	typename vector<PointVector<2,Coordinate> >::const_iterator i = v.begin();
-	for ( ;i != v.end();++i) {
-			PointVector<2,Coordinate> p = (*i);
-			double xp = (double) p[0];
-			double yp = (double) p[1];
-			polyline.push_back(LibBoard::Point(xp,yp));
-	}
+  typename vector<PointVector<2,Coordinate> >::const_iterator i = v.begin();
+  for ( ;i != v.end();++i) {
+      PointVector<2,Coordinate> p = (*i);
+      double xp = (double) p[0];
+      double yp = (double) p[1];
+      polyline.push_back(LibBoard::Point(xp,yp));
+  }
 
   aBoard.drawPolyline(polyline);
 
@@ -74,12 +74,12 @@ drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, Board2
 bool testDrawingFP()
 {
 
-	typedef int Coordinate;
-	typedef HyperRectDomain<SpaceND<2,Coordinate> > Domain;
-	typedef PointVector<2,Coordinate> Point;
-	typedef PointVector<2,double> RealPoint;
+  typedef int Coordinate;
+  typedef HyperRectDomain<SpaceND<2,Coordinate> > Domain;
+  typedef PointVector<2,Coordinate> Point;
+  typedef PointVector<2,double> RealPoint;
   typedef FreemanChain<Coordinate> Contour; 
-	typedef FP<Contour::ConstIterator,Coordinate,4> FP;
+  typedef FP<Contour::ConstIterator,Coordinate,4> FP;
 
   std::string filename = testPath + "samples/france.fc";
   std::cout << filename << std::endl;
@@ -90,18 +90,18 @@ bool testDrawingFP()
 
   trace.beginBlock ( "FP of a 4-connected digital curve..." );
 
-	FP theFP( theContour.begin(),theContour.end(),true );
+  FP theFP( theContour.begin(),theContour.end(),true );
   //trace.info() << theFP << std::endl;
 
-	// Draw the FP
+  // Draw the FP
   Board2D aBoard;
-	aBoard << SetMode( "PointVector", "Grid" ) << theContour;
+  aBoard << SetMode( "PointVector", "Grid" ) << theContour;
   aBoard << theFP;
   aBoard.saveEPS("FP.eps");
 
   //accessors: 
   Board2D newBoard;
-	newBoard << SetMode( "PointVector", "Grid" ) << theContour;
+  newBoard << SetMode( "PointVector", "Grid" ) << theContour;
 
   trace.info() << "FP" << endl;
   vector<Point> v( theFP.size() );

@@ -66,9 +66,9 @@ TransformEPS::mapY( double y ) const
 
 void
 TransformEPS::setBoundingBox( const Rect & rect,
-			      const double pageWidth,
-			      const double pageHeight,
-			      const double margin )
+            const double pageWidth,
+            const double pageHeight,
+            const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;
@@ -119,9 +119,9 @@ TransformFIG::mapWidth( double width ) const
 
 void
 TransformFIG::setBoundingBox( const Rect & rect,
-			      const double pageWidth,
-			      const double pageHeight,
-			      const double margin )
+            const double pageWidth,
+            const double pageHeight,
+            const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = fig_ppmm / ppmm;
@@ -193,9 +193,9 @@ TransformSVG::mapWidth( double width ) const
 
 void
 TransformSVG::setBoundingBox( const Rect & rect,
-			      const double pageWidth,
-			      const double pageHeight,
-			      const double margin )  
+            const double pageWidth,
+            const double pageHeight,
+            const double margin )  
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;
@@ -245,9 +245,9 @@ TransformCairo::mapWidth( double width ) const
 
 void
 TransformCairo::setBoundingBox( const Rect & rect,
-			      const double pageWidth,
-			      const double pageHeight,
-			      const double margin )  
+            const double pageWidth,
+            const double pageHeight,
+            const double margin )  
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;

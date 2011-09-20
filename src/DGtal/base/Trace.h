@@ -44,12 +44,12 @@
 #include <string>
 #include <stack>
 
+#include "DGtal/base/Config.h"
 #include "DGtal/base/Clock.h"
 #include "DGtal/base/Assert.h"
 #include "DGtal/base/TraceWriter.h"
 #include "DGtal/base/TraceWriterTerm.h"
 //////////////////////////////////////////////////////////////////////////////
-
 
 
 namespace DGtal 
@@ -59,7 +59,7 @@ namespace DGtal
   // class Trace
   /** 
    * Description of class 'Trace' <p>
-   * Aim: @brief ximplementation of basic methods to trace out messages with indentation levels.
+   * Aim: @brief implementation of basic methods to trace out messages with indentation levels.
    * 
    * Trace objects use a TraceWriter to switch between terminal and file outputs.
    * Methods postfixed with "Debug" contain no code if the compilation flag DEBUG is not set.
@@ -170,13 +170,13 @@ namespace DGtal
     std::string myCurrentPrefix;
 
     ///A stack to store the block keywords
-    std::stack<std::string> myKeywordStack;
+   std::stack<std::string> myKeywordStack;
 
     ///A reference to the output writer
     TraceWriter &myWriter;
 
     ///A stack to store the block clocks
-    std::stack<Clock*> myClockStack;
+std::stack<Clock*> myClockStack;
 
     // ------------------------- Hidden services ------------------------------
   protected:

@@ -1,4 +1,4 @@
-## Sources associated to the module math
+## Sources associated to the module kernel
 ##
 
 SET(DGTAL_SRC ${DGTAL_SRC} 

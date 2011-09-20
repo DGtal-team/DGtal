@@ -66,7 +66,7 @@ int main()
   Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/circleR10modif.pgm" ); 
   Z2i::KSpace ks;
   if(! ks.init( image.domain().lowerBound(), 
-		image.domain().upperBound(), true )){
+    image.domain().upperBound(), true )){
     cerr << "Problem in initialisation of KSpace" << endl;
     exit(1);
   }
@@ -77,7 +77,7 @@ int main()
   SurfelAdjacency<2> sAdj( true );
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-						    ks, set2dPredicate, sAdj );  
+                ks, set2dPredicate, sAdj );  
   Board2D aBoard;
   aBoard << set2d;
   aBoard << image.domain();  
@@ -96,7 +96,7 @@ int main()
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
     aBoard << SetMode( fc.styleName(), "InterGrid" );
     aBoard<< CustomStyle( fc.styleName(), 
-    			  new CustomColors(  cmap_grad(i),  Color::None ) );    
+            new CustomColors(  cmap_grad(i),  Color::None ) );    
     
     
     

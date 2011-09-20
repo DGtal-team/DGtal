@@ -60,6 +60,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
 
   template < typename Domain, typename Value, typename HashKey>
+  inline
   experimental::ImageContainerByHashTree<Domain, Value, HashKey>::ImageContainerByHashTree ( const unsigned int hashKeySize,
       const unsigned int depth,
       const Value defaultValue )
@@ -90,29 +91,30 @@ namespace DGtal
     myData = new Node*[myArraySize];
     for ( unsigned i = 0; i < myArraySize; ++i )
       myData[i] = 0;
-
+    
     addNode ( defaultValue, ROOT_KEY );
   }
-
-
+  
+  
   template < typename Domain, typename Value, typename HashKey>
+  inline
   experimental::ImageContainerByHashTree<Domain, Value, HashKey>::ImageContainerByHashTree ( const unsigned int hashKeySize,
-      const Point & p1,
-      const Point & p2,
-      const Value defaultValue )
-      : myKeySize ( hashKeySize ), myOrigin ( p1 )
+											     const Point & p1,
+											     const Point & p2,
+											     const Value defaultValue )
+    : myKeySize ( hashKeySize ), myOrigin ( p1 )
   {
     //Consistency check of the hashKeysize
     ASSERT ( hashKeySize <= sizeof ( HashKey ) *8 );
-
+    
     myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
-
+    
     int maxSize = 0;
     for ( unsigned int i = 0; i < dim; ++i )
       if ( maxSize < p1[i] - p2[i] )
         maxSize = p1[i] - p2[i];
     unsigned int depth = ceil ( log ( (double) maxSize ) / log((double) 2.0) );
-
+    
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
     {
@@ -139,6 +141,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
 
   template < typename Domain, typename Value, typename HashKey>
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const Point& aPoint, const Value value )
   {
@@ -147,6 +150,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey>
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const HashKey key, const Value value )
   {
@@ -183,7 +187,7 @@ namespace DGtal
     std::list< HashKey > nodeList;
     while ( iterKey != 0 )
     {
-      //	cerr << "while(iter)..." << endl;
+      //  cerr << "while(iter)..." << endl;
       n = getNode ( iterKey );
       if ( n )
       {
@@ -195,7 +199,7 @@ namespace DGtal
             it != nodeList.end();
             it++ )
         {
-          //	cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
+          //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
           addNode ( tempVal, *it );
         }
         addNode ( value, key );
@@ -226,17 +230,20 @@ namespace DGtal
   }
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const HashKey key ) const
   {
     return get ( key );
   }
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const Point &aPoint ) const
   {
     return get ( aPoint );
   }
 
   template < typename Domain, typename Value, typename HashKey >
+  inline
   Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const HashKey key ) const
   {
 
@@ -255,6 +262,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey >
+  inline
   Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::reverseGet ( const HashKey key ) const
   {
 
@@ -281,6 +289,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey>
+  inline
   Value
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const Point & aPoint ) const
   {
@@ -289,6 +298,7 @@ namespace DGtal
 
   //Deprecated
   template < typename Domain, typename Value, typename HashKey >
+  inline
   Value
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
   {
@@ -311,6 +321,7 @@ namespace DGtal
   }
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   HashKey
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getKey ( const Point & aPoint ) const
   {
@@ -327,6 +338,7 @@ namespace DGtal
   }
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   HashKey
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getIntermediateKey ( HashKey key ) const
   {
@@ -335,6 +347,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::Iterator::next()
   {
@@ -365,6 +378,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::removeNode ( HashKey key )
   {
@@ -395,6 +409,7 @@ namespace DGtal
   }
   
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::recursiveRemoveNode ( HashKey key, unsigned int nbRecursions )
   {
@@ -406,7 +421,7 @@ namespace DGtal
       myMorton.childrenKeys ( key, children );
       for ( unsigned int i = 0; i < N; ++i )
       {
-	recursiveRemoveNode ( children[i], nbRecursions );
+  recursiveRemoveNode ( children[i], nbRecursions );
       }
     }
   }
@@ -418,6 +433,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::setDepth ( unsigned int depth )
   {
@@ -429,6 +445,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   unsigned int
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getKeyDepth ( HashKey key ) const
   {
@@ -442,6 +459,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   int*
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getCoordinatesFromKey ( HashKey key ) const
   {
@@ -461,7 +479,7 @@ namespace DGtal
       coordinates[i] = 0;
       for ( unsigned int bitPos = 0; bitPos < ( sizeof ( HashKey ) << 3 ) / dim; ++bitPos )
       {
-	if ( key & Bits::mask ( bitPos*dim + i ) )
+  if ( key & Bits::mask ( bitPos*dim + i ) )
         {
           coordinates[i] |= Bits::mask<HashKey> ( bitPos );
         }
@@ -472,6 +490,7 @@ namespace DGtal
 
 
   template < typename Domain, typename Value, typename HashKey  >
+  inline
   bool
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::isKeyValid ( HashKey key ) const
   {
@@ -498,6 +517,7 @@ namespace DGtal
   // Debug
   // ---------------------------------------------------------------------
   template <typename Domain, typename Value , typename HashKey >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( ostream& out, bool displayKeys ) const
   {
@@ -508,6 +528,7 @@ namespace DGtal
   }
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, ostream& out, bool displayKeys ) const
   {
@@ -540,6 +561,7 @@ namespace DGtal
   }
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( ostream& out, unsigned int nbBits ) const
   {
@@ -581,6 +603,7 @@ namespace DGtal
 
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( ostream& out ) const
   {
@@ -599,6 +622,7 @@ namespace DGtal
 
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   unsigned int
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes ( unsigned int intermediateKey ) const
   {
@@ -622,6 +646,7 @@ namespace DGtal
 
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   unsigned int
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes() const
   {
@@ -636,6 +661,7 @@ namespace DGtal
 
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   unsigned int
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbEmptyLists() const
   {
@@ -651,6 +677,7 @@ namespace DGtal
 
 
   template<typename Domain, typename Value, typename HashKey  >
+  inline
   double
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getAverageCollisions() const
   {
@@ -677,6 +704,7 @@ namespace DGtal
 
 
   template <typename Domain, typename Value, typename HashKey  >
+  inline
   unsigned int
   experimental::ImageContainerByHashTree<Domain, Value, HashKey >::getMaxCollisions() const
   {
@@ -697,40 +725,6 @@ namespace DGtal
   }
 
 
-
-
-  /**
-   *  If you read these line, it means that i haven't got the time to finish these two methods
-   * (I like the tragic sound of it)
-   *
-   * any way this shouldn't take long to implement, the stuff you need to persist is:
-   *     	- the depth of the tree
-   * 		- it's dimension
-   * 		- the position of the origin (Point myOrigin variable)
-   * 		- every existing key associated to its key (use the builtin iterator)
-   *
-   *	The tricky stuff lies in how to serialize
-   * 		- the values (typename TValue),
-   * 		- the keys (ok easier but still can be of 8, 16, 32 and more likely 64 bit type)
-   * 		- the Point (may be in 1D,2D...etc.)
-   *
-   * have fun
-   * Nicolas
-   */
-
-  template <typename Domain, typename Value, typename HashKey  >
-  void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::save ( ostream& out )
-  {
-    assert ( false && "Not implemented yet" );
-  }
-
-  template <typename Domain, typename Value, typename HashKey  >
-  void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::load ( istream& in )
-  {
-    assert ( false && "Not implemented yet" );
-  }
 
 
 
@@ -835,7 +829,7 @@ namespace DGtal
       float result = 0;
       for ( unsigned int i = 0; i < N; ++i )
       {
-	result += blendChildren ( children[i] );
+  result += blendChildren ( children[i] );
       }
       return static_cast<Value> ( result / N );
     }
