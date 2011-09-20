@@ -23,7 +23,7 @@
  *
  * @date 2010/10/27
  *
- * Header file for module Point2ShapePredicate.cpp
+ * @brief Header file for module Point2ShapePredicate.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -53,20 +53,21 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Point2ShapePredicate
   /**
-   * Description of template class 'Point2ShapePredicate' <p>
-   * \brief Aim: Predicate returning true iff the point is in 
-   * the 'interior' of the shape following the concept of 
-   * CPointPredicate.
+   * \brief Aim: Predicate returning 'true' iff a given point is in 
+   * the 'interior' of a given shape, 'false' otherwise
    *
-   * The concept of shape considered here stands for a 
-   * 2D Euclidean shape separating the plane in two 
-   * disjoints parts (the 'interior' and the 'exterior')
-   * and able to return for any point the signed distance
-   * to itself (negative in the interior, positive in the 
-   * exterior) 
-   * The orientation (which part is the 'interior'?)
-   * and the closure (is the boundary included?) are
-   * given by the two boolean template parameters 
+   * This class is a model of CPointPredicate.
+   *
+   * @tparam TSurface  a type that is a model of COrientableHypersurface.
+   * Must separate the space in two disjoints parts (the 'interior' and the 'exterior')
+   * and must be able to return for any given point the signed distance to itself 
+   * (of type TSurface::Distance) by a method called signedDistance() 
+   * (negative in the interior, positive in the exterior, null on the shape). 
+   * @tparam isUpward a bool for the orientation ('true' means that the interior 
+   * is the set of points of positive distance)
+   * @tparam isClosed a bool for the closure ('true' means that the surface is included)
+   *  
+   * @see testHalfPlane.cpp
    */
   template <typename Shape, bool isUpward, bool isClosed>
   class Point2ShapePredicate
@@ -75,9 +76,9 @@ namespace DGtal
   public:
 
     typedef typename Shape::Point Point;
-    typedef typename Shape::Coordinate Coordinate;
-
-    /**
+    typedef typename Shape::Distance Distance; 
+  
+  /**
      * Constructor.
      * @param aShape any shape
      */
