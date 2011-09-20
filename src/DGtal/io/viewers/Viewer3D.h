@@ -232,7 +232,7 @@ protected:
    *  Need to called after a number of addVoxel or after a sortSurfelFromCamera().
    *
    **/
-  void updateList(bool updateBoundingBox=true);
+  void updateList(bool needToUpdateBoundingBox=true);
   
   
   /**
