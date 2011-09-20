@@ -48,7 +48,7 @@ DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::~Point2ShapePredicate()
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
-        const Surface& aSurface):
+        const TSurface& aSurface):
         myS(aSurface)
 {
 }
@@ -77,7 +77,7 @@ DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
     isUpward,
     isClosed> theComparator;
 
-  return theComparator(myS.signedDistance(aPoint),0);
+  return theComparator(myS.signedDistance(p),0);
 }
 
 
