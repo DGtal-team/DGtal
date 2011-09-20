@@ -21,7 +21,7 @@
  *
  * @date 2011/01/26
  *
- * Implementation of inline methods defined in FP.h
+ * @brief Implementation of inline methods defined in FP.h
  *
  * This file is part of the DGtal library.
  */
@@ -159,6 +159,16 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
 }
 
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::FP<TIterator,TInteger,connectivity>::FP(
+  const TIterator& itb, 
+  const TIterator& ite ) throw( InputException ) 
+{
+  FP(itb, ite, false);
+}
+  
 /**
  * Constructor.
  */
