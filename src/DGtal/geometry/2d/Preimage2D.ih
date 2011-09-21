@@ -169,10 +169,25 @@ DGtal::Preimage2D<Shape>::update(
 // Interface - public :
 
 template <typename Shape>
-template<typename Functor>
+inline
+DGtal::DrawableWithBoard2D*
+DGtal::Preimage2D<Shape>::defaultStyle( std::string /*mode*/ ) const
+{
+  return new DrawableWithBoard2D; 
+}
+
+template <typename Shape>
+inline
+std::string
+DGtal::Preimage2D<Shape>::styleName() const
+{
+  return "Preimage2D";
+}
+
+template <typename Shape>
 inline
 void 
-DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
 {
 
   ConstForwardIterator i = myPHull.begin();
@@ -180,7 +195,7 @@ DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
   ++i;
   while ( i != myPHull.end() ) {
     Shape s(pt, *i);
-    s.selfDraw<Functor>(aBoard);
+    s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -190,7 +205,7 @@ DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
   ++i;
   while ( i != myQHull.end() ) {
     Shape s(pt, *i);
-    s.selfDraw<Functor>(aBoard);
+    s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -201,9 +216,9 @@ DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
   Point Ql(*myQHull.rbegin());
 
   Shape s1(Pf, Ql);
-  s1.selfDraw<Functor>(aBoard);
+  s1.selfDraw(aBoard);
   Shape s2(Qf, Pl);
-  s2.selfDraw<Functor>(aBoard);
+  s2.selfDraw(aBoard);
 
 }
 
