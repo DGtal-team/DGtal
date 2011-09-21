@@ -391,7 +391,7 @@ int main( int argc, char** argv )
 	if (!(vm.count("width"))) missingParam("--width");
 	double width = vm["width"].as<double>();
   
-	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
+	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2.0);
 	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
 	Z2i::DigitalSet aSet(domain);
   

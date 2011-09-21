@@ -45,7 +45,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/parametric/StarShaped2D.h"
-#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
