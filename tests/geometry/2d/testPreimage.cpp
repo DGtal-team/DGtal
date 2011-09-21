@@ -27,8 +27,7 @@
  */
 
 /**
- * Description of testPreimage <p>
- * Aim: simple test of \ref Preimage2D
+ * @brief Aim: simple test of \ref Preimage2D
  */
 
 #include <cstdio>
@@ -54,8 +53,7 @@
 
 
 using namespace DGtal;
-
-using namespace LibBoard;
+//using namespace LibBoard;
 
 
 /**** small test, to be completed *******/
@@ -82,20 +80,20 @@ int main()
   bSup.push_back(Point(2, 13));
   bSup.push_back(Point(3, 14));
 
+  Board2D board;
+  board.setUnit(Board2D::UCentimeter);
+
+
   //SimpleTest
   trace.beginBlock("Simple Preimage test");
   {
-    Board board;
-    board.setUnit(Board::UCentimeter);
-
     int i = 0;
     Preimage2D thePreimage(bInf.at(i), bSup.at(i));
-
-//draw range
+    
+    //draw range
     Point P(bInf.at(i));
     Point Q(bSup.at(i));
-    board.fillCircle(P[0], P[1], 0.1);
-    board.fillCircle(Q[0], Q[1], 0.1);
+    board << P << Q; 
     board.drawLine(P[0], P[1], Q[0], Q[1]);
 
     i++;
@@ -111,17 +109,14 @@ int main()
       //draw range
       Point P2(bInf.at(i));
       Point Q2(bSup.at(i));
-      board.fillCircle(P2[0], P2[1], 0.1);
-      board.fillCircle(Q2[0], Q2[1], 0.1);
+      board << P2 << Q2; 
       board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }
 
-    //draw preimage
-    thePreimage.selfDraw(board);
-
-    board.saveEPS("testPreimage-simple.eps");
+    board << thePreimage; 
+    board.saveEPS( "testPreimage-simple.eps", Board2D::BoundingBox, 5000 );
   }
   trace.endBlock();
 
@@ -143,18 +138,16 @@ int main()
   //preimage
   trace.beginBlock("test limit case");
 
+  board.clear(); 
+  
   {
-    Board board;
-    board.setUnit(Board::UCentimeter);
-
     int i = 0;
     Preimage2D thePreimage2(bInf.at(i), bSup.at(i));
 
     //draw range
     Point P(bInf.at(i));
     Point Q(bSup.at(i));
-    board.fillCircle(P[0], P[1], 0.1);
-    board.fillCircle(Q[0], Q[1], 0.1);
+    board << P << Q; 
     board.drawLine(P[0], P[1], Q[0], Q[1]);
 
     i++;
@@ -170,16 +163,14 @@ int main()
       //draw range
       Point P2(bInf.at(i));
       Point Q2(bSup.at(i));
-      board.fillCircle(P2[0], P2[1], 0.1);
-      board.fillCircle(Q2[0], Q2[1], 0.1);
+      board << P2 << Q2;
       board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }
 
     //draw preimage
-    thePreimage2.selfDraw(board);
-
+    board << thePreimage2; 
     board.saveEPS("testPreimage-limitCase.eps");
 
   }
@@ -223,18 +214,15 @@ int main()
   //preimage
   trace.beginBlock("test General Case");
 
+  board.clear();
   {
-    Board board;
-    board.setUnit(Board::UCentimeter);
-
     int i = 0;
     Preimage2D thePreimage(bInf.at(i), bSup.at(i));
 
     //draw range
     Point P(bInf.at(i));
     Point Q(bSup.at(i));
-    board.fillCircle(P[0], P[1], 2);
-    board.fillCircle(Q[0], Q[1], 2);
+    board << P << Q;
     board.drawLine(P[0], P[1], Q[0], Q[1]);
 
     i++;
@@ -250,21 +238,19 @@ int main()
       //draw range
       Point P2(bInf.at(i));
       Point Q2(bSup.at(i));
-      board.fillCircle(P2[0], P2[1], 2);
-      board.fillCircle(Q2[0], Q2[1], 2);
+      board << P2 << Q2;
       board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
 
       i++;
     }
 
     //draw preimage
-    thePreimage.selfDraw(board);
-
+    board << thePreimage; 
     board.saveEPS("testPreimage-generalCase.eps");
 
   }
   trace.endBlock();
 
 
-  return 0;
+  return 1;
 }
