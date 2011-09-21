@@ -91,6 +91,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
 
   - \ref IntroductionPackage
   - \ref KernelPackage
+  - \ref GeometryPackage
 
 
  * @section manuals_dgtal DGtal user-guides
@@ -100,9 +101,6 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
  *   - \ref dgtal_topology 
  *   - \ref dgtal_cellular_topology
  *
- * - Geometric Package
- *    - \ref volpackage
- *    - \ref geometry2d
  * 
  * - Helpers and tools
  *  - \ref dgtal_dgtalboard
