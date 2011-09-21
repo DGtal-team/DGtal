@@ -136,12 +136,12 @@ void displayList()
   trace.emphase()<<"2D Shapes:"<<std::endl;
   for(unsigned int i=0; i<shapes2D.size(); ++i)
     trace.info()<<"\t"<<shapes2D[i]<<"\t"
-    <<shapesDesc[i]<<std::endl
-    <<"\t\tRequired parameter(s): "
-    << shapesParam1[i]<<" "
-          << shapesParam2[i]<<" "
-          << shapesParam3[i]<<" "
-          << shapesParam4[i]<<std::endl;
+		<<shapesDesc[i]<<std::endl
+		<<"\t\tRequired parameter(s): "
+		<< shapesParam1[i]<<" "
+		<< shapesParam2[i]<<" "
+		<< shapesParam3[i]<<" "
+		<< shapesParam4[i]<<std::endl;
   
 }
 
@@ -195,8 +195,8 @@ struct Exporter
    */
   static
   void save(const Set &aSet, 
-      const std::string outputName, 
-      const std::string outputFormat)
+	    const std::string outputName, 
+	    const std::string outputFormat)
   {
     
     Image  image = ImageFromSet<Image>::template create<Set>(aSet, 255, true);
@@ -205,36 +205,36 @@ struct Exporter
       PNMWriter<Image,Gray>::exportPGM(outputName+"."+outputFormat,image,0,255);
     else
       if (outputFormat == "raw")
-  RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
+	RawWriter<Image,Gray>::exportRaw8(outputName+"."+outputFormat,image,0,255);
       else
-  if (outputFormat == "svg")
-    {
-      Board2D board;
-      board << aSet;
-      board.saveSVG((outputName+"."+outputFormat).c_str());
-    }
-  else
+	if (outputFormat == "svg")
+	  {
+	    Board2D board;
+	    board << aSet;
+	    board.saveSVG((outputName+"."+outputFormat).c_str());
+	  }
+	else
 #ifdef WITH_CAIRO
-    if (outputFormat == "pdf")
-      {
-        Board2D board;
-        board << aSet;
-        board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPDF);
+	  if (outputFormat == "pdf")
+	    {
+	      Board2D board;
+	      board << aSet;
+	      board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPDF);
         
-      }
-    else
-      if (outputFormat == "png")
-        {
-    Board2D board;
-    board << aSet;
-    board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPNG);
-        }
-      else
+	    }
+	  else
+	    if (outputFormat == "png")
+	      {
+		Board2D board;
+		board << aSet;
+		board.saveCairo((outputName+"."+outputFormat).c_str(), Board2D::CairoPNG);
+	      }
+	    else
 #endif
-        {
-    trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
-    exit(1);
-        }
+	      {
+		trace.error()<< "Output format: "<<outputFormat<< " not recognized."<<std::endl;
+		exit(1);
+	      }
   }
 
 
@@ -263,12 +263,12 @@ struct Exporter
     ASSERT(space_ok);
     trace.info() << aSet << std::endl;
     trace.info() << ks 
-     << ( space_ok ? " Successfully instantiated" : " Error" )
-     << std::endl;
+		 << ( space_ok ? " Successfully instantiated" : " Error" )
+		 << std::endl;
 
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-                  ks, aSetPredicate, sAdj );  
+						      ks, aSetPredicate, sAdj );  
     trace.endBlock();
     
     ///Export
@@ -277,21 +277,21 @@ struct Exporter
     std::cout<<"## x\ty\tdx\tdy\tddx\tddy"<<std::endl;
     for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++)
       for(unsigned int j=0 ; j< vectContoursBdryPointels.at(i).size() - 1; j++)
-  {
-    Z2i::Space::Point point = (vectContoursBdryPointels.at(i).at(j) 
-             + vectContoursBdryPointels.at(i).at(j+1));
-    Z2i::Space::RealPoint midpoint (point[0]/2.0,point[1]/2.0);
+	{
+	  Z2i::Space::Point point = (vectContoursBdryPointels.at(i).at(j) 
+				     + vectContoursBdryPointels.at(i).at(j+1));
+	  Z2i::Space::RealPoint midpoint (point[0]/2.0,point[1]/2.0);
 
-    Z2i::Space::RealPoint xp,xpp;
-    double t = aShape.parameter(midpoint);
-    xp = aShape.xp( t );
-    xpp = aShape.xpp( t );
+	  Z2i::Space::RealPoint xp,xpp;
+	  double t = aShape.parameter(midpoint);
+	  xp = aShape.xp( t );
+	  xpp = aShape.xpp( t );
     
-    std::cout<< midpoint[0]<<"\t"<<midpoint[1]<<"\t"
-       << xp[0]<<"\t"<<xp[1]<<"\t"
-           << xpp[0]<<"\t"<<xpp[1]<<std::endl;
+	  std::cout<< midpoint[0]<<"\t"<<midpoint[1]<<"\t"
+		   << xp[0]<<"\t"<<xp[1]<<"\t"
+		   << xpp[0]<<"\t"<<xpp[1]<<std::endl;
       
-  }
+	}
         
   }
 };
@@ -339,8 +339,8 @@ int main( int argc, char** argv )
   if(vm.count("help")||argc<=1)
     {
       trace.info()<< "Generate shapes using DGtal library" <<std::endl << "Basic usage: "<<std::endl
-      << "\tshapeGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
-      << general_opt << "\n";
+		  << "\tshapeGenerator [options] --shape <shapeName> --output <outputBasename>"<<std::endl
+		  << general_opt << "\n";
       return 0;
     }
   
@@ -381,144 +381,144 @@ int main( int argc, char** argv )
       Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
       
       if (vm.count("signature"))
-  Exporter<Z2i::DigitalSet,Image>::exportSignature(ball,aSet,domain);
+	Exporter<Z2i::DigitalSet,Image>::exportSignature(ball,aSet,domain);
       
       return 0;
     }
   else
     if (id ==1)
       {
-  if (!(vm.count("width"))) missingParam("--width");
-  double width = vm["width"].as<double>();
+	if (!(vm.count("width"))) missingParam("--width");
+	double width = vm["width"].as<double>();
   
-  ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
-  Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
-  Z2i::DigitalSet aSet(domain);
+	ImplicitHyperCube<Z2i::Space> object(Z2i::Point(0,0), width/2);
+	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
+	Z2i::DigitalSet aSet(domain);
   
-  Shapes<Z2i::Domain>::shaper(aSet, object);
-  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	Shapes<Z2i::Domain>::shaper(aSet, object);
+	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-  if (vm.count("signature"))
-    {
-      trace.error()<< "No signature export for this shape.";
-      trace.info()<<std::endl;
-    }
+	if (vm.count("signature"))
+	  {
+	    trace.error()<< "No signature export for this shape.";
+	    trace.info()<<std::endl;
+	  }
    
-  return 0;
+	return 0;
       }
     else
       if (id ==2)
-  {
-    if (!(vm.count("power"))) missingParam("--power");
-    if (!(vm.count("radius"))) missingParam("--radius");
-    double radius = vm["radius"].as<double>();
-    double power = vm["power"].as<double>();
+	{
+	  if (!(vm.count("power"))) missingParam("--power");
+	  if (!(vm.count("radius"))) missingParam("--radius");
+	  double radius = vm["radius"].as<double>();
+	  double power = vm["power"].as<double>();
     
-    ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
-    Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
-    Z2i::DigitalSet aSet(domain);
+	  ImplicitRoundedHyperCube<Z2i::Space> ball(Z2i::Point(0,0), radius, power);
+	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
+	  Z2i::DigitalSet aSet(domain);
     
-    Shapes<Z2i::Domain>::shaper(aSet, ball);
-    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	  Shapes<Z2i::Domain>::shaper(aSet, ball);
+	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-    if (vm.count("signature"))
-      {
-        trace.error()<< "No signature export for this shape.";
-        trace.info()<<std::endl;
-      }
+	  if (vm.count("signature"))
+	    {
+	      trace.error()<< "No signature export for this shape.";
+	      trace.info()<<std::endl;
+	    }
    
-    return 0;
-  }
+	  return 0;
+	}
       else
-  if (id ==3)
-    {
-      if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-      if (!(vm.count("radius"))) missingParam("--radius");
-      if (!(vm.count("k"))) missingParam("--k");
-      if (!(vm.count("phi"))) missingParam("--phi");
-      double radius = vm["radius"].as<double>();
-      double varsmallradius = vm["varsmallradius"].as<double>();
-      unsigned int k = vm["k"].as<unsigned int>();
-      double phi = vm["phi"].as<double>();
+	if (id ==3)
+	  {
+	    if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+	    if (!(vm.count("radius"))) missingParam("--radius");
+	    if (!(vm.count("k"))) missingParam("--k");
+	    if (!(vm.count("phi"))) missingParam("--phi");
+	    double radius = vm["radius"].as<double>();
+	    double varsmallradius = vm["varsmallradius"].as<double>();
+	    unsigned int k = vm["k"].as<unsigned int>();
+	    double phi = vm["phi"].as<double>();
       
-      Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
-      Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
-      Z2i::DigitalSet aSet(domain);
+	    Flower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
+	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+	    Z2i::DigitalSet aSet(domain);
       
-      Shapes<Z2i::Domain>::shaper(aSet, flower);
-      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	    Shapes<Z2i::Domain>::shaper(aSet, flower);
+	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-      if (vm.count("signature"))
-        Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
+	    if (vm.count("signature"))
+	      Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
-      return 0;
-    }
-  else
-    if (id ==4)
-      {
-        if (!(vm.count("radius"))) missingParam("--radius");
-        if (!(vm.count("k"))) missingParam("--k");
-        if (!(vm.count("phi"))) missingParam("--phi");
-        double radius = vm["radius"].as<double>();
-        unsigned int k = vm["k"].as<unsigned int>();
-        double phi = vm["phi"].as<double>();
+	    return 0;
+	  }
+	else
+	  if (id ==4)
+	    {
+	      if (!(vm.count("radius"))) missingParam("--radius");
+	      if (!(vm.count("k"))) missingParam("--k");
+	      if (!(vm.count("phi"))) missingParam("--phi");
+	      double radius = vm["radius"].as<double>();
+	      unsigned int k = vm["k"].as<unsigned int>();
+	      double phi = vm["phi"].as<double>();
         
-        NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
-        Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
-        Z2i::DigitalSet aSet(domain);
+	      NGon2D<Z2i::Space> object(Z2i::Point(0,0), radius,k,phi);
+	      Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
+	      Z2i::DigitalSet aSet(domain);
         
-        Shapes<Z2i::Domain>::shaper(aSet, object);
-        Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+	      Shapes<Z2i::Domain>::shaper(aSet, object);
+	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-        if (vm.count("signature"))
-    Exporter<Z2i::DigitalSet,Image>::exportSignature(object,aSet,domain);
+	      if (vm.count("signature"))
+		Exporter<Z2i::DigitalSet,Image>::exportSignature(object,aSet,domain);
    
-        return 0;
-      }
-    else
-      if (id ==5)
-        {
-    if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-    if (!(vm.count("radius"))) missingParam("--radius");
-    if (!(vm.count("k"))) missingParam("--k");
-    if (!(vm.count("phi"))) missingParam("--phi");
-    double radius = vm["radius"].as<double>();
-    double varsmallradius = vm["varsmallradius"].as<double>();
-    unsigned int k = vm["k"].as<unsigned int>();
-    double phi = vm["phi"].as<double>();
+	      return 0;
+	    }
+	  else
+	    if (id ==5)
+	      {
+		if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+		if (!(vm.count("radius"))) missingParam("--radius");
+		if (!(vm.count("k"))) missingParam("--k");
+		if (!(vm.count("phi"))) missingParam("--phi");
+		double radius = vm["radius"].as<double>();
+		double varsmallradius = vm["varsmallradius"].as<double>();
+		unsigned int k = vm["k"].as<unsigned int>();
+		double phi = vm["phi"].as<double>();
         
-    AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
-    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
-    Z2i::DigitalSet aSet(domain);
+		AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), radius, varsmallradius,k,phi);
+		Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
+		Z2i::DigitalSet aSet(domain);
         
-    Shapes<Z2i::Domain>::shaper(aSet, flower);
-    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+		Shapes<Z2i::Domain>::shaper(aSet, flower);
+		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-    if (vm.count("signature"))
-      Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
+		if (vm.count("signature"))
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(flower,aSet,domain);
    
-    return 0;
-        } 
-      else
-        //if (id ==6)
-        {
-    if (!(vm.count("axis1"))) missingParam("--axis1");
-    if (!(vm.count("axis2"))) missingParam("--axis2");
-    if (!(vm.count("phi"))) missingParam("--phi");
-    double a1 = vm["axis1"].as<double>();
-    double a2 = vm["axis2"].as<double>();
-    double phi = vm["phi"].as<double>();
+		return 0;
+	      } 
+	    else
+	      //if (id ==6)
+	      {
+		if (!(vm.count("axis1"))) missingParam("--axis1");
+		if (!(vm.count("axis2"))) missingParam("--axis2");
+		if (!(vm.count("phi"))) missingParam("--phi");
+		double a1 = vm["axis1"].as<double>();
+		double a2 = vm["axis2"].as<double>();
+		double phi = vm["phi"].as<double>();
         
-    Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
-    Z2i::Domain domain(ell.getLowerBound(), ell.getUpperBound());
-    Z2i::DigitalSet aSet(domain);
+		Ellipse2D<Z2i::Space> ell(Z2i::Point(0,0), a1, a2,phi);
+		Z2i::Domain domain(ell.getLowerBound(), ell.getUpperBound());
+		Z2i::DigitalSet aSet(domain);
         
-    Shapes<Z2i::Domain>::shaper(aSet, ell);
-    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
+		Shapes<Z2i::Domain>::shaper(aSet, ell);
+		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
-    if (vm.count("signature"))
-      Exporter<Z2i::DigitalSet,Image>::exportSignature(ell,aSet,domain);
+		if (vm.count("signature"))
+		  Exporter<Z2i::DigitalSet,Image>::exportSignature(ell,aSet,domain);
    
-    return 0;
-        } 
+		return 0;
+	      } 
 }
