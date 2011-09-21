@@ -58,6 +58,9 @@ namespace DGtal
    * crossing a sequence of n straigth segments in O(n),
    * with the algorithm of O'Rourke (1981). 
    *
+   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
+  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+   *
    * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.
    * The set of shapes considered here are those that 
@@ -73,43 +76,15 @@ namespace DGtal
    * vertical segments of increasing x-coordinate) the algorithm of O'Rourke
    * will return the right output.
    *
-   * @code 
-   
-   typedef int Coordinate;
-   typedef PointVector<2, Coordinate> Point;
-   typedef StraightLine<Coordinate> StraightLine;
-   typedef Preimage2D<StraightLine> Preimage2D;
-   
-   // Set input data segments as two vectors of endpoints.   
-   std::vector<Point> P, Q;
-   
-   Q.push_back(Point(0, 10));
-   Q.push_back(Point(1, 11));
-   Q.push_back(Point(2, 11));
-   Q.push_back(Point(3, 12));
-   
-   P.push_back(Point(0, 12));
-   P.push_back(Point(1, 13));
-   P.push_back(Point(2, 13));
-   P.push_back(Point(3, 14));
-   
-   // Initialization 
-   int i = 0;
-   Preimage2D thePreimage(bInf.at(i), bSup.at(i));
-   
-   // Incremental computation of the preimage
-   while ( (i < n) &&
-   (thePreimage.addFront(bInf.at(i), bSup.at(i))) )
-   {
-     i++;
-   }
-   std::cout << thePreimage << std::endl;
-   
-   * @endcode
-   *
    * @tparam Shape  a model of COrientableHypersurface
    *
-   * @see testPreimage.cpp
+   * You can define your preimage type from a given shape type as follows:
+   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromStraightLine
+   *
+   * Then, here is the basic usage of this class:
+   * @snippet geometry/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
+   *
+   * @see examplePreimage.cpp testPreimage.cpp
    */
   template <typename Shape>
   class Preimage2D

@@ -137,7 +137,7 @@ DGtal::Preimage2D<Shape>::update(
   if (anIterator != anEndIterator) {
     p = *anIterator;
     Predicate pred( Shape(p,q) );
-      std::cerr << pred << std::endl;
+//      std::cerr << pred << std::endl;
 
 
     while ( (anIterator != anEndIterator) && 
@@ -145,7 +145,7 @@ DGtal::Preimage2D<Shape>::update(
 
       //deletion
       anIterator--;
-      std::cerr << "ERASE " << (*anIterator) << std::endl;
+//      std::cerr << "ERASE " << (*anIterator) << std::endl;
 //      anIterator = aContainer.erase(anIterator);
 //does not compile if type 'Iterator' is the type ' ::reverse_iterator'
 //erase only takes parameter of type ' ::iterator'

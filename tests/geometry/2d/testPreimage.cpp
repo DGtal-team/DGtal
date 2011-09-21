@@ -46,17 +46,19 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/io/boards/Board2D.h"
 
 #include "DGtal/geometry/2d/StraightLine.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 
 
+#include "ConfigTest.h"
+
+
 using namespace DGtal;
-//using namespace LibBoard;
 
-
-/**** small test, to be completed *******/
 
 int main()
 {
@@ -252,5 +254,5 @@ int main()
   trace.endBlock();
 
 
-  return 1;
+  return 0;
 }
