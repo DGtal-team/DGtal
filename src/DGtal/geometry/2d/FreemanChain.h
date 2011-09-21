@@ -114,8 +114,14 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
+
+    //deprecated
     typedef PointVector<2, Integer> PointI2;
     typedef PointVector<2, Integer> VectorI2;
+
+    typedef PointVector<2, Integer> Point;
+    typedef PointVector<2, Integer> Vector;
+
     typedef unsigned int Size;
     typedef unsigned int Index;
 
