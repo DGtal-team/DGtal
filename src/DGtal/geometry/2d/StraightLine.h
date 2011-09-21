@@ -76,6 +76,7 @@ namespace DGtal
     //2D point and 2D vector
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Coordinate;
+    typedef TInteger Distance; 
     typedef DGtal::PointVector<2,Coordinate> Point;
     typedef DGtal::PointVector<2,Coordinate> Vector;
 
