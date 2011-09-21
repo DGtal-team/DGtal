@@ -229,13 +229,12 @@ bool testPublicSercives()
 /**
  * test iterators
  */
-bool testIterators()
+bool testPointsIterators()
 {
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> FreemanChain;
   typedef FreemanChain::PointI2 Point;
   typedef FreemanChain::ConstIterator PointIterator;
-  typedef FreemanChain::ConstCharIterator CharIterator;
   typedef std::reverse_iterator<PointIterator> ReverseIterator;
    
   trace.beginBlock ( "Testing FreemanChain Iterator" );
@@ -278,6 +277,58 @@ bool testIterators()
   return myStack.empty() && samePoints && ( nbPts == seq.size() + 1);
 }
 
+/**
+ * test codes iterators
+ */
+bool testCodesIterators()
+{
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> FreemanChain;
+  typedef FreemanChain::CodesRange Range;
+//  typedef Range::ConstIterator PointIterator;
+//  typedef std::reverse_iterator<PointIterator> ReverseIterator;
+   
+  trace.beginBlock ( "Testing CodesRange Iterator" );
+
+  std::stringstream ss;
+  std::string myString = "0 0 000011112222333";
+  ss << myString << std::endl;
+  FreemanChain seq(ss);
+
+  trace.info()<< "Freeman chain set to " << myString << endl;   
+  trace.info()<< seq << endl;
+  Range r = seq.getCodesRange(); 
+  trace.info()<< r << endl;
+  
+  trace.info()<< "Iterates on letters." << endl;
+  std::stack<char> myStack;
+
+  unsigned int nbLetters = 0;
+  for (Range::ConstIterator i = r.begin(); i != r.end(); ++i) 
+  {
+    myStack.push(*i);
+    nbLetters++;
+  }
+
+  trace.info()<< "Test reverse iterator." << endl;
+  bool samePoints = true;
+  for (Range::ConstReverseIterator ri = r.rbegin(); 
+      ri != r.rend();
+      ++ri) 
+  {
+    if ( !myStack.empty() && ( *ri == myStack.top() ) )
+    {
+      myStack.pop();
+    } 
+    else
+    {
+      samePoints = false;
+      break;
+    }
+  }
+  trace.endBlock();
+  return myStack.empty() && samePoints && ( nbLetters == seq.size() );
+}
 
 /**
  * Test static services
@@ -528,7 +579,8 @@ int main( int argc, char** argv )
   bool res = 
     testConstructors() &&  
     testPublicSercives() &&
-    testIterators() &&
+    testPointsIterators() &&
+    testCodesIterators() &&
     testStaticServices() &&
     testDisplay();
 

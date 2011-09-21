@@ -55,6 +55,7 @@
 #include <iterator>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/OrderedAlphabet.h"
+#include "DGtal/base/Circulator.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 #include "DGtal/io/boards/Board2D.h"
 
@@ -115,7 +116,7 @@ namespace DGtal
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
 
-    //deprecated
+    //deprecated, use Point and Vector instead
     typedef PointVector<2, Integer> PointI2;
     typedef PointVector<2, Integer> VectorI2;
 
@@ -374,80 +375,173 @@ namespace DGtal
     };
 
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // class FreemanChain::ConstCharIterator
-    ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// class CodesRange
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the letters of the freeman chain.
+*
+* @see FreemanChain.h testFreemanChain.cpp
+*/
+class CodesRange
+{
+
+  // ------------------------- inner types --------------------------------
+public: 
+
+  typedef std::string::const_iterator ConstIterator; 
+  typedef std::string::const_reverse_iterator ConstReverseIterator;
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+
+  // ------------------------- standard services --------------------------------
+
+  /**
+   * Default Constructor.
+   */
+  CodesRange(){}
+
+  /**
+   * Constructor.
+   */
+  CodesRange(const std::string& aChain ): myChain(aChain){}
+
+  /**
+   * Copy constructor.
+   * @param other the iterator to clone.
+   */
+  CodesRange( const CodesRange & aOther )
+    : myChain( aOther.myChain ){}
   
-    
-    /**
-     * This class represents an iterator on the symbols of the freeman chain.
-     *
-     * The ConstCharIterator inherits from std::string::const_iterator which is
-     * a random access iterator.
-     */
-
-    class ConstCharIterator : public std::string::const_iterator
+  /**
+   * Assignment.
+   * @param other the iterator to copy.
+   * @return a reference on 'this'.
+   */
+  CodesRange& operator= ( const CodesRange & other )
+  {  
+    if ( this != &other )
     {
+      myChain = other.myChain;
+    }
+  return *this;
+  }
 
-      // ------------------------- Private data -----------------------
+  /**
+   * Destructor. Does nothing.
+   */
+  ~CodesRange() {}
 
-      private:
+  /**
+   * @return the size of the range
+   */
+  std::string::size_type size() const 
+  {
+    return myChain.size();
+  }
 
-        /// The Freeman chain visited by the iterator.
-        const FreemanChain* myFc;
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[FreemanChainCodes]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, "") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'CodesRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'CodesRange' to write.
+   * @return the output stream after the writing.
+   */
+    friend ostream& operator <<(ostream & out, const CodesRange & object)
+    {
+      object.selfDisplay( out );
+      return out;
+    }
+  // ------------------------- private data --------------------------------
+  private:
+  /**
+   * Private member @a myChain is a string of letters
+   */    
+  const std::string myChain;
+  // ------------------------- iterator services --------------------------------
+public:
 
-        typedef std::string::const_iterator parent;
+  /**
+   * Iterator service.
+   * @return begin iterator
+   */
+  ConstIterator begin() const {
+    return myChain.begin();
+  }
 
-        // ------------------------- Standard services -----------------------
-      public:
+  /**
+   * Iterator service.
+   * @return end iterator
+   */
+  ConstIterator end() const {
+    return myChain.end();
+  }
 
-        /**
-         * Default constructor
-         * Not valid.
-         */
-        ConstCharIterator () :
-          myFc( NULL ) { }
+  /**
+   * Iterator service.
+   * @return rbegin iterator
+   */
+  ConstReverseIterator rbegin() const {
+    return myChain.rbegin();
+  }
 
-        /**
-         * Constructor.
-         *
-         * @param chain a Freeman chain,
-         * @param n the position in [chain] (within 0 and chain.size()).
-         */
-        ConstCharIterator( const FreemanChain & aFC, Index n = 0) ;
+  /**
+   * Iterator service.
+   * @return rend iterator
+   */
+  ConstReverseIterator rend() const {
+    return myChain.rend();
+  }
 
-        /**
-         * Copy constructor.
-         * @param other the iterator to clone.
-         */
-        ConstCharIterator( const ConstCharIterator & other );
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
 
-        /**
-         * Initilization from a ConstIterator. If the ConstIterator points on
-         * the i-th point of the curve defined by the FreemanChain then the
-         * CharIterator is initialized on the i-th letter, i.e. '*this' is the
-         * code of the step that starts at '*other'.  
-         * @param other the iterator
-         * on points
-         */
-        ConstCharIterator( const ConstIterator & other );
+  /**
+   * Circulator service.
+   * @return a reverse circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
+};
 
+///////////////////////////////////////////////////////////////////////////////
+// end of class CodesRange
+///////////////////////////////////////////////////////////////////////////////
 
-        /**
-         * Destructor. Does nothing.
-         */
-        ~ConstCharIterator()
-        { }
-
-
-        const FreemanChain * getChain() const
-        {
-          return myFc;
-        }
-
-    };
-
-
+    /**
+     * @return  an instance of CodesRange.
+     */
+    CodesRange getCodesRange()
+    { 
+      return CodesRange(chain); 
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -723,20 +817,6 @@ namespace DGtal
      * @return an iterator pointing after the last point of the chain.
      */
     ConstIterator end() const;
-
-    /**
-     * Iterator service on codes.
-     * @return an iterator pointing on the first point of the chain.
-     */
-    ConstCharIterator cbegin() const;
-
-
-    /**
-     * Iterator service on codes.
-     * @return an iterator pointing after the last point of the chain.
-     */
-    ConstCharIterator cend() const;
-
 
     /**
      * Returns the next position in the chain code. The path coded by the chain
