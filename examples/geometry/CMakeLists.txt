@@ -5,6 +5,7 @@ SET(DGTAL_EXAMPLES_SRC
   convex-and-concave-parts
   freemanChainFromImage
   exampleGridCurve2d
+  examplePreimage
 )
 
 

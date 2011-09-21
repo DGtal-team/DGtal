@@ -131,44 +131,24 @@ namespace DGtal
      */
     Coordinate signedDistance(const Point& aP) const;
 
-//------------------ display -------------------------------
+    //------------------ display -------------------------------
     /**
-     * Draw the part of the straight line lying between 
-     * the two given point
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
      */
-    template<typename Functor>
-      void selfDraw( LibBoard::Board & board ) const;
-
-
+    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    
     /**
-     * Draw the part of the straight line lying between 
-     * the two given point on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * @return the style name used for drawing this object.
      */
-    void selfDraw( LibBoard::Board & board ) const
-      {
-        selfDraw<selfDrawStyle>(board);
-      }
-
-private:
-
-   /** 
-     * Default Style Functor for drawing
-     * 
-     * @param aBoard 
-     */
-
-    struct selfDrawStyle
-    {
-      selfDrawStyle(LibBoard::Board & aBoard) 
-      {
-  aBoard.setPenColor(Color::Red);
-      }
-    };
-
+    std::string styleName() const;
+    
+    /**
+       Draw the object on a Board2D board
+       @param board the output board where the object is drawn.
+    */
+    void selfDraw(Board2D & board ) const;
+    
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
