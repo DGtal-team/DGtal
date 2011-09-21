@@ -113,21 +113,27 @@ DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Draw the part of the straight line lying between 
- * the two given point on a LiBoard board
- * @param board the output board where the object is drawn.
- * @tparam Functor a Functor to specialize the Board style
- */
 template <typename TInteger>
-template<typename Functor>
+inline
+DGtal::DrawableWithBoard2D*
+DGtal::StraightLine<TInteger>::defaultStyle( std::string /*mode*/ ) const
+{
+  return new DrawableWithBoard2D; 
+}
+
+template <typename TInteger>
+inline
+std::string
+DGtal::StraightLine<TInteger>::styleName() const
+{
+  return "StraightLine";
+}
+
+template <typename TInteger>
 inline
 void 
-DGtal::StraightLine<TInteger>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::StraightLine<TInteger>::selfDraw(Board2D & aBoard) const
 {
-
-  Functor applystyle(aBoard);
-
   aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
 }
 
