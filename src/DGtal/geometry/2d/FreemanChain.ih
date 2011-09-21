@@ -18,12 +18,18 @@
  * @file FreemanChain.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * Bertrand Kerautret (\c kerautre@loria.fr )
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
  *
  * @date 2010/07/01
  *
- * Implementation of inline methods defined in FreemanChain.h
+ * @brief Implementation of inline methods defined in FreemanChain.h
  *
  * This file is part of the DGtal library.
  */
