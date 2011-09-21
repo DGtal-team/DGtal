@@ -28,28 +28,15 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of static constants
 ///////////////////////////////////////////////////////////////////////////////
-template < Dimension dim, typename TInteger >
-const Dimension 
-DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
 
-template < Dimension dim, typename TInteger >
-const Dimension 
-DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
+//DC static const are now in the class declaration (build fix on MSVC)
 
-template < Dimension dim, typename TInteger >
-const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
-DGtal::KhalimskySpaceND< dim, TInteger >::POS = true;
-
-template < Dimension dim, typename TInteger >
-const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
-DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.

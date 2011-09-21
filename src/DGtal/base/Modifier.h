@@ -622,7 +622,7 @@ namespace DGtal
   class SCellToCode
   {
     
-    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
+    BOOST_STATIC_ASSERT( KSpace::dimension == 2 );
 
     public: 
       
