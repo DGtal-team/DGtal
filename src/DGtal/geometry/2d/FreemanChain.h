@@ -20,12 +20,18 @@
  * @file FreemanChain.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * Bertrand Kerautret (\c kerautre@loria.fr )
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
  *
  * @date 2010/07/01
  *
- * Header file for module FreemanChain.cpp
+ * @brief Header file for module FreemanChain.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -63,10 +69,10 @@ namespace DGtal
   // class FreemanChain
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'FreemanChain' <p> Aim: Describes a digital
+   * Aim: Describes a digital
    * 4-connected contour as a string of '0', '1', '2', and '3' and the
    * coordinate of the first point. When it is a loop, it is the
-   * counterclockwise boundary of the shape.
+   * clockwise boundary of the shape.
    
    * Example :
    * @code 
@@ -84,15 +90,19 @@ namespace DGtal
    fc.computeBoundingBox(minX, minY, maxX, maxY);  
    
    // Compute the list of points of the contour
-   vector<FreemanChain<int>::PointI2> aContourPointVector; 
+   vector<FreemanChain<int>::Point> aContourPointVector; 
    fc.getContourPoints(fc, aContourPointVector);
    
    // Draw the Freeman chain
-   Board2D::Board aBoard;
+   Board2D aBoard;
    aBoard.setUnit(Board::UMillimeter);
-   fc.selfDraw(aBoard);
+   aBoard << fc;
 
    * @endcode
+   *
+   * @tparam TInteger  type of the coordinates of the starting point
+   *
+   * @see freemanChainDisplay.cpp  freemanChainFromImage.cpp  testFreemanChain.cpp
    */
 
   template <typename TInteger>
