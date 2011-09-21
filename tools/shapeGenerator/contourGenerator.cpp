@@ -432,13 +432,13 @@ int main( int argc, char** argv )
     }
 
   //Parse options
-  if (not(vm.count("shape"))) missingParam("--shape");
+  if (!(vm.count("shape"))) missingParam("--shape");
   std::string shapeName = vm["shape"].as<std::string>();
     
-  if (not(vm.count("outputGeometry"))) missingParam("--outputGeometry");
+  if (!(vm.count("outputGeometry"))) missingParam("--outputGeometry");
   std::string outputFileName = vm["outputGeometry"].as<std::string>();
 
-  if (not(vm.count("format"))) missingParam("--format");
+  if (!(vm.count("format"))) missingParam("--format");
   std::string outputFormat = vm["format"].as<std::string>();
 
   //We check that the shape is known
@@ -454,14 +454,14 @@ int main( int argc, char** argv )
   double h = vm["gridstep"].as<double>();
   if (id ==0)
     {
-      if (not(vm.count("radius"))) missingParam("--radius");
+      if (!(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       Ball2D<Space> ball(Z2i::Point(0,0), radius);
       generateContour<Space>( ball, h, outputFormat, outputFileName ); 
     }
   else if (id ==1)
     {
-      if (not(vm.count("width"))) missingParam("--width");
+      if (!(vm.count("width"))) missingParam("--width");
       double width = vm["width"].as<double>();
       ImplicitHyperCube<Space> object(Z2i::Point(0,0), width/2);
           trace.error()<< "Not available.";
@@ -469,8 +469,8 @@ int main( int argc, char** argv )
     }
   else if (id ==2)
     {
-      if (not(vm.count("power"))) missingParam("--power");
-      if (not(vm.count("radius"))) missingParam("--radius");
+      if (!(vm.count("power"))) missingParam("--power");
+      if (!(vm.count("radius"))) missingParam("--radius");
       double radius = vm["radius"].as<double>();
       double power = vm["power"].as<double>();
       ImplicitRoundedHyperCube<Space> ball(Z2i::Point(0,0), radius, power);
@@ -479,10 +479,10 @@ int main( int argc, char** argv )
     }
   else if (id ==3)
     {
-      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-      if (not(vm.count("radius"))) missingParam("--radius");
-      if (not(vm.count("k"))) missingParam("--k");
-      if (not(vm.count("phi"))) missingParam("--phi");
+      if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+      if (!(vm.count("radius"))) missingParam("--radius");
+      if (!(vm.count("k"))) missingParam("--k");
+      if (!(vm.count("phi"))) missingParam("--phi");
       double radius = vm["radius"].as<double>();
       double varsmallradius = vm["varsmallradius"].as<double>();
       unsigned int k = vm["k"].as<unsigned int>();
@@ -492,9 +492,9 @@ int main( int argc, char** argv )
     }
   else if (id ==4)
     {
-      if (not(vm.count("radius"))) missingParam("--radius");
-      if (not(vm.count("k"))) missingParam("--k");
-      if (not(vm.count("phi"))) missingParam("--phi");
+      if (!(vm.count("radius"))) missingParam("--radius");
+      if (!(vm.count("k"))) missingParam("--k");
+      if (!(vm.count("phi"))) missingParam("--phi");
       double radius = vm["radius"].as<double>();
       unsigned int k = vm["k"].as<unsigned int>();
       double phi = vm["phi"].as<double>();
@@ -503,10 +503,10 @@ int main( int argc, char** argv )
     }
   else if (id ==5)
     {
-      if (not(vm.count("varsmallradius"))) missingParam("--varsmallradius");
-      if (not(vm.count("radius"))) missingParam("--radius");
-      if (not(vm.count("k"))) missingParam("--k");
-      if (not(vm.count("phi"))) missingParam("--phi");
+      if (!(vm.count("varsmallradius"))) missingParam("--varsmallradius");
+      if (!(vm.count("radius"))) missingParam("--radius");
+      if (!(vm.count("k"))) missingParam("--k");
+      if (!(vm.count("phi"))) missingParam("--phi");
       double radius = vm["radius"].as<double>();
       double varsmallradius = vm["varsmallradius"].as<double>();
       unsigned int k = vm["k"].as<unsigned int>();
@@ -516,9 +516,9 @@ int main( int argc, char** argv )
     } 
   else if (id ==6)
     {
-      if (not(vm.count("axis1"))) missingParam("--axis1");
-      if (not(vm.count("axis2"))) missingParam("--axis2");
-      if (not(vm.count("phi"))) missingParam("--phi");
+      if (!(vm.count("axis1"))) missingParam("--axis1");
+      if (!(vm.count("axis2"))) missingParam("--axis2");
+      if (!(vm.count("phi"))) missingParam("--phi");
       double a1 = vm["axis1"].as<double>();
       double a2 = vm["axis2"].as<double>();
       double phi = vm["phi"].as<double>();
