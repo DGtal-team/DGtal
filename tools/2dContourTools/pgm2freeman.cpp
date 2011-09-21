@@ -102,7 +102,7 @@ int main( int argc, char** argv )
   bool select=false;
   bool thresholdRange=vm.count("thresholdRange");
   Z2i::Point selectCenter;
-  unsigned int selectDistanceMax; 
+  unsigned int selectDistanceMax = 0; 
   
   
   //Parse options
