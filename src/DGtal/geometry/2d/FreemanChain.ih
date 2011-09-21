@@ -168,63 +168,6 @@ void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Iterator on codes
-
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstCharIterator 
-DGtal::FreemanChain<TInteger>::cbegin() const
-{
-  return ConstCharIterator( *this, 0 );
-}
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstCharIterator 
-DGtal::FreemanChain<TInteger>::cend() const
-{
-  return ConstCharIterator( *this, chain.size() );
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const FreemanChain & aFC, 
-    unsigned int n) : std::string::const_iterator( aFC.chain.begin() ) 
-{
-  myFc = &aFC;
-  (*this) += n;
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const ConstCharIterator & aOther) 
-    : std::string::const_iterator( aOther ) 
-{
-   myFc = aOther.myFc;
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const ConstIterator & aOther) 
-    : std::string::const_iterator( aOther.getChain->chain.begin() ) 
-{
-  myFc = aOther.getChain();
-  (*this) += aOther.getPosition();
-}
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
 
