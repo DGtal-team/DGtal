@@ -191,25 +191,9 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, TInteger x, 
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::
-FreemanChain( const std::vector<PointI2> vectPoints )
+FreemanChain( const std::vector<Point>& vectPoints )
 {
-  ostringstream oss;
-  x0=vectPoints.at(0)[0];
-  y0=vectPoints.at(0)[1];
-  xn=vectPoints.at(vectPoints.size()-1)[0];
-  yn=vectPoints.at(vectPoints.size()-1)[1];
-  
-  PointI2 pt;
-  PointI2 ptSuiv;
-  for(unsigned int i=0; i< vectPoints.size()-1; i++){
-    pt = vectPoints.at(i);
-    ptSuiv = vectPoints.at(i+1);
-    int dx = ptSuiv[0] - pt[0]; 
-    int dy = ptSuiv[1] - pt[1]; 
-    char aCode = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
-    oss << aCode;
-  }
-  chain = oss.str();
+  readFromPointsRange(vectPoints.begin(), vectPoints.end(), *this); 
 }
 
 
@@ -674,8 +658,59 @@ void DGtal::FreemanChain<TInteger>::read( std::istream & in, FreemanChain & c )
   }
 }
 
+template <typename TInteger>
+template <typename TConstIterator>
+inline
+void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TConstIterator& itBegin, const TConstIterator& itEnd, FreemanChain & c ) 
+{
+  TConstIterator it( itBegin ); 
 
+  if (it != itEnd) 
+  { //if the range is not empty
+    Point startingPt( *it ); 
+    ++it; 
+    
+    if (it != itEnd)
+    { //if there is more than one element
+      ostringstream oss;
+      Point pt( startingPt );
+      do 
+      {
+        
+        Point ptSuiv( *it ); 
+        Integer dx = ptSuiv[0] - pt[0]; 
+        Integer dy = ptSuiv[1] - pt[1]; 
+        short number = ( dx != 0 ? (1 - dx) : (2 - dy) );
+        if ( (number < 0) || (number > 3) )
+        {
+          std::cerr << "not connected points (method readFromPointsRange of FreemanChain)" << std::endl;
+          throw ConnectivityException(); 
+        }
+        oss << number;
+        pt = ptSuiv;
+        ++it;         
+        
+      } while ( it != itEnd ); 
+      
+      c.xn=pt[0];
+      c.yn=pt[1];
+      c.chain = oss.str(); 
+    }
+    
+    c.x0=startingPt[0];
+    c.y0=startingPt[1];  
+  }
 
+}
+
+template <typename TInteger>
+template <typename TRange>
+inline
+void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
+{
+  BOOST_CONCEPT_ASSERT(( CConstRange<TRange> ));
+  readFromPointsRange( aRange.begin(), aRange.end(), c ); 
+}
 
 template <typename TInteger>
 inline

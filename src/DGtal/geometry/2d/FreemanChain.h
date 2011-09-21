@@ -568,7 +568,7 @@ public:
      * Constructor.
      * @param vectorPoints the vector containing all the points. 
      */
-    FreemanChain( const std::vector<PointI2> vectPoints);
+    FreemanChain( const std::vector<Point>& vectPoints);
     
     
     /**
@@ -860,7 +860,25 @@ public:
      */
     static void read( std::istream & in, FreemanChain & c );
 
-
+    /**
+     * Reads a chain from the points range [ @a itBegin , @a itEnd ) and updates @a c.
+     * @param itBegin  begin iterator,
+     * @param itEnd  end iterator,
+     * @param c  the returned Freeman chain.
+     * @tparam TConstIterator  type of iterator
+     */
+    template<typename TConstIterator>
+    static void readFromPointsRange( const TConstIterator& itBegin, const TConstIterator& itEnd, FreemanChain & c );
+    
+    /**
+     * Reads a chain from the points range @a aRange and updates @a c.
+     * @param aRange  any points range
+     * @param c  the returned Freeman chain
+     * @tparam TRange  type of points range
+     */
+    template<typename TRange>
+    static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
+    
     /**
      * Return a vector containing all the interger points of the freemanchain.
      *
