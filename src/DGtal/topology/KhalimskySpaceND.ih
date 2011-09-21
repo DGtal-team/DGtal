@@ -35,8 +35,23 @@
 // IMPLEMENTATION of static constants
 ///////////////////////////////////////////////////////////////////////////////
 
-//DC static const are now in the class declaration (build fix on MSVC)
+#if (!defined(WIN32))
+template < Dimension dim, typename TInteger >
+const Dimension 
+DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
 
+template < Dimension dim, typename TInteger >
+const Dimension 
+DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
+
+template < Dimension dim, typename TInteger >
+const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
+DGtal::KhalimskySpaceND< dim, TInteger >::POS = true;
+
+template < Dimension dim, typename TInteger >
+const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
+DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.

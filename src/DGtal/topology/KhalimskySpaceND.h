@@ -458,11 +458,19 @@ namespace DGtal
     typedef SpaceND<dim, Integer> Space;
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
+#if defined ( WIN32 )
     // static constants
     static const Dimension dimension = dim;
     static const Dimension DIM = dim;
     static const Sign POS = true;
     static const Sign NEG = false;
+#else
+    // static constants
+    static const Dimension dimension;
+    static const Dimension DIM;
+    static const Sign POS;
+    static const Sign NEG;
+#endif //WIN32
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {

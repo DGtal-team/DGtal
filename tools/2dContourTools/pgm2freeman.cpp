@@ -106,7 +106,7 @@ int main( int argc, char** argv )
   
   
   //Parse options
-  if (not(vm.count("image"))){
+  if (!(vm.count("image"))){
     trace.info() << "Image file name needed"<< endl;
     return 0;
   } 
@@ -177,7 +177,7 @@ int main( int argc, char** argv )
       if(vectContoursBdryPointels.at(k).size()>minSize){
   if(select){
     Z2i::Point ptMean = ContourHelper::getMeanPoint(vectContoursBdryPointels.at(k));
-    unsigned int distance = (unsigned int)(sqrt((ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
+    unsigned int distance = (unsigned int)ceil(sqrt((double)(ptMean[0]-selectCenter[0])*(ptMean[0]-selectCenter[0])+
             (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
     if(distance<=selectDistanceMax){
       FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(k));    
