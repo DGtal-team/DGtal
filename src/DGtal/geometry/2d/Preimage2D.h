@@ -23,7 +23,7 @@
  *
  * @date 2010/10/26
  *
- * Header file for module Preimage2D.cpp
+ * @brief Header file for module Preimage2D.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -54,25 +54,25 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Preimage2D
   /**
-   * Description of template class 'Preimage2D' <p>
-   * \brief Aim: Computes the preimage of the 2D Euclidean shapes 
-   * crossing a sequence of straigth segments in linear-time
-   * according to the algorithm of O'Rourke (1981). 
-
-   * The straight
+   * @brief Aim: Computes the preimage of the 2D Euclidean shapes 
+   * crossing a sequence of n straigth segments in O(n),
+   * with the algorithm of O'Rourke (1981). 
+   *
+   * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.
    * The set of shapes considered here are those that 
    * can be uniquely defined by two points and that separate 
    * the 2D plane into two disjoint parts (e.g. straight lines, 
    * circles passing through a given point). Consequently, the 
    * points Pi and the points Qi are assumed to lie in either 
-   * side of the shape. 
-   * Nb: The user of this class has to decide from its input set 
+   * side of the shape (Pi in the interior, Qi in the exterior).
+   *
+   * The user of this class has to decide from its input set 
    * of segments and the shape used whether a linear-time algorithm 
-   * is possible or not. 
-   * (if yes - e.g. preimage of straight lines crossing a set of 
-   * vertical segments of increasing x-coordinate - this algorithm 
-   * will return the right output). 
+   * is possible or not. If yes (e.g. preimage of straight lines crossing a set of 
+   * vertical segments of increasing x-coordinate) the algorithm of O'Rourke
+   * will return the right output.
+   *
    * @code 
    
    typedef int Coordinate;
@@ -106,6 +106,10 @@ namespace DGtal
    std::cout << thePreimage << std::endl;
    
    * @endcode
+   *
+   * @tparam Shape  a model of COrientableHypersurface
+   *
+   * @see testPreimage.cpp
    */
   template <typename Shape>
   class Preimage2D
@@ -115,9 +119,8 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-    typedef typename Shape::Coordinate Coordinate;
-    typedef DGtal::PointVector<2,Coordinate> Point;
-    typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename Shape::Point Point;
+    typedef typename Shape::Point Vector;
 
   private:
 
@@ -153,8 +156,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * \param firstPoint, secondPoint, the two end points of 
-     * the first straight segment
+     * @param firstPoint  the end point of the first straight segment expected to lie in the interior of the separating shapes
+     * @param secondPoint  the end point of the first straight segment expected to lie in the exterior of the separating shapes
      */
     Preimage2D(const Point & firstPoint, const Point & secondPoint);
 
@@ -168,12 +171,13 @@ namespace DGtal
      * the constraints involved by the two 
      * end points of a new segment
      * (adding to the front of the sequence of 
-     * segments with respect to the scan orientaion
-     * e.g. back => seg1 => ... segn => front) 
+     * segments with respect to the scan orientaion)
+     *
      * Nb: in O(n)
-     * @param aP, aQ, 
-     * the two ends of the new straight segment 
-     * assumed to lie on either side of the shapes. 
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
      * @return 'false' if the updated preimage is empty, 
      * 'true' otherwise.
      */
@@ -238,8 +242,16 @@ private:
   private:
 
     //lists of the vertices of the preimage
-    //coorresponding to the points Pi and Qi
-    Container myPHull, myQHull;
+    /**
+     * Lower part of the preimage
+     * (whose vertices are Pi points)
+     */
+    Container myPHull;
+    /**
+     * Upper part of the preimage.
+     * (whose vertices are Qi points)
+     */
+    Container myQHull;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -254,13 +266,17 @@ private:
 
     /**
      * Updates the current preimage
+     *
      * Nb: in O(n)
-     * @param 
-     * aPoint a new vertex of the preimage,
-     * aContainer the container to be updated,
-     * anIterator an iterator to its front (resp. back)
-     * anEndIterator an iterator pointing after its back 
+     *
+     * @param aPoint  a new vertex of the preimage,
+     * @param aContainer  the STL-like container to be updated,
+     * @param anIterator  an iterator to its front (resp. back)
+     * @param anEndIterator  an iterator pointing after its back 
      * (resp. before its front). 
+     *
+     * @tparam Iterator  the type of Iterator (either Container::iterator or Container::reverse_iterator)
+     * @tparam Predicate  the type of Predicate
      */
     template <typename Iterator, typename Predicate>
     void update(const Point & aPoint, 
