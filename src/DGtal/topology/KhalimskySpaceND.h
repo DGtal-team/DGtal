@@ -461,8 +461,8 @@ namespace DGtal
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
     // static constants
-    static const Dimension dimension;
-    static const Dimension DIM;
+    static const Dimension dimension = dim;
+    static const Dimension DIM = dim;
     static const Sign POS;
     static const Sign NEG;
 
