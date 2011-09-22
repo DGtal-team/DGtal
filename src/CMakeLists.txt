@@ -10,9 +10,12 @@ include_directories(${PROJECT_BINARY_DIR}/src)
 ## each subdir can contain a ModuleSRC.txt file 
 ## with a set command on the variable ${DGTAL_SRC}
 ## 
+include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
+include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
+
 include(Board/ModuleSRC.txt)
 
 
