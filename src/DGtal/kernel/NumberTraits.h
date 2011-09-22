@@ -674,6 +674,7 @@ namespace DGtal
     }
   }; // end of class NumberTraits<float>.
 
+
   /**
    * Specialization for <double>.
    */
@@ -728,7 +729,6 @@ namespace DGtal
     }
   }; // end of class NumberTraits<double>.
 
- 
 
   /**
    * Specialization for <long double>.

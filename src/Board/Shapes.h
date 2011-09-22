@@ -1411,6 +1411,9 @@ struct Arc : public Circle {
     int depthValue = -1 )
     : Circle( x, y, radius, pen, fill, lineWidth, style, depthValue )
   { _angle1 = angle1; _angle2 = angle2; _negative = negative; }
+  void
+  flushPostscript( std::ostream & stream,
+		   const TransformEPS & transform ) const;
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)

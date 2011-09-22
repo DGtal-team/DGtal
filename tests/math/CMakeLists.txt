@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_MATH
        testMeasure
-       testSignal )
+       testSignal 
+       testAngleLinearMinimizer)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   add_executable(${FILE} ${FILE})
