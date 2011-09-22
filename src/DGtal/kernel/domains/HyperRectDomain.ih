@@ -238,7 +238,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 
 
 
-
+#if(0)
 template<typename TSpace>
 inline
 void
@@ -450,7 +450,7 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) 
     
     }
 }
-
+#endif
 
 
 

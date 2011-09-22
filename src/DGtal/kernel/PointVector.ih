@@ -794,7 +794,7 @@ DGtal::PointVector<dim, TComponent>::selfDraw(Board2D & board,
 
 
     
-
+#if (0)
 template<Dimension dim, typename TComponent>
 inline
 void
@@ -868,7 +868,7 @@ DGtal::PointVector<dim,TComponent>::selfDrawDisplay3D( Display3D & display,  con
      (float) aPoint[0] + myArray[0], (float)aPoint[1] + myArray[1], (float) aPoint[2] + myArray[2]);
   
 }
-
+#endif
 
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>

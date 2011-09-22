@@ -51,7 +51,7 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstRange.h"
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 namespace DGtal
 {
@@ -593,7 +593,7 @@ namespace DGtal
     
 
 
-
+#if(0)
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
@@ -609,7 +609,7 @@ namespace DGtal
     void selfDrawAsPavingDisplay3D( Display3D & display ) const;
     void selfDrawAsPavingPointsDisplay3D( Display3D & display ) const;
     void selfDrawAsBoundingBoxDisplay3D ( Display3D & display) const;
-
+#endif
     
 
     
@@ -644,7 +644,7 @@ namespace DGtal
   }; // end of class HyperRectDomain
 
 
-
+#if(0)
   /**
    * Modifier class in a Board2D stream. Realizes the concept
    * CDrawableWithBoard2D.
@@ -666,7 +666,8 @@ namespace DGtal
       display.myModes[ "HyperRectDomain" ] = "Grid";
     }
   };
-
+#endif
+  
   /**
    * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
    * @param out the output stream where the object is written.

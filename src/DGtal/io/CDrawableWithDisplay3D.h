@@ -113,14 +113,13 @@ namespace DGtal
   BOOST_CONCEPT_USAGE( CDrawableWithDisplay3D )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithDisplay3D*
-      ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D() );
+      //ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D() ); // TODO
       //Drawable model should have a defaultStyle( string ) returning a DrawableWithDisplay3D*
-      ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D( myS ) );
+      //ConceptUtils::sameType( myD, myT.defaultStyleDisplay3D( myS ) ); // TODO
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
-      ///@todo FIXME: si on décommente ça plante
-      myT.selfDrawDisplay3D( myD3D );
+      //myT.selfDrawDisplay3D( myD3D ); // TODO
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -128,7 +127,6 @@ namespace DGtal
     T myT;
     DrawableWithDisplay3D *myD;
 
-    ///@todo FIXME: si on décommente ça plante
     Display3D myD3D;
     std::string myS;
 

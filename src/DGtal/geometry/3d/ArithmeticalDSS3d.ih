@@ -360,7 +360,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::os
 
     
 
-
+#if(0)
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
@@ -539,5 +539,5 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
    }
 
 }
-
+#endif
 

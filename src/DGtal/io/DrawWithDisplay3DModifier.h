@@ -90,10 +90,10 @@ namespace DGtal
     SetMode3D( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDrawDisplay3D( Display3D & display ) const
+    /*void selfDrawDisplay3D( Display3D & display ) const
     {
       display.myModes[ myClassname ] = myMode;
-    }
+    }*/
   private:
     std::string myClassname;
     std::string myMode;
@@ -164,11 +164,11 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDrawDisplay3D( Display3D & display) const
+    /*virtual void selfDrawDisplay3D( Display3D & display) const
     {
       display.setFillColor(myFillColor);
       display.setLineColor(myPenColor);
-    }
+    }*/
   };
 
 
@@ -189,10 +189,11 @@ namespace DGtal
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
-    void selfDrawViewer3D( Display3D & display ) const
+    // MT: why selfDrawViewer3D here and not selfDrawDisplay3D ???
+    /*void selfDrawViewer3D( Display3D & display ) const
     {
       display.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-    }
+    }*/
     double * getEquation(){
       double *r = new double[4];
       r[0] = myA;
@@ -228,10 +229,10 @@ namespace DGtal
       eyex=x; eyey=y; eyez=z;
     }
     
-    void selfDrawDisplay3D( Display3D & display) const
+    /*void selfDrawDisplay3D( Display3D & display) const
     {
       display.setCameraPosition(eyex, eyey, eyez);
-    }
+    }*/
     
     private:
       double eyex, eyey, eyez;
@@ -254,10 +255,10 @@ namespace DGtal
       dirx=x; diry=y; dirz=z;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & display) const
+    /*virtual void selfDrawDisplay3D( Display3D & display) const
     {
       display.setCameraDirection(dirx, diry, dirz);
-    }
+    }*/
     
     private:
       double dirx, diry, dirz;
@@ -280,10 +281,10 @@ namespace DGtal
       upx=x; upy=y; upz=z;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    /*virtual void selfDrawDisplay3D( Display3D & viewer) const
     {
       viewer.setCameraUpVector(upx, upy, upz);
-    }
+    }*/
     
     private:
       double upx, upy, upz;

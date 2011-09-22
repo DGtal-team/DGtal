@@ -88,7 +88,8 @@ DGtal::Viewer3D &
 DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
-  object.selfDrawDisplay3D( *this );
+  
+  DGtal::Display3DFactory::draw(*this, object);
   return *this;
 }
 

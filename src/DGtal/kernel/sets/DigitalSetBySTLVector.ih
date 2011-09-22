@@ -562,9 +562,9 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef WITH_VISU3D_QGLVIEWER
+//#ifdef WITH_VISU3D_QGLVIEWER
 
-
+#if(0)
 template <typename Domain>
 inline
 void
@@ -650,8 +650,9 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawDisplay3D( Display3D & display ) c
       selfDrawAsGridDisplay3D( display );
     }  
 }
-
 #endif
+
+//#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////
