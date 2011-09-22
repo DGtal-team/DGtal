@@ -58,27 +58,23 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class StraightLineFrom2Points
   /**
-   * Description of template class 'StraightLineFrom2Points' <p>
-   * \brief Aim: Represents a StraightLineFrom2Points uniquely
+   * \brief Aim: Represents a straight line uniquely
    * defined by two 2D points and that is able
-   * to return for each 2D point of the domain
-   * its signed distance to itself 
+   * to return for any given 2D point its signed distance to itself 
    *
-   * @tparam TInteger a model for CInteger.
+   * @tparam TPoint  a type of points.
    */
-  template <typename TInteger>
+  template <typename TPoint>
   class StraightLineFrom2Points
   {
 
     // ----------------------- associated types ------------------------------
   public:
 
-    //2D point and 2D vector
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    typedef TInteger Coordinate;
-    typedef TInteger Distance; 
-    typedef DGtal::PointVector<2,Coordinate> Point;
-    typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename TPoint::Coordinate Coordinate;
+    typedef Coordinate Distance; //to promote
+    typedef TPoint Point;
+    typedef TPoint Vector;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -129,7 +125,7 @@ namespace DGtal
      * @param aP, the point to be tested.
      * @return the signed distance.
      */
-    Coordinate signedDistance(const Point& aP) const;
+    Distance signedDistance(const Point& aP) const;
 
     //------------------ display -------------------------------
     /**
@@ -153,7 +149,7 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the two points that uniquely define the StraightLineFrom2Points
+    //the two points that uniquely define the straight line
     Point myP, myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -172,11 +168,11 @@ namespace DGtal
   }; // end of class StraightLineFrom2Points
 
 
-  template <typename TInteger>
+  template <typename TPoint>
   inline
   std::ostream&
   operator<< ( std::ostream & out, 
-        const StraightLineFrom2Points<TInteger> & object )
+        const StraightLineFrom2Points<TPoint> & object )
   {
     object.selfDisplay( out );
     return out;

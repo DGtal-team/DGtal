@@ -62,7 +62,7 @@ int main( int argc, char** argv )
 
   trace.beginBlock("Simple preimage example");
 
-  typedef StraightLineFrom2Points<Curve::KSpace::Integer> StraightLine;
+  typedef StraightLineFrom2Points<Curve::Point> StraightLine;
   //! [PreimageTypedefFromStraightLine]
   typedef Preimage2D<StraightLine> Preimage2D;
   //! [PreimageTypedefFromStraightLine]

@@ -41,9 +41,9 @@
 /**
  * Destructor.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLineFrom2Points<TInteger>::~StraightLineFrom2Points()
+DGtal::StraightLineFrom2Points<TPoint>::~StraightLineFrom2Points()
 {
 }
 
@@ -52,9 +52,9 @@ DGtal::StraightLineFrom2Points<TInteger>::~StraightLineFrom2Points()
  * @param firstPoint, secondPoint, two points
  * that uniquely define the StraightLineFrom2Points
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
         const Point& aFirstPoint, 
         const Point& aSecondPoint):
         myP(aFirstPoint),
@@ -66,9 +66,9 @@ DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
         const StraightLineFrom2Points & other):
         myP(other.myP),
         myQ(other.myQ)
@@ -80,10 +80,10 @@ DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLineFrom2Points<TInteger>&
-DGtal::StraightLineFrom2Points<TInteger>::operator=(
+DGtal::StraightLineFrom2Points<TPoint>&
+DGtal::StraightLineFrom2Points<TPoint>::operator=(
         const StraightLineFrom2Points & other)
 {
   myP = other.myP;
@@ -97,10 +97,10 @@ DGtal::StraightLineFrom2Points<TInteger>::operator=(
  * @param aP, the point to be tested.
  * @return the signed distance.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
-TInteger
-DGtal::StraightLineFrom2Points<TInteger>::signedDistance(const Point& aP) const
+typename DGtal::StraightLineFrom2Points<TPoint>::Distance
+DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
 {
   Vector pq = myQ - myP;
   Vector pr = aP - myP;
@@ -113,26 +113,26 @@ DGtal::StraightLineFrom2Points<TInteger>::signedDistance(const Point& aP) const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename TInteger>
+template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D*
-DGtal::StraightLineFrom2Points<TInteger>::defaultStyle( std::string /*mode*/ ) const
+DGtal::StraightLineFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
 {
   return new DrawableWithBoard2D; 
 }
 
-template <typename TInteger>
+template <typename TPoint>
 inline
 std::string
-DGtal::StraightLineFrom2Points<TInteger>::styleName() const
+DGtal::StraightLineFrom2Points<TPoint>::styleName() const
 {
   return "StraightLineFrom2Points";
 }
 
-template <typename TInteger>
+template <typename TPoint>
 inline
 void 
-DGtal::StraightLineFrom2Points<TInteger>::selfDraw(Board2D & aBoard) const
+DGtal::StraightLineFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
 {
   aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
 }
@@ -142,10 +142,10 @@ DGtal::StraightLineFrom2Points<TInteger>::selfDraw(Board2D & aBoard) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
 void
-DGtal::StraightLineFrom2Points<TInteger>::selfDisplay ( std::ostream & out ) const
+DGtal::StraightLineFrom2Points<TPoint>::selfDisplay ( std::ostream & out ) const
 {
   out << "[StraightLineFrom2Points] passing through:\n";
   out << myP << myQ;
@@ -155,10 +155,10 @@ DGtal::StraightLineFrom2Points<TInteger>::selfDisplay ( std::ostream & out ) con
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TInteger>
+template <typename TPoint>
 inline
 bool
-DGtal::StraightLineFrom2Points<TInteger>::isValid() const
+DGtal::StraightLineFrom2Points<TPoint>::isValid() const
 {
     return true;
 }

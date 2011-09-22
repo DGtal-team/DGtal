@@ -65,7 +65,7 @@ int main()
 
   typedef int Coordinate;
   typedef PointVector<2, Coordinate> Point;
-  typedef StraightLineFrom2Points<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Point> StraightLine;
   typedef Preimage2D<StraightLine> Preimage2D;
 
   //data
