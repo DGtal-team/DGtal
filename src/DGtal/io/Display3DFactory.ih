@@ -1,0 +1,120 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   Display3DFactory.ih
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 21 septembre 2011
+ * 
+ * @brief
+ *
+ * Implementation of inline methods defined in Display3DFactory.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+template<Dimension dim, typename TComponent>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & p )
+{
+}
+
+template<typename TSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+{
+}
+
+template<typename Domain>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+{
+}
+
+/*template<typename Domain>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
+{
+}*/
+
+template < Dimension dim, typename TInteger >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k )
+{
+}
+
+template< Dimension dim, typename TInteger >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+}
+
+//
+
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SetMode3D & sm3d )
+{
+  //display.myModes[ myClassname ] = myMode;
+}
+
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CustomColors3D & cc3d )
+{
+  /*display.setFillColor(myFillColor);
+  display.setLineColor(myPenColor);*/
+}
+
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ClippingPlane & cl )
+{
+  //display.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
+}
+    
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraPosition & cp )
+{
+  //display.setCameraPosition(cp.eyex, cp.eyey, cp.eyez);
+}
+
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraDirection & cd )
+{
+  //display.setCameraDirection(dirx, diry, dirz);
+}
+
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraUpVector & cuv )
+{
+  //viewer.setCameraUpVector(upx, upy, upz);
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -52,7 +52,6 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/base/Modifier.h"
 
@@ -231,7 +230,7 @@ namespace DGtal
     
  
 
-    
+#if(0)
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
@@ -245,7 +244,7 @@ namespace DGtal
     void selfDrawDisplay3D ( Display3D & display ) const;
     void selfDrawAsPointsDisplay3D( Display3D & display ) const;
     void selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const;
- 
+#endif 
 
 
 

@@ -49,9 +49,9 @@
 #include <string>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
-#ifdef WITH_VISU3D_QGLVIEWER
+/*#ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/Display3D.h"
-#endif
+#endif*/
 
 
 namespace DGtal
@@ -356,7 +356,7 @@ namespace DGtal
 
 
 
-    
+#if(0)    
          /** 
      * Default style.
      */
@@ -383,7 +383,7 @@ namespace DGtal
     void selfDrawAsGridDisplay3D( Display3D & display  ) const;
     void selfDrawAsPavingDisplay3D( Display3D & display ) const;
     void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
-
+#endif
 
 
 

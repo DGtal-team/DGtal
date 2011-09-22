@@ -68,7 +68,7 @@ namespace DGtal
    (Board3DTo2D) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
  
-   @see Viewer3D, Board2Dto3D
+   @see Viewer3D, Board3DTo2D
   
   */
   class Display3D

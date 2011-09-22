@@ -179,9 +179,10 @@ selfDraw( Board2D & board ) const
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+//#ifdef WITH_VISU3D_QGLVIEWER
 //------------------------------------------------------------------------------
 
+#if(0)
 template < Dimension dim, typename TInteger >
 inline
 void
@@ -305,12 +306,12 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
   } 
   display.setFillColor(fillColorSave);
 }
-
-
-
-
-
 #endif
+
+
+
+
+//#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////

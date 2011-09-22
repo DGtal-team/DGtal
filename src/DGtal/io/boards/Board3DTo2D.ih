@@ -67,7 +67,8 @@ DGtal::Board3DTo2D &
 DGtal::Board3DTo2D::operator<<( const TDrawableWithDisplay3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
-  object.selfDrawDisplay3D( *this );
+
+  DGtal::Display3DFactory::draw(*this, object);
   return *this;
 }
 

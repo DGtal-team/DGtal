@@ -49,7 +49,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 
 
@@ -528,6 +528,7 @@ namespace DGtal
     
 
   private:
+#if(0)
        /**
        * Default style.
        */
@@ -561,7 +562,7 @@ namespace DGtal
        * @param board the output board where the object is drawn.
        */
       void selfDrawWithAdjacenciesDisplay3D( Display3D & display ) const;
-
+#endif
 
       // ------------------------- internals ------------------------------------
     private:

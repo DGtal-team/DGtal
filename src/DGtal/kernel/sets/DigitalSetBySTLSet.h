@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 
 namespace DGtal
@@ -332,7 +332,7 @@ namespace DGtal
 
 
 
-
+#if(0)
      /** 
      * Default style.
      */
@@ -359,7 +359,7 @@ namespace DGtal
     void selfDrawAsGridDisplay3D( Display3D & display  ) const;
     void selfDrawAsPavingDisplay3D( Display3D & display ) const;
     void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
-    
+#endif    
     
 
 

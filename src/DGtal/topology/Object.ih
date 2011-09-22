@@ -878,7 +878,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & 
 //------------------------------------------------------------------------------
 
 
-
+#if(0)
 /**
  * Default drawing style object.
  * @return the dyn. alloc. default style for this object.
@@ -936,7 +936,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacenciesDisplay3D(D
     }
   }
 }
-
+#endif
 
 
 
