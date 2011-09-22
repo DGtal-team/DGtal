@@ -61,11 +61,7 @@ DGtal::StraightLineFrom2Points<TPoint>::init(
   myQ = aSecondPoint;
 }
 
-/**
- * Constructor.
- * @param firstPoint, secondPoint, two points
- * that uniquely define the StraightLineFrom2Points
- */
+
 template <typename TPoint>
 inline
 DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
@@ -76,10 +72,7 @@ DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
 {
 }
 
-/**
- * Copy constructor.
- * @param other the object to clone.
- */
+
 template <typename TPoint>
 inline
 DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
@@ -89,11 +82,7 @@ DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
 {
 }
 
-/**
- * Assignment.
- * @param other the object to copy.
- * @return a reference on 'this'.
- */
+
 template <typename TPoint>
 inline
 DGtal::StraightLineFrom2Points<TPoint>&
@@ -106,11 +95,7 @@ DGtal::StraightLineFrom2Points<TPoint>::operator=(
 }
 
 
-/**
- * Computes the signed distance of [aP] to the StraightLineFrom2Points
- * @param aP, the point to be tested.
- * @return the signed distance.
- */
+
 template <typename TPoint>
 inline
 typename DGtal::StraightLineFrom2Points<TPoint>::Distance
@@ -152,10 +137,6 @@ DGtal::StraightLineFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
 }
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template <typename TPoint>
 inline
 void
@@ -165,10 +146,6 @@ DGtal::StraightLineFrom2Points<TPoint>::selfDisplay ( std::ostream & out ) const
   out << myP << myQ;
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
 template <typename TPoint>
 inline
 bool

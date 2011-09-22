@@ -134,8 +134,8 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of [aP] to the StraightLineFrom2Points
-     * @param aP, the point to be tested.
+     * Computes the signed distance of @aP to the straight line
+     * @param aP the point to be tested.
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
@@ -163,7 +163,14 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     //the two points that uniquely define the straight line
-    Point myP, myQ;
+    /**
+       First point through which the straight line passes
+    */
+    Point myP;
+    /**
+       Second point through which the straight line passes
+    */
+    Point myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -181,6 +188,12 @@ namespace DGtal
   }; // end of class StraightLineFrom2Points
 
 
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'StraightLineFrom2Points'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'StraightLineFrom2Points' to write.
+   * @return the output stream after the writing.
+   */
   template <typename TPoint>
   inline
   std::ostream&
