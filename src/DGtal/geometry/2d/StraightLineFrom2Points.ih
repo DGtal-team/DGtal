@@ -38,13 +38,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
 template <typename TPoint>
 inline
 DGtal::StraightLineFrom2Points<TPoint>::~StraightLineFrom2Points()
 {
+}
+
+template <typename TPoint>
+inline
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points()
+{
+}
+
+template <typename TPoint>
+inline
+void
+DGtal::StraightLineFrom2Points<TPoint>::init(
+        const Point& aFirstPoint, 
+        const Point& aSecondPoint)
+{
+  myP = aFirstPoint;
+  myQ = aSecondPoint;
 }
 
 /**
