@@ -17,29 +17,29 @@
 #pragma once
 
 /**
- * @file StraightLine.h
- * @brief Representation of a StraightLine uniquely defined by two 2D points.
+ * @file StraightLineFrom2Points.h
+ * @brief Representation of a StraightLineFrom2Points uniquely defined by two 2D points.
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/10/27
  *
- * Header file for module StraightLine.cpp
+ * Header file for module StraightLineFrom2Points.cpp
  *
  * This file is part of the DGtal library.
  *
  * @see testHalfPlane.cpp
  */
 
-#if defined(StraightLine_RECURSES)
-#error Recursive header files inclusion detected in StraightLine.h
-#else // defined(StraightLine_RECURSES)
+#if defined(StraightLineFrom2Points_RECURSES)
+#error Recursive header files inclusion detected in StraightLineFrom2Points.h
+#else // defined(StraightLineFrom2Points_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define StraightLine_RECURSES
+#define StraightLineFrom2Points_RECURSES
 
-#if !defined StraightLine_h
+#if !defined StraightLineFrom2Points_h
 /** Prevents repeated inclusion of headers. */
-#define StraightLine_h
+#define StraightLineFrom2Points_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,10 +56,10 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class StraightLine
+  // template class StraightLineFrom2Points
   /**
-   * Description of template class 'StraightLine' <p>
-   * \brief Aim: Represents a StraightLine uniquely
+   * Description of template class 'StraightLineFrom2Points' <p>
+   * \brief Aim: Represents a StraightLineFrom2Points uniquely
    * defined by two 2D points and that is able
    * to return for each 2D point of the domain
    * its signed distance to itself 
@@ -67,7 +67,7 @@ namespace DGtal
    * @tparam TInteger a model for CInteger.
    */
   template <typename TInteger>
-  class StraightLine
+  class StraightLineFrom2Points
   {
 
     // ----------------------- associated types ------------------------------
@@ -86,28 +86,28 @@ namespace DGtal
     /**
      * Constructor.
      * @param firstPoint, secondPoint two points
-     * that uniquely define the StraightLine
+     * that uniquely define the StraightLineFrom2Points
      */
-    StraightLine(const Point& aFirstPoint, const Point& aSecondPoint);
+    StraightLineFrom2Points(const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    StraightLine ( const StraightLine & other );
+    StraightLineFrom2Points ( const StraightLineFrom2Points & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    StraightLine & operator= ( const StraightLine & other );
+    StraightLineFrom2Points & operator= ( const StraightLineFrom2Points & other );
 
 
     /**
      * Destructor. Does nothing
      */
-    ~StraightLine();
+    ~StraightLineFrom2Points();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -125,7 +125,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of [aP] to the StraightLine
+     * Computes the signed distance of [aP] to the StraightLineFrom2Points
      * @param aP, the point to be tested.
      * @return the signed distance.
      */
@@ -153,7 +153,7 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the two points that uniquely define the StraightLine
+    //the two points that uniquely define the StraightLineFrom2Points
     Point myP, myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -169,14 +169,14 @@ namespace DGtal
 
 
 
-  }; // end of class StraightLine
+  }; // end of class StraightLineFrom2Points
 
 
   template <typename TInteger>
   inline
   std::ostream&
   operator<< ( std::ostream & out, 
-        const StraightLine<TInteger> & object )
+        const StraightLineFrom2Points<TInteger> & object )
   {
     object.selfDisplay( out );
     return out;
@@ -188,12 +188,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/StraightLine.ih"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined StraightLine_h
+#endif // !defined StraightLineFrom2Points_h
 
-#undef StraightLine_RECURSES
-#endif // else defined(StraightLine_RECURSES)
+#undef StraightLineFrom2Points_RECURSES
+#endif // else defined(StraightLineFrom2Points_RECURSES)
