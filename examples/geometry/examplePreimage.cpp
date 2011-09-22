@@ -74,7 +74,7 @@ int main( int argc, char** argv )
   Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
 
   //preimage computation
-  Preimage2D thePreimage(it->first, it->second);
+  Preimage2D thePreimage(it->first, it->second, StraightLine());
   ++it; 
   while ( (it != itEnd) &&
               (thePreimage.addFront(it->first, it->second)) )

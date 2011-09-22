@@ -133,8 +133,9 @@ namespace DGtal
      * Constructor.
      * @param firstPoint  the end point of the first straight segment expected to lie in the interior of the separating shapes
      * @param secondPoint  the end point of the first straight segment expected to lie in the exterior of the separating shapes
+     * @param sShape  any shape
      */
-    Preimage2D(const Point & firstPoint, const Point & secondPoint);
+    Preimage2D(const Point & firstPoint, const Point & secondPoint, const Shape & aShape );
 
     /**
      * Destructor. Does nothing.
@@ -197,6 +198,11 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    /**
+     * Shape used to separate the input points
+     */
+    Shape myShape;
+  
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
