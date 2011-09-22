@@ -66,7 +66,7 @@ int main(int , char **)
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef StraightLineFrom2Points<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Point> StraightLine;
 
   Point p(0,0);
   Point q(5,2);
