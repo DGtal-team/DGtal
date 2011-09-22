@@ -80,11 +80,24 @@ namespace DGtal
   public:
 
     /**
+     * Default constructor.
+     */
+    StraightLineFrom2Points();
+
+
+    /**
      * Constructor.
-     * @param firstPoint, secondPoint two points
-     * that uniquely define the StraightLineFrom2Points
+     * @param firstPoint  a point
+     * @param secondPoint  another point
      */
     StraightLineFrom2Points(const Point& aFirstPoint, const Point& aSecondPoint);
+
+    /**
+     * Init.
+     * @param firstPoint  a point
+     * @param secondPoint  another point
+     */
+    void init(const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Copy constructor.
