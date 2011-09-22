@@ -14,7 +14,7 @@ SET(DGTAL_TESTS_SRC
   testMostCenteredMSEstimator
   testBinomialConvolver
   testCombinDSS
-  testCircleFrom3Points
+  testShapesFromPoints
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
