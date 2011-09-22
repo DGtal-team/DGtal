@@ -35,7 +35,7 @@
 #include "ConfigExamples.h"
 
 #include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/StraightLine.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +62,7 @@ int main( int argc, char** argv )
 
   trace.beginBlock("Simple preimage example");
 
-  typedef StraightLine<Curve::KSpace::Integer> StraightLine;
+  typedef StraightLineFrom2Points<Curve::KSpace::Integer> StraightLine;
   //! [PreimageTypedefFromStraightLine]
   typedef Preimage2D<StraightLine> Preimage2D;
   //! [PreimageTypedefFromStraightLine]

@@ -50,7 +50,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLine.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 
 
@@ -65,7 +65,7 @@ int main()
 
   typedef int Coordinate;
   typedef PointVector<2, Coordinate> Point;
-  typedef StraightLine<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Coordinate> StraightLine;
   typedef Preimage2D<StraightLine> Preimage2D;
 
   //data

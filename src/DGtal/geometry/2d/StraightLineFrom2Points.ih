@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file StraightLine.ih
+ * @file StraightLineFrom2Points.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/10/27
  *
- * Implementation of inline methods defined in StraightLine.h
+ * Implementation of inline methods defined in StraightLineFrom2Points.h
  *
  * This file is part of the DGtal library.
  */
@@ -43,18 +43,18 @@
  */
 template <typename TInteger>
 inline
-DGtal::StraightLine<TInteger>::~StraightLine()
+DGtal::StraightLineFrom2Points<TInteger>::~StraightLineFrom2Points()
 {
 }
 
 /**
  * Constructor.
  * @param firstPoint, secondPoint, two points
- * that uniquely define the StraightLine
+ * that uniquely define the StraightLineFrom2Points
  */
 template <typename TInteger>
 inline
-DGtal::StraightLine<TInteger>::StraightLine(
+DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
         const Point& aFirstPoint, 
         const Point& aSecondPoint):
         myP(aFirstPoint),
@@ -68,8 +68,8 @@ DGtal::StraightLine<TInteger>::StraightLine(
  */
 template <typename TInteger>
 inline
-DGtal::StraightLine<TInteger>::StraightLine(
-        const StraightLine & other):
+DGtal::StraightLineFrom2Points<TInteger>::StraightLineFrom2Points(
+        const StraightLineFrom2Points & other):
         myP(other.myP),
         myQ(other.myQ)
 {
@@ -82,9 +82,9 @@ DGtal::StraightLine<TInteger>::StraightLine(
  */
 template <typename TInteger>
 inline
-DGtal::StraightLine<TInteger>&
-DGtal::StraightLine<TInteger>::operator=(
-        const StraightLine & other)
+DGtal::StraightLineFrom2Points<TInteger>&
+DGtal::StraightLineFrom2Points<TInteger>::operator=(
+        const StraightLineFrom2Points & other)
 {
   myP = other.myP;
   myQ = other.myQ;
@@ -93,14 +93,14 @@ DGtal::StraightLine<TInteger>::operator=(
 
 
 /**
- * Computes the signed distance of [aP] to the StraightLine
+ * Computes the signed distance of [aP] to the StraightLineFrom2Points
  * @param aP, the point to be tested.
  * @return the signed distance.
  */
 template <typename TInteger>
 inline
 TInteger
-DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
+DGtal::StraightLineFrom2Points<TInteger>::signedDistance(const Point& aP) const
 {
   Vector pq = myQ - myP;
   Vector pr = aP - myP;
@@ -116,7 +116,7 @@ DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
 template <typename TInteger>
 inline
 DGtal::DrawableWithBoard2D*
-DGtal::StraightLine<TInteger>::defaultStyle( std::string /*mode*/ ) const
+DGtal::StraightLineFrom2Points<TInteger>::defaultStyle( std::string /*mode*/ ) const
 {
   return new DrawableWithBoard2D; 
 }
@@ -124,15 +124,15 @@ DGtal::StraightLine<TInteger>::defaultStyle( std::string /*mode*/ ) const
 template <typename TInteger>
 inline
 std::string
-DGtal::StraightLine<TInteger>::styleName() const
+DGtal::StraightLineFrom2Points<TInteger>::styleName() const
 {
-  return "StraightLine";
+  return "StraightLineFrom2Points";
 }
 
 template <typename TInteger>
 inline
 void 
-DGtal::StraightLine<TInteger>::selfDraw(Board2D & aBoard) const
+DGtal::StraightLineFrom2Points<TInteger>::selfDraw(Board2D & aBoard) const
 {
   aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
 }
@@ -145,9 +145,9 @@ DGtal::StraightLine<TInteger>::selfDraw(Board2D & aBoard) const
 template <typename TInteger>
 inline
 void
-DGtal::StraightLine<TInteger>::selfDisplay ( std::ostream & out ) const
+DGtal::StraightLineFrom2Points<TInteger>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[StraightLine] passing through:\n";
+  out << "[StraightLineFrom2Points] passing through:\n";
   out << myP << myQ;
 }
 
@@ -158,7 +158,7 @@ DGtal::StraightLine<TInteger>::selfDisplay ( std::ostream & out ) const
 template <typename TInteger>
 inline
 bool
-DGtal::StraightLine<TInteger>::isValid() const
+DGtal::StraightLineFrom2Points<TInteger>::isValid() const
 {
     return true;
 }
