@@ -1398,10 +1398,10 @@ Arc::flushCairo( cairo_t *cr,
 
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
 
-      if (_negative)
-  cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+      if (_negative) // important: here for Cairo we must inverse 'cairo_arc' and 'cairo_arc_negative' and change alpha with 2.*M_PI-alpha
+  cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 2.*M_PI-_angle1, 2.*M_PI-_angle2);
       else
-  cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), _angle1, _angle2);
+  cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 2.*M_PI-_angle1, 2.*M_PI-_angle2);
       
       if ( filled() )
       {
