@@ -14,10 +14,10 @@ namespace DGtal {
    This part of the manual describes how to define cellular grid space
    or cartesian cubic spaces, as well as the main objects living in
    these spaces. A part of this documentation comes from project <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. A
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. A
    lot of the ideas, concepts, algorithms, and code is also a backport
    from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
    -# \ref dgtal_ctopo_sec1
       -# \ref dgtal_ctopo_sec1_1
