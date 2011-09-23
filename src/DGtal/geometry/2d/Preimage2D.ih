@@ -189,11 +189,12 @@ void
 DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
 {
 
+  Shape s( myShape ); 
   ConstForwardIterator i = myPHull.begin();
   Point pt(*i);
   ++i;
   while ( i != myPHull.end() ) {
-    Shape s(pt, *i);
+    s.init(pt, *i);
     s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
@@ -203,7 +204,7 @@ DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
   pt = Point(*i);
   ++i;
   while ( i != myQHull.end() ) {
-    Shape s(pt, *i);
+    s.init(pt, *i);
     s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
@@ -214,10 +215,10 @@ DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
   Point Qf(*myQHull.begin());
   Point Ql(*myQHull.rbegin());
 
-  Shape s1(Pf, Ql);
-  s1.selfDraw(aBoard);
-  Shape s2(Qf, Pl);
-  s2.selfDraw(aBoard);
+  s.init(Pf, Ql);
+  s.selfDraw(aBoard);
+  s.init(Qf, Pl);
+  s.selfDraw(aBoard);
 
 }
 
