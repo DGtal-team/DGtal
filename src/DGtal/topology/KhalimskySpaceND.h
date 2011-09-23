@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -435,10 +435,8 @@ namespace DGtal
        typename TInteger = DGtal::int32_t >
   class KhalimskySpaceND
   {
-    //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) ); 
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
@@ -460,11 +458,19 @@ namespace DGtal
     typedef SpaceND<dim, Integer> Space;
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
+#if defined ( WIN32 )
+    // static constants
+    static const Dimension dimension = dim;
+    static const Dimension DIM = dim;
+    static const Sign POS = true;
+    static const Sign NEG = false;
+#else
     // static constants
     static const Dimension dimension;
     static const Dimension DIM;
     static const Sign POS;
     static const Sign NEG;
+#endif //WIN32
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
