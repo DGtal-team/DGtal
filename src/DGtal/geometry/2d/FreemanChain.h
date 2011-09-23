@@ -116,10 +116,6 @@ namespace DGtal
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
 
-    //deprecated, use Point and Vector instead
-    typedef PointVector<2, Integer> PointI2;
-    typedef PointVector<2, Integer> VectorI2;
-
     typedef PointVector<2, Integer> Point;
     typedef PointVector<2, Integer> Vector;
 
@@ -140,7 +136,7 @@ namespace DGtal
      */
 
     class ConstIterator : public 
-      std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2> 
+      std::iterator<std::bidirectional_iterator_tag, Point, int, Point*, Point> 
     {
 
       // ------------------------- Private data -----------------------
@@ -154,7 +150,7 @@ namespace DGtal
         Index myPos;
 
         ///The current coordinates of the iterator.
-        PointI2  myXY;
+        Point  myXY;
 
         // ------------------------- Standard services -----------------------
       public:
@@ -188,7 +184,7 @@ namespace DGtal
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
-        ConstIterator( const FreemanChain & aChain, Index n, const PointI2 & XY)
+        ConstIterator( const FreemanChain & aChain, Index n, const Point & XY)
           : myFc( &aChain ), myPos( n ), myXY ( XY ) 
         { }
 
@@ -220,7 +216,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        const PointI2& operator*() const
+        const Point& operator*() const
         {
           return myXY;
         }
@@ -228,7 +224,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        const PointI2& get() const
+        const Point& get() const
         {
           return myXY;
         }
@@ -753,24 +749,24 @@ public:
      * @param pos the position of the point in the FreemanChain
      * @return the point at position 'pos'.
      */
-    PointI2 getPoint ( Index pos ) const;
+    Point getPoint ( Index pos ) const;
     
 
     /**
      * @return the starting point of the FreemanChain.
      */
-    PointI2 firstPoint ( ) const
+    Point firstPoint ( ) const
     {
-      return PointI2(x0,y0);
+      return Point(x0,y0);
     }
 
 
     /**
      * @return the starting point of the FreemanChain.
      */
-    PointI2 lastPoint ( ) const
+    Point lastPoint ( ) const
     {
-      return PointI2(xn,yn);
+      return Point(xn,yn);
     }
 
 
@@ -778,7 +774,7 @@ public:
      * @return the vector given by displacement from the first point to the
      * last point.
      */
-    VectorI2 totalDisplacement() const
+    Vector totalDisplacement() const
     {
       return lastPoint() -  firstPoint();
     }
@@ -886,7 +882,7 @@ public:
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
     static void getContourPoints(const FreemanChain & fc, 
-        std::vector<PointI2> & aVContour );
+        std::vector<Point> & aVContour );
 
 
     /**
@@ -895,8 +891,8 @@ public:
      * @param aPoint the point to translate
      * @param aCode  a FreemanChain code
      */
-    //static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
-    static void movePointFromFC(PointI2 & aPoint, char aCode );
+    //static void movePointFromFC(Point & aPoint, unsigned int aCode );
+    static void movePointFromFC(Point & aPoint, char aCode );
 
 
     // Deprecated
@@ -952,8 +948,8 @@ public:
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-    // static PointI2 displacement( unsigned int aCode );
-    static PointI2 displacement( char aCode );
+    // static Point displacement( unsigned int aCode );
+    static Point displacement( char aCode );
 
 
     /**
