@@ -97,7 +97,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
-::longestSegment(const typename TSegmentComputer::ConstIterator& it)
+::longestSegment(const typename SegmentComputerIterator::SegmentComputer::ConstIterator& it)
 {
 
   mySegmentComputer.init(it);
@@ -206,7 +206,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator& 
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 ( const SegmentComputerIterator & other )
 {
