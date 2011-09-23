@@ -81,8 +81,8 @@ namespace DGtal
      * Default Constructor.
      */
     RosenProffittLocalLengthEstimator():
-      TwoStepLocalLengthEstimator<TConstIterator>(M_PI*(sqrt(2)+1)/8,
-              M_PI*(sqrt(2)+2)/16)
+      TwoStepLocalLengthEstimator<TConstIterator>(M_PI*(sqrt(2.0f)+1.0)/8.0,
+              M_PI*(sqrt(2.0f)+2.0)/16.0)
     {}
     
     
