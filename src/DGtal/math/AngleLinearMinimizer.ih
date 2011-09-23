@@ -230,7 +230,7 @@ DGtal::AngleLinearMinimizer::selfDraw(DGtal::Board2D & board) const
 
 INLINE
 DGtal::DrawableWithBoard2D*
-DGtal::AngleLinearMinimizer::defaultStyle( std::string mode) const
+DGtal::AngleLinearMinimizer::defaultStyle( std::string /*mode*/) const
 {
   //only one style actually...
   return new DefaultDrawStyleCircular;
