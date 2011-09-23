@@ -216,7 +216,7 @@ public:
    * @return the sum of the displacements.
    * @see oneStep
    */
-  double optimize( uint i1, uint i2 );
+  double optimize( unsigned int i1, unsigned int i2 );
   
   
   /**
@@ -243,7 +243,7 @@ protected:
    * @param i1 the first value to be optimized (between 0 and 'size()-1').
    * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
    */
-  virtual void oneStep( uint i1, uint i2 );
+  virtual void oneStep( unsigned int i1, unsigned int i2 );
 
 
 public:
@@ -328,7 +328,7 @@ private:
    * The meaningful size of the array [myValues], ie the number of
    * valid entries.
    */
-  uint mySize;
+  unsigned int mySize;
 
 
 

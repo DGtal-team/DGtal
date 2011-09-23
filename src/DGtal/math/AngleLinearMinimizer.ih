@@ -145,7 +145,7 @@ DGtal::AngleLinearMinimizer::ro( unsigned int i ) const
  * @return the maximum number of values stored in the object.
  */
 INLINE
-uint
+unsigned int
 DGtal::AngleLinearMinimizer::maxSize() const
 {
   return myMaxSize;
@@ -156,7 +156,7 @@ DGtal::AngleLinearMinimizer::maxSize() const
  * @return the number of values stored in the object.
  */
 INLINE
-uint
+unsigned int
 DGtal::AngleLinearMinimizer::size() const
 {
   return mySize;
