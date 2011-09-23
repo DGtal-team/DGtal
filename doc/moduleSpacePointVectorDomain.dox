@@ -73,7 +73,7 @@ typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
 typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace64;
 
 #ifdef WITH_BIGINTEGER
-typedef DGtal::SpaceND<3, DGtal::Integer MySpaceBigInteger;
+typedef DGtal::SpaceND<3, DGtal::Integer> MySpaceBigInteger;
 #endif
 @endcode
 
