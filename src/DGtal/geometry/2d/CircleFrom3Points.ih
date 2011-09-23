@@ -220,7 +220,7 @@ DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, const Point& aPoint1
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
   	Vector u(myP - myQ);
 	  Vector v(myR - myP);
-  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) > 0 )?true:false;
+  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?true:false;
     //drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
   } 
