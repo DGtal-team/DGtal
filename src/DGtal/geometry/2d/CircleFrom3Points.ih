@@ -203,6 +203,35 @@ DGtal::CircleFrom3Points<TPoint>::selfDraw(Board2D & aBoard) const
   } 
 }
 
+template <typename TPoint>
+inline
+void 
+DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const
+{
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx ); 
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+  	Vector u(myP - myQ);
+	  Vector v(myR - myP);
+  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) > 0 )?true:false;
+    //drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
 
 template <typename TPoint>
 inline

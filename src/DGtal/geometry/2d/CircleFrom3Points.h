@@ -162,9 +162,18 @@ namespace DGtal
     
     /**
        Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
+       @param aBoard the output board where the object is drawn.
     */
-    void selfDraw(Board2D & board ) const;
+    void selfDraw(Board2D & aBoard ) const;
+
+    /**
+       Draw a circular arc between @a alpha1 and @a alpha2 on a Board2D board
+       @param aBoard the output board where the object is drawn.
+       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
+       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
+    */
+    void drawArc(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const;
+
     
     // ------------------------- Protected Datas ------------------------------
   private:

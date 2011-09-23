@@ -76,7 +76,7 @@ bool testCircleFrom3Points()
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != -4026300) return false; 
     board << c; 
-    board.saveEPS("circle1.eps", Board2D::BoundingBox, 5000 );
+    board.saveEPS("circle1.eps");
   }
   {
     c.init( Point(0,1), Point(150,18), Point(100,48) ); 
@@ -84,7 +84,7 @@ bool testCircleFrom3Points()
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 442200) return false; 
     board << c; 
-    board.saveEPS("circle2.eps", Board2D::BoundingBox, 5000 );
+    board.saveEPS("circle2.eps");
   }
   {
     c.init( Point(0,1), Point(150,18), Point(100,48) ); 
@@ -98,7 +98,7 @@ bool testCircleFrom3Points()
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 0) return false; 
     board << c; 
-    board.saveEPS("circle4.eps", Board2D::BoundingBox, 5000 );
+    board.saveEPS("circle4.eps");
   }
 
   trace.endBlock(); 
@@ -120,12 +120,17 @@ bool testCircleFrom2Points()
   board << SetMode(o.styleName(), "Grid") << o << pole; 
 
   {
-    c.init( Point(150,18), Point(100,48) ); 
+    c.init( Point(15,2), Point(10,5) ); 
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
-    if (c.signedDistance(o) != 442200) return false; 
+    if (c.signedDistance(o) != 470) return false; 
     board << c; 
+    board.saveSVG("circle5.svg", Board2D::BoundingBox, 5000 );
     board.saveEPS("circle5.eps", Board2D::BoundingBox, 5000 );
+#ifdef WITH_CAIRO
+    board.saveCairo("circle5.pdf", Board2D::CairoPDF, Board2D::BoundingBox, 5000);
+#endif
+
   }
 
   trace.endBlock(); 
