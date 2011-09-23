@@ -77,7 +77,7 @@ DGtal::Preimage2D<Shape>::addFront(
 
   BackwardIterator QHullBack = myQHull.rbegin();
   ForwardIterator PHullFront = myPHull.begin();
-  myShape.init(*PHullBack, *QHullFront);
+  myShape.init(*QHullBack, *PHullFront);
   QHullBackPHullFrontPred p2( myShape );
 
   //constraint involved by aP
