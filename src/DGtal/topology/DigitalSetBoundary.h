@@ -123,7 +123,7 @@ namespace DGtal
 	 
 	 @param s (modified) set to the adjacent surfel in the specified
 	 direction @a d and orientation @a pos if it exists. Otherwise
-	 unchanged (method return 0 in this cas.
+	 unchanged (method returns 0 in this case).
 	 
 	 @param d any direction different from 'orthDir()'.
 	 
