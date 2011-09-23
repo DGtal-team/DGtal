@@ -78,7 +78,7 @@ findABel
     {
       for ( Dimension i = 0; i < K.dimension; ++i )
   {
-    r = random();
+    r = rand();
     x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
   }
       bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();

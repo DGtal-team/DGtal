@@ -66,7 +66,7 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
+  if(vm.count("help")||argc<=1 || (!(vm.count("FreemanChain"))) )
     {
       trace.info()<< "Tangent using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
       << "\t tangentBC [options] --FreemanChain  <fileName> "<<std::endl

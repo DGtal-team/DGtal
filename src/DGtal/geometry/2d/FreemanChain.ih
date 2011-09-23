@@ -641,7 +641,7 @@ typename DGtal::FreemanChain<TInteger> &
 DGtal::FreemanChain<TInteger>::extend(char aCode)
 {
   chain += std::string( &aCode, 1);
-  int dx, dy;
+  int dx=0, dy=0;
   //displacement( dx, dy, aCode - '0' );
   displacement( dx, dy, aCode );
   xn += dx;
@@ -896,8 +896,8 @@ void DGtal::FreemanChain<TInteger>::innerContour(
   aInnerChain.chain = "";
   aInner2outer.clear();
   aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
-  int dx0, dy0;
-  int dx1, dy1;
+  int dx0=0, dy0=0;
+  int dx1=0, dy1=0;
   FreemanChain<TInteger>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
   int turn = ccw ? 1 : 3;
   //FreemanChain<TInteger>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
