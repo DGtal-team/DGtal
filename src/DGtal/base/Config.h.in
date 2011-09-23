@@ -92,6 +92,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref IntroductionPackage
   - \ref KernelPackage
   - \ref GeometryPackage
+  - \ref ImagePackage
 
 
  * @section manuals_dgtal DGtal user-guides
@@ -105,12 +106,9 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
  * - Helpers and tools
  *  - \ref dgtal_dgtalboard
  *  - \ref threeD_visu
- *  - \ref image_io 
  *  - \ref freemanChainFromImage
  *  - \ref Tools3dVolViewer
  *
- * - Miscellaneous
- *  - \ref dgtalITK
  * 
  * @section manueldev Manual pages for DGtal developers
  * - \ref FAQDGtalCmake

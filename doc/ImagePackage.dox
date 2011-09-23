@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Geometric.dox
+ * @file Image.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/19
+ * @date 2011/09/23
  *
- * Documentation file for feature Geometric
+ * Documentation file for feature Image
  *
  * This file is part of the DGtal library.
  */
@@ -33,33 +33,24 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackage Documentation of the Geometry package
+@page ImagePackage Documentation of the Image package
    
-@author Tristan Roussillon
 @author David Coeurjolly
-@author Jacques-Olivier Lachaud
 
 @b LICENSE: LGPL
 
 
 @b Package @b Overview
 
-This package contains geometry related concepts, objects and methods which are
-used in other higher level packages. For example, it contains
-geometrical tools for the analysis of digital contours
-or digital objects.
-
+This package aims to implement Image models and data-structures.
 
 @b Modules
- - \ref geometry2d
- - \ref moduleEsimators
- - \ref volpackage
- - \ref moduleShapesDigitizer
-
+ - \ref moduleImage
 
 
  @b Related @b documentation @b pages
-
+ - \ref image_io
+ - \ref dgtalITK
 
 
 
