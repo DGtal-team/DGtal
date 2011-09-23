@@ -173,6 +173,10 @@ namespace DGtal
   private:
     //the three points that uniquely define the circle
     /**
+       First (and not mutable) point through which the circle passes
+    */
+    Point myPole;
+    /**
        Second point through which the circle passes
     */
     Point myP;
@@ -180,10 +184,6 @@ namespace DGtal
        Third point through which the circle passes
     */
     Point myQ;
-    /**
-       First (and not mutable) point through which the circle passes
-    */
-    Point myPole;
     // ------------------------- Hidden services ------------------------------
   protected:
 

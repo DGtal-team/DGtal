@@ -36,6 +36,7 @@
 
 #include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/StraightLineFrom2Points.h"
+#include "DGtal/geometry/2d/CircleFrom2Points.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -60,10 +61,12 @@ int main( int argc, char** argv )
   Curve c; //grid curve
   c.initFromVectorStream(instream);
 
+{
   trace.beginBlock("Simple preimage example");
 
-  typedef StraightLineFrom2Points<Curve::Point> StraightLine;
   //! [PreimageTypedefFromStraightLine]
+  typedef StraightLineFrom2Points<Curve::Point> StraightLine;
+  StraightLine aStraightLine; //instance of straight line
   typedef Preimage2D<StraightLine> Preimage2D;
   //! [PreimageTypedefFromStraightLine]
 
@@ -74,14 +77,14 @@ int main( int argc, char** argv )
   Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
 
   //preimage computation
-  Preimage2D thePreimage(it->first, it->second, StraightLine());
+  Preimage2D thePreimage(it->first, it->second, aStraightLine);
   ++it; 
   while ( (it != itEnd) &&
               (thePreimage.addFront(it->first, it->second)) )
   {
     ++it;
   }
-
+  trace.info() << thePreimage << endl;
   //display
   Board2D board;
   board.setUnit(Board2D::UCentimeter);
@@ -89,8 +92,40 @@ int main( int argc, char** argv )
   board.saveEPS( "PreimageExample.eps", Board2D::BoundingBox, 5000 );
   //! [PreimageUsageFromIncidentPointsRange]
   
+  trace.endBlock();
+}
+
+{
+  trace.beginBlock("Preimage example with circles");
+
+  //! [PreimageTypedefFromCircle]
+  typedef CircleFrom2Points<Curve::Point> Circle;
+  Circle aCircle(Curve::Point(7,3)); //instance of circle passing through a given point 
+  typedef Preimage2D<Circle> Preimage2D;
+  //! [PreimageTypedefFromCircle]
+
+  Curve::IncidentPointsRange r = c.getIncidentPointsRange(); //range
+  Curve::IncidentPointsRange::ConstIterator it (r.begin()); //iterators
+  Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
+
+  //preimage computation
+  Preimage2D thePreimage(it->first, it->second, aCircle);
+  ++it; 
+  while ( (it != itEnd) &&
+              (thePreimage.addFront(it->first, it->second)) )
+  {
+    ++it;
+  }
+  trace.info() << thePreimage << endl;
+  //display
+  Board2D board;
+  board.setUnit(Board2D::UCentimeter);
+  board << r << thePreimage; 
+  board.saveEPS( "PreimageExample2.eps", Board2D::BoundingBox, 5000 );
   
   trace.endBlock();
+}
+
   return 0;
 }
 //                                                                           //
