@@ -39,6 +39,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/2d/CircleFrom3Points.h"
+#include "DGtal/geometry/2d/CircleFrom2Points.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -61,7 +62,7 @@ template <typename Coordinate>
 bool testCircleFrom3Points()
 {
 
-  trace.beginBlock("Simple test"); 
+  trace.beginBlock("Simple test for CircleFrom3Points"); 
   
   typedef PointVector<2,Coordinate> Point; 
   CircleFrom3Points<Point> c; 
@@ -105,6 +106,34 @@ bool testCircleFrom3Points()
   return true; 
 }
 
+template <typename Coordinate>
+bool testCircleFrom2Points()
+{
+
+  trace.beginBlock("Simple test for CircleFrom2Points"); 
+  
+  typedef PointVector<2,Coordinate> Point; 
+  Point o(0,0);
+  Point pole(0,1); 
+  CircleFrom2Points<Point> c( pole ); 
+  Board2D board; 
+  board << SetMode(o.styleName(), "Grid") << o << pole; 
+
+  {
+    c.init( Point(150,18), Point(100,48) ); 
+    trace.info() << c << endl;
+    trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
+    if (c.signedDistance(o) != 442200) return false; 
+    board << c; 
+    board.saveEPS("circle5.eps", Board2D::BoundingBox, 5000 );
+  }
+
+  trace.endBlock(); 
+  
+  return true; 
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -120,6 +149,7 @@ int main( int argc, char** argv )
   bool res = testCircleFrom3Points<int>()
   && testCircleFrom3Points<double>()
   && testCircleFrom3Points<BigInteger>()
+  && testCircleFrom2Points<int>()
 ; 
 
 
