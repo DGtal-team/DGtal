@@ -144,7 +144,15 @@ int main( int argc, char** argv )
     //! [GridCurveToGraphics]
   }
   
-// @TODO trace.info() << "\t into a FreemanChain " << endl; 
+  trace.info() << "\t into a FreemanChain " << endl; 
+  {
+    //! [GridCurveToFreemanChain]
+    typedef FreemanChain<Curve::KSpace::Integer> FreemanChain; 
+    FreemanChain fc;
+    FreemanChain::readFromPointsRange( c1.getPointsRange(), fc ); 
+    trace.info() << "\t" << fc << endl;
+    //! [GridCurveToFreemanChain]
+  }
   
   trace.emphase() << "Ranges Ouput" << endl;
   {
