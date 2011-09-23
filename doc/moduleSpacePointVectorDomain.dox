@@ -77,21 +77,10 @@ typedef DGtal::SpaceND<3, DGtal::Integer> MySpaceBigInteger;
 #endif
 @endcode
 
-In the latter example, we construct a digital space using multiprecision intergers (implemented using the  GMP
-arbitrary precision library).
+In the latter example, we construct a digital space using
+multiprecision intergers (implemented using the  GMP arbitrary
+precision library). For details, see the documentation page @ref moduleNumber.
 
-However, if we try:
-@code
-typedef DGtal::SpaceND<2, unsigned char> MySpaceUChar;
-@endcode
-a build error is raised by the compiler since we cannot define a ring
-based on "unsigned char". 
-
-@note To check the constraints on template parameter types, DGtal is
-based on a concept framework and concept checking utilities (see
-dedicated documentation). In this example, the type "unsigned char" is
-not a model of the concept CSignedInteger and thus cannot be used to
-define a DGtal space.
 
 Using the shortcuts provides in StdDefs.h, the types defined in the
 namespace  DGtal::Z2i correspond to a digital space in dimension 2
