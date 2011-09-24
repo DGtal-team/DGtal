@@ -93,37 +93,35 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref KernelPackage
   - \ref GeometryPackage
   - \ref TopologyPackage
+  - \ref ImagePackage
 
- * @section manuals_dgtal DGtal user-guides
- *
- * - Helpers and tools
- *  - \ref dgtal_dgtalboard
- *  - \ref threeD_visu
- *  - \ref image_io 
- *  - \ref freemanChainFromImage
- *  - \ref Tools3dVolViewer
- *
- * - Miscellaneous
- *  - \ref dgtalITK
- * 
- * @section manueldev Manual pages for DGtal developers
- * - \ref FAQDGtalCmake
- * - \ref FAQGit
- *
- *
- *
- * @section links_sec_dgtal Links
- *
- * <ul>
- * <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
- *  <li> LibBoard section page   </li>
- * </ul>
- *
- * @defgroup Concepts DGtal Concepts
- * @defgroup Archetypes DGtal Archetypes
- * @defgroup Tests DGtal Test Files
- * @defgroup Examples DGtal Examples
- *
+@section manuals_dgtal DGtal user-guides
+  
+  - Helpers and tools
+  - \ref dgtal_dgtalboard
+  - \ref threeD_visu
+  - \ref freemanChainFromImage
+  - \ref Tools3dVolViewer
+  
+   
+@section manueldev Manual pages for DGtal developers
+  - \ref FAQDGtalCmake
+  - \ref FAQGit
+  
+  
+  
+@section links_sec_dgtal Links
+  
+   <ul>
+   <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
+    <li> LibBoard section page   </li>
+   </ul>
+  
+   @defgroup Concepts DGtal Concepts
+   @defgroup Archetypes DGtal Archetypes
+   @defgroup Tests DGtal Test Files
+   @defgroup Examples DGtal Examples
+  
  */
 
 #if defined _WIN32 || defined __CYGWIN__

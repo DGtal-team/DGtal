@@ -8,8 +8,7 @@ namespace DGtal {
    
    @page dgtal_cellular_topology Cellular grid space and topology, cells, digital surfaces
    
-   @author Jacques-Olivier Lachaud
-   @author Bertrand Kerautret
+   Documentation written by Jacques-Olivier Lachaud and Bertrand Kerautret.
   
    This part of the manual describes how to define cellular grid space
    or cartesian cubic spaces, as well as the main objects living in
