@@ -108,8 +108,8 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP")) && not(vm.count("SFP"))&&
-           not(vm.count("backgroundImage")) ) )
+  if(vm.count("help")||argc<=1 || (!(vm.count("FreemanChain")) && !(vm.count("SDP")) && !(vm.count("SFP"))&&
+           !(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
       << "\t displayContours [options] --FreemanChain  <fileName>  --imageName image.png "<<std::endl

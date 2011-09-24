@@ -260,7 +260,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator& 
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 ( const SegmentComputerIterator & other )
 {

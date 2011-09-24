@@ -98,6 +98,7 @@ endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 # Functions are INLINE only in Release mode
 if ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
     ADD_DEFINITIONS(-DINLINE=inline)
+    ADD_DEFINITIONS(-DBUILD_INLINE=)
 else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
     ADD_DEFINITIONS(-DINLINE=)
 endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )

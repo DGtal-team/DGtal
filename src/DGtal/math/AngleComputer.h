@@ -60,7 +60,7 @@ namespace DGtal
      * @param i any angle.
      * @return the corresponding angle in [0:2pi[
      */
-    INLINE static float cast( float i );
+     static float cast( float i );
     
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
@@ -70,7 +70,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return 'true' if [i] strictly precedes [j] in a window 'pi'.
      */
-    INLINE static bool less( float i, float j );
+     static bool less( float i, float j );
 
     /**
      * Performs j - i modulo 2pi, assuming less(i,j) is true.
@@ -79,7 +79,7 @@ namespace DGtal
      * @param i any angle in [0:2pi[
      * @return the value j - i, always positive. 
      */
-    INLINE static float posDiff( float j, float i );
+     static float posDiff( float j, float i );
 
     /**
      * Performs j - i, assuming th result is in [-pi:pi[
@@ -88,7 +88,7 @@ namespace DGtal
      * @param i any angle in [0:2pi[
      * @return the value j - i, always positive. 
      */
-    INLINE static float deviation( float j, float i );
+     static float deviation( float j, float i );
 
     /**
      * Equivalent to 'less( i, j ) ? i : j'.
@@ -97,7 +97,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the smallest angle of [i] and [j] in a window 'pi'.
      */
-    INLINE static float min( float i, float j );
+    static float min( float i, float j );
 
     /**
      * Equivalent to 'less( i, j ) ? j : i'.
@@ -106,14 +106,14 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the greatest angle of [i] and [j] in a window 'pi'.
      */
-    INLINE static float max( float i, float j );
+    static float max( float i, float j );
 
 
     /**
      * @param i any angle.
      * @return the corresponding angle in [0:2pi[
      */
-    INLINE static double cast( double i );
+    static double cast( double i );
     
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
@@ -123,7 +123,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return 'true' if [i] strictly precedes [j] in a window 'pi'.
      */
-    INLINE static bool less( double i, double j );
+    static bool less( double i, double j );
 
     /**
      * Performs j - i modulo 2pi, assuming less(i,j) is true.
@@ -132,7 +132,7 @@ namespace DGtal
      * @param i any angle in [0:2pi[
      * @return the value j - i, always positive. 
      */
-    INLINE static double posDiff( double j, double i );
+    static double posDiff( double j, double i );
 
     /**
      * Performs j - i, assuming th result is in [-pi:pi[
@@ -141,7 +141,7 @@ namespace DGtal
      * @param i any angle in [0:2pi[
      * @return the value j - i, always positive. 
      */
-    INLINE static double deviation( double j, double i );
+    static double deviation( double j, double i );
 
     /**
      * Equivalent to 'less( i, j ) ? i : j'.
@@ -150,7 +150,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the smallest angle of [i] and [j] in a window 'pi'.
      */
-    INLINE static double min( double i, double j );
+    static double min( double i, double j );
 
     /**
      * Equivalent to 'less( i, j ) ? j : i'.
@@ -159,7 +159,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the greatest angle of [i] and [j] in a window 'pi'.
      */
-    INLINE static double max( double i, double j );
+    static double max( double i, double j );
 
     
   };
