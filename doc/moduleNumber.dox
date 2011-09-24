@@ -25,7 +25,7 @@ namespace DGtal {
 @section overV Overview
 
 When implementing digital geometry algorithms, the choice of integer
-type to implement or approximate @f$Z@f$ is curcial in many situations. In
+type to implement or approximate @f$Z@f$ is crucial in many situations. In
 DGtal, objects, datastructure and algorithms are orthogonal to this
 choice in the sense that the user can specify the best
 Integer type for his own pruposes. 
@@ -62,7 +62,7 @@ following code:
 @code
 typedef DGtal::SpaceND<2, DGtal::uint64_t> MySpace;
 @endcode
-will procude a compiler error.
+will produce a compiler error.
 
 
 In DGtal algorithms, we sometimes need information or associated types
