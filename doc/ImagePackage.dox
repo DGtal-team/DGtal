@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page ImagePackage Documentation of the Image package
+@page ImagePackage  Image package
    
 @author David Coeurjolly
 
