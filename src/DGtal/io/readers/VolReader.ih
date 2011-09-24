@@ -53,7 +53,17 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
+#ifdef WIN32
+  errno_t err;
+  err = fopen_s( &fin, filename.c_str() , "r" );
+  if ( err )
+  {
+    trace.error() << "VolReader : can't open " << filename << endl;
+    throw dgtalexception;
+  }
+#else
   fin = fopen( filename.c_str() , "r" );
+#endif
 
   if ( fin == NULL )
   {

@@ -123,11 +123,11 @@ bool testCellularGridSpaceND()
 
   trace.beginBlock ( "Testing faces in KSpace..." );
   Cells Nf = K.uFaces( center );
-  nbok += Nf.size() == round( std::pow( 3.0 ,(int) K.dimension ) - 1 ) ? 1 : 0; 
+  nbok += Nf.size() == ceil( std::pow( 3.0 ,(int) K.dimension ) - 1 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << Nf.size() << "(faces size) == "
-         << round( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
+         << floor( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
   trace.endBlock();
   
   trace.beginBlock ( "Testing block Incidence in KSpace..." );
