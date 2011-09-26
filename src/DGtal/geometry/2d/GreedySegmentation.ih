@@ -316,7 +316,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectP
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
 {
   return mySegmentComputer.begin();
@@ -324,7 +324,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() co
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
 {
   return mySegmentComputer.end();

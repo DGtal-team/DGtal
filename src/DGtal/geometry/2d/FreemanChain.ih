@@ -1349,8 +1349,8 @@ DGtal::FreemanChain<TInteger>::selfDrawAsGrid(Board2D & aBoard) const
   
   vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToInt64_t(aVContour[i][0]),
-              NumberTraits<TInteger>::castToInt64_t(aVContour[i][1])));
+    contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToDouble(aVContour[i][0]),
+              NumberTraits<TInteger>::castToDouble(aVContour[i][1])));
   }
   aBoard.drawPolyline(contour);
 }
