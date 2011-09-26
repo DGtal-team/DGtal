@@ -106,7 +106,7 @@ viewer << CameraPosition(2.500000, 2.500000, 16.078199)
        << CameraUpVector(0.000000, 1.000000, 0.000000);
 viewer << CameraZNearFar(4.578200, 22.578199);
 viewer.saveCairo("dgtalCairo-1-points.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
-@encode
+@endcode
 
 This example should provides a comparable visualization.
 
