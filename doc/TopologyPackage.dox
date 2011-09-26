@@ -15,9 +15,8 @@
  **/
 
 /**
- * @file Geometric.dox
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/09/19
  *
@@ -33,11 +32,10 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackage Geometry package
+@page TopologyPackage Topology package
    
-@author Tristan Roussillon
-@author David Coeurjolly
 @author Jacques-Olivier Lachaud
+@author Bertrand Kerautret
 @since 0.3
 
 @b LICENSE: LGPL
@@ -45,30 +43,29 @@ namespace DGtal {
 
 @b Package @b Overview
 
-This package contains geometry related concepts, objects and methods which are
-used in other higher level packages. For example, it contains
-geometrical tools for the analysis of digital contours
-or digital objects.
-
+This package contains digital topology related concepts, objects and
+methods which are used in other higher level packages. For example, it
+contains the classical topology tools (à la Rosenfeld), cartesian
+cellular topology, and digital surface topology (à la Herman). Generic
+tools and methods are provided for extracting connected components,
+identifying simple points, determining the neighborhood over a digital
+surface, tracking the boundary of a shape, defining cells and
+incidence operations. This package is notably used by the geometry
+package, especially to define curves and surfaces.
 
 @b Modules
- - \ref geometry2d
- - \ref moduleEsimators
- - \ref volpackage
- - \ref moduleShapesDigitizer
-
-
+ - \ref dgtal_topology
+ - \ref dgtal_cellular_topology
 
  @b Related @b documentation @b pages
 
- @b Related @b examples @b and @b tools
-  - shapeGenerator.cpp
-  - contourGenerator.cpp
-  - lengthEstimators.cpp
-  - estimatorComparator.cpp
-  - distancetransform3D.cpp
-
-
+ @b Related @b examples
+  - 3dBorderExtraction.cpp, 3dBorderExtractionImg.cpp
+  - homotopicThinning3D.cpp
+  - ctopo-1.cpp, ctopo-1-3d.cpp, ctopo-1s-3d.cpp
+  - ctopo-2.cpp, ctopo-2-3d.cpp
+  - khalimskySpaceScanner.cpp
+  - 3dKSSurfaceExtraction.cpp
 
 */
 

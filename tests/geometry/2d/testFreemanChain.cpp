@@ -115,8 +115,8 @@ bool testConstructors()
 bool testPublicSercives()
 {
   typedef FreemanChain<int> FreemanChain;
-  typedef FreemanChain::PointI2 Point;
-  typedef FreemanChain::VectorI2 Vector;
+  typedef FreemanChain::Point Point;
+  typedef FreemanChain::Vector Vector;
   typedef FreemanChain::ConstIterator Iterator;
 
   trace.beginBlock ( "Testing public sercives" );
@@ -189,7 +189,7 @@ bool testPublicSercives()
 
 
 
-  // PointI2 getPoint ( Index pos ) const;
+  // Point getPoint ( Index pos ) const;
   it = fc.begin();
   test = true;
   for (unsigned int i=0; i <= fc.size(); ++i, ++it)
@@ -200,8 +200,8 @@ bool testPublicSercives()
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 10 " << ((test) ? "passed" : "failed" ) << endl;
 
-  // PointI2 firstPoint ( ) const
-  // PointI2 lastPoint ( ) const
+  // Point firstPoint ( ) const
+  // Point lastPoint ( ) const
   test = ( ( fc.subChain(4,3).firstPoint() == Point(3,1) ) && 
       ( fc.subChain(4,3).lastPoint() == Point(5,0) ) );
   nbOk += (test) ? 1 : 0;
@@ -229,13 +229,12 @@ bool testPublicSercives()
 /**
  * test iterators
  */
-bool testIterators()
+bool testPointsIterators()
 {
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> FreemanChain;
-  typedef FreemanChain::PointI2 Point;
+  typedef FreemanChain::Point Point;
   typedef FreemanChain::ConstIterator PointIterator;
-  typedef FreemanChain::ConstCharIterator CharIterator;
   typedef std::reverse_iterator<PointIterator> ReverseIterator;
    
   trace.beginBlock ( "Testing FreemanChain Iterator" );
@@ -278,6 +277,58 @@ bool testIterators()
   return myStack.empty() && samePoints && ( nbPts == seq.size() + 1);
 }
 
+/**
+ * test codes iterators
+ */
+bool testCodesIterators()
+{
+  typedef int Coordinate;
+  typedef FreemanChain<Coordinate> FreemanChain;
+  typedef FreemanChain::CodesRange Range;
+//  typedef Range::ConstIterator PointIterator;
+//  typedef std::reverse_iterator<PointIterator> ReverseIterator;
+   
+  trace.beginBlock ( "Testing CodesRange Iterator" );
+
+  std::stringstream ss;
+  std::string myString = "0 0 000011112222333";
+  ss << myString << std::endl;
+  FreemanChain seq(ss);
+
+  trace.info()<< "Freeman chain set to " << myString << endl;   
+  trace.info()<< seq << endl;
+  Range r = seq.getCodesRange(); 
+  trace.info()<< r << endl;
+  
+  trace.info()<< "Iterates on letters." << endl;
+  std::stack<char> myStack;
+
+  unsigned int nbLetters = 0;
+  for (Range::ConstIterator i = r.begin(); i != r.end(); ++i) 
+  {
+    myStack.push(*i);
+    nbLetters++;
+  }
+
+  trace.info()<< "Test reverse iterator." << endl;
+  bool samePoints = true;
+  for (Range::ConstReverseIterator ri = r.rbegin(); 
+      ri != r.rend();
+      ++ri) 
+  {
+    if ( !myStack.empty() && ( *ri == myStack.top() ) )
+    {
+      myStack.pop();
+    } 
+    else
+    {
+      samePoints = false;
+      break;
+    }
+  }
+  trace.endBlock();
+  return myStack.empty() && samePoints && ( nbLetters == seq.size() );
+}
 
 /**
  * Test static services
@@ -285,8 +336,8 @@ bool testIterators()
 bool testStaticServices()
 {
   typedef FreemanChain<int> FreemanChain;
-  typedef FreemanChain::PointI2 Point;
-  typedef FreemanChain::VectorI2 Vector;
+  typedef FreemanChain::Point Point;
+  typedef FreemanChain::Vector Vector;
   typedef FreemanChain::ConstIterator Iterator;
   typedef std::vector<unsigned int> numVector;
   bool test = false;
@@ -312,7 +363,7 @@ bool testStaticServices()
   trace.info() << "Test 1 " << ((test) ? "passed" : "failed" ) << endl;
 
   //  static void getContourPoints(const FreemanChain & fc, 
-  //      std::vector<PointI2> & aVContour );
+  //      std::vector<Point> & aVContour );
   Point p0, p1(-1,-1), p2(0,-1), p3(1,-1), p4(2,-1), p5(2,0);
   vector<Point> pointVecRef, pointVecTest; 
   pointVecRef.push_back(p1);
@@ -326,7 +377,7 @@ bool testStaticServices()
   trace.info() << "Test 2 " << ((test) ? "passed" : "failed" ) << endl;
 
 
-  // static void movePointFromFC(PointI2 & aPoint, unsigned int aCode )
+  // static void movePointFromFC(Point & aPoint, unsigned int aCode )
   Point P0(10,10), P1(10,10), P2(10,10), P3(10,10); 
   FreemanChain::movePointFromFC( P0, '0'); FreemanChain::movePointFromFC( P1, '1');
   FreemanChain::movePointFromFC( P2, '2'); FreemanChain::movePointFromFC( P3, '3');
@@ -372,7 +423,7 @@ bool testStaticServices()
 
 
   // static void displacement( int & dx, int & dy, unsigned int aCode );
-  // static PointI2 displacement( unsigned int aCode );
+  // static Point displacement( unsigned int aCode );
   int X[4], Y[4];
   FreemanChain::displacement( X[0] , Y[0], '0');
   FreemanChain::displacement( X[1] , Y[1], '1');
@@ -472,8 +523,8 @@ bool testStaticServices()
 bool testDisplay()
 {
   typedef FreemanChain<int> FreemanChain;
-  //typedef FreemanChain::PointI2 Point;
-  //typedef FreemanChain::VectorI2 Vector;
+  //typedef FreemanChain::Point Point;
+  //typedef FreemanChain::Vector Vector;
   //typedef FreemanChain::ConstIterator Iterator;
   //typedef std::vector<unsigned int> numVector;
 
@@ -528,7 +579,8 @@ int main( int argc, char** argv )
   bool res = 
     testConstructors() &&  
     testPublicSercives() &&
-    testIterators() &&
+    testPointsIterators() &&
+    testCodesIterators() &&
     testStaticServices() &&
     testDisplay();
 

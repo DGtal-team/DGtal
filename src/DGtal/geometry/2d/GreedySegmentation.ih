@@ -93,11 +93,10 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
 }
 
 
-  template <typename TSegmentComputer>
+template <typename TSegmentComputer>
 inline
 void
-DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
-::longestSegment(const typename TSegmentComputer::ConstIterator& it)
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSegment(const ConstIterator& it)
 {
 
   mySegmentComputer.init(it);
@@ -206,7 +205,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator& 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator& 
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 ( const SegmentComputerIterator & other )
 {
@@ -317,7 +316,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectP
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
 {
   return mySegmentComputer.begin();
@@ -325,7 +324,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() co
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
 {
   return mySegmentComputer.end();

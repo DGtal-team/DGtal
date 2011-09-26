@@ -33,7 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/math/AngleLinearMinimizer.h"
 // Includes inline functions/methods if necessary.
-#if !defined(INLINE)
+#if !defined(BUILD_INLINE)
 #include "DGtal/math/AngleLinearMinimizer.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ DGtal::AngleLinearMinimizer::getEnergy( unsigned int i1, unsigned int i2 ) const
       unsigned int inext = mc.next( i );
       const ValueInfo & vi = this->ro( i );
       const ValueInfo & viprev = this->ro( mc.previous( i ) );
-      float dev = ac.deviation( vi.value, viprev.value ); 
+      double dev = ac.deviation( vi.value, viprev.value ); 
       E +=  (dev * dev) / viprev.distToNext;
       i = inext;
     }
