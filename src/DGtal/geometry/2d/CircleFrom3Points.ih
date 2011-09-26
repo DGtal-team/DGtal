@@ -234,6 +234,90 @@ DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, const Point& aPoint1
 
 template <typename TPoint>
 inline
+void 
+DGtal::CircleFrom3Points<TPoint>::drawSector(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const
+{
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+  	Vector u(myP - myQ);
+	  Vector v(myR - myP);
+  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //sector drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                   cx, cy ); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
+                   cx, cy ); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename TPoint>
+inline
+void 
+DGtal::CircleFrom3Points<TPoint>::drawAnnulus(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2, const double& w ) const
+{
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+  	Vector u(myP - myQ);
+	  Vector v(myR - myP);
+  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //inner arc
+    aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
+    //outer arc
+    aBoard.drawArc (cx, cy, radius+w, alpha1, alpha2, orientation); 
+    //first segment
+    double ifx = cx + (radius-w)*std::cos(alpha1);
+    double ify = cy + (radius-w)*std::sin(alpha1);
+    double ofx = cx + (radius+w)*std::cos(alpha1);
+    double ofy = cy + (radius+w)*std::sin(alpha1);
+    aBoard.drawLine(ifx, ify, ofx, ofy); 
+    //second segment
+    double ilx = cx + (radius-w)*std::cos(alpha2);
+    double ily = cy + (radius-w)*std::sin(alpha2);
+    double olx = cx + (radius+w)*std::cos(alpha2);
+    double oly = cy + (radius+w)*std::sin(alpha2);
+    aBoard.drawLine(ilx, ily, olx, oly); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename TPoint>
+inline
 void
 DGtal::CircleFrom3Points<TPoint>::selfDisplay ( std::ostream & out ) const
 {

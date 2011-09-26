@@ -31,7 +31,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <exception>
@@ -68,24 +67,18 @@ bool testCircleFrom3Points()
   typedef PointVector<2,Coordinate> Point; 
   CircleFrom3Points<Point> c; 
   Point o(0,0); 
-  Board2D board; 
-  board << SetMode(o.styleName(), "Grid") << o; 
 
   {
     c.init( Point(0,1), Point(150,18), Point(250,-48) ); 
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != -4026300) return false; 
-    board << c; 
-    board.saveEPS("circle1.eps");
   }
   {
     c.init( Point(0,1), Point(150,18), Point(100,48) ); 
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 442200) return false; 
-    board << c; 
-    board.saveEPS("circle2.eps");
   }
   {
     c.init( Point(8,4), Point(9,3), Point(10,0) ); 
@@ -94,7 +87,6 @@ bool testCircleFrom3Points()
     if (c.signedDistance(o) != 0) return false;
     double cx, cy, r; 
     c.getParameters(cx, cy, r); 
-    trace.info() << setprecision(15); 
     if ( (cx != 5.0)||(cy != 0.0) )
     {
       trace.emphase() << "error in returned center" << endl;
@@ -108,9 +100,19 @@ bool testCircleFrom3Points()
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 0) return false; 
-    board << c; 
-    board.saveEPS("circle4.eps");
   }
+
+  Board2D board; 
+  board << SetMode(o.styleName(), "Grid") << o; 
+  {
+    c.init( Point(8,4), Point(9,3), Point(10,0) ); 
+    trace.info() << "arc drawing" << endl;
+    c.drawArc(board, Point(5,10), Point(8,4)); 
+    c.drawSector(board, Point(9,3), Point(10,0) ); 
+    c.drawAnnulus(board, Point(5,-10), Point(2,-4) ); 
+    board.saveEPS("arcDisplay.eps");
+  }
+
 
   trace.endBlock(); 
   
@@ -127,20 +129,12 @@ bool testCircleFrom2Points()
   Point o(0,0);
   Point pole(0,1); 
   CircleFrom2Points<Point> c( pole ); 
-  Board2D board; 
-  board << SetMode(o.styleName(), "Grid") << o << pole; 
 
   {
     c.init( Point(15,2), Point(10,5) ); 
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 470) return false; 
-    board << c; 
-    board.saveSVG("circle5.svg", Board2D::BoundingBox, 5000 );
-    board.saveEPS("circle5.eps", Board2D::BoundingBox, 5000 );
-#ifdef WITH_CAIRO
-    board.saveCairo("circle5.pdf", Board2D::CairoPDF, Board2D::BoundingBox, 5000);
-#endif
 
   }
 
