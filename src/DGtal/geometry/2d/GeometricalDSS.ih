@@ -1,0 +1,177 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file GeometricalDSS.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/09/26
+ *
+ * Implementation of inline methods defined in GeometricalDSS.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename TConstIterator>
+inline
+DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS()
+:myBegin(), myEnd(), myPreimage()
+{
+}
+
+template <typename TConstIterator>
+inline
+DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS( const GeometricalDSS & other )
+:myBegin(other.myBegin), myEnd(other.myEnd), myPreimage(other.myPreimage)
+{
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>&
+DGtal::GeometricalDSS<TConstIterator>::operator= ( const GeometricalDSS & other )
+{
+  myBegin = other.myBegin;
+  myEnd = other.myEnd;
+  myPreimage = other.myPreimage;
+}
+
+template <typename TConstIterator>
+inline
+DGtal::GeometricalDSS<TConstIterator>::~GeometricalDSS()
+{
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Reverse
+DGtal::GeometricalDSS<TConstIterator>::getReverse ( ) const
+{
+  return Reverse(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+template <typename TConstIterator>
+inline
+void
+DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GeometricalDSS]";
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isValid() const
+{
+  return true;
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::ConstIterator
+DGtal::GeometricalDSS<TConstIterator>::begin() const
+{
+  return myBegin;
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::ConstIterator
+DGtal::GeometricalDSS<TConstIterator>::end() const
+{
+  return myEnd;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Growth operations                                                        //
+
+template <typename TConstIterator>
+inline
+void
+DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
+{
+  myBegin = anIt; 
+  myEnd = anIt; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isExtendable()
+{
+  return true; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::extend()
+{
+  myEnd++; 
+  return true; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
+{
+  return true; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
+{
+  myBegin--; 
+  return true; 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TConstIterator>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const GeometricalDSS<TConstIterator> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
