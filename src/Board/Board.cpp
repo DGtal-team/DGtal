@@ -1007,6 +1007,10 @@ Board::save( const char * filename, double pageWidth, double pageHeight, double 
     saveSVG( filename, pageWidth, pageHeight, margin );
     return;
   }
+  if ( !(strcmp( extension, ".tikz" )) || !(strcmp( extension, ".TIKZ" )) ) {
+    saveTikZ( filename, pageWidth, pageHeight, margin );
+    return;
+  }
 }
 
 void
@@ -1096,6 +1100,81 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   cairo_surface_destroy (surface);
 }
 #endif
+
+void
+Board::saveTikZ( const char * filename, PageSize size, double margin ) const
+{
+  saveTikZ( filename, pageSizes[size][0], pageSizes[size][1], margin );
+}
+
+void
+Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin ) const
+{
+  std::ofstream file( filename );
+  TransformTikZ transform;
+  Rect box = boundingBox();
+  bool clipping = _clippingPath.size() > 2;
+  if ( clipping )
+    box = box && _clippingPath.boundingBox();
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
+
+  file << "\\begin{tikzpicture}" << std::endl
+    << "\\pgfsetxvec{\\pgfpoint{1pt}{0pt}}" << std::endl
+    << "\\pgfsetyvec{\\pgfpoint{0pt}{-1pt}}" << std::endl;
+
+/*
+  if ( pageWidth > 0 && pageHeight > 0 ) {
+    file << "<svg width=\""
+	 << pageWidth << "mm\" height=\""
+	 << pageHeight << "mm\" " << std::endl;
+    file << "     viewBox=\"0 0 "
+ 	 << pageWidth * ppmm  << " "
+ 	 << pageHeight * ppmm  << "\" " << std::endl;
+    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
+  } else {
+    file << "<svg width=\""
+	 << ( box.width / ppmm )  << "mm"
+	 << "\" height=\""
+	 << ( box.height / ppmm ) << "mm"
+	 << "\" " << std::endl;
+    file << "     viewBox=\"0 0 "
+	 << box.width  << " "
+	 << box.height << "\" " << std::endl;
+    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" >" << std::endl;
+
+  }
+
+  file << "<desc>" << filename 
+       << ", created with the Board library (Copyleft) 2007 Sebastien Fourey" 
+       << "</desc>" << std::endl;*/
+
+  if ( clipping  ) {
+    file << "\\clip ";
+    _clippingPath.flushSVGCommands( file, transform );
+    file << "\n";
+  }
+  
+  // Draw the background color if needed.
+  if ( _backgroundColor != Color::None ) { 
+    Rectangle r( box, Color::None, _backgroundColor, 0.0 );
+    r.flushTikZ( file, transform );
+  }
+
+  // Draw the shapes.
+  std::vector< Shape* > shapes = _shapes;
+  stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
+  std::vector< Shape* >::const_iterator i = shapes.begin();
+  std::vector< Shape* >::const_iterator end = shapes.end();
+  while ( i != end ) {
+    (*i)->flushTikZ( file, transform );
+    ++i;
+  }  
+
+  //if ( clipping )
+  //  file << "</g>\n</g>";
+  file << "\\end{tikzpicture}" << std::endl;
+  file.close();
+}
 
 } // namespace LibBoard;
 

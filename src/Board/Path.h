@@ -210,6 +210,9 @@ struct Path {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZPoints( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
 
 protected:
