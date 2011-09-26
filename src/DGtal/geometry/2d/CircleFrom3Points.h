@@ -174,12 +174,32 @@ namespace DGtal
     */
     void drawArc(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const;
 
+
+    /**
+       Draw a sector between @a alpha1 and @a alpha2 on a Board2D board 
+       (the circular arc is tied with the circle center)
+       @param aBoard the output board where the object is drawn.
+       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
+       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
+    */
+    void drawSector(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const;
+
+    /**
+       Draw an annulus of width 2 @a w between @a alpha1 and @a alpha2 on a Board2D board 
+       (the circular arc is tied with the circle center)
+       @param aBoard the output board where the object is drawn.
+       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
+       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
+       @param w  the annulus half-width
+    */
+    void drawAnnulus(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2, const double& w = 1.0 ) const;
+
     
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the three points that uniquely define the circle line
+    //the three points that uniquely define the circle
     /**
        First point through which the circle passes
     */
