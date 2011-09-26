@@ -38,6 +38,7 @@ namespace DGtal {
 @author Tristan Roussillon
 @author David Coeurjolly
 @author Jacques-Olivier Lachaud
+@since 0.3
 
 @b LICENSE: LGPL
 
@@ -60,7 +61,11 @@ or digital objects.
 
  @b Related @b documentation @b pages
 
- @b Related @b examples and @b tools
+ @b Related @b examples @b and @b tools
+  - shapeGenerator.cpp
+  - contourGenerator.cpp
+  - lengthEstimators.cpp
+  - estimatorComparator.cpp
   - distancetransform3D.cpp
 
 
