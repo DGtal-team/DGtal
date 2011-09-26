@@ -36,6 +36,7 @@ namespace DGtal {
 @page ImagePackage  Image package
    
 @author David Coeurjolly
+@since 0.1
 
 @b LICENSE: LGPL
 

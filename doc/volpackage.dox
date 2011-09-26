@@ -108,7 +108,7 @@ three elements:
 - and a static number "p" used to define the @f$l_p@f$ metric
 
 An optional IntegerLong template parameter with default type
-DGtal::uint64_t can be specified to represent the sums of @f$x_i^p@f$
+DGtal::int64_t can be specified to represent the sums of @f$x_i^p@f$
 values. This type is important because it corresponds to the Value
 type of the DistanceTransformation::OutputImage type that is used to
 store the output result.
