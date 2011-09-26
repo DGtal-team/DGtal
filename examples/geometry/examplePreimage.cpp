@@ -128,18 +128,6 @@ int main( int argc, char** argv )
     board.saveCairo("PreimageExample2.pdf", Board2D::CairoPDF);
 #endif
 
-////////////////////////////////////////
-  board.clear();
-  board.drawArc(0.0, 0.0, 5.0, 0, M_PI/2.0, true); 
-  board.drawArc(0.0, 0.0, 4.0, 0, M_PI/2.0, false); 
-  board.drawArc(0.0, 0.0, 3.0, -0.5, M_PI/2.0-0.5, true); 
-  board.drawArc(0.0, 0.0, 2.0, 0.5, M_PI/2.0+0.5, true); 
-  board.saveEPS( "essai.eps" );
-//do not work  board.saveSVG( "essai.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("essai.pdf", Board2D::CairoPDF);
-#endif
-////////////////////////////////////////
   trace.endBlock();
 }
 

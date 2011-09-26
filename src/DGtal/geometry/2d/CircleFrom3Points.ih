@@ -146,8 +146,8 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
                   +NumberTraits<Coordinate>::castToDouble(myQ[0])*(pz-rz)
                   -NumberTraits<Coordinate>::castToDouble(myR[0])*(pz-qz);
 
-		cx = ( -alpha / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
-		cy = ( -beta / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
+		cx = ( alpha / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
+		cy = ( beta / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
 
 		//radius
 		double a, b, c; 
@@ -215,12 +215,14 @@ DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, const Point& aPoint1
     getParameters(cx, cy, radius);
     //angle parameters
     double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx ); 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
     double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
   	Vector u(myP - myQ);
 	  Vector v(myR - myP);
-  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?true:false;
+  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
     //drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
   } 
