@@ -77,18 +77,20 @@ DGtal::Viewer3D::isValid() const
 
 void
 DGtal::Viewer3D::drawWithNames()
-{   
+{     
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++)
+    {
+      glCallList(myListToAff+i);
+    }
+  for(unsigned int i=0; i<myLineSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+i);
+    }
   
-  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
-    glCallList(myListToAff+i);
-  }
-  for(unsigned int i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+i);
-  }
-  
-  for(unsigned int i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
-  }   
+  for(unsigned int i=0; i<myPointSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+    }   
 }
 
 
@@ -223,7 +225,7 @@ DGtal::Viewer3D::init()
 void 
 DGtal::Viewer3D::sortSurfelFromCamera()
 {
-  compFarthestFromCamera comp;
+  compFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
     {
