@@ -67,6 +67,7 @@ namespace DGtal
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
   {
+
     // ----------------------- types ------------------------------
   public:
     typedef DigitalSurface<TDigitalSurfaceContainer> Self;
@@ -76,6 +77,62 @@ namespace DGtal
     typedef typename DigitalSurfaceContainer::SCell SCell;
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::SurfelConstIterator ConstIterator;
+    typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
+    typedef typename KSpace::SurfelSet SurfelSet;
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
+    template <typename Value> struct SurfelMap {
+      typedef typename KSpace::template SurfelMap<Value>::Type Type;
+    };
+
+    // ----------------------- UndirectedSimpleGraph --------------------------
+  public:
+    typedef Surfel Vertex;
+    typedef typename KSpace::Size Size;
+    typedef typename KSpace::SurfelSet VertexSet;
+    template <typename Value> struct VertexMap {
+      typedef typename KSpace::template SurfelMap<Value>::Type Type;
+    };
+    /**
+       An edge is a unordered pair of vertices. To make comparisons
+       easier, the smallest vertex is stored before the greatest
+       vertex. Note that loops are legal.
+    */ 
+    struct Edge {
+      /// The two vertices.
+      Vertex vertices[ 2 ];
+      /** 
+          Constructor from vertices.
+          @param v1 the first vertex.
+          @param v2 the second vertex.
+      */
+      Edge( const Vertex & v1, const Vertex & v2 )
+      {
+        if ( v1 <= v2 ) 
+          {
+            vertices[ 0 ] = v1;
+            vertices[ 1 ] = v2;
+          }
+        else
+          {
+            vertices[ 0 ] = v2;
+            vertices[ 1 ] = v1;
+          }
+      }
+      bool operator==( const Edge & other ) const
+      {
+        return ( vertices[ 0 ] == other.vertices[ 0 ] )
+          && ( vertices[ 1 ] == other.vertices[ 1 ] );
+      }
+      bool operator<( const Edge & other ) const
+      {
+        return ( vertices[ 0 ] < other.vertices[ 0 ] )
+          || ( ( vertices[ 0 ] == other.vertices[ 0 ] )
+               && ( vertices[ 1 ] < other.vertices[ 1 ] ) );
+      }
+
+    };
+    
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -124,6 +181,9 @@ namespace DGtal
     */
     DigitalSurfaceContainer & container();
 
+    // ----------------- UndirectedSimpleGraph realization --------------------
+  public:
+    
     /**
        @return a ConstIterator on the first surfel in the container.
     */
@@ -133,6 +193,9 @@ namespace DGtal
        @return a ConstIterator after the last surfel in the container.
     */
     ConstIterator end() const;
+
+    /// @return the number of vertices of the graph.
+    Size size() const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -156,6 +219,8 @@ namespace DGtal
 
     /// a smart pointer on the container.
     CowPtr<DigitalSurfaceContainer> myContainer;
+    /// a smart pointer on a tracker.
+    CowPtr<DigitalSurfaceTracker> myTracker;
 
     // ------------------------- Hidden services ------------------------------
   protected:

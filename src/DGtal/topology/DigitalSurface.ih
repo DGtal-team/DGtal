@@ -38,13 +38,102 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
+//-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::~DigitalSurface()
 {
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( const DigitalSurface & other )
+  : myContainer( other.myContainer ),
+    myTracker( other.myTracker )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( const TDigitalSurfaceContainer & aContainer )
+  : myContainer( new DigitalSurfaceContainer( aContainer ) )
+{
+  if ( myContainer->nbSurfels() != 0 )
+    {
+      Surfel s = *( myContainer->begin() );
+      myTracker = CowPtr<DigitalSurfaceTracker>
+        ( myContainer->newTracker( s ) ); 
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( TDigitalSurfaceContainer* containerPtr )
+  : myContainer( containerPtr )
+{
+  if ( myContainer->nbSurfels() != 0 )
+    {
+      Surfel s = *( myContainer->begin() );
+      myTracker = CowPtr<DigitalSurfaceTracker>
+        ( myContainer->newTracker( s ) ); 
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer> &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
+( const DigitalSurface & other )
+{
+  if ( this != &other )
+    {
+      myContainer = other.myContainer;
+      myTracker = other.myTracker;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+const TDigitalSurfaceContainer &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::container() const
+{
+  return *myContainer;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+TDigitalSurfaceContainer &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::container()
+{
+  return *myContainer;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::begin() const
+{
+  return myContainer->begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::end() const
+{
+  return myContainer->end();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::size() const
+{
+  return myContainer->nbSurfels();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
