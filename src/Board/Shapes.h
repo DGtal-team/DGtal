@@ -257,6 +257,16 @@ struct Shape {
        const TransformCairo & transform ) const = 0;
 #endif
 
+  /** 
+   * Writes the TikZ code of the shape in a stream according
+   * to a transform.
+   * 
+   * @param stream The output stream.
+   * @param transform A 2D transform to be applied.
+   */
+  virtual void flushTikZ( std::ostream & stream,
+       const TransformTikZ & transform ) const = 0;
+
   inline int depth() const;
 
   virtual void depth( int );
@@ -305,6 +315,13 @@ protected:
    */
   void setCairoDashStyle(cairo_t *cr, LineStyle type) const;
 #endif
+
+  /** 
+   * Return a string of the properties lineWidth, penColor, lineCap, and lineJoin
+   * as TikZ commands.
+   * @return A string of the TikZ commands.
+   */
+  std::string tikzProperties( const TransformTikZ & transform ) const;
 };
 
   
@@ -483,6 +500,9 @@ struct Dot : public Shape {
      const TransformCairo & transform ) const;
 #endif
   
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
 
   Dot * clone() const;
@@ -603,6 +623,9 @@ struct Line : public Shape {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
 
   Line * clone() const;
@@ -707,6 +730,9 @@ struct Arrow : public Line {
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
 
   Arrow * clone() const;
 
@@ -847,6 +873,9 @@ struct Polyline : public Shape {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
 
   Polyline * clone() const;
@@ -958,6 +987,9 @@ struct Rectangle : public Polyline {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rectangle * clone() const;
 
 private:
@@ -1009,6 +1041,9 @@ struct Image : public Rectangle {
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
 
 
 private:
@@ -1202,6 +1237,9 @@ struct GouraudTriangle : public Polyline {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   GouraudTriangle * clone() const;
 
 private:
@@ -1318,6 +1356,9 @@ struct Ellipse : public Shape {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
 
   Ellipse * clone() const;
@@ -1391,6 +1432,9 @@ struct Circle : public Ellipse {
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
 
   Circle * clone() const;
 
@@ -1543,6 +1587,9 @@ struct Text : public Shape {
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
 
   Rect boundingBox() const;
 

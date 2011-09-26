@@ -157,8 +157,9 @@ namespace DGtal
     std::string svgAlpha( const char * aPrefix ) const;
 
     std::string postscript() const;
-  
 
+    std::string tikz() const;
+  
     static const Color None;
     static const Color Black;
     static const Color Gray;
