@@ -131,23 +131,21 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
 	} else {
 
 		//center
+    double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
 		double pz, qz, rz;
-		pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 ) 
-        + std::pow( NumberTraits<Coordinate>::castToDouble(myP[1]),2.0 );
-		qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 ) 
-        + std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]),2.0 );
-		rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 ) 
-        + std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]),2.0 );
+		pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 )/areaD 
+        + std::pow( NumberTraits<Coordinate>::castToDouble(myP[1]),2.0 )/areaD;
+		qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 )/areaD 
+        + std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]),2.0 )/areaD;
+		rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 )/areaD 
+        + std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]),2.0 )/areaD;
 
-		double alpha = NumberTraits<Coordinate>::castToDouble(myP[1])*(qz-rz)
-                  -NumberTraits<Coordinate>::castToDouble(myQ[1])*(pz-rz)
-                  +NumberTraits<Coordinate>::castToDouble(myR[1])*(pz-qz);
-		double beta = -NumberTraits<Coordinate>::castToDouble(myP[0])*(qz-rz)
-                  +NumberTraits<Coordinate>::castToDouble(myQ[0])*(pz-rz)
-                  -NumberTraits<Coordinate>::castToDouble(myR[0])*(pz-qz);
-
-		cx = ( alpha / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
-		cy = ( beta / (NumberTraits<Coordinate>::castToDouble(area)*2.0) );
+		cx = NumberTraits<Coordinate>::castToDouble(myP[1])*(qz-rz)
+        -NumberTraits<Coordinate>::castToDouble(myQ[1])*(pz-rz)
+        +NumberTraits<Coordinate>::castToDouble(myR[1])*(pz-qz);
+		cy = -NumberTraits<Coordinate>::castToDouble(myP[0])*(qz-rz)
+         +NumberTraits<Coordinate>::castToDouble(myQ[0])*(pz-rz)
+         -NumberTraits<Coordinate>::castToDouble(myR[0])*(pz-qz);
 
 		//radius
 		double a, b, c; 
@@ -158,8 +156,7 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
 		c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
 
-		r = ( (std::sqrt(a)*std::sqrt(b)*std::sqrt(c))
-         /(std::abs(NumberTraits<Coordinate>::castToDouble(area))*2.0) );
+		r = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
 	}	
 
 }

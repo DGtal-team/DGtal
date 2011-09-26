@@ -94,14 +94,14 @@ bool testCircleFrom3Points()
     if (c.signedDistance(o) != 0) return false;
     double cx, cy, r; 
     c.getParameters(cx, cy, r); 
-/*    trace.info() << setprecision(15); 
-    if ( (cx != 5.0)||(cy != 0.0)||(r != 5.0) )
+    trace.info() << setprecision(15); 
+    if ( (cx != 5.0)||(cy != 0.0) )
     {
-      trace.emphase() << "error in returned center and radius" << endl;
-      trace.info() << "(" << cx << "," << cy << ") " << r << endl;
-      trace.info() << "instead of (5,0) 5" << endl;
+      trace.emphase() << "error in returned center" << endl;
+      trace.info() << "(" << cx << "," << cy << ") " << endl;
+      trace.info() << "instead of (5,0)" << endl;
       return false; 
-    } */
+    } 
   }
   {
     c.init( Point(0,0), Point(150,20), Point(15,2) ); 
