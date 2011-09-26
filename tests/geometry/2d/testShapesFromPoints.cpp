@@ -31,6 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <exception>
@@ -87,10 +88,20 @@ bool testCircleFrom3Points()
     board.saveEPS("circle2.eps");
   }
   {
-    c.init( Point(0,1), Point(150,18), Point(100,48) ); 
+    c.init( Point(8,4), Point(9,3), Point(10,0) ); 
     trace.info() << c << endl;
-    trace.info() << Point(150,18) << " is at distance " << c.signedDistance(Point(150,18)) << endl;
-    if (c.signedDistance(Point(150,18)) != 0) return false; 
+    trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
+    if (c.signedDistance(o) != 0) return false;
+    double cx, cy, r; 
+    c.getParameters(cx, cy, r); 
+/*    trace.info() << setprecision(15); 
+    if ( (cx != 5.0)||(cy != 0.0)||(r != 5.0) )
+    {
+      trace.emphase() << "error in returned center and radius" << endl;
+      trace.info() << "(" << cx << "," << cy << ") " << r << endl;
+      trace.info() << "instead of (5,0) 5" << endl;
+      return false; 
+    } */
   }
   {
     c.init( Point(0,0), Point(150,20), Point(15,2) ); 
