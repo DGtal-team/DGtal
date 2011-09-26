@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page dgtalITK Interactions between ITK and DGtal
+@page dgtalITK Interactions between ITK and DGtal using ITKImage 
 @author David Coeurjolly
 
 This part of the manual describe the interactions between DGTal and
