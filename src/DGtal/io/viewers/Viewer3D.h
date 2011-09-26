@@ -198,18 +198,6 @@ private:
 
 public:
   
-  //  ModeMapping myModes;  
-      /**
-     * For instance, may associate a new style object T1 to the class
-     * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
-     *
-     * One can also store a new style T2 for a specific mode used for
-     * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
-     *
-     * Modes may only be used in objects implementing the concept
-     * CDrawableWithBoard2D.
-     */
-  //    StyleMapping myStyles;
 
   
     // ------------------------- Private Datas --------------------------------
@@ -255,13 +243,32 @@ protected:
 
 
   
-  
+  /**
+   * Used to manage new key event (wich are added from the default
+   * QGLviewer keys).
+   *
+   * Note that when a new key event is taken into account it could be
+   * added in the QGLviewer init() method to update automatically the
+   * key description in the help QGLviewer window.  For instance when
+   * a new key is processed in this method you simply should add the following
+   * code in the init() method:
 
+   @code
+     setKeyDescription(Qt::Key_NEW, "Description of the new Key."); 
+   @endcode
 
+   * 
+   * @param e: the QKeyEvent 
+   **/
   
   virtual void keyPressEvent(QKeyEvent *e);
   
-  struct compFarthestFromCamera{
+  
+  /**
+   * Used to sort pixel from camera
+   **/
+  
+  struct compFarthestVoxelFromCamera{
     qglviewer::Vec posCam;
     bool operator() ( voxelD3D s1, voxelD3D s2){
       double dist1= sqrt((posCam.x-s1.x)*(posCam.x-s1.x)+ (posCam.y-s1.y)*(posCam.y-s1.y)+(posCam.z-s1.z)*(posCam.z-s1.z));
