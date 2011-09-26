@@ -71,7 +71,11 @@ int main( int argc, char** argv )
   Z3i::KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   
-  ASSERT(space_ok);
+  if (!space_ok)
+    {
+      trace.error() << "Error in the Khamisky space construction."<<std::endl;
+      return 2;
+    }
 
   std::vector<Z3i::SCell> vectBdrySCell;
   std::vector<Z3i::SCell> vectBdrySCell2;

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Kernel.dox
+ * @file Image.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/02
+ * @date 2011/09/23
  *
- * Documentation file for feature Kernel
+ * Documentation file for feature Image
  *
  * This file is part of the DGtal library.
  */
@@ -33,32 +33,25 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page KernelPackage Kernel package
+@page ImagePackage  Image package
    
-@author Jacques-Olivier Lachaud
 @author David Coeurjolly
-@author Guillaume Damiand 
-@author Sebastien Fourey
+@since 0.1
 
 @b LICENSE: LGPL
 
 
 @b Package @b Overview
 
-This package contains core concepts, objects and methods which are
-used in other higher level packages. For example, it defines 
-number types considered in DGtal, fundamental structures such as the
-digital space, the digital domain, as well as basic linear algebra
-tools.
+This package aims to implement Image models and data-structures.
 
 @b Modules
- - \ref moduleNumber
- - \ref moduleSpacePointVectorDomain
- - \ref moduleDigitalSets  
+ - \ref moduleImage
 
 
  @b Related @b documentation @b pages
- - \ref PageRef
+ - \ref image_io
+ - \ref dgtalITK
 
 
 

@@ -57,10 +57,12 @@
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/concept_archetype.hpp>
 
-#if ( (defined(WIN32)) )
+#if defined( WIN32 )
 #define _USE_MATH_DEFINES
-#endif //win32
+#include <math.h>
+#else 
 #include <cmath>
+#endif //win32
 
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s

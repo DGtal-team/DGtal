@@ -127,29 +127,29 @@ public:
   /**
    * @return a reference on the information structure of the [i]th value.
    */
-  INLINE ValueInfo & rw( unsigned int i );
+   ValueInfo & rw( unsigned int i );
 
   
    /**
    * @return a const reference on the information structure of the [i]th value.
    */
-  INLINE const ValueInfo & ro( unsigned int i ) const;
+   const ValueInfo & ro( unsigned int i ) const;
   
   /**
    * @return the maximum number of values stored in the object.
    */
-  INLINE unsigned int maxSize() const;
+   unsigned int maxSize() const;
 
   /**
    * @return the number of values stored in the object.
    */
-  INLINE unsigned int size() const;
+   unsigned int size() const;
 
   /**
    * Specifies the exact number of valid values.
    * @param nb any number below 'maxSize()'.
    */
-  INLINE void setSize( unsigned int nb );
+   void setSize( unsigned int nb );
 
   /**
    * Specifies if the curve is open or not.
@@ -157,7 +157,7 @@ public:
    * value does not depend on the first one, otherwise the curve is
    * closed and the last value is linked to the first one.
    */
-  INLINE void setIsCurveOpen( bool is_curve_open = false );
+   void setIsCurveOpen( bool is_curve_open = false );
 
 
  
@@ -216,20 +216,20 @@ public:
    * @return the sum of the displacements.
    * @see oneStep
    */
-  double optimize( uint i1, uint i2 );
+  double optimize( unsigned int i1, unsigned int i2 );
   
   
   /**
    * Sum of all the absolute displacements of the last optimisation step.
    */
-  INLINE double sum() const;
+   double sum() const;
 
 
 
   /**
    * Max of all the absolute displacements of the last optimisation step.
    */
-  INLINE double max() const;
+   double max() const;
 
  
 protected:
@@ -243,7 +243,7 @@ protected:
    * @param i1 the first value to be optimized (between 0 and 'size()-1').
    * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
    */
-  virtual void oneStep( uint i1, uint i2 );
+  virtual void oneStep( unsigned int i1, unsigned int i2 );
 
 
 public:
@@ -328,7 +328,7 @@ private:
    * The meaningful size of the array [myValues], ie the number of
    * valid entries.
    */
-  uint mySize;
+  unsigned int mySize;
 
 
 
@@ -372,14 +372,14 @@ private:
    * @param other the object to clone.
    * Forbidden by default.
    */
-  INLINE AngleLinearMinimizer( const AngleLinearMinimizer & other );
+   AngleLinearMinimizer( const AngleLinearMinimizer & other );
   /**
    * Assignment.
    * @param other the object to copy.
    * @return a reference on 'this'.
    * Forbidden by default.
    */
-  INLINE AngleLinearMinimizer & operator=( const AngleLinearMinimizer & other );
+   AngleLinearMinimizer & operator=( const AngleLinearMinimizer & other );
   
 
   
@@ -391,7 +391,7 @@ private:
 
 
 
-/**
+  /**
    * Specializes LinearMinimizer to optimize with a relaxation method.
    */
   class AngleLinearMinimizerByRelaxation : public AngleLinearMinimizer
@@ -400,12 +400,12 @@ private:
     /**
      * Default constructor. Does nothing.
      */
-    INLINE AngleLinearMinimizerByRelaxation();
+     AngleLinearMinimizerByRelaxation();
 
     /**
      * Destructor. Does nothing.
      */
-    INLINE virtual ~AngleLinearMinimizerByRelaxation();
+     virtual ~AngleLinearMinimizerByRelaxation();
 
   protected:
     
@@ -458,12 +458,12 @@ public:
     /**
      * Default constructor. Does nothing.
      */
-    INLINE AngleLinearMinimizerByGradientDescent( double step = 0.1 );
+     AngleLinearMinimizerByGradientDescent( double step = 0.1 );
 
     /**
      * Destructor. Does nothing.
      */
-    INLINE virtual ~AngleLinearMinimizerByGradientDescent();
+     virtual ~AngleLinearMinimizerByGradientDescent();
 
   protected:
     
@@ -516,12 +516,12 @@ public:
     /**
      * Default constructor. Does nothing.
      */
-    INLINE AngleLinearMinimizerByAdaptiveStepGradientDescent( double step = 0.1 );
+     AngleLinearMinimizerByAdaptiveStepGradientDescent( double step = 0.1 );
 
     /**
      * Destructor. Does nothing.
      */
-    INLINE virtual ~AngleLinearMinimizerByAdaptiveStepGradientDescent();
+     virtual ~AngleLinearMinimizerByAdaptiveStepGradientDescent();
 
   protected:
     
@@ -574,8 +574,9 @@ operator<< ( std::ostream & out, const AngleLinearMinimizer & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
+#if defined(BUILD_INLINE)
 #include "DGtal/math/AngleLinearMinimizer.ih"
-
+#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

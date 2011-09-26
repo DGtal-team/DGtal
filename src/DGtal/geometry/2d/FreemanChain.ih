@@ -18,12 +18,18 @@
  * @file FreemanChain.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * Bertrand Kerautret (\c kerautre@loria.fr )
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
  *
  * @date 2010/07/01
  *
- * Implementation of inline methods defined in FreemanChain.h
+ * @brief Implementation of inline methods defined in FreemanChain.h
  *
  * This file is part of the DGtal library.
  */
@@ -162,63 +168,6 @@ void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Iterator on codes
-
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstCharIterator 
-DGtal::FreemanChain<TInteger>::cbegin() const
-{
-  return ConstCharIterator( *this, 0 );
-}
-
-
-template <typename TInteger>
-typename DGtal::FreemanChain<TInteger>::ConstCharIterator 
-DGtal::FreemanChain<TInteger>::cend() const
-{
-  return ConstCharIterator( *this, chain.size() );
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const FreemanChain & aFC, 
-    unsigned int n) : std::string::const_iterator( aFC.chain.begin() ) 
-{
-  myFc = &aFC;
-  (*this) += n;
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const ConstCharIterator & aOther) 
-    : std::string::const_iterator( aOther ) 
-{
-   myFc = aOther.myFc;
-}
-
-
-template <typename TInteger>
-inline
-DGtal::FreemanChain<TInteger>::ConstCharIterator::ConstCharIterator ( 
-    const ConstIterator & aOther) 
-    : std::string::const_iterator( aOther.getChain->chain.begin() ) 
-{
-  myFc = aOther.getChain();
-  (*this) += aOther.getPosition();
-}
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
 
@@ -242,25 +191,9 @@ DGtal::FreemanChain<TInteger>::FreemanChain( const std::string & s, TInteger x, 
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::
-FreemanChain( const std::vector<PointI2> vectPoints )
+FreemanChain( const std::vector<Point>& vectPoints )
 {
-  ostringstream oss;
-  x0=vectPoints.at(0)[0];
-  y0=vectPoints.at(0)[1];
-  xn=vectPoints.at(vectPoints.size()-1)[0];
-  yn=vectPoints.at(vectPoints.size()-1)[1];
-  
-  PointI2 pt;
-  PointI2 ptSuiv;
-  for(unsigned int i=0; i< vectPoints.size()-1; i++){
-    pt = vectPoints.at(i);
-    ptSuiv = vectPoints.at(i+1);
-    int dx = ptSuiv[0] - pt[0]; 
-    int dy = ptSuiv[1] - pt[1]; 
-    char aCode = '0' + (char) ( dx != 0 ? (1 - dx) : (2 - dy) );
-    oss << aCode;
-  }
-  chain = oss.str();
+  readFromPointsRange(vectPoints.begin(), vectPoints.end(), *this); 
 }
 
 
@@ -329,7 +262,7 @@ template <typename TInteger>
 typename DGtal::FreemanChain<TInteger>::ConstIterator 
 DGtal::FreemanChain<TInteger>::end() const
 {
-  PointI2 p(0,0); // *(end()) is invalid
+  Point p(0,0); // *(end()) is invalid
   return ConstIterator( *this, chain.size() + 1, p );
 }
 
@@ -398,7 +331,7 @@ void DGtal::FreemanChain<TInteger>::computeBoundingBox( TInteger & min_x,
       it != end();
       ++it )
   {
-    PointI2 p( *it );
+    Point p( *it );
     if ( p.at(0) < min_x )
       min_x = p.at(0);
     else
@@ -538,7 +471,7 @@ int DGtal::FreemanChain<TInteger>::ccwLoops() const
   ConstIterator it_end = this->end();
   --it_end;
   ConstIterator it_suiv = it;
-  PointI2 spos = *it;
+  Point spos = *it;
   int nb_ccw_turns = 0;
   while ( it != it_end )
   {
@@ -569,8 +502,8 @@ typename DGtal::FreemanChain<TInteger>
 DGtal::FreemanChain<TInteger>::subChain(Index pos, Size n) const
 {
   Self newChain;
-  PointI2 startPoint = getPoint(pos);
-  PointI2 endPoint = getPoint(pos+n);
+  Point startPoint = getPoint(pos);
+  Point endPoint = getPoint(pos+n);
   newChain.chain = chain.substr(pos,n);
   newChain.x0 = startPoint.at(0);
   newChain.y0 = startPoint.at(1);
@@ -589,7 +522,7 @@ DGtal::FreemanChain<TInteger>::operator+(const Self& aOther) const
   newChain.chain = chain + aOther.chain;
   newChain.x0 = x0;
   newChain.y0 = y0;
-  PointI2 newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
+  Point newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
   newChain.xn = newLastPoint.at(0);
   newChain.yn = newLastPoint.at(1);
   return newChain;
@@ -602,7 +535,7 @@ typename DGtal::FreemanChain<TInteger>&
 DGtal::FreemanChain<TInteger>::operator+=(const Self& aOther) 
 {
   chain += aOther.chain;
-  PointI2 newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
+  Point newLastPoint = lastPoint() + ( aOther.lastPoint() - aOther.firstPoint() );
   xn = newLastPoint.at(0);
   yn = newLastPoint.at(1);
   return *this;
@@ -611,7 +544,7 @@ DGtal::FreemanChain<TInteger>::operator+=(const Self& aOther)
 
 template <typename TInteger>
 inline
-typename DGtal::FreemanChain<TInteger>::PointI2 
+typename DGtal::FreemanChain<TInteger>::Point 
 DGtal::FreemanChain<TInteger>::getPoint(Index aPos) const
 {
   ConstIterator it;
@@ -641,7 +574,7 @@ typename DGtal::FreemanChain<TInteger> &
 DGtal::FreemanChain<TInteger>::extend(char aCode)
 {
   chain += std::string( &aCode, 1);
-  int dx, dy;
+  int dx=0, dy=0;
   //displacement( dx, dy, aCode - '0' );
   displacement( dx, dy, aCode );
   xn += dx;
@@ -725,13 +658,64 @@ void DGtal::FreemanChain<TInteger>::read( std::istream & in, FreemanChain & c )
   }
 }
 
+template <typename TInteger>
+template <typename TConstIterator>
+inline
+void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TConstIterator& itBegin, const TConstIterator& itEnd, FreemanChain & c ) 
+{
+  TConstIterator it( itBegin ); 
 
+  if (it != itEnd) 
+  { //if the range is not empty
+    Point startingPt( *it ); 
+    ++it; 
+    
+    if (it != itEnd)
+    { //if there is more than one element
+      ostringstream oss;
+      Point pt( startingPt );
+      do 
+      {
+        
+        Point ptSuiv( *it ); 
+        Integer dx = ptSuiv[0] - pt[0]; 
+        Integer dy = ptSuiv[1] - pt[1]; 
+        short number = ( dx != 0 ? (1 - dx) : (2 - dy) );
+        if ( (number < 0) || (number > 3) )
+        {
+          std::cerr << "not connected points (method readFromPointsRange of FreemanChain)" << std::endl;
+          throw ConnectivityException(); 
+        }
+        oss << number;
+        pt = ptSuiv;
+        ++it;         
+        
+      } while ( it != itEnd ); 
+      
+      c.xn=pt[0];
+      c.yn=pt[1];
+      c.chain = oss.str(); 
+    }
+    
+    c.x0=startingPt[0];
+    c.y0=startingPt[1];  
+  }
 
+}
+
+template <typename TInteger>
+template <typename TRange>
+inline
+void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
+{
+  BOOST_CONCEPT_ASSERT(( CConstRange<TRange> ));
+  readFromPointsRange( aRange.begin(), aRange.end(), c ); 
+}
 
 template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::getContourPoints(
-    const FreemanChain & fc, std::vector<PointI2> & aVContour) 
+    const FreemanChain & fc, std::vector<Point> & aVContour) 
 {
   aVContour.clear();
   for ( ConstIterator it = fc.begin();
@@ -746,7 +730,7 @@ void DGtal::FreemanChain<TInteger>::getContourPoints(
 
 template <typename TInteger>
 void 
-DGtal::FreemanChain<TInteger>::movePointFromFC(PointI2 & aPoint, char aCode ){
+DGtal::FreemanChain<TInteger>::movePointFromFC(Point & aPoint, char aCode ){
   switch ( aCode )
     {
     case '0': aPoint.at(0)++; break;
@@ -838,23 +822,23 @@ DGtal::FreemanChain<TInteger>::displacement( char aCode )
 #ifdef CPP0X_INITIALIZER_LIST  
   switch ( aCode ) 
   {
-    case '0':  return PointI2({1,0}); 
-    case '1':  return PointI2({0,1}); 
-    case '2':  return PointI2({-1,0});
-    case '3':  return PointI2({0,-1});
+    case '0':  return Point({1,0}); 
+    case '1':  return Point({0,1}); 
+    case '2':  return Point({-1,0});
+    case '3':  return Point({0,-1});
   }
-  return  PointI2({0,0}); 
+  return  Point({0,0}); 
 #else
   int t[2] = {0,0};
 
   switch ( aCode ) 
   {
-    case '0':  t[0]++; return PointI2( t ); 
-    case '1':  t[1]++; return PointI2( t ); 
-    case '2':  t[0]--; return PointI2( t );
-    case '3':  t[1]--; return PointI2( t );
+    case '0':  t[0]++; return Point( t ); 
+    case '1':  t[1]++; return Point( t ); 
+    case '2':  t[0]--; return Point( t );
+    case '3':  t[1]--; return Point( t );
   }
-  return  PointI2( t ); 
+  return  Point( t ); 
 #endif //CPP0X_INITIALIZER_LIST
 }
 
@@ -896,8 +880,8 @@ void DGtal::FreemanChain<TInteger>::innerContour(
   aInnerChain.chain = "";
   aInner2outer.clear();
   aInner2outer.reserve( nb + ( ccw ? 4 : -4 ) );
-  int dx0, dy0;
-  int dx1, dy1;
+  int dx0=0, dy0=0;
+  int dx1=0, dy1=0;
   FreemanChain<TInteger>::displacement( dx0, dy0, aOuterChain.code( 0 ) );
   int turn = ccw ? 1 : 3;
   //FreemanChain<TInteger>::displacement( dx1, dy1, ( aOuterChain.code( 0 ) + turn ) % 4 );
@@ -1037,7 +1021,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
   i = start_idx;
   // JOL : 2009/07/07, added starting coordinates
   // XP  : 2011/09/06, added ending coordinates
-  PointI2 P = *it;
+  Point P = *it;
   aCleanC.x0 = P.at(0);
   aCleanC.y0 = P.at(1);
   aCleanC.xn = P.at(0);
@@ -1243,8 +1227,8 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 //   unsigned int j = 0;
 //   unsigned int nb = c.chain.size();
 //   if ( nb == 0 ) return false;
-//   PointI2 fxy( it.get() );
-//   PointI2 fXY;
+//   Point fxy( it.get() );
+//   Point fXY;
 //   fXY.at(0)= ( fxy.at(0) - x0 ) / h;
 //   fXY.at(1)= ( fxy.at(1) - y0 ) / v;
 //   aSubc.x0 = fXY.at(0);
@@ -1257,8 +1241,8 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 //     {
 //       aC2subc.push_back( j );
 //       it.nextInLoop();
-//       PointI2 nxy( it.get() );
-//       PointI2 nXY;
+//       Point nxy( it.get() );
+//       Point nXY;
 //       nXY.at(0)= ( nxy.at(0) - x0 ) / h;
 //       nXY.at(1)= ( nxy.at(1) - y0 ) / v;
 //       if ( nXY != fXY )
@@ -1358,15 +1342,15 @@ inline
 void 
 DGtal::FreemanChain<TInteger>::selfDrawAsGrid(Board2D & aBoard) const
 {
-  vector<PointI2> aVContour;
+  vector<Point> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   TInteger minX, minY, maxX, maxY;
   this->computeBoundingBox(minX, minY, maxX, maxY);
   
   vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
-    contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToInt64_t(aVContour[i][0]),
-              NumberTraits<TInteger>::castToInt64_t(aVContour[i][1])));
+    contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToDouble(aVContour[i][0]),
+              NumberTraits<TInteger>::castToDouble(aVContour[i][1])));
   }
   aBoard.drawPolyline(contour);
 }
@@ -1377,7 +1361,7 @@ inline
 void 
 DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(Board2D & aBoard) const
 {
-  vector<PointI2> aVContour;
+  vector<Point> aVContour;
   FreemanChain<TInteger>::getContourPoints(*this, aVContour);
   TInteger minX, minY, maxX, maxY;
   this->computeBoundingBox(minX, minY, maxX, maxY);

@@ -655,6 +655,7 @@ struct Arrow : public Line {
   
   /** 
    * Returns a copy of the arrow, rotated around a given rotation center.
+
    * 
    * @param angle The rotation angle.
    * @param center The center of rotation.
@@ -1384,7 +1385,7 @@ struct Circle : public Ellipse {
    */
   void scaleAll( double s );
 
-  void flushSVG( std::ostream & stream,
+  virtual void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
@@ -1414,6 +1415,9 @@ struct Arc : public Circle {
   void
   flushPostscript( std::ostream & stream,
 		   const TransformEPS & transform ) const;
+  void
+  flushSVG( std::ostream & stream,
+		   const TransformSVG & transform ) const;
 
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
