@@ -57,7 +57,7 @@ namespace DGtal
   // template class CircleFrom3Points
   /**
    * \brief Aim: Represents a circle uniquely
-   * defined by three 3D points and that is able
+   * defined by three 2D points and that is able
    * to return for any given 2D point its signed distance to itself 
    *
    * @tparam TPoint  a type of points.
@@ -85,17 +85,17 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param firstPoint  a point
-     * @param secondPoint  a second point
-     * @param thirdPoint  a third point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
+     * @param aThirdPoint  a third point
      */
     CircleFrom3Points(const Point& aFirstPoint, const Point& aSecondPoint, const Point& aThirdPoint);
 
     /**
      * Init.
-     * @param firstPoint  a point
-     * @param secondPoint  a second point
-     * @param thirdPoint  a third point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
+     * @param aThirdPoint  a third point
      */
     void init(const Point& aFirstPoint, const Point& aSecondPoint, const Point& aThirdPoint);
 
@@ -186,7 +186,6 @@ namespace DGtal
 
     /**
        Draw an annulus of width 2 @a w between @a alpha1 and @a alpha2 on a Board2D board 
-       (the circular arc is tied with the circle center)
        @param aBoard the output board where the object is drawn.
        @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
        @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center

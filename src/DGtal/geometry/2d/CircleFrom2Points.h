@@ -88,15 +88,15 @@ namespace DGtal
     /**
      * Constructor with initialization.
      * @param aPole  a point
-     * @param firstPoint  a point
-     * @param secondPoint  a second point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
      */
     CircleFrom2Points(const Point& aPole, const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Init.
-     * @param firstPoint  a point
-     * @param secondPoint  a second point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
      */
     void init(const Point& aFirstPoint, const Point& aSecondPoint);
 
