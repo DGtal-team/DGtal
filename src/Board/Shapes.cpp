@@ -1477,7 +1477,7 @@ Arc::flushSVG( std::ostream & stream,
 double fx = _center.x + _xRadius*std::cos(_angle1);
 double fy = _center.y + _xRadius*std::sin(_angle1);
 double lx = _center.x + _xRadius*std::cos(_angle2);
-double ly = _center.x + _xRadius*std::sin(_angle2);
+double ly = _center.y + _xRadius*std::sin(_angle2);
 
 stream << "<path ";
 stream << svgProperties( transform ) << " ";
