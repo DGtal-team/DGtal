@@ -52,7 +52,9 @@ or digital objects.
 
 @b Modules
  - \ref geometry2d
+ - \ref moduleEsimators
  - \ref volpackage
+ - \ref moduleShapesDigitizer
 
 
 
