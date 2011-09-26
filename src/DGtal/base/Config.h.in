@@ -95,9 +95,8 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref TopologyPackage
   - \ref ImagePackage
 
-@section manuals_dgtal DGtal user-guides
+@section manuals_dgtal Helpers and tools
   
-  - Helpers and tools
   - \ref dgtal_dgtalboard
   - \ref threeD_visu
   - \ref freemanChainFromImage
