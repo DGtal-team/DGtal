@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackage Documentation of the Geometry package
+@page GeometryPackage  Geometry package
    
 @author Tristan Roussillon
 @author David Coeurjolly
@@ -52,7 +52,9 @@ or digital objects.
 
 @b Modules
  - \ref geometry2d
+ - \ref moduleEsimators
  - \ref volpackage
+ - \ref moduleShapesDigitizer
 
 
 
