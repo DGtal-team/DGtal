@@ -98,8 +98,14 @@ bool testDigitalSurface()
                    << "boundary.isInside( s2 )" << std::endl;
       delete ptrTracker;
     }
-
   trace.endBlock();
+
+  trace.beginBlock ( "Testing block ... DigitalSurface" );
+  typedef DigitalSurface<Boundary> MyDS;
+  MyDS digsurf( boundary ); // duplicated.
+  nb++, nbok += digsurf.size() == nbsurfels ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "digsurf.size() == nbsurfels" << std::endl;
   
   return nbok == nb;
 }

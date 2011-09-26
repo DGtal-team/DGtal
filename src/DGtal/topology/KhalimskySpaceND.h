@@ -41,6 +41,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <set>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CUnsignedInteger.h"
@@ -478,6 +480,28 @@ namespace DGtal
     typedef AnyCellCollection<Cell> Cells;
     typedef AnyCellCollection<SCell> SCells;
 
+    // Sets, Maps
+    /// Preferred type for defining a set of Cell(s).
+    typedef std::set<Cell> CellSet;
+    /// Preferred type for defining a set of SCell(s).
+    typedef std::set<SCell> SCellSet;
+    /// Preferred type for defining a set of surfels (always signed cells).
+    typedef std::set<SCell> SurfelSet;
+    /// Template rebinding for defining the type that is a mapping
+    /// Cell -> Value.
+    template <typename Value> struct CellMap {
+      typedef std::map<SCell,Value> Type;
+    };
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
+    template <typename Value> struct SCellMap {
+      typedef std::map<SCell,Value> Type;
+    };
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
+    template <typename Value> struct SurfelMap {
+      typedef std::map<SCell,Value> Type;
+    };
     // ----------------------- Standard services ------------------------------
   public:
 

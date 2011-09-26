@@ -148,9 +148,10 @@ namespace DGtal
     // ----------------------- associated types ------------------------------
   public:
     typedef DigitalSetBoundary<TKSpace,TDigitalSet> Self;
-    typedef TDigitalSet DigitalSet;
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell Surfel;
+    typedef typename KSpace::Size Size;
+    typedef TDigitalSet DigitalSet;
     typedef typename std::vector<Surfel> SurfelStorage;
     typedef typename SurfelStorage::const_iterator SurfelConstIterator;
     typedef typename KSpace::Space Space;
@@ -215,6 +216,9 @@ namespace DGtal
     /// @return an iterator after the last surfel of the digital surface
     /// (unspecified order).
     SurfelConstIterator end() const;
+
+    /// @return the number of surfels of this digital surface.
+    Size nbSurfels() const;
 
     /**
        @param s any surfel of the space.
