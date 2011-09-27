@@ -178,6 +178,18 @@ namespace DGtal
     bool operator!=( const Preimage2D & other) const;
 
     /**
+     * Decide whether a new constraint can be added
+     * without making the preimage empty or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the new constraint make the preimage empty
+     * 'true' otherwise.
+     */
+    bool canBeAddedAtTheFront(const Point & aP, const Point & aQ);
+
+    /**
      * Updates the current preimage with 
      * the constraints involved by the two 
      * end points of a new segment
