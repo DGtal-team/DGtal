@@ -60,7 +60,7 @@ namespace DGtal {
      domain in Z2. It then displays them in a Board2D object. The
      two last commands export the graphics in SVG and EPS format. The
      full code is in <a
-     href="dgtalboard-1-points_8cpp-example.html">dgtalboard-1-points.cpp</a>.
+     href="dgtalBoard2D-1-points_8cpp-example.html">dgtalBoard2D-1-points.cpp</a>.
     
    \code
    using namespace DGtal;
@@ -147,7 +147,7 @@ namespace DGtal {
     
      Note the different adjacency relations depending on the topology
      chosen for the object. The full code is in <a
-     href="dgtalboard-2-sets_8cpp-example.html">dgtalboard-2-sets.cpp</a>.
+     href="dgtalBoard2D-2-sets_8cpp-example.html">dgtalBoard2D-2-sets.cpp</a>.
     
      <table>
      <tr><td> \image html dgtalboard-2-sets-2.png "(4,8)-object"
@@ -228,7 +228,7 @@ namespace DGtal {
    \endcode
     
      This program (see full source at <a
-     href="dgtalboard-3-custom-classes_8cpp-example.html">dgtalboard-3-custom-classes.cpp</a>)
+     href="dgtalBoard2D-3-custom-classes_8cpp-example.html">dgtalBoard2D-3-custom-classes.cpp</a>)
      outputs the following graphics.
     
      \image html dgtalboard-3-custom-classes.png "Custom drawing."
@@ -274,7 +274,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
    \endcode
     
      This program (see full source at <a
-     href="dgtalboard-3-custom-points_8cpp-example.html">dgtalboard-3-custom-points.cpp</a>) outputs the following graphics.
+     href="dgtalBoard2D-3-custom-points_8cpp-example.html">dgtalBoard2D-3-custom-points.cpp</a>) outputs the following graphics.
     
      \image html dgtalboard-3-custom-points.png "Custom drawing of point." 
      \image latex dgtalboard-3-custom-points.png "Custom drawing of point." width=6cm
@@ -314,7 +314,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
    \endcode
     
      This program (see full source at <a
-     href="dgtalboard-4-colormaps_8cpp-example.html">dgtalboard-4-colormaps.cpp</a>) outputs the following graphics.
+     href="dgtalBoard2D-4-colormaps_8cpp-example.html">dgtalBoard2D-4-colormaps.cpp</a>) outputs the following graphics.
     
      \image html dgtalboard-4-colormaps.png "Colormap example." 
      \image latex dgtalboard-4-colormaps.png "Colormap example." width=5cm
@@ -332,7 +332,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
    \endcode
     
      Another example involving ArithmeticDSS is <a
-     href="dgtalboard-5-greedy-dss_8cpp-example.html">dgtalboard-5-greedy-dss.cpp</a>. It outputs the following graphics:
+     href="dgtalBoard2D-5-greedy-dss_8cpp-example.html">dgtalBoard2D-5-greedy-dss.cpp</a>. It outputs the following graphics:
     
      \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
      \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
