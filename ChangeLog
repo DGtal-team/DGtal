@@ -27,7 +27,8 @@ Posted on September 26, 2011 by David Coeurjolly
 
 	* Tools: multigrid shapeGenerator/contourGenerator added,
 	lengthEstimator/estimatorComparator  added for differential
-	estimator multigrid comparison,...
+	estimator multigrid comparison, connected components extraction in
+	3D, ...
 	  
 	* Documentation: User guide has been improved thanks to a
 	decomposition of the library into packages.
