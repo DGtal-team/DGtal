@@ -58,12 +58,15 @@ namespace DGtal
      
      <p> Refinement of CSinglePassConstRange
     
-     <p> Provided types :
+     <p> Provided types:
 
-     - Iterator: the iterator type, a model of iterator concept.
-     - ReverseIterator: the reverse iterator type, a model of
-          iterator concept.
+     - Iterator: the iterator type, a model of iterator concept
+          (see boost concept SinglePassIteratorConcept).
 
+     <p> Notation:
+
+     - x an object of a model of CSinglePassConstRange.
+     
      <table>
      <tr> 
      <td class=CName> \b Name </td> 
@@ -76,10 +79,20 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t X should have a static \c dimension. </td>
-     <td class=CExpression>      \t x.dimension </td> 
-     <td class=CRequirements>    static member has type \t Dimension </td>
-     <td class=CReturnType>      </td>
+     <td class=CName>            \t begin </td>
+     <td class=CExpression>      \t x.begin() </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      Iterator</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t end </td>
+     <td class=CExpression>      \t x.end() </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      Iterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -101,14 +114,14 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
-   typedef typename T::ReverseIterator ReverseIterator;
+   typedef typename T::Iterator Iterator;
 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
  
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
-      ReverseIterator it=i.rbegin();
-      it=i.rend();
+      Iterator it=i.begin();
+      it2=i.end();
     };
 
   private:
