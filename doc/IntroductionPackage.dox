@@ -35,6 +35,8 @@ namespace DGtal {
 /*!
 @page IntroductionPackage Preliminaries
    
+@since 0.4
+
 @author David Coeurjolly
 
 

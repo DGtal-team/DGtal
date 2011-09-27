@@ -40,6 +40,8 @@ namespace DGtal {
 @author Guillaume Damiand 
 @author Sebastien Fourey
 
+@since 0.4
+
 @b LICENSE: LGPL
 
 
