@@ -38,8 +38,6 @@
 
 
 #include "DGtal/base/Common.h"
-
-#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/helpers/StdDefs.h"
 
 //Grid curve
@@ -68,7 +66,7 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
+  if(vm.count("help")||argc<=1 || (!(vm.count("FreemanChain"))) )
     {
       trace.info()<< "Tangent using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
       << "\t tangentBC [options] --FreemanChain  <fileName> "<<std::endl
@@ -87,7 +85,7 @@ int main( int argc, char** argv )
 
     typedef Z2i::Space Space; 
     typedef Space::Point Point; 
-    typedef RealPointVector<2> RealPoint; 
+    typedef PointVector<2, double> RealPoint; 
     typedef Space::Integer Integer;  
     typedef FreemanChain<Integer> FreemanChain; 
     typedef vector< Point > Storage;

@@ -48,8 +48,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cmath>
-
-#include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -80,7 +78,7 @@ namespace DGtal
   public: 
 
     // ----------------------- inner type ------------------------------
-    typedef DGtal::RealPointVector<2> RealVector;
+    typedef DGtal::PointVector<2,double> RealVector;
     typedef RealVector Value;
 
     // ----------------------- Standard services ------------------------------
@@ -311,7 +309,7 @@ namespace DGtal
      * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
      * be extended at front and false otherwise.  
      */
-    Value operator()( const typename DSSComputer::Point& aPoint, 
+    Value operator()( const typename DSSComputer::Point& /*aPoint*/, 
                       const DSSComputer& aDSS, 
                       const double& h = 1, 
                       const bool& isExtendableAtBack = false,

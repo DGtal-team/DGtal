@@ -45,7 +45,6 @@
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/RealPointVector.h"
 
 #ifdef WITH_MAGICK
 #include "DGtal/io/readers/MagickReader.h"
@@ -53,7 +52,6 @@
 
 
 //contour
-#include "DGtal/kernel/RealPointVector.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 
 //processing
@@ -110,8 +108,8 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain")) && not(vm.count("SDP")) && not(vm.count("SFP"))&&
-           not(vm.count("backgroundImage")) ) )
+  if(vm.count("help")||argc<=1 || (!(vm.count("FreemanChain")) && !(vm.count("SDP")) && !(vm.count("SFP"))&&
+           !(vm.count("backgroundImage")) ) )
     {
       trace.info()<< "Display discrete contours. " <<std::endl << "Basic usage: "<<std::endl
       << "\t displayContours [options] --FreemanChain  <fileName>  --imageName image.png "<<std::endl
@@ -179,7 +177,7 @@ int main( int argc, char** argv )
   if (processingName == "DSS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
-          typedef GreedyDecomposition<DSS4> Decomposition4;
+          typedef deprecated::GreedyDecomposition<DSS4> Decomposition4;
 
           //Segmentation
     DSS4 computer;
@@ -187,10 +185,10 @@ int main( int argc, char** argv )
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
-          for ( Decomposition4::SegmentIterator ii = theDecomposition.begin();
-    ii != theDecomposition.end(); ++ii ) 
+          for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
+    it != theDecomposition.end(); ++it ) 
             {
-        DSS4 segment(*ii);
+        DSS4 segment(*it);
         aBoard << CustomStyle( styleName, 
              new CustomPenColor( DGtal::Color::Gray ) ); 
         aBoard << segment; // draw each segment
@@ -199,7 +197,7 @@ int main( int argc, char** argv )
   } else if (processingName == "MS") {
 
           typedef ArithmeticalDSS<vector<Z2i::Point>::iterator,int,4> DSS4;
-          typedef MaximalSegments<DSS4> Decomposition4;
+          typedef deprecated::MaximalSegments<DSS4> Decomposition4;
 
           //Segmentation
     DSS4 computer;
@@ -208,10 +206,10 @@ int main( int argc, char** argv )
           //for each segment
           aBoard << SetMode( computer.styleName(), "BoundingBox" );
           string styleName = computer.styleName() + "/BoundingBox";
-          for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
-    i != theDecomposition.end(); ++i ) 
+          for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
+    it != theDecomposition.end(); ++it ) 
             {
-        DSS4 segment(*i);
+        DSS4 segment(*it);
         aBoard << CustomStyle( styleName, 
              new CustomPenColor( DGtal::Color::Black ) ); 
         aBoard << segment; // draw each segment
@@ -237,9 +235,9 @@ int main( int argc, char** argv )
 
           //polyline to draw
     vector<LibBoard::Point> polyline;
-    vector<FP::RealPoint>::const_iterator i = v.begin();
-    for ( ;i != v.end();++i) {
-      FP::RealPoint p = (*i);
+    vector<FP::RealPoint>::const_iterator it = v.begin();
+    for ( ;it != v.end();++it) {
+      FP::RealPoint p = (*it);
       polyline.push_back(LibBoard::Point(p[0],p[1]));
     }
           if (isClosed) {
@@ -285,8 +283,8 @@ int main( int argc, char** argv )
  
     if(vm.count("SFP")){
       string fileName = vm["SFP"].as<string>();
-      vector<  RealPointVector<2>  >  contour = 
-  PointListReader<  RealPointVector<2>  >::getPointsFromFile(fileName); 
+      vector< PointVector<2,double>  >  contour = 
+	PointListReader<  PointVector<2,double>  >::getPointsFromFile(fileName); 
       for(unsigned int j=0; j<contour.size(); j++){
   LibBoard::Point pt((double)(contour.at(j)[0]),
          (invertYaxis? (double)(-contour.at(j)[1]+contour.at(0)[1]):(double)(contour.at(j)[1])));

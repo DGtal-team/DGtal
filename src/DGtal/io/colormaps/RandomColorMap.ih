@@ -66,7 +66,7 @@ DGtal::RandomColorMap::associateRandomIndexColor(){
   }
   unsigned int i=0;
   while(myFreeColorIndex.size()!=0){
-    unsigned int pos = random()%myFreeColorIndex.size();
+    unsigned int pos = rand()%myFreeColorIndex.size();
     myColorIndex[i]=myFreeColorIndex.at(pos);
     myFreeColorIndex.erase(myFreeColorIndex.begin()+pos);
     i++;

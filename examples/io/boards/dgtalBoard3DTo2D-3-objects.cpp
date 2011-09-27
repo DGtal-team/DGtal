@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-3-objects.cpp
+ * @file   dgtalBoard3DTo2D-3-objects.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -46,7 +46,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   Board3DTo2D viewer;
 
@@ -72,9 +72,8 @@ int main( int argc, char** argv )
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer << SetMode3DCairo(viewer.styleName(), "WireFrameMode");
+  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
   viewer.saveCairo("dgtalCairo-3-objects.png", Board3DTo2D::CairoPNG, 600, 400);
-
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

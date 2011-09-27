@@ -62,6 +62,8 @@ bool testCombinatorialDSS()
   typedef ContourType::ConstIterator ConstIterator;
   typedef CombinatorialDSS<Coordinate> CombinatorialDSS;
 
+  trace.beginBlock ( "Test \'extend\' and \'retract\'" );
+
   std::string filename = testPath + "samples/france.fc";
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
@@ -70,13 +72,19 @@ bool testCombinatorialDSS()
 
   int nbRetract = 0;
   CombinatorialDSS C(theContour.begin());
-  while ( *C.end() != *theContour.end() ) 
+  //while ( *C.end() != *theContour.end() ) 
+  while ( C.getLastPoint() != theContour.lastPoint() ) 
   {
+    //cout << "=================================" << theContour.size()  << endl;
+    //cout << C << endl;
+    //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
     if ( ! C.extend() )  {
       C.retract();
       ++nbRetract;
     }
+    //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
   }
+  trace.endBlock();
   return (nbRetract == 3485) ;
 }
   
@@ -92,6 +100,9 @@ bool CompareToArithmetical()
   typedef FreemanChain<Coordinate> ContourType; 
   typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> ReferenceType;
   typedef CombinatorialDSS<Coordinate> TestedType;
+
+  trace.beginBlock ( "Comparing to ArithmeticalDSS" );
+
   std::string filename = testPath + "samples/manche.fc";
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
@@ -104,7 +115,9 @@ bool CompareToArithmetical()
   int nbPts = 2;
   bool a,c;
   bool res = true;
-  while ( *C.end() != *theContour.end() ) {
+  //while ( *C.end() != *theContour.end() ) {
+  //while ( C.end() != theContour.end() ) {
+  while ( C.getLastPoint() != theContour.lastPoint() ) {
     double d = ((double) rand()) / ((double) RAND_MAX );
     if ( (d < 0.15)  && (nbPts > 2) ) {
       a = A.retract();
@@ -121,11 +134,16 @@ bool CompareToArithmetical()
       c = C.extend();
       if (a && c) ++nbPts;
     }
-    if ( !C.isValid() || (a xor c) || (C != A) ) {
+    if ( ((!C.isValid()) || (a ^ c)) || (C != A) ) {
+      cout << C.isValid() << endl;
+      cout << a << " " << c << endl;
+      cout << C << endl;
+      cout << A << endl;
       res = false;
       break;
     }
   }
+  trace.endBlock();
   return res;
 }
 
@@ -142,7 +160,6 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  //bool res = testCombinDSS() && testEquality(); // && ... other tests
   bool res = testCombinatorialDSS() && CompareToArithmetical();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

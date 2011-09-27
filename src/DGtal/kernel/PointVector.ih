@@ -159,6 +159,15 @@ DGtal::PointVector<dim, TComponent>::PointVector ( const Self & other )
 {}
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
+template<typename OtherComponent>
+inline
+DGtal::PointVector<dim, TComponent>::PointVector ( const PointVector<dim,OtherComponent> & other )
+{
+  for ( Dimension i = 0; i < dimension; ++i )
+    this->myArray[ i ] = static_cast<OtherComponent>(other[ i ]);
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Iterator
 DGtal::PointVector<dim, TComponent>::begin()
@@ -186,6 +195,38 @@ template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::ConstIterator
 DGtal::PointVector<dim, TComponent>::end() const
+{
+  return myArray.end();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
+typename DGtal::PointVector<dim, TComponent>::ReverseIterator
+DGtal::PointVector<dim, TComponent>::rbegin()
+{
+  return myArray.begin();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
+typename DGtal::PointVector<dim, TComponent>::ReverseIterator
+DGtal::PointVector<dim, TComponent>::rend()
+{
+  return myArray.end();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
+typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
+DGtal::PointVector<dim, TComponent>::rbegin() const
+{
+  return myArray.begin();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
+typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
+DGtal::PointVector<dim, TComponent>::rend() const
 {
   return myArray.end();
 }
@@ -258,6 +299,19 @@ DGtal::PointVector<dim, TComponent>&
 DGtal::PointVector<dim, TComponent>::operator= ( const Self & pv )
 {
   myArray = pv.myArray;
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+template<typename Component2>
+inline
+DGtal::PointVector<dim,TComponent>&
+DGtal::PointVector<dim, TComponent>::operator= ( const DGtal::PointVector<dim,Component2> & v )
+{
+  for ( Dimension i = 0; i < dimension; ++i )
+    {
+      this->myArray[ i ] = static_cast<Component>(v[ i ]);
+    }
   return *this;
 }
 //------------------------------------------------------------------------------
@@ -425,7 +479,37 @@ DGtal::PointVector<dim, TComponent>::operator-= ( const Self& v )
   for ( Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] -= v[ i ];
   return *this;
-}//------------------------------------------------------------------------------
+}
+//------------------------------------------------------------------------------
+template<Dimension dim,typename TComponent>
+inline
+DGtal::PointVector<dim,TComponent>&
+DGtal::PointVector<dim,TComponent>::operator/= ( const Self& v )
+{
+  for ( Dimension i = 0; i < dim; ++i )
+    this->myArray[ i ] /= v[ i ];
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<Dimension dim,typename TComponent>
+inline
+DGtal::PointVector<dim,TComponent>
+DGtal::PointVector<dim,TComponent>::operator/ ( const Self& v ) const
+{
+  return Self(*this, v, std::divides<Component>());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim,typename TComponent>
+inline
+DGtal::PointVector<dim,TComponent> & 
+DGtal::PointVector<dim,TComponent>::operator/= ( const Component coeff )
+{
+  for ( Dimension i = 0; i < dimension; ++i )
+    this->myArray[ i ] /= coeff;
+  return *this;
+}
+   
+//------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
@@ -583,6 +667,17 @@ DGtal::PointVector<dim, TComponent>::normInfinity() const
   val = tmp;
     }
   return val;
+}
+//------------------------------------------------------------------------------
+
+template<Dimension dim, typename TComponent>
+inline
+typename DGtal::PointVector<dim, double>
+DGtal::PointVector<dim, TComponent>::getNormalized() const
+{
+  PointVector<dim,double> normalized =(*this);
+  normalized /= normalized.norm();
+  return normalized;
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>

@@ -23,7 +23,7 @@
  *
  * @date 2010/10/26
  *
- * Header file for module Preimage2D.cpp
+ * @brief Header file for module Preimage2D.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -54,58 +54,37 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Preimage2D
   /**
-   * Description of template class 'Preimage2D' <p>
-   * \brief Aim: Computes the preimage of the 2D Euclidean shapes 
-   * crossing a sequence of straigth segments in linear-time
-   * according to the algorithm of O'Rourke (1981). 
-
-   * The straight
+   * @brief Aim: Computes the preimage of the 2D Euclidean shapes 
+   * crossing a sequence of n straigth segments in O(n),
+   * with the algorithm of O'Rourke (1981). 
+   *
+   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
+  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+   *
+   * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.
    * The set of shapes considered here are those that 
    * can be uniquely defined by two points and that separate 
    * the 2D plane into two disjoint parts (e.g. straight lines, 
    * circles passing through a given point). Consequently, the 
    * points Pi and the points Qi are assumed to lie in either 
-   * side of the shape. 
-   * Nb: The user of this class has to decide from its input set 
+   * side of the shape (Pi in the interior, Qi in the exterior).
+   *
+   * The user of this class has to decide from its input set 
    * of segments and the shape used whether a linear-time algorithm 
-   * is possible or not. 
-   * (if yes - e.g. preimage of straight lines crossing a set of 
-   * vertical segments of increasing x-coordinate - this algorithm 
-   * will return the right output). 
-   * @code 
-   
-   typedef int Coordinate;
-   typedef PointVector<2, Coordinate> Point;
-   typedef StraightLine<Coordinate> StraightLine;
-   typedef Preimage2D<StraightLine> Preimage2D;
-   
-   // Set input data segments as two vectors of endpoints.   
-   std::vector<Point> P, Q;
-   
-   Q.push_back(Point(0, 10));
-   Q.push_back(Point(1, 11));
-   Q.push_back(Point(2, 11));
-   Q.push_back(Point(3, 12));
-   
-   P.push_back(Point(0, 12));
-   P.push_back(Point(1, 13));
-   P.push_back(Point(2, 13));
-   P.push_back(Point(3, 14));
-   
-   // Initialization 
-   int i = 0;
-   Preimage2D thePreimage(bInf.at(i), bSup.at(i));
-   
-   // Incremental computation of the preimage
-   while ( (i < n) &&
-   (thePreimage.addFront(bInf.at(i), bSup.at(i))) )
-   {
-     i++;
-   }
-   std::cout << thePreimage << std::endl;
-   
-   * @endcode
+   * is possible or not. If yes (e.g. preimage of straight lines crossing a set of 
+   * vertical segments of increasing x-coordinate) the algorithm of O'Rourke
+   * will return the right output.
+   *
+   * @tparam Shape  a model of COrientableHypersurface
+   *
+   * You can define your preimage type from a given shape type as follows:
+   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromStraightLine
+   *
+   * Then, here is the basic usage of this class:
+   * @snippet geometry/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
+   *
+   * @see examplePreimage.cpp testPreimage.cpp
    */
   template <typename Shape>
   class Preimage2D
@@ -115,9 +94,8 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-    typedef typename Shape::Coordinate Coordinate;
-    typedef DGtal::PointVector<2,Coordinate> Point;
-    typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename Shape::Point Point;
+    typedef typename Shape::Point Vector;
 
   private:
 
@@ -153,8 +131,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * \param firstPoint, secondPoint, the two end points of 
-     * the first straight segment
+     * @param firstPoint  the end point of the first straight segment expected to lie in the interior of the separating shapes
+     * @param secondPoint  the end point of the first straight segment expected to lie in the exterior of the separating shapes
      */
     Preimage2D(const Point & firstPoint, const Point & secondPoint);
 
@@ -168,12 +146,13 @@ namespace DGtal
      * the constraints involved by the two 
      * end points of a new segment
      * (adding to the front of the sequence of 
-     * segments with respect to the scan orientaion
-     * e.g. back => seg1 => ... segn => front) 
+     * segments with respect to the scan orientaion)
+     *
      * Nb: in O(n)
-     * @param aP, aQ, 
-     * the two ends of the new straight segment 
-     * assumed to lie on either side of the shapes. 
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
      * @return 'false' if the updated preimage is empty, 
      * 'true' otherwise.
      */
@@ -195,42 +174,23 @@ namespace DGtal
      */
     bool isValid() const;
 
-//------------------ display -------------------------------
+    //------------------ display -------------------------------
     /**
-     * Draw the preimage
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
      */
-    template<typename Functor>
-      void selfDraw( LibBoard::Board & board ) const;
-
-
+    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    
     /**
-     * Draw the preimage on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * @return the style name used for drawing this object.
      */
-    void selfDraw( LibBoard::Board & board ) const
-      {
-        selfDraw<selfDrawStyle>(board);
-      }
-
-private:
-
-   /** 
-     * Default Style Functor for drawing
-     * 
-     * @param aBoard 
-     */
-
-    struct selfDrawStyle
-    {
-      selfDrawStyle(LibBoard::Board & aBoard) 
-      {
-        aBoard.setPenColor(Color::Red);
-      }
-    };
-
+    std::string styleName() const;
+    
+    /**
+       Draw the object on a Board2D board
+       @param board the output board where the object is drawn.
+    */
+    void selfDraw(Board2D & board ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -238,8 +198,16 @@ private:
   private:
 
     //lists of the vertices of the preimage
-    //coorresponding to the points Pi and Qi
-    Container myPHull, myQHull;
+    /**
+     * Lower part of the preimage
+     * (whose vertices are Pi points)
+     */
+    Container myPHull;
+    /**
+     * Upper part of the preimage.
+     * (whose vertices are Qi points)
+     */
+    Container myQHull;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -254,13 +222,17 @@ private:
 
     /**
      * Updates the current preimage
+     *
      * Nb: in O(n)
-     * @param 
-     * aPoint a new vertex of the preimage,
-     * aContainer the container to be updated,
-     * anIterator an iterator to its front (resp. back)
-     * anEndIterator an iterator pointing after its back 
+     *
+     * @param aPoint  a new vertex of the preimage,
+     * @param aContainer  the STL-like container to be updated,
+     * @param anIterator  an iterator to its front (resp. back)
+     * @param anEndIterator  an iterator pointing after its back 
      * (resp. before its front). 
+     *
+     * @tparam Iterator  the type of Iterator (either Container::iterator or Container::reverse_iterator)
+     * @tparam Predicate  the type of Predicate
      */
     template <typename Iterator, typename Predicate>
     void update(const Point & aPoint, 

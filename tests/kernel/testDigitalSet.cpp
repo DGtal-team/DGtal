@@ -45,11 +45,14 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/sets/CDigitalSetArchetype.h"
+#include "DGtal/kernel/domains/CDomainArchetype.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/helpers/StdDefs.h"
+
 
 using namespace DGtal;
 using namespace std;
@@ -66,6 +69,7 @@ using namespace LibBoard;
   nb++; \
   trace.info() << "(" << nbok << "/" << nb << ") " \
   << y << std::endl;
+
 
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard2D
@@ -87,6 +91,9 @@ bool testDigitalSetBoardSnippet()
   Point p2(  10, 10  );
   Domain domain( p1, p2 );
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
+
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+
   SpecificSet mySet( domain );
 
   Point c(  0, 0  );
@@ -128,6 +135,8 @@ bool testDigitalSetBoardSnippet()
 template < typename DigitalSetType >
 bool testDigitalSet( const typename DigitalSetType::Domain & domain )
 {
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
+
   typedef typename DigitalSetType::Domain Domain;
   typedef typename Domain::Point Point;
   typedef typename Point::Coordinate Coordinate;
@@ -202,6 +211,8 @@ bool testDigitalSetDraw()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
+
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
   SpecificSet disk( domain );
   Point c(  0, 0  );
 
@@ -241,6 +252,8 @@ bool testDigitalSetDomain()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+
   SpecificSet disk( domain );
   Point c(  0, 0  );
   Point l(  49, 0  );
@@ -279,8 +292,19 @@ bool testDigitalSetDomain()
 
 bool testDigitalSetConcept()
 {
-  //  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
+  typedef Z2i::Point Value;
+  typedef std::vector<Value>::iterator vector_iterator;
+  typedef std::set<Value>::iterator set_iterator;
+  //BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< vector_iterator > ));
+  //BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< set_iterator > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z3i::DigitalSet> ));
 
+  typedef Z2i::Space Space;
+  BOOST_CONCEPT_ASSERT(( CDomain< CDomainArchetype< Space > > ));
+  typedef CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<DigitalSetArchetype> ));
+  
   return true;
 }
 

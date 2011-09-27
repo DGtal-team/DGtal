@@ -46,15 +46,21 @@
 
 namespace DGtal
 {
-  
+  namespace deprecated 
+  {
+    
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
-   * \TODO update doc
+   * @warning This class is deprecated since GreedySegmentation has been created. 
+   * This class is used in @href testDecomposition.cpp @href DSSLengthEstimator.ih and @href displayContours.cpp, 
+   * but GreedySegmentation will be preferred in the future. 
+   *
    * Description of template class 'GreedyDecomposition' <p>
    * \brief Aim: Computes the greedy decomposition of a sequence 
    * into segments (the last element of a given segment is the first one
    * one of the next segment).
+    
    * This class is a model of CDecomposition.
    * 
    * This class is templated by 'TSegment', a model of CSegmentComputer
@@ -246,13 +252,13 @@ namespace DGtal
        * @return TRUE if the current segment intersects
        * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
        * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return an iterator of a digital curve
@@ -418,6 +424,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const GreedyDecomposition<Segment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 

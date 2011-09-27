@@ -75,12 +75,13 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Const
   myF = it;
   myL = it;
 
-  XYIteratorAdapter<TIterator> XYit(it); 
+  XYIteratorAdapter XYit(it); 
   myXYalgo.init(XYit);
-  XZIteratorAdapter<TIterator> XZit(it); 
+  XZIteratorAdapter XZit(it); 
   myXZalgo.init(XZit);
-  YZIteratorAdapter<TIterator> YZit(it); 
+  YZIteratorAdapter YZit(it); 
   myYZalgo.init(YZit);
+
 }
 
 /**
@@ -91,9 +92,10 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
-      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
-          myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
-          myF(other.myF), myL(other.myL) {}
+  const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
+    myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
+    myF(other.myF), myL(other.myL) {}
+
 
 /**
  * Assignment.
@@ -105,7 +107,9 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
-      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) {
+    const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) 
+{
+
   myXYalgo = other.myXYalgo;
   myXZalgo = other.myXZalgo; 
   myYZalgo = other.myYZalgo;
@@ -127,10 +131,11 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
-  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const {
-  return (  (  myXYalgo == other.myXYalgo ) &&
-            (  myXZalgo == other.myXZalgo ) &&
-            (  myYZalgo == other.myYZalgo ) &&
+  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const 
+{
+  return (  (	myXYalgo == other.myXYalgo ) &&
+            (	myXZalgo == other.myXZalgo ) &&
+            (	myYZalgo == other.myYZalgo ) &&
             (*myF == *other.myF) &&  
             (*myL == *other.myL) );
 }
@@ -145,7 +150,8 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
-        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const {
+        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const 
+{
   return (!(*this == other));
 }
 
@@ -169,19 +175,19 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const ConstIte
 {
 
 //projection on xy-plane
-  XYIteratorAdapter<TIterator> XYit(it); 
+  XYIteratorAdapter XYit(it); 
   bool XYflag = true;
   if (myXYalgo.getFrontPoint() != *XYit) {
     XYflag = myXYalgo.isExtendable(XYit);
   }
 //projection on xz-plane
-  XZIteratorAdapter<TIterator> XZit(it); 
+  XZIteratorAdapter XZit(it); 
   bool XZflag = true;
   if (myXZalgo.getFrontPoint() != *XZit) {
     XZflag = myXZalgo.isExtendable(XZit);
   }
 //projection on yz-plane
-  YZIteratorAdapter<TIterator> YZit(it); 
+  YZIteratorAdapter YZit(it); 
   bool YZflag = true;
   if (myYZalgo.getFrontPoint() != *YZit) {
     YZflag = myYZalgo.isExtendable(YZit);
@@ -211,7 +217,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 {
   return ( (myXYalgo.isValid())&&
            (myXZalgo.isValid())&&
-            (myYZalgo.isValid()) );
+           (myYZalgo.isValid()) );
 }
 
 
@@ -227,9 +233,9 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-     ::getParameters(DGtal::PointVector<3,TInteger>& direction,
-                     DGtal::PointVector<3,double>& intercept,
-                     DGtal::PointVector<3,double>& thickness) const
+        ::getParameters(Point3d& direction,
+                                  PointD3d& intercept,
+                                  PointD3d& thickness) const
 {
 
   //let us take the pair of projection planes for which
@@ -242,7 +248,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
     Integer a2 = myXZalgo.getB();
     Integer c1 = myXZalgo.getA();
 
-    direction = Point3d(a1*a2,a2*b1,a1*c1);  
+    direction = Point3d(a1*a2,a2*b1,a1*c1);	
 
     Integer mu1 = myXYalgo.getMu();
     Integer mu2 = myXZalgo.getMu();
@@ -267,18 +273,17 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
       direction = Point3d(b1*a1,b1*b2,b2*c2);
 
-      Integer mu1 = myXYalgo.getMu();
-      Integer mu2 = myYZalgo.getMu();
-      double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
-      double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
-      intercept = PointD3d(x,0,z);
+    Integer mu1 = myXYalgo.getMu();
+    Integer mu2 = myYZalgo.getMu();
+    double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
+    double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
+    intercept = PointD3d(x,0,z);
 
-      Integer omega1 = myXYalgo.getOmega()-1;
-      Integer omega2 = myYZalgo.getOmega()-1;
-      double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
-      double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
-      thickness = PointD3d(tx,0,tz);
-
+    Integer omega1 = myXYalgo.getOmega()-1;
+    Integer omega2 = myYZalgo.getOmega()-1;
+    double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
+    double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
+    thickness = PointD3d(tx,0,tz);
 
     } else {                  
 
@@ -289,7 +294,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
         Integer a2 = myXZalgo.getB();
         Integer c1 = myXZalgo.getA();
 
-        direction = Point3d(c2*a2,c1*b2,c1*c2);  
+        direction = Point3d(c2*a2,c1*b2,c1*c2);	
 
         Integer mu1 = myYZalgo.getMu();
         Integer mu2 = myXZalgo.getMu();
@@ -304,9 +309,9 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
         thickness = PointD3d(tx,ty,0);
 
       } else {//degenerated case
-        direction = Point3d(0,0,0);    
+        direction = Point3d(0,0,0);		
         intercept = PointD3d(0,0,0);
-        thickness = PointD3d(0,0,0);    
+        thickness = PointD3d(0,0,0);		
       }
     } 
   }
@@ -360,7 +365,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-     ::selfDrawAsPointsDisplay3D( Display3D & display ) const
+    ::selfDrawAsPointsDisplay3D( Display3D & display ) const
 {
 
 
@@ -401,7 +406,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-     ::selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const
+    ::selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const
 {
 
   //get DSS parameters
@@ -471,6 +476,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
                             (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
                             (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n ); 
 
+
     PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n, 
                             (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n, 
                             (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
@@ -514,21 +520,13 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
   }
 
-/* else { //n == 0
-
-      display.addLine(f[0], f[1], f[2], l[0], l[1], l[2],
-                     Color(250,0,0));
-
-  }*/
-
-
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-     ::selfDrawDisplay3D( Display3D & display ) const
+        ::selfDrawDisplay3D( Display3D & display ) const
 {
   std::string mode = display.getMode( styleName() );
   if ( mode == "BoundingBox" )
@@ -536,9 +534,9 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
   else if ( mode == "Points" )
     selfDrawAsPointsDisplay3D(display);
   else if ( ( mode == "" ) )
-    {
-      selfDrawAsPointsDisplay3D(display);
-    }
+  {
+    selfDrawAsPointsDisplay3D(display);
+   }
 
 }
 

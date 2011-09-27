@@ -408,6 +408,16 @@ Board::drawCircle( double x, double y, double radius,
          _state.lineWidth, _state.lineStyle, d ) );
 }
 
+void 
+Board::drawArc(double x, double y, double radius, double angle1, double angle2, 
+	       bool neg, int depthValue /*= -1*/ ){
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
+  _shapes.push_back( new Arc( _state.unit(x), _state.unit(y), _state.unit(radius), 
+			      angle1, angle2, neg,_state.penColor,
+			      DGtal::Color::None, _state.lineWidth, _state.lineStyle, d ) );
+}
+    
+
 void
 Board::fillCircle( double x, double y,
        double radius,

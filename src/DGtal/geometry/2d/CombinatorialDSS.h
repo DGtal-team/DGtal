@@ -46,6 +46,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/base/OrderedAlphabet.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -105,7 +106,7 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Vector;
 
 
-      typedef unsigned int Code;
+      typedef char Code;
       typedef int Size;
       typedef int Index;
 

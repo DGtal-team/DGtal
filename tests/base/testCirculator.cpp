@@ -50,6 +50,9 @@ template<typename Iterator>
 bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
 {
 
+  BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<Iterator> ));
+  BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Circulator<Iterator> > ));
+
   //list
   cout << endl;
   copy(itb,ite,ostream_iterator<int>(cout, " ")); 

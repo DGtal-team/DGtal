@@ -56,6 +56,9 @@ bool testPNMReader()
   nbok += true ? 1 : 0; 
   nb++;
   std::string filename = testPath + "samples/circleR10.pgm";
+
+  trace.info() << "Loading filename: "<< filename<<std::endl;
+
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
   Image image = PNMReader<Image>::importPGMImage( filename ); 
   
