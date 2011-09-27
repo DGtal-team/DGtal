@@ -43,7 +43,7 @@ using namespace Z2i;
 
 int main( )
 {
-  trace.beginBlock ( "Example dgtalboard-2-sets" );
+  trace.beginBlock ( "Example dgtalBoard2D-2-sets" );
 
   Point p1( -10, -7 );
   Point p2( 10, 7 );
@@ -56,14 +56,14 @@ int main( )
 
   Board2D board;
   board << domain << shape_set; // display domain and set
-  board.saveSVG( "dgtalboard-2-sets-1.svg");
-  board.saveEPS( "dgtalboard-2-sets-1.eps");
+  board.saveSVG( "dgtalBoard2D-2-sets-1.svg");
+  board.saveEPS( "dgtalBoard2D-2-sets-1.eps");
   
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-1-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-1-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-2-sets-1-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-2-sets-1-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-2-sets-1-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-2-sets-1-cairo.svg", Board2D::CairoSVG);
 #endif
 
   board.clear();
@@ -73,14 +73,14 @@ int main( )
   board << domain // display domain
   << SetMode( shape.styleName(), "DrawAdjacencies" )
   << shape; // and object with mode "DrawAdjacencies"
-  board.saveSVG( "dgtalboard-2-sets-2.svg");
-  board.saveEPS( "dgtalboard-2-sets-2.eps");
+  board.saveSVG( "dgtalBoard2D-2-sets-2.svg");
+  board.saveEPS( "dgtalBoard2D-2-sets-2.eps");
  
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-2-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-2-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-2-sets-2-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-2-sets-2-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-2-sets-2-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-2-sets-2-cairo.svg", Board2D::CairoSVG);
 #endif
 
   board.clear();
@@ -90,14 +90,14 @@ int main( )
   board << domain // display domain
   << SetMode( shape2.styleName(), "DrawAdjacencies" )
   << shape2; // and object with mode "DrawAdjacencies"
-  board.saveSVG( "dgtalboard-2-sets-3.svg");
-  board.saveEPS( "dgtalboard-2-sets-3.eps");
+  board.saveSVG( "dgtalBoard2D-2-sets-3.svg");
+  board.saveEPS( "dgtalBoard2D-2-sets-3.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-2-sets-3-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-2-sets-3-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-2-sets-3-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-2-sets-3-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-2-sets-3-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-2-sets-3-cairo.svg", Board2D::CairoSVG);
 #endif
 
   trace.endBlock();

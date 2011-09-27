@@ -49,19 +49,19 @@ int main( int argc, char** argv )
   Point p3( 2, 3, 4 );
   Domain domain( p1, p2 );
 
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
-  viewer << domain;  
-  viewer << p1 << p2 << p3;
+  board << domain;  
+  board << p1 << p2 << p3;
   
-    viewer << CameraPosition(2.500000, 2.500000, 16.078199)
+    board << CameraPosition(2.500000, 2.500000, 16.078199)
   << CameraDirection(0.000000, 0.000000, -1.000000)
   << CameraUpVector(0.000000, 1.000000, 0.000000);
 
-  //viewer << CameraZNearFar(4.578200, 22.578199);
+  //board << CameraZNearFar(4.578200, 22.578199);
 
-  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
