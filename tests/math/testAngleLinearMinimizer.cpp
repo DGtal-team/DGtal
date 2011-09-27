@@ -68,11 +68,14 @@ bool testAngleLinearMinimizer()
     vi.distToNext = 4.0;    
     alm.rw(i)=vi;
   }
-  double diff=1.0;
-  while(diff >0.00001){
-    diff= alm.optimize();
-    cerr << "sum of displacements " << diff << endl; 
+  //! [optimization]
+  double delta= alm.optimize();
+  double aPrecision=0.00001;
+  while(delta >aPrecision){
+    delta= alm.optimize();
+    cerr << "sum of displacements " << delta << endl; 
   }
+  //! [optimization]
   cout << "# index distPos valInit valOpt valMin valMax  " << endl;
   double currentPos=0.0;
   cout << -1 << " "<< -4 << " " << 9+valDec[9]  <<  " " << alm.ro(9).value
