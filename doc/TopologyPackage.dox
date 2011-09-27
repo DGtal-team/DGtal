@@ -36,7 +36,8 @@ namespace DGtal {
    
 @author Jacques-Olivier Lachaud
 @author Bertrand Kerautret
-@since 0.3
+
+@since 0.4
 
 @b LICENSE: LGPL
 

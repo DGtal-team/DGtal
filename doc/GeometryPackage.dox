@@ -67,6 +67,7 @@ or digital objects.
   - lengthEstimators.cpp
   - estimatorComparator.cpp
   - distancetransform3D.cpp
+  - distancetransform2D.cpp
 
 
 

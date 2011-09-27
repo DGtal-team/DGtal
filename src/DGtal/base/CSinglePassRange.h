@@ -17,55 +17,57 @@
 #pragma once
 
 /**
- * @file CEuclideanRing.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @file CSinglePassRange.h
+ * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/05
+ * @date 2011/08/31
+ *
+ * Header file for concept CSinglePassRange
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CEuclideanRing_RECURSES)
-#error Recursive header files inclusion detected in CEuclideanRing.h
-#else // defined(CEuclideanRing_RECURSES)
+#if defined(CSinglePassRange_RECURSES)
+#error Recursive header files inclusion detected in CSinglePassRange.h
+#else // defined(CSinglePassRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CEuclideanRing_RECURSES
+#define CSinglePassRange_RECURSES
 
-#if !defined CEuclideanRing_h
+#if !defined CSinglePassRange_h
 /** Prevents repeated inclusion of headers. */
-#define CEuclideanRing_h
+#define CSinglePassRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CCommutativeRing.h"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CEuclideanRing
+  // class CSinglePassRange
   /**
-     Description of \b concept '\b CEuclideanRing' <p>
+     Description of \b concept '\b CSinglePassRange' <p>
      @ingroup Concepts
     
-     @brief Aim: Defines the mathematical concept equivalent to a
-     unitary commutative ring with a division operator. 
+     \brief Aim: Defines the concept describing a range.
      
-     <p> Refinement of CCommutativeRing
-     <p> Associated types :
+     <p> Refinement of CSinglePassConstRange
     
-     <p> Notation
-     - \t X : A type that is a model of CEuclideanRing
-     - \t x, \t y  : Object of type Integer
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
+     <p> Provided types:
+
+     - Iterator: the iterator type, a model of iterator concept
+          (see boost concept SinglePassIteratorConcept).
+
+     <p> Notation:
+
+     - x an object of a model of CSinglePassConstRange.
+     
+     <table>
      <tr> 
      <td class=CName> \b Name </td> 
      <td class=CExpression> \b Expression </td>
@@ -77,12 +79,22 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            Division </td>
-     <td class=CExpression>      \t x / \t y </td> 
+     <td class=CName>            \t begin </td>
+     <td class=CExpression>      \t x.begin() </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
+     <td class=CReturnType>      Iterator</td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       Euclidean division of two numbers </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t end </td>
+     <td class=CExpression>      \t x.end() </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      Iterator</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -91,34 +103,39 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
-       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
      <p> Notes <br>
-   
-     @tparam T the type that should be a model of commutative ring.
+
+     @tparam T the type that is checked. T should be a model of CSinglePassRange.
+
    */
   template <typename T>
-  struct CEuclideanRing : CCommutativeRing<T>
+  struct CSinglePassRange : public CSinglePassConstRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
+   typedef typename T::Iterator Iterator;
 
-    BOOST_CONCEPT_USAGE( CEuclideanRing )
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
+ 
+    BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
-      ConceptUtils::sameType( c, T( a/b ) );
-    }   
-    // ------------------------- Internals ------------------------------------
+      Iterator it=i.begin();
+      it2=i.end();
+    };
+
   private:
-    T a,b,c;
+    T i;
+  }; // end of concept CSinglePassRange
   
-  };
 } // namespace DGtal
+
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CEuclideanRing_h
+#endif // !defined CSinglePassRange_h
 
-#undef CEuclideanRing_RECURSES
-#endif // else defined(CEuclideanRing_RECURSES)
+#undef CSinglePassRange_RECURSES
+#endif // else defined(CSinglePassRange_RECURSES)
