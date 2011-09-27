@@ -161,7 +161,8 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 {
-  return true; 
+  Pair aPair( *myEnd ); 
+  return ( myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ) );
 }
 
 template <typename TConstIterator>
@@ -169,8 +170,13 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::extend()
 {
-  myEnd++; 
-  return true; 
+  Pair aPair( *myEnd ); 
+  if ( myPreimagePtr->addFront( aPair.first, aPair.second ) )
+  {
+    ++myEnd; 
+    return true; 
+  }
+  else return false; 
 }
 
 template <typename TConstIterator>
@@ -178,6 +184,12 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
 {
+/*
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  return ( myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ) );
+*/
   return true; 
 }
 
@@ -186,6 +198,17 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
 {
+/*
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  if ( myPreimagePtr->addBack( aPair.first, aPair.second ) )
+  {
+    myBegin = it; 
+    return true; 
+  }
+  else return false; 
+*/
   myBegin--; 
   return true; 
 }

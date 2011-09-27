@@ -31,9 +31,14 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/GeometricalDSS.h"
+
 #include "DGtal/geometry/CBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
+
+#include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,16 +52,42 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testGeometricalDSS()
+template <typename TCurve>
+bool testGeometricalDSS(const TCurve& c)
 {
+
+  typedef typename TCurve::IncidentPointsRange Range; //range
+  typedef typename Range::ConstIterator ConstIterator; //iterator
+  typedef typename Range::ConstReverseIterator ConstReverseIterator; //reverse iterator
+
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing block ..." );
+
+  Range r = c.getIncidentPointsRange(); //range
+
+  GeometricalDSS<ConstIterator> s;
+  typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
+
+  trace.info() << "forward extension " << endl; 
+  ConstIterator itBegin (r.begin()); 
+  ConstIterator itEnd (r.end()); 
+  s.init( itBegin );
+  while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
+  trace.info() << s << endl; 
+
+  trace.info() << "backward extension " << endl; 
+  ConstReverseIterator ritBegin (r.rbegin()); //iterators
+  ConstReverseIterator ritEnd (r.rend()); 
+  rs.init( ritBegin );
+  while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
+  trace.info() << rs << endl; 
+
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << "true == true" << endl;
   trace.endBlock();
   
   return nbok == nb;
@@ -67,7 +98,7 @@ void testGeometricalDSSConceptChecking()
    typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
    typedef std::vector<Pair>::const_iterator ConstIterator; 
    typedef GeometricalDSS<ConstIterator> GeomDSS; 
-    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
+   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
    BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
 }
 
@@ -85,7 +116,15 @@ int main( int argc, char** argv )
 
   testGeometricalDSSConceptChecking();
 
-  bool res = testGeometricalDSS()
+  std::string filename = testPath + "samples/DSS.dat";
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+  
+  typedef KhalimskySpaceND<2,int> KSpace; 
+  GridCurve<KSpace> c; //grid curve
+  c.initFromVectorStream(instream);
+
+  bool res = testGeometricalDSS(c)
 ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

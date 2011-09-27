@@ -106,6 +106,27 @@ DGtal::Preimage2D<Shape>::operator!=( const Preimage2D & other ) const
 template <typename Shape>
 inline
 bool
+DGtal::Preimage2D<Shape>::canBeAddedAtTheFront(
+    const Point & aP, 
+    const Point & aQ)
+{
+  //predicates definition from critical shapes
+  BackwardIterator PHullBack = myPHull.rbegin();
+  ForwardIterator QHullFront = myQHull.begin();
+  myShape.init(*PHullBack, *QHullFront);
+  PHullBackQHullFrontPred p1( myShape );
+
+  BackwardIterator QHullBack = myQHull.rbegin();
+  ForwardIterator PHullFront = myPHull.begin();
+  myShape.init(*QHullBack, *PHullFront);
+  QHullBackPHullFrontPred p2( myShape );
+
+  return ( p1(aP) && p2(aQ) );
+}
+
+template <typename Shape>
+inline
+bool
 DGtal::Preimage2D<Shape>::addFront(
     const Point & aP, 
     const Point & aQ)
@@ -124,9 +145,8 @@ DGtal::Preimage2D<Shape>::addFront(
   myShape.init(*QHullBack, *PHullFront);
   QHullBackPHullFrontPred p2( myShape );
 
-  //constraint involved by aP
-  if ( p1(aP) ) {
-    if ( p2(aP) ) {
+  if ( p1(aP) && p2(aQ) ) {
+    if ( p2(aP) ) {   //constraint involved by aP
 
       //update PHull
       update<ForwardIterator,PHullUpdateForPAddingPred>
@@ -142,25 +162,21 @@ DGtal::Preimage2D<Shape>::addFront(
 
     } //else nothing to do
 
-    //constraint involved by aQ
-    if ( p2(aQ) ) {
-      if ( p1(aQ) ) {
+    if ( p1(aQ) ) {  //constraint involved by aQ
 
-        //update myQHull
-        update<ForwardIterator,QHullUpdateForQAddingPred>
-          (aQ, myQHull, QHullFront, myQHull.end());
+      //update myQHull
+      update<ForwardIterator,QHullUpdateForQAddingPred>
+        (aQ, myQHull, QHullFront, myQHull.end());
 
-        //add aQ to myQHull
-        if (aQ != *myQHull.begin()) myQHull.push_front(aQ);
+      //add aQ to myQHull
+      if (aQ != *myQHull.begin()) myQHull.push_front(aQ);
 
-        //update myPHull
+      //update myPHull
 
-        update<BackwardIterator,PHullUpdateForQAddingPred>
-          (aQ, myPHull, PHullBack, myPHull.rend());
+      update<BackwardIterator,PHullUpdateForQAddingPred>
+        (aQ, myPHull, PHullBack, myPHull.rend());
 
-      } //else nothing to do
-
-    } else isEmpty = true;
+    } //else nothing to do
 
   } else isEmpty = true;
 
