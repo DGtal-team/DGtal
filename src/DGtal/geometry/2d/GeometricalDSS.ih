@@ -118,17 +118,6 @@ DGtal::GeometricalDSS<TConstIterator>::getReverse() const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-
-template <typename TConstIterator>
-inline
-void
-DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[GeometricalDSS]";
-  out << (*myPreimagePtr); 
-  out << "[end of GeometricalDSS]";
-}
-
 template <typename TConstIterator>
 inline
 bool
@@ -200,6 +189,45 @@ DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
   myBegin--; 
   return true; 
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Display :
+
+template <typename TConstIterator>
+inline
+void
+DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[GeometricalDSS]";
+  out << (*myPreimagePtr); 
+  out << "[end of GeometricalDSS]";
+}
+
+
+template <typename TConstIterator>
+inline
+DGtal::DrawableWithBoard2D*
+DGtal::GeometricalDSS<TConstIterator>::defaultStyle( std::string /*mode*/ ) const
+{
+  return new DrawableWithBoard2D; 
+}
+
+template <typename TConstIterator>
+inline
+std::string
+DGtal::GeometricalDSS<TConstIterator>::styleName() const
+{
+  return "GeometricalDSS";
+}
+
+template <typename TConstIterator>
+inline
+void 
+DGtal::GeometricalDSS<TConstIterator>::selfDraw(Board2D & aBoard) const
+{
+//TODO
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

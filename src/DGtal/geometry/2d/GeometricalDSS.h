@@ -130,12 +130,6 @@ namespace DGtal
   public:
 
     /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -178,6 +172,30 @@ namespace DGtal
      * Backward extension test.
      */
     bool isOppositeEndExtendable();
+
+    //------------------ display -------------------------------
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string styleName() const;
+    
+    /**
+       Draw the object on a Board2D board
+       @param board the output board where the object is drawn.
+    */
+    void selfDraw(Board2D & board ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
