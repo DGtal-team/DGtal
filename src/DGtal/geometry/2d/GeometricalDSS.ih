@@ -161,8 +161,9 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 {
+  ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
-  return ( myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ) );
+  return ( myPreimagePtr->canBeAdded( aPair.first, aPair.second ) );
 }
 
 template <typename TConstIterator>
@@ -170,8 +171,9 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::extend()
 {
+  ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
-  if ( myPreimagePtr->addFront( aPair.first, aPair.second ) )
+  if ( myPreimagePtr->add( aPair.first, aPair.second ) )
   {
     ++myEnd; 
     return true; 
@@ -184,13 +186,11 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
 {
-/*
+  ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
   --it; 
   Pair aPair( *it ); 
-  return ( myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ) );
-*/
-  return true; 
+  return ( myPreimagePtr->canBeAdded( aPair.first, aPair.second ) );
 }
 
 template <typename TConstIterator>
@@ -198,19 +198,16 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
 {
-/*
+  ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
   --it; 
   Pair aPair( *it ); 
-  if ( myPreimagePtr->addBack( aPair.first, aPair.second ) )
+  if ( myPreimagePtr->add( aPair.first, aPair.second ) )
   {
     myBegin = it; 
     return true; 
   }
   else return false; 
-*/
-  myBegin--; 
-  return true; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -221,9 +218,16 @@ inline
 void
 DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[GeometricalDSS]";
+  out << "[GeometricalDSS]" << std::endl;
+  Pair firstPair( *myBegin ); 
+  out << "From " << firstPair.first << firstPair.second << std::endl; 
+  ConstIterator it (myEnd); 
+  if ( isNotEmpty(myBegin, it) ) --it;
+  Pair lastPair( *it );  
+  out << "To " << lastPair.first << lastPair.second << std::endl; 
+  ASSERT( myPreimagePtr.get() != 0 ); 
   out << (*myPreimagePtr); 
-  out << "[end of GeometricalDSS]";
+  out << "[end of GeometricalDSS]" << std::endl;
 }
 
 
