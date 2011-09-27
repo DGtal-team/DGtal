@@ -282,6 +282,34 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+  
+    /**
+     * @return first upper leaning point.
+     */
+    Point getUf() const;
+
+    /**
+     * @return last upper leaning point.
+     */
+    Point getUl() const;
+
+    /**
+     * @return first lower leaning point.
+     */
+    Point getLf() const;
+
+    /**
+     * @return last lower leaning point.
+     */
+    Point getLl() const;
+    
+    /**
+     * Get the parameters of one separating straight line
+     * @param alpha  (returned) y-component of the normal
+     * @param beta  (returned) x-component of the normal
+     * @param gamma  (returned) intercept
+     */
+    void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
 
     //------------------ display -------------------------------
     /**

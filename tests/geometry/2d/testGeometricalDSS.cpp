@@ -53,7 +53,7 @@ using namespace DGtal;
  *
  */
 template <typename TCurve>
-bool testGeometricalDSS(const TCurve& c)
+bool testGeometricalDSS(const TCurve& curve)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -65,7 +65,7 @@ bool testGeometricalDSS(const TCurve& c)
   
   trace.beginBlock ( "Testing block ..." );
 
-  Range r = c.getIncidentPointsRange(); //range
+  Range r = curve.getIncidentPointsRange(); //range
 
   GeometricalDSS<ConstIterator> s, t;
 
@@ -75,6 +75,9 @@ bool testGeometricalDSS(const TCurve& c)
   s.init( itBegin );
   while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
   trace.info() << s << endl; 
+  double a, b, c; 
+  s.getParameters(a,b,c); 
+  trace.info() << a << " " << b << " " << c << endl; 
 
   t.init( (itBegin + (itEnd - itBegin)/2) ); 
   while ( (t.end() != itEnd) && (t.extend()) 
@@ -88,6 +91,9 @@ bool testGeometricalDSS(const TCurve& c)
   rs.init( ritBegin );
   while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
   trace.info() << rs << endl; 
+  double ap, bp, cp; 
+  rs.getParameters(ap,bp,cp); 
+  trace.info() << ap << " " << bp << " " << cp << endl; 
 
   typename GeometricalDSS<ConstIterator>::Reverse rt = t.getReverse(); 
   rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
@@ -95,7 +101,16 @@ bool testGeometricalDSS(const TCurve& c)
        && (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
   trace.info() << rt << endl; 
 
-  bool myFlag = ( (s == t)&&(rs == rt) ); 
+  trace.info() << "comparison... " << endl; 
+  bool myFlag = ( (s == t)&&(rs == rt) )
+&& ( s.getUf() == rs.getUf() )
+&& ( s.getUl() == rs.getUl() )
+&& ( s.getLf() == rs.getLf() )
+&& ( s.getLl() == rs.getLl() )
+&& (a == ap)
+&& (b == bp)
+&& (c == cp)
+; 
 
   nbok += myFlag ? 1 : 0; 
   nb++;
@@ -103,6 +118,32 @@ bool testGeometricalDSS(const TCurve& c)
   trace.endBlock();
   
   return nbok == nb;
+}
+
+/*
+* simple drawing
+*/
+template <typename TCurve>
+bool drawingTestGeometricalDSS(const TCurve& curve)
+{
+
+  typedef typename TCurve::IncidentPointsRange Range; //range
+  typedef typename Range::ConstIterator ConstIterator; //iterator
+
+  Range r = curve.getIncidentPointsRange(); //range
+
+  GeometricalDSS<ConstIterator> s;
+  ConstIterator itEnd (r.end()); 
+  s.init( r.begin() );
+  while ( (s.end() != itEnd) && (s.extend()) ) {}
+
+  double a, b, c; 
+  s.getParameters(a,b,c); 
+
+  Board2D board; 
+  board << r << s; 
+  board.saveEPS("drawingTestGeometricalDSS.eps"); 
+  return true; 
 }
 
 void testGeometricalDSSConceptChecking()
@@ -137,6 +178,7 @@ int main( int argc, char** argv )
   c.initFromVectorStream(instream);
 
   bool res = testGeometricalDSS(c)
+&& drawingTestGeometricalDSS(c)
 ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

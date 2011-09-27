@@ -142,6 +142,64 @@ DGtal::GeometricalDSS<TConstIterator>::end() const
   return myEnd;
 }
 
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Point
+DGtal::GeometricalDSS<TConstIterator>::getUf() const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  return myPreimagePtr->getUf();
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Point
+DGtal::GeometricalDSS<TConstIterator>::getUl() const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  return myPreimagePtr->getUl();
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Point
+DGtal::GeometricalDSS<TConstIterator>::getLf() const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  return myPreimagePtr->getLf();
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Point
+DGtal::GeometricalDSS<TConstIterator>::getLl() const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  return myPreimagePtr->getLl();
+}
+
+template <typename TConstIterator>
+inline
+void
+DGtal::GeometricalDSS<TConstIterator>::getParameters(double& alpha, double& beta, double& gamma) const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  myPreimagePtr->getSeparatingStraightLine(alpha, beta, gamma);
+}
+
+template <typename TConstIterator>
+inline
+void
+DGtal::GeometricalDSS<TConstIterator>::projects(double& x, double& y, 
+                const double& alpha, const double& beta, const double& gamma) const
+{
+
+  double d2 = ( alpha * alpha + beta * beta );
+  double s = beta*x - alpha*y; 
+  x = (beta*s - alpha*gamma)/d2;
+  y = -(alpha*s + beta*gamma)/d2;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Growth operations                                                        //
 
@@ -252,7 +310,32 @@ inline
 void 
 DGtal::GeometricalDSS<TConstIterator>::selfDraw(Board2D & aBoard) const
 {
-//TODO
+  double alpha, beta, gamma; 
+  getParameters(alpha, beta, gamma); 
+
+  typedef typename Point::Coordinate Coordinate; 
+
+  Pair firstPair( *myBegin ); 
+  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+  double fx = (fx1+fx2)/2.0; 
+  double fy = (fy1+fy2)/2.0; 
+  projects(fx, fy, alpha, beta, gamma);
+
+  ConstIterator it (myEnd); 
+  if ( isNotEmpty(myBegin, it) ) --it;
+  Pair lastPair( *it );  
+  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+  double lx = (lx1+lx2)/2.0; 
+  double ly = (ly1+ly2)/2.0; 
+  projects(lx, ly, alpha, beta, gamma);
+
+  aBoard.drawLine(fx,fy,lx,ly); 
 }
 
 

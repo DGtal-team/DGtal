@@ -145,6 +145,37 @@ namespace DGtal
      */
     ConstIterator end() const;
 
+    // ----------------------- accessors --------------------------------------
+
+    /**
+     * @return first upper leaning point.
+     */
+    Point getUf() const;
+
+    /**
+     * @return last upper leaning point.
+     */
+    Point getUl() const;
+
+    /**
+     * @return first lower leaning point.
+     */
+    Point getLf() const;
+
+    /**
+     * @return last lower leaning point.
+     */
+    Point getLl() const;
+
+    /**
+     * Get the parameters of one separating straight line
+     * @param alpha  (returned) x-component of the normal
+     * @param beta  (returned) y-component of the normal
+     * @param gamma  (returned) intercept
+     */
+    void getParameters(double& alpha, double& beta, double& gamma) const;
+
+
     // ----------------------- growth operations --------------------------------------
 
     /**
@@ -221,6 +252,17 @@ namespace DGtal
 
   private:
 
+    /**
+     * Projects the point ( @a x , @a y ) onto the 
+     * straight line of parameters ( @a alpha , @a beta , @a gamma )
+     * @param x  (returned) x-coordinate of the point
+     * @param y  (returned) y-coordinate of the point
+     * @param alpha  x-component of the direction vector
+     * @param beta  y-component of the direction vector
+     * @param gamma  intercept
+     */
+    void projects(double& x, double& y, 
+                const double& alpha, const double& beta, const double& gamma) const;
 
     // ------------------------- Internals ------------------------------------
   private:
