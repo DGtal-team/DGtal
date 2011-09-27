@@ -411,6 +411,72 @@ DGtal::Preimage2D<Shape>::isValid() const
     return true;
 }
 
+template <typename Shape>
+inline
+typename DGtal::Preimage2D<Shape>::Point
+DGtal::Preimage2D<Shape>::getUf() const
+{
+    return *myPHull.rbegin();
+}
+
+template <typename Shape>
+inline
+typename DGtal::Preimage2D<Shape>::Point
+DGtal::Preimage2D<Shape>::getUl() const
+{
+    return *myPHull.begin();
+}
+
+template <typename Shape>
+inline
+typename DGtal::Preimage2D<Shape>::Point
+DGtal::Preimage2D<Shape>::getLf() const
+{
+    return *myQHull.rbegin();
+}
+
+template <typename Shape>
+inline
+typename DGtal::Preimage2D<Shape>::Point
+DGtal::Preimage2D<Shape>::getLl() const
+{
+    return *myQHull.begin();
+}
+
+template <typename Shape>
+inline
+void
+DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
+  double& alpha, 
+  double& beta, 
+  double& gamma) const
+{
+  //critical points
+  Point Uf = getUf();
+  Point Ul = getUl();
+  Point Lf = getLf();
+  Point Ll = getLl();
+
+  //parameters
+  typedef typename Point::Coordinate Coordinate; 
+  
+  double a = -NumberTraits<Coordinate>::castToDouble(Ll[1]-Uf[1]);
+  double b = NumberTraits<Coordinate>::castToDouble(Ll[0]-Uf[0]);
+  double c = -NumberTraits<Coordinate>::castToDouble(Uf[0])*a 
+                     -NumberTraits<Coordinate>::castToDouble(Uf[1])*b;
+  
+  double ap = -NumberTraits<Coordinate>::castToDouble(Ul[1]-Lf[1]);
+  double bp = NumberTraits<Coordinate>::castToDouble(Ul[0]-Lf[0]);
+  double cp = -NumberTraits<Coordinate>::castToDouble(Lf[0])*ap 
+                      -NumberTraits<Coordinate>::castToDouble(Lf[1])*bp;
+  
+  alpha = (a*bp+ap*b);
+  beta = (2*b*bp);
+  //intersection point
+  double x = -(b*cp-bp*c)/(ap*b-bp*a);
+  double y = -(a*cp-ap*c)/(bp*a-ap*b); 
+  gamma = -alpha*x - beta*y;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
