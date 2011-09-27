@@ -79,7 +79,9 @@ testDigitization( const Shape & aShape, double h,
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
  
-  ASSERT( ok );
+  if (!ok)
+    return false;
+  
 
   SurfelAdjacency<KSpace::dimension> SAdj( true );
 

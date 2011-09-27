@@ -28,13 +28,14 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of static constants
 ///////////////////////////////////////////////////////////////////////////////
+
+#if (!defined(WIN32))
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
@@ -50,6 +51,7 @@ DGtal::KhalimskySpaceND< dim, TInteger >::POS = true;
 template < Dimension dim, typename TInteger >
 const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
 DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -558,6 +560,31 @@ KhalimskySpaceND()
       high[ i ] = NumberTraits< Integer >::max() / 2 - 1;
     }
   init( low, high, true );
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+DGtal::KhalimskySpaceND< dim, TInteger>::
+KhalimskySpaceND( const KhalimskySpaceND & other )
+ : myLower(other.myLower), myUpper(other.myUpper),
+   myCellLower(other.myCellLower), myCellUpper(other.myCellUpper),
+   myIsClosed(other.myIsClosed) { }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+DGtal::KhalimskySpaceND< dim, TInteger> &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+operator= ( const KhalimskySpaceND & other ) 
+{
+  if ( this != &other )
+    {
+      myLower = other.myLower;
+      myUpper = other.myUpper;
+      myCellLower = other.myCellLower;
+      myCellUpper = other.myCellUpper;
+      myIsClosed = other.myIsClosed;
+    }
+  return *this;  
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>

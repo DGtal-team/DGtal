@@ -170,6 +170,9 @@ bool testNorms()
   trace.info() << "aPoint l_2 norm="<<aPoint.norm() <<endl;
   trace.info() << "aPoint l_1 norm="<<aPoint.norm ( PointType::L_1 ) <<endl;
   trace.info() << "aPoint l_infty norm="<<aPoint.norm ( PointType::L_infty ) <<endl;
+
+  trace.info() << "Normalization="<<aPoint.getNormalized () <<endl;
+
   trace.endBlock();
 
 

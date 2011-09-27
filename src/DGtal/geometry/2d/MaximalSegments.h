@@ -46,12 +46,15 @@
 
 namespace DGtal
 {
-  
+  namespace deprecated
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MaximalSegments
   /**
-   * \TODO update doc
-   *
+   * @warning This class is deprecated since SaturatedSegmentation has been created. 
+   * This class is however used now in @href testMaximalSegments.cpp , 
+   * @href MostCenteredMaximalSegmentEstimator.h and @href displayContours.cpp
+   * 
    * Description of template class 'MaximalSegments' <p>
    * \brief Aim: Computes the set of maximal segments of a sequence.
    * Maximal segments are segments that cannot be included in other segments. 
@@ -235,13 +238,13 @@ namespace DGtal
        * @return TRUE if the current segment intersects
        * the next one, FALSE otherwise.
        */
-      const bool intersectNext() const;
+      bool intersectNext() const;
 
       /**
        * @return TRUE if the current segment intersects
        * the previous one, FALSE otherwise.
        */
-      const bool intersectPrevious() const;
+      bool intersectPrevious() const;
 
       /**
        * @return an iterator of a sequence
@@ -300,7 +303,7 @@ namespace DGtal
       template <typename TypeSegment, typename TypeIterator>
       void extension(TypeSegment& aSeg, TypeIterator& it);
 
-      /**
+       /**
        * Extension of the segment along the (circular) sequence while it is possible.
        * @param aSeg a segment computer
        * @param it an iterator on a sequence
@@ -470,6 +473,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const MaximalSegments<TSegment> & object );
 
+  } // namespace deprecated
 } // namespace DGtal
 
 

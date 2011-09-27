@@ -43,6 +43,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 //Estimators
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
@@ -78,7 +79,7 @@ int main( int argc, char** argv )
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
   po::notify(vm);    
-  if(vm.count("help")||argc<=1 || (not(vm.count("FreemanChain"))) )
+  if(vm.count("help")||argc<=1 || (!(vm.count("FreemanChain"))) )
     {
       trace.info()<< "Curvature using a binomial convolver " <<std::endl << "Basic usage: "<<std::endl
       << "\t curvatureMCMS [options] --FreemanChain  <fileName> "<<std::endl

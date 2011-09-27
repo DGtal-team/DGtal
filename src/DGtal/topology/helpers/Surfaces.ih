@@ -78,7 +78,7 @@ findABel
     {
       for ( Dimension i = 0; i < K.dimension; ++i )
         {
-          r = random();
+          r = rand();
           x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
         }
       bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
@@ -107,6 +107,7 @@ findABel
   ASSERT( val_v1 != pp( x2 ) );
   // (2) Find two candidates on the same axis.
   Dimension d = 0;
+  bool alreadyOnSameAxis = true;
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
       if ( x1[ i ] != x2[ i ] )
@@ -115,6 +116,7 @@ findABel
             {
               if ( x1[ j ] != x2[ j ] )
                 {
+                  alreadyOnSameAxis = false;
                   Integer c = x2[ j ];
                   x2[ j ] = x1[ j ];
                   bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
@@ -130,6 +132,8 @@ findABel
                     }
                 } // if ( x1[ j ] != x2[ j ] )
             } // for ( Dimension j = i + 1; j < K.dimension; ++j )
+          if ( alreadyOnSameAxis )
+            d = i;
         } // if ( x1[ i ] != x2[ i ] )
     } // for ( Dimension i = 0; i < K.dimension; ++i )
 

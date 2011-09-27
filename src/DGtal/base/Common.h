@@ -55,11 +55,14 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
+#include <boost/concept_archetype.hpp>
 
-#if ( (defined(WIN32)) )
+#if defined( WIN32 )
 #define _USE_MATH_DEFINES
-#endif //win32
+#include <math.h>
+#else 
 #include <cmath>
+#endif //win32
 
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s
@@ -75,6 +78,7 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/BasicArchetypes.h"
 #include "DGtal/base/GlobalFunctions.h"
 #include "DGtal/base/Exceptions.h"
 

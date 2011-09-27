@@ -63,7 +63,7 @@ and provides a way of getting the elements (operator*).
 In the following, iterators are assumed to be constant (because the structures
 are assumed to be constant) and to be at least bidirectionnal (ie. they are
 either bidirectionnal iterators or random access iterators). You can read 
-the STL documentation about iterators http://www.sgi.com/tech/stl/Iterators.html
+the STL documentation about iterators: http://www.sgi.com/tech/stl/Iterators.html
 to learn more about the different kind of iterators. 
 
 The notion of <em>reachability</em> is very important. An iterator j is reachable from an iterator i
@@ -84,27 +84,36 @@ an iterator denoted by end is the past-the-end value, iterating over the range [
  is a way of iterating over all the elements of the underlying structure. If the underlying
  structure is empty, it only has a past-the-end value. As a consequence, a range [i, i) 
 denotes an empty range.    
+A range of a linear structure is illustrated below (normal values are depicted with 
+a small straight segment, whereas the past-the-end value is depicted with a cross).
+In this example, [i,j) is not a valid range because j cannot be reached from i
+and the whole range may be denoted by [begin,end). 
+
+ @image html linearRange.png  "Linear range"
+ @image latex linearRange.png  "Linear range"
+
 
 However, for closed (or circular) structures, [i,j) should always be a valid range 
 (ie. j should always be reachable from i) and there should be no past-the-end value.
 As a consequence, iterating over all the elements or dealing with empty ranges is 
-different. The chosen solution is the same as the one used in CGAL: 
-http://www.cgal.org/Manual/3.3/doc_html/cgal_manual/Circulator/Chapter_main.html.
+different. The chosen solution is the same as the one used in 
+<a href="http://www.cgal.org/Manual/3.3/doc_html/cgal_manual/Circulator/Chapter_main.html">CGAL</a>.
 Circular iterators (or <em>circulators</em> for short) are used instead classic iterators. 
 They behave like classic iterators but they have a specific state in the empty range case. 
 As long as i != j, the range [i,j) behaves like a classic iterator range 
 and could be used in STL algorithms. The range [i,i) is used to iterate over
  all the elements in DGtal algorithms (each element is visited only once). 
 Such a range is however considered as empty in STL algorithms. 
+A range of a circular structure is illustrated below. In this example, [i,j) is a valid range.  
 
-Range of linear and circular structures are illustrated below (normal values are depicted with 
-a small straight segment, whereas the past-the-end value is depicted with a cross). 
+ @image html circularRange.png  "Circular range"
+ @image latex circularRange.png  "Circular range"
 
 
 Either an iterator or a circulator may have a reverse counterpart, ie. 
 an adaptor that enables a backward scanning. The operator++ of the adaptor 
 calls the operator-- of the underlying (circular)iterator and conversely. 
-You can use the STL reverse iterator for that 
+You can use the STL reverse iterator for that:
 http://www.sgi.com/tech/stl/ReverseIterator.html 
 
 
@@ -123,16 +132,46 @@ It stores a list of alternated (signed) 0-cells and 1-cells,
     - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
     (the point stands for the starting point of the arrow, the vector gives
     the orientation or the arrow). 
-- TODO in 2d: 
+- in 2d: 
     - InnerPointsRange to iterate over the 2-cells, viewed as integer points, 
 that are <em>directly</em> incident to the (signed) 1-cells,
     - OuterPointsRange to iterate over the 2-cells, viewed as integer points, 
 that are <em>indirectly</em> incident to the (signed) 1-cells,
     - IncidentPointsRange to iterate over the pairs of 2-cells 
 that are incident to the 1-cells (both inner points and outer points),
-    - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}
-(see FreemanChain below). 
+    - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}. 
 
+You can get an access to these nine ranges through the following methods: 
+
+- get0SCellsRange()
+- get1SCellsRange()
+- getPointsRange()
+- getMidPointsRange()
+- getArrowsRange()
+- getInnerPointsRange()
+- getOuterPointsRange()
+- getIncidentPointsRange()
+- getCodesRange()
+
+The different ranges for a grid curve whose chain code is 1110002223333
+are depicted below. 
+
+ @image html 0cellsRange.png  "Range of 0-cells"
+ @image latex 0cellsRange.png  "Range of 0-cells"
+ @image html 1cellsRange.png  "Range of 1-cells"
+ @image latex 1cellsRange.png  "Range of 1-cells"
+ @image html PointsRange.png  "Points of integer coordinates associated to 0-cells"
+ @image latex PointsRange.png  "Points of integer coordinates associated to 0-cells"
+ @image html MidPointsRange.png  "Points of half-integer coordinates accociated to 1-cells"
+ @image latex MidPointsRange.png  "Points of half-integer coordinates accociated to 1-cells"
+ @image html InnerPointsRange.png "Points of integer coordinates associated to the 2-cells directly incident to the 1-cells"
+ @image latex InnerPointsRange.png "Points of integer coordinates associated to the 2-cells directly incident to the 1-cells"
+ @image html OuterPointsRange.png "Points of integer coordinates associated to the 2-cells indirectly incident to the 1-cells"
+ @image latex OuterPointsRange.png "Points of integer coordinates associated to the 2-cells indirectly incident to the 1-cells"
+ @image html IncidentPointsRange.png "Points of integer coordinates associated to the 2-cells incident to the 1-cells"
+ @image latex IncidentPointsRange.png "Points of integer coordinates associated to the 2-cells incident to the 1-cells"
+
+ 
 
 FreemanChain is 2-dimensional and 4-connected digital curve
 stored as a string of codes {0,1,2,3} as follows: 
@@ -144,42 +183,40 @@ As GridCurve, it provides a CodesRange.
 
 Each range has the following inner types: 
 
- - ConstIterator
- - ConstReverseIterator
- - ConstCirculator
- - ConstReverseCirculator
+- ConstIterator
+- ConstReverseIterator
+- ConstCirculator
+- ConstReverseCirculator
 
-Each range provides the following methods,  
-which return the (circular)iterators 
-required to iterate over the whole range: 
+And each range provides these (circular)iterator services: 
 
- - begin() : begin ConstIterator
- - end() : end ConstIterator
- - rbegin() : begin ConstReverseIterator
- - rend() : end ConstReverseIterator
- - c() : ConstCirculator
- - rc() : ConstReverseCirculator
+- begin() : begin ConstIterator
+- end() : end ConstIterator
+- rbegin() : begin ConstReverseIterator
+- rend() : end ConstReverseIterator
+- c() : ConstCirculator
+- rc() : ConstReverseCirculator
+
+You can use these services to iterate over the elements of a given range
+as follows: 
+@snippet geometry/exampleGridCurve2d.cpp GridCurveRangeIterators
 
 Since GridCurve and FreemanChain have both a method isClosed(), 
 you can decide to use a classic iterator or a circulator at 
 running time as follows: 
 
  @code 
-    //c is a grid curve, r is a range
+    //c is a grid curve, r is an instance of Range
     //myProcessing is a template function where 
     //the range r is processed through (circular)iterators
     if ( c.isClosed() ) {
-      myProcessing<ConstCirculator>( r.c(), r.c() ); 
+      myProcessing<Range::ConstCirculator>( r.c(), r.c() ); 
     } else {
-      myProcessing<ConstIterator>( r.begin(), r.end() ); 
+      myProcessing<Range::ConstIterator>( r.begin(), r.end() ); 
     }
  @endcode
 
 
-TODO conversion between GridCurve and FreemanChain
-
-
-TODO IO
 
 
 
@@ -225,7 +262,7 @@ but actually five concepts that form a hierarchy: the first one can only
 extend itself in one direction, while others define additional functionality. 
 The five concepts that are actually used in segmentation algorithms are 
 CTrivialSegmentComputer, CForwardSegmentComputer, CBidirectionalSegmentComputer, 
-CDynamicSegmentComputer and CDynamicBidrectionalSegmentComputer. 
+CDynamicSegmentComputer and CDynamicBidirectionalSegmentComputer. 
 
  @image html segmentComputersHierarchy.png  "Hierarchy"
  @image latex segmentComputersHierarchy.png  "Hierarchy"
@@ -290,60 +327,20 @@ Any model of this concept should define the following method:
 Finally, the concept CDynamicBidirectionalSegmentComputer is a refinement of both 
 CBidirectionalSegmentComputer and CDynamicSegmentComputer. 
 
-A model of CDynamicBidirectionalSegmentComputer is the class \ref ArithmeticalDSS, 
-devoted to the dynamic recognition of DSSs, defined as a range of connected integer 
-points (x,y) such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
- (see Debled and Reveilles, 1995).
 
-A model of CSegmentComputer is the class @href ArithmeticalDSS, 
+A model of CDynamicBidirectionalSegmentComputer is the class ArithmeticalDSS, 
 devoted to the dynamic recognition of DSSs, 
- defined as a sequence of connected points (x,y)
+ defined as a sequence of connected points @f$ (x,y) @f$
  such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
  (see Debled and Reveilles, 1995).
 
  Here is a short example of how to use this class in the 4-connected case:
- @code 
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
-
-    Range contour; 
-    ... //feed range
-		
-    // Add points while it is possible
-    DSS4 theDSS4;		
-    theDSS4.init( contour.begin() );
-    while ( ( theDSS4.end() != contour.end() )
-	        &&( theDSS4.extend() ) ) {}
-
-    // Output parameters
-    cout << theDSS4 << endl;
- @endcode
+ @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
- @code 
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
+ @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
 
-    Range boundary;
-    ... //feed range
-
-    // Add points while it is possible
-    DSS8 theDSS8;		
-    theDSS8.init( boundary.begin() );
-    while ( ( theDSS8.end() != boundary.end() )
-	        &&( theDSS8.extend() ) ) {}
-
-
-    // Output parameters
-    cout << theDSS8 << endl;
-
- @endcode
-
- These snippets are drawn from @href ArithmeticalDSS.cpp. 
+ These snippets are drawn from ArithmeticalDSS.cpp. 
  
  The resulting DSSs of the two previous pieces of code are drawing below:
 
@@ -353,7 +350,7 @@ devoted to the dynamic recognition of DSSs,
  @image html DSS4.png  "4-connected DSS drawn with the grid mode"
  @image latex DSS4.png  "4-connected DSS in the grid drawing mode" width=5cm
 
-See @href dgtalboard.dox for the drawing mechanism. 
+See @ref dgtal_dgtalboard for the drawing mechanism. 
 
 
 As seen above, the code can be different if an iterator or a circulator is used 

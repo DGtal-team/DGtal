@@ -123,11 +123,11 @@ bool testCellularGridSpaceND()
 
   trace.beginBlock ( "Testing faces in KSpace..." );
   Cells Nf = K.uFaces( center );
-  nbok += Nf.size() == round( std::pow( 3.0 ,(int) K.dimension ) - 1 ) ? 1 : 0; 
+  nbok += Nf.size() == ceil( std::pow( 3.0 ,(int) K.dimension ) - 1 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << Nf.size() << "(faces size) == "
-         << round( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
+         << floor( std::pow( 3.0, (int)K.dimension ) - 1 ) << "(3^dim()-1)" << endl;
   trace.endBlock();
   
   trace.beginBlock ( "Testing block Incidence in KSpace..." );
@@ -389,6 +389,42 @@ bool testCellDrawOnBoard()
   
   return ((space_ok) && (nbok == nb));
 }
+
+template <typename KSpace>
+bool testFindABel()
+{
+  typedef typename KSpace::Point Point;
+  typedef SpaceND< KSpace::dimension, typename KSpace::Integer > Space;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef typename KSpace::SCell SCell;
+  typedef SetPredicate<DigitalSet> PointPredicate;
+
+  trace.beginBlock("Test FindABel");
+  Point low(-3,-3,-3), high(3,3,3);
+  Domain domain( low, high );
+  DigitalSet shape_set( domain );
+  PointPredicate pp( shape_set );
+  KSpace K;
+  K.init( low, high, true );
+
+  Point p000(0,0,0), p001(0,0,1), p010(0,1,0), p011(0,1,1),
+        p100(1,0,0), p101(1,0,1), p110(1,1,0), p111(1,1,1);
+
+  shape_set.insert( p000 );
+  shape_set.insert( p100 );
+
+  Surfaces<KSpace>::findABel( K, pp , p000 , p011 );
+  Surfaces<KSpace>::findABel( K, pp , p000 , p110 );
+  Surfaces<KSpace>::findABel( K, pp , p000 , p111 );
+  Surfaces<KSpace>::findABel( K, pp , p000 , p101 );
+  SCell s010 = Surfaces<KSpace>::findABel( K, pp , p000 , p010 );
+  SCell s001 = Surfaces<KSpace>::findABel( K, pp , p000 , p001 );
+
+  trace.endBlock();
+  return ( (s010 == SCell( Point(1,2,1), true  ) ) &&
+           (s001 == SCell( Point(1,1,2), false ) ) );
+}
   
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -410,7 +446,8 @@ int main( int argc, char** argv )
     && testSurfelAdjacency<K2>()
     && testSurfelAdjacency<K3>()
     && testSurfelAdjacency<K4>()
-    && testCellDrawOnBoard<K2>();
+    && testCellDrawOnBoard<K2>()
+    && testFindABel<K3>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -52,7 +52,7 @@ int main()
 
   /////////////////////////// DSS4 //////////////////////////////////
   {
-
+    //! [ArithmeticalDSS4Usage]
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
     typedef std::vector<Point>::const_iterator ConstIterator;
@@ -81,7 +81,9 @@ int main()
 
     // Output parameters
     cout << theDSS4 << endl;
-
+    //! [ArithmeticalDSS4Usage]
+            
+    //! [ArithmeticalDSS4DrawingUsage]
     // Draw the grid
     Board2D board;
   
@@ -98,11 +100,12 @@ int main()
     << theDSS4;
   
     board.saveSVG("DSS4.svg");
+    //! [ArithmeticalDSS4DrawingUsage]
   }
 
   ////////////////////// DSS8 ///////////////////////////////
   {
-
+    //! [ArithmeticalDSS8Usage]
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
     typedef std::vector<Point>::const_iterator ConstIterator;
@@ -128,7 +131,9 @@ int main()
 
     // Output parameters
     cout << theDSS8 << endl;
-
+    //! [ArithmeticalDSS8Usage]
+    
+    //! [ArithmeticalDSS8DrawingUsage]
     //Draw the pixels
     Board2D board;
     Domain domain( Point(0,0), Point(8,8) );
@@ -144,9 +149,8 @@ int main()
     board << SetMode(theDSS8.styleName(), "BoundingBox") 
     << theDSS8;
     
-    
     board.saveSVG("DSS8.svg");
-
+    //! [ArithmeticalDSS8DrawingUsage]
   }
 
   return 1;

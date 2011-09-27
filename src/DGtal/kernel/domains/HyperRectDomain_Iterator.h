@@ -370,7 +370,10 @@ namespace DGtal
      */
     bool operator== ( const HyperRectDomain_subIterator<TPoint> &it ) const
     {
-      return ( myPoint==it.myPoint );
+			for (unsigned int i=0; i<mySubDomain.size(); ++i)
+				if ( myPoint[mySubDomain[i]]!=it.myPoint[mySubDomain[i]]) return false;
+			return true;
+			//  return ( myPoint==it.myPoint );
     }
 
     /**
@@ -379,7 +382,8 @@ namespace DGtal
      */
     bool operator!= ( const HyperRectDomain_subIterator<TPoint> &aIt ) const
     {
-      return ( myPoint!=aIt.myPoint );
+      return !operator==(aIt);
+			// ( myPoint!=aIt.myPoint );
     }
 
     /**

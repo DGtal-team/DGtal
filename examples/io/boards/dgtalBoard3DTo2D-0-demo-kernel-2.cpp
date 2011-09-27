@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   demo-kernel-2.cpp
+ * @file   dgtalBoard3DTo2D-0-demo-kernel-2.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -42,7 +42,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
   typedef MySpace::Point MyPoint;

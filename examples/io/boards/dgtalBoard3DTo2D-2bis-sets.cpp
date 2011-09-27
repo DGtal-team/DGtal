@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalCairo-2-sets.cpp
+ * @file   dgtalBoard3DTo2D-2bis-sets.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -44,7 +44,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   Board3DTo2D viewer;
 

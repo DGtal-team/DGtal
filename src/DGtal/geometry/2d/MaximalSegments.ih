@@ -46,7 +46,7 @@
   template <typename TSegment>
 inline
 bool
-DGtal::MaximalSegments<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::doesIntersectNext(const Iterator& it)
 {
     Segment tmpSegment;
     Iterator previousIt = it; --previousIt;
@@ -60,7 +60,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::doesIntersectNext(const Itera
   template <typename TSegment>
 inline
 void
-DGtal::MaximalSegments<TSegment>::SegmentIterator::firstMaximalSegment()
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::firstMaximalSegment()
 {
 
   mySegment.init(myBack);
@@ -90,7 +90,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::firstMaximalSegment()
   template <typename TSegment>
 inline
 void
-DGtal::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegment()
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegment()
 {
 
   myFlagIntersectPrevious = myFlagIntersectNext;
@@ -201,7 +201,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegment()
 template <typename TypeSegment, typename TypeIterator>
 inline
 void
-DGtal::MaximalSegments<TSegment>::SegmentIterator::
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::
        extension(TypeSegment& aSeg, TypeIterator& it, const TypeIterator& end) {
     do {
       ++it;
@@ -219,7 +219,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::
 template <typename TypeSegment, typename TypeIterator>
 inline
 void
-DGtal::MaximalSegments<TSegment>::SegmentIterator::
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::
        extension(TypeSegment& aSeg, TypeIterator& it) {
     do {
       ++it;
@@ -235,7 +235,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::
 template <typename TypeSegment, typename TypeIterator>
 inline
 void
-DGtal::MaximalSegments<TSegment>::SegmentIterator::
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::
        extensionInLoop(TypeSegment& aSeg, TypeIterator& it, 
                        const TypeIterator& begin, const TypeIterator& end) {
     do {
@@ -263,7 +263,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::
  */
 template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::SegmentIterator
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator
 ::SegmentIterator( MaximalSegments<TSegment> *aCov,
        const typename TSegment::ConstIterator& aBack,
        const TSegment& aSegment )
@@ -287,7 +287,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator
  */
 template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::SegmentIterator
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator
 ::SegmentIterator( const SegmentIterator & aOther )
   : myCov( aOther.myCov ), 
     myFront( aOther.myFront ), myBack( aOther.myBack ),
@@ -305,8 +305,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator
  */
 template <typename TSegment>
 inline
-typename DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator& 
-DGtal::MaximalSegments<TSegment>::SegmentIterator::operator=
+typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator& 
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator=
 ( const SegmentIterator & other )
 {
   if ( this != &other )
@@ -328,7 +328,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator=
  */
   template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::SegmentIterator::~SegmentIterator()
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::~SegmentIterator()
 {
 }
 
@@ -342,7 +342,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::~SegmentIterator()
   template <typename TSegment>
 inline
 TSegment
-DGtal::MaximalSegments<TSegment>::SegmentIterator::operator*() const
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator*() const
 {
   return mySegment;
 }
@@ -353,7 +353,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator*() const
   template <typename TSegment>
 inline
 TSegment
-DGtal::MaximalSegments<TSegment>::SegmentIterator::get() const
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::get() const
 {
   return mySegment;
 }
@@ -365,8 +365,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::get() const
 
   template <typename TSegment>
 inline
-typename DGtal::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator& 
-DGtal::MaximalSegments<TSegment>::SegmentIterator::operator++()
+typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator& 
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator++()
 {
   this->nextMaximalSegment();
   return *this;
@@ -381,7 +381,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator++()
   template <typename TSegment>
 inline
 const typename TSegment::ConstIterator
-DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::getFront() const
 {
   return myFront;
 }
@@ -393,7 +393,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::getFront() const
   template <typename TSegment>
 inline
 const typename TSegment::ConstIterator
-DGtal::MaximalSegments<TSegment>::SegmentIterator::getBack() const
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::getBack() const
 {
   return myBack;
 }
@@ -405,8 +405,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::getBack() const
  */
   template <typename TSegment>
 inline
-const bool
-DGtal::MaximalSegments<TSegment>::SegmentIterator::intersectNext() const
+bool
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::intersectNext() const
 {
   return myFlagIntersectNext;
 }
@@ -417,8 +417,8 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::intersectNext() const
  */
   template <typename TSegment>
 inline
-const bool
-DGtal::MaximalSegments<TSegment>::SegmentIterator::intersectPrevious() const
+bool
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::intersectPrevious() const
 {
   return myFlagIntersectPrevious;
 }
@@ -433,7 +433,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::intersectPrevious() const
   template <typename TSegment>
 inline
 bool
-DGtal::MaximalSegments<TSegment>::SegmentIterator::operator==
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator==
 ( const SegmentIterator & aOther ) const
 {
   return ( (myFront == aOther.myFront)&&(myBack == aOther.myBack) );
@@ -449,7 +449,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator==
   template <typename TSegment>
 inline
 bool
-DGtal::MaximalSegments<TSegment>::SegmentIterator::operator!=
+DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator!=
 ( const SegmentIterator & aOther ) const
 {
   return ( (myFront != aOther.myFront)||(myBack != aOther.myBack) );
@@ -467,7 +467,7 @@ DGtal::MaximalSegments<TSegment>::SegmentIterator::operator!=
  * Constructor.
  */
   template <typename TSegment>
-DGtal::MaximalSegments<TSegment>::MaximalSegments(
+DGtal::deprecated::MaximalSegments<TSegment>::MaximalSegments(
   const typename TSegment::ConstIterator& aBegin, 
   const typename TSegment::ConstIterator& aEnd, 
   const TSegment& aSegment, 
@@ -486,7 +486,7 @@ DGtal::MaximalSegments<TSegment>::MaximalSegments(
   template <typename TSegment>
 inline
 void
-DGtal::MaximalSegments<TSegment>::init(
+DGtal::deprecated::MaximalSegments<TSegment>::init(
   const typename TSegment::ConstIterator& aBegin, 
   const typename TSegment::ConstIterator& aEnd, 
   const TSegment& aSegment, 
@@ -505,7 +505,7 @@ DGtal::MaximalSegments<TSegment>::init(
  */
   template <typename TSegment>
 inline
-DGtal::MaximalSegments<TSegment>::~MaximalSegments()
+DGtal::deprecated::MaximalSegments<TSegment>::~MaximalSegments()
 {
 }
 
@@ -516,8 +516,8 @@ DGtal::MaximalSegments<TSegment>::~MaximalSegments()
  */
   template <typename TSegment>
 inline
-typename DGtal::MaximalSegments<TSegment>::SegmentIterator 
-DGtal::MaximalSegments<TSegment>::begin() 
+typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator 
+DGtal::deprecated::MaximalSegments<TSegment>::begin() 
 {
   return SegmentIterator(this, myBegin, mySegment);
 }
@@ -529,8 +529,8 @@ DGtal::MaximalSegments<TSegment>::begin()
  */
   template <typename TSegment>
 inline
-typename DGtal::MaximalSegments<TSegment>::SegmentIterator 
-DGtal::MaximalSegments<TSegment>::end() 
+typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator 
+DGtal::deprecated::MaximalSegments<TSegment>::end() 
 {
   return SegmentIterator(this, myEnd, mySegment);
 }
@@ -543,7 +543,7 @@ DGtal::MaximalSegments<TSegment>::end()
   template <typename TSegment>
 inline
 void
-DGtal::MaximalSegments<TSegment>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::MaximalSegments<TSegment>::selfDisplay ( std::ostream & out ) const
 {
   out << "[MaximalSegments]";
 }
@@ -555,7 +555,7 @@ DGtal::MaximalSegments<TSegment>::selfDisplay ( std::ostream & out ) const
   template <typename TSegment>
 inline
 bool
-DGtal::MaximalSegments<TSegment>::isValid() const
+DGtal::deprecated::MaximalSegments<TSegment>::isValid() const
 {
     return true;
 }
@@ -568,7 +568,7 @@ DGtal::MaximalSegments<TSegment>::isValid() const
   template <typename TSegment>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::deprecated::operator<< ( std::ostream & out, 
       const MaximalSegments<TSegment> & object )
 {
   object.selfDisplay( out );

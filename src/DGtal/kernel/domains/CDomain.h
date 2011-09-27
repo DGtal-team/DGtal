@@ -44,6 +44,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
+#include "DGtal/base/CConstRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,16 +57,16 @@ namespace DGtal
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 
-   * <p> Refinement of
+   * <p> Refinement of CConstRange
    *
    * <p> Associated types :
    * - Domain : the type itself of the CDomain model.
    * - Space : the embedding digital space.
    * - Point : the point type of the space
-   * - SizeType : the type used for counting elements of the space.
+   * - Size : the type used for counting elements of the space.
+   * - Dimension : the type used for indexing the dimension.
    * - Vector : the vector type of the space
    * - Predicate : the type of the predicate returning true for exactly the points of this domain.  
-   * - ConstRange : the type used for describing the range of all the points of the domain.
    * 
    * 
    * <p> Notation
@@ -124,7 +125,7 @@ namespace DGtal
    * @todo Complete domain checking.
    */
   template <typename T>
-  struct CDomain
+  struct CDomain //: public CConstRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -136,8 +137,8 @@ namespace DGtal
     typedef typename T::Size Size;
     typedef typename T::Dimension Dimension;
     // typedef typename T::ConstRange ConstRange;
-    typedef typename T::ConstIterator ConstIterator;
     typedef typename T::Predicate Predicate;
+    typedef typename T::ConstIterator ConstIterator;
 
     BOOST_CONCEPT_USAGE( CDomain )
     {
