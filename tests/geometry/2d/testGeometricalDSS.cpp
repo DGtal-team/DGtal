@@ -61,14 +61,13 @@ bool testGeometricalDSS()
   return nbok == nb;
 }
 
-template <typename GDSS>
 void testGeometricalDSSConceptChecking()
 {
-   typedef PointVector<2,int> Point; 
-   typedef std::vector<Point>::const_iterator ConstIterator; 
+   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
+   typedef std::vector<Pair>::const_iterator ConstIterator; 
    typedef GeometricalDSS<ConstIterator> GeomDSS; 
 //    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
-    BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
+   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
 }
 
 
@@ -83,8 +82,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
+  testGeometricalDSSConceptChecking();
+
   bool res = testGeometricalDSS()
-&& testGeometricalDSSConceptChecking()
 ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

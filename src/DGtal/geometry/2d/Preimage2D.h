@@ -146,6 +146,38 @@ namespace DGtal
     ~Preimage2D();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Preimage2D ( const Preimage2D & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Preimage2D & operator= ( const Preimage2D & other );
+
+    /**
+    *  Equality operator
+    * @param other the object to compare with.
+    * @return 'true' if the points of @a myPHull
+    * match to those of @a other.myPHull and if 
+    * the points of @a myQHull match to those of 
+    * @a other.myQHull, 'false' otherwise.
+    *
+    * NB: linear in the size of @a myPHull and @a myQHull
+    */
+    bool operator==( const Preimage2D & other) const;
+
+    /**
+    *  Difference operator
+    * @param other the object to compare with.
+    * @return 'true' if not equal, 'false' otherwise.
+    */
+    bool operator!=( const Preimage2D & other) const;
+
+    /**
      * Updates the current preimage with 
      * the constraints involved by the two 
      * end points of a new segment
@@ -221,11 +253,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Preimage2D();
 
   private:
 
@@ -250,21 +277,6 @@ namespace DGtal
                 const Iterator & anEndIterator);
 
 
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Preimage2D ( const Preimage2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Preimage2D & operator= ( const Preimage2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:

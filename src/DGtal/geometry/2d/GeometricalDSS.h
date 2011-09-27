@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
 
@@ -76,7 +77,9 @@ namespace DGtal
    //Pair::first_type and Pair::second_type should be the same type;
 
     //preimage
-    typedef Preimage2D<StraightLineFrom2Points<Point> > Preimage; 
+    typedef StraightLineFrom2Points<Point> StraightLine; 
+    typedef Preimage2D<StraightLine> Preimage; 
+    typedef CowPtr<Preimage> PreimagePtr; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -89,22 +92,34 @@ namespace DGtal
     /**
      * Copy constructor.
      * @param other the object to clone.
-     * Forbidden by default.
      */
-    GeometricalDSS ( const GeometricalDSS & other );
+    GeometricalDSS ( const Self& other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
-    GeometricalDSS & operator= ( const GeometricalDSS & other );
+    Self& operator= ( const Self& other );
 
     /**
      * Destructor.
      */
     ~GeometricalDSS();
+
+    /**
+    *  Equality operator
+    * @param other the object to compare with.
+    * @return 'true' if equal, 'false' otherwise
+    */
+    bool operator==( const Self & other) const;
+
+    /**
+    *  Difference operator
+    * @param other the object to compare with.
+    * @return 'true' if not equal, 'false' otherwise.
+    */
+    bool operator!=( const Self & other) const;
 
     /**
      * Accessor to an instance of the reverse type.
@@ -179,7 +194,7 @@ namespace DGtal
     /**
      * preimage.
      */
-    Preimage myPreimage;
+    PreimagePtr myPreimagePtr; 
 
 
     // ------------------------- Hidden services ------------------------------

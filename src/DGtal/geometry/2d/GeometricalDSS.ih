@@ -41,25 +41,29 @@
 template <typename TConstIterator>
 inline
 DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS()
-:myBegin(), myEnd(), myPreimage()
+:myBegin(), myEnd(), myPreimagePtr()
 {
 }
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS( const GeometricalDSS & other )
-:myBegin(other.myBegin), myEnd(other.myEnd), myPreimage(other.myPreimage)
+DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS( const Self& other )
+:myBegin(other.myBegin), myEnd(other.myEnd), myPreimagePtr(other.myPreimagePtr)
 {
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>&
-DGtal::GeometricalDSS<TConstIterator>::operator= ( const GeometricalDSS & other )
+typename DGtal::GeometricalDSS<TConstIterator>::Self&
+DGtal::GeometricalDSS<TConstIterator>::operator= ( const Self& other )
 {
-  myBegin = other.myBegin;
-  myEnd = other.myEnd;
-  myPreimage = other.myPreimage;
+  if ( this != &other )
+  {
+    myBegin = other.myBegin;
+    myEnd = other.myEnd;
+    myPreimagePtr = other.myPreimagePtr;
+  }
+  return *this;
 }
 
 template <typename TConstIterator>
@@ -70,8 +74,43 @@ DGtal::GeometricalDSS<TConstIterator>::~GeometricalDSS()
 
 template <typename TConstIterator>
 inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::operator==( const Self& other ) const
+{
+  Pair firstPair( *myBegin );
+  Pair oFirstPair( *(other.myBegin) ); 
+  if ( (firstPair.first == oFirstPair.first)
+     &&(firstPair.second == oFirstPair.second) )
+  {
+    ConstIterator it (myEnd); 
+    if ( isNotEmpty(myBegin, it) ) --it;
+    Pair lastPair( *it );  
+    ConstIterator oIt (other.myEnd); 
+    if ( isNotEmpty(other.myBegin, oIt) ) --oIt;
+    Pair oLastPair( *oIt ); 
+   
+    if ( (lastPair.first == oLastPair.first)
+       &&(lastPair.second == oLastPair.second) )
+    {
+      return ( *myPreimagePtr == *(other.myPreimagePtr) ); 
+    }
+    else return false; 
+  } 
+  else return false; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::operator!=( const Self& other ) const
+{
+  return !(*this == other); 
+}
+
+template <typename TConstIterator>
+inline
 typename DGtal::GeometricalDSS<TConstIterator>::Reverse
-DGtal::GeometricalDSS<TConstIterator>::getReverse ( ) const
+DGtal::GeometricalDSS<TConstIterator>::getReverse() const
 {
   return Reverse(); 
 }
@@ -86,6 +125,8 @@ void
 DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
 {
   out << "[GeometricalDSS]";
+  out << (*myPreimagePtr); 
+  out << "[end of GeometricalDSS]";
 }
 
 template <typename TConstIterator>
@@ -122,6 +163,8 @@ DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
 {
   myBegin = anIt; 
   myEnd = anIt; 
+  Pair aPair( *anIt); 
+  myPreimagePtr = PreimagePtr( new Preimage( aPair.first, aPair.second, StraightLine() ) );
 }
 
 template <typename TConstIterator>

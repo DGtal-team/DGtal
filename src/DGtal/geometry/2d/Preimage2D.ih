@@ -44,7 +44,7 @@ inline
 DGtal::Preimage2D<Shape>::Preimage2D(
   const Point & firstPoint, 
   const Point & secondPoint,
-    const Shape & aShape ): myShape(aShape)
+  const Shape & aShape ): myShape(aShape)
 {
   myPHull.push_front(firstPoint);
   myQHull.push_front(secondPoint);
@@ -58,6 +58,50 @@ DGtal::Preimage2D<Shape>::~Preimage2D()
 {
 }
 
+template <typename Shape>
+inline
+DGtal::Preimage2D<Shape>::Preimage2D( const Preimage2D & other ): myShape(other.myShape)
+{
+  myPHull = other.myPHull;
+  myQHull = other.myQHull;
+}
+
+template <typename Shape>
+inline
+DGtal::Preimage2D<Shape>&
+DGtal::Preimage2D<Shape>::operator=( const Preimage2D & other )
+{
+  if ( this != &other )
+  {
+    myShape = other.myShape;
+    myPHull = other.myPHull;
+    myQHull = other.myQHull;
+  }
+  return *this;
+}
+
+template <typename Shape>
+inline
+bool
+DGtal::Preimage2D<Shape>::operator==( const Preimage2D & other ) const
+{
+  if ( (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.begin()) 
+      &&std::equal(myQHull.begin(),myQHull.end(),other.myQHull.begin()))
+    || (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.rbegin()) 
+      &&std::equal(myQHull.begin(),myQHull.end(),other.myQHull.rbegin()))
+     )
+    return true;
+  else 
+    return false;  
+}
+
+template <typename Shape>
+inline
+bool
+DGtal::Preimage2D<Shape>::operator!=( const Preimage2D & other ) const
+{
+  return !(*this == other); 
+}
 
 template <typename Shape>
 inline
