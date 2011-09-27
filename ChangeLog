@@ -23,7 +23,9 @@ Posted on September 26, 2011 by David Coeurjolly
 	shapes in dimension 2.
 	
 	* I/O Package: refactoring/enhancements of DGtal boards and
-	viewers, a new Board3Dto2D board has been added (based on libcairo).
+	viewers,  enhancement of 2D boards with libcairo and a new
+	Board3Dto2D board has been added.
+	
 
 	* Tools: multigrid shapeGenerator/contourGenerator added,
 	lengthEstimator/estimatorComparator  added for differential
