@@ -42,7 +42,7 @@ using namespace DGtal::Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 int main()
 {
-  trace.beginBlock ( "Example dgtalboard-3-custom-classes" );
+  trace.beginBlock ( "Example dgtalBoard2D-3-custom-classes" );
 
   Point p1( -3, -2 );
   Point p2( 7, 3 );
@@ -67,14 +67,14 @@ int main()
                Board2D::Shape::RoundCap,
                Board2D::Shape::RoundJoin ) )
   << p3;
-  board.saveSVG("dgtalboard-3-custom-classes.svg");
-  board.saveEPS("dgtalboard-3-custom-classes.eps");
+  board.saveSVG("dgtalBoard2D-3-custom-classes.svg");
+  board.saveEPS("dgtalBoard2D-3-custom-classes.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-3-custom-classes-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-3-custom-classes-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-3-custom-classes-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-3-custom-classes-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.svg", Board2D::CairoSVG);
 #endif
   
   trace.endBlock();

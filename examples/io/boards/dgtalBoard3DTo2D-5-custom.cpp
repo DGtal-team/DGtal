@@ -46,7 +46,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -58,25 +58,25 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  viewer << SetMode3D( p1.styleName(), "PavingWired" );
-  viewer << p1 << p2 << p3;
+  board << SetMode3D( p1.styleName(), "PavingWired" );
+  board << p1 << p2 << p3;
 
-  //viewer << SetMode3D( p1.styleName(), "Grid" );
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
-  viewer << p4 << p5 ;
-  viewer << SetMode3D( p1.styleName(), "Both" );
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
-  viewer << p6;
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
-  viewer << p0;
+  //board << SetMode3D( p1.styleName(), "Grid" );
+  board << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board << p4 << p5 ;
+  board << SetMode3D( p1.styleName(), "Both" );
+  board << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
+  board << p6;
+  board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+  board << p0;
 
-  viewer << SetMode3D(domain.styleName(), "Paving");
-  viewer << domain;
-  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board << SetMode3D(domain.styleName(), "Paving");
+  board << domain;
+  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
   
-  viewer << SetMode3D(viewer.styleName(), "SolidMode");
-  viewer.saveCairo("dgtalCairo-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board << SetMode3D(board.styleName(), "SolidMode");
+  board.saveCairo("dgtalBoard3DTo2D-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

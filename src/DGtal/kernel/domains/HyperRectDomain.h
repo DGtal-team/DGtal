@@ -628,11 +628,13 @@ namespace DGtal
     
     
     // ------------------------- Hidden services ------------------------------
-  private:
+  //private:
     ///The lowest point of the space diagonal
     Point myLowerBound;
     ///The highest point of the space diagonal
     Point myUpperBound;
+        
+  private:
 
     /// "IsInside" predicate.
     Predicate myPredicate;

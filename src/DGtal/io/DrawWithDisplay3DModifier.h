@@ -48,7 +48,6 @@
 namespace DGtal
 {
 
-
  /**
    *@brief Base class specifying the methods for classes which intend to
    * modify a Viewer3D stream.
@@ -60,14 +59,13 @@ namespace DGtal
       return "DrawWithDisplay3DModifier";
     }
 
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string = "" ) const
+    /*DrawableWithDisplay3D* defaultStyleDisplay3D( std::string = "" ) const
     {
       return 0;
-    }
+    }*/
 
-    virtual void selfDrawDisplay3D( Display3D &  ) const 
-    {}
-    
+    /*virtual void selfDrawDisplay3D( Display3D &  ) const 
+    {}*/
   };
 
 
@@ -90,11 +88,12 @@ namespace DGtal
     SetMode3D( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
+    
     /*void selfDrawDisplay3D( Display3D & display ) const
     {
       display.myModes[ myClassname ] = myMode;
     }*/
-  private:
+    
     std::string myClassname;
     std::string myMode;
   };
@@ -123,11 +122,11 @@ namespace DGtal
       return "CustomStyle3D";
     }
 
-    void selfDrawDisplay3D( Display3D & display ) const
+    /*void selfDrawDisplay3D( Display3D & display ) const
     {
       display.myStyles[ myClassname ] = myStyle;
-    }
-  private:
+    }*/
+
     std::string myClassname;
     CountedPtr<DrawableWithDisplay3D> myStyle;
   };
@@ -189,11 +188,13 @@ namespace DGtal
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
+    
     // MT: why selfDrawViewer3D here and not selfDrawDisplay3D ???
     /*void selfDrawViewer3D( Display3D & display ) const
     {
       display.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
     }*/
+    
     double * getEquation(){
       double *r = new double[4];
       r[0] = myA;
@@ -203,7 +204,6 @@ namespace DGtal
       return r;
     } 
     
-  private:
     double myA;
     double myB;
     double myC;
@@ -234,7 +234,6 @@ namespace DGtal
       display.setCameraPosition(eyex, eyey, eyez);
     }*/
     
-    private:
       double eyex, eyey, eyez;
   };
   
@@ -260,7 +259,6 @@ namespace DGtal
       display.setCameraDirection(dirx, diry, dirz);
     }*/
     
-    private:
       double dirx, diry, dirz;
   };
   
@@ -286,7 +284,6 @@ namespace DGtal
       viewer.setCameraUpVector(upx, upy, upz);
     }*/
     
-    private:
       double upx, upy, upz;
   };
   
@@ -306,12 +303,11 @@ namespace DGtal
       ZNear=near; ZFar=far;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    /*virtual void selfDrawDisplay3D( Display3D & viewer) const
     {
       viewer.setNearFar(ZNear, ZFar);
-    }
+    }*/
     
-    private:
       double ZNear, ZFar;
   };
 

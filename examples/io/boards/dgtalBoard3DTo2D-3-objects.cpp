@@ -48,7 +48,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
@@ -57,23 +57,23 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
-  viewer << shape_set;  
+  board <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
+  board << shape_set;  
 
   Object6_18 shape( dt6_18, shape_set );
-  viewer << SetMode3D( shape.styleName(), "DrawAdjacencies" );
-  viewer << shape;
+  board << SetMode3D( shape.styleName(), "DrawAdjacencies" );
+  board << shape;
 
   Object18_6 shape2( dt18_6, shape_set );
-  viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
-  //viewer << shape2;
+  board << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
+  //board << shape2;
   
-  viewer << CameraPosition(4.000000, 4.000000, 17.578199)
+  board << CameraPosition(4.000000, 4.000000, 17.578199)
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-3-objects.png", Board3DTo2D::CairoPNG, 600, 400);
+  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-3-objects.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -356,7 +356,7 @@ namespace DGtal
 
 
 
-#if(0)    
+#if(0)
          /** 
      * Default style.
      */

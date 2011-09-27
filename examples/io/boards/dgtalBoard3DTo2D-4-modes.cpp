@@ -45,7 +45,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -57,19 +57,19 @@ int main( int argc, char** argv )
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  //viewer << SetMode3D( p1.styleName(), "Grid" );
+  //board << SetMode3D( p1.styleName(), "Grid" );
 
-  viewer << p1 << p2 << p3 << p4 << p5 << p6 << p0;
+  board << p1 << p2 << p3 << p4 << p5 << p6 << p0;
 
-  //viewer << SetMode3D(domain.styleName(), "PavingGrids");
-  viewer << domain;
+  //board << SetMode3D(domain.styleName(), "PavingGrids");
+  board << domain;
   
-  viewer << CameraPosition(0.500000, 0.500000, 11.274194)
+  board << CameraPosition(0.500000, 0.500000, 11.274194)
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);
+  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

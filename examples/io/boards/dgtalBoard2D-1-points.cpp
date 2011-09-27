@@ -43,7 +43,7 @@ using namespace DGtal::Z2i;
 
 int main()
 {
-  trace.beginBlock ( "Example dgtalboard-1-points" );
+  trace.beginBlock ( "Example dgtalBoard2D-1-points" );
 
   Point p1( -3, -2 );
   Point p2( 7, 3 );
@@ -52,14 +52,14 @@ int main()
   
   Board2D board;
   board << domain << p1 << p2 << p3;
-  board.saveSVG("dgtalboard-1-points.svg");
-  board.saveEPS("dgtalboard-1-points.eps");
+  board.saveSVG("dgtalBoard2D-1-points.svg");
+  board.saveEPS("dgtalBoard2D-1-points.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-1-points-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-1-points-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-1-points-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-1-points-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-1-points-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-1-points-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-1-points-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-1-points-cairo.svg", Board2D::CairoSVG);
 #endif
   
   trace.endBlock();

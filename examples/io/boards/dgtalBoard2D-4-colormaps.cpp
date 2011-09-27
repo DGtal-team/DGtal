@@ -46,7 +46,7 @@ using namespace Z2i;
 
 int main()
 {
-  trace.beginBlock ( "Example dgtalboard-4-colormaps" );
+  trace.beginBlock ( "Example dgtalBoard2D-4-colormaps" );
 
   Point p1( -10, -7 );
   Point p2( 10, 7 );
@@ -83,14 +83,14 @@ int main()
                 cmap_grad( d ) ) )
       << *it;
     }
-  board.saveSVG( "dgtalboard-4-colormaps.svg");
-  board.saveEPS( "dgtalboard-4-colormaps.eps");
+  board.saveSVG( "dgtalBoard2D-4-colormaps.svg");
+  board.saveEPS( "dgtalBoard2D-4-colormaps.eps");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.svg", Board2D::CairoSVG);
 #endif
 
   trace.endBlock();

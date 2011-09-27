@@ -278,7 +278,7 @@ namespace DGtal
 
     
 
-
+#if(0)
      /**
       * Default drawing style object.
       * @return the dyn. alloc. default style for this object.
@@ -294,7 +294,7 @@ namespace DGtal
   //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
       }
     };
-  
+#endif  
 
 
 

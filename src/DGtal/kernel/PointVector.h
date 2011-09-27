@@ -829,7 +829,7 @@ namespace DGtal
     static Self zero;
     
     // ------------------------- Hidden services ------------------------------
-  protected:
+  //protected:
     
     ///Internal data-structure: boost/array with constant size.
     boost::array<Component, dimension> myArray;
