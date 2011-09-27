@@ -96,7 +96,7 @@ Then we can display some 3D primitives:
 
 
  The same visualization can be obtain with the Board2Dto3D class. You
-just need to adapt the camera settings (see example: ).
+just need to adapt the camera settings (see example: <a href="dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
 
 
 @code
