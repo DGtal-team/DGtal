@@ -48,7 +48,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLine.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 #include "DGtal/geometry/2d/Point2ShapePredicate.h"
   
 
@@ -66,7 +66,7 @@ int main(int , char **)
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef StraightLine<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Point> StraightLine;
 
   Point p(0,0);
   Point q(5,2);
