@@ -116,16 +116,19 @@ namespace DGtal
       PHullBackQHullFrontPred; 
     typedef Point2ShapePredicate<Shape,true,true> 
       QHullBackPHullFrontPred; 
+    typedef Point2ShapePredicate<Shape,true,true> 
+      PHullFrontQHullBackPred; 
+    typedef Point2ShapePredicate<Shape,false,true> 
+      QHullFrontPHullBackPred; 
     //Predicates used to update the hulls
     typedef Point2ShapePredicate<Shape,true,false> 
-      PHullUpdateForPAddingPred; 
+      FrontPHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,false,false> 
-      QHullUpdateForQAddingPred; 
+      FrontQHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,false,false> 
-      QHullUpdateForPAddingPred; 
+      BackPHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,true,false> 
-      PHullUpdateForQAddingPred; 
-
+      BackQHullUpdatePred; 
     
 
 
@@ -178,7 +181,8 @@ namespace DGtal
     bool operator!=( const Preimage2D & other) const;
 
     /**
-     * Decide whether a new constraint can be added
+     * Decide whether a new constraint can be added at the front
+     * (with respect to the scan orientation)
      * without making the preimage empty or not
      *
      * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
@@ -189,6 +193,32 @@ namespace DGtal
      */
     bool canBeAddedAtTheFront(const Point & aP, const Point & aQ);
 
+    /**
+     * Decide whether a new constraint can be added at the back
+     * (with respect to the scan orientation)
+     * without making the preimage empty or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the new constraint make the preimage empty
+     * 'true' otherwise.
+     */
+    bool canBeAddedAtTheBack(const Point & aP, const Point & aQ);
+    
+    /**
+     * Decide whether a new constraint can be added
+     * without making the preimage empty or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the new constraint make the preimage empty
+     * 'true' otherwise.
+     */
+    bool canBeAdded(const Point & aP, const Point & aQ);
+    
+    
     /**
      * Updates the current preimage with 
      * the constraints involved by the two 
@@ -206,7 +236,38 @@ namespace DGtal
      */
     bool addFront(const Point & aP, const Point & aQ);
 
+    /**
+     * Updates the current preimage with 
+     * the constraints involved by the two 
+     * end points of a new segment
+     * (adding to the back of the sequence of 
+     * segments with respect to the scan orientaion)
+     *
+     * Nb: in O(n)
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the updated preimage is empty, 
+     * 'true' otherwise.
+     */
+    bool addBack(const Point & aP, const Point & aQ);
 
+    /**
+     * Updates the current preimage with 
+     * the constraint involved by the two 
+     * end points of a new segment
+     *
+     * Nb: in O(n)
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the updated preimage is empty, 
+     * 'true' otherwise.
+     */
+    bool add(const Point & aP, const Point & aQ);
+    
     // ----------------------- Interface --------------------------------------
   public:
 

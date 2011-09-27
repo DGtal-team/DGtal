@@ -67,8 +67,7 @@ bool testGeometricalDSS(const TCurve& c)
 
   Range r = c.getIncidentPointsRange(); //range
 
-  GeometricalDSS<ConstIterator> s;
-  typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
+  GeometricalDSS<ConstIterator> s, t;
 
   trace.info() << "forward extension " << endl; 
   ConstIterator itBegin (r.begin()); 
@@ -77,17 +76,30 @@ bool testGeometricalDSS(const TCurve& c)
   while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
   trace.info() << s << endl; 
 
+  t.init( (itBegin + (itEnd - itBegin)/2) ); 
+  while ( (t.end() != itEnd) && (t.extend()) 
+       && (t.begin() != itBegin) && (t.extendOppositeEnd()) ) {}
+  trace.info() << t << endl; 
+
   trace.info() << "backward extension " << endl; 
-  ConstReverseIterator ritBegin (r.rbegin()); //iterators
+  typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
+  ConstReverseIterator ritBegin (r.rbegin()); 
   ConstReverseIterator ritEnd (r.rend()); 
   rs.init( ritBegin );
   while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
   trace.info() << rs << endl; 
 
-  nbok += true ? 1 : 0; 
+  typename GeometricalDSS<ConstIterator>::Reverse rt = t.getReverse(); 
+  rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
+  while ( (rt.end() != ritEnd) && (rt.extend()) 
+       && (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
+  trace.info() << rt << endl; 
+
+  bool myFlag = ( (s == t)&&(rs == rt) ); 
+
+  nbok += myFlag ? 1 : 0; 
   nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << endl;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   trace.endBlock();
   
   return nbok == nb;
