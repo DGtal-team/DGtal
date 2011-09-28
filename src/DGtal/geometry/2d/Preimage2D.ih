@@ -236,6 +236,9 @@ DGtal::Preimage2D<Shape>::addBack(
   myShape.init(*QHullFront, *PHullBack);
   QHullFrontPHullBackPred p2( myShape );
 
+std::cerr << p1 << aP << p1(aP) << std::endl; 
+std::cerr << p2 << aQ << p2(aQ) << std::endl; 
+
   if ( p1(aP) && p2(aQ) ) {
     if ( p2(aP) ) {   //constraint involved by aP
 
@@ -244,6 +247,7 @@ DGtal::Preimage2D<Shape>::addBack(
         (aP, myPHull, PHullBack, myPHull.rend());
 
       //add aP to myPHull
+std::cerr << "!!!! " << aP << *myPHull.rbegin() << std::endl; 
       if (aP != *myPHull.rbegin()) myPHull.push_back(aP);
 
       //update myQHull
@@ -260,6 +264,7 @@ DGtal::Preimage2D<Shape>::addBack(
         (aQ, myQHull, QHullBack, myQHull.rend());
 
       //add aQ to myQHull
+std::cerr << "!!!! " << aQ << *myQHull.rbegin() << std::endl; 
       if (aQ != *myQHull.rbegin()) myQHull.push_back(aQ);
 
       //update myPHull
