@@ -50,7 +50,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLine.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 
 
@@ -65,7 +65,7 @@ int main()
 
   typedef int Coordinate;
   typedef PointVector<2, Coordinate> Point;
-  typedef StraightLine<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Point> StraightLine;
   typedef Preimage2D<StraightLine> Preimage2D;
 
   //data
@@ -90,7 +90,7 @@ int main()
   trace.beginBlock("Simple Preimage test");
   {
     int i = 0;
-    Preimage2D thePreimage(bInf.at(i), bSup.at(i));
+    Preimage2D thePreimage(bInf.at(i), bSup.at(i), StraightLine());
     
     //draw range
     Point P(bInf.at(i));
@@ -144,7 +144,7 @@ int main()
   
   {
     int i = 0;
-    Preimage2D thePreimage2(bInf.at(i), bSup.at(i));
+    Preimage2D thePreimage2(bInf.at(i), bSup.at(i), StraightLine());
 
     //draw range
     Point P(bInf.at(i));
@@ -219,7 +219,7 @@ int main()
   board.clear();
   {
     int i = 0;
-    Preimage2D thePreimage(bInf.at(i), bSup.at(i));
+    Preimage2D thePreimage(bInf.at(i), bSup.at(i), StraightLine());
 
     //draw range
     Point P(bInf.at(i));
