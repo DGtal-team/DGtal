@@ -119,7 +119,7 @@ namespace DGtal
     typedef HyperRectDomain_Iterator<Point> Iterator;
     typedef myreverse_iterator<Iterator> ReverseIterator;
     typedef Iterator ConstIterator;
-    typedef ReverseIterator ReverseConstIterator;
+    typedef ReverseIterator ConstReverseIterator;
     
     typedef IsWithinPointPredicate<Point> Predicate;
 
@@ -186,8 +186,8 @@ namespace DGtal
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
-    ReverseConstIterator rbegin() const
-    { return ReverseConstIterator(end()); }
+    ConstReverseIterator rbegin() const
+    { return ConstReverseIterator(end()); }
     
     /*
      * reverse begin method from a given point.
@@ -195,17 +195,17 @@ namespace DGtal
      * @return a ConstIterator initialized to aPoint.
      * @pre aPoint must belong to the range.
      */
-    ReverseConstIterator rbegin(const Point& aPoint) const
+    ConstReverseIterator rbegin(const Point& aPoint) const
     {  ASSERT(isInside(aPoint));
       ConstIterator it(begin(aPoint)); ++it;
-      return ReverseConstIterator(it); }
+      return ConstReverseIterator(it); }
     
     /*
      * reverse end method.
      * @return ConstIterator on the end of the reverse range.
        */
-    ReverseConstIterator rend() const
-    { return ReverseConstIterator(begin()); }
+    ConstReverseIterator rend() const
+    { return ConstReverseIterator(begin()); }
     
     /**
      * Description of class 'ConstSubRange' <p> \brief Aim:
@@ -213,12 +213,12 @@ namespace DGtal
      * Defines a constructor taking a domain in parameter plus some
      * additional parameters to specify the subdomain,
      * begin and end methods returning ConstIterator, and
-     * rbegin and rend methods returning ReverseConstIterator.
+     * rbegin and rend methods returning ConstReverseIterator.
      */
     struct ConstSubRange 
     {
       typedef HyperRectDomain_subIterator<Point> ConstIterator;
-      typedef myreverse_iterator<ConstIterator> ReverseConstIterator;
+      typedef myreverse_iterator<ConstIterator> ConstReverseIterator;
 
       /**
        * ConstSubRange constructor from a given domain.
@@ -370,8 +370,8 @@ namespace DGtal
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
-      ReverseConstIterator rbegin() const
-      { return ReverseConstIterator(end()); }
+      ConstReverseIterator rbegin() const
+      { return ConstReverseIterator(end()); }
 
       /*
        * reverse begin method from a given point.
@@ -379,16 +379,16 @@ namespace DGtal
        * @return a ConstIterator initialized to aPoint.
        * @pre aPoint must belong to the range.
        */
-      ReverseConstIterator rbegin(const Point& aPoint) const
+      ConstReverseIterator rbegin(const Point& aPoint) const
       { ConstIterator it(begin(aPoint)); ++it;
-  return ReverseConstIterator(it); }
+  return ConstReverseIterator(it); }
 
       /*
        * reverse end method.
        * @return ConstIterator on the end of the reverse range.
        */
-      ReverseConstIterator rend() const
-      { return ReverseConstIterator(begin()); }
+      ConstReverseIterator rend() const
+      { return ConstReverseIterator(begin()); }
 
     private:
       /// Lower bound of the subrange.
