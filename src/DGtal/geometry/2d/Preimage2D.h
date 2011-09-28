@@ -68,7 +68,7 @@ namespace DGtal
    * the 2D plane into two disjoint parts (e.g. straight lines, 
    * circles passing through a given point). Consequently, the 
    * points Pi and the points Qi are assumed to lie in either 
-   * side of the shape (Pi in the interior, Qi in the exterior).
+   * side of the shape.
    *
    * The user of this class has to decide from its input set 
    * of segments and the shape used whether a linear-time algorithm 
@@ -80,6 +80,9 @@ namespace DGtal
    *
    * You can define your preimage type from a given shape type as follows:
    * @snippet geometry/examplePreimage.cpp PreimageTypedefFromStraightLine
+   *
+   * Here is another example:
+   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromCircle
    *
    * Then, here is the basic usage of this class:
    * @snippet geometry/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
@@ -133,8 +136,9 @@ namespace DGtal
      * Constructor.
      * @param firstPoint  the end point of the first straight segment expected to lie in the interior of the separating shapes
      * @param secondPoint  the end point of the first straight segment expected to lie in the exterior of the separating shapes
+     * @param sShape  any shape
      */
-    Preimage2D(const Point & firstPoint, const Point & secondPoint);
+    Preimage2D(const Point & firstPoint, const Point & secondPoint, const Shape & aShape );
 
     /**
      * Destructor. Does nothing.
@@ -197,6 +201,11 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    /**
+     * Shape used to separate the input points
+     */
+    Shape myShape;
+  
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
