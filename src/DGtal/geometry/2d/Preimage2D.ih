@@ -469,13 +469,31 @@ DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
   double bp = NumberTraits<Coordinate>::castToDouble(Ul[0]-Lf[0]);
   double cp = -NumberTraits<Coordinate>::castToDouble(Lf[0])*ap 
                       -NumberTraits<Coordinate>::castToDouble(Lf[1])*bp;
-  
-  alpha = (a*bp+ap*b);
-  beta = (2*b*bp);
-  //intersection point
-  double x = -(b*cp-bp*c)/(ap*b-bp*a);
-  double y = -(a*cp-ap*c)/(bp*a-ap*b); 
-  gamma = -alpha*x - beta*y;
+
+  double x, y; 
+  double det = (ap*b-bp*a); 
+  if (det != 0)
+  {
+    //intersection point
+    x = -(b*cp-bp*c)/det;
+    y = -(a*cp-ap*c)/(-det); 
+    //normalisation of (ap,bp) with respect to (a,b)
+    double l = std::sqrt(a*a + b*b); 
+    double lp = std::sqrt(ap*ap + bp*bp); 
+    double apn = ap/lp*l; 
+    double bpn = bp/lp*l; 
+    //slope bisector of (UfLl) and (UlLf)
+    alpha = (a+apn)/2.0; 
+    beta = (b+bpn)/2.0; 
+    //intercept
+    gamma = -alpha*x - beta*y;
+  }
+  else 
+  {//parallel case
+    alpha = a;
+    beta = b;
+    gamma = (c+cp)/2.0;
+  }
 }
 
 

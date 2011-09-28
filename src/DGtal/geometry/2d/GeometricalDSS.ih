@@ -207,7 +207,7 @@ void
 DGtal::GeometricalDSS<TConstIterator>::projects(double& x, double& y, 
                 const double& alpha, const double& beta, const double& gamma) const
 {
-
+  ASSERT( (alpha!=0)||(beta!=0) );
   double d2 = ( alpha * alpha + beta * beta );
   double s = beta*x - alpha*y; 
   x = (beta*s - alpha*gamma)/d2;
@@ -224,6 +224,7 @@ DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
 {
   myBegin = anIt; 
   myEnd = anIt; 
+  ++myEnd; 
   Pair aPair( *anIt); 
   myPreimagePtr = PreimagePtr( new Preimage( aPair.first, aPair.second, StraightLine() ) );
 }
@@ -316,7 +317,7 @@ inline
 DGtal::DrawableWithBoard2D*
 DGtal::GeometricalDSS<TConstIterator>::defaultStyle( std::string /*mode*/ ) const
 {
-  return new DrawableWithBoard2D; 
+  return new DefaultDrawStyle(); 
 }
 
 template <typename TConstIterator>

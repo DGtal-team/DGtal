@@ -90,7 +90,6 @@ bool testGeometricalDSS(const TCurve& curve)
 
     nbok += myFlag ? 1 : 0; 
     nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
   trace.endBlock();
   
@@ -103,7 +102,7 @@ bool testGeometricalDSS(const TCurve& curve)
     trace.info() << "forward extension " << endl; 
     ConstIterator itBegin (r.begin()); 
     ConstIterator itEnd (r.end()); 
-    s.init( itBegin );
+    s.init( itBegin+1 );
     while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
     trace.info() << s << endl; 
     double a, b, c; 
@@ -119,7 +118,7 @@ bool testGeometricalDSS(const TCurve& curve)
     typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
     ConstReverseIterator ritBegin (r.rbegin()); 
     ConstReverseIterator ritEnd (r.rend()); 
-    rs.init( ritBegin );
+    rs.init( ritBegin+1 );
     while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
     trace.info() << rs << endl; 
     double ap, bp, cp; 
@@ -145,10 +144,10 @@ bool testGeometricalDSS(const TCurve& curve)
 
     nbok += myFlag ? 1 : 0; 
     nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
   trace.endBlock();
   
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return nbok == nb;
 }
 
@@ -216,33 +215,38 @@ bool testSegmentation(const TCurve& curve)
       board << (*it); 
     }
     
-    board.saveEPS("GeometricalDSSGreedySegmentationTest.eps"); 
-    board.saveSVG("GeometricalDSSGreedySegmentationTest.svg"); 
-    
-    nbok += (c==1) ? 1 : 0; 
+    board.saveEPS("GeometricalDSSGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+
+    nbok += (c==10) ? 1 : 0; 
     nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
   trace.endBlock();
-/*
+
   trace.beginBlock ( "Saturated segmentation" );
   {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
     
+    Board2D board; 
+    board << r; 
+    
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
     unsigned int c = 0; 
     for ( ; it != itEnd; ++it, ++c) {
-      trace.info() << (*it) << std::endl;   //standard output
+      cout << c << (*it); 
+      board << (*it); 
     }
     
+//    board.saveEPS("GeometricalDSSSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+
     nbok += (c==1) ? 1 : 0; 
     nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
   trace.endBlock();
-  */
+  
+  
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return (nbok == nb);
 }
 ///////////////////////////////////////////////////////////////////////////////
