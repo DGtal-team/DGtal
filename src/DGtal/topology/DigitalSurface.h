@@ -197,6 +197,28 @@ namespace DGtal
     /// @return the number of vertices of the graph.
     Size size() const;
 
+    /**
+       @param v any vertex of this graph
+       @return the number of neighbors of this Vertex/Surfel.a
+       @pre container().isInside( v )
+    */
+    Size degree( const Vertex & v ) const;
+
+    /**
+       Writes the neighbors of [v] in the output iterator
+       [it]. Neighbors are given in no specific order.
+
+       @param v any vertex of this graph
+       
+       @param[in,out] it any output iterator on Vertex (*it++ should
+       be allowed), which specifies where neighbors are written.
+
+       @pre container().isInside( v )
+    */
+    template <typename OutputIterator>
+    void writeNeighbors( const Vertex & v,
+                         OutputIterator & it ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -219,8 +241,8 @@ namespace DGtal
 
     /// a smart pointer on the container.
     CowPtr<DigitalSurfaceContainer> myContainer;
-    /// a smart pointer on a tracker.
-    CowPtr<DigitalSurfaceTracker> myTracker;
+    /// a pointer on a tracker.
+    mutable DigitalSurfaceTracker* myTracker;
 
     // ------------------------- Hidden services ------------------------------
   protected:
