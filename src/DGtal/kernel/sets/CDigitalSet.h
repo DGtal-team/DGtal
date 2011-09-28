@@ -109,17 +109,10 @@ namespace DGtal
 
      @tparam T the type that should be a model of CDigitalSet.
    */
-<<<<<<< HEAD
-  template <typename Domain>
-  struct CDigitalSet : 
-    boost::CopyConstructible< Domain >, 
-    boost::Assignable< Domain >
-=======
   template <typename T> 
   struct CDigitalSet :
     boost::CopyConstructible< T >, 
     boost::Assignable< T >
->>>>>>> 8d0b00b1627f7540b5478578de519aeb82bd1201
   {
     // ----------------------- Concept checks ------------------------------
   public:

@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <vector>
 #include <queue>
 #include <algorithm>
 #include "DGtal/kernel/CPointPredicate.h"
@@ -697,28 +698,68 @@ sWriteBoundary( OutputIterator & out_it,
                 const PointPredicate & pp,
                 const Point & aLowerBound, const Point & aUpperBound  )
 {
-  unsigned int k;
-  bool in_here, in_further;
- 
+  Dimension k;
+  // bool in_here, in_further;
+  bool in_here, in_before;
+  
+  typedef typename KSpace::Space Space;
+  typedef HyperRectDomain<Space> Domain;
+  std::vector< Dimension > axes( aKSpace.dimension ); 
+  for ( k = 0; k < aKSpace.dimension; ++k )
+    axes[ k ] = k;
+  // We look for surfels in every direction.
   for ( k = 0; k < aKSpace.dimension; ++k )
     {
-      Cell dir_low_uid = aKSpace.uSpel( aLowerBound );
-      Cell dir_up_uid = aKSpace.uGetDecr( aKSpace.uSpel( aUpperBound ), k);
-      Cell p = dir_low_uid;
-      do 
+      // When looking for surfels, the visiting must follow the k-th
+      // axis first so as to reuse the predicate "pp( p )".
+      std::swap( axes[ 0 ], axes[ k ] );
+      Point low = aLowerBound; ++low[ k ];
+      Point up = aUpperBound;
+      Domain domain( low, up );
+      Integer x = low[ k ];
+      typename Domain::ConstSubRange range = domain.subRange( axes );
+      for ( typename Domain::ConstSubRange::ConstIterator
+              it = range.begin(), it_end = range.end();
+            it != it_end; ++it )
         {
-          in_here = pp( aKSpace.uCoords(p) );
-          in_further = pp( aKSpace.uCoords(aKSpace.uGetIncr( p, k )) );
-          if ( in_here != in_further ) // boundary element
+          const Point & p = *it;
+          if ( p[ k ] == x)
+            {
+              in_here = pp( p );
+              Point p2( p ); --p2[ k ];
+              in_before = pp( p2 );
+            }
+          else
+            { 
+              in_before = in_here;
+              in_here = pp( p );
+            }
+          if ( in_here != in_before ) // boundary element
             { // writes it into the output iterator.
-              *out_it++ = aKSpace.sIncident( aKSpace.signs( p, in_here ),
-                                             k, true );
+              *out_it++ = aKSpace.sIncident( aKSpace.sSpel( p, in_here ),
+                                             k, false );
             }
         }
-      while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
     }
+  // for ( k = 0; k < aKSpace.dimension; ++k )
+  //   {
+  //     Cell dir_low_uid = aKSpace.uSpel( aLowerBound );
+  //     Cell dir_up_uid = aKSpace.uGetDecr( aKSpace.uSpel( aUpperBound ), k);
+  //     Cell p = dir_low_uid;
+  //     do 
+  //       {
+  //         in_here = pp( aKSpace.uCoords(p) );
+  //         in_further = pp( aKSpace.uCoords(aKSpace.uGetIncr( p, k )) );
+  //         if ( in_here != in_further ) // boundary element
+  //           { // writes it into the output iterator.
+  //             *out_it++ = aKSpace.sIncident( aKSpace.signs( p, in_here ),
+  //                                            k, true );
+  //           }
+  //       }
+  //     while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
+  //   }
 }
-
+          
 
 
 

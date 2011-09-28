@@ -45,7 +45,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testDigitalSurface()
+bool testDigitalSetBoundary()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -99,14 +99,65 @@ bool testDigitalSurface()
       delete ptrTracker;
     }
   trace.endBlock();
+  return nbok == nb;
+}
 
+template <typename KSpace>
+bool testDigitalSurface()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
   trace.beginBlock ( "Testing block ... DigitalSurface" );
-  typedef DigitalSurface<Boundary> MyDS;
-  MyDS digsurf( boundary ); // duplicated.
+  typedef typename KSpace::Space Space;
+  typedef typename KSpace::Size Size;
+  typedef typename Space::Point Point;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type DigitalSet;
+
+  trace.beginBlock ( "Creating object and DigitalSurfaceContainer" );
+  Point p0 = Point::diagonal( 0 );
+  Point p1 = Point::diagonal( -6 );
+  Point p2 = Point::diagonal( 6 );
+  Domain domain( p1, p2 );
+  DigitalSet dig_set( domain );
+  Shapes<Domain>::addNorm2Ball( dig_set, p0, 3 );
+  Shapes<Domain>::removeNorm2Ball( dig_set, p0, 1 );
+  KSpace K;
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing DigitalSurface" );
+  typedef DigitalSetBoundary<KSpace,DigitalSet> DSContainer;
+  typedef DigitalSurface<DSContainer> MyDS;
+  typedef typename MyDS::Surfel Surfel;
+  DSContainer* ptrBdry = new DSContainer( K, dig_set );
+  MyDS digsurf( ptrBdry ); // acquired
+  Size nbsurfels = 
+    ( K.dimension == 2 ) ? 12+28 :
+    ( K.dimension == 3 ) ? 30+174 :
+    ( K.dimension == 4 ) ? 56+984 : 
+    ( K.dimension == 5 ) ? 4340 : 0;
   nb++, nbok += digsurf.size() == nbsurfels ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "digsurf.size() == nbsurfels" << std::endl;
-  
+	       << "digsurf.size() = " << digsurf.size() 
+               << " == " << nbsurfels << std::endl;
+  for ( typename MyDS::ConstIterator it = digsurf.begin(),
+          it_end = digsurf.end();
+        it != it_end;
+        ++it )
+    {
+      Surfel s = *it;
+      nb++, nbok += digsurf.degree( s ) == 2*(K.dimension-1) ? 1 : 0;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "digsurf.degree( s ) == "
+               << 2*(K.dimension-1) << std::endl;
+  trace.endBlock();
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -121,7 +172,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDigitalSurface(); // && ... other tests
+  bool res = testDigitalSetBoundary()
+    && testDigitalSurface<KhalimskySpaceND<2> >()
+    && testDigitalSurface<KhalimskySpaceND<3> >()
+    && testDigitalSurface<KhalimskySpaceND<4> >();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
