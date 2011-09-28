@@ -77,26 +77,33 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::operator==( const Self& other ) const
 {
-  Pair firstPair( *myBegin );
-  Pair oFirstPair( *(other.myBegin) ); 
-  if ( (firstPair.first == oFirstPair.first)
-     &&(firstPair.second == oFirstPair.second) )
+  if (isValid()&&other.isValid())
   {
-    ConstIterator it (myEnd); 
-    if ( isNotEmpty(myBegin, it) ) --it;
-    Pair lastPair( *it );  
-    ConstIterator oIt (other.myEnd); 
-    if ( isNotEmpty(other.myBegin, oIt) ) --oIt;
-    Pair oLastPair( *oIt ); 
-   
-    if ( (lastPair.first == oLastPair.first)
-       &&(lastPair.second == oLastPair.second) )
+    Pair firstPair( *myBegin );
+    Pair oFirstPair( *(other.myBegin) ); 
+    if ( (firstPair.first == oFirstPair.first)
+       &&(firstPair.second == oFirstPair.second) )
     {
-      return ( *myPreimagePtr == *(other.myPreimagePtr) ); 
-    }
+      ConstIterator it (myEnd); 
+      --it;
+      Pair lastPair( *it );  
+      ConstIterator oIt (other.myEnd); 
+      --oIt;
+      Pair oLastPair( *oIt ); 
+     
+      if ( (lastPair.first == oLastPair.first)
+         &&(lastPair.second == oLastPair.second) )
+      {
+        return ( *myPreimagePtr == *(other.myPreimagePtr) ); 
+      }
+      else return false; 
+    } 
     else return false; 
-  } 
-  else return false; 
+  }
+  else 
+  {
+    return ( (!isValid()) && (!other.isValid()) );
+  }
 }
 
 template <typename TConstIterator>
@@ -123,7 +130,14 @@ inline
 bool
 DGtal::GeometricalDSS<TConstIterator>::isValid() const
 {
-  return true;
+  if ( myPreimagePtr.get() != 0 )
+  {
+    return myPreimagePtr->isValid(); 
+  }
+  else 
+  {
+    return false;
+  }
 }
 
 template <typename TConstIterator>
@@ -276,15 +290,23 @@ inline
 void
 DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
 {
+  out << std::endl;
   out << "[GeometricalDSS]" << std::endl;
-  Pair firstPair( *myBegin ); 
-  out << "From " << firstPair.first << firstPair.second << std::endl; 
-  ConstIterator it (myEnd); 
-  if ( isNotEmpty(myBegin, it) ) --it;
-  Pair lastPair( *it );  
-  out << "To " << lastPair.first << lastPair.second << std::endl; 
-  ASSERT( myPreimagePtr.get() != 0 ); 
-  out << (*myPreimagePtr); 
+  if (isValid())
+  {
+    Pair firstPair( *myBegin ); 
+    out << "\t From " << firstPair.first << firstPair.second << std::endl; 
+    ConstIterator it (myEnd); 
+    --it;
+    Pair lastPair( *it );  
+    out << "\t To " << lastPair.first << lastPair.second << std::endl; 
+    ASSERT( myPreimagePtr.get() != 0 ); 
+    out << (*myPreimagePtr); 
+  }
+  else
+  {
+    out << "\t not valid" << std::endl; 
+  }
   out << "[end of GeometricalDSS]" << std::endl;
 }
 
@@ -325,7 +347,7 @@ DGtal::GeometricalDSS<TConstIterator>::selfDraw(Board2D & aBoard) const
   projects(fx, fy, alpha, beta, gamma);
 
   ConstIterator it (myEnd); 
-  if ( isNotEmpty(myBegin, it) ) --it;
+  --it;
   Pair lastPair( *it );  
   double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
   double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
