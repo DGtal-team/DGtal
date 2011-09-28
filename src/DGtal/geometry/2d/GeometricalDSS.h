@@ -266,6 +266,27 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    
+    // ------------------------- Private Datas --------------------------------
+  private:
+
+    /**
+     * Default drawing style for GeometricalDSS.
+     */
+    struct DefaultDrawStyle : public DrawableWithBoard2D
+    {
+      /**
+       * Draw the GeometricalDSS on a board
+       * @param board the output board where the object is drawn.
+       */
+      virtual void selfDraw(Board2D & aBoard) const
+      {
+        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+        aBoard.setPenColor(Color::Red);
+        aBoard.setLineWidth(1.5);
+        aBoard.setFillColor(Color::None);
+      }
+    };
 
   }; // end of class GeometricalDSS
 
