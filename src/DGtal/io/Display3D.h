@@ -235,7 +235,8 @@ namespace DGtal
      * @param widthWire if true add the wire representation.
      */
 
-    virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
+    virtual void addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z, 
+			  DGtal::Color color= DGtal::Color(220, 220, 220),
 			  double width=0.5,bool withWire=false);
     
 

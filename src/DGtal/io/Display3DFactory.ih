@@ -37,7 +37,8 @@
 // ArithmeticalDSS3d
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display3DFactory::drawAsPoints( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+void DGtal::Display3DFactory::drawAsPoints( Display3D & display, 
+					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
 
@@ -56,18 +57,18 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display, const DGtal::Ar
     {
       ConstIterator k = a.myF;
       Point3d prevp = *k;
-      double xprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[0]);
-      double yprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[1]);
-      double zprevp = (double) NumberTraits<TInteger>::castToInt64_t(prevp[2]);
+      double xprevp =  NumberTraits<TInteger>::castToDouble(prevp[0]);
+      double yprevp =  NumberTraits<TInteger>::castToDouble(prevp[1]);
+      double zprevp =  NumberTraits<TInteger>::castToDouble(prevp[2]);
       ++k;
       for ( ; k != end; ++k) {
         Point3d p = *k;
-        double xp = (double) NumberTraits<TInteger>::castToInt64_t(p[0]);
-        double yp = (double) NumberTraits<TInteger>::castToInt64_t(p[1]);
-        double zp = (double) NumberTraits<TInteger>::castToInt64_t(p[2]);
+        double xp = NumberTraits<TInteger>::castToDouble(p[0]);
+        double yp = NumberTraits<TInteger>::castToDouble(p[1]);
+        double zp = NumberTraits<TInteger>::castToDouble(p[2]);
         display.addLine(xprevp,yprevp,zprevp,
-                       xp,yp,zp,
-                       Color(0,250,0));
+			xp,yp,zp,
+			Color(0,250,0));
         xprevp = xp;
         yprevp = yp;
         zprevp = zp;
@@ -77,7 +78,9 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display, const DGtal::Ar
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+void 
+DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, 
+					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   
@@ -96,25 +99,22 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, const DGta
   getParameters(v,mu,omega);
 
   //casting coordinates of v in double
-  VectorD3d u = VectorD3d(
-  (double) NumberTraits<Integer>::castToInt64_t(v[0]), 
-  (double) NumberTraits<Integer>::castToInt64_t(v[1]), 
-  (double) NumberTraits<Integer>::castToInt64_t(v[2]) ); 
+  VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]), 
+			  NumberTraits<Integer>::castToDouble(v[1]), 
+			  NumberTraits<Integer>::castToDouble(v[2]) ); 
   //L2 norm of u
   double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
-
+  
   //first and last points
-  PointD3d f = PointD3d(
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myF))[0]), 
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myF))[1]), 
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myF))[2]) ); 
-  PointD3d l = PointD3d(
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myL))[0]), 
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myL))[1]), 
-  (double) NumberTraits<Integer>::castToInt64_t((*(a.myL))[2]) ); 
-
+  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myF))[0]), 
+			NumberTraits<Integer>::castToDouble((*(a.myF))[1]), 
+			NumberTraits<Integer>::castToDouble((*(a.myF))[2]) ); 
+  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myL))[0]), 
+			NumberTraits<Integer>::castToDouble((*(a.myL))[1]), 
+			NumberTraits<Integer>::castToDouble((*(a.myL))[2]) ); 
+  
   if (n != 0) {
-
+    
     //last coefficient of the normal plane to the DSS direction
     //passing trough f and l
     double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
@@ -203,7 +203,8 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, const DGta
     
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = display.getMode( a.styleName() );
   if ( mode == "BoundingBox" )
@@ -221,40 +222,44 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Arithmetic
 // PointVector
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display3DFactory::drawAsGrid( Display3D & display, 
+					  const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
   
-  display.addPoint(NumberTraits<TComponent>::castToInt64_t(p.myArray[0]),
-      NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),
-        NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getLineColor());
+  display.addPoint(NumberTraits<TComponent>::castToDouble(p.myArray[0]),
+		   NumberTraits<TComponent>::castToDouble(p.myArray[1]),
+		   NumberTraits<TComponent>::castToDouble(p.myArray[2]), display.getLineColor());
 }
 
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
+					    const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
   
   display.addVoxel(NumberTraits<TComponent>::castToInt64_t(p.myArray[0]),
-       NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),
-       NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor());
+		   NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),
+		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor());
 }
 
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display, 
+						 const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
   
   display.addVoxel(NumberTraits<TComponent>::castToInt64_t(p.myArray[0]),
-      NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),
-      NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor(), 0.5, true);
+		   NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),
+		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor(), 0.5, true);
 }
     
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
  
@@ -277,12 +282,18 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::PointVecto
 
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::PointVector<dim,TComponent> & aPoint, 
+				    const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
   
-  display.addLine((float)aPoint[0], (float) aPoint[1], (float) aPoint[2],
-     (float) aPoint[0] + p.myArray[0], (float)aPoint[1] + p.myArray[1], (float) aPoint[2] + p.myArray[2]);
+  display.addLine(NumberTraits<TComponent>::castToDouble(aPoint[0]), 
+		  NumberTraits<TComponent>::castToDouble(aPoint[1]), 
+		  NumberTraits<TComponent>::castToDouble(aPoint[2]),
+		  NumberTraits<TComponent>::castToDouble(aPoint[0] + p.myArray[0]), 
+		  NumberTraits<TComponent>::castToDouble(aPoint[1] + p.myArray[1]), 
+		  NumberTraits<TComponent>::castToDouble(aPoint[2] + p.myArray[2]));
   
 }
 // PointVector
@@ -291,52 +302,104 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::PointVecto
 // HyperRectDomain
 template<typename TSpace>
 inline
-void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, 
+						 const DGtal::HyperRectDomain<TSpace> & h )
 {
   ASSERT(TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
   
+  typename TSpace::RealPoint upperBound ( h.myUpperBound);
+  typename TSpace::RealPoint lowerBound ( h.myLowerBound);
+
   DGtal::Color colDef(250,250,250,10);
   float shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
-      display.addQuad(h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize), h.myUpperBound[2]+(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize), h.myUpperBound[2]+(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize), h.myUpperBound[2]+(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize), h.myUpperBound[2]+(0.5+shiftSize),
-         colDef);
+      display.addQuad(upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize), 
+		      upperBound[2]+(0.5+shiftSize), 
+		      lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize), 
+		      upperBound[2]+(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize),
+		      lowerBound[1]-(0.5+shiftSize), 
+		      upperBound[2]+(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize), 
+		      upperBound[2]+(0.5+shiftSize),
+		      colDef);
       //Z lower face
-      display.addQuad(h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize), h.myLowerBound[2]-(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize), h.myLowerBound[2]-(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize), h.myLowerBound[2]-(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize), h.myLowerBound[2]-(0.5+shiftSize),
-         colDef);
+      display.addQuad(upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize), 
+		      lowerBound[2]-(0.5+shiftSize), 
+		      upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize), 
+		      lowerBound[2]-(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize), 
+		      lowerBound[2]-(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize), 
+		      lowerBound[2]-(0.5+shiftSize),
+		      colDef);
       
       //Y upper face
-      display.addQuad(h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         colDef);
+      display.addQuad(upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      colDef);
       //Y lower face
-      display.addQuad(h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         colDef);
+      display.addQuad(upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      colDef);
       
       // X upper face
-      display.addQuad(h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         h.myUpperBound[0]+(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),         
-         colDef);
+      display.addQuad(upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      upperBound[0]+(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),         
+		      colDef);
       
       //  X lower face
-      display.addQuad(h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myUpperBound[1]+(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),         
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myLowerBound[2]-(0.5+shiftSize),
-         h.myLowerBound[0]-(0.5+shiftSize), h.myLowerBound[1]-(0.5+shiftSize),h.myUpperBound[2]+(0.5+shiftSize),
+      display.addQuad(lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      upperBound[1]+(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),         
+		      lowerBound[0]-(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      lowerBound[2]-(0.5+shiftSize),
+		      lowerBound[0]-(0.5+shiftSize), 
+		      lowerBound[1]-(0.5+shiftSize),
+		      upperBound[2]+(0.5+shiftSize),
          colDef);
     }  
 }
@@ -346,6 +409,9 @@ inline
 void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
+
+  //  typename TSpace::RealPoint upperBound ( h.myUpperBound);
+  // typename TSpace::RealPoint lowerBound ( h.myLowerBound);
   
   ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
@@ -353,47 +419,48 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::Hype
   {
     // Face XY
     for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
-   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-  display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5,z,
-           x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5,z,display.getLineColor() );
+	 z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+      {
+	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	  display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5,z,
+			  x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5,z,display.getLineColor() );
+	}
+	for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+	     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	  display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
+			  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y,z,  display.getLineColor());
+	}
       }
-      for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-  display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-           NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y,z,  display.getLineColor());
-      }
-    }
     
     // Faces XZ
     for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-   y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	 y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-  display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-           x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])+0.5,display.getLineColor());
+	   x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
+			x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])+0.5,display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-  display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-           NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y, z, display.getLineColor());
+	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
+			NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y, z, display.getLineColor());
       }
     }
     
     // Faces YZ
     for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-   x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	 x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
       
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-  display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-           x, y ,NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2])+0.5, display.getLineColor());
+	   y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
+			x, y ,NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-  display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5 ,z,
-           x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5, z, display.getLineColor());
+	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5 ,z,
+			x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5, z, display.getLineColor());
       }
     }
   }
@@ -401,7 +468,8 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::Hype
 
 template<typename TSpace>
 inline
-void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display,
+						  const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
   
@@ -427,7 +495,8 @@ void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display, const DGt
 
 template<typename TSpace>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
+					    const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
   
@@ -453,7 +522,8 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::Hy
 
 template<typename TSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = display.getMode( h.styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
@@ -489,28 +559,35 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectD
 // DigitalSetBySTLSet
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
+void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, 
+						       const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
   
   display.createNewVoxelList(false);
   for (  ConstIterator it = s.begin(); 
-   it != s.end();
-   ++it )
+	 it != s.end();
+	 ++it )
     {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
+      display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
+		       NumberTraits<Component>::castToInt64_t((*it)[1]),
+		       NumberTraits<Component>::castToInt64_t((*it)[2]), 
+		       display.getFillColor());
     }
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
+void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
+					    const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename Domain::Point::Component Component;
+   typedef typename std::set<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
   
@@ -519,15 +596,19 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::Di
    it != s.end();
    ++it )
     {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
+      display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]), 
+		       NumberTraits<Component>::castToInt64_t((*it)[1]),
+		       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
     }
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
+void DGtal::Display3DFactory::drawAsGrid( Display3D & display, 
+					  const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
@@ -536,13 +617,17 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::Digi
   it != s.end();
         ++it )
     {
-      display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
+      display.addPoint(NumberTraits<Component>::castToInt64_t((*it)[0]),
+		       NumberTraits<Component>::castToInt64_t((*it)[1]), 
+		       NumberTraits<Component>::castToInt64_t((*it)[2]), 
+		       display.getFillColor());
     }
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -567,9 +652,11 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSet
 // DigitalSetBySTLVector
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
+void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, 
+						       const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
@@ -579,7 +666,9 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, cons
    it != v.end();
    ++it )
     {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
+      display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
+		       NumberTraits<Component>::castToInt64_t((*it)[1]),
+		       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
     }
 }
 
@@ -589,17 +678,20 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display, cons
  */
 template<typename Domain>
 inline
-DGtal::DrawableWithDisplay3D * DGtal::Display3DFactory::defaultStyle( std::string, const DGtal::DigitalSetBySTLVector<Domain> & v )
+DGtal::DrawableWithDisplay3D * DGtal::Display3DFactory::defaultStyle( std::string, 
+								      const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   return new DGtal::Display3DFactory::DefaultDrawStyleDisplay3D;
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
+void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
+					    const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
-  typedef typename std::vector<Point>::const_iterator ConstIterator;
+  typedef typename Domain::Point::Component Component;
+   typedef typename std::vector<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
   
@@ -608,16 +700,20 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display, const DGtal::Di
    it != v.end();
    ++it )
     {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
+      display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
+		       NumberTraits<Component>::castToInt64_t((*it)[1]),
+		       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
     }
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
+void DGtal::Display3DFactory::drawAsGrid( Display3D & display, 
+					  const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
+  typedef typename Domain::Point::Component Component;
   
   ASSERT(Domain::Space::dimension == 3);
   
@@ -625,13 +721,16 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::Digi
   it != v.end();
         ++it )
     {
-      display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
+      display.addPoint(NumberTraits<Component>::castToInt64_t((*it)[0]),
+		       NumberTraits<Component>::castToInt64_t((*it)[1]),
+		       NumberTraits<Component>::castToInt64_t( (*it)[2]), display.getFillColor());
     }
 }
 
 template<typename Domain>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -660,14 +759,16 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::DigitalSet
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+DGtal::DrawableWithDisplay3D * defaultStyle( std::string, 
+					     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   return new DGtal::Display3DFactory::DefaultDrawStyleDisplay3D;
 }
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Display3DFactory::drawWithAdjacencies( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+void DGtal::Display3DFactory::drawWithAdjacencies( Display3D & display, 
+						   const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   typedef typename TDigitalSet::Point Point;
   
@@ -696,7 +797,8 @@ void DGtal::Display3DFactory::drawWithAdjacencies( Display3D & display, const DG
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = display.getMode( o.styleName() );
   if ( mode == "" )
@@ -719,7 +821,8 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Object<TDi
 // KhalimskyCell
 template < Dimension dim, typename TInteger >
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k )
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
@@ -737,16 +840,13 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyC
   }else if(mode=="Basic"){
     basicMode=true;
   }
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1 );
-  float z = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[2] ) >> 1 );
+  double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
+  double y = (double)( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1) ;
+  double z =(double)  (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[2] ) >> 1 );
   
-  bool xodd = ( k.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( k.myCoordinates[ 1 ] & 1 );
-  bool zodd = ( k.myCoordinates[ 2 ] & 1 );
+  bool xodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 0 ]) & 1 );
+  bool yodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 1 ]) & 1 );
+  bool zodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 2 ]) & 1 );
   
    
   uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
@@ -776,7 +876,8 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyC
 // SignedKhalimskyCell
 template< Dimension dim, typename TInteger >
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
 
    ASSERT(dim == 3);
@@ -843,13 +944,15 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhal
 //
 
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SetMode3D & sm3d )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::SetMode3D & sm3d )
 {
   display.myModes[ sm3d.myClassname ] = sm3d.myMode;
 }
 
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CustomStyle3D & cs3d )
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::CustomStyle3D & cs3d )
 {
   display.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
 }
@@ -862,19 +965,22 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CustomColo
 }
 
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ClippingPlane & cl )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::ClippingPlane & cl )
 {
   display.addClippingPlane(cl.myA, cl.myB, cl.myC, cl.myD, cl.myDrawPlane);
 }
     
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraPosition & cp )
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::CameraPosition & cp )
 {
   display.setCameraPosition(cp.eyex, cp.eyey, cp.eyez);
 }
 
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraDirection & cd )
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::CameraDirection & cd )
 {
   display.setCameraDirection(cd.dirx, cd.diry, cd.dirz);
 }
@@ -882,11 +988,13 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraDire
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraUpVector & cuv )
 {
+  
   display.setCameraUpVector(cuv.upx, cuv.upy, cuv.upz);
 }
 
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::CameraZNearFar & cz )
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::CameraZNearFar & cz )
 {
   display.setNearFar(cz.ZNear, cz.ZFar);
 }
