@@ -155,7 +155,8 @@ DGtal::Display3D::createNewLineList()
 
 inline
 void
-DGtal::Display3D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire)
+DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
+			   DGtal::Color aColor, double width, bool withWire)
 {
   updateBoundingBox(x, y, z);    
   voxelD3D v;
