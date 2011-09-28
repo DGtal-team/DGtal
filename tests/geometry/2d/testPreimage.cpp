@@ -79,16 +79,16 @@ int main()
   typedef Preimage2D<StraightLine> Preimage2D;
 
   GridCurve<KSpace>::IncidentPointsRange r = c.getIncidentPointsRange(); //range
-  GridCurve<KSpace>::IncidentPointsRange::ConstIterator it (r.begin()); //iterators
-  GridCurve<KSpace>::IncidentPointsRange::ConstIterator itEnd (r.end()); 
+  GridCurve<KSpace>::IncidentPointsRange::ConstReverseIterator it (r.rbegin()); //iterators
+  GridCurve<KSpace>::IncidentPointsRange::ConstReverseIterator itEnd (r.rend()); 
 
   //preimage computation
   Preimage2D thePreimage(it->first, it->second, aStraightLine);
   ++it; 
   while ( (it != itEnd) &&
-              (thePreimage.addFront(it->first, it->second)) )
+              (thePreimage.add(it->first, it->second)) )
   {
-  trace.info() << (it - r.begin()) << endl << thePreimage << endl;
+  trace.info() << (it - r.rbegin()) << endl << thePreimage << endl;
     ++it;
   }
 
