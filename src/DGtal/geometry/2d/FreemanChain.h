@@ -50,7 +50,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1018,7 +1018,7 @@ namespace DGtal
      */
     std::string styleName() const;
 
-    
+#if(0)
     /**
      * Draw the object on a Board2D board
      * @param board the output board where the object is drawn.
@@ -1047,7 +1047,7 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      */
     void selfDrawAsInterGrid(Board2D & board ) const;
-
+#endif
 
     // ------------------------- Public Datas ------------------------------
 
@@ -1107,8 +1107,10 @@ namespace DGtal
     {
       SelfDrawStyle(Board2D & aBoard)
       {
+#if(0)
         aBoard.setFillColor(Color::None);
         aBoard.setPenColor(Color::Black);
+#endif
       }
     };
 
@@ -1116,9 +1118,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-
+#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
+#endif
       }
     };
 
@@ -1126,8 +1129,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
+#endif
       }
     };
 
@@ -1135,8 +1140,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
+#endif
       }
     };
 

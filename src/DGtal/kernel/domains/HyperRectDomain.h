@@ -49,7 +49,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstRange.h"
 //#include "DGtal/io/Display3D.h"
 
@@ -534,10 +534,12 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
+#if(0)
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(255, 255, 255);
         aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setLineWidth( 1 );
+#endif
       }
     };
 
@@ -548,10 +550,12 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
+#if(0)
         aBoard.setPenColorRGBi(160, 160, 160);
         aBoard.setFillColorRGBi(160, 160, 160);
         aBoard.setLineStyle(Board2D::Shape::DashStyle);
         aBoard.setLineWidth( 1 );
+#endif
       }
     };
 
@@ -569,6 +573,7 @@ namespace DGtal
      */
     std::string styleName() const;
 
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
@@ -590,6 +595,7 @@ namespace DGtal
      * @param asGrid to choose between paving vs. grid representation.
      */
     void selfDrawAsPaving( Board2D & board ) const;
+#endif
     
 
 
@@ -680,7 +686,7 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream& out, const HyperRectDomain<TSpace> & object );
 
-
+#if(0)
   /**
    * Modifier class in a Board2D stream. Realizes the concept
    * CDrawableWithBoard2D.
@@ -702,7 +708,7 @@ namespace DGtal
       board.myModes[ "HyperRectDomain" ] = "Paving";
     }
   };
-  
+#endif  
 
 } // namespace DGtal
 

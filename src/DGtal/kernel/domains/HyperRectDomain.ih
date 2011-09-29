@@ -180,6 +180,7 @@ DGtal::HyperRectDomain<TSpace>::styleName() const
 {
   return "HyperRectDomain";
 }
+#if(0)
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -235,6 +236,23 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
   }
 }
 
+template<typename TSpace>
+inline
+void
+DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
+{
+  ASSERT(TSpace::dimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
+  
+  if (TSpace::dimension == 2)
+  {
+    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
+   x <= NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+      for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
+     y <= NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+        aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
+  }
+}
+#endif
 
 
 
@@ -452,32 +470,6 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsPavingDisplay3D( Display3D & display) 
 }
 #endif
 
-
-
-
-
-
-
-
-
-
-//-----------------------------------------------------------------------------
-template<typename TSpace>
-inline
-void
-DGtal::HyperRectDomain<TSpace>::selfDrawAsPaving( Board2D & aboard) const
-{
-  ASSERT(TSpace::dimension==2 || "selfDraw-NOT-YET-IMPLEMENTED-in-ND" );
-  
-  if (TSpace::dimension == 2)
-  {
-    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-   x <= NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
-      for (int64_t y = NumberTraits<Integer>::castToInt64_t(myLowerBound[1]); 
-     y <= NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
-        aboard.drawRectangle(x - 0.5, y + 0.5, 1, 1);
-  }
-}
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline

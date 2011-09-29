@@ -820,7 +820,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::styleName() const
 ///////////////////////////////////////////////////////////////////////////////
 // selfDraw functions                                                        //
 
-
+#if(0)
 /**
  * Draw the object on a LiBoard board.
  * @param board the output board where the object is drawn.
@@ -865,7 +865,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawWithAdjacencies(Board2D & 
     }
   }
 }
-
+#endif
 
 
 

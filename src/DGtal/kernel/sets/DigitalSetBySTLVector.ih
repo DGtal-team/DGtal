@@ -521,6 +521,7 @@ DGtal::DigitalSetBySTLVector<Domain>::styleName() const
   return "DigitalSetBySTLVector";
 }
 
+#if(0)
 /**
  * Draw the object on a LibBoard board.
  * @param board the output board where the object is drawn.
@@ -556,7 +557,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
     ASSERT(false && ("selfDraw-NOT-YET-IMPLEMENTED-in-ND"));
 
 }
-
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 //    3D SelfDisplay
 ///////////////////////////////////////////////////////////////////////////////

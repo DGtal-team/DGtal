@@ -251,11 +251,11 @@ namespace DGtal
       return "CustomStyle";
     }
 
-    void selfDraw( Board2D & board ) const
+    /*void selfDraw( Board2D & board ) const
     {
       board.myStyles[ myClassname ] = myStyle;
-    }
-  private:
+    }*/
+
     std::string myClassname;
     CountedPtr<DrawableWithBoard2D> myStyle;
   };
@@ -275,11 +275,12 @@ namespace DGtal
     SetMode( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDraw( Board2D & board ) const
+    
+    /*void selfDraw( Board2D & board ) const
     {
       board.myModes[ myClassname ] = myMode;
-    }
-  private:
+    }*/
+    
     std::string myClassname;
     std::string myMode;
   };
