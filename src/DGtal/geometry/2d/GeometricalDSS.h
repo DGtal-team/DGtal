@@ -57,8 +57,34 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class GeometricalDSS
   /**
-   * \brief Aim:
+   * @brief Aim:
+   * On-line recognition of a digital straight segment (DSS)
+   * defined as a sequence of connected grid edges such that 
+   * there is at least one straight line that separates the centers 
+   * of the two incident pixels of each grid edge. 
+   *
+   * @note On either side, the pixels centers are included. 
+   * The class of segments considered here is thus larger
+   * than the one considered in ArithmeticalDSS 
+   * (the equivalence would be true if the pixels centers 
+   * were included on one side but excluded on the other side)
+   *
+   * The algorithm computes and maintains the preimage
+   * of the whole set of separating straight lines in linear time
+   * using Preimage2D and the algorithm of O'Rourke (1981). 
+   *
+   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
+  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+   *
+   * This class is a model of the concept CBidirectionalSegmentComputer. 
+   *
+   * It should be used with the Curve object (defined in StdDefs.h)
+   * and its IncidentPointsRange as follows:
+   * @snippet geometry/exampleGeometricalDSS.cpp GeometricalDSSUsage
+   *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
+  *
+   * @see testGeometricalDSS.cpp  exampleGeometricalDSS.cpp  Preimage2D ArithmeticalDSS
    */
   template <typename TConstIterator>
   class GeometricalDSS
