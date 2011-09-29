@@ -116,9 +116,9 @@ bool testGeometricalDSS(const TCurve& curve)
 
     trace.info() << "backward extension " << endl; 
     typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
-    ConstReverseIterator ritBegin (r.rbegin()); 
+    ConstReverseIterator ritBegin (t.end()); 
     ConstReverseIterator ritEnd (r.rend()); 
-    rs.init( ritBegin+1 );
+    rs.init( ritBegin );
     while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
     trace.info() << rs << endl; 
     double ap, bp, cp; 
@@ -127,8 +127,8 @@ bool testGeometricalDSS(const TCurve& curve)
 
     typename GeometricalDSS<ConstIterator>::Reverse rt = t.getReverse(); 
     rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
-    while ( (rt.end() != ritEnd) && (rt.extend()) 
-         && (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
+    while ( (rt.begin() != ritBegin) && (rt.extendOppositeEnd())
+         && (rt.end() != ritEnd) && (rt.extend()) ) {}
     trace.info() << rt << endl; 
 
     trace.info() << "comparison... " << endl; 
@@ -210,14 +210,19 @@ bool testSegmentation(const TCurve& curve)
       
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int c = 0; 
-    for ( ; it != itEnd; ++it, ++c) {
+    unsigned int n = 0; 
+    unsigned int suml = 0; 
+    for ( ; it != itEnd; ++it, ++n) {
       board << (*it); 
+      for (ConstIterator i = it->begin(); i != it->end(); ++i)
+        suml += 1; 
     }
     
     board.saveEPS("GeometricalDSSGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
 
-    nbok += (c==10) ? 1 : 0; 
+    trace.info() << r.size() << ";" << n << ";" << suml << endl;
+    //comparison with the results gave by another program
+    nbok += ((r.size()==85)&&(n==10)&&(suml==94)) ? 1 : 0; 
     nb++;
   }
   trace.endBlock();
@@ -232,15 +237,19 @@ bool testSegmentation(const TCurve& curve)
     
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int c = 0; 
-    for ( ; it != itEnd; ++it, ++c) {
-      cout << c << (*it); 
+    unsigned int n = 0; 
+    unsigned int suml = 0; 
+    for ( ; it != itEnd; ++it, ++n) {
       board << (*it); 
+      for (ConstIterator i = it->begin(); i != it->end(); ++i)
+        suml += 1; 
     }
     
-//    board.saveEPS("GeometricalDSSSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveEPS("GeometricalDSSSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
 
-    nbok += (c==1) ? 1 : 0; 
+    trace.info() << r.size() << ";" << n << ";" << suml << endl;
+    //comparison with the results gave by another program
+    nbok += ((r.size()==85)&&(n==25)&&(suml==255)) ? 1 : 0; 
     nb++;
   }
   trace.endBlock();

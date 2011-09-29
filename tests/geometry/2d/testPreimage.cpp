@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testHalfPlane.cpp
+ * @file testPreimage.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -27,7 +27,8 @@
  */
 
 /**
- * @brief Aim: simple test of \ref Preimage2D
+ * @brief Aim: simple test of Preimage2D
+ * @see testGeometricalDSS.cpp
  */
 
 #include <cstdio>
@@ -86,89 +87,13 @@ int main()
   Preimage2D thePreimage(it->first, it->second, aStraightLine);
   ++it; 
   while ( (it != itEnd) &&
-              (thePreimage.add(it->first, it->second)) )
+              (thePreimage.addBack(it->first, it->second)) )
   {
   trace.info() << (it - r.rbegin()) << endl << thePreimage << endl;
     ++it;
   }
 
   trace.endBlock();
-/*
-//////////////////////////// test 2 //////////////////////////////////////
-
-  bInf.clear();
-  bSup.clear();
-
-  bInf.push_back(Point(154, 154));
-  bInf.push_back(Point(154, 154));
-  bInf.push_back(Point(167, 201));
-  bInf.push_back(Point(167, 201));
-  bInf.push_back(Point(167, 201));
-  bInf.push_back(Point(210, 213));
-  bInf.push_back(Point(199, 246));
-  bInf.push_back(Point(199, 246));
-  bInf.push_back(Point(236, 249));
-  bInf.push_back(Point(256, 275));
-  bInf.push_back(Point(256, 275));
-  bInf.push_back(Point(286, 295));
-  bInf.push_back(Point(286, 295));
-
-
-  bSup.push_back(Point(74, 211));
-  bSup.push_back(Point(122, 210));
-  bSup.push_back(Point(122, 210));
-  bSup.push_back(Point(139, 239));
-  bSup.push_back(Point(159, 243));
-  bSup.push_back(Point(159, 243));
-  bSup.push_back(Point(159, 243));
-  bSup.push_back(Point(184, 271));
-  bSup.push_back(Point(184, 271));
-  bSup.push_back(Point(184, 271));
-  bSup.push_back(Point(225, 294));
-  bSup.push_back(Point(225, 294));
-  bSup.push_back(Point(234, 338));
-
-
-  //preimage
-  trace.beginBlock("test General Case");
-
-  board.clear();
-  {
-    int i = 0;
-    Preimage2D thePreimage(bInf.at(i), bSup.at(i), StraightLine());
-
-    //draw range
-    Point P(bInf.at(i));
-    Point Q(bSup.at(i));
-    board << P << Q;
-    board.drawLine(P[0], P[1], Q[0], Q[1]);
-
-    i++;
-    int n;
-    n = bInf.size();
-    while ( (i < n) &&
-        (thePreimage.addFront(bInf.at(i), bSup.at(i))) )
-    {
-
-      trace.info() << "--- Constraint number " << i << " ---" << std::endl;
-      trace.info() << thePreimage << std::endl;
-
-      //draw range
-      Point P2(bInf.at(i));
-      Point Q2(bSup.at(i));
-      board << P2 << Q2;
-      board.drawLine(P2[0], P2[1], Q2[0], Q2[1]);
-
-      i++;
-    }
-
-    //draw preimage
-    board << thePreimage; 
-    board.saveEPS("testPreimage-generalCase.eps");
-
-  }
-  trace.endBlock();
-*/
 
   return 0;
 }

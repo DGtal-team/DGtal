@@ -241,10 +241,19 @@ namespace DGtal
      */
     ConstIterator myEnd;
     /**
-     * preimage.
+     * Pointer to the preimage.
      */
     PreimagePtr myPreimagePtr; 
-
+    /**
+     * Flag equal to 'true' if the segment contains at least two pairs 
+     * (the orientation is known) and 'false' otherwise. 
+     */
+    bool myFlagIsInit; 
+    /**
+     * Flag equal to 'true' if the pairs of points are clockwise oriented, 
+     * 'false' otherwise.
+     */
+    bool myFlagIsCW; 
 
     // ------------------------- Hidden services ------------------------------
   protected:
