@@ -41,14 +41,15 @@
 template <typename TConstIterator>
 inline
 DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS()
-:myBegin(), myEnd(), myPreimagePtr()
+:myBegin(), myEnd(), myPreimagePtr(), myFlagIsInit(false), myFlagIsCW(true)
 {
 }
 
 template <typename TConstIterator>
 inline
 DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS( const Self& other )
-:myBegin(other.myBegin), myEnd(other.myEnd), myPreimagePtr(other.myPreimagePtr)
+:myBegin(other.myBegin), myEnd(other.myEnd), myPreimagePtr(other.myPreimagePtr), 
+myFlagIsInit(other.myFlagIsInit), myFlagIsCW(other.myFlagIsCW)
 {
 }
 
@@ -62,6 +63,8 @@ DGtal::GeometricalDSS<TConstIterator>::operator= ( const Self& other )
     myBegin = other.myBegin;
     myEnd = other.myEnd;
     myPreimagePtr = other.myPreimagePtr;
+    myFlagIsInit = other.myFlagIsInit; 
+    myFlagIsCW = other.myFlagIsCW; 
   }
   return *this;
 }
@@ -236,7 +239,25 @@ DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
-  return ( myPreimagePtr->canBeAdded( aPair.first, aPair.second ) );
+  bool isOK = false; 
+  
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isOK = myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ); 
+    else
+      isOK = myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ); 
+    
+  } else
+  { //not initialized yet
+    if ( myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ) )
+      isOK = true; 
+    else if ( myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ) )
+      isOK = true; 
+  }
+  
+  return isOK; 
 }
 
 template <typename TConstIterator>
@@ -246,12 +267,36 @@ DGtal::GeometricalDSS<TConstIterator>::extend()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
-  if ( myPreimagePtr->add( aPair.first, aPair.second ) )
+  bool isOK = false; 
+  
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isOK = myPreimagePtr->addFront( aPair.first, aPair.second ); 
+    else
+      isOK = myPreimagePtr->addBack( aPair.first, aPair.second ); 
+    
+  } else
+  { //not initialized yet
+    if ( myPreimagePtr->addFront( aPair.first, aPair.second ) )
+    {
+      myFlagIsCW = true;
+      isOK = true; 
+    }
+    else if ( myPreimagePtr->addBack( aPair.first, aPair.second ) )
+    {
+      myFlagIsCW = false;
+      isOK = true; 
+    }
+    myFlagIsInit = true; 
+  }
+  
+  if (isOK) 
   {
     ++myEnd; 
     return true; 
-  }
-  else return false; 
+  } else return false; 
 }
 
 template <typename TConstIterator>
@@ -263,7 +308,25 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
   ConstIterator it( myBegin ); 
   --it; 
   Pair aPair( *it ); 
-  return ( myPreimagePtr->canBeAdded( aPair.first, aPair.second ) );
+  bool isOK = false; 
+  
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isOK = myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ); 
+    else
+      isOK = myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ); 
+    
+  } else
+  { //not initialized yet
+    if ( myPreimagePtr->canBeAddedAtTheBack( aPair.first, aPair.second ) )
+      isOK = true; 
+    else if ( myPreimagePtr->canBeAddedAtTheFront( aPair.first, aPair.second ) )
+      isOK = true; 
+  }
+  
+  return isOK; 
 }
 
 template <typename TConstIterator>
@@ -275,12 +338,36 @@ DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
   ConstIterator it( myBegin ); 
   --it; 
   Pair aPair( *it ); 
-  if ( myPreimagePtr->add( aPair.first, aPair.second ) )
+  bool isOK = false; 
+  
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isOK = myPreimagePtr->addBack( aPair.first, aPair.second ); 
+    else
+      isOK = myPreimagePtr->addFront( aPair.first, aPair.second ); 
+    
+  } else
+  { //not initialized yet
+    if ( myPreimagePtr->addBack( aPair.first, aPair.second ) )
+    {
+      myFlagIsCW = true;
+      isOK = true; 
+    }
+    else if ( myPreimagePtr->addFront( aPair.first, aPair.second ) )
+    {
+      myFlagIsCW = false;
+      isOK = true; 
+    }
+    myFlagIsInit = true; 
+  }
+  
+  if (isOK) 
   {
     myBegin = it; 
     return true; 
-  }
-  else return false; 
+  } else return false; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////

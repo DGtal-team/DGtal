@@ -132,6 +132,7 @@ DGtal::Preimage2D<Shape>::canBeAddedAtTheBack(
     const Point & aP, 
     const Point & aQ)
 {
+
   //critical points
   ForwardIterator PHullFront = myPHull.begin();
   BackwardIterator QHullBack = myQHull.rbegin();
@@ -145,16 +146,7 @@ DGtal::Preimage2D<Shape>::canBeAddedAtTheBack(
   QHullFrontPHullBackPred p2( myShape );
 
   return ( p1(aP) && p2(aQ) );
-}
 
-template <typename Shape>
-inline
-bool
-DGtal::Preimage2D<Shape>::canBeAdded(
-    const Point & aP, 
-    const Point & aQ)
-{
-  return ( canBeAddedAtTheFront(aP,aQ) || canBeAddedAtTheBack(aP,aQ) );
 }
 
 template <typename Shape>
@@ -178,7 +170,7 @@ DGtal::Preimage2D<Shape>::addFront(
   PHullBackQHullFrontPred p1( myShape );
   myShape.init(*QHullBack, *PHullFront);
   QHullBackPHullFrontPred p2( myShape );
-
+  
   if ( p1(aP) && p2(aQ) ) {
     if ( p2(aP) ) {   //constraint involved by aP
 
@@ -211,7 +203,7 @@ DGtal::Preimage2D<Shape>::addFront(
     } //else nothing to do
 
   } else isEmpty = true;
-
+  
   return (!isEmpty);
 }
 
@@ -225,19 +217,17 @@ DGtal::Preimage2D<Shape>::addBack(
 
   bool isEmpty = false;
 
-  //predicates definition from critical shapes
+  //critical points
   ForwardIterator PHullFront = myPHull.begin();
   BackwardIterator QHullBack = myQHull.rbegin();
-  myShape.init(*PHullFront, *QHullBack);
-  PHullFrontQHullBackPred p1( myShape );
-
   ForwardIterator QHullFront = myQHull.begin();
   BackwardIterator PHullBack = myPHull.rbegin();
+  
+  //predicates definition from critical shapes
+  myShape.init(*PHullFront, *QHullBack);
+  PHullFrontQHullBackPred p1( myShape );
   myShape.init(*QHullFront, *PHullBack);
   QHullFrontPHullBackPred p2( myShape );
-
-std::cerr << p1 << aP << p1(aP) << std::endl; 
-std::cerr << p2 << aQ << p2(aQ) << std::endl; 
 
   if ( p1(aP) && p2(aQ) ) {
     if ( p2(aP) ) {   //constraint involved by aP
@@ -247,7 +237,6 @@ std::cerr << p2 << aQ << p2(aQ) << std::endl;
         (aP, myPHull, PHullBack, myPHull.rend());
 
       //add aP to myPHull
-std::cerr << "!!!! " << aP << *myPHull.rbegin() << std::endl; 
       if (aP != *myPHull.rbegin()) myPHull.push_back(aP);
 
       //update myQHull
@@ -264,7 +253,6 @@ std::cerr << "!!!! " << aP << *myPHull.rbegin() << std::endl;
         (aQ, myQHull, QHullBack, myQHull.rend());
 
       //add aQ to myQHull
-std::cerr << "!!!! " << aQ << *myQHull.rbegin() << std::endl; 
       if (aQ != *myQHull.rbegin()) myQHull.push_back(aQ);
 
       //update myPHull
@@ -278,15 +266,6 @@ std::cerr << "!!!! " << aQ << *myQHull.rbegin() << std::endl;
   return (!isEmpty);
 }
 
-template <typename Shape>
-inline
-bool
-DGtal::Preimage2D<Shape>::add(
-    const Point & aP, 
-    const Point & aQ)
-{
-  return ( addFront(aP,aQ) || addBack(aP,aQ) );
-}
 
 template <typename Shape>
 template <typename Iterator, typename Predicate>
@@ -497,7 +476,7 @@ DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
   {//parallel case
     alpha = a;
     beta = b;
-    gamma = (c+cp)/2.0;
+    gamma = c;
   }
 }
 
