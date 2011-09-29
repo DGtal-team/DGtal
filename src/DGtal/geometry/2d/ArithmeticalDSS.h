@@ -18,7 +18,6 @@
 
 /**
  * @file ArithmeticalDSS.h 
- * @brief Dynamic recognition of arithmetical DSS.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -26,11 +25,11 @@
  *
  * @date 2010/07/01
  *
- * Header file for module ArithmeticalDSS.cpp
+ * @brief Header file for module ArithmeticalDSS.cpp
  *
  * This file is part of the DGtal library.
  *
- * @see testArithDSS.cpp
+ * @see ArithmeticalDSS.cpp testArithDSS.cpp
  */
 
 #if defined(ArithmeticalDSS_RECURSES)
@@ -77,67 +76,43 @@ namespace DGtal
    * International Journal of Pattern Recognition and Artificial
    * Intelligence, Volume 9, N. 6, December 1995. 
    *
-   * This class is a model of the concept CSegmentComputer. 
+   * This class is a model of the concept CDynamicBidirectionalSegmentComputer. 
    *
    *
    * Here is a short example of how to use this class:
-   * @code 
-
-   //type definitions: 
-   typedef PointVector<2,int> Point;
-   typedef std::vector<Point> Range;
-   typedef Range::const_iterator ConstIterator;
-   typedef ArithmeticalDSS<ConstIterator, int, 4> DSS4;
-
-   // Input points
-   Range contour;
-   contour.push_back(Point(0,0));
-   contour.push_back(Point(1,0));
-   contour.push_back(Point(2,0));
-   contour.push_back(Point(3,0));
-   contour.push_back(Point(3,1));
-   contour.push_back(Point(4,1));
-   contour.push_back(Point(5,1));
-   contour.push_back(Point(5,2));
-
-  
-   // Add points while it is possible
-   DSS4 s;
-   s.init( contour.begin() );
-   while ( (s.end()!=contour.end())
-   &&(s.extend()) ) {} 
-
-   // Output parameters
-   cout << s << endl;
-
-   //You must get:
-   //[ArithmeticalDSS]
-   //Parameters (a,b,mu,omega)=(2, 5, 0, 7)
-   //Number of upper patterns: 1
-   //Number of lower patterns: 0
-   //First point [PointVector] {0, 0} Last point [PointVector] {5, 2}
-   //Leaning points:
-   //   Uf [PointVector] {0, 0}
-   //   Ul [PointVector] {5, 2}
-   //   Lf [PointVector] {3, 0}
-   //   Ll [PointVector] {3, 0}
-   //Steps:
-   //   [PointVector] {1, 0}
-   //   [PointVector] {0, 1}
-   //[End ArithmeticalDSS]
-
+   * @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+   *
+   * You must get: 
+   *
+   * @code
+[ArithmeticalDSS]
+Parameters (a,b,mu,omega)=(2, 5, -4, 7)
+Number of upper patterns: 0
+Number of lower patterns: 1
+First point [PointVector] {0, 0} Last point [PointVector] {6, 3}
+Leaning points:
+   Uf [PointVector] {3, 2}
+   Ul [PointVector] {3, 2}
+   Lf [PointVector] {1, 0}
+   Ll [PointVector] {6, 2}
+Steps:
+   [PointVector] {1, 0}
+   [PointVector] {0, 1}
+[End ArithmeticalDSS]
    * @endcode
    *
-   * @tparam 'TIterator', type ConstIterator on 2D points, 
-   * @tparam 'TInteger', type of scalars used for the DSS parameters 
+   * @tparam 'TIterator'  type ConstIterator on 2D points, 
+   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
    * (satisfying CInteger) 
-   * @tparam 'connectivity', an integer equal to 
+   * @tparam 'connectivity'  an integer equal to 
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
+   *
+   * @see ArithmeticalDSS.cpp testArithDSS.cpp 
    */
   template <typename TIterator, 
-	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
-	    int connectivity = 8>
+    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
+    int connectivity = 8>
   class ArithmeticalDSS
   {
 
@@ -307,7 +282,8 @@ namespace DGtal
   public:
      
     /**
-     * Deprecated
+     * @deprecated
+     * @see isExtendable()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -333,7 +309,8 @@ namespace DGtal
     bool isOppositeEndExtendable();
 
     /**
-     * Deprecated
+     * @deprecated
+     * @see extend()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -347,7 +324,8 @@ namespace DGtal
     bool extend(const ConstIterator & itf);
 
     /**
-     * Deprecated
+     * @deprecated
+     * @see extendOppositeEnd()
      *
      * Tests whether the union between a point 
      * (adding to the back of the DSS 
@@ -394,23 +372,19 @@ namespace DGtal
 
     // ------------------------- Accessors ------------------------------
     /**
-     * myA accessor
-     * @return an Integer of value myA.
+     * @return an Integer of value @a myA.
      */
     Integer getA() const;
     /**
-     * myB accessor
-     * @return an Integer of value myB.
+     * @return an Integer of value @a myB.
      */
     Integer getB() const;
     /**
-     * myMu accessor
-     * @return an Integer of value myMu.
+     * @return an Integer of value @a myMu.
      */
     Integer getMu() const;
     /**
-     * myOmega accessor
-     * @return an Integer of value myOmega.
+     * @return an Integer of value @a myOmega.
      */
     Integer getOmega() const;
     /**
@@ -434,37 +408,41 @@ namespace DGtal
      */
     Point getLl() const;
     /**
+     * @deprecated
      * Accessor to the first added point to the DSS
-     * @return point.
+     * @return the first point of the DSS.
      */
     Point getBackPoint() const;
     /**
+     * @deprecated
      * Accessor to the last added point to the DSS
-     * @return point.
+     * @return the last point of the DSS.
      */
     Point getFrontPoint() const;
     /**
      * Accessor to the first added point to the DSS
-     * @return point.
+     * @return the first point of the DSS.
      */
     Point getFirstPoint() const;
     /**
      * Accessor to the last added point to the DSS
-     * @return point.
+     * @return the last point of the DSS.
      */
     Point getLastPoint() const;
     /**
-     * Deprecated
+     * @deprecated
+     * @see begin() end()
      *
      * Accessor to the iterator at the back of the DSS
-     * @return iterator.
+     * @return iterator pointing to the back of the DSS.
      */
     ConstIterator getBack() const;
     /**
-     * Deprecated
+     * @deprecated
+     * @see begin() end()
      *
      * Accessor to the iterator at the front of the DSS
-     * @return iterator.
+     * @return iterator pointing to the front of the DSS.
      */
     ConstIterator getFront() const;
     /**
@@ -491,7 +469,7 @@ namespace DGtal
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
      * @param it an iterator on points
-     * @return the remainder of *it.
+     * @return the remainder of @a *it.
      */
     Integer getRemainder(const ConstIterator & it) const;
 
@@ -499,7 +477,7 @@ namespace DGtal
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
      * @param aPoint the point whose remainder is returned 
-     * @return myA*aPoint[0] - myB*aPoint[1].
+     * @return @a myA * @a aPoint[0] - @a myB * @a aPoint[1].
      */
     Integer getRemainder( const Point& aPoint ) const;
 
@@ -507,7 +485,7 @@ namespace DGtal
      * Computes the position of a point
      * (that does not necessarily belong to the DSS)
      * @param it an iterator on points
-     * @return the position of *it.
+     * @return the position of @a *it.
      */
     Integer getPosition(const ConstIterator & it) const;
 
@@ -515,13 +493,13 @@ namespace DGtal
      * Computes the position of a point
      * (that does not necessarily belong to the DSS)
      * @param aPoint the point whose position is returned 
-     * @return myA*aPoint[0] + myB*aPoint[1].
+     * @return @a myA * @a aPoint[0] + @a myB * @a aPoint[1].
      */
     Integer getPosition( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
+     * of parameters ( @a myA, @a myB, @a myMu, @a myOmega )
      * @param aPoint the point to be checked 
      * @return 'true' if yes, 'false' otherwise
      */
@@ -529,7 +507,7 @@ namespace DGtal
 
     /**
      * Checks whether a point is in the DSL
-     * of parameters (myA,myB,myMu,myOmega)
+     * of parameters ( @a myA, @a myB, @a myMu, @a myOmega )
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
@@ -554,64 +532,70 @@ namespace DGtal
   private:
 
     /**
-     * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
+     * Tests whether the union between @a lastPoint 
+     * and the DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param lastPoint, the new point
-     * @param lastMove, end shift vector of the DSS  
+     *
+     * @param lastPoint  the point to add
+     * @param lastMove  shift vector to the point to add
+     *
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool isExtendable( const Point & lastPoint, 
-		       const Vector & lastMove );
+                                   const Vector & lastMove );
 
     /**
      * Tests whether the union between a point 
-     * (pointing by it) and the DSS is a DSS. 
+     * (pointing to by @a it) and the DSS is a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
-     * @param it an iterator on a sequence of points
-     * @param lastIt, an iterator pointing at the end of the DSS 
-     * @param lastMove, end shift vector of the DSS  
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
+     *
+     * @param it  an iterator on a 2D point
+     * @param lastIt  an iterator pointing to the end of the DSS 
+     * @param lastMove  shift vector to the point pointed to by @a it
+     * @param Uf  first upper leaning point  
+     * @param Ul  last upper leaning point 
+     * @param Lf  first lower leaning point  
+     * @param Ll  last lower leaning point 
+     * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool extend( const ConstIterator & it, 
-		 ConstIterator & lastIt, 
-		 const Vector & lastMove,
-		 Point & Uf,  Point & Ul,
-		 Point & Lf,  Point & Ll );
+                          ConstIterator & lastIt, 
+                          const Vector & lastMove,
+                          Point & Uf,  Point & Ul,
+                          Point & Lf,  Point & Ll );
 
     /**
      * Removes the end point of a DSS
-     * (pointing by firstIt)
-     * @param firstIt, an iterator pointing at the end of the DSS 
-     * @param lastIt, an iterator pointing at the other end of the DSS 
-     * @param nextIt, an iterator pointing at the point following the one pointing by firstIt
-     * @param Uf, first upper leaning point  
-     * @param Ul, last upper leaning point 
-     * @param Lf, first lower leaning point  
-     * @param Ll, last lower leaning point 
-     * @param s, a signed integer equal to 1 or -1
+     * (pointing to by @a firstIt)
+     *
+     * @param firstIt  an iterator pointing to the end of the DSS 
+     * @param lastIt  an iterator pointing to the other end of the DSS 
+     * @param nextIt  an iterator pointing to the point of the DSS close to the one pointing to by @a firstIt
+     * @param Uf  first upper leaning point  
+     * @param Ul  last upper leaning point 
+     * @param Lf  first lower leaning point  
+     * @param Ll  last lower leaning point 
+     * @param s  a signed integer equal to 1 or -1
+     *
      * @return 'true'.
      */
     bool retract( ConstIterator & firstIt,
-		  ConstIterator & lastIt,
-		  ConstIterator & nextIt,       
-		  Point & Uf,  Point & Ul,
-		  Point & Lf,  Point & Ll,
-		  const Integer& s );
+                        ConstIterator & lastIt,
+                        ConstIterator & nextIt,       
+                        Point & Uf,  Point & Ul,
+                        Point & Lf,  Point & Ll,
+                        const Integer& s );
 
 
     /**
      * Checks whether the DSS has less or more
-     * than two displacement vectors (steps)
+     * than two shift vectors (steps)
      * between two consecutive points
      * (must be called only in the main stage)
-     * @param aStep, the last displacement vector. 
+     * @param aStep  the last shift vector. 
      * @return 'true' if less or equal, 'false' otherwise.
      */
     bool hasLessThanTwoSteps(const Vector& aStep) const;
@@ -620,7 +604,7 @@ namespace DGtal
     /**
      * Returns the 2D vector 
      * starting at a point of remainder 0
-     * and pointing at the closer point of
+     * and pointing to the closer point of
      * remainder omega
      * @return the 2D vector.
      */
@@ -632,21 +616,67 @@ namespace DGtal
   protected:
 
     //parameters of the DSS
-    Integer myA, myB, myMu, myOmega;
+    /**
+    * y-component of the direction vector
+    */
+    Integer myA;
+    /**
+    * x-component of the direction vector
+    */
+    Integer myB;
+    /**
+    * Intercept
+    */
+    Integer myMu;
+    /**
+    * Thickness
+    */
+    Integer myOmega;
+
     //number of upper and lower patterns
-    Integer myNbUpPat, myNbLowPat; 
-
+    /**
+    * Number of upper patterns ( @a myUf = @a myNbUpPat . ( @a myB , @a myA ) + @a myUl )
+    */
+    Integer myNbUpPat;
+    /**
+    * Number of lower patterns ( @a myLf = @a myNbLowPat . ( @a myB , @a myA ) + @a myLl )
+    */
+    Integer myNbLowPat; 
+    
     //leaning points
-    Point myUf, myUl, myLf, myLl;
+    /**
+    * First upper leaning point ( of remainder @a myMu )
+    */
+    Point myUf;
+    /**
+    * Last upper leaning point ( of remainder @a myMu )
+    */
+    Point myUl;
+    /**
+    * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLf;
+    /**
+    * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLl;
+  
 
-    //first (at the front) and last (at the back) points of the DSS
-    //Deprecated or to be redefinied (myBackIt, myFrontIt) ?
-    ConstIterator myF, myL;
+    //Iterators to the first (at the back) and last (at the front) points of the DSS
+    /**
+    * ConstIterator pointing to the back of the DSS
+    */
+    ConstIterator myF;
+    /**
+    * ConstIterator pointing to the front of the DSS
+    */
+    ConstIterator myL;
 
-    //steps of the DSS 
-    //e.g. right and up in the first octant
+    /**
+    * Steps of the DSS (eg. right and up in the first octant)
+    */
     std::vector<Vector> mySteps;
-
+    
     // ------------------------- Private Datas --------------------------------
   
   private:
@@ -656,32 +686,31 @@ namespace DGtal
 
   public:
     /**
-     * Projects the point [m] onto the average straight line (ie (mu+nu)/2).
-     * @param m any point expressed in the local reference frame (may not be part of the segment).
+     * Projects the point @a m onto the straight line of slope ( @a myA / @a myB) 
+     * and intercept @a myMu + ( @a myOmega - 1 )/2 ).
+     * @param m any point (may not be part of the DSS).
      * @return the projected point.
      */
     PointD project( const Point & m ) const;
 
     /**
-     * Projects the point [m] onto the straight line whose points have
-     * remainder [r].
+     * Projects the point @a m onto the straight line whose points have
+     * remainder @a r.
      *
-     * @param m any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param m any point (may not be part of the DSS).
      *
      * @param r the remainder (may not be an integer).
+     *
      * @return the projected point.
      */
     PointD project( const Point & m, double r ) const;
     
     /**
-     * Projects the point [m] onto the straight line going through point [p].
+     * Projects the point @a m onto the straight line going through point @a p.
      *
-     * @param m any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param m any point (may not be part of the DSS).
      *
-     * @param p any point expressed in the local reference frame (may not
-     * be part of the segment).
+     * @param p any point (may not be part of the DSS).
      *
      * @return the projected point.
      */
@@ -702,19 +731,17 @@ namespace DGtal
 
 #if(0)    
     /**
-     * Draw the digital points of the DSS linked into a 
-     * polygonal line on a LiBoard board
+     * Draw the digital points of the DSS 
+     * (possibly linked into a polygonal line) on a board
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
      */
     
     void selfDrawAsDigitalPoints( Board2D & board ) const;
     
     
     /**
-     * Draw the bounding box of the DSS on a LiBoard board
+     * Draw the bounding box of the DSS on a board
      * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
      */
     void selfDrawAsBoundingBox( Board2D & board ) const;
 #endif    
@@ -724,10 +751,14 @@ namespace DGtal
   private:
 
     /**
-     * Default style.
+     * Default style for the bounding box mode.
      */
     struct DefaultDrawStyleBB : public DrawableWithBoard2D
     {
+      /**
+       * Draw the DSS on a board
+       * @param board the output board where the object is drawn.
+       */
       virtual void selfDraw(Board2D & aBoard) const
       {
 #if(0)
@@ -741,10 +772,14 @@ namespace DGtal
     };
     
     /**
-     * Default style.
+     * Default style for the points mode.
      */
     struct DefaultDrawStylePoints : public DrawableWithBoard2D
     {
+      /**
+       * Draw the DSS on a board
+       * @param board the output board where the object is drawn.
+       */
       virtual void selfDraw(Board2D & aBoard) const
       {
 #if(0)
@@ -762,6 +797,7 @@ namespace DGtal
     
     /**
      * Default drawing style object.
+     * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
@@ -773,10 +809,8 @@ namespace DGtal
 
 #if(0)
     /**
-     * Draw the DSS on a LiBoard board as its bounding box and the
+     * Draw the DSS on a board as its bounding box and the
      * polyline of its points 
-     * @see BoundingBoxDraw
-     * @see DigitalPointsDraw
      * @param board the output board where the object is drawn.
      *
      */

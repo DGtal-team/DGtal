@@ -21,7 +21,7 @@
  *
  * @date 2010/10/26
  *
- * Implementation of inline methods defined in Preimage2D.h
+ * @brief Implementation of inline methods defined in Preimage2D.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,46 +38,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Constructor.
- * \param firstPoint, secondPoint, the two end points of 
- * the first straight segment
- */
+
 template <typename Shape>
 inline
 DGtal::Preimage2D<Shape>::Preimage2D(
   const Point & firstPoint, 
-  const Point & secondPoint)
+  const Point & secondPoint,
+    const Shape & aShape ): myShape(aShape)
 {
   myPHull.push_front(firstPoint);
   myQHull.push_front(secondPoint);
 }
 
 
-/**
- * Destructor.
- */
+
 template <typename Shape>
 inline
 DGtal::Preimage2D<Shape>::~Preimage2D()
 {
 }
 
-/**
- * Updates the current preimage with 
- * the constraints involved by a new segment
- * (adding to the front of the sequence of 
- * segments with respect to the scan orientaion
- * e.g. back => seg1 => ... segn => front) 
- * Nb: in O(n)
- * @param firstPoint, secondPoint, 
- * the two ends of the new straight segment. 
- * (Nb: the set of first points and the one of 
- * second points are expected to lie on either 
- * side of the shapes of the preimage). 
- * @return 'false' if the updated preimage is empty, 
- * 'true' otherwise.
- */
+
 template <typename Shape>
 inline
 bool
@@ -91,11 +72,13 @@ DGtal::Preimage2D<Shape>::addFront(
   //predicates definition from critical shapes
   BackwardIterator PHullBack = myPHull.rbegin();
   ForwardIterator QHullFront = myQHull.begin();
-  PHullBackQHullFrontPred p1( Shape(*PHullBack, *QHullFront) );
+  myShape.init(*PHullBack, *QHullFront);
+  PHullBackQHullFrontPred p1( myShape );
 
   BackwardIterator QHullBack = myQHull.rbegin();
   ForwardIterator PHullFront = myPHull.begin();
-  QHullBackPHullFrontPred p2( Shape(*QHullBack, *PHullFront) );
+  myShape.init(*QHullBack, *PHullFront);
+  QHullBackPHullFrontPred p2( myShape );
 
   //constraint involved by aP
   if ( p1(aP) ) {
@@ -156,19 +139,14 @@ DGtal::Preimage2D<Shape>::update(
   anIterator++;
   if (anIterator != anEndIterator) {
     p = *anIterator;
-    Predicate pred( Shape(p,q) );
-      std::cerr << pred << std::endl;
-
+    myShape.init(p,q);
+    Predicate pred( myShape );
 
     while ( (anIterator != anEndIterator) && 
             (pred(aPoint)) ) {
 
       //deletion
       anIterator--;
-      std::cerr << "ERASE " << (*anIterator) << std::endl;
-//      anIterator = aContainer.erase(anIterator);
-//does not compile if type 'Iterator' is the type ' ::reverse_iterator'
-//erase only takes parameter of type ' ::iterator'
 
       anIterator = 
         DGtal::OpInSTLContainers<Container,Iterator>
@@ -179,7 +157,8 @@ DGtal::Preimage2D<Shape>::update(
       anIterator++;
       if (anIterator != anEndIterator) {
         p = *anIterator;
-        pred = Predicate( Shape(p,q) );
+        myShape.init(p,q);
+        pred = Predicate( myShape );
       }
     }  
   }
@@ -188,24 +167,35 @@ DGtal::Preimage2D<Shape>::update(
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Draw the preimage on a LiBoard board
- * @param board the output board where the object is drawn.
- * @tparam Functor a Functor to specialize the Board style
- */
 template <typename Shape>
-template<typename Functor>
+inline
+DGtal::DrawableWithBoard2D*
+DGtal::Preimage2D<Shape>::defaultStyle( std::string /*mode*/ ) const
+{
+  return new DrawableWithBoard2D; 
+}
+
+template <typename Shape>
+inline
+std::string
+DGtal::Preimage2D<Shape>::styleName() const
+{
+  return "Preimage2D";
+}
+
+template <typename Shape>
 inline
 void 
-DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
 {
 
+  Shape s( myShape ); 
   ConstForwardIterator i = myPHull.begin();
   Point pt(*i);
   ++i;
   while ( i != myPHull.end() ) {
-    Shape s(pt, *i);
-    s.selfDraw<Functor>(aBoard);
+    s.init(pt, *i);
+    s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -214,8 +204,8 @@ DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
   pt = Point(*i);
   ++i;
   while ( i != myQHull.end() ) {
-    Shape s(pt, *i);
-    s.selfDraw<Functor>(aBoard);
+    s.init(pt, *i);
+    s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -225,18 +215,14 @@ DGtal::Preimage2D<Shape>::selfDraw( LibBoard::Board & aBoard) const
   Point Qf(*myQHull.begin());
   Point Ql(*myQHull.rbegin());
 
-  Shape s1(Pf, Ql);
-  s1.selfDraw<Functor>(aBoard);
-  Shape s2(Qf, Pl);
-  s2.selfDraw<Functor>(aBoard);
+  s.init(Pf, Ql);
+  s.selfDraw(aBoard);
+  s.init(Qf, Pl);
+  s.selfDraw(aBoard);
 
 }
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template <typename Shape>
 inline
 void
@@ -257,10 +243,6 @@ DGtal::Preimage2D<Shape>::selfDisplay ( std::ostream & out ) const
   out << "\n";
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
 template <typename Shape>
 inline
 bool

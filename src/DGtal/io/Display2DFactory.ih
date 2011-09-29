@@ -45,13 +45,37 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 
 
 // FreemanChain
-/*template <typename TInteger>
+template <typename TInteger>
 inline
 void DGtal::Display2DFactory::draw( Board2D & board,
 				    const DGtal::FreemanChain<TInteger> & f )
 {
-}*/
+}
 // FreemanChain
+
+
+// GridCurve
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const DGtal::GridCurve<TKSpace> & gc )
+{
+}
+
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const typename DGtal::GridCurve<TKSpace>::SCellsRange & gcscr )
+{
+}
+
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gcipr )
+{
+}
+// GridCurve
 
 
 // PointVector
@@ -103,12 +127,40 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 
 
 // KhalimskyCell
-
+template < Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const DGtal::KhalimskyCell<dim, TInteger> & k )
+{
+}
 // KhalimskyCell
 
 // SignedKhalimskyCell
-
+template < Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+}
 // SignedKhalimskyCell
+
+
+// AngleLinearMinimizer
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+                                    const DGtal::AngleLinearMinimizer & a )
+{
+}
+// AngleLinearMinimizer
+
+// FP
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board, 
+                                    const DGtal::FP<TIterator,TInteger,connectivity> & a )
+{
+}
+// FP
 
 //
 

@@ -27,7 +27,7 @@
  */
 
 /**
- * Description of testHalfPlane <p>
+ * @brief
  * Aim: simple test of \ref StraightLine and \ref Point2ShapePredicate
  */
 
@@ -48,7 +48,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLine.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 #include "DGtal/geometry/2d/Point2ShapePredicate.h"
   
 
@@ -66,7 +66,7 @@ int main(int , char **)
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef StraightLine<Coordinate> StraightLine;
+  typedef StraightLineFrom2Points<Point> StraightLine;
 
   Point p(0,0);
   Point q(5,2);
@@ -78,7 +78,10 @@ int main(int , char **)
 
 
   //halfplane upward oriented and closed 
-  typedef Point2ShapePredicate<StraightLine,true,true> UpClosedHalfPlane; 
+//! [HalfPlaneTypedefUpClosed]
+  typedef Point2ShapePredicate<StraightLine,true,true> UpClosedHalfPlane;
+//! [HalfPlaneTypedefUpClosed]
+ 
   //halfplane upward oriented and open 
   typedef Point2ShapePredicate<StraightLine,true,false> UpOpenHalfPlane; 
   //halfplane downward oriented and closed 
@@ -92,13 +95,14 @@ int main(int , char **)
   trace.info() << "created line:" << std::endl;
   trace.info() << line << std::endl;
 
+//! [HalfPlaneUsage]
+  //line is an instance of StraightLine
   UpClosedHalfPlane hp(line);
-  trace.info() << "created hp:" << std::endl;
   trace.info() << hp << std::endl;
-
   trace.info() << "Does " << r1 << " belongs to hp (no)?" << std::endl;
   res = hp(r1)?"yes":"no";
   trace.info() << res << std::endl;
+//! [HalfPlaneUsage]
 
   trace.info() << "Does " << r2 << " belongs to hp (yes)?" << std::endl;
   res = hp(r2)?"yes":"no";
@@ -110,7 +114,6 @@ int main(int , char **)
 
 
   UpOpenHalfPlane hp2(line);
-  trace.info() << "created h2:" << std::endl;
   trace.info() << hp2 << std::endl;
 
   trace.info() << "Does " << r1 << " belongs to hp2 (no)?" << std::endl;
@@ -126,7 +129,6 @@ int main(int , char **)
   trace.info() << res << std::endl;
 
   DownClosedHalfPlane hp3(line);
-  trace.info() << "created h3:" << std::endl;
   trace.info() << hp3 << std::endl;
 
   trace.info() << "Does " << r1 << " belongs to hp3 (yes)?" << std::endl;

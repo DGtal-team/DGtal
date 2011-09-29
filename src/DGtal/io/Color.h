@@ -26,7 +26,7 @@
  * Header file for module Color.cpp
  *
  * This file is part of the DGtal library.
- * Backport from Color of LibBoard
+ * Backport from Color of LibBoard library :http://libboard.sourceforge.net
  */
 
 #if defined(Color_RECURSES)
@@ -54,7 +54,9 @@ namespace DGtal
   // class Color
   /**
    * Description of class 'Color' <p>
-   * \brief Aim:
+   * 
+   * @brief Structure representing an RGB triple.
+
    */
   class Color
   {
@@ -71,24 +73,50 @@ namespace DGtal
 
     /**
      * Constructor.
-     * 
+     *
+     * @param aRgb: an unsigned int representing the color.
+     * @param aAlpha: color transparency (default value =255);
      */
+    
+    Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
 
-  
-    Color( const unsigned int rgb, unsigned char alpha = 255 );
-  
+
+    /**
+     * Constructor from R, G, B and Alpha parameter.
+     *
+     * @param aRedValue, aGreenValue, aBlueValue, aAlphaValue: the three color components.
+     * @param alpha: color transparency.
+     */
+    
+    
     Color( unsigned char aRedValue, unsigned char  aGreenValue, unsigned char  aBlueValue,
-     unsigned char aAlphaValue = 255 )
+	   unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
-  
+    
+
+    /**
+     * Constructor from gray scale value.
+     *
+     * @param aGrayValue: the color gray value.
+     * @param alpha: color transparency (default value =255);.
+     */
+    
     Color( unsigned char aGrayValue, unsigned char aAlphaValue = 255 )
       : myRed(aGrayValue),myGreen(aGrayValue), myBlue(aGrayValue), myAlpha(aAlphaValue) { }
-  
+
+
+   /**
+    * Constructor.
+    *
+    * @param aRedValue, aGreenValue, aBlueValue: the three color components (set to -1)
+    * @param alpha: color transparency (default value =255);.
+    */
+    
     Color( const bool aValidColor = true )
       : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
     { 
       if ( aValidColor ) {
-  myRed = myGreen = myBlue = 0;
+	myRed = myGreen = myBlue = 0;
       }
     }
     

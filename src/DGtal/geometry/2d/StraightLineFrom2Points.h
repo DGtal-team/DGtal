@@ -17,29 +17,29 @@
 #pragma once
 
 /**
- * @file StraightLine.h
- * @brief Representation of a StraightLine uniquely defined by two 2D points.
+ * @file StraightLineFrom2Points.h
+ * @brief Representation of a StraightLineFrom2Points uniquely defined by two 2D points.
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/10/27
  *
- * Header file for module StraightLine.cpp
+ * Header file for module StraightLineFrom2Points.cpp
  *
  * This file is part of the DGtal library.
  *
  * @see testHalfPlane.cpp
  */
 
-#if defined(StraightLine_RECURSES)
-#error Recursive header files inclusion detected in StraightLine.h
-#else // defined(StraightLine_RECURSES)
+#if defined(StraightLineFrom2Points_RECURSES)
+#error Recursive header files inclusion detected in StraightLineFrom2Points.h
+#else // defined(StraightLineFrom2Points_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define StraightLine_RECURSES
+#define StraightLineFrom2Points_RECURSES
 
-#if !defined StraightLine_h
+#if !defined StraightLineFrom2Points_h
 /** Prevents repeated inclusion of headers. */
-#define StraightLine_h
+#define StraightLineFrom2Points_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,57 +56,67 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class StraightLine
+  // template class StraightLineFrom2Points
   /**
-   * Description of template class 'StraightLine' <p>
-   * \brief Aim: Represents a StraightLine uniquely
+   * \brief Aim: Represents a straight line uniquely
    * defined by two 2D points and that is able
-   * to return for each 2D point of the domain
-   * its signed distance to itself 
+   * to return for any given 2D point its signed distance to itself 
    *
-   * @tparam TInteger a model for CInteger.
+   * @tparam TPoint  a type of points.
    */
-  template <typename TInteger>
-  class StraightLine
+  template <typename TPoint>
+  class StraightLineFrom2Points
   {
 
     // ----------------------- associated types ------------------------------
   public:
 
-    //2D point and 2D vector
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    typedef TInteger Coordinate;
-    typedef DGtal::PointVector<2,Coordinate> Point;
-    typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename TPoint::Coordinate Coordinate;
+    typedef Coordinate Distance; //to promote
+    typedef TPoint Point;
+    typedef TPoint Vector;
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Constructor.
-     * @param firstPoint, secondPoint two points
-     * that uniquely define the StraightLine
+     * Default constructor.
      */
-    StraightLine(const Point& aFirstPoint, const Point& aSecondPoint);
+    StraightLineFrom2Points();
+
+
+    /**
+     * Constructor.
+     * @param firstPoint  a point
+     * @param secondPoint  another point
+     */
+    StraightLineFrom2Points(const Point& aFirstPoint, const Point& aSecondPoint);
+
+    /**
+     * Init.
+     * @param firstPoint  a point
+     * @param secondPoint  another point
+     */
+    void init(const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    StraightLine ( const StraightLine & other );
+    StraightLineFrom2Points ( const StraightLineFrom2Points & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    StraightLine & operator= ( const StraightLine & other );
+    StraightLineFrom2Points & operator= ( const StraightLineFrom2Points & other );
 
 
     /**
      * Destructor. Does nothing
      */
-    ~StraightLine();
+    ~StraightLineFrom2Points();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -124,56 +134,45 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of [aP] to the StraightLine
-     * @param aP, the point to be tested.
+     * Computes the signed distance of @aP to the straight line
+     * @param aP the point to be tested.
      * @return the signed distance.
      */
-    Coordinate signedDistance(const Point& aP) const;
+    Distance signedDistance(const Point& aP) const;
 
-//------------------ display -------------------------------
+    //------------------ display -------------------------------
     /**
-     * Draw the part of the straight line lying between 
-     * the two given point
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
      */
-    template<typename Functor>
-      void selfDraw( LibBoard::Board & board ) const;
-
-
+    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    
     /**
-     * Draw the part of the straight line lying between 
-     * the two given point on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
+     * @return the style name used for drawing this object.
      */
-    void selfDraw( LibBoard::Board & board ) const
-      {
-        selfDraw<selfDrawStyle>(board);
-      }
+    std::string styleName() const;
 
-private:
-
-   /** 
-     * Default Style Functor for drawing
-     * 
-     * @param aBoard 
-     */
-
-    struct selfDrawStyle
-    {
-      selfDrawStyle(LibBoard::Board & aBoard) 
-      {
-  aBoard.setPenColor(Color::Red);
-      }
-    };
-
+#if(0)
+    /**
+       Draw the object on a Board2D board
+       @param board the output board where the object is drawn.
+    */
+    void selfDraw(Board2D & board ) const;
+#endif
+    
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the two points that uniquely define the StraightLine
-    Point myP, myQ;
+    //the two points that uniquely define the straight line
+    /**
+       First point through which the straight line passes
+    */
+    Point myP;
+    /**
+       Second point through which the straight line passes
+    */
+    Point myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -188,14 +187,20 @@ private:
 
 
 
-  }; // end of class StraightLine
+  }; // end of class StraightLineFrom2Points
 
 
-  template <typename TInteger>
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'StraightLineFrom2Points'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'StraightLineFrom2Points' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPoint>
   inline
   std::ostream&
   operator<< ( std::ostream & out, 
-        const StraightLine<TInteger> & object )
+        const StraightLineFrom2Points<TPoint> & object )
   {
     object.selfDisplay( out );
     return out;
@@ -207,12 +212,12 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/StraightLine.ih"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined StraightLine_h
+#endif // !defined StraightLineFrom2Points_h
 
-#undef StraightLine_RECURSES
-#endif // else defined(StraightLine_RECURSES)
+#undef StraightLineFrom2Points_RECURSES
+#endif // else defined(StraightLineFrom2Points_RECURSES)

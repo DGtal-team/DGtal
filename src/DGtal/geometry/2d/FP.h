@@ -23,7 +23,7 @@
  *
  * @date 2011/01/26
  *
- * Header file for module FP.cpp
+ * @brief Header file for module FP.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -55,52 +55,118 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class adapterDSS,
-  // which is a tool class for FP
-  template <typename ArithmeticalDSS>
+  /**
+   * \brief Aim: abstract adapter for ArithmeticalDSS.
+   * Has 2 virtual methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * @see Adapter4ConvexPart Adapter4ConcavePart
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   */
+   template <typename ArithmeticalDSS>
   class Adapter 
   {
     protected:
+      /**
+       *  A pointer to an instance of ArithmeticalDSS
+       */
       ArithmeticalDSS* myDSS;
     public:
+      /**
+       *  @return the first upper or lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+      /**
+       *  @return the last upper or lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
   };
 
+  /**
+   * \brief Aim: adapter for ArithmeticalDSS used by FP in convex parts.
+   * Has 2 methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * that respectively return the first and last upper leaning point 
+   * of the underlying instance of ArithmeticalDSS. 
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   * @see Adapter FP
+   */
   template <typename ArithmeticalDSS>
   class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
   {
     public:
-      //constructor
+      /**
+       *  Constructor
+       * @param aDSS
+       */
       Adapter4ConvexPart(ArithmeticalDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
-      //accessors
+      /**
+       *  @return the first upper leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getUf();
       }
+      /**
+       *  @return the last upper leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getUl();
       }
   };
 
+  /**
+   * \brief Aim: adapter for ArithmeticalDSS used by FP in concave parts.
+   * Has 2 methods: 
+   * - firstLeaningPoint()
+   * - lastLeaningPoint()
+   *
+   * that respectively return the first and last lower leaning point 
+   * of the underlying instance of ArithmeticalDSS. 
+   * 
+   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
+   * Must have a nested type Point and have four accessors: 
+   *  getUf(), getUl(), getLf(), getLl()
+   *
+   * @see Adapter FP
+   */
   template <typename ArithmeticalDSS>
   class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
   {
     public:
-      //constructor
+      /**
+       *  Constructor
+       * @param aDSS
+       */
       Adapter4ConcavePart(ArithmeticalDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
-      //accessors
+      /**
+       *  @return the first lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getLf();
       }
+      /**
+       *  @return the last lower leaning point
+       */
       virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getLl();
@@ -112,9 +178,45 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class FP
   /**
-   * Description of template class 'FP' <p>
-   * \brief Aim:Computes the faithful polygon (FP)
+   * \brief Aim: Computes the faithful polygon (FP)
    * of a range of 4/8-connected 2D Points. 
+   * 
+   * The FP has several interesting properties: 
+   *  - its vertices are points of the underlying digital curve, thus with integer coordinates, 
+   *  - it respects the convex and concave parts of the underlying digital curve,
+   *  - it is reversible, 
+   *  - it is unique for digital curves that are not digital straight segments,
+   *  - it is closed to the minimum length polygon (MLP) (and converges toward the MLP
+   * as the resolution tends to the infinity) for closed digital curves.  
+   *
+   * It is computed in the course of the maximal digital straight segments computation,
+   * because in convex parts (resp. concave parts), the first and last upper (resp. lower) 
+   * leaning points of segments that are maximal at the front or at the back are also
+   * vertices of the FP.
+   * 
+   * @see ArithmeticalDSS Adapter Adapter4ConvexPart Adapter4ConcavePart
+   *
+   * @note T. ROUSSILLON and I. SIVIGNON, 
+   * Faithful polygonal representation of the convex and concave parts of a digital curve, 
+   * Pattern Recognition, Volume 44, Issues 10-11, October-November 2011, Pages 2693-2700. 
+   *
+   * Usage:
+   * @code
+   //r is a range of 4-connected 2D points
+   FP<ConstIterator, Integer, 4> theFP( r .begin(), r.end() );
+   * @endcode
+   *
+   * Once the FP is computed, copyFP() is a way of geting its vertices. 
+   * In the same way, copyMLP() is a way of getting the vertices of the MLP. 
+   * 
+   * @tparam 'TIterator'  type ConstIterator on 2D points, 
+   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
+   * (satisfying CInteger) 
+   * @tparam 'connectivity'  an integer equal to 
+   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
+   * (Any other integers act as 8). 
+   *
+   * @see testFP.cpp
    */
   template <typename TIterator, typename TInteger, int connectivity>
   class FP
@@ -144,8 +246,15 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param itb begin iterator
-     * @param ite end iterator
+     * @param itb  begin iterator
+     * @param ite  end iterator
+     */
+    FP(const TIterator& itb, const TIterator& ite) throw( InputException ) ;
+  
+    /**
+     * Constructor.
+     * @param itb  begin iterator
+     * @param ite  end iterator
      * @param isClosed 'true' if the range has to be considered as circular, 
      * 'false' otherwise. 
      */
@@ -193,11 +302,15 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    //each vertex of the FP is stored in this list
+    /*
+    * list where each vertex of the FP is stored
+    */
     Polygon myPolygon; 
 
-    //TRUE if the list has to be consider as circular
-    //FALSE otherwise
+    /*
+    * bool equal to 'true' if the list has to be consider as circular
+    * 'false' otherwise
+    */
     bool myFlagIsClosed;
 
     // ------------------------- Hidden services ------------------------------
@@ -208,11 +321,12 @@ namespace DGtal
   private:
 
     /**
-     * @param [aDSS] a DSS lying on a range
-     * @param [anAdapter] an Adapter to [aDSS] for convex part
-     * if 'true' is returned, for concave part otherwise
-     * @param [i] an iterator pointing after the front of [aDSS] 
-     * @return 'true' if [aDSS] begins a convex part, 'false' otherwise
+     * A DSS adapter is chosen according to the local convexity/concavity
+     * @param aDSS a DSS lying on the range to process
+     * @param anAdapter an Adapter to @a aDSS for convex part
+     * when 'true' is returned, for concave part otherwise
+     * @param i an iterator pointing after the front of @a aDSS 
+     * @return 'true' if @a aDSS begins a convex part, 'false' otherwise
      */
     template<typename DSS, typename Adapter>
     bool initConvexityConcavity( DSS &aDSS,  
@@ -220,11 +334,12 @@ namespace DGtal
                                  const typename DSS::ConstIterator& i );
 
     /**
-     * @param [currentDSS] a DSS lying on a range
-     * @param [adapter] an Adapter to [currentDSS]
-     * @param [isConvex], 'true' if [currentDSS] is in a convex part, 'false' otherwise
-     * @param [i] an iterator pointing after the front of [currentDSS] 
-     * @param the algorithm stops when [i] == [end]
+     * Main algorithm
+     * @param currentDSS a DSS lying on the range to process
+     * @param adapter an Adapter to @a currentDSS
+     * @param isConvex, 'true' if @a currentDSS is in a convex part, 'false' otherwise
+     * @param i an iterator pointing after the front of @a currentDSS 
+     * @param end iterator used to stop the algorithm (when @a i == @a end )
      */
     template<typename DSS, typename Adapter>
     void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
@@ -234,19 +349,20 @@ namespace DGtal
 
 
     /**
-     * gets a MLP vertex from three consecutive vertices of the FP.
+     * Gets a MLP vertex from three consecutive vertices of the FP.
      * @param a previous vertex of the FP
      * @param b current vertex of the FP
      * @param c next vertex of the FP
      * @return vertex of the MLP, which is 
-     * the tranlated of b by (+- 0.5, +- 0.5)
+     * the tranlated of @a b by (+- 0.5, +- 0.5)
      */
     RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
 
     /**
-     * @param v any Vector
+     * Returns the quadrant number of a vector
+     * @param v any ector
      * @param q a quandrant number (0,1,2 or 3)
-     * @return 'true' if [v] lies in quadrant number [q], 'false' otherwise
+     * @return 'true' if @a v lies in quadrant number @a q, 'false' otherwise
      */
 
     bool quadrant (const Vector& v, const int& q) const;
@@ -275,17 +391,23 @@ namespace DGtal
      */
     struct DefaultDrawStyle : public DrawableWithBoard2D
     {
+        /**
+         * Drawing method.
+         * @param board the output board where the object is drawn.
+         */
         virtual void selfDraw(Board2D & aBoard) const
         {
+#if(0)
         // Set board style
         aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setPenColor(Color::Red);
         aBoard.setLineWidth(2);
         aBoard.setFillColor(Color::None);
+#endif
         }
     };
 
-      /*
+    /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -297,6 +419,7 @@ namespace DGtal
     
     /**
      * Default drawing style object.
+     * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
     DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
@@ -306,6 +429,7 @@ namespace DGtal
      */
     std::string styleName() const;
 
+#if(0)
     /**
      * Draw the vertices of the FP as a polygonal line 
      * @param board the output board where the object is drawn.
@@ -315,11 +439,11 @@ namespace DGtal
 
 
     /**
-     * Draw the FP on a LiBoard board
+     * Draw the FP on a board
      * @param board the output board where the object is drawn.
      */
     void selfDrawAsPolygon( Board2D & board ) const;
-
+#endif
 
 
   }; // end of class FP

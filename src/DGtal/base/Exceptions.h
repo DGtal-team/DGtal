@@ -71,7 +71,7 @@ namespace DGtal
   };
 
   /**
-   * InputException derived class.
+   * ConnectivityException derived class.
    */ 
   class ConnectivityException: public exception
   {
@@ -93,7 +93,16 @@ namespace DGtal
     }
   };
 
-
+  /**
+   * InfiniteNumberException derived class.
+   */ 
+  class InfiniteNumberException: public exception
+  {
+    virtual const char* what() const throw()
+    {
+      return "DGtal infinite number error";
+    }
+  };
 
 
 } // namespace DGtal

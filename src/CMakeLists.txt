@@ -10,9 +10,12 @@ include_directories(${PROJECT_BINARY_DIR}/src)
 ## each subdir can contain a ModuleSRC.txt file 
 ## with a set command on the variable ${DGTAL_SRC}
 ## 
+include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
+include(DGtal/math/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
+
 include(Board/ModuleSRC.txt)
 
 
@@ -47,4 +50,11 @@ install(TARGETS DGtalIO
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
+
+
+IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+  SET_TARGET_PROPERTIES(DGtal PROPERTIES COMPILE_FLAGS "-fPIC")
+#  SET_TARGET_PROPERTIES(DGtalIO PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+
 

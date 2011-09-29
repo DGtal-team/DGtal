@@ -733,7 +733,9 @@ namespace DGtal
       }
     };
 
-    
+    /**
+     *  Style based in grid representation.
+     */
     struct DefaultDrawStyleGrid : public DrawableWithBoard2D
     {
       virtual void selfDraw( Board2D & aBoard ) const
@@ -872,11 +874,9 @@ namespace DGtal
 
 #if(0)
   /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
+   * Modifier class in a Display3D stream. Realizes the concept
+   * CDrawableWithDisplay3D.
    */
-
-
 
   struct DrawPavingVoxel : public DrawableWithDisplay3D {
     void selfDrawDisplay3D( Display3D & viewer ) const
@@ -885,6 +885,10 @@ namespace DGtal
     }
   };
   
+  /**
+   * Modifier class in a Display3D stream. Realizes the concept
+   * CDrawableWithDisplay3D.
+   */
   
   struct DrawGridVoxel : public DrawableWithDisplay3D {
     void selfDrawDisplay3D( Display3D & viewer ) const

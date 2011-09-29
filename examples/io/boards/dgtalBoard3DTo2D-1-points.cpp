@@ -42,8 +42,9 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
+
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
@@ -62,6 +63,7 @@ int main( int argc, char** argv )
 
   board << SetMode3D(board.styleName(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

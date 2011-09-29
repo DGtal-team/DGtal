@@ -33,12 +33,14 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page KernelPackage Documentation of the Kernel package
+@page KernelPackage Kernel package
    
 @author Jacques-Olivier Lachaud
 @author David Coeurjolly
 @author Guillaume Damiand 
 @author Sebastien Fourey
+
+@since 0.4
 
 @b LICENSE: LGPL
 

@@ -23,9 +23,8 @@
  *
  * @date 2010/11/26
  *
- * An example file named dgtalboard-1-points.
- * @example
- * This file is part of the DGtal library.
+ * An example file named dgtalBoard2D-1-points.
+ * 
  */
 
 ///////////////////////////////////////////////////////////////////////////////

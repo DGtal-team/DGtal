@@ -53,6 +53,8 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/helpers/StdDefs.h"
 
+#include "DGtal/io/boards/Board2D.h"
+
 
 using namespace DGtal;
 using namespace std;
@@ -111,13 +113,13 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << DrawDomainGrid() << domain << mySet;
+  board /*<< DrawDomainGrid()*/ << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << DrawDomainPaving() << domain;
+  board /*<< DrawDomainPaving()*/ << domain;
   board << mySet;
   board.saveSVG("simpleSet-paving.svg");
 
@@ -229,8 +231,8 @@ bool testDigitalSetDraw()
   //Board export test
   trace.beginBlock("SVG Export");
   Board2D board;
-  domain.selfDrawAsGrid(board);
-  disk.selfDraw(board);
+  //domain.selfDrawAsGrid(board);
+  board << disk;
 
   board.scale(10);
   board.saveSVG( "disk-set.svg" );

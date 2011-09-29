@@ -20,12 +20,18 @@
  * @file FreemanChain.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * Bertrand Kerautret (\c kerautre@loria.fr )
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
  *
  * @date 2010/07/01
  *
- * Header file for module FreemanChain.cpp
+ * @brief Header file for module FreemanChain.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -49,6 +55,7 @@
 #include <iterator>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/OrderedAlphabet.h"
+#include "DGtal/base/Circulator.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 //#include "DGtal/io/boards/Board2D.h"
 
@@ -63,10 +70,10 @@ namespace DGtal
   // class FreemanChain
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'FreemanChain' <p> Aim: Describes a digital
+   * Aim: Describes a digital
    * 4-connected contour as a string of '0', '1', '2', and '3' and the
    * coordinate of the first point. When it is a loop, it is the
-   * counterclockwise boundary of the shape.
+   * clockwise boundary of the shape.
    
    * Example :
    * @code 
@@ -84,15 +91,19 @@ namespace DGtal
    fc.computeBoundingBox(minX, minY, maxX, maxY);  
    
    // Compute the list of points of the contour
-   vector<FreemanChain<int>::PointI2> aContourPointVector; 
+   vector<FreemanChain<int>::Point> aContourPointVector; 
    fc.getContourPoints(fc, aContourPointVector);
    
    // Draw the Freeman chain
-   Board2D::Board aBoard;
+   Board2D aBoard;
    aBoard.setUnit(Board::UMillimeter);
-   fc.selfDraw(aBoard);
+   aBoard << fc;
 
    * @endcode
+   *
+   * @tparam TInteger  type of the coordinates of the starting point
+   *
+   * @see freemanChainDisplay.cpp  freemanChainFromImage.cpp  testFreemanChain.cpp
    */
 
   template <typename TInteger>
@@ -104,8 +115,10 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
-    typedef PointVector<2, Integer> PointI2;
-    typedef PointVector<2, Integer> VectorI2;
+
+    typedef PointVector<2, Integer> Point;
+    typedef PointVector<2, Integer> Vector;
+
     typedef unsigned int Size;
     typedef unsigned int Index;
 
@@ -123,7 +136,7 @@ namespace DGtal
      */
 
     class ConstIterator : public 
-      std::iterator<std::bidirectional_iterator_tag, PointI2, int, PointI2*, PointI2> 
+      std::iterator<std::bidirectional_iterator_tag, Point, int, Point*, Point> 
     {
 
       // ------------------------- Private data -----------------------
@@ -137,7 +150,7 @@ namespace DGtal
         Index myPos;
 
         ///The current coordinates of the iterator.
-        PointI2  myXY;
+        Point  myXY;
 
         // ------------------------- Standard services -----------------------
       public:
@@ -171,7 +184,7 @@ namespace DGtal
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
-        ConstIterator( const FreemanChain & aChain, Index n, const PointI2 & XY)
+        ConstIterator( const FreemanChain & aChain, Index n, const Point & XY)
           : myFc( &aChain ), myPos( n ), myXY ( XY ) 
         { }
 
@@ -203,7 +216,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        const PointI2& operator*() const
+        const Point& operator*() const
         {
           return myXY;
         }
@@ -211,7 +224,7 @@ namespace DGtal
         /**
          * @return the current coordinates.
          */
-        const PointI2& get() const
+        const Point& get() const
         {
           return myXY;
         }
@@ -358,80 +371,173 @@ namespace DGtal
     };
 
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // class FreemanChain::ConstCharIterator
-    ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// class CodesRange
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+* @brief Aim: model of CRange that provides services
+* to (circularly)iterate over the letters of the freeman chain.
+*
+* @see FreemanChain.h testFreemanChain.cpp
+*/
+class CodesRange
+{
+
+  // ------------------------- inner types --------------------------------
+public: 
+
+  typedef std::string::const_iterator ConstIterator; 
+  typedef std::string::const_reverse_iterator ConstReverseIterator;
+  typedef Circulator<ConstIterator> ConstCirculator;
+  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+
+  // ------------------------- standard services --------------------------------
+
+  /**
+   * Default Constructor.
+   */
+  CodesRange(){}
+
+  /**
+   * Constructor.
+   */
+  CodesRange(const std::string& aChain ): myChain(aChain){}
+
+  /**
+   * Copy constructor.
+   * @param other the iterator to clone.
+   */
+  CodesRange( const CodesRange & aOther )
+    : myChain( aOther.myChain ){}
   
-    
-    /**
-     * This class represents an iterator on the symbols of the freeman chain.
-     *
-     * The ConstCharIterator inherits from std::string::const_iterator which is
-     * a random access iterator.
-     */
-
-    class ConstCharIterator : public std::string::const_iterator
+  /**
+   * Assignment.
+   * @param other the iterator to copy.
+   * @return a reference on 'this'.
+   */
+  CodesRange& operator= ( const CodesRange & other )
+  {  
+    if ( this != &other )
     {
+      myChain = other.myChain;
+    }
+  return *this;
+  }
 
-      // ------------------------- Private data -----------------------
+  /**
+   * Destructor. Does nothing.
+   */
+  ~CodesRange() {}
 
-      private:
+  /**
+   * @return the size of the range
+   */
+  std::string::size_type size() const 
+  {
+    return myChain.size();
+  }
 
-        /// The Freeman chain visited by the iterator.
-        const FreemanChain* myFc;
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const { return true; }
+  
+  // ------------------------- display --------------------------------
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const 
+  {
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    out << "[FreemanChainCodes]" << std::endl;
+    out << "\t"; 
+    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, "") );
+    out << std::endl;
+  }
+  
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'CodesRange'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'CodesRange' to write.
+   * @return the output stream after the writing.
+   */
+    friend ostream& operator <<(ostream & out, const CodesRange & object)
+    {
+      object.selfDisplay( out );
+      return out;
+    }
+  // ------------------------- private data --------------------------------
+  private:
+  /**
+   * Private member @a myChain is a string of letters
+   */    
+  const std::string myChain;
+  // ------------------------- iterator services --------------------------------
+public:
 
-        typedef std::string::const_iterator parent;
+  /**
+   * Iterator service.
+   * @return begin iterator
+   */
+  ConstIterator begin() const {
+    return myChain.begin();
+  }
 
-        // ------------------------- Standard services -----------------------
-      public:
+  /**
+   * Iterator service.
+   * @return end iterator
+   */
+  ConstIterator end() const {
+    return myChain.end();
+  }
 
-        /**
-         * Default constructor
-         * Not valid.
-         */
-        ConstCharIterator () :
-          myFc( NULL ) { }
+  /**
+   * Iterator service.
+   * @return rbegin iterator
+   */
+  ConstReverseIterator rbegin() const {
+    return myChain.rbegin();
+  }
 
-        /**
-         * Constructor.
-         *
-         * @param chain a Freeman chain,
-         * @param n the position in [chain] (within 0 and chain.size()).
-         */
-        ConstCharIterator( const FreemanChain & aFC, Index n = 0) ;
+  /**
+   * Iterator service.
+   * @return rend iterator
+   */
+  ConstReverseIterator rend() const {
+    return myChain.rend();
+  }
 
-        /**
-         * Copy constructor.
-         * @param other the iterator to clone.
-         */
-        ConstCharIterator( const ConstCharIterator & other );
+  /**
+   * Circulator service.
+   * @return a circulator
+   */
+  ConstCirculator c() const {
+    return ConstCirculator( this->begin(), this->begin(), this->end() );
+  }
 
-        /**
-         * Initilization from a ConstIterator. If the ConstIterator points on
-         * the i-th point of the curve defined by the FreemanChain then the
-         * CharIterator is initialized on the i-th letter, i.e. '*this' is the
-         * code of the step that starts at '*other'.  
-         * @param other the iterator
-         * on points
-         */
-        ConstCharIterator( const ConstIterator & other );
+  /**
+   * Circulator service.
+   * @return a reverse circulator
+   */
+  ConstReverseCirculator rc() const {
+    return ConstReverseCirculator( this->c() );
+  }
+};
 
+///////////////////////////////////////////////////////////////////////////////
+// end of class CodesRange
+///////////////////////////////////////////////////////////////////////////////
 
-        /**
-         * Destructor. Does nothing.
-         */
-        ~ConstCharIterator()
-        { }
-
-
-        const FreemanChain * getChain() const
-        {
-          return myFc;
-        }
-
-    };
-
-
+    /**
+     * @return  an instance of CodesRange.
+     */
+    CodesRange getCodesRange()
+    { 
+      return CodesRange(chain); 
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -458,7 +564,7 @@ namespace DGtal
      * Constructor.
      * @param vectorPoints the vector containing all the points. 
      */
-    FreemanChain( const std::vector<PointI2> vectPoints);
+    FreemanChain( const std::vector<Point>& vectPoints);
     
     
     /**
@@ -643,24 +749,24 @@ namespace DGtal
      * @param pos the position of the point in the FreemanChain
      * @return the point at position 'pos'.
      */
-    PointI2 getPoint ( Index pos ) const;
+    Point getPoint ( Index pos ) const;
     
 
     /**
      * @return the starting point of the FreemanChain.
      */
-    PointI2 firstPoint ( ) const
+    Point firstPoint ( ) const
     {
-      return PointI2(x0,y0);
+      return Point(x0,y0);
     }
 
 
     /**
      * @return the starting point of the FreemanChain.
      */
-    PointI2 lastPoint ( ) const
+    Point lastPoint ( ) const
     {
-      return PointI2(xn,yn);
+      return Point(xn,yn);
     }
 
 
@@ -668,7 +774,7 @@ namespace DGtal
      * @return the vector given by displacement from the first point to the
      * last point.
      */
-    VectorI2 totalDisplacement() const
+    Vector totalDisplacement() const
     {
       return lastPoint() -  firstPoint();
     }
@@ -707,20 +813,6 @@ namespace DGtal
      * @return an iterator pointing after the last point of the chain.
      */
     ConstIterator end() const;
-
-    /**
-     * Iterator service on codes.
-     * @return an iterator pointing on the first point of the chain.
-     */
-    ConstCharIterator cbegin() const;
-
-
-    /**
-     * Iterator service on codes.
-     * @return an iterator pointing after the last point of the chain.
-     */
-    ConstCharIterator cend() const;
-
 
     /**
      * Returns the next position in the chain code. The path coded by the chain
@@ -764,7 +856,25 @@ namespace DGtal
      */
     static void read( std::istream & in, FreemanChain & c );
 
-
+    /**
+     * Reads a chain from the points range [ @a itBegin , @a itEnd ) and updates @a c.
+     * @param itBegin  begin iterator,
+     * @param itEnd  end iterator,
+     * @param c  the returned Freeman chain.
+     * @tparam TConstIterator  type of iterator
+     */
+    template<typename TConstIterator>
+    static void readFromPointsRange( const TConstIterator& itBegin, const TConstIterator& itEnd, FreemanChain & c );
+    
+    /**
+     * Reads a chain from the points range @a aRange and updates @a c.
+     * @param aRange  any points range
+     * @param c  the returned Freeman chain
+     * @tparam TRange  type of points range
+     */
+    template<typename TRange>
+    static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
+    
     /**
      * Return a vector containing all the interger points of the freemanchain.
      *
@@ -772,7 +882,7 @@ namespace DGtal
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
     static void getContourPoints(const FreemanChain & fc, 
-        std::vector<PointI2> & aVContour );
+        std::vector<Point> & aVContour );
 
 
     /**
@@ -781,8 +891,8 @@ namespace DGtal
      * @param aPoint the point to translate
      * @param aCode  a FreemanChain code
      */
-    //static void movePointFromFC(PointI2 & aPoint, unsigned int aCode );
-    static void movePointFromFC(PointI2 & aPoint, char aCode );
+    //static void movePointFromFC(Point & aPoint, unsigned int aCode );
+    static void movePointFromFC(Point & aPoint, char aCode );
 
 
     // Deprecated
@@ -838,8 +948,8 @@ namespace DGtal
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
      */
-    // static PointI2 displacement( unsigned int aCode );
-    static PointI2 displacement( char aCode );
+    // static Point displacement( unsigned int aCode );
+    static Point displacement( char aCode );
 
 
     /**

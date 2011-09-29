@@ -43,11 +43,11 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 
 
 //#include "DGtal/io/Display3D.h"
@@ -131,10 +131,12 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
   aBoard.setPenColorRGBi( 50, 50, 50 );
   aBoard.setLineStyle( Board2D::Shape::SolidStyle );
   aBoard.setFillColorRGBi( 80, 80, 80 );
   aBoard.setLineWidth( 1 );
+#endif
       }
     };
 
@@ -180,12 +182,14 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string styleName() const;
-    
+ 
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDraw( Board2D & board ) const;
+#endif
 
   }; 
 
@@ -268,10 +272,12 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
   aBoard.setPenColorRGBi( 50, 50, 50 );
   aBoard.setLineStyle( Board2D::Shape::SolidStyle );
   aBoard.setFillColorRGBi( 80, 80, 80 );
   aBoard.setLineWidth( 1 );
+#endif
       }
     };
 
@@ -311,12 +317,14 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string styleName() const;
-    
+
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDraw( Board2D & board ) const;
+#endif
 
   }; 
 
@@ -435,10 +443,8 @@ namespace DGtal
        typename TInteger = DGtal::int32_t >
   class KhalimskySpaceND
   {
-    //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) ); 
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
@@ -460,11 +466,19 @@ namespace DGtal
     typedef SpaceND<dim, Integer> Space;
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
+#if defined ( WIN32 )
+    // static constants
+    static const Dimension dimension = dim;
+    static const Dimension DIM = dim;
+    static const Sign POS = true;
+    static const Sign NEG = false;
+#else
     // static constants
     static const Dimension dimension;
     static const Dimension DIM;
     static const Sign POS;
     static const Sign NEG;
+#endif //WIN32
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {

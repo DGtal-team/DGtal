@@ -305,7 +305,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator
  */
 template <typename TSegment>
 inline
-typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::SegmentIterator& 
+typename DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator& 
 DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::operator=
 ( const SegmentIterator & other )
 {

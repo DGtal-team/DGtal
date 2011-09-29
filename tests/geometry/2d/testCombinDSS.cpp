@@ -134,7 +134,7 @@ bool CompareToArithmetical()
       c = C.extend();
       if (a && c) ++nbPts;
     }
-    if ( !C.isValid() || (a xor c) || (C != A) ) {
+    if ( ((!C.isValid()) || (a ^ c)) || (C != A) ) {
       cout << C.isValid() << endl;
       cout << a << " " << c << endl;
       cout << C << endl;
