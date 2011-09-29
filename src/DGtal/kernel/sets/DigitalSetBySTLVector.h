@@ -315,8 +315,10 @@ namespace DGtal
     {
       SelfDrawStyle(Board2D & aBoard) 
       {
+#if(0)
   aBoard.setFillColorRGBi(160,160,160);
   aBoard.setPenColorRGBi(80,80,80);
+#endif
       }
     };
 
@@ -328,8 +330,10 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
+#if(0)
   aBoard.setFillColorRGBi(160,160,160);
   aBoard.setPenColorRGBi(80,80,80);
+#endif
       }
     };
 
@@ -347,12 +351,13 @@ namespace DGtal
      */
     std::string styleName() const;
 
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
      */
     void selfDraw(Board2D & board ) const;
-
+#endif
 
 
 

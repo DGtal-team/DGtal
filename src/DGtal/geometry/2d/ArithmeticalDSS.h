@@ -51,7 +51,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
@@ -700,7 +700,7 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) ;
 
-    
+#if(0)    
     /**
      * Draw the digital points of the DSS linked into a 
      * polygonal line on a LiBoard board
@@ -717,7 +717,7 @@ namespace DGtal
      * @tparam Functor a Functor to specialize the Board style
      */
     void selfDrawAsBoundingBox( Board2D & board ) const;
-    
+#endif    
     
     
     // ------------------------- Private Datas --------------------------------
@@ -730,11 +730,13 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
+#if(0)
         // Set board style
         aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setPenColor(Color::Red);
         aBoard.setLineWidth(1);
         aBoard.setFillColor(Color::None);
+#endif
       }
     };
     
@@ -745,11 +747,13 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
+#if(0)
 	// Set board style
 	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
 	aBoard.setPenColor(Color::Black);
 	aBoard.setLineWidth(2);
 	aBoard.setFillColor(Color::None);
+#endif
       }
     };
 
@@ -767,6 +771,7 @@ namespace DGtal
      */
     std::string styleName() const;
 
+#if(0)
     /**
      * Draw the DSS on a LiBoard board as its bounding box and the
      * polyline of its points 
@@ -776,11 +781,12 @@ namespace DGtal
      *
      */
     void selfDraw(Board2D & board ) const;
+#endif
     
     
   }; // end of class ArithmeticalDSS
 
-
+#if(0)
 /**
  * Modifier class in a Board2D stream. Realizes the concept
  * CDrawableWithBoard2D.
@@ -802,6 +808,7 @@ struct DrawDSSPoints : public DrawWithBoardModifier {
     board.myModes[ "ArithmeticalDSS" ] = "Points";
   }
 };
+#endif
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.

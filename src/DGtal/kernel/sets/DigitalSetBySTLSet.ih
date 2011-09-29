@@ -462,6 +462,7 @@ DGtal::DigitalSetBySTLSet<Domain>::styleName() const
   return "DigitalSetBySTLSet";
 }
 
+#if(0)
 /**
  * Draw the object on a LibBoard board.
  * @param board the output board where the object is drawn.
@@ -475,7 +476,7 @@ DGtal::DigitalSetBySTLSet<Domain>::selfDraw( Board2D & board ) const
   for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
     board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
 }
-
+#endif
 
 
 

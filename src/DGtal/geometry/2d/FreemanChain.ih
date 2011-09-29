@@ -1314,7 +1314,6 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 ///////////////////////////////////////////////////////////////////////////////
 // Drawing services                 
 
-
 template <typename TInteger>
 inline
 DGtal::DrawableWithBoard2D*
@@ -1335,7 +1334,7 @@ DGtal::FreemanChain<TInteger>::styleName() const
   return "FreemanChain";
 }
 
-
+#if(0)
 template <typename TInteger>
 inline
 void 
@@ -1389,7 +1388,7 @@ DGtal::FreemanChain<TInteger>::selfDrawAsInterGrid(Board2D & aBoard) const
   }
   aBoard.drawPolyline(contour);
 }
-
+#endif
 
 template <typename TInteger>
 inline
@@ -1411,8 +1410,10 @@ struct SelfDrawStyle
 {
   SelfDrawStyle(Board2D & aBoard)
   {
+#if(0)
     aBoard.setFillColor(Color::None);
     aBoard.setPenColor(Color::Black);
+#endif
   }
 };
 

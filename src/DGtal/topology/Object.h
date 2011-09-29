@@ -479,8 +479,10 @@ namespace DGtal
       {
         virtual void selfDraw(Board2D & aBoard) const
         {
+#if(0)
           aBoard.setFillColorRGBi(160, 160, 160);
           aBoard.setPenColorRGBi(80, 80, 80);
+#endif
         }
       };
 
@@ -502,6 +504,7 @@ namespace DGtal
        */
       std::string styleName() const;
 
+#if(0)
       /**
        * Draw the object on a Board2D board.
        * @param board the output board where the object is drawn.
@@ -523,7 +526,7 @@ namespace DGtal
        * @param board the output board where the object is drawn.
        */
       void selfDrawWithAdjacencies(Board2D & board ) const;
-
+#endif
 
     
 
@@ -581,6 +584,7 @@ namespace DGtal
   operator<< ( std::ostream & out,
       const Object<TDigitalTopology, TDigitalSet> & object );
 
+#if(0)
   /**
    * Modifier class in a Board2D stream. Realizes the concept
    * CDrawableWithBoard2D.
@@ -596,7 +600,7 @@ namespace DGtal
     }
     bool myDrawAdj;
   };
-
+#endif
 
 
 } // namespace DGtal

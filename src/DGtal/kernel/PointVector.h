@@ -55,7 +55,7 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 //#include "DGtal/io/Display3D.h"
 
@@ -724,10 +724,12 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
 	aBoard.setPenColorRGBi(160,160,160);
 	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi(220,220,220);
 	aBoard.setLineWidth(1);
+#endif
       }
     };
 
@@ -736,8 +738,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
 	aBoard.setPenColor(Color::Black);
 	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+#endif
       }
     };
 
@@ -758,7 +762,8 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string styleName() const;
-    
+
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
@@ -779,7 +784,7 @@ namespace DGtal
      * @param board the output board where the object is drawn.
      */
     void selfDrawAsGrid( Board2D & board ) const;
-    
+#endif    
     
 
 
@@ -804,6 +809,7 @@ namespace DGtal
     
     // ----------------------- Interface --------------------------------------
   public:
+#if(0)
     /**
      * Draw the object (as a Vector from aPoint) on a Board2D board
      *
@@ -812,6 +818,7 @@ namespace DGtal
      * @tparam Functor a Functor to specialize the Board style
      */
     void selfDraw( Board2D & board, const Self &startingPoint ) const;
+#endif
 
     /**
      * Writes/Displays the object on an output stream.
@@ -837,6 +844,7 @@ namespace DGtal
   }; // end of class PointVector
 
   
+#if(0)
   /**
    * Modifier class in a Board2D stream. Realizes the concept
    * CDrawableWithBoard2D.
@@ -858,6 +866,7 @@ namespace DGtal
       board.myModes[ "PointVector" ] = "Grid";
     }
   };
+#endif
 
 
 

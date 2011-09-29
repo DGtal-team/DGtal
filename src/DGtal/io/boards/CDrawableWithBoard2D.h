@@ -120,7 +120,7 @@ namespace DGtal
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
-      myT.selfDraw( myB );
+      //myT.selfDraw( myB );
     }
 
     // ------------------------- Private Datas --------------------------------

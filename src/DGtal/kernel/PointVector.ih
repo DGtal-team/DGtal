@@ -731,6 +731,7 @@ DGtal::PointVector<dim, TComponent>::styleName() const
   return "PointVector";
 }
 //------------------------------------------------------------------------------
+#if(0)
 template<Dimension dim, typename TComponent>
 inline
 void
@@ -784,7 +785,7 @@ DGtal::PointVector<dim, TComponent>::selfDraw(Board2D & board,
       (float) apoint[0] + myArray[0], (float)apoint[1] + myArray[1],
       true);
 }
-
+#endif
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

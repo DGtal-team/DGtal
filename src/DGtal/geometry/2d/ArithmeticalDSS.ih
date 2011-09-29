@@ -1113,7 +1113,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
 
 
 
-
+#if(0)
 /**
  * Draw the bounding box of the DSS on a LiBoard board
  * @param board the output board where the object is drawn.
@@ -1182,7 +1182,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
  
 
 }
-
+#endif
 
 
 /**
@@ -1211,6 +1211,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::styleName() const
   return "ArithmeticalDSS";
 }
 
+#if(0)
 /**
  * Draw the object on a LibBoard board.
  * @param board the output board where the object is drawn.
@@ -1234,7 +1235,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( Board2D & boa
     ASSERT(false && ("DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode)==""  );
 
 }
-
+#endif
 
 
 
