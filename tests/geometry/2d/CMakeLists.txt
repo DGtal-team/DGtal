@@ -16,6 +16,7 @@ SET(DGTAL_TESTS_SRC
   testCombinDSS
   testShapesFromPoints
   testGeometricalDSS
+  testGeometricalDCA
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
