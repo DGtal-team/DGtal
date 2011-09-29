@@ -6,6 +6,7 @@ SET(DGTAL_EXAMPLES_SRC
   freemanChainFromImage
   exampleGridCurve2d
   examplePreimage
+  exampleGeometricalDSS
 )
 
 
