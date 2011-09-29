@@ -38,6 +38,8 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
+#include "DGtal/io/boards/Board2D.h"
+
 
 #include "ConfigTest.h"
 
@@ -86,7 +88,7 @@ bool testTangentFromDSS(
   TangentAngleFromDSSFunctor<DSSComputer> f; 
   //call
   double v1 = f(*begin,dss); 
-  double v2 = std::atan2(dss.getA(),dss.getB());
+  double v2 = std::atan2((double)dss.getA(),(double)dss.getB());
   trace.info() << "Tangent orientation : " << v1 << " == " << v2 << endl;
 
   return (v1 == v2);

@@ -303,7 +303,7 @@ namespace DGtal
       template <typename TypeSegment, typename TypeIterator>
       void extension(TypeSegment& aSeg, TypeIterator& it);
 
-      /**
+       /**
        * Extension of the segment along the (circular) sequence while it is possible.
        * @param aSeg a segment computer
        * @param it an iterator on a sequence

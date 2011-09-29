@@ -240,6 +240,7 @@ DGtal::GridCurve<TKSpace>::styleName() const
   return "GridCurve";
 }
 //------------------------------------------------------------------------------
+#if(0)
 template <typename TKSpace>
 inline
 void 
@@ -252,7 +253,7 @@ DGtal::GridCurve<TKSpace>::selfDraw(Board2D & aBoard) const
     aBoard << my1SCells.at(i);
   }
 }
-
+#endif
 
 
 

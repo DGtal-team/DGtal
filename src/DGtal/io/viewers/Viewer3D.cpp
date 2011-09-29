@@ -77,18 +77,20 @@ DGtal::Viewer3D::isValid() const
 
 void
 DGtal::Viewer3D::drawWithNames()
-{   
+{     
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++)
+    {
+      glCallList(myListToAff+i);
+    }
+  for(unsigned int i=0; i<myLineSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+i);
+    }
   
-  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
-    glCallList(myListToAff+i);
-  }
-  for(unsigned int i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+i);
-  }
-  
-  for(unsigned int i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
-  }   
+  for(unsigned int i=0; i<myPointSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+    }   
 }
 
 
@@ -223,7 +225,7 @@ DGtal::Viewer3D::init()
 void 
 DGtal::Viewer3D::sortSurfelFromCamera()
 {
-  compFarthestFromCamera comp;
+  compFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
     {
@@ -278,7 +280,7 @@ DGtal::Viewer3D::postSelection(const QPoint& point)
 
 
 void
-DGtal::Viewer3D::updateList(bool updateBoundingBox)
+DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
 { 
   unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
   glDeleteLists(myListToAff, myNbListe);
@@ -309,44 +311,44 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
 	{
   
 	  glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-	  double width=(*s_it).width;
+	  double _width=(*s_it).width;
    
 	  //z+
 	  glNormal3f( 0.0, 0.0, 1.0);
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width);
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width);
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width);
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width);
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z+_width);
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z+_width);
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z+_width);
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z+_width);
 	  //z-
 	  glNormal3f( 0.0, 0.0, -1.0);
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width);
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width);
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width);
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width);
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z-_width);
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z-_width);
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z-_width);
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z-_width);
 	  //x+
 	  glNormal3f( 1.0, 0.0, 0.0);
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z-_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z-_width );
 	  //x-
 	  glNormal3f( -1.0, 0.0, 0.0);
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width );
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width );
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width );
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z-_width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z-_width );
 	  //y+
 	  glNormal3f( 0.0, 1.0, 0.0);
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width );
-	  glVertex3f((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y+_width, (*s_it).z-_width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y+_width, (*s_it).z-_width );
 	  //y-
 	  glNormal3f( 0.0, -1.0, 0.0);
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width );
-	  glVertex3f((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width );
-	  glVertex3f((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width );      
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z+_width );
+	  glVertex3f((*s_it).x+_width,  (*s_it).y-_width, (*s_it).z-_width );
+	  glVertex3f((*s_it).x-_width,  (*s_it).y-_width, (*s_it).z-_width );  
 	}
       glEnd();
       glEndList();
@@ -435,7 +437,7 @@ DGtal::Viewer3D::updateList(bool updateBoundingBox)
     
     }   
 
-  if( updateBoundingBox)
+  if( needToUpdateBoundingBox )
     {
       setSceneBoundingBox(qglviewer::Vec(myBoundingPtLow[0],myBoundingPtLow[1],myBoundingPtLow[2]),
 			  qglviewer::Vec(myBoundingPtUp[0], myBoundingPtUp[1], myBoundingPtUp[2]));

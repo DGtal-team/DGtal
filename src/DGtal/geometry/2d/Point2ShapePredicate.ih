@@ -38,25 +38,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
-template <typename Shape, bool isUpward, bool isClosed>
+
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::~Point2ShapePredicate()
+DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::~Point2ShapePredicate()
 {
 }
 
-/**
- * Constructor.
- * @param firstPoint, secondPoint, two points
- * that uniquely define the Point2ShapePredicate
- */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
-        const Shape& aShape):
-        myS(aShape)
+DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
+        const TSurface& aSurface):
+        myS(aSurface)
 {
 }
 
@@ -64,35 +57,27 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>::Point2ShapePredicate(
+DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
         const Point2ShapePredicate & other):
         myS(other.myS)
 {
 }
 
 
-
-
-/**
- * Checks whether [aPoint] belongs to the Point2ShapePredicate or not 
- * @param aPoint, the point to be tested.
- * @return 'true' if [aPoint] belongs to the Point2ShapePredicate
- * 'false' otherwise.
- */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 bool
-DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
-::operator()(const Point& aPoint) const
+DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
+::operator()(const Point& p) const
 {
   DGtal::Point2ShapePredicateComparator<
-    typename Shape::Coordinate,
+    Distance,
     isUpward,
     isClosed> theComparator;
 
-  return theComparator(myS.signedDistance(aPoint),0);
+  return theComparator(myS.signedDistance(p),0);
 }
 
 
@@ -100,18 +85,15 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 void
-DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
+DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "[Point2ShapePredicate] :\n";
-  out << myS << "\n";
+  myS.selfDisplay(out);
+  out << "\n";
   std::string orientation = (isUpward)?
           "upward oriented":"downward oriented";
   std::string closure = (isClosed)?
@@ -123,11 +105,11 @@ DGtal::Point2ShapePredicate<Shape,isUpward,isClosed>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Shape, bool isUpward, bool isClosed>
+template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-      const Point2ShapePredicate<Shape,isUpward,isClosed> & object )
+      const Point2ShapePredicate<TSurface,isUpward,isClosed> & object )
 {
   object.selfDisplay( out );
   return out;

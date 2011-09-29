@@ -114,7 +114,7 @@ DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterat
  */
   template <typename TSegment>
 inline
-typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterator& 
+typename DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator& 
 DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::operator=
 ( const SegmentIterator & other )
 {

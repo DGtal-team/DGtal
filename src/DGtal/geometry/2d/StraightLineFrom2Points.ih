@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file StraightLine.ih
+ * @file StraightLineFrom2Points.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/10/27
  *
- * Implementation of inline methods defined in StraightLine.h
+ * Implementation of inline methods defined in StraightLineFrom2Points.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,23 +38,33 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLine<TInteger>::~StraightLine()
+DGtal::StraightLineFrom2Points<TPoint>::~StraightLineFrom2Points()
 {
 }
 
-/**
- * Constructor.
- * @param firstPoint, secondPoint, two points
- * that uniquely define the StraightLine
- */
-template <typename TInteger>
+template <typename TPoint>
 inline
-DGtal::StraightLine<TInteger>::StraightLine(
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points()
+{
+}
+
+template <typename TPoint>
+inline
+void
+DGtal::StraightLineFrom2Points<TPoint>::init(
+        const Point& aFirstPoint, 
+        const Point& aSecondPoint)
+{
+  myP = aFirstPoint;
+  myQ = aSecondPoint;
+}
+
+
+template <typename TPoint>
+inline
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
         const Point& aFirstPoint, 
         const Point& aSecondPoint):
         myP(aFirstPoint),
@@ -62,29 +72,22 @@ DGtal::StraightLine<TInteger>::StraightLine(
 {
 }
 
-/**
- * Copy constructor.
- * @param other the object to clone.
- */
-template <typename TInteger>
+
+template <typename TPoint>
 inline
-DGtal::StraightLine<TInteger>::StraightLine(
-        const StraightLine & other):
+DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
+        const StraightLineFrom2Points & other):
         myP(other.myP),
         myQ(other.myQ)
 {
 }
 
-/**
- * Assignment.
- * @param other the object to copy.
- * @return a reference on 'this'.
- */
-template <typename TInteger>
+
+template <typename TPoint>
 inline
-DGtal::StraightLine<TInteger>&
-DGtal::StraightLine<TInteger>::operator=(
-        const StraightLine & other)
+DGtal::StraightLineFrom2Points<TPoint>&
+DGtal::StraightLineFrom2Points<TPoint>::operator=(
+        const StraightLineFrom2Points & other)
 {
   myP = other.myP;
   myQ = other.myQ;
@@ -92,15 +95,11 @@ DGtal::StraightLine<TInteger>::operator=(
 }
 
 
-/**
- * Computes the signed distance of [aP] to the StraightLine
- * @param aP, the point to be tested.
- * @return the signed distance.
- */
-template <typename TInteger>
+
+template <typename TPoint>
 inline
-TInteger
-DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
+typename DGtal::StraightLineFrom2Points<TPoint>::Distance
+DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
 {
   Vector pq = myQ - myP;
   Vector pr = aP - myP;
@@ -113,46 +112,45 @@ DGtal::StraightLine<TInteger>::signedDistance(const Point& aP) const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/**
- * Draw the part of the straight line lying between 
- * the two given point on a LiBoard board
- * @param board the output board where the object is drawn.
- * @tparam Functor a Functor to specialize the Board style
- */
-template <typename TInteger>
-template<typename Functor>
+template <typename TPoint>
 inline
-void 
-DGtal::StraightLine<TInteger>::selfDraw( LibBoard::Board & aBoard) const
+DGtal::DrawableWithBoard2D*
+DGtal::StraightLineFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
 {
-
-  Functor applystyle(aBoard);
-
-  aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
+  return new DrawableWithBoard2D; 
 }
 
+template <typename TPoint>
+inline
+std::string
+DGtal::StraightLineFrom2Points<TPoint>::styleName() const
+{
+  return "StraightLineFrom2Points";
+}
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename TInteger>
+#if(0)
+template <typename TPoint>
+inline
+void 
+DGtal::StraightLineFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
+{
+  aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
+}
+#endif
+
+template <typename TPoint>
 inline
 void
-DGtal::StraightLine<TInteger>::selfDisplay ( std::ostream & out ) const
+DGtal::StraightLineFrom2Points<TPoint>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[StraightLine] passing through:\n";
+  out << "[StraightLineFrom2Points] passing through:\n";
   out << myP << myQ;
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename TInteger>
+template <typename TPoint>
 inline
 bool
-DGtal::StraightLine<TInteger>::isValid() const
+DGtal::StraightLineFrom2Points<TPoint>::isValid() const
 {
     return true;
 }

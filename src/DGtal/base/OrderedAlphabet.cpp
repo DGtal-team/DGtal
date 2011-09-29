@@ -33,7 +33,7 @@
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 
 // Includes inline functions/methods if necessary.
-#if !defined(INLINE)
+#if !defined(BUILD_INLINE)
 #include "DGtal/base/OrderedAlphabet.ih"
 #endif
 ///////////////////////////////////////////////////////////////////////////////

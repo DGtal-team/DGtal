@@ -28,13 +28,14 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of static constants
 ///////////////////////////////////////////////////////////////////////////////
+
+#if (!defined(WIN32))
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
@@ -50,6 +51,7 @@ DGtal::KhalimskySpaceND< dim, TInteger >::POS = true;
 template < Dimension dim, typename TInteger >
 const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
 DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -148,6 +150,7 @@ styleName() const
 {
   return "KhalimskyCell";
 }
+#if(0)
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
@@ -169,7 +172,7 @@ selfDraw( Board2D & board ) const
            !yodd ? y + retract - 0.5 : y - retract + 0.5,
            dx, dy );
 }
-
+#endif
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -418,6 +421,7 @@ styleName() const
   return "SignedKhalimskyCell";
 }
 //------------------------------------------------------------------------------
+#if(0)
 template < Dimension dim, typename TInteger >
 inline
 void
@@ -438,6 +442,7 @@ selfDraw( Board2D & board ) const
            !yodd ? y + retract - 0.5 : y - retract + 0.5,
            dx, dy );
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // CellDirectionIterator

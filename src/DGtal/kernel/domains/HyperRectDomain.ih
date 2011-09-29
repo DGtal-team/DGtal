@@ -210,28 +210,28 @@ DGtal::HyperRectDomain<TSpace>::selfDrawAsGrid( Board2D & aboard) const
 
   if (TSpace::dimension == 2)
   {
-    for (int64_t x = NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
+    for (double x = NumberTraits<Integer>::castToDouble(myLowerBound[0]); 
+   x <=  NumberTraits<Integer>::castToDouble(myUpperBound[0]); x++)
       aboard.drawLine(x,
-          NumberTraits<Integer>::castToInt64_t(myLowerBound[1]) -
+          NumberTraits<Integer>::castToDouble(myLowerBound[1]) -
           0.5,
           x, 
-          NumberTraits<Integer>::castToInt64_t(myUpperBound[1]) +
+          NumberTraits<Integer>::castToDouble(myUpperBound[1]) +
           0.5);
 
-    for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-   y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
-      aboard.drawLine(NumberTraits<Integer>::castToInt64_t(myLowerBound[0]) -
+    for (double y =  NumberTraits<Integer>::castToDouble(myLowerBound[1]);
+   y <=  NumberTraits<Integer>::castToDouble(myUpperBound[1]); y++)
+      aboard.drawLine(NumberTraits<Integer>::castToDouble(myLowerBound[0]) -
           0.5,
           y, 
-          NumberTraits<Integer>::castToInt64_t(myUpperBound[0]) +
+          NumberTraits<Integer>::castToDouble(myUpperBound[0]) +
           0.5,
           y);
 
-    for (int64_t x =  NumberTraits<Integer>::castToInt64_t(myLowerBound[0]); 
-   x <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[0]); x++)
-      for (int64_t y =  NumberTraits<Integer>::castToInt64_t(myLowerBound[1]);
-     y <=  NumberTraits<Integer>::castToInt64_t(myUpperBound[1]); y++)
+    for (double x =  NumberTraits<Integer>::castToDouble(myLowerBound[0]); 
+   x <=  NumberTraits<Integer>::castToDouble(myUpperBound[0]); x++)
+      for (double y =  NumberTraits<Integer>::castToDouble(myLowerBound[1]);
+     y <=  NumberTraits<Integer>::castToDouble(myUpperBound[1]); y++)
         aboard.fillCircle(x, y, 0.1);
   }
 }

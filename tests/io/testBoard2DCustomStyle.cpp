@@ -50,7 +50,7 @@ using namespace DGtal;
  */
 struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
-  virtual void selfDraw( LibBoard::Board & aBoard ) const
+  virtual void selfDraw( DGtal::Board2D & aBoard ) const
    {
      aBoard.setFillColorRGBi(0,160,0);
      aBoard.setPenColorRGBi(80,0,0);
@@ -91,14 +91,14 @@ bool testBoard2DCustomStyle()
   Board2D board;
   board.setUnit(LibBoard::Board::UCentimeter);
   
-  board << DrawDomainGrid()
+  board /*<< DrawDomainGrid()*/
   << domain 
   << mySet;
   board.saveSVG("testcustom-prev.svg");
 
   board.clear();
 
-  board << DrawDomainGrid()
+  board /*<< DrawDomainGrid()*/
   << domain 
   << CustomStyle( mySet.styleName(), new MyDrawStyleCustomGreen )
   << mySet;

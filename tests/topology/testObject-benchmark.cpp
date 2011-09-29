@@ -43,6 +43,7 @@
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/Expander.h"
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -478,24 +479,24 @@ bool testDraw()
   Board2D board;
   board.setUnit(Board::UCentimeter);
 
-  domain.selfDrawAsGrid(board);
-  disk_object.selfDraw(board);
+  //domain.selfDrawAsGrid(board);
+  board << disk_object;
 
   board.saveSVG("disk-object.svg");
 
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
 
-  domain.selfDrawAsGrid(board2);
-  disk_object.selfDrawWithAdjacencies(board2);
+  //domain.selfDrawAsGrid(board2);
+  //disk_object.selfDrawWithAdjacencies(board2);
 
   board2.saveSVG("disk-object-adj.svg");
 
   Board2D board3;
   board3.setUnit( Board::UCentimeter );
 
-  domain.selfDrawAsGrid(board3);
-  disk_object2.selfDrawWithAdjacencies(board3);
+  //domain.selfDrawAsGrid(board3);
+  //disk_object2.selfDrawWithAdjacencies(board3);
 
   board3.saveSVG("disk-object-adj-bis.svg");
   trace.endBlock();
