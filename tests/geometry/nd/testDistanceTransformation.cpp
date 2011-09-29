@@ -108,7 +108,7 @@ bool testDistanceTransformation()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Gray> ( board, 0, 255 );
+  //image.selfDraw<Gray> ( board, 0, 255 );
   board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
@@ -135,7 +135,7 @@ bool testDistanceTransformation()
 
 
   board.clear();
-  result.selfDraw<Gray> ( board, 0, 16 );
+  //result.selfDraw<Gray> ( board, 0, 16 );
   board.saveSVG ( "image-postDT.svg" );
 
 
@@ -182,7 +182,7 @@ bool testDistanceTransformationNeg()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Gray> ( board, 0, 1 );
+  //image.selfDraw<Gray> ( board, 0, 1 );
   board.saveSVG ( "image-preDT-neg.svg" );
 
 
@@ -218,7 +218,7 @@ bool testDistanceTransformationNeg()
   trace.warning() << result << endl;
 
   board.clear();
-  result.selfDraw<Gray> ( board, 0, maxv );
+  //result.selfDraw<Gray> ( board, 0, maxv );
   board.saveSVG ( "image-postDT-neg.svg" );
 
 
@@ -270,7 +270,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  result.selfDraw<Hue> ( board, 0, maxv+1);
+  //result.selfDraw<Hue> ( board, 0, maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
   
   board.clear();
@@ -280,7 +280,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  result0.selfDraw<Hue> ( board, 0, maxv+1);
+  //result0.selfDraw<Hue> ( board, 0, maxv+1);
   board.saveSVG ( "image-DTSet-linfty.svg" );
   
   board.clear();
@@ -290,7 +290,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  result1.selfDraw<Hue> ( board, 0, maxv+1);
+  //result1.selfDraw<Hue> ( board, 0, maxv+1);
   board.saveSVG ( "image-DTSet-l1.svg" );
   trace.endBlock();
 
@@ -334,7 +334,7 @@ bool testDistanceTransformationBorder()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Hue> ( board, 0, 150 );
+  //image.selfDraw<Hue> ( board, 0, 150 );
   board.saveSVG ( "image-preDT-border.svg" );
 
 
@@ -360,7 +360,7 @@ bool testDistanceTransformationBorder()
 
 
   board.clear();
-  result.selfDraw<Hue> ( board, 0, maxv + 1);
+  //result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-postDT-border.svg" );
 
 
@@ -532,7 +532,7 @@ bool testChessboard()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  result.selfDraw<Hue> ( board, 0, maxv + 1);
+  //result.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-linfty.svg" );
   trace.info()<< "done"<<endl;
 
@@ -550,7 +550,7 @@ bool testChessboard()
   
   trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
-  result1.selfDraw<Hue> ( board, 0, maxv + 1);
+  //result1.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-l1.svg" );
   trace.info()<< "done"<<endl;
   
@@ -565,7 +565,7 @@ bool testChessboard()
   
   trace.info()<< "Exporting to SVG L2"<<endl;
   board.clear();
-  result2.selfDraw<Hue> ( board, 0, maxv + 1);
+  //result2.selfDraw<Hue> ( board, 0, maxv + 1);
   board.saveSVG ( "image-DT-l2.svg" );
   trace.info()<< "done"<<endl;
   trace.info() << result << endl;

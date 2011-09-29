@@ -183,6 +183,7 @@ DGtal::Preimage2D<Shape>::styleName() const
   return "Preimage2D";
 }
 
+#if(0)
 template <typename Shape>
 inline
 void 
@@ -221,7 +222,7 @@ DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
   s.selfDraw(aBoard);
 
 }
-
+#endif
 
 template <typename Shape>
 inline

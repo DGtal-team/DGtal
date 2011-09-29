@@ -87,7 +87,7 @@ ImageContainerBySTLVector<Domain, T>::extent() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // libBoard export
-
+#if(0)
 template <typename D, typename V>
 template<typename Colormap>
 inline
@@ -115,6 +115,7 @@ DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
        castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
+#endif
 //------------------------------------------------------------------------------
 template <typename D, typename V>
 inline

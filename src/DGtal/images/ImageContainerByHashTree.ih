@@ -745,7 +745,7 @@ namespace DGtal
     return "ImageContainerByHashTree";
   }
 
-
+#if(0)
   template <typename Domain, typename Value, typename HashKey  >
   template <typename C>
   void
@@ -810,7 +810,7 @@ namespace DGtal
       recursiveDraw ( children[3], np, nlen, board, cmap );
     }
   }
-
+#endif
 
 
   template <typename Domain, typename Value, typename HashKey  >

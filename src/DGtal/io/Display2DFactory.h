@@ -47,6 +47,7 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
 #include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/FP.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -57,9 +58,6 @@
 #include "DGtal/math/AngleLinearMinimizer.h"
 
 // TODO: begin
-// remettre exampleGridCurve2d
-// remettre examplePreimage
-
 // remettre testGridCurve
 // remettre testPreimage
 
@@ -75,6 +73,19 @@
 //    c.drawArc(board, Point(5,10), Point(8,4)); 
 //   c.drawSector(board, Point(9,3), Point(10,0) ); 
 //    c.drawAnnulus(board, Point(5,-10), Point(2,-4) );
+
+// test testHashTree.cpp
+//tests/kernel/testHashTree.cpp:175:11: error: ‘class testGetSetVal()::Image’ has no member named ‘selfDraw’
+//tests/kernel/testHashTree.cpp:178:12: error: ‘class testGetSetVal()::ImageVector’ has no member named ‘selfDraw’
+
+// test /home/user/Desktop/DGtal.git/DGtal/tests/geometry/nd/testDistanceTransformation.cpp
+//ligne 111 138 185 - 221 273 283 - 293 337 363 535 - 553 568
+
+//home/user/Desktop/DGtal.git/DGtal/tests/io/writers/testPNMRawWriter.cpp
+//ligne 99
+
+//home/user/Desktop/DGtal.git/DGtal/examples/geometry/distancetransform2D.cpp
+//ligne 99 130 135 140
 
 // test testDigitalSet.cpp
 //tests/kernel/testDigitalSet.cpp:116:27: error: ‘DrawDomainGrid’ was not declared in this scope
@@ -99,7 +110,7 @@
 //tests/topology/testObjectBorder.cpp:170:29: error: ‘DrawDomainGrid’ was not declared in this scope
 //tests/topology/testObjectBorder.cpp:173:36: error: ‘DrawObjectAdjacencies’ was not declared in this scope
 //tests/topology/testObjectBorder.cpp:195:12: error: ‘class testObjectBorder()::Domain’ has no member named ‘selfDrawAsGrid’
-et ligne 197 aussi
+//et ligne 197 aussi
 //tests/topology/testObjectBorder.cpp:216:45: error: ‘DrawObjectAdjacencies’ was not declared in this scope
 //tests/topology/testObjectBorder.cpp:218:45: error: ‘DrawObjectAdjacencies’ was not declared in this scope
 //tests/topology/testObjectBorder.cpp:291:29: error: ‘DrawDomainGrid’ was not declared in this scope
@@ -112,7 +123,7 @@ et ligne 197 aussi
 //tests/topology/testSimpleExpander.cpp:156:34: error: ‘DrawObjectAdjacencies’ was not declared in this scope
 //tests/topology/testSimpleExpander.cpp:172:28: error: ‘DrawDomainGrid’ was not declared in this scope
 //tests/topology/testSimpleExpander.cpp:173:34: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-et lignes 189-190 aussi
+//et lignes 189-190 aussi
 //tests/topology/testSimpleExpander.cpp:267:28: error: ‘DrawDomainGrid’ was not declared in this scope
 //tests/topology/testSimpleExpander.cpp:268:35: error: ‘DrawObjectAdjacencies’ was not declared in this scope
 //tests/topology/testSimpleExpander.cpp:290:27: error: ‘DrawDomainGrid’ was not declared in this scope
@@ -164,9 +175,16 @@ namespace DGtal
     template <typename TKSpace>
     static void draw( Board2D & board, const typename DGtal::GridCurve<TKSpace>::SCellsRange & );
     
+    
     template <typename TKSpace>
-    static void draw( Board2D & board, const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & );
+    static void draw( Board2D & board, const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange &);
     // GridCurve
+    
+    
+    // Preimage2D
+    template <typename Shape>
+    static void draw( Board2D & board, const DGtal::Preimage2D<Shape> & );
+    // Preimage2D
     
     
     // PointVector

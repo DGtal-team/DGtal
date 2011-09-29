@@ -78,8 +78,10 @@ struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
   void selfDraw(Board2D & aboard) const
   {
+#if(0)
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
+#endif
   }
 };
 

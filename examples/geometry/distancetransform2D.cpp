@@ -96,7 +96,7 @@ int main()
   //Input shape output
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Gray> ( board , 0, 129);
+  //image.selfDraw<Gray> ( board , 0, 129);
   board.saveSVG("inputShape.svg");
 
   typedef  DistanceTransformation<Image, 2> DTL2;
@@ -127,17 +127,17 @@ int main()
   
   trace.warning() << resultL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
-  resultL2.selfDraw<HueTwice> ( board , 0, maxv2 + 1 );
+  //resultL2.selfDraw<HueTwice> ( board , 0, maxv2 + 1 );
   board.saveSVG ( "example-DT-L2.svg" );
 
   trace.warning() << resultL1 << " maxValue= "<<maxv1<< endl;
   board.clear();
-  resultL1.selfDraw<HueTwice> ( board , 0, maxv1 + 1 );
+  //resultL1.selfDraw<HueTwice> ( board , 0, maxv1 + 1 );
   board.saveSVG ( "example-DT-L1.svg" );
 
   trace.warning() << resultLinf << " maxValue= "<<maxv<< endl;
   board.clear();
-  resultLinf.selfDraw<HueTwice> ( board , 0, maxv + 1 );
+  //resultLinf.selfDraw<HueTwice> ( board , 0, maxv + 1 );
   board.saveSVG ( "example-DT-Linf.svg" );
 
   trace.endBlock();

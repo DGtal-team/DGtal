@@ -137,6 +137,7 @@ DGtal::CircleFrom2Points<TPoint>::styleName() const
   return "CircleFrom2Points";
 }
 
+#if(0)
 template <typename TPoint>
 inline
 void 
@@ -145,7 +146,7 @@ DGtal::CircleFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
 	CircleFrom3Points<Point> c(myPole,myP,myQ); 
   c.drawArc(aBoard,myP,myQ);  
 }
-
+#endif
 
 template <typename TPoint>
 inline

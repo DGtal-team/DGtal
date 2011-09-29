@@ -483,8 +483,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
+#if(0)
   aBoard.setPenColorRGBi(60, 60, 60);
   aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+#endif
       }
     };
 
@@ -501,7 +503,7 @@ namespace DGtal
      */
     std::string styleName() const;
 
-
+#if(0)
     /**
      * Draw the object on a Board2D board.
      * @param board the output board where the object is drawn.
@@ -511,6 +513,7 @@ namespace DGtal
      */
     template<typename Colormap>
     void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
+#endif
 
   };
 
