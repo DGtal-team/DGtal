@@ -514,10 +514,12 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
   virtual void selfDraw(Board2D & aboard) const
   {
+#if(0)
     aboard.setFillColor( Color::Red);
     aboard.setPenColorRGBi(200,0,0);
     aboard.setLineStyle(LibBoard::Shape::SolidStyle);
     aboard.setLineWidth( 2 );
+#endif
   }
 };
 
@@ -529,10 +531,12 @@ struct MyDrawStyleCustomFillColor : public DrawableWithBoard2D
   {}
   virtual void selfDraw(Board2D & aboard) const
   {
+#if(0)
     aboard.setFillColor( myColor );
     aboard.setPenColorRGBi( 0, 0, 0 );
     aboard.setLineStyle( LibBoard::Shape::SolidStyle );
     aboard.setLineWidth( 1.0 );
+#endif
   }
 };
 

@@ -394,7 +394,8 @@ namespace DGtal
 
 
   public:
-    
+
+#if(0)
     /**
      * Draw the object on a LiBoard board
      * @param board the output board where the object is drawn.
@@ -402,6 +403,7 @@ namespace DGtal
      */
     template<typename Functor>
     void selfDraw(Board2D & board ) const;
+#endif
 
     // ------------------------- Hidden services ------------------------------
   protected:

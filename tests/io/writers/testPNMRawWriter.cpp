@@ -96,7 +96,7 @@ bool testPNMWriter()
   //test Image export with libboard
   Board2D  board;
   board.setUnit(LibBoard::Board::UCentimeter);
-  image.selfDraw<HueTwice>(board,0,255);
+  //image.selfDraw<HueTwice>(board,0,255);
   board.saveSVG("export-hue-twice.svg");
 
   trace.endBlock();

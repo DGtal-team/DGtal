@@ -312,11 +312,11 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    /*virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor);
       aboard.setPenColor( myPenColor );
-    }
+    }*/
   };
 
   /**
@@ -343,10 +343,10 @@ namespace DGtal
       : myPenColor( penColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    /*virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
-    }
+    }*/
   };
 
   /**
@@ -373,10 +373,10 @@ namespace DGtal
       : myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    /*virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor );
-    }
+    }*/
   };
 
   /**
@@ -429,7 +429,7 @@ namespace DGtal
   myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    /*virtual void selfDraw( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
       aboard.setFillColor( myFillColor );
@@ -437,7 +437,7 @@ namespace DGtal
       aboard.setLineStyle( myLineStyle );
       aboard.setLineCap( myLineCap );
       aboard.setLineJoin( myLineJoin );
-    }
+    }*/
   };
 
 } // namespace DGtal
