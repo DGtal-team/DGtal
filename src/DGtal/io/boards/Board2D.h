@@ -188,15 +188,6 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
   }; // end of class Board2D
 
 
