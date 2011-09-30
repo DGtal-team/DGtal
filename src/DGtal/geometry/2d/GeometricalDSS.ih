@@ -235,6 +235,50 @@ DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
+DGtal::GeometricalDSS<TConstIterator>::isLeftExterior()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  Pair aPair( *myEnd ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isLeftExteriorAtTheFront( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isLeftExteriorAtTheBack( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isRightExterior()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  Pair aPair( *myEnd ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isRightExteriorAtTheFront( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isRightExteriorAtTheBack( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
 DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
