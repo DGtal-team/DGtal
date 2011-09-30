@@ -439,7 +439,14 @@ DGtal::GeometricalDCA<TConstIterator>::selfDraw(Board2D & aBoard) const
       ConstIterator it (myEnd); 
       --it;
       Pair lastPair( *it );  
-
+/*
+        RealPoint p1, p2; 
+  p1[0] = NumberTraits<Coordinate>::castToDouble(aPoint1[0]);  
+  p1[1] = NumberTraits<Coordinate>::castToDouble(aPoint1[1]);
+  p2[0] = NumberTraits<Coordinate>::castToDouble(aPoint2[0]);  
+  p2[1] = NumberTraits<Coordinate>::castToDouble(aPoint2[1]);
+  drawArc(aBoard, p1, p2, anOrientation); 
+      */
       //mode
       std::string mode = aBoard.getMode( styleName() );
       if ( mode == "Sector" ) 
