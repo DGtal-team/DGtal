@@ -62,19 +62,19 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 {
 }
 
-/*template <typename TKSpace>
+template <typename GC>
 inline
 void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const typename DGtal::GridCurve<TKSpace>::SCellsRange & gcscr )
+                                    const typename GC::SCellsRange & gcscr )
 {
 }
 
-template <typename TKSpace>
+template <typename GC>
 inline
 void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gcipr )
+                                    const typename GC::IncidentPointsRange & gcipr )
 {
-}*/
+}
 // GridCurve
 
 
@@ -91,7 +91,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // PointVector
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, const DGtal::PointVector<dim,TComponent> & p )
+void DGtal::Display2DFactory::draw( Board2D & board, 
+				    const DGtal::PointVector<dim,TComponent> & p )
 {
 }
 // PointVector
@@ -100,7 +101,8 @@ void DGtal::Display2DFactory::draw( Board2D & board, const DGtal::PointVector<di
 // HyperRectDomain
 template<typename TSpace>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display2DFactory::draw( Board2D & board, 
+				    const DGtal::HyperRectDomain<TSpace> & h )
 {
 }
 // HyperRectDomain
