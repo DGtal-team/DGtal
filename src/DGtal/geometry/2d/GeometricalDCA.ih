@@ -98,11 +98,15 @@ DGtal::GeometricalDCA<TConstIterator>::operator==( const Self& other ) const
       if ( (lastPair.first == oLastPair.first)
          &&(lastPair.second == oLastPair.second) )
       {
-        double a, b, r; 
-        myCircle.getParameters(a,b,r); 
-        double ap, bp, rp; 
-        other.myCircle.getParameters(ap,bp,rp); 
-        return ((a==ap)&&(b==bp)&&(r==rp)); 
+        if (myFlagIsInit)
+        {
+          double a, b, r; 
+          myCircle.getParameters(a,b,r); 
+          double ap, bp, rp; 
+          other.myCircle.getParameters(ap,bp,rp); 
+          return ((a==ap)&&(b==bp)&&(r==rp)); 
+        }
+        else return (*mySegPtr == *other.mySegPtr); 
       }
       else return false; 
     } 
@@ -167,6 +171,43 @@ DGtal::GeometricalDCA<TConstIterator>::end() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // Growth operations                                                        //
+
+template <typename TConstIterator>
+template <typename TIterator>
+inline
+bool 
+DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
+  const TIterator& itb, const TIterator& ite, 
+  const Point& aPole, 
+  Point& Pf, Point& Pl, Point& Qf, Point& Ql)
+{
+  ASSERT( itb != ite ); 
+  TIterator it( itb ); 
+  Pair currentPair( *it ); 
+  
+  //preimage of circles passing through aPole
+  CircleFrom2Points<Point> aCircle( aPole ); 
+  Preimage2D<CircleFrom2Points<Point> >
+    thePreimage( currentPair.first, currentPair.second, aCircle );
+  
+  bool isOK = true; 
+  ++it;
+  while ( (it != ite)&&(isOK) ) 
+  {
+    currentPair = *it; 
+    isOK = thePreimage.addFront(currentPair.first, currentPair.second); 
+    ++it;
+  }
+  
+  if (isOK)
+  {//points of support
+    Pf = thePreimage.getUf(); 
+    Pl = thePreimage.getUl(); 
+    Qf = thePreimage.getLf(); 
+    Ql = thePreimage.getLl();
+    return true; 
+  } else return false; 
+}
 
 template <typename TConstIterator>
 inline
@@ -236,8 +277,14 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
     
     if (! mySegPtr->extend() )
     {
-      //TODO isOK = update
-      myFlagIsInit = isOK ; 
+      //which point makes the recognition stop ?
+      Point Pf, Pl, Qf, Ql; 
+      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
+      {
+        myCircle.init(Qf,Pl,aQ); 
+        myFlagIsInit = true;
+        isOK = true; 
+      }
     }
   }
   

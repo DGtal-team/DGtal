@@ -253,6 +253,30 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     
+    /**
+     * Check if the two sets of points can be separated by circles
+     * passing through the given point @a aPole. 
+     * If yes, return the four points of support of the partial preimage.
+     * The pole and either @a Pf and @a Ql or @a Qf and @a Pl 
+     * implicitely describe a separating circle. 
+     *
+     * @param itb begin iterator on STL pairs of 2D points.
+     * @param ite end iterator on STL pairs of 2D points.
+     * @param aPole the point the circles pass through.
+     * @param Pf  (returned) first inner point of support.
+     * @param Pl  (returned) last inner point of support.
+     * @param Qf  (returned) first outer point of support.
+     * @param Ql  (returned) last outer point of support.
+     *
+     * @tparam TIterator type of iterator (normal or reverse type)
+     * 
+     * @return 'true' if the sets of points can be separated, 'false' otherwise
+     */
+    template <typename TIterator>
+    bool isCircularlySeparable(const TIterator& itb, const TIterator& ite, 
+                                              const Point& aPole, 
+                                              Point& Pf, Point& Pl, Point& Qf, Point& Ql);  
+  
     // ------------------------- Private Datas --------------------------------
   private:
 
