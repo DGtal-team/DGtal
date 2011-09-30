@@ -236,7 +236,7 @@ namespace DGtal
      *
      * NB: a true returned value implies that isExtendable() returns 'false'
      */
-    bool isLeftExterior();
+    bool isConcave();
 
     /**
      * Decide whether the extension of the segment
@@ -247,7 +247,7 @@ namespace DGtal
      *
      * NB: a true returned value implies that isExtendable() returns 'false'
      */
-    bool isRightExterior();
+    bool isConvex();
 
     /**
      * Backward extension of the segment.
