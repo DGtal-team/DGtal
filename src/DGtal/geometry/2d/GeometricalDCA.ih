@@ -447,14 +447,17 @@ DGtal::GeometricalDCA<TConstIterator>::selfDraw(Board2D & aBoard) const
   p2[1] = NumberTraits<Coordinate>::castToDouble(aPoint2[1]);
   drawArc(aBoard, p1, p2, anOrientation); 
       */
+      //orientation
+      ASSERT( mySegPtr.get() != 0 ); 
+      bool orientation = mySegPtr->isClockwiseOriented(); 
       //mode
       std::string mode = aBoard.getMode( styleName() );
       if ( mode == "Sector" ) 
-        myCircle.drawSector( aBoard, firstPair.first, lastPair.first );
+        myCircle.drawSector( aBoard, firstPair.first, lastPair.first, orientation );
       else if ( mode == "Annulus" )
-        myCircle.drawAnnulus( aBoard, firstPair.first, lastPair.first );
+        myCircle.drawAnnulus( aBoard, firstPair.first, lastPair.first, orientation );
       else 
-        myCircle.drawArc( aBoard, firstPair.first, lastPair.first );
+        myCircle.drawArc( aBoard, firstPair.first, lastPair.first, orientation );
     }
     else 
     {
