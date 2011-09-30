@@ -161,20 +161,36 @@ bool drawingTestGeometricalDCA(const TCurve& curve)
 
   typedef typename TCurve::IncidentPointsRange Range; //range
   typedef typename Range::ConstIterator ConstIterator; //iterator
+  typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
 
   Range r = curve.getIncidentPointsRange(); //range
 
-  GeometricalDCA<ConstIterator> s;
-  ConstIterator itEnd (r.end()); 
-  s.init( r.begin() );
-  while ( (s.end() != itEnd) && (s.extend()) ) {}
+  {
+    GeometricalDCA<ConstIterator> s;
+    ConstIterator itEnd (r.end()); 
+    s.init( r.begin() );
+    while ( (s.end() != itEnd) && (s.extend()) ) {}
 
-  trace.info() << s << endl; 
+    trace.info() << s << endl; 
 
-  Board2D board; 
-  board << r << s; 
-  board.saveEPS("GeometricalDCAdrawingTest.eps"); 
+    Board2D board; 
+    board << r << s; 
+    board.saveEPS("GeometricalDCADrawingTest.eps"); 
+  }
 
+  {
+    GeometricalDCA<ConstReverseIterator> s;
+    ConstReverseIterator itEnd (r.rend()); 
+    s.init( r.rbegin() );
+    while ( (s.end() != itEnd) && (s.extend()) ) {}
+
+    trace.info() << s << endl; 
+
+    Board2D board; 
+    board << r << s; 
+    board.saveEPS("GeometricalDCADrawingTest2.eps"); 
+  }
+    
   return true; 
 }
 
