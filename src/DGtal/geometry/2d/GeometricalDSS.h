@@ -193,6 +193,7 @@ namespace DGtal
      */
     Point getLl() const;
 
+
     /**
      * Get the parameters of one separating straight line
      * @param alpha  (returned) x-component of the normal
@@ -212,21 +213,55 @@ namespace DGtal
 
     /**
      * Forward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
     bool extend();
 
     /**
      * Forward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
     bool isExtendable();
 
     /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendable() returns 'false'
+     */
+    bool isLeftExterior();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendable() returns 'false'
+     */
+    bool isRightExterior();
+
+    /**
      * Backward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
     bool extendOppositeEnd();
 
     /**
      * Backward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
     bool isOppositeEndExtendable();
 
