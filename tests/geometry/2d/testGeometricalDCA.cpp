@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
@@ -156,7 +157,7 @@ bool testGeometricalDCA(const TCurve& curve)
 */
 
 template <typename TCurve>
-bool drawingTestGeometricalDCA(const TCurve& curve)
+bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -175,7 +176,9 @@ bool drawingTestGeometricalDCA(const TCurve& curve)
 
     Board2D board; 
     board << r << s; 
-    board.saveEPS("GeometricalDCADrawingTest.eps"); 
+    std::stringstream ss; 
+    ss << "GeometricalDCADrawingTest" << suffix << ".eps"; 
+    board.saveEPS(ss.str().c_str()); 
   }
 
   {
@@ -186,9 +189,11 @@ bool drawingTestGeometricalDCA(const TCurve& curve)
 
     trace.info() << s << endl; 
 
-    Board2D board; 
-    board << r << s; 
-    board.saveEPS("GeometricalDCADrawingTest2.eps"); 
+    Board2D board;
+    board << r << s;       
+    std::stringstream ss; 
+    ss << "GeometricalDCADrawingTest" << suffix << "2.eps"; 
+    board.saveEPS(ss.str().c_str()); 
   }
     
   return true; 
@@ -296,13 +301,19 @@ int main( int argc, char** argv )
     std::string filename = testPath + "samples/DCA.dat";
     ifstream instream; // input stream
     instream.open (filename.c_str(), ifstream::in);
+    std::vector<PointVector<2,int> > v = 
+      PointListReader<PointVector<2,int> >::getPointsFromInputStream(instream);
+    std::vector<PointVector<2,int> > rv; 
+    rv.assign( v.rbegin(), v.rend() ); 
     
     typedef KhalimskySpaceND<2,int> KSpace; 
-    GridCurve<KSpace> c; //grid curve
-    c.initFromVectorStream(instream);
+    GridCurve<KSpace> c, rc; //grid curve
+    c.initFromVector(v);
+    rc.initFromVector(rv);
 
     res = testGeometricalDCA(c)
-  && drawingTestGeometricalDCA(c); 
+  && drawingTestGeometricalDCA(c, "CCW")
+  && drawingTestGeometricalDCA(rc, "CW"); 
   }
   
   {//segmentations
