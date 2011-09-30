@@ -158,7 +158,7 @@ bool testGeometricalDCA(const TCurve& curve)
 template <typename TCurve>
 bool drawingTestGeometricalDCA(const TCurve& curve)
 {
-/*
+
   typedef typename TCurve::IncidentPointsRange Range; //range
   typedef typename Range::ConstIterator ConstIterator; //iterator
 
@@ -169,13 +169,12 @@ bool drawingTestGeometricalDCA(const TCurve& curve)
   s.init( r.begin() );
   while ( (s.end() != itEnd) && (s.extend()) ) {}
 
-  double a, b, c; 
-  s.getParameters(a,b,c); 
+  trace.info() << s << endl; 
 
   Board2D board; 
   board << r << s; 
   board.saveEPS("GeometricalDCAdrawingTest.eps"); 
-*/
+
   return true; 
 }
 
@@ -278,7 +277,7 @@ int main( int argc, char** argv )
   }
   
   {//basic operations
-    std::string filename = testPath + "samples/DSS.dat";
+    std::string filename = testPath + "samples/DCA.dat";
     ifstream instream; // input stream
     instream.open (filename.c_str(), ifstream::in);
     

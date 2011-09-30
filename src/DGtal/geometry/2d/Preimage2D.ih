@@ -108,7 +108,7 @@ inline
 bool
 DGtal::Preimage2D<Shape>::isLeftExteriorAtTheFront(
     const Point & aP, 
-    const Point & aQ)
+    const Point & /*aQ*/)
 {
   //critical points
   BackwardIterator PHullBack = myPHull.rbegin();
@@ -125,7 +125,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isLeftExteriorAtTheBack(
-    const Point & aP, 
+    const Point & /*aP*/, 
     const Point & aQ)
 {
   //critical points
@@ -143,7 +143,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isRightExteriorAtTheFront(
-    const Point & aP, 
+    const Point & /*aP*/, 
     const Point & aQ)
 {
   //critical points
@@ -162,7 +162,7 @@ inline
 bool
 DGtal::Preimage2D<Shape>::isRightExteriorAtTheBack(
     const Point & aP, 
-    const Point & aQ)
+    const Point & /*aQ*/)
 {
   //critical points
   ForwardIterator PHullFront = myPHull.begin();

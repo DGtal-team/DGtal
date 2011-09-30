@@ -250,10 +250,10 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
   Point aP( aPair.first ); 
   Point aQ( aPair.second ); 
   bool isOK = false; 
-  
+std::cerr << "Extension" << std::endl; 
   if (myFlagIsInit)
   { //initialized
-    
+std::cerr << "Circle test" << std::endl; 
     //predicates
     PInCirclePred p1( myCircle ); 
     QInCirclePred p2( myCircle ); 
@@ -261,30 +261,55 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
     if ( p1(aP)&&p2(aQ) )
       isOK = true; 
     else
-    {
+    { //update separating circle
       if (p2(aP))
       {
-              //TODO isOK = update
+std::cerr << "\t to update with " << aP << std::endl; 
+        Point Pf, Pl, Qf, Ql;
+        if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(Pf,Ql,aP); 
+          isOK = true; 
+        }
       }
       if (p1(aQ))
       {
-              //TODO isOK = update
+std::cerr << "\t to update with " << aQ << std::endl; 
+        Point Pf, Pl, Qf, Ql;
+        if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(Qf,Pl,aQ); 
+          isOK = true; 
+        }
       }
     }
     
   } else
   { //not initialized yet
-    
-    if (! mySegPtr->extend() )
+std::cerr << "GeometricalDSS Extension" << std::endl; 
+    if ( mySegPtr->extend() ) isOK = true; 
+    else
     {
-      //which point makes the recognition stop ?
       Point Pf, Pl, Qf, Ql; 
-      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
-      {
-        myCircle.init(Qf,Pl,aQ); 
-        myFlagIsInit = true;
-        isOK = true; 
+      if (mySegPtr->isRightExterior())
+      { //convex part
+        if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(Qf,Pl,aQ); 
+          myFlagIsInit = true;
+          isOK = true; 
+        }
       }
+      else if (mySegPtr->isLeftExterior())
+      { //concave part
+        if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(Pf,Ql,aP); 
+          myFlagIsInit = true;
+          isOK = true; 
+        }
+      }
+      else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extend(): impossible case") ); 
     }
   }
   
