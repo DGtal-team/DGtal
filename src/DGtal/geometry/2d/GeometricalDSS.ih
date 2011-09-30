@@ -197,6 +197,15 @@ DGtal::GeometricalDSS<TConstIterator>::getLl() const
 
 template <typename TConstIterator>
 inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isClockwiseOriented() const
+{
+  return myFlagIsCW;
+}
+
+
+template <typename TConstIterator>
+inline
 void
 DGtal::GeometricalDSS<TConstIterator>::getParameters(double& alpha, double& beta, double& gamma) const
 {

@@ -193,6 +193,10 @@ namespace DGtal
      */
     Point getLl() const;
 
+    /**
+     * @return 'true' if CW, 'false' if CCW
+     */
+    bool isClockwiseOriented() const;
 
     /**
      * Get the parameters of one separating straight line
