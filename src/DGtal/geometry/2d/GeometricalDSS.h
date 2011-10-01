@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include <boost/static_assert.hpp>
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
@@ -100,7 +101,11 @@ namespace DGtal
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
     typedef typename Pair::first_type Point;
-   //Pair::first_type and Pair::second_type should be the same type;
+
+    //Pair::first_type and Pair::second_type should be the same type;
+    BOOST_STATIC_ASSERT( ( ConceptUtils::SameType
+                           < typename Pair::first_type, typename Pair::second_type >
+                           ::value ) );
 
     //preimage
     typedef StraightLineFrom2Points<Point> StraightLine; 
