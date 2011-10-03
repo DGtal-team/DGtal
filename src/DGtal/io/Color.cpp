@@ -156,13 +156,13 @@ DGtal::Color::tikz() const
   if ( *this == DGtal::Color::Green ) return "green!50!black";
   if ( *this == DGtal::Color::Lime ) return "green";
   if ( *this == DGtal::Color::Blue ) return "blue";
-  if ( *this == DGtal::Color::Cyan ) return "cyan";
-  if ( *this == DGtal::Color::Magenta ) return "magenta";
-  if ( *this == DGtal::Color::Yellow ) return "yellow";
+//  if ( *this == DGtal::Color::Cyan ) return "cyan";
+//  if ( *this == DGtal::Color::Magenta ) return "magenta";
+//  if ( *this == DGtal::Color::Yellow ) return "yellow";
   if ( *this == DGtal::Color::Silver ) return "white!75!black";
   if ( *this == DGtal::Color::Purple ) return "gray"; // ???: Is Color::Purple meant to be equal to Color::Gray?
   if ( *this == DGtal::Color::Navy ) return "blue!50!black";
-  if ( *this == DGtal::Color::Aqua ) return "cyan"; // ???: Is Color::Aqua meant to be equal to Color::Cyan?
+//  if ( *this == DGtal::Color::Aqua ) return "cyan"; // ???: Is Color::Aqua meant to be equal to Color::Cyan?
   secured_sprintf( buffer, 255, "{rgb,255:red,%d;green,%d;blue,%d}", myRed, myGreen, myBlue );
   return buffer;
 }
