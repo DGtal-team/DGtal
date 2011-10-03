@@ -81,8 +81,6 @@ ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
   //Forme
   Shape aShape(Point(aCx,aCy), aR);
 
-  trace.info() << "#ball created, (" << aCx << "," << aCy << "), r=" << aR << endl;
-
   // Window for the estimation
   RealPoint xLow ( -aR-1, -aR-1 );
   RealPoint xUp( aR+1, aR+1 );
@@ -132,6 +130,57 @@ ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class GeometricalDCA.
 ///////////////////////////////////////////////////////////////////////////////
+
+void testGeometricalDCAConceptChecking()
+{
+   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
+   typedef std::vector<Pair>::const_iterator ConstIterator; 
+   typedef GeometricalDCA<ConstIterator> GeomDSS; 
+   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
+   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
+}
+
+/*
+* simple drawing
+*/
+template <typename TCurve>
+bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
+{
+
+  typedef typename TCurve::IncidentPointsRange Range; //range
+  Range r = curve.getIncidentPointsRange(); //range
+
+  {
+    typedef typename Range::ConstIterator ConstIterator; //iterator
+    GeometricalDCA<ConstIterator> s;
+    longestSegment(s,r.begin(),r.end()); 
+
+    trace.info() << s << endl; 
+
+    Board2D board; 
+    board << r << s; 
+    std::stringstream ss; 
+    ss << "GeometricalDCADrawingTest" << suffix << ".eps"; 
+    board.saveEPS(ss.str().c_str()); 
+  }
+
+  {
+    typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
+    GeometricalDCA<ConstReverseIterator> s;
+    longestSegment(s,r.rbegin(),r.rend()); 
+
+    trace.info() << s << endl; 
+
+    Board2D board;
+    board << r << s;       
+    std::stringstream ss; 
+    ss << "GeometricalDCADrawingTest" << suffix << "2.eps"; 
+    board.saveEPS(ss.str().c_str()); 
+  }
+    
+  return true; 
+}
+
 /**
  * Basic methods
  */
@@ -171,6 +220,7 @@ bool testGeometricalDCA(const TCurve& curve)
     nb++;
   }
   trace.endBlock();
+    
   /*
   trace.beginBlock ( "Extension operations" );
   {
@@ -230,57 +280,62 @@ bool testGeometricalDCA(const TCurve& curve)
   return nbok == nb;
 }
 
-/*
-* simple drawing
-*/
-
-template <typename TCurve>
-bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
+/**
+ * Recogition of randomly generated digital circles
+ */
+bool testRecognition()
 {
 
-  typedef typename TCurve::IncidentPointsRange Range; //range
-  Range r = curve.getIncidentPointsRange(); //range
+  typedef KhalimskySpaceND<2,int> KSpace; 
+  GridCurve<KSpace> c; 
+  
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
 
+  for (unsigned int i = 0; i < 50; ++i)
   {
-    typedef typename Range::ConstIterator ConstIterator; //iterator
+    //generate digital circle
+    double cx = (rand()%100 ) / 100.0;
+    double cy = (rand()%100 ) / 100.0;
+    double radius = (rand()%100 )+100;
+    c = ballGenerator<KSpace>( cx, cy, radius, ((i%2)==1) ); 
+    trace.info() << " #ball #" << i << " c(" << cx << "," << cy << ") r=" << radius << endl; 
+    
+    //range
+    typedef GridCurve<KSpace>::IncidentPointsRange Range; 
+    Range r = c.getIncidentPointsRange();
+    
+    //recognition
+    typedef Range::ConstIterator ConstIterator; //iterator
     GeometricalDCA<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
-    trace.info() << s << endl; 
-
-    Board2D board; 
-    board << r << s; 
-    std::stringstream ss; 
-    ss << "GeometricalDCADrawingTest" << suffix << ".eps"; 
-    board.saveEPS(ss.str().c_str()); 
-  }
-
-  {
-    typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
-    GeometricalDCA<ConstReverseIterator> s;
-    longestSegment(s,r.rbegin(),r.rend()); 
-
-    trace.info() << s << endl; 
-
-    Board2D board;
-    board << r << s;       
-    std::stringstream ss; 
-    ss << "GeometricalDCADrawingTest" << suffix << "2.eps"; 
-    board.saveEPS(ss.str().c_str()); 
-  }
+    //checking if the circle is separating
+    bool flag = true;
+    typedef CircleFrom3Points<KSpace::Point> Circle; 
+    typedef Point2ShapePredicate<Circle,false,true> 
+      FirstInCirclePred; 
+    typedef Point2ShapePredicate<Circle,true,true> 
+      SecondInCirclePred; 
+    for (ConstIterator it = s.begin(); ((it != s.end()) && flag) ; ++it)
+    {
+      FirstInCirclePred p1( s.getSeparatingCircle() ); 
+      SecondInCirclePred p2( s.getSeparatingCircle() ); 
+      flag = ( p1(it->first)&&p2(it->second) ); 
+    }
     
-  return true; 
+    //conclusion
+    nbok += flag ? 1 : 0; 
+    nb++;
+  }
+  
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+  return nbok == nb;
 }
 
-void testGeometricalDCAConceptChecking()
-{
-   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
-   typedef std::vector<Pair>::const_iterator ConstIterator; 
-   typedef GeometricalDCA<ConstIterator> GeomDSS; 
-   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
-   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
-}
-
+/**
+ * Segmentations
+ */
 template <typename TCurve>
 bool testSegmentation(const TCurve& curve)
 {
@@ -371,7 +426,6 @@ int main( int argc, char** argv )
   }
   
   {//basic operations
-    
     typedef KhalimskySpaceND<2,int> KSpace; 
 
     GridCurve<KSpace> c, rc; 
@@ -382,6 +436,10 @@ int main( int argc, char** argv )
     res = testGeometricalDCA(c)
   && drawingTestGeometricalDCA(c, "CCW")
   && drawingTestGeometricalDCA(rc, "CW"); 
+  }
+  
+  {//recognition 
+    res = res && testRecognition();
   }
   
   {//segmentations
