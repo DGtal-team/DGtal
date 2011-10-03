@@ -170,15 +170,20 @@ namespace DGtal
     
     // GridCurve
     template <typename TKSpace>
-    static void draw( Board2D & board, const DGtal::GridCurve<TKSpace> & );
+    static void draw( Board2D & board, const GridCurve<TKSpace> & );
     
-    template <typename GC>
+    template <typename TKSpace>
     static void draw( Board2D & board, 
-		      const typename GC::SCellsRange & );
+		      const typename GridCurve<TKSpace>::SCellsRange & );
     
-    template <typename GC>
+
+    template <typename TKSpace>
     static void draw( Board2D & board, 
-		      const typename GC::IncidentPointsRange &);
+		      const typename GridCurve<TKSpace>::IncidentPointsRange &);
+
+    template <typename T>
+    static void draw( Board2D & board, 
+		      const T &);
     // GridCurve
     
     
