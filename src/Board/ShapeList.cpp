@@ -663,7 +663,7 @@ Group::flushTikZ( std::ostream & stream,
 {
   // FIXME: implement clipping
   stream << "\\begin{scope}\n";
-  ShapeList::flushSVG( stream, transform );
+  ShapeList::flushTikZ( stream, transform );
   stream << "\\end{scope}\n";
 }
 
