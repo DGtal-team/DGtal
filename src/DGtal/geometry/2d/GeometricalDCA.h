@@ -84,9 +84,10 @@ namespace DGtal
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+    //Pair::first_type and Pair::second_type should be the same type;
+    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<typename Pair::first_type, typename Pair::second_type >::value ));
     typedef typename Pair::first_type Point;
-   //Pair::first_type and Pair::second_type should be the same type;
-
+    BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
   
   private: 
     
@@ -130,6 +131,8 @@ namespace DGtal
     *  Equality operator
     * @param other the object to compare with.
     * @return 'true' if equal, 'false' otherwise
+    *
+    * NB: linear in the size of the segment
     */
     bool operator==( const Self & other) const;
 
@@ -137,6 +140,8 @@ namespace DGtal
     *  Difference operator
     * @param other the object to compare with.
     * @return 'true' if not equal, 'false' otherwise.
+    *
+    * NB: linear in the size of the segment
     */
     bool operator!=( const Self & other) const;
 
