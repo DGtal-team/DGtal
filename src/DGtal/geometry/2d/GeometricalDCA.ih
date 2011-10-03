@@ -168,6 +168,13 @@ DGtal::GeometricalDCA<TConstIterator>::end() const
   return myEnd;
 }
 
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDCA<TConstIterator>::Circle
+DGtal::GeometricalDCA<TConstIterator>::getSeparatingCircle() const
+{
+  return myCircle; 
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Growth operations                                                        //

@@ -164,7 +164,13 @@ namespace DGtal
      */
     ConstIterator end() const;
 
-
+    //------------------ accessors -------------------------------
+    
+    /**
+     * @return a separating circle.
+     */
+    Circle getSeparatingCircle() const;
+    
     // ----------------------- growth operations --------------------------------------
 
     /**
