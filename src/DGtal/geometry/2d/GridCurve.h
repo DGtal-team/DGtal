@@ -183,7 +183,7 @@ namespace DGtal
     typedef typename KSpace::SCell SCell;
     typedef typename std::vector<SCell> Storage;
 
-
+    typedef GridCurve<TKSpace> Self;
 
 
 
@@ -324,7 +324,7 @@ namespace DGtal
   public: 
 
     ///////////////////////////////////////////////////////////////////////////////
-    // Includes range types.
+    // Includes range inner types.
     #include "DGtal/geometry/2d/GridCurveRanges.ih"
 
     /**

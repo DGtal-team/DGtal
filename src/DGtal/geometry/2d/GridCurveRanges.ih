@@ -55,7 +55,6 @@ public:
   typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-
   /**
    * Default Constructor.
    */
@@ -257,7 +256,7 @@ class PointsRange
 public: 
 
   friend class GridCurve<KSpace>;
-
+  typedef Self SCellsRange;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -474,7 +473,7 @@ class MidPointsRange
 public: 
   
   friend class GridCurve<KSpace>;
-
+  typedef Self MidPontsRange;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -692,7 +691,6 @@ class ArrowsRange
 public: 
 
   friend class GridCurve<KSpace>;
-
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
