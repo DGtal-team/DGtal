@@ -30,16 +30,26 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/io/readers/PointListReader.h"
+
+//space / domain
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+
+//shape and digitizer
+#include "DGtal/shapes/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/geometry/nd/GaussDigitizer.h"
 #include "DGtal/geometry/2d/GridCurve.h"
 
+//Segment computer and DCA
 #include "DGtal/geometry/CBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "DGtal/geometry/2d/GeometricalDCA.h"
 
+#include "DGtal/geometry/2d/SegmentComputerUtils.h"
 #include "DGtal/geometry/2d/GreedySegmentation.h"
 #include "DGtal/geometry/2d/SaturatedSegmentation.h"
 
@@ -50,6 +60,74 @@
 
 using namespace std;
 using namespace DGtal;
+
+//////////////////////////////////////////////////////////////////////////////
+// digital circle generator
+template<typename TKSpace>
+GridCurve<TKSpace>
+ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
+{
+
+  // Types
+  typedef TKSpace KSpace;  
+  typedef typename KSpace::SCell SCell;
+  typedef GridCurve<KSpace> GridCurve; 
+  typedef typename KSpace::Space Space;  
+  typedef Ball2D<Space> Shape;
+  typedef typename Space::Point Point;
+  typedef typename Space::RealPoint RealPoint;
+  typedef HyperRectDomain<Space> Domain;
+
+  //Forme
+  Shape aShape(Point(aCx,aCy), aR);
+
+  trace.info() << "#ball created, (" << aCx << "," << aCy << "), r=" << aR << endl;
+
+  // Window for the estimation
+  RealPoint xLow ( -aR-1, -aR-1 );
+  RealPoint xUp( aR+1, aR+1 );
+  GaussDigitizer<Space,Shape> dig;  
+  dig.attach( aShape ); // attaches the shape.
+  dig.init( xLow, xUp, 1 ); 
+  Domain domain = dig.getDomain();
+  // Create cellular space
+  KSpace K;
+  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
+  if ( ! ok )
+  {
+      std::cerr << " "
+    << " error in creating KSpace." << std::endl;
+      return GridCurve();
+  }
+  try 
+  {
+
+    // Extracts shape boundary
+    SurfelAdjacency<KSpace::dimension> SAdj( true );
+    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+    // Getting the consecutive surfels of the 2D boundary
+    std::vector<Point> points, points2;
+    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+    //counter-clockwise oriented by default
+    GridCurve c; 
+    if (aFlagIsCW)
+    {
+      points2.assign( points.rbegin(), points.rend() );
+      c.initFromVector(points2); 
+    } 
+    else 
+    {
+      c.initFromVector(points); 
+    }
+    return c;
+  }
+  catch ( InputException e )
+  {
+      std::cerr << " "
+    << " error in finding a bel." << std::endl;
+      return GridCurve();
+  }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class GeometricalDCA.
@@ -161,16 +239,12 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
-  typedef typename Range::ConstIterator ConstIterator; //iterator
-  typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
-
   Range r = curve.getIncidentPointsRange(); //range
 
   {
+    typedef typename Range::ConstIterator ConstIterator; //iterator
     GeometricalDCA<ConstIterator> s;
-    ConstIterator itEnd (r.end()); 
-    s.init( r.begin() );
-    while ( (s.end() != itEnd) && (s.extend()) ) {}
+    longestSegment(s,r.begin(),r.end()); 
 
     trace.info() << s << endl; 
 
@@ -182,10 +256,9 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
   }
 
   {
+    typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
     GeometricalDCA<ConstReverseIterator> s;
-    ConstReverseIterator itEnd (r.rend()); 
-    s.init( r.rbegin() );
-    while ( (s.end() != itEnd) && (s.extend()) ) {}
+    longestSegment(s,r.rbegin(),r.rend()); 
 
     trace.info() << s << endl; 
 
@@ -298,18 +371,13 @@ int main( int argc, char** argv )
   }
   
   {//basic operations
-    std::string filename = testPath + "samples/DCA.dat";
-    ifstream instream; // input stream
-    instream.open (filename.c_str(), ifstream::in);
-    std::vector<PointVector<2,int> > v = 
-      PointListReader<PointVector<2,int> >::getPointsFromInputStream(instream);
-    std::vector<PointVector<2,int> > rv; 
-    rv.assign( v.rbegin(), v.rend() ); 
     
     typedef KhalimskySpaceND<2,int> KSpace; 
-    GridCurve<KSpace> c, rc; //grid curve
-    c.initFromVector(v);
-    rc.initFromVector(rv);
+
+    GridCurve<KSpace> c, rc; 
+    c = ballGenerator<KSpace>(0,0,6,false); 
+    std::vector<PointVector<2,int> > rv; 
+    rc = ballGenerator<KSpace>(0,0,6,true); 
 
     res = testGeometricalDCA(c)
   && drawingTestGeometricalDCA(c, "CCW")
