@@ -708,7 +708,7 @@ template <typename TRange>
 inline
 void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
 {
-  BOOST_CONCEPT_ASSERT(( CConstRange<TRange> ));
+  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange<TRange> ));
   readFromPointsRange( aRange.begin(), aRange.end(), c ); 
 }
 

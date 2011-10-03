@@ -110,32 +110,18 @@ namespace DGtal
 
    */
   template <typename T>
-  struct CConstRange: public CSinglePassConstRange<T>
+  struct CConstRange: CSinglePassConstRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-<<<<<<< HEAD
-    typedef typename T::ConstIterator ConstIterator;
     typedef typename T::ConstReverseIterator ConstReverseIterator;
 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
-=======
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
-
->>>>>>> gdamiand/ranges
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
 
     BOOST_CONCEPT_USAGE(CConstRange)
     {
-<<<<<<< HEAD
-      ConstIterator it=i.begin();
-      it=i.end();
-      ConstReverseIterator it2=i.rbegin();
-      it2=i.rend();
-=======
       ConstReverseIterator it=i.rbegin();
       it=i.rend();
->>>>>>> gdamiand/ranges
     };
 
   private:

@@ -41,8 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
-#include "DGtal/base/ConceptUtils.h"
+#include "DGtal/base/CSinglePassConstRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -110,7 +109,7 @@ namespace DGtal
 
    */
   template <typename T>
-  struct CSinglePassRange : public CSinglePassConstRange<T>
+  struct CSinglePassRange :  CSinglePassConstRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -121,7 +120,7 @@ namespace DGtal
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
       Iterator it=i.begin();
-      it2=i.end();
+      it=i.end();
     };
 
   private:
