@@ -200,8 +200,8 @@ bool testGeometricalDCA(const TCurve& curve)
     Range r = curve.getIncidentPointsRange(); //range
 
     GeometricalDCA<ConstIterator> s1, s2, s3;
-    s2.init(r.begin()); 
-    s3.init(++r.begin()); 
+    longestSegment(s2, r.begin(), r.end()); 
+    longestSegment(s3, r.begin()+1, r.end()); 
     GeometricalDCA<ConstIterator> s4(s2); 
     GeometricalDCA<ConstIterator> s5(s3);
     s3 = s1; 
@@ -214,7 +214,8 @@ bool testGeometricalDCA(const TCurve& curve)
 
     bool myFlag = (!s1.isValid())&&(!s3.isValid())
     &&(s2.isValid())&&(s4.isValid())&&(s5.isValid())
-    &&(s2 == s4)&&(s3 != s5)&&(s1 == s3)&&(s2 != s5);
+    &&(s2 == s4)&&(s2 != s5)&&(s2 != s1)
+    &&(s3 != s5)&&(s1 == s3);
 
     nbok += myFlag ? 1 : 0; 
     nb++;

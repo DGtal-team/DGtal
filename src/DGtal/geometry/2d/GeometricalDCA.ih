@@ -83,34 +83,39 @@ DGtal::GeometricalDCA<TConstIterator>::operator==( const Self& other ) const
 {
   if (isValid()&&other.isValid())
   {
-    Pair firstPair( *myBegin );
-    Pair oFirstPair( *(other.myBegin) ); 
-    if ( (firstPair.first == oFirstPair.first)
-       &&(firstPair.second == oFirstPair.second) )
+    bool flag1 = true; 
     {
-      ConstIterator it (myEnd); 
-      --it;
-      Pair lastPair( *it );  
-      ConstIterator oIt (other.myEnd); 
-      --oIt;
-      Pair oLastPair( *oIt ); 
-     
-      if ( (lastPair.first == oLastPair.first)
-         &&(lastPair.second == oLastPair.second) )
-      {
-        if (myFlagIsInit)
-        {
-          double a, b, r; 
-          myCircle.getParameters(a,b,r); 
-          double ap, bp, rp; 
-          other.myCircle.getParameters(ap,bp,rp); 
-          return ((a==ap)&&(b==bp)&&(r==rp)); 
-        }
-        else return (*mySegPtr == *other.mySegPtr); 
-      }
-      else return false; 
-    } 
-    else return false; 
+    ConstIterator first1 (myBegin); 
+    ConstIterator first2 (other.myBegin); 
+    while ( ( ( first1 != myEnd )
+                 ||( first2 != other.myEnd ) )
+              && (flag1) )
+    {
+      Pair pair1( *first1 ); 
+      Pair pair2( *first2 ); 
+      if ( (pair1.first != pair2.first)||(pair1.second != pair2.second) ) flag1 = false;
+      ++first1; ++first2;
+    }
+    if ( (first1 != myEnd) || (first2 != other.myEnd) ) flag1 = false;
+    }
+    bool flag2 = true; 
+    {
+    std::reverse_iterator<ConstIterator> rfirst1(myEnd); 
+    ConstIterator first2 = other.myBegin; 
+    while ( ( ( rfirst1 != std::reverse_iterator<ConstIterator>(myBegin) )
+                ||( first2 != other.myEnd ) )
+                && (flag2) )
+    {
+      Pair pair1( *rfirst1 ); 
+      Pair pair2( *first2 ); 
+      if ( (pair1.first != pair2.first)||(pair1.second != pair2.second) ) flag2 = false;
+      ++rfirst1; ++first2;
+    }
+    if ( (rfirst1 != std::reverse_iterator<ConstIterator>(myBegin)) 
+      || (first2 != other.myEnd) ) flag2 = false;
+    }
+    
+    return ( flag1 || flag2 );
   }
   else 
   {
