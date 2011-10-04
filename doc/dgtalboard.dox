@@ -13,7 +13,7 @@ namespace DGtal {
      into graphics files (and later buffers). For now, it is limited
      to 2D DGtal objects like CDomain, Object, CDigitalSet, Point,
      ImageContainer. The current supported export formats are SVG,
-     EPS, and XFIG. It is currently based on LibBoard, but may evolve
+     EPS, XFIG and TikZ. It is currently based on LibBoard, but may evolve
      later (it will probably move to <a
      href="http://www.cairographics.org">Cairo</a>).  This document is
      dedicated both to DGtal users and developers.
@@ -54,7 +54,7 @@ namespace DGtal {
      an output stream, and if you wish to visualize some object, you
      use the stream \c operator \c << to output the object on the
      board. When you are finished, there is a command to export your
-     graphics in SVG, XFIG or EPS format.
+     graphics in SVG, XFIG, EPS or TikZ format.
     
      The following code snippet defines three points and a rectangular
      domain in Z2. It then displays them in a Board2D object. The
@@ -75,6 +75,7 @@ namespace DGtal {
    board << domain << p1 << p2 << p3;
    board.saveSVG("dgtalboard-1-points.svg");
    board.saveEPS("dgtalboard-1-points.eps");
+   board.saveTikZ("dgtalboard-1-points.tikz");
    \endcode
     
      This program outputs this image.
