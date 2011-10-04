@@ -5,7 +5,7 @@
 namespace DGtal {
 
   /**
-     @author Jacques-Olivier Lachaud.
+     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly
 
      @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
     
@@ -13,7 +13,7 @@ namespace DGtal {
      into graphics files (and later buffers). For now, it is limited
      to 2D DGtal objects like CDomain, Object, CDigitalSet, Point,
      ImageContainer. The current supported export formats are SVG,
-     EPS, and XFIG. It is currently based on LibBoard, but may evolve
+     EPS, XFIG and TikZ. It is currently based on LibBoard, but may evolve
      later (it will probably move to <a
      href="http://www.cairographics.org">Cairo</a>).  This document is
      dedicated both to DGtal users and developers.
@@ -30,6 +30,7 @@ namespace DGtal {
         -# \ref dgtal_dgtalboard_sec16
         -# \ref dgtal_dgtalboard_sec17
         -# \ref dgtal_dgtalboard_sec18
+        -# \ref dgtal_dgtalboard_sec19
       -# \ref dgtal_dgtalboard_sec2
         -# \ref dgtal_dgtalboard_sec21
         -# \ref dgtal_dgtalboard_sec22
@@ -54,7 +55,7 @@ namespace DGtal {
      an output stream, and if you wish to visualize some object, you
      use the stream \c operator \c << to output the object on the
      board. When you are finished, there is a command to export your
-     graphics in SVG, XFIG or EPS format.
+     graphics in SVG, XFIG, EPS or TikZ format.
     
      The following code snippet defines three points and a rectangular
      domain in Z2. It then displays them in a Board2D object. The
@@ -75,6 +76,7 @@ namespace DGtal {
    board << domain << p1 << p2 << p3;
    board.saveSVG("dgtalboard-1-points.svg");
    board.saveEPS("dgtalboard-1-points.eps");
+   board.saveTikZ("dgtalboard-1-points.tikz");
    \endcode
     
      This program outputs this image.
@@ -104,6 +106,7 @@ namespace DGtal {
    Board2D board;
    board << domain << shape_set; // display domain and set
    board.saveSVG( "dgtalboard-2-sets-1.svg");
+   board.saveTikZ( "dgtalboard-2-sets-1.tikz");
    \endcode
     
      \image html dgtalboard-2-sets-1.png "Digital set drawing with Board." 
@@ -135,6 +138,7 @@ namespace DGtal {
 	<< SetMode( shape.styleName(), "DrawAdjacencies" )
 	<< shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
+  board.saveTikZ( "dgtalboard-2-sets-2.tikz");
   board.clear();
 
   // Object with couple (8,4) of adjacency.
@@ -143,6 +147,7 @@ namespace DGtal {
 	<< SetMode( shape2.styleName(), "DrawAdjacencies" )
 	<< shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
+  board.saveTikZ( "dgtalboard-2-sets-3.tikz");
    \endcode
     
      Note the different adjacency relations depending on the topology
@@ -225,6 +230,7 @@ namespace DGtal {
 				       Board2D::Shape::RoundJoin ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-classes.svg");
+  board.saveTikZ("dgtalboard-3-custom-classes.svg");
    \endcode
     
      This program (see full source at <a
@@ -271,6 +277,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
+  board.saveTikZ("dgtalboard-3-custom-points.tikz");
    \endcode
     
      This program (see full source at <a
@@ -311,6 +318,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 	    << *it;
     }
   board.saveSVG( "dgtalboard-4-colormaps.svg");
+  board.saveTikZ( "dgtalboard-4-colormaps.tikz");
    \endcode
     
      This program (see full source at <a
@@ -337,7 +345,67 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
      \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
      \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
     
-     \subsection dgtal_dgtalboard_sec18 Conclusion and future improvements
+     \subsection dgtal_dgtalboard_sec18 Compiling TikZ files
+
+     Quoted from http://sourceforge.net/projects/pgf/:
+     <em>PGF is a TeX macro package for generating graphics. It is platform- and format-independent
+     and works together with the most important TeX backend drivers, including pdftex and dvips.
+     It comes with a user-friedly syntax layer called TikZ.</em>
+
+     TikZ allows to create inline graphics in LaTeX documents.
+     TikZ files produced by Board2D contains pgf/TikZ commands in a \c tikzpicture environment
+     and are intended to be compiled by a LaTeX engine.
+     Please refer to the pgf/TikZ manual and project forums for further information
+     (<a href="http://sourceforge.net/projects/pgf/">pgf project homepage</a>).
+
+     \subsubsection dgtal_dgtalboard_sec181 Inclusion in a LaTeX document
+
+     The main LaTeX documents should be set up to use package "tikz" and TikZ library "arrows" with the
+     following lines in preamble:
+
+     \code
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\endcode
+
+The figure can be included in a floating environment as follows:
+@code
+\begin{figure}
+\input{myfigure.tikz}
+\caption{My caption.\label{fig:myfigure}}
+\end{figure}
+     \endcode
+
+     The TikZ file can be included at compilation time using the LaTeX macro \c \\input.
+
+     \subsubsection dgtal_dgtalboard_sec182 Standalone compilation
+
+     Alternatively, a PDF graphics file can be generated from the standalone TikZ file using a
+     \c pdflatex command as shown in the following Makefile:
+
+     \code
+SOURCES_TIKZ=$(wildcard *.tikz)
+
+TARGETS_PDF=$(SOURCES_TIKZ:%.tikz=%.pdf)
+
+all: $(TARGETS_PDF)
+
+.INTERMEDIATE: $(SOURCES_TIKZ:%.tikz=%.log)
+.INTERMEDIATE: $(SOURCES_TIKZ:%.tikz=%.aux)
+
+%.pdf %.aux %.log: %.tikz
+pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\documentclass{article}\
+\usepackage{tikz}\
+\usetikzlibrary{arrows} \
+\usepackage[active,tightpage]{preview}\
+\PreviewEnvironment{tikzpicture}\
+\begin{document}\
+\pagestyle{empty}\
+\input{$^}\
+\end{document}"
+     \endcode
+
+     \subsection dgtal_dgtalboard_sec19 Conclusion and future improvements
      
      The Board2D mechanism is a simple mechanism for displaying 2D digital objects and graphics. A 3D adaptation is under development. Furthermore, in order to enhance its graphics and export possibilities, the hidden drawing library will certainly move to Cairo.
      

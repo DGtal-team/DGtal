@@ -185,8 +185,17 @@ namespace DGtal
     std::string svgAlpha( const char * aPrefix ) const;
 
     std::string postscript() const;
-  
 
+    /** 
+     * Return a string representation of the color usable in TikZ commands.
+     * Use the corresponding named color (or a mixture of a named color and black)
+     * for predefined colors. Use a mixture of red, green and blue for general
+     * colors.
+     * 
+     * @return a string representation of the color usable in TikZ commands.
+     */
+    std::string tikz() const;
+  
     static const Color None;
     static const Color Black;
     static const Color Gray;
