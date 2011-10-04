@@ -276,6 +276,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
+  board.saveTikZ("dgtalboard-3-custom-points.tikz");
    \endcode
     
      This program (see full source at <a
