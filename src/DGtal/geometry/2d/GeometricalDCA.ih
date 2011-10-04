@@ -194,6 +194,7 @@ DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
   Point& Pf, Point& Pl, Point& Qf, Point& Ql)
 {
 std::cout << "\t to update with " << aPole << std::endl; 
+  std::cout << "\t from " << itb->first << ite->second << std::endl;
   ASSERT( itb != ite ); 
   TIterator it( itb ); 
   Pair currentPair( *it ); 
@@ -230,7 +231,7 @@ std::cout << "\t to update with " << aPole << std::endl;
     } else isOK = false; 
     
   } //if only one pair => circularly separable
-    
+    std::cout << " " << thePreimage << std::endl;
   if (isOK)
   {//points of support
     Pf = thePreimage.getUf(); 
@@ -265,11 +266,59 @@ bool
 DGtal::GeometricalDCA<TConstIterator>::isExtendable()
 {
   ASSERT( mySegPtr.get() != 0 ); 
+  Pair aPair( *myEnd ); 
+  Point aP( aPair.first ); 
+  Point aQ( aPair.second ); 
   bool isOK = false; 
-  
-//TODO
 
-  return isOK; 
+  if (myFlagIsInit)
+  { //initialized
+
+    //predicates
+    PInCirclePred p1( myCircle ); 
+    QInCirclePred p2( myCircle ); 
+    
+    if ( p1(aP)&&p2(aQ) )
+      isOK = true; 
+    else
+    { //checks if the separating circle can be updated
+      if (!p1(aP))
+      {
+        Point Pf, Pl, Qf, Ql;
+        if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
+          isOK = true; 
+      }
+      else if (!p2(aQ))
+      {
+        Point Pf, Pl, Qf, Ql;
+        if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
+          isOK = true; 
+      }
+      else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendable(): impossible case") );  
+    }
+    
+  } else
+  { //not initialized yet
+    
+    if ( mySegPtr->extend() ) isOK = true; 
+    else
+    {
+      Point Pf, Pl, Qf, Ql; 
+      if (mySegPtr->isConvex())
+      { //convex part
+        if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
+          isOK = true; 
+      }
+      else if (mySegPtr->isConcave())
+      { //concave part
+        if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
+          isOK = true; 
+      }
+      else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendable(): impossible case") ); 
+    }
+  }
+  
+  return isOK;  
 }
 
 template <typename TConstIterator>
@@ -285,7 +334,7 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
 
   if (myFlagIsInit)
   { //initialized
-std::cout << "Circle test " << aP << aQ << std::endl; 
+
     //predicates
     PInCirclePred p1( myCircle ); 
     QInCirclePred p2( myCircle ); 
@@ -300,7 +349,6 @@ std::cout << "Circle test " << aP << aQ << std::endl;
         if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
         {
           myCircle.init(Pf,Ql,aP); 
-std::cout << "\t new circle" << myCircle << std::endl; 
           isOK = true; 
         }
       }
@@ -310,7 +358,6 @@ std::cout << "\t new circle" << myCircle << std::endl;
         if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
         {
           myCircle.init(Qf,Pl,aQ); 
-std::cout << "\t new circle" << myCircle << std::endl; 
           isOK = true; 
         }
       }
@@ -319,7 +366,7 @@ std::cout << "\t new circle" << myCircle << std::endl;
     
   } else
   { //not initialized yet
-std::cout << "GeometricalDSS Extension" << std::endl; 
+
     if ( mySegPtr->extend() ) isOK = true; 
     else
     {
@@ -378,10 +425,81 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
   ConstIterator it( myBegin ); 
   --it; 
   Pair aPair( *it ); 
+  Point aP( aPair.first ); 
+  Point aQ( aPair.second ); 
   bool isOK = false; 
-  
-//TODO
 
+  if (myFlagIsInit)
+  { //initialized
+
+    //predicates
+    PInCirclePred p1( myCircle ); 
+    QInCirclePred p2( myCircle ); 
+    std::cout << p1 << aP << " => " << p1(aP) << std::endl; 
+    std::cout << p2 << aQ << " => " << p2(aQ) << std::endl; 
+    if ( p1(aP)&&p2(aQ) )
+      isOK = true; 
+    else
+    { //update separating circle
+      if (!p1(aP))
+      {
+        Point Pf, Pl, Qf, Ql;
+        std::reverse_iterator<ConstIterator> ritb(myEnd); 
+        std::reverse_iterator<ConstIterator> rite(myBegin); 
+        if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(aP,Ql,Pf); 
+          isOK = true; 
+        }
+      }
+      else if (!p2(aQ))
+      {
+        Point Pf, Pl, Qf, Ql;
+        std::reverse_iterator<ConstIterator> ritb(myEnd); 
+        std::reverse_iterator<ConstIterator> rite(myBegin); 
+        if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(aQ,Pl,Qf); 
+          isOK = true; 
+        }
+      }
+      else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd(): impossible case") );  
+    }
+    
+  } else
+  { //not initialized yet
+
+    if ( mySegPtr->extendOppositeEnd() ) isOK = true; 
+    else
+    {
+      std::cout << " seg to arc " << std::endl; 
+      Point Pf, Pl, Qf, Ql; 
+      std::reverse_iterator<ConstIterator> ritb(myEnd); 
+      std::reverse_iterator<ConstIterator> rite(myBegin); 
+      if (mySegPtr->isOppositeEndConvex())
+      { //convex part 
+        std::cout << " convex (aQ) " << std::endl; 
+        if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(aQ,Pl,Qf); 
+          myFlagIsInit = true;
+          isOK = true; 
+        }
+      }
+      else if (mySegPtr->isOppositeEndConcave())
+      { //concave part 
+        std::cout << " concave (aP) " << std::endl; 
+        if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
+        {
+          myCircle.init(aP,Ql,Pf); 
+          myFlagIsInit = true;
+          isOK = true; 
+        }
+      }
+      else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd(): impossible case") ); 
+    }
+  }
+  
   if (isOK) 
   {
     myBegin = it; 
