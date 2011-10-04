@@ -1462,6 +1462,12 @@ struct Arc : public Circle {
    * @return 
    */
   const std::string & name() const;
+  void
+  flushPostscript( std::ostream & stream,
+		   const TransformEPS & transform ) const;
+  void
+  flushSVG( std::ostream & stream,
+		   const TransformSVG & transform ) const;
 
 #ifdef WITH_CAIRO
   void flushCairo( cairo_t *cr,
@@ -1476,6 +1482,7 @@ protected:
   double _angle2;
   bool _negative;
 };
+
 
 /**
  * The text structure.
@@ -1629,4 +1636,5 @@ bool shapeGreaterDepth( const Shape *s1, const Shape *s2 );
 
 
 #endif /* _SHAPE_H_ */
+
 
