@@ -155,8 +155,6 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
     GeometricalDCA<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
-    trace.info() << s << endl; 
-
     Board2D board; 
     board << r << s; 
     std::stringstream ss; 
@@ -168,8 +166,6 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
     typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
     GeometricalDCA<ConstReverseIterator> s;
     longestSegment(s,r.rbegin(),r.rend()); 
-
-    trace.info() << s << endl; 
 
     Board2D board;
     board << r << s;       
@@ -222,7 +218,7 @@ bool testGeometricalDCA(const TCurve& curve)
   }
   trace.endBlock();
     
-  /*
+  
   trace.beginBlock ( "Extension operations" );
   {
     Range r = curve.getIncidentPointsRange(); //range
@@ -230,53 +226,44 @@ bool testGeometricalDCA(const TCurve& curve)
     GeometricalDCA<ConstIterator> s, t;
 
     trace.info() << "forward extension " << endl; 
+    
     ConstIterator itBegin (r.begin()); 
+    ConstIterator itFirst (r.begin()); ++itFirst; 
     ConstIterator itEnd (r.end()); 
-    s.init( itBegin+1 );
+
+    s.init( itFirst );
     while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
     trace.info() << s << endl; 
-    double a, b, c; 
-    s.getParameters(a,b,c); 
-    trace.info() << a << " " << b << " " << c << endl; 
 
-    t.init( (itBegin + (itEnd - itBegin)/2) ); 
-    while ( (t.end() != itEnd) && (t.extend()) 
-         && (t.begin() != itBegin) && (t.extendOppositeEnd()) ) {}
+    ConstIterator itLast (s.end()); --itLast;
+      
+    t.init( itLast ); 
+    while ( (t.begin() != itBegin) && (t.extendOppositeEnd()) ) {}
     trace.info() << t << endl; 
-
+    
     trace.info() << "backward extension " << endl; 
     typename GeometricalDCA<ConstIterator>::Reverse rs = s.getReverse(); 
-    ConstReverseIterator ritBegin (t.end()); 
-    ConstReverseIterator ritEnd (r.rend()); 
+    ConstReverseIterator ritBegin ( s.end() ); 
+    ConstReverseIterator ritEnd ( itBegin+1 ); 
     rs.init( ritBegin );
     while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
     trace.info() << rs << endl; 
-    double ap, bp, cp; 
-    rs.getParameters(ap,bp,cp); 
-    trace.info() << ap << " " << bp << " " << cp << endl; 
-
+    
     typename GeometricalDCA<ConstIterator>::Reverse rt = t.getReverse(); 
-    rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
-    while ( (rt.begin() != ritBegin) && (rt.extendOppositeEnd())
-         && (rt.end() != ritEnd) && (rt.extend()) ) {}
+    rt.init( rs.end()-1 ); 
+    while ( (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
     trace.info() << rt << endl; 
-
+    
     trace.info() << "comparison... " << endl; 
-    bool myFlag = ( (s == t)&&(rs == rt) )
-    && ( s.getUf() == rs.getUf() )
-    && ( s.getUl() == rs.getUl() )
-    && ( s.getLf() == rs.getLf() )
-    && ( s.getLl() == rs.getLl() )
-    && (a == ap)
-    && (b == bp)
-    && (c == cp)
+    bool myFlag = (s == t)
+                      &&(rs == rt) 
     ; 
 
     nbok += myFlag ? 1 : 0; 
     nb++;
   }
   trace.endBlock();
-  */
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return nbok == nb;
 }
@@ -293,6 +280,8 @@ bool testRecognition()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
+  trace.beginBlock ( "Recognition" );
+  
   for (unsigned int i = 0; i < 50; ++i)
   {
     //generate digital circle
@@ -329,6 +318,8 @@ bool testRecognition()
     nbok += flag ? 1 : 0; 
     nb++;
   }
+
+  trace.endBlock();
   
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return nbok == nb;

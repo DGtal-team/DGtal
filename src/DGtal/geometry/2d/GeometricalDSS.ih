@@ -288,6 +288,55 @@ DGtal::GeometricalDSS<TConstIterator>::isConvex()
 template <typename TConstIterator>
 inline
 bool
+DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConcave()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isRightExteriorAtTheBack( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isLeftExteriorAtTheFront( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConvex()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isLeftExteriorAtTheBack( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isRightExteriorAtTheFront( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+
+template <typename TConstIterator>
+inline
+bool
 DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 

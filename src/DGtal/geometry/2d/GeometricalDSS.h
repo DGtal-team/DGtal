@@ -269,6 +269,28 @@ namespace DGtal
      */
     bool isOppositeEndExtendable();
 
+    /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
+     */
+    bool isOppositeEndConcave();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
+     */
+    bool isOppositeEndConvex();
+
     //------------------ display -------------------------------
     /**
      * Writes/Displays the object on an output stream.
