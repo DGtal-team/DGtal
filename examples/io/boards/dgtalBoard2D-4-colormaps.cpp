@@ -85,6 +85,7 @@ int main()
     }
   board.saveSVG( "dgtalboard-4-colormaps.svg");
   board.saveEPS( "dgtalboard-4-colormaps.eps");
+  board.saveTikZ( "dgtalboard-4-colormaps.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", Board2D::CairoPDF);
