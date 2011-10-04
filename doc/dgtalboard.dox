@@ -137,6 +137,7 @@ namespace DGtal {
 	<< SetMode( shape.styleName(), "DrawAdjacencies" )
 	<< shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
+  board.saveTikZ( "dgtalboard-2-sets-2.tikz");
   board.clear();
 
   // Object with couple (8,4) of adjacency.
@@ -145,6 +146,7 @@ namespace DGtal {
 	<< SetMode( shape2.styleName(), "DrawAdjacencies" )
 	<< shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
+  board.saveTikZ( "dgtalboard-2-sets-3.tikz");
    \endcode
     
      Note the different adjacency relations depending on the topology
