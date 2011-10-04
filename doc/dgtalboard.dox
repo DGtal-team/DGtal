@@ -229,6 +229,7 @@ namespace DGtal {
 				       Board2D::Shape::RoundJoin ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-classes.svg");
+  board.saveTikZ("dgtalboard-3-custom-classes.svg");
    \endcode
     
      This program (see full source at <a
