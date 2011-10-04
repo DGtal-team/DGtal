@@ -259,7 +259,6 @@ Path::flushTikZPoints( std::ostream & stream,
     return;
   std::vector<Point>::const_iterator i = _points.begin();
   std::vector<Point>::const_iterator end = _points.end();
-  int count = 0;
   stream << '(' << transform.mapX( i->x ) << "," << transform.mapY( i->y ) << ')';
   ++i;
   while ( i != end ) {
