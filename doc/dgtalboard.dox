@@ -5,7 +5,7 @@
 namespace DGtal {
 
   /**
-     @author Jacques-Olivier Lachaud.
+     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly
 
      @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
     
@@ -366,6 +366,14 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
      \code
 \usepackage{tikz}
 \usetikzlibrary{arrows}
+\endcode
+
+The figure can be included in a floating environment as follows:
+@code
+\begin{figure}
+\input{myfigure.tikz}
+\caption{My caption.\label{fig:myfigure}}
+\end{figure}
      \endcode
 
      The TikZ file can be included at compilation time using the LaTeX macro \c \\input.
