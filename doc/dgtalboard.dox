@@ -105,6 +105,7 @@ namespace DGtal {
    Board2D board;
    board << domain << shape_set; // display domain and set
    board.saveSVG( "dgtalboard-2-sets-1.svg");
+   board.saveTikZ( "dgtalboard-2-sets-1.tikz");
    \endcode
     
      \image html dgtalboard-2-sets-1.png "Digital set drawing with Board." 
