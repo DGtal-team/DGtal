@@ -66,6 +66,7 @@ bool testSimpleBoard()
   board.saveSVG( "simpleboard.svg" );
   board.saveFIG( "simpleboard.fig" );
   board.saveEPS( "simpleboard.eps" );
+  board.saveTikZ( "simpleboard.tikz" );
   nbok++;
 
   typedef  PointVector<2,int> Point2D;
@@ -86,6 +87,7 @@ bool testSimpleBoard()
   board.saveSVG( "pointsimpleboard.svg" );
   board.saveFIG( "pointsimpleboard.fig" );
   board.saveEPS( "pointsimpleboard.eps" );
+  board.saveTikZ( "pointsimpleboard.tikz" );
   nbok++;
   trace.endBlock();
   return nbok == nb;
@@ -106,11 +108,13 @@ bool testDomain()
     board << DrawDomainGrid() << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
+    board.saveTikZ( "domain-grid.tikz" );
     
     Board2D b2;
     b2 << DrawDomainPaving() << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
+    b2.saveTikZ( "domain-paving.tikz" );
 
 
     trace.endBlock();
