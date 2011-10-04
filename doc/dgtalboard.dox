@@ -317,6 +317,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 	    << *it;
     }
   board.saveSVG( "dgtalboard-4-colormaps.svg");
+  board.saveTikZ( "dgtalboard-4-colormaps.tikz");
    \endcode
     
      This program (see full source at <a
