@@ -260,7 +260,7 @@ class PointsRange
 public: 
 
   friend class GridCurve<KSpace>;
-  friend struct Display2DFactory;
+
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -390,7 +390,8 @@ public:
       }
   }
   
-  friend  void Display2DFactory::draw( Board2D & board, const PointsRange & object)
+  friend void Display2DFactory::draw( Board2D & board, 
+				      const PointsRange & object)
   {
     object.selfDraw( board );
   }
