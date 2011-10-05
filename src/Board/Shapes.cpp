@@ -2603,7 +2603,7 @@ Text::flushTikZ( std::ostream & stream,
 	   << (fontTraits[ _font ] & BOLD_FONT ? "\\bfseries " : "")
 	   << (fontTraits[ _font ] & MONOSPACE_FONT ? "\\ttfamily " : "")
 	   << (fontTraits[ _font ] & SANSSERIF_FONT ? "\\sffamily " : "")
-           << _text << ' ' << (int)fontTraits[_font] << ' ' << (int)_font
+           << _text
            << "};" << std::endl;
 }
 
