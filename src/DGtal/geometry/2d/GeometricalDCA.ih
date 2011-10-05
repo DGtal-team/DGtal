@@ -193,8 +193,6 @@ DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
   const Point& aPole, 
   Point& Pf, Point& Pl, Point& Qf, Point& Ql)
 {
-std::cout << "\t to update with " << aPole << std::endl; 
-  std::cout << "\t from " << itb->first << ite->second << std::endl;
   ASSERT( itb != ite ); 
   TIterator it( itb ); 
   Pair currentPair( *it ); 
@@ -231,7 +229,7 @@ std::cout << "\t to update with " << aPole << std::endl;
     } else isOK = false; 
     
   } //if only one pair => circularly separable
-    std::cout << " " << thePreimage << std::endl;
+  
   if (isOK)
   {//points of support
     Pf = thePreimage.getUf(); 
@@ -448,7 +446,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
         std::reverse_iterator<ConstIterator> rite(myBegin); 
         if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
         {
-          myCircle.init(aP,Ql,Pf); 
+          myCircle.init(aP,Pf,Ql); 
           isOK = true; 
         }
       }
@@ -459,7 +457,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
         std::reverse_iterator<ConstIterator> rite(myBegin); 
         if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
         {
-          myCircle.init(aQ,Pl,Qf); 
+          myCircle.init(aQ,Qf,Pl); 
           isOK = true; 
         }
       }
@@ -472,26 +470,23 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
     if ( mySegPtr->extendOppositeEnd() ) isOK = true; 
     else
     {
-      std::cout << " seg to arc " << std::endl; 
       Point Pf, Pl, Qf, Ql; 
       std::reverse_iterator<ConstIterator> ritb(myEnd); 
       std::reverse_iterator<ConstIterator> rite(myBegin); 
       if (mySegPtr->isOppositeEndConvex())
       { //convex part 
-        std::cout << " convex (aQ) " << std::endl; 
         if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
         {
-          myCircle.init(aQ,Pl,Qf); 
+          myCircle.init(aQ,Qf,Pl); 
           myFlagIsInit = true;
           isOK = true; 
         }
       }
       else if (mySegPtr->isOppositeEndConcave())
       { //concave part 
-        std::cout << " concave (aP) " << std::endl; 
         if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
         {
-          myCircle.init(aP,Ql,Pf); 
+          myCircle.init(aP,Pf,Ql); 
           myFlagIsInit = true;
           isOK = true; 
         }
