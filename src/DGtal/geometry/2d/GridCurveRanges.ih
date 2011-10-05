@@ -30,19 +30,19 @@
  * This file is part of the DGtal library.
  */
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // class SCellsRange
-    ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// class SCellsRange
+///////////////////////////////////////////////////////////////////////////////
 
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the signed d-cells of a grid curve.
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the signed d-cells of a grid curve.
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 
 
 class SCellsRange
@@ -55,6 +55,10 @@ public:
   typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+  
+  ///Local copy of the parent template parameter
+  typedef TKSpace KSpace;
+  
   /**
    * Default Constructor.
    */
@@ -81,9 +85,9 @@ public:
   SCellsRange& operator= ( const SCellsRange & other )
   {  
     if ( this != &other )
-    {
-      myData = other.myData;
-    }
+      {
+	myData = other.myData;
+      }
     return *this;
   }
 
@@ -147,7 +151,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -165,9 +169,9 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      aBoard << *it;
-    }
+      {
+	aBoard << *it;
+      }
   }
 #endif
 
@@ -241,14 +245,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the 0-cells of a grid curve,
-* viewed as points of integer coordinates. 
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the 0-cells of a grid curve,
+ * viewed as points of integer coordinates. 
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class PointsRange
 {
 
@@ -256,7 +260,7 @@ class PointsRange
 public: 
 
   friend class GridCurve<KSpace>;
-  typedef Self SCellsRange;
+  friend struct Display2DFactory;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -296,10 +300,10 @@ public:
   PointsRange& operator= ( const PointsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -363,7 +367,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -371,7 +375,6 @@ public:
     return "PointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -381,19 +384,23 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      aBoard << SetMode(it->styleName(),"Grid")
-                  << *it;
-    }
+      {
+	aBoard << SetMode(it->styleName(),"Grid")
+	       << *it;
+      }
   }
-#endif
+  
+  friend  void Display2DFactory::draw( Board2D & board, const PointsRange & object)
+  {
+    object.selfDraw( board );
+  }
 
   // ------------------------- private data --------------------------------
-  private:
+private:
   /**
    * Private member @a myC is a pointer to any grid curve
    */    
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -458,14 +465,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the signed 1-cells of a grid curve, 
-* viewed as points of half-integer coordinates. 
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the signed 1-cells of a grid curve, 
+ * viewed as points of half-integer coordinates. 
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class MidPointsRange
 {
 
@@ -473,7 +480,6 @@ class MidPointsRange
 public: 
   
   friend class GridCurve<KSpace>;
-  typedef Self MidPontsRange;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -513,10 +519,10 @@ public:
   MidPointsRange& operator= ( const MidPointsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -580,7 +586,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -598,21 +604,21 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      typename IteratorCirculatorTraits<ConstIterator>::Value p(*it); 
-      double s = 0.1; 
-      aBoard.drawLine( p[0]-s, p[1]-s, p[0]+s, p[1]+s ); 
-      aBoard.drawLine( p[0]-s, p[1]+s, p[0]+s, p[1]-s ); 
-    }
+      {
+	typename IteratorCirculatorTraits<ConstIterator>::Value p(*it); 
+	double s = 0.1; 
+	aBoard.drawLine( p[0]-s, p[1]-s, p[0]+s, p[1]+s ); 
+	aBoard.drawLine( p[0]-s, p[1]+s, p[0]+s, p[1]-s ); 
+      }
   }
 #endif
 
   // ------------------------- private data --------------------------------
-  private: 
+private: 
   /**
    * Private member @a myC is a pointer to any grid curve
    */
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -676,14 +682,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the signed 1-cells of a grid curve,
-* viewed as pairs (point - shift vector), both in integer coordinates.
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the signed 1-cells of a grid curve,
+ * viewed as pairs (point - shift vector), both in integer coordinates.
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class ArrowsRange
 {
 
@@ -701,7 +707,7 @@ public:
 
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-
+ 
   // ------------------------- standard services --------------------------------
 
   /**
@@ -730,10 +736,10 @@ public:
   ArrowsRange& operator= ( const ArrowsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -749,7 +755,7 @@ public:
     return myC->my1SCells.size();
   }
 
-    /**
+  /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
    */
@@ -767,10 +773,10 @@ public:
     out << "[ArrowsRange]" << std::endl; 
     out << "\t"; 
     for ( ; it != itEnd; ++it) 
-    {
-      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-      out << pair.first << pair.second << ", "; 
-    }
+      {
+	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+	out << pair.first << pair.second << ", "; 
+      }
     out << std::endl; 
   }
   
@@ -803,7 +809,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -821,25 +827,25 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-      typename Modifier::Vector shift( pair.second );
-      aBoard << CustomStyle( shift.styleName(), 
-             new CustomPen( Color::Black, Color::Black, 1.0, 
-                                       Board2D::Shape::SolidStyle,
-                                       Board2D::Shape::RoundCap,
-                                       Board2D::Shape::RoundJoin ) );       
-      shift.selfDraw( aBoard, pair.first );
-    }
+      {
+	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+	typename Modifier::Vector shift( pair.second );
+	aBoard << CustomStyle( shift.styleName(), 
+			       new CustomPen( Color::Black, Color::Black, 1.0, 
+					      Board2D::Shape::SolidStyle,
+					      Board2D::Shape::RoundCap,
+					      Board2D::Shape::RoundJoin ) );       
+	shift.selfDraw( aBoard, pair.first );
+      }
   }
 #endif
 
   // ------------------------- private data --------------------------------
-  private: 
+private: 
   /**
    * Private member @a myC is a pointer to any grid curve
    */
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -903,15 +909,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the 2-cells (viewed as points
-* of integer coordinates) that are directly incident to the
-* signed 1-cells of a 2d grid curve.
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the 2-cells (viewed as points
+ * of integer coordinates) that are directly incident to the
+ * signed 1-cells of a 2d grid curve.
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class InnerPointsRange
 {
 
@@ -959,10 +965,10 @@ public:
   InnerPointsRange& operator= ( const InnerPointsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -1027,7 +1033,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -1045,21 +1051,21 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      aBoard << SetMode( it->styleName(), "Both" )
-                  << CustomStyle( it->styleName(), 
-                new CustomFillColor( Color::Blue ) )
-                  << *it;
-    }
+      {
+	aBoard << SetMode( it->styleName(), "Both" )
+	       << CustomStyle( it->styleName(), 
+			       new CustomFillColor( Color::Blue ) )
+	       << *it;
+      }
   }
 #endif
 
   // ------------------------- private data --------------------------------
-  private: 
+private: 
   /**
    * Private member @a myC is a pointer to any grid curve
    */
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1122,15 +1128,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the 2-cells (viewed as points
-* of integer coordinates) that are indirectly incident to the
-* signed 1-cells of a 2d grid curve.
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the 2-cells (viewed as points
+ * of integer coordinates) that are indirectly incident to the
+ * signed 1-cells of a 2d grid curve.
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class OuterPointsRange
 {
 
@@ -1178,10 +1184,10 @@ public:
   OuterPointsRange& operator= ( const OuterPointsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -1245,7 +1251,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -1263,21 +1269,21 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      aBoard << SetMode( it->styleName(), "Both" )
-                  << CustomStyle( it->styleName(), 
-                new CustomFillColor( Color::Green ) )
-                  << *it;
-    }
+      {
+	aBoard << SetMode( it->styleName(), "Both" )
+	       << CustomStyle( it->styleName(), 
+			       new CustomFillColor( Color::Green ) )
+	       << *it;
+      }
   }
 #endif
   
   // ------------------------- private data --------------------------------
-  private:
+private:
   /**
    * Private member @a myC is a pointer to any grid curve
    */    
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1340,15 +1346,15 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the two 2-cells (viewed as points
-* of integer coordinates) that are (directly and indirectly) 
-* incident to the signed 1-cells of a 2d grid curve.
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the two 2-cells (viewed as points
+ * of integer coordinates) that are (directly and indirectly) 
+ * incident to the signed 1-cells of a 2d grid curve.
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class IncidentPointsRange
 {
 
@@ -1367,7 +1373,7 @@ public:
 
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-
+ 
   // ------------------------- standard services --------------------------------
 
   /**
@@ -1396,10 +1402,10 @@ public:
   IncidentPointsRange& operator= ( const IncidentPointsRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -1415,7 +1421,7 @@ public:
     return myC->my1SCells.size();
   }
 
-    /**
+  /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
    */
@@ -1433,10 +1439,10 @@ public:
     out << "[IncidentPointsRange]" << std::endl; 
     out << "\t"; 
     for ( ; it != itEnd; ++it) 
-    {
-      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-      out << pair.first << pair.second << ", "; 
-    }
+      {
+	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+	out << pair.first << pair.second << ", "; 
+      }
     out << std::endl; 
   }
 
@@ -1469,7 +1475,7 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-   /**
+  /**
    * @return the style name used for drawing this object.
    */
   std::string styleName() const
@@ -1487,25 +1493,25 @@ public:
     ConstIterator it ( this->begin() ); 
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
-    {
-      typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-      aBoard << SetMode( pair.first.styleName(), "Both" )
-                  << CustomStyle( pair.first.styleName(), 
-                new CustomFillColor( Color::Blue ) )
-                  << pair.first 
-                  << CustomStyle( pair.second.styleName(), 
-                new CustomFillColor( Color::Green ) )
-                  << pair.second; 
-    }
+      {
+	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
+	aBoard << SetMode( pair.first.styleName(), "Both" )
+	       << CustomStyle( pair.first.styleName(), 
+			       new CustomFillColor( Color::Blue ) )
+	       << pair.first 
+	       << CustomStyle( pair.second.styleName(), 
+			       new CustomFillColor( Color::Green ) )
+	       << pair.second; 
+      }
   }
 #endif
   
   // ------------------------- private data --------------------------------
-  private: 
+private: 
   /**
    * Private member @a myC is a pointer to any grid curve
    */
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1568,18 +1574,18 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
-* @brief Aim: model of CRange that provides services
-* to (circularly)iterate over the 1-cells of a 2d grid curve,
-* viewed as chain codes: 
-* - 0 for a shift to the right
-* - 2 for a shift to the left
-* - 1 for a shift to the up
-* - 3 for a shift to the bottom
-* 
-* (Included in GridCurve.h)
-*
-* @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
-*/
+ * @brief Aim: model of CRange that provides services
+ * to (circularly)iterate over the 1-cells of a 2d grid curve,
+ * viewed as chain codes: 
+ * - 0 for a shift to the right
+ * - 2 for a shift to the left
+ * - 1 for a shift to the up
+ * - 3 for a shift to the bottom
+ * 
+ * (Included in GridCurve.h)
+ *
+ * @see GridCurve.h exampleGridCurve2d.cpp testGridCurve.cpp
+ */
 class CodesRange
 {
 
@@ -1598,7 +1604,6 @@ public:
 
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-
   // ------------------------- standard services --------------------------------
 
   /**
@@ -1626,10 +1631,10 @@ public:
   CodesRange& operator= ( const CodesRange & other )
   {  
     if ( this != &other )
-    {
-      myC = other.myC;
-    }
-  return *this;
+      {
+	myC = other.myC;
+      }
+    return *this;
   }
 
   /**
@@ -1671,17 +1676,17 @@ public:
    * @param object the object of class 'CodesRange' to write.
    * @return the output stream after the writing.
    */
-    friend ostream& operator <<(ostream & out, const CodesRange & object)
-    {
-      object.selfDisplay( out );
-      return out;
-    }
+  friend ostream& operator <<(ostream & out, const CodesRange & object)
+  {
+    object.selfDisplay( out );
+    return out;
+  }
   // ------------------------- private data --------------------------------
-  private:
+private:
   /**
    * Private member @a myC is a pointer to any grid curve
    */    
-    const GridCurve* myC;
+  const GridCurve* myC;
 
   // ------------------------- iterator services --------------------------------
 public:
