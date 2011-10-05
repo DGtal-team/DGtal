@@ -1128,9 +1128,7 @@ Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, dou
     box = box && _clippingPath.boundingBox();
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
 
-  file << "\\begin{tikzpicture}" << std::endl
-    << "\\pgfsetxvec{\\pgfpoint{1pt}{0pt}}" << std::endl
-    << "\\pgfsetyvec{\\pgfpoint{0pt}{-1pt}}" << std::endl;
+  file << "\\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]" << std::endl;
 
 /*
   if ( pageWidth > 0 && pageHeight > 0 ) {
