@@ -362,7 +362,7 @@ bool testSegmentation(const TCurve& curve)
         suml += 1; 
     }
     
-    board.saveEPS("GeometricalDCAGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveSVG("GeometricalDCAGreedySegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results given by another program
@@ -371,34 +371,35 @@ bool testSegmentation(const TCurve& curve)
     nb++;
   }
   trace.endBlock();
-/*
+
   trace.beginBlock ( "Saturated segmentation" );
-  {
+  {cout << "SEGMENTATION" << endl;
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    
+    theSegmentation.setMode("Last"); 
     Board2D board; 
-    board << r; 
+    board << curve; 
     
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
     unsigned int n = 0; 
     unsigned int suml = 0; 
     for ( ; it != itEnd; ++it, ++n) {
-      board << (*it); 
+      cout << "# " << n << endl;
+      board << SetMode(SegmentComputer().styleName(), "Annulus")
+                << (*it); 
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
         suml += 1; 
     }
     
-    board.saveEPS("GeometricalDCASaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveSVG("GeometricalDCASaturatedSegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
-    //comparison with the results gave by another program
-    nbok += ((r.size()==85)&&(n==25)&&(suml==255)) ? 1 : 0; 
+    //comparison with the results given by another program
+    nbok += ((r.size()==85)&&(n==20)&&(suml==326)) ? 1 : 0; 
     nb++;
   }
   trace.endBlock();
-  */
   
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return (nbok == nb);

@@ -246,7 +246,7 @@ void
 DGtal::GeometricalDCA<TConstIterator>::init(const ConstIterator& anIt)
 {
   myFlagIsInit = false; 
-  
+  std::cout << "INIT"  << myFlagIsInit << std::endl;  
   //initialize the iterators
   myBegin = anIt; 
   myEnd = anIt; 
@@ -332,9 +332,10 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
   Point aQ( aPair.second ); 
   bool isOK = false; 
 
+std::cout << " FRONT " << myFlagIsInit << std::endl;
   if (myFlagIsInit)
   { //initialized
-
+std::cout << " in circle test " << std::endl;
     //predicates
     PInCirclePred p1( myCircle ); 
     QInCirclePred p2( myCircle ); 
@@ -366,7 +367,7 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
     
   } else
   { //not initialized yet
-
+std::cout << "seg" << std::endl;
     if ( mySegPtr->extend() ) isOK = true; 
     else
     { 
@@ -483,15 +484,14 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
   Point aP( aPair.first ); 
   Point aQ( aPair.second ); 
   bool isOK = false; 
-
+std::cout << " BACK " << std::endl;
   if (myFlagIsInit)
   { //initialized
-
+std::cout << " in circle test " << std::endl;
     //predicates
     PInCirclePred p1( myCircle ); 
     QInCirclePred p2( myCircle ); 
-    std::cout << p1 << aP << " => " << p1(aP) << std::endl; 
-    std::cout << p2 << aQ << " => " << p2(aQ) << std::endl; 
+
     if ( p1(aP)&&p2(aQ) )
       isOK = true; 
     else
@@ -523,7 +523,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
     
   } else
   { //not initialized yet
-
+std::cout << " seg " << std::endl;
     if ( mySegPtr->extendOppositeEnd() ) isOK = true; 
     else
     {
@@ -532,6 +532,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
       std::reverse_iterator<ConstIterator> rite(myBegin); 
       if (mySegPtr->isOppositeEndConvex())
       { //convex part 
+        std::cout << "convex" << std::endl;
         if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
         {
           myCircle.init(aQ,Qf,Pl); 
@@ -541,6 +542,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendOppositeEnd()
       }
       else if (mySegPtr->isOppositeEndConcave())
       { //concave part 
+        std::cout << "concave" << std::endl;
         if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
         {
           myCircle.init(aP,Pf,Ql); 
