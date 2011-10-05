@@ -364,7 +364,7 @@ Dot::flushCairo( cairo_t *cr,
 
 void
 Dot::flushTikZ( std::ostream & stream,
-                const TransformTikZ & transform ) const
+                const TransformTikZ & /*transform*/ ) const
 
 {
   // FIXME: unimplemented
@@ -2313,7 +2313,7 @@ GouraudTriangle::flushCairo( cairo_t */*cr*/,
 
 void
 GouraudTriangle::flushTikZ( std::ostream & stream,
-			    const TransformTikZ & transform ) const
+			    const TransformTikZ & /*transform*/ ) const
 {
   // FIXME: unimplemented
   stream << "% FIXME: GouraudTriangle::flushTikZ unimplemented" << endl;
@@ -2540,7 +2540,7 @@ Text::flushCairo( cairo_t */*cr*/,
 
 void
 Text::flushTikZ( std::ostream & stream,
-		 const TransformTikZ & transform ) const
+		 const TransformTikZ & /*transform*/ ) const
 {
   // FIXME: unimplemented
   stream << "% FIXME: Text::flushTikZ unimplemented" << endl;
