@@ -2553,11 +2553,57 @@ void
 Text::flushTikZ( std::ostream & stream,
 		 const TransformTikZ & transform ) const
 {
-    // FIXME: honor font-family (?), font-size
+  // FIXME: honor font-size
+#define BOLD_FONT	0x01
+#define ITALIC_FONT	0x02
+#define MONOSPACE_FONT	0x04
+#define SANSSERIF_FONT	0x08
+    char fontTraits[] = {
+	0,						// TimesRoman,
+	ITALIC_FONT,					// TimesItalic,
+	BOLD_FONT,					// TimesBold,
+	BOLD_FONT | ITALIC_FONT,			// TimesBoldItalic,
+	SANSSERIF_FONT,					// AvantGardeBook,
+	SANSSERIF_FONT | ITALIC_FONT,			// AvantGardeBookOblique,
+	SANSSERIF_FONT,					// AvantGardeDemi,
+	SANSSERIF_FONT | ITALIC_FONT,			// AvantGardeDemiOblique,
+	0,						// BookmanLight,
+	ITALIC_FONT,					// BookmanLightItalic,
+	0,						// BookmanDemi,
+	ITALIC_FONT,					// BookmanDemiItalic,
+	MONOSPACE_FONT,					// Courier,
+	MONOSPACE_FONT | ITALIC_FONT,			// CourierOblique,
+	MONOSPACE_FONT | BOLD_FONT,			// CourierBold,
+	MONOSPACE_FONT | BOLD_FONT | ITALIC_FONT,	// CourierBoldOblique,
+	SANSSERIF_FONT,					// Helvetica,
+	SANSSERIF_FONT | ITALIC_FONT,			// HelveticaOblique,
+	SANSSERIF_FONT | BOLD_FONT,			// HelveticaBold,
+	SANSSERIF_FONT | BOLD_FONT | ITALIC_FONT,	// HelveticaBoldOblique,
+	SANSSERIF_FONT,					// HelveticaNarrow,
+	SANSSERIF_FONT | ITALIC_FONT,			// HelveticaNarrowOblique,
+	SANSSERIF_FONT | BOLD_FONT,			// HelveticaNarrowBold,
+	SANSSERIF_FONT | BOLD_FONT | ITALIC_FONT,	// HelveticaNarrowBoldOblique,
+	0,						// NewCenturySchoolbookRoman,
+	ITALIC_FONT,					// NewCenturySchoolbookItalic,
+	BOLD_FONT,					// NewCenturySchoolbookBold,
+	BOLD_FONT | ITALIC_FONT,			// NewCenturySchoolbookBoldItalic,
+	0,						// PalatinoRoman,
+	ITALIC_FONT,					// PalatinoItalic,
+	BOLD_FONT,					// PalatinoBold,
+	BOLD_FONT | ITALIC_FONT,			// PalatinoBoldItalic,
+	0,						// Symbol,
+	ITALIC_FONT,					// ZapfChanceryMediumItalic,
+	0						// ZapfDingbats
+    };
+
     stream << "\\path[" << tikzProperties(transform) << "] ("
 	   << transform.mapX( _position.x ) << ',' << transform.mapY( _position.y )
 	   << ") node {"
-           << _text
+	   << (fontTraits[ _font ] & ITALIC_FONT ? "\\itshape " : "")
+	   << (fontTraits[ _font ] & BOLD_FONT ? "\\bfseries " : "")
+	   << (fontTraits[ _font ] & MONOSPACE_FONT ? "\\ttfamily " : "")
+	   << (fontTraits[ _font ] & SANSSERIF_FONT ? "\\sffamily " : "")
+           << _text << ' ' << (int)fontTraits[_font] << ' ' << (int)_font
            << "};" << std::endl;
 }
 
