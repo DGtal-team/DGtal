@@ -58,6 +58,8 @@
 #include "DGtal/base/Circulator.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
+
+///@todo TO REMOVE
 #include "DGtal/io/Display2DFactory.h"
 
 
