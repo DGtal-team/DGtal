@@ -196,7 +196,7 @@ DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
   ASSERT( itb != ite ); 
   TIterator it( itb ); 
   Pair currentPair( *it ); 
-  
+
   //preimage of circles passing through aPole
   CircleFrom2Points<Point> aCircle( aPole ); 
   Preimage2D<CircleFrom2Points<Point> >
@@ -245,6 +245,8 @@ inline
 void
 DGtal::GeometricalDCA<TConstIterator>::init(const ConstIterator& anIt)
 {
+  myFlagIsInit = false; 
+  
   //initialize the iterators
   myBegin = anIt; 
   myEnd = anIt; 
@@ -367,12 +369,13 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
 
     if ( mySegPtr->extend() ) isOK = true; 
     else
-    {
+    { 
       Point Pf, Pl, Qf, Ql; 
       if (mySegPtr->isConvex())
       { //convex part
+
         if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
-        {
+        { 
           myCircle.init(Qf,Pl,aQ); 
           myFlagIsInit = true;
           isOK = true; 
@@ -380,8 +383,9 @@ DGtal::GeometricalDCA<TConstIterator>::extend()
       }
       else if (mySegPtr->isConcave())
       { //concave part
+
         if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
-        {
+        { 
           myCircle.init(Pf,Ql,aP); 
           myFlagIsInit = true;
           isOK = true; 
@@ -559,30 +563,49 @@ DGtal::GeometricalDCA<TConstIterator>::selfDraw(Board2D & aBoard) const
   {
     if (myFlagIsInit) 
     {
+      typedef typename Point::Coordinate Coordinate; 
+      
       //points
       Pair firstPair( *myBegin ); 
+      double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+      double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+      double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+      double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+      PointVector<2,double> p1( (fx1+fx2)/2.0, (fy1+fy2)/2.0 ); 
+      
       ConstIterator it (myEnd); 
       --it;
       Pair lastPair( *it );  
-/*
-        RealPoint p1, p2; 
-  p1[0] = NumberTraits<Coordinate>::castToDouble(aPoint1[0]);  
-  p1[1] = NumberTraits<Coordinate>::castToDouble(aPoint1[1]);
-  p2[0] = NumberTraits<Coordinate>::castToDouble(aPoint2[0]);  
-  p2[1] = NumberTraits<Coordinate>::castToDouble(aPoint2[1]);
-  drawArc(aBoard, p1, p2, anOrientation); 
-      */
+      double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+      double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+      double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+      double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+      PointVector<2,double> p2( (lx1+lx2)/2.0, (ly1+ly2)/2.0 ); 
+
+      //circle
+      double px = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[0]);
+      double py = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[1]);
+      double qx = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[0]);
+      double qy = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[1]);
+      double rx = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[0]);
+      double ry = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[1]);
+      CircleFrom3Points<PointVector<2,double> > circleToDraw; 
+      circleToDraw.init( PointVector<2,double>(px,py), 
+                                  PointVector<2,double>(qx,qy), 
+                                  PointVector<2,double>(rx,ry) ); 
+      
       //orientation
       ASSERT( mySegPtr.get() != 0 ); 
       bool orientation = mySegPtr->isClockwiseOriented(); 
+      
       //mode
       std::string mode = aBoard.getMode( styleName() );
       if ( mode == "Sector" ) 
-        myCircle.drawSector( aBoard, firstPair.first, lastPair.first, orientation );
+        circleToDraw.drawSector( aBoard, p1, p2, orientation );
       else if ( mode == "Annulus" )
-        myCircle.drawAnnulus( aBoard, firstPair.first, lastPair.first, orientation );
+        circleToDraw.drawAnnulus( aBoard, p1, p2, orientation );
       else 
-        myCircle.drawArc( aBoard, firstPair.first, lastPair.first, orientation );
+        circleToDraw.drawArc( aBoard, p1, p2, orientation );
     }
     else 
     {
