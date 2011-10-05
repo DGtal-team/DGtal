@@ -284,7 +284,7 @@ bool testRecognition()
 
   trace.beginBlock ( "Recognition" );
   
-  for (unsigned int i = 0; i < 50; ++i)
+  for (unsigned int i = 0; i < 5; ++i)
   {
     //generate digital circle
     double cx = (rand()%100 ) / 100.0;
@@ -343,7 +343,6 @@ bool testSegmentation(const TCurve& curve)
   unsigned int nbok = 0;
   unsigned int nb = 0;  
 
-  /*
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
@@ -357,7 +356,8 @@ bool testSegmentation(const TCurve& curve)
     unsigned int n = 0; 
     unsigned int suml = 0; 
     for ( ; it != itEnd; ++it, ++n) {
-      board << (*it); 
+      board << SetMode(SegmentComputer().styleName(), "Sector")
+                << (*it); 
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
         suml += 1; 
     }
@@ -365,12 +365,13 @@ bool testSegmentation(const TCurve& curve)
     board.saveEPS("GeometricalDCAGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
-    //comparison with the results gave by another program
-    nbok += ((r.size()==85)&&(n==10)&&(suml==94)) ? 1 : 0; 
+    //comparison with the results given by another program
+    bool flag = ((r.size()==85)&&(n==6)&&(suml==90)&&((r.size()+n-1)==suml)); 
+    nbok += flag ? 1 : 0; 
     nb++;
   }
   trace.endBlock();
-
+/*
   trace.beginBlock ( "Saturated segmentation" );
   {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;

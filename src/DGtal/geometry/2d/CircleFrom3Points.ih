@@ -314,14 +314,15 @@ DGtal::CircleFrom3Points<TPoint>::drawSector(Board2D & aBoard, const Point& aPoi
     Vector u(myP - myQ);
     Vector v(myR - myP);
     bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
-    //sector drawing
+    //arc drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                   cx, cy ); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
-                   cx, cy ); 
+    //draw the segments tied to the center
+    double fx = cx + radius*std::cos(alpha1);
+    double fy = cy + radius*std::sin(alpha1);
+    double lx = cx + radius*std::cos(alpha2);
+    double ly = cy + radius*std::sin(alpha2);
+    aBoard.drawLine(fx, fy, cx, cy ); 
+    aBoard.drawLine(lx, ly, cx, cy ); 
   } 
   catch ( InfiniteNumberException e )
   {
