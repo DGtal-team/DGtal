@@ -2553,8 +2553,12 @@ void
 Text::flushTikZ( std::ostream & stream,
 		 const TransformTikZ & transform ) const
 {
-  // FIXME: unimplemented
-  stream << "% FIXME: Text::flushTikZ unimplemented" << endl;
+    // FIXME: honor font-family (?), font-size
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+	   << transform.mapX( _position.x ) << ',' << transform.mapY( _position.y )
+	   << ") node {"
+           << _text
+           << "};" << std::endl;
 }
 
 Rect
