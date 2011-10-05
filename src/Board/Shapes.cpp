@@ -1617,6 +1617,17 @@ stream << "' />";
 
 }
 
+void
+Arc::flushTikZ( std::ostream & stream,
+		const TransformTikZ & transform ) const
+{
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+	   << transform.mapX( _center.x ) << ',' << transform.mapY( _center.y ) << ')'	// center
+	   << " +(" << -_angle1/M_PI*180. << ':' << transform.scale( _xRadius) << ')'	// first point of arc
+           << " arc (" << -_angle1/M_PI*180. << ':' << -_angle2/M_PI*180. + _negative * 360. << ':' << transform.scale( _xRadius ) << ");"
+	   << std::endl;
+}
+
 /*
  * Polyline
  */
