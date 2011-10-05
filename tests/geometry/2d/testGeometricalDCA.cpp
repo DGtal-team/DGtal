@@ -228,10 +228,9 @@ bool testGeometricalDCA(const TCurve& curve)
     trace.info() << "forward extension " << endl; 
     
     ConstIterator itBegin (r.begin()); 
-    ConstIterator itFirst (r.begin()); ++itFirst; 
     ConstIterator itEnd (r.end()); 
 
-    s.init( itFirst );
+    s.init( itBegin );
     while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
     trace.info() << s << endl; 
 
@@ -242,22 +241,25 @@ bool testGeometricalDCA(const TCurve& curve)
     trace.info() << t << endl; 
     
     trace.info() << "backward extension " << endl; 
+      
     typename GeometricalDCA<ConstIterator>::Reverse rs = s.getReverse(); 
     ConstReverseIterator ritBegin ( s.end() ); 
-    ConstReverseIterator ritEnd ( itBegin+1 ); 
+    ConstReverseIterator ritEnd ( itBegin ); 
+      
     rs.init( ritBegin );
     while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
     trace.info() << rs << endl; 
     
+    ConstReverseIterator ritLast (rs.end()); --ritLast;
+      
     typename GeometricalDCA<ConstIterator>::Reverse rt = t.getReverse(); 
-    rt.init( rs.end()-1 ); 
+    rt.init( ritLast ); 
     while ( (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
     trace.info() << rt << endl; 
     
     trace.info() << "comparison... " << endl; 
     bool myFlag = (s == t)
-                      &&(rs == rt) 
-    ; 
+                      &&(rs == rt); 
 
     nbok += myFlag ? 1 : 0; 
     nb++;
