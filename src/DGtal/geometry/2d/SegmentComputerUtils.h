@@ -69,9 +69,9 @@ namespace DGtal
 //default
 template <typename SC>
 struct SegmentComputerTraits {
-    typedef  ForwardSegmentComputer Category;
+//    typedef  ForwardSegmentComputer Category;
 //    typedef DynamicBidirectionalSegmentComputer Category; 
-//    typedef BidirectionalSegmentComputer Category;   
+    typedef BidirectionalSegmentComputer Category;   
 };
 
 
