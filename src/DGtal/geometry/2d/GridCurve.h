@@ -58,8 +58,7 @@
 #include "DGtal/base/Circulator.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
-
-//#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/Display2DFactory.h"
 
 
 
@@ -181,11 +180,7 @@ namespace DGtal
     typedef typename KSpace::Point Vector;
 
     typedef typename KSpace::SCell SCell;
-    typedef typename std::vector<SCell> Storage;
-
-    typedef GridCurve<TKSpace> Self;
-
-
+    typedef typename std::vector<SCell> Storage; 
 
     // ----------------------- Standard services ------------------------------
   public:
