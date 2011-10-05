@@ -1474,6 +1474,10 @@ struct Arc : public Circle {
      const TransformCairo & transform ) const;
 #endif
 
+  void
+  flushTikZ( std::ostream & stream,
+	     const TransformTikZ & transform ) const;
+
 private:
   static const std::string _name; /**< The generic name of the shape. */
   
