@@ -284,7 +284,7 @@ bool testRecognition()
 
   trace.beginBlock ( "Recognition" );
   
-  for (unsigned int i = 0; i < 5; ++i)
+  for (unsigned int i = 0; i < 50; ++i)
   {
     //generate digital circle
     double cx = (rand()%100 ) / 100.0;
@@ -373,10 +373,11 @@ bool testSegmentation(const TCurve& curve)
   trace.endBlock();
 
   trace.beginBlock ( "Saturated segmentation" );
-  {cout << "SEGMENTATION" << endl;
+  {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
     theSegmentation.setMode("Last"); 
+    
     Board2D board; 
     board << curve; 
     
@@ -385,7 +386,6 @@ bool testSegmentation(const TCurve& curve)
     unsigned int n = 0; 
     unsigned int suml = 0; 
     for ( ; it != itEnd; ++it, ++n) {
-      cout << "# " << n << endl;
       board << SetMode(SegmentComputer().styleName(), "Annulus")
                 << (*it); 
       for (ConstIterator i = it->begin(); i != it->end(); ++i)

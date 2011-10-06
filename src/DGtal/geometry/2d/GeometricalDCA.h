@@ -61,11 +61,48 @@ namespace DGtal
   // template class GeometricalDCA
   /**
    * @brief Aim:
+   * On-line recognition of a digital circular arcs (DCA)
+   * defined as a sequence of connected grid edges such that 
+   * there is at least one (Euclidean) circle that separates the centers 
+   * of the two incident pixels of each grid edge. 
+   *
+   * The algorithm iteratively calls a routine (@ref isCircularlySeparable)
+   * that uses Preimage2D in order to compute the whole set of 
+   * separating (Euclidean) circles passing through a given point. 
+   * It returns 'false' if the set is empty and 'true' otherwise. 
+   *
+   * The algorithm may be divided into two steps:
+  
+  - The first one consists in the on-line recognition of a DSS
+  using GeometricalDSS (using at its turn Preimage2D). 
+  Once the recogntion stops, the main routine is run. 
+  The two incident pixels of each grid edge are scanned
+  a second time in order to compute the whole set of 
+  separating (Euclidean) circles passing through 
+  the point that made the recognition stop. If the set is not
+  empty, one of the separating circles is chosen as a solution. 
+  
+  - The second step consists in checking if the centers of the two incident pixels 
+  of the next grid edge are lying on either side of the current solution circle. 
+  If it turns out that a point is outside of the current solution circle instead of 
+  being inside or conversely, the main routine is run. 
+  The two incident pixels of each grid edge are scanned
+  a new time in order to compute the whole set of separating (Euclidean) circles 
+  passing through the point that made the current solution circle not separating.
+  If the set is not empty, one of the separating circles is chosen as a new solution
+  and so on. 
+  
+  For a DCA of @f$ n @f$ grid edges, a trivial upper bound of this algorithm is @f$ O(n^2) @f$ 
+  because the linear-time routine may be possibly called @f$ n @f$ times. But we observed in practice
+  that the routine is called only a few times and that the algorithm is fast. 
+  
    *
    * This class is a model of the concept CBidirectionalSegmentComputer. 
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
+   *
+   * @snippet geometry/exampleGeometricalDCA.cpp GeometricalDCAUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *
