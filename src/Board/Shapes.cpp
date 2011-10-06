@@ -2551,7 +2551,7 @@ Text::flushCairo( cairo_t */*cr*/,
 
 void
 Text::flushTikZ( std::ostream & stream,
-		 const TransformTikZ & /*transform*/ ) const
+		 const TransformTikZ & transform ) const
 {
   // FIXME: honor font-size
 #define BOLD_FONT	0x01
