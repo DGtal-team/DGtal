@@ -37,8 +37,8 @@
 // ArithmeticalDSS3d
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
 {
 }
 // ArithmeticalDSS3d
@@ -47,48 +47,49 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // FreemanChain
 template <typename TInteger>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const DGtal::FreemanChain<TInteger> & f )
+void draw( DGtal::Board2D & board,
+	   const DGtal::FreemanChain<TInteger> & f )
 {
 }
 // FreemanChain
 
 
 // GridCurve
-template <typename TKSpace>
-inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const typename DGtal::GridCurve<TKSpace>::PointsRange & gc )
-{
-}
-template <typename TKSpace>
-inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gc )
-{
-}
+/*template <typename TKSpace>
+  inline
+  void draw( DGtal::Board2D & board,
+  const typename DGtal::GridCurve<TKSpace>::PointsRange & gc )
+  {
+  }
 
-template <typename TKSpace>
-inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const typename DGtal::GridCurve<TKSpace>::SCellsRange & gc )
-{
-}
+  template <typename TKSpace>
+  inline
+  void draw( DGtal::Board2D & board,
+  const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gc )
+  {
+  }
 
-template <typename TKSpace>
+  template <typename TKSpace>
+  inline
+  void draw( DGtal::Board2D & board,
+  const typename DGtal::GridCurve<TKSpace>::SCellsRange & gc )
+  {
+  }
+*/
+/*template <typename TKSpace>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const typename DGtal::GridCurve<TKSpace> & gc )
+void draw( DGtal::Board2D & board,
+	   const typename DGtal::GridCurve<TKSpace> & gc )
 {
-}
+}*/
 // GridCurve
 
 
 // Preimage2D
 template <typename Shape>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const DGtal::Preimage2D<Shape> & p )
+void draw( DGtal::Board2D & board,
+	   const DGtal::Preimage2D<Shape> & p )
 {
 }
 // Preimage2D
@@ -97,8 +98,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // PointVector
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::PointVector<dim,TComponent> & p )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::PointVector<dim,TComponent> & p )
 {
 }
 // PointVector
@@ -107,8 +108,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // HyperRectDomain
 template<typename TSpace>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::HyperRectDomain<TSpace> & h )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::HyperRectDomain<TSpace> & h )
 {
 }
 // HyperRectDomain
@@ -117,8 +118,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // DigitalSetBySTLSet
 template<typename Domain>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::DigitalSetBySTLSet<Domain> & s )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
 }
 // DigitalSetBySTLSet
@@ -127,8 +128,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // DigitalSetBySTLVector
 template<typename Domain>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::DigitalSetBySTLVector<Domain> & v )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
 }
 // DigitalSetBySTLVector
@@ -137,8 +138,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
 }
 // Object
@@ -147,8 +148,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // KhalimskyCell
 template < Dimension dim, typename TInteger >
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const DGtal::KhalimskyCell<dim, TInteger> & k )
+void draw( DGtal::Board2D & board,
+	   const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
 }
 // KhalimskyCell
@@ -156,8 +157,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // SignedKhalimskyCell
 template < Dimension dim, typename TInteger >
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+void draw( DGtal::Board2D & board,
+	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
 }
 // SignedKhalimskyCell
@@ -165,8 +166,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 
 // AngleLinearMinimizer
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-                                    const DGtal::AngleLinearMinimizer & a )
+void draw( DGtal::Board2D & board,
+	   const DGtal::AngleLinearMinimizer & a )
 {
 }
 // AngleLinearMinimizer
@@ -174,8 +175,8 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 // FP
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-                                    const DGtal::FP<TIterator,TInteger,connectivity> & a )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::FP<TIterator,TInteger,connectivity> & a )
 {
 }
 // FP
@@ -183,25 +184,25 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 //
 
 inline
-void DGtal::Display2DFactory::draw( Board2D & board, 
-				    const DGtal::SetMode & sm )
+void draw( DGtal::Board2D & board, 
+	   const DGtal::SetMode & sm )
 {
   board.myModes[ sm.myClassname ] = sm.myMode;
 }
 
 inline
-void DGtal::Display2DFactory::draw( Board2D & board,
-				    const DGtal::CustomStyle & cs )
+void draw( DGtal::Board2D & board,
+	   const DGtal::CustomStyle & cs )
 {
   board.myStyles[ cs.myClassname ] = cs.myStyle;
 }
 
 /*inline
-void DGtal::Display2DFactory::draw( Display3D & display, const DGtal::CustomColors3D & cc3d )
-{
+  void draw( Display3D & display, const DGtal::CustomColors3D & cc3d )
+  {
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
-}*/
+  }*/
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

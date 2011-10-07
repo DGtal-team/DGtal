@@ -58,7 +58,7 @@
 #include "DGtal/base/Circulator.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
-
+#include "DGtal/io/boards/Board2D.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -305,14 +305,18 @@ namespace DGtal
      */
     std::string styleName() const;
 
-#if(0)
+
     /**
        Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
     void selfDraw(Board2D & board ) const;
-#endif
 
+    friend void draw(Board2D & aBoard, const DGtal::GridCurve<TKSpace> &aGC)
+    {
+      aGC.selfDraw(aBoard);
+    }
+    
     // ------------------------- inner classes --------------------------------
 
   public: 
