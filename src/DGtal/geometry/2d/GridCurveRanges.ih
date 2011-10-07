@@ -259,8 +259,6 @@ class PointsRange
   // ------------------------- inner types --------------------------------
 public: 
 
-  friend class GridCurve<KSpace>;
-
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -350,6 +348,7 @@ public:
     return out;
   }
   
+#if(0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -367,6 +366,8 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+#endif
+
   /**
    * @return the style name used for drawing this object.
    */
@@ -375,6 +376,7 @@ public:
     return "PointsRange";
   }
   
+#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -389,12 +391,7 @@ public:
 	       << *it;
       }
   }
-  
-  friend void Display2DFactory::draw( Board2D & board, 
-				      const PointsRange & object)
-  {
-    object.selfDraw( board );
-  }
+#endif
 
   // ------------------------- private data --------------------------------
 private:
@@ -480,7 +477,6 @@ class MidPointsRange
   // ------------------------- inner types --------------------------------
 public: 
   
-  friend class GridCurve<KSpace>;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -697,7 +693,6 @@ class ArrowsRange
   // ------------------------- inner types --------------------------------
 public: 
 
-  friend class GridCurve<KSpace>;
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -793,6 +788,7 @@ public:
     return out;
   }
   
+#if (0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -810,6 +806,8 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+#endif
+
   /**
    * @return the style name used for drawing this object.
    */
@@ -925,8 +923,6 @@ class InnerPointsRange
   // ------------------------- inner types --------------------------------
 public: 
 
-  friend class GridCurve<KSpace>;
-
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
@@ -1017,6 +1013,7 @@ public:
     return out;
   }
 
+#if(0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -1034,6 +1031,9 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+
+#endif
+
   /**
    * @return the style name used for drawing this object.
    */
