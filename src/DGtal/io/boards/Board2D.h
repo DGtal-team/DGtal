@@ -45,8 +45,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-
 //////////////////////////////////////////////////////////////////////////////
+
 
 namespace DGtal
 {
@@ -436,8 +436,9 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/boards/Board2D.ih"
 
+#include "DGtal/io/Display2DFactory.h"
+#include "DGtal/io/boards/Board2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

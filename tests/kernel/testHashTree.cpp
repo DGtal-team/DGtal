@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "Board/Board.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayScaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"

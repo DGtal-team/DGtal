@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////

@@ -40,7 +40,7 @@
 
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
-
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

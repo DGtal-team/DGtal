@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -529,7 +529,7 @@ namespace DGtal
 
       template <typename C>
       void
-      recursiveDraw(HashKey key, const double p1[2], const double len, LibBoard::Board & board, const C& cmap) const;
+      recursiveDraw(HashKey key, const double p1[2], const double len, Board2D & board, const C& cmap) const;
 
 
       // -------------------------------------------------------------

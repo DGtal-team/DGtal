@@ -55,10 +55,7 @@ public:
   typedef typename GridCurve::Storage::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-  
-  ///Local copy of the parent template parameter
-  typedef TKSpace KSpace;
-  
+    
   /**
    * Default Constructor.
    */
@@ -159,7 +156,6 @@ public:
     return "SCellsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -173,7 +169,10 @@ public:
 	aBoard << *it;
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const SCellsRange &sc)
+  {
+    sc.selfDraw(aBoard);
+  }
 
   // ------------------------- private data --------------------------------
 private: 
@@ -1484,7 +1483,6 @@ public:
     return "IncidentPointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -1505,7 +1503,12 @@ public:
 	       << pair.second; 
       }
   }
-#endif
+
+  friend void draw( Board2D &aBoard, const IncidentPointsRange &ir)
+  {
+    ir.selfDraw(aBoard);
+  }
+
   
   // ------------------------- private data --------------------------------
 private: 

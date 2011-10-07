@@ -40,13 +40,13 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+
 #include "DGtal/base/Common.h"
 
 //#include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/FP.h"
 #include "DGtal/kernel/PointVector.h"
@@ -56,6 +56,10 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
+
+#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/io/boards/Board2D.h"
+
 
 // TODO: begin
 // remettre testGridCurve
@@ -145,122 +149,123 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+//namespace DGtal
+//{
 
-  ///Forward Declatations for inner classes
-  template <typename T>
+
+/* template<typename T>
   class GridCurve;
-   
-  template<typename T>
-  class FreemanChain;
   
-  
+  class Board2D;
+  class SetMode;
+  class CustomStyle;
+*/
+
   /////////////////////////////////////////////////////////////////////////////
   // struct Display2DFactory
   /**
    * Description of struct 'Display2DFactory' <p>
    * \brief Factory for Display2D:
    */
-  struct Display2DFactory
-  {
+  //  namespace Display2DFactory
+  // {
+   
     // ArithmeticalDSS3d
     template <typename TIterator, typename TInteger, int connectivity=8>
-    static void draw( Board2D & board, const ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
     // ArithmeticalDSS3d
     
     
     // FreemanChain
     template <typename TInteger>
-    static void draw( Board2D & board, const FreemanChain<TInteger> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::FreemanChain<TInteger> & );
     // FreemanChain
     
     
     // GridCurve
-    template <typename TKSpace>
-    static void draw( Board2D & board, const typename GridCurve<TKSpace>::PointsRange & );
+//    template <typename TKSpace>
+/*static*/ //void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::PointsRange & );
     
-    template <typename TKSpace>
-    static void draw( Board2D & board, const typename GridCurve<TKSpace>::IncidentPointsRange & );
+//  template <typename TKSpace>
+/*static*/// void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::IncidentPointsRange & );
     
-    template <typename TKSpace>
-    static void draw( Board2D & board, const typename GridCurve<TKSpace>::SCellsRange & );
+//  template <typename TKSpace>
+/*static*/ //void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::SCellsRange & );
    
-    template <typename TKSpace>
-    static void draw( Board2D & board, const GridCurve<TKSpace> & );
+//template <typename TKSpace>
+/*static*/ //void draw( DGtal::Board2D & board, const DGtal::GridCurve<TKSpace> & );
     // GridCurve
     
     
     // Preimage2D
-    template <typename Shape>
-    static void draw( Board2D & board, const DGtal::Preimage2D<Shape> & );
+  template <typename Shape>
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::Preimage2D<Shape> & );
     // Preimage2D
     
     
     // PointVector
     template<Dimension dim, typename TComponent>
-    static void draw( Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
     // PointVector
     
     
     // HyperRectDomain
     template<typename TSpace>
-    static void draw( Board2D & board, const DGtal::HyperRectDomain<TSpace> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & );
     // HyperRectDomain
     
     
     // DigitalSetBySTLSet
     template<typename Domain>
-    static void draw( Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
     // DigitalSetBySTLSet
     
     
     // DigitalSetBySTLVector
     template<typename Domain>
-    static void draw( Board2D & board, const DGtal::DigitalSetBySTLVector<Domain> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLVector<Domain> & );
     // DigitalSetBySTLVector
     
     
     // Object
     template <typename TDigitalTopology, typename TDigitalSet>
-    static void draw( Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
     // Object
     
     
     // KhalimskyCell
     template < Dimension dim, typename TInteger >
-    static void draw( Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
     // KhalimskyCell
     
     // SignedKhalimskyCell
     template < Dimension dim, typename TInteger >
-    static void draw( Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
     // SignedKhalimskyCell
     
     // AngleLinearMinimizer
-    static void draw( Board2D & board, const DGtal::AngleLinearMinimizer & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
     // AngleLinearMinimizer
     
     // FP
     template <typename TIterator, typename TInteger, int connectivity>
-    static void draw( Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
     // FP
     
     //
     
-    static void draw( Board2D & board, const DGtal::SetMode & );
-    static void draw( Board2D & board, const DGtal::CustomStyle & );
-    //static void draw( Display3D & display, const DGtal::CustomColors3D & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::SetMode & );
+    /*static*/ void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
+    ///*static*/ void draw( Display3D & display, const DGtal::CustomColors3D & );
 
-  }; // end of struct Display2DFactory
+  //  }; // end of struct Display2DFactory
 
-} // namespace DGtal
+  //} // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods 
 #include "DGtal/io/Display2DFactory.ih"
-
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
