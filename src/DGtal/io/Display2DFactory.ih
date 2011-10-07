@@ -58,10 +58,29 @@ void DGtal::Display2DFactory::draw( Board2D & board,
 template <typename TKSpace>
 inline
 void DGtal::Display2DFactory::draw( Board2D & board,
-				    const DGtal::GridCurve<TKSpace> & gc )
+				    const typename DGtal::GridCurve<TKSpace>::PointsRange & gc )
+{
+}
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+				    const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gc )
 {
 }
 
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+				    const typename DGtal::GridCurve<TKSpace>::SCellsRange & gc )
+{
+}
+
+template <typename TKSpace>
+inline
+void DGtal::Display2DFactory::draw( Board2D & board,
+				    const typename DGtal::GridCurve<TKSpace> & gc )
+{
+}
 // GridCurve
 
 

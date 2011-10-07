@@ -147,6 +147,14 @@
 
 namespace DGtal
 {
+
+  ///Forward Declatations for inner classes
+  template <typename T>
+  class GridCurve;
+   
+  template<typename T>
+  class FreemanChain;
+  
   
   /////////////////////////////////////////////////////////////////////////////
   // struct Display2DFactory
@@ -158,17 +166,26 @@ namespace DGtal
   {
     // ArithmeticalDSS3d
     template <typename TIterator, typename TInteger, int connectivity=8>
-    static void draw( Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+    static void draw( Board2D & board, const ArithmeticalDSS<TIterator,TInteger,connectivity> & );
     // ArithmeticalDSS3d
     
     
     // FreemanChain
     template <typename TInteger>
-    static void draw( Board2D & board, const DGtal::FreemanChain<TInteger> & );
+    static void draw( Board2D & board, const FreemanChain<TInteger> & );
     // FreemanChain
     
     
     // GridCurve
+    template <typename TKSpace>
+    static void draw( Board2D & board, const typename GridCurve<TKSpace>::PointsRange & );
+    
+    template <typename TKSpace>
+    static void draw( Board2D & board, const typename GridCurve<TKSpace>::IncidentPointsRange & );
+    
+    template <typename TKSpace>
+    static void draw( Board2D & board, const typename GridCurve<TKSpace>::SCellsRange & );
+   
     template <typename TKSpace>
     static void draw( Board2D & board, const GridCurve<TKSpace> & );
     // GridCurve
