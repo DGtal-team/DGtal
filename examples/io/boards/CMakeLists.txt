@@ -18,7 +18,7 @@ if( WITH_CAIRO )
     dgtalBoard3DTo2D-4-modes
     dgtalBoard3DTo2D-5-custom
     dgtalBoard3DTo2D-6
-    dgtalBoard3DTo2D-KSCell
+#    dgtalBoard3DTo2D-KSCell
 )
 endif ( WITH_CAIRO )
 
