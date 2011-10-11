@@ -1,0 +1,42 @@
+/**
+ * @file tutoImageRegionDT.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/10/11
+ *
+ * Documentation file for feature tutoImageRegionDT
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page tutoImageRegionDT Tutorial "Image -> Digital Set -> Distance Transformation"
+@writer David Coeurjolly
+
+Table of contents:
+ -# \ref secttutoImageRegionDT1
+   -# \ref subsecttutoImageRegionDT11
+ -# \ref secttutoImageRegionDT2  
+   -# \ref subsecttutoImageRegionDT21
+   -# \ref subsecttutoImageRegionDT22
+
+\section secttutoImageRegionDT1 First Section
+
+\subsection subsecttutoImageRegionDT11 Subsection 1.1
+
+\section secttutoImageRegionDT2 Section Two
+
+\subsection subsecttutoImageRegionDT21  Subsection 2.1
+
+\subsection subsecttutoImageRegionDT22  Subsection 2.2
+
+*/
+
+}
