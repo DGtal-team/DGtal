@@ -49,9 +49,9 @@
 #include <string>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
-/*#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/Display3D.h"
-#endif*/
+
+//#include "DGtal/io/Display3D.h"
+
 
 
 namespace DGtal
