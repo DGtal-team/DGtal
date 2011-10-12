@@ -60,8 +60,9 @@ int main()
 
   //! [ImageSetDT-image]
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
-  Image image = DGtal::PNMReader<Image>::importPGMImage( examplesPath + "samples/contourS.pgm" ); 
-  DGtal::trace.info() << "Imported image characteristics: "<<image<<endl;
+  std::string filename =  examplesPath + "samples/contourS.pgm";
+  Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
+  DGtal::trace.info() << "Imported image: "<<image<<endl;
   //! [ImageSetDT-image]
 
 
@@ -80,13 +81,15 @@ int main()
   typedef DTL2::OutputImage OutputImage;
   DTL2 dt;
 
-  OutputImage result = dt.compute(image, IntervalForegroundPredicate<Image>(image,0,135));
+  OutputImage result = dt.compute(image, 
+				  IntervalForegroundPredicate<Image>(image,0,135));
   
-  OutputImage::Value maxDT = (*std::max_element(result.begin(), result.end()));
+  OutputImage::Value maxDT = (*std::max_element(result.begin(), 
+						result.end()));
   //! [ImageSetDT-DT]
 
   //! [ImageSetDT-DTvis]
-  typedef DGtal::HueShadeColorMap<OutputImage::Value, 2> HueTwice;
+  typedef DGtal::HueShadeColorMap<OutputImage::Value,2> HueTwice;
 
   aBoard.clear();
   result.selfDraw<HueTwice> ( aBoard, 0, maxDT );
