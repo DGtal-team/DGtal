@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoImageRegionDT Tutorial "Image -> Digital Set -> Distance Transformation"
+@page tutoImageRegionDT Tutorial "Image -> Region -> Distance Transformation"
 @writers David Coeurjolly
 
 Table of contents:
