@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file SimpleForegroundPredicate.h
+ * @file IntervalForegroundPredicate.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/26
  *
- * Header file for module SimpleForegroundPredicate.cpp
+ * Header file for module IntervalForegroundPredicate.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(SimpleForegroundPredicate_RECURSES)
-#error Recursive header files inclusion detected in SimpleForegroundPredicate.h
-#else // defined(SimpleForegroundPredicate_RECURSES)
+#if defined(IntervalForegroundPredicate_RECURSES)
+#error Recursive header files inclusion detected in IntervalForegroundPredicate.h
+#else // defined(IntervalForegroundPredicate_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SimpleForegroundPredicate_RECURSES
+#define IntervalForegroundPredicate_RECURSES
 
-#if !defined SimpleForegroundPredicate_h
+#if !defined IntervalForegroundPredicate_h
 /** Prevents repeated inclusion of headers. */
-#define SimpleForegroundPredicate_h
+#define IntervalForegroundPredicate_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,14 +50,14 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'SimpleForegroundPredicate' <p>
+   * Description of template class 'IntervalForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
-   * image values  between to constant values.
+   * image values  between two constant values.
    *
    * @tparam TImage an model of CImageContainer concept. 
    */
   template <typename Image>
-  class SimpleForegroundPredicate
+  class IntervalForegroundPredicate
   {
   public:
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
@@ -71,9 +71,9 @@ namespace DGtal
      * @param minVal the minimum value (first value excluded).
      * @param maxVal the maximum value (last value considered).
      */
-    SimpleForegroundPredicate(const Image & aImage,
-            const Value minVal, 
-            const Value maxVal): 
+    IntervalForegroundPredicate(const Image & aImage,
+			      const Value minVal, 
+			      const Value maxVal): 
       myImage(new Image(aImage)), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 
@@ -114,7 +114,7 @@ namespace DGtal
     Value myMinVal;
     
   protected:
-    SimpleForegroundPredicate();
+    IntervalForegroundPredicate();
     
   };
 
@@ -124,7 +124,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SimpleForegroundPredicate_h
+#endif // !defined IntervalForegroundPredicate_h
 
-#undef SimpleForegroundPredicate_RECURSES
-#endif // else defined(SimpleForegroundPredicate_RECURSES)
+#undef IntervalForegroundPredicate_RECURSES
+#endif // else defined(IntervalForegroundPredicate_RECURSES)

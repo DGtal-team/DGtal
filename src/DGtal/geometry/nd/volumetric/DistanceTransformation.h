@@ -50,6 +50,8 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImageContainer.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -122,39 +124,6 @@ namespace DGtal
      */
     ~DistanceTransformation();
 
-
-    // ------- Private Functor to be used as a default template ----
-
-  private:
-    /**
-     * Default foregroundPredicate : we return true if the value at a
-     * point differs from zero.
-     *
-     * @todo Refactoring needed to generalize this class !
-     */
-    struct DefaultForegroundPredicate
-    {
-      bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
-      {
-  return (aImage(aPoint) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::Iterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-    };
   public:
 
     /**
@@ -181,12 +150,12 @@ namespace DGtal
      * @return the distance transformation image with the Internal format.
      */
     template <typename ForegroundPredicate>
-    OutputImage compute(const Image & inputImage, const ForegroundPredicate & predicate  );
+    OutputImage compute(const Image & inputImage, const ForegroundPredicate & predicate   );
     
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
      * The method associates to each point with value satisfying the
-     * foreground predicate, its distance to the closest background
+     * foreground predicate (by default, values greater than 0), its distance to the closest background
      * point.
      * This algorithm is  O(d.|inputImage|).
      *
@@ -195,7 +164,8 @@ namespace DGtal
      */
     OutputImage compute(const Image & inputImage )
     {
-      return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
+      return compute(inputImage, 
+		     SimpleThresholdForegroundPredicate<Image>(inputImage, 0));
     };
 
     /**

@@ -21,21 +21,51 @@ namespace DGtal {
 @writers David Coeurjolly
 
 Table of contents:
+ -# \ref secttutoImageRegionDT0
  -# \ref secttutoImageRegionDT1
-   -# \ref subsecttutoImageRegionDT11
- -# \ref secttutoImageRegionDT2  
-   -# \ref subsecttutoImageRegionDT21
-   -# \ref subsecttutoImageRegionDT22
+ -# \ref secttutoImageRegionDT2
+ -# \ref secttutoImageRegionDT3 
+ -# \ref secttutoImageRegionDT4 
+  
 
-\section secttutoImageRegionDT1 First Section
+\section secttutoImageRegionDT0 Introduction
 
-\subsection subsecttutoImageRegionDT11 Subsection 1.1
 
-\section secttutoImageRegionDT2 Section Two
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-types
 
-\subsection subsecttutoImageRegionDT21  Subsection 2.1
 
-\subsection subsecttutoImageRegionDT22  Subsection 2.2
+
+\section secttutoImageRegionDT1 Reading an image from a file
+
+
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-image
+
+\section secttutoImageRegionDT2 Board exports
+
+
+
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-board1
+
+
+
+
+\section secttutoImageRegionDT3 Distance transformation 
+
+
+
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DT
+
+
+
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DTvis
+
+
+
+\section secttutoImageRegionDT4 Required includes
+
+@snippet tutorial-examples/imageSetDT.cpp ImageSetDT-includes
+
+
 
 */
 
