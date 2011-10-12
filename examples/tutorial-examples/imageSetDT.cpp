@@ -30,48 +30,68 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
-#include "DGtal/base/Common.h"
+#include <algorithm>
 ///////////////////////////////////////////////////////////////////////////////
 
+//! [ImageSetDT-includes]
+#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 
 #include "ConfigExamples.h"
-
-
-using namespace std;
-using namespace DGtal;
-using namespace Z2i;
-
+//! [ImageSetDT-includes]
 
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
-  typedef GrayscaleColorMap<unsigned char> Gray;
- 
-  typedef ImageContainerBySTLVector< Z2i::Domain, int> Image;
+  //! [ImageSetDT-types]
+  typedef DGtal::GrayscaleColorMap<unsigned char> Gray;
+  //! [ImageSetDT-types]
 
-  Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/church.pgm" ); 
 
-  trace.info() << "PGM Import ok: "<<image<<endl;
+  //! [ImageSetDT-image]
+  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
+  Image image = DGtal::PNMReader<Image>::importPGMImage( examplesPath + "samples/contourS.pgm" ); 
+  DGtal::trace.info() << "Imported image characteristics: "<<image<<endl;
+  //! [ImageSetDT-image]
 
-  Board2D aBoard;
+
+  //! [ImageSetDT-board1]
+  DGtal::Board2D aBoard;
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
   
   aBoard.clear();
   image.selfDraw<Gray> ( aBoard, 0, 255 );
   aBoard.saveEPS("imageDomainTuto2.eps");
- 
+  //! [ImageSetDT-board1]
+
+  //! [ImageSetDT-DT]
+  typedef DGtal::DistanceTransformation<Image, 2> DTL2;
+  typedef DTL2::OutputImage OutputImage;
+  DTL2 dt;
+
+  OutputImage result = dt.compute(image, IntervalForegroundPredicate<Image>(image,0,135));
+  
+  OutputImage::Value maxDT = (*std::max_element(result.begin(), result.end()));
+  //! [ImageSetDT-DT]
+
+  //! [ImageSetDT-DTvis]
+  typedef DGtal::HueShadeColorMap<OutputImage::Value, 2> HueTwice;
+
+  aBoard.clear();
+  result.selfDraw<HueTwice> ( aBoard, 0, maxDT );
+  aBoard.saveEPS("imageDomainTuto3.eps");
+  //! [ImageSetDT-DTvis]
 
   return 0;
 
