@@ -55,12 +55,12 @@
 int main()
 {
   //! [ImageSetDT-types]
+  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, unsigned char> Image;
   typedef DGtal::GrayscaleColorMap<unsigned char> Gray;
   //! [ImageSetDT-types]
 
 
   //! [ImageSetDT-image]
-  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
   DGtal::trace.info() << "Imported image: "<<image<<endl;
@@ -72,6 +72,8 @@ int main()
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
   
+
+
   aBoard.clear();
   image.selfDraw<Gray> ( aBoard, 0, 255 );
   aBoard.saveEPS("imageDomainTuto2.eps");
