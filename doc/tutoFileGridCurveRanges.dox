@@ -1,0 +1,72 @@
+/**
+ * @file tutoFileGridCurveRanges.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/10/17
+ *
+ * Documentation file for feature tutofileGridCurveRanges
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page tutoFileGridCurveRanges Tutorial "File -> Grid Curve -> Ranges"
+@writers Tristan Roussillon
+
+Table of contents:
+ -# \ref secttutofileGridCurveRanges0
+ -# \ref secttutofileGridCurveRanges1
+ -# \ref secttutofileGridCurveRanges2
+ -# \ref secttutofileGridCurveRanges3 
+ -# \ref secttutofileGridCurveRanges4 
+  
+
+\section secttutofileGridCurveRanges0 Declaration
+
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-declaration
+
+
+
+\section secttutofileGridCurveRanges1 Reading a grid curve from a file
+
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-read
+
+\section secttutofileGridCurveRanges2 Displaying a grid curve with Board2D
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-board
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-displayCurve
+
+
+
+
+\section secttutofileGridCurveRanges3 Ranges
+
+
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-displayInnerPoints
+
+
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-displayIncidentPoints
+
+
+
+\section secttutofileGridCurveRanges4 Required includes
+
+@snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-includes
+
+
+
+*/
+
+}
