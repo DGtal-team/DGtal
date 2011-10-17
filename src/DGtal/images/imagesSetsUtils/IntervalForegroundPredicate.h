@@ -63,6 +63,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
     
     typedef typename Image::Value Value;
+    typedef typename Image::Point Point; 
 
     /** 
      * Constructor. This functor can be used to threshold image values
