@@ -1,6 +1,7 @@
 SET(DGTAL_TUTO_EXAMPLES_SRC
   imageSetDT
   fileGridCurveRanges
+  imageGridCurveEstimator
 )
 
 
