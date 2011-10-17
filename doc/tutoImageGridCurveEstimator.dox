@@ -1,0 +1,58 @@
+/**
+ * @file tutoImageGridCurveEstimator.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/10/17
+ *
+ * Documentation file for feature tutoImageGridCurveEstimator
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page tutoImageGridCurveEstimator Tutorial "Image -> Region -> Grid curve -> Length estimation"
+@writers Tristan Roussillon
+
+Table of contents:
+ -# \ref secttutoImageGridCurveEstimator0
+ -# \ref secttutoImageGridCurveEstimator1
+ -# \ref secttutoImageGridCurveEstimator2
+ -# \ref secttutoImageGridCurveEstimator4 
+  
+
+\section secttutoImageGridCurveEstimator0 Tracking a connected subset of an image 
+
+
+@snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-prepareTracking
+
+@snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-tracking
+
+
+\section secttutoImageGridCurveEstimator1 Grid curve instantiation
+
+@snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-instantiation
+
+
+\section secttutoImageGridCurveEstimator2 Length estimation
+
+@snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-lengthEstimation
+
+
+
+
+\section secttutoImageGridCurveEstimator4 Required includes
+
+@snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-includes
+
+
+
+*/
+
+}
