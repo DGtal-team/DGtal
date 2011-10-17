@@ -642,8 +642,22 @@ Steps:
     * Number of lower patterns ( @a myLf = @a myNbLowPat . ( @a myB , @a myA ) + @a myLl )
     */
     Integer myNbLowPat; 
+
     
-    //leaning points
+    /**
+    * Steps of the DSS (eg. right and up in the first octant)
+    */
+    std::vector<Vector> mySteps;
+    
+    // ------------------------- Private Datas --------------------------------
+  
+  private:
+
+
+    // ------------------ Display ------------------------------------------
+
+  public:
+    //leaning points (here because Display2DFactory, todo: accessors)
     /**
     * First upper leaning point ( of remainder @a myMu )
     */
@@ -660,9 +674,8 @@ Steps:
     * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
     */
     Point myLl;
-  
-
-    //Iterators to the first (at the back) and last (at the front) points of the DSS
+    
+    //Iterators to the first (at the back) and last (at the front) points of the DSS  (here because Display2DFactory, todo: accessors)
     /**
     * ConstIterator pointing to the back of the DSS
     */
@@ -671,20 +684,7 @@ Steps:
     * ConstIterator pointing to the front of the DSS
     */
     ConstIterator myL;
-
-    /**
-    * Steps of the DSS (eg. right and up in the first octant)
-    */
-    std::vector<Vector> mySteps;
     
-    // ------------------------- Private Datas --------------------------------
-  
-  private:
-
-
-    // ------------------ Display ------------------------------------------
-
-  public:
     /**
      * Projects the point @a m onto the straight line of slope ( @a myA / @a myB) 
      * and intercept @a myMu + ( @a myOmega - 1 )/2 ).

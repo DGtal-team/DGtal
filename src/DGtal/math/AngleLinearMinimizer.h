@@ -317,23 +317,25 @@ protected:
    */
   bool myIsCurveOpen;
   
-private:
+public:
   
   /**
    * The dynamically allocated array of values and the associated constraints.
    */
-  ValueInfo* myValues;
+  ValueInfo* myValues; // public because Display2DFactory, todo: accessors
+  
+  /**
+   * The meaningful size of the array [myValues], ie the number of
+   * valid entries.
+   */
+  unsigned int mySize; // public because Display2DFactory, todo: accessors
+
+private:
   
   /**
    * The size of the array @a myValues, ie the maximal number of valid values.
    */
   unsigned int myMaxSize;
-
-  /**
-   * The meaningful size of the array [myValues], ie the number of
-   * valid entries.
-   */
-  unsigned int mySize;
 
 
 
