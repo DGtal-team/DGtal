@@ -47,6 +47,7 @@
 
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/FP.h"
 #include "DGtal/kernel/PointVector.h"
@@ -56,14 +57,12 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
-
-#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/io/boards/Board2D.h"
 
 
 // TODO: begin
-// remettre testGridCurve
-// remettre testPreimage
+//modified:   ../../../../src/DGtal/geometry/2d/GridCurveRanges.ih
+//ligne 835: //shift.selfDraw( aBoard, pair.first );
 
 //modified:   examples/doc-examples/kernelDomain.cpp
 //ligne 127: //shift.selfDraw(board, (*itPrec));
@@ -152,15 +151,6 @@
 //namespace DGtal
 //{
 
-
-/* template<typename T>
-  class GridCurve;
-  
-  class Board2D;
-  class SetMode;
-  class CustomStyle;
-*/
-
   /////////////////////////////////////////////////////////////////////////////
   // struct Display2DFactory
   /**
@@ -183,22 +173,12 @@
     
     
     // GridCurve
-//    template <typename TKSpace>
-/*static*/ //void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::PointsRange & );
-    
-//  template <typename TKSpace>
-/*static*/// void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::IncidentPointsRange & );
-    
-//  template <typename TKSpace>
-/*static*/ //void draw( DGtal::Board2D & board, const typename GridCurve<TKSpace>::SCellsRange & );
-   
-//template <typename TKSpace>
-/*static*/ //void draw( DGtal::Board2D & board, const DGtal::GridCurve<TKSpace> & );
+    // we use selfDraw because of inner classes
     // GridCurve
     
     
     // Preimage2D
-  template <typename Shape>
+    template <typename Shape>
     /*static*/ void draw( DGtal::Board2D & board, const DGtal::Preimage2D<Shape> & );
     // Preimage2D
     

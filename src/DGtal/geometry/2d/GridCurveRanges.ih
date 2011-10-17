@@ -169,9 +169,9 @@ public:
 	aBoard << *it;
       }
   }
-  friend void draw( Board2D &aBoard, const SCellsRange &sc)
+  friend void draw( Board2D &aBoard, const SCellsRange &scr)
   {
-    sc.selfDraw(aBoard);
+    scr.selfDraw(aBoard);
   }
 
   // ------------------------- private data --------------------------------
@@ -347,7 +347,6 @@ public:
     return out;
   }
   
-#if(0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -365,7 +364,6 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-#endif
 
   /**
    * @return the style name used for drawing this object.
@@ -375,7 +373,6 @@ public:
     return "PointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -390,7 +387,10 @@ public:
 	       << *it;
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const PointsRange &pr)
+  {
+    pr.selfDraw(aBoard);
+  }
 
   // ------------------------- private data --------------------------------
 private:
@@ -590,7 +590,6 @@ public:
     return "MidPointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -607,7 +606,10 @@ public:
 	aBoard.drawLine( p[0]-s, p[1]+s, p[0]+s, p[1]-s ); 
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const MidPointsRange &mpr)
+  {
+    mpr.selfDraw(aBoard);
+  }
 
   // ------------------------- private data --------------------------------
 private: 
@@ -787,7 +789,6 @@ public:
     return out;
   }
   
-#if (0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -805,7 +806,6 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
-#endif
 
   /**
    * @return the style name used for drawing this object.
@@ -815,7 +815,6 @@ public:
     return "ArrowsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -833,10 +832,13 @@ public:
 					      Board2D::Shape::SolidStyle,
 					      Board2D::Shape::RoundCap,
 					      Board2D::Shape::RoundJoin ) );       
-	shift.selfDraw( aBoard, pair.first );
+	//shift.selfDraw( aBoard, pair.first );
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const ArrowsRange &ar)
+  {
+    ar.selfDraw(aBoard);
+  }
 
   // ------------------------- private data --------------------------------
 private: 
@@ -1012,7 +1014,6 @@ public:
     return out;
   }
 
-#if(0)
   /**
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -1031,8 +1032,6 @@ public:
     return new DrawableWithBoard2D; 
   }
 
-#endif
-
   /**
    * @return the style name used for drawing this object.
    */
@@ -1041,7 +1040,6 @@ public:
     return "InnerPointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -1058,7 +1056,10 @@ public:
 	       << *it;
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const InnerPointsRange &ipr)
+  {
+    ipr.selfDraw(aBoard);
+  }
 
   // ------------------------- private data --------------------------------
 private: 
@@ -1259,7 +1260,6 @@ public:
     return "OuterPointsRange";
   }
   
-#if(0)
   /**
      Draw the object on a Board2D board
      @param board the output board where the object is drawn.
@@ -1276,7 +1276,10 @@ public:
 	       << *it;
       }
   }
-#endif
+  friend void draw( Board2D &aBoard, const OuterPointsRange &opr)
+  {
+    opr.selfDraw(aBoard);
+  }
   
   // ------------------------- private data --------------------------------
 private:
@@ -1503,12 +1506,10 @@ public:
 	       << pair.second; 
       }
   }
-
-  friend void draw( Board2D &aBoard, const IncidentPointsRange &ir)
+  friend void draw( Board2D &aBoard, const IncidentPointsRange &ipr)
   {
-    ir.selfDraw(aBoard);
+    ipr.selfDraw(aBoard);
   }
-
   
   // ------------------------- private data --------------------------------
 private: 
