@@ -299,19 +299,22 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
+    
     // ------------------------- Private Datas --------------------------------
   private:
+    
+  public:
 
     /*
     * list where each vertex of the FP is stored
     */
-    Polygon myPolygon; 
+    Polygon myPolygon; // public because Display2DFactory, todo: accessors
 
     /*
     * bool equal to 'true' if the list has to be consider as circular
     * 'false' otherwise
     */
-    bool myFlagIsClosed;
+    bool myFlagIsClosed; // public because Display2DFactory, todo: accessors
 
     // ------------------------- Hidden services ------------------------------
   protected:

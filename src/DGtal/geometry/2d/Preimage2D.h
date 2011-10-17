@@ -202,23 +202,25 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+    
+  public:
 
     /**
      * Shape used to separate the input points
      */
-    Shape myShape;
+    Shape myShape; // public because Display2DFactory, todo: accessors
   
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
      * (whose vertices are Pi points)
      */
-    Container myPHull;
+    Container myPHull; // public because Display2DFactory, todo: accessors
     /**
      * Upper part of the preimage.
      * (whose vertices are Qi points)
      */
-    Container myQHull;
+    Container myQHull; // public because Display2DFactory, todo: accessors
 
     // ------------------------- Hidden services ------------------------------
   protected:
