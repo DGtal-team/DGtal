@@ -55,33 +55,7 @@ void draw( DGtal::Board2D & board,
 
 
 // GridCurve
-/*template <typename TKSpace>
-  inline
-  void draw( DGtal::Board2D & board,
-  const typename DGtal::GridCurve<TKSpace>::PointsRange & gc )
-  {
-  }
-
-  template <typename TKSpace>
-  inline
-  void draw( DGtal::Board2D & board,
-  const typename DGtal::GridCurve<TKSpace>::IncidentPointsRange & gc )
-  {
-  }
-
-  template <typename TKSpace>
-  inline
-  void draw( DGtal::Board2D & board,
-  const typename DGtal::GridCurve<TKSpace>::SCellsRange & gc )
-  {
-  }
-*/
-/*template <typename TKSpace>
-inline
-void draw( DGtal::Board2D & board,
-	   const typename DGtal::GridCurve<TKSpace> & gc )
-{
-}*/
+// we use selfDraw because of inner classes
 // GridCurve
 
 

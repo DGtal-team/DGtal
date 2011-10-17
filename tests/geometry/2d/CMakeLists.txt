@@ -4,10 +4,10 @@ SET(DGTAL_TESTS_SRC
   testDecomposition  
   testSegmentation
   testHalfPlane
-#  testPreimage
+  testPreimage
   testMaximalSegments
   testFP
-#  testGridCurve
+  testGridCurve
   testLengthEstimators
   testTrueLocalEstimator
   testSegmentComputerFunctor
