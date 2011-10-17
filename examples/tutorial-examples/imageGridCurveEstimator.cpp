@@ -66,12 +66,15 @@ int main()
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
-  
-  //! [imageGridCurveEstimator-prepareTracking]
-  Z2i::KSpace ks;                                                                           //Khalimsky space 
-  ks.init( image.lowerBound(), image.upperBound(), true );
-  SurfelAdjacency<2> sAdj( true );                                              //adjacency
+
+  //! [imageGridCurveEstimator-predicate]  
   IntervalForegroundPredicate<Image> predicate(image,0,135); //predicate from the image
+  //! [imageGridCurveEstimator-predicate]
+
+  //! [imageGridCurveEstimator-prepareTracking]
+  Z2i::KSpace ks;                                            //Khalimsky space 
+  ks.init( image.lowerBound(), image.upperBound(), true );
+  SurfelAdjacency<2> sAdj( true );                           //adjacency
   //! [imageGridCurveEstimator-prepareTracking]
 
   //! [imageGridCurveEstimator-tracking]
