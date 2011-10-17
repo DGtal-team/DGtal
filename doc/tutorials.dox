@@ -23,6 +23,7 @@ namespace DGtal {
 Table of contents:
  -# \ref tutoFileGridCurveRanges
  -# \ref tutoImageRegionDT
+ -# \ref tutoImageGridCurveEstimator
 
 
 */

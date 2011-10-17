@@ -80,10 +80,10 @@ int main()
   Surfaces<Z2i::KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, bel );
   //! [imageGridCurveEstimator-tracking]
 
-  //! [imageGridCurveEstimator-instanciation]
+  //! [imageGridCurveEstimator-instantiation]
   Z2i::Curve c;
   c.initFromVector( boundaryPoints );  
-  //! [imageGridCurveEstimator-instanciation]
+  //! [imageGridCurveEstimator-instantiation]
   
   //! [imageGridCurveEstimator-lengthEstimation]
   Z2i::Curve::PointsRange r = c.getPointsRange(); 
