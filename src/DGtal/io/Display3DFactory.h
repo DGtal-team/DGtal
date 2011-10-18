@@ -53,9 +53,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 
 // TODO: begin
-// (0) redefinition of typedefs int .ih (not really good)
-
-// (1) write new concepts in CDrawableWithDisplay3D (because don't know how to do...)
+// (1) write (if necessary ?) new concepts in CDrawableWithDisplay3D (because don't know how to do...)
 
 // (2) here, at the end of the file -> struct DefaultDrawStyleDisplay3D : public DrawableWithDisplay3D ? necessary or not used ? (really not sure writing is good...)
 

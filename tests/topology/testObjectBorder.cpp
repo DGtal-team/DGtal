@@ -177,12 +177,12 @@ bool testObjectBorder()
     Board2D board;
     board.setUnit ( Board::UCentimeter );
 
-    board /*<< DrawDomainGrid()*/ <<  domain << bubble_set;
+    board << SetMode( domain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/ <<  domain << bubble_set;
     board.saveSVG ( "bubble-set.svg" );
 
-    board /*<< DrawObjectAdjacencies()*/
+    board << SetMode( bubbleBorder.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/
     //  << DrawWithCustomStyle<SelfDrawStyleCustom>()
-          << CustomStyle ( "Object", new MyObjectStyleCustom )
+          << CustomStyle ( bubbleBorder.styleName()/*"Object"*/, new MyObjectStyleCustom )
           << bubbleBorder;
     board.saveSVG ( "bubble-object-border.svg" );
 
@@ -202,11 +202,11 @@ bool testObjectBorder()
     else
         trace.info() << "The object (4,8) border is not connected." << endl;
 
-    //domain.selfDrawAsGrid ( board );
-    board  <<  bubble_set
-    /*<< DrawObjectAdjacencies()*/
-    << CustomStyle ( "Object", new MyObjectStyleCustom )
-    << bubbleBorder2;
+    board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid ( board );
+    board << bubble_set
+          << SetMode( bubbleBorder2.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/
+          << CustomStyle ( bubbleBorder2.styleName()/*"Object"*/, new MyObjectStyleCustom )
+          << bubbleBorder2;
 
     board.saveSVG ( "bubble-object-border-48.svg" );
 
@@ -223,9 +223,9 @@ bool testObjectBorder()
     for ( unsigned int k = 0;k < nbComponents ; k++ )
     {
         if ( flag )
-            board /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( "Object", new MyObjectStyleCustom ) << borders[k];
+            board << SetMode( borders[k].styleName(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( borders[k].styleName()/*"Object"*/, new MyObjectStyleCustom ) << borders[k];
         else
-            board /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( "Object", new MyObjectStyleCustom ) << borders[k];
+            board << SetMode( borders[k].styleName(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( borders[k].styleName()/*"Object"*/, new MyObjectStyleCustom ) << borders[k];
         flag = !flag;
     }
 
@@ -298,14 +298,14 @@ bool testBoard2D()
     Board2D board;
     board.setUnit ( Board::UCentimeter );
 
-    board /*<< DrawDomainGrid()*/
+    board << SetMode( domain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/
     << CustomStyle ( domain.styleName(), new MyDrawStyleCustomGreen )
     << domain
     << CustomStyle ( bubble_set.styleName(), new MyDrawStyleCustomRed )
     << bubble_set;
     board.saveSVG ( "bubble-set-dgtalboard.svg" );
 
-    board /*<< DrawObjectAdjacencies ( true )*/
+    board << SetMode( bubbleBorder.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies ( true )*/
     << CustomStyle ( bubbleBorder.styleName(), new MyDrawStyleCustomBlue )
     << bubbleBorder;
     board.saveSVG ( "bubble-object-border-dgtalboard.svg" );

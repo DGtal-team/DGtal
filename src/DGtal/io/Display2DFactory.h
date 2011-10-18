@@ -61,6 +61,17 @@
 
 
 // TODO: begin
+
+// --- VERIF --- :
+// test testDigitalSet.cpp
+// test testObject.cpp
+// test testObject-benchmark.cpp
+// test testObjectBorder
+// test testSimpleExpander
+// test testBoard2DCustomStyle
+
+// /tests/io/testSimpleBoard --> draw(board, apoint, p2) ??? ligne 82
+
 //modified:   ../../../../src/DGtal/geometry/2d/GridCurveRanges.ih
 //ligne 835: //shift.selfDraw( aBoard, pair.first );
 
@@ -71,6 +82,15 @@
 //ligne91://     shift.selfDraw(boardScan1, K.uCoords(prec) );
 //ligne115://    shiftq.selfDraw(boardScan2, K.uCoords(precq) );
 
+//---
+
+// --- FAIRE --- :
+// rechercher tous les selfdraw
+// revoir les // des structs ou alors c'est des #if dehors
+
+//---
+
+// --- DEMANDER A DC --- :
 //modified:   tests/geometry/2d/testShapesFromPoints.cpp
 //ligne 110,111,112
 //    c.drawArc(board, Point(5,10), Point(8,4)); 
@@ -81,75 +101,25 @@
 //tests/kernel/testHashTree.cpp:175:11: error: ‘class testGetSetVal()::Image’ has no member named ‘selfDraw’
 //tests/kernel/testHashTree.cpp:178:12: error: ‘class testGetSetVal()::ImageVector’ has no member named ‘selfDraw’
 
-// test /home/user/Desktop/DGtal.git/DGtal/tests/geometry/nd/testDistanceTransformation.cpp
+// home/user/Desktop/DGtal.git/DGtal/tests/geometry/nd/testDistanceTransformation.cpp
 //ligne 111 138 185 - 221 273 283 - 293 337 363 535 - 553 568
 
-//home/user/Desktop/DGtal.git/DGtal/tests/io/writers/testPNMRawWriter.cpp
-//ligne 99
+// home/user/Desktop/DGtal.git/DGtal/tests/io/writers/testPNMRawWriter.cpp
+//ligne 99 -> //image.selfDraw<HueTwice>(board,0,255);
 
-//home/user/Desktop/DGtal.git/DGtal/examples/geometry/distancetransform2D.cpp
+// home/user/Desktop/DGtal.git/DGtal/examples/geometry/distancetransform2D.cpp
 //ligne 99 130 135 140
 
-// test testDigitalSet.cpp
-//tests/kernel/testDigitalSet.cpp:116:27: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/kernel/testDigitalSet.cpp:122:29: error: ‘DrawDomainPaving’ was not declared in this scope
-//tests/kernel/testDigitalSet.cpp:234:10: error: ‘class testDigitalSetDraw()::Domain’ has no member named ‘selfDrawAsGrid’
-
-// test testObject.cpp
-//tests/topology/testObject.cpp:485:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject.cpp:493:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject.cpp:494:15: error: ‘class testDraw()::ObjectType’ has no member named ‘selfDrawWithAdjacencies’
-//tests/topology/testObject.cpp:501:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject.cpp:502:16: error: ‘class testDraw()::ObjectType84’ has no member named ‘selfDrawWithAdjacencies’
-
-// test testObject-benchmark.cpp
-//tests/topology/testObject-benchmark.cpp:482:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject-benchmark.cpp:490:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject-benchmark.cpp:491:15: error: ‘class testDraw()::ObjectType’ has no member named ‘selfDrawWithAdjacencies’
-//tests/topology/testObject-benchmark.cpp:498:10: error: ‘class testDraw()::DomainType’ has no member named ‘selfDrawAsGrid’
-//tests/topology/testObject-benchmark.cpp:499:16: error: ‘class testDraw()::ObjectType84’ has no member named ‘selfDrawWithAdjacencies’
-
-// test testObjectBorder
-//tests/topology/testObjectBorder.cpp:170:29: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testObjectBorder.cpp:173:36: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testObjectBorder.cpp:195:12: error: ‘class testObjectBorder()::Domain’ has no member named ‘selfDrawAsGrid’
-//et ligne 197 aussi
-//tests/topology/testObjectBorder.cpp:216:45: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testObjectBorder.cpp:218:45: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testObjectBorder.cpp:291:29: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testObjectBorder.cpp:298:43: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-
-// test testSimpleExpander
-//tests/topology/testSimpleExpander.cpp:138:28: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:139:35: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:155:28: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:156:34: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:172:28: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:173:34: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//et lignes 189-190 aussi
-//tests/topology/testSimpleExpander.cpp:267:28: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:268:35: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:290:27: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/topology/testSimpleExpander.cpp:291:34: error: ‘DrawObjectAdjacencies’ was not declared in this scope
-
-// test testBoard2DCustomStyle
-//tests/io/testBoard2DCustomStyle.cpp:94:27: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/io/testBoard2DCustomStyle.cpp:101:27: error: ‘DrawDomainGrid’ was not declared in this scope
-
-// testSimpleBoard
-//tests/io/testSimpleBoard.cpp:82:10: error: ‘class testSimpleBoard()::Point2D’ has no member named ‘selfDraw’
-//tests/io/testSimpleBoard.cpp:106:29: error: ‘DrawDomainGrid’ was not declared in this scope
-//tests/io/testSimpleBoard.cpp:111:28: error: ‘DrawDomainPaving’ was not declared in this scope
-
-
-// rechercher tous les selfdraw
-// revoir les // des structs ou alors c'est des #if dehors
 // TODO: end
 
 
-// TODO: new
+// TODO new: begin
 // 1) -> todo: accessors
 // 2) -> Caution, don't know if it's good FOR Preimage2D draw
+// 3) -> DigitalSetBySTLVector: draw with Functor ??? necessary ???
+
+// 4) types de David
+// TODO new: end
 
 
 //////////////////////////////////////////////////////////////////////////////
