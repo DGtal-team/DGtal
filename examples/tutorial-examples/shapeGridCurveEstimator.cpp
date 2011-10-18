@@ -74,10 +74,11 @@ int main()
   //! [shapeGridCurveEstimator-dig]
   //implicit digitization of a shape of type Flower 
   //into a digital space of type Space
+  double h = 1; 
   GaussDigitizer<Z2i::Space,Flower> dig;  
   dig.attach( flower );
   dig.init( flower.getLowerBound()+Z2i::Vector(-1,-1),
-               flower.getUpperBound()+Z2i::Vector(1,1), 1 ); 
+               flower.getUpperBound()+Z2i::Vector(1,1), h ); 
   //! [shapeGridCurveEstimator-dig]
   
   //! [shapeGridCurveEstimator-prepareTracking]
@@ -115,9 +116,9 @@ int main()
   //! [shapeGridCurveEstimator-lengthEstimation]
   //length estimation
   DSSLengthEstimator< Range::ConstIterator > DSSlength;
-  DSSlength.init( 1, r.begin(), r.end(), c.isClosed() );
+  DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
   double length1 = DSSlength.eval();
-  cout << "Length (h=1): " << length1 << endl; 
+  cout << "Length (h=" << h << "): " << length1 << endl; 
   //! [shapeGridCurveEstimator-lengthEstimation]
 
 //@TODO correct init method of trueLengthEstimator (remove &flower)
@@ -127,16 +128,17 @@ int main()
     Range::ConstIterator, 
     Flower, 
     Length  >  trueLengthEstimator;
-  trueLengthEstimator.init( 1, r.begin(), r.end(), &flower, c.isClosed());
+  trueLengthEstimator.init( h, r.begin(), r.end(), &flower, c.isClosed());
   double trueLength = trueLengthEstimator.eval(); 
   cout << "ground truth: " << trueLength << endl; 
   //! [shapeGridCurveEstimator-trueLengthEstimation]
 
   //! [shapeGridCurveEstimator-higher]
   //implicit digitization at higher resolution
+  h = 0.1; 
   dig.init( flower.getLowerBound()+Z2i::Vector(-1,-1),
-               flower.getUpperBound()+Z2i::Vector(1,1), 0.1 ); 
-  //a greater domain is needed
+               flower.getUpperBound()+Z2i::Vector(1,1), h ); 
+  //a greater domain is needed in the Khalimsky space
   ks.init( dig.getLowerBound(), dig.getUpperBound(), true );
   //searching for one boundary element
   bel = Surfaces<Z2i::KSpace>::findABel( ks, dig, 10000 );
@@ -147,9 +149,9 @@ int main()
   c.initFromVector( boundaryPoints );
   r = c.getPointsRange(); 
   //estimate length
-  DSSlength.init( 0.1, r.begin(), r.end(), c.isClosed() );
+  DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
   double length2 = DSSlength.eval();
-  cout << "Length (h=0.1): " << length2 << endl;  
+  cout << "Length (h=" << h << "): " << length2 << endl;  
   //! [shapeGridCurveEstimator-higher]
   
   aBoard.clear(); 
