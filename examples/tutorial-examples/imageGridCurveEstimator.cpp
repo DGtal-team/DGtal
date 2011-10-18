@@ -34,28 +34,30 @@
 #include <algorithm>
 ///////////////////////////////////////////////////////////////////////////////
 
-//! [imageGridCurveEstimator-includes]
+//! [imageGridCurveEstimator-basicIncludes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
 #include "ConfigExamples.h"
+//! [imageGridCurveEstimator-basicIncludes]
 
-//images
+//! [imageGridCurveEstimator-imageIncludes]
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+//! [imageGridCurveEstimator-imageIncludes]
 
-//tracking grid curve
+//! [imageGridCurveEstimator-trackingIncludes]
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+//! [imageGridCurveEstimator-trackingIncludes]
 
-//estimation
+//! [imageGridCurveEstimator-estimatorIncludes]
 #include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+//! [imageGridCurveEstimator-estimatorIncludes]
 
 //display
 #include "DGtal/io/boards/Board2D.h"
-//! [imageGridCurveEstimator-includes]
 
+//segmentation
 #include "DGtal/geometry/2d/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,8 +69,9 @@ int main()
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
 
-  //! [imageGridCurveEstimator-predicate]  
-  IntervalForegroundPredicate<Image> predicate(image,0,135); //predicate from the image
+  //! [imageGridCurveEstimator-predicate] 
+  //predicate from the image
+  IntervalForegroundPredicate<Image> predicate(image,0,135); 
   //! [imageGridCurveEstimator-predicate]
 
   //! [imageGridCurveEstimator-prepareTracking]
@@ -78,41 +81,53 @@ int main()
   //! [imageGridCurveEstimator-prepareTracking]
 
   //! [imageGridCurveEstimator-tracking]
-  Z2i::SCell bel = Surfaces<Z2i::KSpace>::findABel( ks, predicate, 1000 );
-  vector<Z2i::Point> boundaryPoints;
-  Surfaces<Z2i::KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, bel );
+  //extraction of all the contours
+  std::vector< std::vector< Z2i::SCell > > contours;
+  Surfaces<Z2i::KSpace>
+    ::extractAll2DSCellContours( contours, ks, sAdj, predicate );
   //! [imageGridCurveEstimator-tracking]
 
-  //! [imageGridCurveEstimator-instantiation]
-  Z2i::Curve c;
-  c.initFromVector( boundaryPoints );  
-  //! [imageGridCurveEstimator-instantiation]
-  
-  //! [imageGridCurveEstimator-lengthEstimation]
-  Z2i::Curve::PointsRange r = c.getPointsRange(); 
-  DSSLengthEstimator< Z2i::Curve::PointsRange::ConstIterator > DSSlength;
-  DSSlength.init(1, r.begin(), r.end(), c.isClosed());
-  double length = DSSlength.eval();
-  cout << "Length: " << length << endl; 
-  //! [imageGridCurveEstimator-lengthEstimation]
-  
-  //segmentation
-  typedef Z2i::Curve::PointsRange::ConstIterator ConstIterator; 
-  typedef ArithmeticalDSS<ConstIterator,int,4> SegmentComputer;
-  typedef GreedySegmentation<SegmentComputer> Segmentation;
+  if (contours.size() > 0)
+  {
+    
+    //! [imageGridCurveEstimator-instantiation]
+    //init grid curve from the first retrieved contour
+    Z2i::Curve c;
+    c.initFromSCellsVector( contours.at(1) );  
+    //! [imageGridCurveEstimator-instantiation]
+    
+    //! [imageGridCurveEstimator-getRange]
+    //range of points
+    typedef Z2i::Curve::PointsRange Range; 
+    Range r = c.getPointsRange(); 
+    //! [imageGridCurveEstimator-getRange]
+    
+    //! [imageGridCurveEstimator-lengthEstimation]
+    //length estimation based on a DSS segmentation
+    DSSLengthEstimator< Range::ConstIterator > DSSlength;
+    DSSlength.init(1, r.begin(), r.end(), c.isClosed());
+    double length = DSSlength.eval();
+    trace.info() << "Length: " << length << endl; 
+    //! [imageGridCurveEstimator-lengthEstimation]
+    
+    //DSS segmentation display
+    typedef Z2i::Curve::PointsRange::ConstCirculator ConstCirculator; 
+    typedef ArithmeticalDSS<ConstCirculator,int,4> SegmentComputer;
+    typedef GreedySegmentation<SegmentComputer> Segmentation;
 
-  Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-  Segmentation::SegmentComputerIterator i = theSegmentation.begin();
-  Segmentation::SegmentComputerIterator end = theSegmentation.end();
+    Segmentation theSegmentation( c(), c(), SegmentComputer() );
+    Segmentation::SegmentComputerIterator i = theSegmentation.begin();
+    Segmentation::SegmentComputerIterator end = theSegmentation.end();
+    
+    DGtal::Board2D aBoard;
+    aBoard << SetMode("PointVector", "Grid");
+    for ( ; i != end; ++i) {
+      aBoard << SetMode(i->styleName(), "Points") << *i; 
+      aBoard << SetMode(i->styleName(), "BoundingBox") << *i; 
+    } 
+    aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
   
-  DGtal::Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid");
-  for ( ; i != end; ++i) {
-    aBoard << SetMode(i->styleName(), "Points") << *i; 
-    aBoard << SetMode(i->styleName(), "BoundingBox") << *i; 
-  } 
-  aBoard.saveEPS("DisplayGridCurveSegmentationTuto.eps");
-  
+  } else trace.info() << "no contour" << endl; 
   
   return 0;
 
