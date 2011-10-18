@@ -79,7 +79,7 @@ bool testSimpleBoard()
   board << apoint;
 
   board.setPenColorRGBi( 255, 0, 0 );
-  //apoint.selfDraw(board,p2);
+  draw(board, apoint, p2); //apoint.selfDraw(board,p2);
 
   board.scale(10);
 
@@ -103,12 +103,12 @@ bool testDomain()
     
     Board2D board;
     
-    board /*<< DrawDomainGrid()*/ << myDomain;
+    board << SetMode( myDomain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/ << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     
     Board2D b2;
-    b2 /*<< DrawDomainPaving()*/ << myDomain;
+    b2 << SetMode( myDomain.styleName(), "Paving" ) /*<< DrawDomainPaving()*/ << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
 

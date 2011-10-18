@@ -832,7 +832,7 @@ public:
 					      Board2D::Shape::SolidStyle,
 					      Board2D::Shape::RoundCap,
 					      Board2D::Shape::RoundJoin ) );       
-	//shift.selfDraw( aBoard, pair.first );
+	draw(aBoard, shift, pair.first); //shift.selfDraw( aBoard, pair.first );
       }
   }
   friend void draw( Board2D &aBoard, const ArrowsRange &ar)

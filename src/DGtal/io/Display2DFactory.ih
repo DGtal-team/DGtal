@@ -388,9 +388,6 @@ void draw( DGtal::Board2D & board,
   else
     ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
 }
-
-//TODO: draw with Functor
-
 // DigitalSetBySTLVector
 
 
