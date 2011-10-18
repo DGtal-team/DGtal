@@ -78,7 +78,7 @@ int main()
   GaussDigitizer<Z2i::Space,Flower> dig;  
   dig.attach( flower );
   dig.init( flower.getLowerBound()+Z2i::Vector(-1,-1),
-               flower.getUpperBound()+Z2i::Vector(1,1), h ); 
+            flower.getUpperBound()+Z2i::Vector(1,1), h ); 
   //! [shapeGridCurveEstimator-dig]
   
   //! [shapeGridCurveEstimator-prepareTracking]
@@ -118,7 +118,7 @@ int main()
   DSSLengthEstimator< Range::ConstIterator > DSSlength;
   DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
   double length1 = DSSlength.eval();
-  cout << "Length (h=" << h << "): " << length1 << endl; 
+  trace.info() << "Length (h=" << h << "): " << length1 << endl; 
   //! [shapeGridCurveEstimator-lengthEstimation]
 
 //@TODO correct init method of trueLengthEstimator (remove &flower)
@@ -130,14 +130,14 @@ int main()
     Length  >  trueLengthEstimator;
   trueLengthEstimator.init( h, r.begin(), r.end(), &flower, c.isClosed());
   double trueLength = trueLengthEstimator.eval(); 
-  cout << "ground truth: " << trueLength << endl; 
+  trace.info() << "ground truth: " << trueLength << endl; 
   //! [shapeGridCurveEstimator-trueLengthEstimation]
 
   //! [shapeGridCurveEstimator-higher]
   //implicit digitization at higher resolution
   h = 0.1; 
   dig.init( flower.getLowerBound()+Z2i::Vector(-1,-1),
-               flower.getUpperBound()+Z2i::Vector(1,1), h ); 
+            flower.getUpperBound()+Z2i::Vector(1,1), h ); 
   //a greater domain is needed in the Khalimsky space
   ks.init( dig.getLowerBound(), dig.getUpperBound(), true );
   //searching for one boundary element
@@ -151,12 +151,12 @@ int main()
   //estimate length
   DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
   double length2 = DSSlength.eval();
-  cout << "Length (h=" << h << "): " << length2 << endl;  
+  trace.info() << "Length (h=" << h << "): " << length2 << endl;  
   //! [shapeGridCurveEstimator-higher]
   
   aBoard.clear(); 
   aBoard << c; 
-  aBoard.saveEPS("DisplayGridCurve0.5.eps");  
+  aBoard.saveEPS("DisplayGridCurve01.eps");  
   
   return 0;
 

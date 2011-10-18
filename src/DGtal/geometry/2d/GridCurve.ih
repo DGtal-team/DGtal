@@ -151,18 +151,18 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
   //first scell
   if (it != itEnd)
   {
-    currentSCell = *it; 
-    SCell firstPointel( myK.DirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    currentSCell = *it;
+    SCell firstPointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
     
     my0SCells.push_back( firstPointel );
     my1SCells.push_back( currentSCell );
 
     //other scells
-    while (it != itEnd) {
+    for (++it; it != itEnd; ++it) {
 
-      SCell expectedPointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
-      ++it; currentSCell = *it; 
-      SCell pointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+      SCell expectedPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+      currentSCell = *it; 
+      SCell pointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
 
       if ( myK.sKCoords(pointel) != myK.sKCoords(expectedPointel) ) { //disconnected !
         throw ConnectivityException(); 
@@ -173,7 +173,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
     }
 
     //if open, add a pointel
-    SCell lastPointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    SCell lastPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
     if ( lastPointel != firstPointel )
     {
       my0SCells.push_back( lastPointel ); 

@@ -95,13 +95,13 @@ int main()
     Z2i::Curve c;
     c.initFromSCellsVector( contours.at(1) );  
     //! [imageGridCurveEstimator-instantiation]
-    
+
     //! [imageGridCurveEstimator-getRange]
     //range of points
     typedef Z2i::Curve::PointsRange Range; 
     Range r = c.getPointsRange(); 
     //! [imageGridCurveEstimator-getRange]
-    
+
     //! [imageGridCurveEstimator-lengthEstimation]
     //length estimation based on a DSS segmentation
     DSSLengthEstimator< Range::ConstIterator > DSSlength;
@@ -115,7 +115,7 @@ int main()
     typedef ArithmeticalDSS<ConstCirculator,int,4> SegmentComputer;
     typedef GreedySegmentation<SegmentComputer> Segmentation;
 
-    Segmentation theSegmentation( c(), c(), SegmentComputer() );
+    Segmentation theSegmentation( r.c(), r.c(), SegmentComputer() );
     Segmentation::SegmentComputerIterator i = theSegmentation.begin();
     Segmentation::SegmentComputerIterator end = theSegmentation.end();
     
