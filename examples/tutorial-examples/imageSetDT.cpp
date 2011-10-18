@@ -37,6 +37,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 
@@ -54,12 +55,12 @@
 int main()
 {
   //! [ImageSetDT-types]
+  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, unsigned char> Image;
   typedef DGtal::GrayscaleColorMap<unsigned char> Gray;
   //! [ImageSetDT-types]
 
 
   //! [ImageSetDT-image]
-  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
   DGtal::trace.info() << "Imported image: "<<image<<endl;
@@ -71,10 +72,21 @@ int main()
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
   
+
+
   aBoard.clear();
   image.selfDraw<Gray> ( aBoard, 0, 255 );
   aBoard.saveEPS("imageDomainTuto2.eps");
   //! [ImageSetDT-board1]
+
+
+  Z2i::DigitalSet mySet(image.domain());
+  SetFromImage<Z2i::DigitalSet>::append<Image>(mySet, image, 0,135);
+  aBoard.clear();
+  aBoard << mySet.domain()
+	 << mySet;
+  aBoard.saveEPS("imageDomainTuto2bis.eps");
+
 
   //! [ImageSetDT-DT]
   typedef DGtal::DistanceTransformation<Image, 2> DTL2;
