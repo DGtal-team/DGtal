@@ -1,0 +1,68 @@
+/**
+ * @file tutoShapeGridCurveEstimator.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/10/17
+ *
+ * Documentation file for feature tutoShapeGridCurveEstimator
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page tutoShapeGridCurveEstimator Tutorial "Generated shape -> Grid curve -> Length estimation"
+@writers Tristan Roussillon
+
+Table of contents:
+ -# \ref secttutoShapeGridCurveEstimator0
+ -# \ref secttutoShapeGridCurveEstimator1
+ -# \ref secttutoShapeGridCurveEstimator2
+ -# \ref secttutoShapeGridCurveEstimator3
+ -# \ref secttutoShapeGridCurveEstimator4 
+  
+
+\section secttutoShapeGridCurveEstimator0 Tracking the contour of a generated shape 
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-dig
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-prepareTracking
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-tracking
+
+
+\section secttutoShapeGridCurveEstimator1 Grid curve instantiation and range choice
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-instantiation
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-getRange
+
+\section secttutoShapeGridCurveEstimator2 Length estimation
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-lengthEstimation
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-trueLengthEstimation
+
+\section secttutoShapeGridCurveEstimator3 Increasing the resolution
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-higher
+
+\section secttutoShapeGridCurveEstimator4 Required includes
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-basicIncludes
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-shapeIncludes
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-trackingIncludes
+
+@snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-estimationIncludes
+
+*/
+
+}
