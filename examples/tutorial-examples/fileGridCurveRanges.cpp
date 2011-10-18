@@ -33,15 +33,17 @@
 #include <algorithm>
 ///////////////////////////////////////////////////////////////////////////////
 
-//! [fileGridCurveRanges-includes]
+//! [fileGridCurveRanges-basicIncludes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
-#include "DGtal/geometry/2d/GridCurve.h"
-#include "DGtal/io/boards/Board2D.h"
-
 #include "ConfigExamples.h"
-//! [fileGridCurveRanges-includes]
+//! [fileGridCurveRanges-basicIncludes]
+
+//! [fileGridCurveRanges-displayIncludes]
+#include "DGtal/io/boards/Board2D.h"
+//! [fileGridCurveRanges-displayIncludes]
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,8 +55,11 @@ int main()
   Z2i::Curve c; 
   //! [fileGridCurveRanges-declaration]
 
-  //! [fileGridCurveRanges-read]
+  //! [fileGridCurveRanges-ex]
   string square = examplesPath + "samples/smallSquare.dat";  
+  //! [fileGridCurveRanges-ex]
+
+  //! [fileGridCurveRanges-read]
   fstream inputStream;
   inputStream.open (square.c_str(), ios::in);
   c.initFromVectorStream(inputStream);
@@ -73,8 +78,8 @@ int main()
   
   //! [fileGridCurveRanges-displayCurve]
   aBoard << c;  
-  //! [fileGridCurveRanges-displayCurve]
   aBoard.saveEPS("DisplayGridCurveTuto.eps");
+  //! [fileGridCurveRanges-displayCurve]
   
   //! [fileGridCurveRanges-displayInnerPoints]
   Z2i::Curve::InnerPointsRange r1 = c.getInnerPointsRange(); 
