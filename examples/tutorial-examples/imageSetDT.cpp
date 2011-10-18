@@ -71,9 +71,6 @@ int main()
   DGtal::Board2D aBoard;
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
-  
-
-
   aBoard.clear();
   image.selfDraw<Gray> ( aBoard, 0, 255 );
   aBoard.saveEPS("imageDomainTuto2.eps");
@@ -95,12 +92,12 @@ int main()
 
   OutputImage result = dt.compute(image, 
 				  IntervalForegroundPredicate<Image>(image,0,135));
-  
-  OutputImage::Value maxDT = (*std::max_element(result.begin(), 
-						result.end()));
   //! [ImageSetDT-DT]
+ 
 
   //! [ImageSetDT-DTvis]
+  OutputImage::Value maxDT = (*std::max_element(result.begin(), 
+						result.end()));
   typedef DGtal::HueShadeColorMap<OutputImage::Value,2> HueTwice;
 
   aBoard.clear();
