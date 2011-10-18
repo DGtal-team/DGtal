@@ -85,8 +85,8 @@ the Euclidean distance to the closest background point.
 
 In this example, the object (a.k.a. foreground) is implicitly defined as the set of pixels with value in the interval ]0,135].
 
-@image html imageDomainTuto2bis.png  "Zoom on the domain output"
-@image latex imageDomainTuto2bis.png  "Zoom on the domain output"
+@image html imageDomainTuto2bis.png  "Resulting digital set after the segmentation step."
+@image latex imageDomainTuto2bis.png  "Resulting digital set after the segmentation step."
 
 
 @snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DT
@@ -96,8 +96,8 @@ We can now export the result using a Hue shade color map. Since Image containers
 
 @snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DTvis
 
-@image html imageDomainTuto3.png  "DT result"
-@image latex imageDomainTuto3.png  "DT result"
+@image html imageDomainTuto3.png  "Euclidean DT result"
+@image latex imageDomainTuto3.png  "Euclidean DT result"
 
 
 \section secttutoImageRegionDT4 Required includes
