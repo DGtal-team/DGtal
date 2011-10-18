@@ -74,7 +74,6 @@ namespace DGtal
      * @pre the ForegroundPredicate instance must have been created on the image aImage.
      *
      * @param aSet the set (maybe empty) to which points are added.
-     * @param aImage image to convert to a Set.
      * @param isForeground instance of ForegroundPredicate to decide
      * @param itBegin starting point in the input image Domain.
      * @param itEnd ending point in the input image domain.
@@ -83,9 +82,9 @@ namespace DGtal
     template<typename Image, typename ForegroundPredicate>
     static
     void append(Set &aSet, 
-    const ForegroundPredicate &isForeground,
-    typename Image::Domain::ConstIterator itBegin, 
-    typename Image::Domain::ConstIterator itEnd);
+		const ForegroundPredicate &isForeground,
+		typename Image::Domain::ConstIterator itBegin, 
+		typename Image::Domain::ConstIterator itEnd);
   
     /** 
      * Append an Image value set  to an existing Set (maybe empty).
@@ -103,10 +102,10 @@ namespace DGtal
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage,
-    const typename Image::Value minVal,
-    const typename Image::Value maxVal,
-    typename Image::Domain::ConstIterator itBegin, 
-    typename Image::Domain::ConstIterator itEnd)
+		const typename Image::Value minVal,
+		const typename Image::Value maxVal,
+		typename Image::Domain::ConstIterator itBegin, 
+		typename Image::Domain::ConstIterator itEnd)
     {
       IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
@@ -148,8 +147,8 @@ namespace DGtal
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage, 
-    const typename Image::Value minVal,
-    const typename Image::Value maxVal)
+		const typename Image::Value minVal,
+		const typename Image::Value maxVal)
     {
       IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);
