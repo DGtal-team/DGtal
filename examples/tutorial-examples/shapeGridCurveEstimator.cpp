@@ -34,29 +34,34 @@
 #include <algorithm>
 ///////////////////////////////////////////////////////////////////////////////
 
-//! [shapeGridCurveEstimator-includes]
+//! [shapeGridCurveEstimator-basicIncludes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
 #include "ConfigExamples.h"
+//! [shapeGridCurveEstimator-basicIncludes]
 
+//! [shapeGridCurveEstimator-shapeIncludes]
 //shape and digitizer
-#include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/geometry/nd/GaussDigitizer.h"
+//! [shapeGridCurveEstimator-shapeIncludes]
 
+//! [shapeGridCurveEstimator-trackingIncludes]
 //tracking grid curve
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/2d/GridCurve.h"
+//! [shapeGridCurveEstimator-trackingIncludes]
 
-//estimation
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+//! [shapeGridCurveEstimator-estimationIncludes]
+//length estimation knowing the shape
 #include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
 #include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
+//length estimation based on a DSS segmentation
+#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+//! [shapeGridCurveEstimator-estimationIncludes]
 
-//! [shapeGridCurveEstimator-includes]
-
-#include "DGtal/geometry/2d/GreedySegmentation.h"
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +72,7 @@ int main()
   Flower2D<Z2i::Space> flower(Z2i::Point(0,0), 20, 5, 5, 0);
   
   //! [shapeGridCurveEstimator-dig]
-  //digitization of a shape of type Flower 
+  //implicit digitization of a shape of type Flower 
   //into a digital space of type Space
   GaussDigitizer<Z2i::Space,Flower> dig;  
   dig.attach( flower );
@@ -97,9 +102,18 @@ int main()
   c.initFromVector( boundaryPoints );  
   //! [shapeGridCurveEstimator-instantiation]
   
-  //! [shapeGridCurveEstimator-lengthEstimation]
+  DGtal::Board2D aBoard;
+  aBoard << c; 
+  aBoard.saveEPS("DisplayGridCurve1.eps");  
+  
+  //! [shapeGridCurveEstimator-getRange]
+  //range of points
   typedef Z2i::Curve::PointsRange Range; 
   Range r = c.getPointsRange(); 
+  //! [shapeGridCurveEstimator-getRange]
+  
+  //! [shapeGridCurveEstimator-lengthEstimation]
+  //length estimation
   DSSLengthEstimator< Range::ConstIterator > DSSlength;
   DSSlength.init( 1, r.begin(), r.end(), c.isClosed() );
   double length1 = DSSlength.eval();
@@ -107,7 +121,7 @@ int main()
   //! [shapeGridCurveEstimator-lengthEstimation]
 
 //@TODO correct init method of trueLengthEstimator (remove &flower)
-  //! [shapeGridCurveEstimator-trueEstimation]
+  //! [shapeGridCurveEstimator-trueLengthEstimation]
   typedef ParametricShapeArcLengthFunctor< Flower > Length;
   TrueGlobalEstimatorOnPoints< 
     Range::ConstIterator, 
@@ -116,14 +130,16 @@ int main()
   trueLengthEstimator.init( 1, r.begin(), r.end(), &flower, c.isClosed());
   double trueLength = trueLengthEstimator.eval(); 
   cout << "ground truth: " << trueLength << endl; 
-  //! [shapeGridCurveEstimator-trueEstimation]
+  //! [shapeGridCurveEstimator-trueLengthEstimation]
 
   //! [shapeGridCurveEstimator-higher]
-  //digitization at higher resolution
+  //implicit digitization at higher resolution
   dig.init( flower.getLowerBound()+Z2i::Vector(-1,-1),
-               flower.getUpperBound()+Z2i::Vector(1,1), 0.5 ); 
+               flower.getUpperBound()+Z2i::Vector(1,1), 0.1 ); 
+  //a greater domain is needed
+  ks.init( dig.getLowerBound(), dig.getUpperBound(), true );
   //searching for one boundary element
-  bel = Surfaces<Z2i::KSpace>::findABel( ks, dig, 1000 );
+  bel = Surfaces<Z2i::KSpace>::findABel( ks, dig, 10000 );
   //tracking
   Surfaces<Z2i::KSpace>
     ::track2DBoundaryPoints( boundaryPoints, ks, sAdj, dig, bel );
@@ -131,29 +147,14 @@ int main()
   c.initFromVector( boundaryPoints );
   r = c.getPointsRange(); 
   //estimate length
-  DSSlength.init( 0.5, r.begin(), r.end(), c.isClosed() );
+  DSSlength.init( 0.1, r.begin(), r.end(), c.isClosed() );
   double length2 = DSSlength.eval();
-  cout << "Length (h=0.5): " << length2 << endl;  
+  cout << "Length (h=0.1): " << length2 << endl;  
   //! [shapeGridCurveEstimator-higher]
-  //@TODO bug in the length ?
   
-  
-/*  typedef Z2i::Curve::PointsRange::ConstIterator ConstIterator; 
-  typedef ArithmeticalDSS<ConstIterator,int,4> SegmentComputer;
-  typedef GreedySegmentation<SegmentComputer> Segmentation;
-
-  Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-  Segmentation::SegmentComputerIterator i = theSegmentation.begin();
-  Segmentation::SegmentComputerIterator end = theSegmentation.end();
-  
-  DGtal::Board2D aBoard;
-  aBoard << SetMode("PointVector", "Grid");
-  for ( ; i != end; ++i) {
-    aBoard << SetMode(i->styleName(), "Points") << *i; 
-    aBoard << SetMode(i->styleName(), "BoundingBox") << *i; 
-  } 
-  aBoard.saveEPS("DisplayGridCurveSegmentationTuto.eps");
-*/
+  aBoard.clear(); 
+  aBoard << c; 
+  aBoard.saveEPS("DisplayGridCurve0.5.eps");  
   
   return 0;
 
