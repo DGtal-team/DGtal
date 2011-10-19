@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/topology/CVertexPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,8 +162,8 @@ template <typename OutputIterator>
 inline
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
-writeNeighbors( const Vertex & v,
-                OutputIterator & it ) const
+writeNeighbors( OutputIterator & it,
+                const Vertex & v ) const
 {
   Vertex s;
   myTracker->move( v );
@@ -173,6 +174,32 @@ writeNeighbors( const Vertex & v,
         *it++ = s;
       if ( myTracker->adjacent( s, *q, false ) )
         *it++ = s;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+template <typename OutputIterator, typename VertexPredicate>
+inline
+void
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v,
+                const VertexPredicate & pred ) const
+{
+  BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
+  Vertex s;
+  myTracker->move( v );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( v );
+        q != 0; ++q )
+    {
+      if ( myTracker->adjacent( s, *q, true ) )
+        {
+          if ( pred( s ) ) *it++ = s;
+        }
+      if ( myTracker->adjacent( s, *q, false ) )
+        {
+          if ( pred( s ) ) *it++ = s;
+        }
     }
 }
 
