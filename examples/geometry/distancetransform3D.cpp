@@ -76,7 +76,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
   typename Image::Vector ext;
   srand ( time(NULL) );
 
-  ext = image.extent();
+  ext = image.extent();1
 
   for (unsigned int k = 0 ; k < nb; k++)
   {
