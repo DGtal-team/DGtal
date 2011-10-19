@@ -64,43 +64,18 @@ namespace DGtal
    * using a std::vector. A linearization of nD points
    * is used to build an index.
    *
-   * @code
-   typedef DGtal::int64_t Integer;
-   typedef SpaceND<4, Integer > Space4Type;
-   typedef HyperRectDomain<Space4Type> Domain;
-   typedef Domain::Point Point;
-
-   //Default image selector = STLVector
-   typedef ImageSelector<Domain, int>::Type Image;
-
-   const Integer t[ ] = { 1, 2, 3 ,4};
-   const Integer t2[ ] = { 5, 5, 3 ,4};
-   const Integer t3[ ] = { 2, 2, 3 ,4};
-   Point a ( t );
-   Point b ( t2 );
-   Point c ( t3 );
-
-   trace.beginBlock ( "Image init" );
-   ///Domain characterized by points a and b
-   Image myImage ( a,b );
-   trace.info() << myImage << std::endl;
-
-   trace.endBlock();
-
-   //We set a value
-   myImage.setValue( c, 128 );
-   * @endcode
-   *
    * This class provides built-in iterators and fast SpanIterators
    * to perform 1D scans.
    *
+   * @tparam TDomain a type for the image domain (model of CDomain).
+   * @tparam TValue a type for image values (model of CValue).
    *
    * @see testImage.cpp
    * @see testImageContainerBenchmark.cpp
    */
 
   template <typename TDomain, typename TValue>
-  class ImageContainerBySTLVector: public vector<TValue>
+  class ImageContainerBySTLVector: public std::vector<TValue>
   {
   public:
 
@@ -127,8 +102,13 @@ namespace DGtal
 
     ~ImageContainerBySTLVector();
 
+  
+    /////////////////// Accessors //////////////////
+
     /**
      * Get the value of an image at a given position.
+     *
+     * @pre @c aPoint must be inside the image domain.
      *
      * @param aPoint  position in the image.
      * @return the value at aPoint.
@@ -138,6 +118,8 @@ namespace DGtal
     /**
      * Get the value of an image at a given position given
      * by a ConstIterator.
+     *
+     * @pre it must reference a point in the image domain.
      *
      * @param it  position in the image.
      * @return the value at aPoint.
@@ -152,6 +134,8 @@ namespace DGtal
      * Get the value of an image at a given position given
      * by a Iterator.
      *
+     * @pre it must reference a point in the image domain.
+     *
      * @param it  position in the image.
      * @return the value at aPoint.
      */
@@ -163,6 +147,8 @@ namespace DGtal
     /**
      * Get the value of an image at a given position given
      * by a ConstIterator.
+     *
+     * @pre it must reference a point in the image domain.
      *
      * @param it  position in the image.
      * @return the value at aPoint.
@@ -176,6 +162,8 @@ namespace DGtal
     /**
      * Get the value of an image at a given position given
      * by a Iterator.
+     * 
+     * @pre it must reference a point in the image domain.
      *
      * @param it  position in the image.
      * @return the value at aPoint.
@@ -185,9 +173,16 @@ namespace DGtal
       return (*it);
     };
 
+
+
+    /////////////////// Set values //////////////////
+
+
     /**
      * Set a value on an Image at aPoint.
      *
+     * @pre @c aPoint must be inside the image domain.
+     *     
      * @param aPoint location of the point to associate with aValue.
      * @param aValue the value.
      */
@@ -195,6 +190,8 @@ namespace DGtal
 
     /**
      * Set a value on an Image at a position specified by an Iterator.
+     *
+     * @pre @c it must reference a point in the image domain.
      *
      * @param it  iterator on the location.
      * @param aValue the value.
@@ -207,6 +204,8 @@ namespace DGtal
     /**
      * Set a value on an Image at a position specified by a ReverseIterator.
      *
+     * @pre @c it must reference a point in the image domain.
+     *
      * @param it  a reverse iterator on the location.
      * @param aValue the value.
      */
@@ -216,6 +215,9 @@ namespace DGtal
     }
 
    
+     /////////////////// Interface //////////////////
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.

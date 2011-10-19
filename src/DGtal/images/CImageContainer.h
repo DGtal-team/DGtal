@@ -21,7 +21,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/06/09
+ * @date 2011/10/19
  *
  * This file is part of the DGtal library.
  */
