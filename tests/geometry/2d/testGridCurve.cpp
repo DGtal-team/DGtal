@@ -45,7 +45,6 @@
 
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/base/CRange.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "ConfigTest.h"
@@ -54,7 +53,6 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FreemanChain.
@@ -171,11 +169,11 @@ bool testDrawGridCurve(const string &filename)
 
   //displaying it
   Board2D aBoard;
-  aBoard.setUnit(Board::UCentimeter);
+  aBoard.setUnit(Board2D::UCentimeter);
   aBoard << c; 
-  aBoard.saveEPS( "GridCurve.eps", Board::BoundingBox, 5000 );
+  aBoard.saveEPS( "GridCurve.eps", Board2D::BoundingBox, 5000 );
 #ifdef WITH_CAIRO
-  aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
+  aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board2D::BoundingBox, 5000);
 #endif
 
   return true;
@@ -300,7 +298,7 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   
   //board
   Board2D aBoard;
-  aBoard.setUnit(Board::UCentimeter);
+  aBoard.setUnit(Board2D::UCentimeter);
   //displaying domain
   PointVector<2,int> low(-1,-1);
   PointVector<2,int> up(3,3);
@@ -310,7 +308,7 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   //displaying range
   aBoard << aRange; 
   //save
-  aBoard.saveEPS( s.str().c_str(), Board::BoundingBox, 5000 );
+  aBoard.saveEPS( s.str().c_str(), Board2D::BoundingBox, 5000 );
   
   return true;
 }

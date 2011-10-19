@@ -84,7 +84,7 @@ bool testReverseDT()
   Z2i::Point b ( 15, 15 );
 
   typedef ImageSelector< Z2i::Domain,  int>::Type Image;
-  Image image ( a, b );
+  Image image (Z2i::Domain( a, b ));
   
   for ( unsigned k = 0; k < 49; k++ )
     {
@@ -168,7 +168,7 @@ bool testReverseDTL1()
   Z2i::Point b ( 15, 15 );
 
   typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Z2i::Domain( a, b ));
   
   for ( unsigned k = 0; k < 49; k++ )
     {
@@ -254,7 +254,7 @@ bool testReverseDTL1simple()
   typedef DistanceTransformation<Image,1>::OutputImage ImageDT;
 
 
-  ImageDT result ( a, b );
+  ImageDT result ( Z2i::Domain(a, b ));
   result.setValue(Z2i::Point(5,7), 3);
   result.setValue(Z2i::Point(9,7), 4);
 
@@ -316,7 +316,7 @@ bool testReverseDTSet()
   Z2i::Point b ( 15, 15 );
 
   typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image (Z2i::Domain( a, b ));
   
   for ( unsigned k = 0; k < 49; k++ )
     {

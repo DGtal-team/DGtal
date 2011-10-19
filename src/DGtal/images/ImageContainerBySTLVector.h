@@ -240,6 +240,19 @@ namespace DGtal
       return myDomain;
     }
 
+    ///@todo temporary copy of translatedomain in the container
+    void translateDomain(const Vector &vec)
+    {
+      myDomain = Domain(myDomain.lowerBound() + vec, myDomain.upperBound() + vec);
+    }
+
+    ///@todo temporary copy of translatedomain in the container
+    Vector extent() const
+    {
+      return   myDomain.upperBound() -  myDomain.lowerBound() 
+	+ Vector::diagonal();
+    }
+    
     /////////////////////////// Custom Iterators ////////////////////:
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.
@@ -275,8 +288,8 @@ namespace DGtal
 
 	//We compute the myShift quantity
 	myShift = 1;
-	for (unsigned int k = 0; k < myDimension  ; k++)
-	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
+	for (Dimension k = 0; k < myDimension  ; k++)
+	  myShift *= (aMap->myDomain.upperBound()[k] - aMap->myDomain.lowerBound()[k] + 1);
       }
 
 
@@ -445,7 +458,7 @@ namespace DGtal
     SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myDomain.getUpperBound().at( aDimension ) + 1;
+      tmp[ aDimension ] = myDomain.upperBound()[ aDimension ] + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 

@@ -58,7 +58,7 @@ using namespace DGtal;
 template<typename Image>
 void randomSeeds(Image &image, const unsigned int nb, const int value)
 {
-  typename Image::Point p, low = image.lowerBound();
+  typename Image::Point p, low = image.domain().lowerBound();
   typename Image::Vector ext;
 
   ext = image.extent();
@@ -81,7 +81,7 @@ int main()
   
   //Input image with unsigned char values
   typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Z2i::Domain(a, b ));
 
   //We fill the image with the 128 value
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)

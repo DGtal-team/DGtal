@@ -62,7 +62,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
 
     
   typename T::Domain domain(firstPoint,lastPoint);
-  T image(firstPoint,lastPoint);
+  T image(domain);
   typename T::Value val;
 
   //We scan the Raw file
