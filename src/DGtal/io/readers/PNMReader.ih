@@ -99,7 +99,7 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   lastPoint[1] = h-1;
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer image(firstPoint,lastPoint);
+  TImageContainer image(domain);
 
   getline( infile, str );
   istringstream str2_in( str );

@@ -40,7 +40,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-
+#include "DGtal/base/CConstBidirectionalRange.h"
 
 using namespace DGtal;
 using namespace std;
@@ -65,7 +65,7 @@ bool testSimpleHyperRectDomain()
   // Checking that HyperRectDomain is a model of CDomain.
   typedef HyperRectDomain<Space4Type> HRDomain4;
   BOOST_CONCEPT_ASSERT(( CDomain< HRDomain4 > ));
-  BOOST_CONCEPT_ASSERT(( CConstRange<HRDomain4> ));
+  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<HRDomain4> ));
       
   ///Empty domain using the default constructor
   HyperRectDomain<Space4Type> myEmptyDomain;

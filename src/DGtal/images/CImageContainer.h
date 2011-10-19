@@ -40,6 +40,8 @@
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
+#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/images/CValue.h"
 
 namespace DGtal
@@ -51,15 +53,14 @@ namespace DGtal
    * Description of \b concept '\b CImageContainer' <p>
    *
    * @ingroup Concepts
-   * Aim: Defines the concept describing an image container.
+   * Aim: Defines the concept describing an image container. 
    *
-   * <p> Refinement of
+   * <p> Refinement of CBidirectionalRange
    *
    * <p> Associated types :
-   * - \t Value: the type of values stored in the image.
-   * - \t Iterator: an iterator in the image.
-   * - \t ConstIterator: a const iterator in the image.
-   * - \t SpanIterator: a 1D span iterator in the image (not yet tested).
+   * - \t Value: the type of values stored in the image, model of
+   * concept CValue
+   * - \t Domain: type of the image domain, model of concept CDomain
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
    * - \t x, \t y  : Object of type X
@@ -67,49 +68,141 @@ namespace DGtal
    * <p> Definitions
    *
    * <p> Valid expressions and semantics <br>
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td>
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr>
-   * <td> Image extent</td> <td>extent = x.extent() </td> <td> </td> <td> X::Space::Vector</td>
-   * <td> </td> <td> returns the extent of the image  </td> <td> </td> <td> O(dimension)</td>
-   * </tr>
-   * <tr>
-   * <td>Set a value at a position</td> <td>x.setValue(point, val)
-   * </td> <td>point is of type X::Space::Point, val is of type
-   * X::Value </td> <td> </td>
-   * <td> the point is in the domain associted to
-   * the image </td> <td> associate a value  to a point  </td> <td> </td> <td> Depends on the model</td>
-   * </tr>
-   * <tr>
-   * <td>Set a value at a position</td> <td>x.setValue(it, val) </td>
-   * <td>it is of type X::Iterator or X::ConstIterator, val is of type
-   * X::Value </td> <td> </td>
-   * <td> the iterator is in the image range</td> <td> associate a value  to a point given by an
-   * iterator</td> <td> </td> <td> Depends on the model</td>
-   * </tr>
-   * <tr>
-   * <td>Get the value at a position</td> <td>val = x(point) </td>
-   * <td>point is of type X::Space::Point, val is of type X::Value
-   * </td> <td> X::Value </td>
-   * <td>  the point is in the domain associted to
-   * the image</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
-   * </tr>
-     * <tr>
-   * <td>Get the value at a position</td> <td>val = x(it) </td>
-   * <td>it is of type X::Iterator, val is of type X::Value
-   * </td> <td> X::Value </td>
-   * <td>  the iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
-   * </tr>
-     * <tr>
-   * <td>Get the value at a position</td> <td>val = x(constIt) </td>
-   * <td>constIt is of type X::ConstIterator, val is of type X::Value
-   * </td> <td> X::Value </td>
-   * <td>  the const iterator is in the image range</td> <td> get the value associated to a point  </td> <td> </td> <td> Depends on the model</td>
-   * </tr>
-   * </table>
+      <table> 
+      <tr> 
+        <td class=CName> \b Name </td> 
+        <td class=CExpression> \b Expression </td>
+        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CReturnType> \b Return type </td>
+        <td class=CPrecondition> \b Precondition </td> 
+        <td class=CSemantics> \b Semantics </td> 
+        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CComplexity> \b Complexity </td>
+      </tr>
+      <tr> 
+        <td class=CName>  Constructor          </td> 
+        <td class=CExpression> X x(@c aDomain)     </td>
+        <td class=CRequirements> @c aDomain of type Domain    </td> 
+        <td class=CReturnType> an instance of X     </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics> Create an image container on the domain
+      @c aDomain for value type Value     </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>   Container dependent   </td>
+	</tr>
+	
+
+	<tr> 
+        <td class=CName> Domain            </td> 
+        <td class=CExpression>  x.domain()   </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>  const Domain &    </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>  returns a const reference to the image domain     </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity> O(1)     </td>
+      </tr>
+    
+
+	<tr> 
+        <td class=CName> Set a value           </td> 
+        <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
+        <td class=CRequirements> @c aPoint of type Point and @c aValue of
+        type Value   </td> 
+        <td class=CReturnType>  void    </td>
+        <td class=CPrecondition> @c aPoint must be inside the image domain  </td> 
+        <td class=CSemantics>  associate the value @c aValue with the
+        point @aPoint     </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+
+	<tr> 
+        <td class=CName> Set a value           </td> 
+        <td class=CExpression>  x.setValue(@c anIterator, @c aValue)    </td>
+        <td class=CRequirements> @c anIterator of type Iterator and @c aValue of
+        type Value   </td> 
+        <td class=CReturnType>  void    </td>
+        <td class=CPrecondition> @c anIterator must be valid (inside the image domain)  </td> 
+        <td class=CSemantics>  associate the value @c aValue with the
+        point  referenced by the itertor @anIterator     </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+     
+    
+      <tr> 
+      <td class=CName> Set a value           </td> 
+      <td class=CExpression>  x.setValue(@c aReverseIterator, @c aValue)    </td>
+      <td class=CRequirements> @c aReverseIterator of type ReverseIterator and @c aValue of
+      type Value   </td> 
+      <td class=CReturnType>  void    </td>
+      <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
+      <td class=CSemantics>  associate the value @c aValue with the
+      point  referenced by the itertor @aReverseIterator     </td> 
+      <td class=CPostCondition>   </td> 
+      <td class=CComplexity>  Container dependent    </td>
+      </tr>
+      
+      <tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  x(@c aPoint)    </td>
+        <td class=CRequirements> @c aPoint of type Point    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aPoint must be inside the image domain  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point @c aPoint</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+   
+
+     	<tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  x(@c aIterator)    </td>
+        <td class=CRequirements> @c aIterator of type Iterator    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point referenced by the iterator aIterator</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+     	<tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  x(@c aConstIterator)    </td>
+        <td class=CRequirements> @c aConstIterator of type ConstIterator    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aConstIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point referenced by the iterator aConstIterator</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+     	<tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  x(@c aReverseIterator)    </td>
+        <td class=CRequirements> @c aReverseIterator of type ReverseIterator    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point referenced by the iterator aReverseIterator</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+     	<tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  x(@c aConstReverseIterator)    </td>
+        <td class=CRequirements> @c aConstReverseIterator of type ConstReverseIterator    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aConstReverseIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point referenced by the iterator aConstReverseIterator</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+</table>   
+
    *
    * <p> Invariants <br>
    *
@@ -121,53 +214,60 @@ namespace DGtal
    */
 
   template <typename ImageContainer>
-  struct CImageContainer
+  struct CImageContainer: CBidirectionalRange<ImageContainer>
   {
 
   public:
+    
+    //Inner types
+    typedef typename ImageContainer::Domain Domain;
     typedef typename ImageContainer::Value Value;
-    typedef typename ImageContainer::Iterator Iterator;
-    typedef typename ImageContainer::ConstIterator ConstIterator;
     typedef typename ImageContainer::Point Point;
 
- 
-    BOOST_CONCEPT_ASSERT((CValue<Value>));
+    //Iterators (already tested in CRange)
+    typedef typename  ImageContainer::Iterator Iterator;
+    typedef typename  ImageContainer::ConstIterator ConstIterator;
+    typedef typename  ImageContainer::ReverseIterator ReverseIterator;
+    typedef typename  ImageContainer::ConstReverseIterator ConstReverseIterator;
+    
 
+    BOOST_CONCEPT_ASSERT((CValue<Value>));
+    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+
+    
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
-      //Iterators
-      it = i.begin();
-      itconst = i.begin();
-      ++it;
-      same_type(++itconst,itconst);
-      --it;
-      same_type(--itconst, itconst);
-
-      it = i.end();
-      itconst = i.end();
-      
-      
       //Accessors
-      same_type(i(a), v);
-      same_type(i(it), v);
-      same_type(i(itconst), v);
+      same_type(image(a), v);
+      same_type(image(it), v);
+      same_type(image(itconst), v);
+      same_type(image(itrev), v);
+      same_type(image(itconstrev), v);
       
       //API
-      same_type(i.extent(), a); //get the extent
-      i.setValue(a, v);  //set a value at a Point
-      i.setValue(it, v); //set a value at an Iterator
-      same_type(i.operator()(itconst), v);       // get the value from a ConstIterator
-      same_type(i.operator()(it), v);       // get the value from a ConstIterator
-      same_type(i.operator()(a), v);       //get the value from a point
+      same_type(image.domain(), d); 
+      image.setValue(a, v);  //set a value at a Point
+      image.setValue(it, v); //set a value at an Iterator
+      image.setValue(a, v);  //set a value at a Point
+      image.setValue(itrev, v); //set a value at an ConstIterator
+      
+      same_type(image.operator()(itconst), v);       // get the value from a ConstIterator
+      same_type(image.operator()(it), v);       // get the value from a ConstIterator
+      same_type(image.operator()(itconstrev), v);       // get the value from a ConstIterator
+      same_type(image.operator()(itrev), v);       // get the value from a ConstIterator
+      same_type(image.operator()(a), v);       //get the value from a point
 
     }
 
   private:
-    ImageContainer i;
+    ImageContainer image;
     Iterator it;
     ConstIterator itconst;
+    ReverseIterator itrev;
+    ConstReverseIterator itconstrev;
     Value v;
     Point a, b;
+    Domain d;
 
     //  deduction will fail unless the arguments have the same type.
     template <typename T>

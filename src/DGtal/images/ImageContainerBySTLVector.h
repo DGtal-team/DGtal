@@ -120,9 +120,10 @@ namespace DGtal
     typedef typename Domain::Size Size;
     typedef typename vector<Value>::iterator Iterator;
     typedef typename vector<Value>::const_iterator ConstIterator;
+    typedef typename vector<Value>::reverse_iterator ReverseIterator;
+    typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
 
-    ImageContainerBySTLVector(const Point &aPointA,
-			      const Point &aPointB );
+    ImageContainerBySTLVector(const Domain &aDomain);
 
     ~ImageContainerBySTLVector();
 
@@ -160,6 +161,31 @@ namespace DGtal
     };
 
     /**
+     * Get the value of an image at a given position given
+     * by a ConstIterator.
+     *
+     * @param it  position in the image.
+     * @return the value at aPoint.
+     */
+    Value operator()(ConstReverseIterator &it) const
+    {
+      return (*it);
+    };
+
+
+    /**
+     * Get the value of an image at a given position given
+     * by a Iterator.
+     *
+     * @param it  position in the image.
+     * @return the value at aPoint.
+     */
+    Value operator()(ReverseIterator &it) const
+    {
+      return (*it);
+    };
+
+    /**
      * Set a value on an Image at aPoint.
      *
      * @param aPoint location of the point to associate with aValue.
@@ -176,8 +202,20 @@ namespace DGtal
     void setValue(Iterator &it, const Value &aValue)
     {
       (*it) = aValue;
+    }  
+    
+    /**
+     * Set a value on an Image at a position specified by a ReverseIterator.
+     *
+     * @param it  a reverse iterator on the location.
+     * @param aValue the value.
+     */
+    void setValue(ReverseIterator &it, const Value &aValue)
+    {
+      (*it) = aValue;
     }
 
+   
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -193,50 +231,13 @@ namespace DGtal
       return (this != NULL);
     }
 
-    /**
-     * Returns the extent of an Image.
-     *
-     * @return the image extent as a Vector.
-     */
-    Vector extent() const;
-
-    /**
-     * @return the image lower point.
-     */
-    Point lowerBound() const
-    {
-      return myLowerBound;
-    };
-
-    /**
-     * @return the image upper point.
-     */
-    Point upperBound() const
-    {
-      return myUpperBound;
-    };
-
+ 
     /**
      * @return the domain associated to the image.
      */
-    Domain domain() const
+    const Domain &domain() const
     {
-      return Domain(myLowerBound, myUpperBound);
-    }
-    
-
-    /** 
-     * Translate the underlying image domain by a given displacement
-     * vector. In other words, given a point p in the image domain, image(p)
-     * before the translation is equal to image(p+vec) after the
-     * translateDomain call.
-     * 
-     * @param vec a displacement vector.
-     */
-    void translateDomain(const Vector &vec)
-    {
-      myLowerBound += vec;
-      myUpperBound += vec;
+      return myDomain;
     }
 
     /////////////////////////// Custom Iterators ////////////////////:
@@ -444,7 +445,7 @@ namespace DGtal
     SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myUpperBound.at( aDimension ) + 1;
+      tmp.at( aDimension ) = myDomain.getUpperBound().at( aDimension ) + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
@@ -470,8 +471,8 @@ namespace DGtal
      */
     Size linearized(const Point &aPoint) const;
 
-    Point myLowerBound;
-    Point myUpperBound;
+    ///Image Domain
+    Domain myDomain;
 
     // ------------- realization CDrawableWithBoard2D --------------------
   private:
