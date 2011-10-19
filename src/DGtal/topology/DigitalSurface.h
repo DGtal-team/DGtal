@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -208,16 +208,43 @@ namespace DGtal
        Writes the neighbors of [v] in the output iterator
        [it]. Neighbors are given in no specific order.
 
-       @param v any vertex of this graph
-       
+       @tparam OutputIterator the type for the output iterator
+       (e.g. back_insert_iterator<std::vector<Vertex> >).
+
        @param[in,out] it any output iterator on Vertex (*it++ should
        be allowed), which specifies where neighbors are written.
+
+       @param[in] v any vertex of this graph
 
        @pre container().isInside( v )
     */
     template <typename OutputIterator>
-    void writeNeighbors( const Vertex & v,
-                         OutputIterator & it ) const;
+    void writeNeighbors( OutputIterator & it,
+                         const Vertex & v ) const;
+
+    /**
+       Writes the neighbors of [v], verifying the predicate [pred] in
+       the output iterator [it]. Neighbors are given in no specific
+       order.
+
+       @tparam OutputIterator the type for the output iterator
+       (e.g. back_insert_iterator<std::vector<Vertex> >).
+
+       @tparam VertexPredicate any type of predicate taking a Vertex as input.
+  
+       @param[in,out] it any output iterator on Vertex (*it++ should
+       be allowed), which specifies where neighbors are written.
+
+       @param[in] v any vertex of this graph
+       
+       @param[in] pred the predicate for selecting neighbors.
+
+       @pre container().isInside( v )
+    */
+    template <typename OutputIterator, typename VertexPredicate>
+    void writeNeighbors( OutputIterator & it,
+                         const Vertex & v,
+                         const VertexPredicate & pred ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -240,7 +267,7 @@ namespace DGtal
   private:
 
     /// a smart pointer on the container.
-    CowPtr<DigitalSurfaceContainer> myContainer;
+    CountedPtr<DigitalSurfaceContainer> myContainer;
     /// a pointer on a tracker.
     mutable DigitalSurfaceTracker* myTracker;
 
