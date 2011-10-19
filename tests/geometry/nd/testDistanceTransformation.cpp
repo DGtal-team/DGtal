@@ -54,10 +54,12 @@ using namespace DGtal;
 template<typename Image>
 void randomSeeds(Image &input, const unsigned int nb, const int value)
 {
-  typename Image::Point p, low = input.lowerBound();
+  typename Image::Point p, low = input.domain().lowerBound(), up = input.domain().upperBound();
   typename Image::Vector ext;
+  
+  for (Dimension i = 0; i < Image::Domain::dimension; i++)
+      ext[i] = up[i] - low[i] + 1;
 
-  ext = input.extent();
 
   for (unsigned int k = 0 ; k < nb; k++)
     {
@@ -90,7 +92,7 @@ bool testDistanceTransformation()
   Point a ( 2, 2 );
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
 
   for ( unsigned k = 0; k < 49; k++ )
     {
@@ -164,7 +166,7 @@ bool testDistanceTransformationNeg()
   Point a ( -10, -10 );
   Point b ( 10, 10 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain( a, b ));
 
   for(int y=-10; y<=10;y++) 
     for(int x=-10; x<=10;x++)
@@ -318,7 +320,7 @@ bool testDistanceTransformationBorder()
   Point b ( 128, 128 );
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     image.setValue ( it, 128 );
@@ -391,7 +393,7 @@ bool testDistanceTransformation3D()
   Point a ( 0, 0, 0 );
   Point b ( 15, 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
   Point c(8, 8, 8);
   Domain dom(a, b);
 
@@ -446,7 +448,7 @@ bool testTypeValidity()
   Point a ( 0, 0 );
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
  
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
@@ -481,7 +483,7 @@ bool testChessboard()
   Point b ( 128, 128 );
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain( a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     image.setValue ( it, 128 );

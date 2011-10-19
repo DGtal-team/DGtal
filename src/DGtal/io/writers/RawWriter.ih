@@ -48,7 +48,7 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
-  typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
+  typename I::Domain domain = aImage.domain();
   typename I::Value val;
   C colormap(minV,maxV);
   Color col;

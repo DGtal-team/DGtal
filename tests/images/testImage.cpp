@@ -65,7 +65,7 @@ bool testSimpleImage()
   trace.beginBlock ( "Image init" );
 
   ///Domain characterized by points a and b
-  Image myImage ( a,b );
+  Image myImage ( Domain( a,b ));
   trace.info() << myImage << std::endl;
 
   trace.endBlock();

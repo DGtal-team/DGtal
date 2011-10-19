@@ -65,7 +65,8 @@ inline
 bool
 DGtal::DistanceTransformation<I, p, IntLong>::checkTypesValidity ( const I & aImage )
 {
-  typename I::Point::UnsignedComponent maxExtent = ( aImage.upperBound() - aImage.lowerBound() ).normInfinity();
+  typename I::Point::UnsignedComponent maxExtent = ( aImage.domain().upperBound() - 
+						     aImage.domain().lowerBound() ).normInfinity();
 
   //Estimate worst-case bit size (special case for p=0 == Linfinity
   double bitSize;
@@ -112,15 +113,16 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage,
 
   //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
   myLowerBoundCopy = Point(); //(O,O,...O)
-  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
-  myDisplacementVector = aImage.lowerBound();
+  myUpperBoundCopy = aImage.domain().upperBound() - aImage.domain().lowerBound();
+  myDisplacementVector = aImage.domain().lowerBound();
 
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
-  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * myExtent.normInfinity() + 1);
+  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * 
+			       myExtent.normInfinity() + 1);
 
   
-  OutputImage output ( myLowerBoundCopy, myUpperBoundCopy );
-  OutputImage swap ( myLowerBoundCopy, myUpperBoundCopy );
+  OutputImage output ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy ));
+  OutputImage swap ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy ));
   bool isSwap = true;
 
   //First step

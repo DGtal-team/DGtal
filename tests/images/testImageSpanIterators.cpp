@@ -58,7 +58,7 @@ bool testSpanIterators()
     Point c( t3 );
 
     trace.beginBlock("Test of Concepts");
-    TContainerV myImageV ( a,b );
+    TContainerV myImageV ( TDomain(a,b ));
 
     double cpt=0;
     //Image Construction 

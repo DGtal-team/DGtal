@@ -76,7 +76,7 @@ bool testPNMWriter()
   Point a ( 1, 1);
   Point b ( 16, 16);
   typedef ImageSelector<Domain, unsigned char>::Type Image;
-  Image image(a,b);
+  Image image(Domain(a,b));
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 

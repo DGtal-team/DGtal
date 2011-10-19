@@ -62,7 +62,7 @@ bool testLongvol()
   
   typedef ImageContainerBySTLVector<Z3i::Domain,DGtal::uint64_t> Image;
   typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
-  Image image(a,b);
+  Image image(Z3i::Domain(a,b));
   
   image.setValue(c,45693);
   
