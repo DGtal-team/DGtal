@@ -61,8 +61,11 @@ namespace DGtal
    * Description of class 'ImageContainerBySTLVector' <p>
    *
    * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::vector. A linearization of nD points
-   * is used to build an index.
+   * using a std::vector. A linearization of nD domain points
+   * is used to build the std::vector index.
+   *
+   * The domain can be any model of CDomain (not necessarily an
+   * HyperRectDomain instance).
    *
    * This class provides built-in iterators and fast SpanIterators
    * to perform 1D scans.
