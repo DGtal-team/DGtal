@@ -254,7 +254,7 @@ lengthEstimators( const string & /*name*/,
     TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  trueLengthEstimator;
     trueLengthEstimator.init( h, rp.begin(), rp.end(), &aShape, gridcurve.isClosed());
 
-    L1LengthEstimator< typename ArrowsRange::ConstIterator > l1length;
+    L1LengthEstimator< typename ArrowsRange::ConstCirculator > l1length;
     DSSLengthEstimator< typename PointsRange::ConstIterator > DSSlength;
     MLPLengthEstimator< typename PointsRange::ConstIterator > MLPlength;
     FPLengthEstimator< typename PointsRange::ConstIterator > FPlength;
@@ -270,7 +270,7 @@ lengthEstimators( const string & /*name*/,
 
     //Length evaluation & timing
     c.startClock();
-    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    l1length.init(h, ra.c(), ra.c());
     l1 = l1length.eval();
     Tl1 = c.stopClock();
     

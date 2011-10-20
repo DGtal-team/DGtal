@@ -88,18 +88,18 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval() const
   while (( i != myEndIt) && (ii != myEndIt))
     {
       if (((*i).second).dot((*ii).second) == 0)
-  nbDiag++;
+	nbDiag++;
       else
-  nbDirect+=2;
+	nbDirect+=2;
 
       ++i; 
       if (i == myEndIt) 
-  continue;
+	continue;
       ++i;
 
       ++ii; 
       if (ii == myEndIt) 
-  continue;
+	continue;
       ++ii;
     }   
   
