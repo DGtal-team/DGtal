@@ -224,7 +224,7 @@ namespace DGtal
     typedef typename ImageContainer::Value Value;
     typedef typename ImageContainer::Point Point;
 
-    //Iterators (already tested in CRange)
+    //Iterators (already tested in CBidirecrtionalRange)
     typedef typename  ImageContainer::Iterator Iterator;
     typedef typename  ImageContainer::ConstIterator ConstIterator;
     typedef typename  ImageContainer::ReverseIterator ReverseIterator;
