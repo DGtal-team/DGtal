@@ -208,11 +208,10 @@ int main ( int argc, char** argv )
   cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
 
   // check that the iterator stuff compiles as it should
-  int val = 0;
   typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t>::Iterator HashTreeIterator;
   HashTreeIterator it = tree.begin();
   for ( it = tree.begin(); it != tree.end(); ++it )
-    val = tree ( *it );
+    tree ( *it );
 
 
 

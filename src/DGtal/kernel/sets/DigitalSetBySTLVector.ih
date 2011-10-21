@@ -455,7 +455,7 @@ DGtal::DigitalSetBySTLVector<Domain>::computeBoundingBox
       ConstIterator it = begin();
       ConstIterator it_end = end();
       upper = lower = *it;
-      for ( ; it != end(); ++it )
+      for ( ; it != it_end; ++it )
   if ( it->isLower( lower ) ) lower = *it;
   else if ( it->isUpper( upper ) ) upper = *it;
     }
