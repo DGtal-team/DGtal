@@ -51,7 +51,6 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 typedef SpaceND<2> Space2Type;
 typedef HyperRectDomain<Space2Type> Domain2D;
-typedef Space2Type::Point Point;
 
 
 /**
