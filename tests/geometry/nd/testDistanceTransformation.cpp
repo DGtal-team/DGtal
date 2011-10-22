@@ -256,7 +256,7 @@ bool testDTFromSet()
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
   
-  Shapes<Z2i::Domain>::shaper(aSet, flower);
+  Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
   ImageLong result = dt.compute ( aSet );
   ImageLong0 result0 = dt0.compute ( aSet );

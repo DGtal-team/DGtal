@@ -209,35 +209,34 @@ bool testDisplay(double radius, double h)
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
-    {
+  {
       std::cerr << " "
-    << " error in creating KSpace." << std::endl;
+      << " error in creating KSpace." << std::endl;
       return false;
-    }
-  try {
-
-    // Extracts shape boundary
-    SurfelAdjacency<KSpace::dimension> SAdj( true );
-    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-    // Getting the consecutive surfels of the 2D boundary
-    std::vector<Point> points;
-    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
-    trace.info() << "# tracking..." << endl;
-    // Create GridCurve
-    GridCurve<KSpace> gridcurve;
+      }
+      try {
+      
+      // Extracts shape boundary
+      SurfelAdjacency<KSpace::dimension> SAdj( true );
+      SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+      // Getting the consecutive surfels of the 2D boundary
+      std::vector<Point> points;
+      Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+      trace.info() << "# tracking..." << endl;
+      // Create GridCurve
+      GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
     trace.info() << "#grid curve created, h=" << h << endl;
-
+    
     //ranges
     ArrowsRange ra = gridcurve.getArrowsRange(); 
     PointsRange rp = gridcurve.getPointsRange(); 
     SCellsRange rc = gridcurve.get1SCellsRange(); 
-  
+    
     //Explicit reshaping for drawing purposes
     Z2i::DigitalSet set(domain);
-    Shapes<Z2i::Domain>::shaper( set,
-         Shape(Point(0,0), radius/h));
- 
+    Shapes<Z2i::Domain>::shaper( set, Shape(Point(0,0), radius/h));
+         
     Board2D board;
     
     board << domain << set;

@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#inclide "DGtal/base/CCommutativeRing.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

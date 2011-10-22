@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CEuclieanBoundedShape.h
+ * @file CEuclideanBoundedShape.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for concept CEuclieanBoundedShape.cpp
+ * Header file for concept CEuclideanBoundedShape.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CEuclieanBoundedShape_RECURSES)
-#error Recursive header files inclusion detected in CEuclieanBoundedShape.h
-#else // defined(CEuclieanBoundedShape_RECURSES)
+#if defined(CEuclideanBoundedShape_RECURSES)
+#error Recursive header files inclusion detected in CEuclideanBoundedShape.h
+#else // defined(CEuclideanBoundedShape_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CEuclieanBoundedShape_RECURSES
+#define CEuclideanBoundedShape_RECURSES
 
-#if !defined CEuclieanBoundedShape_h
+#if !defined CEuclideanBoundedShape_h
 /** Prevents repeated inclusion of headers. */
-#define CEuclieanBoundedShape_h
+#define CEuclideanBoundedShape_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,9 +52,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CEuclieanBoundedShape
+  // class CEuclideanBoundedShape
   /**
-   * Description of \b concept '\b CEuclieanBoundedShape' <p>
+   * Description of \b concept '\b CEuclideanBoundedShape' <p>
    * @ingroup Concepts
    * Aim: designs the concept of bounded shapes in DGtal (shape for
    * which upper and lower bounding bounds are available).
@@ -65,7 +65,7 @@ namespace DGtal
    *   - RealPoint: type for real points (to characterize upper/lower bounds).
    *
    * <p> Notation
-   * - \t X : A type that is a model of CEuclieanBoundedShape
+   * - \t X : A type that is a model of CEuclideanBoundedShape
    * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
@@ -111,14 +111,14 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename TShape>
-  struct CEuclieanBoundedShape
+  struct CEuclideanBoundedShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
     
     typedef typename TShape::RealPoint RealPoint;
     
-     BOOST_CONCEPT_USAGE( CEuclieanBoundedShape )
+     BOOST_CONCEPT_USAGE( CEuclideanBoundedShape )
     {
       // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
@@ -131,7 +131,7 @@ namespace DGtal
     TShape myT;
     RealPoint myP;
     
-  }; // end of concept CEuclieanBoundedShape
+  }; // end of concept CEuclideanBoundedShape
   
 } // namespace DGtal
 
@@ -139,7 +139,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CEuclieanBoundedShape_h
+#endif // !defined CEuclideanBoundedShape_h
 
-#undef CEuclieanBoundedShape_RECURSES
-#endif // else defined(CEuclieanBoundedShape_RECURSES)
+#undef CEuclideanBoundedShape_RECURSES
+#endif // else defined(CEuclideanBoundedShape_RECURSES)

@@ -84,6 +84,28 @@ DGtal::StarShaped2D<TSpace>::isInside( const RealPoint & p ) const
   return d_p <= d_x;
 }
 
+/**
+ * @param p any point in the plane.
+ *
+ * @return 'true' if the point is inside the shape, 'false' if it
+ * is strictly outside.
+ */
+template<typename TSpace>
+inline
+typename DGtal::StarShaped2D<TSpace>::Orientation
+DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
+{
+  double t = parameter( p );
+  RealPoint x_rel = x( t );
+  x_rel -= center();
+  double d_x = x_rel[0]*x_rel[0] + x_rel[1]*x_rel[1];
+  RealPoint p_rel( p );
+  p_rel -= center();
+  double d_p = p_rel[0]*p_rel[0] + p_rel[1]*p_rel[1];
+   
+  return (Orientation) (d_x - d_p);
+}
+
 
 /**
  * @param t any angle between 0 and 2*Pi.

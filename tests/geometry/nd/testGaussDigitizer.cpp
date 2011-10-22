@@ -71,7 +71,7 @@ testDigitization( const Shape & aShape, double h,
   Domain domain = dig.getDomain(); // ( dig.getLowerBound(), dig.getUpperBound() );
   MySet aSet( domain );
   // Creates a set from the digitizer.
-  Shapes<Domain>::shaper( aSet, dig );
+  Shapes<Domain>::digitalShaper( aSet, dig );
   
   // Create cellular space
   typedef Z2i::KSpace KSpace;

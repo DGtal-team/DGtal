@@ -61,9 +61,8 @@ namespace DGtal
 
   public:
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::Integer Integer;
-    
+    typedef typename Space::RealPoint RealPoint;    
+    typedef double Orientation;
    
     /** 
      * Constructor. Contructs a ball with center aCenter and width
@@ -72,8 +71,9 @@ namespace DGtal
      * @param aCenter the cube center. 
      * @param aHalfWidth the cube half-width.
      */
-    ImplicitNorm1Ball(const Point &aCenter, const Integer &aHalfWidth): myCenter(aCenter),
-                myHalfWidth(aHalfWidth)
+    ImplicitNorm1Ball(const RealPoint &aCenter, const double &aHalfWidth): 
+      myCenter(aCenter),
+      myHalfWidth(aHalfWidth)
     {};
     
     /** 
@@ -95,12 +95,11 @@ namespace DGtal
      * @return the distance of aPoint to the ball center.
      */
     inline
-    double operator()(const Point &aPoint) const
+    double operator()(const RealPoint &aPoint) const
     {
-      return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
-  (aPoint - myCenter ).norm(Point::L_1);
+      return (aPoint - myCenter ).norm(RealPoint::L_1);
     }
-
+    
     /** 
      * Return true if the given point belongs to the shape.
      * 
@@ -108,11 +107,18 @@ namespace DGtal
      * @return true if aPoint belongs to the shape.
      */
     inline
-    bool isInside(const Point &aPoint) const
+    bool isInside(const RealPoint &aPoint) const
     {
       return this->operator()(aPoint) >0.0;
     }
 
+
+   
+    inline
+    Orientation orientation(const RealPoint &aPoint) const
+    {
+      return (-this->operator()(aPoint));
+    }
 
     /** 
      * Returns the lower bound of the Shape bounding box.
@@ -121,9 +127,9 @@ namespace DGtal
      * @return the lower bound point.
      */
     inline
-    Point getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return (myCenter - Point::diagonal(myHalfWidth));
+      return (myCenter - RealPoint::diagonal(myHalfWidth));
     }
     
     /** 
@@ -133,9 +139,9 @@ namespace DGtal
      * @return the upper bound point.
      */
     inline
-    Point getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return (myCenter + Point::diagonal(myHalfWidth)); 
+      return (myCenter + RealPoint::diagonal(myHalfWidth)); 
     }
     
     // ----------------------- Interface --------------------------------------
@@ -159,10 +165,10 @@ namespace DGtal
   private:
    
     ///Ball center
-    Point myCenter;
+    RealPoint myCenter;
 
     ///Ball HalfWidth
-    Integer myHalfWidth;
+    double myHalfWidth;
    
     // ------------------------- Hidden services ------------------------------
   protected:
