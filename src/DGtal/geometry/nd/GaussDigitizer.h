@@ -46,6 +46,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/shapes/CEuclideanOrientedShape.h"
+#include "DGtal/shapes/CEuclideanBoundedShape.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -64,8 +67,7 @@ namespace DGtal
      @tparam TSpace the type of digital Space where the digitized
      object lies.
 
-     @tparam TEuclideanShape a model of CEuclideanShape, i.e. a class
-     having a method @code bool isInside( const RealPoint & p ) const
+     @tparam TEuclideanShape a model of CEuclideanOrientedShape and CEuclideanBoundedShape
      @endcode.
    */
   template <typename TSpace, typename TEuclideanShape>
@@ -81,6 +83,11 @@ namespace DGtal
     typedef typename Space::RealPoint RealVector;
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
+
+
+    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape>));
+    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape>));
+
 
     /**
      * Destructor.
