@@ -84,10 +84,12 @@ namespace DGtal
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
 
+    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
+    
+    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
 
-    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape>));
-    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape>));
-
+    ///OrientedShape concept requirement
+    typedef typename TEuclideanShape::Orientation Orientation;
 
     /**
      * Destructor.
@@ -117,7 +119,7 @@ namespace DGtal
        adjacent digital points) identical in every direction.
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
-         typename RealVector::Component gridStep );
+               typename RealVector::Component gridStep );
 
     /**
        Initializes the digital bounds of the digitizer so as to cover
@@ -180,6 +182,17 @@ namespace DGtal
      * is strictly outside.
      */
     bool isInside( const Point & p ) const;
+
+    /** 
+     * Orientation method to match with CDigitalOrientedShape concept.
+     * 
+     * @param p  a digital point
+     * 
+     * @return negative orientation if the point is inside the shape,
+     * 0 if it is on the shape and positive orientation otherwise.
+     */
+    Orientation orientation(const Point &p) const
+    { return myEShape->orientation(p);}
 
     /**
      * @param p any point in the digital plane.

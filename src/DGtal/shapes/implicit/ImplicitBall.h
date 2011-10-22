@@ -63,10 +63,11 @@ namespace DGtal
 
   public:
     typedef TSpace Space;
-    typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
     
+    //OrientedShape concept
+    typedef double Orientation;
 
     /** 
      * Constructor. Contructs a ball with center aCenter and radius
@@ -75,7 +76,7 @@ namespace DGtal
      * @param aCenter the ball center. 
      * @param aRadius the ball radius.
      */
-    ImplicitBall(const Point &aCenter, const Integer &aRadius): myCenter(aCenter),
+    ImplicitBall(const RealPoint &aCenter, const double &aRadius): myCenter(aCenter),
                 myRadius(aRadius)
     {};
     
@@ -90,28 +91,34 @@ namespace DGtal
   public:
     
     inline
-    double operator()(const Point &aPoint) const
+    double operator()(const RealPoint &aPoint) const
     {
       return NumberTraits<Integer>::castToDouble(myRadius) - 
-  (aPoint - myCenter ).norm();
-    }
-
-    inline
-    bool isInside(const Point &aPoint) const
-    {
-      return (this->operator()(aPoint) > 0.0);
-    }
-
-    inline
-    Point getLowerBound() const
-    {
-      return (myCenter - Point::diagonal(myRadius));
+        (aPoint - myCenter ).norm();
     }
     
     inline
-    Point getUpperBound() const
+    bool isInside(const RealPoint &aPoint) const
     {
-      return (myCenter + Point::diagonal(myRadius)); 
+      return (this->operator()(aPoint) > 0.0);
+    }
+    
+    inline
+    Orientation orientation(const RealPoint &aPoint) const
+    {
+      return (-this->operator()(aPoint));
+    }
+
+    inline
+    RealPoint getLowerBound() const
+    {
+      return (myCenter - RealPoint::diagonal(myRadius));
+    }
+    
+    inline
+    RealPoint getUpperBound() const
+    {
+      return (myCenter + RealPoint::diagonal(myRadius)); 
     }
     
 
@@ -137,10 +144,10 @@ namespace DGtal
   private:
    
     ///Ball center
-    Point myCenter;
+    RealPoint myCenter;
 
     ///Ball Radius
-    Integer myRadius;
+    double myRadius;
    
     // ------------------------- Hidden services ------------------------------
   protected:
