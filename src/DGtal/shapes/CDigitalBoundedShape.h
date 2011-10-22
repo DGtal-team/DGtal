@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CBoundedShape.h
+ * @file CDigitalBoundedShape.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for concept CBoundedShape.cpp
+ * Header file for concept CDigitalBoundedShape.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CBoundedShape_RECURSES)
-#error Recursive header files inclusion detected in CBoundedShape.h
-#else // defined(CBoundedShape_RECURSES)
+#if defined(CDigitalBoundedShape_RECURSES)
+#error Recursive header files inclusion detected in CDigitalBoundedShape.h
+#else // defined(CDigitalBoundedShape_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CBoundedShape_RECURSES
+#define CDigitalBoundedShape_RECURSES
 
-#if !defined CBoundedShape_h
+#if !defined CDigitalBoundedShape_h
 /** Prevents repeated inclusion of headers. */
-#define CBoundedShape_h
+#define CDigitalBoundedShape_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,9 +52,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CBoundedShape
+  // class CDigitalBoundedShape
   /**
-   * Description of \b concept '\b CBoundedShape' <p>
+   * Description of \b concept '\b CDigitalBoundedShape' <p>
    * @ingroup Concepts
    * Aim: designs the concept of bounded shapes in DGtal (shape for
    * which upper and lower bounding bounds are available).
@@ -65,7 +65,7 @@ namespace DGtal
    *   - Point: type for points (to characterize upper/lower bounds).
    *
    * <p> Notation
-   * - \t X : A type that is a model of CBoundedShape
+   * - \t X : A type that is a model of CDigitalBoundedShape
    * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
@@ -111,14 +111,14 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename TShape>
-  struct CBoundedShape
+  struct CDigitalBoundedShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
     
     typedef typename TShape::Point Point;
     
-     BOOST_CONCEPT_USAGE( CBoundedShape )
+     BOOST_CONCEPT_USAGE( CDigitalBoundedShape )
     {
       // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
@@ -131,7 +131,7 @@ namespace DGtal
     TShape myT;
     Point myP;
     
-  }; // end of concept CBoundedShape
+  }; // end of concept CDigitalBoundedShape
   
 } // namespace DGtal
 
@@ -139,7 +139,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CBoundedShape_h
+#endif // !defined CDigitalBoundedShape_h
 
-#undef CBoundedShape_RECURSES
-#endif // else defined(CBoundedShape_RECURSES)
+#undef CDigitalBoundedShape_RECURSES
+#endif // else defined(CDigitalBoundedShape_RECURSES)
