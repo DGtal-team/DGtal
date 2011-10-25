@@ -76,15 +76,14 @@ int main()
   
   Board2D board;
   board << domain 
-  << CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
-  << p1
-  << CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
-  << p2
-  << CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
-  << p3;
+	<< h
+	<< CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+	<< p2
+	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+	<< p3;
   board.saveSVG("dgtalBoard2D-3-custom-points.svg");
   board.saveEPS("dgtalBoard2D-3-custom-points.eps");
-
+  
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.png", Board2D::CairoPNG);

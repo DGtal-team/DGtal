@@ -98,13 +98,13 @@ bool testDSS4drawing()
   board.setUnit(Board::UCentimeter);
     
   board << SetMode(domain.styleName(), "Grid")
-  << domain;    
+	<< domain;    
   board << SetMode("PointVector", "Grid");
-
+  
   board << SetMode(theDSS4.styleName(), "Points") 
-  << theDSS4;
+	<< theDSS4;
   board << SetMode(theDSS4.styleName(), "BoundingBox") 
-  << theDSS4;
+	<< theDSS4;
     
   board.saveSVG("DSS4.svg");
   
