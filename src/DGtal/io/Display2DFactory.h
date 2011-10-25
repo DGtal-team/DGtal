@@ -250,6 +250,7 @@
     void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
     // void draw( Display3D & display, const DGtal::CustomColors3D & );
 
+
   //  }; // end of struct Display2DFactory
 
   //} // namespace DGtal
