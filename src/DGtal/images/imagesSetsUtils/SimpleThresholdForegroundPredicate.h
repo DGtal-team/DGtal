@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file SimpleForegroundPredicate.h
+ * @file SimpleThresholdForegroundPredicate.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/26
  *
- * Header file for module SimpleForegroundPredicate.cpp
+ * Header file for module SimpleThresholdForegroundPredicate.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(SimpleForegroundPredicate_RECURSES)
-#error Recursive header files inclusion detected in SimpleForegroundPredicate.h
-#else // defined(SimpleForegroundPredicate_RECURSES)
+#if defined(SimpleThresholdForegroundPredicate_RECURSES)
+#error Recursive header files inclusion detected in SimpleThresholdForegroundPredicate.h
+#else // defined(SimpleThresholdForegroundPredicate_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SimpleForegroundPredicate_RECURSES
+#define SimpleThresholdForegroundPredicate_RECURSES
 
-#if !defined SimpleForegroundPredicate_h
+#if !defined SimpleThresholdForegroundPredicate_h
 /** Prevents repeated inclusion of headers. */
-#define SimpleForegroundPredicate_h
+#define SimpleThresholdForegroundPredicate_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,38 +50,39 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'SimpleForegroundPredicate' <p>
+   * Description of template class 'SimpleThresholdForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
-   * image values  between to constant values.
+   * image values  given a single thresold.
+   * More precisely, the functor operator() returns true if the value
+   * is greater than a given threshold.
    *
    * @tparam TImage an model of CImageContainer concept. 
    */
   template <typename Image>
-  class SimpleForegroundPredicate
+  class SimpleThresholdForegroundPredicate
   {
   public:
     BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
     
     typedef typename Image::Value Value;
+    typedef typename Image::Point Point;
 
     /** 
      * Constructor. This functor can be used to threshold image values
-     * in the interval ]minVal,maxVal].
+     * greater (>) than @a value.
      * 
-     * @param minVal the minimum value (first value excluded).
-     * @param maxVal the maximum value (last value considered).
+     * @param value  the threshold value.
      */
-    SimpleForegroundPredicate(const Image & aImage,
-            const Value minVal, 
-            const Value maxVal): 
-      myImage(new Image(aImage)), myMaxVal(maxVal), myMinVal(minVal) {};
+    SimpleThresholdForegroundPredicate(const Image & aImage,
+				       const Value value):
+      myImage(new Image(aImage)), myVal(value) {};
     
     /** 
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::Point &aPoint) const
     {
-      return ((*myImage)(aPoint) > myMinVal) && ((*myImage)(aPoint) <= myMaxVal);
+      return ((*myImage)(aPoint) > myVal);
     }
     
     /** 
@@ -89,7 +90,7 @@ namespace DGtal
      */
     bool operator()(const typename Image::Iterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*myImage)(it) > myVal);
     }
     
     /** 
@@ -97,7 +98,7 @@ namespace DGtal
      */
     bool operator()(const typename Image::ConstIterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*myImage)(it) > myVal);
     }
     
     /** 
@@ -105,16 +106,15 @@ namespace DGtal
      */
     bool operator()(const typename Image::SpanIterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*myImage)(it) > myVal);
     }
     
   private:
     CountedPtr<Image> myImage;
-    Value myMaxVal;
-    Value myMinVal;
+    Value myVal;
     
   protected:
-    SimpleForegroundPredicate();
+    SimpleThresholdForegroundPredicate();
     
   };
 
@@ -124,7 +124,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SimpleForegroundPredicate_h
+#endif // !defined SimpleThresholdForegroundPredicate_h
 
-#undef SimpleForegroundPredicate_RECURSES
-#endif // else defined(SimpleForegroundPredicate_RECURSES)
+#undef SimpleThresholdForegroundPredicate_RECURSES
+#endif // else defined(SimpleThresholdForegroundPredicate_RECURSES)
