@@ -50,6 +50,8 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImageContainer.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+
 #include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -122,39 +124,6 @@ namespace DGtal
      */
     ~DistanceTransformation();
 
-
-    // ------- Private Functor to be used as a default template ----
-
-  private:
-    /**
-     * Default foregroundPredicate : we return true if the value at a
-     * point differs from zero.
-     *
-     * @todo Refactoring needed to generalize this class !
-     */
-    struct DefaultForegroundPredicate
-    {
-      bool operator()(const Image &aImage, const typename Image::Point &aPoint) const
-      {
-  return (aImage(aPoint) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::Iterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::ConstIterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-      bool operator()(const Image &aImage, const typename Image::SpanIterator &it) const
-      {
-  return (aImage(it) != 0);
-      }
-
-    };
   public:
 
     /**
@@ -175,19 +144,23 @@ namespace DGtal
      * foreground predicate, its distance to the closest background point.
      * This algorithm is  O(d.|inputImage|).
      *
+     * @pre the @a foregroundPredicate must have been constructed from
+     * a reference to @a inputImage.
+     *
      * @param inputImage the input image
      * @param foregroundPredicate a predicate to detect foreground
      * point from the image valuetype
      * @return the distance transformation image with the Internal format.
      */
     template <typename ForegroundPredicate>
-    OutputImage compute(const Image & inputImage, const ForegroundPredicate & predicate  );
+    OutputImage compute(const Image & inputImage, 
+			const ForegroundPredicate & predicate   );
     
     /**
      * Compute the Distance Transformation of an image with the SeparableMetric metric.
      * The method associates to each point with value satisfying the
-     * foreground predicate, its distance to the closest background
-     * point.
+     * foreground predicate (by default, values greater than 0), its
+     * distance to the closest background point.
      * This algorithm is  O(d.|inputImage|).
      *
      * @param inputImage the input image
@@ -195,7 +168,8 @@ namespace DGtal
      */
     OutputImage compute(const Image & inputImage )
     {
-      return compute<DefaultForegroundPredicate>(inputImage, DefaultForegroundPredicate());
+      return compute(inputImage, 
+		     SimpleThresholdForegroundPredicate<Image>(inputImage, 0));
     };
 
     /**
@@ -215,7 +189,8 @@ namespace DGtal
      * @return the distance transformation image with the Internal format.
      */
     template<typename DigitalSet>
-    OutputImage compute(const DigitalSet & inputSet, const bool addBoundary=true );
+    OutputImage compute(const DigitalSet & inputSet, 
+			const bool addBoundary=true );
 
    
 
@@ -225,28 +200,26 @@ namespace DGtal
     /** 
      * Compute the first step of the separable distance transformation.
      * 
-b     * @param aImage the input image
      * @param output the output image with the first step DT values
      * @param predicate the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep(const Image & aImage, OutputImage & output, const ForegroundPredicate &predicate) const;
+    void computeFirstStep(OutputImage & output, 
+			  const ForegroundPredicate &predicate) const;
 
     /** 
      * Compute the 1D DT associated to the first step.
      * 
-     * @param aImage the input image
      * @param output the output image  with the first step DT values
      * @param startingPoint a point to specify the starting point of the 1D row
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
     template <typename ForegroundPredicate>
-    void computeFirstStep1D (const Image & aImage, 
-           OutputImage & output, 
-           const Point &startingPoint, 
-           const ForegroundPredicate &predicate) const;
+    void computeFirstStep1D (OutputImage & output, 
+			     const Point &startingPoint, 
+			     const ForegroundPredicate &predicate) const;
 
     /** 
      *  Compute the other steps of the separable distance transformation.

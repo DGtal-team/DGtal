@@ -34,7 +34,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/parametric/Ball2D.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
