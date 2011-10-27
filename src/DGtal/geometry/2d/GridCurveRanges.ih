@@ -139,6 +139,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const SCellsRange &scr)
+  {
+    return scr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -147,6 +151,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const SCellsRange &scr, std::string /*mode*/)
+  {
+    return scr.defaultStyle();
   }
   /**
    * @return the style name used for drawing this object.
@@ -355,6 +363,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const PointsRange &pr)
+  {
+    return pr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -363,6 +375,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const PointsRange &pr, std::string /*mode*/)
+  {
+    return pr.defaultStyle();
   }
 
   /**
@@ -573,6 +589,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const MidPointsRange &mpr)
+  {
+    return mpr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -581,6 +601,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const MidPointsRange &mpr, std::string /*mode*/)
+  {
+    return mpr.defaultStyle();
   }
   /**
    * @return the style name used for drawing this object.
@@ -797,6 +821,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const ArrowsRange &ar)
+  {
+    return ar.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -805,6 +833,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const ArrowsRange &ar, std::string /*mode*/)
+  {
+    return ar.defaultStyle();
   }
 
   /**
@@ -1022,6 +1054,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const InnerPointsRange &ipr)
+  {
+    return ipr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -1030,6 +1066,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const InnerPointsRange &ipr, std::string /*mode*/)
+  {
+    return ipr.defaultStyle();
   }
 
   /**
@@ -1243,6 +1283,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const OuterPointsRange &opr)
+  {
+    return opr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -1251,6 +1295,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const OuterPointsRange &opr, std::string /*mode*/)
+  {
+    return opr.defaultStyle();
   }
   /**
    * @return the style name used for drawing this object.
@@ -1469,6 +1517,10 @@ public:
   {
     return new DrawableWithBoard2D; 
   }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const IncidentPointsRange &ipr)
+  {
+    return ipr.defaultStyle();
+  }
   /**
    * Default drawing style object.
    * @param mode the drawing mode
@@ -1477,6 +1529,10 @@ public:
   DGtal::DrawableWithBoard2D* defaultStyle( std::string /*mode*/ ) const
   {
     return new DrawableWithBoard2D; 
+  }
+  friend DGtal::DrawableWithBoard2D* defaultStyle(const IncidentPointsRange &ipr, std::string /*mode*/)
+  {
+    return ipr.defaultStyle();
   }
   /**
    * @return the style name used for drawing this object.

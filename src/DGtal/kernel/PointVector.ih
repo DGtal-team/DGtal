@@ -712,16 +712,18 @@ DGtal::PointVector<dim,TComponent>::selfDisplay( std::ostream & out ) const
   out << "}";
 }
 //------------------------------------------------------------------------------
+#if(0)
 template<Dimension dim, typename TComponent>
 inline
 DGtal::DrawableWithBoard2D*
 DGtal::PointVector<dim, TComponent>::defaultStyle( std::string mode) const
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
-    return new DefaultDrawStylePaving;
+    return new DGtal::DefaultDrawStylePaving;
   else // mode == "Grid"
-    return new DefaultDrawStyleGrid;  
+    return new DGtal::DefaultDrawStyleGrid;  
 }
+#endif
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline

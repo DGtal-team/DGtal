@@ -123,7 +123,7 @@ bool testReverseDT()
   ImageRDT reconstruction = reverseDT.reconstruction( result );
   
   // board.clear();
-  // result.selfDraw<Hue> ( board, 0, 10); //maxval 
+  // result.selfDraw<Hue> ( board, 0, 10); //maxval FAIRE
   // board.saveSVG ( "image-REDTtest.svg" );
 
   trace.warning()<<"REDT:"<<endl;

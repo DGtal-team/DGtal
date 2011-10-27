@@ -58,20 +58,16 @@ using namespace LibBoard;
 
 struct MyObjectStyleCustom : public DrawableWithBoard2D
 {
-    void selfDraw ( Board2D & aboard ) const
+    virtual void selfDraw ( Board2D & aboard ) const
     {
-#if(0)
         aboard.setFillColorRGBi ( 0, 169, 0 );
-#endif
     }
 };
 struct MyObjectStyleCustomRed : public DrawableWithBoard2D
 {
-    void selfDraw ( Board2D & aboard ) const
+    virtual void selfDraw ( Board2D & aboard ) const
     {
-#if(0)
         aboard.setFillColorRGBi ( 169, 0, 0 );
-#endif
     }
 };
 
@@ -79,12 +75,10 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
     virtual void selfDraw ( Board2D & aboard ) const
     {
-#if(0)
         aboard.setFillColorRGBi ( 169, 150, 150 );
         aboard.setPenColorRGBi ( 0, 0, 0 );
         aboard.setLineStyle ( Board2D::Shape::SolidStyle );
         aboard.setLineWidth ( 1.5 );
-#endif
     }
 };
 
@@ -92,12 +86,10 @@ struct MyDrawStyleCustomBlue : public DrawableWithBoard2D
 {
     virtual void selfDraw ( Board2D & aboard ) const
     {
-#if(0)
         aboard.setFillColorRGBi ( 150, 150, 250 );
         aboard.setPenColorRGBi ( 0, 0, 200 );
         aboard.setLineStyle ( Board2D::Shape::SolidStyle );
         aboard.setLineWidth ( 1.5 );
-#endif
     }
 };
 
@@ -105,12 +97,10 @@ struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
     virtual void selfDraw ( Board2D & aboard ) const
     {
-#if(0)
         aboard.setFillColorRGBi ( 150, 150, 160 );
         aboard.setPenColorRGBi ( 150, 150, 160 );
         aboard.setLineStyle ( Board2D::Shape::DashStyle );
         aboard.setLineWidth ( 1.0 );
-#endif
     }
 };
 

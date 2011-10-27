@@ -388,7 +388,7 @@ namespace DGtal
     // ------------------------- Display ------------------------------------
   public: 
 
-
+#if(0)
     /**
      * Default style.
      */
@@ -400,15 +400,14 @@ namespace DGtal
          */
         virtual void selfDraw(Board2D & aBoard) const
         {
-#if(0)
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(2);
-        aBoard.setFillColor(Color::None);
-#endif
+          // Set board style
+          aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+          aBoard.setPenColor(Color::Red);
+          aBoard.setLineWidth(2);
+          aBoard.setFillColor(Color::None);
         }
     };
+#endif
 
     /*
      * Writes/Displays the object on an output stream.
@@ -425,7 +424,7 @@ namespace DGtal
      * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.

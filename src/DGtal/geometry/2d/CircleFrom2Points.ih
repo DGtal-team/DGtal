@@ -121,6 +121,7 @@ DGtal::CircleFrom2Points<TPoint>::getParameters(double& cx, double& cy, double& 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
+#if(0)
 template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D*
@@ -128,6 +129,7 @@ DGtal::CircleFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
 {
   return new DrawableWithBoard2D; 
 }
+#endif
 
 template <typename TPoint>
 inline

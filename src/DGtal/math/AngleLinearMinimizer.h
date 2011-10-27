@@ -272,7 +272,7 @@ public:
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
    */
-  DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+  //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
   
   /**
    * @return the style name used for drawing this object.
@@ -353,6 +353,7 @@ private:
   double myMax;
   
   
+#if(0)
   /**
    * Default styles.
    */
@@ -360,14 +361,13 @@ private:
   {
     virtual void selfDraw( Board2D & aBoard ) const
     {
-#if(0)
 	aBoard.setPenColorRGBi(160,160,160);
 	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi(220,220,220);
 	aBoard.setLineWidth(1);
-#endif
       }
   };
+#endif
   
   
   

@@ -124,6 +124,7 @@ namespace DGtal
     */
     bool operator<( const KhalimskyCell & other ) const;
 
+#if(0)
     /**
      * Default style.
      */
@@ -131,15 +132,13 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
-  aBoard.setPenColorRGBi( 50, 50, 50 );
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-  aBoard.setFillColorRGBi( 80, 80, 80 );
-  aBoard.setLineWidth( 1 );
-#endif
+        aBoard.setPenColorRGBi( 50, 50, 50 );
+        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+        aBoard.setFillColorRGBi( 80, 80, 80 );
+        aBoard.setLineWidth( 1 );
       }
     };
-
+#endif
 
     
 
@@ -176,7 +175,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -265,6 +264,7 @@ namespace DGtal
     */
     bool operator<( const SignedKhalimskyCell & other ) const;
 
+#if(0)
     /**
      * Default style.
      */
@@ -272,15 +272,13 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
-  aBoard.setPenColorRGBi( 50, 50, 50 );
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-  aBoard.setFillColorRGBi( 80, 80, 80 );
-  aBoard.setLineWidth( 1 );
-#endif
+        aBoard.setPenColorRGBi( 50, 50, 50 );
+        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+        aBoard.setFillColorRGBi( 80, 80, 80 );
+        aBoard.setLineWidth( 1 );
       }
     };
-
+#endif
 
     
 
@@ -311,7 +309,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.

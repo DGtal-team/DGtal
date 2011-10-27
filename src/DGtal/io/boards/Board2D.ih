@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -68,7 +69,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
  
   BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
-  CountedPtr<DrawableWithBoard2D> style( object.defaultStyle() );
+  CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) /*object.defaultStyle()*/ );
 #ifdef DEBUG_VERBOSE
   trace.info() << "[operator<<] " << object.styleName();
 #endif
@@ -79,7 +80,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
-      style->selfDraw( *this );
+      draw(*this, style.get()); //style->selfDraw( *this );
     }
   // Apply Customized style
   StyleMapping::const_iterator it = myStyles.find( object.styleName() );
@@ -89,7 +90,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
-  it->second->selfDraw( *this );
+  draw(*this, it->second.get()); //it->second->selfDraw( *this );
       }
   // Check for specific mode.
   ModeMapping::const_iterator itm = myModes.find( object.styleName() );
@@ -101,13 +102,13 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 
       // Apply default style for specific mode.
       CountedPtr<DrawableWithBoard2D> style_mode
-  ( object.defaultStyle( itm->second ) );
+  ( defaultStyle(object, itm->second) /*object.defaultStyle( itm->second )*/ );
       if ( style_mode.get() )
   {
 #ifdef DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
-    style_mode->selfDraw( *this );
+    draw(*this, style_mode.get()); //style_mode->selfDraw( *this );
   }
       // Apply customized style for specific mode.
       std::string specific_style = object.styleName() + "/" + itm->second;
@@ -119,7 +120,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
       trace.info() << " [specific style for mode: " 
           << specific_style << "]";
 #endif
-      it->second->selfDraw( *this );
+      draw(*this, it->second.get()); //it->second->selfDraw( *this );
     }
     }
 #ifdef DEBUG_VERBOSE

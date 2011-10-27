@@ -34,7 +34,7 @@
 // Implementation of inline functions and external operators                 //
 
 
-// ArithmeticalDSS3d
+// ArithmeticalDSS
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void drawAsBoundingBox( DGtal::Board2D & aBoard, 
@@ -112,7 +112,7 @@ void draw( DGtal::Board2D & board,
     ASSERT(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode)==""  );
 
 }
-// ArithmeticalDSS3d
+// ArithmeticalDSS
 
 
 // FreemanChain
@@ -520,7 +520,7 @@ void draw( DGtal::Board2D & board,
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void drawAsPolygon( DGtal::Board2D & aBoard, 
-           const DGtal::FP<TIterator,TInteger,connectivity> & a )
+           const DGtal::FP<TIterator,TInteger,connectivity> & fp )
 {
   typedef DGtal::PointVector<2,TInteger> Point;
   typedef std::list<Point> Polygon;
@@ -530,16 +530,16 @@ void drawAsPolygon( DGtal::Board2D & aBoard,
   //polyline to draw
   vector<LibBoard::Point> polyline;
 
-  ConstIterator i = a.myPolygon.begin();
-  for ( ;i != a.myPolygon.end();++i) {
+  ConstIterator i = fp.myPolygon.begin();
+  for ( ;i != fp.myPolygon.end();++i) {
       Point p = (*i);
       double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
       double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
       polyline.push_back(LibBoard::Point(xp,yp));
   }
 
-  if (a.myFlagIsClosed) {
-      Point p = (*a.myPolygon.begin());
+  if (fp.myFlagIsClosed) {
+      Point p = (*fp.myPolygon.begin());
       double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
       double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
       polyline.push_back(LibBoard::Point(xp,yp));
@@ -550,14 +550,14 @@ void drawAsPolygon( DGtal::Board2D & aBoard,
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void draw( DGtal::Board2D & board, 
-	   const DGtal::FP<TIterator,TInteger,connectivity> & a )
+	   const DGtal::FP<TIterator,TInteger,connectivity> & fp )
 {
-  std::string mode = board.getMode( a.styleName() );
+  std::string mode = board.getMode( fp.styleName() );
   if ( mode == "Polygon" )
-    drawAsPolygon( board, a );
+    drawAsPolygon( board, fp );
   else if ( ( mode == "Both" ) || ( mode == "" ) )
     {
-      drawAsPolygon( board, a );
+      drawAsPolygon( board, fp );
     }
   else
     {

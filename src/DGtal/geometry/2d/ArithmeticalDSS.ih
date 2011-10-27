@@ -1043,7 +1043,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
 }
 #endif
 
-
+#if(0)
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard2D*
@@ -1054,6 +1054,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::stri
   else // mode == "Points"
     return new DefaultDrawStylePoints;
 }
+#endif
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline

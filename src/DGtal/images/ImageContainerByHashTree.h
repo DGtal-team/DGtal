@@ -490,23 +490,23 @@ namespace DGtal
 
       // ------------- realization CDrawableWithBoard2D --------------------
     private:
+#if(0)
       struct DefaultDrawStyle : public DrawableWithBoard2D
       {
 	virtual void selfDraw(Board2D & aboard)
 	{
-#if(0)
 	  aboard.setPenColorRGBi(60, 60, 60);
 	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
-#endif
 	}
       };
+#endif
 
     public:
       /**
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithBoard2D* defaultStyle() const;
+      //DrawableWithBoard2D* defaultStyle() const;
 
       /**
        * @return the style name used for drawing this object.

@@ -797,6 +797,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
  * Default drawing style object.
  * @return the dyn. alloc. default style for this object.
  */
+#if(0)
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::DrawableWithBoard2D*
@@ -804,6 +805,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }
+#endif
 
 /**
  * @return the style name used for drawing this object.

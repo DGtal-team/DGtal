@@ -61,6 +61,9 @@
 // port struct DrawPavingVoxel and DrawGridVoxel from PointVector ? necessary or not used ? same as (2) ?
 // port struct DrawPavingVoxel3D and DrawGridVoxel3D from HyperRectDomain ? necessary or not used ? same as (2) ?
 // port struct DefaultDrawStyle3D from KS ? necessary or not used ? same as (2) ?
+
+// (4)
+// pb with dgtalBoard3DTo2D-3-objects.png ???
 // TODO: end
 
 //////////////////////////////////////////////////////////////////////////////

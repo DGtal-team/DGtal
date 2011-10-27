@@ -162,6 +162,7 @@ DGtal::HyperRectDomain<TSpace>::isValid() const
   return true;
 }
 //-----------------------------------------------------------------------------
+#if(0)
 template<typename TSpace>
 inline
 DGtal::DrawableWithBoard2D*
@@ -172,6 +173,7 @@ DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
   else // mode == "Paving"
     return new DefaultDrawStylePaving;
 }
+#endif
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline

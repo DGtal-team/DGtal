@@ -112,6 +112,7 @@ DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
+#if(0)
 template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D*
@@ -119,6 +120,7 @@ DGtal::StraightLineFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) con
 {
   return new DrawableWithBoard2D; 
 }
+#endif
 
 template <typename TPoint>
 inline

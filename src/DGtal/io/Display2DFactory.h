@@ -43,11 +43,9 @@
 
 #include "DGtal/base/Common.h"
 
-//#include "DGtal/io/DrawWithDisplay3DModifier.h"
-
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+//#include "DGtal/geometry/2d/GridCurve.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/FP.h"
 #include "DGtal/kernel/PointVector.h"
@@ -57,6 +55,7 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
+
 #include "DGtal/io/boards/Board2D.h"
 
 
@@ -85,8 +84,9 @@
 //---
 
 // --- FAIRE --- :
-// rechercher tous les selfdraw
+// rechercher tous les selfdraw et defaultStyle
 // revoir les // des structs ou alors c'est des #if dehors
+// voir les FAIRE
 
 //---
 
@@ -110,6 +110,10 @@
 // home/user/Desktop/DGtal.git/DGtal/examples/geometry/distancetransform2D.cpp
 //ligne 99 130 135 140
 
+// with ITK and GMP and GraphicsMagick
+// modified:   ../tests/io/readers/testMagickReader.cpp
+// ligne 100
+
 // TODO: end
 
 
@@ -119,6 +123,8 @@
 // 3) -> DigitalSetBySTLVector: draw with Functor ??? necessary ???
 
 // 4) types de David
+
+// 5) pb avec les flèches (ne se dessinent pas)
 // TODO new: end
 
 
@@ -137,7 +143,7 @@
   //  namespace Display2DFactory
   // {
    
-    // ArithmeticalDSS3d
+    // ArithmeticalDSS
     template <typename TIterator, typename TInteger, int connectivity=8>
     void drawAsBoundingBox( DGtal::Board2D & aBoard, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
 
@@ -146,7 +152,7 @@
 
     template <typename TIterator, typename TInteger, int connectivity=8>
     void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
-    // ArithmeticalDSS3d
+    // ArithmeticalDSS
     
     
     // FreemanChain

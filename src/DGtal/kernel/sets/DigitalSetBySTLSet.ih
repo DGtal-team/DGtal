@@ -443,6 +443,7 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
  * Default drawing style object.
  * @return the dyn. alloc. default style for this object. 
  */
+#if(0)
 template<typename Domain>
 inline
 DGtal::DrawableWithBoard2D* 
@@ -450,6 +451,7 @@ DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }
+#endif
 
 /**
  * @return the style name used for drawing this object.

@@ -114,13 +114,13 @@ namespace DGtal
     BOOST_CONCEPT_USAGE( CDrawableWithBoard2D )
     {
       //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
-      ConceptUtils::sameType( myD, myT.defaultStyle() );
+      //ConceptUtils::sameType( myD, myT.defaultStyle() ); // TODO
       //Drawable model should have a defaultStyle( string ) returning a DrawableWithBoard2D*
-      ConceptUtils::sameType( myD, myT.defaultStyle( myS ) );
+      //ConceptUtils::sameType( myD, myT.defaultStyle( myS ) ); // TODO
       //Drawable model should have a styleName() returning a string
       ConceptUtils::sameType( myS, myT.styleName() );
       //Drawable model should have a selfDraw()
-      //myT.selfDraw( myB );
+      //myT.selfDraw( myB ); // TODO
     }
 
     // ------------------------- Private Datas --------------------------------

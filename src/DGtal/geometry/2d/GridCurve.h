@@ -300,6 +300,11 @@ namespace DGtal
      */
     DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
+    friend DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GridCurve<TKSpace> &aGC, std::string mode = "" )
+    {
+      return aGC.defaultStyle(mode);
+    }
+    
     /**
      * @return the style name used for drawing this object.
      */
