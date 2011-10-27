@@ -498,6 +498,7 @@ DGtal::DigitalSetBySTLVector<Domain>::isValid() const
 
 // --------------- CDrawableWithBoard2D realization -------------------------
 
+#if(0)
 /**
  * Default drawing style object.
  * @return the dyn. alloc. default style for this object. 
@@ -509,6 +510,7 @@ DGtal::DigitalSetBySTLVector<Domain>::defaultStyle( std::string ) const
 {
   return new DefaultDrawStyle;
 }
+#endif
 
 /**
  * @return the style name used for drawing this object.

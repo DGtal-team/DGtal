@@ -463,6 +463,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard)
 }
 #endif
 
+#if(0)
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard2D*
@@ -470,6 +471,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string  ) const
 {
   return new DefaultDrawStyle;
 }
+#endif
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline

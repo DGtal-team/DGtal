@@ -134,6 +134,7 @@ DGtal::operator<<( std::ostream & out,
   return out;
 }
 //------------------------------------------------------------------------------
+#if(0)
 template < Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithBoard2D*
@@ -141,6 +142,7 @@ DGtal::KhalimskyCell<dim, TInteger>::defaultStyle( std::string /*mode*/) const
 {
   return new typename DGtal::KhalimskyCell<dim, TInteger>::DefaultDrawStyle;
 }
+#endif
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
@@ -403,6 +405,7 @@ DGtal::operator<<( std::ostream & out,
   return out;
 }
 //------------------------------------------------------------------------------
+#if(0)
 template < Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithBoard2D*
@@ -411,6 +414,7 @@ defaultStyle( std::string ) const
 {
   return new typename DGtal::SignedKhalimskyCell<dim, TInteger>::DefaultDrawStyle;
 }
+#endif
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline

@@ -51,10 +51,8 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 
   virtual void selfDraw( Board2D & aboard) const
   {
-#if(0)
     aboard.setFillColor( myFillColor);
     aboard.setPenColor( myPenColor );
-#endif
   }
 };
 

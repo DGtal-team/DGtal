@@ -59,6 +59,8 @@
 #include "DGtal/io/Color.h"
 //#include "DGtal/io/Display3D.h"
 
+//#include "DGtal/io/Style2DFactory.h"
+
 
 
 
@@ -717,6 +719,7 @@ namespace DGtal
     // ------------------------- Private Datas -------------------------------
   private:
 
+#if(0)
     /**
      * Default styles.
      */
@@ -724,12 +727,10 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
 	aBoard.setPenColorRGBi(160,160,160);
 	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
 	aBoard.setFillColorRGBi(220,220,220);
 	aBoard.setLineWidth(1);
-#endif
       }
     };
 
@@ -740,13 +741,11 @@ namespace DGtal
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
 	aBoard.setPenColor(Color::Black);
 	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-#endif
       }
     };
-
+#endif
 
 
     // --------------- CDrawableWithBoard2D realization -------------------
@@ -756,7 +755,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
 
     

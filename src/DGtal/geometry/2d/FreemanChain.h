@@ -1120,7 +1120,7 @@ public:
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
  
 
     /**
@@ -1207,7 +1207,7 @@ public:
 
   public:
 
-
+#if(0)
     /**
      * Default Style Functor for selfDraw methods
      *
@@ -1217,10 +1217,8 @@ public:
     {
       SelfDrawStyle(Board2D & aBoard)
       {
-#if(0)
         aBoard.setFillColor(Color::None);
         aBoard.setPenColor(Color::Black);
-#endif
       }
     };
 
@@ -1228,10 +1226,8 @@ public:
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
-#endif
       }
     };
 
@@ -1239,10 +1235,8 @@ public:
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
-#endif
       }
     };
 
@@ -1250,12 +1244,11 @@ public:
     {
       virtual void selfDraw( Board2D & aBoard ) const
       {
-#if(0)
         aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
         aBoard.setFillColor(Color::None);
-#endif
       }
     };
+#endif
 
   }; // end of class FreemanChain
 

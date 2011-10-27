@@ -729,6 +729,7 @@ namespace DGtal
 
 
 //------------------------------------------------------------------------------
+#if(0)
   template <typename Domain, typename Value, typename HashKey  >
   inline
   DGtal::DrawableWithBoard2D*
@@ -736,6 +737,7 @@ namespace DGtal
   {
     return new DefaultDrawStyle;
   }
+#endif
 //------------------------------------------------------------------------------
   template <typename Domain, typename Value, typename HashKey  >
   inline

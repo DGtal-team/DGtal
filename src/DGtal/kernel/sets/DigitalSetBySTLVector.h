@@ -306,6 +306,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+#if(0)
     /** 
      * Default Style Functor for selfDraw methods
      * 
@@ -315,10 +316,8 @@ namespace DGtal
     {
       SelfDrawStyle(Board2D & aBoard) 
       {
-#if(0)
-  aBoard.setFillColorRGBi(160,160,160);
-  aBoard.setPenColorRGBi(80,80,80);
-#endif
+        aBoard.setFillColorRGBi(160,160,160);
+        aBoard.setPenColorRGBi(80,80,80);
       }
     };
 
@@ -330,12 +329,11 @@ namespace DGtal
     {
       virtual void selfDraw(Board2D & aBoard) const
       {
-#if(0)
-  aBoard.setFillColorRGBi(160,160,160);
-  aBoard.setPenColorRGBi(80,80,80);
-#endif
+        aBoard.setFillColorRGBi(160,160,160);
+        aBoard.setPenColorRGBi(80,80,80);
       }
     };
+#endif
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -344,7 +342,7 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.

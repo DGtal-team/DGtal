@@ -52,10 +52,8 @@ struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
   virtual void selfDraw( DGtal::Board2D & aBoard ) const
    {
-#if(0)
      aBoard.setFillColorRGBi(0,160,0);
      aBoard.setPenColorRGBi(80,0,0);
-#endif
    }
 };
 

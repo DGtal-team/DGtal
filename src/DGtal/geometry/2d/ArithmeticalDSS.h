@@ -211,7 +211,7 @@ Steps:
     //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
-    typedef DGtal::PointVector<2,double> PointD;  
+    typedef PointVector<2,double> PointD;  
 
 
     // ----------------------- Standard services ------------------------------
@@ -729,7 +729,7 @@ Steps:
      */
     void selfDisplay ( std::ostream & out ) ;
 
-#if(0)    
+#if(0)
     /**
      * Draw the digital points of the DSS 
      * (possibly linked into a polygonal line) on a board
@@ -750,6 +750,7 @@ Steps:
     // ------------------------- Private Datas --------------------------------
   private:
 
+#if(0)
     /**
      * Default style for the bounding box mode.
      */
@@ -761,13 +762,11 @@ Steps:
        */
       virtual void selfDraw(Board2D & aBoard) const
       {
-#if(0)
         // Set board style
         aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setPenColor(Color::Red);
         aBoard.setLineWidth(1);
         aBoard.setFillColor(Color::None);
-#endif
       }
     };
     
@@ -782,15 +781,14 @@ Steps:
        */
       virtual void selfDraw(Board2D & aBoard) const
       {
-#if(0)
 	// Set board style
 	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
 	aBoard.setPenColor(Color::Black);
 	aBoard.setLineWidth(2);
 	aBoard.setFillColor(Color::None);
-#endif
       }
     };
+#endif
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -800,7 +798,7 @@ Steps:
      * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.

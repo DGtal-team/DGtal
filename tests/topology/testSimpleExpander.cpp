@@ -54,21 +54,17 @@ using namespace DGtal;
 
 struct MyStyleCustom : public DrawableWithBoard2D
 {
-  void selfDraw(Board2D & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
-#if(0)
     aboard.setFillColorRGBi(0, 169, 0);
-#endif
   }
 };
 
 struct MyStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(Board2D & aboard) const
+  virtual void selfDraw(Board2D & aboard) const
   {
-#if(0)
     aboard.setFillColorRGBi(169, 0, 0);
-#endif
   }
 };
 ///////////////////////////////////////////////////////////////////////////////

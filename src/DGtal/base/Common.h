@@ -104,7 +104,6 @@ namespace DGtal
 
   class Display3D;
 
-
   /**
    * Interface that specifies that an object can draw itself on a
    *  3DDisplay
