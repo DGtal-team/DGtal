@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    * Description of template class 'ImplicitNorm1Ball' <p>
-   * \brief Aim: model of CImplicitShape concept to create a
+   * \brief Aim: model of  CEuclideanOrientedShape and CEuclideanBoundedShape concepts to create a
    * ball for the L_1 norm in  nD.
    *
    * @tparam TSpace the Digital space definition.
