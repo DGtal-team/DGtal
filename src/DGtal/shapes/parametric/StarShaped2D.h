@@ -78,9 +78,7 @@ namespace DGtal
     typedef TSpace Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
-    
-    typedef double Orientation;
- 
+     
    /**
      * Constructor.
      */

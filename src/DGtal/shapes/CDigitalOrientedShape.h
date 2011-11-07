@@ -53,14 +53,14 @@ namespace DGtal
   /**
      Description of \b concept '\b CDigitalOrientedShape' <p>
      @ingroup Concepts
-     @brief Aim: characterze models of digital oriented shapes. For example,
-     models should provide an orientation method  for  points on a SpaceND.
+     @brief Aim: characterizes models of digital oriented shapes. For example,
+     models should provide an orientation method  for  points on a
+     SpaceND.  Returned value type corresponds to  DGtal::Orientation.
+
      
      <p> Refinement of
     
      <p> Associated types :
-     - Orientation: scalar and signed type for orientation values
-     (model of CCommutativeRing). 
      - Point: type for digital points.
 
      <p> Notation
@@ -88,11 +88,8 @@ namespace DGtal
         <td class=CReturnType> Orientation     </td>
         <td class=CPrecondition>    </td> 
         <td class=CSemantics> return the orientation of a point @c
-     aPoint according to the shape. Negative return value means that
-     the point is inside the shape (or on the negative side of the
-     shape).  Positive return value means that
-     the point is outside the shape (or on the positive side of the
-     shape). Zero value means that the point is on the shape.      </Td> 
+     aPoint according to the shape.  Orientation values can be {INSIDE,
+     ON, OUTSIDE}.   </Td> 
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>      </td>
       </tr>
@@ -115,12 +112,8 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Orientation Orientation;
     typedef typename T::Point Point;
    
-    // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing< Orientation > ));
-  
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalOrientedShape )
     {

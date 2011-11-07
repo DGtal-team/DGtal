@@ -66,9 +66,7 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
     
-    //OrientedShape concept
-    typedef double Orientation;
-
+   
     /** 
      * Constructor. Contructs a ball with center aCenter and radius
      * aRadius.
@@ -106,7 +104,13 @@ namespace DGtal
     inline
     Orientation orientation(const RealPoint &aPoint) const
     {
-      return (-this->operator()(aPoint));
+      if (this->operator()(aPoint) > 0.0)
+        return INSIDE;
+      else
+        if (this->operator()(aPoint) < 0.0)
+          return OUTSIDE;
+        else
+          return ON;
     }
 
     inline

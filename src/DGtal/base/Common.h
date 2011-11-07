@@ -94,6 +94,13 @@ namespace DGtal
    */
   typedef DGtal::uint32_t Dimension;
 
+  /** 
+   * Global enum definition for orientation.
+   */
+  enum Orientation { INSIDE = 0, ON = 1, OUTSIDE = 2};
+  
+
+
   /** DGtal Global variables
    *
    **/

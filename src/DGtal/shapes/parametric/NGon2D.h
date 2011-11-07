@@ -71,9 +71,6 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
    
-
-    typedef typename StarShaped2D<TSpace>::Orientation Orientation;
-
     /**
      * Destructor.
      */

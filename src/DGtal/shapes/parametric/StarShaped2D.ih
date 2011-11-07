@@ -92,7 +92,7 @@ DGtal::StarShaped2D<TSpace>::isInside( const RealPoint & p ) const
  */
 template<typename TSpace>
 inline
-typename DGtal::StarShaped2D<TSpace>::Orientation
+DGtal::Orientation
 DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
 {
   double t = parameter( p );
@@ -102,8 +102,14 @@ DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
   RealPoint p_rel( p );
   p_rel -= center();
   double d_p = p_rel[0]*p_rel[0] + p_rel[1]*p_rel[1];
-   
-  return (Orientation) (d_x - d_p);
+
+  if (d_x - d_p > 0.0)
+    return OUTSIDE;
+  else
+    if (d_x - d_p < 0.0)
+      return  INSIDE;
+    else
+      return ON;
 }
 
 
