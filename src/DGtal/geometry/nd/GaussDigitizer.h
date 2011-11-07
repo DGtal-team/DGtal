@@ -88,9 +88,7 @@ namespace DGtal
     
     BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
 
-    ///OrientedShape concept requirement
-    typedef typename TEuclideanShape::Orientation Orientation;
-
+    
     /**
      * Destructor.
      */

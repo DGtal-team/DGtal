@@ -213,7 +213,7 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
         it != implicitDomain.end(); 
         ++it )
     {
-      if ( aFunctor.orientation( *it ) <=  NumberTraits<typename ShapeFunctor::Orientation>::ZERO)
+      if ( aFunctor.orientation( *it ) == INSIDE)
         aSet.insert( *it );
     }
 }
@@ -239,7 +239,7 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
         it != implicitDomain.end(); 
         ++it )
     {
-      if ( aFunctor.orientation( *it ) <= NumberTraits<typename ShapeFunctor::Orientation>::ZERO )
+      if ( aFunctor.orientation( *it ) == INSIDE)
         aSet.insert( *it );
     }
 }

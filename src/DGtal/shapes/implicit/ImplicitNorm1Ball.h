@@ -51,7 +51,7 @@ namespace DGtal
   /**
    * Description of template class 'ImplicitNorm1Ball' <p>
    * \brief Aim: model of CImplicitShape concept to create a
-   * ball for the L_1 norm in  nD..
+   * ball for the L_1 norm in  nD.
    *
    * @tparam TSpace the Digital space definition.
    */
@@ -62,7 +62,6 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;    
-    typedef double Orientation;
    
     /** 
      * Constructor. Contructs a ball with center aCenter and width
@@ -117,7 +116,13 @@ namespace DGtal
     inline
     Orientation orientation(const RealPoint &aPoint) const
     {
-      return (-this->operator()(aPoint));
+      if (this->operator()(aPoint) > 0.0)
+        return INSIDE;
+      else
+        if (this->operator()(aPoint) < 0.0)
+          return OUTSIDE;
+        else
+          return ON;
     }
 
     /** 

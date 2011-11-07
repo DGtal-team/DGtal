@@ -65,7 +65,6 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
-    typedef double Orientation;    
    
     /** 
      * Constructor. Contructs a rounded hypercube with center aCenter and width
@@ -133,8 +132,15 @@ namespace DGtal
     inline
     Orientation orientation(const RealPoint &aPoint) const
     {
-      return (-this->operator()(aPoint));
+      if (this->operator()(aPoint) > 0.0)
+        return INSIDE;
+      else
+        if (this->operator()(aPoint) < 0.0)
+          return OUTSIDE;
+        else
+          return ON;
     }
+
 
     /** 
      * Returns the lower bound of the Shape bounding box.
