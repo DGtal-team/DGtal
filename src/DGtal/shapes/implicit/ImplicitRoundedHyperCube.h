@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    * Description of template class 'ImplicitRoundedHyperCube' <p>
-   * \brief Aim: model of CImplicitShape concept to create a rounded
+   * \brief Aim: model of  CEuclideanOrientedShape and CEuclideanBoundedShape concepts to create a rounded
    * hypercube in  nD..
    *
    * Rounded hypercubes corresponds to balls for the @f$l_p@f$ norm.
