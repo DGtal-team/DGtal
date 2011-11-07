@@ -134,8 +134,8 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 
     ////////////////////////////////////////estimations
     double trueValue = M_PI*2*radius;
-    L1LengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > l1length;
-    l1length.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
+    L1LengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstCirculator > l1length;
+    l1length.init(h, ra.c(), ra.c());
     TwoStepLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
     locallength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     BLUELocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > BLUElength;
