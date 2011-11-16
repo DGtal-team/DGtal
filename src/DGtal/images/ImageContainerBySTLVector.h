@@ -101,22 +101,23 @@ namespace DGtal
     typedef typename vector<Value>::reverse_iterator ReverseIterator;
     typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
 
+    /** 
+     * Constructor from a Domain
+     * 
+     * @param aDomain the image domain.
+     * 
+     */
     ImageContainerBySTLVector(const Domain &aDomain);
 
+    /** 
+     * Destructor.
+     $
+     */
     ~ImageContainerBySTLVector();
 
   
     /////////////////// Accessors //////////////////
 
-    /**
-     * Get the value of an image at a given position.
-     *
-     * @pre @c aPoint must be inside the image domain.
-     *
-     * @param aPoint  position in the image.
-     * @return the value at aPoint.
-     */
-    Value operator()(const Point &aPoint) const;
 
     /**
      * Get the value of an image at a given position given
@@ -180,17 +181,6 @@ namespace DGtal
 
     /////////////////// Set values //////////////////
 
-
-    /**
-     * Set a value on an Image at aPoint.
-     *
-     * @pre @c aPoint must be inside the image domain.
-     *     
-     * @param aPoint location of the point to associate with aValue.
-     * @param aValue the value.
-     */
-    void setValue(const Point &aPoint, const Value &aValue);
-
     /**
      * Set a value on an Image at a position specified by an Iterator.
      *
@@ -236,6 +226,46 @@ namespace DGtal
       return (this != NULL);
     }
 
+
+    /** 
+     * Construct a ConstIterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a ConstIterator on. 
+     * 
+     * @return a ConstIterator on @c aPoint
+     */
+    ReverseIterator getReverseIterator(const Point &aPoint);
+ 
+    /** 
+     * Construct a Iterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a Iterator on. 
+     * 
+     * @return a Iterator on @c aPoint
+     */
+    ConstReverseIterator getconstReverseIterator(const Point &aPoint);
+ 
+    /** 
+     * Construct a ConstIterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a ConstIterator on. 
+     * 
+     * @return a ConstIterator on @c aPoint
+     */
+    ConstIterator getConstIterator(const Point &aPoint);
+ 
+    /** 
+     * Construct a Iterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a Iterator on. 
+     * 
+     * @return a Iterator on @c aPoint
+     */
+    Iterator getIterator(const Point &aPoint);
  
     /**
      * @return the domain associated to the image.
