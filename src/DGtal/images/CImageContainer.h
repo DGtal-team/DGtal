@@ -105,57 +105,43 @@ namespace DGtal
     
 
 	<tr> 
-        <td class=CName> Set a value           </td> 
-        <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
-        <td class=CRequirements> @c aPoint of type Point and @c aValue of
-        type Value   </td> 
-        <td class=CReturnType>  void    </td>
-        <td class=CPrecondition> @c aPoint must be inside the image domain  </td> 
-        <td class=CSemantics>  associate the value @c aValue with the
-        point @aPoint     </td> 
+        <td class=CName> Iterator on points            </td> 
+        <td class=CExpression>  x.getConstIterator(@c aPoint)   </td>
+        <td class=CRequirements> @c aPoint of type const Point   </td> 
+        <td class=CReturnType>  ConstIterator     </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>  returns a const iterator to reference
+        the point @c aPoint in the image.    </td> 
         <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-      </tr>
-
-	<tr> 
-        <td class=CName> Set a value           </td> 
-        <td class=CExpression>  x.setValue(@c anIterator, @c aValue)    </td>
-        <td class=CRequirements> @c anIterator of type Iterator and @c aValue of
-        type Value   </td> 
-        <td class=CReturnType>  void    </td>
-        <td class=CPrecondition> @c anIterator must be valid (inside the image domain)  </td> 
-        <td class=CSemantics>  associate the value @c aValue with the
-        point  referenced by the itertor @anIterator     </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-      </tr>
-     
-    
-      <tr> 
-      <td class=CName> Set a value           </td> 
-      <td class=CExpression>  x.setValue(@c aReverseIterator, @c aValue)    </td>
-      <td class=CRequirements> @c aReverseIterator of type ReverseIterator and @c aValue of
-      type Value   </td> 
-      <td class=CReturnType>  void    </td>
-      <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
-      <td class=CSemantics>  associate the value @c aValue with the
-      point  referenced by the itertor @aReverseIterator     </td> 
-      <td class=CPostCondition>   </td> 
-      <td class=CComplexity>  Container dependent    </td>
+        <td class=CComplexity> Container dependent   </td>
       </tr>
       
       <tr> 
-        <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x(@c aPoint)    </td>
-        <td class=CRequirements> @c aPoint of type Point    </td> 
-        <td class=CReturnType>  Value    </td>
-        <td class=CPrecondition> @c aPoint must be inside the image domain  </td> 
-        <td class=CSemantics> returns the value associated to the
-        point @c aPoint</td> 
+      <td class=CName> Set a value           </td> 
+      <td class=CExpression>  x.setValue(@c anIterator, @c aValue)    </td>
+      <td class=CRequirements> @c anIterator of type Iterator and @c aValue of
+      type Value   </td> 
+      <td class=CReturnType>  void    </td>
+      <td class=CPrecondition> @c anIterator must be valid (inside the image domain)  </td> 
+      <td class=CSemantics>  associate the value @c aValue with the
+      point  referenced by the itertor @anIterator     </td> 
+      <td class=CPostCondition>   </td> 
+      <td class=CComplexity>  Container dependent    </td>
+      </tr>
+        
+        
+        <tr> 
+        <td class=CName> Set a value           </td> 
+        <td class=CExpression>  x.setValue(@c aReverseIterator, @c aValue)    </td>
+        <td class=CRequirements> @c aReverseIterator of type ReverseIterator and @c aValue of
+        type Value   </td> 
+        <td class=CReturnType>  void    </td>
+        <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics>  associate the value @c aValue with the
+        point  referenced by the itertor @aReverseIterator     </td> 
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>  Container dependent    </td>
-      </tr>
-   
+        </tr>
 
      	<tr> 
         <td class=CName> Accessor           </td> 
@@ -238,24 +224,25 @@ namespace DGtal
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
       //Accessors
-      same_type(image(a), v);
-      same_type(image(it), v);
-      same_type(image(itconst), v);
-      same_type(image(itrev), v);
-      same_type(image(itconstrev), v);
+      ConceptUtils::sameType(image(a), v);
+      ConceptUtils::sameType(image(it), v);
+      ConceptUtils::sameType(image(itconst), v);
+      ConceptUtils::sameType(image(itrev), v);
+      ConceptUtils::sameType(image(itconstrev), v);
       
       //API
-      same_type(image.domain(), d); 
+      ConceptUtils::sameType(image.domain(), d); 
+      ConceptUtils::sameType(image.getConstIterator(a), itconst); 
       image.setValue(a, v);  //set a value at a Point
       image.setValue(it, v); //set a value at an Iterator
       image.setValue(a, v);  //set a value at a Point
       image.setValue(itrev, v); //set a value at an ConstIterator
       
-      same_type(image.operator()(itconst), v);       // get the value from a ConstIterator
-      same_type(image.operator()(it), v);       // get the value from a ConstIterator
-      same_type(image.operator()(itconstrev), v);       // get the value from a ConstIterator
-      same_type(image.operator()(itrev), v);       // get the value from a ConstIterator
-      same_type(image.operator()(a), v);       //get the value from a point
+      ConceptUtils::sameType(image.operator()(itconst), v);       // get the value from a ConstIterator
+      ConceptUtils::sameType(image.operator()(it), v);       // get the value from a ConstIterator
+      ConceptUtils::sameType(image.operator()(itconstrev), v);       // get the value from a ConstIterator
+      ConceptUtils::sameType(image.operator()(itrev), v);       // get the value from a ConstIterator
+      ConceptUtils::sameType(image.operator()(a), v);       //get the value from a point
 
     }
 
@@ -268,10 +255,6 @@ namespace DGtal
     Value v;
     Point a, b;
     Domain d;
-
-    //  deduction will fail unless the arguments have the same type.
-    template <typename T>
-    void same_type(T const&, T const&);
   };
 } // namespace DGtal
 
