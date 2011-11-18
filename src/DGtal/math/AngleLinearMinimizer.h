@@ -45,6 +45,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleComputer.h" 
 #include "DGtal/math/arithmetic/ModuloComputer.h" 
