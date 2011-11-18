@@ -36,10 +36,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #if (!defined(WIN32))
-template < Dimension dim, typename TInteger >
+/*template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
-
+*/
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;

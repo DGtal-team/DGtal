@@ -1029,7 +1029,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 
   // cerr << "Starting point is " << i << endl;
   ASSERT( ( n < nb ) || ( i == 0 ) );
-  if ( ( n == nb ) )
+  if (  n == nb  )
   { // do nothing
     aCleanC.chain = c.chain;
     for ( unsigned int ni = 0; ni < nb; ++ni )
