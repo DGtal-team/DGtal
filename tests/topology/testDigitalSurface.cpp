@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/ImplicitDigitalSurface.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,6 +80,81 @@ bool testDigitalSetBoundary()
   nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nbsurfels == (12 + 44 )" << std::endl;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      Tracker* ptrTracker = boundary.newTracker( *it );
+      Surfel s = ptrTracker->current();
+      Dimension trackDir = * K.sDirs( s );
+      Surfel s1, s2;
+      unsigned int m1 = ptrTracker->adjacent( s1, trackDir, true ); 
+      unsigned int m2 = ptrTracker->adjacent( s2, trackDir, false ); 
+      trace.info() << "s = " << s << std::endl;
+      trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
+      trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
+      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "boundary.isInside( s1 )" << std::endl;
+      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "boundary.isInside( s2 )" << std::endl;
+      delete ptrTracker;
+    }
+  trace.endBlock();
+  return nbok == nb;
+}
+
+template <typename TPoint3>
+struct ImplicitDigitalEllipse3 {
+  typedef TPoint3 Point;
+  inline
+  ImplicitDigitalEllipse3( double a, double b, double c )
+    : myA( a ), myB( b ), myC( c )
+  {}
+  inline
+  bool operator()( const TPoint3 & p ) const
+  {
+    double x = ( (double) p[ 0 ] / myA );
+    double y = ( (double) p[ 1 ] / myB );
+    double z = ( (double) p[ 2 ] / myC );
+    return ( x*x + y*y + z*z ) <= 1.0;
+  }
+  double myA, myB, myC;
+};
+
+bool testImplicitDigitalSurface()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing block ... ImplicitDigitalSurface" );
+  using namespace Z3i;
+  typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
+  typedef ImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Boundary;
+  typedef Boundary::SurfelConstIterator ConstIterator;
+  typedef Boundary::Tracker Tracker;
+  typedef Boundary::Surfel Surfel;
+  Point p1( -10, -10, -10 );
+  Point p2( 10, 10, 10 );
+  KSpace K;
+  nbok += K.init( p1, p2, true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
+  Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
+  Boundary boundary( K, ellipse, 
+                     SurfelAdjacency<KSpace::dimension>( true ), bel );
+  unsigned int nbsurfels = 0;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      ++nbsurfels;
+    }
+  trace.info() << nbsurfels << " surfels found." << std::endl;
+  // nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
+  // trace.info() << "(" << nbok << "/" << nb << ") "
+  //              << "nbsurfels == (12 + 44 )" << std::endl;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
         it != it_end; ++it )
     {
@@ -206,6 +282,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testDigitalSetBoundary()
+    && testImplicitDigitalSurface()
     && testDigitalSurface<KhalimskySpaceND<2> >()
     && testDigitalSurface<KhalimskySpaceND<3> >()
     && testDigitalSurface<KhalimskySpaceND<4> >();

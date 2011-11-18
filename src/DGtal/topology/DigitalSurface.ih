@@ -92,6 +92,8 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
   if ( this != &other )
     {
       myContainer = other.myContainer;
+      ASSERT( myTracker != 0 );
+      delete myTracker;
       myTracker = new DigitalSurfaceTracker( *other.myTracker );
     }
   return *this;

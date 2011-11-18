@@ -87,9 +87,14 @@ namespace DGtal
 
     // ----------------------- UndirectedSimpleGraph --------------------------
   public:
+    /// Defines the type for a vertex.
     typedef Surfel Vertex;
+    /// Defines how to represent a size (unsigned integral type).
     typedef typename KSpace::Size Size;
+    /// Defines how to represent a set of vertex.
     typedef typename KSpace::SurfelSet VertexSet;
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
     template <typename Value> struct VertexMap {
       typedef typename KSpace::template SurfelMap<Value>::Type Type;
     };
