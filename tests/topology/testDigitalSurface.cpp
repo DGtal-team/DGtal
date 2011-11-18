@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -107,8 +108,10 @@ bool testDigitalSurface()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ... DigitalSurface" );
+  std::string msg( "Testing block ... DigitalSurface in K" );
+  msg += '0' + KSpace::dimension;
+  trace.beginBlock ( msg );
+  //"Testing block ... DigitalSurface " + std::string( KSpace.dimension ) );
   typedef typename KSpace::Space Space;
   typedef typename KSpace::Size Size;
   typedef typename Space::Point Point;
@@ -157,6 +160,36 @@ bool testDigitalSurface()
                << "digsurf.degree( s ) == "
                << 2*(K.dimension-1) << std::endl;
   trace.endBlock();
+  trace.beginBlock ( "Testing BreadthFirstVisitor on DigitalSurface" );
+  BreadthFirstVisitor< MyDS > visitor( digsurf, *digsurf.begin() );
+  typedef typename BreadthFirstVisitor< MyDS >::Node BFVNode;
+  typedef typename BreadthFirstVisitor< MyDS >::MarkSet BFVMarkSet;
+  unsigned int nb_dist_1 = 0;
+  BFVNode node;
+  while ( ! visitor.finished() )
+    {
+      node = visitor.current();
+      if ( node.second == 1 ) ++nb_dist_1;
+      visitor.expand();
+    }
+  trace.info() << "last node v=" << node.first << " d=" << node.second << std::endl;
+  nb++, nbok += nb_dist_1 == 2*(K.dimension-1) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nb surfels at distance 1 == "
+               << 2*(K.dimension-1) << std::endl;
+  const BFVMarkSet & visitedVtx = visitor.markedVertices();
+  Size nbsurfelsComp1 = 
+    ( K.dimension == 2 ) ? 28 :
+    ( K.dimension == 3 ) ? 174 :
+    ( K.dimension == 4 ) ? 984 : 0;
+  nb++, nbok += visitedVtx.size() == nbsurfelsComp1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nb visited = " << visitedVtx.size() << " == "
+               << nbsurfelsComp1 << std::endl;
+
+  trace.endBlock();
+  
+
   trace.endBlock();
   return nbok == nb;
 }
