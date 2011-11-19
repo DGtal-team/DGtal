@@ -93,6 +93,7 @@ namespace DGtal
   {
     // ----------------------- Associated types ------------------------------
   public:
+    typedef BreadthFirstVisitor<TGraph,TMarkSet> Self;
     typedef TGraph Graph;
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
@@ -110,6 +111,128 @@ namespace DGtal
     typedef std::queue< Node > NodeQueue;
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
+
+    /**
+       Allows to access the node as the pair (Vertex,distance) when
+       iterating over the graph.
+    */
+    struct NodeAccessor {
+      typedef const Node value;
+      typedef const Node* pointer;
+      typedef const Node& reference;
+      inline
+      static reference get( const Node & node )
+      { return node; }
+    };
+
+    /**
+       Allows to access the node as only the Vertex when iterating
+       over the graph.
+    */
+    struct VertexAccessor {
+      typedef const Vertex value;
+      typedef const Vertex* pointer;
+      typedef const Vertex& reference;
+      inline
+      static reference get( const Node & node )
+      { return node.first; }
+    };
+
+    template <typename TAccessor>
+    struct ConstIterator 
+    {
+      typedef ConstIterator<TAccessor> Self;
+      typedef BreadthFirstVisitor<TGraph,TMarkSet> Visitor;
+      typedef TAccessor Accessor;
+
+      // stl iterator types.
+      typedef std::input_iterator_tag iterator_category;
+      typedef typename Accessor::value value;
+      typedef std::ptrdiff_t difference_type; 
+      typedef typename Accessor::pointer pointer;
+      typedef typename Accessor::reference reference;
+
+      /// Smart pointer to a Visitor.
+      CountedPtr< Visitor > myVisitor;
+
+      inline
+      ConstIterator() 
+        : myVisitor( 0 ) {}
+      inline
+      ConstIterator( Visitor* ptrV ) 
+        : myVisitor( ptrV ) {}
+      inline
+      ConstIterator( const Self & other ) 
+        : myVisitor( other.myVisitor ) {}
+
+      inline
+      Self & operator=( const Self & other )
+      {
+        if ( this != &other )
+          myVisitor = other.myVisitor;
+        return *this;
+      }
+
+      inline
+      reference
+      operator*() const
+      {
+        ASSERT( ( myVisitor != 0 )
+                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
+        return Accessor::get( myVisitor->current() );
+      }
+
+      inline
+      pointer
+      operator->() const
+      { 
+        ASSERT( ( myVisitor != 0 )
+                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
+        return & Accessor::get( operator*() );
+      }
+
+      inline
+      Self&
+      operator++()
+      {
+        myVisitor->expand();
+	return *this;
+      }
+
+      inline
+      Self
+      operator++(int)
+      {
+	Self __tmp = *this;
+        myVisitor->expand();
+	return __tmp;
+      }
+      
+      inline
+      bool operator==( const Self & other ) const
+      {
+        if ( myVisitor.finished() || ( myVisitor == 0 ) )
+          return ( other.myVisitor == 0 ) || other.myVisitor.finished();
+        else if ( other.myVisitor == 0 )
+          return false;
+        else
+          return &(myVisitor->current()) == &(other.myVisitor->current());
+      }
+
+      inline
+      bool operator!=( const Self & other ) const
+      {
+        return ! ( this->operator==( other ) );
+      }
+    };
+
+    /// const iterator on Vertex for visiting a graph by following a
+    /// breadth first traversal.
+    typedef ConstIterator<VertexAccessor> VertexConstIterator;
+    /// const iterator on pair (Vertex,distance) for visiting a graph by
+    /// following a breadth first traversal.
+    typedef ConstIterator<NodeAccessor> NodeConstIterator;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -117,6 +240,14 @@ namespace DGtal
      * Destructor.
      */
     ~BreadthFirstVisitor();
+
+    /**
+     * Constructor from the graph only. The visitor is in the state
+     * 'finished()'. Useful to create an equivalent of 'end()' iterator.
+     *
+     * @param graph the graph in which the breadth first traversal takes place.
+     */
+    BreadthFirstVisitor( const Graph & graph );
 
     /**
      * Constructor from a point. This point provides the initial core
@@ -253,8 +384,9 @@ namespace DGtal
     const Graph & myGraph;
 
     /**
-     * Set representing the core of the expansion: the expansion should not
-     * enter the core.
+     * Set representing the marked vertices: the ones that have been
+     * visited and the one that are going to be visited soon (at
+     * distance + 1).
      */
     MarkSet myMarkedVertices;
 

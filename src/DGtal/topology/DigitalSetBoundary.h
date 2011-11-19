@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -226,6 +227,12 @@ namespace DGtal
        @return a dyn. alloc. pointer on a tracker positionned at @a s.
     */
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
+
+     /**
+        @return the connectedness of this surface. Either CONNECTED,
+        DISCONNECTED, or UNKNOWN.
+       */
+    Connectedness connectedness() const;
 
     // ----------------------- Interface --------------------------------------
   public:

@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,8 @@ namespace DGtal
   /**
      Description of template class 'ImplicitDigitalSurface' <p> \brief
      Aim: A model of DigitalSurfaceContainer which defines the digital
-     surface as the boundary of an implicitly define shape.
+     surface as the boundary of an implicitly define shape. Compute
+     once the boundary of the surface with a tracking.
      
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
@@ -227,7 +229,9 @@ namespace DGtal
     /// (unspecified order).
     SurfelConstIterator end() const;
 
-    /// @return the number of surfels of this digital surface.
+    /// @return the number of surfels of this digital surface. NB:
+    /// O(N) computational complexity where N is the number of
+    /// surfels.
     Size nbSurfels() const;
 
     /**
@@ -236,6 +240,12 @@ namespace DGtal
        @return a dyn. alloc. pointer on a tracker positionned at @a s.
     */
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
+
+     /**
+        @return the connectedness of this surface. Either CONNECTED,
+        DISCONNECTED, or UNKNOWN.
+       */
+    Connectedness connectedness() const;
 
     // ----------------------- Interface --------------------------------------
   public:

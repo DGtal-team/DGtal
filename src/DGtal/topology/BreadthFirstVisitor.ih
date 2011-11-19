@@ -48,6 +48,14 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::~BreadthFirstVisitor()
 template < typename TGraph, typename TMarkSet >
 inline
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
+::BreadthFirstVisitor( const Graph & g )
+  : myGraph( g )
+{
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TMarkSet >
+inline
+DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
 ::BreadthFirstVisitor( const Graph & g, const Vertex & p )
   : myGraph( g )
 {
