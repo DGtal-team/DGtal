@@ -564,7 +564,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  * @see computeConnectedness
  */
 template <typename TDigitalTopology, typename TDigitalSet>
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::Connectedness
+DGtal::Connectedness
 DGtal::Object<TDigitalTopology, TDigitalSet>::connectedness() const
 {
   return myConnectedness;
@@ -581,7 +581,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::connectedness() const
  * @see connectedness
  */
 template <typename TDigitalTopology, typename TDigitalSet>
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::Connectedness
+DGtal::Connectedness
 DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
 {
   if ( myConnectedness == UNKNOWN )
@@ -744,7 +744,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
       v,
       Space::dimension );
 
-  if ( Gkappa_X.computeConnectedness() == SmallObject::CONNECTED )
+  if ( Gkappa_X.computeConnectedness() == CONNECTED )
   {
     if ( Gkappa_X.pointSet().empty() )
       return false;
@@ -753,7 +753,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
         v,
         Space::dimension );
     return ( Glambda_compX.computeConnectedness()
-        == SmallComplementObject::CONNECTED )
+        == CONNECTED )
         && ( ! Glambda_compX.pointSet().empty() );
   }
   return false;

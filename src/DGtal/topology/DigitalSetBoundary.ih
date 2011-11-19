@@ -237,6 +237,14 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::newTracker
 {
   return new Tracker( *this, s );
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
+DGtal::Connectedness
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::connectedness() const
+{
+  return Connectedness::UNKNOWN;
+}
 
 // ------------------------- Hidden services ------------------------------
 //-----------------------------------------------------------------------------

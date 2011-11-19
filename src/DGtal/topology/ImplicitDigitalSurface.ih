@@ -238,6 +238,14 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::newTracker
 {
   return new Tracker( *this, s );
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TPointPredicate>
+inline
+DGtal::Connectedness
+DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::connectedness() const
+{
+  return Connectedness::CONNECTED;
+}
 
 // ------------------------- Hidden services ------------------------------
 //-----------------------------------------------------------------------------
