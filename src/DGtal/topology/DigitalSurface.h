@@ -210,6 +210,16 @@ namespace DGtal
     Size degree( const Vertex & v ) const;
 
     /**
+       Should return a reasonable estimation of the number of
+       neighbors for all vertices. For instance a planar triangulation
+       should return 6-8, a quad-mesh should return 4, digital surface
+       is 2*(K::dimension-1).
+
+       @return 2*(K::dimension-1)
+    */
+    Size bestCapacity() const;
+
+    /**
        Writes the neighbors of [v] in the output iterator
        [it]. Neighbors are given in no specific order.
 

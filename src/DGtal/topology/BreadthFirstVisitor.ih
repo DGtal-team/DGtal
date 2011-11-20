@@ -122,7 +122,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand()
   Size d = node.second + 1; 
   myQueue.pop();
   VertexList tmp;
-  tmp.reserve( myGraph.degree( node.first ) );
+  tmp.reserve( myGraph.bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph.writeNeighbors( write_it, node.first );
   for ( typename VertexList::const_iterator it = tmp.begin(), 
@@ -149,7 +149,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand
   Size d = node.second + 1; 
   myQueue.pop();
   VertexList tmp;
-  tmp.reserve( myGraph.degree( node.first ) );
+  tmp.reserve( myGraph.bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph.writeNeighbors( write_it,
                           node.first,

@@ -63,7 +63,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 ( const TDigitalSurfaceContainer & aContainer )
   : myContainer( new DigitalSurfaceContainer( aContainer ) )
 {
-  if ( myContainer->nbSurfels() != 0 )
+  if ( ! myContainer->empty() )
     {
       Surfel s = *( myContainer->begin() );
       myTracker = myContainer->newTracker( s ); 
@@ -76,7 +76,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 ( TDigitalSurfaceContainer* containerPtr )
   : myContainer( containerPtr )
 {
-  if ( myContainer->nbSurfels() != 0 )
+  if ( ! myContainer->empty() )
     {
       Surfel s = *( myContainer->begin() );
       myTracker = myContainer->newTracker( s );
@@ -137,6 +137,14 @@ typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::size() const
 {
   return myContainer->nbSurfels();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::bestCapacity() const
+{
+  return KSpace::dimension*2 - 2;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>

@@ -221,6 +221,10 @@ namespace DGtal
     /// @return the number of surfels of this digital surface.
     Size nbSurfels() const;
 
+    /// @return 'true' is the surface has no surfels, 'false'
+    /// otherwise. NB: O(1) operation.
+    bool empty() const;
+
     /**
        @param s any surfel of the space.
        @pre 'isInside( s )'
