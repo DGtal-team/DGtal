@@ -231,6 +231,14 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::nbSurfels() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
+bool
+DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::empty() const
+{
+  return mySurfels.empty();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TDigitalSet>
+inline
 typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSurfaceTracker* 
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::newTracker
 ( const Surfel & s ) const

@@ -450,6 +450,7 @@ namespace DGtal
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
+    typedef SCell Surfel;
     typedef bool Sign;
     typedef CellDirectionIterator< dim, Integer > DirIterator;
     

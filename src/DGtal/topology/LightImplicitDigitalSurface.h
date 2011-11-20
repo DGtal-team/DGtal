@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ImplicitDigitalSurface.h
+ * @file LightImplicitDigitalSurface.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2011/11/18
  *
- * Header file for module ImplicitDigitalSurface.cpp
+ * Header file for module LightImplicitDigitalSurface.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImplicitDigitalSurface_RECURSES)
-#error Recursive header files inclusion detected in ImplicitDigitalSurface.h
-#else // defined(ImplicitDigitalSurface_RECURSES)
+#if defined(LightImplicitDigitalSurface_RECURSES)
+#error Recursive header files inclusion detected in LightImplicitDigitalSurface.h
+#else // defined(LightImplicitDigitalSurface_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImplicitDigitalSurface_RECURSES
+#define LightImplicitDigitalSurface_RECURSES
 
-#if !defined ImplicitDigitalSurface_h
+#if !defined LightImplicitDigitalSurface_h
 /** Prevents repeated inclusion of headers. */
-#define ImplicitDigitalSurface_h
+#define LightImplicitDigitalSurface_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -46,18 +46,20 @@
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
+#include "DGtal/topology/BreadthFirstVisitor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ImplicitDigitalSurface
+  // template class LightImplicitDigitalSurface
   /**
-     Description of template class 'ImplicitDigitalSurface' <p> \brief
-     Aim: A model of DigitalSurfaceContainer which defines the digital
-     surface as the boundary of an implicitly define shape. Compute
-     once the boundary of the surface with a tracking.
+     Description of template class 'LightImplicitDigitalSurface' <p>
+     \brief Aim: A model of DigitalSurfaceContainer which defines the
+     digital surface as the boundary of an implicitly define
+     shape. The whole boundary is not precomputed nor stored. You may
+     use an iterator to visit it.
      
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
@@ -66,19 +68,19 @@ namespace DGtal
      defines the inside of a shape on points where it is true.
    */
   template <typename TKSpace, typename TPointPredicate>
-  class ImplicitDigitalSurface
+  class LightImplicitDigitalSurface
   {
   public:
 
     /**
-       A model of CDigitalSurfaceTracker for ImplicitDigitalSurface.
+       A model of CDigitalSurfaceTracker for LightImplicitDigitalSurface.
     */
     class Tracker
     {
     public:
       // -------------------- associated types --------------------
       typedef Tracker Self;
-      typedef ImplicitDigitalSurface<TKSpace,TPointPredicate>
+      typedef LightImplicitDigitalSurface<TKSpace,TPointPredicate>
       DigitalSurfaceContainer;
       typedef typename DigitalSurfaceContainer::Surfel Surfel;
 
@@ -150,7 +152,7 @@ namespace DGtal
 
     // ----------------------- associated types ------------------------------
   public:
-    typedef ImplicitDigitalSurface<TKSpace,TPointPredicate> Self;
+    typedef LightImplicitDigitalSurface<TKSpace,TPointPredicate> Self;
     /// Model of cellular grid space.
     typedef TKSpace KSpace;
     /// Type for surfels.
@@ -159,12 +161,6 @@ namespace DGtal
     typedef typename KSpace::Size Size;
     // Model of CPointPredicate
     typedef TPointPredicate PointPredicate;
-    // -------------------- specific types ------------------------------
-    typedef typename std::vector<Surfel> SurfelStorage;
-    typedef typename SurfelStorage::const_iterator SurfelConstIterator;
-    typedef typename KSpace::Space Space;
-    typedef typename KSpace::Point Point;
-    typedef Tracker DigitalSurfaceTracker;
 
     // ----------------------- other types ------------------------------
   public:
@@ -174,23 +170,35 @@ namespace DGtal
     typedef typename KSpace::CellSet CellSet;
     typedef typename KSpace::SCellSet SCellSet;
 
+
+    // ----------------- UndirectedSimplePreGraph types ------------------
+    typedef Surfel Vertex;
+    typedef SCellSet VertexSet;  
+    template <typename Value>
+    struct VertexMap {
+      typedef typename KSpace::template SurfelMap<Value>::Type Type;
+    };
+
+    // -------------------- specific types ------------------------------
+    typedef BreadthFirstVisitor< Self > SelfVisitor;
+    typedef typename SelfVisitor::VertexConstIterator SurfelConstIterator;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Point Point;
+    typedef Tracker DigitalSurfaceTracker;
+
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Destructor.
      */
-    ~ImplicitDigitalSurface();
+    ~LightImplicitDigitalSurface();
 
     /**
-       Copy constructor.
-       @param other the object to clone.
-
-       NB: O(N) computational complexity operation, where N is the
-       number of surfels of the surface. This is due to the fact that
-       the surface is stored explicitly.
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    ImplicitDigitalSurface ( const ImplicitDigitalSurface & other );
+    LightImplicitDigitalSurface ( const LightImplicitDigitalSurface & other );
 
     /**
        Constructor from digital set.
@@ -201,21 +209,11 @@ namespace DGtal
 
        @param s any surfel of \a aKSpace such that \a aPP is true in
        the interior and false in the exterior.
-
-       @param closed when 'true', the surface is known to be closed,
-       hence faster extraction can be performed, default is 'false'.
-
-       NB: O(N) computational complexity operation, where N is the
-       number of surfels of the surface. This is due to the fact that,
-       at construction, the surface is extracted and stored.
-
-       @see computeSurfels
       */
-    ImplicitDigitalSurface( const KSpace & aKSpace,
+    LightImplicitDigitalSurface( const KSpace & aKSpace,
                             const PointPredicate & aPP,
                             const Adjacency & adj,
-                            const Surfel & s,
-                            bool closed = false );
+                            const Surfel & s );
 
     /// accessor to surfel adjacency.
     const Adjacency & surfelAdjacency() const;
@@ -244,7 +242,8 @@ namespace DGtal
     SurfelConstIterator end() const;
 
     /// @return the number of surfels of this digital surface. NB:
-    /// O(1)
+    /// O(N) computational complexity where N is the number of
+    /// surfels.
     Size nbSurfels() const;
 
     /// @return 'true' is the surface has no surfels, 'false'
@@ -263,6 +262,64 @@ namespace DGtal
         DISCONNECTED, or UNKNOWN.
        */
     Connectedness connectedness() const;
+
+    // ----------------- UndirectedSimplePreGraph realization --------------------
+  public:
+    
+    /**
+       @param v any vertex of this graph
+       @return the number of neighbors of this Vertex/Surfel.
+    */
+    Size degree( const Vertex & v ) const;
+
+    /**
+       Writes the neighbors of [v] in the output iterator
+       [it]. Neighbors are given in no specific order.
+
+       @tparam OutputIterator the type for the output iterator
+       (e.g. back_insert_iterator<std::vector<Vertex> >).
+
+       @param[in,out] it any output iterator on Vertex (*it++ should
+       be allowed), which specifies where neighbors are written.
+
+       @param[in] v any vertex of this graph
+    */
+    template <typename OutputIterator>
+    void writeNeighbors( OutputIterator & it,
+                         const Vertex & v ) const;
+
+    /**
+       Writes the neighbors of [v], verifying the predicate [pred] in
+       the output iterator [it]. Neighbors are given in no specific
+       order.
+
+       @tparam OutputIterator the type for the output iterator
+       (e.g. back_insert_iterator<std::vector<Vertex> >).
+
+       @tparam VertexPredicate any type of predicate taking a Vertex as input.
+  
+       @param[in,out] it any output iterator on Vertex (*it++ should
+       be allowed), which specifies where neighbors are written.
+
+       @param[in] v any vertex of this graph
+       
+       @param[in] pred the predicate for selecting neighbors.
+    */
+    template <typename OutputIterator, typename VertexPredicate>
+    void writeNeighbors( OutputIterator & it,
+                         const Vertex & v,
+                         const VertexPredicate & pred ) const;
+
+    /**
+       Should return a reasonable estimation of the number of
+       neighbors for all vertices. For instance a planar triangulation
+       should return 6-8, a quad-mesh should return 4, digital surface
+       is 2*(K::dimension-1).
+
+       @return 2*(K::dimension-1)
+    */
+    Size bestCapacity() const;
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -289,23 +346,13 @@ namespace DGtal
     const PointPredicate & myPointPredicate;
     /// the surfel adjacency used to determine neighbors. 
     Adjacency mySurfelAdjacency;
-    /// a vector storing all the surfels of the boundary.
-    SurfelStorage mySurfels;
+    /// a surfel belonging to the surface.
+    Surfel mySurfel;
+    /// Internal tracker for visiting surfels.
+    mutable Tracker myTracker;
 
     // ------------------------- Hidden services ------------------------------
   protected:
-    /**
-       Recomputes the set of boundary surfels from the point predicate
-       and some initial surfel.
-
-       @param p any surfel of the surface
-
-       @param closed when 'true', the surface is known to be closed,
-       hence faster extraction can be performed.
-
-    */
-    void computeSurfels( const Surfel & p,
-                         bool closed );
 
 
   private:
@@ -316,18 +363,18 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ImplicitDigitalSurface & operator= ( const ImplicitDigitalSurface & other );
+    LightImplicitDigitalSurface & operator= ( const LightImplicitDigitalSurface & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class ImplicitDigitalSurface
+  }; // end of class LightImplicitDigitalSurface
 
 
   /**
-     Overloads 'operator<<' for displaying objects of class 'ImplicitDigitalSurface'.
+     Overloads 'operator<<' for displaying objects of class 'LightImplicitDigitalSurface'.
      @param out the output stream where the object is written.
-     @param object the object of class 'ImplicitDigitalSurface' to write.
+     @param object the object of class 'LightImplicitDigitalSurface' to write.
      @return the output stream after the writing.
 
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
@@ -339,19 +386,19 @@ namespace DGtal
   template <typename TKSpace, typename TPointPredicate>
   std::ostream&
   operator<< ( std::ostream & out, 
-	       const ImplicitDigitalSurface<TKSpace, TPointPredicate> & object );
+	       const LightImplicitDigitalSurface<TKSpace, TPointPredicate> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/ImplicitDigitalSurface.ih"
+#include "DGtal/topology/LightImplicitDigitalSurface.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImplicitDigitalSurface_h
+#endif // !defined LightImplicitDigitalSurface_h
 
-#undef ImplicitDigitalSurface_RECURSES
-#endif // else defined(ImplicitDigitalSurface_RECURSES)
+#undef LightImplicitDigitalSurface_RECURSES
+#endif // else defined(LightImplicitDigitalSurface_RECURSES)

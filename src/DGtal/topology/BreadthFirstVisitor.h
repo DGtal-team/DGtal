@@ -177,7 +177,7 @@ namespace DGtal
       reference
       operator*() const
       {
-        ASSERT( ( myVisitor != 0 )
+        ASSERT( ( myVisitor.get() != 0 )
                 && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
         return Accessor::get( myVisitor->current() );
       }
@@ -186,7 +186,7 @@ namespace DGtal
       pointer
       operator->() const
       { 
-        ASSERT( ( myVisitor != 0 )
+        ASSERT( ( myVisitor.get() != 0 )
                 && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
         return & Accessor::get( operator*() );
       }
@@ -211,9 +211,9 @@ namespace DGtal
       inline
       bool operator==( const Self & other ) const
       {
-        if ( myVisitor.finished() || ( myVisitor == 0 ) )
-          return ( other.myVisitor == 0 ) || other.myVisitor.finished();
-        else if ( other.myVisitor == 0 )
+        if ( ( myVisitor.get() == 0 ) || myVisitor->finished() )
+          return ( other.myVisitor.get() == 0 ) || other.myVisitor->finished();
+        else if ( other.myVisitor.get() == 0 )
           return false;
         else
           return &(myVisitor->current()) == &(other.myVisitor->current());

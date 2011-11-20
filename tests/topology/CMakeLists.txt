@@ -19,6 +19,8 @@ ENDFOREACH(FILE)
 SET(DGTAL_BENCH_SRC
    testExpander-benchmark
    testObject-benchmark
+   testImplicitDigitalSurface-benchmark
+   testLightImplicitDigitalSurface-benchmark
 )
 
 
