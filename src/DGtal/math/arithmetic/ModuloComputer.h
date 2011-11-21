@@ -122,6 +122,7 @@ namespace DGtal
     /**
      * @param i any integer value.
      * @return the value of [i] modulo [k].
+     * NB: O ( i/k ) operation.
      */
     UnsignedInteger cast( IntegerParamType i ) const;
     
@@ -195,6 +196,13 @@ namespace DGtal
 
   }; // end of class ModuloComputer
 
+  /**
+     Displays \c object on the output stream \c out.
+
+     @tparam T the type of integer for the modulo computer.
+     @param out the output stream
+     @param object the object to display.
+  */
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, 

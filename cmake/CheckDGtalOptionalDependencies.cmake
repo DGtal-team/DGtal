@@ -25,181 +25,6 @@ IF(WITH_ALL)
   SET( WITH_MAGICK  TRUE)
 ENDIF(WITH_ALL)
 
-
-# -----------------------------------------------------------------------------
-# Look for GMP (The GNU Multiple Precision Arithmetic Library)
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_GMP)
-  FIND_PACKAGE(GMP REQUIRED)
-  IF(GMP_FOUND)
-    INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
-    SET(GMP_FOUND_DGTAL 1)
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
-    message(STATUS "(optional) gmp found." )
-    ADD_DEFINITIONS("-DWITH_GMP ")
-    SET(DGtalLibInc ${DGtalLibInc} ${GMP_INCLUDE_DIR})
-  ELSE(GMP_FOUND)
-    SET(GMP_FOUND_DGTAL 1)
-    message(STATUS "(optional) gmp not found." )
-  ENDIF(GMP_FOUND)
-ENDIF(WITH_GMP)
-
-# -----------------------------------------------------------------------------
-# Look for GraphicsMagic
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_MAGICK)
-  FIND_PACKAGE(Magick REQUIRED)
-  IF(MAGICK++_FOUND)
-    INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
-    message(STATUS "(optional) GraphicsMagick++ found." )
-    ADD_DEFINITIONS("-DWITH_MAGICK ")
-    SET(DGtalLibInc ${DGtalLibInc} ${MAGICK++_INCLUDE_DIR})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${MAGICK++_LIBRARIES})
-  ELSE(MAGICK++_FOUND)
-    message(STATUS "(optional) GraphicsMagick++ not found." )
-  ENDIF(MAGICK++_FOUND)
-ELSE(WITH_MAGICK)  
-  UNSET(MAGICK++_INCLUDE_DIR)
-  UNSET(MAGICK++_LIBRARIES)
-ENDIF(WITH_MAGICK)  
-
-# -----------------------------------------------------------------------------
-# Look for ITK
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_ITK)
-  FIND_PACKAGE(ITK REQUIRED)
-  IF(ITK_FOUND)
-    INCLUDE(${ITK_USE_FILE})
-    MESSAGE(STATUS "(optional) ITK found ${ITK_USE_FILE}, libs=${ITK_LIBRARIES}.")
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
-    ADD_DEFINITIONS(" -DWITH_ITK ")
-    SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
-  ELSE(ITK_FOUND)
-    MESSAGE(STATUS "(optional) ITK not found.")
-  ENDIF(ITK_FOUND)
-ENDIF(WITH_ITK)  
-
-# -----------------------------------------------------------------------------
-# Look for Cairo (2D graphics library)
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_CAIRO)
-  FIND_PACKAGE(Cairo REQUIRED)
-  IF(CAIRO_FOUND)
-    INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRAIRIES})
-    message(STATUS "(optional) cairo found")
-    set ( WITH_CAIRO TRUE )
-    SET(DGtalLibInc ${DGtalLibInc} ${CAIRO_INCLUDE_DIRS})
-    ADD_DEFINITIONS("-DWITH_CAIRO ")
-  ELSE(CAIRO_FOUND)
-    message(STATUS "(optional) cairo not found." )
-  ENDIF(CAIRO_FOUND)
-ELSE(WITH_CAIRO)
-  unset(CAIRO_INCLUDE_DIRS)
-  unset(CAIRO_LIBRAIRIES)
-ENDIF(WITH_CAIRO)
-
-
-# -----------------------------------------------------------------------------
-# Look for Coin3D, SoQt for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-
-IF(WITH_COIN3D-SOQT)
-  find_package(COIN3D REQUIRED)
-  if ( COIN3D_FOUND )
-    set(COIN3D_FOUND_DGTAL 1)
-    message(STATUS "(optional) Coin3d found.")
-    ADD_DEFINITIONS(-DWITH_COIN3D)
-    include_directories( ${COIN3D_INCLUDE_DIR} )
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${COIN3D_LIBRARY})
-    SET(DGtalLibInc ${DGtalLibInc} ${COIN3D_INCLUDE_DIR})
-  else ( COIN3D_FOUND )
-    set(COIN3D_FOUND_DGTAL 0)
-    message(STATUS "(optional) Coin3d not found." )
-  endif ( COIN3D_FOUND )
-  
-  find_package(SOQT REQUIRED)
-  if ( SOQT_FOUND )
-    SET(SOQT_FOUND_DGTAL 1)
-    message(STATUS  "(optional) SoQt found. ")
-    ADD_DEFINITIONS("-DWITH_SOQT ")
-    include_directories( ${SOQT_INCLUDE_DIR} )
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${SOQT_LIBRARY})
-    SET(DGtalLibInc ${DGtalLibInc} ${SOQT_INCLUDE_DIR})
-  else ( SOQT_FOUND )
-    SET(SOQT_FOUND_DGTAL 0)
-    message(STATUS  "(optional) SoQt not found." )
-  endif ( SOQT_FOUND )
-ENDIF(WITH_COIN3D-SOQT)  
-
-if ( COIN3D_FOUND AND SOQT_FOUND )
-    SET ( WITH_VISU3D_IV TRUE )
-    ADD_DEFINITIONS("-DWITH_VISU3D_IV")
-endif( COIN3D_FOUND  AND SOQT_FOUND )
-
-
-
-
-# -----------------------------------------------------------------------------
-# Look for QGLViewer for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-
-IF(WITH_QGLVIEWER)
-  find_package(QGLVIEWER REQUIRED)
-  if(QGLVIEWER_FOUND)
-    find_package(OpenGL REQUIRED)
-    message(STATUS  "(optional) libQGLViewer found.")
-    include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
-    set ( WITH_VISU3D_QGLVIEWER TRUE )
-    set(QGLVIEWER_FOUND_DGTAL 1)
-    ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
-  else ( QGLVIEWER_FOUND )
-    set(QGLVIEWER_FOUND_DGTAL °)
-    message(STATUS  "(optional) libQGLViewer not found (or Qt4 not found)." )
-  endif (QGLVIEWER_FOUND)
-ENDIF(WITH_QGLVIEWER)
-
-
-if(NOT WITH_VISU3D_QGLVIEWER)
-  if(NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D FALSE)
-  else (NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D TRUE )
-  endif(NOT WITH_VISU3D_IV)
-else(NOT WITH_VISU3D_QGLVIEWER)
-  set( WITH_VISU3D TRUE )
-endif(NOT WITH_VISU3D_QGLVIEWER)
-
-
-# -----------------------------------------------------------------------------
-# Look for Qt (if LibqglViewer or coin3D are set).
-# -----------------------------------------------------------------------------
-
-IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
-  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
-  if ( QT4_FOUND )
-    set(QT4_FOUND_DGTAL 1)
-    message(STATUS  "(optional) Qt4 found.")
-    set(QT_USE_QTXML 1)
-    ADD_DEFINITIONS("-DWITH_QT4 ")
-    include( ${QT_USE_FILE})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
-    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
-  else ( QT4_FOUND )
-    set(QT4_FOUND_DGTAL 0)
-    message(STATUS  "(optional) Qt4 not found." )
-  endif ( QT4_FOUND )
-ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
-
-
-
 IF(WITH_ALL) 
 message(STATUS "      WITH_ALL          true")
 ELSE(WITH_ALL)
@@ -248,3 +73,183 @@ message(STATUS "      WITH_MAGICK       true")
 ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false")
 ENDIF(WITH_MAGICK)
+
+message(STATUS "")
+message(STATUS "-------------------------------------------------------------------------------")
+
+message(STATUS "Checking the dependencies: ")
+
+
+# -----------------------------------------------------------------------------
+# Look for GMP (The GNU Multiple Precision Arithmetic Library)
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+IF(WITH_GMP)
+  FIND_PACKAGE(GMP REQUIRED)
+  IF(GMP_FOUND)
+    INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
+    SET(GMP_FOUND_DGTAL 1)
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
+    message(STATUS "GMP found." )
+    ADD_DEFINITIONS("-DWITH_GMP ")
+    SET(DGtalLibInc ${DGtalLibInc} ${GMP_INCLUDE_DIR})
+  ELSE(GMP_FOUND)
+    SET(GMP_FOUND_DGTAL 1)
+    message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
+  ENDIF(GMP_FOUND)
+ENDIF(WITH_GMP)
+
+# -----------------------------------------------------------------------------
+# Look for GraphicsMagic
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+IF(WITH_MAGICK)
+  FIND_PACKAGE(Magick REQUIRED)
+  IF(MAGICK++_FOUND)
+    INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
+    message(STATUS "GraphicsMagick++ found." )
+    ADD_DEFINITIONS("-DWITH_MAGICK ")
+    SET(DGtalLibInc ${DGtalLibInc} ${MAGICK++_INCLUDE_DIR})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${MAGICK++_LIBRARIES})
+  ELSE(MAGICK++_FOUND)
+    message(FATAL_ERROR "GraphicsMagick++ not found. Check the cmake variables associated to this package or disable it." )
+  ENDIF(MAGICK++_FOUND)
+ELSE(WITH_MAGICK)  
+  UNSET(MAGICK++_INCLUDE_DIR)
+  UNSET(MAGICK++_LIBRARIES)
+ENDIF(WITH_MAGICK)  
+
+# -----------------------------------------------------------------------------
+# Look for ITK
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+IF(WITH_ITK)
+  FIND_PACKAGE(ITK REQUIRED)
+  IF(ITK_FOUND)
+    INCLUDE(${ITK_USE_FILE})
+    MESSAGE(STATUS "ITK found ${ITK_USE_FILE}.")
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
+    ADD_DEFINITIONS(" -DWITH_ITK ")
+    SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
+  ELSE(ITK_FOUND)
+    MESSAGE(FATAL_ERROR "ITK not found. Check the cmake variables associated to this package or disable it.")
+  ENDIF(ITK_FOUND)
+ENDIF(WITH_ITK)  
+
+# -----------------------------------------------------------------------------
+# Look for Cairo (2D graphics library)
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+IF(WITH_CAIRO)
+  FIND_PACKAGE(Cairo REQUIRED)
+  IF(CAIRO_FOUND)
+    INCLUDE_DIRECTORIES(${CAIRO_INCLUDE_DIRS})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRAIRIES})
+    message(STATUS "cairo found")
+    set ( WITH_CAIRO TRUE )
+    SET(DGtalLibInc ${DGtalLibInc} ${CAIRO_INCLUDE_DIRS})
+    ADD_DEFINITIONS("-DWITH_CAIRO ")
+  ELSE(CAIRO_FOUND)
+    message(FATAL_ERROR "cairo not found. Check the cmake variables associated to this package or disable it." )
+  ENDIF(CAIRO_FOUND)
+ELSE(WITH_CAIRO)
+  unset(CAIRO_INCLUDE_DIRS)
+  unset(CAIRO_LIBRAIRIES)
+ENDIF(WITH_CAIRO)
+
+
+# -----------------------------------------------------------------------------
+# Look for Coin3D, SoQt for 3D display.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+
+IF(WITH_COIN3D-SOQT)
+  find_package(COIN3D REQUIRED)
+  if ( COIN3D_FOUND )
+    set(COIN3D_FOUND_DGTAL 1)
+    message(STATUS "Coin3d found.")
+    ADD_DEFINITIONS(-DWITH_COIN3D)
+    include_directories( ${COIN3D_INCLUDE_DIR} )
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${COIN3D_LIBRARY})
+    SET(DGtalLibInc ${DGtalLibInc} ${COIN3D_INCLUDE_DIR})
+  else ( COIN3D_FOUND )
+    set(COIN3D_FOUND_DGTAL 0)
+    message(FATAL_ERROR " Coin3d not found. Check the cmake variables associated to this package or disable it." )
+  endif ( COIN3D_FOUND )
+  
+  find_package(SOQT REQUIRED)
+  if ( SOQT_FOUND )
+    SET(SOQT_FOUND_DGTAL 1)
+    message(STATUS  "SoQt found. ")
+    ADD_DEFINITIONS("-DWITH_SOQT ")
+    include_directories( ${SOQT_INCLUDE_DIR} )
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${SOQT_LIBRARY})
+    SET(DGtalLibInc ${DGtalLibInc} ${SOQT_INCLUDE_DIR})
+  else ( SOQT_FOUND )
+    SET(SOQT_FOUND_DGTAL 0)
+    message(FATAL_ERROR  "SoQt not found." Check the cmake variables associated to this package or disable it. )
+  endif ( SOQT_FOUND )
+ENDIF(WITH_COIN3D-SOQT)  
+
+if ( COIN3D_FOUND AND SOQT_FOUND )
+    SET ( WITH_VISU3D_IV TRUE )
+    ADD_DEFINITIONS("-DWITH_VISU3D_IV")
+endif( COIN3D_FOUND  AND SOQT_FOUND )
+
+
+
+
+# -----------------------------------------------------------------------------
+# Look for QGLViewer for 3D display.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+
+IF(WITH_QGLVIEWER)
+  find_package(QGLVIEWER REQUIRED)
+  if(QGLVIEWER_FOUND)
+    find_package(OpenGL REQUIRED)
+    message(STATUS  "libQGLViewer found.")
+    include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+    set ( WITH_VISU3D_QGLVIEWER TRUE )
+    set(QGLVIEWER_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER")
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
+  else ( QGLVIEWER_FOUND )
+    set(QGLVIEWER_FOUND_DGTAL 0)
+    message(FATAL_ERROR  "libQGLViewer not found (or Qt4 not found).  Check the cmake variables associated to this package or disable it." )
+  endif (QGLVIEWER_FOUND)
+ENDIF(WITH_QGLVIEWER)
+
+
+if(NOT WITH_VISU3D_QGLVIEWER)
+  if(NOT WITH_VISU3D_IV)
+    set( WITH_VISU3D FALSE)
+  else (NOT WITH_VISU3D_IV)
+    set( WITH_VISU3D TRUE )
+  endif(NOT WITH_VISU3D_IV)
+else(NOT WITH_VISU3D_QGLVIEWER)
+  set( WITH_VISU3D TRUE )
+endif(NOT WITH_VISU3D_QGLVIEWER)
+
+
+# -----------------------------------------------------------------------------
+# Look for Qt (if LibqglViewer or coin3D are set).
+# -----------------------------------------------------------------------------
+
+IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
+  if ( QT4_FOUND )
+    set(QT4_FOUND_DGTAL 1)
+    message(STATUS  "Qt4 found.")
+    set(QT_USE_QTXML 1)
+    ADD_DEFINITIONS("-DWITH_QT4 ")
+    include( ${QT_USE_FILE})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
+    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
+  else ( QT4_FOUND )
+    set(QT4_FOUND_DGTAL 0)
+    message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
+  endif ( QT4_FOUND )
+ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+
+

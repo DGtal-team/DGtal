@@ -1019,8 +1019,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints
       vector<LibBoard::Point> contour;
       for (ConstIterator i = myF; i != itend; ++i) {
         Point p = *i;
-        double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-        double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+        double xp = NumberTraits<TInteger>::castToDouble(p[0]);
+        double yp = NumberTraits<TInteger>::castToDouble(p[1]);
         contour.push_back(LibBoard::Point(xp,yp));
       }
       aBoard.drawPolyline(contour);

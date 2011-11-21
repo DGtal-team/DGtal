@@ -7,9 +7,7 @@ namespace DGtal {
 /**
    @page dgtal_topology Digital topology and digital objects
   
-   @author Jacques-Olivier Lachaud
-   @author Bertrand Kerautret
-  
+   Documentation written by Jacques-Olivier Lachaud and Bertrand Kerautret.
   
    This part of the manual describes how to define digital
    objects. Subset of a digital sets are not really objects as long as
