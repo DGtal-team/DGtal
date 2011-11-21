@@ -119,12 +119,11 @@ bool DGtal::CombinatorialDSS<TInteger>::operator==( const Self & other ) const
 {
   return ( ( myFC == other.myFC ) 
 	   && (
-	       ( myFirstLetter == other.myFirstLetter ) 
-	       && ( myLastLetter  == other.myLastLetter  )
-	       )
-	   || (
-	       ( myFirstLetter == other.myLastLetter  ) 
-	       && ( myLastLetter  == other.myFirstLetter ) ) );
+	       (( myFirstLetter == other.myFirstLetter ) && ( myLastLetter  == other.myLastLetter ))
+       || 
+         (( myFirstLetter == other.myLastLetter  ) && ( myLastLetter  == other.myFirstLetter )) 
+       ) 
+     );
 }
 
 
