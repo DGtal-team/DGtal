@@ -375,7 +375,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::interse
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
 {
   return mySegmentComputer.begin();
@@ -383,7 +383,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::begin()
 
   template <typename TSegmentComputer>
 inline
-const typename TSegmentComputer::ConstIterator
+const typename DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
 {
   return mySegmentComputer.end();

@@ -45,6 +45,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleComputer.h" 
 #include "DGtal/math/arithmetic/ModuloComputer.h" 
@@ -58,7 +59,11 @@ namespace DGtal
 // class AngleLinearMinimizer
 /**
  * Description of class 'AngleLinearMinimizer' <p>
- * \brief Aim:
+ * \brief Aim: Used to minimize the angle variation between different angles while taking into accounts min and max constraints.
+ * Example (@see math/testAngleLinearMinimizer.cpp) 
+  \snippet testAngleLinearMinimizer.cpp [optimization]
+  
+ *
  */
 class AngleLinearMinimizer
 {

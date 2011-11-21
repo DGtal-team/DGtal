@@ -33,11 +33,12 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackage Documentation of the Geometry package
+@page GeometryPackage Geometry package
    
 @author Tristan Roussillon
 @author David Coeurjolly
 @author Jacques-Olivier Lachaud
+@since 0.3
 
 @b LICENSE: LGPL
 
@@ -52,12 +53,21 @@ or digital objects.
 
 @b Modules
  - \ref geometry2d
+ - \ref moduleEsimators
  - \ref volpackage
+ - \ref moduleShapesDigitizer
 
 
 
  @b Related @b documentation @b pages
 
+ @b Related @b examples @b and @b tools
+  - shapeGenerator.cpp
+  - contourGenerator.cpp
+  - lengthEstimators.cpp
+  - estimatorComparator.cpp
+  - distancetransform3D.cpp
+  - distancetransform2D.cpp
 
 
 

@@ -36,10 +36,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #if (!defined(WIN32))
-template < Dimension dim, typename TInteger >
+/*template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
-
+*/
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
@@ -181,7 +181,7 @@ selfDraw( Board2D & board ) const
 
 
     
-#ifdef WITH_VISU3D_QGLVIEWER
+
 //------------------------------------------------------------------------------
 
 template < Dimension dim, typename TInteger >
@@ -312,7 +312,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
 
 
 
-#endif
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

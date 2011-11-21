@@ -127,8 +127,8 @@ namespace DGtal
     template<typename Set>
     static
     void append(Image &aImage, const Value &defaultValue,
-    typename Set::ConstIterator itBegin, 
-    typename Set::ConstIterator itEnd);
+		typename Set::ConstIterator itBegin, 
+		typename Set::ConstIterator itEnd);
 
 
     /** 

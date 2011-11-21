@@ -82,6 +82,7 @@ int main()
   << p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
   board.saveEPS("dgtalboard-3-custom-points.eps");
+  board.saveTikZ("dgtalboard-3-custom-points.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", Board2D::CairoPDF);

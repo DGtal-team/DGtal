@@ -251,6 +251,23 @@ Path::flushCairoPoints( cairo_t *cr,
 }
 #endif
 
+void
+Path::flushTikZPoints( std::ostream & stream,
+		       const TransformTikZ & transform ) const
+{
+  if ( _points.empty() )
+    return;
+  std::vector<Point>::const_iterator i = _points.begin();
+  std::vector<Point>::const_iterator end = _points.end();
+  stream << '(' << transform.mapX( i->x ) << "," << transform.mapY( i->y ) << ')';
+  ++i;
+  while ( i != end ) {
+    stream << " -- "
+    << '(' << transform.mapX( i->x ) << "," << transform.mapY( i->y ) << ')';
+    ++i;
+  }
+}
+
 Rect
 Path::boundingBox() const
 {

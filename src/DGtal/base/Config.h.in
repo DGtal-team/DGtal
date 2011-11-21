@@ -75,7 +75,7 @@ arbitrary dimensional volumetric distance transforms. A stream
 mechanism has been developed to display digital objects and export
 results in different vector formats.
 
-DGtal is a collaborative effort --- for now --- of the French digital
+DGtal is a collaborative effort of the French --- for now --- digital
 geometry community. It is still a work in progress but show already
 many promises to be the common basis for future developments made by
 the digital geometry community. 
@@ -92,44 +92,37 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref IntroductionPackage
   - \ref KernelPackage
   - \ref GeometryPackage
+  - \ref TopologyPackage
+  - \ref ImagePackage
+
+@section manuals_dgtal Helpers and tools
+  - \ref tutorials
+  - \ref dgtal_dgtalboard
+  - \ref threeD_visu
+
+  
+  
 
 
- * @section manuals_dgtal DGtal user-guides
- *
- *
- * - Topology Package
- *   - \ref dgtal_topology 
- *   - \ref dgtal_cellular_topology
- *
- * 
- * - Helpers and tools
- *  - \ref dgtal_dgtalboard
- *  - \ref threeD_visu
- *  - \ref image_io 
- *  - \ref freemanChainFromImage
- *  - \ref Tools3dVolViewer
- *
- * - Miscellaneous
- *  - \ref dgtalITK
- * 
- * @section manueldev Manual pages for DGtal developers
- * - \ref FAQDGtalCmake
- * - \ref FAQGit
- *
- *
- *
- * @section links_sec_dgtal Links
- *
- * <ul>
- * <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
- *  <li> LibBoard section page   </li>
- * </ul>
- *
- * @defgroup Concepts DGtal Concepts
- * @defgroup Archetypes DGtal Archetypes
- * @defgroup Tests DGtal Test Files
- * @defgroup Examples DGtal Examples
- *
+   
+@section manueldev Manual pages for DGtal developers
+  - \ref FAQDGtalCmake
+  - \ref FAQGit
+  
+  
+  
+@section links_sec_dgtal Links
+  
+   <ul>
+   <li>Visit the <a href="http://liris.cnrs.fr/dgtal/">DGtal homepage</a>.</li>
+    <li> LibBoard section page   </li>
+   </ul>
+  
+   @defgroup Concepts DGtal Concepts
+   @defgroup Archetypes DGtal Archetypes
+   @defgroup Tests DGtal Test Files
+   @defgroup Examples DGtal Examples
+  
  */
 
 #if defined _WIN32 || defined __CYGWIN__

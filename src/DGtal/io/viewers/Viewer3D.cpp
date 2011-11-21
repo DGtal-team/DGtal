@@ -77,18 +77,20 @@ DGtal::Viewer3D::isValid() const
 
 void
 DGtal::Viewer3D::drawWithNames()
-{   
+{     
+  for(unsigned int i=0; i<myVoxelSetList.size(); i++)
+    {
+      glCallList(myListToAff+i);
+    }
+  for(unsigned int i=0; i<myLineSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+i);
+    }
   
-  for(unsigned int i=0; i<myVoxelSetList.size(); i++){
-    glCallList(myListToAff+i);
-  }
-  for(unsigned int i=0; i<myLineSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+i);
-  }
-  
-  for(unsigned int i=0; i<myPointSetList.size(); i++){
-    glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
-  }   
+  for(unsigned int i=0; i<myPointSetList.size(); i++)
+    {
+      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+    }   
 }
 
 
@@ -223,7 +225,7 @@ DGtal::Viewer3D::init()
 void 
 DGtal::Viewer3D::sortSurfelFromCamera()
 {
-  compFarthestFromCamera comp;
+  compFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
     {
@@ -367,11 +369,6 @@ DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
        ++s_it)
     {    
       glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
-      double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
-      x1=(*s_it).x1; x2=(*s_it).x2; x3=(*s_it).x3; x4=(*s_it).x4;
-      y1=(*s_it).y1; y2=(*s_it).y2; y3=(*s_it).y3; y4=(*s_it).y4;
-      z1=(*s_it).z1; z2=(*s_it).z2; z3=(*s_it).z3; z4=(*s_it).z4;
-    
       glNormal3f( (*s_it).nx, (*s_it).ny, (*s_it).nz);
       glVertex3f((*s_it).x1, (*s_it).y1 , (*s_it).z1);
       glVertex3f((*s_it).x2, (*s_it).y2 , (*s_it).z2);
@@ -395,9 +392,6 @@ DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
 	   s_it != myLineSetList.at(i).end();
 	   ++s_it)
 	{
-
-
-
 	  glColor4ub((*s_it).R, (*s_it).G, (*s_it).B, (*s_it).T);
 	  glVertex3f((*s_it).x1,  (*s_it).y1, (*s_it).z1);
 	  glVertex3f((*s_it).x2,  (*s_it).y2, (*s_it).z2);
@@ -557,7 +551,8 @@ DGtal::Viewer3D::keyPressEvent(QKeyEvent *e)
     {
       GLint    Viewport[4];
       GLdouble Projection[16], Modelview[16]; 
-      GLdouble matrix[16];
+      //Unused matrix so I remove it (DC)
+      //GLdouble matrix[16];
 
       // Precomputation begin
       glGetIntegerv(GL_VIEWPORT         , Viewport);
@@ -571,7 +566,7 @@ DGtal::Viewer3D::keyPressEvent(QKeyEvent *e)
 	      double sum = 0.0;
 	      for (unsigned short k=0; k<4; ++k)
 		sum += Projection[l+4*k]*Modelview[k+4*m];
-	      matrix[l+4*m] = sum;
+	      //matrix[l+4*m] = sum;
 	    }
         }
       // Precomputation end

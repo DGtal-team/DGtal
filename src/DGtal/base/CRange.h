@@ -42,8 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/ConceptUtils.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,13 +56,14 @@ namespace DGtal
     
      \brief Aim: Defines the concept describing a const range.
      
-     <p> Refinement of CConstRange
+     <p> Refinement of CSinglePassRange
     
      <p> Provided types :
 
-     - Iterator: the iterator type, a model of iterator concept.
      - ReverseIterator: the reverse iterator type, a model of
           iterator concept.
+     - ConstReverseIterator: the const reverse iterator type, a model of
+          const iterator concept.
 
      <table>
      <tr> 
@@ -77,10 +77,40 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t X should have a static \c dimension. </td>
-     <td class=CExpression>      \t x.dimension </td> 
-     <td class=CRequirements>    static member has type \t Dimension </td>
-     <td class=CReturnType>      </td>
+     <td class=CName>            \t rbegin </td>
+     <td class=CExpression>      \t x.rbegin() </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      ReverseIterator</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t rend </td>
+     <td class=CExpression>      \t x.rend() </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      ReverseIterator</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t rbegin </td>
+     <td class=CExpression>      \t x.rbegin() const </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      ConstReverseIterator</td>
+     <td class=CPrecondition>    </td> 
+     <td class=CSemantics>       </td> 
+     <td class=CPostCondition>   </td> 
+     <td class=CComplexity>      </td>
+     </tr>
+     <tr> 
+     <td class=CName>            \t rend </td>
+     <td class=CExpression>      \t x.rend() const </td> 
+     <td class=CRequirements>    </td>
+     <td class=CReturnType>      ConstReverseIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -99,21 +129,21 @@ namespace DGtal
 
    */
   template <typename T>
-  struct CRange : public CConstRange<T>
+  struct CRange : public CSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Iterator Iterator;
     typedef typename T::ReverseIterator ReverseIterator;
-
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
+    typedef typename T::ConstReverseIterator ConstReverseIterator;
+    
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
- 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
+    
     BOOST_CONCEPT_USAGE(CRange)
     {
-      Iterator it=i.begin();
-      it=i.end();
-      ReverseIterator it2=i.rbegin();
+      ReverseIterator it=i.rbegin();
+      it=i.rend();
+      ConstReverseIterator it2=i.rbegin();
       it2=i.rend();
     };
 
