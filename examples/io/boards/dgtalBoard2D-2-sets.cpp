@@ -56,8 +56,9 @@ int main( )
 
   Board2D board;
   board << domain << shape_set; // display domain and set
-  board.saveSVG( "dgtalBoard2D-2-sets-1.svg");
-  board.saveEPS( "dgtalBoard2D-2-sets-1.eps");
+  board.saveSVG( "dgtalboard-2-sets-1.svg");
+  board.saveEPS( "dgtalboard-2-sets-1.eps");
+  board.saveTikZ( "dgtalboard-2-sets-1.tikz");
   
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.pdf", Board2D::CairoPDF);
@@ -73,8 +74,9 @@ int main( )
   board << domain // display domain
   << SetMode( shape.styleName(), "DrawAdjacencies" )
   << shape; // and object with mode "DrawAdjacencies"
-  board.saveSVG( "dgtalBoard2D-2-sets-2.svg");
-  board.saveEPS( "dgtalBoard2D-2-sets-2.eps");
+  board.saveSVG( "dgtalboard-2-sets-2.svg");
+  board.saveEPS( "dgtalboard-2-sets-2.eps");
+  board.saveTikZ( "dgtalboard-2-sets-2.tikz");
  
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.pdf", Board2D::CairoPDF);
@@ -90,8 +92,9 @@ int main( )
   board << domain // display domain
   << SetMode( shape2.styleName(), "DrawAdjacencies" )
   << shape2; // and object with mode "DrawAdjacencies"
-  board.saveSVG( "dgtalBoard2D-2-sets-3.svg");
-  board.saveEPS( "dgtalBoard2D-2-sets-3.eps");
+  board.saveSVG( "dgtalboard-2-sets-3.svg");
+  board.saveEPS( "dgtalboard-2-sets-3.eps");
+  board.saveTikZ( "dgtalboard-2-sets-3.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-3-cairo.pdf", Board2D::CairoPDF);

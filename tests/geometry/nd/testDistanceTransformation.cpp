@@ -37,7 +37,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"

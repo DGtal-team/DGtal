@@ -49,6 +49,7 @@
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -123,9 +124,8 @@ namespace DGtal
 
     protected:
       class Node;
-      template <int X, unsigned int exponent> struct POW;
-
-
+  
+ 
     public:
 
       BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
@@ -407,12 +407,12 @@ namespace DGtal
 
       // -------------------------------------------------------------
       /*  Iterator inner-class
-      *
-      *  @brief Buil-in iterator on an HashTree. This iterator visits
-      *  all node in the tree.
-      *
-      * -------------------------------------------------------------
-      */
+       *
+       *  @brief Buil-in iterator on an HashTree. This iterator visits
+       *  all node in the tree.
+       *
+       * -------------------------------------------------------------
+       */
       class Iterator
       {
       public:
@@ -599,21 +599,7 @@ namespace DGtal
       };// -----------------------------------------------------------
 
 
-        /**
-         * Template metaprogrammed power function.  To compute at
-         * compilation time the number of children per node (N) and save
-         * runtime calculations
-         */
-      template <int X, unsigned int exponent> struct POW
-      {
-	enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
-      };
-      template <int X > struct POW<X, 1>
-      {
-	enum { VALUE = X };
-      };
-      
-      /**
+     /**
        * This is part of the hash function. It is called whenever a key
        * is accessed.  The mask used to compute the result is
        * precomputed in the constructor for efficiency.
@@ -720,6 +706,11 @@ namespace DGtal
       unsigned int myTreeDepth;
 
       unsigned int mySpanSize;
+
+
+      // myN is number of children per node.
+      static const unsigned int myN=POW<2,dim>::VALUE;
+
 
     public:
       Point myOrigin; // public because Display2DFactory, todo: accessors

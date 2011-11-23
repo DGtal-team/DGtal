@@ -63,7 +63,7 @@ namespace DGtal
      Khalimsky coordinates.
    */
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+	     typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
 
@@ -472,7 +472,7 @@ namespace DGtal
     static const Sign NEG = false;
 #else
     // static constants
-    static const Dimension dimension;
+    static const Dimension dimension = dim;
     static const Dimension DIM;
     static const Sign POS;
     static const Sign NEG;

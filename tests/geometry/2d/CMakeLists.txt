@@ -15,6 +15,7 @@ SET(DGTAL_TESTS_SRC
   testBinomialConvolver
   testCombinDSS
   testShapesFromPoints
+  testGeometricalDSS
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

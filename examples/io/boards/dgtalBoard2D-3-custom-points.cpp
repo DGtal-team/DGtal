@@ -80,8 +80,9 @@ int main()
   << p2
   << CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
   << p3;
-  board.saveSVG("dgtalBoard2D-3-custom-points.svg");
-  board.saveEPS("dgtalBoard2D-3-custom-points.eps");
+  board.saveSVG("dgtalboard-3-custom-points.svg");
+  board.saveEPS("dgtalboard-3-custom-points.eps");
+  board.saveTikZ("dgtalboard-3-custom-points.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.pdf", Board2D::CairoPDF);

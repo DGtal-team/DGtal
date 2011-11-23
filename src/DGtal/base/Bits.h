@@ -29,39 +29,12 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
-
+#include "DGtal/base/ExpressionTemplates.h"
 
 namespace DGtal
 {
  
-  /**
-   * Template metaprogramming to compute at compilation time a power.
-   */
-  template <int X, unsigned exponent> class POW
-  {
-  public:  enum{ VALUE = X* POW<X, exponent-1>::VALUE};
-  };
-  template <int X > class POW<X, 1>
-  {
-  public:  enum{ VALUE = X };
-  };
-
-  /**
-   * Template metaprogramming to compute at compilation time a log2.
-   */
-  template <int X>
-  class LOG2
-  {
-  public:  enum{ VALUE = 1 +  LOG2<X / 2>::VALUE};
-  };
-  template <> class LOG2<2>
-  {
-  public:  enum{ VALUE = 1 };
-  };
-  template <> class LOG2<1>
-  {
-  public:  enum{ VALUE = 0 };
-  };
+ 
 
   struct Bits
   {

@@ -359,6 +359,22 @@ ShapeList::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+ShapeList::flushTikZ( std::ostream & stream,
+                      const TransformTikZ & transform ) const
+{
+    std::vector< Shape* > shapes = _shapes;
+    stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
+    std::vector< Shape* >::const_iterator i = shapes.begin();
+    std::vector< Shape* >::const_iterator end = shapes.end();
+    stream << "\\begin{scope}\n";
+    while ( i != end ) {
+        (*i)->flushTikZ( stream, transform );
+        ++i;
+    }
+    stream << "\\end{scope}\n";
+}
+
 Rect
 ShapeList::boundingBox() const
 {
@@ -640,6 +656,16 @@ Group::flushCairo( cairo_t */*cr*/,
     //ShapeList::flushCairo( cr, transform );
 }
 #endif
+
+void
+Group::flushTikZ( std::ostream & stream,
+		  const TransformTikZ & transform ) const
+{
+  // FIXME: implement clipping
+  stream << "\\begin{scope}\n";
+  ShapeList::flushTikZ( stream, transform );
+  stream << "\\end{scope}\n";
+}
 
 Rect
 Group::boundingBox() const

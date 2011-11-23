@@ -52,9 +52,6 @@ using namespace std;
 namespace DGtal
 {
 
-  // N is number of children per node.
-#define N POW<2,dim>::VALUE
-
   // ---------------------------------------------------------------------
   // constructor
   // ---------------------------------------------------------------------
@@ -154,11 +151,11 @@ namespace DGtal
   void
   experimental::ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const HashKey key, const Value value )
   {
-    HashKey brothers[N-1];
+    HashKey brothers[myN-1];
 
     bool broValue = ( key != static_cast<HashKey> ( 1 ) );
     myMorton.brotherKeys ( key, brothers );
-    for ( unsigned int i = 0; i < N - 1; ++ i )
+    for ( unsigned int i = 0; i < myN - 1; ++ i )
     {
       Node* n = getNode ( brothers[i] );
       if ( ! ( n && ( n->getObject() == value ) ) )
@@ -209,9 +206,9 @@ namespace DGtal
       else
       {
         //cerr << " + " << endl;
-        HashKey brothersH[N-1];
+        HashKey brothersH[myN-1];
         myMorton.brotherKeys ( iterKey, brothersH );
-        for ( unsigned int i = 0; i < N - 1; ++i )
+        for ( unsigned int i = 0; i < myN - 1; ++i )
         {
           nodeList.push_front ( brothersH[i] );
         }
@@ -220,9 +217,9 @@ namespace DGtal
     }
     addNode ( value, key );
     unsigned int nbRecur = myTreeDepth - getKeyDepth ( key ) + 1;
-    HashKey children[N];
+    HashKey children[myN];
     myMorton.childrenKeys ( key, children );
-    for ( unsigned int i = 0; i < N; ++i )
+    for ( unsigned int i = 0; i < myN; ++i )
       recursiveRemoveNode ( children[i], nbRecur );
 
     return;
@@ -417,11 +414,11 @@ namespace DGtal
       return;
     if ( --nbRecursions > 0 )
     {
-      HashKey children[N];
+      HashKey children[myN];
       myMorton.childrenKeys ( key, children );
-      for ( unsigned int i = 0; i < N; ++i )
+      for ( unsigned int i = 0; i < myN; ++i )
       {
-  recursiveRemoveNode ( children[i], nbRecursions );
+	recursiveRemoveNode ( children[i], nbRecursions );
       }
     }
   }
@@ -523,7 +520,7 @@ namespace DGtal
   {
     out << "ImageContainerByHashTree::printState" << endl;
     out << "depth: " << myTreeDepth << " (" << Bits::bitString ( myDepthMask ) << ")" << endl;
-    out << "dim: " << dim << "N: " << N << endl;
+    out << "dim: " << dim << "myN: " << myN << endl;
     printTree ( ROOT_KEY, out, displayKeys );
   }
 
@@ -553,9 +550,9 @@ namespace DGtal
 
     if ( level < myTreeDepth )
     {
-      HashKey children[N];
+      HashKey children[myN];
       myMorton.childrenKeys ( key, children );
-      for ( unsigned int i = 0; i < N; ++i )
+      for ( unsigned int i = 0; i < myN; ++i )
         printTree ( children[i], out, displayKeys );
     }
   }
@@ -566,7 +563,7 @@ namespace DGtal
   experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( ostream& out, unsigned int nbBits ) const
   {
     out << "ImageContainerByHashTree::printInternalState ----------------------------------" << endl;
-    out << "| <template> dim = " << dim << " N = " << N << endl;
+    out << "| <template> dim = " << dim << " myN = " << myN << endl;
     out << "| tree depth = " << myTreeDepth << " mask = " << Bits::bitString ( myDepthMask ) << endl;
 
     for ( unsigned int i = 0; i < ( 1 << myKeySize ); ++i )
@@ -826,14 +823,14 @@ namespace DGtal
     }
     else
     {
-      HashKey children[N];
+      HashKey children[myN];
       myMorton.childrenKeys ( key, children );
       float result = 0;
-      for ( unsigned int i = 0; i < N; ++i )
+      for ( unsigned int i = 0; i < myN; ++i )
       {
   result += blendChildren ( children[i] );
       }
-      return static_cast<Value> ( result / N );
+      return static_cast<Value> ( result / myN );
     }
   }
 
@@ -875,10 +872,10 @@ namespace DGtal
       }
     }
 
-    HashKey children[N];
+    HashKey children[myN];
     myMorton.childrenKeys ( key, children );
     bool returnValue = true;
-    for ( unsigned int i = 0; i < N; ++i )
+    for ( unsigned int i = 0; i < myN; ++i )
       returnValue &= checkIntegrity ( children[i], ( n || leafAbove ) );
     return returnValue;
   }
