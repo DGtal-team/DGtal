@@ -103,6 +103,10 @@ namespace DGtal
   // we use friend because of inner classes
   // GridCurve
 
+  
+  // Preimage2D
+  // Preimage2D
+
 
   // PointVector
   /**

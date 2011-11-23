@@ -567,6 +567,117 @@ void draw( DGtal::Board2D & board,
 }
 // FP
 
+
+// ImageContainerByHashTree
+/*template <typename C, typename Domain, typename Value, typename HashKey>
+inline
+void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+    HashKey key,
+    const double p[2],
+    const double len,
+    LibBoard::Board & board,
+    const C& cmap )
+{
+  static const typename Domain::Space::Dimension dim = Domain::dimension;
+  
+  //
+  
+  ASSERT ( dim == 2 );
+  
+  double np[2], nlen;
+
+#if(0)
+  Node* n = i.getNode ( key );
+  if ( n )
+  {
+    Color c;
+    c = cmap ( n->getObject() );
+    board.setFillColorRGBi ( c.red(), c.green(), c.blue() );
+
+    board.drawRectangle ( p[0], p[1], len, len );
+  }
+  else
+#endif
+  {
+    HashKey children[4];
+    i.myMorton.childrenKeys ( key, children );
+
+    nlen = len / 2.0;
+
+    np[0] = p[0];
+    np[1] = p[1] - nlen;
+    drawImageRecursive<C>( aBoard, i, children[0], np, nlen, board, cmap );
+
+    np[0] = p[0] + nlen;
+    np[1] = p[1] - nlen;
+    drawImageRecursive<C>( aBoard, i, children[1], np, nlen, board, cmap );
+
+    np[0] = p[0];
+    np[1] = p[1];
+    drawImageRecursive<C>( aBoard, i, children[2], np, nlen, board, cmap );
+
+    np[0] = p[0] + nlen;
+    np[1] = p[1];
+    drawImageRecursive<C>( aBoard, i, children[3], np, nlen, board, cmap );
+  }
+}
+  
+template <typename C, typename Domain, typename Value, typename HashKey>
+inline
+void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i, const Value &minV, const Value &maxV )
+{
+  static const typename Domain::Space::Dimension dim = Domain::dimension;
+  static const HashKey ROOT_KEY = static_cast<HashKey>(1);
+  
+  //
+  
+  ASSERT ( dim == 2 );
+
+  C colormap ( minV, maxV );
+
+  double p[2];
+  double len;
+
+  p[0] = i.myOrigin[0];
+  p[1] = i.myOrigin[1] + i.getSpanSize();
+
+  len = i.getSpanSize();
+
+  drawImageRecursive<C>( board, i, ROOT_KEY, p, len, board, colormap );
+}*/
+// ImageContainerByHashTree
+
+
+// ImageContainerBySTLVector
+template <typename Colormap, typename D, typename V>
+inline
+void drawImage( DGtal::Board2D & board,
+           const DGtal::ImageContainerBySTLVector<D, V> & i,
+             const V &minV,
+             const V &maxV )
+{
+  ASSERT(D::dimension == 2);
+
+  Colormap colormap(minV, maxV);
+  Color c;
+  V val;
+  D ldomain(i.lowerBound(), i.upperBound());
+
+  for (typename D::ConstIterator it =  ldomain.begin();
+       it != ldomain.end(); ++it)
+  {
+    val = i.operator()( (*it) );
+    c = colormap( val );
+    board.setFillColorRGBi( c.red(), c.green(), c.blue());
+    board.drawRectangle( NumberTraits<typename D::Integer>::
+       castToInt64_t((*it)[0]) - 0.5, 
+       NumberTraits<typename D::Integer>::
+       castToInt64_t((*it)[1]) + 0.5, 1, 1);
+  }
+}
+// ImageContainerBySTLVector
+
+
 //
 
 inline
