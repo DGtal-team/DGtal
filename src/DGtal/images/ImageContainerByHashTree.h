@@ -648,6 +648,7 @@ namespace DGtal
 	return n;
       }
 
+    public:
       /**
        * Returns a pointer to the node corresponding to the key. If it
        * does'nt exist, returns 0.  This method is called VERY often,
@@ -655,7 +656,7 @@ namespace DGtal
        * @param key The key.
        * @return the pointer to the node corresponding to the key.
        */
-      inline Node* getNode(const HashKey key)  const  // very used !!
+      inline Node* getNode(const HashKey key)  const  // very used !! // public because Display2DFactory, todo: accessors
       {
 	Node* iter = myData[getIntermediateKey(key)];
 	while (iter != 0)
@@ -666,6 +667,7 @@ namespace DGtal
           }
 	return 0;
       }
+    protected:
 
       /**
        * Remove the node corresponding to a key. Returns false if the
@@ -719,7 +721,9 @@ namespace DGtal
 
       unsigned int mySpanSize;
 
-      Point myOrigin;
+    public:
+      Point myOrigin; // public because Display2DFactory, todo: accessors
+    protected:
 
       /**
        * Precoputed masks to avoid recalculating it all the time
@@ -727,8 +731,10 @@ namespace DGtal
       HashKey myDepthMask;
       HashKey myPreComputedIntermediateMask; // ~((~0) << _keySize)
 
+    public:
       ///The morton code computer.
-      Morton<HashKey, Point> myMorton;
+      Morton<HashKey, Point> myMorton; // public because Display2DFactory, todo: accessors
+    protected:
 
     };
 

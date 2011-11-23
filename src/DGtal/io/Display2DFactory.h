@@ -56,6 +56,9 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
 
+#include "DGtal/images/ImageContainerBySTLVector.h"
+//#include "DGtal/images/ImageContainerByHashTree.h"
+
 #include "DGtal/io/boards/Board2D.h"
 
 
@@ -126,6 +129,14 @@
 
 // 5) pb avec les flèches (ne se dessinent pas)
 // TODO new: end
+
+
+// TODO new2: begin
+// pb avec ImageContainerByHashTree
+
+// drawImage *2 au lieu de draw pour ImageContainerBySTLVector et pour ImageContainerByHashTree
+// ImageContainerByHashTree: pb Node (ligne 590 à 599) de DisplaYFactory.ih
+// TODO new2: end
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -249,6 +260,26 @@
     template <typename TIterator, typename TInteger, int connectivity>
     void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
     // FP
+  
+    
+    // ImageContainerByHashTree
+    /*template <typename C, typename Domain, typename Value, typename HashKey>
+    void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+        HashKey key,
+        const double p[2],
+        const double len,
+        LibBoard::Board & board,
+        const C& cmap );
+
+    template <typename C, typename Domain, typename Value, typename HashKey>
+    void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );*/
+    // ImageContainerByHashTree
+
+
+    // ImageContainerBySTLVector
+    template <typename Colormap, typename D, typename V>
+    void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
+    // ImageContainerBySTLVector
     
     //
     
