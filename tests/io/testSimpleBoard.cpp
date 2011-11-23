@@ -121,7 +121,7 @@ bool testDomain()
 
     PointVector<3,int> pl;
     //An assert should be raised 
-    //pl.selfDraw(b2); FAIRE ??? (vérif)
+    //draw(b2, pl); //pl.selfDraw(b2);
 
     return true;
 }

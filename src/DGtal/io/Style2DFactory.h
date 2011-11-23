@@ -59,13 +59,13 @@
 
 #include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 
-//#include "DGtal/images/ImageContainerByHashTree.h"
+#include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+
+#include "DGtal/geometry/2d/GeometricalDSS.h"
 
 
 // TODO: begin
-// pb avec ImageContainerByHashTree
-
 // valeur des struct pour les defaultStyle
 // styleName en className
 
