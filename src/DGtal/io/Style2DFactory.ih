@@ -36,6 +36,10 @@
 
 namespace DGtal
 {
+
+template<class TDomain, class TValue >
+class ImageContainerBySTLVector;
+
  
   // ArithmeticalDSS
   /**
@@ -311,6 +315,27 @@ namespace DGtal
   };
   // ImageContainerBySTLVector
   
+  
+  // GeometricalDSS
+  /**
+    * Default drawing style for GeometricalDSS.
+    */
+  struct DefaultDrawStyle_GeometricalDSS : public DrawableWithBoard2D
+  {
+    /**
+      * Draw the GeometricalDSS on a board
+      * @param board the output board where the object is drawn.
+      */
+    virtual void selfDraw(Board2D & aBoard) const
+    {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(1.5);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  // GeometricalDSS
+  
   //
 
 #if(0)
@@ -578,12 +603,12 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TP
 
 
 // ImageContainerByHashTree
-/*template <typename Domain, typename Value, typename HashKey  >
+template <typename Domain, typename Value, typename HashKey  >
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const experimental::ImageContainerByHashTree<Domain, Value, HashKey > & icbht, std::string mode = "" )
 {
   return new DefaultDrawStyle_ImageContainerByHashTree;
-}*/
+}
 // ImageContainerByHashTree
 
 
@@ -595,6 +620,16 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ImageContainerBySTLVector<
   return new DefaultDrawStyle_ImageContainerBySTLVector;
 }
 // ImageContainerBySTLVector
+
+
+// GeometricalDSS
+template <typename TConstIterator>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstIterator> & g, std::string mode = "" )
+{
+  return new DefaultDrawStyle_GeometricalDSS; 
+}
+// GeometricalDSS
 
 //
 

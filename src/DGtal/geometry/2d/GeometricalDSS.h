@@ -246,31 +246,35 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
     std::string styleName() const;
     
+#if(0)
     /**
        Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
     void selfDraw(Board2D & board ) const;
+#endif
 
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+  public:
     /**
      * segment begin iterator.
      */
-    ConstIterator myBegin;
+    ConstIterator myBegin; // public because Display2DFactory, todo: accessors
     /**
      * segment end iterator.
      */
-    ConstIterator myEnd;
+    ConstIterator myEnd; // public because Display2DFactory, todo: accessors
+  private:
     /**
      * Pointer to the preimage.
      */
@@ -291,6 +295,7 @@ namespace DGtal
 
 
   private:
+  public:
 
     /**
      * Projects the point ( @a x , @a y ) onto the 
@@ -302,7 +307,8 @@ namespace DGtal
      * @param gamma  intercept
      */
     void projects(double& x, double& y, 
-                const double& alpha, const double& beta, const double& gamma) const;
+                const double& alpha, const double& beta, const double& gamma) const; // public because Display2DFactory, todo: accessors
+  private:
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -310,6 +316,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+#if(0)
     /**
      * Default drawing style for GeometricalDSS.
      */
@@ -327,6 +334,7 @@ namespace DGtal
         aBoard.setFillColor(Color::None);
       }
     };
+#endif
 
   }; // end of class GeometricalDSS
 

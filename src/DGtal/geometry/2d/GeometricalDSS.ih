@@ -398,7 +398,7 @@ DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
   out << "[end of GeometricalDSS]" << std::endl;
 }
 
-
+#if(0)
 template <typename TConstIterator>
 inline
 DGtal::DrawableWithBoard2D*
@@ -406,6 +406,7 @@ DGtal::GeometricalDSS<TConstIterator>::defaultStyle( std::string /*mode*/ ) cons
 {
   return new DefaultDrawStyle(); 
 }
+#endif
 
 template <typename TConstIterator>
 inline
@@ -415,6 +416,7 @@ DGtal::GeometricalDSS<TConstIterator>::styleName() const
   return "GeometricalDSS";
 }
 
+#if(0)
 template <typename TConstIterator>
 inline
 void 
@@ -447,6 +449,7 @@ DGtal::GeometricalDSS<TConstIterator>::selfDraw(Board2D & aBoard) const
 
   aBoard.drawLine(fx,fy,lx,ly); 
 }
+#endif
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -195,7 +195,7 @@ void draw( DGtal::Board2D & aBoard,
   ++i;
   while ( i != p.myPHull.end() ) {
     s.init(pt, *i);
-    draw(aBoard, *i);//s.selfDraw(aBoard); // Caution, don't know if it's good
+    draw(aBoard, s); //s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -205,7 +205,7 @@ void draw( DGtal::Board2D & aBoard,
   ++i;
   while ( i != p.myQHull.end() ) {
     s.init(pt, *i);
-    draw(aBoard, *i);//s.selfDraw(aBoard); // Caution, don't know if it's good
+    draw(aBoard, s); //s.selfDraw(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -216,9 +216,9 @@ void draw( DGtal::Board2D & aBoard,
   Point Ql(*p.myQHull.rbegin());
 
   s.init(Pf, Ql);
-  draw(aBoard, Ql);//s.selfDraw(aBoard); // Caution, don't know if it's good
+  draw(aBoard, s); //s.selfDraw(aBoard);
   s.init(Qf, Pl);
-  draw(aBoard, Pl);//s.selfDraw(aBoard); // Caution, don't know if it's good
+  draw(aBoard, s); //s.selfDraw(aBoard);
 }
 // Preimage2D
 
@@ -569,14 +569,15 @@ void draw( DGtal::Board2D & board,
 
 
 // ImageContainerByHashTree
-/*template <typename C, typename Domain, typename Value, typename HashKey>
+template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-    HashKey key,
-    const double p[2],
-    const double len,
-    LibBoard::Board & board,
-    const C& cmap )
+void drawImageRecursive( DGtal::Board2D & aBoard,
+    const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+      HashKey key,
+      const double p[2],
+      const double len,
+      LibBoard::Board & board,
+      const C& cmap )
 {
   static const typename Domain::Space::Dimension dim = Domain::dimension;
   
@@ -624,7 +625,9 @@ void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageConta
   
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i, const Value &minV, const Value &maxV )
+void drawImage( Board2D & board,
+                const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                const Value &minV, const Value &maxV )
 {
   static const typename Domain::Space::Dimension dim = Domain::dimension;
   static const HashKey ROOT_KEY = static_cast<HashKey>(1);
@@ -644,7 +647,7 @@ void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Do
   len = i.getSpanSize();
 
   drawImageRecursive<C>( board, i, ROOT_KEY, p, len, board, colormap );
-}*/
+}
 // ImageContainerByHashTree
 
 
@@ -676,6 +679,46 @@ void drawImage( DGtal::Board2D & board,
   }
 }
 // ImageContainerBySTLVector
+
+
+// GeometricalDSS
+template <typename TConstIterator>
+inline
+void draw(DGtal::Board2D & aBoard,
+          const DGtal::GeometricalDSS<TConstIterator> & g)
+{
+  typedef TConstIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+  typedef typename Pair::first_type Point;
+    
+  double alpha, beta, gamma; 
+  g.getParameters(alpha, beta, gamma); 
+
+  typedef typename Point::Coordinate Coordinate; 
+
+  Pair firstPair( *g.myBegin ); 
+  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+  double fx = (fx1+fx2)/2.0; 
+  double fy = (fy1+fy2)/2.0; 
+  g.projects(fx, fy, alpha, beta, gamma);
+
+  ConstIterator it (g.myEnd); 
+  --it;
+  Pair lastPair( *it );  
+  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+  double lx = (lx1+lx2)/2.0; 
+  double ly = (ly1+ly2)/2.0; 
+  g.projects(lx, ly, alpha, beta, gamma);
+
+  aBoard.drawLine(fx,fy,lx,ly);
+}
+// GeometricalDSS
 
 
 //

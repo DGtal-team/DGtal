@@ -57,7 +57,9 @@
 #include "DGtal/math/AngleLinearMinimizer.h"
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
-//#include "DGtal/images/ImageContainerByHashTree.h"
+#include "DGtal/images/ImageContainerByHashTree.h"
+
+#include "DGtal/geometry/2d/GeometricalDSS.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -86,10 +88,9 @@
 
 //---
 
-// --- FAIRE --- :
+// --- àfaire --- :
 // rechercher tous les selfdraw et defaultStyle
 // revoir les // des structs ou alors c'est des #if dehors
-// voir les FAIRE
 
 //---
 
@@ -99,30 +100,11 @@
 //    c.drawArc(board, Point(5,10), Point(8,4)); 
 //   c.drawSector(board, Point(9,3), Point(10,0) ); 
 //    c.drawAnnulus(board, Point(5,-10), Point(2,-4) );
-
-// test testHashTree.cpp
-//tests/kernel/testHashTree.cpp:175:11: error: ‘class testGetSetVal()::Image’ has no member named ‘selfDraw’
-//tests/kernel/testHashTree.cpp:178:12: error: ‘class testGetSetVal()::ImageVector’ has no member named ‘selfDraw’
-
-// home/user/Desktop/DGtal.git/DGtal/tests/geometry/nd/testDistanceTransformation.cpp
-//ligne 111 138 185 - 221 273 283 - 293 337 363 535 - 553 568
-
-// home/user/Desktop/DGtal.git/DGtal/tests/io/writers/testPNMRawWriter.cpp
-//ligne 99 -> //image.selfDraw<HueTwice>(board,0,255);
-
-// home/user/Desktop/DGtal.git/DGtal/examples/geometry/distancetransform2D.cpp
-//ligne 99 130 135 140
-
-// with ITK and GMP and GraphicsMagick
-// modified:   ../tests/io/readers/testMagickReader.cpp
-// ligne 100
-
 // TODO: end
 
 
 // TODO new: begin
 // 1) -> todo: accessors
-// 2) -> Caution, don't know if it's good FOR Preimage2D draw
 // 3) -> DigitalSetBySTLVector: draw with Functor ??? necessary ???
 
 // 4) types de David
@@ -132,10 +114,12 @@
 
 
 // TODO new2: begin
-// pb avec ImageContainerByHashTree
-
 // drawImage *2 au lieu de draw pour ImageContainerBySTLVector et pour ImageContainerByHashTree
 // ImageContainerByHashTree: pb Node (ligne 590 à 599) de DisplaYFactory.ih
+
+// ranger dans l'ordre les new style et draw
+
+// IMPORTANT -> revoir tous les drawImage
 // TODO new2: end
 
 
@@ -263,7 +247,7 @@
   
     
     // ImageContainerByHashTree
-    /*template <typename C, typename Domain, typename Value, typename HashKey>
+    template <typename C, typename Domain, typename Value, typename HashKey>
     void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
         HashKey key,
         const double p[2],
@@ -272,7 +256,7 @@
         const C& cmap );
 
     template <typename C, typename Domain, typename Value, typename HashKey>
-    void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );*/
+    void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );
     // ImageContainerByHashTree
 
 
@@ -280,6 +264,12 @@
     template <typename Colormap, typename D, typename V>
     void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
     // ImageContainerBySTLVector
+    
+    
+    // GeometricalDSS
+    template <typename TConstIterator>
+    void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
+    // GeometricalDSS
     
     //
     
