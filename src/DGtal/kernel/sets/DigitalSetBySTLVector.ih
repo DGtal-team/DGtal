@@ -455,7 +455,7 @@ DGtal::DigitalSetBySTLVector<Domain>::computeBoundingBox
       ConstIterator it = begin();
       ConstIterator it_end = end();
       upper = lower = *it;
-      for ( ; it != end(); ++it )
+      for ( ; it != it_end; ++it )
   if ( it->isLower( lower ) ) lower = *it;
   else if ( it->isUpper( upper ) ) upper = *it;
     }
@@ -566,7 +566,6 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDraw(Board2D & aBoard) const
 
 
 
-
 #if(0)
 template <typename Domain>
 inline
@@ -653,7 +652,9 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawDisplay3D( Display3D & display ) c
       selfDrawAsGridDisplay3D( display );
     }  
 }
+
 #endif
+
 
 
 

@@ -121,6 +121,14 @@ public:
 };
 #endif
 
+/**
+ * The TransformTikZ structure.
+ * @brief Structure representing a scaling and translation
+ * suitable for an TikZ output.
+ */
+struct TransformTikZ : public TransformSVG {
+};
+
 #include "Transforms.ih"
 
 } // namespace LibBoard

@@ -213,6 +213,11 @@ namespace DGtal
      */
     bool initFromVectorStream(std::istream & in );
 
+    /**
+     * Init.
+     * @param aVectorOfSCells the vector containing the sequence of signed 1-cells. 
+     */
+    bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException);
 
     /**
      * Outputs the grid curve to the stream @a out.

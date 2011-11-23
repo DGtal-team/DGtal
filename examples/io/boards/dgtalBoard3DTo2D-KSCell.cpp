@@ -36,7 +36,6 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"

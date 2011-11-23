@@ -48,7 +48,7 @@
 #include <bitset>
 #include <algorithm>
 #include <boost/array.hpp>
-
+#include <vector>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CRange.h"

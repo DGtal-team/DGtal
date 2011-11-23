@@ -708,7 +708,7 @@ template <typename TRange>
 inline
 void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
 {
-  BOOST_CONCEPT_ASSERT(( CConstRange<TRange> ));
+  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange<TRange> ));
   readFromPointsRange( aRange.begin(), aRange.end(), c ); 
 }
 
@@ -1029,7 +1029,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
 
   // cerr << "Starting point is " << i << endl;
   ASSERT( ( n < nb ) || ( i == 0 ) );
-  if ( ( n == nb ) )
+  if (  n == nb  )
   { // do nothing
     aCleanC.chain = c.chain;
     for ( unsigned int ni = 0; ni < nb; ++ni )

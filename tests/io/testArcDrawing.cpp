@@ -23,6 +23,7 @@ int main(int /*argc*/, char** /*argv*/)
   board.drawArc(0.0, 1.0, 2.0, 0.5, M_PI/2.0+0.5, false); 
   board.saveEPS( "essai.eps" );
   board.saveSVG( "essai.svg" );  
+  board.saveTikZ( "essai.tikz" );
 #ifdef WITH_CAIRO
     board.saveCairo("essai.pdf", Board2D::CairoPDF);
 #endif

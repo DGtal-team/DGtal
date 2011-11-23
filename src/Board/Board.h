@@ -786,6 +786,28 @@ public:
   void saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 #endif
 
+  /** 
+   * Save the drawing in an TikZ file. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param filename The name of the file.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+
+  /** 
+   * Save the drawing in an TikZ file. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param filename The name of the file.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
  protected:
 
   /**

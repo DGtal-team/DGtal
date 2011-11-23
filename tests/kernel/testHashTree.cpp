@@ -33,7 +33,7 @@
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
@@ -46,7 +46,6 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class HashTree.
@@ -104,7 +103,7 @@ bool testGetSetVal()
   typedef TDomain::Point Point;
   Board2D board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
 
 
   //Default image selector = STLVector
@@ -228,9 +227,9 @@ bool testBadKeySizes()
   typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
-  Board board;
+  Board2D board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(Board2D::UCentimeter);
 
 
   //Default image selector = STLVector

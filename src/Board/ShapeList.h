@@ -88,6 +88,9 @@ struct ShapeList : public Shape {
      const TransformCairo & transform ) const;
 #endif
 
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
   Rect boundingBox() const;
   
   virtual int minDepth() const;
@@ -256,6 +259,9 @@ struct Group : public ShapeList {
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
 
   Group & operator=( const Group & other );
 

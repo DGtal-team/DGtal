@@ -36,10 +36,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #if (!defined(WIN32))
-template < Dimension dim, typename TInteger >
+/*template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
-
+*/
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
@@ -312,8 +312,6 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
   display.setFillColor(fillColorSave);
 }
 #endif
-
-
 
 
 

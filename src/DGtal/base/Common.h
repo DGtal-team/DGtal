@@ -67,6 +67,7 @@
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s
 #else
+#include <stdio.h> 
 #define secured_sprintf snprintf
 #endif // defined( WIN32 )
 
