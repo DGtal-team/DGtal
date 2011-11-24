@@ -568,6 +568,173 @@ void draw( DGtal::Board2D & board,
 // FP
 
 
+// CircleFrom2Points
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
+{
+    CircleFrom3Points<TPoint> c(cf2p.myPole,cf2p.myP,cf2p.myQ); 
+    drawArc(aBoard,c,cf2p.myP,cf2p.myQ);  
+}
+// CircleFrom2Points
+
+
+// CircleFrom3Points
+template <typename Point>
+inline
+void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+        Vector u(cf3p.myP - cf3p.myQ);
+          Vector v(cf3p.myR - cf3p.myP);
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename Point>
+inline
+void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+        Vector u(cf3p.myP - cf3p.myQ);
+          Vector v(cf3p.myR - cf3p.myP);
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //sector drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                   cx, cy ); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
+                   cx, cy ); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename Point>
+inline
+void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+        Vector u(cf3p.myP - cf3p.myQ);
+          Vector v(cf3p.myR - cf3p.myP);
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //inner arc
+    aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
+    //outer arc
+    aBoard.drawArc (cx, cy, radius+w, alpha1, alpha2, orientation); 
+    //first segment
+    double ifx = cx + (radius-w)*std::cos(alpha1);
+    double ify = cy + (radius-w)*std::sin(alpha1);
+    double ofx = cx + (radius+w)*std::cos(alpha1);
+    double ofy = cy + (radius+w)*std::sin(alpha1);
+    aBoard.drawLine(ifx, ify, ofx, ofy); 
+    //second segment
+    double ilx = cx + (radius-w)*std::cos(alpha2);
+    double ily = cy + (radius-w)*std::sin(alpha2);
+    double olx = cx + (radius+w)*std::cos(alpha2);
+    double oly = cy + (radius+w)*std::sin(alpha2);
+    aBoard.drawLine(ilx, ily, olx, oly); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
+{
+  typedef typename TPoint::Coordinate Coordinate;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    cf3p.getParameters(cx,cy,radius);
+    aBoard.drawCircle (cx,cy,radius); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(cf3p.myP[0]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[0]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[1]) );
+  } 
+}
+// CircleFrom3Points
+
+
+// StraightLineFrom2Points
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p)
+{
+  aBoard.drawLine(slf2p.myP[0],slf2p.myP[1],slf2p.myQ[0],slf2p.myQ[1]);
+}
+// StraightLineFrom2Points
+
+    
 // ImageContainerByHashTree
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline

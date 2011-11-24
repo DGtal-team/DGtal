@@ -107,9 +107,9 @@ bool testCircleFrom3Points()
   {
     c.init( Point(8,4), Point(9,3), Point(10,0) ); 
     trace.info() << "arc drawing" << endl;
-//    c.drawArc(board, Point(5,10), Point(8,4)); 
-//   c.drawSector(board, Point(9,3), Point(10,0) ); 
-//    c.drawAnnulus(board, Point(5,-10), Point(2,-4) ); 
+    drawArc(board, c, Point(5,10), Point(8,4)); 
+    drawSector(board, c, Point(9,3), Point(10,0) ); 
+    drawAnnulus(board, c, Point(5,-10), Point(2,-4) ); 
     board.saveEPS("arcDisplay.eps");
   }
 

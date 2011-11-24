@@ -173,19 +173,21 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+  public:
     //the three points that uniquely define the circle
     /**
        First (and not mutable) point through which the circle passes
     */
-    Point myPole;
+    Point myPole; // public because Display2DFactory, todo: accessors
     /**
        Second point through which the circle passes
     */
-    Point myP;
+    Point myP; // public because Display2DFactory, todo: accessors
     /**
        Third point through which the circle passes
     */
-    Point myQ;
+    Point myQ; // public because Display2DFactory, todo: accessors
+  private:
     // ------------------------- Hidden services ------------------------------
   protected:
 

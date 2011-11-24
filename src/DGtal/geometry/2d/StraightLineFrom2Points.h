@@ -164,15 +164,17 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+  public:
     //the two points that uniquely define the straight line
     /**
        First point through which the straight line passes
     */
-    Point myP;
+    Point myP; // public because Display2DFactory, todo: accessors
     /**
        Second point through which the straight line passes
     */
-    Point myQ;
+    Point myQ; // public because Display2DFactory, todo: accessors
+  private:
     // ------------------------- Hidden services ------------------------------
   protected:
 

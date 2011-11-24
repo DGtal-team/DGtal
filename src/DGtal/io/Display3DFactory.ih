@@ -551,7 +551,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     drawAsGrid( display, h );
     drawAsPaving( display, h );
   }
-  // selfDrawAsGrid( board );
 }
 // HyperRectDomain
 
