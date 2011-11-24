@@ -289,6 +289,18 @@ class ImageContainerBySTLVector;
   // FP
   
   
+  // CircleFrom2Points
+  // CircleFrom2Points
+
+
+  // CircleFrom3Points
+  // CircleFrom3Points
+
+
+  // StraightLineFrom2Points
+  // StraightLineFrom2Points
+  
+  
   // ImageContainerByHashTree
   struct DefaultDrawStyle_ImageContainerByHashTree : public DrawableWithBoard2D
   {

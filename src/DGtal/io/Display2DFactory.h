@@ -61,18 +61,23 @@
 
 #include "DGtal/geometry/2d/GeometricalDSS.h"
 
+#include "DGtal/geometry/2d/CircleFrom2Points.h"
+#include "DGtal/geometry/2d/CircleFrom3Points.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
+
 #include "DGtal/io/boards/Board2D.h"
 
 
 // TODO: begin
 
 // --- VERIF --- :
-// test testDigitalSet.cpp
-// test testObject.cpp
-// test testObject-benchmark.cpp
-// test testObjectBorder
-// test testSimpleExpander
-// test testBoard2DCustomStyle
+// test testDigitalSet.cpp ***
+// test testObject-benchmark.cpp *** BAD * 3
+// test testObject.cpp *** BAD * 5
+
+// test testObjectBorder --> flèches only ?
+// test testSimpleExpander --> flèches only 
+// test testBoard2DCustomStyle --> my DGTAL semble bon !!!
 
 // /tests/io/testSimpleBoard --> draw(board, apoint, p2) ??? ligne 82
 
@@ -91,15 +96,6 @@
 // --- àfaire --- :
 // rechercher tous les selfdraw et defaultStyle
 // revoir les // des structs ou alors c'est des #if dehors
-
-//---
-
-// --- DEMANDER A DC --- :
-//modified:   tests/geometry/2d/testShapesFromPoints.cpp
-//ligne 110,111,112
-//    c.drawArc(board, Point(5,10), Point(8,4)); 
-//   c.drawSector(board, Point(9,3), Point(10,0) ); 
-//    c.drawAnnulus(board, Point(5,-10), Point(2,-4) );
 // TODO: end
 
 
@@ -110,6 +106,8 @@
 // 4) types de David
 
 // 5) pb avec les flèches (ne se dessinent pas)
+// dgtalBoard2D-2-sets-2-cairo.png et dgtalBoard2D-2-sets-3-cairo.png de /examples/io/boards/dgtalBoard2D-2-sets
+// -> DrawWithAdjacencies et mode DrawAdjacencies
 // TODO new: end
 
 
@@ -244,6 +242,33 @@
     template <typename TIterator, typename TInteger, int connectivity>
     void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
     // FP
+    
+    
+    // CircleFrom2Points
+    template <typename TPoint>
+    void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & );
+    // CircleFrom2Points
+
+
+    // CircleFrom3Points
+    template <typename Point>
+    void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
+    template <typename Point>
+    void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
+    template <typename Point>
+    void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0);
+    
+    template <typename TPoint>
+    void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
+    // CircleFrom3Points
+
+
+    // StraightLineFrom2Points
+    template <typename TPoint>
+    void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & );
+    // StraightLineFrom2Points
   
     
     // ImageContainerByHashTree

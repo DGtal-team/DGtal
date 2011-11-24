@@ -291,7 +291,6 @@ DGtal::HyperRectDomain<TSpace>::selfDrawDisplay3D( Display3D & display ) const
     selfDrawAsGridDisplay3D( display );
     selfDrawAsPavingDisplay3D( display );
   }
-  // selfDrawAsGrid( board );
 }
 
 
