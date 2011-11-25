@@ -98,15 +98,15 @@
   // {
    
     // ArithmeticalDSS
-    template <typename TIterator, typename TInteger, int connectivity=8>
+    template <typename TIterator, typename TInteger, int connectivity>
     void drawAsBoundingBox( DGtal::Board2D & aBoard, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
 
-    template <typename TIterator, typename TInteger, int connectivity=8>
+    template <typename TIterator, typename TInteger, int connectivity>
     void drawAsDigitalPoints( DGtal::Board2D & aBoard, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
 
-    template <typename TIterator, typename TInteger, int connectivity=8>
+     template <typename TIterator, typename TInteger, int connectivity>
     void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
-    // ArithmeticalDSS
+  // ArithmeticalDSS
     
     
     // FreemanChain
