@@ -69,7 +69,7 @@
 // valeur des struct pour les defaultStyle
 // styleName en className
 
-// verif "virtual void selfDraw" avec const derrière
+// verif "virtual void selfDraw" avec const derrière important pour les exemples et tests
 // TODO: end
 
 //////////////////////////////////////////////////////////////////////////////

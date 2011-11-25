@@ -268,8 +268,8 @@ void draw( DGtal::Board2D & board,
 template<Dimension dim, typename TComponent>
 inline
 void draw( DGtal::Board2D & board, 
-          const DGtal::PointVector<dim,TComponent> & apoint, 
-          const DGtal::PointVector<dim,TComponent> & p )
+          const DGtal::PointVector<dim,TComponent> & p, 
+          const DGtal::PointVector<dim,TComponent> & apoint )
 {
   ASSERT(dim == 2);
 
@@ -420,7 +420,7 @@ void drawWithAdjacencies( DGtal::Board2D & aBoard,
         ++it2)
     {
       p = (*it2) - (*it);
-      draw(aBoard, (*it));
+      draw(aBoard, p, (*it));
     }
   }
 }
@@ -561,7 +561,7 @@ void draw( DGtal::Board2D & board,
     }
   else
     {
-      mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode;
+      mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & fp ): Unknown mode "+mode;
       ASSERT2(false,  mode  );
     }
 }

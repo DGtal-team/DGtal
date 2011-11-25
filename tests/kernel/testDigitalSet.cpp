@@ -231,8 +231,7 @@ bool testDigitalSetDraw()
   //Board export test
   trace.beginBlock("SVG Export");
   Board2D board;
-  //board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
-  drawAsGrid(board, domain);
+  board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
   board << disk;
 
   board.scale(10);
