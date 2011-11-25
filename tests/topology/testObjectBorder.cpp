@@ -191,8 +191,7 @@ bool testObjectBorder()
     else
         trace.info() << "The object (4,8) border is not connected." << endl;
 
-    //board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid ( board );
-    drawAsGrid ( board, domain );
+    board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid ( board );
     board << bubble_set
           << SetMode( bubbleBorder2.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/
           << CustomStyle ( bubbleBorder2.styleName()/*"Object"*/, new MyObjectStyleCustom )

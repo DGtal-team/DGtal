@@ -283,8 +283,8 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template<Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-				    const DGtal::PointVector<dim,TComponent> & aPoint, 
-				    const DGtal::PointVector<dim,TComponent> & p )
+				    const DGtal::PointVector<dim,TComponent> & p, 
+				    const DGtal::PointVector<dim,TComponent> & aPoint )
 {
   ASSERT(dim == 3);
   
@@ -406,7 +406,8 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
 
 template<typename TSpace>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
+                                          const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
 
@@ -789,7 +790,7 @@ void DGtal::Display3DFactory::drawWithAdjacencies( Display3D & display,
         ++it2)
     {
       p = (*it2) - (*it);
-      draw(display, (*it));
+      draw(display, p, (*it));
     }
   }
 }

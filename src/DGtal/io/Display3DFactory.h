@@ -63,7 +63,7 @@
 // port struct DefaultDrawStyle3D from KS ? necessary or not used ? same as (2) ?
 
 // (4)
-// pb with dgtalBoard3DTo2D-3-objects.png ???
+// verif all examples
 // TODO: end
 
 //////////////////////////////////////////////////////////////////////////////

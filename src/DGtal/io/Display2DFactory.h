@@ -69,56 +69,17 @@
 
 
 // TODO: begin
-
-// --- VERIF --- :
-// test testDigitalSet.cpp ***
-// test testObject-benchmark.cpp *** BAD * 3
-// test testObject.cpp *** BAD * 5
-
-// test testObjectBorder --> flèches only ?
-// test testSimpleExpander --> flèches only 
-// test testBoard2DCustomStyle --> my DGTAL semble bon !!!
-
-// /tests/io/testSimpleBoard --> draw(board, apoint, p2) ??? ligne 82
-
-//modified:   ../../../../src/DGtal/geometry/2d/GridCurveRanges.ih
-//ligne 835: //shift.selfDraw( aBoard, pair.first );
-
-//modified:   examples/doc-examples/kernelDomain.cpp
-//ligne 127: //shift.selfDraw(board, (*itPrec));
-
-//modified:   examples/doc-examples/khalimskySpaceScanner.cpp
-//ligne91://     shift.selfDraw(boardScan1, K.uCoords(prec) );
-//ligne115://    shiftq.selfDraw(boardScan2, K.uCoords(precq) );
-
-//---
-
-// --- àfaire --- :
 // rechercher tous les selfdraw et defaultStyle
 // revoir les // des structs ou alors c'est des #if dehors
-// TODO: end
 
+// todo: accessors
 
-// TODO new: begin
-// 1) -> todo: accessors
-// 3) -> DigitalSetBySTLVector: draw with Functor ??? necessary ???
-
-// 4) types de David
-
-// 5) pb avec les flèches (ne se dessinent pas)
-// dgtalBoard2D-2-sets-2-cairo.png et dgtalBoard2D-2-sets-3-cairo.png de /examples/io/boards/dgtalBoard2D-2-sets
-// -> DrawWithAdjacencies et mode DrawAdjacencies
-// TODO new: end
-
-
-// TODO new2: begin
-// drawImage *2 au lieu de draw pour ImageContainerBySTLVector et pour ImageContainerByHashTree
 // ImageContainerByHashTree: pb Node (ligne 590 à 599) de DisplaYFactory.ih
 
 // ranger dans l'ordre les new style et draw
 
 // IMPORTANT -> revoir tous les drawImage
-// TODO new2: end
+// TODO: end
 
 
 //////////////////////////////////////////////////////////////////////////////

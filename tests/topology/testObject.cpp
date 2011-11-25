@@ -482,8 +482,7 @@ bool testDraw()
   Board2D board;
   board.setUnit(Board::UCentimeter);
 
-  //board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
-  drawAsGrid(board, domain);
+  board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
   board << disk_object;
   
   board.saveSVG("disk-object.svg");
@@ -491,20 +490,16 @@ bool testDraw()
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
 
-  //board2 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board2);
-  drawAsGrid(board2, domain);
-  //board2 << SetMode( disk_object.styleName(), "DrawAdjacencies" ) << disk_object; //disk_object.selfDrawWithAdjacencies(board2);
-  drawWithAdjacencies(board2, disk_object);
+  board2 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board2);
+  board2 << SetMode( disk_object.styleName(), "DrawAdjacencies" ) << disk_object; //disk_object.selfDrawWithAdjacencies(board2);
   
   board2.saveSVG("disk-object-adj.svg");
 
   Board2D board3;
   board3.setUnit(Board::UCentimeter);
 
-  //board3 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board3);
-  drawAsGrid(board3, domain);
-  //board3 << SetMode( disk_object2.styleName(), "DrawAdjacencies" ) << disk_object2; //disk_object2.selfDrawWithAdjacencies(board3);
-  drawWithAdjacencies(board3, disk_object2);
+  board3 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board3);
+  board3 << SetMode( disk_object2.styleName(), "DrawAdjacencies" ) << disk_object2; //disk_object2.selfDrawWithAdjacencies(board3);
   
   board3.saveSVG("disk-object-adj-bis.svg");
   trace.endBlock();
