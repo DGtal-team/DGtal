@@ -53,9 +53,9 @@ int main()
   Board2D board;
   board << domain << p1 << p2 << p3;
 
-  board.saveSVG("dgtalboard-1-points.svg");
-  board.saveEPS("dgtalboard-1-points.eps");
-  board.saveTikZ("dgtalboard-1-points.tikz");
+  board.saveSVG("dgtalBoard2D-1-points.svg");
+  board.saveEPS("dgtalBoard2D-1-points.eps");
+  board.saveTikZ("dgtalBoard2D-1-points.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-1-points-cairo.pdf", Board2D::CairoPDF);
